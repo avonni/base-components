@@ -1,14 +1,7 @@
 button {
-    padding-bottom: var(--avonni-button-menu-spacing-block-end);
     border-radius: var(--avonni-button-menu-radius-border, 0.25rem);
     border-width: var(--avonni-button-menu-sizing-border, 1px);
     border-style: var(--avonni-button-menu-styling-border, solid);
-}
-
-.avonni-button-menu_label {
-    font-size: var(--avonni-button-menu-label-font-size, 0.8175rem);
-    font-weight: var(--avonni-button-menu-label-font-weight, 400);
-    font-style: var(--avonni-button-menu-label-font-style, normal);
 }
 
 .avonni-button-menu__button_bare:disabled,
@@ -72,7 +65,7 @@ button {
     transition: border 0.15s linear;
 }
 
-.avonni-button-menu__button_bare {
+.avonni-button-menu_bare {
     background-color: var(
         --avonni-button-menu-button-bare-color-background,
         transparent
@@ -85,9 +78,13 @@ button {
         --avonni-button-menu-button-bare-text-color,
         var(--slds-g-color-neutral-base-50, #747474)
     );
+    padding-right: var(--avonni-button-menu-button-bare-inline-end, 0);
+    padding-left: var(--avonni-button-menu-button-bare-inline-start, 0);
+    padding-top: var(--avonni-button-menu-button-bare-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-bare-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_bare:active {
+.slds-button.avonni-button-menu_bare:active {
     background-color: var(
         --avonni-button-menu-button-bare-color-background-active,
         transparent
@@ -102,7 +99,8 @@ button {
     );
 }
 
-.avonni-button-menu__button_bare:hover {
+.avonni-button-menu_bare:hover,
+.avonni-button-menu_bare:focus {
     background-color: var(
         --avonni-button-menu-button-bare-color-background-hover,
         transparent
@@ -117,7 +115,7 @@ button {
     );
 }
 
-.avonni-button-menu__button_bare-inverse {
+.avonni-button-menu_bare-inverse {
     background-color: var(
         --avonni-button-menu-button-bare-inverse-color-background,
         transparent
@@ -130,9 +128,13 @@ button {
         --avonni-button-menu-button-bare-inverse-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+    padding-right: var(--avonni-button-menu-button-bare-inverse-inline-end, 0);
+    padding-left: var(--avonni-button-menu-button-bare-inverse-inline-start, 0);
+    padding-top: var(--avonni-button-menu-button-bare-inverse-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-bare-inverse-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_bare-inverse:active {
+.slds-button.avonni-button-menu_bare-inverse:active {
     background-color: var(
         --avonni-button-menu-button-bare-inverse-color-background-active,
         transparent
@@ -147,7 +149,8 @@ button {
     );
 }
 
-.avonni-button-menu__button_bare-inverse:hover {
+.avonni-button-menu_bare-inverse:hover,
+.avonni-button-menu_bare-inverse:focus {
     background-color: var(
         --avonni-button-menu-button-bare-inverse-color-background-hover,
         transparent
@@ -162,7 +165,68 @@ button {
     );
 }
 
-.avonni-button-menu__button_border {
+.avonni-button-menu-button_base {
+    --slds-c-button-color-background: var(
+        --avonni-button-menu-button-base-color-background,
+        transparent
+    );
+    --slds-c-button-color-border: var(
+        --avonni-button-menu-button-base-color-border,
+        transparent
+    );
+    --slds-c-button-text-color: var(
+        --avonni-button-menu-button-base-text-color,
+        var(--sds-c-button-brand-color-background, #0176d3)
+    );
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-menu-button-base-inline-end,
+        0
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-menu-button-base-inline-start,
+        0
+    );
+    --slds-c-button-spacing-block-start: var(
+        --avonni-button-menu-button-base-block-start,
+        0
+    );
+    --slds-c-button-spacing-block-end: var(
+        --avonni-button-menu-button-base-block-end,
+        0
+    );
+}
+
+.avonni-button-menu-button_base:active {
+    --slds-c-button-color-background-active: var(
+        --avonni-button-menu-button-base-color-background-active,
+        transparent
+    );
+    --slds-c-button-color-border-active: var(
+        --avonni-button-menu-button-base-color-border-active,
+        var(--sds-c-button-text-color-hover, #014486)
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-button-menu-button-base-text-color-active,
+        var(--sds-c-button-text-color-hover, #014486)
+    );
+}
+
+.avonni-button-menu-button_base:hover {
+    --slds-c-button-color-background-hover: var(
+        --avonni-button-menu-button-base-color-background-hover,
+        transparent
+    );
+    --slds-c-button-color-border-hover: var(
+        --avonni-button-menu-button-base-color-border-hover,
+        transparent
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-button-menu-button-base-text-color-hover,
+        var(--sds-c-button-text-color-hover, #014486)
+    );
+}
+
+.avonni-button-menu_border {
     background-color: var(
         --avonni-button-menu-button-border-color-background,
         transparent
@@ -172,9 +236,13 @@ button {
         var(--slds-g-color-border-base-4, #747474)
     );
     color: var(--avonni-button-menu-button-border-text-color, #747474);
+    padding-right: var(--avonni-button-menu-button-border-inline-end, 1rem);
+    padding-left: var(--avonni-button-menu-button-border-inline-start, 1rem);
+    padding-top: var(--avonni-button-menu-button-border-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-border-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_border:active {
+.slds-button.avonni-button-menu_border:active {
     background-color: var(
         --avonni-button-menu-button-border-color-background-active,
         transparent
@@ -189,7 +257,8 @@ button {
     );
 }
 
-.avonni-button-menu__button_border:hover {
+.avonni-button-menu_border:hover,
+.avonni-button-menu_border:focus {
     background-color: var(
         --avonni-button-menu-button-border-color-background-hover,
         transparent
@@ -204,7 +273,7 @@ button {
     );
 }
 
-.avonni-button-menu__button_border-filled {
+.avonni-button-menu_border-filled {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background,
         var(--slds-g-color-neutral-base-100, #fff)
@@ -217,9 +286,19 @@ button {
         --avonni-button-menu-button-border-filled-text-color,
         var(--slds-g-color-neutral-base-50, #747474)
     );
+    padding-right: var(
+        --avonni-button-menu-button-border-filled-inline-end,
+        1rem
+    );
+    padding-left: var(
+        --avonni-button-menu-button-border-filled-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-border-filled-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-border-filled-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_border-filled:active {
+.slds-button.avonni-button-menu_border-filled:active {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background-active,
         var(--slds-g-color-neutral-base-100, #fff)
@@ -234,7 +313,8 @@ button {
     );
 }
 
-.avonni-button-menu__button_border-filled:hover {
+.avonni-button-menu_border-filled:hover,
+.avonni-button-menu_border-filled:focus {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background-hover,
         var(--slds-g-color-neutral-base-100, #fff)
@@ -249,7 +329,7 @@ button {
     );
 }
 
-.avonni-button-menu__button_border-inverse {
+.avonni-button-menu_border-inverse {
     background-color: var(
         --avonni-button-menu-button-border-inverse-color-background,
         transparent
@@ -262,9 +342,22 @@ button {
         --avonni-button-menu-button-border-inverse-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+    padding-right: var(
+        --avonni-button-menu-button-border-inverse-inline-end,
+        1rem
+    );
+    padding-left: var(
+        --avonni-button-menu-button-border-inverse-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-border-inverse-block-start, 0);
+    padding-bottom: var(
+        --avonni-button-menu-button-border-inverse-block-end,
+        0
+    );
 }
 
-.slds-button.avonni-button-menu__button_border-inverse:active {
+.slds-button.avonni-button-menu_border-inverse:active {
     background-color: var(
         --avonni-button-menu-button-border-inverse-color-background-active,
         transparent
@@ -279,7 +372,8 @@ button {
     );
 }
 
-.avonni-button-menu__button_border-inverse:hover {
+.avonni-button-menu_border-inverse:hover,
+.avonni-button-menu_border-inverse:focus {
     background-color: var(
         --avonni-button-menu-button-border-inverse-color-background-hover,
         transparent
@@ -294,97 +388,117 @@ button {
     );
 }
 
-.avonni-button-menu__button_brand {
-    background-color: var(
+.avonni-button-menu_brand {
+    --slds-c-button-brand-color-background: var(
         --avonni-button-menu-button-brand-color-background,
         var(--sds-c-button-brand-color-background, #0176d3)
     );
-    border-color: var(
+    --slds-c-button-brand-color-border: var(
         --avonni-button-menu-button-brand-color-border,
         var(--sds-c-button-brand-color-border, #0176d3)
     );
-    color: var(
+    --slds-c-button-brand-text-color: var(
         --avonni-button-menu-button-brand-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+    --slds-c-button-brand-spacing-inline-end: var(
+        --avonni-button-menu-button-brand-spacing-inline-end,
+        1rem
+    );
+    --slds-c-button-brand-spacing-inline-start: var(
+        --avonni-button-menu-button-brand-spacing-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-brand-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-brand-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_brand:active {
-    background-color: var(
+.slds-button.avonni-button-menu_brand:active {
+    --slds-c-button-brand-color-background-active: var(
         --avonni-button-menu-button-brand-color-background-active,
         var(--sds-c-button-brand-color-background-active, #014486)
     );
-    border-color: var(
+    --slds-c-button-color-border-active: var(
         --avonni-button-menu-button-brand-color-border-active,
         var(--sds-c-button-brand-color-border-active, #014486)
     );
-    color: var(
+    --slds-c-button-brand-text-color-active: var(
         --avonni-button-menu-button-brand-text-color-active,
         var(--slds-g-color-neutral-base-100, #fff)
     );
 }
 
-.avonni-button-menu__button_brand:hover {
-    background-color: var(
+.avonni-button-menu_brand:hover {
+    --slds-c-button-brand-color-background-hover: var(
         --avonni-button-menu-button-brand-color-background-hover,
         var(--sds-c-button-brand-color-background-active, #014486)
     );
-    border-color: var(
+    --slds-c-button-brand-color-border-hover: var(
         --avonni-button-menu-button-brand-color-border-hover,
         var(--sds-c-button-brand-color-border-active, #014486)
     );
-    color: var(
+    --slds-c-button-brand-text-color-hover: var(
         --avonni-button-menu-button-brand-text-color-hover,
         var(--slds-g-color-neutral-base-100, #fff)
     );
 }
 
-.avonni-button-menu__button_brand-outline {
-    background-color: var(
+.avonni-button-menu_brand-outline {
+    --slds-c-button-outline-brand-color-background: var(
         --avonni-button-menu-button-outline-brand-color-background,
         var(--slds-g-color-neutral-base-100, #fff)
     );
-    border-color: var(
+    --slds-c-button-outline-brand-color-border: var(
         --avonni-button-menu-button-outline-brand-color-border,
         var(--sds-c-button-outline-brand-color-border, #0176d3)
     );
-    color: var(
+    --slds-c-button-text-color: var(
         --avonni-button-menu-button-outline-brand-text-color,
         var(--sds-c-button-text-color, #0176d3)
     );
+    --slds-c-button-outline-brand-spacing-inline-end: var(
+        --avonni-button-menu-button-outline-brand-spacing-inline-end,
+        1rem
+    );
+    --slds-c-button-outline-brand-spacing-inline-start: var(
+        --avonni-button-menu-button-outline-brand-spacing-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-outline-brand-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-outline-brand-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_brand-outline:active {
-    background-color: var(
+.slds-button.avonni-button-menu_brand-outline:active {
+    --slds-c-button-outline-brand-color-background-active: var(
         --avonni-button-menu-button-outline-brand-color-background-active,
-        var(--slds-g-color-neutral-base-100, #f3f3f3)
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-color-border-active: var(
         --avonni-button-menu-button-outline-brand-color-border-active,
         var(--sds-c-button-outline-brand-color-border, #0176d3)
     );
-    color: var(
+    --slds-c-button-text-color-active: var(
         --avonni-button-menu-button-outline-brand-text-color-active,
         var(--sds-c-button-text-color-active, #014486)
     );
 }
 
-.avonni-button-menu__button_brand-outline:hover {
-    background-color: var(
+.avonni-button-menu_brand-outline:hover {
+    --slds-c-button-outline-brand-color-background-hover: var(
         --avonni-button-menu-button-outline-brand-color-background-hover,
-        var(--slds-g-color-neutral-base-100, #f3f3f3)
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-outline-brand-color-border-hover: var(
         --avonni-button-menu-button-outline-brand-color-border-hover,
         var(--sds-c-button-outline-brand-color-border, #0176d3)
     );
-    color: var(
+    --slds-c-button-text-color-hover: var(
         --avonni-button-menu-button-outline-brand-text-color-hover,
-        var(--sds-c-button-text-color-active, #014486)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
-.avonni-button-menu__button_container {
+.avonni-button-menu_container {
     background-color: var(
         --avonni-button-menu-button-container-color-background,
         var(--sds-c-button-color-background, transparent)
@@ -397,9 +511,13 @@ button {
         --avonni-button-menu-button-container-text-color,
         var(--slds-g-color-neutral-base-50, #747474)
     );
+    padding-left: var(--avonni-button-menu-button-container-inline-start, 1rem);
+    padding-right: var(--avonni-button-menu-button-container-inline-end, 1rem);
+    padding-top: var(--avonni-button-menu-button-container-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-container-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_container:active {
+.slds-button.avonni-button-menu_container:active {
     background-color: var(
         --avonni-button-menu-button-container-color-background-active,
         var(--sds-c-button-color-background, transparent)
@@ -414,7 +532,8 @@ button {
     );
 }
 
-.avonni-button-menu__button_container:hover {
+.avonni-button-menu_container:hover,
+.avonni-button-menu_container:focus {
     background-color: var(
         --avonni-button-menu-button-container-color-background-hover,
         transparent
@@ -429,226 +548,293 @@ button {
     );
 }
 
-.avonni-button-menu__button_destructive {
-    background-color: var(
+.avonni-button-menu_destructive {
+    --slds-c-button-destructive-color-background: var(
         --avonni-button-menu-button-destructive-color-background,
         var(--slds-g-color-error-base-40, #ba0517)
     );
-    border-color: var(
+    --slds-c-button-destructive-color-border: var(
         --avonni-button-menu-button-destructive-color-border,
         var(--slds-g-color-error-base-40, #ba0517)
     );
-    color: var(
+    --slds-c-button-destructive-text-color: var(
         --avonni-button-menu-button-destructive-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+    --slds-c-button-destructive-spacing-inline-end: var(
+        --avonni-button-menu-button-destructive-spacing-inline-end,
+        1rem
+    );
+    --slds-c-button-destructive-spacing-inline-start: var(
+        --avonni-button-menu-button-destructive-spacing-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-destructive-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-destructive-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_destructive:active {
-    background-color: var(
+.slds-button.avonni-button-menu_destructive:active {
+    --slds-c-button-destructive-color-background-active: var(
         --avonni-button-menu-button-destructive-color-background-active,
         var(--slds-g-color-error-base-30, #8e030f)
     );
-    border-color: var(
+    --slds-c-button-destructive-color-border-active: var(
         --avonni-button-menu-button-destructive-color-border-active,
         var(--slds-g-color-error-base-30, #8e030f)
     );
-    color: var(
+    --slds-c-button-destructive-text-color-active: var(
         --avonni-button-menu-button-destructive-text-color-active,
         var(--slds-g-color-neutral-base-100, #fff)
     );
 }
 
-.avonni-button-menu__button_destructive:hover {
-    background-color: var(
+.avonni-button-menu_destructive:hover {
+    --slds-c-button-destructive-color-background-hover: var(
         --avonni-button-menu-button-destructive-color-background-hover,
         var(--slds-g-color-error-base-30, #8e030f)
     );
-    border-color: var(
+    --slds-c-button-color-border-hover: var(
         --avonni-button-menu-button-destructive-color-border-hover,
-        var(--slds-g-color-error-base-30, #8e030f)
+        var(--slds-g-color-error-base-40, #ba0517)
     );
-    color: var(
+    --slds-c-button-text-color-hover: var(
         --avonni-button-menu-button-destructive-text-color-hover,
         var(--slds-g-color-neutral-base-100, #fff)
     );
 }
 
-.avonni-button-menu__button_destructive-text {
-    background-color: var(
+.avonni-button-menu_destructive-text {
+    --slds-c-button-text-destructive-color-background: var(
         --avonni-button-menu-button-text-destructive-color-background,
         var(--slds-g-color-neutral-base-100, #fff)
     );
-    border-color: var(
+    --slds-c-button-text-destructive-color-border: var(
         --avonni-button-menu-button-text-destructive-color-border,
         var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-text-destructive-text-color: var(
         --avonni-button-menu-button-text-destructive-text-color,
         var(--slds-g-color-error-base-30, #8e030f)
     );
+    --slds-c-button-text-destructive-spacing-inline-end: var(
+        --avonni-button-menu-button-text-destructive-spacing-inline-end,
+        1rem
+    );
+    --slds-c-button-text-destructive-spacing-inline-start: var(
+        --avonni-button-menu-button-text-destructive-spacing-inline-start,
+        1rem
+    );
+    padding-top: var(
+        --avonni-button-menu-button-text-destructive-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-button-menu-button-text-destructive-block-end,
+        0
+    );
 }
 
-.slds-button.avonni-button-menu__button_destructive-text:active {
-    background-color: var(
+.slds-button.avonni-button-menu_destructive-text:active {
+    --slds-c-button-text-destructive-color-background-active: var(
         --avonni-button-menu-button-text-destructive-color-background-active,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-color-border-active: var(
         --avonni-button-menu-button-text-destructive-color-border-active,
         var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-text-destructive-text-color-active: var(
         --avonni-button-menu-button-text-destructive-text-color-active,
         var(--slds-g-color-error-base-30, #8e030f)
     );
 }
 
-.avonni-button-menu__button_destructive-text:hover {
-    background-color: var(
+.avonni-button-menu_destructive-text:hover {
+    --slds-c-button-text-destructive-color-background-hover: var(
         --avonni-button-menu-button-text-destructive-color-background-hover,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-text-destructive-color-border-hover: var(
         --avonni-button-menu-button-text-destructive-color-border-hover,
         var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-text-destructive-text-color-hover: var(
         --avonni-button-menu-button-text-destructive-text-color-hover,
         var(--slds-g-color-error-base-30, #8e030f)
     );
 }
 
-.avonni-button-menu__button_inverse {
-    background-color: var(
+.avonni-button-menu_inverse {
+    --slds-c-button-inverse-color-background: var(
         --avonni-button-menu-button-inverse-color-background,
         var(--sds-c-button-inverse-color-background, transparent)
     );
-    border-color: var(
+    --slds-c-button-inverse-color-border: var(
         --avonni-button-menu-button-inverse-color-border,
-        transparent
+        var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-inverse-text-color: var(
         --avonni-button-menu-button-inverse-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+    --slds-c-button-inverse-spacing-inline-end: var(
+        --avonni-button-menu-button-inverse-spacing-inline-end,
+        1rem
+    );
+    --slds-c-button-inverse-spacing-inline-start: var(
+        --avonni-button-menu-button-inverse-spacing-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-inverse-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-inverse-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_inverse:active {
-    background-color: var(
+.slds-button.avonni-button-menu_inverse:active,
+.slds-button.avonni-button-menu_inverse:focus {
+    --slds-c-button-inverse-color-background-active: var(
         --avonni-button-menu-button-inverse-color-background-active,
-        var(--sds-c-button-inverse-color-background, transparent)
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-inverse-color-border-active: var(
         --avonni-button-menu-button-inverse-color-border-active,
-        var(--slds-g-color-neutral-100-opacity-5, hsla(0, 0%, 100%, 0.5))
+        var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-inverse-text-color-active: var(
         --avonni-button-menu-button-inverse-text-color-active,
-        var(--slds-g-color-neutral-100-opacity-5, hsla(0, 0%, 100%, 0.5))
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
-.avonni-button-menu__button_inverse:hover {
-    background-color: var(
+.avonni-button-menu_inverse:hover {
+    --slds-c-button-inverse-color-background-hover: var(
         --avonni-button-menu-button-inverse-color-background-hover,
-        var(--sds-c-button-inverse-color-background, transparent)
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-inverse-color-border-hover: var(
         --avonni-button-menu-button-inverse-color-border-hover,
-        transparent
+        var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-inverse-text-color-hover: var(
         --avonni-button-menu-button-inverse-text-color-hover,
-        var(--slds-g-color-neutral-100-opacity-5, hsla(0, 0%, 100%, 0.5))
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
-.avonni-button-menu__button_neutral {
-    background-color: var(
+.slds-button.avonni-button-menu_inverse:focus {
+    --slds-c-button-shadow: 0 0 3px #f3f3f3;
+    --slds-c-button-color-border: var(--slds-g-color-neutral-base-100, #f3f3f3);
+    outline: none;
+    --slds-c-button-inverse-text-color-hover: var(
+        --avonni-button-menu-button-inverse-text-color-hover,
+        var(--sds-c-button-text-color-hover, #014486)
+    );
+}
+
+.avonni-button-menu_neutral {
+    --slds-c-button-neutral-color-background: var(
         --avonni-button-menu-button-neutral-color-background,
         var(--slds-g-color-neutral-base-100, #fff)
     );
-    border-color: var(
+    --slds-c-button-neutral-color-border: var(
         --avonni-button-menu-button-neutral-color-border,
         var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-text-color: var(
         --avonni-button-menu-button-neutral-text-color,
         var(--sds-c-button-text-color, #0176d3)
     );
+    --slds-c-button-neutral-spacing-inline-end: var(
+        --avonni-button-menu-button-neutral-spacing-inline-end,
+        1rem
+    );
+    --slds-c-button-neutral-spacing-inline-start: var(
+        --avonni-button-menu-button-neutral-spacing-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-neutral-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-neutral-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_neutral:active {
-    background-color: var(
+.slds-button.avonni-button-menu_neutral:active {
+    --slds-c-button-neutral-color-background-active: var(
         --avonni-button-menu-button-neutral-color-background-active,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-neutral-color-border-active: var(
         --avonni-button-menu-button-neutral-color-border-active,
         var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-text-color-active: var(
         --avonni-button-menu-button-neutral-text-color-active,
         var(--sds-c-button-text-color-active, #014486)
     );
 }
 
-.avonni-button-menu__button_neutral:hover {
-    background-color: var(
+.avonni-button-menu_neutral:hover {
+    --slds-c-button-neutral-color-background-hover: var(
         --avonni-button-menu-button-neutral-color-background-hover,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
-    border-color: var(
+    --slds-c-button-neutral-color-border-hover: var(
         --avonni-button-menu-button-neutral-color-border-hover,
         var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
+    --slds-c-button-text-color-hover: var(
         --avonni-button-menu-button-neutral-text-color-hover,
         var(--sds-c-button-text-color-active, #014486)
     );
 }
 
-.avonni-button-menu__button_success {
-    background-color: var(
+.avonni-button-menu_success {
+    --slds-c-button-success-color-background: var(
         --avonni-button-menu-button-success-color-background,
         var(--slds-g-color-success-base-70, #45c65a)
     );
-    border-color: var(
+    --slds-c-button-success-color-border: var(
         --avonni-button-menu-button-success-color-border,
         var(--slds-g-color-success-base-50, #91db8b)
     );
-    color: var(
+    --slds-c-button-success-text-color: var(
         --avonni-button-menu-button-success-text-color,
         var(--slds-g-color-neutral-base-10, #181818)
     );
+    --slds-c-button-success-spacing-inline-end: var(
+        --avonni-button-menu-button-success-spacing-inline-end,
+        1rem
+    );
+    --slds-c-button-success-spacing-inline-start: var(
+        --avonni-button-menu-button-success-spacing-inline-start,
+        1rem
+    );
+    padding-top: var(--avonni-button-menu-button-success-block-start, 0);
+    padding-bottom: var(--avonni-button-menu-button-success-block-end, 0);
 }
 
-.slds-button.avonni-button-menu__button_success:active {
-    background-color: var(
+.slds-button.avonni-button-menu_success:active {
+    --slds-c-button-success-color-background-active: var(
         --avonni-button-menu-button-success-color-background-active,
         var(--slds-g-color-success-base-50, #2e844a)
     );
-    border-color: var(
+    --slds-c-button-success-color-border-active: var(
         --avonni-button-menu-button-success-color-border-active,
         var(--slds-g-color-success-base-50, #2e844a)
     );
-    color: var(
+    --slds-c-button-success-text-color-active: var(
         --avonni-button-menu-button-success-text-color-active,
         var(--slds-g-color-neutral-base-100, #fff)
     );
 }
 
-.avonni-button-menu__button_success:hover {
-    background-color: var(
+.avonni-button-menu_success:hover {
+    --slds-c-button-success-color-background-hover: var(
         --avonni-button-menu-button-success-color-background-hover,
         var(--slds-g-color-success-base-50, #2e844a)
     );
-    border-color: var(
+    --slds-c-button-success-color-border-hover: var(
         --avonni-button-menu-button-success-color-border-hover,
         var(--slds-g-color-success-base-50, #2e844a)
     );
-    color: var(
+    --slds-c-button-success-text-color-hover: var(
         --avonni-button-menu-button-success-text-color-hover,
         var(--slds-g-color-neutral-base-100, #fff)
     );
@@ -723,10 +909,10 @@ button {
     min-height: 1.5rem;
 }
 
-.avonni-button-menu__container_medium {
+.avonni-button-menu__button_medium {
     height: 2.5rem;
 }
 
-.avonni-button-menu__container_large {
+.avonni-button-menu__button_large {
     height: 3.5rem;
 }

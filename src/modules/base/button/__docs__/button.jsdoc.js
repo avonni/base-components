@@ -217,6 +217,85 @@
 
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-base-color-background
+ * @type color
+ * @default transparent
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-color-border
+ * @type color
+ * @default transparent
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-text-color
+ * @type color
+ * @default #0176d3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-inline-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-inline-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-color-background-active
+ * @type color
+ * @default transparent
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-color-border-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-text-color-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-color-background-hover
+ * @type color
+ * @default transparent
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-color-border-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-base-text-color-hover
+ * @type color
+ * @default #014486
+ */
+
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-border-color-background
  * @type color
  * @default transparent
@@ -1103,4 +1182,10 @@
  * @memberof stylingHooks
  * @name --avonni-button-image-color-border
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-image-object-fit
+ * @type string
+ * @default cover
  */

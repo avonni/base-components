@@ -54,6 +54,7 @@
 
 .avonni-button_bare:disabled,
 .avonni-button_bare-inverse:disabled,
+.avonni-button_base:disabled,
 .avonni-button_border-inverse:disabled,
 .avonni-button_container:disabled,
 .avonni-button_inverse:disabled {
@@ -165,6 +166,61 @@
     color: var(
         --avonni-button-bare-inverse-text-color-hover,
         rgba(255, 255, 255, 0.75)
+    );
+}
+
+.avonni-button_base {
+    --slds-c-button-color-background: var(
+        --avonni-button-base-color-background,
+        transparent
+    );
+    --slds-c-button-color-border: var(
+        --avonni-button-base-color-border,
+        transparent
+    );
+    --slds-c-button-text-color: var(
+        --avonni-button-base-text-color,
+        var(--sds-c-button-brand-color-background, #0176d3)
+    );
+    --slds-c-button-spacing-inline-end: var(--avonni-button-base-inline-end, 0);
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-base-inline-start,
+        0
+    );
+    --slds-c-button-spacing-block-start: var(
+        --avonni-button-base-block-start,
+        0
+    );
+    --slds-c-button-spacing-block-end: var(--avonni-button-base-block-end, 0);
+}
+
+.avonni-button_base:active {
+    --slds-c-button-color-background-active: var(
+        --avonni-button-base-color-background-active,
+        transparent
+    );
+    --slds-c-button-color-border-active: var(
+        --avonni-button-base-color-border-active,
+        var(--sds-c-button-text-color-hover, #014486)
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-button-base-text-color-active,
+        var(--sds-c-button-text-color-hover, #014486)
+    );
+}
+
+.avonni-button_base:hover {
+    --slds-c-button-color-background-hover: var(
+        --avonni-button-base-color-background-hover,
+        transparent
+    );
+    --slds-c-button-color-border-hover: var(
+        --avonni-button-base-color-border-hover,
+        transparent
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-button-base-text-color-hover,
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 

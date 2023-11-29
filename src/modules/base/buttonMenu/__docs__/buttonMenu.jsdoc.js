@@ -72,6 +72,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-inline-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-inline-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-color-background-active
  * @type color
  * @default transparent
@@ -124,6 +148,30 @@
  * @name --avonni-button-menu-button-bare-inverse-text-color
  * @type color
  * @default #fff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-inverse-inline-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-inverse-inline-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-inverse-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-bare-inverse-block-end
+ * @type dimension
+ * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -182,6 +230,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-color-background-active
  * @type color
  * @default transparent
@@ -237,6 +309,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-filled-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-filled-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-filled-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-filled-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-color-background-active
  * @type color
  * @default #fff
@@ -288,6 +384,30 @@
  * @name --avonni-button-menu-button-border-inverse-text-color
  * @type color
  * @default #fff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-inverse-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-inverse-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-inverse-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-border-inverse-block-end
+ * @type dimension
+ * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -346,6 +466,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-brand-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-brand-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-brand-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-brand-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-brand-color-background-active
  * @type color
  * @default #014486
@@ -398,6 +542,30 @@
  * @name --avonni-button-menu-button-container-text-color
  * @type color
  * @default #706e6b
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-container-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-container-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-container-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-container-block-end
+ * @type dimension
+ * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -456,6 +624,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-outline-brand-spacing-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-outline-brand-spacing-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-outline-brand-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-outline-brand-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-outline-brand-color-background-active
  * @type color
  * @default #f3f3f3
@@ -508,6 +700,30 @@
  * @name --avonni-button-menu-button-destructive-text-color
  * @type color
  * @default #fff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-destructive-spacing-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-destructive-spacing-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-destructive-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-destructive-block-end
+ * @type dimension
+ * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -566,6 +782,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-text-destructive-spacing-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-text-destructive-spacing-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-text-destructive-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-text-destructive-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-color-background-active
  * @type color
  * @default #f3f3f3
@@ -618,6 +858,30 @@
  * @name --avonni-button-menu-button-inverse-text-color
  * @type color
  * @default #fff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-inverse-spacing-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-inverse-spacing-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-inverse-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-inverse-block-end
+ * @type dimension
+ * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -676,6 +940,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-neutral-spacing-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-neutral-spacing-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-neutral-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-neutral-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-neutral-color-background-active
  * @type color
  * @default #f3f3f3
@@ -731,6 +1019,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-button-success-spacing-inline-end
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-success-spacing-inline-start
+ * @type dimension
+ * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-success-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-success-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-success-color-background-active
  * @type color
  * @default #2e844a
@@ -764,4 +1076,32 @@
  * @name --avonni-button-menu-button-success-text-color-hover
  * @type color
  * @default #fff
+ */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-image-radius-border
+ * @type radius
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-image-sizing-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-image-styling-border
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-image-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-image-object-fit
+ * @type string
+ * @default cover
  */

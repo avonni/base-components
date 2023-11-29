@@ -187,7 +187,8 @@ BareInverseImage.args = {
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Button'
+    label: 'Button',
+    variant: 'base'
 };
 
 export const Border = Template.bind({});

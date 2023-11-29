@@ -38,7 +38,7 @@ describe('Button Menu', () => {
         expect(element.nubbin).toBeFalsy();
         expect(element.title).toBeUndefined();
         expect(element.tooltip).toBeUndefined();
-        expect(element.value).toBe('');
+        expect(element.value).toBeUndefined();
         expect(element.variant).toBeUndefined();
     });
 

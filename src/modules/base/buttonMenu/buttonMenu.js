@@ -28,18 +28,19 @@ const MENU_ALIGNMENTS = {
 };
 
 const BUTTON_VARIANTS = [
-    'neutral',
-    'brand',
-    'brand-outline',
     'bare',
     'bare-inverse',
-    'container',
+    'base',
     'border',
     'border-filled',
     'border-inverse',
+    'brand',
+    'brand-outline',
+    'container',
     'destructive',
     'destructive-text',
     'inverse',
+    'neutral',
     'success'
 ];
 
@@ -375,6 +376,7 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     get computedButtonClass() {
         const isDropdownIcon = this.computedHideDownIcon;
+        const isBase = this.computedVariant === 'base';
         const isBare =
             this.computedVariant === 'bare' ||
             this.computedVariant === 'bare-inverse';
@@ -389,7 +391,7 @@ export default class ButtonMenu extends PrimitiveButton {
 
         const classes = classSet('slds-button');
 
-        classes.add(`avonni-button-menu__button_${this.computedVariant}`);
+        classes.add(`avonni-button-menu_${this.computedVariant}`);
         classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
@@ -411,10 +413,8 @@ export default class ButtonMenu extends PrimitiveButton {
                 'slds-button_text-destructive':
                     this.computedVariant === 'destructive-text',
                 'slds-button_success': this.computedVariant === 'success',
-                'avonni-button-menu__container_large':
-                    this.iconSize === 'large',
-                'avonni-button-menu__container_medium':
-                    this.iconSize === 'medium'
+                'avonni-button-menu__button_large': this.iconSize === 'large',
+                'avonni-button-menu__button_medium': this.iconSize === 'medium'
             });
         } else {
             const useMoreContainer =
@@ -423,7 +423,7 @@ export default class ButtonMenu extends PrimitiveButton {
                 this.computedVariant === 'border-inverse';
 
             classes.add({
-                'slds-button_icon': !isDropdownIcon,
+                'slds-button_icon': !isDropdownIcon && !isBase,
                 'slds-button_icon-bare': isBare,
                 'avonni-button-menu__button-icon-more':
                     !useMoreContainer && !isDropdownIcon,
@@ -475,7 +475,7 @@ export default class ButtonMenu extends PrimitiveButton {
                     this.menuAlignment === 'left' || this.isAutoAlignment,
                 'slds-dropdown_center': this.menuAlignment === 'center',
                 'slds-dropdown_right': this.menuAlignment === 'right',
-                'slds-dropdown_bottom': this.isBottomAlignment,
+                'slds-dropdown_bottom': this.menuAlignment.includes('bottom'),
                 'slds-dropdown_right slds-dropdown_bottom-right':
                     this.menuAlignment === 'bottom-right',
                 'slds-dropdown_left slds-dropdown_bottom-left':
