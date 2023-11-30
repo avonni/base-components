@@ -718,7 +718,9 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemWrapperClass() {
-        return classSet('avonni-list__item-wrapper avonni-list__item')
+        return classSet(
+            'avonni-list__item-wrapper avonni-list__item slds-truncate'
+        )
             .add({
                 'avonni-list__item-sortable':
                     this.sortable &&
