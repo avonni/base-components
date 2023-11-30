@@ -292,9 +292,8 @@ customElements.define(
     'ac-base-button-variants',
     ButtonVariantsComponent.CustomElementConstructor
 );
-const ButtonVariants = ({ variant }) => {
+const ButtonVariants = () => {
     const element = document.createElement('ac-base-button-variants');
-    element.variant = variant;
     return element;
 };
 const TemplateVariants = (args) => ButtonVariants(args);

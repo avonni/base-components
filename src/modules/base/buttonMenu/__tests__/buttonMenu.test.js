@@ -493,9 +493,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-border');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_border'
-            );
+            expect(button.className).toContain('avonni-button-menu_border');
         });
     });
 
@@ -507,9 +505,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_neutral');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_neutral'
-            );
+            expect(button.className).toContain('avonni-button-menu_neutral');
         });
     });
 
@@ -521,9 +517,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-bare');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_bare'
-            );
+            expect(button.className).toContain('avonni-button-menu_bare');
         });
     });
 
@@ -536,9 +530,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).not.toContain('slds-button_icon-bare');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_bare'
-            );
+            expect(button.className).toContain('avonni-button-menu_bare');
         });
     });
 
@@ -551,7 +543,7 @@ describe('Button Menu', () => {
             );
             expect(button.className).toContain('slds-button_icon-inverse');
             expect(button.className).toContain(
-                'avonni-button-menu__button_bare-inverse'
+                'avonni-button-menu_bare-inverse'
             );
         });
     });
@@ -566,7 +558,7 @@ describe('Button Menu', () => {
             );
             expect(button.className).not.toContain('slds-button_icon-inverse');
             expect(button.className).toContain(
-                'avonni-button-menu__button_bare-inverse'
+                'avonni-button-menu_bare-inverse'
             );
         });
     });
@@ -579,9 +571,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-border');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_border'
-            );
+            expect(button.className).toContain('avonni-button-menu_border');
         });
     });
 
@@ -608,7 +598,7 @@ describe('Button Menu', () => {
                 'slds-button_icon-border-filled'
             );
             expect(button.className).toContain(
-                'avonni-button-menu__button_border-filled'
+                'avonni-button-menu_border-filled'
             );
         });
     });
@@ -625,7 +615,7 @@ describe('Button Menu', () => {
                 'slds-button_icon-border-filled'
             );
             expect(button.className).toContain(
-                'avonni-button-menu__button_border-filled'
+                'avonni-button-menu_border-filled'
             );
         });
     });
@@ -641,7 +631,7 @@ describe('Button Menu', () => {
                 'slds-button_icon-border-inverse'
             );
             expect(button.className).toContain(
-                'avonni-button-menu__button_border-inverse'
+                'avonni-button-menu_border-inverse'
             );
         });
     });
@@ -656,7 +646,7 @@ describe('Button Menu', () => {
             );
             expect(button.className).toContain('slds-button_inverse');
             expect(button.className).toContain(
-                'avonni-button-menu__button_border-inverse'
+                'avonni-button-menu_border-inverse'
             );
         });
     });
@@ -669,9 +659,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-brand');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_brand'
-            );
+            expect(button.className).toContain('avonni-button-menu_brand');
         });
     });
 
@@ -684,9 +672,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_brand');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_brand'
-            );
+            expect(button.className).toContain('avonni-button-menu_brand');
             expect(button.textContent).toContain('label');
         });
     });
@@ -700,7 +686,7 @@ describe('Button Menu', () => {
             );
 
             expect(button.className).toContain(
-                'avonni-button-menu__button_brand-outline'
+                'avonni-button-menu_brand-outline'
             );
         });
     });
@@ -715,7 +701,7 @@ describe('Button Menu', () => {
             );
             expect(button.className).toContain('slds-button_outline-brand');
             expect(button.className).toContain(
-                'avonni-button-menu__button_brand-outline'
+                'avonni-button-menu_brand-outline'
             );
             expect(button.textContent).toContain('label');
         });
@@ -729,9 +715,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-container');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_container'
-            );
+            expect(button.className).toContain('avonni-button-menu_container');
         });
     });
 
@@ -743,9 +727,7 @@ describe('Button Menu', () => {
             const button = element.shadowRoot.querySelector(
                 '[data-element-id="button"]'
             );
-            expect(button.className).toContain(
-                'avonni-button-menu__button_container'
-            );
+            expect(button.className).toContain('avonni-button-menu_container');
         });
     });
 
@@ -758,7 +740,7 @@ describe('Button Menu', () => {
             );
 
             expect(button.className).toContain(
-                'avonni-button-menu__button_destructive'
+                'avonni-button-menu_destructive'
             );
         });
     });
@@ -773,7 +755,7 @@ describe('Button Menu', () => {
             );
             expect(button.className).toContain('slds-button_destructive');
             expect(button.className).toContain(
-                'avonni-button-menu__button_destructive'
+                'avonni-button-menu_destructive'
             );
         });
     });
@@ -786,7 +768,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain(
-                'avonni-button-menu__button_destructive-text'
+                'avonni-button-menu_destructive-text'
             );
         });
     });
@@ -801,7 +783,7 @@ describe('Button Menu', () => {
             );
             expect(button.className).toContain('slds-button_text-destructive');
             expect(button.className).toContain(
-                'avonni-button-menu__button_destructive-text'
+                'avonni-button-menu_destructive-text'
             );
         });
     });
@@ -814,9 +796,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
 
-            expect(button.className).toContain(
-                'avonni-button-menu__button_inverse'
-            );
+            expect(button.className).toContain('avonni-button-menu_inverse');
         });
     });
 
@@ -829,9 +809,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_inverse');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_inverse'
-            );
+            expect(button.className).toContain('avonni-button-menu_inverse');
         });
     });
 
@@ -843,9 +821,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
 
-            expect(button.className).toContain(
-                'avonni-button-menu__button_neutral'
-            );
+            expect(button.className).toContain('avonni-button-menu_neutral');
         });
     });
 
@@ -858,9 +834,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_neutral');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_neutral'
-            );
+            expect(button.className).toContain('avonni-button-menu_neutral');
         });
     });
 
@@ -872,9 +846,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
 
-            expect(button.className).toContain(
-                'avonni-button-menu__button_success'
-            );
+            expect(button.className).toContain('avonni-button-menu_success');
         });
     });
 
@@ -887,9 +859,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_success');
-            expect(button.className).toContain(
-                'avonni-button-menu__button_success'
-            );
+            expect(button.className).toContain('avonni-button-menu_success');
         });
     });
 

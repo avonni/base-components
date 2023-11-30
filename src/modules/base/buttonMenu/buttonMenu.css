@@ -4,31 +4,31 @@ button {
     border-style: var(--avonni-button-menu-styling-border, solid);
 }
 
-.avonni-button-menu__button_bare:disabled,
-.avonni-button-menu__button_bare-inverse:disabled,
-.avonni-button-menu__button_border-inverse:disabled,
-.avonni-button-menu__button_container:disabled,
-.avonni-button-menu__button_inverse:disabled {
+.avonni-button-menu_bare:disabled,
+.avonni-button-menu_bare-inverse:disabled,
+.avonni-button-menu_border-inverse:disabled,
+.avonni-button-menu_container:disabled,
+.avonni-button-menu_inverse:disabled {
     color: #dddbda;
     background-color: transparent;
     border-color: transparent;
     pointer-events: none;
 }
 
-.avonni-button-menu__button_brand:disabled,
-.avonni-button-menu__button_destructive:disabled,
-.avonni-button-menu__button_success:disabled {
+.avonni-button-menu_brand:disabled,
+.avonni-button-menu_destructive:disabled,
+.avonni-button-menu_success:disabled {
     color: #fff;
     background-color: #c9c7c5;
     border-color: #c9c7c5;
     pointer-events: none;
 }
 
-.avonni-button-menu__button_brand-outline:disabled,
-.avonni-button-menu__button_border:disabled,
-.avonni-button-menu__button_border-filled:disabled,
-.avonni-button-menu__button_destructive-text:disabled,
-.avonni-button-menu__button_neutral:disabled {
+.avonni-button-menu_brand-outline:disabled,
+.avonni-button-menu_border:disabled,
+.avonni-button-menu_border-filled:disabled,
+.avonni-button-menu_destructive-text:disabled,
+.avonni-button-menu_neutral:disabled {
     color: #dddbda;
     background-color: #fff;
     border-color: #c9c7c5;
