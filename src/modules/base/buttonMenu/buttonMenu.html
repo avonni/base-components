@@ -55,6 +55,7 @@
         onmouseup={handleDropdownMouseUp}
         onmouseleave={handleDropdownMouseLeave}
         onscroll={handleDropdownScroll}
+        data-element-id="dropdown"
     >
         <template if:true={isLoading}>
             <lightning-spinner
@@ -73,6 +74,7 @@
                 onmouseover={handleMouseOverOnMenuItem}
                 onmouseout={allowBlur}
                 onkeydown={handleKeyOnMenuItem}
+                data-element-id="dropdown-list"
             >
                 <slot></slot>
             </div>
