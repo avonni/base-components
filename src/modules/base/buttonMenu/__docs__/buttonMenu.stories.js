@@ -77,12 +77,12 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            options: ['x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon. Options include xx-small, x-small, small, medium or large.',
+                'The size of the icon. Options include x-small, small, medium or large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'medium' },
+                defaultValue: { summary: 'small' },
                 category: 'icon'
             }
         },
@@ -238,7 +238,7 @@ export default {
         disabled: false,
         hideDownArrow: false,
         iconName: 'utility:down',
-        iconSize: 'medium',
+        iconSize: 'small',
         isDraft: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
@@ -255,16 +255,6 @@ const darkBackground = {
         default: 'dark'
     }
 };
-export const Border = Template.bind({});
-Border.args = {
-    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-};
-
-export const BorderWithLabel = Template.bind({});
-BorderWithLabel.args = {
-    label: 'Menu'
-};
-
 export const Bare = Template.bind({});
 Bare.args = {
     variant: 'bare'
@@ -272,8 +262,8 @@ Bare.args = {
 
 export const BareWithLabel = Template.bind({});
 BareWithLabel.args = {
-    variant: 'bare',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'bare'
 };
 
 export const BareInverse = Template.bind({});
@@ -285,8 +275,32 @@ BareInverse.args = {
 export const BareInverseWithLabel = Template.bind({});
 BareInverseWithLabel.parameters = darkBackground;
 BareInverseWithLabel.args = {
-    variant: 'bare-inverse',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'bare-inverse'
+};
+
+export const BaseWithImage = Template.bind({});
+BaseWithImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    variant: 'base'
+};
+
+export const BaseWithImageLabel = Template.bind({});
+BaseWithImageLabel.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    label: 'Menu',
+    variant: 'base'
+};
+
+export const Border = Template.bind({});
+Border.args = {
+    variant: 'border'
+};
+
+export const BorderWithLabel = Template.bind({});
+BorderWithLabel.args = {
+    label: 'Menu',
+    variant: 'border'
 };
 
 export const BorderInverse = Template.bind({});
@@ -298,8 +312,8 @@ BorderInverse.args = {
 export const BorderInverseWithLabel = Template.bind({});
 BorderInverseWithLabel.parameters = darkBackground;
 BorderInverseWithLabel.args = {
-    variant: 'border-inverse',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'border-inverse'
 };
 
 export const Brand = Template.bind({});
@@ -309,8 +323,8 @@ Brand.args = {
 
 export const BrandWithLabel = Template.bind({});
 BrandWithLabel.args = {
-    variant: 'brand',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'brand'
 };
 
 export const BrandOutline = Template.bind({});
@@ -320,46 +334,51 @@ BrandOutline.args = {
 
 export const BrandOutlineWithLabel = Template.bind({});
 BrandOutlineWithLabel.args = {
-    variant: 'brand-outline',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'brand-outline'
 };
 
-export const Container = Template.bind({});
-Container.args = {
+export const ContainerWithImage = Template.bind({});
+ContainerWithImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     variant: 'container'
 };
 
 export const ContainerWithLabel = Template.bind({});
 ContainerWithLabel.args = {
-    variant: 'container',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'container'
 };
 
 export const Destructive = Template.bind({});
 Destructive.args = {
+    iconName: 'utility:error',
     variant: 'destructive'
 };
 
 export const DestructiveWithLabel = Template.bind({});
 DestructiveWithLabel.args = {
-    variant: 'destructive',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'destructive'
 };
 
-export const DestructiveText = Template.bind({});
-DestructiveText.args = {
+export const DestructiveTextHideDownArrow = Template.bind({});
+DestructiveTextHideDownArrow.args = {
+    hideDownArrow: true,
+    iconName: 'utility:error',
     variant: 'destructive-text'
 };
 
 export const DestructiveTextWithLabel = Template.bind({});
 DestructiveTextWithLabel.args = {
-    variant: 'destructive-text',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'destructive-text'
 };
 
-export const InverseXxSmall = Template.bind({});
-InverseXxSmall.parameters = darkBackground;
-InverseXxSmall.args = {
+export const InverseXSmall = Template.bind({});
+InverseXSmall.parameters = darkBackground;
+InverseXSmall.args = {
+    iconSize: 'x-small',
     variant: 'inverse'
 };
 
@@ -370,9 +389,9 @@ InverseWithLabel.args = {
     label: 'Menu'
 };
 
-export const NeutralSmall = Template.bind({});
-NeutralSmall.args = {
-    iconSize: 'small',
+export const NeutralMedium = Template.bind({});
+NeutralMedium.args = {
+    iconSize: 'medium',
     variant: 'neutral'
 };
 

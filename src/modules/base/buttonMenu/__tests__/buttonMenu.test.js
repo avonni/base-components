@@ -30,7 +30,7 @@ describe('Button Menu', () => {
             expect(element.groupOrder).toBeUndefined();
             expect(element.hideDownArrow).toBeFalsy();
             expect(element.iconName).toBe('utility:down');
-            expect(element.iconSize).toBe('medium');
+            expect(element.iconSize).toBe('small');
             expect(element.isDraft).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
@@ -99,6 +99,19 @@ describe('Button Menu', () => {
                     );
                     expect(draft.textContent).toBe('*');
                     expect(element.classList).toContain('slds-is-unsaved');
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('groupOrder', () => {
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toContain('slds-button_first');
                 });
             });
         });

@@ -29,7 +29,7 @@ const MENU_ALIGNMENTS = {
 
 const ICON_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
-    default: 'medium'
+    default: 'small'
 };
 
 const DEFAULT_ICON_NAME = 'utility:down';
@@ -745,15 +745,6 @@ export default class ButtonMenu extends PrimitiveButton {
     preventDefaultAndStopPropagation(event) {
         event.preventDefault();
         event.stopPropagation();
-    }
-
-    /**
-     * Set button order.
-     *
-     * @param {object} order
-     */
-    setOrder(order) {
-        this._order = order;
     }
 
     /**
