@@ -725,7 +725,8 @@ export default class VisualPicker extends LightningElement {
                 displayDescription ||
                 displayAvatar ||
                 hasTags ||
-                hasFields;
+                hasFields ||
+                (hasImg && !imgIsBackground);
 
             return {
                 key,
