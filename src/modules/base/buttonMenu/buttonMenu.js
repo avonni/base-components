@@ -305,13 +305,10 @@ export default class ButtonMenu extends PrimitiveButton {
     get tooltip() {
         return this._tooltip ? this._tooltip.value : undefined;
     }
-    // remove-next-line-for-c-namespace
     set tooltip(value) {
         if (this._tooltip) {
             this._tooltip.value = value;
         } else if (value) {
-            // Note that because the tooltip target is a child element it may not be present in the
-            // dom during initial rendering.
             this._tooltip = new Tooltip(value, {
                 root: this,
                 target: () =>

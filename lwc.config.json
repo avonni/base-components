@@ -83,6 +83,10 @@
             "path": "src/modules/base/buttonDialog/buttonDialog.js"
         },
         {
+            "name": "c/buttonIcon",
+            "path": "src/modules/base/buttonIcon/buttonIcon.js"
+        },
+        {
             "name": "c/buttonIconDialog",
             "path": "src/modules/base/buttonIconDialog/buttonIconDialog.js"
         },
@@ -701,6 +705,10 @@
         {
             "name": "avonni/buttonDialog",
             "path": "src/modules/base/buttonDialog/buttonDialog.js"
+        },
+        {
+            "name": "avonni/buttonIcon",
+            "path": "src/modules/base/buttonIcon/buttonIcon.js"
         },
         {
             "name": "avonni/buttonIconDialog",

@@ -1,30 +1,55 @@
 import { api } from 'lwc';
-import { normalizeBoolean, normalizeString, isCSR } from 'c/utilsPrivate';
+import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
+import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 
 const ICON_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large'],
-    default: 'x-small'
+    validBare: ['x-small', 'small', 'medium', 'large'],
+    validNonBare: ['xx-small', 'x-small', 'small', 'medium'],
+    default: 'medium'
 };
 
 /**
  * @class
- * @name Button
- * @descriptor avonni-button
+ * @name Button Icon
+ * @descriptor avonni-button-icon
  * @description A clickable element used to perform an action.
- * @storyId example-button--base
+ * @storyId example-button-icon--base
  * @public
  */
-export default class Button extends PrimitiveButton {
+export default class ButtonIcon extends PrimitiveButton {
     /**
-     * If present, the button can't be clicked by users.
+     * The keyboard shortcut for the button.
+     *
+     * @name accessKey
+     * @public
+     * @type {string}
+     */
+    /**
+     * The alternative text used to describe the icon. This text should describe what
+     * happens when you click the button, for example 'Upload File', not what the icon looks like, 'Paperclip'.
+     *
+     * @public
+     * @type {string}
+     */
+    @api alternativeText;
+    /**
+     * If present, the button icon can't be clicked by users.
      *
      * @name disabled
      * @public
      * @type {boolean}
      * @default false
      */
+    /**
+     * The class to be applied to the contained icon element.
+     * Only Lightning Design System utility classes are currently supported.
+     *
+     * @public
+     * @type {string}
+     */
+    @api iconClass;
     /**
      * The Lightning Design System name of the icon.
      * Names are written in the format 'utility:down' where 'utility' is the category,
@@ -35,24 +60,9 @@ export default class Button extends PrimitiveButton {
      * @type {string}
      */
     /**
-     * Describes the position of the icon with respect to the button label. Options include left and right.
-     *
-     * @name iconPosition
-     * @public
-     * @type {string}
-     * @default left
-     */
-    /**
      * URL to set for the image attribute.
      *
      * @name iconSrc
-     * @public
-     * @type {string}
-     */
-    /**
-     * The text to be displayed inside the button.
-     *
-     * @name label
      * @public
      * @type {string}
      */
@@ -63,6 +73,16 @@ export default class Button extends PrimitiveButton {
      * @name name
      * @public
      * @type {string}
+     */
+    /**
+     * Reserved for internal use only.
+     * Should be set to -1 if button should not
+     * be focused during tab navigation and should
+     * be set to 0 if button should be focused.
+     *
+     * @name tabIndex
+     * @public
+     * @type {number}
      */
     /**
      * Specifies the type of button.
@@ -90,8 +110,10 @@ export default class Button extends PrimitiveButton {
      * @default neutral
      */
 
-    _iconSize = ICON_SIZES.default;
-    _stretch = false;
+    _size = ICON_SIZES.default;
+    _tooltip = null;
+    tooltipValue = null;
+    tooltipType = TooltipType.Info;
 
     /*
      * ------------------------------------------------------------
@@ -105,6 +127,7 @@ export default class Button extends PrimitiveButton {
 
     renderedCallback() {
         super.renderedCallback();
+        this.initTooltip();
     }
 
     disconnectedCallback() {
@@ -118,37 +141,54 @@ export default class Button extends PrimitiveButton {
      */
 
     /**
-     * The size of the icon. Options include x-small, small, medium or large.
+     * The size of the button-icon. For the bare variant, options include x-small, small, medium, and large.
+     * For non-bare variants, options include xx-small, x-small, small, and medium.
      *
      * @public
      * @type {string}
-     * @default x-small
+     * @default medium
      */
     @api
-    get iconSize() {
-        return this._iconSize;
+    get size() {
+        return this._size;
     }
-    set iconSize(value) {
-        this._iconSize = normalizeString(value, {
-            fallbackValue: ICON_SIZES.default,
-            validValues: ICON_SIZES.valid
-        });
+    set size(value) {
+        if (this._variant === 'bare' || this._variant === 'bare-inverse') {
+            this._size = normalizeString(value, {
+                fallbackValue: ICON_SIZES.default,
+                validValues: ICON_SIZES.validBare
+            });
+        } else {
+            this._size = normalizeString(value, {
+                fallbackValue: ICON_SIZES.default,
+                validValues: ICON_SIZES.validNonBare
+            });
+        }
     }
 
     /**
-     * Setting it to true allows the button to take up the entire available width.
-     * This value defaults to false.
+     * Text to display when the user mouses over or focuses on the button.
+     * The tooltip is auto-positioned relative to the button and screen space.
      *
+     * @type {string}
+     * @param {string} value - The plain text string for the tooltip
      * @public
-     * @type {boolean}
-     * @default false
      */
     @api
-    get stretch() {
-        return this._stretch;
+    get tooltip() {
+        return this._tooltip ? this._tooltip.value : undefined;
     }
-    set stretch(value) {
-        this._stretch = normalizeBoolean(value);
+    set tooltip(value) {
+        if (this._tooltip) {
+            this._tooltip.value = value;
+        } else if (value) {
+            this._tooltip = new Tooltip(value, {
+                root: this,
+                target: () =>
+                    this.template.querySelector('[data-element-id="button"]')
+            });
+            this._tooltip.initialize();
+        }
     }
 
     /*
@@ -156,17 +196,6 @@ export default class Button extends PrimitiveButton {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Returns the button element.
-     *
-     * @type {Element}
-     */
-    get button() {
-        return isCSR
-            ? this.template.querySelector('[data-element-id="button"]')
-            : null;
-    }
 
     /**
      * Computed button class styling.
@@ -240,12 +269,12 @@ export default class Button extends PrimitiveButton {
     }
 
     /**
-     * Display button only if label is set or showIcon is true.
+     * Display avatar or icon if they are set.
      *
      * @type {boolean}
      */
-    get showButton() {
-        return this.label || this.showMedia;
+    get showButtonIcon() {
+        return this.iconName || this.iconSrc;
     }
 
     /**
@@ -255,15 +284,6 @@ export default class Button extends PrimitiveButton {
      */
     get showIcon() {
         return this.iconName && !this.iconSrc;
-    }
-
-    /**
-     * Display image or icon if they are set.
-     *
-     * @type {boolean}
-     */
-    get showMedia() {
-        return this.iconName || this.iconSrc;
     }
 
     /*
@@ -299,6 +319,21 @@ export default class Button extends PrimitiveButton {
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Tooltip initialization.
+     */
+    initTooltip() {
+        if (this._tooltip && !this._tooltip.initialized) {
+            this._tooltip.initialize();
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
 

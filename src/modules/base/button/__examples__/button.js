@@ -13,6 +13,7 @@ export const Button = ({
     name,
     stretch,
     type,
+    value,
     variant
 }) => {
     const element = document.createElement('ac-base-button');
@@ -26,6 +27,7 @@ export const Button = ({
     element.name = name;
     element.stretch = stretch;
     element.type = type;
+    element.value = value;
     element.variant = variant;
     return element;
 };
