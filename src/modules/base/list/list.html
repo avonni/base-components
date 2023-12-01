@@ -59,7 +59,7 @@
                     for:index="index"
                 >
                     <c-layout-item
-                        key={item.name}
+                        key={item.key}
                         class={computedItemWrapperClass}
                         aria-describedby="instructions"
                         aria-label={item.label}
@@ -429,11 +429,11 @@
                 <c-layout-item
                     if:true={showLoadingColumn}
                     class="slds-is-relative avonni-list__lower-spinner"
-                    large-container-size={largeContainerColSize}
-                    medium-container-size={mediumContainerColSize}
+                    large-container-size={loadingLargeContainerColSize}
+                    medium-container-size={loadingMediumContainerColSize}
                     role="listitem"
-                    small-container-size={smallContainerColSize}
-                    size={colSize}
+                    small-container-size={loadingSmallContainerColSize}
+                    size={loadingColSize}
                     data-element-id="loading-spinner-container"
                 >
                     <lightning-spinner

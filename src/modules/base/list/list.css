@@ -6,6 +6,17 @@
     flex: 1 1 auto;
 }
 
+.avonni-list__item-wrapper {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.avonni-list__single-line {
+    min-height: 3rem;
+}
+
 /* VALUE ASSIGNMENTS */
 .avonni-list__item-menu {
     width: 100%;
@@ -18,7 +29,11 @@
     );
 }
 
-.avonni-list__vertical-compact {
+.avonni-list__item-menu.avonni-list__item-menu_horizontal-compact {
+    margin-inline: 0;
+}
+
+.avonni-list__item-menu.avonni-list__vertical-compact {
     --avonni-layout-items-spacing-block-between: var(
         --avonni-list-item-spacing-block-between,
         0
@@ -42,6 +57,11 @@
     --avonni-card-body-spacing-block-start: 0px;
     --avonni-card-body-spacing-block-end: 0px;
     --avonni-card-shadow: var(--avonni-list-item-shadow, none);
+}
+
+.avonni-list__item.avonni-list__item_horizontal-compact {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .avonni-list-item-body {

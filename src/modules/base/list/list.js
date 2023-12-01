@@ -6,7 +6,7 @@ import {
     normalizeObject,
     deepCopy
 } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 import Item from './item';
 
 const ICON_POSITIONS = {
@@ -126,7 +126,6 @@ export default class List extends LightningElement {
     _draggedElement;
     _draggedIndex;
     _dragging = false;
-    _hasUsedInfiniteLoading = false;
     _hoveredIndex;
     _imageSizes = {
         height: {
@@ -184,6 +183,7 @@ export default class List extends LightningElement {
     }
 
     connectedCallback() {
+        this.updateColumnCount();
         this.setItemProperties();
         this._connected = true;
     }
@@ -228,7 +228,10 @@ export default class List extends LightningElement {
     set cols(value) {
         this._cols = this.normalizeColumns(value) || COLUMNS.default;
         this._columnsSizes.default = this._cols;
-        this.updateColumnCount();
+
+        if (this._connected) {
+            this.updateColumnCount();
+        }
     }
 
     /**
@@ -263,10 +266,8 @@ export default class List extends LightningElement {
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
 
-        if (this._enableInfiniteLoading) {
-            this._hasUsedInfiniteLoading = true;
-
-            if (this._connected && this.isSingleLine) {
+        if (this._enableInfiniteLoading && this._connected) {
+            if (this.isSingleLine) {
                 this.checkSingleLineLoading();
             }
         }
@@ -433,8 +434,16 @@ export default class List extends LightningElement {
         if (this._connected) {
             this.setItemProperties();
 
-            if (this.isSingleLine && this.enableInfiniteLoading) {
-                this.checkSingleLineLoading();
+            if (this.isSingleLine) {
+                if (!this.computedItems[this._singleLinePageFirstIndex]) {
+                    this._singleLinePageFirstIndex = 0;
+                }
+
+                if (this.enableInfiniteLoading) {
+                    this.checkSingleLineLoading();
+                }
+            } else if (this.enableInfiniteLoading) {
+                this._restoreScroll = true;
             }
         }
     }
@@ -452,7 +461,10 @@ export default class List extends LightningElement {
     set largeContainerCols(value) {
         this._largeContainerCols = this.normalizeColumns(value);
         this._columnsSizes.large = this._largeContainerCols;
-        this.updateColumnCount();
+
+        if (this._connected) {
+            this.updateColumnCount();
+        }
     }
 
     /**
@@ -503,7 +515,10 @@ export default class List extends LightningElement {
     set mediumContainerCols(value) {
         this._mediumContainerCols = this.normalizeColumns(value);
         this._columnsSizes.medium = this._mediumContainerCols;
-        this.updateColumnCount();
+
+        if (this._connected) {
+            this.updateColumnCount();
+        }
     }
 
     /**
@@ -518,7 +533,10 @@ export default class List extends LightningElement {
     set smallContainerCols(value) {
         this._smallContainerCols = this.normalizeColumns(value);
         this._columnsSizes.small = this._smallContainerCols;
-        this.updateColumnCount();
+
+        if (this._connected) {
+            this.updateColumnCount();
+        }
     }
 
     /**
@@ -718,14 +736,14 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemWrapperClass() {
-        return classSet(
-            'avonni-list__item-wrapper avonni-list__item slds-truncate'
-        )
+        return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
                     this.sortable &&
                     this._currentColumnCount === 1 &&
-                    this.isNotSingleLine
+                    this.isNotSingleLine,
+                'avonni-list__item_horizontal-compact':
+                    this._currentColumnCount === 1
             })
             .toString();
     }
@@ -740,6 +758,8 @@ export default class List extends LightningElement {
             .add({
                 'avonni-list__vertical-compact':
                     ['none', 'top', 'bottom'].includes(this.divider) &&
+                    this._currentColumnCount === 1,
+                'avonni-list__item-menu_horizontal-compact':
                     this._currentColumnCount === 1
             })
             .toString();
@@ -750,9 +770,9 @@ export default class List extends LightningElement {
      */
     get computedListContainerClass() {
         return classSet({
-            'slds-grid avonni-list__flex-col': this.isSingleLine,
-            'slds-scrollable_y':
-                this._hasUsedInfiniteLoading && this.isNotSingleLine
+            'slds-grid avonni-list__flex-col avonni-list__single-line':
+                this.isSingleLine,
+            'slds-scrollable_y': this.isNotSingleLine
         }).toString();
     }
 
@@ -818,13 +838,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Generate unique ID key.
-     */
-    get generateKey() {
-        return generateUUID();
-    }
-
-    /**
      * Check if there are any Actions.
      *
      * @type {boolean}
@@ -887,6 +900,22 @@ export default class List extends LightningElement {
         );
     }
 
+    get loadingColSize() {
+        return !this.displayedItems.length ? 12 : this.colSize;
+    }
+
+    get loadingLargeContainerColSize() {
+        return !this.displayedItems.length ? 12 : this.largeContainerColSize;
+    }
+
+    get loadingMediumContainerColSize() {
+        return !this.displayedItems.length ? 12 : this.mediumContainerColSize;
+    }
+
+    get loadingSmallContainerColSize() {
+        return !this.displayedItems.length ? 12 : this.smallContainerColSize;
+    }
+
     get mediumContainerColSize() {
         return this.mediumContainerCols
             ? 12 / this.mediumContainerCols
@@ -922,7 +951,7 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get previousPageDisabled() {
-        return this._singleLinePageFirstIndex < this._currentColumnCount;
+        return this._singleLinePageFirstIndex === 0;
     }
 
     get showLoadingColumn() {
@@ -1222,7 +1251,7 @@ export default class List extends LightningElement {
     clearSelection() {
         // Clean the styles and dataset
         this._itemElements.forEach((item, index) => {
-            item.style = undefined;
+            item.style.transform = '';
             item.dataset.index = index;
             item.dataset.elementTempIndex = index;
             delete item.dataset.moved;
@@ -1594,6 +1623,9 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
+        if (event.type === 'mousedown' && event.button !== 0) {
+            return;
+        }
         if (event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.computedItems[index];
@@ -1810,6 +1842,15 @@ export default class List extends LightningElement {
         if (this.isSingleLine && this.enableInfiniteLoading) {
             this.checkSingleLineLoading();
         }
+
+        this.dispatchEvent(
+            new CustomEvent('sizechange', {
+                detail: {
+                    colSize: this._currentColumnCount,
+                    width: this._displayWidth
+                }
+            })
+        );
     }
 
     /**
@@ -1856,6 +1897,9 @@ export default class List extends LightningElement {
      */
     handleCardRendered() {
         if (this._cardRendersBeforeScrollUpdate === 1) {
+            if (this._restoreScroll) {
+                this.listContainer.scrollTop = this._scrollTop;
+            }
             this.handleScroll();
         }
 
@@ -2047,6 +2091,12 @@ export default class List extends LightningElement {
      */
     handlePreviousPage() {
         this._singleLinePageFirstIndex -= this._currentColumnCount;
+
+        if (this._singleLinePageFirstIndex < 0) {
+            // It could happen if the currentColumnCount has changed,
+            // or the number of items have changed, for example
+            this._singleLinePageFirstIndex = 0;
+        }
     }
 
     /**
