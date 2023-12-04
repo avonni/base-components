@@ -275,7 +275,10 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: INPUT_CHOICE_ORIENTATIONS.default,
             validValues: INPUT_CHOICE_ORIENTATIONS.valid
         });
-        this._setWidth();
+        if (this._connected) {
+            this._initOrientationAttributes();
+            this._setWidth();
+        }
     }
 
     /**
