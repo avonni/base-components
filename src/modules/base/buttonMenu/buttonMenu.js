@@ -169,6 +169,9 @@ export default class ButtonMenu extends PrimitiveButton {
 
     disconnectedCallback() {
         super.disconnectedCallback();
+        if (this._tooltip) {
+            this._tooltip.disconnect();
+        }
     }
 
     /*

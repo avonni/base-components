@@ -132,6 +132,9 @@ export default class ButtonIcon extends PrimitiveButton {
 
     disconnectedCallback() {
         super.disconnectedCallback();
+        if (this._tooltip) {
+            this._tooltip.disconnect();
+        }
     }
 
     /*
@@ -204,7 +207,16 @@ export default class ButtonIcon extends PrimitiveButton {
      */
     get computedButtonClass() {
         const classes = classSet(super.computedButtonClass);
-        const isBare = this.variantBase === 'bare';
+        const isBare =
+            this.variant === 'bare' || this.variant === 'bare-inverse';
+        const isAddedVariant =
+            this.variant === 'base' ||
+            this.variant === 'brand-outline' ||
+            this.variant === 'destructive' ||
+            this.variant === 'destructive-text' ||
+            this.variant === 'inverse' ||
+            this.variant === 'neutral' ||
+            this.variant === 'success';
         classes.add('slds-button_icon avonni-button-icon');
         if (!isBare) {
             switch (this._size) {
@@ -222,40 +234,37 @@ export default class ButtonIcon extends PrimitiveButton {
                 default:
             }
         }
+        if (isAddedVariant) {
+            classes.add(`avonni-button-icon_${this.size}`);
+        }
         return classes
-            .add(`avonni-button_${this.computedVariant}`)
+            .add(`avonni-button-icon_${this.computedVariant}`)
             .add({
                 'slds-button_icon-bare': isBare,
-                'slds-button_icon-container': this._variant === 'container',
-                'slds-button_icon-border': this._variant === 'border',
+                'slds-button_icon-container':
+                    this.computedVariant === 'container',
+                'slds-button_icon-border': this.computedVariant === 'border',
                 'slds-button_icon-border-filled':
-                    this._variant === 'border-filled',
+                    this.computedVariant === 'border-filled',
                 'slds-button_icon-border-inverse':
-                    this._variant === 'border-inverse',
-                'slds-button_icon-inverse': this._variant === 'bare-inverse',
-                'slds-button_icon-brand': this._variant === 'brand'
+                    this.computedVariant === 'border-inverse',
+                'slds-button_icon-inverse':
+                    this.computedVariant === 'bare-inverse',
+                'slds-button_icon-brand': this.computedVariant === 'brand'
             })
             .toString();
     }
 
     /**
-     * Computed image class styling.
-     *
-     * @type {string}
-     */
-    get computedImageClass() {
-        return classSet('avonni-button-icon__image')
-            .add(`avonni-button-icon__image_${this.size}`)
-            .toString();
-    }
-
-    /**
-     * Computed size for the icon.
+     * Computed icon class styling.
      *
      * @type {string}
      */
     get computedIconClass() {
-        const isBare = this.variantBase === 'bare';
+        const isBare =
+            this.variant === 'bare' ||
+            this.variant === 'bare-inverse' ||
+            this.variant === 'base';
         const iconClass = this.iconClass || '';
         const classes = classSet('slds-button__icon');
         classes.add(iconClass);
@@ -283,6 +292,17 @@ export default class ButtonIcon extends PrimitiveButton {
         }
 
         return classes.toString();
+    }
+
+    /**
+     * Computed image class styling.
+     *
+     * @type {string}
+     */
+    get computedImageClass() {
+        return classSet('avonni-button-icon__image')
+            .add(`avonni-button-icon__image_${this.size}`)
+            .toString();
     }
 
     /**
