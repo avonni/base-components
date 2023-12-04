@@ -427,7 +427,8 @@
     );
 }
 
-.avonni-button-icon_brand:hover {
+.avonni-button-icon_brand:hover,
+.avonni-button-icon_brand:focus {
     background-color: var(
         --avonni-button-icon-brand-color-background-hover,
         var(--sds-c-button-brand-color-background-active, #014486)
@@ -482,7 +483,8 @@
     );
 }
 
-.avonni-button-icon_brand-outline:hover {
+.avonni-button-icon_brand-outline:hover,
+.avonni-button-icon_brand-outline:focus {
     background-color: var(
         --avonni-button-icon-outline-brand-color-background-hover,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
@@ -581,7 +583,8 @@
     );
 }
 
-.avonni-button-icon_destructive:hover {
+.avonni-button-icon_destructive:hover,
+.avonni-button-icon_destructive:focus {
     background-color: var(
         --avonni-button-icon-destructive-color-background-hover,
         var(--slds-g-color-error-base-30, #8e030f)
@@ -636,7 +639,8 @@
     );
 }
 
-.avonni-button-icon_destructive-text:hover {
+.avonni-button-icon_destructive-text:hover,
+.avonni-button-icon_destructive-text:focus {
     background-color: var(
         --avonni-button-icon-text-destructive-color-background-hover,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
@@ -745,7 +749,8 @@
     );
 }
 
-.avonni-button-icon_neutral:hover {
+.avonni-button-icon_neutral:hover,
+.avonni-button-icon_neutral:focus {
     background-color: var(
         --avonni-button-icon-neutral-color-background-hover,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
@@ -794,7 +799,8 @@
     );
 }
 
-.avonni-button-icon_success:hover {
+.avonni-button-icon_success:hover,
+.avonni-button-icon_success:focus {
     background-color: var(
         --avonni-button-icon-success-color-background-hover,
         var(--slds-g-color-success-base-50, #2e844a)
