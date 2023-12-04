@@ -155,10 +155,10 @@ Bare.args = {
     variant: 'bare'
 };
 
-export const BareInverseImage = Template.bind({});
-BareInverseImage.parameters = darkBackground;
-BareInverseImage.args = {
-    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+export const BareInverse = Template.bind({});
+BareInverse.parameters = darkBackground;
+BareInverse.args = {
+    iconName: 'utility:animal_and_nature',
     variant: 'bare-inverse'
 };
 
@@ -168,9 +168,9 @@ Base.args = {
     variant: 'base'
 };
 
-export const Border = Template.bind({});
-Border.args = {
-    iconName: 'utility:animal_and_nature',
+export const BorderImage = Template.bind({});
+BorderImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     variant: 'border'
 };
 
