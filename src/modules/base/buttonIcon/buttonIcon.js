@@ -4,6 +4,26 @@ import { classSet } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'bare-inverse',
+        'base',
+        'border',
+        'border-filled',
+        'border-inverse',
+        'brand',
+        'brand-outline',
+        'container',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'neutral',
+        'success'
+    ],
+    default: 'border'
+};
+
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
@@ -100,18 +120,11 @@ export default class ButtonIcon extends PrimitiveButton {
      * @public
      * @type {string}
      */
-    /**
-     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
-     * border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.
-     *
-     * @name variant
-     * @public
-     * @type {string}
-     * @default border
-     */
 
     _size = ICON_SIZES.default;
     _tooltip = null;
+    _variant = 'border';
+
     tooltipType = TooltipType.Info;
 
     /*
@@ -131,9 +144,6 @@ export default class ButtonIcon extends PrimitiveButton {
 
     disconnectedCallback() {
         super.disconnectedCallback();
-        if (this._tooltip) {
-            this._tooltip.disconnect();
-        }
     }
 
     /*
@@ -179,11 +189,30 @@ export default class ButtonIcon extends PrimitiveButton {
         } else if (value) {
             this._tooltip = new Tooltip(value, {
                 root: this,
-                target: () =>
-                    this.template.querySelector('[data-element-id="button"]')
+                target: () => this.button
             });
             this._tooltip.initialize();
         }
+    }
+
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
+     * border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.
+     *
+     * @name variant
+     * @public
+     * @type {string}
+     * @default border
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
     }
 
     /*
@@ -191,6 +220,15 @@ export default class ButtonIcon extends PrimitiveButton {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Returns the button element.
+     *
+     * @type {Element}
+     */
+    get button() {
+        return this.template.querySelector('[data-element-id="button"]');
+    }
 
     /**
      * Computed button class styling.
@@ -259,7 +297,7 @@ export default class ButtonIcon extends PrimitiveButton {
             this.computedVariant === 'base';
         const iconClass = this.iconClass || '';
         const classes = classSet('slds-button__icon');
-        classes.add(iconClass);
+        if (iconClass) classes.add(iconClass);
 
         if (isBare) {
             // If the variant is bare, then size the icon instead of the button

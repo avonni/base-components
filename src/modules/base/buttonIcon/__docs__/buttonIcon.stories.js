@@ -84,6 +84,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        tooltip: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         type: {
             control: {
                 type: 'select'

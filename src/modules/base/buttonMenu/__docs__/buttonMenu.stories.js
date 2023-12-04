@@ -1,6 +1,6 @@
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
-import ButtonMenuVariantsComponent from './variants/variants';
+import ButtonMenuVariantsComponent from '../__examples__/variants/variants';
 
 export default {
     title: 'Example/Button Menu',

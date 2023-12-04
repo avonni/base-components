@@ -32,5 +32,13 @@
             variant="bare"
             data-element-id="primitive-icon"
         ></c-primitive-icon>
+
+        <span
+            if:true={alternativeText}
+            class="slds-assistive-text"
+            data-element-id="alternative-text"
+        >
+            {alternativeText}
+        </span>
     </button>
 </template>

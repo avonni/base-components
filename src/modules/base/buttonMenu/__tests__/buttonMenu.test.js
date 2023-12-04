@@ -1,8 +1,10 @@
 import { createElement } from 'lwc';
 import ButtonMenu from '../buttonMenu';
+import { Tooltip } from 'c/tooltipLibrary';
+
+jest.mock('c/tooltipLibrary');
 
 // not tested
-// tooltip
 // selected event
 // Keyboard navigation (focus)
 
@@ -19,6 +21,7 @@ describe('Button Menu', () => {
             is: ButtonMenu
         });
         document.body.appendChild(element);
+        Tooltip.mockClear();
     });
 
     describe('Attributes', () => {
@@ -645,6 +648,17 @@ describe('Button Menu', () => {
                 return Promise.resolve().then(() => {
                     expect(button.title).toBe('This is a title');
                 });
+            });
+        });
+
+        describe('Tooltip', () => {
+            it('tooltip', () => {
+                element.tooltip = 'some tooltip';
+                expect(Tooltip).toHaveBeenCalled();
+                expect(Tooltip.mock.calls[0][0]).toBe('some tooltip');
+
+                const instance = Tooltip.mock.instances[0];
+                expect(instance.initialize).toHaveBeenCalled();
             });
         });
 
