@@ -1240,7 +1240,7 @@ export default class List extends LightningElement {
     checkSingleLineLoading() {
         const isAllLoaded =
             this.displayedItems.length < this._currentColumnCount;
-        if (isAllLoaded) {
+        if (isAllLoaded && !this.isLoading) {
             this.dispatchLoadMore();
         }
     }
@@ -2103,7 +2103,7 @@ export default class List extends LightningElement {
      * Determine scroll position to trigger loadmore and adjust dragged item position.
      */
     handleScroll() {
-        if (this.isSingleLine || !this.listContainer) {
+        if (this.isSingleLine || !this.listContainer || this.isLoading) {
             return;
         }
 
