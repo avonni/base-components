@@ -1,5 +1,5 @@
 import { Button } from '../__examples__/button';
-import ButtonVariantsComponent from './variants/variants';
+import ButtonVariantsComponent from '../__examples__/variants/variants';
 
 export default {
     title: 'Example/Button',

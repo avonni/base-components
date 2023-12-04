@@ -19,23 +19,18 @@
         onblur={handleButtonBlur}
         onclick={handleButtonClick}
     >
-        <div
-            class={computedIconContainerClass}
-            data-element-id="icon-container"
-        >
-            <img
-                if:true={iconSrc}
-                class={computedImageClass}
-                src={iconSrc}
-                data-element-id="image"
-            />
-            <c-primitive-icon
-                if:true={showIcon}
-                icon-name={iconName}
-                svg-class={computedIconClass}
-                variant="bare"
-                data-element-id="primitive-icon"
-            ></c-primitive-icon>
-        </div>
+        <img
+            if:true={iconSrc}
+            class={computedImageClass}
+            src={iconSrc}
+            data-element-id="image"
+        />
+        <c-primitive-icon
+            if:true={showIcon}
+            icon-name={iconName}
+            svg-class={computedIconClass}
+            variant="bare"
+            data-element-id="primitive-icon"
+        ></c-primitive-icon>
     </button>
 </template>

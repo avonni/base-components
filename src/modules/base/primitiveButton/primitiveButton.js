@@ -2,6 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
+    buttonGroupOrderClass,
     isIE11,
     isCSR
 } from 'c/utilsPrivate';
@@ -85,6 +86,13 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api ariaLabel;
+
+    /**
+     * Reserved for internal use only.
+     * Describes the order of this element (first, middle or last) inside lightning-button-group.
+     * @type {string}
+     */
+    @api groupOrder = '';
 
     /**
      * The Lightning Design System name of the icon.
@@ -608,6 +616,12 @@ export default class PrimitiveButton extends LightningElement {
 
     get computedAriaRelevant() {
         return this.state.ariaRelevant;
+    }
+
+    get computedButtonClass() {
+        const classes = classSet('slds-button');
+        classes.add(buttonGroupOrderClass(this.groupOrder));
+        return classes.toString();
     }
 
     get computedIconClass() {
