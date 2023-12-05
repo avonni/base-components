@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const HORIZONTAL_ALIGNMENTS = {
@@ -36,21 +36,72 @@ export default class Layout extends LightningElement {
     _multipleRows = false;
     _verticalAlign = VERTICAL_ALIGNMENTS.default;
 
-    _items = {};
+    _disconnected = false;
+    _items = new Map();
+    _name = generateUUID();
     _previousWidth;
+    _resizeIsHandledByParent = false;
     _resizeObserver;
 
+    connectedCallback() {
+        /**
+         * The event fired when the layout is inserted in the DOM.
+         *
+         * @event
+         * @name privatelayoutconnected
+         * @param {string} name Unique name of the layout.
+         * @param {object} callbacks Object with two keys:
+         * * `setItemsSize`: When called, the layout passes down its current width to its layout items.
+         * * `setIsResizedByParent`: If called with `true`, the resizing of the layout is handled by its parent. The layout will not watch its width and update the size of its items automatically.
+         * @bubbles
+         * @composed
+         */
+        const event = new CustomEvent('privatelayoutconnected', {
+            detail: {
+                callbacks: {
+                    setItemsSize: this.setItemsSize.bind(this),
+                    setIsResizedByParent: this.setIsResizedByParent.bind(this)
+                },
+                name: this._name
+            },
+            composed: true,
+            bubbles: true
+        });
+        this.dispatchEvent(event);
+    }
+
     renderedCallback() {
-        if (!this._resizeObserver) {
+        if (!this._resizeObserver && !this._resizeIsHandledByParent) {
             this.initResizeObserver();
+        } else if (this._resizeIsHandledByParent) {
+            this.removeResizeObserver();
         }
     }
 
     disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = undefined;
-        }
+        this.removeResizeObserver();
+
+        /**
+         * The event fired when the layout is removed from the DOM.
+         *
+         * @event
+         * @name privatelayoutdisconnected
+         * @param {string} name Unique name of the layout.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutdisconnected', {
+                detail: {
+                    name: this._name
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
+        // If the parent is disconnected too, the event won't get to its other ancestors.
+        // Use _disconnected to still make sure setItemsSize() is not called uselessly.
+        this._disconnected = true;
     }
 
     /*
@@ -194,10 +245,27 @@ export default class Layout extends LightningElement {
 
         this._resizeObserver = new AvonniResizeObserver(this.wrapper, () => {
             this.dispatchSizeChange();
+            this.setItemsSize();
+        });
+    }
 
-            Object.values(this._items).forEach((item) => {
-                item.setContainerSize(this.width);
-            });
+    removeResizeObserver() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
+    }
+
+    setIsResizedByParent(value) {
+        this._resizeIsHandledByParent = normalizeBoolean(value);
+    }
+
+    setItemsSize() {
+        if (this._disconnected) {
+            return;
+        }
+        this._items.forEach((item) => {
+            item.setContainerSize(this.width);
         });
     }
 
@@ -215,7 +283,7 @@ export default class Layout extends LightningElement {
     handleItemConnected(event) {
         event.stopPropagation();
         const { name, callbacks } = event.detail;
-        this._items[name] = callbacks;
+        this._items.set(name, callbacks);
         callbacks.setContainerSize(this.width);
     }
 
@@ -227,7 +295,7 @@ export default class Layout extends LightningElement {
     handleItemDisconnected(event) {
         event.stopPropagation();
         const name = event.detail.name;
-        delete this._items[name];
+        this._items.delete(name);
     }
 
     /**
