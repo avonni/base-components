@@ -266,10 +266,14 @@ export default class List extends LightningElement {
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
 
-        if (this._enableInfiniteLoading && this._connected) {
-            if (this.isSingleLine) {
-                this.checkSingleLineLoading();
-            }
+        if (
+            this._enableInfiniteLoading &&
+            this._connected &&
+            this.isSingleLine
+        ) {
+            this.checkSingleLineLoading();
+        } else if (this._enableInfiniteLoading && this._connected) {
+            this.computedItems = [...this.computedItems];
         }
     }
 
@@ -1045,7 +1049,7 @@ export default class List extends LightningElement {
     @api
     reset() {
         this.clearSelection();
-        this.computedItems = JSON.parse(JSON.stringify(this.items));
+        this.setItemProperties();
     }
 
     /*
