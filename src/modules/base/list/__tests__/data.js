@@ -45,16 +45,20 @@ export const ITEMS = [
 
 export const ITEMS_WITHOUT_ICONS = [
     {
-        label: 'Item 1'
+        label: 'Item 1',
+        name: 'item-1'
     },
     {
-        label: 'Item 2'
+        label: 'Item 2',
+        name: 'item-2'
     },
     {
-        label: 'Item 3'
+        label: 'Item 3',
+        name: 'item-3'
     },
     {
-        label: 'Item 4'
+        label: 'Item 4',
+        name: 'item-4'
     }
 ];
 
