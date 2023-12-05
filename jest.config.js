@@ -16,6 +16,7 @@ module.exports = {
         '^c/(filterMenu)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputDateRange)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputRichText)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(layoutItem)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(outputData)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(positionLibrary)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveCombobox)$': '<rootDir>/jest-mock/components/base/$1/$1',
