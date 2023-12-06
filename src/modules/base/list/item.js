@@ -28,7 +28,9 @@ export default class Item {
         );
         this.description = value.description;
         this.fallbackIconName = value.fallbackIconName;
-        this.fields = value.fields;
+        this.fields = normalizeArray(value.fields).map((f) => {
+            return { ...f, key: generateUUID() };
+        });
         this.href = value.href;
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);

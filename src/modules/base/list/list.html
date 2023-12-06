@@ -332,7 +332,7 @@
 
                                             <!-- Fields -->
                                             <div
-                                                if:true={item.fields}
+                                                if:true={item.fields.length}
                                                 class="
                                                     slds-m-top_xx-small
                                                     avonni-list__item-fields-container
@@ -342,6 +342,8 @@
                                                 <c-layout
                                                     multiple-rows
                                                     data-element-id="fields-container"
+                                                    onprivatelayoutconnected={handleFieldsLayoutConnected}
+                                                    onprivatelayoutdisconnected={handleFieldsLayoutDisconnected}
                                                 >
                                                     <template
                                                         for:each={item.fields}
@@ -349,7 +351,7 @@
                                                         for:index="index"
                                                     >
                                                         <c-layout-item
-                                                            key={field.value}
+                                                            key={field.key}
                                                             class="
                                                                 slds-truncate
                                                             "

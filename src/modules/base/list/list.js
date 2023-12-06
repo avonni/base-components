@@ -6,7 +6,8 @@ import {
     normalizeObject,
     deepCopy
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
+import { classSet, generateUUID } from 'c/utils';
 import Item from './item';
 
 const ICON_POSITIONS = {
@@ -116,16 +117,19 @@ export default class List extends LightningElement {
     _visibleActions;
     _visibleMediaActions;
 
+    _cardRendersBeforeScrollUpdate = 0;
     _columnsSizes = {
         default: 1
     };
-    _cardRendersBeforeScrollUpdate = 0;
+    _connected = false;
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
     _displayWidth = 'default';
     _draggedElement;
     _draggedIndex;
     _dragging = false;
+    _fieldsResizeIsHandledByParent = false;
+    _listHasFields = false;
     _hoveredIndex;
     _imageSizes = {
         height: {
@@ -143,21 +147,24 @@ export default class List extends LightningElement {
     _isFallbackLoadedMap = {};
     _initialY;
     _itemElements;
+    _listHasImages = false;
     _menuTop;
     _menuBottom;
+    _name = generateUUID();
+    _previousDisplayWidth = 0;
     _previousScrollTop;
     _savedComputedItems;
     _keyboardMoveIndex;
+    _resizeObserver;
     _restrictMotion = false;
     _scrollingInterval;
     _scrollTop = 0;
+    _setItemsSizeCallbacks = new Map();
     _singleLinePageFirstIndex = 0;
 
     computedActions = [];
     computedItems = [];
     computedMediaActions = [];
-    listHasImages = false;
-    _connected = false;
 
     renderedCallback() {
         if ((this._dragging || this._keyboardDragged) && this._draggedElement) {
@@ -180,17 +187,63 @@ export default class List extends LightningElement {
 
         // Reset loaded fallback map.
         this._isFallbackLoadedMap = {};
+
+        if (
+            !this._resizeObserver &&
+            !this._fieldsResizeIsHandledByParent &&
+            this._listHasFields
+        ) {
+            this.initResizeObserver();
+        } else if (
+            this._fieldsResizeIsHandledByParent ||
+            !this._listHasFields
+        ) {
+            this.removeResizeObserver();
+        }
     }
 
     connectedCallback() {
         this.updateColumnCount();
         this.setItemProperties();
         this._connected = true;
+
+        /**
+         * The event fired when the list is inserted in the DOM.
+         *
+         * @event
+         * @name privatelistconnected
+         * @param {}
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelistconnected', {
+                detail: {
+                    callbacks: {
+                        setDisplayWidth: this.setDisplayWidth.bind(this)
+                    },
+                    name: this._name
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
     }
 
     disconnectedCallback() {
+        this.removeResizeObserver();
         window.removeEventListener('mouseup', this._dragEndMethod);
         window.removeEventListener('touchend', this._dragEndMethod);
+
+        this.dispatchEvent(
+            new CustomEvent('privatelistdisconnected', {
+                detail: {
+                    name: this._name
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
     }
 
     /*
@@ -320,7 +373,9 @@ export default class List extends LightningElement {
             }
         );
 
-        this._fieldAttributes = { ...this._fieldAttributes };
+        if (this._connected) {
+            this.setItemProperties();
+        }
     }
 
     /**
@@ -420,6 +475,16 @@ export default class List extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+
+        if (
+            this._enableInfiniteLoading &&
+            this._connected &&
+            this.isSingleLine
+        ) {
+            this.checkSingleLineLoading();
+        } else if (this._enableInfiniteLoading && this._connected) {
+            this.computedItems = [...this.computedItems];
+        }
     }
 
     /**
@@ -988,7 +1053,7 @@ export default class List extends LightningElement {
             this.isNotSingleLine &&
             this.sortable &&
             !!this.sortableIconName &&
-            this.listHasImages &&
+            this._listHasImages &&
             this.imageAttributes.position === 'left' &&
             this.sortableIconPosition === 'left'
         );
@@ -1290,7 +1355,7 @@ export default class List extends LightningElement {
         delete itemCopy.index;
         delete itemCopy.imagePosition;
         delete itemCopy.variant;
-        delete itemCopy.listHasImages;
+        delete itemCopy._listHasImages;
         delete itemCopy.infos;
         delete itemCopy.icons;
         delete itemCopy.avatarPosition;
@@ -1420,6 +1485,19 @@ export default class List extends LightningElement {
                 : event.clientY;
     }
 
+    initResizeObserver() {
+        if (!this.listContainer) return;
+
+        this._resizeObserver = new AvonniResizeObserver(
+            this.listContainer,
+            () => {
+                this._setItemsSizeCallbacks.forEach((callback) => {
+                    callback();
+                });
+            }
+        );
+    }
+
     /**
      * Only accept predetermined number of columns.
      *
@@ -1449,11 +1527,14 @@ export default class List extends LightningElement {
      * Make sure all used properties are set before they are used in items.
      */
     setItemProperties() {
-        this.listHasImages = this.items.some(
-            (item) => item.imageSrc || this.imageAttributes.fallbackSrc
-        );
+        this._listHasFields = false;
+        this._listHasImages = false;
         this.computedItems = this.items.map((item, index) => {
             const imageSrc = item.imageSrc || this.imageAttributes.fallbackSrc;
+            if (imageSrc) {
+                this._listHasImages = true;
+            }
+
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
             let usedImagePosition = this.imageAttributes.position;
@@ -1466,9 +1547,13 @@ export default class List extends LightningElement {
             const newItem = new Item(item);
             newItem.index = index;
             newItem.imagePosition = usedImagePosition;
-            newItem.listHasImages = this.listHasImages;
+            newItem._listHasImages = this._listHasImages;
             newItem.variant = this.variant;
             newItem.imageSrc = imageSrc;
+            if (newItem.fields.length) {
+                this._listHasFields = true;
+            }
+
             return newItem;
         });
     }
@@ -1511,6 +1596,13 @@ export default class List extends LightningElement {
         }
     }
 
+    removeResizeObserver() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
+    }
+
     /**
      * Remove transform style and class from all items.
      */
@@ -1545,6 +1637,19 @@ export default class List extends LightningElement {
             });
             draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
         }, 0);
+    }
+
+    setDisplayWidth(width) {
+        this._displayWidth = width;
+        this.updateColumnCount();
+
+        if (this.isSingleLine && this.enableInfiniteLoading) {
+            this.checkSingleLineLoading();
+        }
+    }
+
+    setFieldsAreResizedByParent(value) {
+        this._fieldsResizeIsHandledByParent = normalizeBoolean(value);
     }
 
     /**
@@ -1839,22 +1944,32 @@ export default class List extends LightningElement {
         );
     }
 
-    handleLayoutSizeChange(event) {
-        this._displayWidth = event.detail.width;
-        this.updateColumnCount();
-
-        if (this.isSingleLine && this.enableInfiniteLoading) {
-            this.checkSingleLineLoading();
-        }
+    handleFieldsLayoutConnected(event) {
+        event.stopPropagation();
+        const { name, callbacks } = event.detail;
+        callbacks.setIsResizedByParent(true);
+        this._setItemsSizeCallbacks.set(name, callbacks.setItemsSize);
 
         this.dispatchEvent(
-            new CustomEvent('sizechange', {
+            new CustomEvent('privatelayoutconnected', {
                 detail: {
-                    colSize: this._currentColumnCount,
-                    width: this._displayWidth
+                    name,
+                    callbacks: {
+                        setIsResizedByParent:
+                            this.setFieldsAreResizedByParent.bind(this),
+                        setItemsSize: callbacks.setItemsSize
+                    }
                 }
             })
         );
+    }
+
+    handleFieldsLayoutDisconnected(event) {
+        this._setItemsSizeCallbacks.delete(event.detail.name);
+    }
+
+    handleLayoutSizeChange(event) {
+        this.setDisplayWidth(event.detail.width);
     }
 
     /**
