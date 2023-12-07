@@ -1356,8 +1356,8 @@ export default class List extends LightningElement {
         const itemCopy = deepCopy(item);
         delete itemCopy.index;
         delete itemCopy.imagePosition;
+        delete itemCopy.key;
         delete itemCopy.variant;
-        delete itemCopy._listHasImages;
         delete itemCopy.infos;
         delete itemCopy.icons;
         delete itemCopy.avatarPosition;
@@ -1549,7 +1549,6 @@ export default class List extends LightningElement {
             const newItem = new Item(item);
             newItem.index = index;
             newItem.imagePosition = usedImagePosition;
-            newItem._listHasImages = this._listHasImages;
             newItem.variant = this.variant;
             newItem.imageSrc = imageSrc;
             if (newItem.fields.length) {
@@ -1902,12 +1901,16 @@ export default class List extends LightningElement {
              * @event
              * @name reorder
              * @param {object} items The items in their new order.
+             * @param {number} newIndex New index of the reordered item.
+             * @param {number} previousIndex Previous index of the reordered item.
              * @public
              */
             this.dispatchEvent(
                 new CustomEvent('reorder', {
                     detail: {
-                        items: cleanItems
+                        items: cleanItems,
+                        previousIndex: this._draggedIndex,
+                        newIndex: this._hoveredIndex
                     }
                 })
             );
