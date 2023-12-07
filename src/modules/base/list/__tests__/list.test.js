@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import { ITEMS, ITEMS_WITHOUT_ICONS, ACTIONS, ACTION } from './data';
+import { callObserver } from 'c/resizeObserver';
 import List from 'c/list';
 
 // Not tested:
@@ -98,15 +99,21 @@ describe('List', () => {
         });
 
         // cols
-        it('Columns, cols', () => {
+        it('cols', () => {
             element.items = ITEMS;
             element.cols = 3;
+            element.smallContainerCols = 6;
+            element.mediumContainerCols = 4;
+            element.largeContainerCols = 2;
 
             return Promise.resolve().then(() => {
                 const item = element.shadowRoot.querySelector(
                     '[data-element-id="li-item"]'
                 );
                 expect(item.size).toBe(4);
+                expect(item.smallContainerSize).toBe(2);
+                expect(item.mediumContainerSize).toBe(3);
+                expect(item.largeContainerSize).toBe(6);
             });
         });
 
@@ -297,55 +304,189 @@ describe('List', () => {
         });
 
         // items
-        it('Items', () => {
-            element.items = ITEMS;
+        describe('Items', () => {
+            it('Items', () => {
+                element.items = ITEMS;
 
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="li-item"]'
-                );
-                const itemsLabels = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="div-item-label"]'
-                );
-                expect(items).toHaveLength(5);
-                expect(itemsLabels).toHaveLength(5);
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="li-item"]'
+                    );
+                    const itemsLabels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-item-label"]'
+                    );
+                    expect(items).toHaveLength(5);
+                    expect(itemsLabels).toHaveLength(5);
 
-                items.forEach((item, index) => {
-                    const originalItem = ITEMS[index];
+                    items.forEach((item, index) => {
+                        const originalItem = ITEMS[index];
 
-                    expect(item.dataset.index).toBe(index.toString());
-                    expect(item.ariaLabel).toBe(originalItem.label);
-                });
+                        expect(item.dataset.index).toBe(index.toString());
+                        expect(item.ariaLabel).toBe(originalItem.label);
+                    });
 
-                itemsLabels.forEach((item, index) => {
-                    const originalItem = ITEMS[index];
+                    itemsLabels.forEach((item, index) => {
+                        const originalItem = ITEMS[index];
 
-                    expect(item.textContent).toBe(originalItem.label);
-                });
+                        expect(item.textContent).toBe(originalItem.label);
+                    });
 
-                [0, 2].forEach((index) => {
-                    const item = items[index];
+                    [0, 2].forEach((index) => {
+                        const item = items[index];
+                        const avatar = item.querySelector(
+                            '[data-element-id="avonni-avatar"]'
+                        );
+                        expect(avatar.fallbackIconName).toBe(
+                            ITEMS[index].avatar.fallbackIconName
+                        );
+                        expect(avatar.src).toBe(ITEMS[index].avatar.src);
+                    });
+
+                    [0, 1, 2, 4].forEach((index) => {
+                        const item = items[index];
+                        const avatar = item.querySelector(
+                            '[data-element-id="avonni-avatar"]'
+                        );
+                        expect(avatar).toBeTruthy();
+                    });
+                    const item = items[3];
                     const avatar = item.querySelector(
                         '[data-element-id="avonni-avatar"]'
                     );
-                    expect(avatar.fallbackIconName).toBe(
-                        ITEMS[index].avatar.fallbackIconName
-                    );
-                    expect(avatar.src).toBe(ITEMS[index].avatar.src);
+                    expect(avatar).toBeNull();
+                });
+            });
+
+            describe('Fields', () => {
+                it('Fields resize observer is centralized in list', () => {
+                    element.items = [
+                        {
+                            label: 'Some item',
+                            name: 'someName',
+                            fields: [
+                                { label: 'Field 1', value: 'Value 1' },
+                                { label: 'Field 2', value: 'Value 2' }
+                            ]
+                        }
+                    ];
+
+                    return Promise.resolve().then(() => {
+                        const fields = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-output-data"]'
+                        );
+                        expect(fields).toHaveLength(2);
+                        const firstSetItems = jest.fn();
+                        const secondSetItems = jest.fn();
+
+                        // The callbacks are saved
+                        const isResizedByParent = jest.fn();
+                        fields[0].dispatchEvent(
+                            new CustomEvent('privatelayoutconnected', {
+                                detail: {
+                                    name: '1',
+                                    callbacks: {
+                                        setIsResizedByParent: isResizedByParent,
+                                        setItemsSize: firstSetItems
+                                    }
+                                },
+                                bubbles: true,
+                                composed: true
+                            })
+                        );
+                        expect(isResizedByParent).toHaveBeenCalledTimes(1);
+                        expect(isResizedByParent).toHaveBeenCalledWith(true);
+                        expect(firstSetItems).not.toHaveBeenCalled();
+
+                        fields[1].dispatchEvent(
+                            new CustomEvent('privatelayoutconnected', {
+                                detail: {
+                                    name: '2',
+                                    callbacks: {
+                                        setIsResizedByParent: isResizedByParent,
+                                        setItemsSize: secondSetItems
+                                    }
+                                },
+                                bubbles: true,
+                                composed: true
+                            })
+                        );
+                        expect(isResizedByParent).toHaveBeenCalledTimes(2);
+                        expect(secondSetItems).not.toHaveBeenCalled();
+
+                        // The callbacks are called when the resize observer is called
+                        callObserver();
+                        expect(firstSetItems).toHaveBeenCalledTimes(1);
+                        expect(secondSetItems).toHaveBeenCalledTimes(1);
+
+                        // The callbacks are not called anymore after the layouts are disconnected
+                        fields.forEach((field, index) => {
+                            field.dispatchEvent(
+                                new CustomEvent('privatelayoutdisconnected', {
+                                    detail: {
+                                        name: (index + 1).toString()
+                                    },
+                                    bubbles: true,
+                                    composed: true
+                                })
+                            );
+                        });
+                        callObserver();
+                        expect(firstSetItems).toHaveBeenCalledTimes(1);
+                        expect(secondSetItems).toHaveBeenCalledTimes(1);
+                    });
                 });
 
-                [0, 1, 2, 4].forEach((index) => {
-                    const item = items[index];
-                    const avatar = item.querySelector(
-                        '[data-element-id="avonni-avatar"]'
-                    );
-                    expect(avatar).toBeTruthy();
+                it('The layout event is redispatched to the parents to let them centralize the resizing', () => {
+                    element.items = [
+                        {
+                            label: 'Some item',
+                            name: 'someName',
+                            fields: [{ label: 'Field 1', value: 'Value 1' }]
+                        }
+                    ];
+
+                    const handler = jest.fn();
+                    element.addEventListener('privatelayoutconnected', handler);
+
+                    return Promise.resolve().then(() => {
+                        const field = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-output-data"]'
+                        );
+                        const setItemsSize = jest.fn();
+                        const isResizedByParent = jest.fn();
+                        field.dispatchEvent(
+                            new CustomEvent('privatelayoutconnected', {
+                                detail: {
+                                    name: 'first',
+                                    callbacks: {
+                                        setIsResizedByParent: isResizedByParent,
+                                        setItemsSize
+                                    }
+                                },
+                                bubbles: true,
+                                composed: true
+                            })
+                        );
+                        expect(isResizedByParent).toHaveBeenCalledTimes(1);
+
+                        // The event is redispatched to the parent
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.bubbles).toBeTruthy();
+                        expect(call.composed).toBeTruthy();
+                        expect(
+                            typeof call.detail.callbacks.setIsResizedByParent
+                        ).toBe('function');
+                        expect(typeof call.detail.callbacks.setItemsSize).toBe(
+                            'function'
+                        );
+                        expect(call.detail.name).toBe('first');
+
+                        // The callback in the redispatched event is different from the original
+                        call.detail.callbacks.setIsResizedByParent(true);
+                        expect(isResizedByParent).toHaveBeenCalledTimes(1);
+                    });
                 });
-                const item = items[3];
-                const avatar = item.querySelector(
-                    '[data-element-id="avonni-avatar"]'
-                );
-                expect(avatar).toBeNull();
             });
         });
 
@@ -1010,6 +1151,43 @@ describe('List', () => {
             });
         });
 
+        // privatelistconnected and privatelistdisconnected
+        it('privatelistconnected', () => {
+            const disconnectedHandler = jest.fn();
+            element.addEventListener(
+                'privatelistdisconnected',
+                disconnectedHandler
+            );
+
+            while (document.body.firstChild) {
+                document.body.removeChild(document.body.firstChild);
+            }
+            element = createElement('base-list', {
+                is: List
+            });
+
+            expect(disconnectedHandler).toHaveBeenCalled();
+            const disconnectedCall = disconnectedHandler.mock.calls[0][0];
+            expect(disconnectedCall.bubbles).toBeTruthy();
+            expect(disconnectedCall.composed).toBeTruthy();
+            expect(disconnectedCall.cancelable).toBeFalsy();
+            expect(typeof disconnectedCall.detail.name).toBe('string');
+
+            const connectedHandler = jest.fn();
+            element.addEventListener('privatelistconnected', connectedHandler);
+
+            document.body.appendChild(element);
+            expect(connectedHandler).toHaveBeenCalled();
+            const connectedCall = connectedHandler.mock.calls[0][0];
+            expect(connectedCall.bubbles).toBeTruthy();
+            expect(connectedCall.composed).toBeTruthy();
+            expect(connectedCall.cancelable).toBeFalsy();
+            expect(typeof connectedCall.detail.name).toBe('string');
+            expect(typeof connectedCall.detail.callbacks.setDisplayWidth).toBe(
+                'function'
+            );
+        });
+
         // reorder
         describe('reorder', () => {
             it('Fired with keyboard', () => {
@@ -1049,12 +1227,13 @@ describe('List', () => {
                     items[1].dispatchEvent(spaceEvent);
 
                     expect(handler).toHaveBeenCalledTimes(1);
-                    expect(handler.mock.calls[0][0].detail.items).toMatchObject(
-                        newOrder
-                    );
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.items).toMatchObject(newOrder);
+                    expect(call.detail.previousIndex).toBe(1);
+                    expect(call.detail.newIndex).toBe(2);
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
                 });
             });
 

@@ -212,7 +212,8 @@ export default class List extends LightningElement {
          *
          * @event
          * @name privatelistconnected
-         * @param {}
+         * @param {object} callbacks Object containing the setDisplayWidth callback.
+         * @param {string} name Unique name of the list.
          * @bubbles
          * @composed
          */
@@ -235,6 +236,15 @@ export default class List extends LightningElement {
         window.removeEventListener('mouseup', this._dragEndMethod);
         window.removeEventListener('touchend', this._dragEndMethod);
 
+        /**
+         * The event fired when the list is inserted in the DOM.
+         *
+         * @event
+         * @name privatelistdisconnected
+         * @param {string} name Unique name of the list.
+         * @bubbles
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('privatelistdisconnected', {
                 detail: {
@@ -1970,7 +1980,9 @@ export default class List extends LightningElement {
                             this.setFieldsAreResizedByParent.bind(this),
                         setItemsSize: callbacks.setItemsSize
                     }
-                }
+                },
+                bubbles: true,
+                composed: true
             })
         );
     }
