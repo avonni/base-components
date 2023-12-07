@@ -1273,7 +1273,9 @@ export default class List extends LightningElement {
                     this.listContainer.scrollHeight > this._initialScrollHeight;
 
                 if (!overflowY) {
-                    this.listContainer.scrollBy(0, this._scrollStep);
+                    const amountScrolled =
+                        this.listContainer.scrollTop + this._scrollStep;
+                    this.listContainer.scrollTop = amountScrolled;
 
                     this.animateItems(currentY);
 
