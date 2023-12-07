@@ -319,14 +319,20 @@ export default class List extends LightningElement {
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
 
-        if (
-            this._enableInfiniteLoading &&
-            this._connected &&
-            this.isSingleLine
-        ) {
+        if (!this._connected) {
+            return;
+        }
+
+        if (this._enableInfiniteLoading && this.isSingleLine) {
             this.checkSingleLineLoading();
-        } else if (this._enableInfiniteLoading && this._connected) {
+        } else if (this._enableInfiniteLoading) {
             this.computedItems = [...this.computedItems];
+        } else if (!this.displayedItems.length) {
+            const previousPageStart =
+                this._singleLinePageFirstIndex - this._currentColumnCount;
+            if (previousPageStart >= 0) {
+                this._singleLinePageFirstIndex = previousPageStart;
+            }
         }
     }
 
@@ -477,12 +483,12 @@ export default class List extends LightningElement {
         this._isLoading = normalizeBoolean(value);
 
         if (
-            this._enableInfiniteLoading &&
+            this.enableInfiniteLoading &&
             this._connected &&
             this.isSingleLine
         ) {
             this.checkSingleLineLoading();
-        } else if (this._enableInfiniteLoading && this._connected) {
+        } else if (this.enableInfiniteLoading && this._connected) {
             this.computedItems = [...this.computedItems];
         }
     }
