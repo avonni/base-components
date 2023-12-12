@@ -29,6 +29,7 @@
             </div>
             <div if:true={isMultiSelect} style="width: 100%">
                 <c-pill-container
+                    if:true={displayPillContainer}
                     items={displayedValue}
                     is-collapsible
                 ></c-pill-container>
