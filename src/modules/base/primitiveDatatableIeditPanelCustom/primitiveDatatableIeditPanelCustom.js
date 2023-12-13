@@ -303,7 +303,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     comboboxFormattedValue(value) {
         if (value.length === 0) {
-            return undefined;
+            return null;
         } else if (value.length === 1) {
             return value[0];
         }
