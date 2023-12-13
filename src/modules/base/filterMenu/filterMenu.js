@@ -1802,9 +1802,9 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event click event.
      */
     handleListItemClick(event) {
+        event.preventDefault();
         const { value, disabled } = event.currentTarget.dataset;
         if (disabled) {
-            event.preventDefault();
             return;
         }
 
