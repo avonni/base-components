@@ -1455,12 +1455,9 @@ export default class DateTimePicker extends LightningElement {
          * The event fired when the user navigates to another period of time.
          *
          * @event
-         * @name
-         * @param {}
+         * @name navigate
+         * @param {string} date First visible day, as an ISO8601 formatted string.
          * @public
-         * @bubbles
-         * @cancelable
-         * @composed
          */
         this.dispatchEvent(
             new CustomEvent('navigate', {
