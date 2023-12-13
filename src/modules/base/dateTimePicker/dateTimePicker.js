@@ -939,6 +939,10 @@ export default class DateTimePicker extends LightningElement {
         this._generateTable();
         this.datePickerValue = this.firstWeekDayToString;
         this._goToDate = normalizedDate;
+
+        if (this._connected) {
+            this.dispatchNavigate();
+        }
     }
 
     /**
@@ -1301,6 +1305,19 @@ export default class DateTimePicker extends LightningElement {
      */
 
     /**
+     * Redispatches the navigate event coming from the monthly variant calendar.
+     *
+     * @param {Event} event `navigate` event coming from the calendar.
+     */
+    handleCalendarNavigate(event) {
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: { date: event.detail.date }
+            })
+        );
+    }
+
+    /**
      * Handles the onchange event of the combobox to change the time zone.
      */
     handleTimeZoneChange(event) {
@@ -1332,6 +1349,7 @@ export default class DateTimePicker extends LightningElement {
         this.firstWeekDay = this.firstWeekDay.plus({ day: dayRangeSign });
         this._generateTable();
         this.datePickerValue = this.firstWeekDay.toISO();
+        this.dispatchNavigate();
     }
 
     /**
@@ -1427,5 +1445,29 @@ export default class DateTimePicker extends LightningElement {
      */
     handleValueFocus() {
         this.interactingState.enter();
+    }
+
+    /**
+     * Dispatch the `navigate` event.
+     */
+    dispatchNavigate() {
+        /**
+         * The event fired when the user navigates to another period of time.
+         *
+         * @event
+         * @name
+         * @param {}
+         * @public
+         * @bubbles
+         * @cancelable
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: {
+                    date: this.firstWeekDay.toISO()
+                }
+            })
+        );
     }
 }
