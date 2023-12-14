@@ -16,239 +16,349 @@ describe('Button Dialog', () => {
         document.body.appendChild(element);
     });
 
-    it('Button Dialog:: Default attributes', () => {
-        expect(element.accessKey).toBeUndefined();
-        expect(element.alternativeText).toBeUndefined();
-        expect(element.disabled).toBeFalsy();
-        expect(element.label).toBeUndefined();
-        expect(element.variant).toBe('neutral');
-        expect(element.iconName).toBeUndefined();
-        expect(element.iconPosition).toBe('left');
-    });
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.accessKey).toBeUndefined();
+            expect(element.alternativeText).toBeUndefined();
+            expect(element.disabled).toBeFalsy();
+            expect(element.iconName).toBeUndefined();
+            expect(element.iconPosition).toBe('left');
+            expect(element.iconSrc).toBeUndefined();
+            expect(element.label).toBeUndefined();
+            expect(element.stretch).toBeFalsy();
+            expect(element.variant).toBe('neutral');
+        });
 
-    /* ----- ATTRIBUTES ----- */
+        /* ----- ATTRIBUTES ----- */
 
-    // access-key
-    it('Button Dialog: access-key', () => {
-        element.accessKey = 'K';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
+        describe('Access Key', () => {
+            it('accessKey', () => {
+                element.accessKey = 'K';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
 
-        return Promise.resolve().then(() => {
-            expect(button.accessKey).toBe('K');
+                return Promise.resolve().then(() => {
+                    expect(button.accessKey).toBe('K');
+                });
+            });
+        });
+
+        describe('Alternative Text', () => {
+            it('alternativeText', () => {
+                element.alternativeText = 'This is an alternative text';
+
+                return Promise.resolve().then(() => {
+                    const assistiveText = element.shadowRoot.querySelector(
+                        '.slds-assistive-text'
+                    );
+                    expect(assistiveText.textContent).toBe(
+                        'This is an alternative text'
+                    );
+                });
+            });
+        });
+
+        describe('Disabled', () => {
+            it('disabled', () => {
+                element.disabled = true;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Icon', () => {
+            describe('Icon Name', () => {
+                it('iconName', () => {
+                    element.iconName = 'utility:lock';
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+
+                    return Promise.resolve().then(() => {
+                        expect(button.iconName).toBe('utility:lock');
+                    });
+                });
+            });
+
+            describe('Icon Position', () => {
+                it('iconPosition = left', () => {
+                    element.iconName = 'utility:lock';
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+
+                    return Promise.resolve().then(() => {
+                        expect(button.iconPosition).toBe('left');
+                    });
+                });
+
+                it('iconPosition = right', () => {
+                    element.iconName = 'utility:lock';
+                    element.iconPosition = 'right';
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+
+                    return Promise.resolve().then(() => {
+                        expect(button.iconPosition).toBe('right');
+                    });
+                });
+            });
+
+            describe('Icon Source', () => {
+                it('iconSrc', () => {
+                    element.iconSrc =
+                        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+
+                    return Promise.resolve().then(() => {
+                        expect(button.iconSrc).toBe(
+                            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+                        );
+                    });
+                });
+            });
+        });
+
+        describe('Label', () => {
+            it('label', () => {
+                element.label = 'Button Label';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.label).toBe('Button Label');
+                });
+            });
+        });
+
+        describe('Stretch', () => {
+            it('stretch', () => {
+                element.stretch = true;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.stretch).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Variant', () => {
+            it('bare', () => {
+                element.variant = 'bare';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('bare');
+                });
+            });
+
+            it('bare-inverse', () => {
+                element.variant = 'bare-inverse';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('bare-inverse');
+                });
+            });
+
+            it('base', () => {
+                element.variant = 'base';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('base');
+                });
+            });
+
+            it('border', () => {
+                element.variant = 'border';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('border');
+                });
+            });
+
+            it('border-filled', () => {
+                element.variant = 'border-filled';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('border-filled');
+                });
+            });
+
+            it('border-inverse', () => {
+                element.variant = 'border-inverse';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('border-inverse');
+                });
+            });
+
+            it('brand', () => {
+                element.variant = 'brand';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('brand');
+                });
+            });
+
+            it('brand-outline', () => {
+                element.variant = 'brand-outline';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('brand-outline');
+                });
+            });
+
+            it('destructive', () => {
+                element.variant = 'destructive';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('destructive');
+                });
+            });
+
+            it('destructive-text', () => {
+                element.variant = 'destructive-text';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('destructive-text');
+                });
+            });
+
+            it('inverse', () => {
+                element.variant = 'inverse';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('inverse');
+                });
+            });
+
+            it('neutral', () => {
+                element.variant = 'neutral';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('neutral');
+                });
+            });
+
+            it('success', () => {
+                element.variant = 'success';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.variant).toBe('success');
+                });
+            });
         });
     });
 
-    // alternative-text
-    it('Button Dialog: alternative-text', () => {
-        element.alternativeText = 'This is an alternative text';
-        const assistiveText = element.shadowRoot.querySelector(
-            '.slds-assistive-text'
-        );
+    describe('Methods', () => {
+        describe('Click', () => {
+            it('click', () => {
+                let clickEvent = false;
+                element.addEventListener('click', () => {
+                    clickEvent = true;
+                });
 
-        return Promise.resolve().then(() => {
-            expect(assistiveText.textContent).toBe(
-                'This is an alternative text'
-            );
-        });
-    });
-
-    // disabled
-    it('Button Dialog: disabled', () => {
-        element.disabled = true;
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.disabled).toBeTruthy();
-        });
-    });
-
-    // label
-    it('Button Dialog: label', () => {
-        element.label = 'Button Label';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.label).toBe('Button Label');
-        });
-    });
-
-    // variant
-    it('Button Dialog: variant neutral', () => {
-        element.variant = 'neutral';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('neutral');
-        });
-    });
-
-    it('Button Dialog: variant base', () => {
-        element.variant = 'base';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('base');
-        });
-    });
-
-    it('Button Dialog: variant brand', () => {
-        element.variant = 'brand';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('brand');
-        });
-    });
-
-    it('Button Dialog: variant brand-outline', () => {
-        element.variant = 'brand-outline';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('brand-outline');
-        });
-    });
-
-    it('Button Dialog: variant destructive', () => {
-        element.variant = 'destructive';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('destructive');
-        });
-    });
-
-    it('Button Dialog: variant destructive-text', () => {
-        element.variant = 'destructive-text';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('destructive-text');
-        });
-    });
-
-    it('Button Dialog: variant inverse', () => {
-        element.variant = 'inverse';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('inverse');
-        });
-    });
-
-    it('Button Dialog: variant success', () => {
-        element.variant = 'success';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.variant).toBe('success');
-        });
-    });
-
-    // icon name
-    it('Button Dialog: icon name', () => {
-        element.iconName = 'utility:lock';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.iconName).toBe('utility:lock');
-        });
-    });
-
-    // icon position
-    it('Button Dialog: icon position left', () => {
-        element.iconName = 'utility:lock';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.iconPosition).toBe('left');
-        });
-    });
-
-    it('Button Dialog: icon position right', () => {
-        element.iconName = 'utility:lock';
-        element.iconPosition = 'right';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(button.iconPosition).toBe('right');
-        });
-    });
-
-    /* ---- METHODS ----- */
-    it('Button Dialog: method click', () => {
-        let clickEvent = false;
-        element.addEventListener('click', () => {
-            clickEvent = true;
+                element.click();
+                return Promise.resolve().then(() => {
+                    expect(clickEvent).toBeTruthy();
+                });
+            });
         });
 
-        element.click();
-        return Promise.resolve().then(() => {
-            expect(clickEvent).toBeTruthy();
-        });
-    });
+        describe('Focus', () => {
+            it('focus', () => {
+                element.label = 'Button Label';
 
-    it('Button Dialog: method focus', () => {
-        let focusEvent = false;
-        element.addEventListener('focus', () => {
-            focusEvent = true;
-        });
+                const handler = jest.fn();
+                element.addEventListener('focus', handler);
 
-        element.focus();
-        return Promise.resolve().then(() => {
-            expect(focusEvent).toBeTruthy();
-        });
-    });
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    button.focus();
 
-    it('Button Dialog: method show', () => {
-        let showEvent = false;
-        element.addEventListener('show', () => {
-            showEvent = true;
+                    expect(handler).toHaveBeenCalled();
+                });
+            });
         });
 
-        element.show();
-        return Promise.resolve().then(() => {
-            expect(showEvent).toBeTruthy();
-        });
-    });
+        describe('Hide', () => {
+            it('hide', () => {
+                let hideEvent = false;
+                element.addEventListener('hide', () => {
+                    hideEvent = true;
+                });
 
-    it('Button Dialog: method hide', () => {
-        let hideEvent = false;
-        element.addEventListener('hide', () => {
-            hideEvent = true;
+                element.hide();
+                return Promise.resolve().then(() => {
+                    expect(hideEvent).toBeTruthy();
+                });
+            });
         });
 
-        element.hide();
-        return Promise.resolve().then(() => {
-            expect(hideEvent).toBeTruthy();
+        describe('Show', () => {
+            it('show', () => {
+                let showEvent = false;
+                element.addEventListener('show', () => {
+                    showEvent = true;
+                });
+
+                element.show();
+                return Promise.resolve().then(() => {
+                    expect(showEvent).toBeTruthy();
+                });
+            });
         });
     });
 });

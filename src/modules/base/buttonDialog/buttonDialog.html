@@ -11,8 +11,11 @@
         variant={variant}
         data-element-id="button"
         onclick={click}
+        onfocus={focus}
     >
     </c-button>
-    <span class="slds-assistive-text">{alternativeText}</span>
+    <span if:true={alternativeText} class="slds-assistive-text"
+        >{alternativeText}</span
+    >
     <slot data-element-id="slot"></slot>
 </template>

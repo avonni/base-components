@@ -279,7 +279,7 @@ export default class Button extends PrimitiveButton {
      */
     @api
     click() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.button.click();
         }
     }
@@ -291,7 +291,7 @@ export default class Button extends PrimitiveButton {
      */
     @api
     focus() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.button.focus();
         }
     }
