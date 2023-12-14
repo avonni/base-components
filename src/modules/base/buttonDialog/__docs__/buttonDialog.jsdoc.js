@@ -9,6 +9,10 @@
  */
 
 /**
+ * @namespace stylingHooks
+ */
+
+/**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-shadow
  * @type shadow

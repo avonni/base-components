@@ -10,12 +10,19 @@ const BUTTON_SIZES = {
 const BUTTON_VARIANTS = {
     valid: [
         'bare',
-        'container',
-        'brand',
+        'bare-inverse',
+        'base',
         'border',
         'border-filled',
-        'bare-inverse',
-        'border-inverse'
+        'border-inverse',
+        'brand',
+        'brand-outline',
+        'container',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'neutral',
+        'success'
     ],
     default: 'border'
 };
@@ -58,6 +65,13 @@ export default class ButtonIconDialog extends LightningElement {
      */
     @api iconName;
     /**
+     * URL to set for the image attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api iconSrc;
+    /**
      * Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.
      *
      * @public
@@ -70,6 +84,12 @@ export default class ButtonIconDialog extends LightningElement {
     _variant = BUTTON_VARIANTS.default;
 
     _dialogSlot;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         this._dialogSlot = this.template.querySelector(
@@ -87,19 +107,20 @@ export default class ButtonIconDialog extends LightningElement {
      * If present, the modal box can't be opened by users.
      *
      * @public
+     * @default false
      * @type {boolean}
      */
     @api
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
 
     /**
-     * The size of the button icon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.
+     * The size of the button icon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants,
+     * options include xx-small, x-small, small, and medium.
      *
      * @public
      * @type {string}
@@ -109,9 +130,12 @@ export default class ButtonIconDialog extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
-        if (this._variant === 'bare' || this._variant === 'bare-inverse') {
+        if (
+            this._variant === 'bare' ||
+            this._variant === 'bare-inverse' ||
+            this._variant === 'base'
+        ) {
             this._size = normalizeString(size, {
                 fallbackValue: BUTTON_SIZES.default,
                 validValues: BUTTON_SIZES.validBare
@@ -125,7 +149,8 @@ export default class ButtonIconDialog extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of button icon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
+     * border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.
      *
      * @public
      * @type {string}
@@ -135,7 +160,6 @@ export default class ButtonIconDialog extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -215,9 +239,7 @@ export default class ButtonIconDialog extends LightningElement {
      */
     @api
     focus() {
-        this.template
-            .querySelector('[data-element-id="lightning-button-icon"]')
-            .focus();
+        this.template.querySelector('[data-element-id="button-icon"]').focus();
         /**
          * The event fired when the button is focused.
          *

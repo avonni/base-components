@@ -1,16 +1,6 @@
 <template>
-    <c-button-icon-dialog
-        access-key={accessKey}
-        alternative-text={alternativeText}
-        tooltip={tooltip}
-        icon-class={iconClass}
-        icon-name={iconName}
-        icon-src={iconSrc}
-        disabled={disabled}
-        size={size}
-        variant={variant}
-    >
-        <c-dialog dialog-name="dialog">
+    <avonni-button-icon-dialog icon-name="utility:error" variant="destructive">
+        <avonni-dialog dialog-name="dialog">
             <h2 slot="title" class="slds-modal__title slds-hyphenate">
                 Modal Header (Slot Title)
             </h2>
@@ -36,6 +26,6 @@
                     label="Save"
                 ></lightning-button>
             </div>
-        </c-dialog>
-    </c-button-icon-dialog>
+        </avonni-dialog>
+    </avonni-button-icon-dialog>
 </template>

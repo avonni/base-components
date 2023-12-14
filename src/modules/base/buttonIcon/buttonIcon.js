@@ -200,7 +200,6 @@ export default class ButtonIcon extends PrimitiveButton {
      * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
      * border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.
      *
-     * @name variant
      * @public
      * @type {string}
      * @default border
@@ -371,7 +370,7 @@ export default class ButtonIcon extends PrimitiveButton {
      */
     @api
     click() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.button.click();
         }
     }
@@ -383,7 +382,7 @@ export default class ButtonIcon extends PrimitiveButton {
      */
     @api
     focus() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.button.focus();
         }
     }

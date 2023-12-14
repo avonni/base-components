@@ -139,7 +139,7 @@ export default {
             description:
                 'The variant changes the look of the button. Accepted variants include bare, bare-inverse, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.',
             table: {
-                defaultValue: { summary: 'neutral' },
+                defaultValue: { summary: 'border' },
                 type: { summary: 'string' }
             }
         }
@@ -148,7 +148,7 @@ export default {
         disabled: false,
         size: 'medium',
         type: 'button',
-        variant: 'neutral'
+        variant: 'border'
     }
 };
 

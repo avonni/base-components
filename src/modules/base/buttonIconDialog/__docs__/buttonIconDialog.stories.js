@@ -57,6 +57,17 @@ export default {
                 category: 'icon'
             }
         },
+        iconSrc: {
+            name: 'icon-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
         size: {
             control: {
                 type: 'select'
@@ -75,18 +86,25 @@ export default {
             },
             options: [
                 'bare',
-                'container',
-                'brand',
+                'bare-inverse',
+                'base',
                 'border',
                 'border-filled',
-                'bare-inverse',
-                'border-inverse'
+                'border-inverse',
+                'brand',
+                'brand-outline',
+                'container',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'neutral',
+                'success'
             ],
             description:
-                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'border' }
+                defaultValue: { summary: 'border' },
+                type: { summary: 'string' }
             }
         },
         disabled: {
@@ -108,67 +126,10 @@ export default {
 };
 
 const Template = (args) => ButtonIconDialog(args);
-
-export const Border = Template.bind({});
-Border.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:animal_and_nature'
-};
-
-export const BorderWithWarningIcon = Template.bind({});
-BorderWithWarningIcon.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:warning',
-    iconClass: 'slds-icon-text-warning'
-};
-
-export const BorderWithErrorIcon = Template.bind({});
-BorderWithErrorIcon.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:error',
-    iconClass: 'slds-icon-text-error'
-};
-
-export const BorderWithSuccessIcon = Template.bind({});
-BorderWithSuccessIcon.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:success',
-    iconClass: 'slds-icon-text-success'
-};
-
-export const BorderWithLightIcon = Template.bind({});
-BorderWithLightIcon.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:check',
-    iconClass: 'slds-icon-text-light'
-};
-
-export const BorderSmall = Template.bind({});
-BorderSmall.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:animal_and_nature',
-    size: 'small'
-};
-
-export const BorderDisabled = Template.bind({});
-BorderDisabled.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:animal_and_nature',
-    disabled: true
-};
-
-export const Brand = Template.bind({});
-Brand.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:einstein',
-    variant: 'brand'
-};
-
-export const Container = Template.bind({});
-Container.args = {
-    tooltip: 'Show modal',
-    iconName: 'utility:animal_and_nature',
-    variant: 'Container'
+const darkBackground = {
+    backgrounds: {
+        default: 'dark'
+    }
 };
 
 export const Bare = Template.bind({});
@@ -179,22 +140,135 @@ Bare.args = {
 };
 
 export const BareInverse = Template.bind({});
+BareInverse.parameters = darkBackground;
 BareInverse.args = {
     tooltip: 'Show modal',
     iconName: 'utility:animal_and_nature',
     variant: 'bare-inverse'
 };
 
+export const Base = Template.bind({});
+Base.args = {
+    iconName: 'utility:animal_and_nature',
+    variant: 'base'
+};
+
+export const BorderImage = Template.bind({});
+BorderImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    variant: 'border'
+};
+
+export const Border = Template.bind({});
+Border.args = {
+    iconName: 'utility:animal_and_nature',
+    tooltip: 'Show modal'
+};
+
+export const BorderWithWarningIcon = Template.bind({});
+BorderWithWarningIcon.args = {
+    iconName: 'utility:warning',
+    iconClass: 'slds-icon-text-warning',
+    tooltip: 'Show modal'
+};
+
+export const BorderWithErrorIcon = Template.bind({});
+BorderWithErrorIcon.args = {
+    iconName: 'utility:error',
+    iconClass: 'slds-icon-text-error',
+    tooltip: 'Show modal'
+};
+
+export const BorderWithSuccessIcon = Template.bind({});
+BorderWithSuccessIcon.args = {
+    iconName: 'utility:success',
+    tooltip: 'Show modal',
+    iconClass: 'slds-icon-text-success'
+};
+
+export const BorderWithLightIcon = Template.bind({});
+BorderWithLightIcon.args = {
+    iconName: 'utility:check',
+    tooltip: 'Show modal',
+    iconClass: 'slds-icon-text-light'
+};
+
+export const BorderSmall = Template.bind({});
+BorderSmall.args = {
+    iconName: 'utility:animal_and_nature',
+    tooltip: 'Show modal',
+    size: 'small'
+};
+
+export const BorderDisabled = Template.bind({});
+BorderDisabled.args = {
+    iconName: 'utility:animal_and_nature',
+    tooltip: 'Show modal',
+    disabled: true
+};
+
 export const BorderFilled = Template.bind({});
 BorderFilled.args = {
-    tooltip: 'Show modal',
     iconName: 'utility:animal_and_nature',
+    tooltip: 'Show modal',
     variant: 'Border-Filled'
 };
 
 export const BorderInverse = Template.bind({});
+BorderInverse.parameters = darkBackground;
 BorderInverse.args = {
-    tooltip: 'Show modal',
     iconName: 'utility:animal_and_nature',
+    tooltip: 'Show modal',
     variant: 'Border-inverse'
+};
+
+export const Brand = Template.bind({});
+Brand.args = {
+    iconName: 'utility:einstein',
+    tooltip: 'Show modal',
+    variant: 'brand'
+};
+
+export const BrandOutline = Template.bind({});
+BrandOutline.args = {
+    iconName: 'utility:einstein',
+    variant: 'brand-outline'
+};
+
+export const Container = Template.bind({});
+Container.args = {
+    iconName: 'utility:animal_and_nature',
+    tooltip: 'Show modal',
+    variant: 'Container'
+};
+
+export const Destructive = Template.bind({});
+Destructive.args = {
+    iconName: 'utility:error',
+    variant: 'destructive'
+};
+
+export const DestructiveText = Template.bind({});
+DestructiveText.args = {
+    iconName: 'utility:error',
+    variant: 'destructive-text'
+};
+
+export const Inverse = Template.bind({});
+Inverse.parameters = darkBackground;
+Inverse.args = {
+    iconName: 'utility:animal_and_nature',
+    variant: 'inverse'
+};
+
+export const Neutral = Template.bind({});
+Neutral.args = {
+    iconName: 'utility:animal_and_nature',
+    label: 'Button'
+};
+
+export const Success = Template.bind({});
+Success.args = {
+    iconName: 'utility:success',
+    variant: 'success'
 };

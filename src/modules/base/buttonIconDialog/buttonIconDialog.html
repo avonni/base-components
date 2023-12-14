@@ -1,15 +1,17 @@
 <template>
-    <lightning-button-icon
+    <c-button-icon
+        class="avonni-button-icon-dialog"
         accesskey={accessKey}
         alternative-text={alternativeText}
         disabled={disabled}
-        variant={variant}
-        size={size}
-        tooltip={tooltip}
         icon-class={iconClass}
         icon-name={iconName}
-        data-element-id="lightning-button-icon"
+        icon-src={iconSrc}
+        size={size}
+        tooltip={tooltip}
+        variant={variant}
+        data-element-id="button-icon"
         onclick={click}
-    ></lightning-button-icon>
+    ></c-button-icon>
     <slot data-element-id="slot"></slot>
 </template>

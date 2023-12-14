@@ -143,10 +143,14 @@
     );
     /* brand */
     --avonni-button-brand-color-background: var(
-        --slds-c-button-brand-color-background
+        --avonni-button-dialog-brand-color-background
     );
-    --avonni-button-brand-color-border: var(--slds-c-button-brand-color-border);
-    --avonni-button-brand-text-color: var(--slds-c-button-brand-text-color);
+    --avonni-button-brand-color-border: var(
+        --avonni-button-dialog-brand-color-border
+    );
+    --avonni-button-brand-text-color: var(
+        --avonni-button-dialog-brand-text-color
+    );
     --avonni-button-brand-inline-end: var(
         --avonni-button-dialog-brand-inline-end
     );
@@ -161,12 +165,14 @@
     );
     /* brand-outline */
     --avonni-button-outline-brand-color-background: var(
-        --slds-c-button-outline-brand-color-background
+        --avonni-button-dialog-outline-brand-color-background
     );
     --avonni-button-outline-brand-color-border: var(
-        --slds-c-button-outline-brand-color-border
+        --avonni-button-dialog-outline-brand-color-border
     );
-    --avonni-button-outline-brand-text-color: var(--slds-c-button-text-color);
+    --avonni-button-outline-brand-text-color: var(
+        --avonni-button-dialog-text-color
+    );
     --avonni-button-outline-brand-inline-end: var(
         --avonni-button-dialog-outline-brand-inline-end
     );
@@ -203,13 +209,13 @@
     );
     /* destructive */
     --avonni-button-destructive-color-background: var(
-        --slds-c-button-destructive-color-background
+        --avonni-button-dialog-destructive-color-background
     );
     --avonni-button-destructive-color-border: var(
-        --slds-c-button-destructive-color-border
+        --avonni-button-dialog-destructive-color-border
     );
     --avonni-button-destructive-text-color: var(
-        --slds-c-button-destructive-text-color
+        --avonni-button-dialog-destructive-text-color
     );
     --avonni-button-destructive-inline-end: var(
         --avonni-button-dialog-destructive-inline-end
@@ -225,13 +231,13 @@
     );
     /* destructive-text */
     --avonni-button-text-destructive-color-background: var(
-        --slds-c-button-text-destructive-color-background
+        --avonni-button-dialog-text-destructive-color-background
     );
     --avonni-button-text-destructive-color-border: var(
-        --slds-c-button-text-destructive-color-border
+        --avonni-button-dialog-text-destructive-color-border
     );
     --avonni-button-text-destructive-text-color: var(
-        --slds-c-button-text-destructive-text-color
+        --avonni-button-dialog-text-destructive-text-color
     );
     --avonni-button-text-destructive-inline-end: var(
         --avonni-button-dialog-text-destructive-inline-end
@@ -247,12 +253,14 @@
     );
     /* inverse */
     --avonni-button-inverse-color-background: var(
-        --slds-c-button-inverse-color-background
+        --avonni-button-dialog-inverse-color-background
     );
     --avonni-button-inverse-color-border: var(
-        --slds-c-button-inverse-color-border
+        --avonni-button-dialog-inverse-color-border
     );
-    --avonni-button-inverse-text-color: var(--slds-c-button-inverse-text-color);
+    --avonni-button-inverse-text-color: var(
+        --avonni-button-dialog-inverse-text-color
+    );
     --avonni-button-inverse-inline-end: var(
         --avonni-button-dialog-inverse-inline-end
     );
@@ -267,12 +275,12 @@
     );
     /* neutral */
     --avonni-button-neutral-color-background: var(
-        --slds-c-button-neutral-color-background
+        --avonni-button-dialog-neutral-color-background
     );
     --avonni-button-neutral-color-border: var(
-        --slds-c-button-neutral-color-border
+        --avonni-button-dialog-neutral-color-border
     );
-    --avonni-button-neutral-text-color: var(--slds-c-button-text-color);
+    --avonni-button-neutral-text-color: var(--avonni-button-dialog-text-color);
     --avonni-button-neutral-inline-end: var(
         --avonni-button-dialog-neutral-inline-end
     );
@@ -287,12 +295,14 @@
     );
     /* success */
     --avonni-button-success-color-background: var(
-        --slds-c-button-success-color-background
+        --avonni-button-dialog-success-color-background
     );
     --avonni-button-success-color-border: var(
-        --slds-c-button-success-color-border
+        --avonni-button-dialog-success-color-border
     );
-    --avonni-button-success-text-color: var(--slds-c-button-success-text-color);
+    --avonni-button-success-text-color: var(
+        --avonni-button-dialog-success-text-color
+    );
     --avonni-button-success-inline-end: var(
         --avonni-button-dialog-success-inline-end
     );
@@ -371,23 +381,23 @@
     );
     /* brand */
     --avonni-button-brand-color-background-hover: var(
-        --slds-c-button-brand-color-background-hover
+        --avonni-button-dialog-brand-color-background-hover
     );
     --avonni-button-brand-color-border-hover: var(
-        --slds-c-button-brand-color-border-hover
+        --avonni-button-dialog-brand-color-border-hover
     );
     --avonni-button-brand-text-color-hover: var(
-        --slds-c-button-brand-text-color-hover
+        --avonni-button-dialog-brand-text-color-hover
     );
     /* brand-outline */
     --avonni-button-outline-brand-color-background-hover: var(
-        --slds-c-button-outline-brand-color-background-hover
+        --avonni-button-dialog-outline-brand-color-background-hover
     );
     --avonni-button-outline-brand-color-border-hover: var(
-        --slds-c-button-outline-brand-color-border-hover
+        --avonni-button-dialog-outline-brand-color-border-hover
     );
     --avonni-button-outline-brand-text-color-hover: var(
-        --slds-c-button-text-color-hover
+        --avonni-button-dialog-text-color-hover
     );
     /* container */
     --avonni-button-container-color-background-hover: var(
@@ -401,53 +411,53 @@
     );
     /* destructive */
     --avonni-button-destructive-color-background-hover: var(
-        --slds-c-button-destructive-color-background-hover
+        --avonni-button-dialog-destructive-color-background-hover
     );
     --avonni-button-destructive-color-border-hover: var(
-        --slds-c-button-destructive-color-border-hover
+        --avonni-button-dialog-destructive-color-border-hover
     );
     --avonni-button-destructive-text-color-hover: var(
-        --sds-c-button-destructive-text-color-hover
+        --avonni-button-dialog-destructive-text-color-hover
     );
     /* destructive-text */
     --avonni-button-text-destructive-color-background-hover: var(
-        --slds-c-button-text-destructive-color-background-hover
+        --avonni-button-dialog-text-destructive-color-background-hover
     );
     --avonni-button-text-destructive-color-border-hover: var(
-        --slds-c-button-text-destructive-color-border-hover
+        --avonni-button-dialog-text-destructive-color-border-hover
     );
     --avonni-button-text-destructive-text-color-hover: var(
-        --sds-c-button-text-destructive-text-color-hover
+        --avonni-button-dialog-text-destructive-text-color-hover
     );
     /* inverse */
     --avonni-button-inverse-color-background-hover: var(
-        --slds-c-button-inverse-color-background-hover
+        --avonni-button-dialog-inverse-color-background-hover
     );
     --avonni-button-inverse-color-border-hover: var(
-        --slds-c-button-inverse-color-border-hover
+        --avonni-button-dialog-inverse-color-border-hover
     );
     --avonni-button-inverse-text-color-hover: var(
-        --slds-c-button-inverse-text-color-hover
+        --avonni-button-dialog-inverse-text-color-hover
     );
     /* neutral */
     --avonni-button-neutral-color-background-hover: var(
-        --slds-c-button-neutral-color-background-hover
+        --avonni-button-dialog-neutral-color-background-hover
     );
     --avonni-button-neutral-color-border-hover: var(
-        --slds-c-button-neutral-color-border-hover
+        --avonni-button-dialog-neutral-color-border-hover
     );
     --avonni-button-neutral-text-color-hover: var(
-        --slds-c-button-text-color-hover
+        --avonni-button-dialog-text-color-hover
     );
     /* success */
     --avonni-button-success-color-background-hover: var(
-        --slds-c-button-success-color-background-hover
+        --avonni-button-dialog-success-color-background-hover
     );
     --avonni-button-success-color-border-hover: var(
-        --slds-c-button-success-color-border-hover
+        --avonni-button-dialog-success-color-border-hover
     );
     --avonni-button-success-text-color-hover: var(
-        --slds-c-button-success-text-color-hover
+        --avonni-button-dialog-success-text-color-hover
     );
 }
 
@@ -514,72 +524,72 @@
     );
     /* brand */
     --avonni-button-brand-color-background-active: var(
-        --slds-c-button-brand-color-background-active
+        --avonni-button-dialog-brand-color-background-active
     );
     --avonni-button-brand-color-border-active: var(
-        --sds-c-button-brand-color-border-active
+        --avonni-button-dialog-brand-color-border-active
     );
     --avonni-button-brand-text-color-active: var(
-        --slds-c-button-brand-text-color-active
+        --avonni-button-dialog-brand-text-color-active
     );
     /* brand-outline */
     --avonni-button-outline-brand-color-background-active: var(
-        --slds-c-button-outline-brand-color-background-active
+        --avonni-button-dialog-outline-brand-color-background-active
     );
     --avonni-button-outline-brand-color-border-active: var(
-        --sds-c-button-outline-brand-color-border-active
+        --avonni-button-dialog-outline-brand-color-border-active
     );
     --avonni-button-outline-brand-text-color-active: var(
-        --slds-c-button-text-color-active
+        --avonni-button-dialog-text-color-active
     );
     /* destructive */
     --avonni-button-destructive-color-background-active: var(
-        --slds-c-button-destructive-color-background-active
+        --avonni-button-dialog-destructive-color-background-active
     );
     --avonni-button-destructive-color-border-active: var(
-        --slds-c-button-destructive-color-border-active
+        --avonni-button-dialog-destructive-color-border-active
     );
     --avonni-button-destructive-text-color-active: var(
-        --slds-c-button-destructive-text-color-active
+        --avonni-button-dialog-destructive-text-color-active
     );
     /* destructive-text */
     --avonni-button-text-destructive-color-background-active: var(
-        --slds-c-button-text-destructive-color-background-active
+        --avonni-button-dialog-text-destructive-color-background-active
     );
     --avonni-button-text-destructive-color-border-active: var(
-        --slds-c-button-text-destructive-color-border-active
+        --avonni-button-dialog-text-destructive-color-border-active
     );
     --avonni-button-text-destructive-text-color-active: var(
-        --sds-c-button-destructive-text-color-hover-active
+        --avonni-button-dialog-destructive-text-color-hover-active
     );
     /* inverse */
     --avonni-button-inverse-color-background-active: var(
-        --slds-c-button-inverse-color-background-active
+        --avonni-button-dialog-inverse-color-background-active
     );
     --avonni-button-inverse-color-border-active: var(
-        --slds-c-button-inverse-color-border-active
+        --avonni-button-dialog-inverse-color-border-active
     );
     --avonni-button-inverse-text-color-active: var(
-        --slds-c-button-inverse-text-color-active
+        --avonni-button-dialog-inverse-text-color-active
     );
     /* neutral */
     --avonni-button-neutral-color-background-active: var(
-        --slds-c-button-neutral-color-background-active
+        --avonni-button-dialog-neutral-color-background-active
     );
     --avonni-button-neutral-color-border-active: var(
-        --slds-c-button-neutral-color-border-active
+        --avonni-button-dialog-neutral-color-border-active
     );
     --avonni-button-neutral-text-color-active: var(
-        --slds-c-button-text-color-active
+        --avonni-button-dialog-text-color-active
     );
     /* success */
     --avonni-button-success-color-background-active: var(
-        --slds-c-button-success-color-background-active
+        --avonni-button-dialog-success-color-background-active
     );
     --avonni-button-success-color-border-active: var(
-        --slds-c-button-success-color-border-active
+        --avonni-button-dialog-success-color-border-active
     );
     --avonni-button-success-text-color-active: var(
-        --slds-c-button-success-text-color-active
+        --avonni-button-dialog-success-text-color-active
     );
 }
