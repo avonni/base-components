@@ -1,4 +1,6 @@
 import { VerticalVisualPicker } from '../__examples__/verticalVisualPicker';
+import { InfiniteLoadingVerticalVisualPicker } from '../__examples__/infiniteLoading';
+import { InfiniteLoadingUsingShowMoreVerticalVisualPicker } from '../__examples__/infiniteLoadingUsingShowMore';
 import {
     baseItems,
     itemsWithIcons,
@@ -11,18 +13,30 @@ import {
 } from './data';
 
 export default {
-    title: 'Example/VerticalVisualPicker',
+    title: 'Example/Vertical Visual Picker',
     argTypes: {
         disabled: {
             control: {
                 type: 'boolean'
             },
             description:
-                'If present, the visual picker is disabled and the user cannot interact with it. ',
+                'If present, the visual picker is disabled and the user cannot interact with it.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
                 category: 'Validations'
+            }
+        },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of items and then display more when users scroll to the end of the picker. Use with the loadmore event to retrieve more items. If present, `max-count` is ignored.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         hideCheckMark: {
@@ -31,6 +45,18 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, hide the check mark when selected.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is shown to indicate that more items are loading.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -53,6 +79,29 @@ export default {
             description: 'Text label to title the vertical visual picker.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the picker.',
+            table: {
+                defaultValue: { summary: '20' },
+                type: { summary: 'number' }
+            }
+        },
+        maxCount: {
+            name: 'max-count',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Maximum of items allowed in the visible list. This attribute is ignored if `enable-infinite-loading` is present.',
+            table: {
+                type: { summary: 'number' }
             }
         },
         messageWhenValueMissing: {
@@ -137,7 +186,10 @@ export default {
     },
     args: {
         disabled: false,
+        enableInfiniteLoading: false,
         hideCheckMark: false,
+        isLoading: false,
+        loadMoreOffset: 20,
         required: false,
         size: 'medium',
         type: 'radio',
@@ -146,6 +198,10 @@ export default {
 };
 
 const Template = (args) => VerticalVisualPicker(args);
+const TemplateInfiniteLoading = (args) =>
+    InfiniteLoadingVerticalVisualPicker(args);
+const TemplateInfiniteLoadingUsingShowMore = (args) =>
+    InfiniteLoadingUsingShowMoreVerticalVisualPicker(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -223,5 +279,17 @@ SubItems.args = {
     label: 'Select an option',
     items: itemsWithSubItems,
     type: 'checkbox',
-    value: ['item-1', 'sub-item-1-2', 'sub-item-1-3', 'item-3', 'sub-item-3-1']
+    value: ['item-1', 'sub-item-1-2', 'sub-item-1-3', 'item-3', 'sub-item-3-1'],
+    maxCount: 2
+};
+
+export const InfiniteLoading = TemplateInfiniteLoading.bind({});
+InfiniteLoading.args = {
+    label: 'Infinite Loading'
+};
+
+export const InfiniteLoadingUsingShowMore =
+    TemplateInfiniteLoadingUsingShowMore.bind({});
+InfiniteLoadingUsingShowMore.args = {
+    maxCount: 5
 };

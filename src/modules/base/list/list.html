@@ -230,8 +230,10 @@
                                                             avonni-list__item-header-link
                                                         "
                                                         href={item.href}
-                                                        >{item.label}</a
+                                                        onclick={handleAnchorTagClick}
                                                     >
+                                                        {item.label}
+                                                    </a>
                                                     <template
                                                         if:false={item.href}
                                                     >
@@ -317,8 +319,10 @@
                                                                 avonni-list__item-info-link
                                                             "
                                                             href={info.href}
-                                                            >{info.label}</a
+                                                            onclick={handleAnchorTagClick}
                                                         >
+                                                            {info.label}
+                                                        </a>
                                                     </li>
                                                 </template>
                                             </ul>

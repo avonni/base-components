@@ -55,22 +55,24 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     get displayedValue() {
         if (this.isMultiSelect && this.value) {
+            const value =
+                this.value && typeof this.value === 'string'
+                    ? [this.value]
+                    : normalizeArray(this.value);
             const selectedOptions = this.options.filter((option) =>
-                this.value.includes(option.value)
+                value.includes(option.value)
             );
 
             // Sort the selected options by the order they appear in the value array
             selectedOptions.sort((a, b) => {
-                return (
-                    this.value.indexOf(a.value) - this.value.indexOf(b.value)
-                );
+                return value.indexOf(a.value) - value.indexOf(b.value);
             });
 
             return selectedOptions.map((option) => ({
                 label: option.label,
                 name: option.value
             }));
-        } else if (this.isMultiSelect && !this.value) {
+        } else if (this.isMultiSelect) {
             return [];
         }
 
@@ -82,7 +84,11 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     get displayPillContainer() {
-        return this.isMultiSelect && this.displayedValue?.length > 0;
+        return (
+            this.isMultiSelect &&
+            Array.isArray(this.displayedValue) &&
+            this.displayedValue.length
+        );
     }
 
     /**

@@ -892,37 +892,73 @@ describe('DateTimePicker', () => {
 
     /* ----- EVENTS ----- */
 
-    // date time picker change
-    it('Date time picker: change event', () => {
-        element.startTime = '08:30';
-        const startTimeDate = new Date(`1970-01-01T08:30`);
-        const now = new Date();
-        const day = now.getDate();
-        const month = now.getMonth();
-        const year = now.getFullYear();
-        const handler = jest.fn();
-        element.addEventListener('change', handler);
+    describe('Events', () => {
+        // date time picker change
+        it('change', () => {
+            element.startTime = '08:30';
+            const startTimeDate = new Date(`1970-01-01T08:30`);
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth();
+            const year = now.getFullYear();
+            const handler = jest.fn();
+            element.addEventListener('change', handler);
 
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelectorAll(
-                '[data-element-id="button-default"]'
-            );
-            button[0].click();
-            const date = new Date(handler.mock.calls[0][0].detail.value);
-            const eventDay = date.getDate();
-            const eventMonth = date.getMonth();
-            const eventYear = date.getFullYear();
-            const eventHour = date.getHours();
-            const eventMinutes = date.getMinutes();
-            expect(handler).toHaveBeenCalled();
-            expect(eventDay).toBe(day);
-            expect(eventMonth).toBe(month);
-            expect(eventYear).toBe(year);
-            expect(eventHour).toBe(startTimeDate.getHours());
-            expect(eventMinutes).toBe(startTimeDate.getMinutes());
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button-default"]'
+                );
+                button[0].click();
+                const date = new Date(handler.mock.calls[0][0].detail.value);
+                const eventDay = date.getDate();
+                const eventMonth = date.getMonth();
+                const eventYear = date.getFullYear();
+                const eventHour = date.getHours();
+                const eventMinutes = date.getMinutes();
+                expect(handler).toHaveBeenCalled();
+                expect(eventDay).toBe(day);
+                expect(eventMonth).toBe(month);
+                expect(eventYear).toBe(year);
+                expect(eventHour).toBe(startTimeDate.getHours());
+                expect(eventMinutes).toBe(startTimeDate.getMinutes());
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        // navigate
+        describe('navigate', () => {
+            it('Fired on gotToDate()', () => {
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+                const date = new Date('2023-12-13');
+                element.goToDate(date);
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(typeof call.detail.date).toBe('string');
+                expect(new Date(call.detail.date)).toEqual(date);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+
+            it('Fired on Previous button click', () => {
+                element.value = new Date('2023-12-13');
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const previous = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-previous"]'
+                    );
+                    previous.click();
+                    expect(handler).toHaveBeenCalled();
+                    const date = new Date(handler.mock.calls[0][0].detail.date);
+                    expect(date).toEqual(new Date('2023-12-12'));
+                });
+            });
         });
     });
 });
