@@ -239,10 +239,11 @@ ContainerLargeIcon.args = {
     variant: 'container'
 };
 
-export const Destructive = Template.bind({});
-Destructive.args = {
+export const DestructiveStretch = Template.bind({});
+DestructiveStretch.args = {
     iconName: 'utility:error',
     label: 'Button',
+    stretch: true,
     variant: 'destructive'
 };
 

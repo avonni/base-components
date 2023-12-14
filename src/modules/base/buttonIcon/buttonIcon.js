@@ -76,6 +76,7 @@ export default class ButtonIcon extends PrimitiveButton {
      *
      * @name iconName
      * @public
+     * @required
      * @type {string}
      */
     /**

@@ -3,13 +3,19 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const BUTTON_VARIANTS = {
     valid: [
+        'bare',
+        'bare-inverse',
         'base',
-        'neutral',
+        'border',
+        'border-filled',
+        'border-inverse',
         'brand',
         'brand-outline',
+        'container',
         'destructive',
         'destructive-text',
         'inverse',
+        'neutral',
         'success'
     ],
     default: 'neutral'
@@ -20,7 +26,7 @@ const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
  * @class
  * @name Button Dialog
  * @descriptor avonni-button-dialog
- * @description The button dialog component displays a lightning button. On click, open the modal box
+ * @description The button dialog component displays an avonni button. On click, open the modal box
  * @storyId example-button-dialog--base
  * @public
  */
@@ -47,6 +53,13 @@ export default class ButtonDialog extends LightningElement {
      */
     @api iconName;
     /**
+     * URL to set for the image attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api iconSrc;
+    /**
      * Optional text to be shown on the button.
      *
      * @public
@@ -55,9 +68,17 @@ export default class ButtonDialog extends LightningElement {
     @api label;
 
     _disabled = false;
-    _variant = BUTTON_VARIANTS.default;
     _iconPosition = ICON_POSITIONS.default;
+    _stretch = false;
+    _variant = BUTTON_VARIANTS.default;
+
     _dialogSlot;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         this._dialogSlot = this.template.querySelector(
@@ -82,7 +103,6 @@ export default class ButtonDialog extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -98,7 +118,6 @@ export default class ButtonDialog extends LightningElement {
     get iconPosition() {
         return this._iconPosition;
     }
-
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
             fallbackValue: ICON_POSITIONS.default,
@@ -107,7 +126,23 @@ export default class ButtonDialog extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     * Setting it to true allows the button to take up the entire available width.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get stretch() {
+        return this._stretch;
+    }
+    set stretch(value) {
+        this._stretch = normalizeBoolean(value);
+    }
+
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
+     * border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.
      *
      * @public
      * @type {string}
@@ -117,7 +152,6 @@ export default class ButtonDialog extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -138,6 +172,7 @@ export default class ButtonDialog extends LightningElement {
      */
     @api
     show() {
+        if (this.disabled) return;
         if (this._dialogSlot.assignedElements().length !== 0) {
             this._dialogSlot.assignedElements()[0].show();
         }
@@ -178,6 +213,7 @@ export default class ButtonDialog extends LightningElement {
      */
     @api
     click() {
+        if (this.disabled) return;
         if (this._dialogSlot.assignedElements().length !== 0) {
             this._dialogSlot.assignedElements()[0].show();
         }
@@ -196,9 +232,8 @@ export default class ButtonDialog extends LightningElement {
      */
     @api
     focus() {
-        this.template
-            .querySelector('[data-element-id="lightning-button"]')
-            .focus();
+        if (this.disabled) return;
+        this.template.querySelector('[data-element-id="button"]').focus();
         /**
          * @event
          * @name focus
