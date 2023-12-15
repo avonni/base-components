@@ -24,39 +24,35 @@
 
     <div
         class={computedPopoverClass}
+        tabindex="0"
         data-element-id="div-popover"
-        onmousedown={handlePopoverMouseDown}
-        onmouseup={handlePopoverMouseUp}
-        onmouseenter={handleMouseEnterBody}
-        onmouseleave={handleMouseLeaveBody}
         onblur={handlePopoverBlur}
         onkeydown={handlePopoverKeyDown}
-        tabindex="0"
+        onmouseenter={handleMouseEnterBody}
+        onmousedown={handlePopoverMouseDown}
+        onmouseleave={handleMouseLeaveBody}
+        onmouseup={handlePopoverMouseUp}
     >
-        <template if:true={isLoading}>
-            <lightning-spinner
-                alternative-text={loadingStateAlternativeText}
-                size="small"
-            ></lightning-spinner>
-        </template>
+        <lightning-spinner
+            if:true={isLoading}
+            alternative-text={loadingStateAlternativeText}
+            size="small"
+        ></lightning-spinner>
         <template if:false={isLoading}>
             <header class={computedPopoverHeaderClass}>
-                <template if:false={hasStringTitle}>
+                <template if:false={title}>
                     <slot name="title" onclick={handleSlotClick}></slot>
                 </template>
-                <template if:true={hasStringTitle}>
-                    <h2 class="slds-text-heading_small">{title}</h2>
-                </template>
-                <template if:false={hideCloseButton}>
-                    <lightning-button-icon
-                        variant="bare"
-                        icon-name="utility:close"
-                        size="medium"
-                        onclick={close}
-                        title="Close popover"
-                        data-element-id="lightning-button-icon-close"
-                    ></lightning-button-icon>
-                </template>
+                <h2 if:true={title} class="slds-text-heading_small">{title}</h2>
+                <lightning-button-icon
+                    if:false={hideCloseButton}
+                    icon-name="utility:close"
+                    size="medium"
+                    title="Close popover"
+                    variant="bare"
+                    data-element-id="lightning-button-icon-close"
+                    onclick={close}
+                ></lightning-button-icon>
             </header>
             <div
                 class="
@@ -66,11 +62,9 @@
             >
                 <slot onclick={handleSlotClick}></slot>
             </div>
-            <template if:true={showFooter}>
-                <div class="slds-popover__footer">
-                    <slot name="footer" onclick={handleSlotClick}></slot>
-                </div>
-            </template>
+            <div if:true={showFooter} class="slds-popover__footer">
+                <slot name="footer" onclick={handleSlotClick}></slot>
+            </div>
         </template>
     </div>
 </template>

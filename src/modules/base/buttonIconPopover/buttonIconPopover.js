@@ -400,7 +400,7 @@ export default class ButtonIconPopover extends LightningElement {
      */
 
     /**
-     * Footer slot.
+     * Avonni Button Element.
      *
      * @type {element}
      */
@@ -465,15 +465,6 @@ export default class ButtonIconPopover extends LightningElement {
             .toString();
     }
 
-    /**
-     * True if there is a title.
-     *
-     * @type {boolean}
-     */
-    get hasStringTitle() {
-        return !!this.title;
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -487,7 +478,7 @@ export default class ButtonIconPopover extends LightningElement {
      */
     @api
     click() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.clickOnButton();
         }
         /**
@@ -501,12 +492,25 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
+     * Closes the popover.
+     *
+     * @public
+     */
+    @api
+    close() {
+        if (this.popoverVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
      * Sets focus on the button.
      *
      * @public
      */
     @api
     focus() {
+        console.log('focus', this._connected, this.button);
         if (this._connected && this.button) {
             this.focusOnButton();
         }
@@ -520,18 +524,6 @@ export default class ButtonIconPopover extends LightningElement {
     @api
     open() {
         if (!this.popoverVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Closes the popover.
-     *
-     * @public
-     */
-    @api
-    close() {
-        if (this.popoverVisible) {
             this.toggleMenuVisibility();
         }
     }

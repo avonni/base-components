@@ -78,28 +78,17 @@ describe('Button Icon Popover', () => {
             });
         });
 
-        // tooltip
-        it('tooltip', () => {
-            element.tooltip = 'This is a tooltip';
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
+        describe('Hide Close Button', () => {
+            it('hideCloseButton', () => {
+                element.hideCloseButton = true;
+                const closeButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-close"]'
+                );
 
-            return Promise.resolve().then(() => {
-                expect(button.tooltip).toBe('This is a tooltip');
-            });
-        });
-
-        // hide close button
-        it('hide close button', () => {
-            element.hideCloseButton = true;
-            const closeButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon-close"]'
-            );
-
-            return Promise.resolve().then(() => {
-                expect(closeButton).toBeTruthy();
-                expect(closeButton.iconName).toBe('utility:close');
+                return Promise.resolve().then(() => {
+                    expect(closeButton).toBeTruthy();
+                    expect(closeButton.iconName).toBe('utility:close');
+                });
             });
         });
 
@@ -216,213 +205,275 @@ describe('Button Icon Popover', () => {
             });
         });
 
-        // popover size
-        it('popoverSize small', () => {
-            element.triggers = 'focus';
-            element.popoverSize = 'small';
+        describe('Loading', () => {
+            describe('Is Loading', () => {
+                it('isLoading', () => {
+                    element.isLoading = true;
 
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-popover_small');
-            });
-        });
-
-        it('popoverSize medium', () => {
-            element.triggers = 'focus';
-            element.popoverSize = 'medium';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-popover_medium');
-            });
-        });
-
-        it('popoverSize large', () => {
-            element.triggers = 'focus';
-            element.popoverSize = 'large';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-popover_large');
-            });
-        });
-
-        // popover variant
-        it('variant = base', () => {
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).not.toContain('slds-popover_warning');
-                expect(popover.className).not.toContain('slds-popover_error');
-                expect(popover.className).not.toContain(
-                    'slds-popover_walkthrough'
-                );
-            });
-        });
-
-        it('variant = warning', () => {
-            element.popoverVariant = 'warning';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-popover_warning');
-                expect(popover.className).not.toContain('slds-popover_error');
-                expect(popover.className).not.toContain(
-                    'slds-popover_walkthrough'
-                );
-            });
-        });
-
-        it('variant = error', () => {
-            element.popoverVariant = 'error';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).not.toContain('slds-popover_warning');
-                expect(popover.className).toContain('slds-popover_error');
-                expect(popover.className).not.toContain(
-                    'slds-popover_walkthrough'
-                );
-            });
-        });
-
-        it('variant = walkthrough', () => {
-            element.popoverVariant = 'walkthrough';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).not.toContain('slds-popover_warning');
-                expect(popover.className).not.toContain('slds-popover_error');
-                expect(popover.className).toContain('slds-popover_walkthrough');
-            });
-        });
-
-        // placement
-        it('placement left', () => {
-            element.placement = 'left';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-nubbin_top-left');
-                expect(popover.className).toContain('slds-dropdown_left');
-            });
-        });
-
-        it('placement auto', () => {
-            element.placement = 'auto';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-dropdown_left');
-            });
-        });
-
-        it('placement center', () => {
-            element.placement = 'center';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-nubbin_top');
-                expect(popover.className).toContain('slds-dropdown_center');
-            });
-        });
-
-        it('placement right', () => {
-            element.placement = 'right';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-nubbin_top-right');
-                expect(popover.className).toContain('slds-dropdown_right');
-            });
-        });
-
-        it('placement bottom-left', () => {
-            element.placement = 'bottom-left';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-nubbin_bottom-left');
-                expect(popover.className).toContain('slds-dropdown_bottom');
-                expect(popover.className).toContain('slds-dropdown_left');
-                expect(popover.className).toContain(
-                    'slds-dropdown_bottom-left'
-                );
-            });
-        });
-
-        it('placement bottom-right', () => {
-            element.placement = 'bottom-right';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-nubbin_bottom-right');
-                expect(popover.className).toContain(
-                    'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
-                );
-            });
-        });
-
-        it('placement bottom-center', () => {
-            element.placement = 'bottom-center';
-
-            return Promise.resolve().then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
-                expect(popover.className).toContain('slds-nubbin_bottom');
-                expect(popover.className).toContain('slds-dropdown_bottom');
-            });
-        });
-
-        // is loading
-        it('is loading', () => {
-            element.isLoading = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button-icon"]'
-                    );
-                    button.focus();
-                })
-                .then(() => {
-                    const spinner =
-                        element.shadowRoot.querySelector('lightning-spinner');
-                    expect(spinner).toBeTruthy();
+                    return Promise.resolve()
+                        .then(() => {
+                            const button = element.shadowRoot.querySelector(
+                                '[data-element-id="button-icon"]'
+                            );
+                            button.focus();
+                        })
+                        .then(() => {
+                            const spinner =
+                                element.shadowRoot.querySelector(
+                                    'lightning-spinner'
+                                );
+                            expect(spinner).toBeTruthy();
+                        });
                 });
+            });
+
+            describe('Loading State Alternative Text', () => {
+                it('loadingStateAlternativeText', () => {
+                    element.isLoading = true;
+                    element.loadingStateAlternativeText =
+                        'This is a loading text';
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const button = element.shadowRoot.querySelector(
+                                '[data-element-id="button-icon"]'
+                            );
+                            button.focus();
+                        })
+                        .then(() => {
+                            const spinner =
+                                element.shadowRoot.querySelector(
+                                    'lightning-spinner'
+                                );
+                            expect(spinner.alternativeText).toBe(
+                                'This is a loading text'
+                            );
+                        });
+                });
+            });
         });
 
-        // loading state alternative text
-        it('loading state alternative text', () => {
-            element.isLoading = true;
-            element.loadingStateAlternativeText = 'This is a loading text';
+        describe('Popover', () => {
+            describe('Popover Placement', () => {
+                it('placement = left', () => {
+                    element.placement = 'left';
 
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button-icon"]'
-                    );
-                    button.focus();
-                })
-                .then(() => {
-                    const spinner =
-                        element.shadowRoot.querySelector('lightning-spinner');
-                    expect(spinner.alternativeText).toBe(
-                        'This is a loading text'
-                    );
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-nubbin_top-left'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-dropdown_left'
+                        );
+                    });
                 });
+
+                it('placement = auto', () => {
+                    element.placement = 'auto';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-dropdown_left'
+                        );
+                    });
+                });
+
+                it('placement = center', () => {
+                    element.placement = 'center';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain('slds-nubbin_top');
+                        expect(popover.className).toContain(
+                            'slds-dropdown_center'
+                        );
+                    });
+                });
+
+                it('placement = right', () => {
+                    element.placement = 'right';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-nubbin_top-right'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-dropdown_right'
+                        );
+                    });
+                });
+
+                it('placement = bottom-left', () => {
+                    element.placement = 'bottom-left';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-nubbin_bottom-left'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-dropdown_bottom'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-dropdown_left'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-dropdown_bottom-left'
+                        );
+                    });
+                });
+
+                it('placement = bottom-right', () => {
+                    element.placement = 'bottom-right';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-nubbin_bottom-right'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
+                        );
+                    });
+                });
+
+                it('placement = bottom-center', () => {
+                    element.placement = 'bottom-center';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-nubbin_bottom'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-dropdown_bottom'
+                        );
+                    });
+                });
+            });
+
+            describe('Popover Size', () => {
+                it('popoverSize = small', () => {
+                    element.triggers = 'focus';
+                    element.popoverSize = 'small';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-popover_small'
+                        );
+                    });
+                });
+
+                it('popoverSize = medium', () => {
+                    element.triggers = 'focus';
+                    element.popoverSize = 'medium';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-popover_medium'
+                        );
+                    });
+                });
+
+                it('popoverSize = large', () => {
+                    element.triggers = 'focus';
+                    element.popoverSize = 'large';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-popover_large'
+                        );
+                    });
+                });
+            });
+
+            describe('Popover Variant', () => {
+                it('popoverVariant = base', () => {
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).not.toContain(
+                            'slds-popover_warning'
+                        );
+                        expect(popover.className).not.toContain(
+                            'slds-popover_error'
+                        );
+                        expect(popover.className).not.toContain(
+                            'slds-popover_walkthrough'
+                        );
+                    });
+                });
+
+                it('popoverVariant = warning', () => {
+                    element.popoverVariant = 'warning';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain(
+                            'slds-popover_warning'
+                        );
+                        expect(popover.className).not.toContain(
+                            'slds-popover_error'
+                        );
+                        expect(popover.className).not.toContain(
+                            'slds-popover_walkthrough'
+                        );
+                    });
+                });
+
+                it('popoverVariant = error', () => {
+                    element.popoverVariant = 'error';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).not.toContain(
+                            'slds-popover_warning'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-popover_error'
+                        );
+                        expect(popover.className).not.toContain(
+                            'slds-popover_walkthrough'
+                        );
+                    });
+                });
+
+                it('popoverVariant = walkthrough', () => {
+                    element.popoverVariant = 'walkthrough';
+
+                    return Promise.resolve().then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).not.toContain(
+                            'slds-popover_warning'
+                        );
+                        expect(popover.className).not.toContain(
+                            'slds-popover_error'
+                        );
+                        expect(popover.className).toContain(
+                            'slds-popover_walkthrough'
+                        );
+                    });
+                });
+            });
         });
 
         describe('Title', () => {
@@ -438,156 +489,174 @@ describe('Button Icon Popover', () => {
                 });
             });
         });
-    });
 
-    describe('Triggers', () => {
-        it('triggers focus', () => {
-            element.triggers = 'focus';
+        describe('Tooltip', () => {
+            it('tooltip', () => {
+                element.tooltip = 'This is a tooltip';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
 
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button-icon"]'
-                    );
-                    button.focus();
-                })
-                .then(() => {
-                    expect(element.classList).toContain('slds-is-open');
-                    const popover =
-                        element.shadowRoot.querySelector('.slds-show');
-                    expect(popover).toBeTruthy();
+                return Promise.resolve().then(() => {
+                    expect(button.tooltip).toBe('This is a tooltip');
                 });
+            });
         });
 
-        it('triggers click', () => {
-            element.triggers = 'click';
+        describe('Triggers', () => {
+            it('triggers = focus', () => {
+                element.iconName = 'utility:lock';
+                element.triggers = 'focus';
 
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button-icon"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    expect(element.classList).toContain('slds-is-open');
-                    const popover =
-                        element.shadowRoot.querySelector('.slds-show');
-                    expect(popover).toBeTruthy();
-                });
-        });
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
 
-        it('triggers hover mouseenter', () => {
-            element.triggers = 'hover';
+                return Promise.resolve()
+                    .then(() => {
+                        button.focus();
+                    })
+                    .then(() => {
+                        expect(element.classList).toContain('slds-is-open');
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-show');
+                        expect(popover).toBeTruthy();
+                    });
+            });
 
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-            return Promise.resolve()
-                .then(() => {
-                    button.dispatchEvent(new CustomEvent('mouseenter'));
-                })
-                .then(() => {
-                    expect(element.classList).toContain('slds-is-open');
-                    const popover =
-                        element.shadowRoot.querySelector('.slds-show');
-                    expect(popover).toBeTruthy();
-                });
-        });
+            it('triggers = click', () => {
+                element.triggers = 'click';
 
-        it('triggers hover mouseleave', () => {
-            element.triggers = 'hover';
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button-icon"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        expect(element.classList).toContain('slds-is-open');
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-show');
+                        expect(popover).toBeTruthy();
+                    });
+            });
 
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    button.dispatchEvent(new CustomEvent('mouseleave'));
-                })
-                .then(() => {
-                    expect(element.classList).not.toContain('slds-is-open');
-                    const popover =
-                        element.shadowRoot.querySelector('.slds-show');
-                    expect(popover).toBeFalsy();
-                });
-        });
+            it('triggers = hover mouseenter', () => {
+                element.triggers = 'hover';
 
-        it('triggers focus blur', () => {
-            element.triggers = 'focus';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+                return Promise.resolve()
+                    .then(() => {
+                        button.dispatchEvent(new CustomEvent('mouseenter'));
+                    })
+                    .then(() => {
+                        expect(element.classList).toContain('slds-is-open');
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-show');
+                        expect(popover).toBeTruthy();
+                    });
+            });
 
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-            return Promise.resolve()
-                .then(() => {
-                    button.focus();
-                    button.dispatchEvent(new CustomEvent('blur'));
-                })
-                .then(() => {
-                    expect(element.classList).not.toContain('slds-is-open');
-                    const popover =
-                        element.shadowRoot.querySelector('.slds-show');
-                    expect(popover).toBeFalsy();
-                });
-        });
+            it('triggers = hover mouseleave', () => {
+                element.triggers = 'hover';
 
-        it('triggers click popoverblur', () => {
-            element.triggers = 'click';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        button.dispatchEvent(new CustomEvent('mouseleave'));
+                    })
+                    .then(() => {
+                        expect(element.classList).not.toContain('slds-is-open');
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-show');
+                        expect(popover).toBeFalsy();
+                    });
+            });
 
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-            const popover = element.shadowRoot.querySelector('.slds-popover');
-            return Promise.resolve()
-                .then(() => {
-                    button.click();
-                    popover.dispatchEvent(new CustomEvent('blur'));
-                })
-                .then(() => {
-                    expect(element.classList).not.toContain('slds-is-open');
-                    expect(popover.classList).not.toContain('slds-show');
-                });
-        });
+            it('triggers = focus blur', () => {
+                element.triggers = 'focus';
 
-        it('triggers hover popoverenter', () => {
-            element.triggers = 'hover';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+                return Promise.resolve()
+                    .then(() => {
+                        button.focus();
+                        button.dispatchEvent(new CustomEvent('blur'));
+                    })
+                    .then(() => {
+                        expect(element.classList).not.toContain('slds-is-open');
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-show');
+                        expect(popover).toBeFalsy();
+                    });
+            });
 
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-            const popover = element.shadowRoot.querySelector('.slds-popover');
-            return Promise.resolve()
-                .then(() => {
-                    button.dispatchEvent(new CustomEvent('mouseenter'));
-                    expect(element.classList).toContain('slds-is-open');
-                })
-                .then(() => {
-                    popover.dispatchEvent(new CustomEvent('mouseenter'));
-                })
-                .then(() => {
-                    expect(element.classList).toContain('slds-is-open');
-                    expect(popover.classList).toContain('slds-show');
-                });
-        });
+            it('triggers = click popoverblur', () => {
+                element.triggers = 'click';
 
-        it('triggers hover popoverleave', () => {
-            element.triggers = 'hover';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
+                return Promise.resolve()
+                    .then(() => {
+                        button.click();
+                        popover.dispatchEvent(new CustomEvent('blur'));
+                    })
+                    .then(() => {
+                        expect(element.classList).not.toContain('slds-is-open');
+                        expect(popover.classList).not.toContain('slds-show');
+                    });
+            });
 
-            const popover = element.shadowRoot.querySelector('.slds-popover');
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button-icon"]'
-                    );
-                    button.click();
-                    popover.dispatchEvent(new CustomEvent('mouseleave'));
-                })
-                .then(() => {
-                    expect(element.classList).not.toContain('slds-is-open');
-                    expect(popover.classList).not.toContain('slds-show');
-                });
+            it('triggers = hover popoverenter', () => {
+                element.triggers = 'hover';
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
+                return Promise.resolve()
+                    .then(() => {
+                        button.dispatchEvent(new CustomEvent('mouseenter'));
+                        expect(element.classList).toContain('slds-is-open');
+                    })
+                    .then(() => {
+                        popover.dispatchEvent(new CustomEvent('mouseenter'));
+                    })
+                    .then(() => {
+                        expect(element.classList).toContain('slds-is-open');
+                        expect(popover.classList).toContain('slds-show');
+                    });
+            });
+
+            it('triggers = hover popoverleave', () => {
+                element.triggers = 'hover';
+
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button-icon"]'
+                        );
+                        button.click();
+                        popover.dispatchEvent(new CustomEvent('mouseleave'));
+                    })
+                    .then(() => {
+                        expect(element.classList).not.toContain('slds-is-open');
+                        expect(popover.classList).not.toContain('slds-show');
+                    });
+            });
         });
 
         describe('Variant', () => {
@@ -671,117 +740,140 @@ describe('Button Icon Popover', () => {
     });
 
     describe('Methods', () => {
-        it('method click', () => {
-            let clickEvent = false;
-            element.addEventListener('click', () => {
-                clickEvent = true;
-            });
-
-            element.click();
-            return Promise.resolve().then(() => {
-                expect(clickEvent).toBeTruthy();
-            });
-        });
-
-        it('method focus', () => {
-            const buttonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-
-            let focusEvent = false;
-
-            buttonIcon.addEventListener('focus', () => {
-                focusEvent = true;
-            });
-
-            buttonIcon.focus();
-            return Promise.resolve().then(() => {
-                expect(focusEvent).toBeTruthy();
-            });
-        });
-
-        it('method close', () => {
-            let closeEvent = false;
-
-            element.addEventListener('close', () => {
-                closeEvent = true;
-            });
-            element.open();
-            element.close();
-
-            return Promise.resolve().then(() => {
-                expect(closeEvent).toBeTruthy();
-                const buttonIcon = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                expect(buttonIcon.getAttribute('aria-expanded')).toBe('false');
-                expect(element.className).not.toContain('slds-is-open');
-            });
-        });
-
-        it('method open', () => {
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    element.open();
-                })
-                .then(() => {
-                    const popover =
-                        element.shadowRoot.querySelector('.slds-popover');
-                    expect(popover.className).toContain('slds-show');
-                    const buttonIcon = element.shadowRoot.querySelector(
-                        'lightning-button-icon'
-                    );
-                    expect(buttonIcon.getAttribute('aria-expanded')).toBe(
-                        'true'
-                    );
-                    expect(element.className).toContain('slds-is-open');
+        describe('Click', () => {
+            it('click', () => {
+                let clickEvent = false;
+                element.addEventListener('click', () => {
+                    clickEvent = true;
                 });
+
+                element.click();
+                return Promise.resolve().then(() => {
+                    expect(clickEvent).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Focus', () => {
+            it('focus', () => {
+                const buttonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+
+                let focusEvent = false;
+
+                buttonIcon.addEventListener('focus', () => {
+                    focusEvent = true;
+                });
+
+                return Promise.resolve().then(() => {
+                    buttonIcon.focus();
+                    expect(focusEvent).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Close', () => {
+            it('close', () => {
+                let closeEvent = false;
+
+                element.addEventListener('close', () => {
+                    closeEvent = true;
+                });
+                element.open();
+                element.close();
+
+                return Promise.resolve().then(() => {
+                    expect(closeEvent).toBeTruthy();
+                    const buttonIcon =
+                        element.shadowRoot.querySelector('button-icon');
+                    expect(buttonIcon.getAttribute('aria-expanded')).toBe(
+                        'false'
+                    );
+                    expect(element.className).not.toContain('slds-is-open');
+                });
+            });
+        });
+
+        describe('Open', () => {
+            it('open', () => {
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.open();
+                    })
+                    .then(() => {
+                        const popover =
+                            element.shadowRoot.querySelector('.slds-popover');
+                        expect(popover.className).toContain('slds-show');
+                        const buttonIcon =
+                            element.shadowRoot.querySelector('button-icon');
+                        expect(buttonIcon.getAttribute('aria-expanded')).toBe(
+                            'true'
+                        );
+                        expect(element.className).toContain('slds-is-open');
+                    });
+            });
         });
     });
 
     describe('Events', () => {
-        // button popover click
-        it('event click', () => {
-            const handler = jest.fn();
-            element.addEventListener('click', handler);
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-            button.click();
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            element.click();
-        });
-
-        // button icon popover close
-        it('event close and open', () => {
-            const closeHandler = jest.fn();
-            const openHandler = jest.fn();
-            element.addEventListener('close', closeHandler);
-            element.addEventListener('open', openHandler);
-
-            let button = element.shadowRoot.querySelector(
-                '[data-element-id="button-icon"]'
-            );
-            button.click();
-            expect(openHandler).toHaveBeenCalled();
-            expect(openHandler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(openHandler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(openHandler.mock.calls[0][0].composed).toBeFalsy();
-
-            return Promise.resolve().then(() => {
-                button = element.shadowRoot.querySelector(
+        describe('Click', () => {
+            it('click', () => {
+                const handler = jest.fn();
+                element.addEventListener('click', handler);
+                const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
                 );
-                button.click();
-                expect(closeHandler).toHaveBeenCalled();
-                expect(closeHandler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(closeHandler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(closeHandler.mock.calls[0][0].composed).toBeFalsy();
+
+                return Promise.resolve().then(() => {
+                    button.click();
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
+            });
+        });
+
+        describe('Close and open', () => {
+            it('close & open', () => {
+                const closeHandler = jest.fn();
+                const openHandler = jest.fn();
+                element.addEventListener('close', closeHandler);
+                element.addEventListener('open', openHandler);
+
+                let button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+
+                return Promise.resolve()
+                    .then(() => {
+                        button.click();
+                        expect(openHandler).toHaveBeenCalled();
+                        expect(
+                            openHandler.mock.calls[0][0].bubbles
+                        ).toBeFalsy();
+                        expect(
+                            openHandler.mock.calls[0][0].cancelable
+                        ).toBeFalsy();
+                        expect(
+                            openHandler.mock.calls[0][0].composed
+                        ).toBeFalsy();
+                    })
+                    .then(() => {
+                        button.click();
+                        expect(closeHandler).toHaveBeenCalled();
+                        expect(
+                            closeHandler.mock.calls[0][0].bubbles
+                        ).toBeFalsy();
+                        expect(
+                            closeHandler.mock.calls[0][0].cancelable
+                        ).toBeFalsy();
+                        expect(
+                            closeHandler.mock.calls[0][0].composed
+                        ).toBeFalsy();
+                    });
             });
         });
     });
