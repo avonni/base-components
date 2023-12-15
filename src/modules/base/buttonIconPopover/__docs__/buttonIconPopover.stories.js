@@ -24,15 +24,14 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        title: {
+        disabled: {
             control: {
-                type: 'text'
+                type: 'boolean'
             },
-            description:
-                'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            description: "If present, the popover can't be opened by users.",
             table: {
-                type: { summary: 'string' },
-                category: 'Popover'
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         hideCloseButton: {
@@ -70,6 +69,30 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        iconSrc: {
+            name: 'icon-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the popover is in a loading state and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Popover'
+            }
+        },
         loadingStateAlternativeText: {
             name: 'loading-state-alternative-text',
             control: {
@@ -80,40 +103,6 @@ export default {
             table: {
                 type: { summary: 'string' },
                 category: 'Popover'
-            }
-        },
-        size: {
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium'],
-            description:
-                'The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
-            }
-        },
-        tooltip: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        triggers: {
-            control: {
-                type: 'select'
-            },
-            options: ['click', 'hover', 'focus'],
-            description:
-                "Specify which triggers will show the popover. Supported values are 'click', 'hover', 'focus'.",
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'click' }
             }
         },
         placement: {
@@ -165,6 +154,51 @@ export default {
                 category: 'Popover'
             }
         },
+        size: {
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium'],
+            description:
+                'The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Popover'
+            }
+        },
+        tooltip: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        triggers: {
+            control: {
+                type: 'select'
+            },
+            options: ['click', 'hover', 'focus'],
+            description:
+                "Specify which triggers will show the popover. Supported values are 'click', 'hover', 'focus'.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'click' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -172,40 +206,24 @@ export default {
             options: [
                 'bare',
                 'bare-inverse',
+                'base',
                 'border',
                 'border-filled',
                 'border-inverse',
                 'brand',
-                'container'
+                'brand-outline',
+                'container',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'neutral',
+                'success'
             ],
             description:
-                'The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'border' }
-            }
-        },
-        isLoading: {
-            name: 'is-loading',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the popover is in a loading state and shows a spinner.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Popover'
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            description: "If present, the popover can't be opened by users.",
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'border' },
+                type: { summary: 'string' }
             }
         }
     },

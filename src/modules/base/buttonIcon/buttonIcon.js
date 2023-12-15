@@ -416,23 +416,6 @@ export default class ButtonIcon extends PrimitiveButton {
     }
 
     /**
-     * Click handler.
-     */
-    handleButtonClick() {
-        // In native shadow mode, parent form can't be submitted from within the
-        // shadow boundary, so we need to manually find the parent form and submit.
-        // Once TD-0118070 is delivered, we can access the parent form using `elementInternals.form`
-        if (!this.template.synthetic && this.type === 'submit') {
-            const form = this.template.host.closest('form');
-            if (form) {
-                form.requestSubmit();
-            }
-        }
-
-        this.dispatchEvent(new CustomEvent('click'));
-    }
-
-    /**
      * Focus handler.
      */
     handleButtonFocus() {

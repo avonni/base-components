@@ -70,19 +70,6 @@ describe('Button Icon Dialog', () => {
             });
         });
 
-        describe('Tooltip', () => {
-            it('tooltip', () => {
-                element.tooltip = 'This is a tooltip';
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-icon"]'
-                );
-
-                return Promise.resolve().then(() => {
-                    expect(button.tooltip).toBe('This is a tooltip');
-                });
-            });
-        });
-
         describe('Icon', () => {
             describe('Icon Class', () => {
                 it('iconClass', () => {
@@ -194,6 +181,19 @@ describe('Button Icon Dialog', () => {
                     return Promise.resolve().then(() => {
                         expect(button.size).toBe('large');
                     });
+                });
+            });
+        });
+
+        describe('Tooltip', () => {
+            it('tooltip', () => {
+                element.tooltip = 'This is a tooltip';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-icon"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.tooltip).toBe('This is a tooltip');
                 });
             });
         });

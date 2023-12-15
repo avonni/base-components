@@ -1,24 +1,26 @@
 <template>
-    <lightning-button-icon
+    <c-button-icon
+        class="avonni-button-icon-popover"
         accesskey={accessKey}
         alternative-text={alternativeText}
+        aria-expanded={computedAriaExpanded}
+        aria-haspopup="true"
         disabled={disabled}
-        variant={variant}
         icon-name={iconName}
-        size={size}
         icon-class={iconClass}
+        icon-src={iconSrc}
+        size={size}
+        tabindex="0"
         tooltip={tooltip}
+        variant={variant}
+        data-element-id="button-icon"
+        onblur={handleBlur}
         onclick={click}
         onfocus={focus}
-        onblur={handleBlur}
         onmouseenter={handleMouseEnter}
         onmouseleave={handleMouseLeave}
-        aria-haspopup="true"
-        aria-expanded={computedAriaExpanded}
-        tabindex="0"
-        data-element-id="lightning-button-icon-main"
     >
-    </lightning-button-icon>
+    </c-button-icon>
 
     <div
         class={computedPopoverClass}
