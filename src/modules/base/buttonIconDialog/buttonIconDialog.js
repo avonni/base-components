@@ -31,7 +31,7 @@ const BUTTON_VARIANTS = {
  * @class
  * @name ButtonIconDialog
  * @descriptor avonni-button-icon-dialog
- * @description The button icon dialog component displays a lightning button icon. On click, open the modal box.
+ * @description The button icon dialog component displays an avonni button icon. On click, open the modal box.
  * @storyId example-button-icon-dialog--border
  * @public
  */

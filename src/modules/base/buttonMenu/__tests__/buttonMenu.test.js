@@ -1201,7 +1201,6 @@ describe('Button Menu', () => {
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
                 );
-
                 const handler = jest.fn();
                 element.addEventListener('select', handler);
 

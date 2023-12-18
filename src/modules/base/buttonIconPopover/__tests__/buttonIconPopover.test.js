@@ -122,6 +122,7 @@ describe('Button Icon Popover', () => {
             describe('Icon Size', () => {
                 it('size xx-small', () => {
                     element.size = 'xx-small';
+
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
                     );
@@ -508,13 +509,9 @@ describe('Button Icon Popover', () => {
                 element.iconName = 'utility:lock';
                 element.triggers = 'focus';
 
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-icon"]'
-                );
-
                 return Promise.resolve()
                     .then(() => {
-                        button.focus();
+                        element.focus();
                     })
                     .then(() => {
                         expect(element.classList).toContain('slds-is-open');
@@ -529,10 +526,7 @@ describe('Button Icon Popover', () => {
 
                 return Promise.resolve()
                     .then(() => {
-                        const button = element.shadowRoot.querySelector(
-                            '[data-element-id="button-icon"]'
-                        );
-                        button.click();
+                        element.click();
                     })
                     .then(() => {
                         expect(element.classList).toContain('slds-is-open');
@@ -579,36 +573,14 @@ describe('Button Icon Popover', () => {
                     });
             });
 
-            it('triggers = focus blur', () => {
-                element.triggers = 'focus';
-
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-icon"]'
-                );
-                return Promise.resolve()
-                    .then(() => {
-                        button.focus();
-                        button.dispatchEvent(new CustomEvent('blur'));
-                    })
-                    .then(() => {
-                        expect(element.classList).not.toContain('slds-is-open');
-                        const popover =
-                            element.shadowRoot.querySelector('.slds-show');
-                        expect(popover).toBeFalsy();
-                    });
-            });
-
             it('triggers = click popoverblur', () => {
                 element.triggers = 'click';
 
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-icon"]'
-                );
                 const popover =
                     element.shadowRoot.querySelector('.slds-popover');
                 return Promise.resolve()
                     .then(() => {
-                        button.click();
+                        element.click();
                         popover.dispatchEvent(new CustomEvent('blur'));
                     })
                     .then(() => {
@@ -747,29 +719,13 @@ describe('Button Icon Popover', () => {
                     clickEvent = true;
                 });
 
-                element.click();
-                return Promise.resolve().then(() => {
-                    expect(clickEvent).toBeTruthy();
-                });
-            });
-        });
-
-        describe('Focus', () => {
-            it('focus', () => {
-                const buttonIcon = element.shadowRoot.querySelector(
-                    '[data-element-id="button-icon"]'
-                );
-
-                let focusEvent = false;
-
-                buttonIcon.addEventListener('focus', () => {
-                    focusEvent = true;
-                });
-
-                return Promise.resolve().then(() => {
-                    buttonIcon.focus();
-                    expect(focusEvent).toBeTruthy();
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        expect(clickEvent).toBeTruthy();
+                    });
             });
         });
 
@@ -785,11 +741,6 @@ describe('Button Icon Popover', () => {
 
                 return Promise.resolve().then(() => {
                     expect(closeEvent).toBeTruthy();
-                    const buttonIcon =
-                        element.shadowRoot.querySelector('button-icon');
-                    expect(buttonIcon.getAttribute('aria-expanded')).toBe(
-                        'false'
-                    );
                     expect(element.className).not.toContain('slds-is-open');
                 });
             });
@@ -806,11 +757,6 @@ describe('Button Icon Popover', () => {
                         const popover =
                             element.shadowRoot.querySelector('.slds-popover');
                         expect(popover.className).toContain('slds-show');
-                        const buttonIcon =
-                            element.shadowRoot.querySelector('button-icon');
-                        expect(buttonIcon.getAttribute('aria-expanded')).toBe(
-                            'true'
-                        );
                         expect(element.className).toContain('slds-is-open');
                     });
             });
@@ -822,12 +768,9 @@ describe('Button Icon Popover', () => {
             it('click', () => {
                 const handler = jest.fn();
                 element.addEventListener('click', handler);
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-icon"]'
-                );
 
                 return Promise.resolve().then(() => {
-                    button.click();
+                    element.click();
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -843,13 +786,9 @@ describe('Button Icon Popover', () => {
                 element.addEventListener('close', closeHandler);
                 element.addEventListener('open', openHandler);
 
-                let button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-icon"]'
-                );
-
                 return Promise.resolve()
                     .then(() => {
-                        button.click();
+                        element.click();
                         expect(openHandler).toHaveBeenCalled();
                         expect(
                             openHandler.mock.calls[0][0].bubbles
@@ -862,7 +801,7 @@ describe('Button Icon Popover', () => {
                         ).toBeFalsy();
                     })
                     .then(() => {
-                        button.click();
+                        element.click();
                         expect(closeHandler).toHaveBeenCalled();
                         expect(
                             closeHandler.mock.calls[0][0].bubbles

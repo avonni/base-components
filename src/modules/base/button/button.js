@@ -312,7 +312,9 @@ export default class Button extends PrimitiveButton {
     /**
      * Click handler.
      */
-    handleButtonClick() {
+    handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
         // In native shadow mode, parent form can't be submitted from within the
         // shadow boundary, so we need to manually find the parent form and submit.
         // Once TD-0118070 is delivered, we can access the parent form using `elementInternals.form`

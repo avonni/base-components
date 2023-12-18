@@ -30,13 +30,12 @@
         onkeydown={handlePopoverKeyDown}
         tabindex="0"
     >
-        <template if:true={isLoading}>
-            <lightning-spinner
-                alternative-text={loadingStateAlternativeText}
-                size="small"
-                data-element-id="lightning-spinner"
-            ></lightning-spinner>
-        </template>
+        <lightning-spinner
+            if:true={isLoading}
+            alternative-text={loadingStateAlternativeText}
+            size="small"
+            data-element-id="lightning-spinner"
+        ></lightning-spinner>
         <template if:false={isLoading}>
             <header class={computedPopoverHeaderClass}>
                 <template if:false={hasStringTitle}>
@@ -45,16 +44,15 @@
                 <template if:true={hasStringTitle}>
                     <h2 class="slds-text-heading_small">{title}</h2>
                 </template>
-                <template if:false={hideCloseButton}>
-                    <lightning-button-icon
-                        variant="bare"
-                        icon-name="utility:close"
-                        size="medium"
-                        onclick={close}
-                        title="Close popover"
-                        data-element-id="lightning-button-icon"
-                    ></lightning-button-icon>
-                </template>
+                <lightning-button-icon
+                    if:false={hideCloseButton}
+                    icon-name="utility:close"
+                    size="medium"
+                    title="Close popover"
+                    variant="bare"
+                    data-element-id="lightning-button-icon"
+                    onclick={close}
+                ></lightning-button-icon>
             </header>
             <div class="slds-popover__body">
                 <slot onclick={handleSlotClick}></slot>

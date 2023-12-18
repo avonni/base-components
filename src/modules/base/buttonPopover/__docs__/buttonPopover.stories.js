@@ -45,7 +45,8 @@ export default {
             description:
                 "The name of the icon to be used in the format 'utility:down'.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         iconPosition: {
@@ -58,7 +59,8 @@ export default {
                 'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         iconSize: {

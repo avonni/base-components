@@ -55,7 +55,8 @@ export default {
             description:
                 'The class to be applied to the contained icon element.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         iconName: {
@@ -66,7 +67,8 @@ export default {
             description:
                 "The name of the icon to be used in the format 'utility:down'.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         iconSrc: {
@@ -163,7 +165,8 @@ export default {
                 'The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'medium' },
+                category: 'icon'
             }
         },
         title: {

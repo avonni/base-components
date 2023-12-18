@@ -392,6 +392,15 @@ export default class ButtonPopover extends LightningElement {
      */
 
     /**
+     * Button element.
+     *
+     * @type {element}
+     */
+    get button() {
+        return this.template.querySelector('[data-element-id="button"]');
+    }
+
+    /**
      * Return a true string if the popover is visible and a false string if not.
      *
      * @type {string}
@@ -466,7 +475,7 @@ export default class ButtonPopover extends LightningElement {
      */
     @api
     click() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.clickOnButton();
         }
         /**
@@ -486,7 +495,7 @@ export default class ButtonPopover extends LightningElement {
      */
     @api
     focus() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.focusOnButton();
         }
     }
@@ -548,7 +557,7 @@ export default class ButtonPopover extends LightningElement {
      */
     focusOnButton() {
         this.allowBlur();
-        this.template.querySelector('[data-element-id="button"]').focus();
+        this.button.focus();
         if (
             this._triggers === 'focus' &&
             !this.popoverVisible &&
@@ -581,9 +590,7 @@ export default class ButtonPopover extends LightningElement {
      * If the trigger is click, it toggles the menu visibility.
      */
     handlePopoverBlur(event) {
-        const isButton =
-            this.template.querySelector('[data-element-id="button"]') ===
-            event.relatedTarget;
+        const isButton = this.button === event.relatedTarget;
         if (this._cancelBlur) {
             return;
         }

@@ -30,8 +30,6 @@ describe('Button Dialog', () => {
             expect(element.variant).toBe('neutral');
         });
 
-        /* ----- ATTRIBUTES ----- */
-
         describe('Access Key', () => {
             it('accessKey', () => {
                 element.accessKey = 'K';
@@ -339,10 +337,7 @@ describe('Button Dialog', () => {
                 element.addEventListener('focus', handler);
 
                 return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.focus();
+                    element.focus();
 
                     expect(handler).toHaveBeenCalled();
                 });

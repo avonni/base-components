@@ -67,7 +67,7 @@ describe('Button Popover', () => {
             it('hideCloseButton', () => {
                 return Promise.resolve().then(() => {
                     const closeButton = element.shadowRoot.querySelector(
-                        '[data-element-id="button-icon"]'
+                        '[data-element-id="lightning-button-icon"]'
                     );
                     expect(closeButton.iconName).toBe('utility:close');
                 });
@@ -78,7 +78,7 @@ describe('Button Popover', () => {
 
                 return Promise.resolve().then(() => {
                     const closeButton = element.shadowRoot.querySelector(
-                        '[data-element-id="button-icon"]'
+                        '[data-element-id="lightning-button-icon"]'
                     );
                     expect(closeButton).toBeFalsy();
                 });
@@ -539,16 +539,12 @@ describe('Button Popover', () => {
 
             it('triggers click popoverblur', () => {
                 element.triggers = 'click';
-
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
                 const popover =
                     element.shadowRoot.querySelector('.slds-popover');
                 return Promise.resolve()
                     .then(() => {
                         element.focus();
-                        button.click();
+                        element.click();
                         popover.dispatchEvent(new CustomEvent('blur'));
                     })
                     .then(() => {
@@ -696,11 +692,8 @@ describe('Button Popover', () => {
 
             return Promise.resolve()
                 .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
                     element.focus();
-                    button.click();
+                    element.click();
                 })
                 .then(() => {
                     const popover =
@@ -725,6 +718,8 @@ describe('Button Popover', () => {
         });
 
         it('method open', () => {
+            element.label = 'Button Label';
+
             return Promise.resolve()
                 .then(() => {
                     element.open();
@@ -751,20 +746,19 @@ describe('Button Popover', () => {
     });
 
     describe('Events', () => {
-        // button popover click
-        it('event click', () => {
+        it('click', () => {
+            element.label = 'Button Label';
             const handler = jest.fn();
             element.addEventListener('click', handler);
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            button.click();
 
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            element.click();
+            return Promise.resolve().then(() => {
+                element.click();
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
         });
 
         // button popover close
