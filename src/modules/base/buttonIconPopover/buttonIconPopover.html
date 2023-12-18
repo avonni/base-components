@@ -40,10 +40,12 @@
         ></lightning-spinner>
         <template if:false={isLoading}>
             <header class={computedPopoverHeaderClass}>
-                <template if:false={title}>
+                <template if:false={hasStringTitle}>
                     <slot name="title" onclick={handleSlotClick}></slot>
                 </template>
-                <h2 if:true={title} class="slds-text-heading_small">{title}</h2>
+                <template if:true={hasStringTitle}>
+                    <h2 class="slds-text-heading_small">{title}</h2>
+                </template>
                 <lightning-button-icon
                     if:false={hideCloseButton}
                     icon-name="utility:close"

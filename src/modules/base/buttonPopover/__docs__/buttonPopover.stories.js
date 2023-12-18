@@ -14,24 +14,14 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        label: {
+        disabled: {
             control: {
-                type: 'text'
+                type: 'boolean'
             },
-            description: 'Optional text to be shown on the button.',
+            description: "If present, the popover can't be opened by users.",
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Popover'
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         hideCloseButton: {
@@ -68,6 +58,53 @@ export default {
                 'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
+                type: { summary: 'string' }
+            }
+        },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the icon. Options include x-small, small, medium, or large.',
+            table: {
+                defaultValue: { summary: 'x-small' },
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
+        iconSrc: {
+            name: 'icon-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the popover is in a loading state and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Popover'
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
+            table: {
                 type: { summary: 'string' }
             }
         },
@@ -118,6 +155,53 @@ export default {
                 category: 'Popover'
             }
         },
+        popoverVariant: {
+            name: 'popover-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['base', 'warning', 'error', 'walkthrough'],
+            description:
+                'The variant changes the appearance of the popover. Accepted variants include base, warning, error, walkthrough.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'base' },
+                category: 'Popover'
+            }
+        },
+        stretch: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Setting it to true allows the button to take up the entire available width.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Popover'
+            }
+        },
+        triggers: {
+            control: {
+                type: 'select'
+            },
+            options: ['click', 'hover', 'focus'],
+            description:
+                "Specify which triggers will show the popover. Supported values are 'click', 'hover', 'focus'.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'click' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -138,65 +222,18 @@ export default {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' }
             }
-        },
-        triggers: {
-            control: {
-                type: 'select'
-            },
-            options: ['click', 'hover', 'focus'],
-            description:
-                "Specify which triggers will show the popover. Supported values are 'click', 'hover', 'focus'.",
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'click' }
-            }
-        },
-        popoverVariant: {
-            name: 'popover-variant',
-            control: {
-                type: 'select'
-            },
-            options: ['base', 'warning', 'error', 'walkthrough'],
-            description:
-                'The variant changes the appearance of the popover. Accepted variants include base, warning, error, walkthrough.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'base' },
-                category: 'Popover'
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            description: "If present, the popover can't be opened by users.",
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        isLoading: {
-            name: 'is-loading',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the popover is in a loading state and shows a spinner.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Popover'
-            }
         }
     },
     args: {
         disabled: false,
         hideCloseButton: false,
         iconPosition: 'left',
+        iconSize: 'x-small',
         isLoading: false,
         placement: 'left',
         popoverSize: 'medium',
         popoverVariant: 'base',
+        stretch: false,
         triggers: 'click',
         variant: 'neutral'
     }

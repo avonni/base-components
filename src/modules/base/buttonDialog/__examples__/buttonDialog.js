@@ -11,6 +11,7 @@ export const ButtonDialog = ({
     disabled,
     iconName,
     iconPosition,
+    iconSize,
     iconSrc,
     label,
     stretch,
@@ -22,6 +23,7 @@ export const ButtonDialog = ({
     element.disabled = disabled;
     element.iconName = iconName;
     element.iconPosition = iconPosition;
+    element.iconSize = iconSize;
     element.iconSrc = iconSrc;
     element.label = label;
     element.stretch = stretch;

@@ -23,6 +23,7 @@ describe('Button Dialog', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
+            expect(element.iconSize).toBe('x-small');
             expect(element.iconSrc).toBeUndefined();
             expect(element.label).toBeUndefined();
             expect(element.stretch).toBeFalsy();
@@ -107,6 +108,21 @@ describe('Button Dialog', () => {
 
                     return Promise.resolve().then(() => {
                         expect(button.iconPosition).toBe('right');
+                    });
+                });
+            });
+
+            describe('Icon Size', () => {
+                it('iconSize = x-small', () => {
+                    element.iconName = 'utility:lock';
+                    element.iconSize = 'x-small';
+
+                    return Promise.resolve().then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+
+                        expect(button.iconSize).toBe('x-small');
                     });
                 });
             });

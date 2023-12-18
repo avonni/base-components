@@ -8,6 +8,21 @@
     --avonni-button-icon-styling-border: var(
         --avonni-button-icon-dialog-styling-border
     );
+    --avonni-button-image-radius-border: var(
+        --avonni-button-icon-dialog-image-radius-border
+    );
+    --avonni-button-image-styling-border: var(
+        --avonni-button-icon-dialog-image-styling-border
+    );
+    --avonni-button-image-sizing-border: var(
+        --avonni-button-icon-dialog-image-sizing-border
+    );
+    --avonni-button-image-color-border: var(
+        --avonni-button-icon-dialog-image-color-border
+    );
+    --avonni-button-image-object-fit: var(
+        --avonni-button-icon-dialog-image-object-fit
+    );
     /* bare */
     --avonni-button-icon-bare-color-background: var(
         --avonni-button-icon-dialog-bare-color-background

@@ -59,6 +59,20 @@ export default {
                 category: 'icon'
             }
         },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the icon. Options include x-small, small, medium, or large.',
+            table: {
+                defaultValue: { summary: 'x-small' },
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
         iconSrc: {
             name: 'icon-src',
             control: {
@@ -120,6 +134,7 @@ export default {
     args: {
         disabled: false,
         iconPosition: 'left',
+        iconSize: 'x-small',
         stretch: false,
         variant: 'neutral'
     }

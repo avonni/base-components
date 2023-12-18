@@ -22,6 +22,11 @@ const BUTTON_VARIANTS = {
 };
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
+const ICON_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
+
 /**
  * @class
  * @name Button Dialog
@@ -69,6 +74,7 @@ export default class ButtonDialog extends LightningElement {
 
     _disabled = false;
     _iconPosition = ICON_POSITIONS.default;
+    _iconSize = ICON_SIZES.default;
     _stretch = false;
     _variant = BUTTON_VARIANTS.default;
 
@@ -122,6 +128,24 @@ export default class ButtonDialog extends LightningElement {
         this._iconPosition = normalizeString(iconPosition, {
             fallbackValue: ICON_POSITIONS.default,
             validValues: ICON_POSITIONS.valid
+        });
+    }
+
+    /**
+     * The size of the icon. Options include x-small, small, medium or large.
+     *
+     * @public
+     * @type {string}
+     * @default x-small
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 

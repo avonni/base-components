@@ -13,6 +13,21 @@
     --avonni-button-label-font-style: var(
         --avonni-button-dialog-label-font-style
     );
+    --avonni-button-image-radius-border: var(
+        --avonni-button-dialog-image-radius-border
+    );
+    --avonni-button-image-styling-border: var(
+        --avonni-button-dialog-image-styling-border
+    );
+    --avonni-button-image-sizing-border: var(
+        --avonni-button-dialog-image-sizing-border
+    );
+    --avonni-button-image-color-border: var(
+        --avonni-button-dialog-image-color-border
+    );
+    --avonni-button-image-object-fit: var(
+        --avonni-button-dialog-image-object-fit
+    );
     /* bare */
     --avonni-button-bare-color-background: var(
         --avonni-button-dialog-bare-color-background

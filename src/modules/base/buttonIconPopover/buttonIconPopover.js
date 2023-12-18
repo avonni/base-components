@@ -465,6 +465,14 @@ export default class ButtonIconPopover extends LightningElement {
             .toString();
     }
 
+    /**
+     * True if there is a title.
+     * @type {boolean}
+     */
+    get hasStringTitle() {
+        return !!this.title;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -510,7 +518,6 @@ export default class ButtonIconPopover extends LightningElement {
      */
     @api
     focus() {
-        console.log('focus', this._connected, this.button);
         if (this._connected && this.button) {
             this.focusOnButton();
         }
