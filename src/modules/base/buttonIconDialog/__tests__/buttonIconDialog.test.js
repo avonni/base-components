@@ -30,7 +30,7 @@ describe('Button Icon Dialog', () => {
         });
 
         describe('Access Key', () => {
-            it('accessKey', () => {
+            it('Passed to the component', () => {
                 element.accessKey = 'K';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -43,7 +43,7 @@ describe('Button Icon Dialog', () => {
         });
 
         describe('Alternative Text', () => {
-            it('alternativeText', () => {
+            it('Passed to the component', () => {
                 element.alternativeText = 'This is an alternative text';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -58,7 +58,7 @@ describe('Button Icon Dialog', () => {
         });
 
         describe('Disabled', () => {
-            it('disabled', () => {
+            it('Passed to the component', () => {
                 element.disabled = true;
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -72,7 +72,7 @@ describe('Button Icon Dialog', () => {
 
         describe('Icon', () => {
             describe('Icon Class', () => {
-                it('iconClass', () => {
+                it('Passed to the component', () => {
                     element.iconClass = 'button-dialog-icon-class';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -87,7 +87,7 @@ describe('Button Icon Dialog', () => {
             });
 
             describe('Icon Name', () => {
-                it('iconName', () => {
+                it('Passed to the component', () => {
                     element.iconName = 'utility:lock';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -100,7 +100,7 @@ describe('Button Icon Dialog', () => {
             });
 
             describe('Icon Src', () => {
-                it('iconSrc', () => {
+                it('Passed to the component', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
                     const button = element.shadowRoot.querySelector(
@@ -116,7 +116,7 @@ describe('Button Icon Dialog', () => {
             });
 
             describe('Icon Size', () => {
-                it('size = xx-small', () => {
+                it('Xx-small', () => {
                     element.size = 'xx-small';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -127,7 +127,7 @@ describe('Button Icon Dialog', () => {
                     });
                 });
 
-                it('size = x-small', () => {
+                it('X-small', () => {
                     element.size = 'x-small';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -138,7 +138,7 @@ describe('Button Icon Dialog', () => {
                     });
                 });
 
-                it('size = small', () => {
+                it('Small', () => {
                     element.size = 'small';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -149,7 +149,7 @@ describe('Button Icon Dialog', () => {
                     });
                 });
 
-                it('size = medium', () => {
+                it('Medium', () => {
                     element.size = 'medium';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -160,7 +160,7 @@ describe('Button Icon Dialog', () => {
                     });
                 });
 
-                it('size = large for non bare', () => {
+                it('Large for non bare', () => {
                     element.size = 'large';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -171,7 +171,7 @@ describe('Button Icon Dialog', () => {
                     });
                 });
 
-                it('size = large for bare', () => {
+                it('Large for bare', () => {
                     element.variant = 'bare';
                     element.size = 'large';
                     const button = element.shadowRoot.querySelector(
@@ -186,7 +186,7 @@ describe('Button Icon Dialog', () => {
         });
 
         describe('Tooltip', () => {
-            it('tooltip', () => {
+            it('Passed to the component', () => {
                 element.tooltip = 'This is a tooltip';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -199,7 +199,7 @@ describe('Button Icon Dialog', () => {
         });
 
         describe('Variant', () => {
-            it('variant = border', () => {
+            it('Border', () => {
                 element.variant = 'border';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -210,7 +210,7 @@ describe('Button Icon Dialog', () => {
                 });
             });
 
-            it('variant = bare', () => {
+            it('Bare', () => {
                 element.variant = 'bare';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -221,7 +221,7 @@ describe('Button Icon Dialog', () => {
                 });
             });
 
-            it('variant = container', () => {
+            it('Container', () => {
                 element.variant = 'container';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -232,7 +232,7 @@ describe('Button Icon Dialog', () => {
                 });
             });
 
-            it('variant = brand', () => {
+            it('Brand', () => {
                 element.variant = 'brand';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -243,7 +243,7 @@ describe('Button Icon Dialog', () => {
                 });
             });
 
-            it('variant = border-filled', () => {
+            it('Border-filled', () => {
                 element.variant = 'border-filled';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -254,7 +254,7 @@ describe('Button Icon Dialog', () => {
                 });
             });
 
-            it('variant = bare-inverse', () => {
+            it('Bare-inverse', () => {
                 element.variant = 'bare-inverse';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -265,7 +265,7 @@ describe('Button Icon Dialog', () => {
                 });
             });
 
-            it('variant = border-inverse', () => {
+            it('Border-inverse', () => {
                 element.variant = 'border-inverse';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'

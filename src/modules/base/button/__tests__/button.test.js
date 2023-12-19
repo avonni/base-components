@@ -33,7 +33,7 @@ describe('Button', () => {
         });
 
         describe('Access Key', () => {
-            it('accessKey', () => {
+            it('Passed to the component', () => {
                 element.accessKey = 'K';
                 element.label = 'Label';
 
@@ -47,7 +47,7 @@ describe('Button', () => {
         });
 
         describe('Disabled', () => {
-            it('disabled', () => {
+            it('Passed to the component', () => {
                 element.disabled = true;
                 element.label = 'Label';
 
@@ -61,7 +61,7 @@ describe('Button', () => {
         });
 
         describe('Icon Name', () => {
-            it('iconName', () => {
+            it('Passed to the component', () => {
                 element.iconName = 'utility:close';
 
                 return Promise.resolve().then(() => {
@@ -74,7 +74,7 @@ describe('Button', () => {
         });
 
         describe('Icon Position', () => {
-            it('iconPosition = left', () => {
+            it('Left', () => {
                 element.iconName = 'utility:close';
 
                 return Promise.resolve().then(() => {
@@ -85,7 +85,7 @@ describe('Button', () => {
                 });
             });
 
-            it('iconPosition = right', () => {
+            it('Right', () => {
                 element.iconName = 'utility:close';
                 element.iconPosition = 'right';
 
@@ -99,7 +99,7 @@ describe('Button', () => {
         });
 
         describe('Icon Size', () => {
-            it('iconSize = x-small', () => {
+            it('X-small', () => {
                 element.iconName = 'utility:close';
 
                 return Promise.resolve().then(() => {
@@ -110,7 +110,7 @@ describe('Button', () => {
                 });
             });
 
-            it('iconSize = small', () => {
+            it('Small', () => {
                 element.iconName = 'utility:close';
                 element.iconSize = 'small';
 
@@ -122,7 +122,7 @@ describe('Button', () => {
                 });
             });
 
-            it('iconSize = medium', () => {
+            it('Medium', () => {
                 element.iconName = 'utility:close';
                 element.iconSize = 'medium';
 
@@ -134,7 +134,7 @@ describe('Button', () => {
                 });
             });
 
-            it('iconSize = large', () => {
+            it('Large', () => {
                 element.iconName = 'utility:close';
                 element.iconSize = 'large';
 
@@ -148,7 +148,7 @@ describe('Button', () => {
         });
 
         describe('Icon Src', () => {
-            it('iconSrc', () => {
+            it('Passed to the component', () => {
                 element.iconSrc =
                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
 
@@ -164,7 +164,7 @@ describe('Button', () => {
         });
 
         describe('Icon Src Size', () => {
-            it('iconSize = x-small', () => {
+            it('X-small', () => {
                 element.iconSrc =
                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
 
@@ -178,7 +178,7 @@ describe('Button', () => {
                 });
             });
 
-            it('iconSize = small', () => {
+            it('Small', () => {
                 element.iconSrc =
                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
                 element.iconSize = 'small';
@@ -193,7 +193,7 @@ describe('Button', () => {
                 });
             });
 
-            it('iconSize = medium', () => {
+            it('Medium', () => {
                 element.iconSrc =
                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
                 element.iconSize = 'medium';
@@ -208,7 +208,7 @@ describe('Button', () => {
                 });
             });
 
-            it('iconSize = large', () => {
+            it('Large', () => {
                 element.iconSrc =
                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
                 element.iconSize = 'large';
@@ -225,7 +225,7 @@ describe('Button', () => {
         });
 
         describe('Label', () => {
-            it('label', () => {
+            it('Passed to the component', () => {
                 element.label = 'Label';
 
                 return Promise.resolve().then(() => {
@@ -238,7 +238,7 @@ describe('Button', () => {
         });
 
         describe('Name', () => {
-            it('name', () => {
+            it('Passed to the component', () => {
                 element.label = 'Label';
                 element.name = 'name';
 
@@ -252,7 +252,7 @@ describe('Button', () => {
         });
 
         describe('Stretch', () => {
-            it('stretch', () => {
+            it('Passed to the component', () => {
                 element.label = 'Label';
                 element.stretch = true;
 
@@ -266,7 +266,7 @@ describe('Button', () => {
         });
 
         describe('Type', () => {
-            it('type', () => {
+            it('Passed to the component', () => {
                 element.label = 'Label';
                 element.type = 'submit';
 
@@ -280,7 +280,7 @@ describe('Button', () => {
         });
 
         describe('Value', () => {
-            it('value', () => {
+            it('Passed to the component', () => {
                 element.label = 'Label';
                 element.value = 'value';
 
@@ -294,7 +294,7 @@ describe('Button', () => {
         });
 
         describe('Variant', () => {
-            it('variant = bare', () => {
+            it('Bare', () => {
                 element.label = 'Label';
                 element.variant = 'bare';
 
@@ -306,7 +306,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = bare-inverse', () => {
+            it('Bare-inverse', () => {
                 element.label = 'Label';
                 element.variant = 'bare-inverse';
 
@@ -320,7 +320,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = base', () => {
+            it('Base', () => {
                 element.label = 'Label';
                 element.variant = 'base';
 
@@ -332,7 +332,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = border', () => {
+            it('Border', () => {
                 element.label = 'Label';
                 element.variant = 'border';
 
@@ -344,7 +344,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = border-filled', () => {
+            it('Border-filled', () => {
                 element.label = 'Label';
                 element.variant = 'border-filled';
 
@@ -358,7 +358,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = border-inverse', () => {
+            it('Border-inverse', () => {
                 element.label = 'Label';
                 element.variant = 'border-inverse';
 
@@ -372,7 +372,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = brand', () => {
+            it('Brand', () => {
                 element.label = 'Label';
                 element.variant = 'brand';
 
@@ -384,7 +384,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = brand-outline', () => {
+            it('Brand-outline', () => {
                 element.label = 'Label';
                 element.variant = 'brand-outline';
 
@@ -398,7 +398,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = container', () => {
+            it('Container', () => {
                 element.label = 'Label';
                 element.variant = 'container';
 
@@ -412,7 +412,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = destructive', () => {
+            it('Destructive', () => {
                 element.label = 'Label';
                 element.variant = 'destructive';
 
@@ -426,7 +426,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = destructive-text', () => {
+            it('Destructive-text', () => {
                 element.label = 'Label';
                 element.variant = 'destructive-text';
 
@@ -440,7 +440,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = inverse', () => {
+            it('Inverse', () => {
                 element.label = 'Label';
                 element.variant = 'inverse';
 
@@ -452,7 +452,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = neutral', () => {
+            it('Neutral', () => {
                 element.label = 'Label';
                 element.variant = 'neutral';
 
@@ -464,7 +464,7 @@ describe('Button', () => {
                 });
             });
 
-            it('variant = success', () => {
+            it('Success', () => {
                 element.label = 'Label';
                 element.variant = 'success';
 

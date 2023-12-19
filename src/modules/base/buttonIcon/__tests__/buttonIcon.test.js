@@ -38,7 +38,7 @@ describe('Button Icon', () => {
         });
 
         describe('Access Key', () => {
-            it('accessKey', () => {
+            it('Passed to the component', () => {
                 element.accessKey = 'K';
                 element.iconName = 'utility:down';
 
@@ -52,7 +52,7 @@ describe('Button Icon', () => {
         });
 
         describe('Alternative Text', () => {
-            it('alternativeText', () => {
+            it('Passed to the component', () => {
                 element.alternativeText = 'text';
                 element.iconName = 'utility:down';
 
@@ -66,7 +66,7 @@ describe('Button Icon', () => {
         });
 
         describe('Disabled', () => {
-            it('disabled', () => {
+            it('Passed to the component', () => {
                 element.disabled = true;
                 element.iconName = 'utility:close';
 
@@ -81,7 +81,7 @@ describe('Button Icon', () => {
 
         describe('Icon', () => {
             describe('Icon Class', () => {
-                it('iconClass', () => {
+                it('Passed to the component', () => {
                     element.iconClass = 'custom-class';
                     element.iconName = 'utility:close';
 
@@ -95,7 +95,7 @@ describe('Button Icon', () => {
             });
 
             describe('Icon Name', () => {
-                it('iconName', () => {
+                it('Passed to the component', () => {
                     element.iconName = 'utility:close';
 
                     return Promise.resolve().then(() => {
@@ -108,7 +108,7 @@ describe('Button Icon', () => {
             });
 
             describe('Size Bare', () => {
-                it('x-small', () => {
+                it('X-small', () => {
                     element.iconName = 'utility:close';
                     element.size = 'x-small';
                     element.variant = 'bare';
@@ -123,7 +123,7 @@ describe('Button Icon', () => {
                     });
                 });
 
-                it('small', () => {
+                it('Small', () => {
                     element.iconName = 'utility:close';
                     element.size = 'small';
                     element.variant = 'bare';
@@ -138,7 +138,7 @@ describe('Button Icon', () => {
                     });
                 });
 
-                it('medium', () => {
+                it('Medium', () => {
                     element.iconName = 'utility:close';
                     element.size = 'medium';
                     element.variant = 'bare';
@@ -151,7 +151,7 @@ describe('Button Icon', () => {
                     });
                 });
 
-                it('large', () => {
+                it('Large', () => {
                     element.iconName = 'utility:close';
                     element.size = 'large';
                     element.variant = 'bare';
@@ -168,7 +168,7 @@ describe('Button Icon', () => {
             });
 
             describe('Size Non Bare', () => {
-                it('xx-small', () => {
+                it('Xx-small', () => {
                     element.iconName = 'utility:close';
                     element.size = 'xx-small';
 
@@ -182,7 +182,7 @@ describe('Button Icon', () => {
                     });
                 });
 
-                it('x-small', () => {
+                it('X-small', () => {
                     element.iconName = 'utility:close';
                     element.size = 'x-small';
 
@@ -196,7 +196,7 @@ describe('Button Icon', () => {
                     });
                 });
 
-                it('small', () => {
+                it('Small', () => {
                     element.iconName = 'utility:close';
                     element.size = 'small';
 
@@ -210,7 +210,7 @@ describe('Button Icon', () => {
                     });
                 });
 
-                it('medium', () => {
+                it('Medium', () => {
                     element.iconName = 'utility:close';
                     element.size = 'medium';
 
@@ -224,7 +224,7 @@ describe('Button Icon', () => {
             });
 
             describe('Icon Src', () => {
-                it('iconSrc', () => {
+                it('Passed to the component', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
 
@@ -241,7 +241,7 @@ describe('Button Icon', () => {
         });
 
         describe('Name', () => {
-            it('name', () => {
+            it('Passed to the component', () => {
                 element.iconName = 'utility:close';
                 element.name = 'name';
 
@@ -255,7 +255,7 @@ describe('Button Icon', () => {
         });
 
         describe('Tooltip', () => {
-            it('tooltip', () => {
+            it('Passed to the component', () => {
                 element.tooltip = 'some tooltip';
                 expect(Tooltip).toHaveBeenCalled();
                 expect(Tooltip.mock.calls[0][0]).toBe('some tooltip');
@@ -266,7 +266,7 @@ describe('Button Icon', () => {
         });
 
         describe('Type', () => {
-            it('type', () => {
+            it('Passed to the component', () => {
                 element.iconName = 'utility:close';
                 element.type = 'submit';
 
@@ -280,7 +280,7 @@ describe('Button Icon', () => {
         });
 
         describe('Value', () => {
-            it('value', () => {
+            it('Passed to the component', () => {
                 element.iconName = 'utility:close';
                 element.value = 'value';
 
@@ -294,7 +294,7 @@ describe('Button Icon', () => {
         });
 
         describe('Variant', () => {
-            it('bare', () => {
+            it('Bare', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'bare';
 
@@ -308,7 +308,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('bare-inverse', () => {
+            it('Bare-inverse', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'bare-inverse';
 
@@ -322,7 +322,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('base', () => {
+            it('Base', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'base';
 
@@ -336,7 +336,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('border', () => {
+            it('Border', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'border';
 
@@ -350,7 +350,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('border-filled', () => {
+            it('Border-filled', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'border-filled';
 
@@ -364,7 +364,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('border-inverse', () => {
+            it('Border-inverse', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'border-inverse';
 
@@ -378,7 +378,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('brand', () => {
+            it('Brand', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'brand';
 
@@ -392,7 +392,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('brand-outline', () => {
+            it('Brand-outline', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'brand-outline';
 
@@ -406,7 +406,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('container', () => {
+            it('Container', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'container';
 
@@ -420,7 +420,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('destructive', () => {
+            it('Destructive', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'destructive';
 
@@ -434,7 +434,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('destructive-text', () => {
+            it('Destructive-text', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'destructive-text';
 
@@ -448,7 +448,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('inverse', () => {
+            it('Inverse', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'inverse';
 
@@ -462,7 +462,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('neutral', () => {
+            it('Neutral', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'neutral';
 
@@ -476,7 +476,7 @@ describe('Button Icon', () => {
                 });
             });
 
-            it('success', () => {
+            it('Success', () => {
                 element.iconName = 'utility:close';
                 element.variant = 'success';
 

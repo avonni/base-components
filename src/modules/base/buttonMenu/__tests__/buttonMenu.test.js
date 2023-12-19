@@ -47,7 +47,7 @@ describe('Button Menu', () => {
         });
 
         describe('Access Key', () => {
-            it('accessKey', () => {
+            it('Passed to the component', () => {
                 element.accessKey = 'K';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
@@ -60,7 +60,7 @@ describe('Button Menu', () => {
         });
 
         describe('Alternative Text', () => {
-            it('alternativeText', () => {
+            it('Passed to the component', () => {
                 element.alternativeText = 'This is an alternative text';
                 const assistiveText = element.shadowRoot.querySelector(
                     '.slds-assistive-text'
@@ -75,7 +75,7 @@ describe('Button Menu', () => {
         });
 
         describe('disabled', () => {
-            it('disabled', () => {
+            it('Passed to the component', () => {
                 element.disabled = true;
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
@@ -88,7 +88,7 @@ describe('Button Menu', () => {
         });
 
         describe('draft', () => {
-            it('draftAlternativeText', () => {
+            it('Passed to the component', () => {
                 element.isDraft = true;
                 element.draftAlternativeText =
                     'This is a draft alternative text';
@@ -107,7 +107,7 @@ describe('Button Menu', () => {
         });
 
         describe('Group Order', () => {
-            it('groupOrder', () => {
+            it('Passed to the component', () => {
                 element.groupOrder = 'first';
 
                 return Promise.resolve().then(() => {
@@ -120,7 +120,7 @@ describe('Button Menu', () => {
         });
 
         describe('Hide Down Arrow', () => {
-            it('hideDownArrow = true', () => {
+            it('True', () => {
                 element.iconName = 'utility:threedots';
                 element.hideDownArrow = true;
 
@@ -132,7 +132,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('hideDownArrow = false', () => {
+            it('False', () => {
                 element.iconName = 'utility:threedots';
 
                 return Promise.resolve().then(() => {
@@ -146,7 +146,7 @@ describe('Button Menu', () => {
 
         describe('Icon', () => {
             describe('icon name', () => {
-                it('icon name', () => {
+                it('Passed to the component', () => {
                     element.iconName = 'utility:close';
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-icon-main"]'
@@ -159,7 +159,7 @@ describe('Button Menu', () => {
             });
 
             describe('icon size', () => {
-                it('x-small', () => {
+                it('X-small', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
                     element.iconSize = 'x-small';
@@ -180,7 +180,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('x-small with label', () => {
+                it('X-small with label', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
                     element.iconSize = 'x-small';
@@ -196,7 +196,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('x-small iconName', () => {
+                it('X-small iconName', () => {
                     element.iconName = 'utility:close';
                     element.iconSize = 'x-small';
                     element.label = 'Label';
@@ -212,7 +212,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('small', () => {
+                it('Small', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
                     element.iconSize = 'small';
@@ -233,7 +233,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('small with label', () => {
+                it('Small with label', () => {
                     element.iconSize = 'small';
                     element.label = 'Label';
 
@@ -246,7 +246,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('medium', () => {
+                it('Medium', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
                     element.iconSize = 'medium';
@@ -267,7 +267,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('medium with added variant', () => {
+                it('Medium with added variant', () => {
                     element.iconSize = 'medium';
                     element.variant = 'success';
                     const button = element.shadowRoot.querySelector(
@@ -281,7 +281,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('medium with label', () => {
+                it('Medium with label', () => {
                     element.iconSize = 'medium';
                     element.label = 'Label';
 
@@ -294,7 +294,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('large', () => {
+                it('Large', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
                     element.iconSize = 'large';
@@ -315,7 +315,7 @@ describe('Button Menu', () => {
                     });
                 });
 
-                it('large with label', () => {
+                it('Large with label', () => {
                     element.iconSize = 'large';
                     element.label = 'Label';
 
@@ -330,7 +330,7 @@ describe('Button Menu', () => {
             });
 
             describe('Icon Src', () => {
-                it('icon src', () => {
+                it('Passed to the component', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
@@ -346,8 +346,8 @@ describe('Button Menu', () => {
             });
         });
 
-        describe('Is Loading', () => {
-            it('is loading & loading state alternative text', () => {
+        describe('Is Loading and Loading Alternative Text', () => {
+            it('Passed to the component', () => {
                 element.isLoading = true;
                 element.loadingStateAlternativeText =
                     'This is a loading state alternative text';
@@ -372,7 +372,7 @@ describe('Button Menu', () => {
         });
 
         describe('Label', () => {
-            it('label', () => {
+            it('Passed to the component', () => {
                 element.label = 'This is a label';
 
                 const button = element.shadowRoot.querySelector(
@@ -389,7 +389,7 @@ describe('Button Menu', () => {
         });
 
         describe('Menu Alignment & Nubbin', () => {
-            it('left', () => {
+            it('Left', () => {
                 return Promise.resolve()
                     .then(() => {
                         const button = element.shadowRoot.querySelector(
@@ -406,7 +406,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('left & nubbin', () => {
+            it('Left & nubbin', () => {
                 element.nubbin = true;
 
                 return Promise.resolve()
@@ -428,7 +428,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('right', () => {
+            it('Right', () => {
                 element.menuAlignment = 'right';
 
                 return Promise.resolve()
@@ -447,7 +447,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('right & nubbin', () => {
+            it('Right & nubbin', () => {
                 element.menuAlignment = 'right';
                 element.nubbin = true;
 
@@ -470,7 +470,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('center', () => {
+            it('Center', () => {
                 element.menuAlignment = 'center';
 
                 return Promise.resolve()
@@ -489,7 +489,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('center & nubbin', () => {
+            it('Center & nubbin', () => {
                 element.menuAlignment = 'center';
                 element.nubbin = true;
 
@@ -510,7 +510,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('bottom-center', () => {
+            it('Bottom-center', () => {
                 element.menuAlignment = 'bottom-center';
 
                 return Promise.resolve()
@@ -529,7 +529,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('bottom-center & nubbin', () => {
+            it('Bottom-center & nubbin', () => {
                 element.menuAlignment = 'bottom-center';
                 element.nubbin = true;
 
@@ -552,7 +552,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('bottom-left', () => {
+            it('Bottom-left', () => {
                 element.menuAlignment = 'bottom-left';
 
                 return Promise.resolve()
@@ -571,7 +571,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('bottom-left & nubbin', () => {
+            it('Bottom-left & nubbin', () => {
                 element.menuAlignment = 'bottom-left';
                 element.nubbin = true;
 
@@ -594,7 +594,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('bottom-right', () => {
+            it('Bottom-right', () => {
                 element.menuAlignment = 'bottom-right';
 
                 return Promise.resolve()
@@ -613,7 +613,7 @@ describe('Button Menu', () => {
                     });
             });
 
-            it('bottom-right & nubbin', () => {
+            it('Bottom-right & nubbin', () => {
                 element.menuAlignment = 'bottom-right';
                 element.nubbin = true;
 
@@ -638,7 +638,7 @@ describe('Button Menu', () => {
         });
 
         describe('Title', () => {
-            it('title', () => {
+            it('Passed to the component', () => {
                 element.title = 'This is a title';
 
                 const button = element.shadowRoot.querySelector(
@@ -652,7 +652,7 @@ describe('Button Menu', () => {
         });
 
         describe('Tooltip', () => {
-            it('tooltip', () => {
+            it('Passed to the component', () => {
                 element.tooltip = 'some tooltip';
                 expect(Tooltip).toHaveBeenCalled();
                 expect(Tooltip.mock.calls[0][0]).toBe('some tooltip');
@@ -663,7 +663,7 @@ describe('Button Menu', () => {
         });
 
         describe('Value', () => {
-            it('value', () => {
+            it('Passed to the component', () => {
                 element.value = 'This is a value';
 
                 const button = element.shadowRoot.querySelector(
@@ -677,7 +677,7 @@ describe('Button Menu', () => {
         });
 
         describe('Variant', () => {
-            it('bare without label', () => {
+            it('Bare without label', () => {
                 element.variant = 'bare';
 
                 return Promise.resolve().then(() => {
@@ -691,7 +691,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('bare with label', () => {
+            it('Bare with label', () => {
                 element.variant = 'bare';
                 element.label = 'Button menu';
 
@@ -708,7 +708,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('bare-inverse without label', () => {
+            it('Bare-inverse without label', () => {
                 element.variant = 'bare-inverse';
 
                 return Promise.resolve().then(() => {
@@ -724,7 +724,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('bare-inverse with label', () => {
+            it('Bare-inverse with label', () => {
                 element.variant = 'bare-inverse';
                 element.label = 'Button menu';
 
@@ -741,7 +741,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('border without label', () => {
+            it('Border without label', () => {
                 element.variant = 'border';
 
                 return Promise.resolve().then(() => {
@@ -757,7 +757,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('border with label', () => {
+            it('Border with label', () => {
                 element.variant = 'border';
                 element.label = 'label';
 
@@ -769,7 +769,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('border-filled without label', () => {
+            it('Border-filled without label', () => {
                 element.variant = 'border-filled';
 
                 return Promise.resolve().then(() => {
@@ -785,7 +785,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('border-filled with label', () => {
+            it('Border-filled with label', () => {
                 element.variant = 'border-filled';
                 element.label = 'Button menu';
 
@@ -802,7 +802,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('border-inverse without label', () => {
+            it('Border-inverse without label', () => {
                 element.variant = 'border-inverse';
 
                 return Promise.resolve().then(() => {
@@ -818,7 +818,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('border-inverse with label', () => {
+            it('Border-inverse with label', () => {
                 element.variant = 'border-inverse';
                 element.label = 'label';
 
@@ -833,7 +833,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('brand without label', () => {
+            it('Brand without label', () => {
                 element.variant = 'brand';
 
                 return Promise.resolve().then(() => {
@@ -849,7 +849,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('brand with label', () => {
+            it('Brand with label', () => {
                 element.variant = 'brand';
                 element.label = 'label';
 
@@ -865,7 +865,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('brand-outline without label', () => {
+            it('Brand-outline without label', () => {
                 element.variant = 'brand-outline';
 
                 return Promise.resolve().then(() => {
@@ -879,7 +879,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('brand-outline with label', () => {
+            it('Brand-outline with label', () => {
                 element.variant = 'brand-outline';
                 element.label = 'label';
 
@@ -897,7 +897,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('container without label', () => {
+            it('Container without label', () => {
                 element.variant = 'container';
 
                 return Promise.resolve().then(() => {
@@ -913,7 +913,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('container with label', () => {
+            it('Container with label', () => {
                 element.variant = 'container';
                 element.label = 'Button menu';
 
@@ -927,7 +927,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('destructive without label', () => {
+            it('Destructive without label', () => {
                 element.variant = 'destructive';
 
                 return Promise.resolve().then(() => {
@@ -941,7 +941,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('destructive with label', () => {
+            it('Destructive with label', () => {
                 element.variant = 'destructive';
                 element.label = 'Button menu';
 
@@ -958,7 +958,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('destructive-text without label', () => {
+            it('Destructive-text without label', () => {
                 element.variant = 'destructive-text';
 
                 return Promise.resolve().then(() => {
@@ -971,7 +971,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('destructive-text with label', () => {
+            it('Destructive-text with label', () => {
                 element.variant = 'destructive-text';
                 element.label = 'Button menu';
 
@@ -988,7 +988,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('inverse without label', () => {
+            it('Inverse without label', () => {
                 element.variant = 'inverse';
 
                 return Promise.resolve().then(() => {
@@ -1002,7 +1002,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('inverse with label', () => {
+            it('Inverse with label', () => {
                 element.variant = 'inverse';
                 element.label = 'Button menu';
 
@@ -1017,7 +1017,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('neutral without label', () => {
+            it('Neutral without label', () => {
                 element.variant = 'neutral';
 
                 return Promise.resolve().then(() => {
@@ -1031,7 +1031,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('neutral with label', () => {
+            it('Neutral with label', () => {
                 element.variant = 'neutral';
                 element.label = 'Button menu';
 
@@ -1046,7 +1046,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('success without label', () => {
+            it('Success without label', () => {
                 element.variant = 'success';
 
                 return Promise.resolve().then(() => {
@@ -1060,7 +1060,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('success with label', () => {
+            it('Success with label', () => {
                 element.variant = 'success';
                 element.label = 'Button menu';
 
@@ -1075,7 +1075,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('border-inverse with icon name', () => {
+            it('Border-inverse with icon name', () => {
                 element.variant = 'border-inverse';
                 element.iconName = 'utility:close';
 
@@ -1089,7 +1089,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            it('bare with icon name', () => {
+            it('Bare with icon name', () => {
                 element.variant = 'bare';
                 element.iconName = 'utility:close';
 
@@ -1107,133 +1107,117 @@ describe('Button Menu', () => {
     });
 
     describe('Methods', () => {
-        describe('Blur', () => {
-            it('blur', () => {
-                let blurEvent = false;
-                element.addEventListener('blur', () => {
-                    blurEvent = true;
-                });
+        it('blur', () => {
+            let blurEvent = false;
+            element.addEventListener('blur', () => {
+                blurEvent = true;
+            });
 
-                element.focus();
-                element.blur();
-                return Promise.resolve().then(() => {
-                    expect(blurEvent).toBeTruthy();
-                });
+            element.focus();
+            element.blur();
+            return Promise.resolve().then(() => {
+                expect(blurEvent).toBeTruthy();
             });
         });
 
-        describe('Click', () => {
-            it('click', () => {
-                let clickEvent = false;
-                element.addEventListener('click', () => {
-                    clickEvent = true;
-                });
+        it('click', () => {
+            let clickEvent = false;
+            element.addEventListener('click', () => {
+                clickEvent = true;
+            });
 
-                element.click();
-                return Promise.resolve().then(() => {
-                    expect(clickEvent).toBeTruthy();
-                    expect(element.classList).toContain('slds-is-open');
-                });
+            element.click();
+            return Promise.resolve().then(() => {
+                expect(clickEvent).toBeTruthy();
+                expect(element.classList).toContain('slds-is-open');
             });
         });
 
-        describe('Focus', () => {
-            it('focus', () => {
-                let focusEvent = false;
-                element.addEventListener('focus', () => {
-                    focusEvent = true;
-                });
+        it('focus', () => {
+            let focusEvent = false;
+            element.addEventListener('focus', () => {
+                focusEvent = true;
+            });
 
-                element.focus();
-                return Promise.resolve().then(() => {
-                    expect(focusEvent).toBeTruthy();
-                });
+            element.focus();
+            return Promise.resolve().then(() => {
+                expect(focusEvent).toBeTruthy();
             });
         });
     });
 
     describe('Events', () => {
-        describe('Close', () => {
-            it('close', () => {
-                const handler = jest.fn();
-                element.addEventListener('close', handler);
-                element.click();
-                element.blur();
+        it('close', () => {
+            const handler = jest.fn();
+            element.addEventListener('close', handler);
+            element.click();
+            element.blur();
 
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            });
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
 
-        describe('Open', () => {
-            it('open', () => {
-                const handler = jest.fn();
-                element.addEventListener('open', handler);
-                element.click();
+        it('open', () => {
+            const handler = jest.fn();
+            element.addEventListener('open', handler);
+            element.click();
 
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            });
-
-            it('open triggered by keyboard', () => {
-                const handler = jest.fn();
-                element.addEventListener('open', handler);
-
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                const event = new CustomEvent('keydown');
-                event.key = 'Enter';
-                button.dispatchEvent(event);
-
-                expect(handler).toHaveBeenCalled();
-            });
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
 
-        describe('Select', () => {
-            it('select', () => {
-                element.iconName = 'utility:down';
+        it('open triggered by keyboard', () => {
+            const handler = jest.fn();
+            element.addEventListener('open', handler);
 
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                const handler = jest.fn();
-                element.addEventListener('select', handler);
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            const event = new CustomEvent('keydown');
+            event.key = 'Enter';
+            button.dispatchEvent(event);
 
-                return Promise.resolve()
-                    .then(() => {
-                        button.click();
-                    })
-                    .then(() => {
-                        const dropdown = element.shadowRoot.querySelector(
-                            '[data-element-id="dropdown"]'
-                        );
-                        expect(dropdown).toBeTruthy();
-                        const list = element.shadowRoot.querySelector(
-                            '[data-element-id="dropdown-list"]'
-                        );
-                        list.dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                detail: {
-                                    value: 'acme'
-                                }
-                            })
-                        );
-                        expect(handler).toHaveBeenCalled();
-                        expect(handler.mock.calls[0][0].detail.value).toBe(
-                            'acme'
-                        );
-                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                        expect(
-                            handler.mock.calls[0][0].cancelable
-                        ).toBeTruthy();
-                    });
-            });
+            expect(handler).toHaveBeenCalled();
+        });
+
+        it('select', () => {
+            element.iconName = 'utility:down';
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            const handler = jest.fn();
+            element.addEventListener('select', handler);
+
+            return Promise.resolve()
+                .then(() => {
+                    button.click();
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeTruthy();
+                    const list = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown-list"]'
+                    );
+                    list.dispatchEvent(
+                        new CustomEvent('privateselect', {
+                            detail: {
+                                value: 'acme'
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toBe('acme');
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                });
         });
     });
 });

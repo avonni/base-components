@@ -38,7 +38,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Access Key', () => {
-            it('accessKey', () => {
+            it('Passed to the component', () => {
                 element.accessKey = 'K';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -51,7 +51,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Alternative Text', () => {
-            it('alternativeText', () => {
+            it('Passed to the component', () => {
                 element.alternativeText = 'This is an alternative text';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -66,7 +66,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Disabled', () => {
-            it('disabled', () => {
+            it('Passed to the component', () => {
                 element.disabled = true;
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -79,7 +79,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Hide Close Button', () => {
-            it('hideCloseButton', () => {
+            it('Passed to the component', () => {
                 element.hideCloseButton = true;
                 const closeButton = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-button-icon-close"]'
@@ -94,7 +94,7 @@ describe('Button Icon Popover', () => {
 
         describe('Icon', () => {
             describe('Icon Class', () => {
-                it('iconClass', () => {
+                it('Passed to the component', () => {
                     element.iconClass = 'button-dialog-icon-class';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -108,7 +108,7 @@ describe('Button Icon Popover', () => {
                 });
             });
             describe('Icon Name', () => {
-                it('iconName', () => {
+                it('Passed to the component', () => {
                     element.iconName = 'utility:lock';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -120,7 +120,7 @@ describe('Button Icon Popover', () => {
             });
 
             describe('Icon Size', () => {
-                it('size xx-small', () => {
+                it('Xx-small', () => {
                     element.size = 'xx-small';
 
                     const button = element.shadowRoot.querySelector(
@@ -132,7 +132,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('size x-small', () => {
+                it('X-small', () => {
                     element.size = 'x-small';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -143,7 +143,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('size small', () => {
+                it('Small', () => {
                     element.size = 'small';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -154,7 +154,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('size medium', () => {
+                it('Medium', () => {
                     element.size = 'medium';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -165,7 +165,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('size large for non bare', () => {
+                it('Large for non bare', () => {
                     element.size = 'large';
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-icon"]'
@@ -176,7 +176,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('size large for bare', () => {
+                it('Large for bare', () => {
                     element.variant = 'bare';
                     element.size = 'large';
                     const button = element.shadowRoot.querySelector(
@@ -190,7 +190,7 @@ describe('Button Icon Popover', () => {
             });
 
             describe('Icon Src', () => {
-                it('iconSrc', () => {
+                it('Passed to the component', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
                     const button = element.shadowRoot.querySelector(
@@ -208,7 +208,7 @@ describe('Button Icon Popover', () => {
 
         describe('Loading', () => {
             describe('Is Loading', () => {
-                it('isLoading', () => {
+                it('Passed to the component', () => {
                     element.isLoading = true;
 
                     return Promise.resolve()
@@ -229,7 +229,7 @@ describe('Button Icon Popover', () => {
             });
 
             describe('Loading State Alternative Text', () => {
-                it('loadingStateAlternativeText', () => {
+                it('Passed to the component', () => {
                     element.isLoading = true;
                     element.loadingStateAlternativeText =
                         'This is a loading text';
@@ -256,7 +256,7 @@ describe('Button Icon Popover', () => {
 
         describe('Popover', () => {
             describe('Popover Placement', () => {
-                it('placement = left', () => {
+                it('Left', () => {
                     element.placement = 'left';
 
                     return Promise.resolve().then(() => {
@@ -271,7 +271,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('placement = auto', () => {
+                it('Auto', () => {
                     element.placement = 'auto';
 
                     return Promise.resolve().then(() => {
@@ -283,7 +283,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('placement = center', () => {
+                it('Center', () => {
                     element.placement = 'center';
 
                     return Promise.resolve().then(() => {
@@ -296,7 +296,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('placement = right', () => {
+                it('Right', () => {
                     element.placement = 'right';
 
                     return Promise.resolve().then(() => {
@@ -311,7 +311,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('placement = bottom-left', () => {
+                it('Bottom-left', () => {
                     element.placement = 'bottom-left';
 
                     return Promise.resolve().then(() => {
@@ -332,7 +332,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('placement = bottom-right', () => {
+                it('Bottom-right', () => {
                     element.placement = 'bottom-right';
 
                     return Promise.resolve().then(() => {
@@ -347,7 +347,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('placement = bottom-center', () => {
+                it('Bottom-center', () => {
                     element.placement = 'bottom-center';
 
                     return Promise.resolve().then(() => {
@@ -364,7 +364,7 @@ describe('Button Icon Popover', () => {
             });
 
             describe('Popover Size', () => {
-                it('popoverSize = small', () => {
+                it('Small', () => {
                     element.triggers = 'focus';
                     element.popoverSize = 'small';
 
@@ -377,7 +377,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('popoverSize = medium', () => {
+                it('Medium', () => {
                     element.triggers = 'focus';
                     element.popoverSize = 'medium';
 
@@ -390,7 +390,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('popoverSize = large', () => {
+                it('Large', () => {
                     element.triggers = 'focus';
                     element.popoverSize = 'large';
 
@@ -405,7 +405,7 @@ describe('Button Icon Popover', () => {
             });
 
             describe('Popover Variant', () => {
-                it('popoverVariant = base', () => {
+                it('Base', () => {
                     return Promise.resolve().then(() => {
                         const popover =
                             element.shadowRoot.querySelector('.slds-popover');
@@ -421,7 +421,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('popoverVariant = warning', () => {
+                it('Warning', () => {
                     element.popoverVariant = 'warning';
 
                     return Promise.resolve().then(() => {
@@ -439,7 +439,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('popoverVariant = error', () => {
+                it('Error', () => {
                     element.popoverVariant = 'error';
 
                     return Promise.resolve().then(() => {
@@ -457,7 +457,7 @@ describe('Button Icon Popover', () => {
                     });
                 });
 
-                it('popoverVariant = walkthrough', () => {
+                it('Walkthrough', () => {
                     element.popoverVariant = 'walkthrough';
 
                     return Promise.resolve().then(() => {
@@ -478,7 +478,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Title', () => {
-            it('title', () => {
+            it('Passed to the component', () => {
                 element.title = 'This is a popover Title';
                 element.triggers = 'focus';
 
@@ -492,7 +492,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Tooltip', () => {
-            it('tooltip', () => {
+            it('Passed to the component', () => {
                 element.tooltip = 'This is a tooltip';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -505,7 +505,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Triggers', () => {
-            it('triggers = focus', () => {
+            it('Focus', () => {
                 element.iconName = 'utility:lock';
                 element.triggers = 'focus';
 
@@ -521,7 +521,7 @@ describe('Button Icon Popover', () => {
                     });
             });
 
-            it('triggers = click', () => {
+            it('Click', () => {
                 element.triggers = 'click';
 
                 return Promise.resolve()
@@ -536,7 +536,7 @@ describe('Button Icon Popover', () => {
                     });
             });
 
-            it('triggers = hover mouseenter', () => {
+            it('Hover mouseenter', () => {
                 element.triggers = 'hover';
 
                 const button = element.shadowRoot.querySelector(
@@ -554,7 +554,7 @@ describe('Button Icon Popover', () => {
                     });
             });
 
-            it('triggers = hover mouseleave', () => {
+            it('Hover mouseleave', () => {
                 element.triggers = 'hover';
 
                 const button = element.shadowRoot.querySelector(
@@ -573,7 +573,7 @@ describe('Button Icon Popover', () => {
                     });
             });
 
-            it('triggers = click popoverblur', () => {
+            it('Click popoverblur', () => {
                 element.triggers = 'click';
 
                 const popover =
@@ -589,7 +589,7 @@ describe('Button Icon Popover', () => {
                     });
             });
 
-            it('triggers = hover popoverenter', () => {
+            it('Hover popoverenter', () => {
                 element.triggers = 'hover';
 
                 const button = element.shadowRoot.querySelector(
@@ -611,7 +611,7 @@ describe('Button Icon Popover', () => {
                     });
             });
 
-            it('triggers = hover popoverleave', () => {
+            it('Hover popoverleave', () => {
                 element.triggers = 'hover';
 
                 const popover =
@@ -632,7 +632,7 @@ describe('Button Icon Popover', () => {
         });
 
         describe('Variant', () => {
-            it('variant = border', () => {
+            it('Border', () => {
                 element.variant = 'border';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -643,7 +643,7 @@ describe('Button Icon Popover', () => {
                 });
             });
 
-            it('variant = bare', () => {
+            it('Bare', () => {
                 element.variant = 'bare';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -654,7 +654,7 @@ describe('Button Icon Popover', () => {
                 });
             });
 
-            it('variant = container', () => {
+            it('Container', () => {
                 element.variant = 'container';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -665,7 +665,7 @@ describe('Button Icon Popover', () => {
                 });
             });
 
-            it('variant = brand', () => {
+            it('Brand', () => {
                 element.variant = 'brand';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -676,7 +676,7 @@ describe('Button Icon Popover', () => {
                 });
             });
 
-            it('variant = border-filled', () => {
+            it('Border-filled', () => {
                 element.variant = 'border-filled';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -687,7 +687,7 @@ describe('Button Icon Popover', () => {
                 });
             });
 
-            it('variant = bare-inverse', () => {
+            it('Bare-inverse', () => {
                 element.variant = 'bare-inverse';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -698,7 +698,7 @@ describe('Button Icon Popover', () => {
                 });
             });
 
-            it('variant = border-inverse', () => {
+            it('Border-inverse', () => {
                 element.variant = 'border-inverse';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button-icon"]'
@@ -712,108 +712,88 @@ describe('Button Icon Popover', () => {
     });
 
     describe('Methods', () => {
-        describe('Click', () => {
-            it('click', () => {
-                let clickEvent = false;
-                element.addEventListener('click', () => {
-                    clickEvent = true;
-                });
+        it('click', () => {
+            let clickEvent = false;
+            element.addEventListener('click', () => {
+                clickEvent = true;
+            });
 
-                return Promise.resolve()
-                    .then(() => {
-                        element.click();
-                    })
-                    .then(() => {
-                        expect(clickEvent).toBeTruthy();
-                    });
+            return Promise.resolve()
+                .then(() => {
+                    element.click();
+                })
+                .then(() => {
+                    expect(clickEvent).toBeTruthy();
+                });
+        });
+
+        it('close', () => {
+            let closeEvent = false;
+
+            element.addEventListener('close', () => {
+                closeEvent = true;
+            });
+            element.open();
+            element.close();
+
+            return Promise.resolve().then(() => {
+                expect(closeEvent).toBeTruthy();
+                expect(element.className).not.toContain('slds-is-open');
             });
         });
 
-        describe('Close', () => {
-            it('close', () => {
-                let closeEvent = false;
-
-                element.addEventListener('close', () => {
-                    closeEvent = true;
+        it('open', () => {
+            return Promise.resolve()
+                .then(() => {
+                    element.focus();
+                    element.open();
+                })
+                .then(() => {
+                    const popover =
+                        element.shadowRoot.querySelector('.slds-popover');
+                    expect(popover.className).toContain('slds-show');
+                    expect(element.className).toContain('slds-is-open');
                 });
-                element.open();
-                element.close();
-
-                return Promise.resolve().then(() => {
-                    expect(closeEvent).toBeTruthy();
-                    expect(element.className).not.toContain('slds-is-open');
-                });
-            });
-        });
-
-        describe('Open', () => {
-            it('open', () => {
-                return Promise.resolve()
-                    .then(() => {
-                        element.focus();
-                        element.open();
-                    })
-                    .then(() => {
-                        const popover =
-                            element.shadowRoot.querySelector('.slds-popover');
-                        expect(popover.className).toContain('slds-show');
-                        expect(element.className).toContain('slds-is-open');
-                    });
-            });
         });
     });
 
     describe('Events', () => {
-        describe('Click', () => {
-            it('click', () => {
-                const handler = jest.fn();
-                element.addEventListener('click', handler);
+        it('click', () => {
+            const handler = jest.fn();
+            element.addEventListener('click', handler);
 
-                return Promise.resolve().then(() => {
-                    element.click();
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                });
+            return Promise.resolve().then(() => {
+                element.click();
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
             });
         });
 
-        describe('Close and open', () => {
-            it('close & open', () => {
-                const closeHandler = jest.fn();
-                const openHandler = jest.fn();
-                element.addEventListener('close', closeHandler);
-                element.addEventListener('open', openHandler);
+        it('close & open', () => {
+            const closeHandler = jest.fn();
+            const openHandler = jest.fn();
+            element.addEventListener('close', closeHandler);
+            element.addEventListener('open', openHandler);
 
-                return Promise.resolve()
-                    .then(() => {
-                        element.click();
-                        expect(openHandler).toHaveBeenCalled();
-                        expect(
-                            openHandler.mock.calls[0][0].bubbles
-                        ).toBeFalsy();
-                        expect(
-                            openHandler.mock.calls[0][0].cancelable
-                        ).toBeFalsy();
-                        expect(
-                            openHandler.mock.calls[0][0].composed
-                        ).toBeFalsy();
-                    })
-                    .then(() => {
-                        element.click();
-                        expect(closeHandler).toHaveBeenCalled();
-                        expect(
-                            closeHandler.mock.calls[0][0].bubbles
-                        ).toBeFalsy();
-                        expect(
-                            closeHandler.mock.calls[0][0].cancelable
-                        ).toBeFalsy();
-                        expect(
-                            closeHandler.mock.calls[0][0].composed
-                        ).toBeFalsy();
-                    });
-            });
+            return Promise.resolve()
+                .then(() => {
+                    element.click();
+                    expect(openHandler).toHaveBeenCalled();
+                    expect(openHandler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(openHandler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(openHandler.mock.calls[0][0].composed).toBeFalsy();
+                })
+                .then(() => {
+                    element.click();
+                    expect(closeHandler).toHaveBeenCalled();
+                    expect(closeHandler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(
+                        closeHandler.mock.calls[0][0].cancelable
+                    ).toBeFalsy();
+                    expect(closeHandler.mock.calls[0][0].composed).toBeFalsy();
+                });
         });
     });
 });
