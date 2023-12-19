@@ -291,14 +291,14 @@ a.avonni-list__item-info-link:active {
 
 .avonni-list__item-header_font {
     color: var(--avonni-list-item-header-text-color, #080707);
-    font-size: var(--avonni-list-item-header-font-size, 0.8125rem);
+    font-size: var(--avonni-list-item-header-font-size);
     font-style: var(--avonni-list-item-header-font-style, normal);
     font-weight: var(--avonni-list-item-header-font-weight, 400);
 }
 
 .avonni-list__item-description_font {
     color: var(--avonni-list-item-description-text-color, #080707);
-    font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
+    font-size: var(--avonni-list-item-description-font-size);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
     -webkit-line-clamp: var(--avonni-list-item-description-line-clamp, 2);
