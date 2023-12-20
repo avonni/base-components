@@ -59,7 +59,7 @@ function splitIds(ids) {
     return ids ? (ids + '').trim().split(/\s+/) : [];
 }
 
-export default class AriaObserver {
+export default class AvonniAriaObserver {
     constructor(component) {
         this.component = component;
         this.template = component.template;
@@ -108,7 +108,7 @@ export default class AriaObserver {
             ? relatedNodeIds.join(' ')
             : relatedNodeIds;
 
-        if (this.component.isConnected) {
+        if (this.component.connected) {
             this.privateUpdate(attribute);
         }
     }
@@ -125,7 +125,7 @@ export default class AriaObserver {
             this.isNativeShadow = isNativeShadow;
         }
 
-        if (!this.component.isConnected) {
+        if (!this.component.connected) {
             throw new Error(
                 `Invalid sync invocation. It can only be invoked during renderedCallback().`
             );
@@ -234,7 +234,7 @@ export default class AriaObserver {
     privateCreateMutationObserver() {
         this.disconnect();
         this.mo = new MutationObserver(() => {
-            if (!this.component.isConnected) {
+            if (!this.component.connected) {
                 return; // do nothing when the template is not connected
             }
             this.sync();

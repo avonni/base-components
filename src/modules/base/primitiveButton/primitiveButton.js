@@ -7,7 +7,7 @@ import {
     isCSR
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import AriaObserver from 'c/ariaObserver';
+import AvonniAriaObserver from 'c/ariaObserver';
 
 const BUTTON = 'button';
 const ROLE = 'role';
@@ -164,7 +164,7 @@ export default class PrimitiveButton extends LightningElement {
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
 
-    _connected = false;
+    connected = false;
     @track
     state = {
         ariaAtomic: null,
@@ -192,7 +192,7 @@ export default class PrimitiveButton extends LightningElement {
 
     constructor() {
         super();
-        this.ariaObserver = new AriaObserver(this);
+        this.ariaObserver = new AvonniAriaObserver(this);
         // Workaround for an IE11 bug where click handlers on button ancestors
         // receive the click event even if the button element has the `disabled`
         // attribute set.
@@ -207,14 +207,14 @@ export default class PrimitiveButton extends LightningElement {
 
     connectedCallback() {
         if (!this.ariaObserver) {
-            this.ariaObserver = new AriaObserver(this);
+            this.ariaObserver = new AvonniAriaObserver(this);
         }
 
-        this._connected = true;
+        this.connected = true;
     }
 
     renderedCallback() {
-        if (this._connected) {
+        if (this.connected) {
             this.ariaObserver.sync();
         }
     }
@@ -225,7 +225,7 @@ export default class PrimitiveButton extends LightningElement {
             this.ariaObserver = undefined;
         }
 
-        this._connected = false;
+        this.connected = false;
     }
 
     /*
