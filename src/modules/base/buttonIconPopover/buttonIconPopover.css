@@ -110,18 +110,6 @@ div:focus {
     --avonni-button-icon-bare-text-color: var(
         --avonni-button-icon-popover-bare-text-color
     );
-    --avonni-button-icon-bare-inline-end: var(
-        --avonni-button-icon-popover-bare-inline-end
-    );
-    --avonni-button-icon-bare-inline-start: var(
-        --avonni-button-icon-popover-bare-inline-start
-    );
-    --avonni-button-icon-bare-block-start: var(
-        --avonni-button-icon-popover-bare-block-start
-    );
-    --avonni-button-icon-bare-block-end: var(
-        --avonni-button-icon-popover-bare-block-end
-    );
     /* bare-inverse */
     --avonni-button-icon-bare-inverse-color-background: var(
         --avonni-button-icon-popover-bare-inverse-color-background
@@ -131,18 +119,6 @@ div:focus {
     );
     --avonni-button-icon-bare-inverse-text-color: var(
         --avonni-button-icon-popover-bare-inverse-background-color
-    );
-    --avonni-button-icon-bare-inverse-inline-end: var(
-        --avonni-button-icon-popover-bare-inverse-inline-end
-    );
-    --avonni-button-icon-bare-inverse-inline-start: var(
-        --avonni-button-icon-popover-bare-inverse-inline-start
-    );
-    --avonni-button-icon-bare-inverse-block-start: var(
-        --avonni-button-icon-popover-bare-inverse-block-start
-    );
-    --avonni-button-icon-bare-inverse-block-end: var(
-        --avonni-button-icon-popover-bare-inverse-block-end
     );
     /* base */
     --avonni-button-icon-base-color-background: var(
@@ -154,18 +130,6 @@ div:focus {
     --avonni-button-icon-base-text-color: var(
         --avonni-button-icon-popover-base-text-color
     );
-    --avonni-button-icon-base-inline-end: var(
-        --avonni-button-icon-popover-base-inline-end
-    );
-    --avonni-button-icon-base-inline-start: var(
-        --avonni-button-icon-popover-base-inline-start
-    );
-    --avonni-button-icon-base-block-start: var(
-        --avonni-button-icon-popover-base-block-start
-    );
-    --avonni-button-icon-base-block-end: var(
-        --avonni-button-icon-popover-base-block-end
-    );
     /* border */
     --avonni-button-icon-border-color-background: var(
         --avonni-button-icon-popover-border-color-background
@@ -175,18 +139,6 @@ div:focus {
     );
     --avonni-button-icon-border-text-color: var(
         --avonni-button-icon-popover-border-text-color
-    );
-    --avonni-button-icon-border-inline-end: var(
-        --avonni-button-icon-popover-border-inline-end
-    );
-    --avonni-button-icon-border-inline-start: var(
-        --avonni-button-icon-popover-border-inline-start
-    );
-    --avonni-button-icon-border-block-start: var(
-        --avonni-button-icon-popover-border-block-start
-    );
-    --avonni-button-icon-border-block-end: var(
-        --avonni-button-icon-popover-border-block-end
     );
     /* border-filled */
     --avonni-button-icon-border-filled-color-background: var(
@@ -198,18 +150,6 @@ div:focus {
     --avonni-button-icon-border-filled-text-color: var(
         --avonni-button-icon-popover-border-filled-text-color
     );
-    --avonni-button-icon-border-filled-inline-end: var(
-        --avonni-button-icon-popover-border-filled-inline-end
-    );
-    --avonni-button-icon-border-filled-inline-start: var(
-        --avonni-button-icon-popover-border-filled-inline-start
-    );
-    --avonni-button-icon-border-filled-block-start: var(
-        --avonni-button-icon-popover-border-filled-block-start
-    );
-    --avonni-button-icon-border-filled-block-end: var(
-        --avonni-button-icon-popover-border-filled-block-end
-    );
     /* border-inverse */
     --avonni-button-icon-border-inverse-color-background: var(
         --avonni-button-icon-popover-border-inverse-color-background
@@ -219,18 +159,6 @@ div:focus {
     );
     --avonni-button-icon-border-inverse-text-color: var(
         --avonni-button-icon-popover-border-inverse-text-color
-    );
-    --avonni-button-icon-border-inverse-inline-end: var(
-        --avonni-button-icon-popover-border-inverse-inline-end
-    );
-    --avonni-button-icon-border-inverse-inline-start: var(
-        --avonni-button-icon-popover-border-inverse-inline-start
-    );
-    --avonni-button-icon-border-inverse-block-start: var(
-        --avonni-button-icon-popover-border-inverse-block-start
-    );
-    --avonni-button-icon-border-inverse-block-end: var(
-        --avonni-button-icon-popover-border-inverse-block-end
     );
     /* brand */
     --avonni-button-icon-brand-color-background: var(
@@ -242,18 +170,6 @@ div:focus {
     --avonni-button-icon-brand-text-color: var(
         --avonni-button-icon-popover-brand-text-color
     );
-    --avonni-button-icon-brand-inline-end: var(
-        --avonni-button-icon-popover-brand-inline-end
-    );
-    --avonni-button-icon-brand-inline-start: var(
-        --avonni-button-icon-popover-brand-inline-start
-    );
-    --avonni-button-icon-brand-block-start: var(
-        --avonni-button-icon-popover-brand-block-start
-    );
-    --avonni-button-icon-brand-block-end: var(
-        --avonni-button-icon-popover-brand-block-end
-    );
     /* brand-outline */
     --avonni-button-icon-outline-brand-color-background: var(
         --avonni-button-icon-popover-outline-brand-color-background
@@ -263,18 +179,6 @@ div:focus {
     );
     --avonni-button-icon-outline-brand-text-color: var(
         --avonni-button-icon-popover-text-color
-    );
-    --avonni-button-icon-outline-brand-inline-end: var(
-        --avonni-button-icon-popover-outline-brand-inline-end
-    );
-    --avonni-button-icon-outline-brand-inline-start: var(
-        --avonni-button-icon-popover-outline-brand-inline-start
-    );
-    --avonni-button-icon-outline-brand-block-start: var(
-        --avonni-button-icon-popover-outline-brand-block-start
-    );
-    --avonni-button-icon-outline-brand-block-end: var(
-        --avonni-button-icon-popover-outline-brand-block-end
     );
     /* container */
     --avonni-button-icon-container-color-background: var(
@@ -286,18 +190,6 @@ div:focus {
     --avonni-button-icon-container-text-color: var(
         --avonni-button-icon-popover-container-text-color
     );
-    --avonni-button-icon-container-inline-end: var(
-        --avonni-button-icon-popover-container-inline-end
-    );
-    --avonni-button-icon-container-inline-start: var(
-        --avonni-button-icon-popover-container-inline-start
-    );
-    --avonni-button-icon-container-block-start: var(
-        --avonni-button-icon-popover-container-block-start
-    );
-    --avonni-button-icon-container-block-end: var(
-        --avonni-button-icon-popover-container-block-end
-    );
     /* destructive */
     --avonni-button-icon-destructive-color-background: var(
         --avonni-button-icon-popover-destructive-color-background
@@ -307,18 +199,6 @@ div:focus {
     );
     --avonni-button-icon-destructive-text-color: var(
         --avonni-button-icon-popover-destructive-text-color
-    );
-    --avonni-button-icon-destructive-inline-end: var(
-        --avonni-button-icon-popover-destructive-inline-end
-    );
-    --avonni-button-icon-destructive-inline-start: var(
-        --avonni-button-icon-popover-destructive-inline-start
-    );
-    --avonni-button-icon-destructive-block-start: var(
-        --avonni-button-icon-popover-destructive-block-start
-    );
-    --avonni-button-icon-destructive-block-end: var(
-        --avonni-button-icon-popover-destructive-block-end
     );
     /* destructive-text */
     --avonni-button-icon-text-destructive-color-background: var(
@@ -330,18 +210,6 @@ div:focus {
     --avonni-button-icon-text-destructive-text-color: var(
         --avonni-button-icon-popover-text-destructive-text-color
     );
-    --avonni-button-icon-text-destructive-inline-end: var(
-        --avonni-button-icon-popover-text-destructive-inline-end
-    );
-    --avonni-button-icon-text-destructive-inline-start: var(
-        --avonni-button-icon-popover-text-destructive-inline-start
-    );
-    --avonni-button-icon-text-destructive-block-start: var(
-        --avonni-button-icon-popover-text-destructive-block-start
-    );
-    --avonni-button-icon-text-destructive-block-end: var(
-        --avonni-button-icon-popover-text-destructive-block-end
-    );
     /* inverse */
     --avonni-button-icon-inverse-color-background: var(
         --avonni-button-icon-popover-inverse-color-background
@@ -351,18 +219,6 @@ div:focus {
     );
     --avonni-button-icon-inverse-text-color: var(
         --avonni-button-icon-popover-inverse-text-color
-    );
-    --avonni-button-icon-inverse-inline-end: var(
-        --avonni-button-icon-popover-inverse-inline-end
-    );
-    --avonni-button-icon-inverse-inline-start: var(
-        --avonni-button-icon-popover-inverse-inline-start
-    );
-    --avonni-button-icon-inverse-block-start: var(
-        --avonni-button-icon-popover-inverse-block-start
-    );
-    --avonni-button-icon-inverse-block-end: var(
-        --avonni-button-icon-popover-inverse-block-end
     );
     /* neutral */
     --avonni-button-icon-neutral-color-background: var(
@@ -374,18 +230,6 @@ div:focus {
     --avonni-button-icon-neutral-text-color: var(
         --avonni-button-icon-popover-text-color
     );
-    --avonni-button-icon-neutral-inline-end: var(
-        --avonni-button-icon-popover-neutral-inline-end
-    );
-    --avonni-button-icon-neutral-inline-start: var(
-        --avonni-button-icon-popover-neutral-inline-start
-    );
-    --avonni-button-icon-neutral-block-start: var(
-        --avonni-button-icon-popover-neutral-block-start
-    );
-    --avonni-button-icon-neutral-block-end: var(
-        --avonni-button-icon-popover-neutral-block-end
-    );
     /* success */
     --avonni-button-icon-success-color-background: var(
         --avonni-button-icon-popover-success-color-background
@@ -395,18 +239,6 @@ div:focus {
     );
     --avonni-button-icon-success-text-color: var(
         --avonni-button-icon-popover-success-text-color
-    );
-    --avonni-button-icon-success-inline-end: var(
-        --avonni-button-icon-popover-success-inline-end
-    );
-    --avonni-button-icon-success-inline-start: var(
-        --avonni-button-icon-popover-success-inline-start
-    );
-    --avonni-button-icon-success-block-start: var(
-        --avonni-button-icon-popover-success-block-start
-    );
-    --avonni-button-icon-success-block-end: var(
-        --avonni-button-icon-popover-success-block-end
     );
 }
 

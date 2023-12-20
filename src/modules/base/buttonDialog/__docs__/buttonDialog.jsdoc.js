@@ -87,25 +87,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inline-end
+ * @name --avonni-button-dialog-bare-spacing-inline-end
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inline-start
+ * @name --avonni-button-dialog-bare-spacing-inline-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-block-start
+ * @name --avonni-button-dialog-bare-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-block-end
+ * @name --avonni-button-dialog-bare-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -166,25 +166,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inverse-inline-end
+ * @name --avonni-button-dialog-bare-inverse-spacing-inline-end
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inverse-inline-start
+ * @name --avonni-button-dialog-bare-inverse-spacing-inline-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inverse-block-start
+ * @name --avonni-button-dialog-bare-inverse-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inverse-block-end
+ * @name --avonni-button-dialog-bare-inverse-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -245,25 +245,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-base-inline-end
+ * @name --avonni-button-dialog-base-spacing-inline-end
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-base-inline-start
+ * @name --avonni-button-dialog-base-spacing-inline-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-base-block-start
+ * @name --avonni-button-dialog-base-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-base-block-end
+ * @name --avonni-button-dialog-base-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -324,25 +324,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-inline-end
+ * @name --avonni-button-dialog-border-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-inline-start
+ * @name --avonni-button-dialog-border-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-block-start
+ * @name --avonni-button-dialog-border-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-block-end
+ * @name --avonni-button-dialog-border-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -403,25 +403,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-filled-inline-end
+ * @name --avonni-button-dialog-border-filled-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-filled-inline-start
+ * @name --avonni-button-dialog-border-filled-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-filled-block-start
+ * @name --avonni-button-dialog-border-filled-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-filled-block-end
+ * @name --avonni-button-dialog-border-filled-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -482,25 +482,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-inverse-inline-end
+ * @name --avonni-button-dialog-border-inverse-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-inverse-inline-start
+ * @name --avonni-button-dialog-border-inverse-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-inverse-block-start
+ * @name --avonni-button-dialog-border-inverse-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-border-inverse-block-end
+ * @name --avonni-button-dialog-border-inverse-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -561,25 +561,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-brand-inline-end
+ * @name --avonni-button-dialog-brand-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-brand-inline-start
+ * @name --avonni-button-dialog-brand-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-brand-block-start
+ * @name --avonni-button-dialog-brand-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-brand-block-end
+ * @name --avonni-button-dialog-brand-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -652,13 +652,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-outline-brand-block-start
+ * @name --avonni-button-dialog-outline-brand-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-outline-brand-block-end
+ * @name --avonni-button-dialog-outline-brand-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -719,25 +719,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-container-inline-start
+ * @name --avonni-button-dialog-container-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-container-inline-end
+ * @name --avonni-button-dialog-container-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-container-block-start
+ * @name --avonni-button-dialog-container-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-container-block-end
+ * @name --avonni-button-dialog-container-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -810,13 +810,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-destructive-block-start
+ * @name --avonni-button-dialog-destructive-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-destructive-block-end
+ * @name --avonni-button-dialog-destructive-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -888,13 +888,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-text-destructive-block-start
+ * @name --avonni-button-dialog-text-destructive-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-text-destructive-block-end
+ * @name --avonni-button-dialog-text-destructive-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -967,13 +967,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-inverse-block-start
+ * @name --avonni-button-dialog-inverse-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-inverse-block-end
+ * @name --avonni-button-dialog-inverse-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -1046,13 +1046,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-neutral-block-start
+ * @name --avonni-button-dialog-neutral-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-neutral-block-end
+ * @name --avonni-button-dialog-neutral-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -1125,13 +1125,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-success-block-start
+ * @name --avonni-button-dialog-success-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-dialog-success-block-end
+ * @name --avonni-button-dialog-success-spacing-block-end
  * @type dimension
  * @default 0
  */

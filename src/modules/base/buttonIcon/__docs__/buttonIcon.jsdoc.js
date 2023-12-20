@@ -47,30 +47,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-bare-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-bare-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-bare-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-bare-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-bare-color-background-active
  * @type color
  * @default transparent
@@ -123,30 +99,6 @@
  * @name --avonni-button-icon-bare-inverse-text-color
  * @type color
  * @default #fff
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-bare-inverse-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-bare-inverse-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-bare-inverse-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-bare-inverse-spacing-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -205,30 +157,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-base-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-base-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-base-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-base-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-base-color-background-active
  * @type color
  * @default transparent
@@ -281,30 +209,6 @@
  * @name --avonni-button-icon-border-text-color
  * @type color
  * @default #747474
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-spacing-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -363,30 +267,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-border-filled-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-filled-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-filled-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-filled-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-border-filled-color-background-active
  * @type color
  * @default #fff
@@ -439,30 +319,6 @@
  * @name --avonni-button-icon-border-inverse-text-color
  * @type color
  * @default #fff
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-inverse-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-inverse-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-inverse-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-border-inverse-spacing-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -521,30 +377,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-brand-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-brand-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-brand-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-brand-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-brand-color-background-active
  * @type color
  * @default #014486
@@ -597,30 +429,6 @@
  * @name --avonni-button-icon-outline-brand-text-color
  * @type color
  * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-outline-brand-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-outline-brand-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-outline-brand-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-outline-brand-spacing-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -679,30 +487,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-container-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-container-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-container-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-container-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-container-color-background-active
  * @type color
  * @default transparent
@@ -758,30 +542,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-destructive-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-destructive-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-destructive-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-destructive-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-destructive-color-background-active
  * @type color
  * @default #8e030f
@@ -833,30 +593,6 @@
  * @name --avonni-button-icon-text-destructive-text-color
  * @type color
  * @default #8e030f
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-text-destructive-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-text-destructive-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-text-destructive-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-text-destructive-spacing-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -915,30 +651,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-inverse-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-inverse-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-inverse-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-inverse-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-inverse-color-background-active
  * @type color
  * @default #f3f3f3
@@ -994,30 +706,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-neutral-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-neutral-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-neutral-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-neutral-spacing-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-neutral-color-background-active
  * @type color
  * @default #f3f3f3
@@ -1070,30 +758,6 @@
  * @name --avonni-button-icon-success-text-color
  * @type color
  * @default #181818
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-success-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-success-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-success-spacing-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-success-spacing-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks

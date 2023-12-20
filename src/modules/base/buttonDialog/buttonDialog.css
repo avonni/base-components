@@ -38,16 +38,18 @@
     --avonni-button-bare-text-color: var(
         --avonni-button-dialog-bare-text-color
     );
-    --avonni-button-bare-inline-end: var(
-        --avonni-button-dialog-bare-inline-end
+    --avonni-button-bare-spacing-inline-end: var(
+        --avonni-button-dialog-bare-spacing-inline-end
     );
-    --avonni-button-bare-inline-start: var(
-        --avonni-button-dialog-bare-inline-start
+    --avonni-button-bare-spacing-inline-start: var(
+        --avonni-button-dialog-bare-spacing-inline-start
     );
-    --avonni-button-bare-block-start: var(
-        --avonni-button-dialog-bare-block-start
+    --avonni-button-bare-spacing-block-start: var(
+        --avonni-button-dialog-bare-spacing-block-start
     );
-    --avonni-button-bare-block-end: var(--avonni-button-dialog-bare-block-end);
+    --avonni-button-bare-spacing-block-end: var(
+        --avonni-button-dialog-bare-spacing-block-end
+    );
     /* bare-inverse */
     --avonni-button-bare-inverse-color-background: var(
         --avonni-button-dialog-bare-inverse-color-background
@@ -58,17 +60,17 @@
     --avonni-button-bare-inverse-text-color: var(
         --avonni-button-dialog-bare-inverse-background-color
     );
-    --avonni-button-bare-inverse-inline-end: var(
-        --avonni-button-dialog-bare-inverse-inline-end
+    --avonni-button-bare-inverse-spacing-inline-end: var(
+        --avonni-button-dialog-bare-inverse-spacing-inline-end
     );
-    --avonni-button-bare-inverse-inline-start: var(
-        --avonni-button-dialog-bare-inverse-inline-start
+    --avonni-button-bare-inverse-spacing-inline-start: var(
+        --avonni-button-dialog-bare-inverse-spacing-inline-start
     );
-    --avonni-button-bare-inverse-block-start: var(
-        --avonni-button-dialog-bare-inverse-block-start
+    --avonni-button-bare-inverse-spacing-block-start: var(
+        --avonni-button-dialog-bare-inverse-spacing-block-start
     );
-    --avonni-button-bare-inverse-block-end: var(
-        --avonni-button-dialog-bare-inverse-block-end
+    --avonni-button-bare-inverse-spacing-block-end: var(
+        --avonni-button-dialog-bare-inverse-spacing-block-end
     );
     /* base */
     --avonni-button-base-color-background: var(
@@ -80,16 +82,18 @@
     --avonni-button-base-text-color: var(
         --avonni-button-dialog-base-text-color
     );
-    --avonni-button-base-inline-end: var(
-        --avonni-button-dialog-base-inline-end
+    --avonni-button-base-spacing-inline-end: var(
+        --avonni-button-dialog-base-spacing-inline-end
     );
-    --avonni-button-base-inline-start: var(
-        --avonni-button-dialog-base-inline-start
+    --avonni-button-base-spacing-inline-start: var(
+        --avonni-button-dialog-base-spacing-inline-start
     );
-    --avonni-button-base-block-start: var(
-        --avonni-button-dialog-base-block-start
+    --avonni-button-base-spacing-block-start: var(
+        --avonni-button-dialog-base-spacing-block-start
     );
-    --avonni-button-base-block-end: var(--avonni-button-dialog-base-block-end);
+    --avonni-button-base-spacing-block-end: var(
+        --avonni-button-dialog-base-spacing-block-end
+    );
     /* border */
     --avonni-button-border-color-background: var(
         --avonni-button-dialog-border-color-background
@@ -100,17 +104,17 @@
     --avonni-button-border-text-color: var(
         --avonni-button-dialog-border-text-color
     );
-    --avonni-button-border-inline-end: var(
-        --avonni-button-dialog-border-inline-end
+    --avonni-button-border-spacing-inline-end: var(
+        --avonni-button-dialog-border-spacing-inline-end
     );
-    --avonni-button-border-inline-start: var(
-        --avonni-button-dialog-border-inline-start
+    --avonni-button-border-spacing-inline-start: var(
+        --avonni-button-dialog-border-spacing-inline-start
     );
-    --avonni-button-border-block-start: var(
-        --avonni-button-dialog-border-block-start
+    --avonni-button-border-spacing-block-start: var(
+        --avonni-button-dialog-border-spacing-block-start
     );
-    --avonni-button-border-block-end: var(
-        --avonni-button-dialog-border-block-end
+    --avonni-button-border-spacing-block-end: var(
+        --avonni-button-dialog-border-spacing-block-end
     );
     /* border-filled */
     --avonni-button-border-filled-color-background: var(
@@ -122,17 +126,17 @@
     --avonni-button-border-filled-text-color: var(
         --avonni-button-dialog-border-filled-text-color
     );
-    --avonni-button-border-filled-inline-end: var(
-        --avonni-button-dialog-border-filled-inline-end
+    --avonni-button-border-filled-spacing-inline-end: var(
+        --avonni-button-dialog-border-filled-spacing-inline-end
     );
-    --avonni-button-border-filled-inline-start: var(
-        --avonni-button-dialog-border-filled-inline-start
+    --avonni-button-border-filled-spacing-inline-start: var(
+        --avonni-button-dialog-border-filled-spacing-inline-start
     );
-    --avonni-button-border-filled-block-start: var(
-        --avonni-button-dialog-border-filled-block-start
+    --avonni-button-border-filled-spacing-block-start: var(
+        --avonni-button-dialog-border-filled-spacing-block-start
     );
-    --avonni-button-border-filled-block-end: var(
-        --avonni-button-dialog-border-filled-block-end
+    --avonni-button-border-filled-spacing-block-end: var(
+        --avonni-button-dialog-border-filled-spacing-block-end
     );
     /* border-inverse */
     --avonni-button-border-inverse-color-background: var(
@@ -144,17 +148,17 @@
     --avonni-button-border-inverse-text-color: var(
         --avonni-button-dialog-border-inverse-text-color
     );
-    --avonni-button-border-inverse-inline-end: var(
-        --avonni-button-dialog-border-inverse-inline-end
+    --avonni-button-border-inverse-spacing-inline-end: var(
+        --avonni-button-dialog-border-inverse-spacing-inline-end
     );
-    --avonni-button-border-inverse-inline-start: var(
-        --avonni-button-dialog-border-inverse-inline-start
+    --avonni-button-border-inverse-spacing-inline-start: var(
+        --avonni-button-dialog-border-inverse-spacing-inline-start
     );
-    --avonni-button-border-inverse-block-start: var(
-        --avonni-button-dialog-border-inverse-block-start
+    --avonni-button-border-inverse-spacing-block-start: var(
+        --avonni-button-dialog-border-inverse-spacing-block-start
     );
-    --avonni-button-border-inverse-block-end: var(
-        --avonni-button-dialog-border-inverse-block-end
+    --avonni-button-border-inverse-spacing-block-end: var(
+        --avonni-button-dialog-border-inverse-spacing-block-end
     );
     /* brand */
     --avonni-button-brand-color-background: var(
@@ -166,17 +170,17 @@
     --avonni-button-brand-text-color: var(
         --avonni-button-dialog-brand-text-color
     );
-    --avonni-button-brand-inline-end: var(
-        --avonni-button-dialog-brand-inline-end
+    --avonni-button-brand-spacing-inline-end: var(
+        --avonni-button-dialog-brand-spacing-inline-end
     );
-    --avonni-button-brand-inline-start: var(
-        --avonni-button-dialog-brand-inline-start
+    --avonni-button-brand-spacing-inline-start: var(
+        --avonni-button-dialog-brand-spacing-inline-start
     );
-    --avonni-button-brand-block-start: var(
-        --avonni-button-dialog-brand-block-start
+    --avonni-button-brand-spacing-block-start: var(
+        --avonni-button-dialog-brand-spacing-block-start
     );
-    --avonni-button-brand-block-end: var(
-        --avonni-button-dialog-brand-block-end
+    --avonni-button-brand-spacing-block-end: var(
+        --avonni-button-dialog-brand-spacing-block-end
     );
     /* brand-outline */
     --avonni-button-outline-brand-color-background: var(
@@ -188,17 +192,17 @@
     --avonni-button-outline-brand-text-color: var(
         --avonni-button-dialog-text-color
     );
-    --avonni-button-outline-brand-inline-end: var(
-        --avonni-button-dialog-outline-brand-inline-end
+    --avonni-button-outline-brand-spacing-inline-end: var(
+        --avonni-button-dialog-outline-brand-spacing-inline-end
     );
-    --avonni-button-outline-brand-inline-start: var(
-        --avonni-button-dialog-outline-brand-inline-start
+    --avonni-button-outline-brand-spacing-inline-start: var(
+        --avonni-button-dialog-outline-brand-spacing-inline-start
     );
-    --avonni-button-outline-brand-block-start: var(
-        --avonni-button-dialog-outline-brand-block-start
+    --avonni-button-outline-brand-spacing-block-start: var(
+        --avonni-button-dialog-outline-brand-spacing-block-start
     );
-    --avonni-button-outline-brand-block-end: var(
-        --avonni-button-dialog-outline-brand-block-end
+    --avonni-button-outline-brand-spacing-block-end: var(
+        --avonni-button-dialog-outline-brand-spacing-block-end
     );
     /* container */
     --avonni-button-container-color-background: var(
@@ -210,17 +214,17 @@
     --avonni-button-container-text-color: var(
         --avonni-button-dialog-container-text-color
     );
-    --avonni-button-container-inline-end: var(
-        --avonni-button-dialog-container-inline-end
+    --avonni-button-container-spacing-inline-end: var(
+        --avonni-button-dialog-container-spacing-inline-end
     );
-    --avonni-button-container-inline-start: var(
-        --avonni-button-dialog-container-inline-start
+    --avonni-button-container-spacing-inline-start: var(
+        --avonni-button-dialog-container-spacing-inline-start
     );
-    --avonni-button-container-block-start: var(
-        --avonni-button-dialog-container-block-start
+    --avonni-button-container-spacing-block-start: var(
+        --avonni-button-dialog-container-spacing-block-start
     );
-    --avonni-button-container-block-end: var(
-        --avonni-button-dialog-container-block-end
+    --avonni-button-container-spacing-block-end: var(
+        --avonni-button-dialog-container-spacing-block-end
     );
     /* destructive */
     --avonni-button-destructive-color-background: var(
@@ -232,17 +236,17 @@
     --avonni-button-destructive-text-color: var(
         --avonni-button-dialog-destructive-text-color
     );
-    --avonni-button-destructive-inline-end: var(
-        --avonni-button-dialog-destructive-inline-end
+    --avonni-button-destructive-spacing-inline-end: var(
+        --avonni-button-dialog-destructive-spacing-inline-end
     );
-    --avonni-button-destructive-inline-start: var(
-        --avonni-button-dialog-destructive-inline-start
+    --avonni-button-destructive-spacing-inline-start: var(
+        --avonni-button-dialog-destructive-spacing-inline-start
     );
-    --avonni-button-destructive-block-start: var(
-        --avonni-button-dialog-destructive-block-start
+    --avonni-button-destructive-spacing-block-start: var(
+        --avonni-button-dialog-destructive-spacing-block-start
     );
-    --avonni-button-destructive-block-end: var(
-        --avonni-button-dialog-destructive-block-end
+    --avonni-button-destructive-spacing-block-end: var(
+        --avonni-button-dialog-destructive-spacing-block-end
     );
     /* destructive-text */
     --avonni-button-text-destructive-color-background: var(
@@ -254,17 +258,17 @@
     --avonni-button-text-destructive-text-color: var(
         --avonni-button-dialog-text-destructive-text-color
     );
-    --avonni-button-text-destructive-inline-end: var(
-        --avonni-button-dialog-text-destructive-inline-end
+    --avonni-button-text-destructive-spacing-inline-end: var(
+        --avonni-button-dialog-text-destructive-spacing-inline-end
     );
-    --avonni-button-text-destructive-inline-start: var(
-        --avonni-button-dialog-text-destructive-inline-start
+    --avonni-button-text-destructive-spacing-inline-start: var(
+        --avonni-button-dialog-text-destructive-spacing-inline-start
     );
-    --avonni-button-text-destructive-block-start: var(
-        --avonni-button-dialog-text-destructive-block-start
+    --avonni-button-text-destructive-spacing-block-start: var(
+        --avonni-button-dialog-text-destructive-spacing-block-start
     );
-    --avonni-button-text-destructive-block-end: var(
-        --avonni-button-dialog-text-destructive-block-end
+    --avonni-button-text-destructive-spacing-block-end: var(
+        --avonni-button-dialog-text-destructive-spacing-block-end
     );
     /* inverse */
     --avonni-button-inverse-color-background: var(
@@ -276,17 +280,17 @@
     --avonni-button-inverse-text-color: var(
         --avonni-button-dialog-inverse-text-color
     );
-    --avonni-button-inverse-inline-end: var(
-        --avonni-button-dialog-inverse-inline-end
+    --avonni-button-inverse-spacing-inline-end: var(
+        --avonni-button-dialog-inverse-spacing-inline-end
     );
-    --avonni-button-inverse-inline-start: var(
-        --avonni-button-dialog-inverse-inline-start
+    --avonni-button-inverse-spacing-inline-start: var(
+        --avonni-button-dialog-inverse-spacing-inline-start
     );
-    --avonni-button-inverse-block-start: var(
-        --avonni-button-dialog-inverse-block-start
+    --avonni-button-inverse-spacing-block-start: var(
+        --avonni-button-dialog-inverse-spacing-block-start
     );
-    --avonni-button-inverse-block-end: var(
-        --avonni-button-dialog-inverse-block-end
+    --avonni-button-inverse-spacing-block-end: var(
+        --avonni-button-dialog-inverse-spacing-block-end
     );
     /* neutral */
     --avonni-button-neutral-color-background: var(
@@ -296,17 +300,17 @@
         --avonni-button-dialog-neutral-color-border
     );
     --avonni-button-neutral-text-color: var(--avonni-button-dialog-text-color);
-    --avonni-button-neutral-inline-end: var(
-        --avonni-button-dialog-neutral-inline-end
+    --avonni-button-neutral-spacing-inline-end: var(
+        --avonni-button-dialog-neutral-spacing-inline-end
     );
-    --avonni-button-neutral-inline-start: var(
-        --avonni-button-dialog-neutral-inline-start
+    --avonni-button-neutral-spacing-inline-start: var(
+        --avonni-button-dialog-neutral-spacing-inline-start
     );
-    --avonni-button-neutral-block-start: var(
-        --avonni-button-dialog-neutral-block-start
+    --avonni-button-neutral-spacing-block-start: var(
+        --avonni-button-dialog-neutral-spacing-block-start
     );
-    --avonni-button-neutral-block-end: var(
-        --avonni-button-dialog-neutral-block-end
+    --avonni-button-neutral-spacing-block-end: var(
+        --avonni-button-dialog-neutral-spacing-block-end
     );
     /* success */
     --avonni-button-success-color-background: var(
@@ -318,17 +322,17 @@
     --avonni-button-success-text-color: var(
         --avonni-button-dialog-success-text-color
     );
-    --avonni-button-success-inline-end: var(
-        --avonni-button-dialog-success-inline-end
+    --avonni-button-success-spacing-inline-end: var(
+        --avonni-button-dialog-success-spacing-inline-end
     );
-    --avonni-button-success-inline-start: var(
-        --avonni-button-dialog-success-inline-start
+    --avonni-button-success-spacing-inline-start: var(
+        --avonni-button-dialog-success-spacing-inline-start
     );
-    --avonni-button-success-block-start: var(
-        --avonni-button-dialog-success-block-start
+    --avonni-button-success-spacing-block-start: var(
+        --avonni-button-dialog-success-spacing-block-start
     );
-    --avonni-button-success-block-end: var(
-        --avonni-button-dialog-success-block-end
+    --avonni-button-success-spacing-block-end: var(
+        --avonni-button-dialog-success-spacing-block-end
     );
 }
 

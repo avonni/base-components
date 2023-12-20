@@ -57,30 +57,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-bare-color-background-active
  * @type color
  * @default transparent
@@ -133,30 +109,6 @@
  * @name --avonni-button-icon-dialog-bare-inverse-text-color
  * @type color
  * @default #fff
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inverse-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inverse-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inverse-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inverse-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -215,30 +167,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-base-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-base-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-base-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-base-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-base-color-background-active
  * @type color
  * @default transparent
@@ -291,30 +219,6 @@
  * @name --avonni-button-icon-dialog-border-text-color
  * @type color
  * @default #747474
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -373,30 +277,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-filled-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-filled-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-filled-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-filled-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-border-filled-color-background-active
  * @type color
  * @default #fff
@@ -449,30 +329,6 @@
  * @name --avonni-button-icon-dialog-border-inverse-text-color
  * @type color
  * @default #fff
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-inverse-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-inverse-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-inverse-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-border-inverse-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -531,30 +387,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-brand-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-brand-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-brand-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-brand-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-brand-color-background-active
  * @type color
  * @default #014486
@@ -607,30 +439,6 @@
  * @name --avonni-button-icon-dialog-outline-brand-text-color
  * @type color
  * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-outline-brand-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-outline-brand-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-outline-brand-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-outline-brand-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -689,30 +497,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-container-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-container-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-container-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-container-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-container-color-background-active
  * @type color
  * @default transparent
@@ -768,30 +552,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-destructive-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-destructive-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-destructive-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-destructive-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-destructive-color-background-active
  * @type color
  * @default #8e030f
@@ -843,30 +603,6 @@
  * @name --avonni-button-icon-dialog-text-destructive-text-color
  * @type color
  * @default #8e030f
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-text-destructive-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-text-destructive-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-text-destructive-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-text-destructive-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -925,30 +661,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-inverse-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-inverse-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-inverse-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-inverse-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-inverse-color-background-active
  * @type color
  * @default #f3f3f3
@@ -1004,30 +716,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-neutral-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-neutral-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-neutral-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-neutral-block-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-neutral-color-background-active
  * @type color
  * @default #f3f3f3
@@ -1080,30 +768,6 @@
  * @name --avonni-button-icon-dialog-success-text-color
  * @type color
  * @default #181818
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-success-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-success-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-success-block-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-success-block-end
- * @type dimension
- * @default 0
  */
 /**
  * @memberof stylingHooks
