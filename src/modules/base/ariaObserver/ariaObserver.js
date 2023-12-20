@@ -108,7 +108,7 @@ export default class AvonniAriaObserver {
             ? relatedNodeIds.join(' ')
             : relatedNodeIds;
 
-        if (this.component.connected) {
+        if (this.component._connected) {
             this.privateUpdate(attribute);
         }
     }
@@ -125,7 +125,7 @@ export default class AvonniAriaObserver {
             this.isNativeShadow = isNativeShadow;
         }
 
-        if (!this.component.connected) {
+        if (!this.component._connected) {
             throw new Error(
                 `Invalid sync invocation. It can only be invoked during renderedCallback().`
             );
@@ -234,7 +234,7 @@ export default class AvonniAriaObserver {
     privateCreateMutationObserver() {
         this.disconnect();
         this.mo = new MutationObserver(() => {
-            if (!this.component.connected) {
+            if (!this.component._connected) {
                 return; // do nothing when the template is not connected
             }
             this.sync();
