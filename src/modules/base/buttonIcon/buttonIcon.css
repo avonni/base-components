@@ -116,10 +116,10 @@
         --avonni-button-icon-bare-text-color,
         var(--slds-g-color-neutral-base-50, #747474)
     );
-    padding-right: var(--avonni-button-icon-bare-inline-end, 0);
-    padding-left: var(--avonni-button-icon-bare-inline-start, 0);
-    padding-top: var(--avonni-button-icon-bare-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-bare-block-end, 0);
+    padding-right: var(--avonni-button-icon-bare-spacing-inline-end, 0);
+    padding-left: var(--avonni-button-icon-bare-spacing-inline-start, 0);
+    padding-top: var(--avonni-button-icon-bare-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-bare-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_bare:active {
@@ -163,10 +163,13 @@
         --avonni-button-icon-bare-inverse-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
-    padding-right: var(--avonni-button-icon-bare-inverse-inline-end, 0);
-    padding-left: var(--avonni-button-icon-bare-inverse-inline-start, 0);
-    padding-top: var(--avonni-button-icon-bare-inverse-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-bare-inverse-block-end, 0);
+    padding-right: var(--avonni-button-icon-bare-inverse-spacing-inline-end, 0);
+    padding-left: var(
+        --avonni-button-icon-bare-inverse-spacing-inline-start,
+        0
+    );
+    padding-top: var(--avonni-button-icon-bare-inverse-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-bare-inverse-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_bare-inverse:active {
@@ -210,10 +213,10 @@
         --avonni-button-icon-base-text-color,
         var(--sds-c-button-brand-color-background, #0176d3)
     );
-    padding-right: var(--avonni-button-icon-base-inline-end, 0);
-    padding-left: var(--avonni-button-icon-base-inline-start, 0);
-    padding-top: var(--avonni-button-icon-base-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-base-block-end, 0);
+    padding-right: var(--avonni-button-icon-base-spacing-inline-end, 0);
+    padding-left: var(--avonni-button-icon-base-spacing-inline-start, 0);
+    padding-top: var(--avonni-button-icon-base-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-base-spacing-block-end, 0);
 }
 
 .avonni-button-icon_base:active {
@@ -256,10 +259,10 @@
         var(--slds-g-color-border-base-4, #747474)
     );
     color: var(--avonni-button-icon-border-text-color, #747474);
-    padding-right: var(--avonni-button-icon-border-inline-end, 0);
-    padding-left: var(--avonni-button-icon-border-inline-start, 0);
-    padding-top: var(--avonni-button-icon-border-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-border-block-end, 0);
+    padding-right: var(--avonni-button-icon-border-spacing-inline-end, 0);
+    padding-left: var(--avonni-button-icon-border-spacing-inline-start, 0);
+    padding-top: var(--avonni-button-icon-border-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-border-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_border:active {
@@ -306,10 +309,19 @@
         --avonni-button-icon-border-filled-text-color,
         var(--slds-g-color-neutral-base-50, #747474)
     );
-    padding-right: var(--avonni-button-icon-border-filled-inline-end, 0);
-    padding-left: var(--avonni-button-icon-border-filled-inline-start, 0);
-    padding-top: var(--avonni-button-icon-border-filled-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-border-filled-block-end, 0);
+    padding-right: var(
+        --avonni-button-icon-border-filled-spacing-inline-end,
+        0
+    );
+    padding-left: var(
+        --avonni-button-icon-border-filled-spacing-inline-start,
+        0
+    );
+    padding-top: var(--avonni-button-icon-border-filled-spacing-block-start, 0);
+    padding-bottom: var(
+        --avonni-button-icon-border-filled-spacing-block-end,
+        0
+    );
 }
 
 .slds-button.avonni-button-icon_border-filled:active {
@@ -356,10 +368,22 @@
         --avonni-button-icon-border-inverse-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
-    padding-right: var(--avonni-button-icon-border-inverse-inline-end, 0);
-    padding-left: var(--avonni-button-icon-border-inverse-inline-start, 0);
-    padding-top: var(--avonni-button-icon-border-inverse-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-border-inverse-block-end, 0);
+    padding-right: var(
+        --avonni-button-icon-border-inverse-spacing-inline-end,
+        0
+    );
+    padding-left: var(
+        --avonni-button-icon-border-inverse-spacing-inline-start,
+        0
+    );
+    padding-top: var(
+        --avonni-button-icon-border-inverse-spacing-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-button-icon-border-inverse-spacing-block-end,
+        0
+    );
 }
 
 .slds-button.avonni-button-icon_border-inverse:active {
@@ -408,8 +432,8 @@
     );
     padding-right: var(--avonni-button-icon-brand-spacing-inline-end, 0);
     padding-left: var(--avonni-button-icon-brand-spacing-inline-start, 0);
-    padding-top: var(--avonni-button-icon-brand-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-brand-block-end, 0);
+    padding-top: var(--avonni-button-icon-brand-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-brand-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_brand:active {
@@ -464,8 +488,11 @@
         --avonni-button-icon-outline-brand-spacing-inline-start,
         0
     );
-    padding-top: var(--avonni-button-icon-outline-brand-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-outline-brand-block-end, 0);
+    padding-top: var(--avonni-button-icon-outline-brand-spacing-block-start, 0);
+    padding-bottom: var(
+        --avonni-button-icon-outline-brand-spacing-block-end,
+        0
+    );
 }
 
 .slds-button.avonni-button-icon_brand-outline:active {
@@ -512,10 +539,10 @@
         --avonni-button-icon-container-text-color,
         var(--slds-g-color-neutral-base-50, #747474)
     );
-    padding-left: var(--avonni-button-icon-container-inline-start, 0);
-    padding-right: var(--avonni-button-icon-container-inline-end, 0);
-    padding-top: var(--avonni-button-icon-container-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-container-block-end, 0);
+    padding-left: var(--avonni-button-icon-container-spacing-inline-start, 0);
+    padding-right: var(--avonni-button-icon-container-spacing-inline-end, 0);
+    padding-top: var(--avonni-button-icon-container-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-container-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_container:active {
@@ -564,8 +591,8 @@
     );
     padding-right: var(--avonni-button-icon-destructive-spacing-inline-end, 0);
     padding-left: var(--avonni-button-icon-destructive-spacing-inline-start, 0);
-    padding-top: var(--avonni-button-icon-destructive-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-destructive-block-end, 0);
+    padding-top: var(--avonni-button-icon-destructive-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-destructive-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_destructive:active {
@@ -620,8 +647,14 @@
         --avonni-button-icon-text-destructive-spacing-inline-start,
         0
     );
-    padding-top: var(--avonni-button-icon-text-destructive-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-text-destructive-block-end, 0);
+    padding-top: var(
+        --avonni-button-icon-text-destructive-spacing-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-button-icon-text-destructive-spacing-block-end,
+        0
+    );
 }
 
 .slds-button.avonni-button-icon_destructive-text:active {
@@ -670,8 +703,8 @@
     );
     padding-right: var(--avonni-button-icon-inverse-spacing-inline-end, 0);
     padding-left: var(--avonni-button-icon-inverse-spacing-inline-start, 0);
-    padding-top: var(--avonni-button-icon-inverse-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-inverse-block-end, 0);
+    padding-top: var(--avonni-button-icon-inverse-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-inverse-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_inverse:active,
@@ -730,8 +763,8 @@
     );
     padding-right: var(--avonni-button-icon-neutral-spacing-inline-end, 0);
     padding-left: var(--avonni-button-icon-neutral-spacing-inline-start, 0);
-    padding-top: var(--avonni-button-icon-neutral-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-neutral-block-end, 0);
+    padding-top: var(--avonni-button-icon-neutral-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-neutral-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_neutral:active {
@@ -780,8 +813,8 @@
     );
     padding-right: var(--avonni-button-icon-success-spacing-inline-end, 0);
     padding-left: var(--avonni-button-icon-success-spacing-inline-start, 0);
-    padding-top: var(--avonni-button-icon-success-block-start, 0);
-    padding-bottom: var(--avonni-button-icon-success-block-end, 0);
+    padding-top: var(--avonni-button-icon-success-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-success-spacing-block-end, 0);
 }
 
 .slds-button.avonni-button-icon_success:active {
