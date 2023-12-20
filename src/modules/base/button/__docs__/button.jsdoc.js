@@ -77,25 +77,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-inline-end
+ * @name --avonni-button-bare-spacing-inline-end
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-inline-start
+ * @name --avonni-button-bare-spacing-inline-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-block-start
+ * @name --avonni-button-bare-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-block-end
+ * @name --avonni-button-bare-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -156,25 +156,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-inverse-inline-end
+ * @name --avonni-button-bare-inverse-spacing-inline-end
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-inverse-inline-start
+ * @name --avonni-button-bare-inverse-spacing-inline-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-inverse-block-start
+ * @name --avonni-button-bare-inverse-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-bare-inverse-block-end
+ * @name --avonni-button-bare-inverse-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -235,25 +235,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-base-inline-end
+ * @name --avonni-button-base-spacing-inline-end
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-base-inline-start
+ * @name --avonni-button-base-spacing-inline-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-base-block-start
+ * @name --avonni-button-base-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-base-block-end
+ * @name --avonni-button-base-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -314,25 +314,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-inline-end
+ * @name --avonni-button-border-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-inline-start
+ * @name --avonni-button-border-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-block-start
+ * @name --avonni-button-border-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-block-end
+ * @name --avonni-button-border-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -393,25 +393,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-filled-inline-end
+ * @name --avonni-button-border-filled-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-filled-inline-start
+ * @name --avonni-button-border-filled-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-filled-block-start
+ * @name --avonni-button-border-filled-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-filled-block-end
+ * @name --avonni-button-border-filled-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -472,25 +472,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-inverse-inline-end
+ * @name --avonni-button-border-inverse-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-inverse-inline-start
+ * @name --avonni-button-border-inverse-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-inverse-block-start
+ * @name --avonni-button-border-inverse-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-border-inverse-block-end
+ * @name --avonni-button-border-inverse-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -551,25 +551,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-brand-inline-end
+ * @name --avonni-button-brand-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-brand-inline-start
+ * @name --avonni-button-brand-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-brand-block-start
+ * @name --avonni-button-brand-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-brand-block-end
+ * @name --avonni-button-brand-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -642,13 +642,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-outline-brand-block-start
+ * @name --avonni-button-outline-brand-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-outline-brand-block-end
+ * @name --avonni-button-outline-brand-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -709,25 +709,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-container-inline-start
+ * @name --avonni-button-container-spacing-inline-start
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-container-inline-end
+ * @name --avonni-button-container-spacing-inline-end
  * @type dimension
  * @default 1rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-container-block-start
+ * @name --avonni-button-container-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-container-block-end
+ * @name --avonni-button-container-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -800,13 +800,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-destructive-block-start
+ * @name --avonni-button-destructive-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-destructive-block-end
+ * @name --avonni-button-destructive-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -878,13 +878,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-text-destructive-block-start
+ * @name --avonni-button-text-destructive-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-text-destructive-block-end
+ * @name --avonni-button-text-destructive-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -957,13 +957,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-inverse-block-start
+ * @name --avonni-button-inverse-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-inverse-block-end
+ * @name --avonni-button-inverse-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -1036,13 +1036,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-neutral-block-start
+ * @name --avonni-button-neutral-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-neutral-block-end
+ * @name --avonni-button-neutral-spacing-block-end
  * @type dimension
  * @default 0
  */
@@ -1115,13 +1115,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-success-block-start
+ * @name --avonni-button-success-spacing-block-start
  * @type dimension
  * @default 0
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-success-block-end
+ * @name --avonni-button-success-spacing-block-end
  * @type dimension
  * @default 0
  */
