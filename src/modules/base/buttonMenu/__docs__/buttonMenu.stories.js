@@ -77,12 +77,12 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large'],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon. Options include x-small, small, medium or large.',
+                'The size of the icon. Options include xx-small, x-small, small, medium or large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'small' },
+                defaultValue: { summary: 'medium' },
                 category: 'icon'
             }
         },

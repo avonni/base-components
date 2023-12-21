@@ -159,6 +159,27 @@ describe('Button Menu', () => {
             });
 
             describe('icon size', () => {
+                it('Xx-small', () => {
+                    element.iconSrc =
+                        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+                    element.iconSize = 'xx-small';
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+
+                    return Promise.resolve().then(() => {
+                        const image = element.shadowRoot.querySelector(
+                            '[data-element-id="image"]'
+                        );
+                        expect(image.className).toContain(
+                            'avonni-button-menu__image_xx-small'
+                        );
+                        expect(button.className).toContain(
+                            'avonni-button-menu__icon_xx-small'
+                        );
+                    });
+                });
+
                 it('X-small', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -207,7 +228,7 @@ describe('Button Menu', () => {
                         );
 
                         return Promise.resolve().then(() => {
-                            expect(icon.size).toBe('xx-small');
+                            expect(icon.size).toBe('x-small');
                         });
                     });
                 });
@@ -242,7 +263,7 @@ describe('Button Menu', () => {
                     );
 
                     return Promise.resolve().then(() => {
-                        expect(icon.size).toBe('x-small');
+                        expect(icon.size).toBe('small');
                     });
                 });
 

@@ -28,7 +28,7 @@ const MENU_ALIGNMENTS = {
 };
 
 const ICON_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large'],
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'small'
 };
 
@@ -208,7 +208,7 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
-     * The size of the icon. Options include x-small, small, medium or large.
+     * The size of the icon. Options include xx-small, x-small, small, medium or large.
      *
      * @public
      * @type {string}
@@ -401,7 +401,10 @@ export default class ButtonMenu extends PrimitiveButton {
                 'slds-button_icon-border-inverse':
                     this.variant === 'border-inverse',
                 'slds-button_icon-inverse': this.variant === 'bare-inverse',
-                'avonni-button-menu__button-icon': isAddedVariant
+                'avonni-button-menu__button-icon': isAddedVariant,
+                'slds-button_icon-xx-small': this.iconSize === 'xx-small',
+                'slds-button_icon-x-small': this.iconSize === 'x-small',
+                'slds-button_icon-small': this.iconSize === 'small'
             });
             if (
                 this.iconSrc ||
@@ -465,33 +468,15 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
-     * Computed icon class styling.
-     *
-     * @type {string}
-     */
-    get computedIconClass() {
-        return this.label ? 'slds-m-left_xx-small' : '';
-    }
-
-    /**
      * Computed size for the icon.
      *
      * @type {string}
      */
     get computedIconSize() {
-        if (!this.label) {
-            return '';
+        if (this.iconSize === 'large' || this.iconSize === 'medium') {
+            return this.iconSize === 'large' ? 'large' : 'small';
         }
-        switch (this.iconSize) {
-            case 'x-small':
-                return 'xx-small';
-            case 'small':
-                return 'x-small';
-            case 'medium':
-                return 'small';
-            default:
-                return this.iconSize;
-        }
+        return this.label ? this.iconSize : '';
     }
 
     /**
@@ -500,13 +485,10 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     get computedIconSvgClass() {
-        return classSet('slds-button__icon')
-            .add({
-                'slds-button__icon_x-small': this.iconSize === 'x-small',
-                'slds-button__icon_small': this.iconSize === 'small',
-                'slds-button__icon_large': this.iconSize === 'large'
-            })
-            .toString();
+        if (this.label) {
+            return 'slds-button__icon slds-button__icon_right';
+        }
+        return 'slds-button__icon';
     }
 
     /**
