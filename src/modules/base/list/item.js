@@ -1,5 +1,5 @@
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 
 const AVATAR_POSITION = {
     valid: [
@@ -17,6 +17,7 @@ const AVATAR_POSITION = {
 
 export default class Item {
     constructor(value) {
+        this.key = generateUUID();
         this.avatar = value.avatar;
         this.avatarPosition = normalizeString(
             this.avatar && this.avatar.position,
@@ -27,7 +28,9 @@ export default class Item {
         );
         this.description = value.description;
         this.fallbackIconName = value.fallbackIconName;
-        this.fields = value.fields;
+        this.fields = normalizeArray(value.fields).map((f) => {
+            return { ...f, key: generateUUID() };
+        });
         this.href = value.href;
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);

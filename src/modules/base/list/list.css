@@ -6,20 +6,41 @@
     flex: 1 1 auto;
 }
 
+.avonni-list__item-wrapper {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.avonni-list__single-line {
+    min-height: 3rem;
+}
+
 /* VALUE ASSIGNMENTS */
 .avonni-list__item-menu {
-    row-gap: var(--avonni-list-item-spacing-block-between, 0.5rem);
+    width: 100%;
+    --avonni-layout-items-spacing-block-between: var(
+        --avonni-list-item-spacing-block-between,
+        0.5rem
+    );
     margin-inline: calc(
         var(--avonni-list-item-spacing-inline-between, 0.5rem) / -2
     );
 }
 
-.avonni-list__vertical-compact {
-    row-gap: var(--avonni-list-item-spacing-block-between, 0);
+.avonni-list__item-menu.avonni-list__item-menu_horizontal-compact {
+    margin-inline: 0;
+}
+
+.avonni-list__item-menu.avonni-list__vertical-compact {
+    --avonni-layout-items-spacing-block-between: var(
+        --avonni-list-item-spacing-block-between,
+        0
+    );
 }
 
 .avonni-list__item {
-    align-self: stretch;
     --avonni-card-color-background: var(
         --avonni-list-item-color-background,
         transparent
@@ -36,6 +57,11 @@
     --avonni-card-body-spacing-block-start: 0px;
     --avonni-card-body-spacing-block-end: 0px;
     --avonni-card-shadow: var(--avonni-list-item-shadow, none);
+}
+
+.avonni-list__item.avonni-list__item_horizontal-compact {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .avonni-list-item-body {
@@ -66,7 +92,7 @@
 }
 
 .avonni-list__lower-spinner {
-    height: 30px;
+    min-height: 3rem;
 }
 
 .avonni-list__page-change-button-container {

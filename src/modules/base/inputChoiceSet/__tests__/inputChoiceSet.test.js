@@ -351,7 +351,7 @@ describe('Input choice set', () => {
                     );
                     expect(items).toHaveLength(5);
                     items.forEach((item) => {
-                        expect(item.size).toBe('100%');
+                        expect(item.size).toBe(12);
                     });
                 });
             });
@@ -376,7 +376,7 @@ describe('Input choice set', () => {
                     );
                     expect(items).toHaveLength(5);
                     items.forEach((item) => {
-                        expect(item.size).toBe('25%');
+                        expect(item.size).toBe(3);
                     });
                 });
             });
