@@ -539,6 +539,15 @@ export default class ButtonMenu extends PrimitiveButton {
         return this.menuAlignment.startsWith('auto');
     }
 
+    /**
+     * Display icon only if iconName is set and src is not set.
+     *
+     * @type {boolean}
+     */
+    get showIcon() {
+        return this.iconName && !this.iconSrc;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
