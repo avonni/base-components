@@ -39,6 +39,16 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-font-family
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-font-size
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-progress-circle-title-font-style
  * @default normal
  * @type font
@@ -54,6 +64,16 @@
  * @name --avonni-progress-circle-title-line-clamp
  * @default 3
  * @type number
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-line-height
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-letter-spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
