@@ -123,10 +123,7 @@ export const itemsWithImages = [
         label: 'Item 4',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        infos: [
-            { label: 'info 1', href: '' },
-            { label: 'info 2', href: '' }
-        ],
+        infos: [{ label: 'info 1' }, { label: 'info 2', href: '#' }],
         icons: ['utility:share', 'utility:refresh'],
         imageSrc:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
@@ -137,8 +134,8 @@ export const itemsWithImages = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
-            { label: 'info 1', href: '' },
-            { label: 'info 2', href: '' }
+            { label: 'info 1', href: 'https://www.avonni.app/' },
+            { label: 'info 2', href: 'https://www.avonni.app/' }
         ],
         icons: ['utility:share', 'utility:refresh'],
         name: 'name-item-5'
@@ -219,7 +216,7 @@ export const itemsWithImagesAndAvatars = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
-            { label: 'info 1', href: '' },
+            { label: 'info 1', href: 'https://www.avonni.app/' },
             { label: 'info 2', href: '' }
         ],
         icons: ['utility:share', 'utility:refresh'],
@@ -235,7 +232,7 @@ export const itemsWithImagesAndAvatars = [
         },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        infos: [{ label: 'info 1', href: '' }],
+        infos: [{ label: 'info 1', href: 'https://www.avonni.app/' }],
         icons: ['utility:share'],
         imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         name: 'name-item-5'
