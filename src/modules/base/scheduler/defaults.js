@@ -1,3 +1,4 @@
+import { DEFAULT_ACTION_NAMES } from 'c/schedulerUtils';
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -16,19 +17,19 @@ const DEFAULT_COLUMNS = [
 ];
 const DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS = [
     {
-        name: 'Standard.Scheduler.AddEvent',
+        name: DEFAULT_ACTION_NAMES.add,
         label: 'Add event',
         iconName: 'utility:add'
     }
 ];
 const DEFAULT_CONTEXT_MENU_EVENT_ACTIONS = [
     {
-        name: 'Standard.Scheduler.EditEvent',
+        name: DEFAULT_ACTION_NAMES.edit,
         label: 'Edit',
         iconName: 'utility:edit'
     },
     {
-        name: 'Standard.Scheduler.DeleteEvent',
+        name: DEFAULT_ACTION_NAMES.delete,
         label: 'Delete',
         iconName: 'utility:delete'
     }

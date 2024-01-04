@@ -11,6 +11,7 @@ import {
 import { classSet } from 'c/utils';
 import Column from './column';
 import {
+    DEFAULT_ACTION_NAMES,
     getElementOnXAxis,
     getElementOnYAxis,
     isAllowedTime,
@@ -1755,6 +1756,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (
             event.button ||
             this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
             !this.firstSelectedResource ||
             this.isMonth
         ) {
@@ -1851,9 +1853,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this._eventData.handleMouseUp(x, y);
 
         switch (eventToDispatch) {
-            case 'edit':
-                this.dispatchOpenEditDialog(this._eventData.selection);
+            case 'edit': {
+                const prevented = this.dispatchOpenEditDialog(
+                    this._eventData.selection
+                );
+                if (prevented) {
+                    this._eventData.cleanSelection(true);
+                }
                 break;
+            }
             case 'recurrence':
                 this.dispatchOpenRecurrenceDialog(this._eventData.selection);
                 break;
@@ -1871,7 +1879,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event `mousedown` event fired by an empty cell or a disabled primitive event occurrence.
      */
     handleMultiDayEmptyCellMouseDown(event) {
-        if (event.button || this.readOnly || !this.firstSelectedResource) {
+        if (
+            event.button ||
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
+            !this.firstSelectedResource
+        ) {
             return;
         }
 
