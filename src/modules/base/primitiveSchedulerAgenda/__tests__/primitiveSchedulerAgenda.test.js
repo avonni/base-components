@@ -2247,7 +2247,7 @@ describe('Primitive Scheduler Agenda', () => {
             expect(call.detail.selection.event.name).toBe(event.eventName);
             expect(call.bubbles).toBeFalsy();
             expect(call.composed).toBeFalsy();
-            expect(call.cancelable).toBeFalsy();
+            expect(call.cancelable).toBeTruthy();
         });
     });
 
