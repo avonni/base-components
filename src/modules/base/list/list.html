@@ -320,16 +320,24 @@
                                                     <li
                                                         key={info.label}
                                                         class="slds-item"
+                                                        data-element-id="li-info"
                                                     >
                                                         <a
+                                                            if:true={info.href}
                                                             class="
                                                                 avonni-list__item-info-link
                                                             "
                                                             href={info.href}
+                                                            data-element-id="a-info"
                                                             onclick={handleAnchorTagClick}
                                                         >
                                                             {info.label}
                                                         </a>
+                                                        <span
+                                                            if:false={info.href}
+                                                            data-element-id="span-info"
+                                                            >{info.label}</span
+                                                        >
                                                     </li>
                                                 </template>
                                             </ul>
