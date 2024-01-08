@@ -96,7 +96,7 @@ export default class ListSortableWithImagesAndAvatars extends LightningElement {
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             infos: [
-                { label: 'info 1', href: '' },
+                { label: 'info 1', href: 'https://www.avonni.app/' },
                 { label: 'info 2', href: '' }
             ],
             icons: ['utility:share', 'utility:refresh'],
@@ -112,7 +112,7 @@ export default class ListSortableWithImagesAndAvatars extends LightningElement {
             },
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            infos: [{ label: 'info 1', href: '' }],
+            infos: [{ label: 'info 1', href: 'https://www.avonni.app/' }],
             icons: ['utility:share'],
             imageSrc:
                 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',

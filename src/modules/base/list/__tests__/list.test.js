@@ -357,6 +357,45 @@ describe('List', () => {
                 });
             });
 
+            it('Infos', () => {
+                element.items = [
+                    {
+                        name: 'item-1',
+                        infos: [
+                            { label: 'Info 1', href: 'https://www.google.com' },
+                            { label: 'Info 2' }
+                        ]
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    const infos = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-info"]'
+                    );
+                    expect(infos).toHaveLength(2);
+                    const firstLink = infos[0].querySelector(
+                        '[data-element-id="a-info"]'
+                    );
+                    const firstSpan = infos[0].querySelector(
+                        '[data-element-id="span-info"]'
+                    );
+                    expect(firstLink).toBeTruthy();
+                    expect(firstLink.href).toBe('https://www.google.com/');
+                    expect(firstLink.textContent).toBe('Info 1');
+                    expect(firstSpan).toBeFalsy();
+
+                    const secondLink = infos[1].querySelector(
+                        '[data-element-id="a-info"]'
+                    );
+                    const secondSpan = infos[1].querySelector(
+                        '[data-element-id="span-info"]'
+                    );
+                    expect(secondLink).toBeFalsy();
+                    expect(secondSpan).toBeTruthy();
+                    expect(secondSpan.textContent).toBe('Info 2');
+                });
+            });
+
             describe('Fields', () => {
                 it('Fields resize observer is centralized in list', () => {
                     element.items = [
