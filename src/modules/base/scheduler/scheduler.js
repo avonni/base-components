@@ -91,6 +91,8 @@ export default class Scheduler extends LightningElement {
     _closeDetailPopoverTimeout;
     _connected = false;
     _focusCalendarPopover;
+    _noEmptySpotActions = false;
+    _noEventActions = false;
     _openDetailPopoverTimeout;
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
@@ -284,6 +286,7 @@ export default class Scheduler extends LightningElement {
         return this._contextMenuEmptySpotActions;
     }
     set contextMenuEmptySpotActions(value) {
+        this._noEmptySpotActions = Array.isArray(value) && !value.length;
         this._contextMenuEmptySpotActions = normalizeArray(value);
     }
 
@@ -299,6 +302,7 @@ export default class Scheduler extends LightningElement {
         return this._contextMenuEventActions;
     }
     set contextMenuEventActions(value) {
+        this._noEventActions = Array.isArray(value) && !value.length;
         this._contextMenuEventActions = normalizeArray(value);
     }
 
@@ -1144,7 +1148,11 @@ export default class Scheduler extends LightningElement {
     }]
     */
     get computedContextMenuEmptySpot() {
-        if (this.readOnly || this.contextMenuEmptySpotActions.length) {
+        if (
+            this.readOnly ||
+            this.contextMenuEmptySpotActions.length ||
+            this._noEmptySpotActions
+        ) {
             return this.contextMenuEmptySpotActions;
         }
         return DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS.filter((action) => {
@@ -1168,7 +1176,11 @@ export default class Scheduler extends LightningElement {
     }]
     */
     get computedContextMenuEvent() {
-        if (this.readOnly || this.contextMenuEventActions.length) {
+        if (
+            this.readOnly ||
+            this.contextMenuEventActions.length ||
+            this._noEventActions
+        ) {
             return this.contextMenuEventActions;
         }
         return DEFAULT_CONTEXT_MENU_EVENT_ACTIONS.filter((action) => {
