@@ -251,16 +251,21 @@ export default class ButtonIcon extends PrimitiveButton {
         classes.add('slds-button_icon avonni-button-icon');
         if (!isBare) {
             switch (this._size) {
-                case 'xx-small':
-                    classes.add('slds-button_icon-xx-small');
+                case 'small':
+                    classes.add('slds-button_icon-small');
                     break;
                 case 'x-small':
                     classes.add('slds-button_icon-x-small');
                     break;
-                case 'small':
-                    classes.add('slds-button_icon-small');
+                case 'xx-small':
+                    classes.add('slds-button_icon-xx-small');
                     break;
-                case 'medium':
+                case 'large': // There is no `large` modifier for buttons so we should drop down one size to `medium`
+                    console.warn(
+                        `<lightning-button-icon> The non-bare variants of buttonIcon do not support a size value of "large". Supported values include "xx-small", "x-small", "small", and "medium". Falling back to size value "medium".`
+                    );
+                /* falls through */
+                case 'medium': // Medium is the default size, and the default size doesn't require a size modifier
                 default:
             }
         }
@@ -308,11 +313,15 @@ export default class ButtonIcon extends PrimitiveButton {
                 case 'small':
                     classes.add('slds-button__icon_small');
                     break;
+                case 'xx-small': // There is no `xx-small` modifier for bare so we should drop down one size to `x-small`
+                    console.warn(
+                        `<lightning-button-icon> The bare variant of buttonIcon does not support a size value of "xx-small". Supported values include "x-small", "small", "medium", and "large". The default is "medium".`
+                    );
                 /* falls through */
                 case 'x-small':
                     classes.add('slds-button__icon_x-small');
                     break;
-                case 'medium':
+                case 'medium': // Medium is the default size, and the default size doesn't require a size modifier
                 default:
             }
         }

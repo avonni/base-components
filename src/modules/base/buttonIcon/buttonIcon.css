@@ -18,6 +18,13 @@
     object-fit: var(--avonni-button-icon-image-object-fit, cover);
 }
 
+.avonni-button-icon__image_xx-small-bare {
+    width: 0.875rem;
+    height: 0.875rem;
+    min-width: 0.875rem;
+    min-height: 0.875rem;
+}
+
 .avonni-button-icon__image_x-small-bare {
     width: 0.5rem;
     height: 0.5rem;
@@ -68,6 +75,13 @@
 }
 
 .avonni-button-icon__image_medium {
+    width: 1rem;
+    height: 1rem;
+    min-width: 1rem;
+    min-height: 1rem;
+}
+
+.avonni-button-icon__image_large {
     width: 1rem;
     height: 1rem;
     min-width: 1rem;
