@@ -28,7 +28,7 @@
             onscroll={handleScroll}
         >
             <div
-                if:true={showPaginationButtons}
+                if:true={isSingleLine}
                 class="
                     avonni-list__flex-col
                     avonni-list__page-change-button-container
@@ -42,26 +42,33 @@
                     size="large"
                     variant="bare"
                     data-element-id="previous-page-button"
-                    onclick={previousPage}
+                    onclick={handlePreviousPage}
                 ></lightning-button-icon>
             </div>
-            <ul
+            <c-layout
                 class={computedListClass}
-                role={menuRole}
+                direction={layoutDirection}
+                multiple-rows={isNotSingleLine}
+                role="list"
+                vertical-align="stretch"
                 data-element-id="list-element"
-                onclick={handleListClick}
+                onsizechange={handleLayoutSizeChange}
             >
                 <template
                     for:each={displayedItems}
                     for:item="item"
                     for:index="index"
                 >
-                    <li
+                    <c-layout-item
+                        key={item.key}
                         class={computedItemWrapperClass}
                         aria-describedby="instructions"
                         aria-label={item.label}
-                        key={generateKey}
-                        role={itemRole}
+                        large-container-size={largeContainerColSize}
+                        medium-container-size={mediumContainerColSize}
+                        role="listitem"
+                        small-container-size={smallContainerColSize}
+                        size={colSize}
                         tabindex="0"
                         data-name={item.name}
                         data-element-id="li-item"
@@ -252,7 +259,7 @@
                                                         for:item="icon"
                                                     >
                                                         <span
-                                                            key={generateKey}
+                                                            key={icon}
                                                             class="
                                                                 avonni-list__item-icon
                                                             "
@@ -329,7 +336,7 @@
 
                                             <!-- Fields -->
                                             <div
-                                                if:true={item.fields}
+                                                if:true={item.fields.length}
                                                 class="
                                                     slds-m-top_xx-small
                                                     avonni-list__item-fields-container
@@ -339,6 +346,8 @@
                                                 <c-layout
                                                     multiple-rows
                                                     data-element-id="fields-container"
+                                                    onprivatelayoutconnected={handleFieldsLayoutConnected}
+                                                    onprivatelayoutdisconnected={handleFieldsLayoutDisconnected}
                                                 >
                                                     <template
                                                         for:each={item.fields}
@@ -346,7 +355,7 @@
                                                         for:index="index"
                                                     >
                                                         <c-layout-item
-                                                            key={field.value}
+                                                            key={field.key}
                                                             class="
                                                                 slds-truncate
                                                             "
@@ -361,6 +370,7 @@
                                                                 type-attributes={field.typeAttributes}
                                                                 value={field.value}
                                                                 variant={fieldAttributes.variant}
+                                                                data-element-id="avonni-output-data"
                                                             ></c-output-data>
                                                         </c-layout-item>
                                                     </template>
@@ -422,16 +432,16 @@
                                 </div>
                             </c-card>
                         </div>
-                    </li>
+                    </c-layout-item>
                 </template>
-                <li
-                    class="
-                        avonni-list__flex-col
-                        slds-size_12-of-12
-                        slds-is-relative
-                        avonni-list__lower-spinner
-                        slds-hide
-                    "
+                <c-layout-item
+                    if:true={showLoadingColumn}
+                    class="slds-is-relative avonni-list__lower-spinner"
+                    large-container-size={loadingLargeContainerColSize}
+                    medium-container-size={loadingMediumContainerColSize}
+                    role="listitem"
+                    small-container-size={loadingSmallContainerColSize}
+                    size={loadingColSize}
                     data-element-id="loading-spinner-container"
                 >
                     <lightning-spinner
@@ -440,10 +450,10 @@
                         size="small"
                         data-element-id="loading-spinner-below"
                     ></lightning-spinner>
-                </li>
-            </ul>
+                </c-layout-item>
+            </c-layout>
             <div
-                if:true={showPaginationButtons}
+                if:true={isSingleLine}
                 class="
                     avonni-list__flex-col
                     slds-is-relative
@@ -458,7 +468,7 @@
                     size="large"
                     variant="bare"
                     data-element-id="next-page-button"
-                    onclick={nextPage}
+                    onclick={handleNextPage}
                 ></lightning-button-icon>
                 <lightning-spinner
                     if:true={isLoading}
