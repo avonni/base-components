@@ -124,7 +124,7 @@ export default class ButtonIcon extends PrimitiveButton {
 
     _size = ICON_SIZES.default;
     _tooltip = null;
-    _variant = 'border';
+    _variant = BUTTON_VARIANTS.default;
 
     tooltipType = TooltipType.Info;
 

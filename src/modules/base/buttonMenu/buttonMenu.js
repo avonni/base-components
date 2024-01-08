@@ -378,8 +378,7 @@ export default class ButtonMenu extends PrimitiveButton {
                 'slds-button_text-destructive':
                     this.variant === 'destructive-text',
                 'slds-button_success': this.variant === 'success',
-                'avonni-button-menu__button_large': this.iconSize === 'large',
-                'avonni-button-menu__button_medium': this.iconSize === 'medium'
+                'avonni-button-menu__button_large': this.iconSize === 'large'
             });
         } else {
             classes.add({
@@ -473,10 +472,17 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     get computedIconSize() {
-        if (this.iconSize === 'large' || this.iconSize === 'medium') {
-            return this.iconSize === 'large' ? 'large' : 'small';
+        if (this.label) {
+            return this.iconSize === 'large' || this.iconSize === 'xx-small'
+                ? this.iconSize
+                : 'x-small';
         }
-        return this.label ? this.iconSize : '';
+        if (this.iconSize === 'medium') {
+            return 'x-small';
+        } else if (this.iconSize === 'large') {
+            return 'small';
+        }
+        return '';
     }
 
     /**

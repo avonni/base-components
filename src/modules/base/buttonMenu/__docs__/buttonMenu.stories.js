@@ -238,7 +238,7 @@ export default {
         disabled: false,
         hideDownArrow: false,
         iconName: 'utility:down',
-        iconSize: 'small',
+        iconSize: 'medium',
         isDraft: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',

@@ -263,7 +263,7 @@ describe('Button Menu', () => {
                     );
 
                     return Promise.resolve().then(() => {
-                        expect(icon.size).toBe('small');
+                        expect(icon.size).toBe('x-small');
                     });
                 });
 
@@ -311,7 +311,7 @@ describe('Button Menu', () => {
                     );
 
                     return Promise.resolve().then(() => {
-                        expect(icon.size).toBe('small');
+                        expect(icon.size).toBe('x-small');
                     });
                 });
 
@@ -333,6 +333,19 @@ describe('Button Menu', () => {
                         expect(button.className).toContain(
                             'avonni-button-menu__icon_large'
                         );
+                    });
+                });
+
+                it('Large only icon', () => {
+                    element.iconName = 'utility:close';
+
+                    element.iconSize = 'large';
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-icon-main"]'
+                    );
+
+                    return Promise.resolve().then(() => {
+                        expect(icon.size).toBe('small');
                     });
                 });
 
