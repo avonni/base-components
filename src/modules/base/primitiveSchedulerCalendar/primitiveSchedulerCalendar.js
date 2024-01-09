@@ -2,6 +2,7 @@ import { api } from 'lwc';
 import {
     addToDate,
     deepCopy,
+    equal,
     getWeekNumber,
     intervalFrom,
     normalizeBoolean,
@@ -323,12 +324,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             return;
         }
 
+        const previousDayHeadersTimeSpan = deepCopy(this.dayHeadersTimeSpan);
+        const previousHourHeadersTimeSpan = deepCopy(this.hourHeadersTimeSpan);
         super.timeSpan = value;
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
             this.initEvents();
+
+            // Make sure the headers stop loading when the time span has not changed
+            if (equal(previousDayHeadersTimeSpan, this.dayHeadersTimeSpan)) {
+                this._dayHeadersLoading = false;
+            }
+            if (equal(previousHourHeadersTimeSpan, this.hourHeadersTimeSpan)) {
+                this._hourHeadersLoading = false;
+            }
 
             // If the hour headers appear or disappear, the visible width changes
             requestAnimationFrame(() => {
