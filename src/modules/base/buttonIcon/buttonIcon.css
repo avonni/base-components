@@ -233,7 +233,8 @@
     );
 }
 
-.avonni-button-icon_base:hover {
+.avonni-button-icon_base:hover,
+.avonni-button-icon_base:focus {
     background-color: var(
         --avonni-button-icon-base-color-background-hover,
         transparent
