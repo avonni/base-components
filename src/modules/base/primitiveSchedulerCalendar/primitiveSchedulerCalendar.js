@@ -5,6 +5,7 @@ import {
     getWeekNumber,
     intervalFrom,
     normalizeBoolean,
+    normalizeObject,
     normalizeString,
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
@@ -317,6 +318,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return super.timeSpan;
     }
     set timeSpan(value) {
+        const { unit, span } = normalizeObject(value);
+        if (unit === this._timeSpan.unit && span === this._timeSpan.span) {
+            return;
+        }
+
         super.timeSpan = value;
 
         if (this._connected) {
