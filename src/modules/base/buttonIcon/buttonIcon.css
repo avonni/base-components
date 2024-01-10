@@ -218,7 +218,7 @@
     );
 }
 
-.avonni-button-icon_base:active {
+.slds-button.avonni-button-icon_base:active {
     background-color: var(
         --avonni-button-icon-base-color-background-active,
         transparent
@@ -629,8 +629,7 @@
     );
 }
 
-.slds-button.avonni-button-icon_inverse:active,
-.slds-button.avonni-button-icon_inverse:focus {
+.slds-button.avonni-button-icon_inverse:active {
     background-color: var(
         --avonni-button-icon-inverse-color-background-active,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
@@ -643,9 +642,12 @@
         --avonni-button-icon-inverse-text-color-active,
         var(--sds-c-button-text-color-hover, #014486)
     );
+    --slds-c-button-shadow: 0 0 3px #f3f3f3;
+    outline: none;
 }
 
-.avonni-button-icon_inverse:hover {
+.avonni-button-icon_inverse:hover,
+.avonni-button-icon_inverse:focus {
     background-color: var(
         --avonni-button-icon-inverse-color-background-hover,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
@@ -654,16 +656,6 @@
         --avonni-button-icon-inverse-color-border-hover,
         var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(
-        --avonni-button-icon-inverse-text-color-hover,
-        var(--sds-c-button-text-color-hover, #014486)
-    );
-}
-
-.slds-button.avonni-button-icon_inverse:focus {
-    --slds-c-button-shadow: 0 0 3px #f3f3f3;
-    border-color: var(--slds-g-color-neutral-base-100, #f3f3f3);
-    outline: none;
     color: var(
         --avonni-button-icon-inverse-text-color-hover,
         var(--sds-c-button-text-color-hover, #014486)

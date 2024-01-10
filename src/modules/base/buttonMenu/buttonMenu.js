@@ -503,7 +503,7 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     get computedImageClass() {
-        return classSet('')
+        return classSet('avonni-button-menu__image')
             .add(`avonni-button-menu__image_${this.iconSize}`)
             .add({ 'slds-m-left_xx-small': this.label })
             .toString();
