@@ -257,6 +257,18 @@ export default {
                 category: 'Events'
             }
         },
+        hiddenActions: {
+            name: 'hidden-actions',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of default action names that are not allowed. These actions will be hidden from the menus, and ignored when triggered by a user action (double click, drag, etc.). Valid values include `Standard.Scheduler.AddEvent`, `Standard.Scheduler.DeleteEvent` and `Standard.Scheduler.EditEvent`.',
+            table: {
+                type: { summary: 'string[]' },
+                category: 'Events'
+            }
+        },
         hiddenDisplays: {
             name: 'hidden-displays',
             control: {
@@ -520,25 +532,6 @@ export default {
         availableMonths: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         availableTimeFrames: ['00:00-23:59'],
         collapseDisabled: false,
-        contextMenuEmptySpotActions: [
-            {
-                name: 'Standard.Scheduler.AddEvent',
-                label: 'Add event',
-                iconName: 'utility:add'
-            }
-        ],
-        contextMenuEventActions: [
-            {
-                name: 'Standard.Scheduler.EditEvent',
-                label: 'Edit',
-                iconName: 'utility:edit'
-            },
-            {
-                name: 'Standard.Scheduler.DeleteEvent',
-                label: 'Delete',
-                iconName: 'utility:delete'
-            }
-        ],
         dateFormat: 'ff',
         dialogLabels: {
             title: 'Title',

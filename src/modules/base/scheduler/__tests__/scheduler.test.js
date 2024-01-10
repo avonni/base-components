@@ -85,6 +85,7 @@ describe('Scheduler', () => {
         });
         expect(element.eventsPalette).toBe('aurora');
         expect(element.eventsTheme).toBe('default');
+        expect(element.hiddenActions).toEqual([]);
         expect(element.hiddenDisplays).toEqual([]);
         expect(element.hideResourcesFilter).toBeFalsy();
         expect(element.hideSidePanel).toBeFalsy();
@@ -403,6 +404,61 @@ describe('Scheduler', () => {
             });
     });
 
+    it('Scheduler: contextMenuEmptySpotActions, default actions are hidden if empty array is passed', () => {
+        element.selectedResources = [RESOURCES[0].name];
+        element.resources = RESOURCES;
+        element.selectedDisplay = 'timeline';
+        element.contextMenuEmptySpotActions = [];
+
+        return Promise.resolve()
+            .then(() => {
+                const timeline = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                );
+                timeline.dispatchEvent(
+                    new CustomEvent('emptyspotcontextmenu', {
+                        detail: { selection: {} }
+                    })
+                );
+            })
+            .then(() => {
+                const menu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(menu).toBeFalsy();
+            });
+    });
+
+    it('Scheduler: contextMenuEmptySpotActions, default actions are visible if undefined', () => {
+        element.selectedResources = [RESOURCES[0].name];
+        element.resources = RESOURCES;
+        element.selectedDisplay = 'timeline';
+
+        return Promise.resolve()
+            .then(() => {
+                const timeline = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                );
+                timeline.dispatchEvent(
+                    new CustomEvent('emptyspotcontextmenu', {
+                        detail: { selection: {} }
+                    })
+                );
+            })
+            .then(() => {
+                const menu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(menu.items).toEqual([
+                    {
+                        iconName: 'utility:add',
+                        label: 'Add event',
+                        name: 'Standard.Scheduler.AddEvent'
+                    }
+                ]);
+            });
+    });
+
     // context-menu-event-actions
     it('Scheduler: contextMenuEventActions', () => {
         element.selectedDisplay = 'calendar';
@@ -462,6 +518,76 @@ describe('Scheduler', () => {
                     '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 expect(menu.items).toEqual(ACTIONS);
+            });
+    });
+
+    it('Scheduler: contextMenuEventActions, default actions are hidden if empty array is passed', () => {
+        element.selectedDisplay = 'calendar';
+        element.contextMenuEventActions = [];
+
+        return Promise.resolve()
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                );
+                const selectSpy = jest
+                    .spyOn(calendar, 'selectEvent')
+                    .mockImplementation(() => {
+                        return {};
+                    });
+                const detail = {};
+                calendar.dispatchEvent(
+                    new CustomEvent('eventcontextmenu', {
+                        detail
+                    })
+                );
+                expect(selectSpy).not.toHaveBeenCalled();
+            })
+            .then(() => {
+                const menu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(menu).toBeFalsy();
+            });
+    });
+
+    it('Scheduler: contextMenuEventActions, default actions are visible if undefined', () => {
+        element.selectedDisplay = 'calendar';
+
+        return Promise.resolve()
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                );
+                const selectSpy = jest
+                    .spyOn(calendar, 'selectEvent')
+                    .mockImplementation(() => {
+                        return {};
+                    });
+                const detail = {};
+                calendar.dispatchEvent(
+                    new CustomEvent('eventcontextmenu', {
+                        detail
+                    })
+                );
+                expect(selectSpy).toHaveBeenCalledWith(detail);
+            })
+            .then(() => {
+                const menu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(menu.items).toEqual([
+                    {
+                        iconName: 'utility:edit',
+                        label: 'Edit',
+                        name: 'Standard.Scheduler.EditEvent'
+                    },
+                    {
+                        iconName: 'utility:delete',
+                        label: 'Delete',
+                        name: 'Standard.Scheduler.DeleteEvent'
+                    }
+                ]);
             });
     });
 
@@ -1161,6 +1287,206 @@ describe('Scheduler', () => {
                 '[data-element-id="avonni-primitive-scheduler-timeline"]'
             );
             expect(timeline.eventsTheme).toBe('transparent');
+        });
+    });
+
+    // hidden-actions
+    describe('Hidden actions', () => {
+        it('No hidden action', () => {
+            element.hiddenActions = [];
+            element.resources = RESOURCES;
+            element.selectedResources = RESOURCES.map((r) => r.name);
+            element.events = EVENTS;
+
+            return Promise.resolve()
+                .then(() => {
+                    const schedule = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    jest.spyOn(schedule, 'selectEvent').mockImplementation(
+                        () => {
+                            return {};
+                        }
+                    );
+                    schedule.dispatchEvent(
+                        new CustomEvent('eventcontextmenu', {
+                            detail: { selection: {} }
+                        })
+                    );
+                })
+                .then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-dropdown-menu"]'
+                    );
+                    expect(menu.items).toEqual([
+                        {
+                            iconName: 'utility:edit',
+                            label: 'Edit',
+                            name: 'Standard.Scheduler.EditEvent'
+                        },
+                        {
+                            iconName: 'utility:delete',
+                            label: 'Delete',
+                            name: 'Standard.Scheduler.DeleteEvent'
+                        }
+                    ]);
+
+                    const schedule = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    schedule.dispatchEvent(
+                        new CustomEvent('emptyspotcontextmenu', {
+                            detail: { selection: {} }
+                        })
+                    );
+                })
+                .then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-dropdown-menu"]'
+                    );
+                    expect(menu.items).toEqual([
+                        {
+                            iconName: 'utility:add',
+                            label: 'Add event',
+                            name: 'Standard.Scheduler.AddEvent'
+                        }
+                    ]);
+                });
+        });
+
+        it('Passed to the schedule', () => {
+            element.hiddenActions = ['Standard.Scheduler.AddEvent'];
+            element.resources = RESOURCES;
+            element.selectedResources = RESOURCES.map((r) => r.name);
+            element.events = EVENTS;
+            element.selectedDisplay = 'timeline';
+
+            return Promise.resolve()
+                .then(() => {
+                    const timeline = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    expect(timeline.hiddenActions).toEqual([
+                        'Standard.Scheduler.AddEvent'
+                    ]);
+
+                    element.selectedDisplay = 'calendar';
+                })
+                .then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                    );
+                    expect(calendar.hiddenActions).toEqual([
+                        'Standard.Scheduler.AddEvent'
+                    ]);
+
+                    element.selectedDisplay = 'agenda';
+                })
+                .then(() => {
+                    const agenda = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-agenda"]'
+                    );
+                    expect(agenda.hiddenActions).toEqual([
+                        'Standard.Scheduler.AddEvent'
+                    ]);
+                });
+        });
+
+        it('Add is hidden', () => {
+            element.hiddenActions = ['Standard.Scheduler.AddEvent'];
+            element.resources = RESOURCES;
+            element.selectedResources = RESOURCES.map((r) => r.name);
+            element.events = EVENTS;
+
+            return Promise.resolve()
+                .then(() => {
+                    const schedule = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    schedule.dispatchEvent(
+                        new CustomEvent('emptyspotcontextmenu', {
+                            detail: { selection: {} }
+                        })
+                    );
+                })
+                .then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-dropdown-menu"]'
+                    );
+                    expect(menu).toBeFalsy();
+                });
+        });
+
+        it('Delete is hidden', () => {
+            element.hiddenActions = ['Standard.Scheduler.DeleteEvent'];
+            element.resources = RESOURCES;
+            element.selectedResources = RESOURCES.map((r) => r.name);
+            element.events = EVENTS;
+
+            return Promise.resolve()
+                .then(() => {
+                    const schedule = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    jest.spyOn(schedule, 'selectEvent').mockImplementation(
+                        () => {
+                            return {};
+                        }
+                    );
+                    schedule.dispatchEvent(
+                        new CustomEvent('eventcontextmenu', {
+                            detail: { selection: {} }
+                        })
+                    );
+                })
+                .then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-dropdown-menu"]'
+                    );
+                    expect(menu.items).toEqual([
+                        {
+                            iconName: 'utility:edit',
+                            label: 'Edit',
+                            name: 'Standard.Scheduler.EditEvent'
+                        }
+                    ]);
+                });
+        });
+
+        it('Edit is hidden', () => {
+            element.hiddenActions = ['Standard.Scheduler.EditEvent'];
+            element.resources = RESOURCES;
+            element.selectedResources = RESOURCES.map((r) => r.name);
+            element.events = EVENTS;
+
+            return Promise.resolve()
+                .then(() => {
+                    const schedule = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    jest.spyOn(schedule, 'selectEvent').mockImplementation(
+                        () => {
+                            return {};
+                        }
+                    );
+                    schedule.dispatchEvent(
+                        new CustomEvent('eventcontextmenu', {
+                            detail: { selection: {} }
+                        })
+                    );
+                })
+                .then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-dropdown-menu"]'
+                    );
+                    expect(menu.items).toEqual([
+                        {
+                            iconName: 'utility:delete',
+                            label: 'Delete',
+                            name: 'Standard.Scheduler.DeleteEvent'
+                        }
+                    ]);
+                });
         });
     });
 

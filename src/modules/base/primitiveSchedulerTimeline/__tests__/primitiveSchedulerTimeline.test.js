@@ -2590,7 +2590,7 @@ describe('Primitive Scheduler Timeline', () => {
                 expect(call.detail.selection.event.name).toBe(event.eventName);
                 expect(call.bubbles).toBeFalsy();
                 expect(call.composed).toBeFalsy();
-                expect(call.cancelable).toBeFalsy();
+                expect(call.cancelable).toBeTruthy();
             });
     });
 
@@ -2751,6 +2751,76 @@ describe('Primitive Scheduler Timeline', () => {
                 const selection = handler.mock.calls[0][0].detail.selection;
                 expect(selection.event.from.ts).toBe(from.getTime());
                 expect(selection.event.to.ts).toBe(to.getTime());
+            });
+    });
+
+    it('Primitive Scheduler Timeline: openeditdialog is ignored if add action is hidden', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.hiddenActions = ['Standard.Scheduler.AddEvent'];
+
+        const handler = jest.fn();
+        const hidePopoversHandler = jest.fn();
+        element.addEventListener('hidepopovers', hidePopoversHandler);
+        element.addEventListener('openeditdialog', handler);
+
+        const body = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        jest.spyOn(body, 'getBoundingClientRect').mockImplementation(() => {
+            return { left: 0, right: 1000, top: 0, bottom: 1000 };
+        });
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const resource = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"]'
+                );
+                const cell = resource.querySelector(
+                    '[data-element-id="div-cell"]'
+                );
+                jest.spyOn(
+                    resource,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 0, bottom: 50 };
+                });
+                jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(
+                    () => {
+                        return { left: 100, right: 150 };
+                    }
+                );
+                const mousedown = new CustomEvent('mousedown');
+                mousedown.clientX = 112;
+                mousedown.clientY = 34;
+                cell.dispatchEvent(mousedown);
+                expect(hidePopoversHandler).not.toHaveBeenCalled();
+
+                // mousemove should also be ignored
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                wrapper.dispatchEvent(new CustomEvent('mousemove'));
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(event).toBeFalsy();
+
+                // mouseup should also be ignored
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                const mouseup = new CustomEvent('mouseup', { bubbles: true });
+                mouseup.clientX = 118;
+                mouseup.clientY = 35;
+                wrapper.dispatchEvent(mouseup);
+                expect(handler).not.toHaveBeenCalled();
             });
     });
 

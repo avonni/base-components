@@ -1,4 +1,9 @@
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
+const DEFAULT_ACTION_NAMES = {
+    add: 'Standard.Scheduler.AddEvent',
+    edit: 'Standard.Scheduler.EditEvent',
+    delete: 'Standard.Scheduler.DeleteEvent'
+};
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -45,6 +50,7 @@ const REFERENCE_LINE_VARIANTS = {
 
 export {
     CELL_SELECTOR,
+    DEFAULT_ACTION_NAMES,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,

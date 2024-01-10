@@ -11,7 +11,11 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utilsPrivate';
-import { isAllDay, spansOnMoreThanOneDay } from 'c/schedulerUtils';
+import {
+    isAllDay,
+    spansOnMoreThanOneDay,
+    DEFAULT_ACTION_NAMES
+} from 'c/schedulerUtils';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
@@ -82,6 +86,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _cellHeight = 0;
     _cellWidth = 0;
     _headerCells = [];
+    _hiddenActions = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _eventData = {};
     _scrollOffset = 0;
@@ -288,6 +293,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             this.updateLength();
             this.updateStickyLabels();
         }
+    }
+
+    /**
+     * Array of default action names that are not allowed. These actions will be hidden from the menus, and ignored when triggered by a user action (double click, drag, etc.).
+     * Valid values include `Standard.Scheduler.AddEvent`, `Standard.Scheduler.DeleteEvent` and `Standard.Scheduler.EditEvent`.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get hiddenActions() {
+        return this._hiddenActions;
+    }
+    set hiddenActions(value) {
+        this._hiddenActions = normalizeArray(value, 'string');
     }
 
     /**
@@ -726,7 +746,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_focused': this._focused,
                 'slds-p-vertical_xx-small': centerLabel.iconName,
                 'avonni-scheduler__event_vertical-animated':
-                    theme !== 'line' && this.isVertical && !this.readOnly,
+                    theme !== 'line' &&
+                    this.isVertical &&
+                    !this.readOnly &&
+                    !this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit),
                 'slds-p-bottom_xx-small': theme === 'line',
                 'avonni-scheduler__event_display-as-dot': this.displayAsDot,
                 'slds-theme_shade slds-theme_alert-texture slds-text-color_weak':
@@ -857,7 +880,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {boolean}
      */
     get hideResizeIcon() {
-        return this.readOnly || this.isStandalone;
+        return (
+            this.readOnly ||
+            this.isStandalone ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
+        );
     }
 
     /**
@@ -1855,7 +1882,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @param {Event} event
      */
     handleMouseDown(event) {
-        if (event.button !== 0 || this.readOnly) return;
+        if (
+            event.button !== 0 ||
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
+        )
+            return;
 
         const resize = event.target.dataset.resize;
 

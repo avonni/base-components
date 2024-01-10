@@ -41,6 +41,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         expect(element.eventName).toBeUndefined();
         expect(element.from).toBeUndefined();
         expect(element.headerCells).toMatchObject([]);
+        expect(element.hiddenActions).toMatchObject([]);
         expect(element.iconName).toBeUndefined();
         expect(element.labels).toMatchObject({});
         expect(element.startPosition).toBe(0);
@@ -162,6 +163,48 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
                 '[data-element-id="div-center-label-wrapper"] span'
             );
             expect(label.textContent).toBe('Custom string');
+        });
+    });
+
+    // hidden-actions
+    describe('Hidden actions', () => {
+        it('No hidden action', () => {
+            const mouseDownHandler = jest.fn();
+            element.addEventListener('privatemousedown', mouseDownHandler);
+
+            const eventWrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-event-occurrence"]'
+            );
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.button = 0;
+            eventWrapper.dispatchEvent(mouseDown);
+
+            expect(mouseDownHandler).toHaveBeenCalled();
+            const resizeIcons = element.shadowRoot.querySelectorAll(
+                '.avonni-scheduler__event-resize-icon'
+            );
+            expect(resizeIcons).toHaveLength(2);
+        });
+
+        it('Edit action hidden', () => {
+            element.hiddenActions = ['Standard.Scheduler.EditEvent'];
+            const mouseDownHandler = jest.fn();
+            element.addEventListener('privatemousedown', mouseDownHandler);
+
+            return Promise.resolve().then(() => {
+                const eventWrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-event-occurrence"]'
+                );
+                const mouseDown = new CustomEvent('mousedown');
+                mouseDown.button = 0;
+                eventWrapper.dispatchEvent(mouseDown);
+
+                expect(mouseDownHandler).not.toHaveBeenCalled();
+                const resizeIcons = element.shadowRoot.querySelectorAll(
+                    '.avonni-scheduler__event-resize-icon'
+                );
+                expect(resizeIcons).toHaveLength(0);
+            });
         });
     });
 

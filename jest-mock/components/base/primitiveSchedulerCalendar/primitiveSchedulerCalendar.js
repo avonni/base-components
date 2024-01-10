@@ -10,6 +10,7 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
     @api events;
     @api eventsLabels;
     @api eventsTheme;
+    @api hiddenActions;
     @api hideResourcesFilter;
     @api hideSidePanel;
     @api loadingStateAlternativeText;
