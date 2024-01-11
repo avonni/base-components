@@ -28,7 +28,6 @@ export default class PrimitiveCellTextarea extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
@@ -42,13 +41,9 @@ export default class PrimitiveCellTextarea extends LightningElement {
     }
 
     get computedWrapTextClass() {
-        return this.wrapText && this.wrapTextMaxLines
+        return this.wrapText && this._wrapTextMaxLines
             ? 'slds-line-clamp'
             : 'slds-truncate';
-    }
-
-    get wrapTextMaxLines() {
-        return this._wrapTextMaxLines;
     }
 
     /**

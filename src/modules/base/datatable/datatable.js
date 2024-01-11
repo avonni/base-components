@@ -40,7 +40,6 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar-group',
     'checkbox-button',
     'color-picker',
-    'combobox',
     'counter',
     'dynamic-icon',
     'date-range',
