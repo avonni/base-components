@@ -21,6 +21,7 @@ const ITEM_VARIANTS = {
     default: 'non-coverable'
 };
 
+const DEFAULT_MIN = 0;
 const DEFAULT_DISABLED = false;
 const DEFAULT_HIDE_CHECK_MARK = false;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
@@ -40,15 +41,30 @@ export default class VerticalVisualPicker extends LightningElement {
      * @public
      */
     @api label;
-
     /**
-     * Error message to be displayed when no item is selected and the required attribute is set to true.
+     * Error message to be displayed when a range overflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api messageWhenValueMissing;
-
+    @api
+    messageWhenRangeOverflow;
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    messageWhenRangeUnderflow;
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    messageWhenValueMissing;
     /**
      * The name of the vertical visual picker.
      *
@@ -64,7 +80,9 @@ export default class VerticalVisualPicker extends LightningElement {
     _isLoading = false;
     _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    _max;
     _maxCount;
+    _min = DEFAULT_MIN;
     _required = DEFAULT_REQUIRED;
     _size = ITEM_SIZES.default;
     _type = ITEM_TYPES.default;
@@ -74,7 +92,7 @@ export default class VerticalVisualPicker extends LightningElement {
     _computedItems = [];
     _connected = false;
     _isCollapsed = true;
-    helpMessage;
+    helpMessage = '';
 
     connectedCallback() {
         this.interactingState = new InteractingState();
@@ -206,6 +224,22 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
+     * Maximum number of selected items.
+     *
+     * @type {number}
+     * @default Infinity
+     * @public
+     */
+    @api
+    get max() {
+        return this._max;
+    }
+
+    set max(value) {
+        this._max = isNaN(parseInt(value, 10)) ? Infinity : parseInt(value, 10);
+    }
+
+    /**
      * Maximum of items allowed in the visible list.
      * This attribute is ignored if `enable-infinite-loading` is present.
      *
@@ -218,6 +252,24 @@ export default class VerticalVisualPicker extends LightningElement {
     }
     set maxCount(value) {
         this._maxCount = isNaN(value) ? undefined : parseInt(value, 10);
+    }
+
+    /**
+     * Minimum number of selected options required.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get min() {
+        return this._min;
+    }
+
+    set min(value) {
+        this._min = isNaN(parseInt(value, 10))
+            ? DEFAULT_MIN
+            : parseInt(value, 10);
     }
 
     /**
@@ -445,6 +497,13 @@ export default class VerticalVisualPicker extends LightningElement {
             : this._computedItems;
     }
 
+    get numberOfMainItemsSelected() {
+        if (this.type === 'radio') return this.value ? 1 : 0;
+        return this.items
+            .map(({ value }) => value)
+            .filter((value) => this.value.includes(value)).length;
+    }
+
     /**
      * Compute NOT selected class styling.
      *
@@ -503,7 +562,13 @@ export default class VerticalVisualPicker extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
+                    !this.disabled && this.required && this.value.length === 0,
+                rangeUnderflow: () =>
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected < this.min,
+                rangeOverflow: () =>
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected > this.max
             });
         }
         return this._constraintApi;
@@ -706,7 +771,11 @@ export default class VerticalVisualPicker extends LightningElement {
     /**
      * Dispatches the blur event.
      */
-    handleBlur() {
+    handleBlur(event) {
+        const { target } = event;
+        const isInput = target.dataset.elementId === 'input';
+        const isInCurrentTemplate = this.template.contains(target);
+        if (isInput && isInCurrentTemplate) return;
         this.interactingState.leave();
     }
 
@@ -738,18 +807,28 @@ export default class VerticalVisualPicker extends LightningElement {
             } else {
                 newValue = newValue.filter((value) => value !== targetValue);
                 if (item && item.subItems) {
-                    const subItemsValue = item.subItems.map(
+                    const subItemsValues = item.subItems.map(
                         ({ value }) => value
                     );
                     // Remove all subItems values from current value.
                     newValue = newValue.filter(
-                        (value) => !subItemsValue.includes(value)
+                        (value) => !subItemsValues.includes(value)
                     );
                 }
             }
         }
 
+        const oldValue = this._value;
         this._value = newValue;
+        this.reportValidity();
+        if (
+            this.validity.rangeOverflow &&
+            oldValue.length < this._value.length
+        ) {
+            this._value = oldValue;
+            this.reportValidity();
+            return;
+        }
         this._dispatchChange();
         this._refreshCheckedAttributes();
     }

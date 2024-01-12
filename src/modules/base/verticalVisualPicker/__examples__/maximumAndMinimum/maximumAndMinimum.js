@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class VerticalVisualPickerBase extends LightningElement {
+export default class VerticalVisualPickerMaximumAndMinimum extends LightningElement {
     items = [
         {
             title: 'Item Text 1',
