@@ -282,17 +282,22 @@
                                         </div>
                                     </div>
                                 </span>
-                                <span class="slds-visual-picker__body">
+                                <span
+                                    if:true={item.hasTitleOrDescription}
+                                    class="slds-visual-picker__body"
+                                >
                                     <span
                                         class="avonni-visual-picker__item-title"
-                                        >{item.itemTitle}</span
                                     >
+                                        {item.itemTitle}
+                                    </span>
                                     <span
                                         class="
                                             avonni-visual-picker__item-description
                                         "
-                                        >{item.itemDescription}</span
                                     >
+                                        {item.itemDescription}
+                                    </span>
                                 </span>
                                 <template
                                     if:true={item.displayCheckNonCoverable}
@@ -315,7 +320,7 @@
             </c-layout>
         </div>
     </fieldset>
-    <template if:false={valid}>
+    <template if:true={helpMessage}>
         <div
             id="help-message"
             class="slds-form-element__help"
