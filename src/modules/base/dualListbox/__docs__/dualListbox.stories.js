@@ -221,7 +221,8 @@ export default {
             description:
                 'Maximum number of options allowed in the selected options listbox.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Validations'
             }
         },
         min: {
@@ -232,7 +233,8 @@ export default {
                 'Minimum number of options required in the selected options listbox.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                defaultValue: { summary: '0' },
+                category: 'Validations'
             }
         },
         messageWhenRangeOverflow: {
@@ -243,7 +245,8 @@ export default {
             description:
                 'Error message to be displayed when a range overflow is detected.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validations'
             }
         },
         messageWhenRangeUnderflow: {
@@ -254,7 +257,8 @@ export default {
             description:
                 'Error message to be displayed when a range underflow is detected.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validations'
             }
         },
         messageWhenValueMissing: {
@@ -265,7 +269,8 @@ export default {
             description:
                 'Error message to be displayed when the value is missing and input is required.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validations'
             }
         },
         name: {
@@ -318,7 +323,8 @@ export default {
                 'If present, the user must add an item to the selected listbox before submitting the form.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: false }
+                defaultValue: { summary: false },
+                category: 'Validations'
             }
         },
         requiredOptions: {
@@ -328,7 +334,8 @@ export default {
             description:
                 'A list of required options that cannot be removed from selected options listbox. This list is populated with values from the options attribute.',
             table: {
-                type: { summary: 'string []' }
+                type: { summary: 'string []' },
+                category: 'Validations'
             }
         },
         search: {
