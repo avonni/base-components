@@ -1072,6 +1072,18 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
+     * Retrieve the current error message. If it is null than the input is valid.
+     *
+     * @returns {string} Current input error message.
+     * @public
+     */
+    @api
+    getErrorMessage() {
+        this.reportValidity();
+        return this.errorMessage;
+    }
+
+    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.

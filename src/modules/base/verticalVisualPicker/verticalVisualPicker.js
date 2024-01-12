@@ -602,6 +602,18 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
+     * Retrieve the current error message. If it is null than the input is valid.
+     *
+     * @returns {string} Current input error message.
+     * @public
+     */
+    @api
+    getErrorMessage() {
+        this.reportValidity();
+        return this.helpMessage;
+    }
+
+    /**
      * Removes keyboard focus from the input element.
      *
      * @public
