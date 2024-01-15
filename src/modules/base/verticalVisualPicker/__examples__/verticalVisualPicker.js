@@ -13,7 +13,11 @@ export const VerticalVisualPicker = ({
     items,
     label,
     loadMoreOffset,
+    max,
+    min,
     maxCount,
+    messageWhenRangeOverflow,
+    messageWhenRangeUnderflow,
     messageWhenValueMissing,
     name,
     required,
@@ -30,7 +34,11 @@ export const VerticalVisualPicker = ({
     element.items = items;
     element.label = label;
     element.loadMoreOffset = loadMoreOffset;
+    element.max = max;
+    element.min = min;
     element.maxCount = maxCount;
+    element.messageWhenRangeOverflow = messageWhenRangeOverflow;
+    element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.name = name;
     element.required = required;

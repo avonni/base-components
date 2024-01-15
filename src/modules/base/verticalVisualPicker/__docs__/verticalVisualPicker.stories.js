@@ -104,6 +104,40 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        max: {
+            control: {
+                type: 'number'
+            },
+            description: 'Maximum number of selected items.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Validations'
+            }
+        },
+        messageWhenRangeOverflow: {
+            name: 'message-when-range-overflow',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a range overflow is detected.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Validations'
+            }
+        },
+        messageWhenRangeUnderflow: {
+            name: 'message-when-range-underflow',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a range underflow is detected.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Validations'
+            }
+        },
         messageWhenValueMissing: {
             name: 'message-when-value-missing',
             control: {
@@ -113,6 +147,17 @@ export default {
                 'Error message to be displayed when no item is selected and the required attribute is set to true.',
             table: {
                 type: { summary: 'string' },
+                category: 'Validations'
+            }
+        },
+        min: {
+            control: {
+                type: 'number'
+            },
+            description: 'Minimum number of selected options required.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' },
                 category: 'Validations'
             }
         },
@@ -209,6 +254,17 @@ Base.args = {
     label: 'Select an option',
     items: baseItems,
     value: 'item-3'
+};
+
+export const MaximumAndMinimum = Template.bind({});
+MaximumAndMinimum.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Select an option',
+    items: baseItems,
+    value: 'item-3',
+    type: 'checkbox',
+    max: 3,
+    min: 2
 };
 
 export const BaseWithIcons = Template.bind({});
