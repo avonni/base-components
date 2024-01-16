@@ -188,6 +188,7 @@ export default class VisualPicker extends LightningElement {
     _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
 
+    _cancelBlur = false;
     _connected = false;
     _computedItems = [];
     _columnSizes = {};
@@ -615,7 +616,7 @@ export default class VisualPicker extends LightningElement {
             const maxReached =
                 this.type === 'checkbox' &&
                 this.max !== 1 &&
-                this.value.length === this.max;
+                this.value.length >= this.max;
             const isUnselectedOption =
                 this.type === 'checkbox' && !this.value.includes(value);
             disabled =
@@ -1415,11 +1416,10 @@ export default class VisualPicker extends LightningElement {
     /**
      * Dispatches the blur event.
      */
-    handleBlur(event) {
-        const { target } = event;
-        const isInput = target.dataset.elementId === 'input';
-        const isInCurrentTemplate = this.template.contains(target);
-        if (isInput && isInCurrentTemplate) return;
+    handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
         this.interactingState.leave();
     }
 
@@ -1445,8 +1445,6 @@ export default class VisualPicker extends LightningElement {
                       .filter((input) => input.checked)
                       .map((input) => input.value);
 
-        this.reportValidity();
-
         // Exception if checkbox max = 1, unselect last option and select the clicked one.
         // Looking to have the same behaviour as radio buttons + being able to deselect the option.
         if (
@@ -1457,7 +1455,6 @@ export default class VisualPicker extends LightningElement {
             this._value = this.value.filter(
                 (value) => !oldValue.includes(value)
             );
-            this.reportValidity();
         }
 
         /**
@@ -1475,6 +1472,14 @@ export default class VisualPicker extends LightningElement {
                 }
             })
         );
+    }
+
+    handleMouseEnter() {
+        this._cancelBlur = true;
+    }
+
+    handleMouseLeave() {
+        this._cancelBlur = false;
     }
 
     /**
