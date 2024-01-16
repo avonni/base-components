@@ -831,16 +831,23 @@ export default class VerticalVisualPicker extends LightningElement {
         }
 
         const oldValue = this._value;
+        const oldNumberOfMainItemSelected = this.numberOfMainItemsSelected;
         this._value = newValue;
         this.reportValidity();
+
+        // Exception if checkbox max = 1, unselect last option and select the clicked one.
+        // Looking to have the same behaviour as radio buttons, but being able to deselect the option.
         if (
+            this.max === 1 &&
             this.validity.rangeOverflow &&
-            oldValue.length < this._value.length
+            oldNumberOfMainItemSelected < this.numberOfMainItemsSelected
         ) {
-            this._value = oldValue;
+            this._value = this.value.filter(
+                (value) => !oldValue.includes(value)
+            );
             this.reportValidity();
-            return;
         }
+
         this._dispatchChange();
         this._refreshCheckedAttributes();
     }
