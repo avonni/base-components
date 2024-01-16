@@ -854,7 +854,7 @@ export default class VisualPicker extends LightningElement {
      * @type {string}
      */
     get visualPickerClass() {
-        return classSet('slds-visual-picker')
+        return classSet('slds-visual-picker slds-m-top_small')
             .add(`avonni-visual-picker_${this._size}`)
             .add(`ratio-${this._ratio}`)
             .add({ 'slds-m-around_none': this.isResponsive })
