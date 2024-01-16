@@ -1,6 +1,10 @@
 import { createElement } from 'lwc';
 import VerticalVisualPicker from 'c/verticalVisualPicker';
-import { itemsWithIcons, itemsWithSubItems } from '../__docs__/data.js';
+import {
+    baseItems,
+    itemsWithIcons,
+    itemsWithSubItems
+} from '../__docs__/data.js';
 
 const longItems = [];
 for (let i = 0; i < 100; i++) {
@@ -42,7 +46,11 @@ describe('Vertical Visual Picker', () => {
             expect(element.items).toMatchObject([]);
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
+            expect(element.max).toBeUndefined();
+            expect(element.min).toBe(0);
             expect(element.maxCount).toBeUndefined();
+            expect(element.messageWhenRangeOverflow).toBeUndefined();
+            expect(element.messageWhenRangeUnderflow).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.name).not.toBeUndefined();
             expect(element.required).toBeFalsy();
@@ -218,24 +226,68 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // message-when-value-missing
-        // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
-        it('messageWhenValueMissing', () => {
-            element.required = true;
-            element.items = itemsWithIcons;
-            element.messageWhenValueMissing = 'Missing value!';
+        // message-when-range-overflow with max
+        it('Visual Picker: Message when range overflow and Max', () => {
+            element.items = baseItems;
+            element.max = 2;
+            element.messageWhenRangeOverflow = 'Maximum Capacity!';
+            element.type = 'checkbox';
+            element.value = ['item-1', 'item-2', 'item-3'];
 
             return Promise.resolve()
                 .then(() => {
                     element.focus();
                     element.blur();
-                    element.showHelpMessageIfInvalid();
                 })
                 .then(() => {
                     const message = element.shadowRoot.querySelector(
-                        '.slds-form-element__help'
+                        '[data-help-message]'
                     );
-                    expect(message.textContent).toBe('Missing value!');
+                    expect(message).toBeTruthy();
+                    expect(message.textContent).toBe('Maximum Capacity!');
+                });
+        });
+
+        // message-when-range-overflow with min
+        it('Visual Picker: Message when range underflow and Min', () => {
+            element.items = baseItems;
+            element.min = 2;
+            element.messageWhenRangeUnderflow = 'Minimum Capacity!';
+            element.type = 'checkbox';
+            element.value = ['item-1'];
+
+            return Promise.resolve()
+                .then(() => {
+                    element.focus();
+                    element.blur();
+                })
+                .then(() => {
+                    const message = element.shadowRoot.querySelector(
+                        '[data-help-message]'
+                    );
+                    expect(message).toBeTruthy();
+                    expect(message.textContent).toBe('Minimum Capacity!');
+                });
+        });
+
+        // message-when-value-missing with required
+        it('Visual Picker: Message when value missing and Required', () => {
+            element.items = baseItems;
+            element.required = true;
+            element.messageWhenValueMissing = 'Value Missing!';
+            element.type = 'checkbox';
+
+            return Promise.resolve()
+                .then(() => {
+                    element.focus();
+                    element.blur();
+                })
+                .then(() => {
+                    const message = element.shadowRoot.querySelector(
+                        '[data-help-message]'
+                    );
+                    expect(message).toBeTruthy();
+                    expect(message.textContent).toBe('Value Missing!');
                 });
         });
 
