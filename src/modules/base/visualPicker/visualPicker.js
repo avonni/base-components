@@ -1458,7 +1458,6 @@ export default class VisualPicker extends LightningElement {
                 (value) => !oldValue.includes(value)
             );
             this.reportValidity();
-            return;
         }
 
         /**
