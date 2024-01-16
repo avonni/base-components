@@ -612,7 +612,16 @@ export default class VisualPicker extends LightningElement {
                 value
             } = item;
             const key = `visual-picker-key-${index}`;
-            disabled = this._disabled ? true : disabled;
+            const maxReached =
+                this.type === 'checkbox' &&
+                this.max !== 1 &&
+                this.value.length === this.max;
+            const isUnselectedOption =
+                this.type === 'checkbox' && !this.value.includes(value);
+            disabled =
+                this._disabled ||
+                disabled ||
+                (maxReached && isUnselectedOption);
 
             // Check management
             const checked = this._value.includes(value);
