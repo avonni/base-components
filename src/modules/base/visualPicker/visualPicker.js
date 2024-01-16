@@ -1437,11 +1437,17 @@ export default class VisualPicker extends LightningElement {
                       .map((input) => input.value);
 
         this.reportValidity();
+
+        // Exception if checkbox max = 1, unselect last option and select the clicked one.
+        // Looking to have the same behaviour as radio buttons + being able to deselect the option.
         if (
+            this.max === 1 &&
             this.validity.rangeOverflow &&
-            oldValue.length < this._value.length
+            oldValue.length < this.value.length
         ) {
-            this._value = oldValue;
+            this._value = this.value.filter(
+                (value) => !oldValue.includes(value)
+            );
             this.reportValidity();
             return;
         }
