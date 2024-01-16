@@ -695,9 +695,18 @@ export default class VerticalVisualPicker extends LightningElement {
      */
     _initItems() {
         this._computedItems = this.items.map((item) => {
+            const maxReached =
+                this.type === 'checkbox' &&
+                this.max !== 1 &&
+                this.numberOfMainItemsSelected === this.max;
+            const isUnselectedOption =
+                this.type === 'checkbox' && !this.value.includes(item.value);
             return new Item({
                 ...item,
-                disabled: this.disabled || item.disabled,
+                disabled:
+                    this.disabled ||
+                    item.disabled ||
+                    (maxReached && isUnselectedOption),
                 isChecked: this._isItemChecked(item.value, item.subItems),
                 size: this.size
             });
@@ -850,6 +859,7 @@ export default class VerticalVisualPicker extends LightningElement {
 
         this._dispatchChange();
         this._refreshCheckedAttributes();
+        this._initItems();
     }
 
     /**
