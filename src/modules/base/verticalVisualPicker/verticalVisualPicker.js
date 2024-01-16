@@ -89,6 +89,7 @@ export default class VerticalVisualPicker extends LightningElement {
     _variant = ITEM_VARIANTS.default;
     _value = [];
 
+    _cancelBlur = false;
     _computedItems = [];
     _connected = false;
     _isCollapsed = true;
@@ -695,9 +696,18 @@ export default class VerticalVisualPicker extends LightningElement {
      */
     _initItems() {
         this._computedItems = this.items.map((item) => {
+            const maxReached =
+                this.type === 'checkbox' &&
+                this.max !== 1 &&
+                this.numberOfMainItemsSelected >= this.max;
+            const isUnselectedOption =
+                this.type === 'checkbox' && !this.value.includes(item.value);
             return new Item({
                 ...item,
-                disabled: this.disabled || item.disabled,
+                disabled:
+                    this.disabled ||
+                    item.disabled ||
+                    (maxReached && isUnselectedOption),
                 isChecked: this._isItemChecked(item.value, item.subItems),
                 size: this.size
             });
@@ -783,11 +793,10 @@ export default class VerticalVisualPicker extends LightningElement {
     /**
      * Dispatches the blur event.
      */
-    handleBlur(event) {
-        const { target } = event;
-        const isInput = target.dataset.elementId === 'input';
-        const isInCurrentTemplate = this.template.contains(target);
-        if (isInput && isInCurrentTemplate) return;
+    handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
         this.interactingState.leave();
     }
 
@@ -831,18 +840,41 @@ export default class VerticalVisualPicker extends LightningElement {
         }
 
         const oldValue = this._value;
+        const oldNumberOfMainItemSelected = this.numberOfMainItemsSelected;
         this._value = newValue;
-        this.reportValidity();
+
+        // Exception if checkbox max = 1, unselect last option and select the clicked one.
+        // Looking to have the same behaviour as radio buttons, but being able to deselect the option.
         if (
+            this.max === 1 &&
             this.validity.rangeOverflow &&
-            oldValue.length < this._value.length
+            oldNumberOfMainItemSelected < this.numberOfMainItemsSelected
         ) {
-            this._value = oldValue;
-            this.reportValidity();
-            return;
+            this._value = this.value.filter(
+                (value) => !oldValue.includes(value)
+            );
         }
+
         this._dispatchChange();
         this._refreshCheckedAttributes();
+        this._initItems();
+
+        // Wait for the checked attributes to be refreshed.
+        requestAnimationFrame(() => {
+            // Set the focus on the clicked item.
+            const lastClickedInput = this.inputs?.find(
+                (input) => input.value === targetValue
+            );
+            lastClickedInput?.focus();
+        });
+    }
+
+    handleMouseEnter() {
+        this._cancelBlur = true;
+    }
+
+    handleMouseLeave() {
+        this._cancelBlur = false;
     }
 
     /**

@@ -188,6 +188,7 @@ export default class VisualPicker extends LightningElement {
     _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
 
+    _cancelBlur = false;
     _connected = false;
     _computedItems = [];
     _columnSizes = {};
@@ -612,7 +613,16 @@ export default class VisualPicker extends LightningElement {
                 value
             } = item;
             const key = `visual-picker-key-${index}`;
-            disabled = this._disabled ? true : disabled;
+            const maxReached =
+                this.type === 'checkbox' &&
+                this.max !== 1 &&
+                this.value.length >= this.max;
+            const isUnselectedOption =
+                this.type === 'checkbox' && !this.value.includes(value);
+            disabled =
+                this._disabled ||
+                disabled ||
+                (maxReached && isUnselectedOption);
 
             // Check management
             const checked = this._value.includes(value);
@@ -844,7 +854,7 @@ export default class VisualPicker extends LightningElement {
      * @type {string}
      */
     get visualPickerClass() {
-        return classSet('slds-visual-picker')
+        return classSet('slds-visual-picker slds-m-top_small')
             .add(`avonni-visual-picker_${this._size}`)
             .add(`ratio-${this._ratio}`)
             .add({ 'slds-m-around_none': this.isResponsive })
@@ -1406,11 +1416,10 @@ export default class VisualPicker extends LightningElement {
     /**
      * Dispatches the blur event.
      */
-    handleBlur(event) {
-        const { target } = event;
-        const isInput = target.dataset.elementId === 'input';
-        const isInCurrentTemplate = this.template.contains(target);
-        if (isInput && isInCurrentTemplate) return;
+    handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
         this.interactingState.leave();
     }
 
@@ -1436,14 +1445,16 @@ export default class VisualPicker extends LightningElement {
                       .filter((input) => input.checked)
                       .map((input) => input.value);
 
-        this.reportValidity();
+        // Exception if checkbox max = 1, unselect last option and select the clicked one.
+        // Looking to have the same behaviour as radio buttons + being able to deselect the option.
         if (
+            this.max === 1 &&
             this.validity.rangeOverflow &&
-            oldValue.length < this._value.length
+            oldValue.length < this.value.length
         ) {
-            this._value = oldValue;
-            this.reportValidity();
-            return;
+            this._value = this.value.filter(
+                (value) => !oldValue.includes(value)
+            );
         }
 
         /**
@@ -1461,6 +1472,14 @@ export default class VisualPicker extends LightningElement {
                 }
             })
         );
+    }
+
+    handleMouseEnter() {
+        this._cancelBlur = true;
+    }
+
+    handleMouseLeave() {
+        this._cancelBlur = false;
     }
 
     /**

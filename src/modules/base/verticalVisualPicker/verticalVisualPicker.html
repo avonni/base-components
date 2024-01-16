@@ -57,7 +57,12 @@
                             onchange={handleChange}
                             onkeyup={handleKeyUp}
                         />
-                        <label for={item.computedValue} data-element-id="label">
+                        <label
+                            for={item.computedValue}
+                            data-element-id="label"
+                            onmouseenter={handleMouseEnter}
+                            onmouseleave={handleMouseLeave}
+                        >
                             <span class={verticalVisualPickerTypeClass}>
                                 <template if:false={hideCheckMark}>
                                     <span

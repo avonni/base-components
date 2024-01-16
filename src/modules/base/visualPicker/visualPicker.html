@@ -44,7 +44,12 @@
                                 onchange={handleChange}
                                 onkeyup={handleKeyUp}
                             />
-                            <label for={item.value} data-element-id="label">
+                            <label
+                                for={item.value}
+                                data-element-id="label"
+                                onmouseenter={handleMouseEnter}
+                                onmouseleave={handleMouseLeave}
+                            >
                                 <span class={visualPickerTypeClass}>
                                     <span
                                         if:true={item.displayCheckCoverable}

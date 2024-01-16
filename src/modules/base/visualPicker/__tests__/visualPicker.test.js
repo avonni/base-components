@@ -30,6 +30,10 @@ describe('VisualPicker', () => {
         expect(element.imageAttributes).toMatchObject({});
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
+        expect(element.max).toBeUndefined();
+        expect(element.min).toBe(0);
+        expect(element.messageWhenRangeOverflow).toBeUndefined();
+        expect(element.messageWhenRangeUnderflow).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.name).not.toBeUndefined();
         expect(element.ratio).toBe('1-by-1');
@@ -337,7 +341,7 @@ describe('VisualPicker', () => {
     });
 
     // label
-    it('Visual Picker: label', () => {
+    it('Visual Picker: Label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -346,6 +350,75 @@ describe('VisualPicker', () => {
             );
             expect(label.textContent).toBe('A string label');
         });
+    });
+
+    // message-when-range-overflow with max
+    it('Visual Picker: Message when range overflow and Max', () => {
+        element.items = ITEMS;
+        element.max = 2;
+        element.messageWhenRangeOverflow = 'Maximum Capacity!';
+        element.type = 'checkbox';
+        element.value = [
+            'lightning-professional',
+            'lightning-enterprise',
+            'lightning-enterprise-plus'
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '[data-help-message]'
+                );
+                expect(message).toBeTruthy();
+                expect(message.textContent).toBe('Maximum Capacity!');
+            });
+    });
+
+    // message-when-range-overflow with min
+    it('Visual Picker: Message when range underflow and Min', () => {
+        element.items = ITEMS;
+        element.min = 2;
+        element.messageWhenRangeUnderflow = 'Minimum Capacity!';
+        element.type = 'checkbox';
+        element.value = ['lightning-professional'];
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '[data-help-message]'
+                );
+                expect(message).toBeTruthy();
+                expect(message.textContent).toBe('Minimum Capacity!');
+            });
+    });
+
+    // message-when-value-missing with required
+    it('Visual Picker: Message when value missing and Required', () => {
+        element.items = ITEMS;
+        element.required = true;
+        element.messageWhenValueMissing = 'Value Missing!';
+        element.type = 'checkbox';
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '[data-help-message]'
+                );
+                expect(message).toBeTruthy();
+                expect(message.textContent).toBe('Value Missing!');
+            });
     });
 
     // name
