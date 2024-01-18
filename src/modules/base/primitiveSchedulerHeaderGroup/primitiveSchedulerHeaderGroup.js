@@ -64,6 +64,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _visibleWidth = 0;
     _zoomToFit = false;
 
+    _cellsSizeUpdateAnimationFrame;
     _connected = false;
     _initHeadersTimeout;
     computedHeaders = [];
@@ -686,7 +687,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             header.computeCellWidths(cellSize, this.smallestHeader.cells);
         });
         this.dispatchCellSizeChange(cellSize);
-        requestAnimationFrame(() => {
+
+        cancelAnimationFrame(this._cellsSizeUpdateAnimationFrame);
+        this._cellsSizeUpdateAnimationFrame = requestAnimationFrame(() => {
             this.updateCellsSize();
         });
     }
@@ -714,12 +717,15 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             const header = this.computedHeaders.find((computedHeader) => {
                 return computedHeader.key === row.dataset.key;
             });
-
-            // Give cells their width/height
-            const cells = row.querySelectorAll('[data-element-id="div-cell"]');
-            cells.forEach((cell, index) => {
-                cell.style = `--avonni-scheduler-cell-size: ${header.cellWidths[index]}px`;
-            });
+            if (header) {
+                // Give cells their width/height
+                const cells = row.querySelectorAll(
+                    '[data-element-id="div-cell"]'
+                );
+                cells.forEach((cell, index) => {
+                    cell.style = `--avonni-scheduler-cell-size: ${header.cellWidths[index]}px`;
+                });
+            }
         });
     }
 

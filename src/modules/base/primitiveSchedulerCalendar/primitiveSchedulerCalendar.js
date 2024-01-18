@@ -1679,9 +1679,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (orientation === 'vertical') {
             this.cellHeight = cellSize;
             this.multiDayCellHeight = cellSize;
-            this.template.host.style = `
-                --avonni-scheduler-cell-height: ${this.cellHeight}px;
-            `;
+
+            try {
+                this.template.host.style = `
+                    --avonni-scheduler-cell-height: ${this.cellHeight}px;
+                `;
+            } catch (e) {
+                // Prevents an error in Salesforce:
+                // 'Cannot add property style, object is not extensible.'
+                // The error seems to happen when the component is loading
+                // and the host is not a Proxy yet.
+            }
         } else {
             this.cellWidth = cellSize;
         }
