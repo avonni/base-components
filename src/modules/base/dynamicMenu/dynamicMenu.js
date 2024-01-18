@@ -287,7 +287,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * The size of the button-icon. Valid values include xx-small, x-small, medium, or large.
+     * Describes the position of the icon with respect to body. Options include left and right.
      *
      * @type {string}
      * @public
