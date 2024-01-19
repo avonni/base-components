@@ -1,12 +1,11 @@
 <template>
     <c-layout class="slds-m-bottom_small slds-show" multiple-rows>
         <c-layout-item
-            class="slds-p-right_small"
-            grow="1"
+            class="slds-p-right_small avonni-date-time-picker__flex-col"
             size="12"
             medium-container-size="auto"
         >
-            <c-layout>
+            <c-layout class="avonni-date-time-picker__toolbar">
                 <c-layout-item if:true={showAvatar} class="slds-m-right_small">
                     <c-avatar
                         alternative-text={avatar.alternativeText}
@@ -18,7 +17,7 @@
                         variant={avatar.variant}
                     ></c-avatar>
                 </c-layout-item>
-                <c-layout-item grow="1">
+                <c-layout-item class="avonni-date-time-picker__flex-col">
                     <!-- Input label -->
                     <p
                         if:false={hideLabel}
@@ -105,7 +104,11 @@
         </c-layout-item>
 
         <!-- Date picker -->
-        <c-layout-item if:false={hideDatePicker} size={datePickerColumnSize}>
+        <c-layout-item
+            if:false={hideDatePicker}
+            size={datePickerColumnSize}
+            data-element-id="temp"
+        >
             <!-- Input date picker -->
             <lightning-input
                 if:false={showInlineDatePicker}
@@ -236,36 +239,42 @@
             ></c-calendar>
         </c-layout-item>
 
-        <c-layout-item grow="1">
+        <c-layout-item class="avonni-date-time-picker__flex-col">
             <template if:true={entirePeriodIsDisabled}>
                 <p if:true={isMonthly} class="slds-text-align_right">
                     No available time slots for this period.
                 </p>
             </template>
             <!-- Hour table -->
-            <c-layout class="slds-show slds-scrollable_x" column-gap="4">
+            <c-layout
+                class="
+                    slds-show
+                    slds-scrollable_x
+                    avonni-date-time-picker__hour-table
+                "
+            >
                 <template for:each={table} for:item="day">
                     <c-layout-item
                         if:true={day.show}
                         key={day.key}
-                        grow="1"
-                        class="slds-text-align_center"
+                        class="
+                            slds-text-align_center
+                            avonni-date-time-picker__flex-col
+                        "
                         data-element-id="div-day"
                     >
                         <c-layout
-                            column-gap="4"
                             direction={tableDirection}
                             multiple-rows={isInline}
-                            row-gap="4"
                         >
                             <!-- Day label -->
                             <c-layout-item
                                 if:true={day.label}
                                 aria-selected={day.selected}
-                                grow="1"
                                 data-today={day.isToday}
                                 class="
                                     avonni-date-time-picker__day-label
+                                    avonni-date-time-picker__flex-col
                                     slds-p-around_medium
                                 "
                             >
@@ -298,12 +307,12 @@
                                             ></lightning-formatted-date-time>
                                         </c-layout-item>
 
-                                        <c-layout-item grow="1">
-                                            <c-layout
-                                                column-gap="4"
-                                                multiple-rows
-                                                row-gap="4"
-                                            >
+                                        <c-layout-item
+                                            class="
+                                                avonni-date-time-picker__flex-col
+                                            "
+                                        >
+                                            <c-layout multiple-rows>
                                                 <template
                                                     for:each={time.times}
                                                     for:item="timelineTime"

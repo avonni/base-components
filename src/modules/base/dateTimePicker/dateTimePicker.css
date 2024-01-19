@@ -2,6 +2,10 @@
     flex: 1 1 auto;
 }
 
+.avonni-date-time-picker__toolbar {
+    --avonni-layout-items-spacing-inline-between: 1.5rem;
+}
+
 .avonni-date-time-picker__label {
     float: none;
     color: var(--avonni-date-time-picker-label-text-color, #444444);
@@ -27,6 +31,11 @@
         --avonni-date-time-picker-weekly-day-header-text-color-today,
         #1589ee
     );
+}
+
+.avonni-date-time-picker__hour-table {
+    --avonni-layout-items-spacing-block-between: 4px;
+    --avonni-layout-items-spacing-inline-between: 4px;
 }
 
 .avonni-date-time-picker__inline-date-picker-button {
@@ -80,7 +89,10 @@
 }
 
 .avonni-date-time-picker__time-button {
-    border-color: var(--avonni-date-time-picker-button-color-border, var(--lwc-colorBorder, #747474));
+    border-color: var(
+        --avonni-date-time-picker-button-color-border,
+        var(--lwc-colorBorder, #747474)
+    );
     border-style: var(--avonni-date-time-picker-button-styling-border, solid);
     border-width: var(--avonni-date-time-picker-button-sizing-border, 1px);
     background-color: var(
