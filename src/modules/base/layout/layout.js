@@ -1,53 +1,26 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const DEFAULT_COLUMN_GAP = 0;
-const DEFAULT_ROW_GAP = 0;
-const DIRECTIONS = {
-    valid: ['row', 'row-reverse', 'column', 'column-reverse'],
-    default: 'row'
-};
 const HORIZONTAL_ALIGNMENTS = {
     valid: ['start', 'center', 'end', 'space', 'spread'],
     default: 'start'
 };
+
+const DIRECTIONS = {
+    valid: ['row', 'row-reverse', 'column', 'column-reverse'],
+    default: 'row'
+};
+
 const VERTICAL_ALIGNMENTS = {
     valid: ['start', 'center', 'end', 'stretch'],
     default: 'stretch'
+};
+
+const WIDTHS = {
+    default: 'default',
+    valid: ['default', 'small', 'medium', 'large']
 };
 
 /**
@@ -58,31 +31,77 @@ const VERTICAL_ALIGNMENTS = {
  * @public
  */
 export default class Layout extends LightningElement {
-    _columnGap = DEFAULT_COLUMN_GAP;
     _direction = DIRECTIONS.default;
     _horizontalAlign = HORIZONTAL_ALIGNMENTS.default;
     _multipleRows = false;
-    _rowGap = DEFAULT_ROW_GAP;
     _verticalAlign = VERTICAL_ALIGNMENTS.default;
 
-    _items = {};
+    _disconnected = false;
+    _items = new Map();
+    _name = generateUUID();
+    _previousWidth;
+    _resizeIsHandledByParent = false;
     _resizeObserver;
-    _width;
+
+    connectedCallback() {
+        /**
+         * The event fired when the layout is inserted in the DOM.
+         *
+         * @event
+         * @name privatelayoutconnected
+         * @param {string} name Unique name of the layout.
+         * @param {object} callbacks Object with two keys:
+         * * `setItemsSize`: When called, the layout passes down its current width to its layout items.
+         * * `setIsResizedByParent`: If called with `true`, the resizing of the layout is handled by its parent. The layout will not watch its width and update the size of its items automatically.
+         * @bubbles
+         * @composed
+         */
+        const event = new CustomEvent('privatelayoutconnected', {
+            detail: {
+                callbacks: {
+                    setItemsSize: this.setItemsSize.bind(this),
+                    setIsResizedByParent: this.setIsResizedByParent.bind(this)
+                },
+                name: this._name
+            },
+            composed: true,
+            bubbles: true
+        });
+        this.dispatchEvent(event);
+    }
 
     renderedCallback() {
-        if (!this.width) {
-            this.updateWidth();
-        }
-        if (!this._resizeObserver) {
+        if (!this._resizeObserver && !this._resizeIsHandledByParent) {
             this.initResizeObserver();
+        } else if (this._resizeIsHandledByParent) {
+            this.removeResizeObserver();
         }
     }
 
     disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = undefined;
-        }
+        this.removeResizeObserver();
+
+        /**
+         * The event fired when the layout is removed from the DOM.
+         *
+         * @event
+         * @name privatelayoutdisconnected
+         * @param {string} name Unique name of the layout.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutdisconnected', {
+                detail: {
+                    name: this._name
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
+        // If the parent is disconnected too, the event won't get to its other ancestors.
+        // Use _disconnected to still make sure setItemsSize() is not called uselessly.
+        this._disconnected = true;
     }
 
     /*
@@ -90,22 +109,6 @@ export default class Layout extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Space between columns of items, given as a number of pixels, or as a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">CSS length</a>.
-     * If an item has an alignment bump, the gap in this direction will be half the given size.
-     *
-     * @type {string|number}
-     * @default 0
-     * @public
-     */
-    @api
-    get columnGap() {
-        return this._columnGap;
-    }
-    set columnGap(value) {
-        this._columnGap = value || DEFAULT_COLUMN_GAP;
-    }
 
     /**
      * Direction in which the items are placed in the container. Valid values include row, row-reverse, column and column-reverse.
@@ -159,22 +162,6 @@ export default class Layout extends LightningElement {
     }
 
     /**
-     * Space between rows of items, given as a number of pixels, or as a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">CSS length</a>.
-     * Only used if `multiple-rows` is true. If an item has an alignment bump, the gap in this direction will be half the given size.
-     *
-     * @type {string|number}
-     * @default 0
-     * @public
-     */
-    @api
-    get rowGap() {
-        return this._rowGap;
-    }
-    set rowGap(value) {
-        this._rowGap = value || DEFAULT_ROW_GAP;
-    }
-
-    /**
      * Determines how to align the layout items vertically in the container. Valid values include start, center, end, and stretch.
      *
      * @type {string}
@@ -199,6 +186,24 @@ export default class Layout extends LightningElement {
      */
 
     /**
+     * Compute current width value.
+     */
+    get width() {
+        const width = this.wrapper?.getBoundingClientRect().width || 0;
+        if (width >= 1024) return 'large';
+        if (width >= 768) return 'medium';
+        if (width >= 480) return 'small';
+        return WIDTHS.default;
+    }
+
+    /**
+     * Wrapper element
+     */
+    get wrapper() {
+        return this.template.querySelector('[data-element-id="div-wrapper"]');
+    }
+
+    /**
      * Computed CSS classes for the layout wrapper.
      *
      * @type {string}
@@ -215,6 +220,7 @@ export default class Layout extends LightningElement {
                 'slds-grid_align-space': this.horizontalAlign === 'space',
                 'slds-grid_align-spread': this.horizontalAlign === 'spread',
                 'slds-wrap': this.multipleRows,
+                'slds-grid_vertical-stretch': this.verticalAlign === 'stretch',
                 'slds-grid_vertical-align-start':
                     this.verticalAlign === 'start',
                 'slds-grid_vertical-align-center':
@@ -222,29 +228,6 @@ export default class Layout extends LightningElement {
                 'slds-grid_vertical-align-end': this.verticalAlign === 'end'
             })
             .toString();
-    }
-
-    /**
-     * Computed CSS style for the layout wrapper.
-     *
-     * @type {string}
-     */
-    get wrapperStyle() {
-        if (!this.columnGap && !this.rowGap) {
-            return undefined;
-        }
-
-        const columnGap = !isNaN(Number(this.columnGap))
-            ? `${this.columnGap}px`
-            : this.columnGap;
-        const rowGap = !isNaN(Number(this.rowGap))
-            ? `${this.rowGap}px`
-            : this.rowGap;
-        return `
-            margin: calc(${rowGap} / -2) calc(${columnGap} / -2);
-            --private-layout-spacing-block-between: ${rowGap};
-            --private-layout-spacing-inline-between: ${columnGap};
-        `;
     }
 
     /*
@@ -257,39 +240,32 @@ export default class Layout extends LightningElement {
      * Initialize the resize observer, triggered when the layout is resized.
      */
     initResizeObserver() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        if (!wrapper) {
-            return;
-        }
-        this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
-            this.updateWidth();
+        if (!this.wrapper) return;
+        this.dispatchSizeChange();
+
+        this._resizeObserver = new AvonniResizeObserver(this.wrapper, () => {
+            this.dispatchSizeChange();
+            this.setItemsSize();
         });
     }
 
-    /**
-     * Get the width of the layout, and update it in each of its items.
-     */
-    updateWidth() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        if (!wrapper || !Object.values(this._items).length) {
+    removeResizeObserver() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
+    }
+
+    setIsResizedByParent(value) {
+        this._resizeIsHandledByParent = normalizeBoolean(value);
+    }
+
+    setItemsSize() {
+        if (this._disconnected) {
             return;
         }
-        const width = wrapper.getBoundingClientRect().width;
-        if (width >= 1024) {
-            this._width = 'large';
-        } else if (width >= 768) {
-            this._width = 'medium';
-        } else if (width >= 480) {
-            this._width = 'small';
-        } else {
-            this._width = 'default';
-        }
-        Object.values(this._items).forEach((item) => {
-            item.setContainerSize(this._width);
+        this._items.forEach((item) => {
+            item.setContainerSize(this.width);
         });
     }
 
@@ -306,10 +282,9 @@ export default class Layout extends LightningElement {
      */
     handleItemConnected(event) {
         event.stopPropagation();
-
         const { name, callbacks } = event.detail;
-        this._items[name] = callbacks;
-        callbacks.setContainerSize(this._width);
+        this._items.set(name, callbacks);
+        callbacks.setContainerSize(this.width);
     }
 
     /**
@@ -320,6 +295,32 @@ export default class Layout extends LightningElement {
     handleItemDisconnected(event) {
         event.stopPropagation();
         const name = event.detail.name;
-        delete this._items[name];
+        this._items.delete(name);
+    }
+
+    /**
+     * Dispatch the `sizechange` event when the layout width changes.
+     */
+    dispatchSizeChange() {
+        const newWidth = this.width;
+        if (this._previousWidth !== newWidth) {
+            this._previousWidth = newWidth;
+
+            /**
+             * The event fired when the layout width changes.
+             *
+             * @event
+             * @name sizechange
+             * @param {string} width Current width of the layout: default, small, medium or large.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('sizechange', {
+                    detail: {
+                        width: newWidth
+                    }
+                })
+            );
+        }
     }
 }

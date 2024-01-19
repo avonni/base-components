@@ -10,13 +10,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-circle-bar-color
- * @default #1589ee
+ * @default #0176d3
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-circle-value-text-color
- * @default #1589ee
+ * @default #0176d3
  * @type color
  */
 /**
@@ -39,6 +39,16 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-font-family
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-font-size
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-progress-circle-title-font-style
  * @default normal
  * @type font
@@ -48,6 +58,22 @@
  * @name --avonni-progress-circle-title-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-line-clamp
+ * @default 3
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-line-height
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-letter-spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

@@ -1,44 +1,14 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
-    normalizeArray
+    normalizeArray,
+    normalizeObject
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const DEFAULT_VALUE = 0;
 
@@ -85,6 +55,16 @@ const PROGRESS_BAR_ORIENTATIONS = {
     default: 'horizontal'
 };
 
+const PROGRESS_BAR_PIN_TYPES = {
+    valid: ['circle', 'rectangle'],
+    default: 'rectangle'
+};
+
+const PROGRESS_BAR_PIN_POSITIONS = {
+    valid: ['right', 'left'],
+    default: 'right'
+};
+
 /**
  * @class
  * @descriptor avonni-progress-bar
@@ -99,16 +79,22 @@ export default class ProgressBar extends LightningElement {
      * @public
      */
     @api label;
+
     /**
-     * Text display next to the value.
+     * Text displayed before the value.
      *
      * @type {string}
      * @public
      */
-    @api valueLabel;
+    @api valuePrefix;
 
     _orientation = PROGRESS_BAR_ORIENTATIONS.default;
+    _pinAttributes = {
+        type: PROGRESS_BAR_PIN_TYPES.default,
+        position: PROGRESS_BAR_PIN_POSITIONS.default
+    };
     _referenceLines = [];
+    _showPin = false;
     _showValue = false;
     _size = PROGRESS_BAR_SIZES.default;
     _textured = false;
@@ -117,6 +103,10 @@ export default class ProgressBar extends LightningElement {
     _value = DEFAULT_VALUE;
     _valuePosition = VALUE_POSITIONS.default;
     _variant = PROGRESS_BAR_VARIANTS.default;
+    _valueSuffix;
+
+    _connected = false;
+    _resizeObserver;
 
     /**
      * Render the progress bar depending on its orientation.
@@ -127,6 +117,24 @@ export default class ProgressBar extends LightningElement {
         return this._orientation === 'horizontal'
             ? progressBar
             : progressBarVertical;
+    }
+
+    connectedCallback() {
+        this.updatePinPosition();
+        this._connected = true;
+    }
+
+    renderedCallback() {
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+        this.updatePinPosition();
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
     }
 
     /*
@@ -152,6 +160,40 @@ export default class ProgressBar extends LightningElement {
             fallbackValue: PROGRESS_BAR_ORIENTATIONS.default,
             validValues: PROGRESS_BAR_ORIENTATIONS.valid
         });
+
+        if (this._connected) {
+            this.updatePinPosition();
+        }
+    }
+
+    /**
+     * Object of attributes for the pin.
+     * Pin attributes: type and position
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get pinAttributes() {
+        return this._pinAttributes;
+    }
+
+    set pinAttributes(value) {
+        const pinAttributes = normalizeObject(value);
+
+        const type = normalizeString(pinAttributes.type, {
+            fallbackValue: PROGRESS_BAR_PIN_TYPES.default,
+            validValues: PROGRESS_BAR_PIN_TYPES.valid
+        });
+        const position = normalizeString(pinAttributes.position, {
+            fallbackValue: PROGRESS_BAR_PIN_POSITIONS.default,
+            validValues: PROGRESS_BAR_PIN_POSITIONS.valid
+        });
+        this._pinAttributes = { type, position };
+
+        if (this._connected) {
+            this.updatePinPosition();
+        }
     }
 
     /**
@@ -186,6 +228,30 @@ export default class ProgressBar extends LightningElement {
             fallbackValue: PROGRESS_BAR_SIZES.default,
             validValues: PROGRESS_BAR_SIZES.valid
         });
+
+        if (this._connected) {
+            this.updatePinPosition();
+        }
+    }
+
+    /**
+     * If present, display the pin .
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showPin() {
+        return this._showPin;
+    }
+
+    set showPin(value) {
+        this._showPin = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.updatePinPosition();
+        }
     }
 
     /**
@@ -202,6 +268,10 @@ export default class ProgressBar extends LightningElement {
 
     set showValue(value) {
         this._showValue = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.updatePinPosition();
+        }
     }
 
     /**
@@ -283,6 +353,23 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
+     * Deprecated. Use `value-suffix` instead.
+     *
+     * @type {string}
+     * @deprecated
+     */
+    @api
+    get valueLabel() {
+        return this._valueSuffix;
+    }
+    set valueLabel(value) {
+        this._valueSuffix = value;
+        console.warn(
+            'The "value-label" attribute is deprecated. Use "value-suffix" instead.'
+        );
+    }
+
+    /**
      * Position of the value if present. Valid values include left, right, top-right, top-left, bottom-right and bottom-left.
      *
      * @type {string}
@@ -299,6 +386,20 @@ export default class ProgressBar extends LightningElement {
             fallbackValue: VALUE_POSITIONS.default,
             validValues: VALUE_POSITIONS.valid
         });
+    }
+
+    /**
+     * Text displayed next to the value.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get valueSuffix() {
+        return this._valueSuffix;
+    }
+    set valueSuffix(value) {
+        this._valueSuffix = value;
     }
 
     /**
@@ -365,8 +466,7 @@ export default class ProgressBar extends LightningElement {
                 'avonni-progress-bar__vertical-bar_size-large':
                     this._size === 'large' && this._orientation === 'vertical',
                 'avonni-progress-bar__vertical-bar_size-full':
-                    (this._size === 'full') &
-                    (this._orientation === 'vertical'),
+                    this._size === 'full' && this._orientation === 'vertical',
                 'slds-grid slds-grid_align-center':
                     this.orientation === 'vertical'
             })
@@ -401,7 +501,7 @@ export default class ProgressBar extends LightningElement {
      */
     get computedInnerClass() {
         // for the progressBar in vertical we need to set a height on the outer div and inner div
-        return classSet('slds-progress-bar__value')
+        return classSet('slds-progress-bar__value slds-is-relative')
             .add(`avonni-progress-bar__bar_theme-${this._theme}`)
             .add({
                 'avonni-progress-bar__vertical-bar_size-x-small':
@@ -418,6 +518,24 @@ export default class ProgressBar extends LightningElement {
             .toString();
     }
 
+    get computedPinClass() {
+        return classSet('avonni-progress-bar__pin')
+            .add(`avonni-progress-bar__pin_theme-${this._theme}`)
+            .add(`avonni-progress-bar__${this.pinType}-pin`)
+            .add({
+                'avonni-progress-bar__pin-left':
+                    this.pinAttributes &&
+                    this.pinAttributes.position === 'left' &&
+                    this.orientation === 'vertical'
+            })
+            .add({
+                'avonni-progress-bar__pin-right':
+                    this.pinAttributes &&
+                    this.pinAttributes.position === 'right' &&
+                    this.orientation === 'vertical'
+            });
+    }
+
     /**
      * Computed orientation width or height depending on vertical or horizontal display.
      *
@@ -430,12 +548,43 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
+     * Get the div container of the pin
+     *
+     * @type {object}
+     */
+    get divPin() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-progress-bar-pin"]'
+        );
+    }
+
+    /**
+     * The type of the pin.
+     *
+     * @type {string}
+     */
+    get pinType() {
+        return this.pinAttributes?.type || PROGRESS_BAR_PIN_TYPES.default;
+    }
+
+    /**
+     * Verify Show pin value.
+     *
+     * @type {boolean}
+     */
+    get showPinValue() {
+        return this._showPin && this._showValue;
+    }
+
+    /**
      * Verify Show position left.
      *
      * @type {string | boolean}
      */
     get showPositionLeft() {
-        return this._valuePosition === 'left' && this._showValue;
+        return (
+            this._valuePosition === 'left' && this._showValue && !this._showPin
+        );
     }
 
     /**
@@ -444,7 +593,9 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionRight() {
-        return this._valuePosition === 'right' && this._showValue;
+        return (
+            this._valuePosition === 'right' && this._showValue && !this._showPin
+        );
     }
 
     /**
@@ -453,7 +604,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionBottomLeft() {
-        return this._valuePosition === 'bottom-left' && this._showValue;
+        return (
+            this._valuePosition === 'bottom-left' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**
@@ -462,7 +617,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionBottomRight() {
-        return this._valuePosition === 'bottom-right' && this._showValue;
+        return (
+            this._valuePosition === 'bottom-right' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**
@@ -471,7 +630,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionTopRight() {
-        return this._valuePosition === 'top-right' && this._showValue;
+        return (
+            this._valuePosition === 'top-right' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**
@@ -480,7 +643,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionTopLeft() {
-        return this._valuePosition === 'top-left' && this._showValue;
+        return (
+            this._valuePosition === 'top-left' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**
@@ -501,5 +668,61 @@ export default class ProgressBar extends LightningElement {
         return (
             this.showPositionTopLeft || this.showPositionTopRight || this.label
         );
+    }
+
+    /**
+     * The value to display including the prefix and the suffix.
+     *
+     * @type {string}
+     */
+    get valueToDisplay() {
+        let value = `${this.value}%`;
+        if (!this.showPin || this.pinAttributes.type !== 'circle') {
+            if (this.valuePrefix) {
+                value = `${this.valuePrefix} ${value}`;
+            }
+            if (this.valueSuffix) {
+                value = `${value} ${this.valueSuffix}`;
+            }
+        }
+        return value;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.divPin) {
+            return null;
+        }
+        return new AvonniResizeObserver(this.divPin, () => {
+            this.updatePinPosition();
+        });
+    }
+
+    /**
+     * Update the position of the pin based on the orientation and the pin attributes.
+     *
+     */
+    updatePinPosition() {
+        if (!this.divPin || !this.showPinValue) {
+            return;
+        }
+
+        const width = this.divPin.getBoundingClientRect().width;
+        const height = this.divPin.getBoundingClientRect().height;
+        if (this.orientation === 'horizontal' && width > 0) {
+            this.divPin.style.right = `${-width / 2}px`;
+        } else if (this.orientation === 'vertical' && height > 0 && width > 0) {
+            this.divPin.style.bottom = `${-height / 2}px`;
+        }
     }
 }

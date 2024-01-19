@@ -1,168 +1,161 @@
-<!--
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
--->
-
 <template>
-    <fieldset
-        class="slds-form-element"
-        aria-required={required}
-        data-element-id="fieldset"
+    <div
+        class="avonni-vertical-visual-picker__wrapper_full-height"
+        data-element-id="div-wrapper"
     >
-        <legend
+        <fieldset
             class="
-                slds-form-element__legend slds-form-element__label
-                avonni-vertical-visual-picker__label
+                slds-form-element
+                avonni-vertical-visual-picker__fieldset_full-height
             "
+            aria-required={required}
+            data-element-id="fieldset"
         >
-            <template if:true={required}>
+            <legend
+                class="
+                    slds-form-element__legend slds-form-element__label
+                    avonni-vertical-visual-picker__label
+                "
+                data-element-id="legend"
+            >
                 <abbr
+                    if:true={required}
                     class="slds-required"
                     title="Required"
                     data-element-id="abbr"
                     >*</abbr
                 >
-            </template>
-            {label}
-        </legend>
-        <div class="slds-form-element__control">
-            <template for:each={computedListItems} for:item="item">
-                <div class={verticalVisualPickerClass} key={item.key}>
-                    <input
-                        type={type}
-                        id={item.value}
-                        value={item.value}
-                        name={name}
-                        disabled={item.disabled}
-                        data-element-id="input"
-                        onblur={handleBlur}
-                        onfocus={handleFocus}
-                        onchange={handleChange}
-                        onkeyup={handleKeyUp}
-                    />
-                    <label for={item.value} data-element-id="label">
-                        <span class={verticalVisualPickerTypeClass}>
-                            <template if:false={hideCheckMark}>
-                                <span
-                                    if:true={isCoverable}
-                                    class="slds-is-selected"
-                                >
-                                    <lightning-icon
-                                        icon-name="utility:check"
-                                        size="medium"
-                                        variant="inverse"
-                                    ></lightning-icon>
-                                </span>
-                            </template>
-                            <span class={notSelectedClass}>
-                                <template if:true={item.mediaIsLeft}>
-                                    <c-primitive-avatar
-                                        alternative-text={item.alternativeText}
-                                        fallback-icon-name={item.avatar.iconName}
-                                        initials={item.avatar.initials}
-                                        presence={item.avatar.presence}
-                                        presence-position={item.avatar.presencePosition}
-                                        size={item.avatar.size}
-                                        src={item.avatar.imgSrc}
-                                        variant={item.avatar.variant}
-                                        class="slds-m-right_small"
-                                        if:false={item.imgSrc}
-                                    ></c-primitive-avatar>
-                                    <img
-                                        src={item.imgSrc}
-                                        alt={item.imgAlternativeText}
-                                        class="
-                                            slds-m-right_small
-                                            avonni-vertical-visual-picker__image
-                                        "
-                                        if:true={item.imgSrc}
-                                    />
+                {label}
+            </legend>
+            <div
+                class="
+                    slds-form-element__control
+                    slds-scrollable_y
+                    avonni-vertical-visual-picker__item-wrapper_full-height
+                "
+                data-element-id="div-items-wrapper"
+                onscroll={handleScroll}
+            >
+                <template for:each={visibleItems} for:item="item">
+                    <div
+                        class={verticalVisualPickerClass}
+                        key={item.key}
+                        data-element-id="div-item-wrapper"
+                        data-value={item.computedValue}
+                    >
+                        <input
+                            class="avonni-vertical-visual-picker__input"
+                            type={type}
+                            id={item.computedValue}
+                            checked={item.isChecked}
+                            value={item.computedValue}
+                            name={name}
+                            disabled={item.disabled}
+                            data-element-id="input"
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
+                            onchange={handleChange}
+                            onkeyup={handleKeyUp}
+                        />
+                        <label
+                            for={item.computedValue}
+                            data-element-id="label"
+                            onmouseenter={handleMouseEnter}
+                            onmouseleave={handleMouseLeave}
+                        >
+                            <span class={verticalVisualPickerTypeClass}>
+                                <template if:false={hideCheckMark}>
+                                    <span
+                                        if:true={isCoverable}
+                                        class="slds-is-selected"
+                                    >
+                                        <lightning-icon
+                                            icon-name="utility:check"
+                                            size="medium"
+                                            variant="inverse"
+                                        ></lightning-icon>
+                                    </span>
                                 </template>
-                                <span class={item.bodyClass}>
-                                    <p
-                                        class="
-                                            avonni-vertical-visual-picker__item-title
-                                            slds-m-bottom_x-small
-                                            slds-truncate
-                                        "
-                                    >
-                                        {item.title}
-                                    </p>
-                                    <p class={item.descriptionClass}>
-                                        {item.description}
-                                    </p>
-                                    <div
-                                        if:true={item.tags}
-                                        class="
-                                            avonni-vertical-visual-picker__tags-container
-                                        "
-                                    >
-                                        <template
-                                            for:each={item.tags}
-                                            for:item="tag"
+                                <span class={notSelectedClass}>
+                                    <template if:true={item.mediaIsLeft}>
+                                        <c-primitive-avatar
+                                            alternative-text={item.alternativeText}
+                                            fallback-icon-name={item.avatar.iconName}
+                                            initials={item.avatar.initials}
+                                            presence={item.avatar.presence}
+                                            presence-position={item.avatar.presencePosition}
+                                            size={item.avatar.size}
+                                            src={item.avatar.imgSrc}
+                                            variant={item.avatar.variant}
+                                            class="slds-m-right_small"
+                                            if:false={item.imgSrc}
+                                        ></c-primitive-avatar>
+                                        <img
+                                            src={item.imgSrc}
+                                            alt={item.imgAlternativeText}
+                                            class="
+                                                slds-m-right_small
+                                                avonni-vertical-visual-picker__image
+                                            "
+                                            if:true={item.imgSrc}
+                                        />
+                                    </template>
+                                    <span class={item.bodyClass}>
+                                        <p
+                                            class="
+                                                avonni-vertical-visual-picker__item-title
+                                                slds-m-bottom_x-small
+                                                slds-truncate
+                                            "
                                         >
-                                            <avonni-chip
-                                                if:true={tag.label}
-                                                key={tag.label}
-                                                label={tag.label}
-                                                variant={tag.variant}
-                                                class="
-                                                    avonni-vertical-visual-picker__tag
-                                                "
-                                            ></avonni-chip>
-                                        </template>
-                                    </div>
+                                            {item.title}
+                                        </p>
+                                        <p class={item.descriptionClass}>
+                                            {item.description}
+                                        </p>
+                                        <div
+                                            if:true={item.tags}
+                                            class="
+                                                avonni-vertical-visual-picker__tags-container
+                                            "
+                                        >
+                                            <template
+                                                for:each={item.tags}
+                                                for:item="tag"
+                                            >
+                                                <c-chip
+                                                    if:true={tag.label}
+                                                    key={tag.label}
+                                                    label={tag.label}
+                                                    variant={tag.variant}
+                                                    class="
+                                                        avonni-vertical-visual-picker__tag
+                                                    "
+                                                ></c-chip>
+                                            </template>
+                                        </div>
+                                    </span>
+                                    <template if:true={item.mediaIsRight}>
+                                        <c-primitive-avatar
+                                            alternative-text={item.alternativeText}
+                                            fallback-icon-name={item.avatar.iconName}
+                                            initials={item.avatar.initials}
+                                            presence={item.avatar.presence}
+                                            presence-position={item.avatar.presencePosition}
+                                            size={item.avatar.size}
+                                            src={item.avatar.imgSrc}
+                                            variant={item.avatar.variant}
+                                            class="slds-m-left_small"
+                                        ></c-primitive-avatar>
+                                    </template>
                                 </span>
-                                <template if:true={item.mediaIsRight}>
-                                    <c-primitive-avatar
-                                        alternative-text={item.alternativeText}
-                                        fallback-icon-name={item.avatar.iconName}
-                                        initials={item.avatar.initials}
-                                        presence={item.avatar.presence}
-                                        presence-position={item.avatar.presencePosition}
-                                        size={item.avatar.size}
-                                        src={item.avatar.imgSrc}
-                                        variant={item.avatar.variant}
-                                        class="slds-m-left_small"
-                                    ></c-primitive-avatar>
-                                </template>
                             </span>
-                        </span>
-                        <template if:true={item.isChecked}>
                             <span
                                 if:false={isCoverable}
                                 class="
                                     slds-icon_container
                                     slds-visual-picker__text-check
+                                    avonni-vertical-visual-picker__text-check
                                 "
                             >
                                 <lightning-icon
@@ -172,39 +165,64 @@
                                     variant="inverse"
                                 ></lightning-icon>
                             </span>
-                        </template>
-                    </label>
-                    <div
-                        if:true={item.showSubItems}
-                        class="
-                            slds-box slds-box_small
-                            slds-m-top_xx-small
-                            slds-text-align_left
-                            avonni-vertical-visual-picker__sub-items
-                        "
-                    >
-                        <c-input-choice-set
-                            data-element-id="input-choice-set"
-                            data-value={item.value}
-                            disabled={item.disabled}
-                            is-multi-select={item.subItemsMultiSelect}
-                            options={item.subItems}
-                            value={value}
-                            onchange={handleSubItemsChange}
-                        ></c-input-choice-set>
+                        </label>
+                        <div
+                            if:true={item.subItems}
+                            class="
+                                slds-box slds-box_small
+                                slds-m-top_xx-small
+                                slds-text-align_left
+                                avonni-vertical-visual-picker__sub-items
+                            "
+                            data-element-id="div-sub-items"
+                        >
+                            <c-input-choice-set
+                                data-element-id="input-choice-set"
+                                data-value={item.computedValue}
+                                disabled={item.disabled}
+                                is-multi-select={item.subItemsMultiSelect}
+                                options={item.subItems}
+                                value={value}
+                                onchange={handleSubItemsChange}
+                            ></c-input-choice-set>
+                        </div>
                     </div>
+                </template>
+                <div
+                    if:true={showButtonOrSpinner}
+                    class={buttonSpinnerWrapperClass}
+                    data-element-id="div-button-spinner-wrapper"
+                >
+                    <!-- Loading spinner -->
+                    <lightning-spinner
+                        if:true={isLoading}
+                        alternative-text="Loading..."
+                        size="small"
+                        data-element-id="lightning-spinner"
+                    ></lightning-spinner>
+
+                    <!-- Show more button -->
+                    <lightning-button
+                        if:true={showMoreButton}
+                        class="slds-m-top_small slds-m-bottom_small slds-show"
+                        disabled={isLoading}
+                        icon-name={currentShowButtonIconName}
+                        label={currentShowButtonLabel}
+                        data-element-id="lightning-button"
+                        onclick={handleToggleShowMoreButton}
+                    ></lightning-button>
                 </div>
-            </template>
-        </div>
-    </fieldset>
-    <template if:false={valid}>
+            </div>
+        </fieldset>
         <div
+            if:true={helpMessage}
             id="help-message"
             class="slds-form-element__help"
+            data-element-id="div-help-message"
             data-help-message
             role="alert"
         >
             {helpMessage}
         </div>
-    </template>
+    </div>
 </template>

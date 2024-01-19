@@ -1,36 +1,6 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { VerticalVisualPicker } from '../__examples__/verticalVisualPicker';
+import { InfiniteLoadingVerticalVisualPicker } from '../__examples__/infiniteLoading';
+import { InfiniteLoadingUsingShowMoreVerticalVisualPicker } from '../__examples__/infiniteLoadingUsingShowMore';
 import {
     baseItems,
     itemsWithIcons,
@@ -43,18 +13,30 @@ import {
 } from './data';
 
 export default {
-    title: 'Example/VerticalVisualPicker',
+    title: 'Example/Vertical Visual Picker',
     argTypes: {
         disabled: {
             control: {
                 type: 'boolean'
             },
             description:
-                'If present, the visual picker is disabled and the user cannot interact with it. ',
+                'If present, the visual picker is disabled and the user cannot interact with it.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
                 category: 'Validations'
+            }
+        },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of items and then display more when users scroll to the end of the picker. Use with the loadmore event to retrieve more items. If present, `max-count` is ignored.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         hideCheckMark: {
@@ -63,6 +45,18 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, hide the check mark when selected.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is shown to indicate that more items are loading.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -87,6 +81,63 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the picker.',
+            table: {
+                defaultValue: { summary: '20' },
+                type: { summary: 'number' }
+            }
+        },
+        maxCount: {
+            name: 'max-count',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Maximum of items allowed in the visible list. This attribute is ignored if `enable-infinite-loading` is present.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        max: {
+            control: {
+                type: 'number'
+            },
+            description: 'Maximum number of selected items.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Validations'
+            }
+        },
+        messageWhenRangeOverflow: {
+            name: 'message-when-range-overflow',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a range overflow is detected.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Validations'
+            }
+        },
+        messageWhenRangeUnderflow: {
+            name: 'message-when-range-underflow',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a range underflow is detected.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Validations'
+            }
+        },
         messageWhenValueMissing: {
             name: 'message-when-value-missing',
             control: {
@@ -96,6 +147,17 @@ export default {
                 'Error message to be displayed when no item is selected and the required attribute is set to true.',
             table: {
                 type: { summary: 'string' },
+                category: 'Validations'
+            }
+        },
+        min: {
+            control: {
+                type: 'number'
+            },
+            description: 'Minimum number of selected options required.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' },
                 category: 'Validations'
             }
         },
@@ -169,7 +231,10 @@ export default {
     },
     args: {
         disabled: false,
+        enableInfiniteLoading: false,
         hideCheckMark: false,
+        isLoading: false,
+        loadMoreOffset: 20,
         required: false,
         size: 'medium',
         type: 'radio',
@@ -178,6 +243,10 @@ export default {
 };
 
 const Template = (args) => VerticalVisualPicker(args);
+const TemplateInfiniteLoading = (args) =>
+    InfiniteLoadingVerticalVisualPicker(args);
+const TemplateInfiniteLoadingUsingShowMore = (args) =>
+    InfiniteLoadingUsingShowMoreVerticalVisualPicker(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -185,6 +254,17 @@ Base.args = {
     label: 'Select an option',
     items: baseItems,
     value: 'item-3'
+};
+
+export const MaximumAndMinimum = Template.bind({});
+MaximumAndMinimum.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Select an option',
+    items: baseItems,
+    value: 'item-3',
+    type: 'checkbox',
+    max: 3,
+    min: 2
 };
 
 export const BaseWithIcons = Template.bind({});
@@ -255,5 +335,17 @@ SubItems.args = {
     label: 'Select an option',
     items: itemsWithSubItems,
     type: 'checkbox',
-    value: ['item-1', 'sub-item-1-2', 'sub-item-1-3', 'item-3', 'sub-item-3-1']
+    value: ['item-1', 'sub-item-1-2', 'sub-item-1-3', 'item-3', 'sub-item-3-1'],
+    maxCount: 2
+};
+
+export const InfiniteLoading = TemplateInfiniteLoading.bind({});
+InfiniteLoading.args = {
+    label: 'Infinite Loading'
+};
+
+export const InfiniteLoadingUsingShowMore =
+    TemplateInfiniteLoadingUsingShowMore.bind({});
+InfiniteLoadingUsingShowMore.args = {
+    maxCount: 5
 };

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import {
     addToDate,
     dateTimeObjectFrom,
@@ -102,29 +70,7 @@ export default class SchedulerEventData {
             return;
         }
 
-        const eventsInTimeFrame = this.events.filter((event) => {
-            const from = this.createDate(event.from);
-            const to = this.createDate(event.to);
-            return (
-                this.belongsToSelectedResources(event) &&
-                (interval.contains(from) ||
-                    interval.contains(to) ||
-                    (interval.isAfter(from) && interval.isBefore(to)) ||
-                    event.recurrence)
-            );
-        });
-
-        this.events = eventsInTimeFrame.reduce((computedEvents, evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event);
-            const computedEvent = new SchedulerEvent(event);
-
-            if (computedEvent.occurrences.length) {
-                computedEvents.push(computedEvent);
-            }
-            return computedEvents;
-        }, []);
-
+        this.events = this.getEventsInInterval();
         this.refreshEvents();
     }
 
@@ -197,7 +143,7 @@ export default class SchedulerEventData {
      * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
      */
     createDate(date) {
-        return dateTimeObjectFrom(date, { zone: this.timezone });
+        return dateTimeObjectFrom(date, { zone: this.schedule.timezone });
     }
 
     /**
@@ -296,6 +242,34 @@ export default class SchedulerEventData {
             '[data-element-id="div-schedule-body"]'
         );
         return body.getBoundingClientRect();
+    }
+
+    getEventsInInterval(events = this.events, interval = this.visibleInterval) {
+        if (!interval) {
+            return [];
+        }
+        const eventsInTimeFrame = events.filter((event) => {
+            const from = this.createDate(event.from);
+            const to = this.createDate(event.to);
+            return (
+                this.belongsToSelectedResources(event) &&
+                (interval.contains(from) ||
+                    interval.contains(to) ||
+                    (interval.isAfter(from) && interval.isBefore(to)) ||
+                    event.recurrence)
+            );
+        });
+
+        return eventsInTimeFrame.reduce((computedEvents, evt) => {
+            const event = { ...evt };
+            this.updateEventDefaults(event, true, interval);
+            const computedEvent = new SchedulerEvent(event);
+
+            if (computedEvent.occurrences.length) {
+                computedEvents.push(computedEvent);
+            }
+            return computedEvents;
+        }, []);
     }
 
     /**
@@ -635,11 +609,15 @@ export default class SchedulerEventData {
      *
      * @param {object} event The event object.
      */
-    updateEventDefaults(event, newEvent = true) {
+    updateEventDefaults(
+        event,
+        newEvent = true,
+        interval = this.visibleInterval
+    ) {
         // If the event is a calendar multi-day event,
         // do not cut it at the currently visible schedule start/end
-        const visibleEnd = this.visibleInterval.e;
-        const visibleStart = this.visibleInterval.s;
+        const visibleEnd = interval.e;
+        const visibleStart = interval.s;
         const from = this.createDate(event.from);
         const to = this.normalizedEventTo(event);
         const isMultiDay = spansOnMoreThanOneDay(event, from, to);

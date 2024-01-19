@@ -31,6 +31,15 @@
  * @property {string} buttonVariant The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. Defaults to neutral.
  * @property {boolean} buttonDisabled If present, the button is disabled. Defaults to false.
  */
+/**
+ * @typedef {Object} FieldAttributes
+ * @name fieldAttributes
+ * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+ * @property {string|number} largeContainerCols Number of columns on small container widths. Width is greater or equal to 1024px. See `cols` for accepted values.
+ * @property {string|number} mediumContainerCols Number of columns on small container widths. Width is greater or equal to 768px. See `cols` for accepted values.
+ * @property {string|number} smallContainerCols Number of columns on small container widths. Width is greater or equal to 480px. See `cols` for accepted values.
+ * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+ */
 
 /**
  * @namespace stylingHooks
@@ -83,4 +92,46 @@
  * @name --avonni-activity-timeline-title-font-weight
  * @type font
  * @default 400
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-fields-color-background
+ * @type color
+ * @default #f3f3f3 for vertical, none for horizontal
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-fields-radius-border
+ * @type sizing
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-fields-color-border
+ * @type color
+ * @default #c9c9c9
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-fields-sizing-border
+ * @type dimension
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-fields-styling-border
+ * @type string
+ * @default solid for vertical, none for horizontal
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-fields-spacing-block
+ * @type dimension
+ * @default 1rem for vertical, 0.75rem for horizontal
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-fields-spacing-inline
+ * @type dimension
+ * @default 1rem
  */

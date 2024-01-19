@@ -2,7 +2,8 @@
  * @typedef {Object} VisualPickerItem
  * @name items
  * @property {object} avatar An object with item fields to be rendered as an avatar.
- * @property {string} avatarPosition If present, sets the position of the avatar. Valid values include top, bottom, right, left. The value defaults to left.
+ * @property {string} avatarPosition If present, sets the position of the avatar. Valid values include top, bottom, right, left, right-of-content and left-of-content. The value defaults to left.
+ * @property {string} avatarVerticalAlignment If present, sets the vertical aligment of the avatar. Valid values includes top, bottom and center. The value defaults to center.
  * @property {string} description The description can include text, and is displayed under the title inside the figure.
  * @property {string} descriptionPosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
  * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
@@ -32,6 +33,29 @@
  * @name itemTags
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
+ */
+/**
+ * @typedef {Object} ImageAttributes
+ * @name imageAttributes
+ * @property {string} fallbackSrc The source URL to use if item.imageSrc is invalid or is not specified.
+ * @property {string} position The position of the image relative to the content. The supported positions are left, right, top, bottom, background and overlay.
+ * @property {string} size The size of the item image. The size controls the width for image positions left and right. Otherwise size controls the image height. Valid values are small, medium, large. The size defaults to large.
+ * @property {number} height The image height in pixels. The height is only used for image positions top, bottom, background and overlay. The height overrides the size value.
+ * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
+ */
+/**
+ * @typedef {Object} FieldAttributes
+ * @name fieldAttributes
+ * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+ * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+ */
+/**
+ * @typedef {Object} ColumnAttributes
+ * @name columnAttributes
+ * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+ * @property {string|number} largeContainerCols Number of columns on large container widths. Width is greater or equal to 1024px. See `cols` for accepted values.
+ * @property {string|number} mediumContainerCols Number of columns on medium container widths. Width is greater or equal to 768px. See `cols` for accepted values.
+ * @property {string|number} smallContainerCols Number of columns on small container widths. Width is greater or equal to 480px. See `cols` for accepted values.
  */
 
 /**
@@ -123,6 +147,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-item-description-line-height
  * @default 1.25
  * @type dimension
@@ -144,6 +174,183 @@
  * @name --avonni-visual-picker-tags-padding
  * @default 0.5rem
  * @type padding
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-alt-inverse-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-alt-inverse-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-alt-inverse-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-base-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-base-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-base-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-brand-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-brand-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-brand-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-error-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-error-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-error-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-info-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-info-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-info-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-inverse-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-inverse-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-inverse-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-offline-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-offline-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-offline-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-success-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-success-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-success-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-warning-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-warning-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-warning-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-label-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-label-font-weight
+ * @default 700
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-radius-border
+ * @default 15rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-sizing-border
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-line-height
+ * @default normal
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -207,6 +414,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-description-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-description-line-height
  * @default 1.25
  * @type dimension
@@ -238,7 +451,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-color-border
- * @default #dddbda
+ * @default #c9c9c9
  * @type color
  */
 /**

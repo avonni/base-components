@@ -1,37 +1,3 @@
-<!--
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
--->
-
 <template>
     <div role="group" aria-labelledby="group-label" class={computedOuterClass}>
         <div id="group-label" class={computedGroupLabelClass}>
@@ -71,13 +37,15 @@
                             type="search"
                             data-element-id="lightning-input"
                             onchange={handleSearch}
+                            onfocus={handleSearchFocus}
                         ></lightning-input>
                     </div>
                     <div
                         class={computedListboxSourceContainerClass}
-                        style={sourceHeight}
+                        data-element-id="div-source-list"
                         ondragover={handleDragOverSource}
                         ondragleave={handleDragLeaveSource}
+                        onscroll={handleScroll}
                     >
                         <ul
                             id="source-list"
@@ -90,7 +58,7 @@
                             "
                             role="listbox"
                             aria-disabled={ariaDisabled}
-                            data-element-id="ul-source-list"
+                            data-element-id={sourceListId}
                         >
                             <template
                                 for:each={computedSourceGroups}
@@ -141,7 +109,7 @@
                                             data-element-id="div-source"
                                             data-role="option"
                                             data-value={option.value}
-                                            data-type={computedSourceListId}
+                                            data-type={sourceListId}
                                             onclick={handleOptionClick}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
@@ -149,22 +117,27 @@
                                             ondragstart={handleDragStart}
                                             ondragend={handleDragEndSource}
                                         >
-                                            <div class="slds-media__figure">
+                                            <div
+                                                class="
+                                                    slds-media__figure
+                                                    slds-truncate
+                                                "
+                                            >
                                                 <c-avatar
-                                                    if:true={option.avatar}
+                                                    if:true={option.showAvatar}
                                                     fallback-icon-name={option.avatar.fallbackIconName}
                                                     src={option.avatar.src}
                                                     initials={option.avatar.initials}
-                                                    size={option.size}
+                                                    size={option.avatar.size}
                                                     variant={option.avatar.variant}
-                                                    primary-text={option.primaryText}
-                                                    secondary-text={option.secondaryText}
+                                                    primary-text={option.avatar.primaryText}
+                                                    secondary-text={option.avatar.secondaryText}
                                                     presence={option.avatar.presence}
                                                     presence-position={option.avatar.presencePosition}
                                                 ></c-avatar>
                                             </div>
                                             <template
-                                                if:false={option.description}
+                                                if:false={option.avatar.primaryText}
                                             >
                                                 <span class="slds-media__body">
                                                     <span
@@ -179,10 +152,9 @@
                                 </template>
                             </template>
                         </ul>
-                        <div if:true={isLoading}>
+                        <div if:true={isLoading} class={loadingSpinnerClass}>
                             <lightning-spinner
                                 size="small"
-                                class="slds-spinner_container"
                                 alternative-text={i18n.loadingText}
                                 data-element-id="lightning-spinner"
                             ></lightning-spinner>
@@ -231,7 +203,7 @@
                     >
                     <div
                         class={computedListboxSelectedContainerClass}
-                        style={selectedHeight}
+                        data-element-id="div-selected-list"
                         ondragover={handleDragOverSelected}
                         ondragleave={handleDragLeaveSelected}
                     >
@@ -243,7 +215,7 @@
                             class="slds-listbox slds-listbox_vertical"
                             role="listbox"
                             aria-disabled={ariaDisabled}
-                            data-element-id="ul-selected-list"
+                            data-element-id={selectedListId}
                         >
                             <template
                                 for:each={computedSelectedGroups}
@@ -296,7 +268,7 @@
                                             data-inside-group-index={insideGroupIndex}
                                             data-role="option"
                                             data-value={option.value}
-                                            data-type={computedSelectedListId}
+                                            data-type={selectedListId}
                                             onclick={handleOptionClick}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
@@ -305,20 +277,25 @@
                                             ondragend={handleDragEndSelected}
                                             ondragover={handleDragOver}
                                         >
-                                            <div class="slds-media__figure">
+                                            <div
+                                                class="
+                                                    slds-media__figure
+                                                    slds-truncate
+                                                "
+                                            >
                                                 <c-avatar
-                                                    if:true={option.avatar}
+                                                    if:true={option.showAvatar}
                                                     fallback-icon-name={option.avatar.fallbackIconName}
                                                     src={option.avatar.src}
                                                     initials={option.avatar.initials}
-                                                    size={option.size}
+                                                    size={option.avatar.size}
                                                     variant={option.avatar.variant}
-                                                    primary-text={option.primaryText}
-                                                    secondary-text={option.secondaryText}
+                                                    primary-text={option.avatar.primaryText}
+                                                    secondary-text={option.avatar.secondaryText}
                                                 ></c-avatar>
                                             </div>
                                             <template
-                                                if:false={option.description}
+                                                if:false={option.avatar.primaryText}
                                             >
                                                 <span class="slds-media__body">
                                                     <span

@@ -3,12 +3,14 @@ import { LightningElement } from 'lwc';
 export default class ColumnsWithImageOverlay extends LightningElement {
     imageAttributes = {
         position: 'overlay'
-    }
+    };
 
-    mediaAction = [{
-        name: 'event-action',
-        iconName: 'utility:bookmark'
-    }]
+    mediaAction = [
+        {
+            name: 'event-action',
+            iconName: 'utility:bookmark'
+        }
+    ];
 
     actions = [
         {
@@ -61,10 +63,7 @@ export default class ColumnsWithImageOverlay extends LightningElement {
             label: 'Item 4',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            infos: [
-                { label: 'info 1', href: '' },
-                { label: 'info 2', href: '' }
-            ],
+            infos: [{ label: 'info 1' }, { label: 'info 2', href: '#' }],
             icons: ['utility:share', 'utility:refresh'],
             imageSrc:
                 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
@@ -75,12 +74,10 @@ export default class ColumnsWithImageOverlay extends LightningElement {
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             infos: [
-                { label: 'info 1', href: '' },
-                { label: 'info 2', href: '' }
+                { label: 'info 1', href: 'https://www.avonni.app/' },
+                { label: 'info 2', href: 'https://www.avonni.app/' }
             ],
             icons: ['utility:share', 'utility:refresh'],
-            imageSrc:
-                'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
             name: 'name-item-5'
         }
     ];

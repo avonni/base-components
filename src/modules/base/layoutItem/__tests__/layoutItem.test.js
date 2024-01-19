@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import LayoutItem from '../layoutItem';
 
@@ -50,13 +18,11 @@ describe('Layout Item', () => {
     it('Default attributes', () => {
         document.body.appendChild(element);
         expect(element.alignmentBump).toBeUndefined();
-        expect(element.grow).toBe(0);
         expect(element.largeContainerOrder).toBeUndefined();
         expect(element.largeContainerSize).toBeUndefined();
         expect(element.mediumContainerOrder).toBeUndefined();
         expect(element.mediumContainerSize).toBeUndefined();
         expect(element.order).toBeUndefined();
-        expect(element.shrink).toBe(1);
         expect(element.size).toBeUndefined();
         expect(element.smallContainerOrder).toBeUndefined();
         expect(element.smallContainerSize).toBeUndefined();
@@ -101,13 +67,6 @@ describe('Layout Item', () => {
         );
     });
 
-    // grow
-    it('Layout Item: grow', () => {
-        document.body.appendChild(element);
-        element.grow = '2';
-        expect(element.shadowRoot.host.style.flexGrow).toBe('2');
-    });
-
     // Container orders
     it('Layout Item: container orders', () => {
         let setContainerSize;
@@ -122,7 +81,6 @@ describe('Layout Item', () => {
         element.smallContainerOrder = 1;
         element.order = 6;
 
-        setContainerSize('default');
         expect(element.shadowRoot.host.style.order).toBe('6');
         setContainerSize('large');
         expect(element.shadowRoot.host.style.order).toBe('3');
@@ -132,11 +90,19 @@ describe('Layout Item', () => {
         expect(element.shadowRoot.host.style.order).toBe('1');
     });
 
-    // shrink
-    it('Layout Item: shrink', () => {
+    it('Layout Item: container orders inheritance', () => {
+        let setContainerSize;
+        element.addEventListener('privatelayoutitemconnected', (event) => {
+            setContainerSize = event.detail.callbacks.setContainerSize;
+        });
         document.body.appendChild(element);
-        element.shrink = '2';
-        expect(element.shadowRoot.host.style.flexShrink).toBe('2');
+        setContainerSize('large');
+        expect(element.shadowRoot.host.style.order).toBe('0');
+
+        element.order = 6;
+        expect(element.shadowRoot.host.style.order).toBe('6');
+        element.largeContainerOrder = 3;
+        expect(element.shadowRoot.host.style.order).toBe('3');
     });
 
     // Container sizes
@@ -153,7 +119,6 @@ describe('Layout Item', () => {
         element.smallContainerSize = 'auto';
         element.size = '4rem';
 
-        setContainerSize('default');
         expect(element.shadowRoot.host.style.flexBasis).toBe('4rem');
         setContainerSize('large');
         expect(element.shadowRoot.host.style.flexBasis).toBe('25%');

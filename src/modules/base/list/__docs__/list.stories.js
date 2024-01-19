@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { List } from '../__examples__/list';
 import { InfiniteGrid } from '../__examples__/infiniteGrid';
 import {
@@ -43,13 +11,25 @@ import {
 export default {
     title: 'Example/List',
     argTypes: {
-        action: {
+        actions: {
             control: {
                 type: 'object'
             },
             description: 'Array of actions',
             table: {
                 type: { summary: 'object[]' },
+                category: 'Base'
+            }
+        },
+        visibleActions: {
+            name: 'visible-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
                 category: 'Base'
             }
         },
@@ -67,7 +47,8 @@ export default {
         },
         cols: {
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Default number of columns',
+            description:
+                'Default number of columns. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -76,7 +57,8 @@ export default {
         smallContainerCols: {
             name: 'small-container-cols',
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Number of columns for small containers',
+            description:
+                'Number of columns for small containers. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -85,7 +67,8 @@ export default {
         mediumContainerCols: {
             name: 'medium-container-cols',
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Number of columns for medium containers',
+            description:
+                'Number of columns for medium containers. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -94,7 +77,8 @@ export default {
         largeContainerCols: {
             name: 'large-container-cols',
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Number of columns for large containers',
+            description:
+                'Number of columns for large containers. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -104,7 +88,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['top', 'bottom', 'around'],
+            options: ['none', 'top', 'bottom', 'around'],
             description:
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
@@ -122,6 +106,17 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 category: 'Infinite Loading'
+            }
+        },
+        fieldAttributes: {
+            name: 'field-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the list item fields.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Base'
             }
         },
         imageAttributes: {
@@ -211,6 +206,18 @@ export default {
                 category: 'Base'
             }
         },
+        visibleMediaActions: {
+            name: 'visible-media-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of media actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Base'
+            }
+        },
         sortableIconPosition: {
             name: 'sortable-icon-position',
             control: {
@@ -239,6 +246,7 @@ export default {
         }
     },
     args: {
+        cols: 1,
         sortable: false,
         sortableIconPosition: 'right',
         variant: 'base'
@@ -261,7 +269,11 @@ DividerOnTop.args = {
 
 export const Images = Template.bind({});
 Images.args = {
-    items: itemsWithImages
+    items: itemsWithImages,
+    imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    }
 };
 
 export const Avatars = Template.bind({});
@@ -291,6 +303,10 @@ SortableWithImagesAndAvatars.args = {
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around',
+    fieldAttributes: {
+        cols: 12,
+        variant: 'label-inline'
+    },
     imageAttributes: {
         size: 'medium'
     }
@@ -303,6 +319,8 @@ ColumnsWithImageBottom.args = {
     mediaActions: actions,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'bottom',
         height: 100
     },
@@ -317,12 +335,16 @@ ColumnsWithImageOverlay.args = {
     label: 'Columns with Image Overlay',
     items: itemsWithImages,
     actions: actions,
-    mediaActions: [{
-        name: 'event-action',
-        iconName: 'utility:bookmark'
-    }],
+    mediaActions: [
+        {
+            name: 'event-action',
+            iconName: 'utility:bookmark'
+        }
+    ],
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'overlay'
     },
     cols: 1,
@@ -339,6 +361,8 @@ SingleLineWithInfiniteLoading.args = {
     enableInfiniteLoading: true,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'bottom'
     },
     cols: 1,
@@ -353,6 +377,8 @@ ColumnsWithInfiniteLoading.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'top'
     },
     loadMoreOffset: 100,

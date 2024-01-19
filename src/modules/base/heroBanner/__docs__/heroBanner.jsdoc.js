@@ -463,25 +463,19 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-inverse-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-inverse-color-border-active
- * @default #c9c9c9
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-hero-banner-primary-button-inverse-color-border-focus
- * @default #f3f3f3
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-inverse-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -541,19 +535,19 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-neutral-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-neutral-color-border-active
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-neutral-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -673,37 +667,37 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-text-destructive-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-text-destructive-color-border-active
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-text-destructive-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-text-destructive-text-color
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-text-destructive-text-color-active
- * @default #ba0517
+ * @default #8e030f
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-text-destructive-text-color-hover
- * @default #ba0517
+ * @default #8e030f
  * @type color
  */
 
@@ -1048,25 +1042,19 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-inverse-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-inverse-color-border-active
- * @default #c9c9c9
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-hero-banner-secondary-button-inverse-color-border-focus
- * @default #f3f3f3
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-inverse-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -1126,19 +1114,19 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-neutral-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-neutral-color-border-active
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-neutral-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -1258,36 +1246,36 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-text-destructive-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-text-destructive-color-border-active
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-text-destructive-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-text-destructive-text-color
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-text-destructive-text-color-active
- * @default #ba0517
+ * @default #8e030f
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-text-destructive-text-color-hover
- * @default #ba0517
+ * @default #8e030f
  * @type color
  */

@@ -1,63 +1,30 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import Layout from '../layout';
-
-// NOT TESTED:
-// Resize observer
+import { callObserver } from 'c/resizeObserver';
 
 let element;
 describe('Layout', () => {
-    afterEach(() => {
+    function addLayoutToDOM() {
+        document.body.appendChild(element);
+    }
+    function clearDOM() {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-    });
-
-    beforeEach(() => {
+    }
+    function createLayout() {
         element = createElement('avonni-layout', {
             is: Layout
         });
-        document.body.appendChild(element);
+    }
+
+    afterEach(() => {
+        clearDOM();
     });
 
-    it('Default attributes', () => {
-        expect(element.columnGap).toBe(0);
-        expect(element.direction).toBe('row');
-        expect(element.horizontalAlign).toBe('start');
-        expect(element.multipleRows).toBeFalsy();
-        expect(element.rowGap).toBe(0);
-        expect(element.verticalAlign).toBe('stretch');
+    beforeEach(() => {
+        createLayout();
+        addLayoutToDOM();
     });
 
     /*
@@ -66,248 +33,219 @@ describe('Layout', () => {
      * -------------------------------------------------------------
      */
 
-    // columnGap
-    it('Layout: columnGap as a number', () => {
-        element.columnGap = 30;
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.style.cssText).toContain(
-                '--private-layout-spacing-inline-between: 30px'
-            );
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.direction).toBe('row');
+            expect(element.horizontalAlign).toBe('start');
+            expect(element.multipleRows).toBeFalsy();
+            expect(element.verticalAlign).toBe('stretch');
         });
-    });
 
-    it('Layout: columnGap as a string', () => {
-        element.columnGap = '3rem';
+        // direction
+        describe('direction', () => {
+            it('row', () => {
+                element.direction = 'row';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.style.cssText).toContain(
-                '--private-layout-spacing-inline-between: 3rem'
-            );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+                    );
+                });
+            });
+
+            it('column', () => {
+                element.direction = 'column';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_vertical'
+                    );
+                });
+            });
+
+            it('row-reverse', () => {
+                element.direction = 'row-reverse';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_reverse'
+                    );
+                });
+            });
+
+            it('column-reverse', () => {
+                element.direction = 'column-reverse';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_vertical-reverse'
+                    );
+                });
+            });
         });
-    });
 
-    // direction
-    it('Layout: direction = row', () => {
-        element.direction = 'row';
+        // horizontal-align
+        describe('horizontal-align', () => {
+            it('start', () => {
+                element.horizontalAlign = 'start';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+                    );
+                });
+            });
+
+            it('center', () => {
+                element.horizontalAlign = 'center';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-center'
+                    );
+                });
+            });
+
+            it('end', () => {
+                element.horizontalAlign = 'end';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-end'
+                    );
+                });
+            });
+
+            it('space', () => {
+                element.horizontalAlign = 'space';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-space'
+                    );
+                });
+            });
+
+            it('spread', () => {
+                element.horizontalAlign = 'spread';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-spread'
+                    );
+                });
+            });
         });
-    });
 
-    it('Layout: direction = column', () => {
-        element.direction = 'column';
+        // multiple-rows
+        describe('multiple-rows', () => {
+            it('false', () => {
+                element.multipleRows = false;
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_vertical'
-            );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+                    );
+                });
+            });
+
+            it('true', () => {
+                element.multipleRows = true;
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-wrap'
+                    );
+                });
+            });
         });
-    });
 
-    it('Layout: direction = row-reverse', () => {
-        element.direction = 'row-reverse';
+        // vertical-align
+        describe('vertical-align', () => {
+            it('stretch', () => {
+                element.verticalAlign = 'stretch';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_reverse'
-            );
-        });
-    });
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+                    );
+                });
+            });
 
-    it('Layout: direction = column-reverse', () => {
-        element.direction = 'column-reverse';
+            it('start', () => {
+                element.verticalAlign = 'start';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_vertical-reverse'
-            );
-        });
-    });
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-align-start'
+                    );
+                });
+            });
 
-    // horizontal-align
-    it('Layout: horizontalAlign = start', () => {
-        element.horizontalAlign = 'start';
+            it('end', () => {
+                element.verticalAlign = 'end';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
-        });
-    });
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-align-end'
+                    );
+                });
+            });
 
-    it('Layout: horizontalAlign = center', () => {
-        element.horizontalAlign = 'center';
+            it('center', () => {
+                element.verticalAlign = 'center';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-center'
-            );
-        });
-    });
-
-    it('Layout: horizontalAlign = end', () => {
-        element.horizontalAlign = 'end';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-end'
-            );
-        });
-    });
-
-    it('Layout: horizontalAlign = space', () => {
-        element.horizontalAlign = 'space';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-space'
-            );
-        });
-    });
-
-    it('Layout: horizontalAlign = spread', () => {
-        element.horizontalAlign = 'spread';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-spread'
-            );
-        });
-    });
-
-    // multiple-rows
-    it('Layout: multipleRows = false', () => {
-        element.multipleRows = false;
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
-        });
-    });
-
-    it('Layout: multipleRows = true', () => {
-        element.multipleRows = true;
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-wrap'
-            );
-        });
-    });
-
-    // rowGap
-    it('Layout: rowGap as a number', () => {
-        element.rowGap = 30;
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.style.cssText).toContain(
-                '--private-layout-spacing-block-between: 30px'
-            );
-        });
-    });
-
-    it('Layout: rowGap as a string', () => {
-        element.rowGap = '3rem';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.style.cssText).toContain(
-                '--private-layout-spacing-block-between: 3rem'
-            );
-        });
-    });
-
-    // vertical-align
-    it('Layout: verticalAlign = stretch', () => {
-        element.verticalAlign = 'stretch';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
-        });
-    });
-
-    it('Layout: verticalAlign = start', () => {
-        element.verticalAlign = 'start';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_vertical-align-start'
-            );
-        });
-    });
-
-    it('Layout: verticalAlign = end', () => {
-        element.verticalAlign = 'end';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_vertical-align-end'
-            );
-        });
-    });
-
-    it('Layout: verticalAlign = center', () => {
-        element.verticalAlign = 'center';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_vertical-align-center'
-            );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    expect(wrapper.className).toBe(
+                        'slds-grid avonni-layout-wrapper slds-grid_vertical-align-center'
+                    );
+                });
+            });
         });
     });
 
@@ -317,31 +255,195 @@ describe('Layout', () => {
      * -------------------------------------------------------------
      */
 
-    // item connected
-    it('Layout: set container size on item connexion', () => {
-        const callback = jest.fn();
-        const wrapper = element.shadowRoot.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        wrapper.dispatchEvent(
-            new CustomEvent('privatelayoutitemconnected', {
-                detail: {
-                    name: 'numberOne',
-                    callbacks: {
-                        setContainerSize: callback
-                    }
-                }
-            })
-        );
-        // The width is not defined yet
-        expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toBeUndefined();
+    describe('Events', () => {
+        describe('Size handling', () => {
+            it('By default, set container size on item connexion', () => {
+                const callback = jest.fn();
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-wrapper"]'
+                );
+                wrapper.dispatchEvent(
+                    new CustomEvent('privatelayoutitemconnected', {
+                        detail: {
+                            name: 'numberOne',
+                            callbacks: {
+                                setContainerSize: callback
+                            }
+                        }
+                    })
+                );
+                expect(callback).toHaveBeenCalledTimes(1);
+                expect(callback.mock.calls[0][0]).toBe('default');
+            });
 
-        wrapper.style.width = '2000px';
-        return Promise.resolve(() => {
-            // The width is set and passed to the items on render
-            expect(callback).toHaveBeenCalledTimes(2);
-            expect(callback.mock.calls[1][0]).toBe('large');
+            it('privatelayoutconnected is fired on connection', () => {
+                clearDOM();
+                createLayout();
+
+                const handler = jest.fn();
+                element.addEventListener('privatelayoutconnected', handler);
+                addLayoutToDOM();
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBeTruthy();
+                expect(typeof call.detail.name).toBe('string');
+                expect(call.detail.callbacks.setItemsSize).toBeInstanceOf(
+                    Function
+                );
+                expect(call.bubbles).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeTruthy();
+            });
+
+            it('privatelayoutconnected allows the setting of the items size', () => {
+                clearDOM();
+                createLayout();
+
+                const handler = jest.fn();
+                element.addEventListener('privatelayoutconnected', handler);
+                addLayoutToDOM();
+
+                const setItemsSize =
+                    handler.mock.calls[0][0].detail.callbacks.setItemsSize;
+
+                return Promise.resolve().then(() => {
+                    const callback = jest.fn();
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: callback
+                                }
+                            }
+                        })
+                    );
+
+                    expect(callback).toHaveBeenCalledTimes(1);
+                    jest.spyOn(
+                        wrapper,
+                        'getBoundingClientRect'
+                    ).mockReturnValue({ width: 1000 });
+                    setItemsSize();
+                    expect(callback).toHaveBeenCalledTimes(2);
+                    expect(callback.mock.calls[1][0]).toBe('medium');
+                });
+            });
+
+            it('sizechange is fired on first render', () => {
+                clearDOM();
+                createLayout();
+
+                const handler = jest.fn();
+                element.addEventListener('sizechange', handler);
+                addLayoutToDOM();
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.width).toBe('default');
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+
+            it('sizechange is fired on resize', () => {
+                const sizeChangeHandler = jest.fn();
+                element.addEventListener('sizechange', sizeChangeHandler);
+
+                const callback = jest.fn();
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-wrapper"]'
+                );
+                wrapper.dispatchEvent(
+                    new CustomEvent('privatelayoutitemconnected', {
+                        detail: {
+                            name: 'numberOne',
+                            callbacks: {
+                                setContainerSize: callback
+                            }
+                        }
+                    })
+                );
+
+                jest.spyOn(wrapper, 'getBoundingClientRect').mockReturnValue({
+                    width: 500
+                });
+
+                callback.mockClear();
+                callObserver();
+                expect(callback).toHaveBeenCalledTimes(1);
+                expect(callback.mock.calls[0][0]).toBe('small');
+                expect(sizeChangeHandler).toHaveBeenCalledTimes(1);
+                expect(sizeChangeHandler.mock.calls[0][0].detail.width).toBe(
+                    'small'
+                );
+            });
+
+            it('If true is passed to setIsResizedByParent(), do not fire sizechange on render', () => {
+                clearDOM();
+                createLayout();
+
+                const connexionHandler = jest.fn((event) => {
+                    event.detail.callbacks.setIsResizedByParent(true);
+                });
+                const sizeChangeHandler = jest.fn();
+                element.addEventListener('sizechange', sizeChangeHandler);
+                element.addEventListener(
+                    'privatelayoutconnected',
+                    connexionHandler
+                );
+                addLayoutToDOM();
+                expect(sizeChangeHandler).not.toHaveBeenCalled();
+            });
+
+            it('If true is passed to setIsResizedByParent(), do not fire sizechange on resize', () => {
+                clearDOM();
+                createLayout();
+
+                const connexionHandler = jest.fn((event) => {
+                    event.detail.callbacks.setIsResizedByParent(true);
+                });
+                element.addEventListener(
+                    'privatelayoutconnected',
+                    connexionHandler
+                );
+                const sizeChangeHandler = jest.fn();
+                element.addEventListener('sizechange', sizeChangeHandler);
+                addLayoutToDOM();
+
+                return Promise.resolve().then(() => {
+                    const callback = jest.fn();
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: callback
+                                }
+                            }
+                        })
+                    );
+
+                    jest.spyOn(
+                        wrapper,
+                        'getBoundingClientRect'
+                    ).mockReturnValue({
+                        width: 500
+                    });
+
+                    callback.mockClear();
+                    callObserver();
+                    expect(callback).not.toHaveBeenCalled();
+                    expect(sizeChangeHandler).not.toHaveBeenCalled();
+                });
+            });
         });
     });
 });

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 .avonni-list__full-height {
     max-height: 100%;
 }
@@ -38,71 +6,62 @@
     flex: 1 1 auto;
 }
 
+.avonni-list__item-wrapper {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.avonni-list__single-line {
+    min-height: 3rem;
+}
+
 /* VALUE ASSIGNMENTS */
-.avonni-list__items-without-divider {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-spacing-block-between,
-        0px
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-spacing-inline-between,
-        0px
-    );
-}
-
-.avonni-list__items-have-top-divider {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-divider-top-spacing-block-between,
-        0px
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-divider-top-spacing-inline-between,
-        0px
-    );
-}
-
-.avonni-list__items-have-bottom-divider {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-divider-bottom-spacing-block-between,
-        0px
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-divider-bottom-spacing-inline-between,
-        0px
-    );
-}
-
-.avonni-list__has-card-style {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-divider-around-spacing-block-between,
-        0.5rem
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-divider-around-spacing-inline-between,
-        0.5rem
-    );
-    --avonni-card-shadow: none;
-    --avonni-card-sizing-border: 1px;
-}
-
 .avonni-list__item-menu {
-    row-gap: var(--private-list-item-spacing-block-between);
-    margin-inline: calc(var(--private-list-item-spacing-inline-between) / -2);
+    width: 100%;
+    --avonni-layout-items-spacing-block-between: var(
+        --avonni-list-item-spacing-block-between,
+        0.5rem
+    );
+    margin-inline: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / -2
+    );
+}
+
+.avonni-list__item-menu.avonni-list__item-menu_horizontal-compact {
+    margin-inline: 0;
+}
+
+.avonni-list__item-menu.avonni-list__vertical-compact {
+    --avonni-layout-items-spacing-block-between: var(
+        --avonni-list-item-spacing-block-between,
+        0
+    );
 }
 
 .avonni-list__item {
-    align-self: stretch;
     --avonni-card-color-background: var(
         --avonni-list-item-color-background,
         transparent
     );
-    padding-left: calc(var(--private-list-item-spacing-inline-between) / 2);
-    padding-right: calc(var(--private-list-item-spacing-inline-between) / 2);
+    padding-left: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2
+    );
+    padding-right: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2
+    );
     --avonni-card-header-spacing-block-start: 0px;
     --avonni-card-header-spacing-block-end: 0px;
     --avonni-card-media-sizing-border: 0px;
     --avonni-card-body-spacing-block-start: 0px;
     --avonni-card-body-spacing-block-end: 0px;
+    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
+}
+
+.avonni-list__item.avonni-list__item_horizontal-compact {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .avonni-list-item-body {
@@ -120,12 +79,6 @@
     );
 }
 
-.avonni-list__item-borderless {
-    --avonni-card-sizing-border: 0px;
-    --avonni-card-radius-border: 0px;
-    --avonni-card-shadow: none;
-}
-
 .avonni-list__header_font {
     color: var(--avonni-list-header-text-color, #080707);
     font-size: var(--avonni-list-header-font-size, 0.875rem);
@@ -139,7 +92,7 @@
 }
 
 .avonni-list__lower-spinner {
-    height: 30px;
+    min-height: 3rem;
 }
 
 .avonni-list__page-change-button-container {
@@ -224,13 +177,6 @@
     object-fit: none;
 }
 
-.avonni-list__item-card-style {
-    --avonni-card-radius-border: var(
-        --avonni-list-item-around-border-radius,
-        0.25rem
-    );
-}
-
 .avonni-list__item-icons {
     transform: translateY(-1px);
 }
@@ -252,9 +198,56 @@
     );
 }
 
+.avonni-list__item-fields-container {
+    background-color: var(--avonni-list-item-fields-color-background);
+    border-radius: var(--avonni-list-item-fields-radius-border, 0.25rem);
+    border-width: var(--avonni-list-item-fields-sizing-border, 1px);
+    border-style: var(--avonni-list-item-fields-styling-border);
+    border-color: var(--avonni-list-item-fields-color-border, #e5e5e5);
+    padding-right: var(--avonni-list-item-fields-spacing-inline);
+    padding-left: var(--avonni-list-item-fields-spacing-inline);
+    padding-bottom: var(--avonni-list-item-fields-spacing-block, 0.25rem);
+    --avonni-layout-item-spacing-block-start: var(
+        --avonni-list-item-fields-spacing-block,
+        0.25rem
+    );
+}
+
+.avonni-list-item-body__vertical-alignment {
+    align-items: var(--avonni-list-item-body-vertical-alignment, center);
+}
+
+.avonni-list__item-actions-container {
+    align-self: var(
+        --avonni-list-item-actions-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, center)
+    );
+}
+
 /* AVATAR */
 .avonni-list-item-avatar {
-    --avonni-avatar-image-object-fit: var(--avonni-list-item-avatar-image-object-fit, 'cover');
+    --avonni-avatar-image-object-fit: var(
+        --avonni-list-item-avatar-image-object-fit,
+        'cover'
+    );
+    align-self: var(
+        --avonni-list-item-avatar-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, center)
+    );
+}
+
+.avonni-list-item-avatar-top {
+    align-self: var(
+        --avonni-list-item-avatar-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, flex-start)
+    );
+}
+
+.avonni-list-item-avatar-bottom {
+    align-self: var(
+        --avonni-list-item-avatar-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, flex-end)
+    );
 }
 
 /* LINK COLORS */
@@ -284,30 +277,57 @@ a.avonni-list__item-info-link:active {
     color: var(--avonni-list-item-infos-link-text-color-active, #014486);
 }
 
+.avonni-list__item-divider_sortable {
+    border-color: var(--avonni-list-item-color-border, #747474);
+    --avonni-card-color-border: var(--avonni-list-item-color-border, #747474);
+}
+
+.avonni-list__item-divider {
+    border-color: var(
+        --avonni-list-item-color-border,
+        var(--slds-g-color-border-base-1, #c9c9c9)
+    );
+}
+
+.avonni-list__item-divider_none,
+.avonni-list__item-divider_top,
+.avonni-list__item-divider_bottom {
+    --avonni-card-sizing-border: 0px;
+    --avonni-card-radius-border: 0px;
+}
+
 .avonni-list__item-divider_top {
     border-top-width: var(--avonni-list-item-sizing-border, 1px);
     border-top-style: var(--avonni-list-item-styling-border, solid);
-    border-top-color: var(--avonni-list-item-color-border, #dddbda);
 }
 
 .avonni-list__item-divider_bottom {
     border-bottom-width: var(--avonni-list-item-sizing-border, 1px);
     border-bottom-style: var(--avonni-list-item-styling-border, solid);
-    border-bottom-color: var(--avonni-list-item-color-border, #dddbda);
+}
+
+.avonni-list__item-divider_around {
+    --avonni-card-radius-border: var(
+        --avonni-list-item-around-border-radius,
+        0.25rem
+    );
+    --avonni-card-sizing-border: var(--avonni-list-item-sizing-border, 1px);
+    --avonni-card-styling-border: var(--avonni-list-item-styling-border, solid);
 }
 
 .avonni-list__item-header_font {
     color: var(--avonni-list-item-header-text-color, #080707);
-    font-size: var(--avonni-list-item-header-font-size, 0.8125rem);
+    font-size: var(--avonni-list-item-header-font-size);
     font-style: var(--avonni-list-item-header-font-style, normal);
     font-weight: var(--avonni-list-item-header-font-weight, 400);
 }
 
 .avonni-list__item-description_font {
     color: var(--avonni-list-item-description-text-color, #080707);
-    font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
+    font-size: var(--avonni-list-item-description-font-size);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
+    -webkit-line-clamp: var(--avonni-list-item-description-line-clamp, 2);
 }
 
 /* LINK INVERSE COLORS */
@@ -375,8 +395,4 @@ a.avonni-list__item-info-link:active {
         --avonni-list-item-icon-radius-border,
         0.25rem
     );
-}
-
-.avonni-list-item-body__vertical-alignment {
-    align-items: var(--avonni-list-item-body-vertical-alignment, center);
 }

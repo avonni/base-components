@@ -1,38 +1,7 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
+import { getResolvedCellChanges } from 'c/primitiveCellUtils';
 
 export default class PrimitiveDatatableIeditPanelCustom extends LightningElement {
     @api colKeyValue;
@@ -66,6 +35,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     // Primitive cell counter
     @api max;
     @api min;
+    // ...also shared with percent-formatted:
     @api step;
 
     // Primitive cell date-range
@@ -77,9 +47,19 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api labelStartDate;
     @api labelEndDate;
 
+    // Primitive cell lookup
+    @api fieldName;
+    @api objectApiName;
+
+    // primitive cell rich-text
+    @api formats;
+    @api variant;
+
     // primitive cell textarea
     @api maxLength;
     @api minLength;
+
+    _allowBlur = true;
 
     connectedCallback() {
         this.interactingState = new InteractingState({
@@ -218,6 +198,24 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
+     * Returns true if column type is name-lookup.
+     *
+     * @type {boolean}
+     */
+    get isTypeNameLookup() {
+        return this.columnDef.type === 'name-lookup';
+    }
+
+    /**
+     * Returns true if column type is percent-formatted.
+     *
+     * @type {boolean}
+     */
+    get isTypePercentFormatted() {
+        return this.columnDef.type === 'percent-formatted';
+    }
+
+    /**
      * Returns true if column type is textarea.
      *
      * @type {boolean}
@@ -281,7 +279,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api
     focus() {
         this.interactingState.enter();
-
         if (this.inputableElement) {
             this.inputableElement.focus();
         }
@@ -305,14 +302,12 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     comboboxFormattedValue(value) {
-        switch (value.length) {
-            case 0:
-                return undefined;
-            case 1:
-                return value[0];
-            default:
-                return value;
+        if (value.length === 0) {
+            return null;
+        } else if (value.length === 1) {
+            return value[0];
         }
+        return value;
     }
 
     dateRangeFormattedValue(value) {
@@ -324,12 +319,11 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
-        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
 
         this.dispatchEvent(
             new CustomEvent('cellchangecustom', {
                 detail: {
-                    draftValues: this.getResolvedCellChanges(state, dirtyValues)
+                    draftValues: getResolvedCellChanges(state, dirtyValues)
                 },
                 bubbles: true,
                 composed: true
@@ -339,39 +333,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     focusLastElement() {
         this.template.querySelector('[data-form-last-element="true"]').focus();
-    }
-
-    getCellChangesByColumn(state, changes) {
-        return Object.keys(changes).reduce((result, colKey) => {
-            const columns = state.columns;
-            const columnIndex = state.headerIndexes[colKey];
-            const columnDef = columns[columnIndex];
-
-            result[columnDef.columnKey || columnDef.fieldName] =
-                changes[colKey];
-
-            return result;
-        }, {});
-    }
-
-    getResolvedCellChanges(state, dirtyValues) {
-        const keyField = state.keyField;
-
-        return Object.keys(dirtyValues).reduce((result, rowKey) => {
-            // Get the changes made by column
-            const cellChanges = this.getCellChangesByColumn(
-                state,
-                dirtyValues[rowKey]
-            );
-
-            if (Object.keys(cellChanges).length > 0) {
-                // Add identifier for which row has change
-                cellChanges[keyField] = rowKey;
-                result.push(cellChanges);
-            }
-
-            return result;
-        }, []);
     }
 
     handleCellKeydown(event) {
@@ -422,13 +383,18 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handleMassEditCheckboxClick() {
-        if (this.inputableElement && !this.isTypeDateRange) {
+        if (this.inputableElement) {
             this.inputableElement.focus();
         }
     }
 
     handlePanelLoosedFocus() {
-        if (this.isTypeLookup && this.visible) {
+        if (
+            (this.isTypeLookup ||
+                this.isTypeNameLookup ||
+                this.isTypePercentFormatted) &&
+            this.visible
+        ) {
             this.processSubmission();
         } else if (this.visible) {
             this.triggerEditFinished({
@@ -438,14 +404,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handleTypeElemBlur() {
-        if (
-            this.visible &&
-            !this.template.activeElement &&
-            !this.isTypeWithMenu
-        ) {
-            this.interactingState.leave();
-        }
-        if (this.isTypeWithMenu && this._allowBlur) {
+        if (this.visible && !this.template.activeElement && this._allowBlur) {
             this.interactingState.leave();
         }
     }
@@ -464,7 +423,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     processSubmission() {
         const validity =
-            this.isTypeRichText || this.inputableElement.validity.valid;
+            this.isTypeRichText ||
+            this.isTypeLookup ||
+            this.inputableElement.validity.valid;
         this.triggerEditFinished({ reason: 'submit-action', validity });
         const value = this.isTypeCombobox
             ? this.comboboxFormattedValue(this.value)
@@ -481,7 +442,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             }
         };
 
-        if (this.isTypeRichText || validity) {
+        if (validity) {
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {
                     detail,
@@ -509,7 +470,10 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         const details = {
             rowKeyValue: detail.rowKeyValue || this.rowKeyValue,
             colKeyValue: detail.colKeyValue || this.colKeyValue,
-            valid: this.isTypeRichText ? true : detail.validity,
+            valid:
+                this.isTypeRichText || this.isTypeLookup
+                    ? true
+                    : detail.validity,
             isMassEditChecked: this.isMassEditChecked
         };
 

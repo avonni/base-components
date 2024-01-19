@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api, track } from 'lwc';
 import {
     equal,
@@ -39,11 +7,11 @@ import {
     dateTimeObjectFrom,
     addToDate,
     deepCopy,
+    parseTimeFrame,
     removeFromDate
 } from 'c/utilsPrivate';
 import {
     getDisabledWeekdaysLabels,
-    parseTimeFrame,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,
@@ -97,6 +65,7 @@ export default class Scheduler extends LightningElement {
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
+    _hiddenActions = [];
     _hiddenDisplays = [];
     _hideResourcesFilter = false;
     _hideSidePanel = false;
@@ -122,6 +91,8 @@ export default class Scheduler extends LightningElement {
     _closeDetailPopoverTimeout;
     _connected = false;
     _focusCalendarPopover;
+    _noEmptySpotActions = false;
+    _noEventActions = false;
     _openDetailPopoverTimeout;
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
@@ -315,6 +286,7 @@ export default class Scheduler extends LightningElement {
         return this._contextMenuEmptySpotActions;
     }
     set contextMenuEmptySpotActions(value) {
+        this._noEmptySpotActions = Array.isArray(value) && !value.length;
         this._contextMenuEmptySpotActions = normalizeArray(value);
     }
 
@@ -330,6 +302,7 @@ export default class Scheduler extends LightningElement {
         return this._contextMenuEventActions;
     }
     set contextMenuEventActions(value) {
+        this._noEventActions = Array.isArray(value) && !value.length;
         this._contextMenuEventActions = normalizeArray(value);
     }
 
@@ -606,6 +579,21 @@ export default class Scheduler extends LightningElement {
         console.warn(
             'The "headers" attribute is deprecated. Set the headers in each time span instead.'
         );
+    }
+
+    /**
+     * Array of default action names that are not allowed. These actions will be hidden from the menus, and ignored when triggered by a user action (double click, drag, etc.).
+     * Valid values include `Standard.Scheduler.AddEvent`, `Standard.Scheduler.DeleteEvent` and `Standard.Scheduler.EditEvent`.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get hiddenActions() {
+        return this._hiddenActions;
+    }
+    set hiddenActions(value) {
+        this._hiddenActions = normalizeArray(value, 'string');
     }
 
     /**
@@ -1160,11 +1148,16 @@ export default class Scheduler extends LightningElement {
     }]
     */
     get computedContextMenuEmptySpot() {
-        const actions = this.contextMenuEmptySpotActions;
-        return this.readOnly
-            ? actions
-            : (actions.length && actions) ||
-                  DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS;
+        if (
+            this.readOnly ||
+            this.contextMenuEmptySpotActions.length ||
+            this._noEmptySpotActions
+        ) {
+            return this.contextMenuEmptySpotActions;
+        }
+        return DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS.filter((action) => {
+            return !this.hiddenActions.includes(action.name);
+        });
     }
 
     /**
@@ -1183,10 +1176,16 @@ export default class Scheduler extends LightningElement {
     }]
     */
     get computedContextMenuEvent() {
-        const actions = this.contextMenuEventActions;
-        return this.readOnly
-            ? actions
-            : (actions.length && actions) || DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
+        if (
+            this.readOnly ||
+            this.contextMenuEventActions.length ||
+            this._noEventActions
+        ) {
+            return this.contextMenuEventActions;
+        }
+        return DEFAULT_CONTEXT_MENU_EVENT_ACTIONS.filter((action) => {
+            return !this.hiddenActions.includes(action.name);
+        });
     }
 
     /**
@@ -1866,6 +1865,18 @@ export default class Scheduler extends LightningElement {
         this.showRecurrenceDialog = false;
     }
 
+    isFieldHiddenFromDetailPopover(fieldName) {
+        if (fieldName !== 'to') {
+            return false;
+        }
+        const allDay = this.selection.event.allDay;
+        const occurrence = this.selection.occurrence;
+        const spansOnWholeDay =
+            allDay && occurrence.endOfTo.ts === occurrence.from.endOf('day').ts;
+        const hasNoDuration = occurrence.from.ts === occurrence.to.ts;
+        return spansOnWholeDay || hasNoDuration;
+    }
+
     /**
      * Normalize the given date to be on the first day of the month.
      *
@@ -1904,28 +1915,34 @@ export default class Scheduler extends LightningElement {
             selectEvent.detail.value ||
             selectEvent.currentTarget.name;
         const { event, from, to } = this.selection;
+        const actionEvent = new CustomEvent('actionclick', {
+            detail: {
+                from,
+                name,
+                targetName: event ? event.name : undefined,
+                to
+            },
+            bubbles: true,
+            cancelable: true
+        });
 
         /**
          * The event fired when a user clicks on an action.
          *
          * @event
          * @name actionclick
+         * @param {string} from If the action came from an empty cell, start of the cell as an ISO 8601 string.
          * @param {string} name Name of the action clicked.
          * @param {string} targetName If the action came from an existing event, name of the event.
+         * @param {string} to If the action came from an empty cell, end of the cell as an ISO 8601 string.
          * @public
          * @bubbles
+         * @cancelable
          */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    from,
-                    name,
-                    targetName: event ? event.name : undefined,
-                    to
-                },
-                bubbles: true
-            })
-        );
+        this.dispatchEvent(actionEvent);
+        if (actionEvent.defaultPrevented) {
+            return;
+        }
 
         switch (name) {
             case 'Standard.Scheduler.EditEvent':
@@ -2257,17 +2274,34 @@ export default class Scheduler extends LightningElement {
                 const { type, label, variant } = field;
                 const eventData = this.selection.event.data;
                 const occurrenceData = this.selection.occurrence;
+                let isHidden = false;
                 let value =
                     occurrenceData[field.value] || eventData[field.value];
 
                 const isDate = type === 'date' && this.createDate(value);
+                const isResources =
+                    field.value === 'resourceNames' && Array.isArray(value);
                 if (isDate) {
                     value = this.createDate(value);
-                    value = value.toFormat(this.dateFormat);
+                    const format = eventData.dateFormat || this.dateFormat;
+                    value = value.toFormat(format);
+                    isHidden = this.isFieldHiddenFromDetailPopover(field.value);
+                } else if (isResources) {
+                    value = value
+                        .map((res) => {
+                            const resource = this.computedResources.find(
+                                (r) => {
+                                    return r.name === res;
+                                }
+                            );
+                            return resource.label;
+                        })
+                        .join(', ');
                 }
 
                 return {
                     key: generateUUID(),
+                    isHidden,
                     label,
                     type: isDate ? 'text' : type,
                     value,
@@ -2352,6 +2386,24 @@ export default class Scheduler extends LightningElement {
      * @param {Event} event
      */
     handleOpenEditDialog(event) {
+        /**
+         * The event fired when the edit dialog should be opened.
+         *
+         * @event
+         * @name openeditdialog
+         * @param {object} selection Object containing details on the new or existing event that the user wants to edit.
+         * @public
+         * @cancelable
+         */
+        const customEvent = new CustomEvent('openeditdialog', {
+            detail: event.detail,
+            cancelable: true
+        });
+        this.dispatchEvent(customEvent);
+        if (customEvent.defaultPrevented) {
+            event.preventDefault();
+            return;
+        }
         this.showEditDialog = true;
         this.selection = event.detail.selection;
     }

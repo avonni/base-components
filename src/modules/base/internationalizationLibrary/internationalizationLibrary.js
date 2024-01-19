@@ -3,9 +3,7 @@
  * All rights reserved.
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
- */
-
-import { address as addressFormat } from './address/AddressFormat';
+ */ import { address as addressFormat } from './address/AddressFormat';
 import { name as nameFormat } from './name/NameFormat';
 import { numberFormat } from './number/NumberFormat';
 import { relativeFormat } from './duration/RelativeFormat';

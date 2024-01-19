@@ -1,36 +1,5 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { DualListbox } from '../__examples__/dualListbox';
+import { InfiniteLoadingDualListbox } from '../__examples__/infiniteLoading';
 import {
     LanguagesOptions,
     OptionsWithAvatar,
@@ -176,6 +145,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of options and then display more when users scroll to the end of the source listbox. Use with the `loadmore` event handler to retrieve more data.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
         hideBottomDivider: {
             name: 'hide-bottom-divider',
             control: {
@@ -209,6 +190,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number of pixels from the bottom of the source listbox. If `enable-infinite-loading` is `true` and the source listbox is scrolled passed this limit, the `loadmore` event will be fired.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 20 }
+            }
+        },
         maxVisibleOptions: {
             name: 'max-visible-options',
             control: {
@@ -228,7 +221,8 @@ export default {
             description:
                 'Maximum number of options allowed in the selected options listbox.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Validations'
             }
         },
         min: {
@@ -239,7 +233,8 @@ export default {
                 'Minimum number of options required in the selected options listbox.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                defaultValue: { summary: '0' },
+                category: 'Validations'
             }
         },
         messageWhenRangeOverflow: {
@@ -250,7 +245,8 @@ export default {
             description:
                 'Error message to be displayed when a range overflow is detected.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validations'
             }
         },
         messageWhenRangeUnderflow: {
@@ -261,7 +257,8 @@ export default {
             description:
                 'Error message to be displayed when a range underflow is detected.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validations'
             }
         },
         messageWhenValueMissing: {
@@ -272,7 +269,8 @@ export default {
             description:
                 'Error message to be displayed when the value is missing and input is required.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validations'
             }
         },
         name: {
@@ -325,7 +323,8 @@ export default {
                 'If present, the user must add an item to the selected listbox before submitting the form.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: false }
+                defaultValue: { summary: false },
+                category: 'Validations'
             }
         },
         requiredOptions: {
@@ -335,7 +334,15 @@ export default {
             description:
                 'A list of required options that cannot be removed from selected options listbox. This list is populated with values from the options attribute.',
             table: {
-                type: { summary: 'string []' }
+                type: { summary: 'string []' },
+                category: 'Validations'
+            }
+        },
+        search: {
+            description:
+                'Custom search function to execute instead of the default search. It has to take an object with two keys as an argument (options and searchTerm) and return the new options.',
+            table: {
+                type: { summary: 'function' }
             }
         },
         selectedLabel: {
@@ -435,51 +442,43 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'standard' }
             }
-        },
-        args: {
-            addButtonIconName: 'utility:right',
-            allowSearch: false,
-            buttonSize: 'medium',
-            buttonVariant: 'border',
-            disableReordering: false,
-            disabled: false,
-            downButtonIconName: 'utility:down',
-            draggable: false,
-            hideBottomDivider: false,
-            isLoading: false,
-            maxVisibleOptions: 5,
-            min: 0,
-            removeButtonIconName: 'utility:left',
-            required: false,
-            size: 'responsive',
-            upButtonIconName: 'utility:up',
-            variant: 'standard'
         }
+    },
+    args: {
+        addButtonIconName: 'utility:right',
+        allowSearch: false,
+        buttonSize: 'medium',
+        buttonVariant: 'border',
+        disableReordering: false,
+        disabled: false,
+        downButtonIconName: 'utility:down',
+        draggable: false,
+        enableInfiniteLoading: false,
+        hideBottomDivider: false,
+        isLoading: false,
+        loadMoreOffset: 20,
+        maxVisibleOptions: 5,
+        min: 0,
+        removeButtonIconName: 'utility:left',
+        required: false,
+        size: 'responsive',
+        upButtonIconName: 'utility:up',
+        variant: 'standard'
     }
 };
 
 const Template = (args) => DualListbox(args);
+const InfiniteLoadingTemplate = (args) => InfiniteLoadingDualListbox(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
-    sourceLabel: 'Available Items',
-    selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    options: Options,
-    value: ['3', '2', '4', '5', '6'],
-    draggable: true,
-    hideBottomDivider: true
+    options: Options
 };
 
-export const BaseWithGroups = Template.bind({});
-BaseWithGroups.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
+export const Groups = Template.bind({});
+Groups.args = {
+    label: 'Dual Listbox with Groups',
+    fieldLevelHelp: 'You can drag elements from one side to the other',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
     addButtonLabel: 'Add Button Label',
@@ -488,74 +487,45 @@ BaseWithGroups.args = {
     upButtonLabel: 'Up Button Label',
     options: OptionsWithGroups,
     value: ['B', '3', '2', '4', '5', '6'],
-    draggable: true,
-    hideBottomDivider: true
+    draggable: true
 };
 
-export const BaseSmall = Template.bind({});
-BaseSmall.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
-    sourceLabel: 'Available Items',
-    selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
+export const Small = Template.bind({});
+Small.args = {
+    label: 'Small Dual Listbox',
+    sourceLabel: 'Source',
+    selectedLabel: 'Selection',
     options: Options,
     value: ['2', '3', '4', '5', '6'],
     size: 'small'
 };
 
-export const BaseMedium = Template.bind({});
-BaseMedium.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
+export const Large = Template.bind({});
+Large.args = {
+    label: 'Large Dual Listbox',
     sourceLabel: 'Available Items',
+    fieldLevelHelp: 'You can drag elements from one side to the other',
     selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
     options: Options,
     value: ['2', '3', '4', '5', '6'],
-    size: 'medium'
+    size: 'large',
+    draggable: true
 };
 
-export const BaseLarge = Template.bind({});
-BaseLarge.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
+export const NoDivider = Template.bind({});
+NoDivider.args = {
+    label: 'Dual Listbox with no Bottom Divider',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    options: Options,
-    value: ['2', '3', '4', '5', '6'],
-    size: 'large'
-};
-
-export const BaseNoBorder = Template.bind({});
-BaseNoBorder.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
-    sourceLabel: 'Available Items',
-    selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
     options: Options,
     hideBottomDivider: true,
     value: ['2', '3', '4', '5', '6']
 };
 
-export const BaseDisabled = Template.bind({});
-BaseDisabled.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
+export const Disabled = Template.bind({});
+Disabled.args = {
+    label: 'Disabled Dual Listbox',
+    fieldLevelHelp: 'No action is possible',
     disabled: true,
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
@@ -567,137 +537,63 @@ BaseDisabled.args = {
     value: ['2', '3']
 };
 
-export const BaseLoading = Template.bind({});
-BaseLoading.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
-    sourceLabel: 'Available Items',
-    selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    isLoading: true,
-    options: Options,
-    value: ['2', '3']
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    label: 'Infinite Loading Dual Listbox',
+    fieldLevelHelp:
+        'More options are loading when the source listbox is scrolled to the bottom',
+    sourceLabel: 'Source',
+    selectedLabel: 'Selection'
 };
 
-export const BaseWithMaximumMinimum = Template.bind({});
-BaseWithMaximumMinimum.args = {
-    label: 'Select Options (at least 3 and at most 8)',
-    fieldLevelHelp: 'This is a Dual Listbox',
+export const MaximumMinimum = Template.bind({});
+MaximumMinimum.args = {
+    label: 'Dual Listbox with a Maximum and a Minimum',
+    fieldLevelHelp: 'Select at least 3 options, and at most 8 options',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
     required: true,
-    max: '8',
-    min: '3',
-    options: Options,
-    requiredOptions: ['1'],
-    value: ['2', '3']
+    max: 8,
+    min: 3,
+    options: LanguagesOptions,
+    value: ['en', 'fr']
 };
 
-export const BaseWithAvatar = Template.bind({});
-BaseWithAvatar.args = {
-    label: 'Select Items',
-    fieldLevelHelp: 'This is a Dual Listbox',
-    sourceLabel: 'Available Items',
-    selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    options: OptionsWithAvatar,
-    required: true,
-    requiredOptions: ['1'],
-    value: ['2', '3']
-};
-
-export const BaseWithAvatarReorderingDisabled = Template.bind({});
-BaseWithAvatarReorderingDisabled.args = {
-    label: 'Select Items',
+export const ReorderingDisabled = Template.bind({});
+ReorderingDisabled.args = {
+    label: 'Dual Listbox with Reordering Disabled',
     disableReordering: true,
-    fieldLevelHelp: 'This is a Dual Listbox',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
     options: OptionsWithAvatar,
-    required: true,
-    requiredOptions: ['1'],
     value: ['2', '3']
 };
 
-export const BaseWithAvatarLabelHidden = Template.bind({});
-BaseWithAvatarLabelHidden.args = {
-    label: 'Select Items',
+export const MaxVisibleOptions10 = Template.bind({});
+MaxVisibleOptions10.args = {
+    label: 'Dual Listbox with 10 Visible Options',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
+    variant: 'label-hidden',
     options: OptionsWithAvatar,
     required: true,
-    requiredOptions: ['1'],
-    value: ['2', '3'],
-    hideBottomDivider: true,
-    variant: 'label-hidden'
-};
-
-export const BaseWithAvatarVisibleOptions10 = Template.bind({});
-BaseWithAvatarVisibleOptions10.args = {
-    label: 'Select Items',
-    sourceLabel: 'Available Items',
-    selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    options: OptionsWithAvatar,
-    required: true,
-    requiredOptions: ['1'],
+    requiredOptions: ['4', '1'],
     maxVisibleOptions: 10,
     value: ['2', '3']
 };
 
-export const BaseWithAvatarDescriptionVisibleOptions6 = Template.bind({});
-BaseWithAvatarDescriptionVisibleOptions6.args = {
+export const Descriptions = Template.bind({});
+Descriptions.args = {
     label: 'Invitations',
     sourceLabel: 'Available',
     selectedLabel: 'Invited',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
     options: OptionsWithAvatarSrc,
-    requiredOptions: ['1'],
     maxVisibleOptions: 6,
     value: ['2', '3']
 };
 
-export const Languages = Template.bind({});
-Languages.args = {
-    label: 'Languages',
-    fieldLevelHelp: 'Required',
-    sourceLabel: 'Available',
-    selectedLabel: 'Selected',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    options: LanguagesOptions,
-    required: true,
-    value: ['en', 'fr']
-};
-
-export const LanguagesWithSearchEngine = Template.bind({});
-LanguagesWithSearchEngine.args = {
+export const SearchEngine = Template.bind({});
+SearchEngine.args = {
     label: 'Languages',
     sourceLabel: 'Available',
     selectedLabel: 'Selected',
@@ -707,20 +603,5 @@ LanguagesWithSearchEngine.args = {
     upButtonLabel: 'Up Button Label',
     options: LanguagesOptions,
     allowSearch: true,
-    value: ['en', 'fr']
-};
-
-export const LanguagesStacked = Template.bind({});
-LanguagesStacked.args = {
-    label: 'Languages',
-    fieldLevelHelp: 'Choose a language',
-    sourceLabel: 'Available',
-    selectedLabel: 'Selected',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    options: LanguagesOptions,
-    variant: 'label-stacked',
     value: ['en', 'fr']
 };

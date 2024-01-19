@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { ProgressBar } from '../__examples__/progressBar';
 
 export default {
@@ -81,6 +49,18 @@ export default {
                 category: 'Value'
             }
         },
+        showPin: {
+            name: 'show-pin',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display the pin.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Value'
+            }
+        },
         valuePosition: {
             name: 'value-position',
             control: {
@@ -102,8 +82,20 @@ export default {
                 category: 'Value'
             }
         },
-        valueLabel: {
-            name: 'value-label',
+        valuePrefix: {
+            name: 'value-prefix',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text display before the value. <br> Example: Progress 25%',
+            table: {
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
+        valueSuffix: {
+            name: 'value-suffix',
             control: {
                 type: 'text'
             },
@@ -111,6 +103,17 @@ export default {
                 'Text display next to the value. <br> Example: 25% Complete',
             table: {
                 type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
+        pinAttributes: {
+            name: 'pin-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the pin.',
+            table: {
+                type: { summary: 'object' },
                 category: 'Value'
             }
         },
@@ -259,6 +262,33 @@ Vertical.args = {
     size: 'large'
 };
 
+export const ShowPinValue = Template.bind({});
+ShowPinValue.args = {
+    label: 'Label',
+    value: 45,
+    referenceLines: oneReferenceLine,
+    showValue: true,
+    showPin: true,
+    pinAttributes: {
+        type: 'circle'
+    }
+};
+
+export const VerticalShowPinValue = Template.bind({});
+VerticalShowPinValue.args = {
+    label: 'Vertical progress bar',
+    value: 45,
+    orientation: 'vertical',
+    referenceLines: oneReferenceLine,
+    size: 'large',
+    showValue: true,
+    showPin: true,
+    pinAttributes: {
+        type: 'rectangle',
+        position: 'right'
+    }
+};
+
 export const MultipleReferenceLines = Template.bind({});
 MultipleReferenceLines.args = {
     label: 'Progress bar with multiple reference lines',
@@ -281,7 +311,8 @@ TexturedVisibleValue.args = {
     label: 'Textured progress bar with visible value',
     value: 24,
     referenceLines: oneReferenceLine,
-    valueLabel: 'Value label',
+    valuePrefix: 'Progress:',
+    valueSuffix: 'completed',
     showValue: true,
     textured: true
 };
@@ -291,7 +322,8 @@ ExtraSmallVertical.args = {
     label: 'Extra small and thin vertical progress bar',
     value: 63,
     referenceLines: oneReferenceLine,
-    valueLabel: 'Value label',
+    valuePrefix: 'Progress:',
+    valueSuffix: 'completed',
     valuePosition: 'bottom-right',
     showValue: true,
     size: 'x-small',

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import ActivityTimeline from '../activityTimeline';
 import { HorizontalActivityTimeline } from '../horizontalActivityTimeline';
@@ -71,8 +39,18 @@ describe('Activity Timeline', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.closed).toBeFalsy();
         expect(element.collapsible).toBeFalsy();
+        expect(element.enableInfiniteLoading).toBeFalsy();
+        expect(element.isLoading).toBeFalsy();
+        expect(element.loadMoreOffset).toBe(20);
         expect(element.itemDateFormat).toBe('LLLL dd, yyyy, t');
         expect(element.groupBy).toBeUndefined();
+        expect(element.fieldAttributes).toEqual({
+            cols: 12,
+            largeContainerCols: 4,
+            mediumContainerCols: 6,
+            smallContainerCols: 12,
+            variant: null
+        });
         expect(element.iconName).toBeUndefined();
         expect(element.items).toMatchObject([]);
         expect(element.hideItemDate).toBeFalsy();
@@ -131,6 +109,48 @@ describe('Activity Timeline', () => {
                 'c-expandable-section'
             );
             expect(expandableSection.collapsible).toBeTruthy();
+        });
+    });
+
+    // enable-infinite-loading
+    it('Activity Timeline: enableInfiniteLoading', () => {
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+        element.enableInfiniteLoading = true;
+
+        expect(handler).toHaveBeenCalled();
+    });
+
+    // is-loading
+    it('Activity Timeline: isLoading', () => {
+        element.isLoading = false;
+
+        return Promise.resolve()
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="div-loading-spinner"]'
+                );
+                expect(spinner).toBeFalsy();
+
+                element.isLoading = true;
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="div-loading-spinner"]'
+                );
+                expect(spinner).toBeTruthy();
+            });
+    });
+    
+    // fieldAttributes
+    it('Activity Timeline: Field Attributes, cols', () => {
+        element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
+
+        return Promise.resolve().then(() => {
+            expect(element.fieldAttributes.cols).toBe(1);
+            expect(element.fieldAttributes.largeContainerCols).toBe(3);
+            expect(element.fieldAttributes.mediumContainerCols).toBe(1);
+            expect(element.fieldAttributes.smallContainerCols).toBe(1);
         });
     });
 
@@ -793,6 +813,51 @@ describe('Activity Timeline', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    // loadmore
+    it('Activity Timeline: loadmore event', () => {
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+        element.enableInfiniteLoading = true;
+        element.loadMoreOffset = 50;
+
+        // First dispatch when there are no items
+        expect(handler).toHaveBeenCalledTimes(1);
+        const call = handler.mock.calls[0][0];
+        expect(call.bubbles).toBeFalsy();
+        expect(call.composed).toBeFalsy();
+        expect(call.cancelable).toBeFalsy();
+
+        element.isLoading = true;
+
+        return Promise.resolve()
+            .then(() => {
+                element.items = testItems;
+                element.isLoading = false;
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-timeline-wrapper"]'
+                );
+                jest.spyOn(wrapper, 'clientHeight', 'get').mockImplementation(
+                    () => 100
+                );
+                jest.spyOn(wrapper, 'scrollHeight', 'get').mockImplementation(
+                    () => 200
+                );
+            })
+            .then(() => {
+                // No dispatch until the scroll position reaches the loadMoreOffset
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-timeline-wrapper"]'
+                );
+                wrapper.scrollTop = 49;
+                wrapper.dispatchEvent(new CustomEvent('scroll'));
+                expect(handler).toHaveBeenCalledTimes(1);
+
+                wrapper.scrollTop = 50;
+                wrapper.dispatchEvent(new CustomEvent('scroll'));
+                expect(handler).toHaveBeenCalledTimes(2);
+            });
     });
 
     // <-- HORIZONTAL TIMELINE -->

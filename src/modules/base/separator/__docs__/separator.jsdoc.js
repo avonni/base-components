@@ -9,6 +9,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-separator-label-font-family
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-separator-label-font-size
  * @default 1em
  * @type font
@@ -24,6 +29,16 @@
  * @name --avonni-separator-label-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-label-line-height
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-label-letter-spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

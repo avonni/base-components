@@ -1,45 +1,8 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 :host {
     display: block;
 }
 
-.slds-checkbox.avonni-input-choice-set__horizontal {
-    /* .avonni-input-choice-set__horizontal ??? */
-    display: inline-flex;
-}
-
-.slds-radio.avonni-input-choice-set__horizontal {
+.avonni-input-choice-set__horizontal {
     display: inline-flex;
 }
 
@@ -62,7 +25,7 @@
 
 .slds-checkbox_button {
     border-left: none;
-    border-bottom: 1px solid #dddbda;
+    border-bottom: 1px solid #747474;
 }
 
 .avonni-input-choice-set__option-label {
@@ -70,8 +33,11 @@
 }
 
 .slds-checkbox_button.avonni-input-choice-set__horizontal {
-    border-right: 1px solid #dddbda;
     border-bottom: none;
+}
+
+.slds-checkbox_button.avonni-input-choice-set__horizontal:not(:last-child) {
+    border-right: 1px solid #747474;
 }
 
 .avonni-input-choice-set__display_flex {
@@ -85,23 +51,108 @@
     font-weight: var(--avonni-input-choice-set-header-font-weight, 400);
 }
 
-.avonni-input-choice-set__stretch {
+.avonni-input-choice-set__horizontal,
+.avonni-input-choice-set__vertical {
+    border-color: var(--slds-g-color-border-base-4, #747474);
+}
+
+.avonni-input-choice-set__button_stretch {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
 }
 
-.avonni-input-choice-set__stretch.avonni-input-choice-set__vertical {
+.avonni-input-choice-set__toggle_stretch {
+    justify-content: space-between;
+}
+
+.avonni-input-choice-set__button_stretch.avonni-input-choice-set__vertical {
     flex-direction: column;
 }
 
-.avonni-input-choice-set__stretch .slds-checkbox_button,
-.avonni-input-choice-set__stretch .slds-checkbox_button__label,
-.avonni-input-choice-set__stretch .slds-checkbox,
-.avonni-input-choice-set__stretch .slds-radio {
+.avonni-input-choice-set__button_stretch .slds-checkbox_button,
+.avonni-input-choice-set__button_stretch .slds-checkbox_button__label,
+.avonni-input-choice-set__button_stretch .slds-checkbox,
+.avonni-input-choice-set__button_stretch .slds-radio {
     flex-grow: 1;
 }
 
 .avonni-input-choice-set__loading {
     height: 3rem;
+}
+
+.avonni-input-choice-set__button__row [type='checkbox'] {
+    width: 1px;
+    height: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+
+.avonni-input-choice-set__button__row
+    [type='checkbox']
+    + .slds-checkbox_button__label {
+    border: 1px solid #747474;
+    border-radius: 0.25rem;
+}
+
+.avonni-input-choice-set__button__row
+    [type='checkbox']:checked
+    + .slds-checkbox_button__label {
+    background-color: #0176d3;
+    color: white;
+    border: 1px solid #0176d3;
+}
+
+.avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
+    .slds-checkbox_button:not(:last-child) {
+    border-right: 1px solid #747474;
+}
+
+.avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
+    .slds-checkbox_button,
+.avonni-input-choice-set__vertical .slds-checkbox_button:last-child {
+    border-bottom: none;
+}
+
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button:last-child:not(:only-child)
+    > .slds-checkbox_button__label {
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button:first-child:not(:only-child)
+    > .slds-checkbox_button__label {
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button:only-child
+    > .slds-checkbox_button__label {
+    border-radius: 0.25rem;
+}
+
+.avonni-input-choice-set__horizontal
+    .slds-checkbox_button:only-child
+    > .slds-checkbox_button__label {
+    border-radius: 0.25rem;
+}
+
+.avonni-input-choice-set__option-label_line-clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: var(
+        --avonni-input-choice-set-option-label-line-clamp,
+        1
+    );
+    text-overflow: ellipsis;
+}
+
+.avonni-input-choice-set__option-label-icon-container {
+    padding-right: 0.5rem;
 }

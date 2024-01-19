@@ -1,36 +1,5 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { ActivityTimeline } from '../__examples__/activityTimeline';
+import { InfiniteLoadingActivityTimeline } from '../__examples__/infiniteLoadingActivityTimeline';
 import {
     actions,
     items,
@@ -47,7 +16,7 @@ export default {
                 type: 'object'
             },
             description:
-                'A list of different actions for dropdown menu. This attribute is supported only for the vertical orientation.',
+                'A list of different actions for dropdown menu. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -58,7 +27,7 @@ export default {
                 type: 'text'
             },
             description:
-                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.",
+                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed. This attribute is only supported for the vertical orientation.",
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -71,7 +40,7 @@ export default {
             },
             options: ['left', 'right'],
             description:
-                "Position of the show less button's icon. Valid values include left and right. This attribute is supported only for the vertical orientation.",
+                "Position of the show less button's icon. Valid values include left and right. This attribute is only supported for the vertical orientation.",
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
@@ -84,7 +53,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Label of the button that appears when all items are displayed and max-visible-items value is set. This attribute is supported only for the vertical orientation.',
+                'Label of the button that appears when all items are displayed and max-visible-items value is set. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Show less' },
@@ -97,7 +66,7 @@ export default {
                 type: 'text'
             },
             description:
-                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.",
+                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is only supported for the vertical orientation.",
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -110,7 +79,7 @@ export default {
             },
             options: ['left', 'right'],
             description:
-                'Position of the showMore button’s icon. Valid values include left and right. This attribute is supported only for the vertical orientation.',
+                'Position of the showMore button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
@@ -123,7 +92,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Label of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.',
+                'Label of the button that appears when the number of items exceeds the max-visible-items number. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Show more' },
@@ -146,7 +115,7 @@ export default {
                 'success'
             ],
             description:
-                'Variant of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.',
+                'Variant of the button that appears when the number of items exceeds the max-visible-items number. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'neutral' },
@@ -158,7 +127,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If true, close the section. This attribute is supported only for the vertical orientation.',
+                'If true, close the section. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -169,10 +138,31 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If true, the section is collapsible, the left icon is present. This attribute is supported only for the vertical orientation.',
+                'If true, the section is collapsible, the left icon is present. This attribute is only supported for the vertical orientation with grouped items.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
+            }
+        },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of items and then display more when users scroll to the end of the timeline. Use with the loadmore event to retrieve more items.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        fieldAttributes: {
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item fields.',
+            table: {
+                type: { summary: 'object' }
             }
         },
         groupBy: {
@@ -182,7 +172,7 @@ export default {
             },
             options: ['week', 'month', 'year', ''],
             description:
-                'Values include week, month, year. This attribute is supported only for the vertical orientation.',
+                'Values include week, month, year. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'string' }
             }
@@ -211,6 +201,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is shown to indicate that more items are loading.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         itemDateFormat: {
             name: 'item-date-format',
             control: {
@@ -230,7 +232,7 @@ export default {
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                "The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large. This attribute is supported only for the vertical orientation.",
+                "The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large. This attribute is only supported for the vertical orientation.",
             table: {
                 defaultValue: { summary: 'small' },
                 type: { summary: 'string' }
@@ -242,6 +244,29 @@ export default {
             },
             table: {
                 type: { summary: 'object[]' }
+            }
+        },
+        locale: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Locale of the current user. The locale is used to format the axis dates in the horizontal orientation.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'en-GB' }
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                "Determines when to trigger infinite loading based on how many pixels the timeline's scroll position is from the bottom of the timeline.",
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '20' }
             }
         },
         hideItemDate: {
@@ -286,7 +311,7 @@ export default {
             },
             options: ['desc', 'asc'],
             description:
-                'Specifies the sorting direction. Valid values include asc and desc. This attribute is supported only for the vertical orientation.',
+                'Specifies the sorting direction. Valid values include asc and desc. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'desc' }
@@ -324,8 +349,12 @@ export default {
         buttonShowMoreLabel: 'Show more',
         buttonShowMoreIconName: 'utility:down',
         buttonVariant: 'neutral',
+        enableInfiniteLoading: false,
         iconSize: 'medium',
+        isLoading: false,
         itemIconSize: 'small',
+        loadMoreOffset: 20,
+        locale: 'en-GB',
         orientation: 'vertical',
         itemDateFormat: 'LLLL dd, yyyy, t',
         hideItemDate: false
@@ -333,24 +362,16 @@ export default {
 };
 
 const Template = (args) => ActivityTimeline(args);
+const InfiniteLoadingTemplate = (args) => InfiniteLoadingActivityTimeline(args);
 
 export const Base = Template.bind({});
-Base.args = {
-    title: 'Activity Timeline',
-    iconName: 'standard:timesheet_entry',
-    items: items,
-    collapsible: true,
-    itemDateFormat: 'dd LLL yyyy',
-    actions: actions,
-    maxVisibleItems: 3
-};
+Base.args = { items };
 
 export const Ascending = Template.bind({});
 Ascending.args = {
     title: 'Activity Timeline',
     iconName: 'standard:timesheet_entry',
     items: items,
-    collapsible: true,
     actions: actions,
     sortedDirection: 'asc',
     maxVisibleItems: 3
@@ -362,7 +383,6 @@ Horizontal.args = {
     iconName: 'standard:timesheet_entry',
     orientation: 'horizontal',
     items: horizontalItems,
-    collapsible: true,
     actions: actions
 };
 
@@ -371,22 +391,10 @@ Weekly.args = {
     title: 'Activity Timeline grouped by week',
     iconName: 'standard:timesheet_entry',
     items: items,
-    collapsible: true,
     actions: actions,
     itemDateFormat: 'DDDD - t',
     groupBy: 'week',
     maxVisibleItems: 5
-};
-
-export const WeeklyNotCollapsible = Template.bind({});
-WeeklyNotCollapsible.args = {
-    title: 'Activity Timeline not collapsible',
-    iconName: 'standard:timesheet_entry',
-    items: items,
-    collapsible: false,
-    actions: actions,
-    itemDateFormat: 'DDDD - t',
-    groupBy: 'week'
 };
 
 export const Monthly = Template.bind({});
@@ -411,12 +419,17 @@ Yearly.args = {
     actions: actions
 };
 
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    title: 'Infinite Loading Activity Timeline',
+    iconName: 'utility:sync'
+};
+
 export const WithoutIcons = Template.bind({});
 WithoutIcons.args = {
-    title: 'Activity Timeline without some icons',
+    title: 'Activity Timeline without icons',
     iconName: 'standard:timesheet_entry',
     items: itemsWithoutIcons,
-    collapsible: true,
     actions: actions,
     hideItemDate: true
 };

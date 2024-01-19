@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 import { createSVGIcon } from 'c/iconUtils';
@@ -141,6 +109,37 @@ export class HorizontalActivityTimeline {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    get axisDateFormat() {
+        try {
+            const date = new Date(2000, 10, 22);
+            const formattedDate = new Intl.DateTimeFormat(
+                this._activityTimeline.locale
+            ).format(date);
+
+            const year = {
+                index: formattedDate.indexOf('2000'),
+                format: '%Y'
+            };
+            const month = {
+                index: formattedDate.indexOf('11'),
+                format: '%m'
+            };
+            const day = {
+                index: formattedDate.indexOf('22'),
+                format: '%d'
+            };
+            const sortedDateParts = [year, month, day].sort(
+                (a, b) => a.index - b.index
+            );
+
+            return sortedDateParts.reduce((acc, datePart) => {
+                return acc ? `${acc}/${datePart.format}` : datePart.format;
+            }, '');
+        } catch (e) {
+            return '%d/%m/%Y';
+        }
+    }
 
     /**
      * Select only items in min-max interval for horizontal view of the timeline
@@ -814,7 +813,7 @@ export class HorizontalActivityTimeline {
         // Create dashed lines aligned to axis ticks
         const axis = d3
             .axisBottom(this.viewTimeScale)
-            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .tickFormat(d3.timeFormat(this.axisDateFormat))
             .ticks(this._numberOfTimelineAxisTicks)
             .tickSizeInner(this._timelineHeight + this._timelineAxisHeight)
             .tickSizeOuter(0);
@@ -923,7 +922,7 @@ export class HorizontalActivityTimeline {
 
         const timeAxis = d3
             .axisBottom(scale)
-            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .tickFormat(d3.timeFormat(this.axisDateFormat))
             .ticks(numberOfTicks)
             .tickSizeOuter(0);
 

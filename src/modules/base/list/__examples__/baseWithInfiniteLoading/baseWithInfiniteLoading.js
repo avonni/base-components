@@ -1,7 +1,6 @@
 import { LightningElement } from 'lwc';
 
 export default class BaseWithInfiniteLoading extends LightningElement {
-
     isLoading = false;
     enableInfiniteLoading = true;
     items = [
@@ -57,25 +56,34 @@ export default class BaseWithInfiniteLoading extends LightningElement {
             disabled: true
         }
     ];
-
+    loadedItems = [];
 
     connectedCallback() {
-        this.loadedItems = this.items;
+        this.generateItems();
+    }
+
+    generateItems() {
+        const newItems = this.items.map((item, index) => {
+            return {
+                ...item,
+                name: `item-${this.loadedItems.length + index + 1}`,
+                label: `Item #${this.loadedItems.length + index + 1}`
+            };
+        });
+        this.loadedItems = this.loadedItems.concat(newItems);
     }
 
     loadMoreData() {
-        this.isLoading = true;
+        if (this.loadedItems.length > 30) {
+            this._isLoading = false;
+            this._enableInfiniteLoading = false;
+            return;
+        }
+        this._isLoading = true;
 
         setTimeout(() => {
-            const newItems = this.items.concat(this.loadedItems);
-
-            if (newItems.length >= 30) {
-                this.isLoading = false;
-                this.enableInfiniteLoading = false;
-            } else {
-                this.isLoading = false;
-                this.items = newItems;
-            }
+            this.generateItems();
+            this._isLoading = false;
         }, 1000);
     }
 }

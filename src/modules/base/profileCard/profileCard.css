@@ -1,34 +1,19 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+article.avonni-profile-card {
+    position: relative;
+    background-color: var(--avonni-profile-card-color-background, white);
+    padding-top: var(--avonni-profile-card-spacing-block-start, 0px);
+    padding-left: var(--avonni-profile-card-spacing-inline-start, 0px);
+    padding-right: var(--avonni-profile-card-spacing-inline-end, 0px);
+    padding-bottom: var(--avonni-profile-card-spacing-block-end, 0px);
+    border-width: var(--avonni-profile-card-sizing-border, 1px);
+    border-style: var(--avonni-profile-card-styling-border, solid);
+    border-color: var(
+        --avonni-profile-card-color-border,
+        var(--slds-g-color-border-base-1, #c9c9c9)
+    );
+    border-radius: var(--avonni-profile-card-radius-border, 0.25rem);
+    box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
+}
 
 .avonni-profile-card__flex-container {
     display: flex;
@@ -36,10 +21,25 @@
 }
 
 .avonni-profile-card_color-background {
-    background-color: var(--avonni-profile-card-color-background, #ffffff);
+    background-color: var(
+        --avonni-profile-card-header-color-background,
+        #ffffff
+    );
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    border-bottom-width: var(
+        --avonni-profile-card-header-sizing-border-bottom,
+        0px
+    );
+    border-bottom-style: var(
+        --avonni-profile-card-header-styling-border-bottom,
+        solid
+    );
+    border-bottom-color: var(
+        --avonni-profile-card-header-color-border-bottom,
+        var(--slds-g-color-border-base-1, #c9c9c9)
+    );
     width: 100%;
     flex: 1 1 auto;
 }
@@ -117,19 +117,33 @@
 }
 
 .avonni-profile-card__title {
+    font-family: var(
+        --avonni-profile-card-header-title-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
     font-size: var(--avonni-profile-card-title-font-size, 18px);
     font-style: var(--avonni-profile-card-title-font-style, normal);
     font-weight: var(--avonni-profile-card-title-font-weight, 400);
     color: var(--avonni-profile-card-title-text-color, #000000);
     line-height: 1.33333em;
+    letter-spacing: var(--avonni-profile-card-title-letter-spacing);
 }
 
 .avonni-profile-card__subtitle {
+    font-family: var(
+        --avonni-profile-card-header-subtitle-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
     font-size: var(--avonni-profile-card-subtitle-font-size, 14px);
     font-weight: var(--avonni-profile-card-subtitle-font-weight, 400);
     font-style: var(--avonni-profile-card-subtitle-font-style, normal);
     color: var(--avonni-profile-card-subtitle-text-color, #000000);
     line-height: 1.71429em;
+    letter-spacing: var(--avonni-profile-card-subtitle-letter-spacing);
 }
 
 .avonni-profile-card__card_size-x-small [data-element-id='avatar-action'],

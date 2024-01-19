@@ -1,51 +1,21 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { api } from 'lwc';
-import { Interval } from 'c/luxon';
 import {
     addToDate,
     deepCopy,
+    equal,
     getWeekNumber,
+    intervalFrom,
     normalizeBoolean,
+    normalizeObject,
     normalizeString,
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import Column from './column';
 import {
+    DEFAULT_ACTION_NAMES,
     getElementOnXAxis,
     getElementOnYAxis,
-    isAllowedDay,
     isAllowedTime,
     nextAllowedMonth,
     nextAllowedDay,
@@ -61,7 +31,6 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
-const MINIMUM_DAY_COLUMN_WIDTH = 48;
 const MONTH_DAY_LABEL_HEIGHT = 30;
 const MONTHS = {
     0: 'January',
@@ -229,6 +198,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         if (this._connected) {
             this.initHeaders();
+            this._dayHeadersLoading = false;
         }
     }
 
@@ -250,6 +220,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         if (this._connected) {
             this.initHeaders();
+            this._dayHeadersLoading = false;
         }
     }
 
@@ -305,7 +276,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
             if (previousStart !== this.start.ts) {
                 this.initHeaders();
-                this.initLeftPanelCalendarDisabledDates();
+                if (this.isYear) {
+                    this.initEvents();
+                }
+                if (!this.hideSidePanel) {
+                    this.initLeftPanelCalendarDisabledDates();
+                    this.initLeftPanelCalendarMarkedDates();
+                }
             }
         }
     }
@@ -342,12 +319,27 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return super.timeSpan;
     }
     set timeSpan(value) {
+        const { unit, span } = normalizeObject(value);
+        if (unit === this._timeSpan.unit && span === this._timeSpan.span) {
+            return;
+        }
+
+        const previousDayHeadersTimeSpan = deepCopy(this.dayHeadersTimeSpan);
+        const previousHourHeadersTimeSpan = deepCopy(this.hourHeadersTimeSpan);
         super.timeSpan = value;
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
             this.initEvents();
+
+            // Make sure the headers stop loading when the time span has not changed
+            if (equal(previousDayHeadersTimeSpan, this.dayHeadersTimeSpan)) {
+                this._dayHeadersLoading = false;
+            }
+            if (equal(previousHourHeadersTimeSpan, this.hourHeadersTimeSpan)) {
+                this._hourHeadersLoading = false;
+            }
 
             // If the hour headers appear or disappear, the visible width changes
             requestAnimationFrame(() => {
@@ -821,6 +813,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._eventData.smallestHeader = this.hourHeaders[0];
         this._eventData.initEvents();
 
+        if (!this.hideSidePanel) {
+            this.initLeftPanelCalendarMarkedDates();
+        }
+
         if (this.isDay || this.isWeek) {
             // Create a cell group for the multi day events row
             const referenceCells = this.columns.map((col) => {
@@ -923,7 +919,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         // Set the visible interval
         const lastCell = lastColumn.cells[lastColumn.cells.length - 1];
         const end = this.createDate(lastCell.end);
-        this.visibleInterval = Interval.fromDateTimes(this.start, end);
+        this.visibleInterval = intervalFrom(this.start, end);
     }
 
     /**
@@ -932,13 +928,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        const grid = this.template.querySelector(
-            '[data-element-id="div-cells-grid"]'
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
         );
-        if (!grid) {
+        if (!wrapper) {
             return null;
         }
-        const resizeObserver = new AvonniResizeObserver(grid, () => {
+        const resizeObserver = new AvonniResizeObserver(wrapper, () => {
             if (this.isMonth) {
                 this.updateCellHeight();
             }
@@ -1121,66 +1117,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Get the marked dates in the calendar of a specific month of the year view.
-     *
-     * @param {number} month Month of which the marked dates should be returned.
-     * @returns {object[]} Array of valid calendar marked dates.
-     */
-    getMonthMarkedDates(month) {
-        let date = this.start;
-        if (month < this.start.month) {
-            // Make sure the month is in the future
-            date = addToDate(this.start, 'year', 1);
-        }
-        date = date.set({ month });
-        const monthStart = date.startOf('month');
-        const monthEnd = date.endOf('month');
-        const monthInterval = Interval.fromDateTimes(monthStart, monthEnd);
-        const dayMap = {};
-
-        return this._eventData.events.reduce((markedDates, event) => {
-            event.occurrences.forEach((occ) => {
-                const { from, to, resourceName } = occ;
-                const normalizedTo = event.referenceLine ? from : to;
-                const occInterval = Interval.fromDateTimes(from, normalizedTo);
-                const intersection = monthInterval.intersection(occInterval);
-
-                if (intersection) {
-                    const days = intersection.count('days');
-                    const color =
-                        event.color || this.getResourceColor(resourceName);
-                    let currentDate = intersection.s;
-
-                    for (let i = 0; i < days; i++) {
-                        // Only add one marker per resource per day
-                        const alreadyMarked =
-                            dayMap[currentDate.day] &&
-                            dayMap[currentDate.day].includes(resourceName);
-                        const isAllowed = isAllowedDay(
-                            currentDate,
-                            this.availableDaysOfTheWeek
-                        );
-
-                        if (!alreadyMarked && isAllowed) {
-                            markedDates.push({
-                                color,
-                                date: currentDate.toUTC().toISO()
-                            });
-
-                            if (!dayMap[currentDate.day]) {
-                                dayMap[currentDate.day] = [];
-                            }
-                            dayMap[currentDate.day].push(resourceName);
-                        }
-                        currentDate = addToDate(currentDate, 'day', 1);
-                    }
-                }
-            });
-            return markedDates;
-        }, []);
-    }
-
-    /**
      * Get the placeholders for the given occurrence, in a specific column.
      *
      * @param {boolean} isFirstCol True if the current column is the first one.
@@ -1262,19 +1198,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             });
         }
         return placeholders;
-    }
-
-    /**
-     * Get the color associated with a resource.
-     *
-     * @param {string} resourceName Unique name of the resource.
-     * @returns {string} Color of the resource, or undefined if not found.
-     */
-    getResourceColor(resourceName) {
-        const resource = this.resources.find(
-            (res) => res.name === resourceName
-        );
-        return resource && resource.color;
     }
 
     /**
@@ -1410,6 +1333,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 this.availableDaysOfTheWeek
             ).ts;
         }
+        if (!this.hideSidePanel) {
+            this.initLeftPanelCalendarMarkedDates();
+        }
     }
 
     /**
@@ -1423,7 +1349,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             // Compute the visible interval, since there is no primitive headers
             const endOfSpan = addToDate(this.start, unit, span) - 1;
             const end = this.createDate(endOfSpan);
-            this.visibleInterval = Interval.fromDateTimes(this.start, end);
+            this.visibleInterval = intervalFrom(this.start, end);
             this.dispatchVisibleIntervalChange(
                 this.start,
                 this.visibleInterval
@@ -1661,19 +1587,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 this.hideSidePanel
                     ? 0
                     : SPLITTER_BAR_WIDTH;
-            const width =
+
+            this.dayHeadersVisibleWidth =
                 wrapper.offsetWidth -
                 sidePanelWidth -
                 splitterBarWidth -
                 verticalHeaderWidth -
                 scrollBarWidth -
                 1;
-
-            const cellWidth = width / this.columns.length;
-            this.dayHeadersVisibleWidth =
-                this.zoomToFit || cellWidth >= MINIMUM_DAY_COLUMN_WIDTH
-                    ? width
-                    : 0;
         }
     }
 
@@ -1758,9 +1679,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (orientation === 'vertical') {
             this.cellHeight = cellSize;
             this.multiDayCellHeight = cellSize;
-            this.template.host.style = `
-                --avonni-scheduler-cell-height: ${this.cellHeight}px;
-            `;
+
+            try {
+                this.template.host.style = `
+                    --avonni-scheduler-cell-height: ${this.cellHeight}px;
+                `;
+            } catch (e) {
+                // Prevents an error in Salesforce:
+                // 'Cannot add property style, object is not extensible.'
+                // The error seems to happen when the component is loading
+                // and the host is not a Proxy yet.
+            }
         } else {
             this.cellWidth = cellSize;
         }
@@ -1852,6 +1781,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (
             event.button ||
             this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
             !this.firstSelectedResource ||
             this.isMonth
         ) {
@@ -1948,9 +1878,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this._eventData.handleMouseUp(x, y);
 
         switch (eventToDispatch) {
-            case 'edit':
-                this.dispatchOpenEditDialog(this._eventData.selection);
+            case 'edit': {
+                const prevented = this.dispatchOpenEditDialog(
+                    this._eventData.selection
+                );
+                if (prevented) {
+                    this._eventData.cleanSelection(true);
+                }
                 break;
+            }
             case 'recurrence':
                 this.dispatchOpenRecurrenceDialog(this._eventData.selection);
                 break;
@@ -1968,7 +1904,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event `mousedown` event fired by an empty cell or a disabled primitive event occurrence.
      */
     handleMultiDayEmptyCellMouseDown(event) {
-        if (event.button || this.readOnly || !this.firstSelectedResource) {
+        if (
+            event.button ||
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
+            !this.firstSelectedResource
+        ) {
             return;
         }
 
@@ -2192,6 +2133,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleYearDateClick(event) {
         const date = this.createDate(event.detail.clickedDate);
         this._selectedDate = date.ts;
+        this.initLeftPanelCalendarMarkedDates();
         const { x, y, width, height } = event.detail.bounds;
         const position = {
             x: x + width / 2,
@@ -2204,8 +2146,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 // If the event is a reference line,
                 // use the start date as an end date too
                 const to = occ.to ? occ.to : occ.from;
-                const interval = Interval.fromDateTimes(occ.from, to);
-                const day = Interval.fromDateTimes(
+                const interval = intervalFrom(occ.from, to);
+                const day = intervalFrom(
                     date.startOf('day'),
                     date.endOf('day')
                 );

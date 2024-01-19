@@ -12,6 +12,7 @@ export default class Button extends LightningElement {
     @api iconPosition;
     @api label;
     @api name;
+    @api stretch;
     @api type;
     @api value;
     @api variant;

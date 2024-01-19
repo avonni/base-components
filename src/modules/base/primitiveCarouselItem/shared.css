@@ -24,10 +24,21 @@
 .avonni-carousel__actions {
     display: flex;
     width: 100%;
+    align-items: center;
+}
+
+.avonni-carousel-item__float {
+    float: left;
+    padding: 0.25rem;
+}
+
+.avonni-carousel__actions_stretch {
+    width: 100%;
+    height: 100%;
 }
 
 .avonni-carousel__panel-action {
-    border-color: var(--avonni-carousel-item-color-border, #e5e5e5);
+    border-color: var(--avonni-carousel-item-color-border, #c9c9c9);
     border-width: var(--avonni-carousel-item-sizing-border, 1px);
     border-style: var(--avonni-carousel-item-styling-border, solid);
     border-radius: var(--avonni-carousel-item-radius-border, 0.25rem);
@@ -61,4 +72,88 @@
     font-size: var(--avonni-carousel-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-carousel-item-description-font-style, normal);
     font-weight: var(--avonni-carousel-item-description-font-weight, 400);
+}
+
+.avonni-carousel__actions_bare {
+    --slds-c-button-color-background: var(
+        --avonni-carousel-item-action-bare-color-background
+    );
+    --slds-c-button-text-color: var(
+        --avonni-carousel-item-action-bare-text-color
+    );
+    --slds-c-button-color-border: var(
+        --avonni-carousel-item-action-bare-color-border
+    );
+    --slds-c-button-sizing-border: var(
+        --avonni-carousel-item-action-bare-sizing-border
+    );
+    --slds-c-button-radius-border: var(
+        --avonni-carousel-item-action-bare-radius-border
+    );
+}
+
+.avonni-carousel__actions_bare:hover {
+    --slds-c-button-color-background-hover: var(
+        --avonni-carousel-item-action-bare-color-background-hover
+    );
+    --slds-c-button-color-border-hover: var(
+        --avonni-carousel-item-action-bare-color-border-hover
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-carousel-item-action-bare-text-color-hover
+    );
+}
+
+.avonni-carousel__actions_bare:active {
+    --slds-c-button-color-background-active: var(
+        --avonni-carousel-item-action-bare-color-background-active
+    );
+    --slds-c-button-color-border-active: var(
+        --avonni-carousel-item-action-bare-color-border-active
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-carousel-item-action-bare-text-color-active
+    );
+}
+
+.avonni-carousel__actions_neutral {
+    --slds-c-button-neutral-color-background: var(
+        --avonni-carousel-item-action-neutral-color-background
+    );
+    --slds-c-button-neutral-color-border: var(
+        --avonni-carousel-item-action-neutral-color-border
+    );
+    --slds-c-button-text-color: var(
+        --avonni-carousel-item-action-neutral-text-color
+    );
+    --slds-c-button-sizing-border: var(
+        --avonni-carousel-item-action-neutral-sizing-border
+    );
+    --slds-c-button-radius-border: var(
+        --avonni-carousel-item-action-neutral-radius-border
+    );
+}
+
+.avonni-carousel__actions_neutral:hover {
+    --slds-c-button-neutral-color-background-hover: var(
+        --avonni-carousel-item-action-neutral-color-background-hover
+    );
+    --slds-c-button-neutral-color-border-hover: var(
+        --avonni-carousel-item-action-neutral-color-border-hover
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-carousel-item-action-neutral-text-color-hover
+    );
+}
+
+.avonni-carousel__actions_neutral:active {
+    --slds-c-button-neutral-color-background-active: var(
+        --avonni-carousel-item-action-neutral-color-background-active
+    );
+    --slds-c-button-neutral-color-border-active: var(
+        --avonni-carousel-item-action-neutral-color-border-active
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-carousel-item-action-neutral-text-color-active
+    );
 }

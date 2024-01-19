@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { DateTime } from 'c/luxon';
@@ -43,7 +11,11 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utilsPrivate';
-import { isAllDay, spansOnMoreThanOneDay } from 'c/schedulerUtils';
+import {
+    isAllDay,
+    spansOnMoreThanOneDay,
+    DEFAULT_ACTION_NAMES
+} from 'c/schedulerUtils';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
@@ -114,6 +86,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _cellHeight = 0;
     _cellWidth = 0;
     _headerCells = [];
+    _hiddenActions = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _eventData = {};
     _scrollOffset = 0;
@@ -320,6 +293,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             this.updateLength();
             this.updateStickyLabels();
         }
+    }
+
+    /**
+     * Array of default action names that are not allowed. These actions will be hidden from the menus, and ignored when triggered by a user action (double click, drag, etc.).
+     * Valid values include `Standard.Scheduler.AddEvent`, `Standard.Scheduler.DeleteEvent` and `Standard.Scheduler.EditEvent`.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get hiddenActions() {
+        return this._hiddenActions;
+    }
+    set hiddenActions(value) {
+        this._hiddenActions = normalizeArray(value, 'string');
     }
 
     /**
@@ -749,6 +737,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
+                'avonni-scheduler__event_horizontal': !this.isVertical,
                 'slds-text-color_inverse slds-current-color':
                     !this.displayAsDot &&
                     (theme === 'default' ||
@@ -757,7 +746,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_focused': this._focused,
                 'slds-p-vertical_xx-small': centerLabel.iconName,
                 'avonni-scheduler__event_vertical-animated':
-                    theme !== 'line' && this.isVertical && !this.readOnly,
+                    theme !== 'line' &&
+                    this.isVertical &&
+                    !this.readOnly &&
+                    !this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit),
                 'slds-p-bottom_xx-small': theme === 'line',
                 'avonni-scheduler__event_display-as-dot': this.displayAsDot,
                 'slds-theme_shade slds-theme_alert-texture slds-text-color_weak':
@@ -888,7 +880,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {boolean}
      */
     get hideResizeIcon() {
-        return this.readOnly || this.isStandalone;
+        return (
+            this.readOnly ||
+            this.isStandalone ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
+        );
     }
 
     /**
@@ -1252,7 +1248,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             length += this.getOffsetStart(cellEnd, cellSize);
             if (this.referenceLine) return;
 
-            if (cellEnd > to) {
+            if (cellEnd > to && from.ts !== to.ts) {
                 // If the event ends before the end of the first column
                 // remove the appropriate length of the first column
                 length -= this.getOffsetEnd(cellEnd, cellSize, to);
@@ -1886,7 +1882,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @param {Event} event
      */
     handleMouseDown(event) {
-        if (event.button !== 0 || this.readOnly) return;
+        if (
+            event.button !== 0 ||
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
+        )
+            return;
 
         const resize = event.target.dataset.resize;
 

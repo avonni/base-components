@@ -1,40 +1,21 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 
 export default {
     title: 'Example/Input Choice Set',
     argTypes: {
+        checkPosition: {
+            name: 'check-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Describes the position of the toggle, radio or checkbox. Options include left and right and is not available for type button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -121,6 +102,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        orientationAttributes: {
+            name: 'orientation-attributes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'An object of attributes for the orientation containing the cols, smallContainerCols, mediumContainerCols and largeContainerCols.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         readOnly: {
             name: 'read-only',
             control: {
@@ -132,13 +124,6 @@ export default {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
-        },
-        stretch: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, vertical or horizontal button groups stretch to full width.'
         },
         required: {
             control: {
@@ -155,11 +140,21 @@ export default {
                 type: 'radio'
             },
             description:
-                'Type of the input. Valid values include default and button.',
-            options: ['default', 'button'],
+                'Type of the input. Valid values include default, button and toggle.',
+            options: ['default', 'button', 'toggle'],
             table: {
                 defaultValue: { summary: 'default' },
                 type: { summary: 'string' }
+            }
+        },
+        typeAttributes: {
+            name: 'type-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Attributes specific to the type.',
+            table: {
+                type: { summary: 'object' }
             }
         },
         value: {
@@ -193,13 +188,13 @@ export default {
         }
     },
     args: {
+        checkPosition: 'left',
         disabled: false,
         isLoading: false,
         isMultiSelect: false,
         orientation: 'vertical',
         readOnly: false,
         required: false,
-        stretch: false,
         type: 'default',
         variant: 'standard'
     }
@@ -212,7 +207,7 @@ const optionsWithIcon = [
         label: 'Left',
         value: 'left',
         iconName: 'utility:left_align_text',
-        iconPosition: 'right'
+        iconPosition: 'top'
     },
     {
         label: 'Center',
@@ -241,6 +236,7 @@ const alignmentValue = ['center'];
 export const RadioButtons = Template.bind({});
 RadioButtons.args = {
     label: 'Please select a value',
+    checkPosition: 'right',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue,
@@ -259,12 +255,12 @@ Checkboxes.args = {
 
 export const HorizontalCheckboxes = Template.bind({});
 HorizontalCheckboxes.args = {
+    isMultiSelect: true,
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     orientation: 'horizontal',
-    value: dayValue,
-    isMultiSelect: true
+    value: dayValue
 };
 
 export const CheckboxesDisabled = Template.bind({});
@@ -326,13 +322,65 @@ Buttons.args = {
     value: dayValue
 };
 
-export const HorizontalButtons = Template.bind({});
-HorizontalButtons.args = {
+export const ButtonsCheckmark = Template.bind({});
+ButtonsCheckmark.args = {
     label: 'Please select a value',
     type: 'button',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue,
+    typeAttributes: {
+        showCheckmark: true
+    }
+};
+
+export const buttonsHorizontal = Template.bind({});
+buttonsHorizontal.args = {
+    label: 'Please select a value',
+    type: 'button',
+    typeAttributes: {
+        stretch: true
+    },
     orientation: 'horizontal',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const buttonsHorizontalStretchRow = Template.bind({});
+buttonsHorizontalStretchRow.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    orientation: 'horizontal',
+    orientationAttributes: {
+        multipleRows: false
+    },
+    type: 'button',
+    typeAttributes: {
+        displayAsRow: true,
+        stretch: true
+    },
+    value: dayValue
+};
+
+export const buttonsHorizontalStretchRowCols = Template.bind({});
+buttonsHorizontalStretchRowCols.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    orientation: 'horizontal',
+    orientationAttributes: {
+        cols: 2,
+        multipleRows: true
+    },
+    type: 'button',
+    typeAttributes: {
+        displayAsRow: true,
+        stretch: true
+    },
     value: dayValue
 };
 
@@ -373,4 +421,48 @@ ButtonsWithRightIcons.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithIcon,
     value: alignmentValue
+};
+
+export const Toggle = Template.bind({});
+Toggle.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ToggleStretch = Template.bind({});
+ToggleStretch.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    options: optionsWithoutIcon,
+    value: dayValue,
+    typeAttributes: {
+        stretch: true
+    }
+};
+
+export const ToggleHorizontal = Template.bind({});
+ToggleHorizontal.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ToggleHorizontalCols = Template.bind({});
+ToggleHorizontalCols.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    orientationAttributes: {
+        cols: 2,
+        multipleRows: true
+    },
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
 };

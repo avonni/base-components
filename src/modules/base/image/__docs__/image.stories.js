@@ -1,37 +1,4 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { Image } from '../__examples__/image';
-
 import { ImageList } from '../__examples__/imageList';
 
 export default {
@@ -224,6 +191,53 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        magnifierType: {
+            name: 'magnifier-type',
+            control: {
+                type: 'select'
+            },
+            options: ['none', 'inner', 'standard', 'follow'],
+            description:
+                'Specifies the magnification type. Valid values include inner, standard and follow.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'none' },
+                category: 'Magnifier'
+            }
+        },
+        magnifierAttributes: {
+            name: 'magnifier-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Specifies the magnifier attributes.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Magnifier'
+            }
+        },
+        compareSrc: {
+            name: 'compare-src',
+            control: {
+                type: 'object'
+            },
+            description: 'URL to set for the compare image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Compare'
+            }
+        },
+        compareAttributes: {
+            name: 'compare-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Attributes of the compare slider.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Compare'
+            }
         }
     },
     args: {
@@ -236,7 +250,24 @@ export default {
         lazyLoading: 'auto',
         position: 'left',
         staticImages: false,
-        thumbnail: false
+        thumbnail: false,
+        magnifierType: 'none',
+        magnifierAttributes: {
+            position: 'auto',
+            horizontalOffset: 0,
+            verticalOffset: 0,
+            smoothMove: true,
+            zoomFactor: 2,
+            zoomRatioWidth: 100,
+            zoomRatioHeight: 100
+        },
+        compareAttributes: {
+            orientation: 'horizontal',
+            moveOn: 'click',
+            originalLabel: '',
+            compareLabel: '',
+            showLabelsOnHover: false
+        }
     }
 };
 
@@ -288,6 +319,18 @@ BaseWithLazyLoading.args = {
     lazyLoading: 'lazy'
 };
 
+export const Compare = Template.bind({});
+Compare.args = {
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    alternativeText: 'Alternative text',
+    compareSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+    compareAttributes: {
+        originalLabel: 'Before',
+        compareLabel: 'After'
+    }
+};
+
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
     src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
@@ -327,4 +370,11 @@ CropImageStaticThumbnailMobile.args = {
     cropPositionY: '80',
     thumbnail: true,
     staticImages: true
+};
+
+export const Magnifier = Template.bind({});
+Magnifier.args = {
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    alternativeText: 'Alternative text',
+    magnifierType: 'standard'
 };

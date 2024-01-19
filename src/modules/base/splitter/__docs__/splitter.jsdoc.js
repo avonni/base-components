@@ -26,12 +26,12 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-splitter-horizontal-color-border-separator
- * @default #00000014
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-splitter-vertical-color-border-separator
- * @default #00000014
+ * @default #747474
  * @type color
  */

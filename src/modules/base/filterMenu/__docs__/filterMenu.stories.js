@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { FilterMenu } from '../__examples__/filterMenu';
 import { FilterMenuInfiniteLoading } from '../__examples__/infiniteLoading';
 
@@ -71,6 +39,7 @@ export default {
             }
         },
         buttonVariant: {
+            name: 'button-variant',
             control: {
                 type: 'select'
             },
@@ -88,6 +57,28 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' },
                 category: 'Button'
+            }
+        },
+        closed: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the collapsible is closed. This attribute is only supported by the vertical variant.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        collapsible: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the headers are collapsible. This attribute is only supported by the vertical variant.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         disabled: {
@@ -308,6 +299,8 @@ export default {
     args: {
         applyButtonLabel: 'Apply',
         buttonVariant: 'border',
+        closed: false,
+        collapsible: false,
         disabled: false,
         dropdownAlignment: 'left',
         dropdownNubbin: false,
@@ -325,7 +318,7 @@ const items = [
     {
         label: 'Call',
         value: 'call',
-        prefixIconName: 'standard:call',
+        prefixIconName: 'custom:custom1',
         iconName: 'utility:voicemail_drop'
     },
     {
@@ -441,7 +434,8 @@ InfiniteLoading.args = {
         allowSearch: true,
         isMultiSelect: true,
         enableInfiniteLoading: true
-    }
+    },
+    hideSelectedItems: true
 };
 
 export const VerticalInfiniteLoading = InfiniteLoadingTemplate.bind({});

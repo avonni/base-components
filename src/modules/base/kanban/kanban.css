@@ -1,0 +1,27 @@
+@import './shared.css';
+
+.avonni-kanban__container {
+    overflow-y: hidden;
+    height: 100%;
+}
+
+.avonni-kanban__footer_action {
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    transition: background 0.1s;
+    border-radius: 0.25rem;
+}
+
+.avonni-kanban__footer_action:not(:disabled):hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.avonni-kanban__footer_action>span {
+    padding: 3px;
+    margin: 3px;
+}
+
+.avonni-kanban__footer_action:disabled {
+    opacity: 0.5;
+}

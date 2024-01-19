@@ -32,7 +32,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-bar-value-base-color-background
- * @default #1ab9ff
+ * @default #0176d3
  * @type color
  */
 /**
@@ -44,7 +44,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-bar-value-error-color-background
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**
@@ -104,7 +104,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-bar-value-warning-color-background
- * @default #fe9339
+ * @default #dd7a01
  * @type color
  */
 /**
@@ -154,4 +154,27 @@
  * @name --avonni-progress-bar-value-font-weight
  * @default 700
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-text-color
+ * @default #ffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-font-weight
+ * @default 700
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-color-background
+ * @type color
  */

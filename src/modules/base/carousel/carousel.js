@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
     keyCodes,
@@ -61,7 +29,7 @@ const ACTIONS_POSITIONS = {
     default: 'bottom-center'
 };
 const ACTIONS_VARIANTS = {
-    valid: ['bare', 'border', 'menu'],
+    valid: ['bare', 'border', 'menu', 'stretch'],
     default: 'border'
 };
 
@@ -146,6 +114,7 @@ export default class Carousel extends LightningElement {
     _hideIndicator = false;
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
     _indicatorVariant = INDICATOR_VARIANTS.default;
+    _rendered = false;
     _scrollDuration = DEFAULT_SCROLL_DURATION;
 
     activeIndexPanel;
@@ -157,14 +126,13 @@ export default class Carousel extends LightningElement {
     };
     currentPanelIndex = 0;
     currentItemsPerPanel;
-    initialRender = true;
     panelItems = [];
     paginationItems = [];
     panelStyle;
     resizeObserver;
 
     renderedCallback() {
-        if (this.initialRender) {
+        if (!this._rendered) {
             this.initCarousel();
             if (!this.disableAutoScroll) {
                 this.play();
@@ -176,7 +144,7 @@ export default class Carousel extends LightningElement {
         }
 
         this.computeItemsPerPanel();
-        this.initialRender = false;
+        this._rendered = true;
     }
 
     connectedCallback() {
@@ -469,15 +437,6 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Verify if actions are present.
-     */
-    get hasActions() {
-        return this.items.some(
-            (item) => item.actions && item.actions.length > 0
-        );
-    }
-
-    /**
      * If not infinite - set next panel as disabled.
      *
      * @type {number}
@@ -607,30 +566,28 @@ export default class Carousel extends LightningElement {
      * Computes the items per panel.
      */
     computeItemsPerPanel() {
-        if (!this.carouselContainer) {
-            return;
-        }
+        if (!this.carouselContainer) return;
 
         const previousItemsPerPanel = this.currentItemsPerPanel;
         const carouselWidth = this.carouselContainer.offsetWidth;
 
         let calculatedItemsPerPanel;
 
-        if (
-            this.largeItemsPerPanel > 0 &&
-            carouselWidth >= MEDIA_QUERY_BREAKPOINTS.large
-        ) {
-            calculatedItemsPerPanel = this.columnsCount.large;
-        } else if (
-            this.mediumItemsPerPanel > 0 &&
-            carouselWidth >= MEDIA_QUERY_BREAKPOINTS.medium
-        ) {
-            calculatedItemsPerPanel = this.columnsCount.medium;
-        } else if (
-            this.smallItemsPerPanel > 0 &&
-            carouselWidth >= MEDIA_QUERY_BREAKPOINTS.small
-        ) {
-            calculatedItemsPerPanel = this.columnsCount.small;
+        if (carouselWidth >= MEDIA_QUERY_BREAKPOINTS.large) {
+            calculatedItemsPerPanel =
+                this.largeItemsPerPanel > 0
+                    ? this.columnsCount.large
+                    : this.columnsCount.default;
+        } else if (carouselWidth >= MEDIA_QUERY_BREAKPOINTS.medium) {
+            calculatedItemsPerPanel =
+                this.mediumItemsPerPanel > 0
+                    ? this.columnsCount.medium
+                    : this.columnsCount.default;
+        } else if (carouselWidth >= MEDIA_QUERY_BREAKPOINTS.small) {
+            calculatedItemsPerPanel =
+                this.smallItemsPerPanel > 0
+                    ? this.columnsCount.small
+                    : this.columnsCount.default;
         } else {
             calculatedItemsPerPanel = this.columnsCount.default;
         }
@@ -700,9 +657,9 @@ export default class Carousel extends LightningElement {
             this._carouselItems.length / this.currentItemsPerPanel
         );
 
-        this.initializeCurrentPanel(numberOfPanels);
-        this.initializePaginationItems(numberOfPanels);
-        this.initializePanels();
+        this.initCurrentPanel(numberOfPanels);
+        this.initPaginationItems(numberOfPanels);
+        this.initPanels();
     }
 
     /**
@@ -710,7 +667,7 @@ export default class Carousel extends LightningElement {
      *
      * @param {number} numberOfPanels
      */
-    initializeCurrentPanel(numberOfPanels) {
+    initCurrentPanel(numberOfPanels) {
         const currentPanelIndex = this.currentPanel
             ? this.items.findIndex((item) => item.name === this.currentPanel)
             : 0;
@@ -723,7 +680,7 @@ export default class Carousel extends LightningElement {
      *
      * @param {number} numberOfPanels
      */
-    initializePaginationItems(numberOfPanels) {
+    initPaginationItems(numberOfPanels) {
         this.paginationItems = [];
         const indicatorVariantClass =
             this.indicatorVariant === 'base'
@@ -749,24 +706,9 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Setup the carousel resize observer. Used to update the number of items per panel when the carousel is resized.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initWrapObserver() {
-        if (!this.carouselContainer) {
-            return;
-        }
-        this.resizeObserver = new AvonniResizeObserver(
-            this.carouselContainer,
-            this.computeItemsPerPanel.bind(this)
-        );
-    }
-
-    /**
      * Creates an array of panels, each containing an array of items.
      */
-    initializePanels() {
+    initPanels() {
         const panelItems = [];
         let panelIndex = 0;
         for (
@@ -790,6 +732,21 @@ export default class Carousel extends LightningElement {
         this.panelStyle = `transform: translateX(-${
             this.activeIndexPanel * 100
         }%);`;
+    }
+
+    /**
+     * Setup the carousel resize observer. Used to update the number of items per panel when the carousel is resized.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initWrapObserver() {
+        if (!this.carouselContainer) {
+            return;
+        }
+        this.resizeObserver = new AvonniResizeObserver(
+            this.carouselContainer,
+            this.computeItemsPerPanel.bind(this)
+        );
     }
 
     /**

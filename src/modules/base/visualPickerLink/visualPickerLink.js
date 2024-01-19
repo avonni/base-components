@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
@@ -68,6 +36,8 @@ export default class VisualPickerLink extends LightningElement {
      */
     @api title;
 
+    _disabled = false;
+
     _completed = false;
 
     _iconPosition = ICON_POSITIONS.default;
@@ -77,7 +47,9 @@ export default class VisualPickerLink extends LightningElement {
     showTitle = true;
 
     render() {
-        return this._infoOnly ? visualPickerLinkInfoOnly : visualPickerLink;
+        return this._infoOnly || this._disabled
+            ? visualPickerLinkInfoOnly
+            : visualPickerLink;
     }
 
     renderedCallback() {
@@ -100,6 +72,22 @@ export default class VisualPickerLink extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, the visual picker is disabled and the user cannot interact with it.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
 
     /**
      * If present, a checkmark is added to the icon.
@@ -166,8 +154,14 @@ export default class VisualPickerLink extends LightningElement {
     get computedContainerClass() {
         return classSet('avonni-visual-picker-link__tile')
             .add({
-                'slds-welcome-mat__tile_complete': this._completed,
-                'avonni-visual-picker-link__tile_info-only': this._infoOnly
+                'slds-welcome-mat__tile_complete avonni-visual-picker-link__tile_complete':
+                    this._completed,
+                'avonni-visual-picker-link__tile_info-only': this._infoOnly,
+                'avonni-visual-picker-link__box':
+                    this._disabled && !this._infoOnly,
+                'avonni-visual-picker-link_disabled':
+                    this._disabled && !this._infoOnly,
+                'avonni-visual-picker-link_cursor-not-allowed': this._disabled
             })
             .toString();
     }

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
@@ -48,7 +16,7 @@ const ACTIONS_POSITIONS = {
 };
 
 const ACTIONS_VARIANTS = {
-    valid: ['bare', 'border', 'menu'],
+    valid: ['bare', 'border', 'menu', 'stretch'],
     default: 'border'
 };
 
@@ -135,6 +103,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
             fallbackValue: ACTIONS_VARIANTS.default,
             validValues: ACTIONS_VARIANTS.valid
         });
+        this.initializeCarouselHeight();
     }
 
     /*
@@ -149,20 +118,22 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedActionsContainerClass() {
-        return classSet('avonni-carousel__actions')
+        return classSet('')
             .add({
                 'avonni-carousel__actions-bottom-center':
                     this._actionsPosition === 'bottom-center',
                 'avonni-carousel__actions-right':
-                    this._actionsPosition === 'bottom-right' ||
-                    this._actionsPosition === 'top-right',
+                    this._actionsPosition.includes('right'),
                 'avonni-carousel__actions-left':
-                    this._actionsPosition === 'bottom-left' ||
-                    this._actionsPosition === 'top-left'
+                    this._actionsPosition.includes('left')
             })
             .add({
                 'slds-p-around_small': !this.isBottomPosition,
                 'slds-is-absolute': !this.isBottomPosition
+            })
+            .add({
+                'avonni-carousel__actions_stretch': this.isStretchVariant,
+                'avonni-carousel__actions': !this.isStretchVariant
             })
             .toString();
     }
@@ -186,6 +157,31 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
+     * Lightning Button class styling based on attributes.
+     *
+     * @type {string}
+     */
+    get computedButtonClass() {
+        return classSet('')
+            .add({
+                'avonni-carousel__actions_bare':
+                    this._actionsVariant === 'bare',
+                'avonni-carousel__actions_neutral':
+                    this._actionsVariant === 'border' || this.isStretchVariant
+            })
+            .toString();
+    }
+
+    /**
+     * Buttons container class styling based on attributes.
+     *
+     * @type {string}
+     */
+    get computedButtonsContainerClass() {
+        return !this.isStretchVariant ? 'slds-show_small' : 'slds-show_small';
+    }
+
+    /**
      * Action button icon class styling based on attributes.
      *
      * @type {string}
@@ -193,16 +189,26 @@ export default class PrimitiveCarouselItem extends LightningElement {
     get computedButtonIconActionClass() {
         return classSet('')
             .add({
-                'slds-m-horizontal_xx-small': this._actionsVariant === 'border',
-                'slds-m-right_x-small slds-m-top_xx-small':
+                'avonni-carousel-item__float':
+                    this._actionsVariant === 'border' ||
                     this._actionsVariant === 'bare',
-                'avonni-carousel__button-icon-top':
-                    this._actionsPosition === 'top-right' ||
-                    this._actionsPosition === 'top-left',
-                'avonni-carousel__button-icon-bottom':
-                    this._actionsPosition === 'bottom-right' ||
-                    this._actionsPosition === 'bottom-left' ||
-                    this._actionsPosition === 'bottom-center'
+                'slds-p-around_xx-small slds-grid': this.isStretchVariant
+            })
+            .toString();
+    }
+
+    /**
+     * Action button class styling based on attributes.
+     *
+     * @type {string}
+     */
+    get computedButtonActionClass() {
+        return classSet('')
+            .add({
+                'avonni-carousel-item__float':
+                    this._actionsVariant === 'border' ||
+                    this._actionsVariant === 'bare',
+                'slds-p-around_xx-small': this.isStretchVariant
             })
             .toString();
     }
@@ -213,7 +219,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedButtonMenuActionClass() {
-        return this.isMenuVariant === false ? 'slds-hide_small' : '';
+        return !this.isMenuVariant ? 'slds-hide_small' : '';
     }
 
     /**
@@ -292,12 +298,20 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return this._actionsVariant === 'menu';
     }
 
+    /**
+     * Returns true if the action variant is stretch.
+     *
+     * @type {boolean}
+     */
+    get isStretchVariant() {
+        return this._actionsVariant === 'stretch';
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
     actionDispatcher(actionName) {
         const {
             title,
@@ -334,6 +348,28 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Action click event handler.
+     *
+     * @param {Event}
+     */
+    handleActionClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    /**
+     * Prevent the default event browser behavior and stop the event propagation.
+     *
+     * @param {Event}
+     */
+    handleButtonMenuClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
     }
 
     /**
@@ -377,18 +413,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Action click event handler.
-     *
-     * @param {Event}
-     */
-    handleActionClick(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        const actionName = event.currentTarget.name;
-        this.actionDispatcher(actionName);
-    }
-
-    /**
      * Menu select event handler
      *
      * @param {Event}
@@ -402,16 +426,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * Carousel height initialization.
      */
     initializeCarouselHeight() {
+        const isStretch = this.isStretchVariant ? 8.5 : 7.5;
         this._carouselContentHeight =
-            this.actions.length > 0 && this.isBottomPosition ? 7.5 : 6.625;
-    }
-
-    /**
-     * Prevent the default event browser behavior
-     *
-     * @param {Event}
-     */
-    preventDefault(event) {
-        event.preventDefault();
+            this.actions.length > 0 && this.isBottomPosition
+                ? isStretch
+                : 6.625;
     }
 }

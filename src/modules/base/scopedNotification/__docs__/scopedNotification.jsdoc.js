@@ -73,7 +73,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-scoped-notification-error-color-background
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**
@@ -127,7 +127,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-scoped-notification-warning-color-background
- * @default #fe9339
+ * @default #dd7a01
  * @type color
  */
 /**

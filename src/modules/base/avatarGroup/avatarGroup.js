@@ -1,38 +1,19 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
-import { keyCodes, normalizeString, normalizeArray } from 'c/utilsPrivate';
+import {
+    animationFrame,
+    keyCodes,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString,
+    timeout
+} from 'c/utilsPrivate';
+import {
+    Direction,
+    startPositioning,
+    stopPositioning
+} from 'c/positionLibrary';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const AVATAR_GROUP_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
@@ -66,8 +47,7 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL = 'Show less';
-const LOADING_THRESHOLD = 60;
-const MAX_LOADED_ITEMS = 30;
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 
 /**
  * @class
@@ -127,8 +107,13 @@ export default class AvatarGroup extends LightningElement {
      */
     @api name;
 
+    _enableInfiniteLoading = false;
+    _isLoading = false;
     _items = [];
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _maxCount;
+    _maxVisibleCount;
+    _resizeObserver;
     _size = AVATAR_GROUP_SIZES.default;
     _layout = AVATAR_GROUP_LAYOUTS.default;
     _listButtonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
@@ -138,10 +123,15 @@ export default class AvatarGroup extends LightningElement {
     _imageWidth;
 
     showHiddenItems = false;
+    _autoPosition;
+    _connected = false;
+    _focusAnimationFrame;
     _focusedIndex = 0;
     _hiddenItemsStartIndex = 0;
+    _lastHiddenItemIndex;
     _popoverFocusoutAnimationFrame;
     _popoverIsFocused = false;
+    _positioning = false;
     _preventPopoverClosing = false;
 
     connectedCallback() {
@@ -149,9 +139,23 @@ export default class AvatarGroup extends LightningElement {
             'actionclick',
             this.handleAvatarActionClick
         );
+        this._connected = true;
     }
 
     renderedCallback() {
+        if (this._resizeObserver && this._layout === 'list') {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        } else if (!this._resizeObserver && this._layout !== 'list') {
+            this._resizeObserver = this.initResizeObserver();
+        }
+
+        if (this.isNotList) {
+            this.updateVisibleMaxCount();
+        } else {
+            this.handleListScroll();
+        }
+
         const avatars = this.template.querySelectorAll(
             '[data-group-name="avatar"]'
         );
@@ -161,11 +165,73 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, you can load a subset of items and then display more when users scroll to the end of the list. Use with the `loadmore` event to retrieve more items.
+     * If present, `max-count` is ignored.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (this._connected && this.isNotList) {
+            this.updateVisibleMaxCount();
+        } else if (this._connected) {
+            this.handleListScroll();
+        }
+    }
+
+    /**
+     * If present, a spinner is shown to indicate that more items are loading.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+        this.keepFocusOnHiddenItems();
+    }
+
+    /**
+     * Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the avatar group.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        const number = parseInt(value, 10);
+        this._loadMoreOffset = isNaN(number)
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : number;
+    }
 
     /**
      * An array of items to be rendered as avatar in a group.
@@ -178,7 +244,19 @@ export default class AvatarGroup extends LightningElement {
     }
 
     set items(value) {
+        this.keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
+
+        if (
+            this.showHiddenItems &&
+            this.hiddenItems.length &&
+            !this._lastHiddenItemIndex
+        ) {
+            // The hidden items popover was open but empty.
+            // Set the focus on the first hidden item added.
+            this._lastHiddenItemIndex = this.hiddenItems[0].index;
+            this.switchFocus(this._lastHiddenItemIndex);
+        }
     }
 
     /**
@@ -258,6 +336,8 @@ export default class AvatarGroup extends LightningElement {
 
     /**
      * The maximum number of avatars allowed in the visible list.
+     * This attribute is ignored if `enable-infinite-loading` is present.
+     *
      * @type {number}
      * @name max-count
      * @default 5 for stack, 11 for grid and list
@@ -269,7 +349,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     set maxCount(value) {
-        this._maxCount = parseInt(value, 10);
+        this._maxCount = value === Infinity ? value : parseInt(value, 10);
     }
 
     /**
@@ -313,6 +393,15 @@ export default class AvatarGroup extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Action Button HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get actionButtonElement() {
+        return this.template.querySelector('[data-element-id="action-button"]');
+    }
 
     /**
      * Class of the action button
@@ -370,7 +459,7 @@ export default class AvatarGroup extends LightningElement {
         return classSet(`avonni-action-button-${this.size}`)
             .add({
                 'avonni-avatar-group__action-button-base-layout':
-                    this.layout !== 'list',
+                    this.isNotList,
                 'avonni-avatar-group__action-button-list slds-show slds-p-vertical_x-small slds-p-horizontal_small':
                     this.layout === 'list',
                 'avonni-avatar-group__avatar-button-in-line':
@@ -385,7 +474,9 @@ export default class AvatarGroup extends LightningElement {
      */
     get avatarFlexWrapperClass() {
         return classSet({
-            'avonni-avatar-group__avatar-wrapper': this.layout !== 'list'
+            'slds-grid': this.isNotList,
+            'slds-scrollable_y avonni-avatar-group__avatar-list_infinite-loading':
+                this.enableInfiniteLoading && this.layout === 'list'
         }).toString();
     }
 
@@ -425,11 +516,22 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Avatar Item HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get avatarItemElement() {
+        return this.template.querySelector('[data-element-id="li-visible"]');
+    }
+
+    /**
      * Class of the avatar wrapper, when there are more than two avatars
      * @type {string}
      */
     get avatarWrapperClass() {
-        return classSet('avonni-avatar-group__avatar-container')
+        return classSet(
+            'avonni-avatar-group__avatar-container slds-is-relative'
+        )
             .add({
                 'slds-show avonni-avatar-group__avatar-container_list slds-p-horizontal_small slds-p-vertical_x-small':
                     this.layout === 'list',
@@ -448,8 +550,18 @@ export default class AvatarGroup extends LightningElement {
      * @type {number}
      */
     get computedMaxCount() {
-        if (this.maxCount) {
+        if (this.enableInfiniteLoading && this.layout === 'list') {
+            return Infinity;
+        } else if (this.enableInfiniteLoading) {
+            return this._maxVisibleCount;
+        } else if (this.maxCount >= 0 && this._maxVisibleCount >= 0) {
+            return Math.min(this.maxCount, this._maxVisibleCount);
+        } else if (this.maxCount >= 0) {
             return this.maxCount;
+        } else if (this._maxVisibleCount >= 0) {
+            return this.layout === 'stack'
+                ? Math.min(this._maxVisibleCount, 5)
+                : Math.min(this._maxVisibleCount, 11);
         }
         return this.layout === 'stack' ? 5 : 11;
     }
@@ -493,6 +605,24 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Class of the hidden avatars when displayed in a line
+     * @type {string}
+     */
+    get hiddenAvatarInlineClass() {
+        return this.layout === 'list' ? this.avatarInlineClass : '';
+    }
+
+    /**
+     * Class of the hidden avatar wrapper, when there are more avatar than the max count
+     * @type {string}
+     */
+    get hiddenAvatarWrapperClass() {
+        return this.layout === 'list'
+            ? this.avatarWrapperClass
+            : 'avonni-avatar-group__hidden-avatar-container slds-p-vertical_x-small slds-p-horizontal_small';
+    }
+
+    /**
      * Array of hidden items.
      *
      * @type {object[]}
@@ -504,14 +634,10 @@ export default class AvatarGroup extends LightningElement {
             return this.items.slice(this.computedMaxCount);
         }
 
-        let endIndex = this._hiddenItemsStartIndex + MAX_LOADED_ITEMS;
-        const lastIndex = this.items.length;
-        if (endIndex + 10 >= lastIndex) {
-            // If only 10 items are left, load them all
-            endIndex = lastIndex;
-        }
-
-        const items = this.items.slice(this._hiddenItemsStartIndex, endIndex);
+        const items = this.items.slice(
+            this._hiddenItemsStartIndex,
+            this.items.length
+        );
 
         return items.map((it, index) => {
             return {
@@ -527,8 +653,7 @@ export default class AvatarGroup extends LightningElement {
      */
     get hiddenListClass() {
         return classSet({
-            'slds-dropdown slds-dropdown_left slds-p-around_none':
-                this.layout !== 'list'
+            'slds-dropdown slds-p-around_none': this.isNotList
         }).toString();
     }
 
@@ -549,7 +674,38 @@ export default class AvatarGroup extends LightningElement {
      * @type {boolean}
      */
     get isNotList() {
-        return !(this.layout === 'list');
+        return this.layout !== 'list';
+    }
+
+    get loadingSpinnerClass() {
+        return classSet('slds-is-relative')
+            .add({
+                'slds-avatar-group_x-small': this.size === 'x-small',
+                'slds-avatar-group_small': this.size === 'small',
+                'slds-avatar-group_medium': this.size === 'medium',
+                'slds-avatar-group_large': this.size === 'large',
+                'avonni-avatar-group__loading-spinner_x-large':
+                    this.size === 'x-large',
+                'avonni-avatar-group__loading-spinner_xx-large':
+                    this.size === 'xx-large'
+            })
+            .toString();
+    }
+
+    get loadingSpinnerSize() {
+        switch (this.size) {
+            case 'small':
+                return 'x-small';
+            case 'medium':
+                return 'small';
+            case 'large':
+            case 'x-large':
+                return 'medium';
+            case 'xx-large':
+                return 'large';
+            default:
+                return this.size;
+        }
     }
 
     /**
@@ -572,6 +728,14 @@ export default class AvatarGroup extends LightningElement {
             return this.items[1];
         }
         return {};
+    }
+
+    get showLoadingSpinner() {
+        return (
+            this.isLoading &&
+            !this.showMoreButton &&
+            (this.isNotList || !this.showMoreButton)
+        );
     }
 
     /**
@@ -597,7 +761,32 @@ export default class AvatarGroup extends LightningElement {
      * @type {boolean}
      */
     get showMoreButton() {
-        return this.computedMaxCount < this.items.length;
+        return (
+            this.computedMaxCount < this.items.length ||
+            (this.enableInfiniteLoading &&
+                (this.computedMaxCount === this.items.length ||
+                    (this.layout === 'list' && this.isLoading)))
+        );
+    }
+
+    get showMoreButtonWrapperClass() {
+        return classSet('slds-is-relative slds-show_inline-block')
+            .add({
+                'slds-m-left_small':
+                    this.layout === 'list' && this.enableInfiniteLoading
+            })
+            .toString();
+    }
+
+    /**
+     * Show more button HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get showMoreButtonElement() {
+        return this.template.querySelector(
+            '[data-element-id="show-more-button"]'
+        );
     }
 
     /**
@@ -606,6 +795,9 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get showMoreInitials() {
+        if (this.enableInfiniteLoading) {
+            return '···';
+        }
         const length = this.items.length - this.computedMaxCount;
         return `+${length}`;
     }
@@ -617,7 +809,7 @@ export default class AvatarGroup extends LightningElement {
     get showMoreSectionClass() {
         return classSet({
             'slds-grid slds-grid_vertical-reverse': this.layout === 'list',
-            'slds-show_inline slds-is-relative': this.layout !== 'list'
+            'slds-show_inline slds-is-relative': this.isNotList
         }).toString();
     }
 
@@ -629,6 +821,15 @@ export default class AvatarGroup extends LightningElement {
         return this.items.length > this.computedMaxCount
             ? this.items.slice(0, this.computedMaxCount)
             : this.items;
+    }
+
+    /**
+     * Wrapper HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get wrapperElement() {
+        return this.template.querySelector('[data-element-id="ul"]');
     }
 
     /*
@@ -675,13 +876,50 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.wrapperElement) {
+            return null;
+        }
+        return new AvonniResizeObserver(
+            this.wrapperElement,
+            this.updateVisibleMaxCount.bind(this)
+        );
+    }
+
+    /**
+     * Set the focus on the last hidden item, to keep the popover open.
+     */
+    keepFocusOnHiddenItems() {
+        if (!this.showHiddenItems) {
+            this._lastHiddenItemIndex = undefined;
+            return;
+        }
+        const lastHiddenItem = this.hiddenItems[this.hiddenItems.length - 1];
+        this._lastHiddenItemIndex = lastHiddenItem
+            ? lastHiddenItem.index
+            : undefined;
+        this.switchFocus(this._lastHiddenItemIndex);
+
+        // Wait for rerender to set the focus
+        cancelAnimationFrame(this._focusAnimationFrame);
+        this._focusAnimationFrame = requestAnimationFrame(() => {
+            this.focusItem();
+            this._lastHiddenItemIndex = undefined;
+        });
+    }
+
+    /**
      * Normalize the focused index.
      *
      * @param {number} index Index to normalize.
      */
     normalizeFocusedIndex(index) {
         let position = 'INDEX';
-        const popoverOpen = this.showHiddenItems && this.layout !== 'list';
+        const popoverOpen = this.showHiddenItems && this.isNotList;
 
         if (popoverOpen && index < this.computedMaxCount) {
             position = 'FIRST_HIDDEN_ITEM';
@@ -739,7 +977,160 @@ export default class AvatarGroup extends LightningElement {
         const item = this.template.querySelector(
             `[data-element-id^="li"][data-index="${normalizedIndex}"]`
         );
-        item.tabIndex = '0';
+        if (item) {
+            item.tabIndex = '0';
+        }
+    }
+
+    startPositioning() {
+        this._positioning = true;
+        return animationFrame()
+            .then(() => {
+                this.stopPositioning();
+                this._autoPosition = startPositioning(
+                    this,
+                    {
+                        target: () =>
+                            this.template.querySelector(
+                                '[data-element-id="div-show-more-button-wrapper"]'
+                            ),
+                        element: () =>
+                            this.template.querySelector(
+                                '[data-element-id="div-hidden-items-popover"]'
+                            ),
+                        align: {
+                            horizontal: Direction.Left,
+                            vertical: Direction.Top
+                        },
+                        targetAlign: {
+                            horizontal: Direction.Left,
+                            vertical: Direction.Bottom
+                        },
+                        autoFlip: true
+                    },
+                    true
+                );
+                // Edge case: W-7460656
+                if (this._autoPosition) {
+                    return this._autoPosition.reposition();
+                }
+                return Promise.reject();
+            })
+            .then(() => {
+                return timeout(0);
+            })
+            .then(() => {
+                // Use a flag to prevent this async function from executing multiple times in a single lifecycle
+                this._positioning = false;
+            });
+    }
+
+    stopPositioning() {
+        if (this._autoPosition) {
+            stopPositioning(this._autoPosition);
+            this._autoPosition = null;
+        }
+        this._positioning = false;
+    }
+
+    /**
+     * Toggle the visibility of the hidden items popover.
+     */
+    toggleItemsVisibility() {
+        this.showHiddenItems = !this.showHiddenItems;
+
+        if (this.showHiddenItems) {
+            if (this.isNotList) {
+                this.startPositioning();
+            }
+
+            this._hiddenItemsStartIndex = this.computedMaxCount;
+            this._focusedIndex = this.computedMaxCount;
+
+            if (!this.hiddenItems.length && this.enableInfiniteLoading) {
+                // If the popover is open but there are no hidden items,
+                // dispatch the loadmore event
+                this.dispatchLoadMore();
+            }
+        } else {
+            this.stopPositioning();
+            this._focusedIndex = this.computedMaxCount - 1;
+        }
+
+        requestAnimationFrame(() => {
+            if (this.showHiddenItems) {
+                this.focusItem();
+
+                if (this.enableInfiniteLoading) {
+                    // If the popover is open and there are hidden items but no scroll bar,
+                    // dispatch the loadmore event.
+                    const popover = this.template.querySelector(
+                        '[data-element-id="div-hidden-items-popover"]'
+                    );
+                    const noScrollBar =
+                        popover &&
+                        popover.scrollHeight === popover.clientHeight;
+                    if (noScrollBar) {
+                        this.dispatchLoadMore();
+                    }
+                }
+            } else {
+                // On popver close, set the focus back on the toggle button
+                const showMoreButton = this.template.querySelector(
+                    '[data-show-more-button]'
+                );
+                if (showMoreButton) {
+                    showMoreButton.focus();
+                }
+            }
+        });
+    }
+
+    /**
+     * Update the number of visible and collapsed items, depending on the available space.
+     */
+    updateVisibleMaxCount() {
+        if (
+            !this.wrapperElement ||
+            (!this.avatarItemElement && !this.showMoreButtonElement) ||
+            this.items.length <= 1
+        ) {
+            if (this.enableInfiniteLoading && !this.isLoading) {
+                // If there is no items, dispatch the loadmore event
+                this.dispatchLoadMore();
+            }
+            return;
+        }
+
+        const totalWidth = this.wrapperElement.offsetWidth;
+        const availableWidth = this.actionButtonElement
+            ? totalWidth - this.actionButtonElement.offsetWidth
+            : totalWidth;
+
+        const referenceElement =
+            this.avatarItemElement || this.showMoreButtonElement;
+
+        const referenceElementStyles =
+            window.getComputedStyle(referenceElement);
+        const referenceElementWidth =
+            parseFloat(referenceElementStyles.width) +
+            parseFloat(referenceElementStyles.marginLeft) +
+            parseFloat(referenceElementStyles.marginRight);
+
+        this._maxVisibleCount = Math.max(
+            0,
+            Math.floor(availableWidth / referenceElementWidth)
+        );
+
+        if (
+            this.enableInfiniteLoading &&
+            !this.isLoading &&
+            this._maxVisibleCount > this.items.length
+        ) {
+            // If there is room for more items,
+            // dispatch the loadmore event
+            this.dispatchLoadMore();
+        }
     }
 
     /*
@@ -834,7 +1225,7 @@ export default class AvatarGroup extends LightningElement {
             })
         );
 
-        if (this.layout !== 'list' && this.showHiddenItems) {
+        if (this.isNotList && this.showHiddenItems) {
             this.handleToggleShowHiddenItems();
         } else if (!this.isClassic) {
             this.switchFocus(index);
@@ -879,49 +1270,18 @@ export default class AvatarGroup extends LightningElement {
      * @param {Event} event `scroll` event.
      */
     handleHiddenItemsScroll(event) {
-        const popover = event.currentTarget;
-        const popoverTop = popover.getBoundingClientRect().top;
-        const height = popover.scrollHeight;
-        const scrolledDistance = popover.scrollTop;
-        const bottomLimit = height - popover.clientHeight - LOADING_THRESHOLD;
-        const loadDown = scrolledDistance >= bottomLimit;
-        const loadUp = scrolledDistance <= LOADING_THRESHOLD;
-
-        let newIndex;
-        if (loadUp) {
-            const previousIndex = this._hiddenItemsStartIndex - 10;
-            newIndex = Math.max(previousIndex, this.computedMaxCount);
-        } else if (loadDown) {
-            const nextIndex = this._hiddenItemsStartIndex + 10;
-            const maxIndex = this.items.length - MAX_LOADED_ITEMS - 10;
-            const minIndex = this.computedMaxCount;
-            newIndex =
-                maxIndex < minIndex ? minIndex : Math.min(nextIndex, maxIndex);
+        if (this.isLoading) {
+            return;
         }
 
-        if (!isNaN(newIndex) && this._hiddenItemsStartIndex !== newIndex) {
-            const topItem = this.getHiddenItemFromPosition(popoverTop);
-            this._hiddenItemsStartIndex = newIndex;
-            this._preventPopoverClosing = true;
+        const popover = event.currentTarget;
+        const height = popover.scrollHeight;
+        const scrolledDistance = popover.scrollTop;
+        const bottomLimit = height - popover.clientHeight - this.loadMoreOffset;
+        const loadDown = scrolledDistance >= bottomLimit;
 
-            requestAnimationFrame(() => {
-                // Move the scroll bar back to the previous top item
-                const previousTopItem = this.template.querySelector(
-                    `[data-element-id="li-hidden"][data-index="${topItem.index}"]`
-                );
-                const lastHiddenItem =
-                    this.hiddenItems[this.hiddenItems.length - 1];
-                const focusIsTooHigh = this._focusedIndex < topItem.index;
-                const focusIsTooLow = this._focusedIndex > lastHiddenItem.index;
-
-                if (focusIsTooHigh || focusIsTooLow) {
-                    // If the scroll was triggered using the mouse,
-                    // keep an item focused
-                    this.switchFocus(topItem.index);
-                }
-                this.focusItem();
-                popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
-            });
+        if (loadDown) {
+            this.dispatchLoadMore();
         }
     }
 
@@ -976,6 +1336,26 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    handleListScroll() {
+        const wrapper = this.template.querySelector('[data-element-id="ul"]');
+        if (
+            !this.enableInfiniteLoading ||
+            this.isNotList ||
+            this.isLoading ||
+            !wrapper
+        ) {
+            return;
+        }
+
+        const { scrollTop, scrollHeight, clientHeight } = wrapper;
+        const offsetFromBottom = scrollHeight - scrollTop - clientHeight;
+        const noScrollBar = scrollTop === 0 && scrollHeight === clientHeight;
+
+        if (offsetFromBottom <= this.loadMoreOffset || noScrollBar) {
+            this.dispatchLoadMore();
+        }
+    }
+
     /**
      * Handle a keydown event on the show more button.
      *
@@ -992,27 +1372,28 @@ export default class AvatarGroup extends LightningElement {
      * Toggle the hidden extra avatars popover
      */
     handleToggleShowHiddenItems() {
-        this.showHiddenItems = !this.showHiddenItems;
-
-        if (this.showHiddenItems) {
-            this._hiddenItemsStartIndex = this.computedMaxCount;
-            this._focusedIndex = this.computedMaxCount;
-        } else {
-            this._focusedIndex = this.computedMaxCount - 1;
-        }
-
-        requestAnimationFrame(() => {
-            if (this.showHiddenItems) {
-                this.focusItem();
-            } else {
-                const showMoreButton = this.template.querySelector(
-                    '[data-show-more-button]'
-                );
-                if (showMoreButton) {
-                    showMoreButton.focus();
-                }
-            }
+        /**
+         * The event fired when you click on the show more/less button that appears at the end of the list `layout`, if a `max-count` value is present and `enable-infinite-loading` is not present.
+         *
+         * @event
+         * @name itemsvisibilitytoggle
+         * @param {boolean} show True if avatars are currently hidden and the click was meant to show more of them. False if the click was meant to hide the visible avatars.
+         * @param {number} visibleItemsLength Length of the currently visible items.
+         * @public
+         * @cancelable
+         */
+        const event = new CustomEvent('itemsvisibilitytoggle', {
+            detail: {
+                show: !this.showHiddenItems,
+                visibleItemsLength: this.items.length - this.hiddenItems.length
+            },
+            cancelable: true
         });
+        this.dispatchEvent(event);
+
+        if (!event.defaultPrevented) {
+            this.toggleItemsVisibility();
+        }
     }
 
     /**
@@ -1022,5 +1403,19 @@ export default class AvatarGroup extends LightningElement {
      */
     stopPropagation(event) {
         event.stopPropagation();
+    }
+
+    /**
+     * Dispatch the `loadmore` event
+     */
+    dispatchLoadMore() {
+        /**
+         * The event fired when you scroll to the end of the avatar group. This event is fired only if `enable-infinite-loading` is true.
+         *
+         * @event
+         * @name loadmore
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('loadmore'));
     }
 }

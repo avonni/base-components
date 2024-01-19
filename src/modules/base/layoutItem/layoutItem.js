@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { classListMutation, normalizeString } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
@@ -43,8 +11,7 @@ const CONTAINER_WIDTHS = {
     default: 'default',
     valid: ['default', 'small', 'medium', 'large']
 };
-const DEFAULT_GROW = 0;
-const DEFAULT_SHRINK = 1;
+
 const DEFAULT_SIZE = 'auto';
 
 /**
@@ -56,21 +23,19 @@ const DEFAULT_SIZE = 'auto';
  */
 export default class LayoutItem extends LightningElement {
     _alignmentBump = ALIGNMENT_BUMPS.default;
-    _grow = DEFAULT_GROW;
     _largeContainerOrder;
     _largeContainerSize;
     _mediumContainerOrder;
     _mediumContainerSize;
     _order;
-    _shrink = DEFAULT_SHRINK;
     _size;
     _smallContainerOrder;
     _smallContainerSize;
 
     _connected = false;
+    _containerWidth = CONTAINER_WIDTHS.default;
     _orders = { default: 0 };
     _sizes = { default: DEFAULT_SIZE };
-    containerWidth;
     name = generateUUID();
 
     connectedCallback() {
@@ -97,6 +62,10 @@ export default class LayoutItem extends LightningElement {
                 bubbles: true
             })
         );
+    }
+
+    renderedCallback() {
+        this.updateClassAndStyle();
     }
 
     disconnectedCallback() {
@@ -146,27 +115,6 @@ export default class LayoutItem extends LightningElement {
     }
 
     /**
-     * Positive number representing the ability for the item to grow if necessary. When set to 0, the item will not grow.
-     * The number indicates the proportion of the empty space that the item will take. For example, if one item has a `grow` value of 2, it will take twice as much of the available space than the items that have a `grow` value of 1. If all the items have the same `grow` value, the available empty space will be equally divided between them.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get grow() {
-        return this._grow;
-    }
-    set grow(value) {
-        const number = parseInt(value, 10);
-        this._grow = number >= 0 ? number : DEFAULT_GROW;
-
-        if (this._connected) {
-            this.updateClassAndStyle();
-        }
-    }
-
-    /**
      * Order of the item when the parent layout’s size is greater or equal to 1024px.
      *
      * @type {number}
@@ -183,7 +131,7 @@ export default class LayoutItem extends LightningElement {
             : normalizedNumber;
         this._orders.large = this.largeContainerOrder;
 
-        if (this.containerWidth === 'large') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -202,7 +150,7 @@ export default class LayoutItem extends LightningElement {
         this._largeContainerSize = this.normalizeSize(value);
         this._sizes.large = this.largeContainerSize;
 
-        if (this.containerWidth === 'large') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -224,7 +172,7 @@ export default class LayoutItem extends LightningElement {
             : normalizedNumber;
         this._orders.medium = this.mediumContainerOrder;
 
-        if (this.containerWidth === 'medium') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -243,7 +191,7 @@ export default class LayoutItem extends LightningElement {
         this._mediumContainerSize = this.normalizeSize(value);
         this._sizes.medium = this.mediumContainerSize;
 
-        if (this.containerWidth === 'medium') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -264,27 +212,6 @@ export default class LayoutItem extends LightningElement {
         const normalizedNumber = parseInt(value, 10);
         this._order = isNaN(normalizedNumber) ? 0 : normalizedNumber;
         this._orders.default = this.order;
-
-        if (this.containerWidth === 'default') {
-            this.updateClassAndStyle();
-        }
-    }
-
-    /**
-     * Positive number representing the ability for the item to shrink if necessary. When set to 0, the item will not shrink.
-     * The number indicates the proportion to which the item will shrink if needed. For example, if one item has a `shrink` value of 2, it will shrink twice as much than the items that have a `shrink` value of 1. If all the items have the same `shrink` value, they will all shrink the same.
-     *
-     * @type {number}
-     * @default 1
-     * @public
-     */
-    @api
-    get shrink() {
-        return this._shrink;
-    }
-    set shrink(value) {
-        const number = parseInt(value, 10);
-        this._shrink = number >= 0 ? number : DEFAULT_SHRINK;
 
         if (this._connected) {
             this.updateClassAndStyle();
@@ -310,7 +237,7 @@ export default class LayoutItem extends LightningElement {
         this._size = size || size === 0 ? size : DEFAULT_SIZE;
         this._sizes.default = this.size;
 
-        if (this.containerWidth === 'default') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -332,7 +259,7 @@ export default class LayoutItem extends LightningElement {
             : normalizedNumber;
         this._orders.small = this.smallContainerOrder;
 
-        if (this.containerWidth === 'small') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -351,7 +278,7 @@ export default class LayoutItem extends LightningElement {
         this._smallContainerSize = this.normalizeSize(value);
         this._sizes.small = this.smallContainerSize;
 
-        if (this.containerWidth === 'small') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -371,7 +298,7 @@ export default class LayoutItem extends LightningElement {
     getCurrentValue(map) {
         const { large, medium, small, default: defaultSize } = map;
 
-        switch (this.containerWidth) {
+        switch (this._containerWidth) {
             case 'large':
                 return large || medium || small || defaultSize;
             case 'medium':
@@ -409,7 +336,7 @@ export default class LayoutItem extends LightningElement {
      * @public
      */
     setContainerSize(width) {
-        this.containerWidth = normalizeString(width, {
+        this._containerWidth = normalizeString(width, {
             fallbackValue: CONTAINER_WIDTHS.default,
             validValues: CONTAINER_WIDTHS.valid
         });
@@ -430,7 +357,5 @@ export default class LayoutItem extends LightningElement {
 
         this.template.host.style.flexBasis = this.getCurrentValue(this._sizes);
         this.template.host.style.order = this.getCurrentValue(this._orders);
-        this.template.host.style.flexGrow = this.grow;
-        this.template.host.style.flexShrink = this.shrink;
     }
 }

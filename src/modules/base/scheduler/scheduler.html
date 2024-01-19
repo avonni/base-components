@@ -1,37 +1,3 @@
-<!--
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
--->
-
 <template>
     <!-- Toolbar -->
     <div
@@ -112,16 +78,17 @@
                 if:true={showToolbarCalendar}
                 class="slds-dropdown slds-dropdown_center"
             >
-                <lightning-focus-trap>
+                <c-focus-trap>
                     <c-calendar
                         disabled-dates={toolbarCalendarDisabledDates}
                         timezone={timezone}
                         value={selectedDate}
                         data-element-id="calendar-toolbar"
+                        data-is-focusable
                         onchange={handleToolbarCalendarChange}
                         onnavigate={handleToolbarCalendarNavigate}
                     ></c-calendar>
-                </lightning-focus-trap>
+                </c-focus-trap>
             </div>
         </div>
 
@@ -227,7 +194,11 @@
         ></c-filter-menu>
     </div>
 
-    <div if:false={isLoading} onscheduleclick={handleScheduleClick}>
+    <div
+        if:false={isLoading}
+        class="avonni-scheduler__wrapper"
+        onscheduleclick={handleScheduleClick}
+    >
         <c-primitive-scheduler-timeline
             if:true={showTimeline}
             class="avonni-scheduler__schedule slds-show"
@@ -241,6 +212,7 @@
             events={computedEvents}
             events-labels={eventsLabels}
             events-theme={eventsTheme}
+            hidden-actions={hiddenActions}
             loading-state-alternative-text={loadingStateAlternativeText}
             new-event-title={dialogLabels.newEventTitle}
             read-only={readOnly}
@@ -290,6 +262,7 @@
             events={computedEvents}
             events-labels={eventsLabels}
             events-theme={eventsTheme}
+            hidden-actions={hiddenActions}
             hide-resources-filter={hideResourcesFilter}
             hide-side-panel={hideSidePanel}
             loading-state-alternative-text={loadingStateAlternativeText}
@@ -328,6 +301,7 @@
             date-format={dateFormat}
             events={computedEvents}
             events-labels={eventsLabels}
+            hidden-actions={hiddenActions}
             hide-resources-filter={hideResourcesFilter}
             hide-side-panel={hideSidePanel}
             read-only={readOnly}
@@ -374,7 +348,7 @@
         onmouseenter={handleDetailPopoverMouseEnter}
         onmouseleave={handleDetailPopoverMouseLeave}
     >
-        <lightning-focus-trap>
+        <c-focus-trap>
             <lightning-button-icon
                 class="
                     slds-is-absolute
@@ -385,6 +359,7 @@
                 size="small"
                 variant="bare"
                 data-element-id="lightning-button-icon-detail-popover-close-button"
+                data-is-focusable
                 onclick={hideDetailPopover}
             ></lightning-button-icon>
 
@@ -395,6 +370,7 @@
                 <div class="slds-grid slds-wrap slds-gutters_x-small">
                     <template for:each={detailPopoverFields} for:item="field">
                         <div
+                            if:false={field.isHidden}
                             key={field.key}
                             class="
                                 slds-col
@@ -426,6 +402,7 @@
                             label={action.label}
                             icon-name={action.iconName}
                             name={action.name}
+                            data-is-focusable
                             onclick={handleActionSelect}
                         ></lightning-button>
                     </template>
@@ -434,6 +411,7 @@
                         alternative-text="More actions"
                         menu-alignment="right"
                         variant="border-filled"
+                        data-is-focusable
                         onselect={handleActionSelect}
                     >
                         <template for:each={lastEventActions} for:item="action">
@@ -447,7 +425,7 @@
                     </lightning-button-menu>
                 </lightning-button-group>
             </div>
-        </lightning-focus-trap>
+        </c-focus-trap>
     </div>
 
     <!-- Event context menu -->

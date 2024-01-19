@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { DateTime, Interval } from 'c/luxon';
 
 /**
@@ -89,6 +57,72 @@ const getWeekday = (date) => {
 
     const weekday = normalizedDate.weekday;
     return weekday === 7 ? 0 : weekday;
+};
+
+const intervalFrom = (start, end) => {
+    const normalizedStart = DateTime.isDateTime(start)
+        ? start
+        : dateTimeObjectFrom(start);
+    const normalizedEnd = DateTime.isDateTime(end)
+        ? end
+        : dateTimeObjectFrom(end);
+    if (!normalizedStart || !normalizedEnd) {
+        return null;
+    }
+    return Interval.fromDateTimes(start, end);
+};
+
+/**
+ * Check if the given time frame is valid, and parse it into a start and an end date.
+ *
+ * @param {string} timeFrame Time frame to validate and parse.
+ * @returns {object} Object with three possible keys: valid, start and end.
+ */
+const parseTimeFrame = (timeFrame, options) => {
+    const startMatch = timeFrame.match(/^([0-9:]+(\.\d+)?)-/);
+    const endMatch = timeFrame.match(/-([0-9:]+(\.\d+)?)$/);
+
+    if (!startMatch || !endMatch) {
+        console.error(
+            `Wrong time frame format for ${timeFrame}. The time frame needs to follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.`
+        );
+        return { valid: false };
+    }
+    const start = DateTime.fromISO(startMatch[1], options);
+    const end = DateTime.fromISO(endMatch[1], options);
+
+    if (end < start) {
+        console.error(
+            `Wrong time frame format for ${timeFrame}. The end time is smaller than the start time.`
+        );
+        return { valid: false };
+    }
+
+    return { start, end, valid: true };
+};
+
+/**
+ * Check if a time is included in a time frame.
+ *
+ * @param {DateTime} date DateTime object.
+ * @param {string} timeFrame The time frame of reference, in the format '00:00-00:00'.
+ * @returns {boolean} true or false.
+ */
+const isInTimeFrame = (date, timeFrame) => {
+    const { start, end, valid } = parseTimeFrame(timeFrame, {
+        zone: date.zoneName
+    });
+    if (!valid) {
+        return true;
+    }
+
+    const time = date.set({
+        year: start.year,
+        month: start.month,
+        day: start.day
+    });
+
+    return time < end && time >= start;
 };
 
 /**
@@ -208,6 +242,9 @@ export {
     getStartOfWeek,
     getWeekday,
     getWeekNumber,
+    intervalFrom,
+    isInTimeFrame,
     numberOfUnitsBetweenDates,
+    parseTimeFrame,
     removeFromDate
 };

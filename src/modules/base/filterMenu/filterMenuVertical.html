@@ -7,130 +7,171 @@
             onactionclick={handleSelectedItemRemove}
         ></c-pill-container>
     </div>
-    <div
+    <button
+        if:true={collapsible}
+        data-element-id="lightning-icon-toggle"
         class="
-            slds-form-element__legend
-            slds-float_none
-            slds-truncate slds-is-relative
+            slds-button
+            slds-section__title-action
+            avonni-filter-menu__title-button_base
         "
-        title={title}
+        onclick={toggleSection}
     >
+        <lightning-icon
+            icon-name={computedCollapsibleButtonIconName}
+            size="x-small"
+            class="slds-button__icon slds-button__icon_left"
+        ></lightning-icon>
         <lightning-icon
             if:true={computedShowDownIcon}
             icon-name={iconName}
             size={iconSize}
             class="slds-m-right_x-small"
         ></lightning-icon>
-        {label}
-        <lightning-helptext
-            if:true={fieldLevelHelp}
-            content={fieldLevelHelp}
-            class="slds-m-left_xx-small slds-is-absolute"
-            style="top: -0.25rem"
-            data-element-id="lightning-helptext"
-        ></lightning-helptext>
-    </div>
-    <lightning-menu-divider
-        if:false={computedTypeAttributes.allowSearch}
-    ></lightning-menu-divider>
-    <!-- Search box -->
-    <lightning-input
-        if:true={computedTypeAttributes.allowSearch}
-        class="slds-p-vertical_x-small"
-        disabled={disabled}
-        label={computedTypeAttributes.searchInputPlaceholder}
-        placeholder={computedTypeAttributes.searchInputPlaceholder}
-        variant="label-hidden"
-        type="search"
-        value={searchTerm}
-        autocomplete="off"
-        data-element-id="lightning-input"
-        onchange={handleSearch}
-    ></lightning-input>
-
-    <p if:true={showNoResultMessage} class="slds-p-around_small">
-        No matches found
-    </p>
-
-    <!-- List -->
-    <div if:true={isList} class={computedVerticalListClass}>
-        <c-input-choice-set
-            class="slds-p-bottom_xx-small"
-            accesskey={accessKey}
+        <div class="slds-form-element__legend">
+            {label}
+            <lightning-helptext
+                if:true={fieldLevelHelp}
+                content={fieldLevelHelp}
+                class="slds-m-left_xx-small slds-is-absolute"
+                style="top: -0.25rem"
+                data-element-id="lightning-helptext"
+            ></lightning-helptext>
+        </div>
+    </button>
+    <template if:false={collapsible}>
+        <div
+            class="
+                slds-form-element__legend
+                slds-float_none
+                slds-truncate slds-is-relative
+            "
+            title={title}
+        >
+            <lightning-icon
+                if:true={computedShowDownIcon}
+                icon-name={iconName}
+                size={iconSize}
+                class="slds-m-right_x-small"
+            ></lightning-icon>
+            {label}
+            <lightning-helptext
+                if:true={fieldLevelHelp}
+                content={fieldLevelHelp}
+                class="slds-m-left_xx-small slds-is-absolute"
+                style="top: -0.25rem"
+                data-element-id="lightning-helptext"
+            ></lightning-helptext>
+        </div>
+    </template>
+    <template if:true={displayFilters}>
+        <!-- Search box -->
+        <lightning-input
+            if:true={computedTypeAttributes.allowSearch}
+            class="slds-p-vertical_x-small"
             disabled={disabled}
-            is-multi-select={computedTypeAttributes.isMultiSelect}
-            label={label}
+            label={computedTypeAttributes.searchInputPlaceholder}
+            placeholder={computedTypeAttributes.searchInputPlaceholder}
             variant="label-hidden"
-            options={checkboxComputedItems}
-            value={currentValue}
-            name={name}
-            data-element-id="avonni-input-choice-set"
-            onchange={handleChoiceSetChange}
-        ></c-input-choice-set>
-        <template if:true={isLoading}>
-            <div
-                class="
-                    slds-is-relative
-                    slds-p-around_medium
-                    slds-show_inline-block
-                "
-            >
-                <lightning-spinner
-                    size="small"
-                    alternative-text={loadingStateAlternativeText}
-                    data-element-id="lightning-spinner"
-                ></lightning-spinner>
-            </div>
-        </template>
-        <lightning-button
-            if:true={showLoadMoreButton}
-            label="Load more"
-            variant="base"
-            data-element-id="lightning-button-load-more"
-            onclick={dispatchLoadMore}
-        ></lightning-button>
-    </div>
+            type="search"
+            value={searchTerm}
+            autocomplete="off"
+            data-element-id="lightning-input"
+            onchange={handleSearch}
+        ></lightning-input>
 
-    <template if:false={isLoading}>
-        <!-- Date Range -->
-        <c-input-date-range
-            if:true={isDateRange}
-            class="slds-show slds-m-bottom_small"
-            date-style={computedTypeAttributes.dateStyle}
-            end-date={dateRangeEndDate}
-            label={label}
-            label-end-date={computedTypeAttributes.labelEndDate}
-            label-end-time={computedTypeAttributes.labelEndTime}
-            label-start-date={computedTypeAttributes.labelStartDate}
-            label-start-time={computedTypeAttributes.labelStartTime}
-            start-date={dateRangeStartDate}
-            time-style={computedTypeAttributes.timeStyle}
-            timezone={computedTypeAttributes.timezone}
-            type={computedTypeAttributes.type}
-            variant="label-hidden"
-            data-element-id="avonni-input-date-range"
-            onchange={handleDateRangeChange}
-        ></c-input-date-range>
+        <p if:true={showNoResultMessage} class="slds-p-around_small">
+            No matches found
+        </p>
 
-        <!-- Range -->
-        <c-slider
-            if:true={isRange}
-            disable-swap
-            hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
-            label={label}
-            max={computedTypeAttributes.max}
-            min={computedTypeAttributes.min}
-            show-pin={computedTypeAttributes.showPin}
-            show-tick-marks={computedTypeAttributes.showTickMarks}
-            step={computedTypeAttributes.step}
-            tick-mark-style={computedTypeAttributes.tickMarkStyle}
-            unit={computedTypeAttributes.unit}
-            unit-attributes={computedTypeAttributes.unitAttributes}
-            value={rangeValue}
-            variant="label-hidden"
-            data-element-id="avonni-slider"
-            onchange={handleRangeChange}
-        ></c-slider>
+        <div
+            class={computedVerticalListClass}
+            data-element-id="div-vertical-list"
+        >
+            <!-- List -->
+            <template if:true={isList}>
+                <c-input-choice-set
+                    class="slds-p-vertical_xx-small"
+                    accesskey={accessKey}
+                    disabled={disabled}
+                    is-multi-select={computedTypeAttributes.isMultiSelect}
+                    label={label}
+                    variant="label-hidden"
+                    options={checkboxComputedItems}
+                    value={currentValue}
+                    name={name}
+                    data-element-id="avonni-input-choice-set"
+                    onchange={handleChoiceSetChange}
+                ></c-input-choice-set>
+                <lightning-button
+                    if:true={showLoadMoreButton}
+                    label="Load more"
+                    variant="base"
+                    data-element-id="lightning-button-load-more"
+                    onclick={dispatchLoadMore}
+                ></lightning-button>
+            </template>
+
+            <!-- Loading spinner -->
+            <template if:true={isLoading}>
+                <div
+                    class="
+                        slds-is-relative
+                        slds-m-around_large
+                        slds-show_inline-block
+                    "
+                >
+                    <lightning-spinner
+                        size="small"
+                        alternative-text={loadingStateAlternativeText}
+                        data-element-id="lightning-spinner"
+                    ></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={isLoading}>
+                <!-- Date Range -->
+                <c-input-date-range
+                    if:true={isDateRange}
+                    class="slds-show slds-m-vertical_small"
+                    date-style={computedTypeAttributes.dateStyle}
+                    end-date={dateRangeEndDate}
+                    label={label}
+                    label-end-date={computedTypeAttributes.labelEndDate}
+                    label-end-time={computedTypeAttributes.labelEndTime}
+                    label-start-date={computedTypeAttributes.labelStartDate}
+                    label-start-time={computedTypeAttributes.labelStartTime}
+                    start-date={dateRangeStartDate}
+                    time-style={computedTypeAttributes.timeStyle}
+                    timezone={computedTypeAttributes.timezone}
+                    type={computedTypeAttributes.type}
+                    variant="label-hidden"
+                    data-element-id="avonni-input-date-range"
+                    onchange={handleDateRangeChange}
+                ></c-input-date-range>
+
+                <!-- Range -->
+                <c-slider
+                    if:true={isRange}
+                    class="slds-m-vertical_small"
+                    disable-swap
+                    hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
+                    label={label}
+                    max={computedTypeAttributes.max}
+                    min={computedTypeAttributes.min}
+                    show-pin={computedTypeAttributes.showPin}
+                    show-tick-marks={computedTypeAttributes.showTickMarks}
+                    step={computedTypeAttributes.step}
+                    tick-mark-style={computedTypeAttributes.tickMarkStyle}
+                    unit={computedTypeAttributes.unit}
+                    unit-attributes={computedTypeAttributes.unitAttributes}
+                    value={rangeValue}
+                    variant="label-hidden"
+                    data-element-id="avonni-slider"
+                    onchange={handleRangeChange}
+                ></c-slider>
+            </template>
+        </div>
     </template>
 
     <!-- Reset and apply buttons -->

@@ -1,40 +1,10 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
     dateTimeObjectFrom,
     getStartOfWeek,
     getWeekday,
+    intervalFrom,
+    isInTimeFrame,
     normalizeBoolean,
     normalizeObject,
     normalizeString,
@@ -838,24 +808,6 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Returns an array of all the disabled date time.
-     *
-     * @type {array}
-     */
-    get _disabledFullDateTimes() {
-        let dateTimes = [];
-
-        this.disabledDateTimes.forEach((dateTime) => {
-            const date = this._processDate(dateTime);
-            if (date) {
-                dateTimes.push(date.ts);
-            }
-        });
-
-        return dateTimes;
-    }
-
-    /**
      * Returns an array of all the disabled weekdays.
      *
      * @type {array}
@@ -920,6 +872,22 @@ export default class DateTimePicker extends LightningElement {
      */
     get datePickerColumnSize() {
         return this.showInlineDatePicker ? '12' : 'auto';
+    }
+
+    /**
+     * Array of ISO dates that should be disabled.
+     *
+     * @type {string[]}
+     */
+    get disabledFullDays() {
+        const valid = [];
+        this.disabledDateTimes.forEach((date) => {
+            const dateTime = this._createDateTimeFromDateString(date);
+            if (dateTime) {
+                valid.push(dateTime.toISO());
+            }
+        });
+        return valid;
     }
 
     /**
@@ -1073,6 +1041,10 @@ export default class DateTimePicker extends LightningElement {
         this._generateTable();
         this.datePickerValue = this.firstWeekDayToString;
         this._goToDate = normalizedDate;
+
+        if (this._connected) {
+            this.dispatchNavigate();
+        }
     }
 
     /**
@@ -1121,6 +1093,27 @@ export default class DateTimePicker extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Create a luxon DateTime object from an ISO date that has no time.
+     *
+     * @param {string} date Date string to transform.
+     * @returns {DateTime|boolean} Returns a DateTime object or false if the string is not an ISO date with no time.
+     */
+    _createDateTimeFromDateString(date) {
+        const isDateWithoutTime =
+            typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/);
+        if (!isDateWithoutTime) {
+            return false;
+        }
+        const dateParts = date.split('-');
+        const year = Number(dateParts[0]);
+        const month = Number(dateParts[1]);
+        const day = Number(dateParts[2]);
+        return this._processDate(new Date())
+            .set({ year, month, day })
+            .startOf('day');
+    }
 
     /**
      * Transform the given value into a Date object, or return null.
@@ -1269,14 +1262,12 @@ export default class DateTimePicker extends LightningElement {
 
         for (let i = 0; i < daysDisplayed; i++) {
             const day = this.firstWeekDay.plus({ days: i });
-            const disabled = this.disabled || this._isDisabled(day);
 
             // Create dayTime object
             const dayTime = {
                 key: i,
                 day,
-                disabled,
-                show: !disabled || this.showDisabledDates,
+                disabled: this.disabled || this._isDisabledDay(day),
                 isToday:
                     this._today.startOf('day').ts === day.startOf('day').ts,
                 times: []
@@ -1293,7 +1284,17 @@ export default class DateTimePicker extends LightningElement {
                 dayTime.label = `${labelWeekday} ${labelDay}`;
             }
 
+            // Create the time slots
             this._createTimeSlots(dayTime);
+
+            if (!dayTime.disabled) {
+                // Update the disable state of the day,
+                // in case all of its time slots are disabled
+                dayTime.disabled = dayTime.times.every((time) => time.disabled);
+            }
+            dayTime.show = !dayTime.disabled || this.showDisabledDates;
+
+            // Add the day to the table
             processedTable.push(dayTime);
         }
 
@@ -1307,8 +1308,6 @@ export default class DateTimePicker extends LightningElement {
 
     //  /!\ Changes the dayTime object passed as argument.
     _createTimeSlots(dayTime) {
-        const disabledDates = this._disabledFullDateTimes;
-
         this._timeSlots.forEach((timeSlot) => {
             // Add time to day
             const hours = parseInt(timeSlot.slice(0, 2), 10);
@@ -1327,14 +1326,15 @@ export default class DateTimePicker extends LightningElement {
 
             if (selected) dayTime.selected = true;
 
+            const endTime = this._processDate(
+                new Date(timestamp + this.timeSlotDuration)
+            );
             const disabled =
-                dayTime.disabled || disabledDates.indexOf(timestamp) > -1;
+                dayTime.disabled || this._isDisabledTime(day, endTime);
 
             const time = {
                 startTimeISO: day.toISO(),
-                endTimeISO: this._processDate(
-                    new Date(timestamp + this.timeSlotDuration)
-                ).toISO(),
+                endTimeISO: endTime.toISO(),
                 disabled,
                 selected,
                 show: !disabled || this.showDisabledDates
@@ -1371,7 +1371,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Generates table depending on the variant.
+     * Check if the given time is selected.
      *
      * @param {object} time timestamp
      * @returns {boolean} returns false if selection === time.
@@ -1385,14 +1385,14 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Generates table depending on the variant.
+     * Check if the given day is disabled.
      *
-     * @param {object} dayObject
+     * @param {DateTime} date
      * @returns {boolean} true if disabled, false if not.
      */
-    _isDisabled(dayObject) {
+    _isDisabledDay(date) {
         // Remove time from the date object
-        const day = dayObject.startOf('day');
+        const day = date.startOf('day');
         const outsideOfAllowedDates =
             day < this.computedMin || day > this.computedMax;
         const weekDay = day.weekday === 7 ? 0 : day.weekday;
@@ -1405,11 +1405,54 @@ export default class DateTimePicker extends LightningElement {
         );
     }
 
+    _isDisabledTime(start, end) {
+        const slotInterval = intervalFrom(start, end);
+        const disabledDates = [];
+        const startTime = this.startTime.slice(0, 5);
+        const endTime = this.endTime.slice(0, 5);
+        const timeFrame = `${startTime}-${endTime}`;
+
+        this.disabledDateTimes.forEach((dateTime) => {
+            const date = this._processDate(dateTime);
+            const isDateWithoutTime =
+                typeof dateTime === 'string' &&
+                dateTime.match(/^\d{4}-\d{2}-\d{2}$/);
+
+            if (isDateWithoutTime) {
+                const normalizedDate =
+                    this._createDateTimeFromDateString(dateTime);
+                disabledDates.push({ allDay: true, date: normalizedDate });
+            } else if (date && isInTimeFrame(date, timeFrame)) {
+                disabledDates.push({ allDay: false, date });
+            }
+        });
+        return disabledDates.find(({ allDay, date }) => {
+            return (
+                slotInterval.contains(date) ||
+                (allDay &&
+                    (date.hasSame(start, 'day') || date.hasSame(end, 'day')))
+            );
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Redispatches the navigate event coming from the monthly variant calendar.
+     *
+     * @param {Event} event `navigate` event coming from the calendar.
+     */
+    handleCalendarNavigate(event) {
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: { date: event.detail.date }
+            })
+        );
+    }
 
     /**
      * Handles the onchange event of the combobox to change the time zone.
@@ -1443,12 +1486,14 @@ export default class DateTimePicker extends LightningElement {
         this.firstWeekDay = this.firstWeekDay.plus({ day: dayRangeSign });
         this._generateTable();
         this.datePickerValue = this.firstWeekDay.toISO();
+        this.dispatchNavigate();
     }
 
     /**
      * Handles the onchange event of the lightning-input to change the date.
      */
     handleDateChange(event) {
+        event.stopPropagation();
         const value = event.detail.value;
         if (!value || typeof value !== 'string') {
             // Prevent unselection of a date
@@ -1621,5 +1666,26 @@ export default class DateTimePicker extends LightningElement {
      */
     handleValueFocus() {
         this.interactingState.enter();
+    }
+
+    /**
+     * Dispatch the `navigate` event.
+     */
+    dispatchNavigate() {
+        /**
+         * The event fired when the user navigates to another period of time.
+         *
+         * @event
+         * @name navigate
+         * @param {string} date First visible day, as an ISO8601 formatted string.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: {
+                    date: this.firstWeekDay.toISO()
+                }
+            })
+        );
     }
 }

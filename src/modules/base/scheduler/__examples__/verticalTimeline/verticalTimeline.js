@@ -40,6 +40,7 @@ export default class SchedulerVerticalTimeline extends LightningElement {
             resourceNames: ['Jung'],
             name: 'research',
             title: 'Research',
+            dateFormat: 'DD',
             from: new Date(2021, 11, 13, 9),
             to: new Date(2021, 11, 14, 12)
         },

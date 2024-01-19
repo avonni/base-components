@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 .slds-visual-picker {
     margin-right: var(--lwc-spacingMedium, 1rem);
     margin-left: 0;
@@ -40,7 +8,7 @@
     border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
     border-width: var(--avonni-visual-picker-sizing-border, 1px);
     border-style: var(--avonni-visual-picker-styling-border, solid);
-    border-color: var(--avonni-visual-picker-color-border, #dddbda);
+    border-color: var(--avonni-visual-picker-color-border, #c9c9c9);
     box-shadow: var(--avonni-visual-picker-shadow, 0 2px 2px rgb(0 0 0 / 5%));
     background-color: var(--avonni-visual-picker-color-background, #ffffff);
     overflow: hidden;
@@ -58,20 +26,142 @@
     );
 }
 
+.avonni-visual-picker__figure-container-reverse
+    > .avonni-visual-picker__figure-body-container {
+    order: 0;
+}
+
+.avonni-visual-picker__figure-container-reverse
+    > .avonni-visual-picker__figure-image-container-horizontal {
+    order: 1;
+}
+
+.avonni-visual-picker__figure-body-container,
+.avonni-visual-picker__figure-body:not(.avonni-visual-picker__figure-body-image-background) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+.avonni-visual-picker__height {
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.avonni-visual-picker__height .avonni-visual-picker__items,
+.avonni-visual-picker__height .avonni-visual-picker__items_responsive_image {
+    flex: 0 1 calc(100% / 3);
+    position: relative;
+}
+
+.avonni-visual-picker__height
+    .avonni-visual-picker__items_responsive_image-fields:has(.avonni-visual-picker__figure-image-center-container) {
+    display: flex;
+    flex: 0 1 100%;
+    flex-direction: column;
+    position: relative;
+}
+
+.avonni-visual-picker__height .avonni-visual-picker__items:not(:empty) {
+    padding-top: 0.25rem;
+}
+
 .avonni-visual-picker__items {
-    height: 33.333333%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.avonni-visual-picker__items_responsive {
-    height: 33.333333%;
+.avonni-visual-picker__items_responsive_image {
+    overflow: hidden;
 }
 
-.avonni-visual-picker__items_responsive_image {
-    height: 33.333333%;
-    overflow: hidden;
+.avonni-visual-picker__items_responsive_image-fields
+    .avonni-visual-picker__item-fields-container {
+    flex: 1;
+}
+
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-image-container,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-image-container,
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-image-container-horizontal,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-image-container-horizontal {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-body-container,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-body-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(
+        --avonni-visual-picker-overlay-background,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.55) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
+    margin: 0 0.3rem 0.3rem 0.3rem;
+    height: fit-content;
+    max-height: 100%;
+}
+
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-body-container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.avonni-visual-picker__figure-image-overlay:hover
+    .avonni-visual-picker__figure-body-container {
+    opacity: 1;
+}
+
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-header,
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-header {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    --avonni-visual-picker-title-text-color: var(
+        --avonni-visual-picker-overlay-text-color,
+        #ffffff
+    );
+    --avonni-visual-picker-description-text-color: var(
+        --avonni-visual-picker-overlay-text-color,
+        #ffffff
+    );
+    --avonni-visual-picker-avatar-fallback-icon-foreground: #ffffff;
+    --avonni-visual-picker-avatar-fallback-icon-foreground-default: #ffffff;
+}
+
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__fields-label,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__fields-label {
+    --avonni-output-data-label-text-color: var(
+        --avonni-visual-picker-overlay-fields-label-text-color,
+        #ffffff
+    );
+    --avonni-output-data-value-text-color: var(
+        --avonni-visual-picker-overlay-fields-value-text-color,
+        #ffffff
+    );
 }
 
 /*-- disabled --*/
@@ -184,17 +274,26 @@
     font-size: var(--avonni-visual-picker-item-description-font-size, 0.75rem);
     font-style: var(--avonni-visual-picker-item-description-font-style, normal);
     font-weight: var(--avonni-visual-picker-item-description-font-weight, 400);
+    text-align: var(--avonni-visual-picker-item-description-alignment, center);
     line-height: var(--avonni-visual-picker-item-description-line-height, 1.25);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: var(
+        --avonni-visual-picker-item-description-line-clamp,
+        2
+    );
 }
 
-/*-- figure description --*/
-.avonni-visual-picker__figure-description {
-    color: var(--avonni-visual-picker-description-text-color, #3e3e3c);
-    font-style: var(--avonni-visual-picker-description-font-style, normal);
-    font-weight: var(--avonni-visual-picker-description-font-weight, 400);
-    font-size: var(--avonni-visual-picker-description-font-size, 0.75rem);
-    line-height: var(--avonni-visual-picker-description-line-height, 1.25);
-    text-align: var(--avonni-visual-picker-description-alignment, center);
+/*-- fields --*/
+.avonni-visual-picker__item-fields-container {
+    padding: 0 0.5rem;
+    text-align: left;
+    pointer-events: none;
+}
+
+.avonni-visual-picker__item-fields {
+    padding: 0.25rem;
 }
 
 /*-- xx-small --*/
@@ -248,7 +347,7 @@
 
 .avonni-visual-picker_small
     .avonni-visual-picker__figure
-    .avonni-visual-picker__figure-title {
+    .avonni-visual-picker__figure-header {
     font-weight: var(--avonni-visual-picker-title-font-weight, 300);
     font-size: var(--avonni-visual-picker-title-font-size, 1.125rem);
 }
@@ -288,6 +387,7 @@
     height: 100%;
     min-height: 15rem;
     max-height: 21rem;
+    width: 100%;
 }
 
 .avonni-visual-picker_responsive .avonni-visual-picker__figure {
@@ -298,6 +398,12 @@
 
 .avonni-visual-picker_responsive .avonni-visual-picker__height {
     height: 100%;
+}
+
+.avonni-visual-picker_responsive .avonni-visual-picker__items,
+.avonni-visual-picker_responsive .avonni-visual-picker__items_responsive_image {
+    width: 0;
+    min-width: 100%;
 }
 
 /*-- ratio 1-by-1 --*/
@@ -472,15 +578,166 @@
 
 /*-- tags --*/
 .avonni-visual-picker__tags-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
     text-align: var(--avonni-visual-picker-tags-alignment, center);
     padding: var(--avonni-visual-picker-tags-padding, 0.5rem);
+}
+
+.avonni-visual-picker__tags {
+    --avonni-chip-sizing-border: var(
+        --avonni-visual-picker-tag-sizing-border,
+        1px
+    );
+    --avonni-chip-styling-border: var(
+        --avonni-visual-picker-tag-styling-border,
+        solid
+    );
+    --avonni-chip-radius-border: var(
+        --avonni-visual-picker-tag-radius-border,
+        15rem
+    );
+    --avonni-chip-label-font-size: var(
+        --avonni-visual-picker-tag-label-font-size,
+        0.75rem
+    );
+    --avonni-chip-label-font-style: var(
+        --avonni-visual-picker-tag-label-font-style,
+        normal
+    );
+    --avonni-chip-label-font-weight: var(
+        --avonni-visual-picker-tag-label-font-weight,
+        700
+    );
+    --avonni-chip-line-height: var(
+        --avonni-visual-picker-tag-line-height,
+        normal
+    );
+
+    /* Alt inverse */
+    --avonni-chip-alt-inverse-color-background: var(
+        --avonni-visual-picker-tag-alt-inverse-color-background
+    );
+    --avonni-chip-alt-inverse-color-border: var(
+        --avonni-visual-picker-tag-alt-inverse-color-border
+    );
+    --avonni-chip-alt-inverse-text-color: var(
+        --avonni-visual-picker-tag-alt-inverse-text-color
+    );
+
+    /* Base */
+    --avonni-chip-base-color-background: var(
+        --avonni-visual-picker-tag-base-color-background
+    );
+    --avonni-chip-base-color-border: var(
+        --avonni-visual-picker-tag-base-color-border
+    );
+    --avonni-chip-base-text-color: var(
+        --avonni-visual-picker-tag-base-text-color
+    );
+
+    /* Brand */
+    --avonni-chip-brand-color-background: var(
+        --avonni-visual-picker-tag-brand-color-background
+    );
+    --avonni-chip-brand-color-border: var(
+        --avonni-visual-picker-tag-brand-color-border
+    );
+    --avonni-chip-brand-text-color: var(
+        --avonni-visual-picker-tag-brand-text-color
+    );
+
+    /* Error */
+    --avonni-chip-error-color-background: var(
+        --avonni-visual-picker-tag-error-color-background
+    );
+    --avonni-chip-error-color-border: var(
+        --avonni-visual-picker-tag-error-color-border
+    );
+    --avonni-chip-error-text-color: var(
+        --avonni-visual-picker-tag-error-text-color
+    );
+
+    /* Info */
+    --avonni-chip-info-color-background: var(
+        --avonni-visual-picker-tag-info-color-background
+    );
+    --avonni-chip-info-color-border: var(
+        --avonni-visual-picker-tag-info-color-border
+    );
+    --avonni-chip-info-text-color: var(
+        --avonni-visual-picker-tag-info-text-color
+    );
+
+    /* Inverse */
+    --avonni-chip-inverse-color-background: var(
+        --avonni-visual-picker-tag-inverse-color-background
+    );
+    --avonni-chip-inverse-color-border: var(
+        --avonni-visual-picker-tag-inverse-color-border
+    );
+    --avonni-chip-inverse-text-color: var(
+        --avonni-visual-picker-tag-inverse-text-color
+    );
+
+    /* Offline */
+    --avonni-chip-offline-color-background: var(
+        --avonni-visual-picker-tag-offline-color-background
+    );
+    --avonni-chip-offline-color-border: var(
+        --avonni-visual-picker-tag-offline-color-border
+    );
+    --avonni-chip-offline-text-color: var(
+        --avonni-visual-picker-tag-offline-text-color
+    );
+
+    /* Success */
+    --avonni-chip-success-color-background: var(
+        --avonni-visual-picker-tag-success-color-background
+    );
+    --avonni-chip-success-color-border: var(
+        --avonni-visual-picker-tag-success-color-border
+    );
+    --avonni-chip-success-text-color: var(
+        --avonni-visual-picker-tag-success-text-color
+    );
+
+    /* Warning */
+    --avonni-chip-warning-color-background: var(
+        --avonni-visual-picker-tag-warning-color-background
+    );
+    --avonni-chip-warning-color-border: var(
+        --avonni-visual-picker-tag-warning-color-border
+    );
+    --avonni-chip-warning-text-color: var(
+        --avonni-visual-picker-tag-warning-text-color
+    );
 }
 
 .avonni-visual-picker__tags:not(:first-child) {
     margin-left: 0.25rem;
 }
 
+.avonni-visual-picker__figure-body-container:not(:empty),
+.avonni-visual-picker__figure-image-container {
+    padding: 0.3rem;
+    max-height: 100%;
+    max-width: 100%;
+}
+
 /*-- images --*/
+.avonni-visual-picker__figure-image-container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    flex: 0 1 auto;
+}
+
+.avonni-visual-picker__figure-image-container img {
+    pointer-events: none;
+}
+
 .avonni-visual-picker__figure-image-top-container {
     width: 100%;
     padding: var(--avonni-visual-picker-image-padding, 0);
@@ -491,124 +748,30 @@
     padding: var(--avonni-visual-picker-image-padding, 0.75rem);
 }
 
+.avonni-visual-picker__figure-image-bottom-container {
+    display: flex;
+    align-items: flex-end;
+}
+
 .avonni-visual-picker__figure-image {
     height: 100%;
     width: 100%;
-    object-fit: var(--avonni-visual-picker-image-object-fit, scale-down);
+    object-fit: cover;
+    pointer-events: none;
 }
 
-.avonni-visual-picker_x-small
-    .avonni-visual-picker__figure-image-center-container,
-.avonni-visual-picker_xx-small
-    .avonni-visual-picker__figure-image-center-container {
-    padding: var(--avonni-visual-picker-image-padding, 15px);
+.avonni-visual-picker__figure-image_object-fit-contain {
+    object-fit: contain;
 }
 
-.avonni-visual-picker__app-screens {
-    display: flex;
-    overflow: hidden;
-    padding: 0.75rem;
-    justify-content: center;
+.avonni-visual-picker__figure-image_object-fit-fill {
+    object-fit: fill;
 }
 
-.avonni-visual-picker_small.ratio-16-by-9 .avonni-visual-picker__app-screens {
-    height: 0.25rem;
+.avonni-visual-picker__figure-image_object-fit-none {
+    object-fit: none;
 }
 
-.avonni-visual-picker_small.ratio-4-by-3 .avonni-visual-picker__app-screens {
-    height: 0.5rem;
-}
-
-.avonni-visual-picker_small.ratio-1-by-1 .avonni-visual-picker__app-screens {
-    height: 1rem;
-}
-
-.avonni-visual-picker_small.ratio-3-by-4 .avonni-visual-picker__app-screens {
-    height: 3.5rem;
-}
-
-.avonni-visual-picker_small.ratio-9-by-16 .avonni-visual-picker__app-screens {
-    height: 4.75rem;
-}
-
-.avonni-visual-picker_medium.ratio-16-by-9 .avonni-visual-picker__app-screens {
-    height: 2rem;
-}
-
-.avonni-visual-picker_medium.ratio-4-by-3 .avonni-visual-picker__app-screens {
-    height: 2.5rem;
-}
-
-.avonni-visual-picker_medium.ratio-1-by-1 .avonni-visual-picker__app-screens {
-    height: 3rem;
-}
-
-.avonni-visual-picker_medium.ratio-3-by-4 .avonni-visual-picker__app-screens {
-    height: 5.25rem;
-}
-
-.avonni-visual-picker_medium.ratio-9-by-16 .avonni-visual-picker__app-screens {
-    height: 7rem;
-}
-
-.avonni-visual-picker_large.ratio-16-by-9 .avonni-visual-picker__app-screens {
-    height: 2.25rem;
-}
-
-.avonni-visual-picker_large.ratio-4-by-3 .avonni-visual-picker__app-screens {
-    height: 3rem;
-}
-
-.avonni-visual-picker_large.ratio-1-by-1 .avonni-visual-picker__app-screens {
-    height: 5rem;
-}
-
-.avonni-visual-picker_large.ratio-3-by-4 .avonni-visual-picker__app-screens {
-    height: 6.5rem;
-}
-
-.avonni-visual-picker_large.ratio-9-by-16 .avonni-visual-picker__app-screens {
-    height: 9rem;
-}
-
-.avonni-visual-picker_x-large.ratio-16-by-9 .avonni-visual-picker__app-screens {
-    height: 3.25rem;
-}
-
-.avonni-visual-picker_x-large.ratio-4-by-3 .avonni-visual-picker__app-screens {
-    height: 3.5rem;
-}
-
-.avonni-visual-picker_x-large.ratio-1-by-1 .avonni-visual-picker__app-screens {
-    height: 6rem;
-}
-
-.avonni-visual-picker_x-large.ratio-3-by-4 .avonni-visual-picker__app-screens {
-    height: 8rem;
-}
-
-.avonni-visual-picker_x-large.ratio-9-by-16 .avonni-visual-picker__app-screens {
-    height: 10.5rem;
-}
-
-.avonni-visual-picker_xx-large.ratio-16-by-9
-    .avonni-visual-picker__app-screens {
-    height: 4rem;
-}
-
-.avonni-visual-picker_xx-large.ratio-4-by-3 .avonni-visual-picker__app-screens {
-    height: 4rem;
-}
-
-.avonni-visual-picker_xx-large.ratio-1-by-1 .avonni-visual-picker__app-screens {
-    height: 7rem;
-}
-
-.avonni-visual-picker_xx-large.ratio-3-by-4 .avonni-visual-picker__app-screens {
-    height: 9.25rem;
-}
-
-.avonni-visual-picker_xx-large.ratio-9-by-16
-    .avonni-visual-picker__app-screens {
-    height: 12.5rem;
+.avonni-visual-picker__tags-hidden {
+    display: none;
 }

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 @import 'c/schedulerSharedStyle';
 
 :host {
@@ -40,8 +8,7 @@
     flex: 1 0 auto;
 }
 
-.avonni-scheduler-header-group__header_multiple-vertical
-    .avonni-scheduler-header-group__header-label_sticky {
+.avonni-scheduler-header-group__header_multiple-vertical .avonni-scheduler-header-group__header-label_sticky {
     transform: rotate(180deg);
 }
 
@@ -50,14 +17,10 @@
     width: var(--avonni-scheduler-cell-size);
     min-width: var(--avonni-scheduler-cell-size);
     color: #514f4d;
-    background-color: var(
-        --avonni-primitive-scheduler-header-group-cell-color-background,
-        #f3f3f3
-    );
+    background-color: var(--avonni-primitive-scheduler-header-group-cell-color-background,
+            #f3f3f3);
     height: var(--avonni-primitive-scheduler-header-group-cell-height);
-    border-right-width: var(
-        --avonni-primitive-scheduler-header-group-cell-border-right-width
-    );
+    border-right-width: var(--avonni-primitive-scheduler-header-group-cell-border-right-width);
 }
 
 .avonni-scheduler-header-group__header-cell:last-of-type:not(.avonni-scheduler-header-group__header-cell_vertical) {
@@ -68,26 +31,22 @@
     color: var(--avonni-primitive-scheduler-header-group-cell-text-color-today);
 }
 
-.avonni-scheduler-header-group__header_vertical
-    .avonni-scheduler-header-group__header-cell {
+.avonni-scheduler-header-group__header_vertical .avonni-scheduler-header-group__header-cell {
     width: auto;
     min-width: auto;
     height: var(--avonni-scheduler-cell-size);
 }
 
-.avonni-scheduler-header-group__header_multiple-vertical
-    .avonni-scheduler-header-group__header-cell {
+.avonni-scheduler-header-group__header_multiple-vertical .avonni-scheduler-header-group__header-cell {
     writing-mode: vertical-rl;
 }
 
-.avonni-scheduler-header-group__header_multiple-vertical:last-of-type
-    .avonni-scheduler-header-group__header-cell {
+.avonni-scheduler-header-group__header_multiple-vertical:last-of-type .avonni-scheduler-header-group__header-cell {
     height: auto;
     writing-mode: initial;
 }
 
-.avonni-scheduler-header-group__header_vertical:last-of-type
-    .avonni-scheduler-header-group__header-cell {
+.avonni-scheduler-header-group__header_vertical:last-of-type .avonni-scheduler-header-group__header-cell {
     padding: 0 0.75rem;
 }
 
@@ -98,16 +57,12 @@
 .avonni-scheduler-header-group__header-label_sticky {
     position: sticky;
     left: 0;
-    top: var(
-        --avonni-primitive-scheduler-header-group-label-position-top,
-        10px
-    );
+    top: var(--avonni-primitive-scheduler-header-group-label-position-top,
+            10px);
 }
 
 .avonni-scheduler-header-group__header-label_vertical-non-sticky {
     top: calc(var(--avonni-scheduler-cell-height) / -2);
-    background-color: var(
-        --avonni-primitive-scheduler-header-group-cell-color-background,
-        #f3f3f3
-    );
+    background-color: var(--avonni-primitive-scheduler-header-group-cell-color-background,
+            #f3f3f3);
 }

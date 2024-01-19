@@ -1,39 +1,8 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api, track } from 'lwc';
 import {
     dateTimeObjectFrom,
     deepCopy,
+    equal,
     formatDateFromStyle,
     normalizeBoolean,
     normalizeObject,
@@ -51,9 +20,9 @@ import {
     startPositioning,
     stopPositioning
 } from 'c/positionLibrary';
-
 import filterMenuVertical from './filterMenuVertical.html';
 import filterMenu from './filterMenu.html';
+import Item from './item';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -185,6 +154,8 @@ export default class FilterMenu extends LightningElement {
     _alternativeText = i18n.showMenu;
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
     _buttonVariant = BUTTON_VARIANTS.default;
+    _closed = false;
+    _collapsible = false;
     _disabled = false;
     _dropdownAlignment = MENU_ALIGNMENTS.default;
     _dropdownLength;
@@ -347,6 +318,38 @@ export default class FilterMenu extends LightningElement {
             fallbackValue: BUTTON_VARIANTS.default,
             validValues: BUTTON_VARIANTS.valid
         });
+    }
+
+    /**
+     * If present, close the collapsible section. This attribute is only supported by the vertical variant.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get closed() {
+        return this._closed;
+    }
+
+    set closed(value) {
+        this._closed = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the headers are collapsible. This attribute is only supported by the vertical variant.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get collapsible() {
+        return this._collapsible;
+    }
+
+    set collapsible(value) {
+        this._collapsible = normalizeBoolean(value);
     }
 
     /**
@@ -761,6 +764,9 @@ export default class FilterMenu extends LightningElement {
     }
     set value(val) {
         const array = typeof val === 'string' ? [val] : normalizeArray(val);
+        if (equal(array, this.value)) {
+            return;
+        }
         this._value = deepCopy(array);
         this.currentValue = deepCopy(array);
 
@@ -813,18 +819,6 @@ export default class FilterMenu extends LightningElement {
      */
     get checkboxComputedItems() {
         return this.computedItems.filter((item) => !item.hidden);
-    }
-
-    /**
-     * Computed showdown icon.
-     *
-     * @type {boolean}
-     */
-    get computedShowDownIcon() {
-        return !(
-            this.iconName === 'utility:down' ||
-            this.iconName === 'utility:chevrondown'
-        );
     }
 
     /**
@@ -896,6 +890,10 @@ export default class FilterMenu extends LightningElement {
             .toString();
     }
 
+    get computedCollapsibleButtonIconName() {
+        return this.closed ? 'utility:chevronright' : 'utility:chevrondown';
+    }
+
     /**
      * Computed Dropdown class styling.
      *
@@ -954,6 +952,27 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed section class styling.
+     *
+     * @type {string}
+     */
+    get computedSectionClass() {
+        return this.displayFilters ? 'slds-show' : 'slds-hide';
+    }
+
+    /**
+     * Computed showdown icon.
+     *
+     * @type {boolean}
+     */
+    get computedShowDownIcon() {
+        return !(
+            this.iconName === 'utility:down' ||
+            this.iconName === 'utility:chevrondown'
+        );
+    }
+
+    /**
      * Computed vertical list CSS classes.
      *
      * @type {string}
@@ -968,6 +987,15 @@ export default class FilterMenu extends LightningElement {
             'slds-dropdown_length-with-icon-10':
                 this.isList && length === '10-items'
         }).toString();
+    }
+
+    /**
+     * Returns true, if the filter menu is not collapsible or open and display the filters.
+     *
+     * @type {boolean}
+     */
+    get displayFilters() {
+        return !this.collapsible || (this.collapsible && !this.closed);
     }
 
     /**
@@ -1101,6 +1129,21 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Value of the slider, when the type is range.
+     *
+     * @type {number[]}
+     */
+    get rangeValue() {
+        if (this.currentValue.length) {
+            return this.currentValue;
+        }
+        const { min, max } = this.computedTypeAttributes;
+        const start = isNaN(min) ? DEFAULT_RANGE_VALUE[0] : Number(min);
+        const end = isNaN(max) ? DEFAULT_RANGE_VALUE[1] : Number(max);
+        return [start, end];
+    }
+
+    /**
      * True if the end of the list is reached.
      *
      * @type {boolean}
@@ -1115,6 +1158,15 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the apply and reset buttons should be visible.
+     *
+     * @type {boolean}
+     */
+    get showApplyResetButtons() {
+        return !this.hideApplyResetButtons && !this.showNoResultMessage;
+    }
+
+    /**
      * True if the load more button should be visible.
      *
      * @type {boolean}
@@ -1124,27 +1176,17 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * True if the no search result message should be visible.
+     * True if the no result message should be visible.
      *
      * @type {boolean}
      */
     get showNoResultMessage() {
-        return !this.isLoading && this.searchTerm && this.noVisibleListItem;
-    }
-
-    /**
-     * Value of the slider, when the type is range.
-     *
-     * @type {number[]}
-     */
-    get rangeValue() {
-        if (this.currentValue.length) {
-            return this.currentValue;
-        }
-        const { min, max } = this.computedTypeAttributes;
-        const start = isNaN(min) ? DEFAULT_RANGE_VALUE[0] : Number(min);
-        const end = isNaN(max) ? DEFAULT_RANGE_VALUE[1] : Number(max);
-        return [start, end];
+        return (
+            !this.isLoading &&
+            this.noVisibleListItem &&
+            this.type === 'list' &&
+            (this.searchTerm || this.variant === 'horizontal')
+        );
     }
 
     /**
@@ -1201,7 +1243,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Set the focus on the filter menu.
+     * Set the focus on the filter menu button (horizontal variant) or choice set (vertical variant).
      *
      * @public
      */
@@ -1221,6 +1263,21 @@ export default class FilterMenu extends LightningElement {
             if (button) {
                 button.focus();
             }
+        }
+    }
+
+    /**
+     * Set the focus on the search input.
+     *
+     * @public
+     */
+    @api
+    focusSearchInput() {
+        const search = this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+        if (search) {
+            search.focus();
         }
     }
 
@@ -1268,17 +1325,21 @@ export default class FilterMenu extends LightningElement {
             'object'
         );
 
-        this.computedItems = deepCopy(items).map((item) => {
-            item.checked = this.currentValue.includes(item.value);
-            item.hidden = this.isOutOfSearchScope(item.label);
+        this.computedItems = items.map((item) => {
+            const checked = this.currentValue.includes(item.value);
+            const hidden = this.isOutOfSearchScope(item.label);
 
+            let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
                 firstFocusableItem = true;
-                item.tabindex = '0';
-            } else {
-                item.tabindex = '-1';
+                tabindex = '0';
             }
-            return item;
+            return new Item({
+                ...item,
+                checked,
+                hidden,
+                tabindex
+            });
         });
 
         if (this.dropdownVisible) {
@@ -1383,7 +1444,7 @@ export default class FilterMenu extends LightningElement {
             this._allowBlur = false;
             requestAnimationFrame(() => {
                 const focusTrap = this.template.querySelector(
-                    '[data-element-id="lightning-focus-trap"]'
+                    '[data-element-id="avonni-focus-trap"]'
                 );
                 if (focusTrap) {
                     this._dropdownIsFocused = true;
@@ -1401,7 +1462,7 @@ export default class FilterMenu extends LightningElement {
      */
     focusListItem(currentIndex, addedIndex = 1) {
         const items = this.template.querySelectorAll(
-            '[data-element-id="lightning-menu-item"]'
+            '[data-element-id="a-list-item"]'
         );
         items[currentIndex].tabIndex = '-1';
         const index = currentIndex + addedIndex;
@@ -1604,15 +1665,7 @@ export default class FilterMenu extends LightningElement {
             this.dropdownVisible = !this.dropdownVisible;
             if (this.dropdownVisible) {
                 this.startPositioning();
-
-                /**
-                 * The event fired when the dropdown is opened.
-                 *
-                 * @event
-                 * @name open
-                 * @public
-                 */
-                this.dispatchEvent(new CustomEvent('open'));
+                this.dispatchOpen();
 
                 // update the bounding rect when the menu is toggled
                 this._boundingRect = this.getBoundingClientRect();
@@ -1623,15 +1676,7 @@ export default class FilterMenu extends LightningElement {
                 this.focusDropdown();
             } else {
                 this.stopPositioning();
-
-                /**
-                 * The event fired when the dropdown is closed.
-                 *
-                 * @event
-                 * @name close
-                 * @public
-                 */
-                this.dispatchEvent(new CustomEvent('close'));
+                this.dispatchClose();
                 this._previousScroll = undefined;
             }
         }
@@ -1752,6 +1797,34 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Handle a click on a list item.
+     *
+     * @param {Event} event click event.
+     */
+    handleListItemClick(event) {
+        event.preventDefault();
+        const { value, disabled } = event.currentTarget.dataset;
+        if (disabled) {
+            return;
+        }
+
+        this.currentValue = [];
+        this.computedItems = this.computedItems.map((item) => {
+            if (item.value === value) {
+                item.checked = !item.checked;
+            } else if (!this.computedTypeAttributes.isMultiSelect) {
+                item.checked = false;
+            }
+            if (item.checked) {
+                this.currentValue.push(item.value);
+            }
+            return item;
+        });
+
+        this.dispatchSelect();
+    }
+
+    /**
      * Handle a key down on a list item.
      *
      * @param {Event} event keydown event.
@@ -1769,34 +1842,14 @@ export default class FilterMenu extends LightningElement {
                 this.focusListItem(index);
                 break;
             }
+            case ' ':
+            case 'Spacebar': {
+                event.currentTarget.click();
+                break;
+            }
             default:
                 break;
         }
-    }
-
-    /**
-     * Handle the selection of a list item.
-     *
-     * @param {Event} event privateselect event.
-     */
-    handlePrivateSelect(event) {
-        event.stopPropagation();
-
-        const selectedValue = event.detail.value;
-        this.currentValue = [];
-        this.computedItems = this.computedItems.map((item) => {
-            if (item.value === selectedValue) {
-                item.checked = !item.checked;
-            } else if (!this.computedTypeAttributes.isMultiSelect) {
-                item.checked = false;
-            }
-            if (item.checked) {
-                this.currentValue.push(item.value);
-            }
-            return item;
-        });
-
-        this.dispatchSelect();
     }
 
     /**
@@ -1939,6 +1992,21 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the close event.
+     */
+    dispatchClose() {
+        /**
+         * The event fired when the dropdown is closed (horizontal variant) or the section is closed (vertical variant).
+         *
+         * @event
+         * @name close
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
+    }
+
     dispatchLoadMore() {
         /**
          * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user.
@@ -1949,6 +2017,21 @@ export default class FilterMenu extends LightningElement {
          * @bubbles
          */
         this.dispatchEvent(new CustomEvent('loadmore', { bubbles: true }));
+    }
+
+    /**
+     * Dispatch the open event.
+     */
+    dispatchOpen() {
+        /**
+         * The event fired when the dropdown is opened (horizontal variant) or the section is opened (vertical variant).
+         *
+         * @event
+         * @name open
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(new CustomEvent('open', { bubbles: true }));
     }
 
     /**
@@ -1982,6 +2065,19 @@ export default class FilterMenu extends LightningElement {
             if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
                 this.close();
             }
+        }
+    }
+
+    /**
+     * Section change status toggle.
+     */
+    toggleSection() {
+        this._closed = !this._closed;
+
+        if (this._closed) {
+            this.dispatchClose();
+        } else {
+            this.dispatchOpen();
         }
     }
 }
