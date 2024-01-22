@@ -2,6 +2,7 @@
     <c-layout
         class="slds-m-bottom_small slds-show avonni-date-time-picker__toolbar"
         multiple-rows
+        data-element-id="avonni-layout-toolbar"
     >
         <c-layout-item
             class="slds-p-right_small avonni-date-time-picker__flex-col"
@@ -107,7 +108,11 @@
         </c-layout-item>
 
         <!-- Date picker -->
-        <c-layout-item if:false={hideDatePicker} size={datePickerColumnSize}>
+        <c-layout-item
+            if:false={hideDatePicker}
+            class="avonni-date-time-picker__date-picker"
+            size={datePickerColumnSize}
+        >
             <!-- Input date picker -->
             <lightning-input
                 if:false={showInlineDatePicker}
@@ -149,7 +154,13 @@
                 ></lightning-button-icon>
 
                 <!-- Weekday labels -->
-                <c-layout class="slds-show" aria-hidden="true">
+                <c-layout
+                    class="
+                        slds-show
+                        avonni-date-time-picker__inline-date-picker-days-labels
+                    "
+                    aria-hidden="true"
+                >
                     <template for:each={datePickerWeekdays} for:item="day">
                         <c-layout-item
                             key={day.date.ts}
@@ -160,7 +171,7 @@
                                 slds-border_bottom slds-border_top
                                 slds-truncate
                             "
-                            size="calc(100%/7)"
+                            size={day.size}
                             data-element-id="avonni-layout-item-inline-date-picker-weekday-label"
                         >
                             {day.weekdayLabel}
@@ -170,14 +181,21 @@
 
                 <!-- Selectable days -->
                 <c-layout
-                    class="slds-show"
+                    class="
+                        slds-show
+                        avonni-date-time-picker__inline-date-picker-days
+                    "
                     data-element-id="div-inline-date-picker"
                 >
                     <template for:each={datePickerWeekdays} for:item="day">
                         <c-layout-item
                             key={day.date.ts}
-                            class="slds-text-align_center"
-                            size="calc(100%/7)"
+                            class="
+                                slds-text-align_center
+                                avonni-date-time-picker__flex-col
+                                slds-has-flexi-truncate
+                            "
+                            size={day.size}
                         >
                             <button
                                 class="

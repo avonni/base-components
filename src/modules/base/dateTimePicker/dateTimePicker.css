@@ -1,5 +1,6 @@
 .avonni-date-time-picker__flex-col {
-    flex: 1 1 auto;
+    --avonni-layout-item-layout-flex-shrink: 1;
+    --avonni-layout-item-layout-flex-grow: 1;
 }
 
 .avonni-date-time-picker__toolbar {
@@ -36,6 +37,13 @@
 .avonni-date-time-picker__hour-table {
     --avonni-layout-items-spacing-block-between: 4px;
     --avonni-layout-items-spacing-inline-between: 4px;
+}
+
+.avonni-date-time-picker__date-picker,
+.avonni-date-time-picker__inline-date-picker,
+.avonni-date-time-picker__inline-date-picker-days,
+.avonni-date-time-picker__inline-date-picker-days-labels {
+    max-width: 100%;
 }
 
 .avonni-date-time-picker__inline-date-picker {
