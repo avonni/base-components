@@ -17,7 +17,7 @@ import { DateTime } from 'c/luxon';
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const DATE_PICKER_VARIANTS = {
-    valid: ['inpute', 'inline'],
+    valid: ['input', 'inline'],
     default: 'input'
 };
 const DATE_PICKER_MOUSE_MOVE_OFFSET = 25;
