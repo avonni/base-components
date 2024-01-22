@@ -144,6 +144,7 @@ export default class DateTimePicker extends LightningElement {
     _goToDate;
     _inlineDatePickerFirstDay;
     _inlineDatePickerMaxVisibleDays = DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS;
+    _resizeIsHandledByParent = false;
     _resizeObserver;
     _selectedDayTime;
     _today;
@@ -161,14 +162,48 @@ export default class DateTimePicker extends LightningElement {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
+
+        /**
+         * The event fired when the date time picker is inserted in the DOM.
+         *
+         * @event
+         * @name privatedatetimepickerconnected
+         * @param {object} callbacks Object with two keys:
+         * * `updateInlineDatePickerMaxVisibleDays`: When called, the number of visible dates in the inline date picker is updated.
+         * * `setIsResizedByParent`: If called with `true`, the resizing of the date time picker is handled by its parent.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatedatetimepickerconnected', {
+                detail: {
+                    callbacks: {
+                        updateInlineDatePickerMaxVisibleDays:
+                            this.updateInlineDatePickerMaxVisibleDays.bind(
+                                this
+                            ),
+                        setIsResizedByParent:
+                            this.setIsResizedByParent.bind(this)
+                    }
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
     }
 
     renderedCallback() {
-        if (!this._resizeObserver && this.showInlineDatePicker) {
+        if (
+            !this._resizeObserver &&
+            this.showInlineDatePicker &&
+            !this._resizeIsHandledByParent
+        ) {
             this._initResizeObserver();
-        } else if (this._resizeObserver && !this.showInlineDatePicker) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = undefined;
+        } else if (
+            this._resizeObserver &&
+            (!this.showInlineDatePicker || this._resizeIsHandledByParent)
+        ) {
+            this._removeResizeObserver();
         }
 
         if (this._goToDate) {
@@ -183,10 +218,22 @@ export default class DateTimePicker extends LightningElement {
     }
 
     disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = undefined;
-        }
+        this._removeResizeObserver();
+
+        /**
+         * The event fired when the layout is removed from the DOM.
+         *
+         * @event
+         * @name privatedatetimepickerdisconnected
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatedatetimepickerdisconnected', {
+                composed: true,
+                bubbles: true
+            })
+        );
     }
 
     /*
@@ -1094,6 +1141,10 @@ export default class DateTimePicker extends LightningElement {
         this._constraint.setCustomValidity(message);
     }
 
+    setIsResizedByParent(value) {
+        this._resizeIsHandledByParent = normalizeBoolean(value);
+    }
+
     /**
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
@@ -1109,6 +1160,32 @@ export default class DateTimePicker extends LightningElement {
             '[data-element-id="lightning-input"]'
         );
         if (datePicker) datePicker.reportValidity();
+    }
+
+    /**
+     * Update the number of visible dates in the inline date picker.
+     */
+    updateInlineDatePickerMaxVisibleDays() {
+        const datePickerWrapper = this.template.querySelector(
+            '[data-element-id="div-inline-date-picker-wrapper"]'
+        );
+        if (!datePickerWrapper) {
+            return;
+        }
+        const width = datePickerWrapper.offsetWidth;
+        let maxVisibleDates = Math.floor(
+            width / MIN_INLINE_DATE_PICKER_DATE_WIDTH
+        );
+        maxVisibleDates =
+            this._normalizeInlineDatePickerNumberOfVisibleDates(
+                maxVisibleDates
+            );
+
+        if (this._inlineDatePickerMaxVisibleDays !== maxVisibleDates) {
+            this._inlineDatePickerMaxVisibleDays = maxVisibleDates;
+            this._setInlineDatePickerFirstDay();
+            this._createDatePickerWeekdays();
+        }
     }
 
     /*
@@ -1203,26 +1280,7 @@ export default class DateTimePicker extends LightningElement {
         }
 
         this._resizeObserver = new AvonniResizeObserver(toolbar, () => {
-            const datePickerWrapper = this.template.querySelector(
-                '[data-element-id="div-inline-date-picker-wrapper"]'
-            );
-            if (!datePickerWrapper) {
-                return;
-            }
-            const width = datePickerWrapper.offsetWidth;
-            let maxVisibleDates = Math.floor(
-                width / MIN_INLINE_DATE_PICKER_DATE_WIDTH
-            );
-            maxVisibleDates =
-                this._normalizeInlineDatePickerNumberOfVisibleDates(
-                    maxVisibleDates
-                );
-
-            if (this._inlineDatePickerMaxVisibleDays !== maxVisibleDates) {
-                this._inlineDatePickerMaxVisibleDays = maxVisibleDates;
-                this._setInlineDatePickerFirstDay();
-                this._createDatePickerWeekdays();
-            }
+            this.updateInlineDatePickerMaxVisibleDays();
         });
     }
 
@@ -1517,6 +1575,13 @@ export default class DateTimePicker extends LightningElement {
             return maxVisibleDates - 1;
         }
         return maxVisibleDates;
+    }
+
+    _removeResizeObserver() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
     }
 
     /*
