@@ -1,11 +1,14 @@
 <template>
-    <c-layout class="slds-m-bottom_small slds-show" multiple-rows>
+    <c-layout
+        class="slds-m-bottom_small slds-show avonni-date-time-picker__toolbar"
+        multiple-rows
+    >
         <c-layout-item
             class="slds-p-right_small avonni-date-time-picker__flex-col"
             size="12"
             medium-container-size="auto"
         >
-            <c-layout class="avonni-date-time-picker__toolbar">
+            <c-layout>
                 <c-layout-item if:true={showAvatar} class="slds-m-right_small">
                     <c-avatar
                         alternative-text={avatar.alternativeText}
