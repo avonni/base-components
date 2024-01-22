@@ -942,22 +942,6 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Array of ISO dates that should be disabled.
-     *
-     * @type {string[]}
-     */
-    get disabledFullDays() {
-        const valid = [];
-        this.disabledDateTimes.forEach((date) => {
-            const dateTime = this._createDateTimeFromDateString(date);
-            if (dateTime) {
-                valid.push(dateTime.toISO());
-            }
-        });
-        return valid;
-    }
-
-    /**
      * Returns first weekday in an ISO8601 string format.
      *
      * @type {string}
@@ -1105,11 +1089,11 @@ export default class DateTimePicker extends LightningElement {
             this.variant === 'weekly'
                 ? getStartOfWeek(normalizedDate)
                 : normalizedDate;
-        this._generateTable();
         this.datePickerValue =
             this.datePickerVariant === 'inline'
                 ? normalizedDate.toISO()
                 : this.firstWeekDayToString;
+        this._generateTable();
         this._goToDate = normalizedDate;
 
         if (this._connected) {
@@ -1679,7 +1663,7 @@ export default class DateTimePicker extends LightningElement {
      * @param {Event} start touchstart or mousedown event.
      */
     handleInlineDatePickerDrag(start) {
-        if (start.button !== 0) {
+        if (start.type === 'mousedown' && start.button !== 0) {
             return;
         }
         const startPosition = start.clientX || start.changedTouches[0].clientX;
