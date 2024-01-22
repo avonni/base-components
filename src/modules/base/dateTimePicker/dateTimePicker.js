@@ -1527,6 +1527,9 @@ export default class DateTimePicker extends LightningElement {
      * @param {Event} start touchstart or mousedown event.
      */
     handleInlineDatePickerDrag(start) {
+        if (start.button !== 0) {
+            return;
+        }
         const startPosition = start.clientX || start.changedTouches[0].clientX;
 
         const handleMove = (move) => {
