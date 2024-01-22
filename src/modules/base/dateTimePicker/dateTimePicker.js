@@ -1059,7 +1059,10 @@ export default class DateTimePicker extends LightningElement {
                 ? getStartOfWeek(normalizedDate)
                 : normalizedDate;
         this._generateTable();
-        this.datePickerValue = this.firstWeekDayToString;
+        this.datePickerValue =
+            this.datePickerVariant === 'inline'
+                ? normalizedDate.toISO()
+                : this.firstWeekDayToString;
         this._goToDate = normalizedDate;
 
         if (this._connected) {
@@ -1266,6 +1269,15 @@ export default class DateTimePicker extends LightningElement {
     _createDatePickerWeekdays() {
         this.datePickerWeekdays = [];
 
+        let selectedDay;
+        if (this.datePickerValue) {
+            const normalizedDate = this._processDate(this.datePickerValue);
+
+            if (normalizedDate) {
+                selectedDay = normalizedDate.startOf('day').ts;
+            }
+        }
+
         for (let i = 0; i < this._inlineDatePickerMaxVisibleDays; i++) {
             const date = this._inlineDatePickerFirstDay.plus({ days: i });
             const weekday = {
@@ -1278,12 +1290,8 @@ export default class DateTimePicker extends LightningElement {
                 }),
                 size: `calc(100% / ${this._inlineDatePickerMaxVisibleDays})`
             };
-            if (this.table.length === 1) {
-                const visibleDay = this.table[0];
-                const visibleDayDate = visibleDay.day.startOf('day');
-                if (date.startOf('day').ts === visibleDayDate.ts) {
-                    weekday.isSelected = true;
-                }
+            if (date.startOf('day').ts === selectedDay) {
+                weekday.isSelected = true;
             }
             this.datePickerWeekdays.push(weekday);
         }
