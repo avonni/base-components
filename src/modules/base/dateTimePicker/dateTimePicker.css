@@ -38,6 +38,10 @@
     --avonni-layout-items-spacing-inline-between: 4px;
 }
 
+.avonni-date-time-picker__inline-date-picker {
+    --avonni-layout-items-spacing-inline-between: 0;
+}
+
 .avonni-date-time-picker__inline-date-picker-button {
     border: none;
     background: none;

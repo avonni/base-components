@@ -107,11 +107,7 @@
         </c-layout-item>
 
         <!-- Date picker -->
-        <c-layout-item
-            if:false={hideDatePicker}
-            size={datePickerColumnSize}
-            data-element-id="temp"
-        >
+        <c-layout-item if:false={hideDatePicker} size={datePickerColumnSize}>
             <!-- Input date picker -->
             <lightning-input
                 if:false={showInlineDatePicker}
