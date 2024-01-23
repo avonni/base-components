@@ -577,17 +577,16 @@ export default class ActivityTimeline extends LightningElement {
     get maxVisibleItems() {
         return this._maxVisibleItems;
     }
-
     set maxVisibleItems(value) {
-        if (value && value > 0) {
-            this._maxVisibleItems = value;
+        const number = parseInt(value, 10);
+        this._maxVisibleItems =
+            !isNaN(number) && number > 0 ? number : undefined;
 
-            if (this.isTimelineHorizontal) {
-                this.requestRedrawTimeline();
-                setTimeout(() => {
-                    this.renderedCallback();
-                }, 0);
-            }
+        if (this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+            setTimeout(() => {
+                this.renderedCallback();
+            }, 0);
         }
     }
 
