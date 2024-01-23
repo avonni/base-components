@@ -141,7 +141,7 @@ describe('Activity Timeline', () => {
                 expect(spinner).toBeTruthy();
             });
     });
-    
+
     // fieldAttributes
     it('Activity Timeline: Field Attributes, cols', () => {
         element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
@@ -481,7 +481,9 @@ describe('Activity Timeline', () => {
                 expect(item.description).toBe(ITEM[index].description);
                 expect(item.datetimeValue).toBe(ITEM[index].datetimeValue);
                 expect(item.href).toBe(ITEM[index].href);
-                expect(item.iconName).toBe(ITEM[index].iconName);
+                expect(item.avatar).toBe(
+                    ITEM[index].avatar || ITEM[index].iconName
+                );
                 expect(item.fields).toMatchObject(ITEM[index].fields);
                 expect(item.hasCheckbox).toBe(ITEM[index].hasCheckbox || false);
                 expect(item.hasError).toBe(ITEM[index].hasError || false);
@@ -957,13 +959,13 @@ describe('Activity Timeline', () => {
             );
 
             for (const item of displayedItemsHorizontalTest) {
-                const itemCategoryIcon = item.iconName.slice(
+                const itemCategoryIcon = item.avatar.slice(
                     0,
-                    item.iconName.indexOf(':')
+                    item.avatar.indexOf(':')
                 );
-                const itemNameIcon = item.iconName.slice(
-                    item.iconName.indexOf(':') + 1,
-                    item.iconName.length
+                const itemNameIcon = item.avatar.slice(
+                    item.avatar.indexOf(':') + 1,
+                    item.avatar.length
                 );
                 const itemSVGGroup = timelineItemsSVG.querySelector(
                     '#timeline-item-' + item.name

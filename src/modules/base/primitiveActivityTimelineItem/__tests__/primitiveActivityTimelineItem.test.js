@@ -74,7 +74,7 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.hasError).toBeFalsy();
         expect(element.fields).toMatchObject([]);
         expect(element.href).toBeUndefined();
-        expect(element.iconName).toBeUndefined();
+        expect(element.avatar).toBeUndefined();
         expect(element.iconSize).toBe('small');
         expect(element.isActive).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
@@ -191,9 +191,9 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    // icon name
+    // avatar
     it('Activity timeline item: icon name no bullet', () => {
-        element.iconName = 'standard:case';
+        element.avatar = 'standard:case';
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
@@ -208,7 +208,7 @@ describe('Primitive Activity Timeline Item', () => {
 
     // icon size
     it('Activity Timeline item: icon size (xx-small)', () => {
-        element.iconName = 'standard:case';
+        element.avatar = 'standard:case';
         element.iconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
@@ -220,7 +220,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (x-small)', () => {
-        element.iconName = 'standard:case';
+        element.avatar = 'standard:case';
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -232,7 +232,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (small)', () => {
-        element.iconName = 'standard:case';
+        element.avatar = 'standard:case';
         element.iconSize = 'small';
 
         return Promise.resolve().then(() => {
@@ -244,7 +244,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (medium)', () => {
-        element.iconName = 'standard:case';
+        element.avatar = 'standard:case';
         element.iconSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -256,7 +256,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (large)', () => {
-        element.iconName = 'standard:case';
+        element.avatar = 'standard:case';
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {

@@ -798,7 +798,7 @@ export default class ActivityTimeline extends LightningElement {
      * @return {string}
      */
     get popoverIconSize() {
-        if (this.selectedItem.iconName.includes('action:')) {
+        if (this.selectedItem.avatar.includes('action:')) {
             return 'x-small';
         }
         return 'medium';
@@ -869,6 +869,8 @@ export default class ActivityTimeline extends LightningElement {
     initActivityTimeline() {
         this.orderedDates = [];
         this.sortedItems.forEach((item) => {
+            this.supportDeprecatedAttributes(item);
+
             const date = new Date(item.datetimeValue);
             const label = this.getGroupLabel(date);
             const lastGroup = this.orderedDates[this.orderedDates.length - 1];
@@ -948,6 +950,16 @@ export default class ActivityTimeline extends LightningElement {
      */
     requestRedrawTimeline() {
         this._redrawHorizontalTimeline = true;
+    }
+
+    /**
+     * Make sure the deprecated item attributes are still supported.
+     */
+    supportDeprecatedAttributes(item) {
+        if (item && item.iconName && item.avatar === undefined) {
+            item.avatar = item.iconName;
+            delete item.iconName;
+        }
     }
 
     /**

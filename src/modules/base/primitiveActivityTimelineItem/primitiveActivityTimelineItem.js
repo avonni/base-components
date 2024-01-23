@@ -70,14 +70,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api href;
     /**
-     * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
-     * When omitted, a simplified timeline bullet replaces it.
-     *
-     * @public
-     * @type {string}
-     */
-    @api iconName;
-    /**
      * Icon or list of icons next to the title.
      *
      * @public
@@ -116,6 +108,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     @api isActive;
 
     _actions = [];
+    _avatar;
     _buttonDisabled = false;
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
@@ -126,6 +119,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _iconName;
     _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _color;
@@ -160,6 +154,21 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
     set actions(value) {
         this._actions = normalizeArray(value, 'object');
+    }
+
+    /**
+     * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
+     * When omitted, a simplified timeline bullet replaces it.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get avatar() {
+        return this._avatar;
+    }
+    set avatar(value) {
+        this._avatar = value;
     }
 
     /**
@@ -334,6 +343,29 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * Deprecated. Use `avatar` instead.
+     *
+     * @public
+     * @type {string}
+     * @deprecated
+     */
+    @api
+    get iconName() {
+        return this._iconName;
+    }
+    set iconName(value) {
+        this._iconName = value;
+
+        console.warn(
+            'The "icon-name" attribute is deprecated. Use "avatar" instead.'
+        );
+
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+        }
+    }
+
+    /**
      * The size of the item's icon. Valid values are x-small, small, medium and large.
      *
      * @public
@@ -452,8 +484,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     get isActionIcon() {
         return (
-            typeof this.iconName === 'string' &&
-            this.iconName.split(':')[0] === 'action'
+            typeof this.avatar === 'string' &&
+            this.avatar.split(':')[0] === 'action'
         );
     }
 
@@ -541,6 +573,15 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         if (icon === null) return;
         const style = getComputedStyle(icon);
         this._color = style.backgroundColor;
+    }
+
+    /**
+     * Make sure the deprecated item attributes are still supported.
+     */
+    supportDeprecatedAttributes() {
+        if (this.iconName && this.avatar === undefined) {
+            this._avatar = this.iconName;
+        }
     }
 
     /*
