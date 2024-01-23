@@ -128,7 +128,7 @@ describe('Activity Timeline', () => {
         return Promise.resolve()
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="div-loading-spinner"]'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeFalsy();
 
@@ -136,12 +136,12 @@ describe('Activity Timeline', () => {
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="div-loading-spinner"]'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeTruthy();
             });
     });
-    
+
     // fieldAttributes
     it('Activity Timeline: Field Attributes, cols', () => {
         element.fieldAttributes = { cols: 12, largeContainerCols: 4 };

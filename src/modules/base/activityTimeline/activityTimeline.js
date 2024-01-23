@@ -736,7 +736,9 @@ export default class ActivityTimeline extends LightningElement {
      */
     get isShowButtonHidden() {
         return (
-            !this.maxVisibleItems || this.maxVisibleItems >= this.items.length
+            this.enableInfiniteLoading ||
+            !this.maxVisibleItems ||
+            this.maxVisibleItems >= this.items.length
         );
     }
 
@@ -756,9 +758,20 @@ export default class ActivityTimeline extends LightningElement {
      */
     get loadingSpinnerClass() {
         return classSet({
-            'slds-is-relative avonni-activity-timeline__spinner':
-                this.items.length
+            'slds-is-relative':
+                (this.items.length || !this.isShowButtonHidden) &&
+                this.isLoading,
+            'avonni-activity-timeline__spinner':
+                this.items.length && this.isLoading && this.isShowButtonHidden,
+            'slds-show_inline-block':
+                this.isLoading && !this.isShowButtonHidden,
+            'slds-m-top_small slds-m-bottom_small slds-m-left_small':
+                !this.isShowButtonHidden
         }).toString();
+    }
+
+    get loadingSpinnerSize() {
+        return this.isShowButtonHidden ? 'medium' : 'small';
     }
 
     /**
@@ -1116,7 +1129,24 @@ export default class ActivityTimeline extends LightningElement {
      * Toggle the show more button
      */
     handleToggleShowMoreButton() {
-        this.showMore = !this.showMore;
-        this.initActivityTimeline();
+        /**
+         * The event fired when you click on the show more/less button that appears at the end of the vertical timeline, if a `max-visible-items` value is present and `enable-infinite-loading` is not present.
+         *
+         * @event
+         * @name itemsvisibilitytoggle
+         * @param {boolean} show True if items are currently hidden and the click was meant to show more of them. False if the click was meant to hide the visible items.
+         * @public
+         * @cancelable
+         */
+        const event = new CustomEvent('itemsvisibilitytoggle', {
+            detail: { show: !this.showMore },
+            cancelable: true
+        });
+        this.dispatchEvent(event);
+
+        if (!event.defaultPrevented) {
+            this.showMore = !this.showMore;
+            this.initActivityTimeline();
+        }
     }
 }

@@ -1,5 +1,6 @@
 import { ActivityTimeline } from '../__examples__/activityTimeline';
 import { InfiniteLoadingActivityTimeline } from '../__examples__/infiniteLoadingActivityTimeline';
+import { InfiniteLoadingUsingShowMoreActivityTimeline } from '../__examples__/infiniteLoadingUsingShowMore';
 import {
     actions,
     items,
@@ -363,6 +364,8 @@ export default {
 
 const Template = (args) => ActivityTimeline(args);
 const InfiniteLoadingTemplate = (args) => InfiniteLoadingActivityTimeline(args);
+const InfiniteLoadingUsingShowMoreTemplate = (args) =>
+    InfiniteLoadingUsingShowMoreActivityTimeline(args);
 
 export const Base = Template.bind({});
 Base.args = { items };
@@ -423,6 +426,14 @@ export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
 InfiniteLoading.args = {
     title: 'Infinite Loading Activity Timeline',
     iconName: 'utility:sync'
+};
+
+export const InfiniteLoadingUsingShowMore =
+    InfiniteLoadingUsingShowMoreTemplate.bind({});
+InfiniteLoadingUsingShowMore.args = {
+    title: 'Infinite Loading Using Show More',
+    iconName: 'utility:sync',
+    maxVisibleItems: 4
 };
 
 export const WithoutIcons = Template.bind({});
