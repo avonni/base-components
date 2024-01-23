@@ -248,13 +248,22 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._closed = normalizeBoolean(value);
     }
 
+    /**
+     * The date format to use for each item. Valid values include 'STANDARD', 'RELATIVE', the name of the preset or the custom format string.
+     * See Luxon's documentation for accepted [presets](https://moment.github.io/luxon/#/formatting?id=presets) and [custom format string tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
+     * If you want to insert text in the label in a custom format string, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get dateFormat() {
         return this._dateFormat;
     }
 
     set dateFormat(value) {
-        this._dateFormat = value;
+        this._dateFormat = typeof value === 'string' ? value : null;
 
         if (this._connected) {
             this.formatDate();

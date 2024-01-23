@@ -18,10 +18,7 @@ const DEFAULT_TOOLTIP_CLASSES =
     'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none';
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
-const INTERVAL_DATE_FORMAT = {
-    format: 'custom',
-    custom: 'dd/MM/yyyy'
-};
+const INTERVAL_DATE_FORMAT = 'dd/MM/yyyy';
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;

@@ -40,12 +40,6 @@
  * @property {string|number} smallContainerCols Number of columns on small container widths. Width is greater or equal to 480px. See `cols` for accepted values.
  * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
  */
-/**
- * @typedef {Object} DateFormat
- * @name itemDateFormat
- * @property {string} format Name of the format. Valid values include 'standard', 'relative', 'preset' and 'custom'. For 'preset' and 'custom' use the 'value' attribute to specify the preset or custom format string to use.
- * @property {string} value If the format is 'preset', the name of the preset. If the format is 'custom', specifies the custom format string. See [Luxon's documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted presets and custom format strings. If you want to insert text in the label, you need to escape it using single quote. For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>. Defaults to 'LLLL dd, yyyy, t' custom format string. Defaults to 'DATE_MED' preset.
- */
 
 /**
  * @namespace stylingHooks

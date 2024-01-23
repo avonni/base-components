@@ -5,7 +5,6 @@ import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
 import { classSet } from 'c/utils';
 import {
-    DATE_FORMAT_PRESETS,
     deepCopy,
     normalizeArray,
     normalizeBoolean,
@@ -40,7 +39,7 @@ const DEFAULT_FIELD_COLUMNS = {
     large: 4
 };
 const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
-const DEFAULT_ITEM_DATE_CUSTOM = 'LLLL dd, yyyy, t';
+const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOCALE = 'en-GB';
@@ -58,16 +57,6 @@ const GROUP_BY_OPTIONS = {
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
-};
-
-const ITEM_DATE_FORMAT = {
-    default: 'standard',
-    valid: ['standard', 'relative', 'preset', 'custom']
-};
-
-const ITEM_DATE_PRESETS = {
-    default: 'DATE_MED',
-    valid: DATE_FORMAT_PRESETS
 };
 
 const ORIENTATIONS = {
@@ -160,11 +149,7 @@ export default class ActivityTimeline extends LightningElement {
     _hideItemDate = false;
     _iconSize = ICON_SIZES.default;
     _isLoading = false;
-    _itemDateFormat = {
-        custom: DEFAULT_ITEM_DATE_CUSTOM,
-        format: ITEM_DATE_FORMAT.default,
-        preset: ITEM_DATE_PRESETS.default
-    };
+    _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
     _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
@@ -486,12 +471,13 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * The date format to use for each item. See [Luxon's documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format.
-     * If you want to insert text in the label, you need to escape it using single quote.
+     * The date format to use for each item. Valid values include 'STANDARD', 'RELATIVE', the name of the preset or the custom format string.
+     * See Luxon's documentation for accepted [presets](https://moment.github.io/luxon/#/formatting?id=presets) and [custom format string tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
+     * If you want to insert text in the label in a custom format string, you need to escape it using single quote.
      * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
      *
-     * @type {string|object}
-     * @default {format: 'custom', custom: 'LLLL dd, yyyy, t'}
+     * @type {string}
+     * @default 'LLLL dd, yyyy, t'
      * @public
      */
     @api
@@ -500,32 +486,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set itemDateFormat(value) {
-        if (typeof value === 'string') {
-            // Condition for backwards compatibility.
-            this._itemDateFormat = {
-                format: 'custom',
-                custom: value || DEFAULT_ITEM_DATE_CUSTOM
-            };
-        } else if (!value || typeof value !== 'object') {
-            this._itemDateFormat = {
-                format: 'custom',
-                custom: DEFAULT_ITEM_DATE_CUSTOM
-            };
-        } else {
-            this._itemDateFormat = {
-                custom: value.custom || DEFAULT_ITEM_DATE_CUSTOM,
-                format: normalizeString(value.format, {
-                    fallbackValue: ITEM_DATE_FORMAT.default,
-                    validValues: ITEM_DATE_FORMAT.valid
-                }),
-                preset: normalizeString(value.preset, {
-                    fallbackValue: ITEM_DATE_PRESETS.default,
-                    validValues: ITEM_DATE_PRESETS.valid,
-                    toLowerCase: false
-                })
-            };
-        }
-        console.log(this._itemDateFormat);
+        this._itemDateFormat =
+            typeof value === 'string' && (value || DEFAULT_ITEM_DATE_FORMAT);
     }
 
     /**

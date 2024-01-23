@@ -259,22 +259,21 @@ const DATE_FORMAT_PRESETS = [
     'DATETIME_HUGE_WITH_SECONDS'
 ];
 
-const getFormattedDate = (date, dateOptions, { format, preset, custom }) => {
+const getFormattedDate = (date, dateOptions, format) => {
     const luxonDate = dateTimeObjectFrom(date, dateOptions);
     const luxonDateNow = dateTimeObjectFrom(Date.now(), dateOptions);
 
-    switch (format) {
-        case 'standard':
-            return getFormattedDateStandard(luxonDate, luxonDateNow);
-        case 'relative':
-            return getFormattedDateRelative(luxonDate, luxonDateNow);
-        case 'preset':
-            return luxonDate.toLocaleString(DateTime[preset]);
-        case 'custom':
-            return luxonDate.toFormat(custom);
-        default:
-            return getFormattedDateStandard(luxonDate, luxonDateNow);
+    if (format === 'STANDARD') {
+        return getFormattedDateStandard(luxonDate, luxonDateNow);
     }
+    if (format === 'RELATIVE') {
+        return getFormattedDateRelative(luxonDate, luxonDateNow);
+    }
+    if (DATE_FORMAT_PRESETS.includes(format)) {
+        return luxonDate.toLocaleString(DateTime[format]);
+    }
+
+    return luxonDate.toFormat(format);
 };
 
 function getFormattedDateRelative(luxonDate, luxonDateNow) {
