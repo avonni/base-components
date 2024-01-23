@@ -79,7 +79,7 @@ export default {
             },
             options: ['left', 'right'],
             description:
-                'Position of the showMore button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.',
+                "Position of the showMore button's icon. Valid values include left and right. This attribute is only supported for the vertical orientation.",
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
@@ -219,9 +219,11 @@ export default {
                 type: 'text'
             },
             description:
-                "The date format to use for each item. See Luxon’s documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
+                "The date format to use for each item. See Luxon's documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
             table: {
-                defaultValue: { summary: 'LLLL dd, yyyy, t' },
+                defaultValue: {
+                    summary: { format: 'custom', custom: 'LLLL dd, yyyy, t' }
+                },
                 type: { summary: 'string' }
             }
         },

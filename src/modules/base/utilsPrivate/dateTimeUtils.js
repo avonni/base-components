@@ -235,10 +235,69 @@ const formatDateFromStyle = (
     return formattedDate;
 };
 
+const DATE_FORMAT_PRESETS = [
+    'DATE_SHORT',
+    'DATE_MED',
+    'DATE_MED_WITH_WEEKDAY',
+    'DATE_FULL',
+    'DATE_HUGE',
+    'TIME_SIMPLE',
+    'TIME_WITH_SECONDS',
+    'TIME_WITH_SHORT_OFFSET',
+    'TIME_WITH_LONG_OFFSET',
+    'TIME_24_SIMPLE',
+    'TIME_24_WITH_SECONDS',
+    'TIME_24_WITH_SHORT_OFFSET',
+    'TIME_24_WITH_LONG_OFFSET',
+    'DATETIME_SHORT',
+    'DATETIME_MED',
+    'DATETIME_FULL',
+    'DATETIME_HUGE',
+    'DATETIME_SHORT_WITH_SECONDS',
+    'DATETIME_MED_WITH_SECONDS',
+    'DATETIME_FULL_WITH_SECONDS',
+    'DATETIME_HUGE_WITH_SECONDS'
+];
+
+const getFormattedDate = (date, dateOptions, { format, preset, custom }) => {
+    const luxonDate = dateTimeObjectFrom(date, dateOptions);
+    const luxonDateNow = dateTimeObjectFrom(Date.now(), dateOptions);
+
+    switch (format) {
+        case 'standard':
+            return getFormattedDateStandard(luxonDate, luxonDateNow);
+        case 'relative':
+            return getFormattedDateRelative(luxonDate, luxonDateNow);
+        case 'preset':
+            return luxonDate.toLocaleString(DateTime[preset]);
+        case 'custom':
+            return luxonDate.toFormat(custom);
+        default:
+            return getFormattedDateStandard(luxonDate, luxonDateNow);
+    }
+};
+
+function getFormattedDateRelative(luxonDate, luxonDateNow) {
+    const diff = luxonDate.diff(luxonDateNow).as('seconds');
+    const minuteInSeconds = 60;
+    if (Math.abs(diff) < minuteInSeconds) return 'now';
+    return luxonDate.toRelative();
+}
+
+function getFormattedDateStandard(luxonDate, luxonDateNow) {
+    if (luxonDate.hasSame(luxonDateNow, 'day'))
+        return `Today ${luxonDate.toFormat('h:mm a')}`;
+    if (luxonDate.hasSame(luxonDateNow.minus({ days: 1 }), 'day'))
+        return `Yesterday ${luxonDate.toFormat('h:mm a')}`;
+    return luxonDate.toFormat('LLL d, h:mm a');
+}
+
 export {
+    DATE_FORMAT_PRESETS,
     addToDate,
     dateTimeObjectFrom,
     formatDateFromStyle,
+    getFormattedDate,
     getStartOfWeek,
     getWeekday,
     getWeekNumber,

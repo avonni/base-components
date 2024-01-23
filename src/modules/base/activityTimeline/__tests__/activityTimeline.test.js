@@ -141,7 +141,7 @@ describe('Activity Timeline', () => {
                 expect(spinner).toBeTruthy();
             });
     });
-    
+
     // fieldAttributes
     it('Activity Timeline: Field Attributes, cols', () => {
         element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
@@ -154,18 +154,63 @@ describe('Activity Timeline', () => {
         });
     });
 
-    // itemDateFormat
+    // itemDateFormat: standard
     it('Activity timeline: itemDateFormat', () => {
         element.items = testItems;
         element.groupBy = 'week';
+
+        // Support string (deprecated)
         element.itemDateFormat = 'dd LLL yyyy';
 
-        return Promise.resolve().then(() => {
-            const timelineItems = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-activity-timeline-item"]'
-            );
-            expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
-        });
+        return Promise.resolve()
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+
+                // Standard
+                element.itemDateFormat = { format: 'standard' };
+            })
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+
+                // Relative
+                element.itemDateFormat = { format: 'relative' };
+            })
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+
+                // Preset
+                element.itemDateFormat = {
+                    format: 'preset',
+                    preset: 'DATETIME_HUGE'
+                };
+            })
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+
+                // Custom
+                element.itemDateFormat = {
+                    format: 'custom',
+                    custom: 'dd LLL yyyy'
+                };
+            })
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+            });
     });
 
     // hideItemDate

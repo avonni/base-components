@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { dateTimeObjectFrom } from 'c/utilsPrivate';
+import { getFormattedDate } from 'c/utilsPrivate';
 import { createSVGIcon } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
@@ -7,7 +7,6 @@ const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
 const BORDER_OFFSET = 0.5;
 const DEFAULT_ICON_NAME = 'empty';
 const DEFAULT_ICON_CATEGORY = 'standard';
-const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_NUBBIN_TOP_POSITION_PX = 24;
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
@@ -19,6 +18,10 @@ const DEFAULT_TOOLTIP_CLASSES =
     'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none';
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
+const INTERVAL_DATE_FORMAT = {
+    format: 'custom',
+    custom: 'dd/MM/yyyy'
+};
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
@@ -54,7 +57,6 @@ const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
-    _dateFormat = DEFAULT_DATE_FORMAT;
     _displayedItems = [];
     _distanceBetweenDragAndMin;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
@@ -235,7 +237,10 @@ export class HorizontalActivityTimeline {
         if (!this._isResizingInterval) {
             this.setIntervalMaxDate();
         }
-        return this.convertDateToFormat(this._intervalMaxDate);
+        return this.convertDateToFormat(
+            this._intervalMaxDate,
+            INTERVAL_DATE_FORMAT
+        );
     }
 
     /**
@@ -244,7 +249,10 @@ export class HorizontalActivityTimeline {
      * @type {Date}
      */
     get intervalMinDate() {
-        return this.convertDateToFormat(this._intervalMinDate);
+        return this.convertDateToFormat(
+            this._intervalMinDate,
+            INTERVAL_DATE_FORMAT
+        );
     }
 
     /**
@@ -638,17 +646,19 @@ export class HorizontalActivityTimeline {
      * Convert a date to the correct format
      *
      * @param {Date} date
-     * @param {string} format
      * @returns string
      */
-    convertDateToFormat(date, format = this._dateFormat) {
+    convertDateToFormat(date, format) {
         if (this.isDateInvalid(date)) {
             return '';
         }
-        const dateTime = dateTimeObjectFrom(date, {
-            zone: this._activityTimeline.timezone
-        });
-        return dateTime.toFormat(format);
+        return getFormattedDate(
+            date,
+            {
+                zone: this._activityTimeline.timezone
+            },
+            format
+        );
     }
 
     /**

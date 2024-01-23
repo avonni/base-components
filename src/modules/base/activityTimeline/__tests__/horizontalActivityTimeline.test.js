@@ -43,7 +43,6 @@ describe('Horizontal Activity Timeline', () => {
 
     it('Horizontal Activity Timeline: Default attributes', () => {
         expect(element._changeIntervalSizeMode).toBeFalsy();
-        expect(element._dateFormat).toBe('dd/MM/yyyy');
         expect(element._intervalDaysLength).toBe(15);
         expect(element._offsetAxis).toBe(16.5);
         expect(element._displayedItems).toMatchObject([]);
