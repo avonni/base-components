@@ -673,7 +673,7 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * Computed item date format.
      *
-     * @type {object}
+     * @type {string}
      */
     get computedItemDateFormat() {
         if (this._hideItemDate) {

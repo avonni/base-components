@@ -643,6 +643,7 @@ export class HorizontalActivityTimeline {
      * Convert a date to the correct format
      *
      * @param {Date} date
+     * @param {string} format
      * @returns string
      */
     convertDateToFormat(date, format) {
