@@ -169,13 +169,12 @@ export default class ActivityTimeline extends LightningElement {
     selectedItem;
     horizontalTimeline;
 
+    _hasHiddenItems = true;
     _key;
     _isConnected = false;
     _presentDates = [];
     _pastDates = [];
     _upcomingDates = [];
-
-    showMore = true;
 
     @track orderedDates = [];
 
@@ -686,7 +685,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonLabel() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreLabel
             : this.buttonShowLessLabel;
     }
@@ -696,7 +695,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonIcon() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreIconName
             : this.buttonShowLessIconName;
     }
@@ -706,7 +705,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonPosition() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreIconPosition
             : this.buttonShowLessIconPosition;
     }
@@ -797,7 +796,7 @@ export default class ActivityTimeline extends LightningElement {
                       (a, b) =>
                           new Date(a.datetimeValue) - new Date(b.datetimeValue)
                   );
-        return this.showMore &&
+        return this._hasHiddenItems &&
             !this.isShowButtonHidden &&
             this.maxVisibleItems &&
             !this.isTimelineHorizontal
@@ -1139,13 +1138,13 @@ export default class ActivityTimeline extends LightningElement {
          * @cancelable
          */
         const event = new CustomEvent('itemsvisibilitytoggle', {
-            detail: { show: !this.showMore },
+            detail: { show: this._hasHiddenItems },
             cancelable: true
         });
         this.dispatchEvent(event);
 
         if (!event.defaultPrevented) {
-            this.showMore = !this.showMore;
+            this._hasHiddenItems = !this._hasHiddenItems;
             this.initActivityTimeline();
         }
     }

@@ -815,6 +815,38 @@ describe('Activity Timeline', () => {
         });
     });
 
+    // itemsvisibilitytoggle
+    it('Activity Timeline: itemsvisibilitytoggle event', () => {
+        element.items = testItems;
+        element.maxVisibleItems = 2;
+
+        const handler = jest.fn();
+        element.addEventListener('itemsvisibilitytoggle', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.show).toBeTruthy();
+                expect(call.cancelable).toBeTruthy();
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+                expect(handler).toHaveBeenCalledTimes(2);
+                const call = handler.mock.calls[1][0];
+                expect(call.detail.show).toBeFalsy();
+            });
+    });
+
     // loadmore
     it('Activity Timeline: loadmore event', () => {
         const handler = jest.fn();
