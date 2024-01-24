@@ -1,5 +1,9 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    classListMutation,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const TEXT_POSITIONS = { valid: ['top', 'bottom'], default: 'top' };
@@ -69,6 +73,7 @@ export default class ProgressStep extends LightningElement {
     _value;
     _variant = VARIANTS.default;
 
+    _connected = false;
     _popoverVisible = true;
 
     /*
@@ -78,6 +83,7 @@ export default class ProgressStep extends LightningElement {
      */
 
     connectedCallback() {
+        this._connected = true;
         this._updateClasses();
     }
 
@@ -409,23 +415,16 @@ export default class ProgressStep extends LightningElement {
      */
 
     _updateClasses() {
-        this.className = '';
-        this.classList.add('slds-progress__item');
-
-        if (this.isCompleted) {
-            this.classList.add('slds-is-completed');
-        }
-        if (this.isCurrent) {
-            this.classList.add('slds-is-active');
-        }
-        if (this.isError) {
-            this.classList.add('slds-has-error');
-        }
-        if (this.isWarning && this.variant === 'shaded') {
-            this.classList.add('slds-has-warning-shaded');
-        } else if (this.isWarning) {
-            this.classList.add('slds-has-warning');
-        }
+        classListMutation(this.classList, {
+            'slds-progress__item': true,
+            'avonni-progress-step__shaded': this.variant === 'shaded',
+            'slds-is-completed': this.isCompleted,
+            'slds-is-active': this.isCurrent,
+            'slds-has-error': this.isError,
+            'slds-has-warning': this.isWarning && !this.variant === 'shaded',
+            'slds-has-warning-shaded':
+                this.isWarning && this.variant === 'shaded'
+        });
     }
 
     /*

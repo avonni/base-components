@@ -12,15 +12,8 @@ const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
  * @public
  */
 export default class ProgressIndicator extends LightningElement {
-    /**
-     * Set current-step to match the value attribute of one of progress-step components.
-     *
-     * @type {string}
-     * @public
-     */
-    @api currentStep;
-
     _completedSteps = [];
+    _currentStep;
     _disabledSteps = [];
     _errorSteps = [];
     _steps = [];
@@ -58,6 +51,24 @@ export default class ProgressIndicator extends LightningElement {
     }
     set completedSteps(value) {
         this._completedSteps = normalizeArray(value);
+
+        if (this._connected) {
+            this._initSteps();
+        }
+    }
+
+    /**
+     * Set current-step to match the value attribute of one of progress-step components.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get currentStep() {
+        return this._currentStep;
+    }
+    set currentStep(value) {
+        this._currentStep = value;
 
         if (this._connected) {
             this._initSteps();
