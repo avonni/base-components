@@ -274,7 +274,12 @@ export default class ProgressStep extends LightningElement {
     get computedButtonClass() {
         return classSet('slds-button slds-progress__marker')
             .add({
-                'slds-button_icon slds-progress__marker_icon': this.stepIconName
+                'slds-button_icon slds-progress__marker_icon avonni-progress-step__button':
+                    this.stepIconName,
+                'avonni-progress-step__button_completed': this.isCompleted,
+                'avonni-progress-step__button_error': this.isError,
+                'avonni-progress-step__button_warning': this.isWarning,
+                'avonni-progress-step__button_shaded': this.variant === 'shaded'
             })
             .toString();
     }
