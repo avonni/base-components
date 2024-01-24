@@ -38,9 +38,16 @@
     border: none;
 }
 
+/* 
+* We have to make the icon selectors very specific to avoid conflicts with slds-scope in Salesforce's flows previews.
+*/
 /* Completed icon */
-.avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_completed,
-.avonni-progress-step__button.avonni-progress-step__button_completed {
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_completed,
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button.avonni-progress-step__button_completed {
     background-color: var(
         --avonni-progress-indicator-step-icon-color-background-completed,
         var(--default-step-icon-background)
@@ -60,8 +67,12 @@
 }
 
 /* Error icon */
-.avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_error,
-.avonni-progress-step__button.avonni-progress-step__button_error {
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_error,
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button.avonni-progress-step__button_error {
     background-color: var(
         --avonni-progress-indicator-step-icon-color-background-error,
         var(--default-step-icon-background)
