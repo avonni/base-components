@@ -1,5 +1,9 @@
 <template>
-    <div class={computedOuterClass} if:true={computedSteps.length}>
+    <div
+        if:true={computedSteps.length}
+        class={computedOuterClass}
+        data-element-id="div-wrapper"
+    >
         <ol class="slds-progress__list">
             <template for:each={computedSteps} for:item="step">
                 <c-primitive-progress-step
