@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const TEXT_POSITIONS = { valid: ['top', 'bottom'], default: 'top' };
@@ -31,11 +31,14 @@ const POPOVER_RATIOS = {
     default: '1-by-1'
 };
 
+const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
+
 export default class ProgressStep extends LightningElement {
-    stepIconName;
-    @api disabledSteps = [];
+    // Deprecated
+    @api completedSteps;
+    @api disabledSteps;
     @api warningSteps;
-    @api completedSteps = [];
+
     @api assistiveText;
     @api label;
     @api description;
@@ -49,65 +52,53 @@ export default class ProgressStep extends LightningElement {
     @api popoverLabel;
     @api popoverDescription;
 
-    _value;
-    _labelPosition = TEXT_POSITIONS.default;
-    _descriptionPosition = TEXT_POSITIONS.default;
-    _buttonIconPosition = ICON_POSITIONS.default;
     _buttonDisabled = false;
+    _buttonIconPosition = ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
-    _popoverVariant = POPOVER_VARIANTS.default;
-    _popoverSize = POPOVER_SIZES.default;
-    _popoverRatio = POPOVER_RATIOS.default;
+    _descriptionPosition = TEXT_POSITIONS.default;
+    _isCompleted = false;
+    _isCurrent = false;
+    _isDisabled = false;
+    _isError = false;
+    _isWarning = false;
+    _labelPosition = TEXT_POSITIONS.default;
     _popoverHidden = false;
+    _popoverRatio = POPOVER_RATIOS.default;
+    _popoverSize = POPOVER_SIZES.default;
+    _popoverVariant = POPOVER_VARIANTS.default;
+    _value;
+    _variant = VARIANTS.default;
 
     _popoverVisible = true;
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
-        this.classList.add('slds-progress__item');
+        this._updateClasses();
     }
 
-    renderedCallback() {
-        this.isDisabled();
-    }
-
-    @api
-    get value() {
-        return this._value;
-    }
-
-    set value(value) {
-        this._value = value;
-    }
+    /*
+     * -------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
-    get labelPosition() {
-        return this._labelPosition;
+    get buttonDisabled() {
+        return this._buttonDisabled;
     }
-
-    set labelPosition(position) {
-        this._labelPosition = normalizeString(position, {
-            fallbackValue: TEXT_POSITIONS.default,
-            validValues: TEXT_POSITIONS.valid
-        });
-    }
-
-    @api
-    get descriptionPosition() {
-        return this._descriptionPosition;
-    }
-
-    set descriptionPosition(position) {
-        this._descriptionPosition = normalizeString(position, {
-            fallbackValue: TEXT_POSITIONS.default,
-            validValues: TEXT_POSITIONS.valid
-        });
+    set buttonDisabled(value) {
+        this._buttonDisabled = normalizeBoolean(value);
     }
 
     @api
     get buttonIconPosition() {
         return this._buttonIconPosition;
     }
-
     set buttonIconPosition(position) {
         this._buttonIconPosition = normalizeString(position, {
             fallbackValue: ICON_POSITIONS.default,
@@ -116,19 +107,9 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
-    get buttonDisabled() {
-        return this._buttonDisabled;
-    }
-
-    set buttonDisabled(value) {
-        this._buttonDisabled = normalizeBoolean(value);
-    }
-
-    @api
     get buttonVariant() {
         return this._buttonVariant;
     }
-
     set buttonVariant(variant) {
         this._buttonVariant = normalizeString(variant, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -137,34 +118,95 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
-    get popoverVariant() {
-        return this._popoverVariant;
+    get descriptionPosition() {
+        return this._descriptionPosition;
     }
-
-    set popoverVariant(variant) {
-        this._popoverVariant = normalizeString(variant, {
-            fallbackValue: POPOVER_VARIANTS.default,
-            validValues: POPOVER_VARIANTS.valid
+    set descriptionPosition(position) {
+        this._descriptionPosition = normalizeString(position, {
+            fallbackValue: TEXT_POSITIONS.default,
+            validValues: TEXT_POSITIONS.valid
         });
     }
 
     @api
-    get popoverSize() {
-        return this._popoverSize;
+    get isCompleted() {
+        return this._isCompleted;
+    }
+    set isCompleted(value) {
+        this._isCompleted = normalizeBoolean(value);
+
+        if (this._connected) {
+            this._updateClasses();
+        }
     }
 
-    set popoverSize(size) {
-        this._popoverSize = normalizeString(size, {
-            fallbackValue: POPOVER_SIZES.default,
-            validValues: POPOVER_SIZES.valid
+    @api
+    get isCurrent() {
+        return this._isCurrent;
+    }
+    set isCurrent(value) {
+        this._isCurrent = normalizeBoolean(value);
+
+        if (this._connected) {
+            this._updateClasses();
+        }
+    }
+
+    @api
+    get isDisabled() {
+        return this._isDisabled;
+    }
+    set isDisabled(value) {
+        this._isDisabled = normalizeBoolean(value);
+    }
+
+    @api
+    get isError() {
+        return this._isError;
+    }
+    set isError(value) {
+        this._isError = normalizeBoolean(value);
+
+        if (this._connected) {
+            this._updateClasses();
+        }
+    }
+
+    @api
+    get isWarning() {
+        return this._isWarning;
+    }
+    set isWarning(value) {
+        this._isWarning = normalizeBoolean(value);
+
+        if (this._connected) {
+            this._updateClasses();
+        }
+    }
+
+    @api
+    get labelPosition() {
+        return this._labelPosition;
+    }
+    set labelPosition(position) {
+        this._labelPosition = normalizeString(position, {
+            fallbackValue: TEXT_POSITIONS.default,
+            validValues: TEXT_POSITIONS.valid
         });
+    }
+
+    @api
+    get popoverHidden() {
+        return this._popoverHidden;
+    }
+    set popoverHidden(value) {
+        this._popoverHidden = normalizeBoolean(value);
     }
 
     @api
     get popoverRatio() {
         return this._popoverRatio;
     }
-
     set popoverRatio(ratio) {
         this._popoverRatio = normalizeString(ratio, {
             fallbackValue: POPOVER_RATIOS.default,
@@ -173,13 +215,55 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
-    get popoverHidden() {
-        return this._popoverHidden;
+    get popoverSize() {
+        return this._popoverSize;
+    }
+    set popoverSize(size) {
+        this._popoverSize = normalizeString(size, {
+            fallbackValue: POPOVER_SIZES.default,
+            validValues: POPOVER_SIZES.valid
+        });
     }
 
-    set popoverHidden(value) {
-        this._popoverHidden = normalizeBoolean(value);
+    @api
+    get popoverVariant() {
+        return this._popoverVariant;
     }
+    set popoverVariant(variant) {
+        this._popoverVariant = normalizeString(variant, {
+            fallbackValue: POPOVER_VARIANTS.default,
+            validValues: POPOVER_VARIANTS.valid
+        });
+    }
+
+    @api
+    get value() {
+        return this._value;
+    }
+    set value(value) {
+        this._value = value;
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+
+        if (this._connected) {
+            this._updateClasses();
+        }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get computedButtonClass() {
         return classSet('slds-button slds-progress__marker')
@@ -189,18 +273,21 @@ export default class ProgressStep extends LightningElement {
             .toString();
     }
 
+    get computedPopoverBody() {
+        return this.popoverIconNameWhenHover
+            ? 'slds-popover__body avonni-progress-step__popover-body-icon-hover'
+            : 'slds-popover__body avonni-progress-step__popover-body-no-icon-hover';
+    }
+
     get computedPopoverClass() {
         return classSet('slds-popover slds-nubbin_bottom')
             .add({
                 'avonni-progress-step__popover-completed':
-                    this.completedSteps.includes(this.value) &&
-                    this._popoverVariant !== 'button',
+                    this.isCompleted && this._popoverVariant !== 'button',
                 'avonni-progress-step__popover-button-completed':
-                    this.completedSteps.includes(this.value) &&
-                    this._popoverVariant === 'button',
+                    this.isCompleted && this._popoverVariant === 'button',
                 'avonni-progress-step__popover-button_background-color':
-                    !this.completedSteps.includes(this.value) &&
-                    this._popoverVariant === 'button'
+                    !this.isCompleted && this._popoverVariant === 'button'
             })
             .add(`avonni-progress-step__popover_size-${this._popoverSize}`)
             .add({
@@ -222,46 +309,6 @@ export default class ProgressStep extends LightningElement {
         return 'medium';
     }
 
-    get showLabelTop() {
-        return this._labelPosition === 'top' && this.label;
-    }
-
-    get showLabelBottom() {
-        return this._labelPosition === 'bottom' && this.label;
-    }
-
-    get showDescriptionTop() {
-        return this._descriptionPosition === 'top' && this.description;
-    }
-
-    get showDescriptionBottom() {
-        return this._descriptionPosition === 'bottom' && this.description;
-    }
-
-    get hasTop() {
-        return this.showLabelTop || this.showDescriptionTop;
-    }
-
-    get hasBottom() {
-        return (
-            this.showLabelBottom ||
-            this.showDescriptionBottom ||
-            this.buttonLabel
-        );
-    }
-
-    get showPopoverIcon() {
-        return this.popoverIconSrc || this.popoverIconName;
-    }
-
-    get showPopoverIconWhenHover() {
-        return this.popoverIconSrcWhenHover || this.popoverIconNameWhenHover;
-    }
-
-    get isButtonDisabled() {
-        return this._buttonDisabled || this.disabledSteps.includes(this.value);
-    }
-
     get displayPopover() {
         return (
             ((!this._popoverHidden && this._popoverVisible) ||
@@ -272,45 +319,120 @@ export default class ProgressStep extends LightningElement {
         );
     }
 
+    get hasBottom() {
+        return (
+            this.showLabelBottom ||
+            this.showDescriptionBottom ||
+            this.buttonLabel
+        );
+    }
+
+    get hasTop() {
+        return this.showLabelTop || this.showDescriptionTop;
+    }
+
+    get isButtonDisabled() {
+        return this._buttonDisabled || this.isDisabled;
+    }
+
     get popoverButton() {
         return this._popoverVariant === 'button';
     }
 
-    get computedPopoverBody() {
-        return this.popoverIconNameWhenHover
-            ? 'slds-popover__body avonni-progress-step__popover-body-icon-hover'
-            : 'slds-popover__body avonni-progress-step__popover-body-no-icon-hover';
-    }
-
-    isDisabled() {
-        const buttons = this.template.querySelectorAll(
-            '[data-element-id^="button"]'
-        );
-        buttons.forEach((button) => {
-            if (this.disabledSteps.includes(this.value)) {
-                button.setAttribute('disabled', 'true');
-            }
-        });
-    }
-
-    @api
-    setIcon(stepIconName) {
-        this.stepIconName = stepIconName;
-    }
-
     get primitiveButtonIconVariant() {
-        if (this.warningSteps.includes(this.value)) {
+        if (this.isWarning) {
             return 'warning';
         }
         return 'bare';
     }
 
     get primitivePopoverIconVariant() {
-        if (this.completedSteps.includes(this.value)) {
+        if (this.isCompleted) {
             return 'inverse';
         }
         return '';
     }
+
+    get showDescriptionBottom() {
+        return this._descriptionPosition === 'bottom' && this.description;
+    }
+
+    get showDescriptionTop() {
+        return this._descriptionPosition === 'top' && this.description;
+    }
+
+    get showLabelBottom() {
+        return this._labelPosition === 'bottom' && this.label;
+    }
+
+    get showLabelTop() {
+        return this._labelPosition === 'top' && this.label;
+    }
+
+    get showPopoverIcon() {
+        return this.popoverIconSrc || this.popoverIconName;
+    }
+
+    get showPopoverIconWhenHover() {
+        return this.popoverIconSrcWhenHover || this.popoverIconNameWhenHover;
+    }
+
+    get stepIconName() {
+        if (this.isCompleted) {
+            return 'utility:success';
+        }
+        if (this.isError) {
+            return 'utility:error';
+        } else if (this.isWarning) {
+            return 'utility:warning';
+        }
+        return undefined;
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    setIcon() {
+        console.warn(
+            'Deprecated method "setIcon()". Please set the boolean attributes corresponding to the step variants instead (isCompleted, isError, etc.).'
+        );
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    _updateClasses() {
+        this.className = '';
+        this.classList.add('slds-progress__item');
+
+        if (this.isCompleted) {
+            this.classList.add('slds-is-completed');
+        }
+        if (this.isCurrent) {
+            this.classList.add('slds-is-active');
+        }
+        if (this.isError) {
+            this.classList.add('slds-has-error');
+        }
+        if (this.isWarning && this.variant === 'shaded') {
+            this.classList.add('slds-has-warning-shaded');
+        } else if (this.isWarning) {
+            this.classList.add('slds-has-warning');
+        }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
     handleStepMouseEnter() {
         this.dispatchEvent(

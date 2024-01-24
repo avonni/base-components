@@ -25,6 +25,7 @@
                     class={computedButtonClass}
                     aria-haspopup="true"
                     aria-expanded="true"
+                    disabled={isDisabled}
                     data-element-id="button"
                     type="button"
                     onclick={handleStepClick}
@@ -84,6 +85,7 @@
                     <template if:true={popoverButton}>
                         <button
                             class={computedPopoverClass}
+                            disabled={isDisabled}
                             type="button"
                             data-element-id="button-propover"
                             onclick={handleStepPopoverClick}
