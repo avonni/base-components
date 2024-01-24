@@ -44,11 +44,11 @@ export default class ProgressStep extends LightningElement {
     @api warningSteps;
 
     @api assistiveText;
-    @api label;
-    @api description;
     @api buttonLabel;
     @api buttonName;
     @api buttonIconName;
+    @api description;
+    @api label;
     @api popoverIconName;
     @api popoverIconSrc;
     @api popoverIconNameWhenHover;
@@ -350,13 +350,6 @@ export default class ProgressStep extends LightningElement {
         return this._popoverVariant === 'button';
     }
 
-    get primitiveButtonIconVariant() {
-        if (this.isWarning) {
-            return 'warning';
-        }
-        return 'bare';
-    }
-
     get primitivePopoverIconVariant() {
         if (this.isCompleted) {
             return 'inverse';
@@ -426,7 +419,7 @@ export default class ProgressStep extends LightningElement {
             'slds-is-completed': this.isCompleted,
             'slds-is-active': this.isCurrent,
             'slds-has-error': this.isError,
-            'slds-has-warning': this.isWarning && !this.variant === 'shaded',
+            'slds-has-warning': this.isWarning && this.variant !== 'shaded',
             'slds-has-warning-shaded':
                 this.isWarning && this.variant === 'shaded'
         });
