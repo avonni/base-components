@@ -1,7 +1,7 @@
 .avonni-carousel-item__content-title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: var(--avonni-carousel-item-title-line-clamp, 1);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: pre-line;
@@ -12,13 +12,18 @@
 }
 
 .avonni-carousel__image {
-    height: var(--avonni-carousel-item-image-sizing-height);
+    height: var(--avonni-carousel-item-image-sizing-height, 100%);
     background: var(--avonni-carousel-item-image-color-background, #ffffff);
     object-fit: var(--avonni-carousel-item-image-positioning-object-fit, cover);
     object-position: var(
         --avonni-carousel-item-image-positioning-object-position
     );
     border-radius: var(--avonni-carousel-item-image-radius-border, 0.25rem);
+}
+
+.avonni-carousel__image-left .avonni-carousel__image,
+.avonni-carousel__image-right .avonni-carousel__image {
+    flex: 1 1 40%;
 }
 
 .avonni-carousel__actions {
@@ -38,10 +43,34 @@
 }
 
 .avonni-carousel__panel-action {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
     border-color: var(--avonni-carousel-item-color-border, #c9c9c9);
     border-width: var(--avonni-carousel-item-sizing-border, 1px);
     border-style: var(--avonni-carousel-item-styling-border, solid);
     border-radius: var(--avonni-carousel-item-radius-border, 0.25rem);
+}
+
+.avonni-carousel__panel-action.avonni-carousel__image-top {
+    flex-direction: column;
+}
+
+.avonni-carousel__panel-action.avonni-carousel__image-bottom {
+    flex-direction: column-reverse;
+}
+
+.avonni-carousel__panel-action.avonni-carousel__image-left {
+    flex-direction: row;
+}
+
+.avonni-carousel__panel-action.avonni-carousel__image-right {
+    flex-direction: row-reverse;
+}
+
+.avonni-carousel__panel-action.avonni-carousel__image-left,
+.avonni-carousel__panel-action.avonni-carousel__image-right {
+    align-items: center;
 }
 
 .avonni-carousel__actions-bottom-center {
@@ -54,6 +83,11 @@
 
 .avonni-carousel__actions-left {
     justify-content: flex-start;
+}
+
+.avonni-carousel__image-left .avonni-carousel__content,
+.avonni-carousel__image-right .avonni-carousel__content {
+    flex: 1 1 60%;
 }
 
 .avonni-carousel__content-bottom {
