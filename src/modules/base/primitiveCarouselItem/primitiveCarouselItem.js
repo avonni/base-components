@@ -281,7 +281,9 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedCarouselImageClass() {
-        return classSet('avonni-carousel__image slds-carousel__image').add({
+        return classSet(
+            'avonni-carousel__image-container slds-carousel__image'
+        ).add({
             'slds-is-relative': !this.isBottomPosition
         });
     }

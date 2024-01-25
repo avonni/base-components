@@ -11,6 +11,17 @@
     font-weight: var(--avonni-carousel-item-title-font-weight, 600);
 }
 
+.avonni-carousel__image-left .avonni-carousel__image-container,
+.avonni-carousel__image-right .avonni-carousel__image-container {
+    display: flex;
+    flex: 1 1 40%;
+}
+
+.avonni-carousel__image-left .avonni-carousel__image,
+.avonni-carousel__image-right .avonni-carousel__image {
+    align-self: center;
+}
+
 .avonni-carousel__image {
     height: var(--avonni-carousel-item-image-sizing-height, 100%);
     background: var(--avonni-carousel-item-image-color-background, #ffffff);
@@ -19,11 +30,6 @@
         --avonni-carousel-item-image-positioning-object-position
     );
     border-radius: var(--avonni-carousel-item-image-radius-border, 0.25rem);
-}
-
-.avonni-carousel__image-left .avonni-carousel__image,
-.avonni-carousel__image-right .avonni-carousel__image {
-    flex: 1 1 40%;
 }
 
 .avonni-carousel__actions {
@@ -70,7 +76,7 @@
 
 .avonni-carousel__panel-action.avonni-carousel__image-left,
 .avonni-carousel__panel-action.avonni-carousel__image-right {
-    align-items: center;
+    align-items: stretch;
 }
 
 .avonni-carousel__actions-bottom-center {
@@ -88,6 +94,7 @@
 .avonni-carousel__image-left .avonni-carousel__content,
 .avonni-carousel__image-right .avonni-carousel__content {
     flex: 1 1 60%;
+    align-self: center;
 }
 
 .avonni-carousel__content-bottom {
