@@ -2,6 +2,7 @@ import { api, track } from 'lwc';
 import {
     addToDate,
     deepCopy,
+    equal,
     normalizeArray,
     normalizeString
 } from 'c/utilsPrivate';
@@ -208,9 +209,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return super.timeSpan;
     }
     set timeSpan(value) {
+        const previousTimeSpan = deepCopy(this.timeSpan);
         super.timeSpan = value;
 
-        if (this._connected) {
+        if (this._connected && !equal(previousTimeSpan, this.timeSpan)) {
             this.initHeaders();
         }
     }
