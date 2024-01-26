@@ -1,5 +1,6 @@
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
+import ButtonMenuSizesComponent from './sizes/sizes';
 
 export default {
     title: 'Example/Button Menu',
@@ -396,3 +397,20 @@ SuccessWithLabel.args = {
     label: 'Menu'
 };
 export const Illustration = TemplateIllustration.bind({});
+
+/**
+ * Example with different combinations of sizes, fallback icon types.
+ * Allows to quickly scan if there is any problems.
+ */
+customElements.define(
+    'ac-base-button-menu-sizes',
+    ButtonMenuSizesComponent.CustomElementConstructor
+);
+const ButtonMenuSizes = ({ label, variant }) => {
+    const element = document.createElement('ac-base-button-menu-sizes');
+    element.variant = variant;
+    element.label = label;
+    return element;
+};
+const TemplateSizes = (args) => ButtonMenuSizes(args);
+export const Sizes = TemplateSizes.bind({});
