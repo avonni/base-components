@@ -386,6 +386,17 @@ Horizontal.args = {
     actions: actions
 };
 
+export const Daily = Template.bind({});
+Daily.args = {
+    title: 'Activity Timeline grouped by day',
+    iconName: 'standard:timesheet_entry',
+    groupBy: 'day',
+    items: items,
+    collapsible: true,
+    itemDateFormat: 'DDDD - t',
+    actions: actions
+};
+
 export const Weekly = Template.bind({});
 Weekly.args = {
     title: 'Activity Timeline grouped by week',
