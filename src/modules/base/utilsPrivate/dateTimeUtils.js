@@ -259,7 +259,7 @@ const DATE_FORMAT_PRESETS = [
     'DATETIME_HUGE_WITH_SECONDS'
 ];
 
-const getFormattedDate = (date, dateOptions, format) => {
+const getFormattedDate = (date = new Date(), dateOptions, format) => {
     const luxonDate = dateTimeObjectFrom(date, dateOptions);
     const luxonDateNow = dateTimeObjectFrom(Date.now(), dateOptions);
 
