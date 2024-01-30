@@ -141,7 +141,7 @@ describe('Activity Timeline', () => {
                 expect(spinner).toBeTruthy();
             });
     });
-    
+
     // fieldAttributes
     it('Activity Timeline: Field Attributes, cols', () => {
         element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
@@ -160,12 +160,22 @@ describe('Activity Timeline', () => {
         element.groupBy = 'week';
         element.itemDateFormat = 'dd LLL yyyy';
 
-        return Promise.resolve().then(() => {
-            const timelineItems = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-activity-timeline-item"]'
-            );
-            expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
-        });
+        return Promise.resolve()
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+
+                // Standard
+                element.itemDateFormat = 'DATETIME_MED';
+            })
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('DATETIME_MED');
+            });
     });
 
     // hideItemDate

@@ -12,9 +12,15 @@
                     ></lightning-icon>
                 </div>
                 <div class="slds-media__body" if:true={title}>
-                    <h2 class="slds-truncate
-                    slds-section__title
-                    avonni-activity-timeline__title">{title}</h2>
+                    <h2
+                        class="
+                            slds-truncate
+                            slds-section__title
+                            avonni-activity-timeline__title
+                        "
+                    >
+                        {title}
+                    </h2>
                 </div>
             </div>
         </div>
@@ -124,8 +130,7 @@
                                     timezone={timezone}
                                     data-element-id="avonni-primitive-activity-timeline-item"
                                     data-name={item.name}
-                                >
-                                </c-primitive-activity-timeline-item>
+                                ></c-primitive-activity-timeline-item>
                             </li>
                         </template>
                     </ul>

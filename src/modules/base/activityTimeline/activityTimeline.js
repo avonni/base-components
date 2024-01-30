@@ -254,7 +254,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show less button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
+     * Position of the show less button's icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -272,7 +272,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show more button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
+     * Position of the show more button's icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -471,8 +471,9 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * The date format to use for each item. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format.
-     * If you want to insert text in the label, you need to escape it using single quote.
+     * The date format to use for each item. Valid values include 'STANDARD', 'RELATIVE', the name of the preset or the custom format string.
+     * See Luxon's documentation for accepted [presets](https://moment.github.io/luxon/#/formatting?id=presets) and [custom format string tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
+     * If you want to insert text in the label in a custom format string, you need to escape it using single quote.
      * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
      *
      * @type {string}
@@ -483,11 +484,10 @@ export default class ActivityTimeline extends LightningElement {
     get itemDateFormat() {
         return this._itemDateFormat;
     }
+
     set itemDateFormat(value) {
         this._itemDateFormat =
-            value && typeof value === 'string'
-                ? value
-                : DEFAULT_ITEM_DATE_FORMAT;
+            typeof value === 'string' && (value || DEFAULT_ITEM_DATE_FORMAT);
     }
 
     /**
@@ -670,13 +670,14 @@ export default class ActivityTimeline extends LightningElement {
         );
     }
 
-    /*
+    /**
      * Computed item date format.
+     *
      * @type {string}
      */
     get computedItemDateFormat() {
         if (this._hideItemDate) {
-            return '';
+            return null;
         }
         return this._itemDateFormat;
     }
