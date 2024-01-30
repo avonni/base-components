@@ -533,20 +533,28 @@ export default class AvatarGroup extends LightningElement {
      * @type {number}
      */
     get computedMaxCount() {
-        if (this.enableInfiniteLoading && this.layout === 'list') {
-            return Infinity;
-        } else if (this.enableInfiniteLoading) {
-            return this._maxVisibleCount;
-        } else if (this.maxCount >= 0 && this._maxVisibleCount >= 0) {
-            return Math.min(this.maxCount, this._maxVisibleCount);
-        } else if (this.maxCount >= 0) {
-            return this.maxCount;
-        } else if (this._maxVisibleCount >= 0) {
-            return this.layout === 'stack'
-                ? Math.min(this._maxVisibleCount, 5)
-                : Math.min(this._maxVisibleCount, 11);
+        if (this.enableInfiniteLoading) {
+            if (this.layout === 'list') {
+                return Infinity;
+            }
+            return this._maxVisibleCount < this.maxCount
+                ? this._maxVisibleCount
+                : this.maxCount || this._maxVisibleCount;
         }
-        return this.layout === 'stack' ? 5 : 11;
+
+        if (this.maxCount && this._maxVisibleCount) {
+            return Math.min(this.maxCount, this._maxVisibleCount);
+        }
+
+        if (this.maxCount) {
+            return this.maxCount;
+        }
+
+        const maxLimit = this.layout === 'stack' ? 5 : 11;
+        if (this._maxVisibleCount) {
+            return Math.min(this._maxVisibleCount, maxLimit);
+        }
+        return maxLimit;
     }
 
     /**
@@ -619,7 +627,7 @@ export default class AvatarGroup extends LightningElement {
     get hiddenItems() {
         if (!this.showMoreButton) {
             return [];
-        } else if (this.display === 'list') {
+        } else if (this.layout === 'list') {
             return this.items.slice(this.computedMaxCount);
         }
 
