@@ -1095,8 +1095,10 @@ export default class AvatarGroup extends LightningElement {
      * Update the number of visible and collapsed items, depending on the available space.
      */
     updateVisibleMaxCount() {
+        if (!this.wrapperElement) {
+            return;
+        }
         if (
-            !this.wrapperElement ||
             (!this.avatarItemElement && !this.showMoreButtonElement) ||
             this.items.length <= 1
         ) {
