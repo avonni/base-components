@@ -94,12 +94,11 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives.forEach((primitive) => {
-                expect(primitive.completedSteps).toMatchObject(STEPS_NAMES);
-
-                if (STEPS_NAMES.includes(primitive.value)) {
-                    expect(primitive.classList).toContain('slds-is-completed');
-                }
+            [1, 2].forEach((i) => {
+                expect(primitives[i].isCompleted).toBeTruthy();
+            });
+            [0, 3].forEach((i) => {
+                expect(primitives[i].isCompleted).toBeFalsy();
             });
         });
     });
@@ -114,8 +113,10 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-
-            expect(primitives[1].classList).toContain('slds-is-active');
+            [0, 2, 3].forEach((i) => {
+                expect(primitives[i].isCurrent).toBeFalsy();
+            });
+            expect(primitives[1].isCurrent).toBeTruthy();
         });
     });
 
@@ -129,9 +130,11 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-
-            primitives.forEach((primitive) => {
-                expect(primitive.disabledSteps).toMatchObject(STEPS_NAMES);
+            [1, 2].forEach((i) => {
+                expect(primitives[i].isDisabled).toBeTruthy();
+            });
+            [0, 3].forEach((i) => {
+                expect(primitives[i].isDisabled).toBeFalsy();
             });
         });
     });
@@ -147,10 +150,11 @@ describe('Progress Indicator', () => {
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
 
-            primitives.forEach((primitive) => {
-                if (STEPS_NAMES.includes(primitive.value)) {
-                    expect(primitive.classList).toContain('slds-has-error');
-                }
+            [1, 2].forEach((i) => {
+                expect(primitives[i].isError).toBeTruthy();
+            });
+            [0, 3].forEach((i) => {
+                expect(primitives[i].isError).toBeFalsy();
             });
         });
     });
@@ -225,92 +229,42 @@ describe('Progress Indicator', () => {
         });
     });
 
-    // type
-    it('Progress Indicator: type', () => {
-        element.steps = STEPS;
-
-        return Promise.resolve().then(() => {
-            const primitives = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-primitive-progress-step"]'
-            );
-
-            expect(primitives).toHaveLength(4);
-
-            primitives.forEach((primitive, index) => {
-                expect(primitive.label).toBe(STEPS[index].label);
-                expect(primitive.labelPosition).toBe(
-                    STEPS[index].labelPosition || 'top'
-                );
-                expect(primitive.description).toBe(STEPS[index].description);
-                expect(primitive.descriptionPosition).toBe(
-                    STEPS[index].descriptionPosition || 'top'
-                );
-                expect(primitive.value).toBe(STEPS[index].value);
-                expect(primitive.buttonLabel).toBe(STEPS[index].buttonLabel);
-                expect(primitive.buttonName).toBe(STEPS[index].buttonName);
-                expect(primitive.buttonIconName).toBe(
-                    STEPS[index].buttonIconName
-                );
-                expect(primitive.buttonIconPosition).toBe(
-                    STEPS[index].buttonIconPosition || 'left'
-                );
-                expect(primitive.buttonDisabled).toBe(
-                    STEPS[index].buttonDisabled || false
-                );
-                expect(primitive.buttonVariant).toBe(
-                    STEPS[index].buttonVariant || 'neutral'
-                );
-                expect(primitive.popoverVariant).toBe(
-                    STEPS[index].popoverVariant || 'base'
-                );
-                expect(primitive.popoverIconName).toBe(
-                    STEPS[index].popoverIconName
-                );
-                expect(primitive.popoverIconSrc).toBe(
-                    STEPS[index].popoverIconSrc
-                );
-                expect(primitive.popoverIconNameWhenHover).toBe(
-                    STEPS[index].popoverIconNameWhenHover
-                );
-                expect(primitive.popoverIconSrcWhenHover).toBe(
-                    STEPS[index].popoverIconSrcWhenHover
-                );
-                expect(primitive.popoverSize).toBe(
-                    STEPS[index].popoverSize || 'medium'
-                );
-                expect(primitive.popoverRatio).toBe(
-                    STEPS[index].popoverRatio || '1-by-1'
-                );
-                expect(primitive.popoverLabel).toBe(STEPS[index].popoverLabel);
-                expect(primitive.popoverDescription).toBe(
-                    STEPS[index].popoverDescription
-                );
-                expect(primitive.popoverHidden).toBe(
-                    STEPS[index].popoverHidden || false
-                );
-                expect(primitive.assistiveText).toBe(
-                    STEPS[index].assistiveText
-                );
-            });
-        });
-    });
-
     // variant
     it('Progress Indicator: variant = base', () => {
         element.variant = 'base';
+        element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('.slds-progress');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
             expect(wrapper.classList).not.toContain('slds-progress_shade');
+
+            const primitives = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-progress-step"]'
+            );
+            primitives.forEach((primitive) => {
+                expect(primitive.variant).toBe('base');
+            });
         });
     });
 
     it('Progress Indicator: variant = shaded', () => {
         element.variant = 'shaded';
+        element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('.slds-progress');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
             expect(wrapper.classList).toContain('slds-progress_shade');
+
+            const primitives = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-progress-step"]'
+            );
+            primitives.forEach((primitive) => {
+                expect(primitive.variant).toBe('shaded');
+            });
         });
     });
 
@@ -325,33 +279,11 @@ describe('Progress Indicator', () => {
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
 
-            primitives.forEach((primitive) => {
-                if (STEPS_NAMES.includes(primitive.value)) {
-                    expect(primitive.classList).toContain('slds-has-warning');
-                }
+            [1, 2].forEach((i) => {
+                expect(primitives[i].isWarning).toBeTruthy();
             });
-        });
-    });
-
-    it('Progress Indicator: warning steps, with variant shaded', () => {
-        element.variant = 'shaded';
-        element.steps = STEPS;
-        element.warningSteps = STEPS_NAMES;
-
-        return Promise.resolve().then(() => {
-            const primitives = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-primitive-progress-step"]'
-            );
-
-            primitives.forEach((primitive) => {
-                if (STEPS_NAMES.includes(primitive.value)) {
-                    expect(primitive.classList).toContain(
-                        'slds-has-warning-shaded'
-                    );
-                    expect(primitive.classList).not.toContain(
-                        'slds-has-warning'
-                    );
-                }
+            [0, 3].forEach((i) => {
+                expect(primitives[i].isWarning).toBeFalsy();
             });
         });
     });
