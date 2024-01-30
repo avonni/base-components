@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     dateTimeObjectFrom,
     getStartOfWeek,
@@ -6,16 +7,21 @@ import {
     intervalFrom,
     isInTimeFrame,
     normalizeBoolean,
+    normalizeObject,
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
-import { classSet } from 'c/utils';
 import { TIME_ZONES } from './timezones';
 import { DateTime } from 'c/luxon';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+const DATE_PICKER_VARIANTS = {
+    valid: ['input', 'inline'],
+    default: 'input'
+};
+const DATE_PICKER_MOUSE_MOVE_OFFSET = 25;
 const DATE_TIME_VARIANTS = {
     valid: ['daily', 'weekly', 'inline', 'timeline', 'monthly'],
     default: 'daily'
@@ -34,11 +40,13 @@ const WEEKDAY_FORMATS = {
     valid: ['narrow', 'short', 'long'],
     default: 'short'
 };
+const MIN_INLINE_DATE_PICKER_DATE_WIDTH = 60;
 const MONTH_FORMATS = {
     valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
     default: 'long'
 };
 
+const DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS = 7;
 const DEFAULT_START_TIME = '08:00';
 const DEFAULT_END_TIME = '18:00';
 const DEFAULT_TIME_SLOT_DURATION = 1800000;
@@ -87,12 +95,15 @@ export default class DateTimePicker extends LightningElement {
      */
     @api name;
 
+    _avatar = {};
     _dateFormatDay = DATE_TIME_FORMATS.dayDefault;
     _dateFormatWeekday = WEEKDAY_FORMATS.default;
     _dateFormatMonth = MONTH_FORMATS.default;
     _dateFormatYear;
+    _datePickerVariant = DATE_PICKER_VARIANTS.default;
     _disabledDateTimes = [];
     _endTime = DEFAULT_END_TIME;
+    _hideDateLabel = false;
     _hideDatePicker = false;
     _hideLabel;
     _hideNavigation = false;
@@ -124,12 +135,17 @@ export default class DateTimePicker extends LightningElement {
     helpMessage;
     datePickerValue;
     timezones = TIME_ZONES;
+    datePickerWeekdays = [];
 
     _computedEndTime;
     _computedStartTime;
     _computedValue = [];
     _connected = false;
     _goToDate;
+    _inlineDatePickerFirstDay;
+    _inlineDatePickerMaxVisibleDays = DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS;
+    _resizeIsHandledByParent = false;
+    _resizeObserver;
     _selectedDayTime;
     _today;
     _valid = true;
@@ -146,9 +162,50 @@ export default class DateTimePicker extends LightningElement {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
+
+        /**
+         * The event fired when the date time picker is inserted in the DOM.
+         *
+         * @event
+         * @name privatedatetimepickerconnected
+         * @param {object} callbacks Object with two keys:
+         * * `updateInlineDatePickerMaxVisibleDays`: When called, the number of visible dates in the inline date picker is updated.
+         * * `setIsResizedByParent`: If called with `true`, the resizing of the date time picker is handled by its parent.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatedatetimepickerconnected', {
+                detail: {
+                    callbacks: {
+                        updateInlineDatePickerMaxVisibleDays:
+                            this.updateInlineDatePickerMaxVisibleDays.bind(
+                                this
+                            ),
+                        setIsResizedByParent:
+                            this.setIsResizedByParent.bind(this)
+                    }
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
     }
 
     renderedCallback() {
+        if (
+            !this._resizeObserver &&
+            this.showInlineDatePicker &&
+            !this._resizeIsHandledByParent
+        ) {
+            this._initResizeObserver();
+        } else if (
+            this._resizeObserver &&
+            (!this.showInlineDatePicker || this._resizeIsHandledByParent)
+        ) {
+            this._removeResizeObserver();
+        }
+
         if (this._goToDate) {
             const monthlyCalendar = this.template.querySelector(
                 '[data-element-id="avonni-calendar"]'
@@ -160,11 +217,44 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    disconnectedCallback() {
+        this._removeResizeObserver();
+
+        /**
+         * The event fired when the layout is removed from the DOM.
+         *
+         * @event
+         * @name privatedatetimepickerdisconnected
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatedatetimepickerdisconnected', {
+                composed: true,
+                bubbles: true
+            })
+        );
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Avatar object. The avatar will be displayed in the header, to the left of the label.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get avatar() {
+        return this._avatar;
+    }
+    set avatar(value) {
+        this._avatar = normalizeObject(value);
+    }
 
     /**
      * Valid values include numeric and 2-digit.
@@ -245,6 +335,30 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Variant of the date picker displayed in the header. Valid values include input and inline.
+     *
+     * @type {string}
+     * @default input
+     * @public
+     */
+    @api
+    get datePickerVariant() {
+        return this._datePickerVariant;
+    }
+
+    set datePickerVariant(value) {
+        this._datePickerVariant = normalizeString(value, {
+            fallbackValue: DATE_PICKER_VARIANTS.default,
+            validValues: DATE_PICKER_VARIANTS.valid
+        });
+
+        if (this._connected && this.showInlineDatePicker) {
+            this._setInlineDatePickerFirstDay();
+            this._createDatePickerWeekdays();
+        }
+    }
+
+    /**
      * If present, the date time picker is disabled and users cannot interact with it.
      *
      * @type {boolean}
@@ -306,6 +420,22 @@ export default class DateTimePicker extends LightningElement {
             this._initTimeSlots();
             this._generateTable();
         }
+    }
+
+    /**
+     * If present, hide the currently visible date or date range.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideDateLabel() {
+        return this._hideDateLabel;
+    }
+
+    set hideDateLabel(value) {
+        this._hideDateLabel = normalizeBoolean(value);
     }
 
     /**
@@ -802,30 +932,13 @@ export default class DateTimePicker extends LightningElement {
             : `${firstWeekDay}, ${firstDay}`;
     }
 
-    get dayClass() {
-        return classSet('slds-text-align_center slds-grid')
-            .add({
-                'avonni-date-time-picker__day_inline':
-                    this._variant === 'inline',
-                'avonni-date-time-picker__day': this._variant !== 'inline'
-            })
-            .toString();
-    }
-
     /**
-     * Array of ISO dates that should be disabled.
+     * Size of the date picker column, depending on its variant.
      *
-     * @type {string[]}
+     * @type {string}
      */
-    get disabledFullDays() {
-        const valid = [];
-        this.disabledDateTimes.forEach((date) => {
-            const dateTime = this._createDateTimeFromDateString(date);
-            if (dateTime) {
-                valid.push(dateTime.toISO());
-            }
-        });
-        return valid;
+    get datePickerColumnSize() {
+        return this.showInlineDatePicker ? '12' : 'auto';
     }
 
     /**
@@ -835,6 +948,15 @@ export default class DateTimePicker extends LightningElement {
      */
     get firstWeekDayToString() {
         return this.firstWeekDay.toISO();
+    }
+
+    /**
+     * True if the variant is inline.
+     *
+     * @type {boolean}
+     */
+    get isInline() {
+        return this.variant === 'inline';
     }
 
     /**
@@ -900,6 +1022,37 @@ export default class DateTimePicker extends LightningElement {
         return this.variant === 'monthly';
     }
 
+    /**
+     * True if the avatar should be shown.
+     *
+     * @type {boolean}
+     */
+    get showAvatar() {
+        return !!(
+            this.avatar.src ||
+            this.avatar.fallbackIconName ||
+            this.avatar.initials
+        );
+    }
+
+    /**
+     * True if the date picker variant is inline.
+     *
+     * @type {boolean}
+     */
+    get showInlineDatePicker() {
+        return this.datePickerVariant === 'inline';
+    }
+
+    /**
+     * Returns the direction of the picker depending on the variant.
+     *
+     * @type {string}
+     */
+    get tableDirection() {
+        return this.isInline ? 'row' : 'column';
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -936,8 +1089,11 @@ export default class DateTimePicker extends LightningElement {
             this.variant === 'weekly'
                 ? getStartOfWeek(normalizedDate)
                 : normalizedDate;
+        this.datePickerValue =
+            this.datePickerVariant === 'inline'
+                ? normalizedDate.toISO()
+                : this.firstWeekDayToString;
         this._generateTable();
-        this.datePickerValue = this.firstWeekDayToString;
         this._goToDate = normalizedDate;
 
         if (this._connected) {
@@ -969,6 +1125,10 @@ export default class DateTimePicker extends LightningElement {
         this._constraint.setCustomValidity(message);
     }
 
+    setIsResizedByParent(value) {
+        this._resizeIsHandledByParent = normalizeBoolean(value);
+    }
+
     /**
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
@@ -984,6 +1144,32 @@ export default class DateTimePicker extends LightningElement {
             '[data-element-id="lightning-input"]'
         );
         if (datePicker) datePicker.reportValidity();
+    }
+
+    /**
+     * Update the number of visible dates in the inline date picker.
+     */
+    updateInlineDatePickerMaxVisibleDays() {
+        const datePickerWrapper = this.template.querySelector(
+            '[data-element-id="div-inline-date-picker-wrapper"]'
+        );
+        if (!datePickerWrapper) {
+            return;
+        }
+        const width = datePickerWrapper.offsetWidth;
+        let maxVisibleDates = Math.floor(
+            width / MIN_INLINE_DATE_PICKER_DATE_WIDTH
+        );
+        maxVisibleDates =
+            this._normalizeInlineDatePickerNumberOfVisibleDates(
+                maxVisibleDates
+            );
+
+        if (this._inlineDatePickerMaxVisibleDays !== maxVisibleDates) {
+            this._inlineDatePickerMaxVisibleDays = maxVisibleDates;
+            this._setInlineDatePickerFirstDay();
+            this._createDatePickerWeekdays();
+        }
     }
 
     /*
@@ -1069,6 +1255,19 @@ export default class DateTimePicker extends LightningElement {
         this._processValue();
     }
 
+    _initResizeObserver() {
+        const toolbar = this.template.querySelector(
+            '[data-element-id="avonni-layout-toolbar"]'
+        );
+        if (!toolbar) {
+            return;
+        }
+
+        this._resizeObserver = new AvonniResizeObserver(toolbar, () => {
+            this.updateInlineDatePickerMaxVisibleDays();
+        });
+    }
+
     /**
      * Time slots initialization.
      */
@@ -1105,6 +1304,42 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Create the weekday items used by the date picker, when its variant is inline.
+     *
+     * @param {DateTime} firstVisibleDay The first day of the week to be displayed.
+     */
+    _createDatePickerWeekdays() {
+        this.datePickerWeekdays = [];
+
+        let selectedDay;
+        if (this.datePickerValue) {
+            const normalizedDate = this._processDate(this.datePickerValue);
+
+            if (normalizedDate) {
+                selectedDay = normalizedDate.startOf('day').ts;
+            }
+        }
+
+        for (let i = 0; i < this._inlineDatePickerMaxVisibleDays; i++) {
+            const date = this._inlineDatePickerFirstDay.plus({ days: i });
+            const weekday = {
+                date,
+                monthLabel: date.toLocaleString({
+                    month: this.dateFormatMonth
+                }),
+                weekdayLabel: date.toLocaleString({
+                    weekday: this.dateFormatWeekday
+                }),
+                size: `calc(100% / ${this._inlineDatePickerMaxVisibleDays})`
+            };
+            if (date.startOf('day').ts === selectedDay) {
+                weekday.isSelected = true;
+            }
+            this.datePickerWeekdays.push(weekday);
+        }
+    }
+
+    /**
      * Center the picker on the right date.
      */
     _setFirstWeekDay() {
@@ -1118,6 +1353,18 @@ export default class DateTimePicker extends LightningElement {
             date = this._processDate(this.max);
         }
         this.goToDate(date);
+    }
+
+    _setInlineDatePickerFirstDay() {
+        if (this._inlineDatePickerMaxVisibleDays === 7) {
+            // Show the current week, starting on Sunday
+            this._inlineDatePickerFirstDay = getStartOfWeek(this.firstWeekDay);
+        } else {
+            // Show the selected day in the center of the date picker
+            this._inlineDatePickerFirstDay = this.firstWeekDay.minus({
+                days: Math.floor(this._inlineDatePickerMaxVisibleDays / 2)
+            });
+        }
     }
 
     /**
@@ -1167,6 +1414,11 @@ export default class DateTimePicker extends LightningElement {
 
         this.lastWeekDay = processedTable[processedTable.length - 1].day;
         this.table = processedTable;
+
+        if (this.showInlineDatePicker) {
+            this._setInlineDatePickerFirstDay();
+            this._createDatePickerWeekdays();
+        }
     }
 
     //  /!\ Changes the dayTime object passed as argument.
@@ -1298,6 +1550,24 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    _normalizeInlineDatePickerNumberOfVisibleDates(maxVisibleDates) {
+        if (maxVisibleDates < 1) {
+            return 1;
+        } else if (maxVisibleDates > 7) {
+            return 7;
+        } else if (maxVisibleDates % 2 === 0) {
+            return maxVisibleDates - 1;
+        }
+        return maxVisibleDates;
+    }
+
+    _removeResizeObserver() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -1370,6 +1640,100 @@ export default class DateTimePicker extends LightningElement {
             : this._processDate(value);
         this.goToDate(date);
         this.datePickerValue = date.toISO();
+    }
+
+    /**
+     * Handle a click on the inline date picker.
+     *
+     * @param {Event} event click event.
+     */
+    handleInlineDatePickerClick(event) {
+        if (event.button !== 0) {
+            return;
+        }
+        const date = this._processDate(
+            Number(event.currentTarget.dataset.date)
+        );
+        this.goToDate(date);
+    }
+
+    /**
+     * Handle the dragging of the inline date picker.
+     *
+     * @param {Event} start touchstart or mousedown event.
+     */
+    handleInlineDatePickerDrag(start) {
+        if (start.type === 'mousedown' && start.button !== 0) {
+            return;
+        }
+        const startPosition = start.clientX || start.changedTouches[0].clientX;
+
+        const handleMove = (move) => {
+            const datePicker = this.template.querySelector(
+                '[data-element-id="div-inline-date-picker"]'
+            );
+            const x = move.clientX || move.changedTouches[0].clientX;
+            let offset = x - startPosition;
+            if (Math.abs(offset) > DATE_PICKER_MOUSE_MOVE_OFFSET) {
+                const factor = offset < 0 ? -1 : 1;
+                offset = DATE_PICKER_MOUSE_MOVE_OFFSET * factor;
+            }
+            datePicker.style.transform = `translateX(${offset}px)`;
+        };
+
+        const handleEnd = (end) => {
+            window.removeEventListener('mouseup', handleEnd);
+            window.removeEventListener('mousemove', handleMove);
+            window.removeEventListener('touchend', handleEnd);
+            window.removeEventListener('touchmove', handleMove);
+
+            const endPosition = end.clientX || end.changedTouches[0].clientX;
+            const move = endPosition - startPosition;
+            const goToPreviousWeek = move >= DATE_PICKER_MOUSE_MOVE_OFFSET;
+            const goToNextWeek = move <= -DATE_PICKER_MOUSE_MOVE_OFFSET;
+            if (goToPreviousWeek) {
+                this.handleInlineDatePickerPrevClick();
+            } else if (goToNextWeek) {
+                this.handleInlineDatePickerNextClick();
+            }
+
+            const datePicker = this.template.querySelector(
+                '[data-element-id="div-inline-date-picker"]'
+            );
+            datePicker.style.transition = 'transform 0.2s ease-in-out';
+            datePicker.style.transform = '';
+
+            setTimeout(() => {
+                if (datePicker) {
+                    datePicker.style.transition = '';
+                }
+            }, 201);
+        };
+
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('touchmove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+        window.addEventListener('touchend', handleEnd);
+    }
+
+    /**
+     * Handle a click on the next button of the inline date picker.
+     */
+    handleInlineDatePickerNextClick() {
+        this._inlineDatePickerFirstDay = this._inlineDatePickerFirstDay.plus({
+            days: this._inlineDatePickerMaxVisibleDays
+        });
+        this._createDatePickerWeekdays();
+    }
+
+    /**
+     * Handle a click on the previous button of the inline date picker.
+     */
+    handleInlineDatePickerPrevClick() {
+        this._inlineDatePickerFirstDay = this._inlineDatePickerFirstDay.minus({
+            days: this._inlineDatePickerMaxVisibleDays
+        });
+        this._createDatePickerWeekdays();
     }
 
     /**
