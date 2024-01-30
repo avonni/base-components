@@ -6,6 +6,7 @@
     display: flex;
     flex: 0 0 100%;
     max-width: 100%;
+    align-items: center;
 }
 
 .avonni-carousel__nav-button {

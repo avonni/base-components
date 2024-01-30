@@ -220,6 +220,20 @@ export default {
                 defaultValue: { summary: 'border' },
                 category: 'Layout'
             }
+        },
+        imagePosition: {
+            name: 'image-position',
+            control: {
+                type: 'select'
+            },
+            description:
+                'Position of the image. Valid values include top, left, right and bottom.',
+            options: ['top', 'left', 'right', 'bottom'],
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'top' },
+                category: 'Layout'
+            }
         }
     },
 
@@ -238,7 +252,8 @@ export default {
         indicatorVariant: 'base',
         isInfinite: false,
         itemsPerPanel: 1,
-        scrollDuration: 5
+        scrollDuration: 5,
+        imagePosition: 'top'
     }
 };
 
@@ -338,4 +353,11 @@ ResponsiveWithStretchButtons.args = {
     largeItemsPerPanel: 2,
     actionsVariant: 'stretch',
     actionsPosition: 'bottom-center'
+};
+
+export const ImagePositionLeft = Template.bind({});
+ImagePositionLeft.args = {
+    items: items,
+    itemsPerPanel: 2,
+    imagePosition: 'left'
 };

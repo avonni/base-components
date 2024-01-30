@@ -22,6 +22,11 @@ const ACTIONS_VARIANTS = {
 
 const DEFAULT_CAROUSEL_HEIGHT = 6.625;
 
+const IMAGE_POSITIONS = {
+    valid: ['top', 'left', 'right', 'bottom'],
+    default: 'top'
+};
+
 export default class PrimitiveCarouselItem extends LightningElement {
     @api title;
     @api description;
@@ -38,6 +43,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actions = [];
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
+    _imagePosition = IMAGE_POSITIONS.default;
+
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
 
     render() {
@@ -61,7 +68,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     get actions() {
         return this._actions;
     }
-
     set actions(actions) {
         this._actions = actions;
         this.initializeCarouselHeight();
@@ -78,7 +84,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     get actionsPosition() {
         return this._actionsPosition;
     }
-
     set actionsPosition(position) {
         this._actionsPosition = normalizeString(position, {
             fallbackValue: ACTIONS_POSITIONS.default,
@@ -97,13 +102,30 @@ export default class PrimitiveCarouselItem extends LightningElement {
     get actionsVariant() {
         return this._actionsVariant;
     }
-
     set actionsVariant(variant) {
         this._actionsVariant = normalizeString(variant, {
             fallbackValue: ACTIONS_VARIANTS.default,
             validValues: ACTIONS_VARIANTS.valid
         });
         this.initializeCarouselHeight();
+    }
+
+    /**
+     * Valid values include top, left, right, bottom.
+     *
+     * @type {string}
+     * @public
+     * @default top
+     */
+    @api
+    get imagePosition() {
+        return this._imagePosition;
+    }
+    set imagePosition(position) {
+        this._imagePosition = normalizeString(position, {
+            fallbackValue: IMAGE_POSITIONS.default,
+            validValues: IMAGE_POSITIONS.valid
+        });
     }
 
     /*
@@ -222,24 +244,35 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return !this.isMenuVariant ? 'slds-hide_small' : '';
     }
 
+    get computedCarouselClass() {
+        return classSet(
+            `slds-carousel__panel-action avonni-carousel__panel-action avonni-carousel__image-${this.imagePosition}`
+        ).add({
+            'slds-text-link_reset': normalizeBoolean(this.href)
+        });
+    }
+
     /**
      * Computed carousel content class - set to display content bottom if position is bottom.
      *
      * @type {string}
      */
     get computedCarouselContentClass() {
-        return this.isBottomPosition
-            ? 'slds-carousel__content avonni-primitive-carousel-item__content_background avonni-carousel__content-bottom'
-            : 'slds-carousel__content avonni-primitive-carousel-item__content_background';
+        return classSet(
+            'slds-carousel__content avonni-carousel__content avonni-primitive-carousel-item__content_background'
+        ).add({
+            'avonni-carousel__content-bottom':
+                this.hasActions && this.isBottomPosition
+        });
     }
 
     /**
-     * Computed Carousle content size height styling.
+     * Computed Carousel content size height styling.
      *
      * @type {string}
      */
     get computedCarouselContentSize() {
-        return `height: ${this._carouselContentHeight}rem`;
+        return `height: ${this._carouselContentHeight}rem;`;
     }
 
     /**
@@ -248,9 +281,11 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedCarouselImageClass() {
-        return !this.isBottomPosition
-            ? 'slds-carousel__image slds-is-relative'
-            : 'slds-carousel__image';
+        return classSet(
+            'avonni-carousel__image-container slds-carousel__image'
+        ).add({
+            'slds-is-relative': !this.isBottomPosition
+        });
     }
 
     /**

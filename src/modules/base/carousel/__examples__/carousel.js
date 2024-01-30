@@ -18,7 +18,8 @@ export const Carousel = ({
     mediumItemsPerPanel,
     largeItemsPerPanel,
     actionsPosition,
-    actionsVariant
+    actionsVariant,
+    imagePosition
 }) => {
     const element = document.createElement('ac-base-carousel');
     element.assistiveText = assistiveText;
@@ -37,5 +38,6 @@ export const Carousel = ({
     element.largeItemsPerPanel = largeItemsPerPanel;
     element.actionsPosition = actionsPosition;
     element.actionsVariant = actionsVariant;
+    element.imagePosition = imagePosition;
     return element;
 };
