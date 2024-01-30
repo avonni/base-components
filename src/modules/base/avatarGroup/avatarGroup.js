@@ -662,9 +662,7 @@ export default class AvatarGroup extends LightningElement {
      */
     get isClassic() {
         return (
-            this.layout === 'stack' &&
-            this.items.length === 2 &&
-            !this.actionIconName
+            this.layout === 'stack' && this.hasTwoItems && !this.actionIconName
         );
     }
 
