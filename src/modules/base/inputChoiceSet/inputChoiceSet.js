@@ -534,7 +534,7 @@ export default class InputChoiceSet extends LightningElement {
      */
     get computedCheckContainerClass() {
         const { size } = this.computedTypeAttributes;
-        return classSet('')
+        return classSet('avonni-input-choice-set__checkbox-container')
             .add({
                 'slds-order_3': this.checkPosition === 'right',
                 'slds-p-top_xx-small':
