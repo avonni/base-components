@@ -1,11 +1,11 @@
-import Component from '../../storybookWrappers/activityTimeline/infiniteLoadingActivityTimeline';
+import Component from '../../storybookWrappers/activityTimeline/infiniteLoadingUsingShowMore';
 
 customElements.define(
-    'ac-infinite-loading-activity-timeline',
+    'ac-infinite-loading-activity-timeline-using-show-more',
     Component.CustomElementConstructor
 );
 
-export const InfiniteLoadingActivityTimeline = ({
+export const InfiniteLoadingUsingShowMoreActivityTimeline = ({
     actions,
     buttonShowMoreLabel,
     buttonVariant,
@@ -16,7 +16,8 @@ export const InfiniteLoadingActivityTimeline = ({
     buttonShowLessLabel,
     closed,
     collapsible,
-    enableInfiniteLoading,
+    groupBy,
+    hideItemDate,
     itemDateFormat,
     iconName,
     iconSize,
@@ -25,16 +26,14 @@ export const InfiniteLoadingActivityTimeline = ({
     items,
     loadMoreOffset,
     locale,
-    hideItemDate,
-    groupBy,
-    orientation,
     maxVisibleItems,
+    orientation,
     sortedDirection,
     timezone,
     title
 }) => {
     const element = document.createElement(
-        'ac-infinite-loading-activity-timeline'
+        'ac-infinite-loading-activity-timeline-using-show-more'
     );
     element.actions = actions;
     element.buttonShowMoreLabel = buttonShowMoreLabel;
@@ -46,7 +45,6 @@ export const InfiniteLoadingActivityTimeline = ({
     element.buttonShowLessLabel = buttonShowLessLabel;
     element.closed = closed;
     element.collapsible = collapsible;
-    element.enableInfiniteLoading = enableInfiniteLoading;
     element.itemDateFormat = itemDateFormat;
     element.locale = locale;
     element.groupBy = groupBy;

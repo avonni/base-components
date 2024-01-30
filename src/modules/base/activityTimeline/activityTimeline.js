@@ -169,13 +169,12 @@ export default class ActivityTimeline extends LightningElement {
     selectedItem;
     horizontalTimeline;
 
+    _hasHiddenItems = true;
     _key;
     _isConnected = false;
     _presentDates = [];
     _pastDates = [];
     _upcomingDates = [];
-
-    showMore = true;
 
     @track orderedDates = [];
 
@@ -578,17 +577,16 @@ export default class ActivityTimeline extends LightningElement {
     get maxVisibleItems() {
         return this._maxVisibleItems;
     }
-
     set maxVisibleItems(value) {
-        if (value && value > 0) {
-            this._maxVisibleItems = value;
+        const number = parseInt(value, 10);
+        this._maxVisibleItems =
+            !isNaN(number) && number > 0 ? number : undefined;
 
-            if (this.isTimelineHorizontal) {
-                this.requestRedrawTimeline();
-                setTimeout(() => {
-                    this.renderedCallback();
-                }, 0);
-            }
+        if (this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+            setTimeout(() => {
+                this.renderedCallback();
+            }, 0);
         }
     }
 
@@ -687,7 +685,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonLabel() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreLabel
             : this.buttonShowLessLabel;
     }
@@ -697,7 +695,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonIcon() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreIconName
             : this.buttonShowLessIconName;
     }
@@ -707,7 +705,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonPosition() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreIconPosition
             : this.buttonShowLessIconPosition;
     }
@@ -737,7 +735,9 @@ export default class ActivityTimeline extends LightningElement {
      */
     get isShowButtonHidden() {
         return (
-            !this.maxVisibleItems || this.maxVisibleItems >= this.items.length
+            this.enableInfiniteLoading ||
+            !this.maxVisibleItems ||
+            this.maxVisibleItems >= this.items.length
         );
     }
 
@@ -757,9 +757,20 @@ export default class ActivityTimeline extends LightningElement {
      */
     get loadingSpinnerClass() {
         return classSet({
-            'slds-is-relative avonni-activity-timeline__spinner':
-                this.items.length
+            'slds-is-relative':
+                (this.items.length || !this.isShowButtonHidden) &&
+                this.isLoading,
+            'avonni-activity-timeline__spinner':
+                this.items.length && this.isLoading && this.isShowButtonHidden,
+            'slds-show_inline-block':
+                this.isLoading && !this.isShowButtonHidden,
+            'slds-m-top_small slds-m-bottom_small slds-m-left_small':
+                !this.isShowButtonHidden
         }).toString();
+    }
+
+    get loadingSpinnerSize() {
+        return this.isShowButtonHidden ? 'medium' : 'small';
     }
 
     /**
@@ -785,7 +796,7 @@ export default class ActivityTimeline extends LightningElement {
                       (a, b) =>
                           new Date(a.datetimeValue) - new Date(b.datetimeValue)
                   );
-        return this.showMore &&
+        return this._hasHiddenItems &&
             !this.isShowButtonHidden &&
             this.maxVisibleItems &&
             !this.isTimelineHorizontal
@@ -1117,7 +1128,24 @@ export default class ActivityTimeline extends LightningElement {
      * Toggle the show more button
      */
     handleToggleShowMoreButton() {
-        this.showMore = !this.showMore;
-        this.initActivityTimeline();
+        /**
+         * The event fired when you click on the show more/less button that appears at the end of the vertical timeline, if a `max-visible-items` value is present and `enable-infinite-loading` is not present.
+         *
+         * @event
+         * @name itemsvisibilitytoggle
+         * @param {boolean} show True if items are currently hidden and the click was meant to show more of them. False if the click was meant to hide the visible items.
+         * @public
+         * @cancelable
+         */
+        const event = new CustomEvent('itemsvisibilitytoggle', {
+            detail: { show: this._hasHiddenItems },
+            cancelable: true
+        });
+        this.dispatchEvent(event);
+
+        if (!event.defaultPrevented) {
+            this._hasHiddenItems = !this._hasHiddenItems;
+            this.initActivityTimeline();
+        }
     }
 }
