@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 import {
     animationFrame,
     keyCodes,
@@ -112,15 +112,12 @@ export default class AvatarGroup extends LightningElement {
     _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _maxCount;
-    _maxVisibleCount;
-    _resizeObserver;
     _size = AVATAR_GROUP_SIZES.default;
     _layout = AVATAR_GROUP_LAYOUTS.default;
     _listButtonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
     _listButtonShowLessIconPosition = BUTTON_ICON_POSITIONS.default;
     _listButtonVariant = BUTTON_VARIANTS.default;
     _variant = AVATAR_GROUP_VARIANTS.default;
-    _imageWidth;
 
     showHiddenItems = false;
     _autoPosition;
@@ -129,10 +126,12 @@ export default class AvatarGroup extends LightningElement {
     _focusedIndex = 0;
     _hiddenItemsStartIndex = 0;
     _lastHiddenItemIndex;
+    _maxVisibleCount;
     _popoverFocusoutAnimationFrame;
     _popoverIsFocused = false;
     _positioning = false;
     _preventPopoverClosing = false;
+    _resizeObserver;
 
     connectedCallback() {
         this.template.addEventListener(
@@ -242,7 +241,6 @@ export default class AvatarGroup extends LightningElement {
     get items() {
         return this._items;
     }
-
     set items(value) {
         this.keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
@@ -269,7 +267,6 @@ export default class AvatarGroup extends LightningElement {
     get layout() {
         return this._layout;
     }
-
     set layout(value) {
         this._layout = normalizeString(value, {
             fallbackValue: AVATAR_GROUP_LAYOUTS.default,
@@ -288,7 +285,6 @@ export default class AvatarGroup extends LightningElement {
     get listButtonShowLessIconPosition() {
         return this._listButtonShowLessIconPosition;
     }
-
     set listButtonShowLessIconPosition(value) {
         this._listButtonShowLessIconPosition = normalizeString(value, {
             fallbackValue: BUTTON_ICON_POSITIONS.default,
@@ -307,7 +303,6 @@ export default class AvatarGroup extends LightningElement {
     get listButtonShowMoreIconPosition() {
         return this._listButtonShowMoreIconPosition;
     }
-
     set listButtonShowMoreIconPosition(value) {
         this._listButtonShowMoreIconPosition = normalizeString(value, {
             fallbackValue: BUTTON_ICON_POSITIONS.default,
@@ -326,7 +321,6 @@ export default class AvatarGroup extends LightningElement {
     get listButtonVariant() {
         return this._listButtonVariant;
     }
-
     set listButtonVariant(value) {
         this._listButtonVariant = normalizeString(value, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -347,7 +341,6 @@ export default class AvatarGroup extends LightningElement {
     get maxCount() {
         return this._maxCount;
     }
-
     set maxCount(value) {
         this._maxCount = value === Infinity ? value : parseInt(value, 10);
     }
@@ -362,7 +355,6 @@ export default class AvatarGroup extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: AVATAR_GROUP_SIZES.default,
@@ -380,7 +372,6 @@ export default class AvatarGroup extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: AVATAR_GROUP_VARIANTS.default,
@@ -404,38 +395,24 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the action button
+     * Class of the action button.
+     *
      * @type {string}
      */
     get actionButtonClass() {
         return classSet('avonni-avatar-group__action-button')
+            .add(`avonni-avatar-group__action-button_${this.variant}`)
+            .add(`avonni-avatar-group__action-button_${this.size}`)
             .add({
                 'avonni-avatar-group__avatar-in-line-button':
                     this.layout === 'stack'
-            })
-            .add({
-                'avonni-avatar-group__action-button_circle':
-                    this.variant === 'circle',
-                'avonni-avatar-group__action-button_square':
-                    this.variant === 'square',
-                'avonni-avatar-group__action-button_x-large':
-                    this.size === 'x-large',
-                'avonni-avatar-group__action-button_xx-large':
-                    this.size === 'xx-large',
-                'avonni-avatar-group__action-button_large':
-                    this.size === 'large',
-                'avonni-avatar-group__action-button_medium':
-                    this.size === 'medium',
-                'avonni-avatar-group__action-button_small':
-                    this.size === 'small',
-                'avonni-avatar-group__action-button_x-small':
-                    this.size === 'x-small'
             })
             .toString();
     }
 
     /**
-     * Action button icon size
+     * Action button icon size.
+     *
      * @type {string}
      */
     get actionButtonIconSize() {
@@ -452,7 +429,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of action button wrapper
+     * Class of action button wrapper.
+     *
      * @type {string}
      */
     get actionButtonWrapperClass() {
@@ -469,7 +447,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class to add a flex row gap to grid and stack layouts
+     * Class to add a flex row gap to grid and stack layouts.
+     *
      * @type {string}
      */
     get avatarFlexWrapperClass() {
@@ -481,7 +460,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class wrapping the two-avatar group
+     * Class wrapping the two-avatar group.
+     *
      * @type {string}
      */
     get avatarGroupClass() {
@@ -500,7 +480,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of avatars when displayed in a line
+     * Class of avatars when displayed in a line.
+     *
      * @type {string}
      */
     get avatarInlineClass() {
@@ -525,7 +506,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the avatar wrapper, when there are more than two avatars
+     * Class of the avatar wrapper, when there are more than two avatars.
+     *
      * @type {string}
      */
     get avatarWrapperClass() {
@@ -547,6 +529,7 @@ export default class AvatarGroup extends LightningElement {
 
     /**
      * Maximum number of visible items.
+     *
      * @type {number}
      */
     get computedMaxCount() {
@@ -567,7 +550,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Current icon name of the list button (show more or show less)
+     * Current icon name of the list button (show more or show less).
+     *
      * @type {string}
      */
     get currentListButtonIcon() {
@@ -577,7 +561,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Current label of the list button (show more or show less)
+     * Current label of the list button (show more or show less).
+     *
      * @type {string}
      */
     get currentlistButtonLabel() {
@@ -587,7 +572,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Current icon position of the list button (show more or show less)
+     * Current icon position of the list button (show more or show less).
+     *
      * @type {string}
      */
     get currentListButtonPosition() {
@@ -597,15 +583,17 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Automatically generated unique key.
-     * @type {string}
+     * True if they are exactly two items.
+     *
+     * @type {boolean}
      */
-    get generatedKey() {
-        return generateUUID();
+    get hasTwoItems() {
+        return this.items.length === 2;
     }
 
     /**
-     * Class of the hidden avatars when displayed in a line
+     * Class of the hidden avatars when displayed in a line.
+     *
      * @type {string}
      */
     get hiddenAvatarInlineClass() {
@@ -613,7 +601,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the hidden avatar wrapper, when there are more avatar than the max count
+     * Class of the hidden avatar wrapper, when there are more avatar than the max count.
+     *
      * @type {string}
      */
     get hiddenAvatarWrapperClass() {
@@ -648,7 +637,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the hidden extra items dropdown
+     * Class of the hidden extra items dropdown.
+     *
      * @type {string}
      */
     get hiddenListClass() {
@@ -658,7 +648,8 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * True if there are only two avatars visible
+     * True if there are only two avatars visible.
+     *
      * @type {boolean}
      */
     get isClassic() {
@@ -670,13 +661,19 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * True if the layout is not "list"
+     * True if the layout is not "list".
+     *
      * @type {boolean}
      */
     get isNotList() {
         return this.layout !== 'list';
     }
 
+    /**
+     * Class of the loading spinner.
+     *
+     * @type {string}
+     */
     get loadingSpinnerClass() {
         return classSet('slds-is-relative')
             .add({
@@ -692,6 +689,11 @@ export default class AvatarGroup extends LightningElement {
             .toString();
     }
 
+    /**
+     * Loading spinner size.
+     *
+     * @type {string}
+     */
     get loadingSpinnerSize() {
         switch (this.size) {
             case 'small':
@@ -710,32 +712,29 @@ export default class AvatarGroup extends LightningElement {
 
     /**
      * If there are exactly two items, contains the first. Else contains an empty object.
+     *
      * @type {object}
      */
     get primaryItem() {
-        if (this.items.length === 2) {
-            return this.items[0];
-        }
-        return {};
+        return this.hasTwoItems ? this.items[0] : {};
     }
 
     /**
      * If there are exactly two items, contains the second. Else contains an empty object.
+     *
      * @type {object}
      */
     get secondaryItem() {
-        if (this.items.length === 2) {
-            return this.items[1];
-        }
-        return {};
+        return this.hasTwoItems ? this.items[1] : {};
     }
 
+    /**
+     * True if is loading, there is no show more button or the layout is not "list"
+     *
+     * @type {boolean}
+     */
     get showLoadingSpinner() {
-        return (
-            this.isLoading &&
-            !this.showMoreButton &&
-            (this.isNotList || !this.showMoreButton)
-        );
+        return this.isLoading && (!this.showMoreButton || this.isNotList);
     }
 
     /**
@@ -1140,7 +1139,7 @@ export default class AvatarGroup extends LightningElement {
      */
 
     /**
-     * Dispatch the actionclick event
+     * Dispatch the actionclick event.
      */
     handleActionClick() {
         const name = this.name;
@@ -1163,7 +1162,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Dispatch the actionclick event
+     * Dispatch the actionclick event.
      */
     handleAvatarActionClick = (event) => {
         const name = event.detail.name;
