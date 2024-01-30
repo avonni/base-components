@@ -170,7 +170,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['week', 'month', 'year', ''],
+            options: ['day', 'week', 'month', 'year', ''],
             description:
                 'Values include week, month, year. This attribute is only supported for the vertical orientation.',
             table: {
