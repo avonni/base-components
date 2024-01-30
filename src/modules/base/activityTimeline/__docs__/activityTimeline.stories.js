@@ -171,7 +171,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['week', 'month', 'year', ''],
+            options: ['day', 'week', 'month', 'year', ''],
             description:
                 'Values include week, month, year. This attribute is only supported for the vertical orientation.',
             table: {
@@ -386,6 +386,17 @@ Horizontal.args = {
     iconName: 'standard:timesheet_entry',
     orientation: 'horizontal',
     items: horizontalItems,
+    actions: actions
+};
+
+export const Daily = Template.bind({});
+Daily.args = {
+    title: 'Activity Timeline grouped by day',
+    iconName: 'standard:timesheet_entry',
+    groupBy: 'day',
+    items: items,
+    collapsible: true,
+    itemDateFormat: 'DDDD - t',
     actions: actions
 };
 

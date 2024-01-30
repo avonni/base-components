@@ -50,7 +50,7 @@ const FIELD_VARIANTS = {
 };
 
 const GROUP_BY_OPTIONS = {
-    valid: ['week', 'month', 'year'],
+    valid: ['day', 'week', 'month', 'year'],
     default: undefined
 };
 
@@ -846,6 +846,11 @@ export default class ActivityTimeline extends LightningElement {
             return 'Upcoming';
         }
         switch (this._groupBy) {
+            case 'day':
+                return `${date.toLocaleString('en-EN', {
+                    day: '2-digit',
+                    month: 'long'
+                })}, ${date.getFullYear().toString()}`;
             case 'month':
                 return `${date.toLocaleString('en-EN', {
                     month: 'long'

@@ -207,6 +207,24 @@ describe('Activity Timeline', () => {
             });
     });
 
+    it('Activity Timeline: group by day', () => {
+        element.items = testItems;
+        element.groupBy = 'day';
+        const firstSection = 'Upcoming';
+        const secondSection = 'January 01, 2022';
+        const thirdSection = 'May 21, 2021';
+
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-expandable-section"]'
+            );
+            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+        });
+    });
+
     it('Activity Timeline: group by week', () => {
         element.items = testItems;
         element.groupBy = 'week';
