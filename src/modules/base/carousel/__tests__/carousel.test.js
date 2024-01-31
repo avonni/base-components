@@ -137,6 +137,7 @@ describe('Carousel', () => {
             expect(element.largeItemsPerPanel).toBeUndefined();
             expect(element.actionsVariant).toBe('border');
             expect(element.actionsPosition).toBe('bottom-center');
+            expect(element.imagePosition).toBe('top');
         });
 
         describe('Action Variant', () => {
@@ -163,6 +164,20 @@ describe('Carousel', () => {
                         'c-primitive-carousel-item'
                     );
                     expect(action.actionsPosition).toBe('top-left');
+                });
+            });
+        });
+
+        describe('Image positions', () => {
+            it('Image position left', () => {
+                element.items = items;
+                element.imagePosition = 'left';
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(item.imagePosition).toBe('left');
                 });
             });
         });

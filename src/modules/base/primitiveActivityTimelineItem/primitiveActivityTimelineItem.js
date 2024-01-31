@@ -4,7 +4,8 @@ import {
     normalizeArray,
     normalizeString,
     deepCopy,
-    dateTimeObjectFrom
+    dateTimeObjectFrom,
+    getFormattedDate
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -232,7 +233,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * if true, close the section.
+     * If true, close the section.
      *
      * @public
      * @type {boolean}
@@ -248,8 +249,9 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * The date format to use for the item. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format.
-     * If you want to insert text in the label, you need to escape it using single quote.
+     * The date format to use for each item. Valid values include 'STANDARD', 'RELATIVE', the name of the preset or the custom format string.
+     * See Luxon's documentation for accepted [presets](https://moment.github.io/luxon/#/formatting?id=presets) and [custom format string tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
+     * If you want to insert text in the label in a custom format string, you need to escape it using single quote.
      * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
      *
      * @type {string}
@@ -261,7 +263,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     set dateFormat(value) {
-        this._dateFormat = typeof value === 'string' ? value : undefined;
+        this._dateFormat = typeof value === 'string' ? value : null;
 
         if (this._connected) {
             this.formatDate();
@@ -526,7 +528,13 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             this.formattedDate = '';
             return;
         }
-        this.formattedDate = date.toFormat(this.dateFormat);
+        this.formattedDate = getFormattedDate(
+            this.datetimeValue,
+            {
+                zone: this.timezone
+            },
+            this.dateFormat
+        );
     }
 
     /**

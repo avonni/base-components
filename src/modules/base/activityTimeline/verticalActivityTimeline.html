@@ -12,9 +12,15 @@
                     ></lightning-icon>
                 </div>
                 <div class="slds-media__body" if:true={title}>
-                    <h2 class="slds-truncate
-                    slds-section__title
-                    avonni-activity-timeline__title">{title}</h2>
+                    <h2
+                        class="
+                            slds-truncate
+                            slds-section__title
+                            avonni-activity-timeline__title
+                        "
+                    >
+                        {title}
+                    </h2>
                 </div>
             </div>
         </div>
@@ -124,41 +130,33 @@
                                     timezone={timezone}
                                     data-element-id="avonni-primitive-activity-timeline-item"
                                     data-name={item.name}
-                                >
-                                </c-primitive-activity-timeline-item>
+                                ></c-primitive-activity-timeline-item>
                             </li>
                         </template>
                     </ul>
                 </c-expandable-section>
             </template>
 
-            <!-- Loading spinner -->
-            <div
-                if:true={isLoading}
-                class={loadingSpinnerClass}
-                data-element-id="div-loading-spinner"
-            >
+            <div class={loadingSpinnerClass}>
+                <!-- Loading spinner -->
                 <lightning-spinner
+                    if:true={isLoading}
                     alternative-text="Loading..."
+                    size={loadingSpinnerSize}
+                    data-element-id="lightning-spinner"
                 ></lightning-spinner>
-            </div>
 
-            <!-- Show more button -->
-            <lightning-button
-                if:false={isShowButtonHidden}
-                variant={buttonVariant}
-                label={currentShowButtonLabel}
-                icon-name={currentShowButtonIcon}
-                icon-position={currentShowButtonPosition}
-                data-element-id="lightning-button"
-                class="
-                    slds-m-top_small
-                    slds-m-bottom_small
-                    slds-m-left_small
-                    slds-show
-                "
-                onclick={handleToggleShowMoreButton}
-            ></lightning-button>
+                <!-- Show more button -->
+                <lightning-button
+                    if:false={isShowButtonHidden}
+                    variant={buttonVariant}
+                    label={currentShowButtonLabel}
+                    icon-name={currentShowButtonIcon}
+                    icon-position={currentShowButtonPosition}
+                    data-element-id="lightning-button"
+                    onclick={handleToggleShowMoreButton}
+                ></lightning-button>
+            </div>
         </div>
     </div>
 </template>

@@ -72,6 +72,7 @@ describe('Primitive Carousel Item', () => {
             expect(element.actions).toMatchObject([]);
             expect(element.actionsPosition).toBe('bottom-center');
             expect(element.actionsVariant).toBe('border');
+            expect(element.imagePosition).toBe('top');
         });
 
         describe('Action Variant', () => {
@@ -304,6 +305,60 @@ describe('Primitive Carousel Item', () => {
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-right'
+                    );
+                });
+            });
+        });
+
+        describe('Image Positions', () => {
+            it('Top', () => {
+                element.imagePosition = 'top';
+
+                return Promise.resolve().then(() => {
+                    const carouselContainer = element.shadowRoot.querySelector(
+                        '.avonni-carousel__panel-action'
+                    );
+                    expect(carouselContainer.className).toContain(
+                        'avonni-carousel__image-top'
+                    );
+                });
+            });
+
+            it('Bottom', () => {
+                element.imagePosition = 'bottom';
+
+                return Promise.resolve().then(() => {
+                    const carouselContainer = element.shadowRoot.querySelector(
+                        '.avonni-carousel__panel-action'
+                    );
+                    expect(carouselContainer.className).toContain(
+                        'avonni-carousel__image-bottom'
+                    );
+                });
+            });
+
+            it('Left', () => {
+                element.imagePosition = 'left';
+
+                return Promise.resolve().then(() => {
+                    const carouselContainer = element.shadowRoot.querySelector(
+                        '.avonni-carousel__panel-action'
+                    );
+                    expect(carouselContainer.className).toContain(
+                        'avonni-carousel__image-left'
+                    );
+                });
+            });
+
+            it('Right', () => {
+                element.imagePosition = 'right';
+
+                return Promise.resolve().then(() => {
+                    const carouselContainer = element.shadowRoot.querySelector(
+                        '.avonni-carousel__panel-action'
+                    );
+                    expect(carouselContainer.className).toContain(
+                        'avonni-carousel__image-right'
                     );
                 });
             });

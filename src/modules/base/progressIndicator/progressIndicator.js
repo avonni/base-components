@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import Step from './step';
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
@@ -11,28 +12,25 @@ const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
  * @public
  */
 export default class ProgressIndicator extends LightningElement {
-    /**
-     * Set current-step to match the value attribute of one of progress-step components.
-     *
-     * @type {string}
-     * @public
-     */
-    @api currentStep;
-
     _completedSteps = [];
+    _currentStep;
     _disabledSteps = [];
     _errorSteps = [];
     _steps = [];
     _variant = INDICATOR_VARIANTS.default;
     _warningSteps = [];
 
-    _initialRender = true;
+    computedSteps = [];
 
-    renderedCallback() {
-        this.updateErrorSteps();
-        this.updateWarningSteps();
-        this.updateCompletedSteps();
-        this.updateCurrentStep();
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
+    connectedCallback() {
+        this._connected = true;
+        this._initSteps();
     }
 
     /*
@@ -53,6 +51,28 @@ export default class ProgressIndicator extends LightningElement {
     }
     set completedSteps(value) {
         this._completedSteps = normalizeArray(value);
+
+        if (this._connected) {
+            this._initSteps();
+        }
+    }
+
+    /**
+     * Set current-step to match the value attribute of one of progress-step components.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get currentStep() {
+        return this._currentStep;
+    }
+    set currentStep(value) {
+        this._currentStep = value;
+
+        if (this._connected) {
+            this._initSteps();
+        }
     }
 
     /**
@@ -67,6 +87,10 @@ export default class ProgressIndicator extends LightningElement {
     }
     set disabledSteps(value) {
         this._disabledSteps = normalizeArray(value);
+
+        if (this._connected) {
+            this._initSteps();
+        }
     }
 
     /**
@@ -81,6 +105,10 @@ export default class ProgressIndicator extends LightningElement {
     }
     set errorSteps(value) {
         this._errorSteps = normalizeArray(value);
+
+        if (this._connected) {
+            this._initSteps();
+        }
     }
 
     /**
@@ -96,6 +124,10 @@ export default class ProgressIndicator extends LightningElement {
 
     set steps(value) {
         this._steps = normalizeArray(value);
+
+        if (this._connected) {
+            this._initSteps();
+        }
     }
 
     /**
@@ -130,6 +162,10 @@ export default class ProgressIndicator extends LightningElement {
     }
     set warningSteps(value) {
         this._warningSteps = normalizeArray(value);
+
+        if (this._connected) {
+            this._initSteps();
+        }
     }
 
     /*
@@ -148,7 +184,7 @@ export default class ProgressIndicator extends LightningElement {
             'slds-progress slds-progress_horizontal slds-scrollable_x'
         )
             .add({
-                'slds-progress_shade': this._variant === 'shaded'
+                'slds-progress_shade': this.variant === 'shaded'
             })
             .toString();
     }
@@ -159,76 +195,15 @@ export default class ProgressIndicator extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * Set what type of step (active, completed, warning, error, disabled).
-     *
-     * @returns {Object[]}
-     */
-    getSteps() {
-        return Array.from(
-            this.template.querySelectorAll(
-                '[data-element-id="avonni-primitive-progress-step"]'
-            )
-        );
-    }
-
-    /**
-     * Update current step value.
-     */
-    updateCurrentStep() {
-        const steps = this.getSteps();
-        steps.forEach((step) => {
-            if (step.value === this.currentStep) {
-                step.classList.add('slds-is-active');
-            }
-        });
-    }
-
-    /**
-     * Update step value if error.
-     */
-    updateErrorSteps() {
-        const steps = this.getSteps();
-        steps.forEach((step) => {
-            this.errorSteps.forEach((error) => {
-                if (step.value === error) {
-                    step.setIcon('utility:error');
-                    step.classList.add('slds-has-error');
-                }
-            });
-        });
-    }
-
-    /**
-     * Update step with icon and warning.
-     */
-    updateWarningSteps() {
-        const steps = this.getSteps();
-        steps.forEach((step) => {
-            this.warningSteps.forEach((warning) => {
-                if (step.value === warning) {
-                    step.setIcon('utility:warning');
-                    step.classList.add('slds-has-warning');
-                    if (this._variant === 'shaded') {
-                        step.classList.remove('slds-has-warning');
-                        step.classList.add('slds-has-warning-shaded');
-                    }
-                }
-            });
-        });
-    }
-
-    /**
-     * Update completed steps with icon and class.
-     */
-    updateCompletedSteps() {
-        const steps = this.getSteps();
-        steps.forEach((step) => {
-            this.completedSteps.forEach((completed) => {
-                if (step.value === completed) {
-                    step.setIcon('utility:success');
-                    step.classList.add('slds-is-completed');
-                }
+    _initSteps() {
+        this.computedSteps = this.steps.map((step) => {
+            return new Step({
+                ...step,
+                completedSteps: this.completedSteps,
+                currentStep: this.currentStep,
+                disabledSteps: this.disabledSteps,
+                errorSteps: this.errorSteps,
+                warningSteps: this.warningSteps
             });
         });
     }

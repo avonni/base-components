@@ -1539,7 +1539,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const headerCells = this.headerCells.xAxis;
         const { to, cellWidth } = this;
         const isOneCellLength =
-            this.referenceLine || !this.spansOnMoreThanOneDay || this.isAllDay;
+            this.referenceLine || !this.spansOnMoreThanOneDay;
 
         if ((isOneCellLength || !headerCells) && this.hostElement) {
             // The event should span on one cell

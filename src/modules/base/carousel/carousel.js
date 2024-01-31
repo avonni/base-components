@@ -40,6 +40,11 @@ const MEDIA_QUERY_BREAKPOINTS = {
     large: 1024
 };
 
+const IMAGE_POSITIONS = {
+    valid: ['top', 'left', 'right', 'bottom'],
+    default: 'top'
+};
+
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 const DEFAULT_ITEMS_PER_PANEL = 1;
@@ -112,10 +117,12 @@ export default class Carousel extends LightningElement {
     };
     _carouselItems = [];
     _hideIndicator = false;
-    _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
+    _imagePosition = IMAGE_POSITIONS.default;
     _indicatorVariant = INDICATOR_VARIANTS.default;
-    _rendered = false;
+    _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
     _scrollDuration = DEFAULT_SCROLL_DURATION;
+
+    _rendered = false;
 
     activeIndexPanel;
     autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
@@ -176,7 +183,6 @@ export default class Carousel extends LightningElement {
     get actionsPosition() {
         return this._actionsPosition;
     }
-
     set actionsPosition(position) {
         this._actionsPosition = normalizeString(position, {
             fallbackValue: ACTIONS_POSITIONS.default,
@@ -195,7 +201,6 @@ export default class Carousel extends LightningElement {
     get actionsVariant() {
         return this._actionsVariant;
     }
-
     set actionsVariant(variant) {
         this._actionsVariant = normalizeString(variant, {
             fallbackValue: ACTIONS_VARIANTS.default,
@@ -214,7 +219,6 @@ export default class Carousel extends LightningElement {
     get assistiveText() {
         return this._assistiveText;
     }
-
     set assistiveText(value) {
         const text = typeof value === 'object' && value !== null ? value : {};
         this._assistiveText = {
@@ -237,7 +241,6 @@ export default class Carousel extends LightningElement {
     get hideIndicator() {
         return this._hideIndicator;
     }
-
     set hideIndicator(value) {
         this._hideIndicator = normalizeBoolean(value);
     }
@@ -253,7 +256,6 @@ export default class Carousel extends LightningElement {
     get indicatorVariant() {
         return this._indicatorVariant;
     }
-
     set indicatorVariant(variant) {
         this._indicatorVariant = normalizeString(variant, {
             fallbackValue: INDICATOR_VARIANTS.default,
@@ -272,7 +274,6 @@ export default class Carousel extends LightningElement {
     get items() {
         return this._carouselItems;
     }
-
     set items(value) {
         let allItems = [];
         allItems = normalizeArray(value);
@@ -304,7 +305,6 @@ export default class Carousel extends LightningElement {
     get itemsPerPanel() {
         return this._itemsPerPanel;
     }
-
     set itemsPerPanel(value) {
         if (ITEMS_PER_PANEL.includes(value)) {
             this._itemsPerPanel = value;
@@ -314,6 +314,24 @@ export default class Carousel extends LightningElement {
 
         this.columnsCount.default = this._itemsPerPanel;
         this.computeItemsPerPanel();
+    }
+
+    /**
+     * Position of the media. Valid values include top, left, right and bottom.
+     *
+     * @type {string}
+     * @public
+     * @default top
+     */
+    @api
+    get imagePosition() {
+        return this._imagePosition;
+    }
+    set imagePosition(imagePosition) {
+        this._imagePosition = normalizeString(imagePosition, {
+            fallbackValue: IMAGE_POSITIONS.default,
+            validValues: IMAGE_POSITIONS.valid
+        });
     }
 
     /**
@@ -345,7 +363,6 @@ export default class Carousel extends LightningElement {
     get smallItemsPerPanel() {
         return this._smallItemsPerPanel;
     }
-
     set smallItemsPerPanel(value) {
         this._smallItemsPerPanel = this.normalizeItemsPerPanel(value, 'small');
         this.computeItemsPerPanel();
@@ -361,7 +378,6 @@ export default class Carousel extends LightningElement {
     get mediumItemsPerPanel() {
         return this._mediumItemsPerPanel;
     }
-
     set mediumItemsPerPanel(value) {
         this._mediumItemsPerPanel = this.normalizeItemsPerPanel(
             value,
@@ -380,7 +396,6 @@ export default class Carousel extends LightningElement {
     get largeItemsPerPanel() {
         return this._largeItemsPerPanel;
     }
-
     set largeItemsPerPanel(value) {
         this._largeItemsPerPanel = this.normalizeItemsPerPanel(value, 'large');
         this.computeItemsPerPanel();

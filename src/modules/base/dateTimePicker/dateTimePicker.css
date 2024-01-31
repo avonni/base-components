@@ -2,6 +2,7 @@
     --avonni-layout-item-layout-flex-shrink: 1;
     --avonni-layout-item-layout-flex-grow: 1;
 }
+
 .avonni-date-time-picker__no-grow-col {
     --avonni-layout-item-layout-flex-grow: 0;
 }
