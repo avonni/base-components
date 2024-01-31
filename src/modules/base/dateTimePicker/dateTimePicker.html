@@ -389,11 +389,14 @@
                                 <template if:false={isTimeline}>
                                     <c-layout-item
                                         if:true={time.show}
+                                        class="
+                                            avonni-date-time-picker__no-grow-col
+                                        "
                                         key={time.startTimeISO}
-                                        size="4"
-                                        small-container-size="3"
-                                        medium-container-size="2"
-                                        large-container-size="1"
+                                        size="calc(100% / 3 - 8px)"
+                                        small-container-size="calc(25% - 8px)"
+                                        medium-container-size="calc(100% / 6 - 8px)"
+                                        large-container-size="calc(100% / 12 - 8px)"
                                         data-element-id="avonni-layout-item-time"
                                     >
                                         <button

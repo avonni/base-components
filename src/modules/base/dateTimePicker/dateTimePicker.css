@@ -3,6 +3,10 @@
     --avonni-layout-item-layout-flex-grow: 1;
 }
 
+.avonni-date-time-picker__no-grow-col {
+    --avonni-layout-item-layout-flex-grow: 0;
+}
+
 .avonni-date-time-picker__toolbar {
     --avonni-layout-items-spacing-inline-between: 1.5rem;
 }

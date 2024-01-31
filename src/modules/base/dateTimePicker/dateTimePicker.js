@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     dateTimeObjectFrom,
+    equal,
     getStartOfWeek,
     getWeekday,
     intervalFrom,
@@ -819,6 +820,15 @@ export default class DateTimePicker extends LightningElement {
     }
 
     set value(value) {
+        const normalizedCurrentValue =
+            this.value && !Array.isArray(this.value)
+                ? [this.value]
+                : normalizeArray(this.value);
+        const normalizedNewValue =
+            value && !Array.isArray(value) ? [value] : normalizeArray(value);
+        if (equal(normalizedCurrentValue, normalizedNewValue)) {
+            return;
+        }
         this._value = value;
 
         if (this._connected) {
