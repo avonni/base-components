@@ -7,7 +7,7 @@ const ITEMS = [
         description: 'You created a task with Charlie Gomez',
         datetimeValue: '01/11/2022',
         href: 'salesforce.com',
-        avatar: 'standard:task',
+        avatar: { fallbackIconName: 'standard:task' },
         icons: ['utility:refresh'],
         hasCheckbox: true,
         fields: [
@@ -40,7 +40,7 @@ const ITEMS = [
         description: 'You logged a call with Adam Chan',
         href: '#',
         datetimeValue: new Date(),
-        avatar: 'standard:log_a_call',
+        avatar: { fallbackIconName: 'standard:log_a_call' },
         fields: [
             {
                 label: 'Name',
@@ -71,7 +71,7 @@ const ITEMS = [
         description: 'You emailed Lea Chan',
         datetimeValue: '02/20/2022 08:00',
         href: '#',
-        avatar: 'standard:email',
+        avatar: { fallbackIconName: 'standard:email' },
         icons: ['utility:groups', 'utility:attach'],
         fields: [
             {
@@ -106,7 +106,7 @@ const ITEMS = [
         icons: ['utility:world'],
         datetimeValue: '04/21/2021 8:00',
         href: '#',
-        avatar: 'standard:event',
+        avatar: { fallbackIconName: 'standard:event' },
         fields: [
             {
                 label: 'Location',
@@ -147,7 +147,7 @@ const ITEMS = [
         title: 'Create one task',
         datetimeValue: '05/21/2022 10:00',
         href: '#',
-        avatar: 'standard:dashboard',
+        avatar: { fallbackIconName: 'standard:dashboard' },
         hasCheckbox: true,
         checked: true,
         buttonLabel: 'Public Sharing',
@@ -158,7 +158,7 @@ const ITEMS = [
         title: 'Create another task',
         datetimeValue: '05/21/2022 11:30',
         href: '#',
-        avatar: 'standard:case',
+        avatar: { fallbackIconName: 'standard:case' },
         hasCheckbox: true,
         hasError: true
     }

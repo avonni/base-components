@@ -91,7 +91,7 @@
                         <!-- item's icon -->
                         <lightning-icon
                             if:true={selectedItem.avatar}
-                            icon-name={selectedItem.avatar}
+                            icon-name={selectedItem.avatar.fallbackIconName}
                             size={popoverIconSize}
                             class="slds-media__figure"
                         ></lightning-icon>

@@ -3,6 +3,7 @@ import {
     normalizeBoolean,
     normalizeArray,
     normalizeString,
+    normalizeObject,
     deepCopy,
     dateTimeObjectFrom
 } from 'c/utilsPrivate';
@@ -157,18 +158,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
-     * When omitted, a simplified timeline bullet replaces it.
+     * Avatar object.
      *
      * @public
-     * @type {string}
+     * @type {object}
      */
     @api
     get avatar() {
         return this._avatar;
     }
     set avatar(value) {
-        this._avatar = value;
+        const normalizedAvatar = normalizeObject(value);
+        this._avatar = Object.keys(normalizedAvatar).length
+            ? normalizedAvatar
+            : undefined;
     }
 
     /**
@@ -344,6 +347,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Deprecated. Use `avatar` instead.
+     * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
+     * When omitted, a simplified timeline bullet replaces it.
      *
      * @public
      * @type {string}
@@ -447,6 +452,14 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             .toString();
     }
 
+    get avatarToDisplay() {
+        return (
+            this.avatar?.src ||
+            this.avatar?.initials ||
+            this.avatar?.fallbackIconName
+        );
+    }
+
     /**
      * Return styling for item background color.
      *
@@ -484,8 +497,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     get isActionIcon() {
         return (
-            typeof this.avatar === 'string' &&
-            this.avatar.split(':')[0] === 'action'
+            typeof this.avatarToDisplay === 'string' &&
+            this.avatarToDisplay.split(':')[0] === 'action'
         );
     }
 
@@ -579,8 +592,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * Make sure the deprecated item attributes are still supported.
      */
     supportDeprecatedAttributes() {
-        if (this.iconName && this.avatar === undefined) {
-            this._avatar = this.iconName;
+        if (this.iconName && this.avatar?.fallbackIconName === undefined) {
+            this._avatar = {
+                ...this.avatar,
+                fallbackIconName: this.iconName
+            };
         }
     }
 

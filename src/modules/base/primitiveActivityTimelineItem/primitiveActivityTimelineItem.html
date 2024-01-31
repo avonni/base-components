@@ -27,14 +27,14 @@
                     </template>
                 </template>
                 <lightning-icon
-                    if:true={avatar}
-                    icon-name={avatar}
+                    if:true={avatarToDisplay}
+                    icon-name={avatar.fallbackIconName}
                     size={iconSize}
                     class={timelineIconClass}
                     data-element-id="item-marker"
                 ></lightning-icon>
                 <div
-                    if:false={avatar}
+                    if:false={avatarToDisplay}
                     class={timelineItemBullet}
                     data-element-id="item-marker"
                 ></div>

@@ -798,7 +798,12 @@ export default class ActivityTimeline extends LightningElement {
      * @return {string}
      */
     get popoverIconSize() {
-        if (this.selectedItem.avatar.includes('action:')) {
+        const avatarToDisplay =
+            this.selectedItem?.avatar?.src ||
+            this.selectedItem?.avatar?.initials ||
+            this.selectedItem?.avatar?.fallbackIconName ||
+            '';
+        if (avatarToDisplay.includes('action:')) {
             return 'x-small';
         }
         return 'medium';
@@ -956,8 +961,11 @@ export default class ActivityTimeline extends LightningElement {
      * Make sure the deprecated item attributes are still supported.
      */
     supportDeprecatedAttributes(item) {
-        if (item && item.iconName && item.avatar === undefined) {
-            item.avatar = item.iconName;
+        if (item?.iconName && item?.avatar?.fallbackIconName === undefined) {
+            item.avatar = {
+                ...item.avatar,
+                fallbackIconName: item.iconName
+            };
             delete item.iconName;
         }
     }

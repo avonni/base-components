@@ -694,7 +694,7 @@ export class HorizontalActivityTimeline {
     createItem(itemGroup, item) {
         this.createIcon(
             itemGroup,
-            item.avatar,
+            item.avatar?.fallbackIconName,
             this.viewTimeScale(new Date(item.datetimeValue)),
             item.yPosition,
             SVG_ICON_SIZE
