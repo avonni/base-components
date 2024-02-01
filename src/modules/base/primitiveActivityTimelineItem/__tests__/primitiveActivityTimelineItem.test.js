@@ -192,23 +192,42 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // avatar
-    it('Activity timeline item: icon name no bullet', () => {
-        element.avatar = 'standard:case';
+    it('Activity timeline item: avatar no bullet', () => {
+        element.avatar = {
+            initials: 'AB',
+            fallbackIconName: 'standard:case',
+            src: 'image.png',
+            presence: 'online'
+        };
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
+            const avatar = element.shadowRoot.querySelector(
                 '.slds-timeline__icon'
             );
-            expect(icon.iconName).toBe('standard:case');
-            expect(icon.classList).not.toContain(
+            expect(avatar.fallbackIconName).toBe('standard:case');
+            expect(avatar.initials).toBe('AB');
+            expect(avatar.src).toBe('image.png');
+            expect(avatar.presence).toBe('online');
+            expect(avatar.classList).not.toContain(
                 'avonni-timeline-item__bullet'
             );
         });
     });
 
+    it('Activity timeline item: avatar without icon', () => {
+        element.avatar = {};
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '.slds-timeline__icon'
+            );
+            expect(avatar.classList).toContain('avonni-timeline-item__bullet');
+        });
+    });
+
     // icon size
     it('Activity Timeline item: icon size (xx-small)', () => {
-        element.avatar = 'standard:case';
+        element.avatar = { fallbackIconName: 'standard:case' };
         element.iconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
@@ -220,7 +239,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (x-small)', () => {
-        element.avatar = 'standard:case';
+        element.avatar = { fallbackIconName: 'standard:case' };
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -232,7 +251,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (small)', () => {
-        element.avatar = 'standard:case';
+        element.avatar = { fallbackIconName: 'standard:case' };
         element.iconSize = 'small';
 
         return Promise.resolve().then(() => {
@@ -244,7 +263,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (medium)', () => {
-        element.avatar = 'standard:case';
+        element.avatar = { fallbackIconName: 'standard:case' };
         element.iconSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -256,7 +275,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline item: icon size (large)', () => {
-        element.avatar = 'standard:case';
+        element.avatar = { fallbackIconName: 'standard:case' };
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {
