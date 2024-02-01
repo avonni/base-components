@@ -41,6 +41,7 @@ const DEFAULT_BACK_ACTION = {
 };
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
+const DEFAULT_MIN = 0;
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_GROUP_NAME = 'ungrouped';
@@ -77,6 +78,14 @@ export default class PrimitiveCombobox extends LightningElement {
     @api label;
 
     /**
+     * If multi-select, maximum number of selected options allowed.
+     *
+     * @type {number}
+     * @public
+     */
+    @api max;
+
+    /**
      * Error message to be displayed when a bad input is detected.
      *
      * @type {string}
@@ -85,12 +94,37 @@ export default class PrimitiveCombobox extends LightningElement {
     @api messageWhenBadInput;
 
     /**
+     * Error message to be displayed when a range overflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenRangeOverflow;
+
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenRangeUnderflow;
+
+    /**
      * Error message to be displayed when the value is missing and input is required.
      *
      * @type {string}
      * @public
      */
     @api messageWhenValueMissing;
+
+    /**
+     * If multi-select, minimum number of selected options allowed.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api min = DEFAULT_MIN;
 
     /**
      * Specifies the name of the primitive combobox.
@@ -144,6 +178,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _scrollState;
     _visibleOptions = [];
     backLink;
+    bottomActions = [];
     computedGroups = [];
     dropdownVisible = false;
     helpMessage;
@@ -153,7 +188,6 @@ export default class PrimitiveCombobox extends LightningElement {
     selectedOptions = [];
     showLoader = false;
     topActions = [];
-    bottomActions = [];
 
     connectedCallback() {
         this.initValue();
@@ -708,7 +742,12 @@ export default class PrimitiveCombobox extends LightningElement {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
                     !this.disabled && this.required && this.value.length === 0,
-                badInput: () => this.hasBadInput
+                badInput: () => this.hasBadInput,
+                rangeOverflow: () =>
+                    this.selectedOptions.length > this.max &&
+                    this.isMultiSelect,
+                rangeUnderflow: () =>
+                    this.selectedOptions.length < this.min && this.isMultiSelect
             });
         }
         return this._constraintApi;
@@ -1125,7 +1164,7 @@ export default class PrimitiveCombobox extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this.helpMessage = this.messageWhenValueMissing || message;
+            this.helpMessage = message;
         });
     }
 
@@ -2053,8 +2092,27 @@ export default class PrimitiveCombobox extends LightningElement {
             this.unselectOption();
         }
         selectedOption.selected = !selectedOption.selected;
+
         this.computeSelection();
+
         this._value = this.selectedOptions.map((option) => option.value);
+
+        if (!this.validity.valid) {
+            this.reportValidity();
+            if (this.validity.rangeOverflow) {
+                if (selectedOption.selected) {
+                    selectedOption.selected = false;
+                    this.computeSelection();
+                    this._value = this.selectedOptions.map(
+                        (option) => option.value
+                    );
+                }
+            }
+            this.close();
+            this.dispatchClose();
+            this.focus();
+            return;
+        }
 
         // Update the input value
         if (!this.isMultiSelect && selectedOption.selected) {
