@@ -43,7 +43,6 @@ const DEFAULT_ICON_MENU_ICON = 'utility:down';
 
 export default class PrimitiveAvatar extends LightningElement {
     @api entityInitials;
-    @api fallbackIconName;
     @api initials;
 
     avatarClass;
@@ -198,6 +197,20 @@ export default class PrimitiveAvatar extends LightningElement {
             validValues: AVATAR_VARIANTS.valid
         });
         this._computeEntityClasses();
+    }
+
+    /**
+     * Fallback Icon
+     */
+
+    @api
+    get fallbackIconName() {
+        return this._fallbackIconName;
+    }
+
+    set fallbackIconName(value) {
+        this._fallbackIconName = value;
+        this._updateClassList();
     }
 
     /**
