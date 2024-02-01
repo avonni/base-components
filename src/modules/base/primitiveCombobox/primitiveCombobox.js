@@ -1051,6 +1051,8 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     close() {
+        this._searchTerm = '';
+
         if (this.dropdownVisible) {
             this.dropdownVisible = false;
             this._previousScroll = undefined;
@@ -1192,12 +1194,15 @@ export default class PrimitiveCombobox extends LightningElement {
             this.computeSelection();
         } else {
             const selectedOption = this.getOption(this.value[0], this.options);
+            this.inputValue = '';
 
             if (selectedOption) {
                 selectedOption.selected = true;
                 this.selectedOption = selectedOption;
                 this.inputValue = selectedOption.label;
-            } else {
+            }
+
+            if (this._searchTerm) {
                 // Filter the options if there is a search term
                 this.inputValue = this._searchTerm;
                 this.search({
