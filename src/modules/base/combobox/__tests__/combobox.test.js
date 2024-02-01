@@ -376,60 +376,6 @@ describe('Combobox', () => {
             });
         });
 
-        describe('Validity Messages', () => {
-            it('MessageWhenBadInput', () => {
-                element.messageWhenBadInput = 'A string message';
-
-                return Promise.resolve().then(() => {
-                    const combobox = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-primitive-combobox-main"]'
-                    );
-                    expect(combobox.messageWhenBadInput).toBe(
-                        'A string message'
-                    );
-                });
-            });
-
-            it('MessageWhenRangeOverflow', () => {
-                element.messageWhenRangeOverflow = 'A string message';
-
-                return Promise.resolve().then(() => {
-                    const combobox = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-primitive-combobox-main"]'
-                    );
-                    expect(combobox.messageWhenRangeOverflow).toBe(
-                        'A string message'
-                    );
-                });
-            });
-
-            it('MessageWhenRangeUnderflow', () => {
-                element.messageWhenRangeUnderflow = 'A string message';
-
-                return Promise.resolve().then(() => {
-                    const combobox = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-primitive-combobox-main"]'
-                    );
-                    expect(combobox.messageWhenRangeUnderflow).toBe(
-                        'A string message'
-                    );
-                });
-            });
-
-            it('MessageWhenValueMissing', () => {
-                element.messageWhenValueMissing = 'A string message';
-
-                return Promise.resolve().then(() => {
-                    const combobox = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-primitive-combobox-main"]'
-                    );
-                    expect(combobox.messageWhenValueMissing).toBe(
-                        'A string message'
-                    );
-                });
-            });
-        });
-
         describe('Min', () => {
             it('Passed to the component', () => {
                 element.min = 2;
@@ -786,6 +732,60 @@ describe('Combobox', () => {
                         '[data-element-id="avonni-primitive-combobox-main"]'
                     );
                     expect(combobox.value).toMatchObject([options[0].value]);
+                });
+            });
+        });
+
+        describe('Validity Messages', () => {
+            it('MessageWhenBadInput', () => {
+                element.messageWhenBadInput = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenBadInput).toBe(
+                        'A string message'
+                    );
+                });
+            });
+
+            it('MessageWhenRangeOverflow', () => {
+                element.messageWhenRangeOverflow = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenRangeOverflow).toBe(
+                        'A string message'
+                    );
+                });
+            });
+
+            it('MessageWhenRangeUnderflow', () => {
+                element.messageWhenRangeUnderflow = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenRangeUnderflow).toBe(
+                        'A string message'
+                    );
+                });
+            });
+
+            it('MessageWhenValueMissing', () => {
+                element.messageWhenValueMissing = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenValueMissing).toBe(
+                        'A string message'
+                    );
                 });
             });
         });
