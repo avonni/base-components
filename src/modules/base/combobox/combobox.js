@@ -153,7 +153,7 @@ export default class Combobox extends LightningElement {
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _max;
-    _min;
+    _min = DEFAULT_MIN;
     _multiLevelGroups = false;
     _options = [];
     _placeholder;
@@ -1107,6 +1107,7 @@ export default class Combobox extends LightningElement {
     handleChange(event) {
         const { action, levelPath, value } = event.detail;
         this._value = value;
+
         this.dispatchChange(action, levelPath);
     }
 
