@@ -58,6 +58,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _entitySrc;
     _entityTitle = DEFAULT_ENTITY_TITLE;
     _entityVariant = AVATAR_VARIANTS.default;
+    _fallbackIconName;
     _presence = PRESENCE.default;
     _presencePosition = POSITIONS.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;

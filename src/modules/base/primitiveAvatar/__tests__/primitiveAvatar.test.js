@@ -121,6 +121,21 @@ describe('PrimitiveAvatar', () => {
         });
     });
 
+    /* ----- METHODS ----- */
+
+    // getBackgroundColor()
+    it('Primitive Avatar: method getBackgroundColor()', () => {
+        element.fallbackIconName = 'standard:account';
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avatar-container"]'
+            );
+            avatar.style.backgroundColor = 'blue';
+            expect(element.getBackgroundColor()).toBe('blue');
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // actionclick event
