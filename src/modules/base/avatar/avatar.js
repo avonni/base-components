@@ -483,6 +483,27 @@ export default class Avatar extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Get the background color of the icon.
+     *
+     * @returns {string} The background color of the icon.
+     * @public
+     */
+    @api
+    getBackgroundColor() {
+        const icon = this.template.querySelector(
+            '[data-element-id^="avonni-primitive-avatar"]'
+        );
+        if (icon === null) return '';
+        return icon.getBackgroundColor();
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */

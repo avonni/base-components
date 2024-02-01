@@ -318,6 +318,22 @@ export default class PrimitiveAvatar extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    getBackgroundColor() {
+        const icon = this.template.querySelector(
+            '[data-element-id="avatar-container"]'
+        );
+        if (icon === null) return '';
+        const style = getComputedStyle(icon);
+        return style.backgroundColor;
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */

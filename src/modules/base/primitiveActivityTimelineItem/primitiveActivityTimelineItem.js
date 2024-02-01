@@ -466,7 +466,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     get backgroundColor() {
-        return `--line-color: ${this._color}`;
+        return this._color ? `--line-color: ${this._color}` : '';
     }
 
     /**
@@ -584,8 +584,14 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             '[data-element-id="item-marker"]'
         );
         if (icon === null) return;
-        const style = getComputedStyle(icon);
-        this._color = style.backgroundColor;
+        if (this.avatarToDisplay) {
+            this._color = this.avatar?.fallbackIconName
+                ? icon.getBackgroundColor()
+                : '';
+        } else {
+            const style = getComputedStyle(icon);
+            this._color = style.backgroundColor;
+        }
     }
 
     /**
