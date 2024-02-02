@@ -54,8 +54,12 @@ describe('Primitive Combobox', () => {
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
             expect(element.loadingStateAlternativeText).toBe('Loading');
+            expect(element.max).toBeUndefined();
             expect(element.messageWhenBadInput).toBeUndefined();
+            expect(element.messageWhenRangeOverflow).toBeUndefined();
+            expect(element.messageWhenRangeUnderflow).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
+            expect(element.min).toBe(0);
             expect(element.multiLevelGroups).toBeFalsy();
             expect(element.name).toBeUndefined();
             expect(element.options).toMatchObject([]);
@@ -840,7 +844,6 @@ describe('Primitive Combobox', () => {
             });
         });
 
-        // load-more-offset
         it('loadMoreOffset', () => {
             element.loadMoreOffset = 100;
             element.enableInfiniteLoading = true;
@@ -873,51 +876,6 @@ describe('Primitive Combobox', () => {
                     list.dispatchEvent(new CustomEvent('scroll'));
                     expect(handler).toHaveBeenCalled();
                 });
-        });
-
-        describe('Validations', () => {
-            // Depends on required and showHelpMessageIfInvalid()
-            it('messageWhenBadInput', () => {
-                element.messageWhenBadInput = 'Something is wrong';
-                element.options = options;
-                element.value = ['hello'];
-                element.showHelpMessageIfInvalid();
-
-                return Promise.resolve().then(() => {
-                    const help = element.shadowRoot.querySelector(
-                        '.slds-form-element__help'
-                    );
-                    expect(help.textContent).toBe('Something is wrong');
-                });
-            });
-
-            // Depends on required and showHelpMessageIfInvalid()
-            it('messageWhenValueMissing', () => {
-                element.messageWhenValueMissing = 'Something is wrong';
-                element.required = true;
-                element.showHelpMessageIfInvalid();
-
-                return Promise.resolve().then(() => {
-                    const help = element.shadowRoot.querySelector(
-                        '.slds-form-element__help'
-                    );
-                    expect(help.textContent).toBe('Something is wrong');
-                });
-            });
-
-            it('Validity', () => {
-                element.required = true;
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="input"]'
-                );
-
-                return Promise.resolve().then(() => {
-                    input.click();
-                    input.blur();
-                    input.dispatchEvent(new CustomEvent('input'));
-                    expect(element.validity.valueMissing).toBeTruthy();
-                });
-            });
         });
 
         describe('Name', () => {
@@ -1111,6 +1069,86 @@ describe('Primitive Combobox', () => {
             });
         });
 
+        describe('Validations', () => {
+            // Depends on required and showHelpMessageIfInvalid()
+            it('messageWhenBadInput', () => {
+                element.messageWhenBadInput = 'Something is wrong';
+                element.options = options;
+                element.value = ['hello'];
+                element.showHelpMessageIfInvalid();
+
+                return Promise.resolve().then(() => {
+                    const help = element.shadowRoot.querySelector(
+                        '.slds-form-element__help'
+                    );
+                    expect(help.textContent).toBe('Something is wrong');
+                });
+            });
+
+            // Depends on isMultiSelect, max and showHelpMessageIfInvalid()
+            it('messageWhenRangeOverflow', () => {
+                element.messageWhenRangeOverflow = 'Something is wrong';
+                element.max = 1;
+                element.isMultiSelect = true;
+                element.options = options;
+                element.value = ['no-avatar-oil-sla', 'no-avatar-united-oil'];
+
+                element.showHelpMessageIfInvalid();
+
+                return Promise.resolve().then(() => {
+                    const help = element.shadowRoot.querySelector(
+                        '.slds-form-element__help'
+                    );
+                    expect(help.textContent).toBe('Something is wrong');
+                });
+            });
+
+            // Depends on isMultiSelect, min and showHelpMessageIfInvalid()
+            it('messageWhenRangeUnderflow', () => {
+                element.messageWhenRangeUnderflow = 'Something is wrong';
+                element.min = 1;
+                element.isMultiSelect = true;
+                element.options = options;
+
+                element.showHelpMessageIfInvalid();
+
+                return Promise.resolve().then(() => {
+                    const help = element.shadowRoot.querySelector(
+                        '.slds-form-element__help'
+                    );
+                    expect(help.textContent).toBe('Something is wrong');
+                });
+            });
+
+            // Depends on required and showHelpMessageIfInvalid()
+            it('messageWhenValueMissing', () => {
+                element.messageWhenValueMissing = 'Something is wrong';
+                element.required = true;
+                element.showHelpMessageIfInvalid();
+
+                return Promise.resolve().then(() => {
+                    const help = element.shadowRoot.querySelector(
+                        '.slds-form-element__help'
+                    );
+                    expect(help.textContent).toBe('Something is wrong');
+                });
+            });
+
+            it('Validity', () => {
+                element.required = true;
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    input.click();
+                    input.blur();
+                    input.dispatchEvent(new CustomEvent('input'));
+                    expect(element.validity.valueMissing).toBeTruthy();
+                });
+            });
+        });
+
         describe('Variant', () => {
             // Depends on label
             it('Standard', () => {
@@ -1262,6 +1300,19 @@ describe('Primitive Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
+        // Depends on options
+        it('Open', () => {
+            element.options = options;
+            element.open();
+
+            return Promise.resolve().then(() => {
+                const dropdownTrigger = element.shadowRoot.querySelector(
+                    '.combobox__dropdown-trigger'
+                );
+                expect(dropdownTrigger.classList).toContain('slds-is-open');
+            });
+        });
+
         // Depends on value, isMultiSelect and options
         it('RemoveSelectedOption and change event', () => {
             element.value = ['no-avatar-oil-sla', 152];
@@ -1291,19 +1342,6 @@ describe('Primitive Combobox', () => {
             });
         });
 
-        // Depends on options
-        it('Open', () => {
-            element.options = options;
-            element.open();
-
-            return Promise.resolve().then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '.combobox__dropdown-trigger'
-                );
-                expect(dropdownTrigger.classList).toContain('slds-is-open');
-            });
-        });
-
         // Depends on required
         it('ReportValidity', () => {
             element.required = true;
@@ -1315,6 +1353,13 @@ describe('Primitive Combobox', () => {
                 );
                 expect(help).toBeTruthy();
             });
+        });
+
+        it('SetCustomValidity', () => {
+            const spy = jest.spyOn(element, 'setCustomValidity');
+
+            element.setCustomValidity('Something');
+            expect(spy).toHaveBeenCalled();
         });
 
         // Depends on required
@@ -1357,8 +1402,73 @@ describe('Primitive Combobox', () => {
             });
         });
 
+        it('Blur, input without value', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+            element.options = options;
+
+            return Promise.resolve().then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+                input.focus();
+                input.blur();
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+        });
+
+        it('Blur, input with value', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+            element.options = options;
+            element.value = [options[0].value];
+
+            return Promise.resolve().then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+                input.focus();
+                input.blur();
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(input.value).toBe(options[0].label);
+            });
+        });
+
+        it('Blur, input with search', () => {
+            jest.useFakeTimers();
+            const handler = jest.fn();
+            element.addEventListener('search', handler);
+            element.options = options;
+            element.allowSearch = true;
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+
+            return Promise.resolve().then(() => {
+                input.value = 'Test';
+                input.dispatchEvent(new CustomEvent('input'));
+                jest.runAllTimers();
+                input.focus();
+                input.blur();
+                jest.runAllTimers();
+                expect(handler).toHaveBeenCalledTimes(2);
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[1][0].detail.value).toBe('');
+            });
+        });
+
         // Depends on options, showClearInput and value
-        it('Change event, triggered by clear button', () => {
+        it('Change, triggered by clear button', () => {
             const handler = jest.fn();
             element.addEventListener('change', handler);
             element.options = options;

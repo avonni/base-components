@@ -707,142 +707,6 @@ export default class PrimitiveCombobox extends LightningElement {
      */
 
     /**
-     * Returns an array of visible options.
-     *
-     * @type {object[]}
-     */
-    get visibleOptions() {
-        return this._visibleOptions;
-    }
-    set visibleOptions(value) {
-        this._visibleOptions =
-            this._connected && this.removeSelectedOptions
-                ? this.removeSelectedOptionsFrom(value)
-                : value;
-
-        this.computeGroups();
-    }
-
-    /**
-     * Returns a boolean indicating if the value is valid or not.
-     *
-     * @type {boolean}
-     */
-    get hasBadInput() {
-        return this.value.some((value) => value && !this.getOption(value));
-    }
-
-    /**
-     * Gets FieldConstraintApi.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0,
-                badInput: () => this.hasBadInput,
-                rangeOverflow: () =>
-                    this.selectedOptions.length > this.max &&
-                    this.isMultiSelect,
-                rangeUnderflow: () =>
-                    this.selectedOptions.length < this.min && this.isMultiSelect
-            });
-        }
-        return this._constraintApi;
-    }
-
-    /**
-     * Returns a unique ID.
-     *
-     * @type {string}
-     */
-    get generateKey() {
-        return generateUUID();
-    }
-
-    /**
-     * Returns an input element.
-     *
-     * @type {element}
-     */
-    get input() {
-        return this.template.querySelector('[data-element-id="input"]');
-    }
-
-    /**
-     * Returns an icon name for the input depending on allow-search attribute.
-     *
-     * @type {string}
-     */
-    get inputIconName() {
-        return this.allowSearch ? 'utility:search' : 'utility:down';
-    }
-
-    /**
-     * Maximum height of the dropdown, so it doesn't overflow the window.
-     *
-     * @type {number}
-     */
-    get maxDropdownHeight() {
-        const dropdown = this.template.querySelector(
-            '[data-element-id="div-dropdown"]'
-        );
-        if (!dropdown) {
-            return 0;
-        }
-        const maxHeightBeforeOverflow =
-            window.innerHeight - dropdown.getBoundingClientRect().top - 20;
-
-        return maxHeightBeforeOverflow < MIN_DROPDOWN_HEIGHT
-            ? MIN_DROPDOWN_HEIGHT
-            : maxHeightBeforeOverflow;
-    }
-
-    /**
-     * If true, display value avatar.
-     *
-     * @type {boolean}
-     */
-    get showInputValueAvatar() {
-        return (
-            this.selectedOption &&
-            !this.selectedOption.iconName &&
-            this.inputValue === this.selectedOption.label &&
-            (this.selectedOption.avatarSrc ||
-                this.selectedOption.avatarFallbackIconName)
-        );
-    }
-
-    /**
-     * If true, display value icon.
-     *
-     * @type {boolean}
-     */
-    get showInputValueIcon() {
-        return this.selectedOption && this.selectedOption.iconName;
-    }
-
-    /**
-     * True if disabled or read-only are true.
-     *
-     * @type {boolean}
-     */
-    get inputIsDisabled() {
-        return this.disabled || this.readOnly;
-    }
-
-    /**
-     * True if allow-search is false.
-     *
-     * @type {boolean}
-     */
-    get hasNoSearch() {
-        return !this.allowSearch;
-    }
-
-    /**
      * Returns true as a string if dropdown-visible is true and false as a string if false.
      *
      * @type {string}
@@ -858,117 +722,6 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get computedAriaAutocomplete() {
         return this.readOnly || this.disabled ? 'none' : 'list';
-    }
-
-    /**
-     * True if parent-options-values and current parent.
-     *
-     * @type {boolean}
-     */
-    get currentParent() {
-        return (
-            this.parentOptionsValues.length &&
-            this.getOption(
-                this.parentOptionsValues[this.parentOptionsValues.length - 1]
-            )
-        );
-    }
-
-    /**
-     * Returns an array of options element.
-     *
-     * @type {element}
-     */
-    get _optionElements() {
-        if (this.dropdownVisible) {
-            const elements = [];
-            const topActions = this.template.querySelectorAll(
-                '[data-group-name="actions"][data-position="top"]'
-            );
-            topActions.forEach((action) => {
-                if (action.dataset.ariaDisabled === 'false')
-                    elements.push(action);
-            });
-
-            const groups = this.template.querySelectorAll(
-                '[data-element-id="avonni-primitive-combobox-group"]'
-            );
-            groups.forEach((group) => {
-                elements.push(
-                    group.optionElements.filter(
-                        (option) => option.dataset.ariaDisabled === 'false'
-                    )
-                );
-            });
-
-            const bottomActions = this.template.querySelectorAll(
-                '[data-group-name="actions"][data-position="bottom"]'
-            );
-            bottomActions.forEach((action) => {
-                if (action.dataset.ariaDisabled === 'false')
-                    elements.push(action);
-            });
-
-            return elements.flat();
-        }
-        return [];
-    }
-
-    /**
-     * Highlighted option HTML element.
-     *
-     * @type {HTMLElement}
-     */
-    get _highlightedOption() {
-        return (
-            this._optionElements.length &&
-            this._optionElements[this._highlightedOptionIndex]
-        );
-    }
-
-    get scrolledToEnd() {
-        const list = this.template.querySelector(
-            '[data-element-id="ul-listbox"]'
-        );
-        const fullHeight = list.scrollHeight;
-        const scrolledDistance = list.scrollTop;
-        const visibleHeight = list.offsetHeight;
-        return (
-            visibleHeight + scrolledDistance + this.loadMoreOffset >= fullHeight
-        );
-    }
-
-    /**
-     * True if hide-clear-input is false and the input has a value.
-     *
-     * @type {boolean}
-     */
-    get showClearInputIcon() {
-        return !this.hideClearIcon && this.inputValue !== '';
-    }
-
-    /**
-     * True if input-value and no visible-options.
-     *
-     * @type {boolean}
-     */
-    get showNoSearchResultMessage() {
-        return (
-            !this._isSearching &&
-            !this.showLoader &&
-            !this.visibleOptions.length
-        );
-    }
-
-    /**
-     * Computed Label Class styling.
-     *
-     * @type {string}
-     */
-    get computedLabelClass() {
-        return classSet('slds-form-element__label')
-            .add({ 'slds-assistive-text': this.variant === 'label-hidden' })
-            .toString();
     }
 
     /**
@@ -1039,6 +792,178 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Computed Label Class styling.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        return classSet('slds-form-element__label')
+            .add({ 'slds-assistive-text': this.variant === 'label-hidden' })
+            .toString();
+    }
+
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0,
+                badInput: () => this.hasBadInput,
+                rangeOverflow: () =>
+                    this.selectedOptions.length > this.max &&
+                    this.isMultiSelect,
+                rangeUnderflow: () =>
+                    this.selectedOptions.length < this.min && this.isMultiSelect
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /**
+     * True if parent-options-values and current parent.
+     *
+     * @type {boolean}
+     */
+    get currentParent() {
+        return (
+            this.parentOptionsValues.length &&
+            this.getOption(
+                this.parentOptionsValues[this.parentOptionsValues.length - 1]
+            )
+        );
+    }
+
+    /**
+     * Returns a unique ID.
+     *
+     * @type {string}
+     */
+    get generateKey() {
+        return generateUUID();
+    }
+
+    /**
+     * Returns a boolean indicating if the value is valid or not.
+     *
+     * @type {boolean}
+     */
+    get hasBadInput() {
+        return this.value.some((value) => value && !this.getOption(value));
+    }
+
+    /**
+     * True if allow-search is false.
+     *
+     * @type {boolean}
+     */
+    get hasNoSearch() {
+        return !this.allowSearch;
+    }
+
+    /**
+     * Highlighted option HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get _highlightedOption() {
+        return (
+            this._optionElements.length &&
+            this._optionElements[this._highlightedOptionIndex]
+        );
+    }
+
+    /**
+     * Returns an input element.
+     *
+     * @type {element}
+     */
+    get input() {
+        return this.template.querySelector('[data-element-id="input"]');
+    }
+
+    /**
+     * Returns an icon name for the input depending on allow-search attribute.
+     *
+     * @type {string}
+     */
+    get inputIconName() {
+        return this.allowSearch ? 'utility:search' : 'utility:down';
+    }
+
+    /**
+     * True if disabled or read-only are true.
+     *
+     * @type {boolean}
+     */
+    get inputIsDisabled() {
+        return this.disabled || this.readOnly;
+    }
+
+    /**
+     * Maximum height of the dropdown, so it doesn't overflow the window.
+     *
+     * @type {number}
+     */
+    get maxDropdownHeight() {
+        const dropdown = this.template.querySelector(
+            '[data-element-id="div-dropdown"]'
+        );
+        if (!dropdown) {
+            return 0;
+        }
+        const maxHeightBeforeOverflow =
+            window.innerHeight - dropdown.getBoundingClientRect().top - 20;
+
+        return maxHeightBeforeOverflow < MIN_DROPDOWN_HEIGHT
+            ? MIN_DROPDOWN_HEIGHT
+            : maxHeightBeforeOverflow;
+    }
+
+    /**
+     * Returns an array of options element.
+     *
+     * @type {element}
+     */
+    get _optionElements() {
+        if (this.dropdownVisible) {
+            const elements = [];
+            const topActions = this.template.querySelectorAll(
+                '[data-group-name="actions"][data-position="top"]'
+            );
+            topActions.forEach((action) => {
+                if (action.dataset.ariaDisabled === 'false')
+                    elements.push(action);
+            });
+
+            const groups = this.template.querySelectorAll(
+                '[data-element-id="avonni-primitive-combobox-group"]'
+            );
+            groups.forEach((group) => {
+                elements.push(
+                    group.optionElements.filter(
+                        (option) => option.dataset.ariaDisabled === 'false'
+                    )
+                );
+            });
+
+            const bottomActions = this.template.querySelectorAll(
+                '[data-group-name="actions"][data-position="bottom"]'
+            );
+            bottomActions.forEach((action) => {
+                if (action.dataset.ariaDisabled === 'false')
+                    elements.push(action);
+            });
+
+            return elements.flat();
+        }
+        return [];
+    }
+
+    /**
      * True if read-only and is-multi-select is false.
      *
      * @type {boolean}
@@ -1054,6 +979,86 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get readOnlyValue() {
         return this.validity.valid ? this.inputValue : '';
+    }
+
+    /**
+     * If true, display value avatar.
+     *
+     * @type {boolean}
+     */
+    get showInputValueAvatar() {
+        return (
+            this.selectedOption &&
+            !this.selectedOption.iconName &&
+            this.inputValue === this.selectedOption.label &&
+            (this.selectedOption.avatarSrc ||
+                this.selectedOption.avatarFallbackIconName)
+        );
+    }
+
+    /**
+     * If true, display value icon.
+     *
+     * @type {boolean}
+     */
+    get showInputValueIcon() {
+        return this.selectedOption && this.selectedOption.iconName;
+    }
+
+    /**
+     * Returns true if the dropdown is scrolled to the end.
+     *
+     * @type {boolean}
+     */
+    get scrolledToEnd() {
+        const list = this.template.querySelector(
+            '[data-element-id="ul-listbox"]'
+        );
+        const fullHeight = list.scrollHeight;
+        const scrolledDistance = list.scrollTop;
+        const visibleHeight = list.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + this.loadMoreOffset >= fullHeight
+        );
+    }
+
+    /**
+     * True if hide-clear-input is false and the input has a value.
+     *
+     * @type {boolean}
+     */
+    get showClearInputIcon() {
+        return !this.hideClearIcon && this.inputValue !== '';
+    }
+
+    /**
+     * True if input-value and no visible-options.
+     *
+     * @type {boolean}
+     */
+    get showNoSearchResultMessage() {
+        return (
+            !this._isSearching &&
+            !this.showLoader &&
+            !this.visibleOptions.length
+        );
+    }
+
+    /**
+     * Returns an array of visible options.
+     *
+     * @type {object[]}
+     */
+    get visibleOptions() {
+        return this._visibleOptions;
+    }
+    set visibleOptions(value) {
+        this._visibleOptions =
+            this._connected && this.removeSelectedOptions
+                ? this.removeSelectedOptionsFrom(value)
+                : value;
+
+        this.computeGroups();
     }
 
     /*
@@ -2293,14 +2298,5 @@ export default class PrimitiveCombobox extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('open'));
-    }
-
-    /**
-     * Stop the propagation of an event.
-     *
-     * @param {Event} event Event to stop the propagation of.
-     */
-    stopPropagation(event) {
-        event.stopPropagation();
     }
 }
