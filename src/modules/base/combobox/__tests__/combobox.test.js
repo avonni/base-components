@@ -19,9 +19,6 @@ describe('Combobox', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
-            element = createElement('base-combobox', {
-                is: Combobox
-            });
             expect(element.actions).toMatchObject([]);
             expect(element.allowSearch).toBeFalsy();
             expect(element.backAction).toEqual({
@@ -41,8 +38,12 @@ describe('Combobox', () => {
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
             expect(element.loadingStateAlternativeText).toBe('Loading');
+            expect(element.max).toBeUndefined();
             expect(element.messageWhenBadInput).toBeUndefined();
+            expect(element.messageWhenRangeOverflow).toBeUndefined();
+            expect(element.messageWhenRangeUnderflow).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
+            expect(element.min).toBe(0);
             expect(element.multiLevelGroups).toBeFalsy();
             expect(element.name).toBeUndefined();
             expect(element.options).toMatchObject([]);
@@ -62,10 +63,8 @@ describe('Combobox', () => {
             expect(element.variant).toBe('standard');
         });
 
-        /* ----- ATTRIBUTES ----- */
-
         describe('Actions', () => {
-            it('actions', () => {
+            it('Passed to the component', () => {
                 element.actions = actions;
 
                 return Promise.resolve().then(() => {
@@ -78,7 +77,7 @@ describe('Combobox', () => {
         });
 
         describe('Allow Search', () => {
-            it('allowSearch', () => {
+            it('Passed to the component', () => {
                 element.allowSearch = true;
 
                 return Promise.resolve().then(() => {
@@ -91,7 +90,7 @@ describe('Combobox', () => {
         });
 
         describe('Back Action', () => {
-            it('backAction', () => {
+            it('Passed to the component', () => {
                 const action = {
                     label: 'Back',
                     iconName: 'utility:add',
@@ -110,7 +109,7 @@ describe('Combobox', () => {
 
         describe('Disabled', () => {
             // Depends on scopes
-            it('disabled', () => {
+            it('Passed to the component', () => {
                 element.disabled = true;
                 element.scopes = scopes;
 
@@ -130,7 +129,7 @@ describe('Combobox', () => {
 
         describe('Dropdown Alignment', () => {
             // Depends on scopes
-            it('dropdownAlignment', () => {
+            it('Passed to the component', () => {
                 element.dropdownAlignment = 'right';
                 element.scopes = scopes;
 
@@ -150,7 +149,7 @@ describe('Combobox', () => {
 
         describe('Dropdown Length', () => {
             // Depends on scopes
-            it('dropdownLength', () => {
+            it('Passed to the component', () => {
                 element.dropdownLength = '5-items';
                 element.scopes = scopes;
 
@@ -169,7 +168,7 @@ describe('Combobox', () => {
         });
 
         describe('Enable Infinite Loading', () => {
-            it('enableInfiniteLoading', () => {
+            it('Passed to the component', () => {
                 element.enableInfiniteLoading = true;
 
                 return Promise.resolve().then(() => {
@@ -182,7 +181,7 @@ describe('Combobox', () => {
         });
 
         describe('Field Level Help', () => {
-            it('fieldLevelHelp', () => {
+            it('Passed to the component', () => {
                 element.fieldLevelHelp = 'A string help';
 
                 return Promise.resolve().then(() => {
@@ -195,7 +194,7 @@ describe('Combobox', () => {
         });
 
         describe('Groups', () => {
-            it('groups', () => {
+            it('Passed to the component', () => {
                 element.groups = groups;
 
                 return Promise.resolve().then(() => {
@@ -209,7 +208,7 @@ describe('Combobox', () => {
         });
 
         describe('Hide Clear Icon', () => {
-            it('hideClearIcon', () => {
+            it('Passed to the component', () => {
                 element.hideClearIcon = true;
 
                 return Promise.resolve().then(() => {
@@ -223,7 +222,7 @@ describe('Combobox', () => {
         });
 
         describe('Hide options Until Search', () => {
-            it('hideOptionsUntilSearch', () => {
+            it('Passed to the component', () => {
                 element.hideOptionsUntilSearch = true;
 
                 return Promise.resolve().then(() => {
@@ -237,7 +236,7 @@ describe('Combobox', () => {
 
         describe('Hide Selected Options', () => {
             // Depends on isMultiSelect
-            it('false', () => {
+            it('False', () => {
                 element.hideSelectedOptions = false;
                 element.isMultiSelect = true;
 
@@ -266,7 +265,7 @@ describe('Combobox', () => {
                     });
             });
 
-            it('true', () => {
+            it('True', () => {
                 element.hideSelectedOptions = true;
                 element.isMultiSelect = true;
 
@@ -293,7 +292,7 @@ describe('Combobox', () => {
         });
 
         describe('Is Loading', () => {
-            it('isLoading', () => {
+            it('Passed to the component', () => {
                 element.isLoading = true;
 
                 return Promise.resolve().then(() => {
@@ -306,7 +305,7 @@ describe('Combobox', () => {
         });
 
         describe('Is Multi Select', () => {
-            it('isMultiSelect', () => {
+            it('Passed to the component', () => {
                 element.isMultiSelect = true;
 
                 return Promise.resolve().then(() => {
@@ -319,7 +318,7 @@ describe('Combobox', () => {
         });
 
         describe('Label', () => {
-            it('label', () => {
+            it('Passed to the component', () => {
                 element.label = 'A string label';
 
                 return Promise.resolve().then(() => {
@@ -337,7 +336,7 @@ describe('Combobox', () => {
         });
 
         describe('Load More Offset', () => {
-            it('loadMoreOffset', () => {
+            it('Passed to the component', () => {
                 element.loadMoreOffset = true;
 
                 return Promise.resolve().then(() => {
@@ -350,7 +349,7 @@ describe('Combobox', () => {
         });
 
         describe('Loading State Alternative Text', () => {
-            it('loadingStateAlternativeText', () => {
+            it('Passed to the component', () => {
                 element.loadingStateAlternativeText = 'A string text';
 
                 return Promise.resolve().then(() => {
@@ -364,37 +363,35 @@ describe('Combobox', () => {
             });
         });
 
-        describe('Validity Messages', () => {
-            it('messageWhenBadInput', () => {
-                element.messageWhenBadInput = 'A string message';
+        describe('Max', () => {
+            it('Passed to the component', () => {
+                element.max = 2;
 
                 return Promise.resolve().then(() => {
                     const combobox = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-combobox-main"]'
                     );
-                    expect(combobox.messageWhenBadInput).toBe(
-                        'A string message'
-                    );
+                    expect(combobox.max).toBe(2);
                 });
             });
+        });
 
-            it('messageWhenValueMissing', () => {
-                element.messageWhenValueMissing = 'A string message';
+        describe('Min', () => {
+            it('Passed to the component', () => {
+                element.min = 2;
 
                 return Promise.resolve().then(() => {
                     const combobox = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-combobox-main"]'
                     );
-                    expect(combobox.messageWhenValueMissing).toBe(
-                        'A string message'
-                    );
+                    expect(combobox.min).toBe(2);
                 });
             });
         });
 
         describe('Multi Level Groups', () => {
             // Depends on scopes
-            it('multiLevelGroups', () => {
+            it('Passed to the component', () => {
                 element.multiLevelGroups = true;
                 element.scopes = scopes;
 
@@ -413,7 +410,7 @@ describe('Combobox', () => {
         });
 
         describe('Name', () => {
-            it('name', () => {
+            it('Passed to the component', () => {
                 element.name = 'a-string-name';
 
                 return Promise.resolve().then(() => {
@@ -426,7 +423,7 @@ describe('Combobox', () => {
         });
 
         describe('Options', () => {
-            it('options', () => {
+            it('Passed to the component', () => {
                 element.options = options;
 
                 return Promise.resolve().then(() => {
@@ -439,7 +436,7 @@ describe('Combobox', () => {
         });
 
         describe('Placeholder', () => {
-            it('placeholder', () => {
+            it('Passed to the component', () => {
                 element.placeholder = 'A string placeholder';
 
                 return Promise.resolve().then(() => {
@@ -453,7 +450,7 @@ describe('Combobox', () => {
 
         describe('Read Only', () => {
             // Depends on scopes
-            it('readOnly', () => {
+            it('Passed to the component', () => {
                 element.readOnly = true;
                 element.scopes = scopes;
 
@@ -472,7 +469,7 @@ describe('Combobox', () => {
         });
 
         describe('Remove Selected Options', () => {
-            it('removeSelectedOptions', () => {
+            it('Passed to the component', () => {
                 element.removeSelectedOptions = true;
 
                 return Promise.resolve().then(() => {
@@ -485,7 +482,7 @@ describe('Combobox', () => {
         });
 
         describe('Required', () => {
-            it('required', () => {
+            it('Passed to the component', () => {
                 element.required = true;
 
                 return Promise.resolve().then(() => {
@@ -498,7 +495,7 @@ describe('Combobox', () => {
         });
 
         describe('Scopes', () => {
-            it('scopes', () => {
+            it('Passed to the component', () => {
                 element.scopes = scopes;
 
                 return Promise.resolve().then(() => {
@@ -510,7 +507,7 @@ describe('Combobox', () => {
             });
 
             // Depends on scopes
-            it('scopesGroups', () => {
+            it('ScopesGroups', () => {
                 element.scopes = scopes;
                 element.scopesGroups = scopesGroups;
 
@@ -525,7 +522,7 @@ describe('Combobox', () => {
         });
 
         describe('Search', () => {
-            it('search', () => {
+            it('Passed to the component', () => {
                 const search = jest.fn();
                 element.search = search;
 
@@ -540,7 +537,7 @@ describe('Combobox', () => {
 
         describe('Selected Options', () => {
             // Depends on isMultiSelect and options
-            it('selectedOptionsAriaLabel', () => {
+            it('SelectedOptionsAriaLabel', () => {
                 element.options = options;
                 element.isMultiSelect = true;
                 element.selectedOptionsAriaLabel = 'A string label';
@@ -569,7 +566,7 @@ describe('Combobox', () => {
             });
 
             // Depends on isMultiSelect and options
-            it('selectedOptionsDirection = horizontal', () => {
+            it('SelectedOptionsDirection = horizontal', () => {
                 element.options = options;
                 element.isMultiSelect = true;
                 element.selectedOptionsDirection = 'horizontal';
@@ -599,7 +596,7 @@ describe('Combobox', () => {
                     });
             });
 
-            it('selectedOptionsDirection = vertical', () => {
+            it('SelectedOptionsDirection = vertical', () => {
                 element.options = options;
                 element.isMultiSelect = true;
                 element.selectedOptionsDirection = 'vertical';
@@ -630,7 +627,7 @@ describe('Combobox', () => {
             });
 
             // Depends on isMultiSelect and options
-            it('sortableSelectedOptions', () => {
+            it('SortableSelectedOptions', () => {
                 element.options = options;
                 element.isMultiSelect = true;
                 element.sortableSelectedOptions = true;
@@ -657,7 +654,7 @@ describe('Combobox', () => {
             });
 
             // Depends on selectedOptionsDirection, isMultiSelect and options
-            it('sortableSelectedOptionsIconName', () => {
+            it('SortableSelectedOptionsIconName', () => {
                 element.options = options;
                 element.isMultiSelect = true;
                 element.sortableSelectedOptionsIconName = 'utility:user';
@@ -687,7 +684,7 @@ describe('Combobox', () => {
 
         describe('Validity', () => {
             // Depends on required
-            it('validity', () => {
+            it('Passed to the component', () => {
                 element.required = true;
 
                 return Promise.resolve().then(() => {
@@ -701,7 +698,7 @@ describe('Combobox', () => {
         });
 
         describe('Value', () => {
-            it('string with delimiters', () => {
+            it('String with delimiters', () => {
                 element.value = 'value1;value2;value3';
 
                 return Promise.resolve().then(() => {
@@ -716,7 +713,7 @@ describe('Combobox', () => {
                 });
             });
 
-            it('number', () => {
+            it('Number', () => {
                 element.value = 2;
 
                 return Promise.resolve().then(() => {
@@ -727,7 +724,7 @@ describe('Combobox', () => {
                 });
             });
 
-            it('array', () => {
+            it('Array', () => {
                 element.value = [options[0].value];
 
                 return Promise.resolve().then(() => {
@@ -739,9 +736,63 @@ describe('Combobox', () => {
             });
         });
 
+        describe('Validity Messages', () => {
+            it('MessageWhenBadInput', () => {
+                element.messageWhenBadInput = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenBadInput).toBe(
+                        'A string message'
+                    );
+                });
+            });
+
+            it('MessageWhenRangeOverflow', () => {
+                element.messageWhenRangeOverflow = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenRangeOverflow).toBe(
+                        'A string message'
+                    );
+                });
+            });
+
+            it('MessageWhenRangeUnderflow', () => {
+                element.messageWhenRangeUnderflow = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenRangeUnderflow).toBe(
+                        'A string message'
+                    );
+                });
+            });
+
+            it('MessageWhenValueMissing', () => {
+                element.messageWhenValueMissing = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.messageWhenValueMissing).toBe(
+                        'A string message'
+                    );
+                });
+            });
+        });
+
         describe('Variant', () => {
             // Depends on label
-            it('standard', () => {
+            it('Standard', () => {
                 element.variant = 'standard';
                 element.label = 'A string label';
 
@@ -761,7 +812,7 @@ describe('Combobox', () => {
                 });
             });
 
-            it('label-stacked', () => {
+            it('Label-stacked', () => {
                 element.variant = 'label-stacked';
                 element.label = 'A string label';
 
@@ -781,7 +832,7 @@ describe('Combobox', () => {
                 });
             });
 
-            it('label-hidden', () => {
+            it('Label-hidden', () => {
                 element.variant = 'label-hidden';
                 element.label = 'A string label';
 
@@ -799,7 +850,7 @@ describe('Combobox', () => {
                 });
             });
 
-            it('label-inline', () => {
+            it('Label-inline', () => {
                 element.variant = 'label-inline';
                 element.label = 'A string label';
 
@@ -822,8 +873,7 @@ describe('Combobox', () => {
     });
 
     describe('Methods', () => {
-        // blur
-        it('blur method', () => {
+        it('Blur', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -833,8 +883,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // checkValidity
-        it('checkValidity method', () => {
+        it('CheckValidity', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -844,8 +893,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // close
-        it('close method', () => {
+        it('Close', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -855,8 +903,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // focus
-        it('focus method', () => {
+        it('Focus', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -866,8 +913,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // open
-        it('open method', () => {
+        it('Open', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -877,8 +923,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // reportValidity
-        it('reportValidity method', () => {
+        it('ReportValidity', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -888,8 +933,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // resetLevel
-        it('resetLevel method', () => {
+        it('ResetLevel', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -899,8 +943,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // setCustomValidity
-        it('setCustomValidity method', () => {
+        it('SetCustomValidity', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -910,8 +953,7 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // showHelpMessageIfInvalid
-        it('showHelpMessageIfInvalid method', () => {
+        it('ShowHelpMessageIfInvalid', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
@@ -921,9 +963,8 @@ describe('Combobox', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // updateScope
         // Depends on scopes
-        it('updateScope method', () => {
+        it('UpdateScope', () => {
             element.scopes = scopes;
 
             return Promise.resolve()
@@ -945,8 +986,7 @@ describe('Combobox', () => {
     });
 
     describe('Events', () => {
-        // actionclick
-        it('actionclick event', () => {
+        it('Actionclick', () => {
             const handler = jest.fn();
             element.addEventListener('actionclick', handler);
 
@@ -968,8 +1008,7 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        // backactionclick
-        it('backactionclick event', () => {
+        it('Backactionclick', () => {
             const handler = jest.fn();
             element.addEventListener('backactionclick', handler);
 
@@ -984,8 +1023,7 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        // blur
-        it('blur event', () => {
+        it('Blur', () => {
             const handler = jest.fn();
             element.addEventListener('blur', handler);
 
@@ -1000,8 +1038,7 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        // focus
-        it('focus event', () => {
+        it('Focus', () => {
             const handler = jest.fn();
             element.addEventListener('focus', handler);
 
@@ -1016,8 +1053,7 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        // levelchange
-        it('levelchange event', () => {
+        it('Levelchange', () => {
             element.options = options;
             const handler = jest.fn();
             element.addEventListener('levelchange', handler);
@@ -1045,8 +1081,7 @@ describe('Combobox', () => {
             });
         });
 
-        // loadmore
-        it('loadmore event', () => {
+        it('Loadmore', () => {
             element.options = options;
             const handler = jest.fn();
             element.addEventListener('loadmore', handler);
@@ -1074,8 +1109,35 @@ describe('Combobox', () => {
             });
         });
 
-        // open
-        it('open event', () => {
+        it('Loadmore with wrong value', () => {
+            element.options = options;
+            const handler = jest.fn();
+            element.addEventListener('loadmore', handler);
+
+            return Promise.resolve().then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('loadmore', {
+                        detail: {
+                            optionValue: 'hey',
+                            searchTerm: 'some research'
+                        }
+                    })
+                );
+
+                expect(handler).toHaveBeenCalled();
+                const event = handler.mock.calls[0][0];
+                expect(event.detail.option).toEqual(null);
+                expect(event.detail.searchTerm).toBe('some research');
+                expect(event.bubbles).toBeFalsy();
+                expect(event.composed).toBeFalsy();
+                expect(event.cancelable).toBeFalsy();
+            });
+        });
+
+        it('Open', () => {
             const handler = jest.fn();
             element.addEventListener('open', handler);
 
@@ -1090,9 +1152,8 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        // scopechange
         // Depends on scopes
-        it('scopechange event', () => {
+        it('Scopechange', () => {
             const handler = jest.fn();
             element.addEventListener('scopechange', handler);
             element.scopes = scopes;
@@ -1119,8 +1180,7 @@ describe('Combobox', () => {
             });
         });
 
-        // search
-        it('search event', () => {
+        it('Search', () => {
             const handler = jest.fn();
             element.addEventListener('search', handler);
 
@@ -1142,8 +1202,7 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        // change
-        it('change event multiselect = true', () => {
+        it('Change multiselect = true', () => {
             element.isMultiSelect = true;
             const handler = jest.fn();
             element.addEventListener('change', handler);
@@ -1171,7 +1230,7 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        it('change event multiselect = false', () => {
+        it('Change multiselect = false', () => {
             const handler = jest.fn();
             element.addEventListener('change', handler);
 
@@ -1193,7 +1252,7 @@ describe('Combobox', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
-        it('change event, reorder horizontal selection', () => {
+        it('Change reorder horizontal selection', () => {
             const handler = jest.fn();
             element.addEventListener('change', handler);
             element.isMultiSelect = true;
@@ -1243,8 +1302,7 @@ describe('Combobox', () => {
                 });
         });
 
-        // close
-        it('close event', () => {
+        it('Close', () => {
             const handler = jest.fn();
             element.addEventListener('close', handler);
 
@@ -1260,7 +1318,6 @@ describe('Combobox', () => {
             });
         });
 
-        // Remove a selected option
         // Depends on isMultiSelect
         it('Remove a selected option', () => {
             const combobox = element.shadowRoot.querySelector(

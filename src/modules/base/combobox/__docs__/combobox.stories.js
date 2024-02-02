@@ -63,7 +63,7 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
-                category: 'Parameters'
+                category: 'Validations'
             }
         },
         dropdownAlignment: {
@@ -111,7 +111,8 @@ export default {
                 'If present, you can load a subset of options and then display more when users scroll to the end of the drop-down. Use with the loadmore event handler to retrieve more data.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         fieldLevelHelp: {
@@ -233,7 +234,19 @@ export default {
                 "Determines when to trigger infinite loading based on how many pixels the drop-down's scroll position is from the bottom of the drop-down.",
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '20' }
+                defaultValue: { summary: '20' },
+                category: 'Parameters'
+            }
+        },
+        max: {
+            control: {
+                type: 'number'
+            },
+            description:
+                'If multi-select, maximum number of selected options allowed.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Validations'
             }
         },
         messageWhenBadInput: {
@@ -245,7 +258,31 @@ export default {
                 'Error message to be displayed when a bad input is detected.',
             table: {
                 type: { summary: 'string' },
-                category: 'Parameters'
+                category: 'Validations'
+            }
+        },
+        messageWhenRangeOverflow: {
+            name: 'message-when-range-overflow',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a range overflow is detected.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Validations'
+            }
+        },
+        messageWhenRangeUnderflow: {
+            name: 'message-when-range-underflow',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a range underflow is detected.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Validations'
             }
         },
         messageWhenValueMissing: {
@@ -257,7 +294,19 @@ export default {
                 'Error message to be displayed when the value is missing and input is required.',
             table: {
                 type: { summary: 'string' },
-                category: 'Parameters'
+                category: 'Validations'
+            }
+        },
+        min: {
+            control: {
+                type: 'number'
+            },
+            description:
+                'If multi-select, minimum number of selected options allowed.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' },
+                category: 'Validations'
             }
         },
         multiLevelGroups: {
@@ -315,7 +364,7 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
-                category: 'Parameters'
+                category: 'Validations'
             }
         },
         removeSelectedOptions: {
@@ -340,7 +389,7 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
-                category: 'Parameters'
+                category: 'Validations'
             }
         },
         scopes: {
@@ -429,7 +478,7 @@ export default {
                 'Represents the validity states that an element can be in, with respect to constraint validation.',
             table: {
                 type: { summary: 'string' },
-                category: 'Parameters'
+                category: 'Validations'
             }
         },
         value: {
@@ -474,6 +523,7 @@ export default {
         isMultiSelect: false,
         loadingStateAlternativeText: 'Loading',
         loadMoreOffset: 20,
+        min: 0,
         multiLevelGroups: false,
         readOnly: false,
         removeSelectedOptions: false,
@@ -546,7 +596,8 @@ MultiSelect.args = {
     label: 'Multi-select combobox',
     options: options,
     isMultiSelect: true,
-    required: true
+    required: true,
+    min: 2
 };
 
 export const Grouped = Template.bind({});

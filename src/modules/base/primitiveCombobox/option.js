@@ -77,6 +77,15 @@ export default class Option {
     }
 
     /**
+     * Return the icon chosen or utility:check.
+     *
+     * @type {string}
+     */
+    get computedCheckmarkIconName() {
+        return this.iconName || 'utility:check';
+    }
+
+    /**
      * Class of the option.
      *
      * @type {string}
@@ -104,20 +113,21 @@ export default class Option {
     }
 
     /**
-     * Return the icon chosen or utility:check.
+     * Returns true if the option has an avatar.
      *
-     * @type {string}
+     * @type {boolean}
      */
-    get computedCheckmarkIconName() {
-        return this.iconName || 'utility:check';
-    }
-
     get hasAvatar() {
         return (
             this.avatarFallbackIconName || this.avatarSrc || this.avatarInitials
         );
     }
 
+    /**
+     * True if the option has children or is loading.
+     *
+     * @type {boolean}
+     */
     get hasChildren() {
         return this.options.length || this.isLoading;
     }

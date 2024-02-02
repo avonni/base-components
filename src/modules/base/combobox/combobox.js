@@ -36,6 +36,7 @@ const DEFAULT_BACK_ACTION = {
 };
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
+const DEFAULT_MIN = 0;
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_READ_ONLY_LABEL = 'Read Only Combobox';
@@ -84,6 +85,22 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api messageWhenBadInput;
+
+    /**
+     * Error message to be displayed when a range overflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenRangeOverflow;
+
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenRangeUnderflow;
 
     /**
      * Error message to be displayed when the value is missing and input is required.
@@ -135,6 +152,8 @@ export default class Combobox extends LightningElement {
     _isMultiSelect = false;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    _max;
+    _min = DEFAULT_MIN;
     _multiLevelGroups = false;
     _options = [];
     _placeholder;
@@ -397,6 +416,38 @@ export default class Combobox extends LightningElement {
             typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    }
+
+    /**
+     * If multi-select, maximum number of selected options allowed.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get max() {
+        return this._max;
+    }
+    set max(value) {
+        this._max = isNaN(parseInt(value, 10)) ? Infinity : parseInt(value, 10);
+    }
+
+    /**
+     * If multi-select, minimum number of selected options allowed.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get min() {
+        return this._min;
+    }
+    set min(value) {
+        const number = isNaN(parseInt(value, 10))
+            ? DEFAULT_MIN
+            : parseInt(value, 10);
+        this._min = number;
     }
 
     /**
@@ -895,7 +946,7 @@ export default class Combobox extends LightningElement {
      * @param {object[]} options Array of options.
      * @returns {object} Option object.
      */
-    getOption(value, options = this.options) {
+    _getOption(value, options = this.options) {
         for (let i = 0; i < options.length; i++) {
             const option = options[i];
             if (option.value === value) {
@@ -904,7 +955,7 @@ export default class Combobox extends LightningElement {
 
             const children = normalizeArray(option.options);
             if (children.length) {
-                const childOption = this.getOption(value, children);
+                const childOption = this._getOption(value, children);
                 if (childOption) return childOption;
             }
         }
@@ -916,6 +967,29 @@ export default class Combobox extends LightningElement {
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Dispatches action click event.
+     */
+    handleActionClick(event) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name The name of the action clicked.
+         * @bubbles
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: event.detail.name
+                },
+                bubbles: true
+            })
+        );
+    }
 
     /**
      * Handle the click on a back action.
@@ -942,119 +1016,13 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Dispatches focus event.
-     */
-    handleFocus() {
-        this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    /**
-     * Handle the load more event dispatched by the primitive combobox.
-     *
-     * @param {Event} event `loadmore` event.
-     */
-    handleLoadMore(event) {
-        const { optionValue, searchTerm } = event.detail;
-        const option = optionValue ? this.getOption(optionValue) : null;
-
-        /**
-         * The event fired when you scroll to the bottom of the drop-down to load more options.
-         *
-         * @event
-         * @name loadmore
-         * @param {object} option Current parent option, if the visible options are nested.
-         * @param {string} searchTerm Value of the search input.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('loadmore', {
-                detail: {
-                    option: deepCopy(option),
-                    searchTerm
-                }
-            })
-        );
-    }
-
-    /**
-     * Dispatches search event.
-     */
-    handleSearch(event) {
-        const { optionValue, value } = event.detail;
-        const option = optionValue ? this.getOption(optionValue) : null;
-
-        /**
-         * The event fired when a user types into the combobox input.
-         *
-         * @event
-         * @name search
-         * @param {object} option Current parent option, if the visible options are nested.
-         * @param {string} value The value of the search input.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('search', {
-                detail: {
-                    value,
-                    option: deepCopy(option)
-                }
-            })
-        );
-    }
-
-    /**
-     * Dispatches scope change event.
-     */
-    handleScopeChange(event) {
-        /**
-         * The event fired when a scope is selected.
-         *
-         * @event
-         * @name scopechange
-         * @param {string} value The value of the scope selected.
-         * @bubbles
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('scopechange', {
-                detail: {
-                    value: event.detail.value[0]
-                },
-                bubbles: true
-            })
-        );
-    }
-
-    /**
-     * Dispatches action click event.
-     */
-    handleActionClick(event) {
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name The name of the action clicked.
-         * @bubbles
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: event.detail.name
-                },
-                bubbles: true
-            })
-        );
-    }
-
-    /**
      * Dispatches change event.
      */
     handleChange(event) {
         const { action, levelPath, value } = event.detail;
         this._value = value;
-        this.dispatchChange(action, levelPath);
+
+        this._dispatchChange(action, levelPath);
     }
 
     /**
@@ -1072,12 +1040,19 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * Dispatches focus event.
+     */
+    handleFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
      * Handle the click on an option with nested options.
      *
      * @param {Event} event
      */
     handleLevelChange(event) {
-        const option = this.getOption(event.detail.optionValue);
+        const option = this._getOption(event.detail.optionValue);
 
         /**
          * The event fired when an option with nested options has been selected.
@@ -1094,6 +1069,34 @@ export default class Combobox extends LightningElement {
                     option: deepCopy(option)
                 },
                 bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handle the load more event dispatched by the primitive combobox.
+     *
+     * @param {Event} event `loadmore` event.
+     */
+    handleLoadMore(event) {
+        const { optionValue, searchTerm } = event.detail;
+        const option = optionValue ? this._getOption(optionValue) : null;
+
+        /**
+         * The event fired when you scroll to the bottom of the drop-down to load more options.
+         *
+         * @event
+         * @name loadmore
+         * @param {object} option Current parent option, if the visible options are nested.
+         * @param {string} searchTerm Value of the search input.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadmore', {
+                detail: {
+                    option: deepCopy(option),
+                    searchTerm
+                }
             })
         );
     }
@@ -1148,13 +1151,62 @@ export default class Combobox extends LightningElement {
      */
     handleReorderSelectedOptions(event) {
         this._value = event.detail.items.map((item) => item.name);
-        this.dispatchChange('reorder');
+        this._dispatchChange('reorder');
+    }
+
+    /**
+     * Dispatches search event.
+     */
+    handleSearch(event) {
+        const { optionValue, value } = event.detail;
+        const option = optionValue ? this._getOption(optionValue) : null;
+
+        /**
+         * The event fired when a user types into the combobox input.
+         *
+         * @event
+         * @name search
+         * @param {object} option Current parent option, if the visible options are nested.
+         * @param {string} value The value of the search input.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('search', {
+                detail: {
+                    value,
+                    option: deepCopy(option)
+                }
+            })
+        );
+    }
+
+    /**
+     * Dispatches scope change event.
+     */
+    handleScopeChange(event) {
+        /**
+         * The event fired when a scope is selected.
+         *
+         * @event
+         * @name scopechange
+         * @param {string} value The value of the scope selected.
+         * @bubbles
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('scopechange', {
+                detail: {
+                    value: event.detail.value[0]
+                },
+                bubbles: true
+            })
+        );
     }
 
     /**
      * Dispatch the change event.
      */
-    dispatchChange(action, levelPath) {
+    _dispatchChange(action, levelPath) {
         /**
          * The event fired when the combobox value changes. The value changes when an option has been selected or unselected, or because the selected options have been reordered.
          *

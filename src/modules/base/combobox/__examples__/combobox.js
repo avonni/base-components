@@ -20,8 +20,12 @@ export const Combobox = ({
     label,
     loadingStateAlternativeText,
     loadMoreOffset,
+    max,
     messageWhenBadInput,
+    messageWhenRangeOverflow,
+    messageWhenRangeUnderflow,
     messageWhenValueMissing,
+    min,
     multiLevelGroups,
     name,
     options,
@@ -57,8 +61,12 @@ export const Combobox = ({
     element.label = label;
     element.loadMoreOffset = loadMoreOffset;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.max = max;
     element.messageWhenBadInput = messageWhenBadInput;
+    element.messageWhenRangeOverflow = messageWhenRangeOverflow;
+    element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenValueMissing = messageWhenValueMissing;
+    element.min = min;
     element.multiLevelGroups = multiLevelGroups;
     element.name = name;
     element.options = options;
