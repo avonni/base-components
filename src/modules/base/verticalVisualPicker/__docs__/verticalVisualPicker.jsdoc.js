@@ -203,3 +203,93 @@
  * @default #f7f9fb
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-spacing-block-end
+ * @default 0
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-spacing-block-start
+ * @default 0
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-spacing-inline-end
+ * @default 1rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-spacing-inline-start
+ * @default 1rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-color-background-active
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-color-background-hover
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-color-border
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-color-border-active
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-color-border-hover
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-text-color
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-text-color-active
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-text-color-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-show-more-button-sizing-border
+ * @default 1px
+ * @type sizing
+ */

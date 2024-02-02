@@ -314,3 +314,51 @@
     ~ .avonni-vertical-visual-picker__sub-items {
     display: block;
 }
+
+.avonni-vertical-visual-picker__show-more-button {
+    --slds-c-button-spacing-block-end: var(
+        --avonni-vertical-visual-picker-show-more-button-spacing-block-end
+    );
+    --slds-c-button-spacing-block-start: var(
+        --avonni-vertical-visual-picker-show-more-button-spacing-block-start
+    );
+    --slds-c-button-neutral-spacing-inline-end: var(
+        --avonni-vertical-visual-picker-show-more-button-spacing-inline-end
+    );
+    --slds-c-button-neutral-spacing-inline-start: var(
+        --avonni-vertical-visual-picker-show-more-button-spacing-inline-start
+    );
+    --slds-c-button-neutral-color-background: var(
+        --avonni-vertical-visual-picker-show-more-button-color-background
+    );
+    --slds-c-button-neutral-color-background-active: var(
+        --avonni-vertical-visual-picker-show-more-button-color-background-active
+    );
+    --slds-c-button-neutral-color-background-hover: var(
+        --avonni-vertical-visual-picker-show-more-button-color-background-hover
+    );
+    --slds-c-button-neutral-color-border: var(
+        --avonni-vertical-visual-picker-show-more-button-color-border
+    );
+    --slds-c-button-neutral-color-border-active: var(
+        --avonni-vertical-visual-picker-show-more-button-color-border-active
+    );
+    --slds-c-button-neutral-color-border-hover: var(
+        --avonni-vertical-visual-picker-show-more-button-color-border-hover
+    );
+    --slds-c-button-text-color: var(
+        --avonni-vertical-visual-picker-show-more-button-text-color
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-vertical-visual-picker-show-more-button-text-color-active
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-vertical-visual-picker-show-more-button-text-color-hover
+    );
+    --slds-c-button-radius-border: var(
+        --avonni-vertical-visual-picker-show-more-button-radius-border
+    );
+    --slds-c-button-sizing-border: var(
+        --avonni-vertical-visual-picker-show-more-button-sizing-border
+    );
+}
