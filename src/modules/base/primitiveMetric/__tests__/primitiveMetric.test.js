@@ -20,6 +20,7 @@ describe('Primitive Metric', () => {
         expect(element.currencyCode).toBeUndefined();
         expect(element.currencyDisplayAs).toBe('symbol');
         expect(element.formatStyle).toBe('decimal');
+        expect(element.isLoading).toBeFalsy();
         expect(element.maximumFractionDigits).toBeUndefined();
         expect(element.maximumSignificantDigits).toBeUndefined();
         expect(element.minimumFractionDigits).toBeUndefined();
@@ -75,6 +76,39 @@ describe('Primitive Metric', () => {
                 '[data-element-id="lightning-formatted-number"]'
             );
             expect(number.formatStyle).toBe('percent-fixed');
+        });
+    });
+
+    // is-loading
+    it('Primitive Metric: isLoading = false', () => {
+        element.isLoading = false;
+        element.value = 40;
+
+        return Promise.resolve().then(() => {
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const spinner = element.shadowRoot.querySelector(
+                '[data-element-id="div-loading-spinner"]'
+            );
+            expect(spinner).toBeFalsy();
+            expect(number).toBeTruthy();
+        });
+    });
+
+    it('Primitive Metric: isLoading = true', () => {
+        element.isLoading = true;
+        element.value = 40;
+
+        return Promise.resolve().then(() => {
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const spinner = element.shadowRoot.querySelector(
+                '[data-element-id="div-loading-spinner"]'
+            );
+            expect(spinner).toBeTruthy();
+            expect(number).toBeFalsy();
         });
     });
 

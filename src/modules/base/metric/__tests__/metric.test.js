@@ -49,6 +49,7 @@ describe('Metric', () => {
         expect(element.secondaryTrendBreakpointValue).toBe(0);
         expect(element.secondaryTrendIcon).toBeUndefined();
         expect(element.secondaryValue).toBeUndefined();
+        expect(element.secondaryValueIsLoading).toBeFalsy();
         expect(element.secondaryValueSign).toBe('negative');
         expect(element.showTrendColor).toBeFalsy();
         expect(element.suffix).toBeUndefined();
@@ -56,6 +57,7 @@ describe('Metric', () => {
         expect(element.trendBreakpointValue).toBe(0);
         expect(element.trendIcon).toBeUndefined();
         expect(element.value).toBeUndefined();
+        expect(element.valueIsLoading).toBeFalsy();
         expect(element.valueSign).toBe('negative');
     });
 
@@ -592,6 +594,19 @@ describe('Metric', () => {
         });
     });
 
+    // secondary-value-is-loading
+    it('Metric: secondaryValueIsLoading', () => {
+        element.secondaryValue = 16;
+        element.secondaryValueIsLoading = true;
+
+        return Promise.resolve().then(() => {
+            const metric = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-secondary"]'
+            );
+            expect(metric.isLoading).toBeTruthy();
+        });
+    });
+
     // secondary-value-sign
     it('Metric: secondaryValueSign', () => {
         element.secondaryValueSign = 'positive-and-negative';
@@ -701,6 +716,19 @@ describe('Metric', () => {
                 '[data-element-id="avonni-primitive-metric-primary"]'
             );
             expect(metric.value).toBe(3);
+        });
+    });
+
+    // value-is-loading
+    it('Metric: valueIsLoading', () => {
+        element.value = 3;
+        element.valueIsLoading = true;
+
+        return Promise.resolve().then(() => {
+            const metric = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-primary"]'
+            );
+            expect(metric.isLoading).toBeTruthy();
         });
     });
 
