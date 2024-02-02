@@ -32,13 +32,15 @@ export const Metric = ({
     secondaryTrendBreakpointValue,
     secondaryTrendIcon,
     secondaryValue,
+    secondaryValueIsLoading,
     showTrendColor,
     suffix,
     tooltip,
     trendBreakpointValue,
     trendIcon,
-    valueSign,
-    value
+    value,
+    valueIsLoading,
+    valueSign
 }) => {
     const element = document.createElement('ac-metric');
     element.align = align;
@@ -70,6 +72,7 @@ export const Metric = ({
     element.secondarySuffix = secondarySuffix;
     element.secondaryTrendBreakpointValue = secondaryTrendBreakpointValue;
     element.secondaryTrendIcon = secondaryTrendIcon;
+    element.secondaryValueIsLoading = secondaryValueIsLoading;
     element.secondaryValueSign = secondaryValueSign;
     element.showTrendColor = showTrendColor;
     element.trendBreakpointValue = trendBreakpointValue;
@@ -78,6 +81,7 @@ export const Metric = ({
     element.suffix = suffix;
     element.tooltip = tooltip;
     element.value = value;
+    element.valueIsLoading = valueIsLoading;
     element.valueSign = valueSign;
     return element;
 };

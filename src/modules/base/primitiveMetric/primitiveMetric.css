@@ -35,3 +35,8 @@
     line-height: var(--avonni-primitive-metric-value-line-height);
     color: var(--avonni-primitive-metric-value-text-color);
 }
+
+.avonni-metric__loading-spinner {
+    height: 2rem;
+    width: 2rem;
+}
