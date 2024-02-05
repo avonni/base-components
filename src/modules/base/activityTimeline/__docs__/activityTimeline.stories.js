@@ -6,7 +6,8 @@ import {
     items,
     horizontalItems,
     yearlyItems,
-    itemsWithoutIcons
+    itemsWithoutIcons,
+    itemsWithEndDate
 } from './data';
 
 export default {
@@ -466,4 +467,13 @@ WithoutIcons.args = {
     items: itemsWithoutIcons,
     actions: actions,
     hideItemDate: true
+};
+
+export const endDate = Template.bind({});
+endDate.args = {
+    title: 'Activity Timeline with End Date field',
+    iconName: 'standard:timesheet_entry',
+    orientation: 'horizontal',
+    items: itemsWithEndDate,
+    intervalDaysLength: 30
 };
