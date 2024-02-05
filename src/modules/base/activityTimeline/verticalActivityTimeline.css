@@ -35,3 +35,52 @@
         --avonni-activity-timeline-icon-color-foreground-default
     );
 }
+
+.avonni-activity-timeline__show-more-button {
+    --slds-c-button-spacing-block-end: var(
+        --avonni-activity-timeline-show-more-button-neutral-spacing-block-end
+    );
+    --slds-c-button-spacing-block-start: var(
+        --avonni-activity-timeline-show-more-button-neutral-spacing-block-start
+    );
+    --slds-c-button-neutral-spacing-inline-end: var(
+        --avonni-activity-timeline-show-more-button-neutral-spacing-inline-end
+    );
+    --slds-c-button-neutral-spacing-inline-start: var(
+        --avonni-activity-timeline-show-more-button-neutral-spacing-inline-start
+    );
+    --slds-c-button-neutral-color-background: var(
+        --avonni-activity-timeline-show-more-button-neutral-color-background,
+        red
+    );
+    --slds-c-button-neutral-color-background-active: var(
+        --avonni-activity-timeline-show-more-button-neutral-color-background-active
+    );
+    --slds-c-button-neutral-color-background-hover: var(
+        --avonni-activity-timeline-show-more-button-neutral-color-background-hover
+    );
+    --slds-c-button-neutral-color-border: var(
+        --avonni-activity-timeline-show-more-button-neutral-color-border
+    );
+    --slds-c-button-neutral-color-border-active: var(
+        --avonni-activity-timeline-show-more-button-neutral-color-border-active
+    );
+    --slds-c-button-neutral-color-border-hover: var(
+        --avonni-activity-timeline-show-more-button-neutral-color-border-hover
+    );
+    --slds-c-button-text-color: var(
+        --avonni-activity-timeline-show-more-button-neutral-text-color
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-activity-timeline-show-more-button-neutral-text-color-active
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-activity-timeline-show-more-button-neutral-text-color-hover
+    );
+    --slds-c-button-radius-border: var(
+        --avonni-activity-timeline-show-more-button-neutral-radius-border
+    );
+    --slds-c-button-sizing-border: var(
+        --avonni-activity-timeline-show-more-button-neutral-sizing-border
+    );
+}
