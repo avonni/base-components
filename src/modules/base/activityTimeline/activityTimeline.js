@@ -41,6 +41,7 @@ const DEFAULT_FIELD_COLUMNS = {
 const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
+const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOCALE = 'en-GB';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
@@ -148,6 +149,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _iconSize = ICON_SIZES.default;
+    _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _isLoading = false;
     _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
@@ -162,7 +164,6 @@ export default class ActivityTimeline extends LightningElement {
 
     // Horizontal Activity Timeline
     _resizeObserver;
-    intervalDaysLength;
     intervalMaxDate;
     intervalMinDate;
     showItemPopOver = false;
@@ -209,7 +210,8 @@ export default class ActivityTimeline extends LightningElement {
             this.horizontalTimeline.createHorizontalActivityTimeline(
                 this.sortedItems,
                 this._maxVisibleItems,
-                this.divHorizontalTimeline.clientWidth
+                this.divHorizontalTimeline.clientWidth,
+                this._intervalDaysLength
             );
             this._redrawHorizontalTimeline = false;
         }
@@ -451,6 +453,29 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
+    }
+
+    /**
+     * Specifies the number of days to display on the horizontal timeline.
+     *
+     * @type {number}
+     * @default 15
+     * @public
+     */
+    @api
+    get intervalDaysLength() {
+        return this._intervalDaysLength;
+    }
+
+    set intervalDaysLength(value) {
+        this._intervalDaysLength = parseInt(value, 10);
+
+        if (this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+            setTimeout(() => {
+                this.renderedCallback();
+            }, 0);
+        }
     }
 
     /**
@@ -971,7 +996,7 @@ export default class ActivityTimeline extends LightningElement {
      * Update horizontal timeline header's value.
      */
     updateHorizontalTimelineHeader() {
-        this.intervalDaysLength = this.horizontalTimeline.intervalDaysLength;
+        this._intervalDaysLength = this.horizontalTimeline.intervalDaysLength;
         this.intervalMaxDate = this.horizontalTimeline.intervalMaxDate;
         this.intervalMinDate = this.horizontalTimeline.intervalMinDate;
     }

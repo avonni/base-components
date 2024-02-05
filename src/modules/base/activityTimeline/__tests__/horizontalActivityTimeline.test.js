@@ -109,7 +109,7 @@ describe('Horizontal Activity Timeline', () => {
     // computedItemTitle
     it('Horizontal Activity Timeline: computedItemTitle', () => {
         expect(element.computedItemTitle(horizontalItemsTest[0])).toBe(
-            'This is a message longer than  ...'
+            'This is a message longer t ...'
         );
     });
 

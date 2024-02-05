@@ -247,6 +247,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        intervalDaysLength: {
+            name: 'interval-days-length',
+            control: {
+                type: 'number'
+            },
+            description: '',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '15' }
+            }
+        },
         locale: {
             control: {
                 type: 'text'
@@ -358,7 +369,8 @@ export default {
         locale: 'en-GB',
         orientation: 'vertical',
         itemDateFormat: 'LLLL dd, yyyy, t',
-        hideItemDate: false
+        hideItemDate: false,
+        intervalDaysLength: 15
     }
 };
 
