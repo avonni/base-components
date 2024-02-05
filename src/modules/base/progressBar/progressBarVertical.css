@@ -24,6 +24,13 @@
     flex-grow: 1;
 }
 
+.avonni-progress-bar__label_font {
+    color: var(--avonni-progress-bar-label-text-color, #080707);
+    font-size: var(--avonni-progress-bar-label-font-size, 0.8125rem);
+    font-style: var(--avonni-progress-bar-label-font-style, normal);
+    font-weight: var(--avonni-progress-bar-label-font-weight, 400);
+}
+
 .avonni-progress-bar__value_font {
     color: var(--avonni-progress-bar-value-text-color, #080707);
     font-size: var(--avonni-progress-bar-value-font-size, 0.8125rem);
