@@ -2304,4 +2304,8 @@ export default class PrimitiveCombobox extends LightningElement {
          */
         this.dispatchEvent(new CustomEvent('open'));
     }
+
+    stopPropagation(event) {
+        event.stopPropagation();
+    }
 }
