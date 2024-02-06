@@ -468,7 +468,9 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set intervalDaysLength(value) {
-        this._intervalDaysLength = parseInt(value, 10);
+        const number = parseInt(value, 10);
+        this._intervalDaysLength =
+            !isNaN(number) && number > 0 ? number : undefined;
 
         if (this.isTimelineHorizontal) {
             this.requestRedrawTimeline();
