@@ -1,16 +1,16 @@
 <template>
     <article class="avonni-card">
         <div
-            class={computedCardClasses}
+            class={computedCardClass}
             data-element-id="avonni-card-body-container"
         >
             <!-- media -->
             <div
                 if:true={showMedia}
-                class={computedMediaClasses}
+                class={computedMediaClass}
                 data-element-id="avonni-card-media-container"
             >
-                <div class={computedMediaRadius}>
+                <div class={computedMediaRadiusClass}>
                     <img
                         if:true={mediaSrc}
                         src={mediaSrc}
@@ -24,15 +24,18 @@
                     </div>
                 </div>
 
-                <div class="avonni-card__media-action">
+                <div
+                    if:true={showMediaActionsSlot}
+                    class="avonni-card__media-action"
+                >
                     <slot name="media-actions"></slot>
                 </div>
             </div>
 
             <!-- title and actions -->
-            <div class={computedContentClasses}>
+            <div class={computedContentClass}>
                 <header
-                    if:true={showHeader}
+                    if:true={hasHeader}
                     class="
                         slds-has-flexi-truncate
                         avonni-card__header
@@ -80,7 +83,7 @@
 
                 <!-- default content -->
                 <div
-                    if:false={cardHasCenterMedia}
+                    if:false={mediaPositionCenter}
                     class="avonni-card__default-slot"
                 >
                     <slot data-element-id="avonni-card-default-slot"></slot>

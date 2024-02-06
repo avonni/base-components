@@ -16,6 +16,7 @@ export default {
             }
         },
         mediaPosition: {
+            name: 'media-position',
             control: {
                 type: 'select'
             },
@@ -35,6 +36,7 @@ export default {
             }
         },
         iconName: {
+            name: 'icon-name',
             control: {
                 type: 'text'
             },
@@ -44,6 +46,7 @@ export default {
             }
         },
         mediaSrc: {
+            name: 'media-src',
             control: {
                 type: 'text'
             },

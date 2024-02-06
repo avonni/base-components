@@ -48,19 +48,15 @@ export default class Card extends LightningElement {
 
     _mediaPosition = MEDIA_POSITIONS.default;
 
-    showHeader = true;
-    showMediaSlot = true;
-    showTitleSlot = true;
     showActionsSlot = true;
     showDefaultSlot = true;
     showFooterSlot = true;
+    showMediaActionsSlot = true;
+    showMediaSlot = true;
+    showTitleSlot = true;
     showCenterMediaContent = true;
 
     renderedCallback() {
-        this.showMediaSlot =
-            !this.mediaSrc &&
-            this.mediaSlot &&
-            this.mediaSlot.assignedElements().length !== 0;
         this.showActionsSlot =
             this.actionsSlot &&
             this.actionsSlot.assignedElements().length !== 0;
@@ -70,17 +66,22 @@ export default class Card extends LightningElement {
             (this.defaultSlot &&
                 this.defaultSlot.innerText &&
                 this.defaultSlot.innerText.trim().length !== 0);
+        this.showFooterSlot =
+            this.footerSlot && this.footerSlot.assignedElements().length !== 0;
+        this.showMediaActionsSlot =
+            this.mediaActionsSlot &&
+            this.mediaActionsSlot.assignedElements().length !== 0;
+        this.showMediaSlot =
+            !this.mediaSrc &&
+            this.mediaSlot &&
+            this.mediaSlot.assignedElements().length !== 0;
         this.showTitleSlot =
             !this.title &&
             this.titleSlot &&
             this.titleSlot.assignedElements().length !== 0;
-        this.showFooterSlot =
-            this.footerSlot && this.footerSlot.assignedElements().length !== 0;
 
         this.showCenterMediaContent =
             this.showDefaultSlot && this.mediaPosition === 'center';
-
-        this.showHeader = this.title || this.showTitleSlot || this.iconName;
 
         /**
          * The event fired when the card is rendered.
@@ -110,7 +111,6 @@ export default class Card extends LightningElement {
     get mediaPosition() {
         return this._mediaPosition;
     }
-
     set mediaPosition(value) {
         this._mediaPosition = normalizeString(value, {
             fallbackValue: MEDIA_POSITIONS.default,
@@ -124,35 +124,6 @@ export default class Card extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /*** Slots ***/
-
-    /**
-     * Get the media slot DOM element.
-     *
-     * @type {Element}
-     */
-    get mediaSlot() {
-        return this.template.querySelector('slot[name=media]');
-    }
-
-    /**
-     * Get the media actions slot DOM element.
-     *
-     * @type {Element}
-     */
-    get mediaActionsSlot() {
-        return this.template.querySelector('slot[name=media-actions]');
-    }
-
-    /**
-     * Get the title slot DOM element.
-     *
-     * @type {Element}
-     */
-    get titleSlot() {
-        return this.template.querySelector('slot[name=title]');
-    }
-
     /**
      * Get the actions slot DOM element.
      *
@@ -161,13 +132,95 @@ export default class Card extends LightningElement {
     get actionsSlot() {
         return this.template.querySelector('slot[name=actions]');
     }
+
     /**
-     * Get the footer slot DOM element.
+     * Card body class
      *
-     * @type {Element}
+     * @type {string}
      */
-    get footerSlot() {
-        return this.template.querySelector('slot[name=footer]');
+    get computedCardClass() {
+        return classSet(
+            'avonni-card__body-container avonni-height_full slds-grid slds-is-relative'
+        ).add({
+            'avonni-card__media-top slds-grid_vertical':
+                this.mediaPosition === 'top',
+            'avonni-card__media-left': this.mediaPosition === 'left',
+            'avonni-card__media-right': this.mediaPosition === 'right',
+            'slds-grid_vertical avonni-card__media-center':
+                this.mediaPosition === 'center',
+            'slds-grid_vertical-reverse': this.mediaPosition === 'bottom',
+            'avonni-card__media-background':
+                this.mediaPosition === 'background',
+            'avonni-card__media-overlay ': this.mediaPosition === 'overlay'
+        });
+    }
+
+    /**
+     * In background and overlay variants, the dark background overlay needs round corners.
+     *
+     * @type {string}
+     */
+    get computedContentClass() {
+        return classSet(
+            'slds-has-flexi-truncate avonni-card__content-container'
+        )
+            .add({
+                'avonni-card__media-bottom-left-radius avonni-card__media-bottom-right-radius avonni-card__media-top-left-radius avonni-card__media-top-right-radius ':
+                    !this.showFooterSlot &&
+                    (this.mediaPosition === 'background' ||
+                        this.mediaPosition === 'overlay')
+            })
+            .toString();
+    }
+
+    /**
+     * Media container class
+     *
+     * @type {string}
+     */
+    get computedMediaClass() {
+        return classSet('avonni-card__media-container slds-is-relative').add({
+            'avonni-card__media-border-bottom': this.mediaHasBottomBorder,
+            'avonni-card__media-border-top': this.mediaHasTopBorder
+        });
+    }
+
+    /**
+     * In background and overlay variants, the dark background overlay needs round corners.
+     *
+     * @type {string}
+     */
+    get computedMediaRadiusClass() {
+        return classSet('avonni-card__media-border-radius')
+            .add({
+                'avonni-card__media-top avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'top' ||
+                    (this.mediaPosition === 'center' && !this.hasHeader),
+                'avonni-card__media-border-right avonni-card__media-top-left-radius':
+                    this.mediaPosition === 'left',
+                'avonni-card__media-border-left avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'right',
+                'avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'background' ||
+                    this.mediaPosition === 'overlay',
+                'avonni-card__media-bottom-left-radius':
+                    !this.showFooterSlot &&
+                    (this.mediaPosition === 'left' ||
+                        this.mediaPosition === 'background' ||
+                        this.mediaPosition === 'overlay' ||
+                        this.mediaPosition === 'bottom' ||
+                        (this.mediaPosition === 'center' &&
+                            !this.showDefaultSlot)),
+                'avonni-card__media-bottom-right-radius':
+                    !this.showFooterSlot &&
+                    (this.mediaPosition === 'right' ||
+                        this.mediaPosition === 'background' ||
+                        this.mediaPosition === 'overlay' ||
+                        this.mediaPosition === 'bottom' ||
+                        (this.mediaPosition === 'center' &&
+                            !this.showDefaultSlot))
+            })
+            .toString();
     }
 
     /**
@@ -182,15 +235,36 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Get show media.
+     * Get the footer slot DOM element.
+     *
+     * @type {Element}
+     */
+    get footerSlot() {
+        return this.template.querySelector('slot[name=footer]');
+    }
+
+    /**
+     * Returns true if the card has a title, icon, or actions.
      *
      * @type {boolean}
      */
-    get showMedia() {
-        return this.mediaSrc || this.showMediaSlot;
+    get hasHeader() {
+        return (
+            this.showTitleSlot ||
+            this.title ||
+            this.iconName ||
+            this.showActionsSlot
+        );
     }
 
-    /*** Styling Conditions ***/
+    /**
+     * Get the media actions slot DOM element.
+     *
+     * @type {Element}
+     */
+    get mediaActionsSlot() {
+        return this.template.querySelector('slot[name=media-actions]');
+    }
 
     /**
      * Apply bottom border
@@ -221,142 +295,38 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Is the header present?
-     *
-     * @type {boolean}
-     */
-    get hasHeader() {
-        return (
-            this.showTitleSlot ||
-            this.title ||
-            this.iconName ||
-            this.showActionsSlot
-        );
-    }
-
-    /**
      * Show default slot for center media.
      *
      * @type {boolean}
      */
-    get cardHasCenterMedia() {
+    get mediaPositionCenter() {
         return this.mediaPosition === 'center';
     }
 
-    /*** Computed Classes ***/
-
     /**
-     * Card body classes
+     * Get the media slot DOM element.
      *
-     * @type {string}
+     * @type {Element}
      */
-    get computedCardClasses() {
-        return classSet(
-            'avonni-card__body-container avonni-height_full slds-grid slds-is-relative'
-        )
-            .add({
-                'avonni-card__media-top slds-grid_vertical':
-                    this.mediaPosition === 'top'
-            })
-            .add({
-                'avonni-card__media-left': this.mediaPosition === 'left'
-            })
-            .add({
-                'avonni-card__media-right': this.mediaPosition === 'right'
-            })
-            .add({
-                'slds-grid_vertical avonni-card__media-center':
-                    this.mediaPosition === 'center'
-            })
-            .add({
-                'slds-grid_vertical-reverse': this.mediaPosition === 'bottom'
-            })
-            .add({
-                'avonni-card__media-background':
-                    this.mediaPosition === 'background'
-            })
-            .add({
-                'avonni-card__media-overlay ': this.mediaPosition === 'overlay'
-            });
+    get mediaSlot() {
+        return this.template.querySelector('slot[name=media]');
     }
 
     /**
-     * In background and overlay variants, the dark background overlay needs round corners.
+     * Get show media.
      *
-     * @type {string}
+     * @type {boolean}
      */
-    get computedMediaRadius() {
-        return classSet('avonni-card__media-border-radius')
-            .add({
-                'avonni-card__media-top avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
-                    this.mediaPosition === 'top' ||
-                    (this.mediaPosition === 'center' && !this.hasHeader)
-            })
-            .add({
-                'avonni-card__media-border-right avonni-card__media-top-left-radius':
-                    this.mediaPosition === 'left'
-            })
-            .add({
-                'avonni-card__media-border-left avonni-card__media-top-right-radius':
-                    this.mediaPosition === 'right'
-            })
-            .add({
-                'avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
-                    this.mediaPosition === 'background' ||
-                    this.mediaPosition === 'overlay'
-            })
-            .add({
-                'avonni-card__media-bottom-left-radius':
-                    !this.showFooterSlot &&
-                    (this.mediaPosition === 'left' ||
-                        this.mediaPosition === 'background' ||
-                        this.mediaPosition === 'overlay' ||
-                        this.mediaPosition === 'bottom' ||
-                        (this.mediaPosition === 'center' &&
-                            !this.showDefaultSlot))
-            })
-            .add({
-                'avonni-card__media-bottom-right-radius':
-                    !this.showFooterSlot &&
-                    (this.mediaPosition === 'right' ||
-                        this.mediaPosition === 'background' ||
-                        this.mediaPosition === 'overlay' ||
-                        this.mediaPosition === 'bottom' ||
-                        (this.mediaPosition === 'center' &&
-                            !this.showDefaultSlot))
-            })
-            .toString();
-    }
-    /**
-     * In background and overlay variants, the dark background overlay needs round corners.
-     *
-     * @type {string}
-     */
-    get computedContentClasses() {
-        return classSet(
-            'slds-has-flexi-truncate avonni-card__content-container'
-        )
-            .add({
-                'avonni-card__media-bottom-left-radius avonni-card__media-bottom-right-radius avonni-card__media-top-left-radius avonni-card__media-top-right-radius ':
-                    !this.showFooterSlot &&
-                    (this.mediaPosition === 'background' ||
-                        this.mediaPosition === 'overlay')
-            })
-            .toString();
+    get showMedia() {
+        return this.mediaSrc || this.showMediaSlot;
     }
 
     /**
-     * Media container classes
+     * Get the title slot DOM element.
      *
-     * @type {string}
+     * @type {Element}
      */
-    get computedMediaClasses() {
-        return classSet('avonni-card__media-container slds-is-relative')
-            .add({
-                'avonni-card__media-border-bottom': this.mediaHasBottomBorder
-            })
-            .add({
-                'avonni-card__media-border-top': this.mediaHasTopBorder
-            });
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
     }
 }
