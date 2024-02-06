@@ -456,7 +456,22 @@ export default class AvatarGroup extends LightningElement {
             'slds-grid': this.isNotList,
             'slds-scrollable_y avonni-avatar-group__avatar-list_infinite-loading':
                 this.enableInfiniteLoading && this.layout === 'list'
-        }).toString();
+        })
+            .add({
+                'avonni-avatar-group__list-stack_x-small':
+                    this.layout === 'stack' && this.size === 'x-small',
+                'avonni-avatar-group__list-stack_small':
+                    this.layout === 'stack' && this.size === 'small',
+                'avonni-avatar-group__list-stack_medium':
+                    this.layout === 'stack' && this.size === 'medium',
+                'avonni-avatar-group__list-stack_large':
+                    this.layout === 'stack' && this.size === 'large',
+                'avonni-avatar-group__list-stack_x-large':
+                    this.layout === 'stack' && this.size === 'x-large',
+                'avonni-avatar-group__list-stack_xx-large':
+                    this.layout === 'stack' && this.size === 'xx-large'
+            })
+            .toString();
     }
 
     /**
