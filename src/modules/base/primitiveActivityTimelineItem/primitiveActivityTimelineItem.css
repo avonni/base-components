@@ -51,7 +51,10 @@
 
 .slds-timeline__item_expandable:before {
     content: '';
-    background: var(--line-color);
+    background: var(
+        --line-color,
+        var(--avonni-activity-timeline-item-color-background, #c9c7c5)
+    );
     height: 100%;
     width: 2px;
     position: absolute;

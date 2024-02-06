@@ -34,27 +34,66 @@
 }
 
 .avonni-activity-timeline__icon {
-    --sds-c-icon-radius-border: var(--avonni-activity-timeline-icon-radius-border);
-    --sds-c-icon-color-background: var(--avonni-activity-timeline-icon-color-background);
-    --sds-c-icon-color-foreground: var(--avonni-activity-timeline-icon-color-foreground);
-    --sds-c-icon-color-foreground-default: var(--avonni-activity-timeline-icon-color-foreground-default);
+    --sds-c-icon-radius-border: var(
+        --avonni-activity-timeline-icon-radius-border
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-activity-timeline-icon-color-background
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-activity-timeline-icon-color-foreground
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-activity-timeline-icon-color-foreground-default
+    );
 }
 
 .avonni-activity-timeline__horizontal-fields-container {
-    background-color: var(--avonni-activity-timeline-item-fields-color-background);
-    border-radius: var(--avonni-activity-timeline-item-fields-radius-border,
-            0.25rem);
-    border-width: var(--avonni-activity-timeline-item-fields-sizing-border,
-            1px);
+    background-color: var(
+        --avonni-activity-timeline-item-fields-color-background
+    );
+    border-radius: var(
+        --avonni-activity-timeline-item-fields-radius-border,
+        0.25rem
+    );
+    border-width: var(
+        --avonni-activity-timeline-item-fields-sizing-border,
+        1px
+    );
     border-style: var(--avonni-activity-timeline-item-fields-styling-border);
-    border-color: var(--avonni-activity-timeline-item-fields-color-border,
-            #e5e5e5);
-    padding-right: var(--avonni-activity-timeline-item-fields-spacing-inline,
-            1rem);
-    padding-left: var(--avonni-activity-timeline-item-fields-spacing-inline,
-            1rem);
-    padding-bottom: var(--avonni-activity-timeline-item-fields-spacing-block,
-            0.75rem);
-    --avonni-layout-item-spacing-block-start: var(--avonni-activity-timeline-item-fields-spacing-block,
-            0.75rem);
+    border-color: var(
+        --avonni-activity-timeline-item-fields-color-border,
+        #e5e5e5
+    );
+    padding-right: var(
+        --avonni-activity-timeline-item-fields-spacing-inline,
+        1rem
+    );
+    padding-left: var(
+        --avonni-activity-timeline-item-fields-spacing-inline,
+        1rem
+    );
+    padding-bottom: var(
+        --avonni-activity-timeline-item-fields-spacing-block,
+        0.75rem
+    );
+    --avonni-layout-item-spacing-block-start: var(
+        --avonni-activity-timeline-item-fields-spacing-block,
+        0.75rem
+    );
+}
+
+/* Avatar */
+.avonni-activity-timeline__horizontal-timeline-avatar__image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.avonni-activity-timeline__horizontal-timeline-avatar__initials {
+    color: #ffffff;
+    font-size: 0.625rem;
+    border-radius: 0.25rem;
+    font-weight: 400;
 }

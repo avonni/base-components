@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { getFormattedDate } from 'c/utilsPrivate';
-import { createSVGIcon } from 'c/iconUtils';
+import { computeSldsClass, createAvatar } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
@@ -747,7 +747,7 @@ export class HorizontalActivityTimeline {
 
         this.createIcon(
             itemGroup,
-            item.iconName,
+            item.avatar,
             startX,
             item.yPosition,
             SVG_ICON_SIZE
@@ -777,7 +777,7 @@ export class HorizontalActivityTimeline {
     /**
      *  Create svg to display lightning icon.
      */
-    createIcon(destinationSVG, iconName, xPosition, yPosition, svgSize) {
+    createIcon(destinationSVG, avatar, xPosition, yPosition, svgSize) {
         const foreignObjectForIcon = destinationSVG.append('foreignObject');
         foreignObjectForIcon
             .attr('width', svgSize)
@@ -785,8 +785,14 @@ export class HorizontalActivityTimeline {
             .attr('x', xPosition)
             .attr('y', yPosition);
 
-        const iconInformation = this.setIconInformation(iconName);
-        const iconSVG = createSVGIcon(
+        const iconInformation = this.setIconInformation(avatar);
+        let propertyName = avatar.src
+            ? 'src'
+            : avatar.initials
+            ? 'initials'
+            : 'svg';
+        const iconSVG = createAvatar(
+            propertyName,
             iconInformation,
             foreignObjectForIcon,
             this.resetAndRedrawTimeline.bind(this)
@@ -1479,40 +1485,60 @@ export class HorizontalActivityTimeline {
     /**
      * Determine and set the icon's information (name of the icon, x link href and CSS classes) according to correct category
      */
-    setIconInformation(iconName) {
-        // The item has no icon
-        if (!iconName) {
-            return this.setDefaultIconInformation();
+    setIconInformation(avatar) {
+        let iconInformations = {};
+        let styleClass = '';
+
+        if (avatar && avatar.fallbackIconName) {
+            const iconCategory = VALID_ICON_CATEGORIES.find((category) => {
+                return avatar.fallbackIconName.match(category + ':');
+            });
+
+            // Invalid icon category - Set default icon
+            if (!iconCategory) {
+                return this.setDefaultIconInformation();
+            }
+
+            // Set icon's information
+            let iconClass = '';
+            if (iconCategory === 'utility') {
+                iconClass = ' slds-icon-text-default ';
+            }
+            iconClass += 'slds-icon-' + iconCategory + '-';
+
+            const nameOfIcon = avatar.fallbackIconName.slice(
+                avatar.fallbackIconName.indexOf(':') + 1,
+                avatar.fallbackIconName.length
+            );
+            iconInformations = {
+                iconName: nameOfIcon,
+                category: iconCategory,
+                categoryIconClass: `slds-icon_small ${iconClass}${nameOfIcon.replace(
+                    /_/g,
+                    '-'
+                )}`
+            };
+        } else {
+            // The item has no icon
+            iconInformations = this.setDefaultIconInformation();
         }
 
-        const iconCategory = VALID_ICON_CATEGORIES.find((category) => {
-            return iconName.match(category + ':');
-        });
-
-        // Invalid icon category - Set default icon
-        if (!iconCategory) {
-            return this.setDefaultIconInformation();
+        // CSS class depending of the avatar type
+        if (avatar?.src) {
+            styleClass +=
+                ' avonni-activity-timeline__horizontal-timeline-avatar__image ';
+        } else if (avatar?.initials) {
+            styleClass += ` slds-avatar__initials ${computeSldsClass(
+                avatar.fallbackIconName
+            )} avonni-activity-timeline__horizontal-timeline-avatar__initials `;
         }
-
-        // Set icon's information
-        let iconClass = '';
-        if (iconCategory === 'utility') {
-            iconClass = ' slds-icon-text-default ';
-        }
-        iconClass += 'slds-icon-' + iconCategory + '-';
-
-        const nameOfIcon = iconName.slice(
-            iconName.indexOf(':') + 1,
-            iconName.length
-        );
 
         return {
-            iconName: nameOfIcon,
-            category: iconCategory,
-            categoryIconClass: `slds-icon_small ${iconClass}${nameOfIcon.replace(
-                /_/g,
-                '-'
-            )}`
+            ...iconInformations,
+            src: avatar?.src,
+            presence: avatar?.presence,
+            initials: avatar?.initials,
+            styleClass
         };
     }
 

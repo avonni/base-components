@@ -3,6 +3,7 @@ import {
     normalizeBoolean,
     normalizeArray,
     normalizeString,
+    normalizeObject,
     deepCopy,
     dateTimeObjectFrom,
     getFormattedDate
@@ -71,14 +72,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api href;
     /**
-     * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
-     * When omitted, a simplified timeline bullet replaces it.
-     *
-     * @public
-     * @type {string}
-     */
-    @api iconName;
-    /**
      * Icon or list of icons next to the title.
      *
      * @public
@@ -117,6 +110,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     @api isActive;
 
     _actions = [];
+    _avatar;
     _buttonDisabled = false;
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
@@ -127,6 +121,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _iconName;
     _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _color;
@@ -161,6 +156,23 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
     set actions(value) {
         this._actions = normalizeArray(value, 'object');
+    }
+
+    /**
+     * Avatar object.
+     *
+     * @public
+     * @type {object}
+     */
+    @api
+    get avatar() {
+        return this._avatar;
+    }
+    set avatar(value) {
+        const normalizedAvatar = normalizeObject(value);
+        this._avatar = Object.keys(normalizedAvatar).length
+            ? normalizedAvatar
+            : undefined;
     }
 
     /**
@@ -336,6 +348,31 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * Deprecated. Use `avatar` instead.
+     * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
+     * When omitted, a simplified timeline bullet replaces it.
+     *
+     * @public
+     * @type {string}
+     * @deprecated
+     */
+    @api
+    get iconName() {
+        return this._iconName;
+    }
+    set iconName(value) {
+        this._iconName = value;
+
+        console.warn(
+            'The "icon-name" attribute is deprecated. Use "avatar" instead.'
+        );
+
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+        }
+    }
+
+    /**
      * The size of the item's icon. Valid values are x-small, small, medium and large.
      *
      * @public
@@ -417,13 +454,21 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             .toString();
     }
 
+    get avatarToDisplay() {
+        return (
+            this.avatar?.src ||
+            this.avatar?.initials ||
+            this.avatar?.fallbackIconName
+        );
+    }
+
     /**
      * Return styling for item background color.
      *
      * @type {string}
      */
     get backgroundColor() {
-        return `--line-color: ${this._color}`;
+        return this._color ? `--line-color: ${this._color}` : '';
     }
 
     /**
@@ -454,8 +499,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     get isActionIcon() {
         return (
-            typeof this.iconName === 'string' &&
-            this.iconName.split(':')[0] === 'action'
+            typeof this.avatarToDisplay === 'string' &&
+            this.avatarToDisplay.split(':')[0] === 'action'
         );
     }
 
@@ -547,8 +592,26 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             '[data-element-id="item-marker"]'
         );
         if (icon === null) return;
-        const style = getComputedStyle(icon);
-        this._color = style.backgroundColor;
+        if (this.avatarToDisplay) {
+            this._color = this.avatar?.fallbackIconName
+                ? icon.getBackgroundColor()
+                : '';
+        } else {
+            const style = getComputedStyle(icon);
+            this._color = style.backgroundColor;
+        }
+    }
+
+    /**
+     * Make sure the deprecated item attributes are still supported.
+     */
+    supportDeprecatedAttributes() {
+        if (this.iconName && this.avatar?.fallbackIconName === undefined) {
+            this._avatar = {
+                ...this.avatar,
+                fallbackIconName: this.iconName
+            };
+        }
     }
 
     /*

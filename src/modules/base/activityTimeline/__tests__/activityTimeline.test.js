@@ -432,6 +432,118 @@ describe('Activity Timeline', () => {
                 description: 'You logged a call with Adam Chan',
                 href: '#',
                 datetimeValue: 1653141600000,
+                avatar: { fallbackIconName: 'standard:log_a_call' },
+                hasCheckbox: true,
+                checked: true,
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Adam Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Adam Chan'
+                        }
+                    },
+                    {
+                        label: 'Related To',
+                        value: 'Tesla Cloudhub + Anypoint Connectors',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Tesla Cloudhub + Anypoint Connectors'
+                        }
+                    },
+                    {
+                        label: 'Description',
+                        value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
+                        type: 'text'
+                    }
+                ]
+            },
+            {
+                name: 'item2',
+                title: 'Re: Mobile conversation on Monday with the new global team',
+                description: 'You emailed Lea Chan',
+                datetimeValue: 1619013600000,
+                href: '#',
+                isActive: true,
+                icons: ['utility:groups', 'utility:attach'],
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Jackie Dewar',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Jackie Dewar'
+                        }
+                    },
+                    {
+                        label: 'To Address',
+                        value: 'Lea Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Lea Chan'
+                        }
+                    },
+                    {
+                        label: 'Text Body',
+                        value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                        type: 'text'
+                    }
+                ],
+                buttonLabel: 'Public Sharing',
+                buttonIconName: 'utility:world'
+            }
+        ];
+
+        element.items = ITEM;
+        return Promise.resolve().then(() => {
+            const timelineItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+
+            expect(timelineItems).toHaveLength(2);
+
+            timelineItems.forEach((item, index) => {
+                expect(item.title).toBe(ITEM[index].title);
+                expect(item.checked).toBe(ITEM[index].checked || false);
+                expect(item.description).toBe(ITEM[index].description);
+                expect(item.datetimeValue).toBe(ITEM[index].datetimeValue);
+                expect(item.href).toBe(ITEM[index].href);
+                expect(item.avatar?.fallbackIconName).toBe(
+                    ITEM[index].avatar?.fallbackIconName
+                );
+                expect(item.fields).toMatchObject(ITEM[index].fields);
+                expect(item.hasCheckbox).toBe(ITEM[index].hasCheckbox || false);
+                expect(item.hasError).toBe(ITEM[index].hasError || false);
+                expect(item.isLoading).toBe(ITEM[index].isLoading || false);
+                expect(item.isActive).toBe(ITEM[index].isActive);
+                expect(item.loadingStateAlternativeText).toBe(
+                    ITEM[index].loadingStateAlternativeText
+                );
+                expect(item.closed).toBe(ITEM[index].closed || false);
+                expect(item.buttonLabel).toBe(ITEM[index].buttonLabel);
+                expect(item.buttonIconName).toBe(ITEM[index].buttonIconName);
+                expect(item.buttonIconPosition).toBe(
+                    ITEM[index].buttonIconPosition || 'left'
+                );
+                expect(item.buttonDisabled).toBe(
+                    ITEM[index].buttonDisabled || false
+                );
+                expect(item.buttonVariant).toBe(
+                    ITEM[index].buttonVariant || 'neutral'
+                );
+            });
+        });
+    });
+
+    it('Activity Timeline: items with deprecated iconName property', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
                 iconName: 'standard:log_a_call',
                 hasCheckbox: true,
                 checked: true,
@@ -509,7 +621,9 @@ describe('Activity Timeline', () => {
                 expect(item.description).toBe(ITEM[index].description);
                 expect(item.datetimeValue).toBe(ITEM[index].datetimeValue);
                 expect(item.href).toBe(ITEM[index].href);
-                expect(item.iconName).toBe(ITEM[index].iconName);
+                expect(item.avatar?.fallbackIconName).toBe(
+                    ITEM[index].iconName
+                );
                 expect(item.fields).toMatchObject(ITEM[index].fields);
                 expect(item.hasCheckbox).toBe(ITEM[index].hasCheckbox || false);
                 expect(item.hasError).toBe(ITEM[index].hasError || false);
@@ -1017,13 +1131,13 @@ describe('Activity Timeline', () => {
             );
 
             for (const item of displayedItemsHorizontalTest) {
-                const itemCategoryIcon = item.iconName.slice(
+                const itemCategoryIcon = item.avatar.fallbackIconName.slice(
                     0,
-                    item.iconName.indexOf(':')
+                    item.avatar.fallbackIconName.indexOf(':')
                 );
-                const itemNameIcon = item.iconName.slice(
-                    item.iconName.indexOf(':') + 1,
-                    item.iconName.length
+                const itemNameIcon = item.avatar.fallbackIconName.slice(
+                    item.avatar.fallbackIconName.indexOf(':') + 1,
+                    item.avatar.fallbackIconName.length
                 );
                 const itemSVGGroup = timelineItemsSVG.querySelector(
                     '#timeline-item-' + item.name

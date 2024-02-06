@@ -16,7 +16,8 @@
  * @property {string} description Description of the item, displayed under the title.
  * @property {(Date|number|string)} datetimeValue Date/time value of the item. It can be a Date object, a timestamp, or an ISO8601 formatted string.
  * @property {string} href URL to use as a link for the title.
- * @property {string} iconName The Lightning Design System name of the icon displayed in the item header, before the title. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+ * @property {object} avatar Avatar object.
+ * @property {string} iconName (Deprecated) Use `avatar` instead. The Lightning Design System name of the icon displayed in the item header, before the title. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
  * @property {string[]} icons Array of icon names to display after the title.
  * @property {object[]} fields Array of output data objects. See <a href="/components/output-data">Output Data</a> for valid keys. The fields are displayed in the details section.
  * @property {boolean} hasCheckbox If present, a checkbox is displayed before the label. Defaults to false.
@@ -134,4 +135,94 @@
  * @name --avonni-activity-timeline-item-fields-spacing-inline
  * @type dimension
  * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-spacing-block-end
+ * @default 0
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-spacing-block-start
+ * @default 0
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-spacing-inline-end
+ * @default 1rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-spacing-inline-start
+ * @default 1rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-color-background-active
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-color-background-hover
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-color-border
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-color-border-active
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-color-border-hover
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-text-color
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-text-color-active
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-text-color-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-show-more-button-neutral-sizing-border
+ * @default 1px
+ * @type sizing
  */

@@ -54,7 +54,7 @@
                             datetime-value={item.datetimeValue}
                             date-format={computedItemDateFormat}
                             href={item.href}
-                            icon-name={item.iconName}
+                            avatar={item.avatar}
                             icon-size={itemIconSize}
                             icons={item.icons}
                             field-attributes={fieldAttributes}
@@ -109,7 +109,7 @@
                                     datetime-value={item.datetimeValue}
                                     date-format={computedItemDateFormat}
                                     href={item.href}
-                                    icon-name={item.iconName}
+                                    avatar={item.avatar}
                                     icon-size={itemIconSize}
                                     icons={item.icons}
                                     field-attributes={fieldAttributes}
@@ -149,6 +149,7 @@
                 <!-- Show more button -->
                 <lightning-button
                     if:false={isShowButtonHidden}
+                    class="avonni-activity-timeline__show-more-button"
                     variant={buttonVariant}
                     label={currentShowButtonLabel}
                     icon-name={currentShowButtonIcon}

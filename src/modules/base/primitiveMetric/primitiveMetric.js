@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const CURRENCY_DISPLAYS = {
     default: 'symbol',
@@ -55,6 +55,7 @@ export default class PrimitiveMetric extends LightningElement {
 
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
     _formatStyle = FORMAT_STYLES.default;
+    _isLoading = false;
     _maximumFractionDigits;
     _maximumSignificantDigits;
     _minimumFractionDigits;
@@ -105,6 +106,21 @@ export default class PrimitiveMetric extends LightningElement {
             fallbackValue: FORMAT_STYLES.default,
             validValues: FORMAT_STYLES.valid
         });
+    }
+
+    /**
+     * If present, the metric is in a loading state and shows a spinner.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     /**
@@ -294,7 +310,7 @@ export default class PrimitiveMetric extends LightningElement {
      * @type {boolean}
      */
     get hasValue() {
-        return isFinite(this.value);
+        return isFinite(this.value) && !this.isLoading;
     }
 
     /**

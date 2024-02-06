@@ -71,7 +71,7 @@ export default class ActivityTimelineWithoutIcons extends LightningElement {
             description: 'You emailed Lea Chan',
             datetimeValue: '02/20/2022 08:00',
             href: '#',
-            iconName: 'standard:email',
+            avatar: 'standard:email',
             icons: ['utility:groups', 'utility:attach'],
             fields: [
                 {
