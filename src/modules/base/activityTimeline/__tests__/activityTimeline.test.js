@@ -1464,7 +1464,7 @@ describe('Activity Timeline', () => {
             const itemsAfterDrag = [
                 {
                     name: 'item1',
-                    title: 'This is a message longer than  ...',
+                    title: 'This is a message longer t ...',
                     datetimeValue: '01/01/2022 11:30',
                     href: '#',
                     iconName: 'standard:skill',
@@ -1482,7 +1482,7 @@ describe('Activity Timeline', () => {
                 },
                 {
                     name: 'item3',
-                    title: 'This is another item to displa ...',
+                    title: 'This is another item to di ...',
                     datetimeValue: '01/30/2022 2:00',
                     href: '#',
                     iconName: 'standard:reward',

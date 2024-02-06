@@ -6,7 +6,8 @@ import {
     items,
     horizontalItems,
     yearlyItems,
-    itemsWithoutIcons
+    itemsWithoutIcons,
+    itemsWithEndDate
 } from './data';
 
 export default {
@@ -247,6 +248,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        intervalDaysLength: {
+            name: 'interval-days-length',
+            control: {
+                type: 'number'
+            },
+            description: '',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '15' }
+            }
+        },
         locale: {
             control: {
                 type: 'text'
@@ -358,7 +370,8 @@ export default {
         locale: 'en-GB',
         orientation: 'vertical',
         itemDateFormat: 'LLLL dd, yyyy, t',
-        hideItemDate: false
+        hideItemDate: false,
+        intervalDaysLength: 15
     }
 };
 
@@ -454,4 +467,13 @@ WithoutIcons.args = {
     items: itemsWithoutIcons,
     actions: actions,
     hideItemDate: true
+};
+
+export const endDate = Template.bind({});
+endDate.args = {
+    title: 'Activity Timeline with End Date field',
+    iconName: 'standard:timesheet_entry',
+    orientation: 'horizontal',
+    items: itemsWithEndDate,
+    intervalDaysLength: 30
 };

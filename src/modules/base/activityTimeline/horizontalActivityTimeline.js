@@ -37,7 +37,9 @@ const TIMELINE_COLORS = {
     intervalBorder: '#0176d3', // $palette-blue-50
     popoverBackground: '#ffffff',
     timelineBorder: '#c9c9c9', // $card-color-border
-    axisLabel: '#181818' // $color-text-action-label-active
+    axisLabel: '#181818', // $color-text-action-label-active
+    itemBorder: '#aacbff', // $palette-blue-80
+    itemBackground: '#eef4ff' // $palette-blue-95
 };
 const VALID_ICON_CATEGORIES = [
     'standard',
@@ -91,11 +93,18 @@ export class HorizontalActivityTimeline {
     /**
      * Create horizontal view timeline
      */
-    createHorizontalActivityTimeline(sortedItems, maxVisibleItems, width) {
+    createHorizontalActivityTimeline(
+        sortedItems,
+        maxVisibleItems,
+        width,
+        intervalDaysLength
+    ) {
         this.resetHorizontalTimeline();
         this.addValidItemsToData(sortedItems);
         this._maxVisibleItems = maxVisibleItems;
+        this._intervalDaysLength = intervalDaysLength;
 
+        this.setIntervalMaxDate();
         this.setTimelineWidth(width);
         this.createTimelineScrollAxis();
         this.createTimelineAxis();
@@ -628,13 +637,35 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Return the height and the width of the item depending of the end date.
+     *
+     * @return {Object}
+     */
+    computedItemSize(itemGroup, startDate, endDate) {
+        const bbox = itemGroup.node().getBBox();
+        const width = endDate
+            ? this.viewTimeScale(new Date(endDate)) -
+              this.viewTimeScale(new Date(startDate))
+            : 0;
+        return {
+            width,
+            height: bbox.height
+        };
+    }
+
+    /**
      * Formatted item's title to prevent text longer than 30 characters on horizontal timeline
      * @param {Object} item
      * @returns string
      */
-    computedItemTitle(item) {
-        if (item.title.length > MAX_LENGTH_TITLE_ITEM) {
-            return item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ...';
+    computedItemTitle(item, maxLength = MAX_LENGTH_TITLE_ITEM) {
+        const truncationText = ' ...';
+        if (item.title.length > maxLength) {
+            const max =
+                maxLength > truncationText.length
+                    ? maxLength - truncationText.length
+                    : 0;
+            return item.title.slice(0, max) + truncationText;
         }
         return item.title;
     }
@@ -700,26 +731,47 @@ export class HorizontalActivityTimeline {
      *  Create item on horizontal timeline to display lightning icon and item's title
      */
     createItem(itemGroup, item) {
+        const startX = this.viewTimeScale(new Date(item.datetimeValue));
+
+        let itemRect;
+        if (item.endDate) {
+            itemRect = itemGroup.append('rect');
+            itemRect
+                .attr('x', startX)
+                .attr('y', item.yPosition)
+                .attr('fill', TIMELINE_COLORS.itemBackground)
+                .attr('stroke-width', 1)
+                .attr('stroke', TIMELINE_COLORS.itemBorder)
+                .attr('rx', 2);
+        }
+
         this.createIcon(
             itemGroup,
             item.avatar,
-            this.viewTimeScale(new Date(item.datetimeValue)),
+            startX,
             item.yPosition,
             SVG_ICON_SIZE
         );
 
-        itemGroup
-            .append('text')
+        const label = itemGroup.append('text');
+        label
             .attr('class', 'avonni-horizontal-activity-timeline__item-text')
-            .attr(
-                'x',
-                this.viewTimeScale(new Date(item.datetimeValue)) +
-                    SVG_ICON_SIZE +
-                    SPACE_BETWEEN_ICON_AND_TEXT
-            )
+            .attr('x', startX + SVG_ICON_SIZE + SPACE_BETWEEN_ICON_AND_TEXT)
             .attr('y', item.yPosition + 0.64 * SVG_ICON_SIZE)
-            .text(this.computedItemTitle(item))
             .style('font-size', 13);
+
+        let labelMaxLength = MAX_LENGTH_TITLE_ITEM;
+        if (itemRect) {
+            const { width, height } = this.computedItemSize(
+                itemGroup,
+                item.datetimeValue,
+                item.endDate
+            );
+            itemRect.attr('width', width).attr('height', height);
+            const dx = SVG_ICON_SIZE + SPACE_BETWEEN_ICON_AND_TEXT;
+            labelMaxLength = width > dx ? ((width - dx) / 13) * 2 : 0;
+        }
+        label.text(this.computedItemTitle(item, labelMaxLength));
     }
 
     /**
