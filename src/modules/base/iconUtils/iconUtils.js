@@ -138,6 +138,65 @@ export const createSVGIcon = (
     return iconSVG;
 };
 
+/**
+ * Create avatar initials to append in a foreign object.
+ * @param {object} iconInformation Information to create specific icon. Valid keys include initials and styleClass.
+ * @param {object} foreignObjectForIcon Foreign object that will contain the avatar initials.
+ * @returns {object} Foreign object that will contain the avatar initials
+ */
+export const createAvatarInitials = (iconInformation, foreignObjectForIcon) => {
+    foreignObjectForIcon
+        .append('xhtml:abbr')
+        .attr('class', iconInformation.styleClass)
+        .html(`${iconInformation.initials}`);
+
+    return foreignObjectForIcon;
+};
+
+/**
+ * Create image to append in a foreign object.
+ * @param {object} iconInformation Information to create specific icon. Valid keys include src and styleClass.
+ * @param {object} foreignObjectForIcon Foreign object that will contain the image.
+ * @returns {object} Foreign object that will contain the image
+ */
+export const createImage = (iconInformation, foreignObjectForIcon) => {
+    foreignObjectForIcon
+        .append('xhtml:img')
+        .attr('class', iconInformation.styleClass)
+        .attr('src', `${iconInformation.src}`);
+
+    return foreignObjectForIcon;
+};
+
+/**
+ * Create avatar to append in a foreign object.
+ * @param {string} propertyName The property name used to create specific avatar. Valid values include src, initials and fallbackIconName.
+ * @param {object} iconInformation Information to create specific icon. Valid keys include iconName, category, categoryIconClass, src, initials, presence and styleClass.
+ * @param {object} foreignObjectForIcon Foreign object that will contain the avatar.
+ * @param resetMethodOfView this method will be called if no path are available and the icon needs to be created from template. Since there is a delay,
+ * it will allow to refresh the icons when the libraries are ready.
+ * @returns {object} Foreign object that will contain the avatar
+ */
+export const createAvatar = (
+    propertyName,
+    iconInformation,
+    foreignObjectForIcon,
+    resetMethodOfView
+) => {
+    switch (propertyName) {
+        case 'src':
+            return createImage(iconInformation, foreignObjectForIcon);
+        case 'initials':
+            return createAvatarInitials(iconInformation, foreignObjectForIcon);
+        default:
+            return createSVGIcon(
+                iconInformation,
+                foreignObjectForIcon,
+                resetMethodOfView
+            );
+    }
+};
+
 export const isActionIconType = (iconName) => {
     return typeof iconName === 'string' && iconName.startsWith('action');
 };

@@ -841,6 +841,28 @@ describe('Avatar', () => {
         });
     });
 
+    /* ----- METHODS ----- */
+
+    // getBackgroundColor()
+    it('Avatar: method getBackgroundColor()', () => {
+        element.hideAvatarDetails = true;
+        element.fallbackIconName = 'standard:account';
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
+            );
+            const spy = jest
+                .spyOn(avatar, 'getBackgroundColor')
+                .mockImplementation(() => {
+                    return 'blue';
+                });
+            const iconBackgroundColor = element.getBackgroundColor();
+            expect(spy).toHaveBeenCalled();
+            expect(iconBackgroundColor).toBe('blue');
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // actionclick event

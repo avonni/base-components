@@ -89,12 +89,16 @@
                         data-element-id="avonni-horizontal-activity-timeline__popover-header"
                     >
                         <!-- item's icon -->
-                        <lightning-icon
-                            if:true={selectedItem.iconName}
-                            icon-name={selectedItem.iconName}
+                        <c-avatar
+                            if:true={selectedItem.avatar}
+                            fallback-icon-name={selectedItem.avatar.fallbackIconName}
+                            hide-avatar-details="true"
+                            initials={selectedItem.avatar.initials}
+                            presence={selectedItem.avatar.presence}
                             size={popoverIconSize}
+                            src={selectedItem.avatar.src}
                             class="slds-media__figure"
-                        ></lightning-icon>
+                        ></c-avatar>
                         <!-- item's title -->
                         <div
                             class="

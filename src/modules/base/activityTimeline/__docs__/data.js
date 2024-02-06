@@ -5,7 +5,7 @@ export const items = [
         description: 'You created a task with Charlie Gomez',
         datetimeValue: '01/11/2022',
         href: 'salesforce.com',
-        iconName: 'standard:task',
+        avatar: { fallbackIconName: 'standard:task' },
         icons: ['utility:refresh'],
         hasCheckbox: true,
         fields: [
@@ -38,7 +38,7 @@ export const items = [
         description: 'You logged a call with Adam Chan',
         href: '#',
         datetimeValue: new Date(),
-        iconName: 'standard:log_a_call',
+        avatar: { fallbackIconName: 'standard:log_a_call' },
         fields: [
             {
                 label: 'Name',
@@ -69,7 +69,7 @@ export const items = [
         description: 'You emailed Lea Chan',
         datetimeValue: '02/20/2022 08:00',
         href: '#',
-        iconName: 'standard:email',
+        avatar: { fallbackIconName: 'standard:email' },
         icons: ['utility:groups', 'utility:attach'],
         fields: [
             {
@@ -104,7 +104,7 @@ export const items = [
         icons: ['utility:world'],
         datetimeValue: '04/21/2021 8:00',
         href: '#',
-        iconName: 'standard:event',
+        avatar: { fallbackIconName: 'standard:event' },
         fields: [
             {
                 label: 'Location',
@@ -146,7 +146,7 @@ export const items = [
         description: 'Fields are loading',
         datetimeValue: '05/21/2022 10:00',
         href: '#',
-        iconName: 'standard:dashboard',
+        avatar: { fallbackIconName: 'standard:dashboard' },
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
         checked: true,
@@ -159,7 +159,7 @@ export const items = [
         title: 'Create another task',
         datetimeValue: '05/21/2022 11:30',
         href: '#',
-        iconName: 'standard:case',
+        avatar: { fallbackIconName: 'standard:case' },
         hasCheckbox: true,
         hasError: true
     }
@@ -236,7 +236,6 @@ export const itemsWithoutIcons = [
         description: 'You emailed Lea Chan',
         datetimeValue: '02/20/2022 08:00',
         href: '#',
-        iconName: 'standard:email',
         icons: ['utility:groups', 'utility:attach'],
         fields: [
             {
@@ -332,7 +331,7 @@ export const yearlyItems = [
         description: 'You created a task with Charlie Gomez',
         datetimeValue: '01/01/2022',
         href: 'salesforce.com',
-        iconName: 'standard:task',
+        avatar: { fallbackIconName: 'standard:task' },
         icons: ['utility:refresh'],
         hasCheckbox: true,
         fields: [
@@ -365,7 +364,7 @@ export const yearlyItems = [
         description: 'You logged a call with Adam Chan',
         href: '#',
         datetimeValue: new Date(),
-        iconName: 'standard:log_a_call',
+        avatar: { fallbackIconName: 'standard:log_a_call' },
         fields: [
             {
                 label: 'Name',
@@ -396,7 +395,7 @@ export const yearlyItems = [
         description: 'You emailed Lea Chan',
         datetimeValue: '02/20/2023 08:00',
         href: '#',
-        iconName: 'standard:email',
+        avatar: { fallbackIconName: 'standard:email' },
         icons: ['utility:groups', 'utility:attach'],
         fields: [
             {
@@ -431,7 +430,7 @@ export const yearlyItems = [
         icons: ['utility:world'],
         datetimeValue: '04/21/2021 8:00',
         href: '#',
-        iconName: 'standard:event',
+        avatar: { fallbackIconName: 'standard:event' },
         fields: [
             {
                 label: 'Location',
@@ -473,7 +472,7 @@ export const yearlyItems = [
         description: 'Fields are loading',
         datetimeValue: '05/21/2021 10:00',
         href: '#',
-        iconName: 'standard:dashboard',
+        avatar: { fallbackIconName: 'standard:dashboard' },
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
         isLoading: true,
@@ -485,7 +484,7 @@ export const yearlyItems = [
         title: 'Create another task',
         datetimeValue: '05/21/2022 11:30',
         href: '#',
-        iconName: 'standard:case',
+        avatar: { fallbackIconName: 'standard:case' },
         hasCheckbox: true,
         hasError: true
     }
@@ -498,7 +497,7 @@ export const testItems = [
         description: 'You created a task with Charlie Gomez',
         datetimeValue: '01/01/2022 10:00',
         href: 'salesforce.com',
-        iconName: 'standard:task',
+        avatar: { fallbackIconName: 'standard:task' },
         icons: ['utility:refresh'],
         hasCheckbox: true,
         fields: [
@@ -531,7 +530,7 @@ export const testItems = [
         description: 'You logged a call with Adam Chan',
         href: '#',
         datetimeValue: '05/21/2021 10:00',
-        iconName: 'standard:log_a_call',
+        avatar: { fallbackIconName: 'standard:log_a_call' },
         fields: [
             {
                 label: 'Name',
@@ -562,7 +561,7 @@ export const testItems = [
         description: 'Fields are loading',
         datetimeValue: '05/21/2055 10:00',
         href: '#',
-        iconName: 'standard:dashboard',
+        avatar: { fallbackIconName: 'standard:dashboard' },
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
         checked: true,
@@ -575,7 +574,7 @@ export const testItems = [
         title: 'Create another task',
         datetimeValue: '05/21/2038 11:30',
         href: '#',
-        iconName: 'standard:case',
+        avatar: { fallbackIconName: 'standard:case' },
         hasCheckbox: true,
         hasError: true
     }
@@ -601,7 +600,7 @@ export const horizontalItems = [
         description: 'You created a task with Charlie Gomez',
         datetimeValue: '01/01/2022 7:45',
         href: 'salesforce.com',
-        iconName: 'standard:task',
+        avatar: { fallbackIconName: 'standard:task' },
         icons: ['utility:refresh'],
         hasCheckbox: true,
         fields: [
@@ -638,7 +637,7 @@ export const horizontalItems = [
         title: 'Mobile conversation on Monday',
         description: 'You logged a call with Adam Chan',
         datetimeValue: new Date(),
-        iconName: 'standard:log_a_call',
+        avatar: { fallbackIconName: 'standard:log_a_call' },
         fields: [
             {
                 label: 'Name',
@@ -668,7 +667,7 @@ export const horizontalItems = [
         title: 'Re: Mobile conversation on Monday with the new global team',
         description: 'You emailed Lea Chan',
         datetimeValue: '02/20/2023 08:00',
-        iconName: 'standard:email',
+        avatar: { fallbackIconName: 'standard:email' },
         icons: ['utility:groups', 'utility:attach'],
         buttonLabel: 'Public Sharing',
         buttonIconName: 'utility:world',
@@ -702,7 +701,7 @@ export const horizontalItems = [
         description: 'You created an event with Aida Lee and 5 others',
         icons: ['utility:world'],
         datetimeValue: '04/21/2021 8:00',
-        iconName: 'standard:event',
+        avatar: { fallbackIconName: 'standard:event' },
         buttonLabel: 'Public Sharing',
         buttonIconName: 'utility:activity',
         closed: true,
@@ -735,7 +734,7 @@ export const horizontalItems = [
         title: 'Create one task',
         description: 'Fields are loading',
         datetimeValue: '02/14/2022 10:00',
-        iconName: 'standard:dashboard',
+        avatar: { fallbackIconName: 'standard:dashboard' },
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
         isLoading: true,
@@ -747,7 +746,7 @@ export const horizontalItems = [
         title: 'Create another task',
         description: 'This is the description of the task.',
         datetimeValue: '01/21/2022 11:30',
-        iconName: 'standard:skill',
+        avatar: { fallbackIconName: 'standard:skill' },
         hasCheckbox: true,
         hasError: true
     },
@@ -755,7 +754,7 @@ export const horizontalItems = [
         name: 'item7',
         title: 'Meeting with John Smith',
         datetimeValue: '03/14/2022 8:30',
-        iconName: 'custom:custom47',
+        avatar: { fallbackIconName: 'custom:custom47' },
         hasCheckbox: true,
         closed: true,
         hasError: true
@@ -766,7 +765,7 @@ export const horizontalItems = [
         description: 'Important follow up for the company.',
         datetimeValue: '02/02/2022 3:30',
         href: '#',
-        iconName: 'standard:solution',
+        avatar: { fallbackIconName: 'standard:solution' },
         hasCheckbox: false,
         hasError: true
     },
@@ -774,7 +773,7 @@ export const horizontalItems = [
         name: 'item88',
         title: 'Brainstorming with Jasmine',
         datetimeValue: '02/02/2022 5:30',
-        iconName: 'standard:procedure_detail',
+        avatar: { fallbackIconName: 'standard:procedure_detail' },
         hasCheckbox: false,
         hasError: true
     },
@@ -784,7 +783,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '01/30/2022 2:00',
         href: '#',
-        iconName: 'standard:service_request_detail',
+        avatar: { fallbackIconName: 'standard:service_request_detail' },
         hasCheckbox: false,
         closed: true,
         hasError: true
@@ -795,7 +794,7 @@ export const horizontalItems = [
         description: 'You created an event with Aida Lee and 5 others',
         datetimeValue: '01/31/2022 2:00',
         href: '#',
-        iconName: 'action:log_event',
+        avatar: { fallbackIconName: 'action:log_event' },
         hasCheckbox: false,
         hasError: true,
         fields: [
@@ -823,7 +822,7 @@ export const horizontalItems = [
         description: 'This is the description of the conference.',
         datetimeValue: '01/04/2022 10:30',
         href: '#',
-        iconName: 'utility:frozen',
+        avatar: { fallbackIconName: 'utility:frozen' },
         hasCheckbox: true,
         hasError: false
     },
@@ -832,7 +831,7 @@ export const horizontalItems = [
         title: 'Meeting',
         datetimeValue: '02/03/2022 00:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: true,
         closed: true,
         hasError: false
@@ -842,7 +841,7 @@ export const horizontalItems = [
         title: 'Release date of new technology',
         datetimeValue: '02/16/2022 00:00',
         href: '#',
-        iconName: 'action:map',
+        avatar: { fallbackIconName: 'action:map' },
         hasCheckbox: true,
         closed: true,
         hasError: false
@@ -852,7 +851,7 @@ export const horizontalItems = [
         title: 'Review business proposal',
         datetimeValue: '02/08/2022 08:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: true,
         hasError: false
     },
@@ -862,7 +861,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:education',
+        avatar: { fallbackIconName: 'standard:education' },
         hasCheckbox: true,
         closed: true,
         hasError: false
@@ -873,7 +872,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '02/02/2022 20:30',
         href: '#',
-        iconName: 'standard:lead',
+        avatar: { fallbackIconName: 'standard:lead' },
         hasCheckbox: true,
         hasError: false
     },
@@ -883,7 +882,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '02/02/2022 10:45',
         href: '#',
-        iconName: 'standard:thanks',
+        avatar: { fallbackIconName: 'standard:thanks' },
         hasCheckbox: true,
         hasError: false
     },
@@ -893,7 +892,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '02/03/2022 10:45',
         href: '#',
-        iconName: 'custom:custom69',
+        avatar: { fallbackIconName: 'custom:custom69' },
         hasCheckbox: true,
         closed: true,
         hasError: false
@@ -903,7 +902,7 @@ export const horizontalItems = [
         title: 'Inauguration of new office',
         datetimeValue: '02/04/2022 10:45',
         href: '#',
-        iconName: 'standard:announcement',
+        avatar: { fallbackIconName: 'standard:announcement' },
         hasCheckbox: true,
         closed: false,
         hasError: false
@@ -913,7 +912,7 @@ export const horizontalItems = [
         title: 'Meeting',
         datetimeValue: '02/04/2022 10:45',
         href: '#',
-        iconName: 'action:priority',
+        avatar: { fallbackIconName: 'action:priority' },
         hasCheckbox: true,
         hasError: false
     },
@@ -923,7 +922,7 @@ export const horizontalItems = [
         description: 'Chemistry subject this week.',
         datetimeValue: '02/02/2022 00:00',
         href: '#',
-        iconName: 'utility:education',
+        avatar: { fallbackIconName: 'utility:education' },
         hasCheckbox: true,
         hasError: false
     },
@@ -934,7 +933,7 @@ export const horizontalItems = [
         datetimeValue: '02/02/2022 08:30',
         href: '#',
         closed: false,
-        iconName: 'utility:animal_and_nature',
+        avatar: { fallbackIconName: 'utility:animal_and_nature' },
         hasCheckbox: true,
         hasError: false,
         fields: [
@@ -967,7 +966,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:trailhead',
+        avatar: { fallbackIconName: 'standard:trailhead' },
         hasCheckbox: true,
         closed: false,
         hasError: false
@@ -977,7 +976,7 @@ export const horizontalItems = [
         title: 'Meeting with design team',
         datetimeValue: '02/09/2022 08:30',
         href: '#',
-        iconName: 'utility:palette',
+        avatar: { fallbackIconName: 'utility:palette' },
         hasCheckbox: true,
         closed: false,
         hasError: false
@@ -987,7 +986,7 @@ export const horizontalItems = [
         title: 'Meeting with UX team',
         datetimeValue: '02/09/2024 08:30',
         href: '#',
-        iconName: 'utility:pin',
+        avatar: { fallbackIconName: 'utility:pin' },
         hasCheckbox: true,
         closed: false,
         hasError: false
@@ -998,7 +997,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:recipe',
+        avatar: { fallbackIconName: 'standard:recipe' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1008,7 +1007,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '02/02/2022 09:30',
         href: '#',
-        iconName: 'standard:story',
+        avatar: { fallbackIconName: 'standard:story' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1017,7 +1016,7 @@ export const horizontalItems = [
         title: 'Surprise party for Johnny',
         datetimeValue: '02/02/2022 22:30',
         href: '#',
-        iconName: 'standard:topic',
+        avatar: { fallbackIconName: 'standard:topic' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1026,7 +1025,7 @@ export const horizontalItems = [
         title: 'Event',
         datetimeValue: '09/09/2022 22:30',
         href: '#',
-        iconName: 'doctype:video',
+        avatar: { fallbackIconName: 'doctype:video' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1036,7 +1035,7 @@ export const horizontalItems = [
         description: 'Description of the event.',
         datetimeValue: '06/09/2022 10:30',
         href: '#',
-        iconName: 'doctype:folder',
+        avatar: { fallbackIconName: 'doctype:folder' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1045,7 +1044,7 @@ export const horizontalItems = [
         title: 'Default event',
         datetimeValue: '07/09/2022 10:30',
         href: '#',
-        iconName: 'invalid:name',
+        avatar: { fallbackIconName: 'invalid:name' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1054,7 +1053,7 @@ export const horizontalItems = [
         title: 'Custom event',
         datetimeValue: '08/08/2022 11:11',
         href: '#',
-        iconName: 'custom:custom74',
+        avatar: { fallbackIconName: 'custom:custom74' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1064,7 +1063,7 @@ export const horizontalItems = [
         description: 'This is the description.',
         datetimeValue: '01/01/2021 11:11',
         href: '#',
-        iconName: 'custom:custom74',
+        avatar: { fallbackIconName: 'custom:custom74' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1073,7 +1072,7 @@ export const horizontalItems = [
         title: 'Deadline to sign contract',
         datetimeValue: '01/04/2022 8:27',
         href: '#',
-        iconName: 'custom:custom1',
+        avatar: { fallbackIconName: 'custom:custom1' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1082,7 +1081,7 @@ export const horizontalItems = [
         title: 'Important event',
         datetimeValue: '02/11/2022 10:32',
         href: '#',
-        iconName: 'utility:classic_interface',
+        avatar: { fallbackIconName: 'utility:classic_interface' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1091,7 +1090,7 @@ export const horizontalItems = [
         title: 'Meeting',
         datetimeValue: '02/11/2023 10:32',
         href: '#',
-        iconName: 'standard:swarm_request',
+        avatar: { fallbackIconName: 'standard:swarm_request' },
         hasCheckbox: true,
         closed: false,
         hasError: false
@@ -1101,7 +1100,7 @@ export const horizontalItems = [
         title: 'Important meeting',
         datetimeValue: '11/11/2023 11:11',
         href: '#',
-        iconName: 'standard:process_exception',
+        avatar: { fallbackIconName: 'standard:process_exception' },
         hasCheckbox: true,
         closed: false,
         hasError: false
@@ -1111,7 +1110,7 @@ export const horizontalItems = [
         title: 'Ceremony',
         datetimeValue: '04/11/2021 11:11',
         href: '#',
-        iconName: 'standard:reward',
+        avatar: { fallbackIconName: 'standard:reward' },
         hasCheckbox: true,
         closed: true,
         hasError: false
@@ -1124,7 +1123,7 @@ export const horizontalItemsTest = [
         title: 'This is a message longer than 30 characters',
         datetimeValue: '01/01/2022 11:30',
         href: '#',
-        iconName: 'standard:skill',
+        avatar: { fallbackIconName: 'standard:skill' },
         hasCheckbox: true,
         hasError: true
     },
@@ -1133,7 +1132,7 @@ export const horizontalItemsTest = [
         title: 'Another new item',
         datetimeValue: '01/04/2022 10:30',
         href: '#',
-        iconName: 'utility:frozen',
+        avatar: { fallbackIconName: 'utility:frozen' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1142,7 +1141,7 @@ export const horizontalItemsTest = [
         title: 'This is another item to display',
         datetimeValue: '01/30/2022 2:00',
         href: '#',
-        iconName: 'standard:reward',
+        avatar: { fallbackIconName: 'standard:reward' },
         hasCheckbox: false,
         hasError: true
     },
@@ -1151,7 +1150,7 @@ export const horizontalItemsTest = [
         title: 'Item',
         datetimeValue: '02/02/2022 2:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: false,
         hasError: true
     },
@@ -1160,7 +1159,7 @@ export const horizontalItemsTest = [
         title: 'Another item',
         datetimeValue: '02/02/2022 3:30',
         href: '#',
-        iconName: 'standard:solution',
+        avatar: { fallbackIconName: 'standard:solution' },
         hasCheckbox: false,
         hasError: true
     },
@@ -1169,7 +1168,7 @@ export const horizontalItemsTest = [
         title: 'Another item with same date',
         datetimeValue: '02/02/2022 5:30',
         href: '#',
-        iconName: 'custom:custom74',
+        avatar: { fallbackIconName: 'custom:custom74' },
         hasCheckbox: false,
         hasError: true
     },
@@ -1178,7 +1177,7 @@ export const horizontalItemsTest = [
         title: 'Another item',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:education',
+        avatar: { fallbackIconName: 'standard:education' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1187,7 +1186,7 @@ export const horizontalItemsTest = [
         title: 'Magic item',
         datetimeValue: '02/02/2022 10:45',
         href: '#',
-        iconName: 'standard:thanks',
+        avatar: { fallbackIconName: 'standard:thanks' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1196,7 +1195,7 @@ export const horizontalItemsTest = [
         title: 'Another item',
         datetimeValue: '02/02/2022 20:30',
         href: '#',
-        iconName: 'standard:lead',
+        avatar: { fallbackIconName: 'standard:lead' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1205,7 +1204,7 @@ export const horizontalItemsTest = [
         title: 'Another new item',
         datetimeValue: '02/03/2022 00:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1214,7 +1213,7 @@ export const horizontalItemsTest = [
         title: 'Item',
         datetimeValue: '02/03/2022 10:45',
         href: '#',
-        iconName: 'custom:custom69',
+        avatar: { fallbackIconName: 'custom:custom69' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1223,7 +1222,7 @@ export const horizontalItemsTest = [
         title: 'Another item',
         datetimeValue: '02/08/2022 08:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1232,7 +1231,7 @@ export const horizontalItemsTest = [
         title: 'Another new item',
         datetimeValue: '02/16/2022 00:00',
         href: '#',
-        iconName: 'action:map',
+        avatar: { fallbackIconName: 'action:map' },
         hasCheckbox: true,
         hasError: false,
         fields: [
@@ -1264,7 +1263,7 @@ export const horizontalItemsTest = [
         title: 'Another item',
         datetimeValue: '03/14/2022 8:30',
         href: '#',
-        iconName: 'custom:custom47',
+        avatar: { fallbackIconName: 'custom:custom47' },
         hasCheckbox: true,
         hasError: true
     }
@@ -1276,7 +1275,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Item',
         datetimeValue: '02/02/2022 2:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: false,
         hasError: true
     },
@@ -1285,7 +1284,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Another item',
         datetimeValue: '02/02/2022 3:30',
         href: '#',
-        iconName: 'standard:solution',
+        avatar: { fallbackIconName: 'standard:solution' },
         hasCheckbox: false,
         hasError: true
     },
@@ -1294,7 +1293,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Another item with same date',
         datetimeValue: '02/02/2022 5:30',
         href: '#',
-        iconName: 'custom:custom74',
+        avatar: { fallbackIconName: 'custom:custom74' },
         hasCheckbox: false,
         hasError: true
     },
@@ -1303,7 +1302,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Another item',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:education',
+        avatar: { fallbackIconName: 'standard:education' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1312,7 +1311,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Magic item',
         datetimeValue: '02/02/2022 10:45',
         href: '#',
-        iconName: 'standard:thanks',
+        avatar: { fallbackIconName: 'standard:thanks' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1321,7 +1320,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Another item',
         datetimeValue: '02/02/2022 20:30',
         href: '#',
-        iconName: 'standard:lead',
+        avatar: { fallbackIconName: 'standard:lead' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1330,7 +1329,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Another new item',
         datetimeValue: '02/03/2022 00:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1339,7 +1338,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Item',
         datetimeValue: '02/03/2022 10:45',
         href: '#',
-        iconName: 'custom:custom69',
+        avatar: { fallbackIconName: 'custom:custom69' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1348,7 +1347,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Another item',
         datetimeValue: '02/08/2022 08:00',
         href: '#',
-        iconName: 'standard:bot',
+        avatar: { fallbackIconName: 'standard:bot' },
         hasCheckbox: true,
         hasError: false
     },
@@ -1357,7 +1356,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Another new item',
         datetimeValue: '02/16/2022 00:00',
         href: '#',
-        iconName: 'action:map',
+        avatar: { fallbackIconName: 'action:map' },
         hasCheckbox: true,
         hasError: false,
         fields: [
