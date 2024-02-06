@@ -36,6 +36,15 @@ export default class Action {
     }
 
     /**
+     * String of true or false.
+     *
+     * @type {string}
+     */
+    get computedAriaDisabled() {
+        return normalizeAriaAttribute(this.disabled.toString());
+    }
+
+    /**
      * Class of the action.
      *
      * @type {string}
@@ -49,14 +58,5 @@ export default class Action {
                 'avonni-primitive-combobox__action_fixed': this.fixed
             })
             .toString();
-    }
-
-    /**
-     * String of true or false.
-     *
-     * @type {string}
-     */
-    get computedAriaDisabled() {
-        return normalizeAriaAttribute(this.disabled.toString());
     }
 }

@@ -1,5 +1,6 @@
 import { ActivityTimeline } from '../__examples__/activityTimeline';
 import { InfiniteLoadingActivityTimeline } from '../__examples__/infiniteLoadingActivityTimeline';
+import { InfiniteLoadingUsingShowMoreActivityTimeline } from '../__examples__/infiniteLoadingUsingShowMore';
 import {
     actions,
     items,
@@ -79,7 +80,7 @@ export default {
             },
             options: ['left', 'right'],
             description:
-                'Position of the showMore button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.',
+                "Position of the showMore button's icon. Valid values include left and right. This attribute is only supported for the vertical orientation.",
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
@@ -170,7 +171,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['week', 'month', 'year', ''],
+            options: ['day', 'week', 'month', 'year', ''],
             description:
                 'Values include week, month, year. This attribute is only supported for the vertical orientation.',
             table: {
@@ -219,7 +220,7 @@ export default {
                 type: 'text'
             },
             description:
-                "The date format to use for each item. See Luxon’s documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
+                "The date format to use for each item. See Luxon's documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
             table: {
                 defaultValue: { summary: 'LLLL dd, yyyy, t' },
                 type: { summary: 'string' }
@@ -363,6 +364,8 @@ export default {
 
 const Template = (args) => ActivityTimeline(args);
 const InfiniteLoadingTemplate = (args) => InfiniteLoadingActivityTimeline(args);
+const InfiniteLoadingUsingShowMoreTemplate = (args) =>
+    InfiniteLoadingUsingShowMoreActivityTimeline(args);
 
 export const Base = Template.bind({});
 Base.args = { items };
@@ -383,6 +386,17 @@ Horizontal.args = {
     iconName: 'standard:timesheet_entry',
     orientation: 'horizontal',
     items: horizontalItems,
+    actions: actions
+};
+
+export const Daily = Template.bind({});
+Daily.args = {
+    title: 'Activity Timeline grouped by day',
+    iconName: 'standard:timesheet_entry',
+    groupBy: 'day',
+    items: items,
+    collapsible: true,
+    itemDateFormat: 'DDDD - t',
     actions: actions
 };
 
@@ -423,6 +437,14 @@ export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
 InfiniteLoading.args = {
     title: 'Infinite Loading Activity Timeline',
     iconName: 'utility:sync'
+};
+
+export const InfiniteLoadingUsingShowMore =
+    InfiniteLoadingUsingShowMoreTemplate.bind({});
+InfiniteLoadingUsingShowMore.args = {
+    title: 'Infinite Loading Using Show More',
+    iconName: 'utility:sync',
+    maxVisibleItems: 4
 };
 
 export const WithoutIcons = Template.bind({});

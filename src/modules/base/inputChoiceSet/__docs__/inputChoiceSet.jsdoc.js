@@ -57,7 +57,17 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-checkbox-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-input-choice-set-option-label-line-clamp
  * @default 1
  * @type number
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-label-text-color
+ * @type color
  */

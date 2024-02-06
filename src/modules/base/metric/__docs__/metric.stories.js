@@ -304,6 +304,17 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        secondaryValueIsLoading: {
+            name: 'secondary-value-is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is displayed to indicate that the secondary value is loading.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         secondaryValueSign: {
             name: 'secondary-value-sign',
             control: {
@@ -381,6 +392,17 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        valueIsLoading: {
+            name: 'value-is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is displayed to indicate that the value is loading.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         valueSign: {
             name: 'value-sign',
             control: {
@@ -403,9 +425,11 @@ export default {
         secondaryPosition: 'right',
         secondaryShowTrendColor: false,
         secondaryTrendBreakpointValue: 0,
+        secondaryValueIsLoading: false,
         secondaryValueSign: 'negative',
         showTrendColor: false,
         trendBreakpointValue: 0,
+        valueIsLoading: false,
         valueSign: 'negative'
     }
 };

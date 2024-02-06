@@ -128,7 +128,7 @@ describe('Activity Timeline', () => {
         return Promise.resolve()
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="div-loading-spinner"]'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeFalsy();
 
@@ -136,7 +136,7 @@ describe('Activity Timeline', () => {
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="div-loading-spinner"]'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeTruthy();
             });
@@ -160,12 +160,22 @@ describe('Activity Timeline', () => {
         element.groupBy = 'week';
         element.itemDateFormat = 'dd LLL yyyy';
 
-        return Promise.resolve().then(() => {
-            const timelineItems = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-activity-timeline-item"]'
-            );
-            expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
-        });
+        return Promise.resolve()
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+
+                // Standard
+                element.itemDateFormat = 'DATETIME_MED';
+            })
+            .then(() => {
+                const timelineItems = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+                expect(timelineItems.dateFormat).toBe('DATETIME_MED');
+            });
     });
 
     // hideItemDate
@@ -195,6 +205,24 @@ describe('Activity Timeline', () => {
                 );
                 expect(expandableSection).toHaveLength(0);
             });
+    });
+
+    it('Activity Timeline: group by day', () => {
+        element.items = testItems;
+        element.groupBy = 'day';
+        const firstSection = 'Upcoming';
+        const secondSection = 'January 01, 2022';
+        const thirdSection = 'May 21, 2021';
+
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-expandable-section"]'
+            );
+            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+        });
     });
 
     it('Activity Timeline: group by week', () => {
@@ -927,6 +955,38 @@ describe('Activity Timeline', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    // itemsvisibilitytoggle
+    it('Activity Timeline: itemsvisibilitytoggle event', () => {
+        element.items = testItems;
+        element.maxVisibleItems = 2;
+
+        const handler = jest.fn();
+        element.addEventListener('itemsvisibilitytoggle', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.show).toBeTruthy();
+                expect(call.cancelable).toBeTruthy();
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+                expect(handler).toHaveBeenCalledTimes(2);
+                const call = handler.mock.calls[1][0];
+                expect(call.detail.show).toBeFalsy();
+            });
     });
 
     // loadmore

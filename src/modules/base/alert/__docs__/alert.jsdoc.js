@@ -235,5 +235,5 @@
  * @memberof stylingHooks
  * @name --avonni-alert-radius-border
  * @default 0
- * @type styling
+ * @type dimension
  */

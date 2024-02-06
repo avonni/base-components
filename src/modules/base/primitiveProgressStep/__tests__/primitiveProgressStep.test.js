@@ -18,16 +18,19 @@ describe('PrimitiveProgressStep', () => {
 
     it('Primitive progress step: Default attributes', () => {
         expect(element.assistiveText).toBeUndefined();
+        expect(element.buttonDisabled).toBeFalsy();
         expect(element.buttonLabel).toBeUndefined();
         expect(element.buttonName).toBeUndefined();
         expect(element.buttonIconName).toBeUndefined();
         expect(element.buttonIconPosition).toBe('left');
-        expect(element.buttonDisabled).toBeFalsy();
         expect(element.buttonVariant).toBe('neutral');
-        expect(element.completedSteps).toMatchObject([]);
         expect(element.description).toBeUndefined();
         expect(element.descriptionPosition).toBe('top');
-        expect(element.disabledSteps).toMatchObject([]);
+        expect(element.isCompleted).toBeFalsy();
+        expect(element.isCurrent).toBeFalsy();
+        expect(element.isDisabled).toBeFalsy();
+        expect(element.isError).toBeFalsy();
+        expect(element.isWarning).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.labelPosition).toBe('top');
         expect(element.popoverDescription).toBeUndefined();
@@ -41,7 +44,7 @@ describe('PrimitiveProgressStep', () => {
         expect(element.popoverSize).toBe('medium');
         expect(element.popoverVariant).toBe('base');
         expect(element.value).toBeUndefined();
-        expect(element.warningSteps).toBeUndefined();
+        expect(element.variant).toBe('base');
     });
 
     // assistive-text
@@ -138,34 +141,6 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    // completed-steps
-    // Depends on value and popoverLabel
-    it('Primitive progress step: completedSteps includes this step', () => {
-        element.completedSteps = ['3', '4'];
-        element.value = '3';
-        element.popoverLabel = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const popover = element.shadowRoot.querySelector('.slds-popover');
-            expect(popover.classList).toContain(
-                'avonni-progress-step__popover-completed'
-            );
-        });
-    });
-
-    it('Primitive progress step: completedSteps excludes this step', () => {
-        element.completedSteps = ['3', '4'];
-        element.value = '18';
-        element.popoverLabel = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const popover = element.shadowRoot.querySelector('.slds-popover');
-            expect(popover.classList).not.toContain(
-                'avonni-progress-step__popover-completed'
-            );
-        });
-    });
-
     // description
     it('Primitive progress step: description', () => {
         element.description = 'A string description';
@@ -214,47 +189,253 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    // disabled-steps
-    // Depends on value and buttonLabel
-    it('Primitive progress step: disabledSteps includes this step', () => {
-        element.value = '5';
-        element.disabledSteps = ['2', '5', '12'];
-        element.buttonLabel = 'A string label';
+    // is-completed
+    it('Primitive progress step: isCompleted = false', () => {
+        element.isCompleted = false;
+        element.popoverLabel = 'some label';
+        element.popoverIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
+            expect(element.classList).not.toContain('slds-is-completed');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-step"]'
+            );
+            expect(icon).toBeFalsy();
+            const button = element.shadowRoot.querySelector(
                 '[data-element-id="button"]'
             );
-            const lightningButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
+            expect(button.classList).not.toContain(
+                'avonni-progress-step__button_completed'
             );
-
-            buttons.forEach((button) => {
-                expect(button.disabled).toBeTruthy();
-            });
-
-            expect(lightningButton.disabled).toBeTruthy();
+            const popoverIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-popover-no-button"]'
+            );
+            expect(popoverIcon.variant).toBe('');
         });
     });
 
-    it('Primitive progress step: disabledSteps excludes this step', () => {
-        element.value = '5';
-        element.disabledSteps = ['2', '8', '12'];
-        element.buttonLabel = 'A string label';
+    it('Primitive progress step: isCompleted = false, button popover', () => {
+        element.isCompleted = false;
+        element.popoverLabel = 'some label';
+        element.popoverVariant = 'button';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
+            const popover = element.shadowRoot.querySelector(
+                '[data-element-id="button-propover"]'
+            );
+            expect(popover.classList).not.toContain(
+                'avonni-progress-step__popover-button-completed'
+            );
+            expect(popover.classList).toContain(
+                'avonni-progress-step__popover-button_background-color'
+            );
+        });
+    });
+
+    it('Primitive progress step: isCompleted = true', () => {
+        element.isCompleted = true;
+        element.popoverLabel = 'some label';
+        element.popoverIconName = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).toContain('slds-is-completed');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-step"]'
+            );
+            expect(icon).toBeTruthy();
+            expect(icon.iconName).toBe('utility:success');
+            const button = element.shadowRoot.querySelector(
                 '[data-element-id="button"]'
             );
-            const lightningButton = element.shadowRoot.querySelector(
+            expect(button.classList).toContain(
+                'avonni-progress-step__button_completed'
+            );
+            const popoverIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-popover-no-button"]'
+            );
+            expect(popoverIcon.variant).toBe('inverse');
+        });
+    });
+
+    it('Primitive progress step: isCompleted = true, button popover', () => {
+        element.isCompleted = true;
+        element.popoverLabel = 'some label';
+        element.popoverVariant = 'button';
+
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector(
+                '[data-element-id="button-propover"]'
+            );
+            expect(popover.classList).toContain(
+                'avonni-progress-step__popover-button-completed'
+            );
+            expect(popover.classList).not.toContain(
+                'avonni-progress-step__popover-button_background-color'
+            );
+        });
+    });
+
+    // is-current
+    it('Primitive progress step: isCurrent = false', () => {
+        element.isCurrent = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('slds-is-active');
+        });
+    });
+
+    it('Primitive progress step: isCurrent = true', () => {
+        element.isCurrent = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).toContain('slds-is-active');
+        });
+    });
+
+    // is-disabled
+    it('Primitive progress step: isDisabled = false', () => {
+        element.isDisabled = false;
+        element.buttonLabel = 'some label';
+        element.popoverVariant = 'button';
+        element.popoverLabel = 'another label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button"]'
             );
+            const stepButton = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            const buttonPopover = element.shadowRoot.querySelector(
+                '[data-element-id="button-propover"]'
+            );
+            expect(stepButton.disabled).toBeFalsy();
+            expect(button.disabled).toBeFalsy();
+            expect(buttonPopover.disabled).toBeFalsy();
+        });
+    });
 
-            buttons.forEach((button) => {
-                expect(button.disabled).toBeFalsy();
-            });
+    it('Primitive progress step: isDisabled = true', () => {
+        element.isDisabled = true;
+        element.buttonLabel = 'some label';
+        element.popoverVariant = 'button';
+        element.popoverLabel = 'another label';
 
-            expect(lightningButton.disabled).toBeFalsy();
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            const stepButton = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            const buttonPopover = element.shadowRoot.querySelector(
+                '[data-element-id="button-propover"]'
+            );
+            expect(stepButton.disabled).toBeTruthy();
+            expect(button.disabled).toBeTruthy();
+            expect(buttonPopover.disabled).toBeTruthy();
+        });
+    });
+
+    // is-error
+    it('Primitive progress step: isError = false', () => {
+        element.isError = false;
+        element.popoverIconName = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('slds-has-error');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.classList).not.toContain(
+                'avonni-progress-step__button_error'
+            );
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-step"]'
+            );
+            expect(icon).toBeFalsy();
+        });
+    });
+
+    it('Primitive progress step: isError = true', () => {
+        element.isError = true;
+        element.popoverIconName = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).toContain('slds-has-error');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.classList).toContain(
+                'avonni-progress-step__button_error'
+            );
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-step"]'
+            );
+            expect(icon).toBeTruthy();
+            expect(icon.iconName).toBe('utility:error');
+        });
+    });
+
+    // is-warning
+    it('Primitive progress step: isWarning = false', () => {
+        element.isWarning = false;
+        element.popoverIconName = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('slds-has-warning');
+            expect(element.classList).not.toContain('slds-has-warning-shaded');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.classList).not.toContain(
+                'avonni-progress-step__button_warning'
+            );
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-step"]'
+            );
+            expect(icon).toBeFalsy();
+        });
+    });
+
+    it('Primitive progress step: isWarning = false, shaded variant', () => {
+        element.isWarning = false;
+        element.variant = 'shaded';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('slds-has-warning');
+            expect(element.classList).not.toContain('slds-has-warning-shaded');
+        });
+    });
+
+    it('Primitive progress step: isWarning = true', () => {
+        element.isWarning = true;
+        element.popoverIconName = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).toContain('slds-has-warning');
+            expect(element.classList).not.toContain('slds-has-warning-shaded');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.classList).toContain(
+                'avonni-progress-step__button_warning'
+            );
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-step"]'
+            );
+            expect(icon).toBeTruthy();
+            expect(icon.iconName).toBe('utility:warning');
+        });
+    });
+
+    it('Primitive progress step: isWarning = true, shaded variant', () => {
+        element.isWarning = true;
+        element.variant = 'shaded';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('slds-has-warning');
+            expect(element.classList).toContain('slds-has-warning-shaded');
         });
     });
 
@@ -556,21 +737,6 @@ describe('PrimitiveProgressStep', () => {
             expect(popover.classList).toContain(
                 'avonni-progress-step__popover-button'
             );
-        });
-    });
-
-    // waring-steps
-    // Depends on value and setIcon
-    it('Primitive progress step: warningSteps', () => {
-        element.warningSteps = ['2', '3', '12'];
-        element.value = '3';
-        element.setIcon('utility:apps');
-
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-step"]'
-            );
-            expect(icon.variant).toBe('warning');
         });
     });
 

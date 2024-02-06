@@ -103,8 +103,7 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      * @public
      */
-    @api
-    messageWhenRangeOverflow;
+    @api messageWhenRangeOverflow;
 
     /**
      * Error message to be displayed when a range underflow is detected.
@@ -112,8 +111,7 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      * @public
      */
-    @api
-    messageWhenRangeUnderflow;
+    @api messageWhenRangeUnderflow;
 
     /**
      * Error message to be displayed when the value is missing and input is required.
