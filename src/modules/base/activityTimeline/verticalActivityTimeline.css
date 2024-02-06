@@ -50,8 +50,7 @@
         --avonni-activity-timeline-show-more-button-neutral-spacing-inline-start
     );
     --slds-c-button-neutral-color-background: var(
-        --avonni-activity-timeline-show-more-button-neutral-color-background,
-        red
+        --avonni-activity-timeline-show-more-button-neutral-color-background
     );
     --slds-c-button-neutral-color-background-active: var(
         --avonni-activity-timeline-show-more-button-neutral-color-background-active
