@@ -1,25 +1,31 @@
 <template>
     <lightning-layout if:true={showPositionTop}>
         <lightning-layout-item size="12" class="slds-text-align_center">
-            <span
-                if:true={showPositionTopLeft}
-                class="avonni-progress-bar__value_font"
-                aria-hidden="true"
-            >
-                {valueToDisplay}
-            </span>
-            <span
-                if:true={label}
-                class="slds-p-right_xx-small slds-p-left_xx-small"
-                >{label}</span
-            >
-            <span
-                if:true={showPositionTopRight}
-                class="avonni-progress-bar__value_font"
-                aria-hidden="true"
-            >
-                {valueToDisplay}
-            </span>
+            <div class="avonni-progress-bar__vertical-bar_top-container">
+                <span
+                    if:true={showPositionTopLeft}
+                    class="avonni-progress-bar__value_font"
+                    aria-hidden="true"
+                >
+                    {valueToDisplay}
+                </span>
+                <span
+                    if:true={label}
+                    class="
+                        avonni-progress-bar__label_font
+                        slds-p-right_xx-small
+                        slds-p-left_xx-small
+                    "
+                    >{label}</span
+                >
+                <span
+                    if:true={showPositionTopRight}
+                    class="avonni-progress-bar__value_font"
+                    aria-hidden="true"
+                >
+                    {valueToDisplay}
+                </span>
+            </div>
         </lightning-layout-item>
     </lightning-layout>
     <div class={computedSizing}>
