@@ -740,7 +740,11 @@ export default class AvatarGroup extends LightningElement {
      * @type {boolean}
      */
     get showLoadingSpinner() {
-        return this.isLoading && (!this.showMoreButton || this.isNotList);
+        return (
+            this.isLoading &&
+            (!this.showMoreButton || this.isNotList) &&
+            !this.maxCount
+        );
     }
 
     /**
