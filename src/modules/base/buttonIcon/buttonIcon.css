@@ -1,8 +1,9 @@
 .avonni-button-icon {
-    line-height: var(--avonni-button-icon-line-height, 1rem);
+    line-height: var(--avonni-button-icon-line-height, 0);
     border-radius: var(--avonni-button-icon-radius-border, 0.25rem);
     border-width: var(--avonni-button-icon-sizing-border, 1px);
     border-style: var(--avonni-button-icon-styling-border, solid);
+    vertical-align: middle;
 }
 
 .avonni-button-icon_medium {
