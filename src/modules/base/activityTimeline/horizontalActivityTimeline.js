@@ -29,6 +29,7 @@ const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_AXIS_RECTANGLES_G_ID =
     'avonni-horizontal-activity-timeline__scroll-axis-rectangles';
+const SCROLL_ITEM_RECTANGLE_HEIGHT = 3;
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
 const SPACE_BETWEEN_ICON_AND_TEXT = 5;
 const SVG_ICON_SIZE = 25;
@@ -56,6 +57,8 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_BORDER_ITEMS_SCROLL = 6;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
+
+const BORDER_ITEM_HEIGHT = SVG_ICON_SIZE + AVATAR_MARGIN * 2;
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -465,7 +468,7 @@ export class HorizontalActivityTimeline {
             )
             .attr('y', (item) => item.yPosition)
             .attr('width', SCROLL_ITEM_RECTANGLE_WIDTH)
-            .attr('height', 3)
+            .attr('height', SCROLL_ITEM_RECTANGLE_HEIGHT)
             .attr('fill', TIMELINE_COLORS.scrollAxisItemRect);
     }
 
@@ -642,21 +645,23 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Return the height and the width of the item depending of the end date.
+     * Return the height and the width of the bordered item.
      *
      * @return {Object}
      */
-    computedItemSize(itemGroup, startDate, endDate) {
-        const bbox = itemGroup.node().getBBox();
-        const width = endDate
-            ? this.viewTimeScale(new Date(endDate)) -
-              this.viewTimeScale(new Date(startDate)) -
-              AVATAR_MARGIN
-            : 0;
-        return {
-            width,
-            height: bbox.height
-        };
+    computedBorderItemSize(item) {
+        let width = 0;
+        let height = 0;
+        if (item) {
+            height = this.hasBorder(item) ? BORDER_ITEM_HEIGHT : SVG_ICON_SIZE;
+            if (item.datetimeValue && item.endDate) {
+                width =
+                    this.viewTimeScale(new Date(item.endDate)) -
+                    this.viewTimeScale(new Date(item.datetimeValue)) -
+                    AVATAR_MARGIN;
+            }
+        }
+        return { width, height };
     }
 
     /**
@@ -777,14 +782,8 @@ export class HorizontalActivityTimeline {
 
         let labelMaxLength = MAX_LENGTH_TITLE_ITEM;
         if (itemRect) {
-            const { width, height } = this.computedItemSize(
-                itemGroup,
-                item.datetimeValue,
-                item.endDate
-            );
-            itemRect
-                .attr('width', width)
-                .attr('height', height + AVATAR_MARGIN * 2);
+            const { width, height } = this.computedBorderItemSize(item);
+            itemRect.attr('width', width).attr('height', height);
             const dx = SVG_ICON_SIZE + SPACE_BETWEEN_ICON_AND_TEXT;
             labelMaxLength =
                 width > dx ? ((width - dx) / DEFAULT_LABEL_FONT_SIZE) * 2 : 0;
@@ -931,7 +930,7 @@ export class HorizontalActivityTimeline {
                 'avonni-horizontal-activity-timeline__timeline-axis-svg'
             )
             .attr('width', this._timelineWidth + BORDER_OFFSET)
-            .attr('height', 25)
+            .attr('height', SVG_ICON_SIZE)
             .attr('transform', 'translate(0 ,0)');
 
         // Add upper and lower line of timeline axis
@@ -1741,13 +1740,20 @@ export class HorizontalActivityTimeline {
             );
             if (foundElements && foundElements.length > 0) {
                 // Add vertical gap between each element
-                foundElements.forEach((element) => {
+                foundElements.forEach((element, elementIndex) => {
                     if (item.yPosition >= element.yPosition) {
                         element.yPosition = item.yPosition;
                         if (this.hasBorder(item)) {
                             element.yPosition += yGapBetweenBorderItems;
                         } else {
-                            element.yPosition += yGapBetweenItems;
+                            if (this.hasBorder(element) && elementIndex === 0) {
+                                element.yPosition +=
+                                    SVG_ICON_SIZE +
+                                    (yGapBetweenBorderItems -
+                                        BORDER_ITEM_HEIGHT);
+                            } else {
+                                element.yPosition += yGapBetweenItems;
+                            }
                         }
                     }
                 });
