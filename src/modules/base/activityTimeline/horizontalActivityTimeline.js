@@ -802,11 +802,12 @@ export class HorizontalActivityTimeline {
             .attr('y', yPosition);
 
         const iconInformation = this.setIconInformation(avatar);
-        let propertyName = avatar.src
-            ? 'src'
-            : avatar.initials
-            ? 'initials'
-            : 'svg';
+        let propertyName = 'svg';
+        if (avatar?.src) {
+            propertyName = 'src';
+        } else if (avatar?.initials) {
+            propertyName = 'initials';
+        }
         const iconSVG = createAvatar(
             propertyName,
             iconInformation,
