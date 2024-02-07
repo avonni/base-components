@@ -52,7 +52,6 @@ const BOXES_SIZES = {
 const i18n = {
     optionLockAssistiveText: 'Option Lock AssistiveText',
     required: 'Required',
-    requiredError: 'Value required',
     loadingText: 'Loading'
 };
 
@@ -99,13 +98,29 @@ export default class DualListbox extends LightningElement {
     @api label;
 
     /**
+     * Error message to be displayed when a range overflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenRangeOverflow;
+
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenRangeUnderflow;
+
+    /**
      * Error message to be displayed when the value is missing and input is required.
      *
      * @type {string}
      * @public
      */
     @api
-    messageWhenValueMissing = i18n.requiredError;
+    messageWhenValueMissing;
 
     /**
      * Specifies the name of an input element.
@@ -533,36 +548,6 @@ export default class DualListbox extends LightningElement {
         if (this._connected) {
             this.updateBoxesHeight();
         }
-    }
-
-    /**
-     * Error message to be displayed when a range overflow is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get messageWhenRangeOverflow() {
-        return this._messageWhenRangeOverflow;
-    }
-
-    set messageWhenRangeOverflow(message) {
-        this._messageWhenRangeOverflow = message;
-    }
-
-    /**
-     * Error message to be displayed when a range underflow is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get messageWhenRangeUnderflow() {
-        return this._messageWhenRangeUnderflow;
-    }
-
-    set messageWhenRangeUnderflow(message) {
-        this._messageWhenRangeUnderflow = message;
     }
 
     /**
@@ -1082,6 +1067,18 @@ export default class DualListbox extends LightningElement {
             firstOption.focus();
             this.updateSelectedOptions(firstOption, true, false);
         }
+    }
+
+    /**
+     * Retrieve the current error message. If it is null than the input is valid.
+     *
+     * @returns {string} Current input error message.
+     * @public
+     */
+    @api
+    getErrorMessage() {
+        this.reportValidity();
+        return this.errorMessage;
     }
 
     /**

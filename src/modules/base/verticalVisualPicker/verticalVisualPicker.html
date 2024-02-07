@@ -57,7 +57,12 @@
                             onchange={handleChange}
                             onkeyup={handleKeyUp}
                         />
-                        <label for={item.computedValue} data-element-id="label">
+                        <label
+                            for={item.computedValue}
+                            data-element-id="label"
+                            onmouseenter={handleMouseEnter}
+                            onmouseleave={handleMouseLeave}
+                        >
                             <span class={verticalVisualPickerTypeClass}>
                                 <template if:false={hideCheckMark}>
                                     <span
@@ -199,7 +204,12 @@
                     <!-- Show more button -->
                     <lightning-button
                         if:true={showMoreButton}
-                        class="slds-m-top_small slds-m-bottom_small slds-show"
+                        class="
+                            slds-m-top_small
+                            slds-m-bottom_small
+                            slds-show
+                            avonni-vertical-visual-picker__show-more-button
+                        "
                         disabled={isLoading}
                         icon-name={currentShowButtonIconName}
                         label={currentShowButtonLabel}
@@ -210,7 +220,7 @@
             </div>
         </fieldset>
         <div
-            if:false={valid}
+            if:true={helpMessage}
             id="help-message"
             class="slds-form-element__help"
             data-element-id="div-help-message"

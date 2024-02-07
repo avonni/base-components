@@ -2,6 +2,7 @@ import { api, track } from 'lwc';
 import {
     addToDate,
     deepCopy,
+    equal,
     normalizeArray,
     normalizeString
 } from 'c/utilsPrivate';
@@ -15,6 +16,7 @@ import {
 } from './defaults';
 import SchedulerResource from './resource';
 import {
+    DEFAULT_ACTION_NAMES,
     getElementOnXAxis,
     getElementOnYAxis,
     ScheduleBase,
@@ -207,9 +209,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return super.timeSpan;
     }
     set timeSpan(value) {
+        const previousTimeSpan = deepCopy(this.timeSpan);
         super.timeSpan = value;
 
-        if (this._connected) {
+        if (this._connected && !equal(previousTimeSpan, this.timeSpan)) {
             this.initHeaders();
         }
     }
@@ -1093,7 +1096,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @param {Event} event `mousedown` event fired by an empty cell or a disabled primitive event occurrence.
      */
     handleMouseDown(event) {
-        if (event.button || this.readOnly) {
+        if (
+            event.button ||
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add)
+        ) {
             return;
         }
 
@@ -1158,9 +1165,15 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             this._eventData.handleMouseUp(x, y);
 
         switch (eventToDispatch) {
-            case 'edit':
-                this.dispatchOpenEditDialog(this._eventData.selection);
+            case 'edit': {
+                const prevented = this.dispatchOpenEditDialog(
+                    this._eventData.selection
+                );
+                if (prevented) {
+                    this._eventData.cleanSelection(true);
+                }
                 break;
+            }
             case 'recurrence':
                 this.dispatchOpenRecurrenceDialog();
                 break;

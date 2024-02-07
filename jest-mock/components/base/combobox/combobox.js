@@ -18,8 +18,12 @@ export default class Combobox extends LightningElement {
     @api label;
     @api loadingStateAlternativeText;
     @api loadMoreOffset;
+    @api max;
     @api messageWhenBadInput;
+    @api messageWhenRangeOverflow;
+    @api messageWhenRangeUnderflow;
     @api messageWhenValueMissing;
+    @api min;
     @api multiLevelGroups;
     @api name;
     @api options;

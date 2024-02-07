@@ -19,7 +19,7 @@ export const Scheduler = ({
     eventsPalette,
     eventsDisplayFields,
     eventsTheme,
-    toolbarActions,
+    hiddenActions,
     hiddenDisplays,
     hideResourcesFilter,
     hideSidePanel,
@@ -37,6 +37,7 @@ export const Scheduler = ({
     start,
     timeSpans,
     timezone,
+    toolbarActions,
     variant,
     zoomToFit
 }) => {
@@ -57,7 +58,7 @@ export const Scheduler = ({
     element.eventsPalette = eventsPalette;
     element.eventsDisplayFields = eventsDisplayFields;
     element.eventsTheme = eventsTheme;
-    element.toolbarActions = toolbarActions;
+    element.hiddenActions = hiddenActions;
     element.hiddenDisplays = hiddenDisplays;
     element.hideResourcesFilter = hideResourcesFilter;
     element.hideSidePanel = hideSidePanel;
@@ -75,6 +76,7 @@ export const Scheduler = ({
     element.start = start;
     element.timeSpans = timeSpans;
     element.timezone = timezone;
+    element.toolbarActions = toolbarActions;
     element.variant = variant;
     element.zoomToFit = zoomToFit;
     return element;

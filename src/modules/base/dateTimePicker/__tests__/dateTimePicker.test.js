@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import DateTimePicker from 'c/dateTimePicker';
+import { callObserver } from 'c/resizeObserver';
 
 // Not tested
 // validity
@@ -26,40 +27,278 @@ describe('DateTimePicker', () => {
     });
 
     it('Date time picker: default attributes', () => {
-        expect(element.disabled).toBeFalsy();
-        expect(element.fieldLevelHelp).toBeUndefined();
-        expect(element.label).toBeUndefined();
-        expect(element.hideLabel).toBeFalsy();
-        expect(element.variant).toBe('daily');
-        expect(element.messageWhenValueMissing).toBeUndefined();
-        expect(element.name).toBeUndefined();
-        expect(element.readOnly).toBeFalsy();
-        expect(element.required).toBeFalsy();
-        expect(element.validity).toMatchObject({});
-        expect(element.value).toBeUndefined();
-        expect(element.startTime).toBe('08:00');
-        expect(element.endTime).toBe('18:00');
-        expect(element.timeSlotDuration).toBe(1800000);
-        expect(element.timeFormatHour).toBe('numeric');
-        expect(element.timeFormatHour12).toBeUndefined();
-        expect(element.timeFormatMinute).toBe('2-digit');
-        expect(element.timeFormatSecond).toBeUndefined();
+        expect(element.avatar).toEqual({});
         expect(element.dateFormatDay).toBe('numeric');
         expect(element.dateFormatMonth).toBe('long');
         expect(element.dateFormatWeekday).toBe('short');
         expect(element.dateFormatYear).toBeUndefined();
-        expect(element.showEndTime).toBeUndefined();
-        expect(element.showDisabledDates).toBeUndefined();
+        expect(element.datePickerVariant).toBe('input');
+        expect(element.disabled).toBeFalsy();
         expect(element.disabledDateTimes).toMatchObject([]);
-        expect(element.max).toBe('2099-12-31');
-        expect(element.min).toBe('1900-01-01');
-        expect(element.type).toBe('radio');
-        expect(element.showTimeZone).toBeFalsy();
-        expect(element.hideNavigation).toBeFalsy();
+        expect(element.endTime).toBe('18:00');
+        expect(element.fieldLevelHelp).toBeUndefined();
+        expect(element.hideDateLabel).toBeFalsy();
         expect(element.hideDatePicker).toBeFalsy();
+        expect(element.hideLabel).toBeFalsy();
+        expect(element.hideNavigation).toBeFalsy();
+        expect(element.label).toBeUndefined();
+        expect(element.max).toBe('2099-12-31');
+        expect(element.messageWhenValueMissing).toBeUndefined();
+        expect(element.min).toBe('1900-01-01');
+        expect(element.name).toBeUndefined();
+        expect(element.readOnly).toBeFalsy();
+        expect(element.required).toBeFalsy();
+        expect(element.showDisabledDates).toBeUndefined();
+        expect(element.showEndTime).toBeUndefined();
+        expect(element.showTimeZone).toBeFalsy();
+        expect(element.startTime).toBe('08:00');
+        expect(element.timeFormatHour).toBe('numeric');
+        expect(element.timeFormatHour12).toBeUndefined();
+        expect(element.timeFormatMinute).toBe('2-digit');
+        expect(element.timeFormatSecond).toBeUndefined();
+        expect(element.timeSlotDuration).toBe(1800000);
+        expect(element.type).toBe('radio');
+        expect(element.validity).toMatchObject({});
+        expect(element.value).toBeUndefined();
+        expect(element.variant).toBe('daily');
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
+
+    // avatar
+    it('Date time picker: avatar', () => {
+        element.avatar = { fallbackIconName: 'standard:apps' };
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-avatar"]'
+            );
+            expect(avatar).toBeTruthy();
+            expect(avatar.fallbackIconName).toBe('standard:apps');
+        });
+    });
+
+    // date-format-day
+    it('Date time picker: date format day', () => {
+        element.dateFormatDay = '2-digit';
+        element.value = new Date(2024, 0, 2);
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            expect(label.textContent).toContain('02');
+        });
+    });
+
+    // date-format-month
+    it('Date time picker: date format month', () => {
+        element.dateFormatMonth = '2-digit';
+        element.value = new Date(2024, 0, 2);
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            expect(label.textContent).toContain('01');
+        });
+    });
+
+    // date-format-year
+    it('Date time picker: date format year', () => {
+        element.dateFormatYear = '2-digit';
+        element.value = new Date(2024, 0, 2);
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            expect(label.textContent).toContain('24');
+            expect(label.textContent).not.toContain('2024');
+        });
+    });
+
+    // date-picker-variant
+    describe('Date picker variant', () => {
+        it('input', () => {
+            element.datePickerVariant = 'input';
+
+            return Promise.resolve().then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(input).toBeTruthy();
+
+                const inline = element.shadowRoot.querySelector(
+                    '[data-element-id="div-inline-date-picker"]'
+                );
+                expect(inline).toBeFalsy();
+            });
+        });
+
+        describe('inline', () => {
+            it('Display is updated', () => {
+                element.datePickerVariant = 'inline';
+                element.value = '2023-04-14';
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    expect(input).toBeFalsy();
+
+                    const inline = element.shadowRoot.querySelector(
+                        '[data-element-id="div-inline-date-picker"]'
+                    );
+                    expect(inline).toBeTruthy();
+
+                    const labels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-layout-item-inline-date-picker-weekday-label"]'
+                    );
+                    expect(labels).toHaveLength(7);
+
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="button-inline-date-picker"]'
+                    );
+                    expect(buttons).toHaveLength(7);
+                    expect(buttons[0].textContent).toBe('9April');
+                });
+            });
+
+            it('Drag to the right', () => {
+                element.datePickerVariant = 'inline';
+                element.value = '2023-04-14';
+                jest.useFakeTimers();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const sunday = new Date(2023, 3, 9).getTime();
+                        const sundayButton = element.shadowRoot.querySelector(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(Number(sundayButton.dataset.date)).toBe(sunday);
+
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-inline-date-picker-wrapper"]'
+                        );
+                        const startEvent = new CustomEvent('touchstart');
+                        startEvent.changedTouches = [{ clientX: 0 }];
+                        wrapper.dispatchEvent(startEvent);
+
+                        const moveEvent = new CustomEvent('touchmove');
+                        moveEvent.changedTouches = [{ clientX: 100 }];
+                        window.dispatchEvent(moveEvent);
+
+                        const pickerDates = element.shadowRoot.querySelector(
+                            '[data-element-id="div-inline-date-picker"]'
+                        );
+                        expect(pickerDates.style.transform).toBe(
+                            'translateX(25px)'
+                        );
+
+                        const endEvent = new CustomEvent('touchend');
+                        endEvent.changedTouches = [{ clientX: 100 }];
+                        window.dispatchEvent(endEvent);
+                    })
+                    .then(() => {
+                        const sunday = new Date(2023, 3, 2).getTime();
+                        const sundayButton = element.shadowRoot.querySelector(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(Number(sundayButton.dataset.date)).toBe(sunday);
+
+                        jest.runAllTimers();
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-inline-date-picker-wrapper"]'
+                        );
+                        expect(wrapper.style.transform).toBeFalsy();
+                    });
+            });
+
+            it('Drag to the left', () => {
+                element.datePickerVariant = 'inline';
+                element.value = '2023-04-14';
+                jest.useFakeTimers();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const sunday = new Date(2023, 3, 9).getTime();
+                        const sundayButton = element.shadowRoot.querySelector(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(Number(sundayButton.dataset.date)).toBe(sunday);
+
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-inline-date-picker-wrapper"]'
+                        );
+                        const startEvent = new CustomEvent('touchstart');
+                        startEvent.changedTouches = [{ clientX: 0 }];
+                        wrapper.dispatchEvent(startEvent);
+
+                        const moveEvent = new CustomEvent('touchmove');
+                        moveEvent.changedTouches = [{ clientX: -32 }];
+                        window.dispatchEvent(moveEvent);
+
+                        const pickerDates = element.shadowRoot.querySelector(
+                            '[data-element-id="div-inline-date-picker"]'
+                        );
+                        expect(pickerDates.style.transform).toBe(
+                            'translateX(-25px)'
+                        );
+
+                        const endEvent = new CustomEvent('touchend');
+                        endEvent.changedTouches = [{ clientX: -35 }];
+                        window.dispatchEvent(endEvent);
+                    })
+                    .then(() => {
+                        const sunday = new Date(2023, 3, 16).getTime();
+                        const sundayButton = element.shadowRoot.querySelector(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(Number(sundayButton.dataset.date)).toBe(sunday);
+
+                        jest.runAllTimers();
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-inline-date-picker-wrapper"]'
+                        );
+                        expect(wrapper.style.transform).toBeFalsy();
+                    });
+            });
+
+            it('Number of visible dates is updated on resize', () => {
+                element.datePickerVariant = 'inline';
+                element.variant = 'weekly';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const buttons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(buttons).toHaveLength(7);
+                        const datePickerWrapper =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="div-inline-date-picker-wrapper"]'
+                            );
+                        jest.spyOn(
+                            datePickerWrapper,
+                            'offsetWidth',
+                            'get'
+                        ).mockReturnValue(300);
+                        callObserver();
+                    })
+                    .then(() => {
+                        const buttons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(buttons).toHaveLength(5);
+                    });
+            });
+        });
+    });
 
     // disabled
     it('Date time picker: disabled daily', () => {
@@ -73,7 +312,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -91,7 +330,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -109,7 +348,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -127,7 +366,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -143,7 +382,7 @@ describe('DateTimePicker', () => {
             );
             expect(paragraph).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
             const calendar = element.shadowRoot.querySelector(
@@ -279,11 +518,11 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelectorAll(
-                '.avonni-date-time-picker__day'
+                '[data-element-id="div-day"]'
             );
             expect(days).toHaveLength(1);
         });
@@ -298,11 +537,11 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelectorAll(
-                '.avonni-date-time-picker__day'
+                '[data-element-id="div-day"]'
             );
             expect(days).toHaveLength(7);
         });
@@ -317,11 +556,11 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelectorAll(
-                '.avonni-date-time-picker__day_inline'
+                '[data-element-id="div-day"]'
             );
             expect(days).toHaveLength(1);
         });
@@ -336,7 +575,7 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time-timeline"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelector(
@@ -359,7 +598,7 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeTruthy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelector(
@@ -773,6 +1012,29 @@ describe('DateTimePicker', () => {
         });
     });
 
+    // hide date label
+    it('Date time picker: hideDateLabel = false', () => {
+        element.hideDateLabel = false;
+
+        return Promise.resolve().then(() => {
+            const dateLabel = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            expect(dateLabel).toBeTruthy();
+        });
+    });
+
+    it('Date time picker: hideDateLabel = true', () => {
+        element.hideDateLabel = true;
+
+        return Promise.resolve().then(() => {
+            const dateLabel = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            expect(dateLabel).toBeFalsy();
+        });
+    });
+
     // hide date picker
     it('Date time picker: hide date picker', () => {
         element.hideDatePicker = true;
@@ -890,40 +1152,185 @@ describe('DateTimePicker', () => {
         expect(spy).toHaveBeenCalled();
     });
 
-    /* ----- EVENTS ----- */
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
 
     describe('Events', () => {
-        // date time picker change
-        it('change', () => {
-            element.startTime = '08:30';
-            const startTimeDate = new Date(`1970-01-01T08:30`);
-            const now = new Date();
-            const day = now.getDate();
-            const month = now.getMonth();
-            const year = now.getFullYear();
-            const handler = jest.fn();
-            element.addEventListener('change', handler);
+        // change
+        describe('change', () => {
+            it('Select a time', () => {
+                element.startTime = '08:30';
+                const startTimeDate = new Date(`1970-01-01T08:30`);
+                const now = new Date();
+                const day = now.getDate();
+                const month = now.getMonth();
+                const year = now.getFullYear();
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
 
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="button-default"]'
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="button-default"]'
+                    );
+                    button[0].click();
+                    const date = new Date(
+                        handler.mock.calls[0][0].detail.value
+                    );
+                    const eventDay = date.getDate();
+                    const eventMonth = date.getMonth();
+                    const eventYear = date.getFullYear();
+                    const eventHour = date.getHours();
+                    const eventMinutes = date.getMinutes();
+                    expect(handler).toHaveBeenCalled();
+                    expect(eventDay).toBe(day);
+                    expect(eventMonth).toBe(month);
+                    expect(eventYear).toBe(year);
+                    expect(eventHour).toBe(startTimeDate.getHours());
+                    expect(eventMinutes).toBe(startTimeDate.getMinutes());
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                });
+            });
+
+            it('Select a date through inline date picker', () => {
+                element.startTime = '08:30';
+                element.value = '2023-04-15T09:00';
+                element.datePickerVariant = 'inline';
+
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const datePickerButtons =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="button-inline-date-picker"]'
+                            );
+                        datePickerButtons[3].click();
+                    })
+                    .then(() => {
+                        const button = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-default"]'
+                        );
+                        button[0].click();
+
+                        expect(handler).toHaveBeenCalled();
+                        const value = handler.mock.calls[0][0].detail.value;
+                        const expectedDate = new Date(
+                            '2023-04-12T08:30'
+                        ).toISOString();
+                        const receivedDate = new Date(value).toISOString();
+                        expect(receivedDate).toEqual(expectedDate);
+                    });
+            });
+        });
+
+        // Connected and disconnected events
+        describe('Connected and disconnected', () => {
+            it('privatedatetimepickerconnected', () => {
+                while (document.body.firstChild) {
+                    document.body.removeChild(document.body.firstChild);
+                }
+                element = createElement('avonni-date-time-picker', {
+                    is: DateTimePicker
+                });
+                const handler = jest.fn();
+                element.addEventListener(
+                    'privatedatetimepickerconnected',
+                    handler
                 );
-                button[0].click();
-                const date = new Date(handler.mock.calls[0][0].detail.value);
-                const eventDay = date.getDate();
-                const eventMonth = date.getMonth();
-                const eventYear = date.getFullYear();
-                const eventHour = date.getHours();
-                const eventMinutes = date.getMinutes();
+                document.body.appendChild(element);
+
                 expect(handler).toHaveBeenCalled();
-                expect(eventDay).toBe(day);
-                expect(eventMonth).toBe(month);
-                expect(eventYear).toBe(year);
-                expect(eventHour).toBe(startTimeDate.getHours());
-                expect(eventMinutes).toBe(startTimeDate.getMinutes());
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeTruthy();
+                expect(call.composed).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
+                expect(
+                    call.detail.callbacks.updateInlineDatePickerMaxVisibleDays
+                ).toBeInstanceOf(Function);
+                expect(
+                    call.detail.callbacks.setIsResizedByParent
+                ).toBeInstanceOf(Function);
+            });
+
+            it('Resize can be managed by the parent', () => {
+                while (document.body.firstChild) {
+                    document.body.removeChild(document.body.firstChild);
+                }
+                element = createElement('avonni-date-time-picker', {
+                    is: DateTimePicker
+                });
+                const handler = jest.fn();
+                element.addEventListener(
+                    'privatedatetimepickerconnected',
+                    handler
+                );
+                document.body.appendChild(element);
+
+                element.datePickerVariant = 'inline';
+                element.variant = 'weekly';
+
+                expect(handler).toHaveBeenCalled();
+                const {
+                    updateInlineDatePickerMaxVisibleDays,
+                    setIsResizedByParent
+                } = handler.mock.calls[0][0].detail.callbacks;
+                setIsResizedByParent(true);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const buttons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(buttons).toHaveLength(7);
+                        const datePickerWrapper =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="div-inline-date-picker-wrapper"]'
+                            );
+                        jest.spyOn(
+                            datePickerWrapper,
+                            'offsetWidth',
+                            'get'
+                        ).mockReturnValue(300);
+                        callObserver();
+                    })
+                    .then(() => {
+                        // The default resize should have been ignored
+                        const buttons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(buttons).toHaveLength(7);
+
+                        // Trigger the resize
+                        updateInlineDatePickerMaxVisibleDays();
+                    })
+                    .then(() => {
+                        const buttons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(buttons).toHaveLength(5);
+                    });
+            });
+
+            it('privatedatetimepickerdisconnected', () => {
+                const handler = jest.fn();
+                element.addEventListener(
+                    'privatedatetimepickerdisconnected',
+                    handler
+                );
+                while (document.body.firstChild) {
+                    document.body.removeChild(document.body.firstChild);
+                }
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeTruthy();
+                expect(call.composed).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
             });
         });
 
@@ -957,6 +1364,70 @@ describe('DateTimePicker', () => {
                     expect(handler).toHaveBeenCalled();
                     const date = new Date(handler.mock.calls[0][0].detail.date);
                     expect(date).toEqual(new Date('2023-12-12'));
+                });
+            });
+
+            it('Fired on date picker navigation', () => {
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                const datePicker = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                datePicker.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: '2023-12-12'
+                        }
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                expect(new Date(handler.mock.calls[0][0].detail.date)).toEqual(
+                    new Date(2023, 11, 12)
+                );
+            });
+
+            it('Fired on monthly calendar navigation', () => {
+                element.variant = 'monthly';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('navigate', {
+                            detail: {
+                                date: new Date(2023, 11, 12).toISOString()
+                            }
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(
+                        new Date(handler.mock.calls[0][0].detail.date)
+                    ).toEqual(new Date(2023, 11, 12));
+                });
+            });
+
+            it('Fired on today click', () => {
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-today"]'
+                    );
+                    button.click();
+
+                    expect(handler).toHaveBeenCalled();
+                    const date = new Date(handler.mock.calls[0][0].detail.date);
+                    const today = new Date();
+                    expect(date.getMonth()).toEqual(today.getMonth());
+                    expect(date.getDate()).toEqual(today.getDate());
+                    expect(date.getYear()).toEqual(today.getYear());
                 });
             });
         });

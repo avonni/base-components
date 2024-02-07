@@ -8,7 +8,7 @@ export default class ActivityTimelineYearly extends LightningElement {
             description: 'You created a task with Charlie Gomez',
             datetimeValue: '01/01/2022',
             href: 'salesforce.com',
-            iconName: 'standard:task',
+            avatar: 'standard:task',
             icons: ['utility:refresh'],
             hasCheckbox: true,
             fields: [
@@ -41,7 +41,7 @@ export default class ActivityTimelineYearly extends LightningElement {
             description: 'You logged a call with Adam Chan',
             href: '#',
             datetimeValue: new Date(),
-            iconName: 'standard:log_a_call',
+            avatar: 'standard:log_a_call',
             fields: [
                 {
                     label: 'Name',
@@ -72,7 +72,7 @@ export default class ActivityTimelineYearly extends LightningElement {
             description: 'You emailed Lea Chan',
             datetimeValue: '02/20/2023 08:00',
             href: '#',
-            iconName: 'standard:email',
+            avatar: 'standard:email',
             icons: ['utility:groups', 'utility:attach'],
             fields: [
                 {
@@ -107,7 +107,7 @@ export default class ActivityTimelineYearly extends LightningElement {
             icons: ['utility:world'],
             datetimeValue: '04/21/2021 8:00',
             href: '#',
-            iconName: 'standard:event',
+            avatar: 'standard:event',
             fields: [
                 {
                     label: 'Location',
@@ -149,7 +149,7 @@ export default class ActivityTimelineYearly extends LightningElement {
             description: 'Fields are loading',
             datetimeValue: '05/21/2021 10:00',
             href: '#',
-            iconName: 'standard:dashboard',
+            avatar: 'standard:dashboard',
             loadingStateAlternativeText: 'Is Loading',
             hasCheckbox: true,
             isLoading: true,
@@ -161,7 +161,7 @@ export default class ActivityTimelineYearly extends LightningElement {
             title: 'Create another task',
             datetimeValue: '05/21/2022 11:30',
             href: '#',
-            iconName: 'standard:case',
+            avatar: 'standard:case',
             hasCheckbox: true,
             hasError: true
         }

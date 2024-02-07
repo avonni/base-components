@@ -11,6 +11,7 @@ import {
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
 import {
+    DEFAULT_ACTION_NAMES,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
@@ -51,6 +52,7 @@ export class ScheduleBase extends LightningElement {
     _events = [];
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsTheme = EVENTS_THEMES.default;
+    _hiddenActions = [];
     _newEventTitle = DEFAULT_NEW_EVENT_TITLE;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
@@ -276,6 +278,21 @@ export class ScheduleBase extends LightningElement {
             this._eventData.eventsTheme = this._eventsTheme;
             this._eventData.updateAllEventsDefaults();
         }
+    }
+
+    /**
+     * Array of default action names that are not allowed. These actions will be hidden from the menus, and ignored when triggered by a user action (double click, drag, etc.).
+     * Valid values include `Standard.Scheduler.AddEvent`, `Standard.Scheduler.DeleteEvent` and `Standard.Scheduler.EditEvent`.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get hiddenActions() {
+        return this._hiddenActions;
+    }
+    set hiddenActions(value) {
+        this._hiddenActions = normalizeArray(value, 'string');
     }
 
     /**
@@ -968,7 +985,10 @@ export class ScheduleBase extends LightningElement {
      * @param {Event} event
      */
     handleDoubleClick(event) {
-        if (this.readOnly) {
+        if (
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add)
+        ) {
             return;
         }
         const x = event.clientX;
@@ -1050,7 +1070,10 @@ export class ScheduleBase extends LightningElement {
      * @param {Event} event
      */
     handleEventDoubleClick(event) {
-        if (this.readOnly) {
+        if (
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
+        ) {
             return;
         }
         this._eventData.cleanSelection(true);
@@ -1353,21 +1376,24 @@ export class ScheduleBase extends LightningElement {
      * @param {Event} event
      */
     dispatchOpenEditDialog(selection) {
+        const openDialogEvent = new CustomEvent('openeditdialog', {
+            detail: {
+                selection
+            },
+            cancelable: true
+        });
         /**
          * The event fired when the edit dialog should be opened.
          *
          * @event
          * @name openeditdialog
-         * @param {object} selection Information about the selected event.
+         * @param {object} selection Object containing details on the new or existing event that the user wants to edit.
          * @public
+         * @cancelable
          */
-        this.dispatchEvent(
-            new CustomEvent('openeditdialog', {
-                detail: {
-                    selection
-                }
-            })
-        );
+        this.dispatchEvent(openDialogEvent);
+
+        return openDialogEvent.defaultPrevented;
     }
 
     /**
@@ -1381,7 +1407,7 @@ export class ScheduleBase extends LightningElement {
          *
          * @event
          * @name openrecurrencedialog
-         * @param {object} selection Information about the selected event.
+         * @param {object} selection Object containing details on the new or existing event that the user wants to edit.
          * @public
          */
         this.dispatchEvent(

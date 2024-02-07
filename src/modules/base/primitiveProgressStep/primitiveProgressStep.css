@@ -1,26 +1,115 @@
+:host {
+    --default-step-icon-background: var(--slds-g-color-brand-base-100, #ffffff);
+}
+
+:host(.avonni-progress-step__shaded) {
+    --default-step-icon-background: #f3f3f3;
+}
+
 :host(.slds-is-active) .avonni-progress-step__marker {
     width: 14px;
     height: 14px;
-    border: 3px solid #0176d3;
+    border: 3px solid
+        var(
+            --avonni-progress-indicator-step-icon-color-foreground-active,
+            var(--slds-g-color-brand-base-50, #0176d3)
+        );
     border-radius: 50%;
     margin: 1px;
-    background-color: #ffffff;
+    background-color: var(
+        --avonni-progress-indicator-step-icon-color-background-active,
+        var(--default-step-icon-background)
+    );
 }
 
 :host(.slds-is-active) .slds-progress__marker {
     border: none;
 }
 
-.slds-progress__marker_icon:focus,
+.avonni-progress-step__button:focus,
 .slds-progress__marker:focus {
     outline: none;
     box-shadow: #0176d3 0 0 0 2px !important;
 }
 
-.slds-progress__marker_icon {
+.avonni-progress-step__button {
     width: 16.5px;
     height: 16.5px;
     border: none;
+}
+
+/* 
+* We have to make the icon selectors very specific to avoid conflicts with slds-scope in Salesforce's flows previews.
+*/
+/* Completed icon */
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_completed,
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button.avonni-progress-step__button_completed {
+    background-color: var(
+        --avonni-progress-indicator-step-icon-color-background-completed,
+        var(--default-step-icon-background)
+    );
+    border: 2px solid
+        var(--avonni-progress-indicator-step-icon-color-border-completed);
+}
+
+.avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_completed
+    .avonni-progress-step__icon,
+.avonni-progress-step__button.avonni-progress-step__button_completed
+    .avonni-progress-step__icon {
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-progress-indicator-step-icon-color-foreground-completed,
+        var(--slds-g-color-brand-base-50, #1ab9ff)
+    );
+}
+
+/* Error icon */
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_error,
+.avonni-progress-step__outer-class
+    .avonni-progress-step__inner-class
+    .avonni-progress-step__button.avonni-progress-step__button_error {
+    background-color: var(
+        --avonni-progress-indicator-step-icon-color-background-error,
+        var(--default-step-icon-background)
+    );
+    border: 2px solid
+        var(--avonni-progress-indicator-step-icon-color-border-error);
+}
+
+.avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_error
+    .avonni-progress-step__icon,
+.avonni-progress-step__button.avonni-progress-step__button_error
+    .avonni-progress-step__icon {
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-progress-indicator-step-icon-color-foreground-error,
+        var(--slds-g-color-error-base-40, #ba0517)
+    );
+}
+
+/* Warning icon */
+.avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_warning,
+.avonni-progress-step__button.avonni-progress-step__button_warning {
+    background-color: var(
+        --avonni-progress-indicator-step-icon-color-background-warning,
+        var(--default-step-icon-background)
+    );
+    border: 2px solid
+        var(--avonni-progress-indicator-step-icon-color-border-warning);
+}
+
+.avonni-progress-step__button_shaded.avonni-progress-step__button.avonni-progress-step__button_warning
+    .avonni-progress-step__icon,
+.avonni-progress-step__button.avonni-progress-step__button_warning
+    .avonni-progress-step__icon {
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-progress-indicator-step-icon-color-foreground-warning,
+        var(--slds-g-color-warning-base-50, #fe9339)
+    );
 }
 
 .avonni-progress-step__icon_margin-bottom {
@@ -183,17 +272,9 @@
     outline: 0 !important;
 }
 
-:host(.slds-has-warning) .slds-button {
-    background-color: #ffffff;
-}
-
 :host(.slds-has-warning) .slds-button:hover,
 :host(.slds-has-warning) .slds-button:focus {
     color: #dd7a01;
-}
-
-:host(.slds-has-warning-shaded) .slds-button {
-    background-color: #f3f2f2;
 }
 
 :host(.slds-has-warning-shaded) .slds-button:hover,

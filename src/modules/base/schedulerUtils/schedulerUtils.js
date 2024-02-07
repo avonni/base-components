@@ -14,6 +14,7 @@ export {
     spansOnMoreThanOneDay
 } from './dateComputations';
 export { ScheduleBase } from './scheduleBase';
+export { DEFAULT_ACTION_NAMES } from './defaults';
 export {
     getElementOnXAxis,
     getElementOnYAxis,

@@ -22,7 +22,7 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <div if:false={isMultiSelect} class="slds-truncate">
+            <div if:false={isMultiSelect} class={computedWrapTextClass}>
                 <lightning-formatted-text
                     value={displayedValue}
                 ></lightning-formatted-text>

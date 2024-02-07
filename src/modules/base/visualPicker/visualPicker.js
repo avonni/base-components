@@ -116,6 +116,7 @@ const IMAGE_SIZE = {
     default: 'large'
 };
 
+const DEFAULT_MIN = 0;
 const DEFAULT_REQUIRED = false;
 const DEFAULT_DISABLED = false;
 const DEFAULT_HIDE_CHECK_MARK = false;
@@ -135,12 +136,29 @@ export default class VisualPicker extends LightningElement {
      */
     @api label;
     /**
-     * Error message to be displayed when no item is selected and the required attribute is set to true.
+     * Error message to be displayed when a range overflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api messageWhenValueMissing;
+    @api
+    messageWhenRangeOverflow;
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    messageWhenRangeUnderflow;
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    messageWhenValueMissing;
     /**
      * The name of the visual picker.
      *
@@ -161,6 +179,8 @@ export default class VisualPicker extends LightningElement {
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
     _imageAttributes = {};
     @track _items = [];
+    _max;
+    _min = DEFAULT_MIN;
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
     _size = VISUAL_PICKER_SIZES.default;
@@ -168,13 +188,13 @@ export default class VisualPicker extends LightningElement {
     _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
 
+    _cancelBlur = false;
     _connected = false;
     _computedItems = [];
     _columnSizes = {};
     _isFallbackLoadedMap = {};
     _resizeObserver;
-
-    helpMessage;
+    helpMessage = '';
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -393,6 +413,40 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Maximum number of selected items.
+     *
+     * @type {number}
+     * @default Infinity
+     * @public
+     */
+    @api
+    get max() {
+        return this._max;
+    }
+
+    set max(value) {
+        this._max = isNaN(parseInt(value, 10)) ? Infinity : parseInt(value, 10);
+    }
+
+    /**
+     * Minimum number of selected options required.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get min() {
+        return this._min;
+    }
+
+    set min(value) {
+        this._min = isNaN(parseInt(value, 10))
+            ? DEFAULT_MIN
+            : parseInt(value, 10);
+    }
+
+    /**
      * The ratio of the items. Valid values include 1-by-1, 4-by-3, 16-by-9, 3-by-4 and 9-by-16.
      *
      * @type {string}
@@ -559,7 +613,16 @@ export default class VisualPicker extends LightningElement {
                 value
             } = item;
             const key = `visual-picker-key-${index}`;
-            disabled = this._disabled ? true : disabled;
+            const maxReached =
+                this.type === 'checkbox' &&
+                this.max !== 1 &&
+                this.value.length >= this.max;
+            const isUnselectedOption =
+                this.type === 'checkbox' && !this.value.includes(value);
+            disabled =
+                this._disabled ||
+                disabled ||
+                (maxReached && isUnselectedOption);
 
             // Check management
             const checked = this._value.includes(value);
@@ -728,6 +791,8 @@ export default class VisualPicker extends LightningElement {
                 hasFields ||
                 (hasImg && !imgIsBackground);
 
+            const hasTitleOrDescription = itemTitle || itemDescription;
+
             return {
                 key,
                 itemTitle,
@@ -767,6 +832,7 @@ export default class VisualPicker extends LightningElement {
                 hasHiddenTags,
                 hasTags,
                 hasBodyContent,
+                hasTitleOrDescription,
                 layoutIsHorizontal,
                 computedBodyLayoutStyle,
                 computedImageLayoutStyle,
@@ -788,7 +854,7 @@ export default class VisualPicker extends LightningElement {
      * @type {string}
      */
     get visualPickerClass() {
-        return classSet('slds-visual-picker')
+        return classSet('slds-visual-picker slds-m-top_small')
             .add(`avonni-visual-picker_${this._size}`)
             .add(`ratio-${this._ratio}`)
             .add({ 'slds-m-around_none': this.isResponsive })
@@ -955,7 +1021,11 @@ export default class VisualPicker extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
+                    !this.disabled && this.required && this.value.length === 0,
+                rangeUnderflow: () =>
+                    this.type === 'checkbox' && this._value.length < this.min,
+                rangeOverflow: () =>
+                    this.type === 'checkbox' && this._value.length > this.max
             });
         }
         return this._constraintApi;
@@ -996,6 +1066,18 @@ export default class VisualPicker extends LightningElement {
     @api
     checkValidity() {
         return this._constraint.checkValidity();
+    }
+
+    /**
+     * Retrieve the current error message. If it is null than the input is valid.
+     *
+     * @returns {string} Current input error message.
+     * @public
+     */
+    @api
+    getErrorMessage() {
+        this.reportValidity();
+        return this.helpMessage;
     }
 
     /**
@@ -1335,6 +1417,9 @@ export default class VisualPicker extends LightningElement {
      * Dispatches the blur event.
      */
     handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
         this.interactingState.leave();
     }
 
@@ -1352,12 +1437,25 @@ export default class VisualPicker extends LightningElement {
      */
     handleChange(event) {
         event.stopPropagation();
+        const oldValue = this._value;
         this._value =
             this.type === 'radio'
                 ? event.target.value
                 : this.inputs
                       .filter((input) => input.checked)
                       .map((input) => input.value);
+
+        // Exception if checkbox max = 1, unselect last option and select the clicked one.
+        // Looking to have the same behaviour as radio buttons + being able to deselect the option.
+        if (
+            this.max === 1 &&
+            this.validity.rangeOverflow &&
+            oldValue.length < this.value.length
+        ) {
+            this._value = this.value.filter(
+                (value) => !oldValue.includes(value)
+            );
+        }
 
         /**
          * The event fired when the value changed.
@@ -1374,6 +1472,14 @@ export default class VisualPicker extends LightningElement {
                 }
             })
         );
+    }
+
+    handleMouseEnter() {
+        this._cancelBlur = true;
+    }
+
+    handleMouseLeave() {
+        this._cancelBlur = false;
     }
 
     /**

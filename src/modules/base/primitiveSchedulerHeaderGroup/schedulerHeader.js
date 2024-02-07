@@ -2,6 +2,7 @@ import { generateUUID } from 'c/utils';
 import {
     dateTimeObjectFrom,
     addToDate,
+    getStartOfWeek,
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
 import {
@@ -158,9 +159,11 @@ export default class SchedulerHeader {
                 this.createDate(new Date()).ts >= date.ts &&
                 this.createDate(new Date()).ts <= cellEnd.ts;
 
+            const startOfUnit =
+                unit === 'week' ? getStartOfWeek(date) : date.startOf(unit);
             this.cells.push({
                 isToday,
-                label: date.startOf(unit).toFormat(label),
+                label: startOfUnit.toFormat(label),
                 start: date.ts,
                 end: cellEnd.ts
             });

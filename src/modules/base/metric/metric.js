@@ -130,12 +130,14 @@ export default class Metric extends LightningElement {
     _secondaryTrendBreakpointValue = DEFAULT_TREND_BREAKPOINT_VALUE;
     _secondaryTrendIcon;
     _secondaryValue;
+    _secondaryValueIsLoading = false;
     _secondaryValueSign = VALUE_SIGNS.default;
     _showTrendColor = false;
     _tooltip;
     _trendBreakpointValue = DEFAULT_TREND_BREAKPOINT_VALUE;
     _trendIcon;
     _value;
+    _valueIsLoading = false;
     _valueSign = VALUE_SIGNS.default;
 
     renderedCallback() {
@@ -511,6 +513,21 @@ export default class Metric extends LightningElement {
     }
 
     /**
+     * If present, a spinner is displayed to indicate that the secondary value is loading.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get secondaryValueIsLoading() {
+        return this._secondaryValueIsLoading;
+    }
+    set secondaryValueIsLoading(value) {
+        this._secondaryValueIsLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Determine what signs are allowed to be displayed in front of the secondary value, to indicate that it is positive or negative.
      * Valid values include negative, positive-and-negative or none.
      *
@@ -617,6 +634,21 @@ export default class Metric extends LightningElement {
     set value(value) {
         const normalizedNumber = value === null ? undefined : Number(value);
         this._value = isFinite(normalizedNumber) ? normalizedNumber : undefined;
+    }
+
+    /**
+     * If present, a spinner is displayed to indicate that the value is loading.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get valueIsLoading() {
+        return this._valueIsLoading;
+    }
+    set valueIsLoading(value) {
+        this._valueIsLoading = normalizeBoolean(value);
     }
 
     /**

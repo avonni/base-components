@@ -41,6 +41,7 @@ const DEFAULT_FIELD_COLUMNS = {
 const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
+const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOCALE = 'en-GB';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
@@ -50,7 +51,7 @@ const FIELD_VARIANTS = {
 };
 
 const GROUP_BY_OPTIONS = {
-    valid: ['week', 'month', 'year'],
+    valid: ['day', 'week', 'month', 'year'],
     default: undefined
 };
 
@@ -148,6 +149,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _iconSize = ICON_SIZES.default;
+    _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _isLoading = false;
     _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
@@ -162,20 +164,18 @@ export default class ActivityTimeline extends LightningElement {
 
     // Horizontal Activity Timeline
     _resizeObserver;
-    intervalDaysLength;
     intervalMaxDate;
     intervalMinDate;
     showItemPopOver = false;
     selectedItem;
     horizontalTimeline;
 
+    _hasHiddenItems = true;
     _key;
     _isConnected = false;
     _presentDates = [];
     _pastDates = [];
     _upcomingDates = [];
-
-    showMore = true;
 
     @track orderedDates = [];
 
@@ -210,7 +210,8 @@ export default class ActivityTimeline extends LightningElement {
             this.horizontalTimeline.createHorizontalActivityTimeline(
                 this.sortedItems,
                 this._maxVisibleItems,
-                this.divHorizontalTimeline.clientWidth
+                this.divHorizontalTimeline.clientWidth,
+                this._intervalDaysLength
             );
             this._redrawHorizontalTimeline = false;
         }
@@ -254,7 +255,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show less button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
+     * Position of the show less button's icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -272,7 +273,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show more button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
+     * Position of the show more button's icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -455,6 +456,31 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Specifies the number of days to display on the horizontal timeline.
+     *
+     * @type {number}
+     * @default 15
+     * @public
+     */
+    @api
+    get intervalDaysLength() {
+        return this._intervalDaysLength;
+    }
+
+    set intervalDaysLength(value) {
+        const number = parseInt(value, 10);
+        this._intervalDaysLength =
+            !isNaN(number) && number > 0 ? number : undefined;
+
+        if (this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+            setTimeout(() => {
+                this.renderedCallback();
+            }, 0);
+        }
+    }
+
+    /**
      * If present, a spinner is shown to indicate that more items are loading.
      *
      * @type {boolean}
@@ -471,8 +497,9 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * The date format to use for each item. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format.
-     * If you want to insert text in the label, you need to escape it using single quote.
+     * The date format to use for each item. Valid values include 'STANDARD', 'RELATIVE', the name of the preset or the custom format string.
+     * See Luxon's documentation for accepted [presets](https://moment.github.io/luxon/#/formatting?id=presets) and [custom format string tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens).
+     * If you want to insert text in the label in a custom format string, you need to escape it using single quote.
      * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
      *
      * @type {string}
@@ -483,11 +510,10 @@ export default class ActivityTimeline extends LightningElement {
     get itemDateFormat() {
         return this._itemDateFormat;
     }
+
     set itemDateFormat(value) {
         this._itemDateFormat =
-            value && typeof value === 'string'
-                ? value
-                : DEFAULT_ITEM_DATE_FORMAT;
+            typeof value === 'string' && (value || DEFAULT_ITEM_DATE_FORMAT);
     }
 
     /**
@@ -578,17 +604,16 @@ export default class ActivityTimeline extends LightningElement {
     get maxVisibleItems() {
         return this._maxVisibleItems;
     }
-
     set maxVisibleItems(value) {
-        if (value && value > 0) {
-            this._maxVisibleItems = value;
+        const number = parseInt(value, 10);
+        this._maxVisibleItems =
+            !isNaN(number) && number > 0 ? number : undefined;
 
-            if (this.isTimelineHorizontal) {
-                this.requestRedrawTimeline();
-                setTimeout(() => {
-                    this.renderedCallback();
-                }, 0);
-            }
+        if (this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+            setTimeout(() => {
+                this.renderedCallback();
+            }, 0);
         }
     }
 
@@ -670,13 +695,14 @@ export default class ActivityTimeline extends LightningElement {
         );
     }
 
-    /*
+    /**
      * Computed item date format.
+     *
      * @type {string}
      */
     get computedItemDateFormat() {
         if (this._hideItemDate) {
-            return '';
+            return null;
         }
         return this._itemDateFormat;
     }
@@ -686,7 +712,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonLabel() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreLabel
             : this.buttonShowLessLabel;
     }
@@ -696,7 +722,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonIcon() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreIconName
             : this.buttonShowLessIconName;
     }
@@ -706,7 +732,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {string}
      */
     get currentShowButtonPosition() {
-        return this.showMore
+        return this._hasHiddenItems
             ? this.buttonShowMoreIconPosition
             : this.buttonShowLessIconPosition;
     }
@@ -736,7 +762,9 @@ export default class ActivityTimeline extends LightningElement {
      */
     get isShowButtonHidden() {
         return (
-            !this.maxVisibleItems || this.maxVisibleItems >= this.items.length
+            this.enableInfiniteLoading ||
+            !this.maxVisibleItems ||
+            this.maxVisibleItems >= this.items.length
         );
     }
 
@@ -756,9 +784,20 @@ export default class ActivityTimeline extends LightningElement {
      */
     get loadingSpinnerClass() {
         return classSet({
-            'slds-is-relative avonni-activity-timeline__spinner':
-                this.items.length
+            'slds-is-relative':
+                (this.items.length || !this.isShowButtonHidden) &&
+                this.isLoading,
+            'avonni-activity-timeline__spinner':
+                this.items.length && this.isLoading && this.isShowButtonHidden,
+            'slds-show_inline-block':
+                this.isLoading && !this.isShowButtonHidden,
+            'slds-m-top_small slds-m-bottom_small slds-m-left_small':
+                !this.isShowButtonHidden
         }).toString();
+    }
+
+    get loadingSpinnerSize() {
+        return this.isShowButtonHidden ? 'medium' : 'small';
     }
 
     /**
@@ -784,7 +823,7 @@ export default class ActivityTimeline extends LightningElement {
                       (a, b) =>
                           new Date(a.datetimeValue) - new Date(b.datetimeValue)
                   );
-        return this.showMore &&
+        return this._hasHiddenItems &&
             !this.isShowButtonHidden &&
             this.maxVisibleItems &&
             !this.isTimelineHorizontal
@@ -798,7 +837,12 @@ export default class ActivityTimeline extends LightningElement {
      * @return {string}
      */
     get popoverIconSize() {
-        if (this.selectedItem.iconName.includes('action:')) {
+        const avatarToDisplay =
+            this.selectedItem?.avatar?.src ||
+            this.selectedItem?.avatar?.initials ||
+            this.selectedItem?.avatar?.fallbackIconName ||
+            '';
+        if (avatarToDisplay.includes('action:')) {
             return 'x-small';
         }
         return 'medium';
@@ -834,6 +878,11 @@ export default class ActivityTimeline extends LightningElement {
             return 'Upcoming';
         }
         switch (this._groupBy) {
+            case 'day':
+                return `${date.toLocaleString('en-EN', {
+                    day: '2-digit',
+                    month: 'long'
+                })}, ${date.getFullYear().toString()}`;
             case 'month':
                 return `${date.toLocaleString('en-EN', {
                     month: 'long'
@@ -869,6 +918,8 @@ export default class ActivityTimeline extends LightningElement {
     initActivityTimeline() {
         this.orderedDates = [];
         this.sortedItems.forEach((item) => {
+            this.supportDeprecatedAttributes(item);
+
             const date = new Date(item.datetimeValue);
             const label = this.getGroupLabel(date);
             const lastGroup = this.orderedDates[this.orderedDates.length - 1];
@@ -951,10 +1002,23 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Make sure the deprecated item attributes are still supported.
+     */
+    supportDeprecatedAttributes(item) {
+        if (item?.iconName && item?.avatar?.fallbackIconName === undefined) {
+            item.avatar = {
+                ...item.avatar,
+                fallbackIconName: item.iconName
+            };
+            delete item.iconName;
+        }
+    }
+
+    /**
      * Update horizontal timeline header's value.
      */
     updateHorizontalTimelineHeader() {
-        this.intervalDaysLength = this.horizontalTimeline.intervalDaysLength;
+        this._intervalDaysLength = this.horizontalTimeline.intervalDaysLength;
         this.intervalMaxDate = this.horizontalTimeline.intervalMaxDate;
         this.intervalMinDate = this.horizontalTimeline.intervalMinDate;
     }
@@ -1116,7 +1180,24 @@ export default class ActivityTimeline extends LightningElement {
      * Toggle the show more button
      */
     handleToggleShowMoreButton() {
-        this.showMore = !this.showMore;
-        this.initActivityTimeline();
+        /**
+         * The event fired when you click on the show more/less button that appears at the end of the vertical timeline, if a `max-visible-items` value is present and `enable-infinite-loading` is not present.
+         *
+         * @event
+         * @name itemsvisibilitytoggle
+         * @param {boolean} show True if items are currently hidden and the click was meant to show more of them. False if the click was meant to hide the visible items.
+         * @public
+         * @cancelable
+         */
+        const event = new CustomEvent('itemsvisibilitytoggle', {
+            detail: { show: this._hasHiddenItems },
+            cancelable: true
+        });
+        this.dispatchEvent(event);
+
+        if (!event.defaultPrevented) {
+            this._hasHiddenItems = !this._hasHiddenItems;
+            this.initActivityTimeline();
+        }
     }
 }

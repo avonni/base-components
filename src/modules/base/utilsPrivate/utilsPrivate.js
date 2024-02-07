@@ -55,8 +55,10 @@ export { ContentMutation } from './contentMutation';
 export { observePosition } from './observers';
 export { hasOnlyAllowedVideoIframes } from './videoUtils';
 export {
+    DATE_FORMAT_PRESETS,
     addToDate,
     dateTimeObjectFrom,
+    getFormattedDate,
     getStartOfWeek,
     getWeekday,
     formatDateFromStyle,

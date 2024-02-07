@@ -1,13 +1,12 @@
 import * as d3 from 'd3';
-import { dateTimeObjectFrom } from 'c/utilsPrivate';
-import { createSVGIcon } from 'c/iconUtils';
+import { getFormattedDate } from 'c/utilsPrivate';
+import { computeSldsClass, createAvatar } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
 const BORDER_OFFSET = 0.5;
 const DEFAULT_ICON_NAME = 'empty';
 const DEFAULT_ICON_CATEGORY = 'standard';
-const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_NUBBIN_TOP_POSITION_PX = 24;
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
@@ -19,6 +18,7 @@ const DEFAULT_TOOLTIP_CLASSES =
     'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none';
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
+const INTERVAL_DATE_FORMAT = 'dd/MM/yyyy';
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
@@ -37,7 +37,9 @@ const TIMELINE_COLORS = {
     intervalBorder: '#0176d3', // $palette-blue-50
     popoverBackground: '#ffffff',
     timelineBorder: '#c9c9c9', // $card-color-border
-    axisLabel: '#181818' // $color-text-action-label-active
+    axisLabel: '#181818', // $color-text-action-label-active
+    itemBorder: '#aacbff', // $palette-blue-80
+    itemBackground: '#eef4ff' // $palette-blue-95
 };
 const VALID_ICON_CATEGORIES = [
     'standard',
@@ -54,7 +56,6 @@ const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
-    _dateFormat = DEFAULT_DATE_FORMAT;
     _displayedItems = [];
     _distanceBetweenDragAndMin;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
@@ -92,11 +93,18 @@ export class HorizontalActivityTimeline {
     /**
      * Create horizontal view timeline
      */
-    createHorizontalActivityTimeline(sortedItems, maxVisibleItems, width) {
+    createHorizontalActivityTimeline(
+        sortedItems,
+        maxVisibleItems,
+        width,
+        intervalDaysLength
+    ) {
         this.resetHorizontalTimeline();
         this.addValidItemsToData(sortedItems);
         this._maxVisibleItems = maxVisibleItems;
+        this._intervalDaysLength = intervalDaysLength;
 
+        this.setIntervalMaxDate();
         this.setTimelineWidth(width);
         this.createTimelineScrollAxis();
         this.createTimelineAxis();
@@ -235,7 +243,10 @@ export class HorizontalActivityTimeline {
         if (!this._isResizingInterval) {
             this.setIntervalMaxDate();
         }
-        return this.convertDateToFormat(this._intervalMaxDate);
+        return this.convertDateToFormat(
+            this._intervalMaxDate,
+            INTERVAL_DATE_FORMAT
+        );
     }
 
     /**
@@ -244,7 +255,10 @@ export class HorizontalActivityTimeline {
      * @type {Date}
      */
     get intervalMinDate() {
-        return this.convertDateToFormat(this._intervalMinDate);
+        return this.convertDateToFormat(
+            this._intervalMinDate,
+            INTERVAL_DATE_FORMAT
+        );
     }
 
     /**
@@ -623,13 +637,35 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Return the height and the width of the item depending of the end date.
+     *
+     * @return {Object}
+     */
+    computedItemSize(itemGroup, startDate, endDate) {
+        const bbox = itemGroup.node().getBBox();
+        const width = endDate
+            ? this.viewTimeScale(new Date(endDate)) -
+              this.viewTimeScale(new Date(startDate))
+            : 0;
+        return {
+            width,
+            height: bbox.height
+        };
+    }
+
+    /**
      * Formatted item's title to prevent text longer than 30 characters on horizontal timeline
      * @param {Object} item
      * @returns string
      */
-    computedItemTitle(item) {
-        if (item.title.length > MAX_LENGTH_TITLE_ITEM) {
-            return item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ...';
+    computedItemTitle(item, maxLength = MAX_LENGTH_TITLE_ITEM) {
+        const truncationText = ' ...';
+        if (item.title.length > maxLength) {
+            const max =
+                maxLength > truncationText.length
+                    ? maxLength - truncationText.length
+                    : 0;
+            return item.title.slice(0, max) + truncationText;
         }
         return item.title;
     }
@@ -641,14 +677,17 @@ export class HorizontalActivityTimeline {
      * @param {string} format
      * @returns string
      */
-    convertDateToFormat(date, format = this._dateFormat) {
+    convertDateToFormat(date, format) {
         if (this.isDateInvalid(date)) {
             return '';
         }
-        const dateTime = dateTimeObjectFrom(date, {
-            zone: this._activityTimeline.timezone
-        });
-        return dateTime.toFormat(format);
+        return getFormattedDate(
+            date,
+            {
+                zone: this._activityTimeline.timezone
+            },
+            format
+        );
     }
 
     /**
@@ -692,32 +731,53 @@ export class HorizontalActivityTimeline {
      *  Create item on horizontal timeline to display lightning icon and item's title
      */
     createItem(itemGroup, item) {
+        const startX = this.viewTimeScale(new Date(item.datetimeValue));
+
+        let itemRect;
+        if (item.endDate) {
+            itemRect = itemGroup.append('rect');
+            itemRect
+                .attr('x', startX)
+                .attr('y', item.yPosition)
+                .attr('fill', TIMELINE_COLORS.itemBackground)
+                .attr('stroke-width', 1)
+                .attr('stroke', TIMELINE_COLORS.itemBorder)
+                .attr('rx', 2);
+        }
+
         this.createIcon(
             itemGroup,
-            item.iconName,
-            this.viewTimeScale(new Date(item.datetimeValue)),
+            item.avatar,
+            startX,
             item.yPosition,
             SVG_ICON_SIZE
         );
 
-        itemGroup
-            .append('text')
+        const label = itemGroup.append('text');
+        label
             .attr('class', 'avonni-horizontal-activity-timeline__item-text')
-            .attr(
-                'x',
-                this.viewTimeScale(new Date(item.datetimeValue)) +
-                    SVG_ICON_SIZE +
-                    SPACE_BETWEEN_ICON_AND_TEXT
-            )
+            .attr('x', startX + SVG_ICON_SIZE + SPACE_BETWEEN_ICON_AND_TEXT)
             .attr('y', item.yPosition + 0.64 * SVG_ICON_SIZE)
-            .text(this.computedItemTitle(item))
             .style('font-size', 13);
+
+        let labelMaxLength = MAX_LENGTH_TITLE_ITEM;
+        if (itemRect) {
+            const { width, height } = this.computedItemSize(
+                itemGroup,
+                item.datetimeValue,
+                item.endDate
+            );
+            itemRect.attr('width', width).attr('height', height);
+            const dx = SVG_ICON_SIZE + SPACE_BETWEEN_ICON_AND_TEXT;
+            labelMaxLength = width > dx ? ((width - dx) / 13) * 2 : 0;
+        }
+        label.text(this.computedItemTitle(item, labelMaxLength));
     }
 
     /**
      *  Create svg to display lightning icon.
      */
-    createIcon(destinationSVG, iconName, xPosition, yPosition, svgSize) {
+    createIcon(destinationSVG, avatar, xPosition, yPosition, svgSize) {
         const foreignObjectForIcon = destinationSVG.append('foreignObject');
         foreignObjectForIcon
             .attr('width', svgSize)
@@ -725,8 +785,14 @@ export class HorizontalActivityTimeline {
             .attr('x', xPosition)
             .attr('y', yPosition);
 
-        const iconInformation = this.setIconInformation(iconName);
-        const iconSVG = createSVGIcon(
+        const iconInformation = this.setIconInformation(avatar);
+        let propertyName = avatar.src
+            ? 'src'
+            : avatar.initials
+            ? 'initials'
+            : 'svg';
+        const iconSVG = createAvatar(
+            propertyName,
             iconInformation,
             foreignObjectForIcon,
             this.resetAndRedrawTimeline.bind(this)
@@ -1419,40 +1485,60 @@ export class HorizontalActivityTimeline {
     /**
      * Determine and set the icon's information (name of the icon, x link href and CSS classes) according to correct category
      */
-    setIconInformation(iconName) {
-        // The item has no icon
-        if (!iconName) {
-            return this.setDefaultIconInformation();
+    setIconInformation(avatar) {
+        let iconInformations = {};
+        let styleClass = '';
+
+        if (avatar && avatar.fallbackIconName) {
+            const iconCategory = VALID_ICON_CATEGORIES.find((category) => {
+                return avatar.fallbackIconName.match(category + ':');
+            });
+
+            // Invalid icon category - Set default icon
+            if (!iconCategory) {
+                return this.setDefaultIconInformation();
+            }
+
+            // Set icon's information
+            let iconClass = '';
+            if (iconCategory === 'utility') {
+                iconClass = ' slds-icon-text-default ';
+            }
+            iconClass += 'slds-icon-' + iconCategory + '-';
+
+            const nameOfIcon = avatar.fallbackIconName.slice(
+                avatar.fallbackIconName.indexOf(':') + 1,
+                avatar.fallbackIconName.length
+            );
+            iconInformations = {
+                iconName: nameOfIcon,
+                category: iconCategory,
+                categoryIconClass: `slds-icon_small ${iconClass}${nameOfIcon.replace(
+                    /_/g,
+                    '-'
+                )}`
+            };
+        } else {
+            // The item has no icon
+            iconInformations = this.setDefaultIconInformation();
         }
 
-        const iconCategory = VALID_ICON_CATEGORIES.find((category) => {
-            return iconName.match(category + ':');
-        });
-
-        // Invalid icon category - Set default icon
-        if (!iconCategory) {
-            return this.setDefaultIconInformation();
+        // CSS class depending of the avatar type
+        if (avatar?.src) {
+            styleClass +=
+                ' avonni-activity-timeline__horizontal-timeline-avatar__image ';
+        } else if (avatar?.initials) {
+            styleClass += ` slds-avatar__initials ${computeSldsClass(
+                avatar.fallbackIconName
+            )} avonni-activity-timeline__horizontal-timeline-avatar__initials `;
         }
-
-        // Set icon's information
-        let iconClass = '';
-        if (iconCategory === 'utility') {
-            iconClass = ' slds-icon-text-default ';
-        }
-        iconClass += 'slds-icon-' + iconCategory + '-';
-
-        const nameOfIcon = iconName.slice(
-            iconName.indexOf(':') + 1,
-            iconName.length
-        );
 
         return {
-            iconName: nameOfIcon,
-            category: iconCategory,
-            categoryIconClass: `slds-icon_small ${iconClass}${nameOfIcon.replace(
-                /_/g,
-                '-'
-            )}`
+            ...iconInformations,
+            src: avatar?.src,
+            presence: avatar?.presence,
+            initials: avatar?.initials,
+            styleClass
         };
     }
 

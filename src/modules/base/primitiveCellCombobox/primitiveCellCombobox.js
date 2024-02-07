@@ -19,6 +19,8 @@ export default class PrimitiveCellCombobox extends LightningElement {
     _index;
     _options = [];
     _value;
+    _wrapText;
+    _wrapTextMaxLines;
 
     visible = false;
     editable = false;
@@ -48,9 +50,22 @@ export default class PrimitiveCellCombobox extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
+    }
+
+    @api
+    get wrapText() {
+        return this._wrapText;
+    }
+    set wrapText(value) {
+        this._wrapText = value;
+    }
+
+    get computedWrapTextClass() {
+        return this.wrapText && this._wrapTextMaxLines && !this.isMultiSelect
+            ? 'slds-line-clamp'
+            : 'slds-truncate';
     }
 
     get displayedValue() {
@@ -134,6 +149,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this.dt = dt;
         const { state, columns } = dt;
         this.state = state;
+        this._wrapTextMaxLines = state.wrapTextMaxLines;
         const index = state.headerIndexes[this.colKeyValue];
         this.editable = isEditable(this.state, index, columns);
     }

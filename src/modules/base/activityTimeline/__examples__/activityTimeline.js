@@ -24,6 +24,7 @@ export const ActivityTimeline = ({
     isLoading,
     itemIconSize,
     items,
+    intervalDaysLength,
     loadMoreOffset,
     locale,
     hideItemDate,
@@ -55,6 +56,7 @@ export const ActivityTimeline = ({
     element.isLoading = isLoading;
     element.itemIconSize = itemIconSize;
     element.items = items;
+    element.intervalDaysLength = intervalDaysLength;
     element.loadMoreOffset = loadMoreOffset;
     element.orientation = orientation;
     element.hideItemDate = hideItemDate;

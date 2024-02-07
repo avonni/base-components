@@ -247,7 +247,7 @@ export default {
         listButtonShowLessIconPosition: 'left',
         listButtonShowMoreIconPosition: 'left',
         listButtonShowMoreLabel: 'Show more',
-        listButtonVariant: 'base',
+        listButtonVariant: 'neutral',
         loadMoreOffset: 20,
         size: 'medium',
         variant: 'square'

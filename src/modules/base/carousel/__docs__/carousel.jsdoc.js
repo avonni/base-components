@@ -135,6 +135,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-carousel-item-title-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-carousel-item-title-text-color
  * @default #ffffff
  * @type color

@@ -21,6 +21,7 @@ const ITEM_VARIANTS = {
     default: 'non-coverable'
 };
 
+const DEFAULT_MIN = 0;
 const DEFAULT_DISABLED = false;
 const DEFAULT_HIDE_CHECK_MARK = false;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
@@ -40,15 +41,30 @@ export default class VerticalVisualPicker extends LightningElement {
      * @public
      */
     @api label;
-
     /**
-     * Error message to be displayed when no item is selected and the required attribute is set to true.
+     * Error message to be displayed when a range overflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api messageWhenValueMissing;
-
+    @api
+    messageWhenRangeOverflow;
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    messageWhenRangeUnderflow;
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    messageWhenValueMissing;
     /**
      * The name of the vertical visual picker.
      *
@@ -64,17 +80,20 @@ export default class VerticalVisualPicker extends LightningElement {
     _isLoading = false;
     _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    _max;
     _maxCount;
+    _min = DEFAULT_MIN;
     _required = DEFAULT_REQUIRED;
     _size = ITEM_SIZES.default;
     _type = ITEM_TYPES.default;
     _variant = ITEM_VARIANTS.default;
     _value = [];
 
+    _cancelBlur = false;
     _computedItems = [];
     _connected = false;
     _isCollapsed = true;
-    helpMessage;
+    helpMessage = '';
 
     connectedCallback() {
         this.interactingState = new InteractingState();
@@ -206,6 +225,22 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
+     * Maximum number of selected items.
+     *
+     * @type {number}
+     * @default Infinity
+     * @public
+     */
+    @api
+    get max() {
+        return this._max;
+    }
+
+    set max(value) {
+        this._max = isNaN(parseInt(value, 10)) ? Infinity : parseInt(value, 10);
+    }
+
+    /**
      * Maximum of items allowed in the visible list.
      * This attribute is ignored if `enable-infinite-loading` is present.
      *
@@ -218,6 +253,24 @@ export default class VerticalVisualPicker extends LightningElement {
     }
     set maxCount(value) {
         this._maxCount = isNaN(value) ? undefined : parseInt(value, 10);
+    }
+
+    /**
+     * Minimum number of selected options required.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get min() {
+        return this._min;
+    }
+
+    set min(value) {
+        this._min = isNaN(parseInt(value, 10))
+            ? DEFAULT_MIN
+            : parseInt(value, 10);
     }
 
     /**
@@ -445,6 +498,13 @@ export default class VerticalVisualPicker extends LightningElement {
             : this._computedItems;
     }
 
+    get numberOfMainItemsSelected() {
+        if (this.type === 'radio') return this.value ? 1 : 0;
+        return this.items
+            .map(({ value }) => value)
+            .filter((value) => this.value.includes(value)).length;
+    }
+
     /**
      * Compute NOT selected class styling.
      *
@@ -503,7 +563,13 @@ export default class VerticalVisualPicker extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
+                    !this.disabled && this.required && this.value.length === 0,
+                rangeUnderflow: () =>
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected < this.min,
+                rangeOverflow: () =>
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected > this.max
             });
         }
         return this._constraintApi;
@@ -534,6 +600,18 @@ export default class VerticalVisualPicker extends LightningElement {
     @api
     focus() {
         this.input.focus();
+    }
+
+    /**
+     * Retrieve the current error message. If it is null than the input is valid.
+     *
+     * @returns {string} Current input error message.
+     * @public
+     */
+    @api
+    getErrorMessage() {
+        this.reportValidity();
+        return this.helpMessage;
     }
 
     /**
@@ -618,9 +696,18 @@ export default class VerticalVisualPicker extends LightningElement {
      */
     _initItems() {
         this._computedItems = this.items.map((item) => {
+            const maxReached =
+                this.type === 'checkbox' &&
+                this.max !== 1 &&
+                this.numberOfMainItemsSelected >= this.max;
+            const isUnselectedOption =
+                this.type === 'checkbox' && !this.value.includes(item.value);
             return new Item({
                 ...item,
-                disabled: this.disabled || item.disabled,
+                disabled:
+                    this.disabled ||
+                    item.disabled ||
+                    (maxReached && isUnselectedOption),
                 isChecked: this._isItemChecked(item.value, item.subItems),
                 size: this.size
             });
@@ -707,6 +794,9 @@ export default class VerticalVisualPicker extends LightningElement {
      * Dispatches the blur event.
      */
     handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
         this.interactingState.leave();
     }
 
@@ -738,20 +828,53 @@ export default class VerticalVisualPicker extends LightningElement {
             } else {
                 newValue = newValue.filter((value) => value !== targetValue);
                 if (item && item.subItems) {
-                    const subItemsValue = item.subItems.map(
+                    const subItemsValues = item.subItems.map(
                         ({ value }) => value
                     );
                     // Remove all subItems values from current value.
                     newValue = newValue.filter(
-                        (value) => !subItemsValue.includes(value)
+                        (value) => !subItemsValues.includes(value)
                     );
                 }
             }
         }
 
+        const oldValue = this._value;
+        const oldNumberOfMainItemSelected = this.numberOfMainItemsSelected;
         this._value = newValue;
+
+        // Exception if checkbox max = 1, unselect last option and select the clicked one.
+        // Looking to have the same behaviour as radio buttons, but being able to deselect the option.
+        if (
+            this.max === 1 &&
+            this.validity.rangeOverflow &&
+            oldNumberOfMainItemSelected < this.numberOfMainItemsSelected
+        ) {
+            this._value = this.value.filter(
+                (value) => !oldValue.includes(value)
+            );
+        }
+
         this._dispatchChange();
         this._refreshCheckedAttributes();
+        this._initItems();
+
+        // Wait for the checked attributes to be refreshed.
+        requestAnimationFrame(() => {
+            // Set the focus on the clicked item.
+            const lastClickedInput = this.inputs?.find(
+                (input) => input.value === targetValue
+            );
+            lastClickedInput?.focus();
+        });
+    }
+
+    handleMouseEnter() {
+        this._cancelBlur = true;
+    }
+
+    handleMouseLeave() {
+        this._cancelBlur = false;
     }
 
     /**

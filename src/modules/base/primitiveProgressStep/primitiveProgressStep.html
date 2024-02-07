@@ -25,6 +25,7 @@
                     class={computedButtonClass}
                     aria-haspopup="true"
                     aria-expanded="true"
+                    disabled={isDisabled}
                     data-element-id="button"
                     type="button"
                     onclick={handleStepClick}
@@ -34,12 +35,14 @@
                     onblur={handleStepBlur}
                 >
                     <c-primitive-icon
-                        class="avonni-progress-step__icon_margin-bottom"
+                        class="
+                            avonni-progress-step__icon_margin-bottom
+                            avonni-progress-step__icon
+                        "
                         if:true={stepIconName}
-                        svg-class="slds-button__icon"
+                        svg-class="slds-icon slds-icon-text-default"
                         icon-name={stepIconName}
                         size="xx-small"
-                        variant={primitiveButtonIconVariant}
                         data-element-id="avonni-primitive-icon-step"
                     ></c-primitive-icon>
                     <div
@@ -84,6 +87,7 @@
                     <template if:true={popoverButton}>
                         <button
                             class={computedPopoverClass}
+                            disabled={isDisabled}
                             type="button"
                             data-element-id="button-propover"
                             onclick={handleStepPopoverClick}

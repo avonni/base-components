@@ -43,7 +43,6 @@ const DEFAULT_ICON_MENU_ICON = 'utility:down';
 
 export default class PrimitiveAvatar extends LightningElement {
     @api entityInitials;
-    @api fallbackIconName;
     @api initials;
 
     avatarClass;
@@ -59,6 +58,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _entitySrc;
     _entityTitle = DEFAULT_ENTITY_TITLE;
     _entityVariant = AVATAR_VARIANTS.default;
+    _fallbackIconName;
     _presence = PRESENCE.default;
     _presencePosition = POSITIONS.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
@@ -201,6 +201,20 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     /**
+     * Fallback Icon
+     */
+
+    @api
+    get fallbackIconName() {
+        return this._fallbackIconName;
+    }
+
+    set fallbackIconName(value) {
+        this._fallbackIconName = value;
+        this._updateClassList();
+    }
+
+    /**
      * Presence
      */
 
@@ -314,6 +328,22 @@ export default class PrimitiveAvatar extends LightningElement {
             validValues: AVATAR_VARIANTS.valid
         });
         this._updateClassList();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    getBackgroundColor() {
+        const icon = this.template.querySelector(
+            '[data-element-id="avatar-container"]'
+        );
+        if (icon === null) return '';
+        const style = getComputedStyle(icon);
+        return style.backgroundColor;
     }
 
     /*

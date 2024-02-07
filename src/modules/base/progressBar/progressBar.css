@@ -1,8 +1,12 @@
 .avonni-progress-bar__label_font {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     color: var(--avonni-progress-bar-label-text-color, #080707);
     font-size: var(--avonni-progress-bar-label-font-size, 0.8125rem);
     font-style: var(--avonni-progress-bar-label-font-style, normal);
     font-weight: var(--avonni-progress-bar-label-font-weight, 400);
+    -webkit-line-clamp: var(--avonni-progress-bar-label-line-clamp, 2);
 }
 
 .avonni-progress-bar__value_font {

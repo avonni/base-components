@@ -2,15 +2,18 @@ import { api } from 'lwc';
 import {
     addToDate,
     deepCopy,
+    equal,
     getWeekNumber,
     intervalFrom,
     normalizeBoolean,
+    normalizeObject,
     normalizeString,
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import Column from './column';
 import {
+    DEFAULT_ACTION_NAMES,
     getElementOnXAxis,
     getElementOnYAxis,
     isAllowedTime,
@@ -316,12 +319,27 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return super.timeSpan;
     }
     set timeSpan(value) {
+        const { unit, span } = normalizeObject(value);
+        if (unit === this._timeSpan.unit && span === this._timeSpan.span) {
+            return;
+        }
+
+        const previousDayHeadersTimeSpan = deepCopy(this.dayHeadersTimeSpan);
+        const previousHourHeadersTimeSpan = deepCopy(this.hourHeadersTimeSpan);
         super.timeSpan = value;
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
             this.initEvents();
+
+            // Make sure the headers stop loading when the time span has not changed
+            if (equal(previousDayHeadersTimeSpan, this.dayHeadersTimeSpan)) {
+                this._dayHeadersLoading = false;
+            }
+            if (equal(previousHourHeadersTimeSpan, this.hourHeadersTimeSpan)) {
+                this._hourHeadersLoading = false;
+            }
 
             // If the hour headers appear or disappear, the visible width changes
             requestAnimationFrame(() => {
@@ -1661,9 +1679,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (orientation === 'vertical') {
             this.cellHeight = cellSize;
             this.multiDayCellHeight = cellSize;
-            this.template.host.style = `
-                --avonni-scheduler-cell-height: ${this.cellHeight}px;
-            `;
+
+            try {
+                this.template.host.style = `
+                    --avonni-scheduler-cell-height: ${this.cellHeight}px;
+                `;
+            } catch (e) {
+                // Prevents an error in Salesforce:
+                // 'Cannot add property style, object is not extensible.'
+                // The error seems to happen when the component is loading
+                // and the host is not a Proxy yet.
+            }
         } else {
             this.cellWidth = cellSize;
         }
@@ -1755,6 +1781,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (
             event.button ||
             this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
             !this.firstSelectedResource ||
             this.isMonth
         ) {
@@ -1851,9 +1878,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this._eventData.handleMouseUp(x, y);
 
         switch (eventToDispatch) {
-            case 'edit':
-                this.dispatchOpenEditDialog(this._eventData.selection);
+            case 'edit': {
+                const prevented = this.dispatchOpenEditDialog(
+                    this._eventData.selection
+                );
+                if (prevented) {
+                    this._eventData.cleanSelection(true);
+                }
                 break;
+            }
             case 'recurrence':
                 this.dispatchOpenRecurrenceDialog(this._eventData.selection);
                 break;
@@ -1871,7 +1904,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event `mousedown` event fired by an empty cell or a disabled primitive event occurrence.
      */
     handleMultiDayEmptyCellMouseDown(event) {
-        if (event.button || this.readOnly || !this.firstSelectedResource) {
+        if (
+            event.button ||
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
+            !this.firstSelectedResource
+        ) {
             return;
         }
 
