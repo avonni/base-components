@@ -6,7 +6,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-icon-line-height
  * @type dimension
- * @default 1rem
+ * @default 0
  */
 /**
  * @memberof stylingHooks

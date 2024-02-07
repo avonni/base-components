@@ -39,7 +39,7 @@ const ICON_POSITIONS = {
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'xx-small'
+    default: 'x-small'
 };
 
 const TYPES = {
@@ -266,6 +266,7 @@ export default class PrimitiveButton extends LightningElement {
     }
     set ariaBusy(value) {
         this._ariaBusy = value;
+        console.log('ariaBusy', value);
         this.state.ariaBusy = normalizeString(value, {
             fallbackValue: null,
             validValues: ['true', 'false']
