@@ -54,6 +54,7 @@ const Y_START_POSITION_TIMELINE_ITEM = 10;
 const Y_GAP_BETWEEN_BORDER_ITEMS_TIMELINE = 45;
 const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
+const Y_GAP_BETWEEN_BORDER_ITEMS_SCROLL = 6;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
 export class HorizontalActivityTimeline {
@@ -434,7 +435,8 @@ export class HorizontalActivityTimeline {
         let itemsToDisplay = this.setYPositionOfItems(
             this._sortedItems,
             Y_START_POSITION_SCROLL_ITEM,
-            Y_GAP_BETWEEN_ITEMS_SCROLL
+            Y_GAP_BETWEEN_ITEMS_SCROLL,
+            Y_GAP_BETWEEN_BORDER_ITEMS_SCROLL
         );
 
         // To remove all items that exceed the scroll axis
@@ -873,7 +875,8 @@ export class HorizontalActivityTimeline {
         const dataToDisplay = this.setYPositionOfItems(
             this.displayedItems,
             Y_START_POSITION_TIMELINE_ITEM,
-            Y_GAP_BETWEEN_ITEMS_TIMELINE
+            Y_GAP_BETWEEN_ITEMS_TIMELINE,
+            Y_GAP_BETWEEN_BORDER_ITEMS_TIMELINE
         );
 
         this.setVisibleTimelineHeight();
@@ -1704,7 +1707,12 @@ export class HorizontalActivityTimeline {
      *
      * @returns {array}
      */
-    setYPositionOfItems(items, yStartPosition, yGapBetweenItems) {
+    setYPositionOfItems(
+        items,
+        yStartPosition,
+        yGapBetweenItems,
+        yGapBetweenBorderItems
+    ) {
         // Set all items with startPosition as yPosition and sort them by date
         let dataToDisplay = items.map((element) => ({
             ...element,
@@ -1737,8 +1745,7 @@ export class HorizontalActivityTimeline {
                     if (item.yPosition >= element.yPosition) {
                         element.yPosition = item.yPosition;
                         if (this.hasBorder(item)) {
-                            element.yPosition +=
-                                Y_GAP_BETWEEN_BORDER_ITEMS_TIMELINE;
+                            element.yPosition += yGapBetweenBorderItems;
                         } else {
                             element.yPosition += yGapBetweenItems;
                         }
