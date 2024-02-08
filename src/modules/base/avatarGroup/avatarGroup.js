@@ -758,7 +758,8 @@ export default class AvatarGroup extends LightningElement {
         return (
             this.isLoading &&
             (!this.showMoreButton || this.isNotList) &&
-            !this.maxCount
+            !this.maxCount &&
+            !this.showHiddenItems
         );
     }
 
@@ -1141,7 +1142,7 @@ export default class AvatarGroup extends LightningElement {
             parseFloat(referenceElementStyles.marginLeft) +
             parseFloat(referenceElementStyles.marginRight);
 
-        if (!referenceElementStyles) return;
+        if (!referenceElementStyles || !referenceElementWidth) return;
         this._maxVisibleCount = Math.max(
             0,
             Math.floor(availableWidth / referenceElementWidth)
@@ -1150,7 +1151,7 @@ export default class AvatarGroup extends LightningElement {
         if (
             this.enableInfiniteLoading &&
             !this.isLoading &&
-            this._maxVisibleCount > this.items.length
+            this.computedMaxCount > this.items.length
         ) {
             // If there is room for more items,
             // dispatch the loadmore event
