@@ -42,7 +42,6 @@
  * @memberof stylingHooks
  * @name --avonni-button-label-font-family
  * @type font
- * @default 'Salesforce Sans'
  */
 /**
  * @memberof stylingHooks
