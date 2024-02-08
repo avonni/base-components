@@ -47,9 +47,10 @@
 }
 
 .avonni-button_label {
+    font-family: var(--avonni-button-label-font-family, 'Salesforce Sans');
     font-size: var(--avonni-button-label-font-size, 0.8175rem);
-    font-weight: var(--avonni-button-label-font-weight, 400);
     font-style: var(--avonni-button-label-font-style, normal);
+    font-weight: var(--avonni-button-label-font-weight, 400);
 }
 
 .avonni-button_bare:disabled,

@@ -4,14 +4,17 @@
     --avonni-button-line-height: var(--avonni-button-dialog-line-height);
     --avonni-button-sizing-border: var(--avonni-button-dialog-sizing-border);
     --avonni-button-styling-border: var(--avonni-button-dialog-styling-border);
+    --avonni-button-label-font-family: var(
+        --avonni-button-dialog-label-font-family
+    );
     --avonni-button-label-font-size: var(
         --avonni-button-dialog-label-font-size
     );
-    --avonni-button-label-font-weight: var(
-        --avonni-button-dialog-label-font-weight
-    );
     --avonni-button-label-font-style: var(
         --avonni-button-dialog-label-font-style
+    );
+    --avonni-button-label-font-weight: var(
+        --avonni-button-dialog-label-font-weight
     );
     --avonni-button-image-radius-border: var(
         --avonni-button-dialog-image-radius-border
