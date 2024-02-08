@@ -7,34 +7,38 @@ customElements.define(
 
 export const ButtonPopover = ({
     accessKey,
-    label,
-    title,
-    loadingStateAlternativeText,
+    disabled,
     hideCloseButton,
     iconName,
     iconPosition,
-    popoverSize,
+    iconSize,
+    iconSrc,
+    isLoading,
+    label,
+    loadingStateAlternativeText,
     placement,
-    variant,
-    triggers,
+    popoverSize,
     popoverVariant,
-    disabled,
-    isLoading
+    title,
+    triggers,
+    variant
 }) => {
     const element = document.createElement('ac-base-button-popover');
     element.accessKey = accessKey;
-    element.label = label;
-    element.title = title;
-    element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.disabled = disabled;
     element.hideCloseButton = hideCloseButton;
+    element.isLoading = isLoading;
     element.iconName = iconName;
     element.iconPosition = iconPosition;
-    element.popoverSize = popoverSize;
+    element.iconSize = iconSize;
+    element.iconSrc = iconSrc;
+    element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.placement = placement;
-    element.variant = variant;
-    element.triggers = triggers;
+    element.popoverSize = popoverSize;
     element.popoverVariant = popoverVariant;
-    element.disabled = disabled;
-    element.isLoading = isLoading;
+    element.title = title;
+    element.triggers = triggers;
+    element.variant = variant;
     return element;
 };

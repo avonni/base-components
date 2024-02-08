@@ -1,17 +1,17 @@
 <template>
     <button
         class={computedButtonClass}
-        disabled={disabled}
-        aria-expanded={computedAriaExpanded}
-        title={title}
         accesskey={accessKey}
-        value={value}
+        aria-expanded={computedAriaExpanded}
         aria-haspopup="true"
+        disabled={disabled}
+        title={title}
+        value={value}
+        type="button"
         data-element-id="button"
         onclick={handleButtonClick}
         onblur={handleBlur}
         onfocus={handleFocus}
-        type="button"
         onkeydown={handleButtonKeyDown}
         onmousedown={handleButtonMouseDown}
     >
@@ -22,55 +22,61 @@
             >*</abbr
         >
         {label}
+        <img
+            if:true={iconSrc}
+            class={computedImageClass}
+            src={iconSrc}
+            data-element-id="image"
+        />
         <c-primitive-icon
-            class="slds-m-horizontal_xx-small"
+            if:true={showIcon}
             icon-name={iconName}
-            svg-class="slds-button__icon"
+            size={computedIconSize}
+            svg-class={computedIconSvgClass}
             variant="bare"
             data-element-id="avonni-primitive-icon-main"
         ></c-primitive-icon>
-
-        <template if:false={computedHideDownIcon}>
-            <c-primitive-icon
-                icon-name="utility:down"
-                svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
-                variant="bare"
-                data-element-id="avonni-primitive-icon-down"
-            ></c-primitive-icon>
-        </template>
+        <c-primitive-icon
+            if:false={computedHideDownIcon}
+            icon-name="utility:down"
+            svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
+            variant="bare"
+            data-element-id="avonni-primitive-icon-down"
+        ></c-primitive-icon>
 
         <span class="slds-assistive-text">{alternativeText}</span>
     </button>
 
-    <template if:true={_dropdownOpened}>
-        <div
-            class={computedDropdownClass}
-            onmousedown={handleDropdownMouseDown}
-            onmouseup={handleDropdownMouseUp}
-            onmouseleave={handleDropdownMouseLeave}
-            onscroll={handleDropdownScroll}
-        >
-            <template if:true={isLoading}>
-                <lightning-spinner
-                    size="small"
-                    alternative-text={computedLoadingStateAlternativeText}
-                    data-element-id="lightning-spinner"
-                ></lightning-spinner>
-            </template>
-            <template if:false={isLoading}>
-                <div
-                    class="slds-dropdown__list"
-                    role="menu"
-                    onprivateselect={handleMenuItemPrivateSelect}
-                    onprivateblur={handlePrivateBlur}
-                    onprivatefocus={handlePrivateFocus}
-                    onmouseover={handleMouseOverOnMenuItem}
-                    onmouseout={allowBlur}
-                    onkeydown={handleKeyOnMenuItem}
-                >
-                    <slot></slot>
-                </div>
-            </template>
-        </div>
-    </template>
+    <div
+        if:true={dropdownOpened}
+        class={computedDropdownClass}
+        onmousedown={handleDropdownMouseDown}
+        onmouseup={handleDropdownMouseUp}
+        onmouseleave={handleDropdownMouseLeave}
+        onscroll={handleDropdownScroll}
+        data-element-id="dropdown"
+    >
+        <template if:true={isLoading}>
+            <lightning-spinner
+                size="small"
+                alternative-text={computedLoadingStateAlternativeText}
+                data-element-id="lightning-spinner"
+            ></lightning-spinner>
+        </template>
+        <template if:false={isLoading}>
+            <div
+                class="slds-dropdown__list"
+                role="menu"
+                onprivateselect={handleMenuItemPrivateSelect}
+                onprivateblur={handlePrivateBlur}
+                onprivatefocus={handlePrivateFocus}
+                onmouseover={handleMouseOverOnMenuItem}
+                onmouseout={allowBlur}
+                onkeydown={handleKeyOnMenuItem}
+                data-element-id="dropdown-list"
+            >
+                <slot></slot>
+            </div>
+        </template>
+    </div>
 </template>

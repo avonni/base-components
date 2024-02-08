@@ -1,5 +1,6 @@
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
+import ButtonMenuVariantsComponent from '../__examples__/variants/variants';
 
 export default {
     title: 'Example/Button Menu',
@@ -67,7 +68,8 @@ export default {
                 "The name of the icon to be used in the format 'utility:down'. If an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.",
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'utility:down' }
+                defaultValue: { summary: 'utility:down' },
+                category: 'icon'
             }
         },
         iconSize: {
@@ -80,7 +82,19 @@ export default {
                 'The size of the icon. Options include xx-small, x-small, small, medium or large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'medium' },
+                category: 'icon'
+            }
+        },
+        iconSrc: {
+            name: 'icon-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         isDraft: {
@@ -199,6 +213,7 @@ export default {
             options: [
                 'bare',
                 'bare-inverse',
+                'base',
                 'border',
                 'border-filled',
                 'border-inverse',
@@ -212,7 +227,7 @@ export default {
                 'success'
             ],
             description:
-                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.',
             table: {
                 type: { summary: 'string' }
             }
@@ -235,14 +250,11 @@ export default {
 
 const Template = (args) => ButtonMenuBase(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
-
-export const Border = Template.bind({});
-
-export const BorderWithLabel = Template.bind({});
-BorderWithLabel.args = {
-    label: 'Menu'
+const darkBackground = {
+    backgrounds: {
+        default: 'dark'
+    }
 };
-
 export const Bare = Template.bind({});
 Bare.args = {
     variant: 'bare'
@@ -250,50 +262,58 @@ Bare.args = {
 
 export const BareWithLabel = Template.bind({});
 BareWithLabel.args = {
-    variant: 'bare',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'bare'
 };
 
 export const BareInverse = Template.bind({});
-BareInverse.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BareInverse.parameters = darkBackground;
 BareInverse.args = {
     variant: 'bare-inverse'
 };
 
 export const BareInverseWithLabel = Template.bind({});
-BareInverseWithLabel.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BareInverseWithLabel.parameters = darkBackground;
 BareInverseWithLabel.args = {
-    variant: 'bare-inverse',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'bare-inverse'
+};
+
+export const BaseWithImage = Template.bind({});
+BaseWithImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    variant: 'base'
+};
+
+export const BaseWithImageLabel = Template.bind({});
+BaseWithImageLabel.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    label: 'Menu',
+    variant: 'base'
+};
+
+export const Border = Template.bind({});
+Border.args = {
+    variant: 'border'
+};
+
+export const BorderWithLabel = Template.bind({});
+BorderWithLabel.args = {
+    label: 'Menu',
+    variant: 'border'
 };
 
 export const BorderInverse = Template.bind({});
-BorderInverse.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BorderInverse.parameters = darkBackground;
 BorderInverse.args = {
     variant: 'border-inverse'
 };
 
 export const BorderInverseWithLabel = Template.bind({});
-BorderInverseWithLabel.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BorderInverseWithLabel.parameters = darkBackground;
 BorderInverseWithLabel.args = {
-    variant: 'border-inverse',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'border-inverse'
 };
 
 export const Brand = Template.bind({});
@@ -303,8 +323,8 @@ Brand.args = {
 
 export const BrandWithLabel = Template.bind({});
 BrandWithLabel.args = {
-    variant: 'brand',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'brand'
 };
 
 export const BrandOutline = Template.bind({});
@@ -314,67 +334,64 @@ BrandOutline.args = {
 
 export const BrandOutlineWithLabel = Template.bind({});
 BrandOutlineWithLabel.args = {
-    variant: 'brand-outline',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'brand-outline'
 };
 
-export const Container = Template.bind({});
-Container.args = {
+export const ContainerWithImage = Template.bind({});
+ContainerWithImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     variant: 'container'
 };
 
 export const ContainerWithLabel = Template.bind({});
 ContainerWithLabel.args = {
-    variant: 'container',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'container'
 };
 
 export const Destructive = Template.bind({});
 Destructive.args = {
+    iconName: 'utility:error',
     variant: 'destructive'
 };
 
 export const DestructiveWithLabel = Template.bind({});
 DestructiveWithLabel.args = {
-    variant: 'destructive',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'destructive'
 };
 
-export const DestructiveText = Template.bind({});
-DestructiveText.args = {
+export const DestructiveTextHideDownArrow = Template.bind({});
+DestructiveTextHideDownArrow.args = {
+    hideDownArrow: true,
+    iconName: 'utility:error',
     variant: 'destructive-text'
 };
 
 export const DestructiveTextWithLabel = Template.bind({});
 DestructiveTextWithLabel.args = {
-    variant: 'destructive-text',
-    label: 'Menu'
+    label: 'Menu',
+    variant: 'destructive-text'
 };
 
-export const InverseXxSmall = Template.bind({});
-InverseXxSmall.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
-InverseXxSmall.args = {
+export const InverseXSmall = Template.bind({});
+InverseXSmall.parameters = darkBackground;
+InverseXSmall.args = {
+    iconSize: 'x-small',
     variant: 'inverse'
 };
 
 export const InverseWithLabel = Template.bind({});
-InverseWithLabel.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+InverseWithLabel.parameters = darkBackground;
 InverseWithLabel.args = {
     variant: 'inverse',
     label: 'Menu'
 };
 
-export const NeutralSmall = Template.bind({});
-NeutralSmall.args = {
-    iconSize: 'small',
+export const NeutralMedium = Template.bind({});
+NeutralMedium.args = {
+    iconSize: 'medium',
     variant: 'neutral'
 };
 
@@ -396,3 +413,91 @@ SuccessWithLabel.args = {
     label: 'Menu'
 };
 export const Illustration = TemplateIllustration.bind({});
+
+/**
+ * Example with different combinations of sizes, fallback icon types.
+ * Allows to quickly scan if there is any problems.
+ */
+customElements.define(
+    'ac-base-button-menu-variants',
+    ButtonMenuVariantsComponent.CustomElementConstructor
+);
+const ButtonMenuVariants = ({ variant }) => {
+    const element = document.createElement('ac-base-button-menu-variants');
+    element.variant = variant;
+    return element;
+};
+const TemplateVariants = (args) => ButtonMenuVariants(args);
+
+export const BareVariant = TemplateVariants.bind({});
+BareVariant.args = {
+    variant: 'bare'
+};
+
+export const BareInverseVariant = TemplateVariants.bind({});
+BareInverseVariant.parameters = darkBackground;
+BareInverseVariant.args = {
+    variant: 'bare-inverse'
+};
+
+export const BaseVariant = TemplateVariants.bind({});
+BaseVariant.args = {
+    variant: 'base'
+};
+
+export const BorderVariant = TemplateVariants.bind({});
+BorderVariant.args = {
+    variant: 'border'
+};
+
+export const BorderFilledVariant = TemplateVariants.bind({});
+BorderFilledVariant.args = {
+    variant: 'border-filled'
+};
+
+export const BorderInverseVariant = TemplateVariants.bind({});
+BorderInverseVariant.parameters = darkBackground;
+BorderInverseVariant.args = {
+    variant: 'border-inverse'
+};
+
+export const BrandVariant = TemplateVariants.bind({});
+BrandVariant.args = {
+    variant: 'brand'
+};
+
+export const BrandOutlineVariant = TemplateVariants.bind({});
+BrandOutlineVariant.args = {
+    variant: 'brand-outline'
+};
+
+export const ContainerVariant = TemplateVariants.bind({});
+ContainerVariant.args = {
+    variant: 'container'
+};
+
+export const DestructiveVariant = TemplateVariants.bind({});
+DestructiveVariant.args = {
+    variant: 'destructive'
+};
+
+export const DestructiveTextVariant = TemplateVariants.bind({});
+DestructiveTextVariant.args = {
+    variant: 'destructive-text'
+};
+
+export const InverseVariant = TemplateVariants.bind({});
+InverseVariant.parameters = darkBackground;
+InverseVariant.args = {
+    variant: 'inverse'
+};
+
+export const NeutralVariant = TemplateVariants.bind({});
+NeutralVariant.args = {
+    variant: 'neutral'
+};
+
+export const SuccessVariant = TemplateVariants.bind({});
+SuccessVariant.args = {
+    variant: 'success'
+};

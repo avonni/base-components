@@ -157,7 +157,7 @@ article.avonni-card {
 .avonni-card__media {
     height: var(--avonni-card-media-sizing-height, 100%);
     width: var(--avonni-card-media-sizing-width, 100%);
-    object-fit: var(--avonni-card-media-object-fit, 'cover');
+    object-fit: var(--avonni-card-media-object-fit, cover);
 }
 
 .avonni-card__media-action {

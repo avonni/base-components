@@ -1,15 +1,22 @@
 <template>
-    <lightning-button
-        label={label}
+    <c-button
+        class="avonni-button-dialog"
         accesskey={accessKey}
         disabled={disabled}
-        variant={variant}
         icon-name={iconName}
         icon-position={iconPosition}
-        data-element-id="lightning-button"
+        icon-size={iconSize}
+        icon-src={iconSrc}
+        label={label}
+        stretch={stretch}
+        variant={variant}
+        data-element-id="button"
         onclick={click}
+        onfocus={focus}
     >
-    </lightning-button>
-    <span class="slds-assistive-text">{alternativeText}</span>
+    </c-button>
+    <span if:true={alternativeText} class="slds-assistive-text"
+        >{alternativeText}</span
+    >
     <slot data-element-id="slot"></slot>
 </template>

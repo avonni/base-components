@@ -10,18 +10,19 @@ const DEFAULT_POPOVER_VARIANT = 'base';
 export default class ButtonIconPopover extends LightningElement {
     @api accessKey;
     @api alternativeText;
-    @api title;
+    @api disabled = false;
     @api hideCloseButton = false;
     @api iconName;
     @api iconClass;
-    @api loadingStateAlternativeText;
-    @api tooltip;
-    @api disabled = false;
+    @api iconSrc;
     @api isLoading = false;
-    @api popoverSize = DEFAULT_POPOVER_SIZE;
+    @api loadingStateAlternativeText;
     @api placement = DEFAULT_POPOVER_PLACEMENT;
+    @api popoverSize = DEFAULT_POPOVER_SIZE;
     @api popoverVariant = DEFAULT_POPOVER_VARIANT;
     @api size = DEFAULT_BUTTON_SIZE;
-    @api variant = DEFAULT_BUTTON_VARIANT;
+    @api title;
+    @api tooltip;
     @api triggers = DEFAULT_BUTTON_TRIGGER;
+    @api variant = DEFAULT_BUTTON_VARIANT;
 }

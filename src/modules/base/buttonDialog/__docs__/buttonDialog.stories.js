@@ -23,13 +23,14 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        label: {
+        disabled: {
             control: {
-                type: 'text'
+                type: 'boolean'
             },
-            description: 'Optional text to be shown on the button.',
+            description: 'If present, the popover can be opened by users.',
             table: {
-                type: { summary: 'string' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         iconName: {
@@ -42,27 +43,6 @@ export default {
             table: {
                 type: { summary: 'string' },
                 category: 'icon'
-            }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'base',
-                'neutral',
-                'brand',
-                'brand-outline',
-                'destructive',
-                'destructive-text',
-                'inverse',
-                'success'
-            ],
-            description:
-                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
-            table: {
-                defaultValue: { summary: 'neutral' },
-                type: { summary: 'string' }
             }
         },
         iconPosition: {
@@ -79,88 +59,204 @@ export default {
                 category: 'icon'
             }
         },
-        disabled: {
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the icon. Options include x-small, small, medium, or large.',
+            table: {
+                defaultValue: { summary: 'x-small' },
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
+        iconSrc: {
+            name: 'icon-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        stretch: {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, the popover can be opened by users.',
+            description:
+                'Setting it to true allows the button to take up the entire available width.',
             table: {
-                defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'bare',
+                'bare-inverse',
+                'base',
+                'border',
+                'border-filled',
+                'border-inverse',
+                'brand',
+                'brand-outline',
+                'container',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'neutral',
+                'success'
+            ],
+            description:
+                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+            table: {
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' }
             }
         }
     },
     args: {
         disabled: false,
         iconPosition: 'left',
+        iconSize: 'x-small',
+        stretch: false,
         variant: 'neutral'
     }
 };
 
 const Template = (args) => ButtonDialog(args);
+const darkBackground = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+
+export const Bare = Template.bind({});
+Bare.args = {
+    label: 'Button',
+    variant: 'bare'
+};
+
+export const BareInverseImage = Template.bind({});
+BareInverseImage.parameters = darkBackground;
+BareInverseImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    label: 'Button',
+    variant: 'bare-inverse'
+};
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Show modal',
-    iconName: 'utility:animal_and_nature',
+    label: 'Button',
     variant: 'base'
 };
 
-export const NeutralWithIconRight = Template.bind({});
-NeutralWithIconRight.args = {
-    label: 'Show modal',
+export const Border = Template.bind({});
+Border.args = {
     iconName: 'utility:animal_and_nature',
-    iconPosition: 'right',
-    variant: 'neutral'
+    label: 'Button',
+    variant: 'border'
 };
 
-export const Brand = Template.bind({});
-Brand.args = {
-    label: 'Show modal',
+export const BorderFilled = Template.bind({});
+BorderFilled.parameters = darkBackground;
+BorderFilled.args = {
+    iconName: 'utility:animal_and_nature',
+    label: 'Button',
+    variant: 'border-filled'
+};
+
+export const BorderInverseIconRight = Template.bind({});
+BorderInverseIconRight.parameters = darkBackground;
+BorderInverseIconRight.args = {
+    iconName: 'utility:animal_and_nature',
+    iconPosition: 'right',
+    label: 'Button',
+    variant: 'border-inverse'
+};
+
+export const BrandSmallIcon = Template.bind({});
+BrandSmallIcon.args = {
     iconName: 'utility:einstein',
+    iconSize: 'small',
+    label: 'Button',
     variant: 'brand'
 };
 
-export const BrandOutline = Template.bind({});
-BrandOutline.args = {
-    label: 'Show modal',
+export const BrandOutlineMediumIcon = Template.bind({});
+BrandOutlineMediumIcon.args = {
     iconName: 'utility:einstein',
+    iconSize: 'medium',
+    label: 'Button',
     variant: 'brand-outline'
 };
 
-export const Destructive = Template.bind({});
-Destructive.args = {
-    label: 'Show modal',
+export const ContainerLargeIcon = Template.bind({});
+ContainerLargeIcon.args = {
+    iconName: 'utility:animal_and_nature',
+    iconSize: 'large',
+    label: 'Button',
+    variant: 'container'
+};
+
+export const DestructiveStretch = Template.bind({});
+DestructiveStretch.args = {
     iconName: 'utility:error',
+    label: 'Button',
+    stretch: true,
     variant: 'destructive'
 };
 
 export const DestructiveText = Template.bind({});
 DestructiveText.args = {
-    label: 'Show modal',
     iconName: 'utility:error',
+    label: 'Button',
     variant: 'destructive-text'
 };
 
-export const Inverse = Template.bind({});
-Inverse.args = {
-    label: 'Show modal',
+export const InverseStretch = Template.bind({});
+InverseStretch.parameters = darkBackground;
+InverseStretch.args = {
     iconName: 'utility:animal_and_nature',
+    label: 'Button',
+    stretch: true,
     variant: 'inverse'
+};
+
+export const NeutralIconRight = Template.bind({});
+NeutralIconRight.args = {
+    iconName: 'utility:animal_and_nature',
+    iconPosition: 'right',
+    label: 'Button'
 };
 
 export const Success = Template.bind({});
 Success.args = {
-    label: 'Show modal',
     iconName: 'utility:success',
-    variant: 'success',
-    alternativeText: 'This is a success button dialog'
+    label: 'Button',
+    variant: 'success'
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-    label: 'Show modal',
+    disabled: true,
     iconName: 'utility:animal_and_nature',
-    variant: 'success',
-    disabled: true
+    label: 'Button',
+    variant: 'success'
 };

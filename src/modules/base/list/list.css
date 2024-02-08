@@ -228,7 +228,7 @@
 .avonni-list-item-avatar {
     --avonni-avatar-image-object-fit: var(
         --avonni-list-item-avatar-image-object-fit,
-        'cover'
+        cover
     );
     align-self: var(
         --avonni-list-item-avatar-vertical-alignment,

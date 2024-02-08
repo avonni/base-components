@@ -1,0 +1,43 @@
+<template>
+    <button
+        if:true={showButtonIcon}
+        class={computedButtonClass}
+        accesskey={accessKey}
+        aria-atomic={computedAriaAtomic}
+        aria-disabled={disabled}
+        aria-expanded={computedAriaExpanded}
+        aria-haspopup={computedAriaHasPopup}
+        aria-label={ariaLabel}
+        aria-live={computedAriaLive}
+        disabled={disabled}
+        name={name}
+        type={type}
+        value={value}
+        tabindex={tabIndex}
+        data-element-id="button"
+        onblur={handleButtonBlur}
+        onfocus={handleButtonFocus}
+    >
+        <img
+            if:true={iconSrc}
+            class={computedImageClass}
+            src={iconSrc}
+            data-element-id="image"
+        />
+        <c-primitive-icon
+            if:true={showIcon}
+            icon-name={iconName}
+            svg-class={computedIconClass}
+            variant="bare"
+            data-element-id="primitive-icon"
+        ></c-primitive-icon>
+
+        <span
+            if:true={alternativeText}
+            class="slds-assistive-text"
+            data-element-id="alternative-text"
+        >
+            {alternativeText}
+        </span>
+    </button>
+</template>

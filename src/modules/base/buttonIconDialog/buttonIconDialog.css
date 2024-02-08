@@ -1,0 +1,443 @@
+.avonni-button-icon-dialog {
+    --avonni-button-icon-line-height: var(
+        --avonni-button-icon-dialog-line-height
+    );
+    --avonni-button-icon-sizing-border: var(
+        --avonni-button-icon-dialog-sizing-border
+    );
+    --avonni-button-icon-styling-border: var(
+        --avonni-button-icon-dialog-styling-border
+    );
+    --avonni-button-image-radius-border: var(
+        --avonni-button-icon-dialog-image-radius-border
+    );
+    --avonni-button-image-styling-border: var(
+        --avonni-button-icon-dialog-image-styling-border
+    );
+    --avonni-button-image-sizing-border: var(
+        --avonni-button-icon-dialog-image-sizing-border
+    );
+    --avonni-button-image-color-border: var(
+        --avonni-button-icon-dialog-image-color-border
+    );
+    --avonni-button-image-object-fit: var(
+        --avonni-button-icon-dialog-image-object-fit
+    );
+    /* bare */
+    --avonni-button-icon-bare-color-background: var(
+        --avonni-button-icon-dialog-bare-color-background
+    );
+    --avonni-button-icon-bare-color-border: var(
+        --avonni-button-icon-dialog-bare-color-border
+    );
+    --avonni-button-icon-bare-text-color: var(
+        --avonni-button-icon-dialog-bare-text-color
+    );
+    /* bare-inverse */
+    --avonni-button-icon-bare-inverse-color-background: var(
+        --avonni-button-icon-dialog-bare-inverse-color-background
+    );
+    --avonni-button-icon-bare-inverse-color-border: var(
+        --avonni-button-icon-dialog-bare-inverse-color-border
+    );
+    --avonni-button-icon-bare-inverse-text-color: var(
+        --avonni-button-icon-dialog-bare-inverse-background-color
+    );
+    /* base */
+    --avonni-button-icon-base-color-background: var(
+        --avonni-button-icon-dialog-base-color-background
+    );
+    --avonni-button-icon-base-color-border: var(
+        --avonni-button-icon-dialog-base-color-border
+    );
+    --avonni-button-icon-base-text-color: var(
+        --avonni-button-icon-dialog-base-text-color
+    );
+    /* border */
+    --avonni-button-icon-border-color-background: var(
+        --avonni-button-icon-dialog-border-color-background
+    );
+    --avonni-button-icon-border-color-border: var(
+        --avonni-button-icon-dialog-border-color-border
+    );
+    --avonni-button-icon-border-text-color: var(
+        --avonni-button-icon-dialog-border-text-color
+    );
+    /* border-filled */
+    --avonni-button-icon-border-filled-color-background: var(
+        --avonni-button-icon-dialog-border-filled-color-background
+    );
+    --avonni-button-icon-border-filled-color-border: var(
+        --avonni-button-icon-dialog-border-filled-color-border
+    );
+    --avonni-button-icon-border-filled-text-color: var(
+        --avonni-button-icon-dialog-border-filled-text-color
+    );
+    /* border-inverse */
+    --avonni-button-icon-border-inverse-color-background: var(
+        --avonni-button-icon-dialog-border-inverse-color-background
+    );
+    --avonni-button-icon-border-inverse-color-border: var(
+        --avonni-button-icon-dialog-border-inverse-color-border
+    );
+    --avonni-button-icon-border-inverse-text-color: var(
+        --avonni-button-icon-dialog-border-inverse-text-color
+    );
+    /* brand */
+    --avonni-button-icon-brand-color-background: var(
+        --avonni-button-icon-dialog-brand-color-background
+    );
+    --avonni-button-icon-brand-color-border: var(
+        --avonni-button-icon-dialog-brand-color-border
+    );
+    --avonni-button-icon-brand-text-color: var(
+        --avonni-button-icon-dialog-brand-text-color
+    );
+    /* brand-outline */
+    --avonni-button-icon-outline-brand-color-background: var(
+        --avonni-button-icon-dialog-outline-brand-color-background
+    );
+    --avonni-button-icon-outline-brand-color-border: var(
+        --avonni-button-icon-dialog-outline-brand-color-border
+    );
+    --avonni-button-icon-outline-brand-text-color: var(
+        --avonni-button-icon-dialog-text-color
+    );
+    /* container */
+    --avonni-button-icon-container-color-background: var(
+        --avonni-button-icon-dialog-container-color-background
+    );
+    --avonni-button-icon-container-color-border: var(
+        --avonni-button-icon-dialog-container-color-border
+    );
+    --avonni-button-icon-container-text-color: var(
+        --avonni-button-icon-dialog-container-text-color
+    );
+    /* destructive */
+    --avonni-button-icon-destructive-color-background: var(
+        --avonni-button-icon-dialog-destructive-color-background
+    );
+    --avonni-button-icon-destructive-color-border: var(
+        --avonni-button-icon-dialog-destructive-color-border
+    );
+    --avonni-button-icon-destructive-text-color: var(
+        --avonni-button-icon-dialog-destructive-text-color
+    );
+    /* destructive-text */
+    --avonni-button-icon-text-destructive-color-background: var(
+        --avonni-button-icon-dialog-text-destructive-color-background
+    );
+    --avonni-button-icon-text-destructive-color-border: var(
+        --avonni-button-icon-dialog-text-destructive-color-border
+    );
+    --avonni-button-icon-text-destructive-text-color: var(
+        --avonni-button-icon-dialog-text-destructive-text-color
+    );
+    /* inverse */
+    --avonni-button-icon-inverse-color-background: var(
+        --avonni-button-icon-dialog-inverse-color-background
+    );
+    --avonni-button-icon-inverse-color-border: var(
+        --avonni-button-icon-dialog-inverse-color-border
+    );
+    --avonni-button-icon-inverse-text-color: var(
+        --avonni-button-icon-dialog-inverse-text-color
+    );
+    /* neutral */
+    --avonni-button-icon-neutral-color-background: var(
+        --avonni-button-icon-dialog-neutral-color-background
+    );
+    --avonni-button-icon-neutral-color-border: var(
+        --avonni-button-icon-dialog-neutral-color-border
+    );
+    --avonni-button-icon-neutral-text-color: var(
+        --avonni-button-icon-dialog-text-color
+    );
+    /* success */
+    --avonni-button-icon-success-color-background: var(
+        --avonni-button-icon-dialog-success-color-background
+    );
+    --avonni-button-icon-success-color-border: var(
+        --avonni-button-icon-dialog-success-color-border
+    );
+    --avonni-button-icon-success-text-color: var(
+        --avonni-button-icon-dialog-success-text-color
+    );
+}
+
+.avonni-button-icon-dialog:hover,
+.avonni-button-icon-dialog:focus {
+    /* bare */
+    --avonni-button-icon-bare-color-background-hover: var(
+        --avonni-button-icon-dialog-bare-color-background-hover
+    );
+    --avonni-button-icon-bare-color-border-hover: var(
+        --avonni-button-icon-dialog-bare-color-border-hover
+    );
+    --avonni-button-icon-bare-text-color-hover: var(
+        --avonni-button-icon-dialog-bare-text-color-hover
+    );
+    /* bare-inverse */
+    --avonni-button-icon-bare-inverse-color-background-hover: var(
+        --avonni-button-icon-dialog-bare-inverse-color-background-hover
+    );
+    --avonni-button-icon-bare-inverse-color-border-hover: var(
+        --avonni-button-icon-dialog-bare-inverse-color-border-hover
+    );
+    --avonni-button-icon-bare-inverse-text-color-hover: var(
+        --avonni-button-icon-dialog-bare-inverse-text-color-hover
+    );
+    /* base */
+    --avonni-button-icon-base-color-background-hover: var(
+        --avonni-button-icon-dialog-base-color-background-hover
+    );
+    --avonni-button-icon-base-color-border-hover: var(
+        --avonni-button-icon-dialog-base-color-border-hover
+    );
+    --avonni-button-icon-base-text-color-hover: var(
+        --avonni-button-icon-dialog-base-text-color-hover
+    );
+    /* border */
+    --avonni-button-icon-border-color-background-hover: var(
+        --avonni-button-icon-dialog-border-color-background-hover
+    );
+    --avonni-button-icon-border-color-border-hover: var(
+        --avonni-button-icon-dialog-border-color-border-hover
+    );
+    --avonni-button-icon-border-text-color-hover: var(
+        --avonni-button-icon-dialog-border-text-color-hover
+    );
+    /* border-inverse */
+    --avonni-button-icon-border-inverse-color-background-hover: var(
+        --avonni-button-icon-dialog-border-inverse-color-background-hover
+    );
+    --avonni-button-icon-border-inverse-color-border-hover: var(
+        --avonni-button-icon-dialog-border-inverse-color-border-hover
+    );
+    --avonni-button-icon-border-inverse-text-color-hover: var(
+        --avonni-button-icon-dialog-border-inverse-text-color-hover
+    );
+    /* border-filled */
+    --avonni-button-icon-border-filled-color-background-hover: var(
+        --avonni-button-icon-dialog-border-filled-color-background-hover
+    );
+    --avonni-button-icon-border-filled-color-border-hover: var(
+        --avonni-button-icon-dialog-border-filled-color-border-hover
+    );
+    --avonni-button-icon-border-filled-text-color-hover: var(
+        --avonni-button-icon-dialog-border-filled-text-color-hover
+    );
+    /* brand */
+    --avonni-button-icon-brand-color-background-hover: var(
+        --avonni-button-icon-dialog-brand-color-background-hover
+    );
+    --avonni-button-icon-brand-color-border-hover: var(
+        --avonni-button-icon-dialog-brand-color-border-hover
+    );
+    --avonni-button-icon-brand-text-color-hover: var(
+        --avonni-button-icon-dialog-brand-text-color-hover
+    );
+    /* brand-outline */
+    --avonni-button-icon-outline-brand-color-background-hover: var(
+        --avonni-button-icon-dialog-outline-brand-color-background-hover
+    );
+    --avonni-button-icon-outline-brand-color-border-hover: var(
+        --avonni-button-icon-dialog-outline-brand-color-border-hover
+    );
+    --avonni-button-icon-outline-brand-text-color-hover: var(
+        --avonni-button-icon-dialog-text-color-hover
+    );
+    /* container */
+    --avonni-button-icon-container-color-background-hover: var(
+        --avonni-button-icon-dialog-container-color-background-hover
+    );
+    --avonni-button-icon-container-color-border-hover: var(
+        --avonni-button-icon-dialog-container-color-border-hover
+    );
+    --avonni-button-icon-container-text-color-hover: var(
+        --avonni-button-icon-dialog-container-text-color-hover
+    );
+    /* destructive */
+    --avonni-button-icon-destructive-color-background-hover: var(
+        --avonni-button-icon-dialog-destructive-color-background-hover
+    );
+    --avonni-button-icon-destructive-color-border-hover: var(
+        --avonni-button-icon-dialog-destructive-color-border-hover
+    );
+    --avonni-button-icon-destructive-text-color-hover: var(
+        --avonni-button-icon-dialog-destructive-text-color-hover
+    );
+    /* destructive-text */
+    --avonni-button-icon-text-destructive-color-background-hover: var(
+        --avonni-button-icon-dialog-text-destructive-color-background-hover
+    );
+    --avonni-button-icon-text-destructive-color-border-hover: var(
+        --avonni-button-icon-dialog-text-destructive-color-border-hover
+    );
+    --avonni-button-icon-text-destructive-text-color-hover: var(
+        --avonni-button-icon-dialog-text-destructive-text-color-hover
+    );
+    /* inverse */
+    --avonni-button-icon-inverse-color-background-hover: var(
+        --avonni-button-icon-dialog-inverse-color-background-hover
+    );
+    --avonni-button-icon-inverse-color-border-hover: var(
+        --avonni-button-icon-dialog-inverse-color-border-hover
+    );
+    --avonni-button-icon-inverse-text-color-hover: var(
+        --avonni-button-icon-dialog-inverse-text-color-hover
+    );
+    /* neutral */
+    --avonni-button-icon-neutral-color-background-hover: var(
+        --avonni-button-icon-dialog-neutral-color-background-hover
+    );
+    --avonni-button-icon-neutral-color-border-hover: var(
+        --avonni-button-icon-dialog-neutral-color-border-hover
+    );
+    --avonni-button-icon-neutral-text-color-hover: var(
+        --avonni-button-icon-dialog-text-color-hover
+    );
+    /* success */
+    --avonni-button-icon-success-color-background-hover: var(
+        --avonni-button-icon-dialog-success-color-background-hover
+    );
+    --avonni-button-icon-success-color-border-hover: var(
+        --avonni-button-icon-dialog-success-color-border-hover
+    );
+    --avonni-button-icon-success-text-color-hover: var(
+        --avonni-button-icon-dialog-success-text-color-hover
+    );
+}
+
+.avonni-button-icon-dialog:active {
+    /* bare */
+    --avonni-button-icon-bare-color-background-active: var(
+        --avonni-button-icon-dialog-bare-color-background-active
+    );
+    --avonni-button-icon-bare-color-border-active: var(
+        --avonni-button-icon-dialog-bare-color-border-active
+    );
+    --avonni-button-icon-bare-text-color-active: var(
+        --avonni-button-icon-dialog-bare-text-color-active
+    );
+    /* bare-inverse */
+    --avonni-button-icon-bare-inverse-color-background-active: var(
+        --avonni-button-icon-dialog-bare-inverse-color-background-active
+    );
+    --avonni-button-icon-bare-inverse-color-border-active: var(
+        --avonni-button-icon-dialog-bare-inverse-color-border-active
+    );
+    --avonni-button-icon-bare-inverse-text-color-active: var(
+        --avonni-button-icon-dialog-bare-inverse-text-color-active
+    );
+    /* base */
+    --avonni-button-icon-base-color-background-active: var(
+        --avonni-button-icon-dialog-base-color-background-active
+    );
+    --avonni-button-icon-base-color-border-active: var(
+        --avonni-button-icon-dialog-base-color-border-active
+    );
+    --avonni-button-icon-base-text-color-active: var(
+        --avonni-button-icon-dialog-base-text-color-active
+    );
+    /* border */
+    --avonni-button-icon-border-color-background-active: var(
+        --avonni-button-icon-dialog-border-color-background-active
+    );
+    --avonni-button-icon-border-color-border-active: var(
+        --avonni-button-icon-dialog-border-color-border-active
+    );
+    --avonni-button-icon-border-text-color-active: var(
+        --avonni-button-icon-dialog-border-text-color-active
+    );
+    /* border-filled */
+    --avonni-button-icon-border-filled-color-background-active: var(
+        --avonni-button-icon-dialog-border-filled-color-background-active
+    );
+    --avonni-button-icon-border-filled-color-border-active: var(
+        --avonni-button-icon-dialog-border-filled-color-border-active
+    );
+    --avonni-button-icon-border-filled-text-color-active: var(
+        --avonni-button-icon-dialog-border-filled-text-color-active
+    );
+    /* border-inverse */
+    --avonni-button-icon-border-inverse-color-background-active: var(
+        --avonni-button-icon-dialog-border-inverse-color-background-active
+    );
+    --avonni-button-icon-border-inverse-color-border-active: var(
+        --avonni-button-icon-dialog-border-inverse-color-border-active
+    );
+    --avonni-button-icon-border-inverse-text-color-active: var(
+        --avonni-button-icon-dialog-border-inverse-text-color-active
+    );
+    /* brand */
+    --avonni-button-icon-brand-color-background-active: var(
+        --avonni-button-icon-dialog-brand-color-background-active
+    );
+    --avonni-button-icon-brand-color-border-active: var(
+        --avonni-button-icon-dialog-brand-color-border-active
+    );
+    --avonni-button-icon-brand-text-color-active: var(
+        --avonni-button-icon-dialog-brand-text-color-active
+    );
+    /* brand-outline */
+    --avonni-button-icon-outline-brand-color-background-active: var(
+        --avonni-button-icon-dialog-outline-brand-color-background-active
+    );
+    --avonni-button-icon-outline-brand-color-border-active: var(
+        --avonni-button-icon-dialog-outline-brand-color-border-active
+    );
+    --avonni-button-icon-outline-brand-text-color-active: var(
+        --avonni-button-icon-dialog-text-color-active
+    );
+    /* destructive */
+    --avonni-button-icon-destructive-color-background-active: var(
+        --avonni-button-icon-dialog-destructive-color-background-active
+    );
+    --avonni-button-icon-destructive-color-border-active: var(
+        --avonni-button-icon-dialog-destructive-color-border-active
+    );
+    --avonni-button-icon-destructive-text-color-active: var(
+        --avonni-button-icon-dialog-destructive-text-color-active
+    );
+    /* destructive-text */
+    --avonni-button-icon-text-destructive-color-background-active: var(
+        --avonni-button-icon-dialog-text-destructive-color-background-active
+    );
+    --avonni-button-icon-text-destructive-color-border-active: var(
+        --avonni-button-icon-dialog-text-destructive-color-border-active
+    );
+    --avonni-button-icon-text-destructive-text-color-active: var(
+        --avonni-button-icon-dialog-destructive-text-color-hover-active
+    );
+    /* inverse */
+    --avonni-button-icon-inverse-color-background-active: var(
+        --avonni-button-icon-dialog-inverse-color-background-active
+    );
+    --avonni-button-icon-inverse-color-border-active: var(
+        --avonni-button-icon-dialog-inverse-color-border-active
+    );
+    --avonni-button-icon-inverse-text-color-active: var(
+        --avonni-button-icon-dialog-inverse-text-color-active
+    );
+    /* neutral */
+    --avonni-button-icon-neutral-color-background-active: var(
+        --avonni-button-icon-dialog-neutral-color-background-active
+    );
+    --avonni-button-icon-neutral-color-border-active: var(
+        --avonni-button-icon-dialog-neutral-color-border-active
+    );
+    --avonni-button-icon-neutral-text-color-active: var(
+        --avonni-button-icon-dialog-text-color-active
+    );
+    /* success */
+    --avonni-button-icon-success-color-background-active: var(
+        --avonni-button-icon-dialog-success-color-background-active
+    );
+    --avonni-button-icon-success-color-border-active: var(
+        --avonni-button-icon-dialog-success-color-border-active
+    );
+    --avonni-button-icon-success-text-color-active: var(
+        --avonni-button-icon-dialog-success-text-color-active
+    );
+}
