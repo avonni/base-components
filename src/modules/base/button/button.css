@@ -208,11 +208,11 @@
     );
     --slds-c-button-color-border-active: var(
         --avonni-button-base-color-border-active,
-        var(--sds-c-button-text-color-hover, #014486)
+        var(--sds-c-button-text-color-active, #014486)
     );
-    --slds-c-button-text-color-active: var(
+    color: var(
         --avonni-button-base-text-color-active,
-        var(--sds-c-button-text-color-hover, #014486)
+        var(--sds-c-button-text-color-active, #014486)
     );
 }
 
@@ -306,7 +306,7 @@
     );
     color: var(
         --avonni-button-border-filled-text-color-active,
-        var(--sds-c-button-text-color-hover, #014486)
+        var(--sds-c-button-text-color-active, #014486)
     );
 }
 
@@ -575,9 +575,12 @@
         --avonni-button-destructive-color-border-active,
         var(--slds-g-color-error-base-30, #8e030f)
     );
-    --slds-c-button-destructive-text-color-active: var(
+    color: var(
         --avonni-button-destructive-text-color-active,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(
+            --sds-c-button-destructive-text-color-active,
+            var(--slds-g-color-neutral-base-100, #fff)
+        )
     );
 }
 
@@ -631,9 +634,12 @@
         --avonni-button-text-destructive-color-border-active,
         var(--slds-g-color-border-base-4, #747474)
     );
-    --slds-c-button-text-destructive-text-color-active: var(
+    color: var(
         --avonni-button-text-destructive-text-color-active,
-        var(--slds-g-color-error-base-30, #8e030f)
+        var(
+            --sds-c-button-text-destructive-text-color-active,
+            var(--slds-g-color-error-base-30, #8e030f)
+        )
     );
 }
 
@@ -753,7 +759,7 @@
         --avonni-button-neutral-color-border-active,
         var(--slds-g-color-border-base-4, #747474)
     );
-    --slds-c-button-text-color-active: var(
+    color: var(
         --avonni-button-neutral-text-color-active,
         var(--sds-c-button-text-color-active, #014486)
     );
@@ -809,13 +815,17 @@
         --avonni-button-success-color-border-active,
         var(--slds-g-color-success-base-50, #2e844a)
     );
-    --slds-c-button-success-text-color-active: var(
+    color: var(
         --avonni-button-success-text-color-active,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(
+            --sds-c-button-success-text-color-active,
+            var(--slds-g-color-neutral-base-100, #fff)
+        )
     );
 }
 
-.avonni-button_success:hover {
+.avonni-button_success:hover,
+.avonni-button_success:focus {
     --slds-c-button-success-color-background-hover: var(
         --avonni-button-success-color-background-hover,
         var(--slds-g-color-success-base-50, #2e844a)
