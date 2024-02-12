@@ -21,13 +21,13 @@
             title={draftAlternativeText}
             >*</abbr
         >
-        {label}
         <img
             if:true={iconSrc}
             class={computedImageClass}
             src={iconSrc}
             data-element-id="image"
         />
+        {label}
         <c-primitive-icon
             if:true={showIcon}
             icon-name={iconName}

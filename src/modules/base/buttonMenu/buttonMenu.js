@@ -545,7 +545,7 @@ export default class ButtonMenu extends PrimitiveButton {
     get computedImageClass() {
         return classSet('avonni-button-menu__image')
             .add(`avonni-button-menu__image_${this.iconSize}`)
-            .add({ 'slds-m-left_xx-small': this.label })
+            .add({ 'slds-m-right_xx-small': this.label })
             .toString();
     }
 
