@@ -227,7 +227,7 @@ export default {
                 'success'
             ],
             description:
-                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.',
             table: {
                 type: { summary: 'string' }
             }

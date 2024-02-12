@@ -10,6 +10,26 @@ import {
 import { Tooltip } from 'c/tooltipLibrary';
 import PrimitiveButton from 'c/primitiveButton';
 
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'bare-inverse',
+        'base',
+        'border',
+        'border-filled',
+        'border-inverse',
+        'brand',
+        'brand-outline',
+        'container',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'neutral',
+        'success'
+    ],
+    default: 'border'
+};
+
 const i18n = {
     loading: 'Loading',
     showMenu: 'Show Menu'
@@ -135,6 +155,7 @@ export default class ButtonMenu extends PrimitiveButton {
     _menuAlignment = MENU_ALIGNMENTS.default;
     _nubbin = false;
     _tooltip;
+    _variant = BUTTON_VARIANTS.default;
 
     _boundingRect = {};
     _dropdownVisible = false;
@@ -316,6 +337,25 @@ export default class ButtonMenu extends PrimitiveButton {
             });
             this._tooltip.initialize();
         }
+    }
+
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
+     * border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.
+     *
+     * @public
+     * @type {string}
+     * @default border
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
     }
 
     /*
