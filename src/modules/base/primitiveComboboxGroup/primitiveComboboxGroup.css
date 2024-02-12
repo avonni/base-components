@@ -1,5 +1,12 @@
-.avonni-primitive-combobox__option .avonni-primitive-combobox__option.avonni-primitive-combobox__option_disabled {
+.avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled) {
     background: var(--avonni-combobox-option-color-background, transparent);
+}
+
+.avonni-primitive-combobox__option.avonni-primitive-combobox__option_disabled {
+    background: var(
+        --avonni-combobox-option-color-background-disabled,
+        transparent
+    );
 }
 
 .avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled):hover,
@@ -16,6 +23,110 @@
     color: #dddbda;
 }
 
-.avonni-primitive-combobox__option_disabled .slds-media__body .slds-listbox__option-icon {
-    --avonni-avatar-fallback-icon-color-background: #dddbda;
+.avonni-primitive-combobox__option_disabled
+    .slds-media__body
+    .slds-listbox__option-icon {
+    --avonni-avatar-fallback-icon-color-background: var(
+        --avonni-combobox-option-avatar-fallback-icon-color-background-disabled,
+        #dddbda
+    );
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-combobox-option-avatar-fallback-icon-color-foreground-disabled
+    );
+}
+
+.avonni-primitive-combobox__avatar {
+    --avonni-avatar-color-border: var(
+        --avonni-combobox-option-avatar-color-border
+    );
+    --avonni-avatar-radius-border: var(
+        --avonni-combobox-option-avatar-radius-border
+    );
+    --avonni-avatar-sizing-border: var(
+        --avonni-combobox-option-avatar-sizing-border
+    );
+    --avonni-avatar-styling-border: var(
+        --avonni-combobox-option-avatar-styling-border
+    );
+    --avonni-avatar-initials-text-color: var(
+        --avonni-combobox-option-avatar-initials-text-color
+    );
+    --avonni-avatar-initials-text-font-style: var(
+        --avonni-combobox-option-avatar-initials-text-font-style
+    );
+    --avonni-avatar-initials-text-font-weight: var(
+        --avonni-combobox-option-avatar-initials-text-font-weight
+    );
+    --avonni-avatar-initials-text-color-hover: var(
+        --avonni-combobox-option-avatar-initials-text-color-hover
+    );
+    --avonni-avatar-presence-color-border: var(
+        --avonni-combobox-option-avatar-presence-color-border
+    );
+    --avonni-avatar-presence-radius-border: var(
+        --avonni-combobox-option-avatar-presence-radius-border
+    );
+    --avonni-avatar-presence-away-color-background: var(
+        --avonni-combobox-option-avatar-presence-away-color-background
+    );
+    --avonni-avatar-presence-blocked-color-background: var(
+        --avonni-combobox-option-avatar-presence-blocked-color-background
+    );
+    --avonni-avatar-presence-busy-color-background: var(
+        --avonni-combobox-option-avatar-presence-busy-color-background
+    );
+    --avonni-avatar-presence-focus-color-background: var(
+        --avonni-combobox-option-avatar-presence-focus-color-background
+    );
+    --avonni-avatar-presence-offline-color-background: var(
+        --avonni-combobox-option-avatar-presence-offline-color-background
+    );
+    --avonni-avatar-presence-online-color-background: var(
+        --avonni-combobox-option-avatar-presence-online-color-background
+    );
+    --avonni-avatar-fallback-icon-color-background: var(
+        --avonni-combobox-option-avatar-fallback-icon-color-background
+    );
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-combobox-option-avatar-fallback-icon-color-foreground
+    );
+    --avonni-avatar-image-object-fit: var(
+        --avonni-combobox-option-avatar-image-object-fit
+    );
+}
+
+.avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled)
+    .avonni-primitive-combobox__option-label {
+    color: var(--avonni-combobox-option-label-text-color, #181818);
+    font-size: var(--avonni-combobox-option-label-font-size, 0.75rem);
+    font-style: var(--avonni-combobox-option-label-font-style, normal);
+    font-weight: var(--avonni-combobox-option-label-font-weight, 400);
+}
+
+.avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled):hover
+    .avonni-primitive-combobox__option-label {
+    color: var(--avonni-combobox-option-label-text-color-hover, #181818);
+}
+
+.avonni-primitive-combobox__option_disabled
+    .avonni-primitive-combobox__option-label {
+    color: var(--avonni-combobox-option-label-text-color-disabled, #dddbda);
+}
+
+.avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled)
+    .avonni-primitive-combobox__option-secondary-text {
+    color: var(--avonni-combobox-option-secondary-text-color, #444444);
+    font-size: var(--avonni-combobox-option-secondary-text-font-size, 0.75rem);
+    font-style: var(--avonni-combobox-option-secondary-text-font-style, normal);
+    font-weight: var(--avonni-combobox-option-secondary-text-font-weight, 400);
+}
+
+.avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled):hover
+    .avonni-primitive-combobox__option-secondary-text {
+    color: var(--avonni-combobox-option-secondary-text-color-hover, #444444);
+}
+
+.avonni-primitive-combobox__option_disabled
+    .avonni-primitive-combobox__option-secondary-text {
+    color: var(--avonni-combobox-option-secondary-text-color-disabled, #dddbda);
 }

@@ -56,7 +56,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-combobox-action-color-background
- * @default #ffffff
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-color-background-disabled
+ * @default transparent
  * @type color
  */
 /**
@@ -67,15 +73,39 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-option-color-background
- * @default transparent
+ * @name --avonni-combobox-action-text-color
+ * @default #181818
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-option-color-background-hover
- * @default #f3f2f2
+ * @name --avonni-combobox-action-text-color-disabled
+ * @default #dddbda
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-text-color-hover
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-text-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-text-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-text-font-weight
+ * @default 400
+ * @type font
  */
 /**
  * @memberof stylingHooks
@@ -103,6 +133,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-combobox-input-color-border
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-combobox-input-radius-border
  * @default 0.25rem
  * @type dimension
@@ -121,7 +157,197 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-input-color-border
- * @default #747474
+ * @name --avonni-combobox-option-color-background
+ * @default transparent
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-color-background-disabled
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-color-background-hover
+ * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-label-text-color
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-label-text-color-hover
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-label-text-color-disabled
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-label-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-label-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-secondary-text-color
+ * @default #444444
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-secondary-text-color-hover
+ * @default #444444
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-secondary-text-color-disabled
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-secondary-text-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-secondary-text-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-secondary-text-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-radius-border
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-sizing-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-styling-border
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-initials-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-initials-text-font-style
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-initials-text-font-weight
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-initials-text-color-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-radius-border
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-away-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-blocked-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-busy-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-focus-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-offline-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-presence-online-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-fallback-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-fallback-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-fallback-icon-color-background-disabled
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-fallback-icon-color-foreground-disabled
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-image-object-fit
+ * @type string
  */

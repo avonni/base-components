@@ -25,9 +25,26 @@ input.avonni-primitive-combobox__input {
     border-bottom-left-radius: 0;
 }
 
-.avonni-primitive-combobox__action,
-.avonni-primitive-combobox__action.avonni-primitive-combobox__action_disabled {
+.avonni-primitive-combobox__action {
     background: var(--avonni-combobox-action-color-background, transparent);
+    color: var(--avonni-combobox-action-text-color, #181818);
+    font-size: var(--avonni-combobox-action-text-font-size, 0.75rem);
+    font-style: var(--avonni-combobox-action-text-font-style, normal);
+    font-weight: var(--avonni-combobox-action-text-font-weight, 400);
+}
+
+.avonni-primitive-combobox__action.avonni-primitive-combobox__action_disabled {
+    background: var(
+        --avonni-combobox-action-color-background-disabled,
+        transparent
+    );
+    color: var(--avonni-combobox-action-text-color-disabled, #dddbda);
+}
+
+.avonni-primitive-combobox__action:not(.avonni-primitive-combobox__action_disabled):hover,
+.avonni-primitive-combobox__action.avonni-primitive-combobox__option_focused {
+    background: var(--avonni-combobox-action-color-background-hover, #f3f2f2);
+    color: var(--avonni-combobox-action-text-color-hover, #181818);
 }
 
 .avonni-primitive-combobox__action_fixed {
@@ -36,11 +53,6 @@ input.avonni-primitive-combobox__input {
     right: 0;
     z-index: 1;
     background-color: var(--avonni-combobox-action-color-background, #ffffff);
-}
-
-.avonni-primitive-combobox__action:not(.avonni-primitive-combobox__action_disabled):hover,
-.avonni-primitive-combobox__action.avonni-primitive-combobox__option_focused {
-    background: var(--avonni-combobox-action-color-background-hover, #f3f2f2);
 }
 
 .avonni-primitive-combobox__action_disabled,

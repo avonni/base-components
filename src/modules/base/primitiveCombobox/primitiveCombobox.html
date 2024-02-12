@@ -36,15 +36,15 @@
                 <c-avatar
                     if:true={showInputValueAvatar}
                     class="slds-combobox__input-entity-icon"
+                    aria-hidden="true"
                     fallback-icon-name={selectedOption.avatar.fallbackIconName}
+                    hide-avatar-details="true"
                     initials={selectedOption.avatar.initials}
                     presence={selectedOption.avatar.presence}
                     presence-position={selectedOption.avatar.presencePosition}
+                    size="x-small"
                     src={selectedOption.avatar.src}
                     variant={selectedOption.avatar.variant}
-                    aria-hidden="true"
-                    hide-avatar-details="true"
-                    size="x-small"
                 ></c-avatar>
                 <!-- Main input -->
                 <input
