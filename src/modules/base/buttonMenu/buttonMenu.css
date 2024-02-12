@@ -49,9 +49,10 @@ button {
 }
 
 .avonni-button-menu__button_label {
+    font-family: var(--avonni-button-menu-label-font-family);
     font-size: var(--avonni-button-menu-label-font-size, 0.8175rem);
-    font-weight: var(--avonni-button-menu-label-font-weight, 400);
     font-style: var(--avonni-button-menu-label-font-style, normal);
+    font-weight: var(--avonni-button-menu-label-font-weight, 400);
 }
 
 .avonni-button-menu__button-icon_medium {
@@ -1107,7 +1108,7 @@ button {
         --avonni-button-menu-button-success-color-background-active,
         var(--slds-g-color-success-base-50, #2e844a)
     );
-    border: var(
+    border-color: var(
         --avonni-button-menu-button-success-color-border-active,
         var(--slds-g-color-success-base-50, #2e844a)
     );
