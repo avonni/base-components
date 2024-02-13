@@ -272,6 +272,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-combobox-option-avatar-initials-text-color-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-combobox-option-avatar-initials-text-font-style
  * @type font
  */
@@ -279,11 +284,6 @@
  * @memberof stylingHooks
  * @name --avonni-combobox-option-avatar-initials-text-font-weight
  * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-combobox-option-avatar-initials-text-color-hover
- * @type color
  */
 /**
  * @memberof stylingHooks

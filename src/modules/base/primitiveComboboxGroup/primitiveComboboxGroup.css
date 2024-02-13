@@ -23,9 +23,7 @@
     color: #dddbda;
 }
 
-.avonni-primitive-combobox__option_disabled
-    .slds-media__body
-    .slds-listbox__option-icon {
+.avonni-primitive-combobox__option_disabled .avonni-primitive-combobox__avatar {
     --avonni-avatar-fallback-icon-color-background: var(
         --avonni-combobox-option-avatar-fallback-icon-color-background-disabled,
         #dddbda
@@ -35,7 +33,8 @@
     );
 }
 
-.avonni-primitive-combobox__avatar {
+.avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled)
+    .avonni-primitive-combobox__avatar {
     --avonni-avatar-color-border: var(
         --avonni-combobox-option-avatar-color-border
     );
@@ -90,6 +89,10 @@
     --avonni-avatar-fallback-icon-color-foreground: var(
         --avonni-combobox-option-avatar-fallback-icon-color-foreground
     );
+    /* Fallback icon if initials */
+    --sds-c-icon-color-background: var(
+        --avonni-combobox-option-avatar-fallback-icon-color-background
+    );
     --avonni-avatar-image-object-fit: var(
         --avonni-combobox-option-avatar-image-object-fit
     );
@@ -98,6 +101,9 @@
 .avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled)
     .avonni-primitive-combobox__option-label {
     color: var(--avonni-combobox-option-label-text-color, #181818);
+}
+
+.avonni-primitive-combobox__option .avonni-primitive-combobox__option-label {
     font-size: var(--avonni-combobox-option-label-font-size, 0.75rem);
     font-style: var(--avonni-combobox-option-label-font-style, normal);
     font-weight: var(--avonni-combobox-option-label-font-weight, 400);
@@ -116,6 +122,10 @@
 .avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled)
     .avonni-primitive-combobox__option-secondary-text {
     color: var(--avonni-combobox-option-secondary-text-color, #444444);
+}
+
+.avonni-primitive-combobox__option
+    .avonni-primitive-combobox__option-secondary-text {
     font-size: var(--avonni-combobox-option-secondary-text-font-size, 0.75rem);
     font-style: var(--avonni-combobox-option-secondary-text-font-style, normal);
     font-weight: var(--avonni-combobox-option-secondary-text-font-weight, 400);
