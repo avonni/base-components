@@ -6,6 +6,33 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'bare-inverse',
+        'base',
+        'border',
+        'border-filled',
+        'border-inverse',
+        'brand',
+        'brand-outline',
+        'container',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'neutral',
+        'success'
+    ],
+    default: 'neutral'
+};
+
+const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+
+const ICON_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
+
 const POPOVER_SIZES = {
     valid: ['small', 'medium', 'large'],
     default: 'medium'
@@ -22,19 +49,6 @@ const POPOVER_PLACEMENTS = {
     ],
     default: 'left'
 };
-const BUTTON_VARIANTS = {
-    valid: [
-        'base',
-        'neutral',
-        'brand',
-        'brand-outline',
-        'destructive',
-        'destructive-text',
-        'inverse',
-        'success'
-    ],
-    default: 'neutral'
-};
 
 const POPOVER_TRIGGERS = {
     valid: ['click', 'hover', 'focus'],
@@ -46,12 +60,10 @@ const POPOVER_VARIANTS = {
     default: 'base'
 };
 
-const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
-
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
- * The button popover displays a lightning button. On click, open the popover.
+ * The button popover displays an avonni button. On click, open the popover.
  *
  * @class
  * @name ButtonPopover
@@ -75,6 +87,13 @@ export default class ButtonPopover extends LightningElement {
      */
     @api iconName;
     /**
+     * URL to set for the image attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api iconSrc;
+    /**
      * Optional text to be shown on the button.
      *
      * @type {string}
@@ -94,10 +113,12 @@ export default class ButtonPopover extends LightningElement {
     _isLoading = false;
     _hideCloseButton = false;
     _iconPosition = ICON_POSITIONS.default;
+    _iconSize = ICON_SIZES.default;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _placement = POPOVER_PLACEMENTS.default;
     _popoverSize = POPOVER_SIZES.default;
     _popoverVariant = POPOVER_VARIANTS.default;
+    _stretch = false;
     _triggers = POPOVER_TRIGGERS.default;
     _variant = BUTTON_VARIANTS.default;
 
@@ -168,7 +189,6 @@ export default class ButtonPopover extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -184,7 +204,6 @@ export default class ButtonPopover extends LightningElement {
     get hideCloseButton() {
         return this._hideCloseButton;
     }
-
     set hideCloseButton(value) {
         this._hideCloseButton = normalizeBoolean(value);
     }
@@ -200,11 +219,28 @@ export default class ButtonPopover extends LightningElement {
     get iconPosition() {
         return this._iconPosition;
     }
-
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
             fallbackValue: ICON_POSITIONS.default,
             validValues: ICON_POSITIONS.valid
+        });
+    }
+
+    /**
+     * The size of the icon. Options include x-small, small, medium or large.
+     *
+     * @public
+     * @type {string}
+     * @default x-small
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 
@@ -219,7 +255,6 @@ export default class ButtonPopover extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -254,7 +289,6 @@ export default class ButtonPopover extends LightningElement {
     get placement() {
         return this._placement;
     }
-
     set placement(placement) {
         this._placement = normalizeString(placement, {
             fallbackValue: POPOVER_PLACEMENTS.default,
@@ -273,7 +307,6 @@ export default class ButtonPopover extends LightningElement {
     get popoverSize() {
         return this._popoverSize;
     }
-
     set popoverSize(popoverSize) {
         this._popoverSize = normalizeString(popoverSize, {
             fallbackValue: POPOVER_SIZES.default,
@@ -293,12 +326,26 @@ export default class ButtonPopover extends LightningElement {
     get popoverVariant() {
         return this._popoverVariant;
     }
-
     set popoverVariant(popoverVariant) {
         this._popoverVariant = normalizeString(popoverVariant, {
             fallbackValue: POPOVER_VARIANTS.default,
             validValues: POPOVER_VARIANTS.valid
         });
+    }
+
+    /**
+     * Setting it to true allows the button to take up the entire available width.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get stretch() {
+        return this._stretch;
+    }
+    set stretch(value) {
+        this._stretch = normalizeBoolean(value);
     }
 
     /**
@@ -312,7 +359,6 @@ export default class ButtonPopover extends LightningElement {
     get triggers() {
         return this._triggers;
     }
-
     set triggers(triggers) {
         this._triggers = normalizeString(triggers, {
             fallbackValue: POPOVER_TRIGGERS.default,
@@ -321,7 +367,8 @@ export default class ButtonPopover extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
+     * border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.
      *
      * @type {string}
      * @default neutral
@@ -331,7 +378,6 @@ export default class ButtonPopover extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -346,11 +392,12 @@ export default class ButtonPopover extends LightningElement {
      */
 
     /**
-     * True if there is a title.
-     * @type {boolean}
+     * Button element.
+     *
+     * @type {element}
      */
-    get hasStringTitle() {
-        return !!this.title;
+    get button() {
+        return this.template.querySelector('[data-element-id="button"]');
     }
 
     /**
@@ -399,15 +446,20 @@ export default class ButtonPopover extends LightningElement {
                 'slds-nubbin_bottom-right': this._placement === 'bottom-right',
                 'slds-nubbin_bottom': this._placement === 'bottom-center',
                 'slds-p-vertical_large': this._isLoading,
-                'slds-popover_warning': this._popoverVariant === 'warning',
-                'slds-popover_error': this._popoverVariant === 'error',
-                'slds-popover_walkthrough':
-                    this._popoverVariant === 'walkthrough',
                 'slds-show': this.popoverVisible,
                 'slds-hide': !this.popoverVisible
             })
+            .add(`slds-popover_${this.popoverVariant}`)
             .add(`slds-popover_${this._popoverSize}`)
             .toString();
+    }
+
+    /**
+     * True if there is a title.
+     * @type {boolean}
+     */
+    get hasStringTitle() {
+        return !!this.title;
     }
 
     /*
@@ -423,7 +475,7 @@ export default class ButtonPopover extends LightningElement {
      */
     @api
     click() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.clickOnButton();
         }
         /**
@@ -443,7 +495,7 @@ export default class ButtonPopover extends LightningElement {
      */
     @api
     focus() {
-        if (this._connected) {
+        if (this._connected && this.button) {
             this.focusOnButton();
         }
     }
@@ -505,9 +557,7 @@ export default class ButtonPopover extends LightningElement {
      */
     focusOnButton() {
         this.allowBlur();
-        this.template
-            .querySelector('[data-element-id="lightning-button"]')
-            .focus();
+        this.button.focus();
         if (
             this._triggers === 'focus' &&
             !this.popoverVisible &&
@@ -540,10 +590,7 @@ export default class ButtonPopover extends LightningElement {
      * If the trigger is click, it toggles the menu visibility.
      */
     handlePopoverBlur(event) {
-        const isButton =
-            this.template.querySelector(
-                '[data-element-id="lightning-button"]'
-            ) === event.relatedTarget;
+        const isButton = this.button === event.relatedTarget;
         if (this._cancelBlur) {
             return;
         }

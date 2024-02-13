@@ -55,8 +55,10 @@ export { ContentMutation } from './contentMutation';
 export { observePosition } from './observers';
 export { hasOnlyAllowedVideoIframes } from './videoUtils';
 export {
+    DATE_FORMAT_PRESETS,
     addToDate,
     dateTimeObjectFrom,
+    getFormattedDate,
     getStartOfWeek,
     getWeekday,
     formatDateFromStyle,
@@ -68,6 +70,7 @@ export {
     removeFromDate
 } from './dateTimeUtils';
 import { smartSetAttribute } from './smartSetAttribute';
+export { isCSR } from './ssr';
 
 export function synchronizeAttrs(element, values) {
     if (!element) {
@@ -177,4 +180,16 @@ export function buttonGroupOrderClass(groupOrder) {
         [BUTTON_GROUP_ORDER.LAST]: 'slds-button_last',
         [BUTTON_GROUP_ORDER.ONLY]: 'single-button'
     }[groupOrder];
+}
+
+/**
+ * Checks if the given component is native
+ * @param {Object} cmp Component instance
+ * @returns {Boolean} Whether the component is native
+ */
+export function isNativeComponent(cmp) {
+    if (cmp && cmp.template && cmp.template.constructor) {
+        return !!String(cmp.template.constructor).match(/\[native code\]/);
+    }
+    return false;
 }

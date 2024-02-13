@@ -60,9 +60,17 @@ button.avonni-avatar-group__avatar-in-line-button {
     height: 43px;
 }
 
+.avonni-avatar-group__list-stack_x-small {
+    margin-left: 4px;
+}
+
 .avonni-avatar-group_in-line.avonni-avatar-x-small,
 .avonni-avatar-group__avatar-button-in-line.avonni-action-button-x-small {
     margin-left: -4px;
+}
+
+.avonni-avatar-group__list-stack_small {
+    margin-left: 6px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-small,
@@ -70,9 +78,17 @@ button.avonni-avatar-group__avatar-in-line-button {
     margin-left: -6px;
 }
 
+.avonni-avatar-group__list-stack_medium {
+    margin-left: 8px;
+}
+
 .avonni-avatar-group_in-line.avonni-avatar-medium,
 .avonni-avatar-group__avatar-button-in-line.avonni-action-button-medium {
     margin-left: -8px;
+}
+
+.avonni-avatar-group__list-stack_large {
+    margin-left: 10px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-large,
@@ -80,9 +96,17 @@ button.avonni-avatar-group__avatar-in-line-button {
     margin-left: -10px;
 }
 
+.avonni-avatar-group__list-stack_x-large {
+    margin-left: 12px;
+}
+
 .avonni-avatar-group_in-line.avonni-avatar-x-large,
 .avonni-avatar-group__avatar-button-in-line.avonni-action-button-x-large {
     margin-left: -12px;
+}
+
+.avonni-avatar-group__list-stack_xx-large {
+    margin-left: 14px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-xx-large,
@@ -125,6 +149,54 @@ button.avonni-avatar-group__avatar-in-line-button {
 
 .avonni-avatar-group__list-button + .slds-dropdown {
     margin-left: 0.75rem;
+}
+
+.avonni-avatar-group__list-button {
+    --slds-c-button-spacing-block-end: var(
+        --avonni-avatar-group-show-more-button-neutral-spacing-block-end
+    );
+    --slds-c-button-spacing-block-start: var(
+        --avonni-avatar-group-show-more-button-neutral-spacing-block-start
+    );
+    --slds-c-button-neutral-spacing-inline-end: var(
+        --avonni-avatar-group-show-more-button-neutral-spacing-inline-end
+    );
+    --slds-c-button-neutral-spacing-inline-start: var(
+        --avonni-avatar-group-show-more-button-neutral-spacing-inline-start
+    );
+    --slds-c-button-neutral-color-background: var(
+        --avonni-avatar-group-show-more-button-neutral-color-background
+    );
+    --slds-c-button-neutral-color-background-active: var(
+        --avonni-avatar-group-show-more-button-neutral-color-background-active
+    );
+    --slds-c-button-neutral-color-background-hover: var(
+        --avonni-avatar-group-show-more-button-neutral-color-background-hover
+    );
+    --slds-c-button-neutral-color-border: var(
+        --avonni-avatar-group-show-more-button-neutral-color-border
+    );
+    --slds-c-button-neutral-color-border-active: var(
+        --avonni-avatar-group-show-more-button-neutral-color-border-active
+    );
+    --slds-c-button-neutral-color-border-hover: var(
+        --avonni-avatar-group-show-more-button-neutral-color-border-hover
+    );
+    --slds-c-button-text-color: var(
+        --avonni-avatar-group-show-more-button-neutral-text-color
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-avatar-group-show-more-button-neutral-text-color-active
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-avatar-group-show-more-button-neutral-text-color-hover
+    );
+    --slds-c-button-radius-border: var(
+        --avonni-avatar-group-show-more-button-neutral-radius-border
+    );
+    --slds-c-button-sizing-border: var(
+        --avonni-avatar-group-show-more-button-neutral-sizing-border
+    );
 }
 
 /* --- */

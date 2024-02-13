@@ -17,8 +17,12 @@ export default class ComboboxInfiniteLoading extends LightningElement {
     @api label;
     @api loadMoreOffset;
     @api loadingStateAlternativeText;
+    @api max;
     @api messageWhenBadInput;
+    @api messageWhenRangeOverflow;
+    @api messageWhenRangeUnderflow;
     @api messageWhenValueMissing;
+    @api min;
     @api multiLevelGroups;
     @api name;
     @api placeholder;

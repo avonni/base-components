@@ -133,6 +133,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-progress-bar-label-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-progress-bar-value-text-color
  * @default #080707
  * @type color

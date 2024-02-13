@@ -204,7 +204,12 @@
                     <!-- Show more button -->
                     <lightning-button
                         if:true={showMoreButton}
-                        class="slds-m-top_small slds-m-bottom_small slds-show"
+                        class="
+                            slds-m-top_small
+                            slds-m-bottom_small
+                            slds-show
+                            avonni-vertical-visual-picker__show-more-button
+                        "
                         disabled={isLoading}
                         icon-name={currentShowButtonIconName}
                         label={currentShowButtonLabel}

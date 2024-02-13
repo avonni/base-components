@@ -1,5 +1,15 @@
 <template>
     <div
+        if:true={isLoading}
+        class="slds-is-relative avonni-metric__loading-spinner"
+        data-element-id="div-loading-spinner"
+    >
+        <lightning-spinner
+            alternative-text="Loading..."
+            size="x-small"
+        ></lightning-spinner>
+    </div>
+    <div
         if:true={hasValue}
         class="slds-grid slds-grid_vertical-align-end avonni-metric__wrapper"
         data-element-id="div-wrapper"

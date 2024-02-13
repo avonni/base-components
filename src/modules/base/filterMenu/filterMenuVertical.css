@@ -1,7 +1,60 @@
 .avonni-filter-menu__title-button_base {
-    background-color: white;
+    background-color: var(
+        --avonni-filter-menu-vertical-label-color-background,
+        var(--lwc-colorBackgroundAlt, #ffffff)
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-filter-menu-vertical-collapse-icon-color-foreground
+    );
+}
+
+.avonni-filter-menu__title-button_base:hover {
+    background-color: var(
+        --avonni-filter-menu-vertical-label-color-background-hover
+    );
+}
+
+.avonni-filter-menu__title-button_base:active {
+    background-color: var(
+        --avonni-filter-menu-vertical-label-color-background-active
+    );
 }
 
 .avonni-filter-menu__title-button_base:active {
     border-color: transparent;
+}
+
+.avonni-filter-menu__load-more-button {
+    --slds-c-button-text-color: var(
+        --avonni-filter-menu-vertical-load-more-button-text-color
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-filter-menu-vertical-load-more-button-text-color-active
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-filter-menu-vertical-load-more-button-text-color-hover
+    );
+}
+
+.avonni-filter-menu__label {
+    color: var(
+        --avonni-filter-menu-vertical-label-text-color,
+        var(
+            --slds-g-color-neutral-base-10,
+            var(--lwc-colorTextDefault, #181818)
+        )
+    );
+    font-weight: var(
+        --avonni-filter-menu-vertical-label-font-weight,
+        var(--lwc-fontWeightBold, 700)
+    );
+    font-size: var(--avonni-filter-menu-vertical-label-font-size, 0.8125rem);
+}
+
+.avonni-filter-menu__title-button_base:hover .avonni-filter-menu__label {
+    color: var(--avonni-filter-menu-vertical-label-text-color-hover);
+}
+
+.avonni-filter-menu__title-button_base:active .avonni-filter-menu__label {
+    color: var(--avonni-filter-menu-vertical-label-text-color-active);
 }

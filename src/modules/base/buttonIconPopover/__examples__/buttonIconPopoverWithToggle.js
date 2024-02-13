@@ -8,39 +8,41 @@ customElements.define(
 export const ButtonIconPopoverWithToggle = ({
     accessKey,
     alternativeText,
-    title,
+    disabled,
     hideCloseButton,
     iconName,
     iconClass,
-    loadingStateAlternativeText,
-    tooltip,
-    disabled,
+    iconSrc,
     isLoading,
-    size,
+    loadingStateAlternativeText,
     placement,
-    variant,
     popoverSize,
+    popoverVariant,
+    size,
+    title,
+    tooltip,
     triggers,
-    popoverVariant
+    variant
 }) => {
     const element = document.createElement(
         'ac-base-button-icon-popover-with-toggle'
     );
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
-    element.title = title;
+    element.disabled = disabled;
     element.hideCloseButton = hideCloseButton;
     element.iconName = iconName;
     element.iconClass = iconClass;
-    element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.tooltip = tooltip;
-    element.disabled = disabled;
+    element.iconSrc = iconSrc;
     element.isLoading = isLoading;
-    element.size = size;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.placement = placement;
-    element.variant = variant;
     element.popoverSize = popoverSize;
-    element.triggers = triggers;
     element.popoverVariant = popoverVariant;
+    element.size = size;
+    element.title = title;
+    element.tooltip = tooltip;
+    element.triggers = triggers;
+    element.variant = variant;
     return element;
 };

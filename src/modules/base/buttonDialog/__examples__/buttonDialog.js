@@ -8,19 +8,25 @@ customElements.define(
 export const ButtonDialog = ({
     accessKey,
     alternativeText,
-    label,
-    iconName,
     disabled,
-    variant,
-    iconPosition
+    iconName,
+    iconPosition,
+    iconSize,
+    iconSrc,
+    label,
+    stretch,
+    variant
 }) => {
     const element = document.createElement('ac-base-button-dialog');
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
-    element.label = label;
-    element.iconName = iconName;
     element.disabled = disabled;
-    element.variant = variant;
+    element.iconName = iconName;
     element.iconPosition = iconPosition;
+    element.iconSize = iconSize;
+    element.iconSrc = iconSrc;
+    element.label = label;
+    element.stretch = stretch;
+    element.variant = variant;
     return element;
 };

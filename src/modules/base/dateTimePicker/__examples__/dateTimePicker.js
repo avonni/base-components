@@ -6,9 +6,12 @@ customElements.define(
 );
 
 export const DateTimePicker = ({
+    avatar,
+    datePickerVariant,
     disabled,
     fieldLevelHelp,
     label,
+    hideDateLabel,
     hideLabel,
     variant,
     messageWhenValueMissing,
@@ -39,9 +42,12 @@ export const DateTimePicker = ({
     timezone
 }) => {
     const element = document.createElement('ac-base-date-time-picker');
+    element.avatar = avatar;
+    element.datePickerVariant = datePickerVariant;
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;
+    element.hideDateLabel = hideDateLabel;
     element.hideLabel = hideLabel;
     element.variant = variant;
     element.messageWhenValueMissing = messageWhenValueMissing;

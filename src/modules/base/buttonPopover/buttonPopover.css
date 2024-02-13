@@ -69,3 +69,618 @@ div:focus {
     display: flex;
     justify-content: space-between;
 }
+
+.avonni-button-popover {
+    --avonni-button-shadow: var(--avonni-button-popover-shadow);
+    --avonni-button-shadow-focus: var(--avonni-button-popover-shadow-focus);
+    --avonni-button-line-height: var(--avonni-button-popover-line-height);
+    --avonni-button-sizing-border: var(--avonni-button-popover-sizing-border);
+    --avonni-button-styling-border: var(--avonni-button-popover-styling-border);
+    --avonni-button-label-font-size: var(
+        --avonni-button-popover-label-font-size
+    );
+    --avonni-button-label-font-weight: var(
+        --avonni-button-popover-label-font-weight
+    );
+    --avonni-button-label-font-style: var(
+        --avonni-button-popover-label-font-style
+    );
+    --avonni-button-image-radius-border: var(
+        --avonni-button-popover-image-radius-border
+    );
+    --avonni-button-image-styling-border: var(
+        --avonni-button-popover-image-styling-border
+    );
+    --avonni-button-image-sizing-border: var(
+        --avonni-button-popover-image-sizing-border
+    );
+    --avonni-button-image-color-border: var(
+        --avonni-button-popover-image-color-border
+    );
+    --avonni-button-image-object-fit: var(
+        --avonni-button-popover-image-object-fit
+    );
+    /* bare */
+    --avonni-button-bare-color-background: var(
+        --avonni-button-popover-bare-color-background
+    );
+    --avonni-button-bare-color-border: var(
+        --avonni-button-popover-bare-color-border
+    );
+    --avonni-button-bare-text-color: var(
+        --avonni-button-popover-bare-text-color
+    );
+    --avonni-button-bare-spacing-inline-end: var(
+        --avonni-button-popover-bare-spacing-inline-end
+    );
+    --avonni-button-bare-spacing-inline-start: var(
+        --avonni-button-popover-bare-spacing-inline-start
+    );
+    --avonni-button-bare-spacing-block-start: var(
+        --avonni-button-popover-bare-spacing-block-start
+    );
+    --avonni-button-bare-spacing-block-end: var(
+        --avonni-button-popover-bare-spacing-block-end
+    );
+    /* bare-inverse */
+    --avonni-button-bare-inverse-color-background: var(
+        --avonni-button-popover-bare-inverse-color-background
+    );
+    --avonni-button-bare-inverse-color-border: var(
+        --avonni-button-popover-bare-inverse-color-border
+    );
+    --avonni-button-bare-inverse-text-color: var(
+        --avonni-button-popover-bare-inverse-background-color
+    );
+    --avonni-button-bare-inverse-spacing-inline-end: var(
+        --avonni-button-popover-bare-inverse-spacing-inline-end
+    );
+    --avonni-button-bare-inverse-spacing-inline-start: var(
+        --avonni-button-popover-bare-inverse-spacing-inline-start
+    );
+    --avonni-button-bare-inverse-spacing-block-start: var(
+        --avonni-button-popover-bare-inverse-spacing-block-start
+    );
+    --avonni-button-bare-inverse-spacing-block-end: var(
+        --avonni-button-popover-bare-inverse-spacing-block-end
+    );
+    /* base */
+    --avonni-button-base-color-background: var(
+        --avonni-button-popover-base-color-background
+    );
+    --avonni-button-base-color-border: var(
+        --avonni-button-popover-base-color-border
+    );
+    --avonni-button-base-text-color: var(
+        --avonni-button-popover-base-text-color
+    );
+    --avonni-button-base-spacing-inline-end: var(
+        --avonni-button-popover-base-spacing-inline-end
+    );
+    --avonni-button-base-spacing-inline-start: var(
+        --avonni-button-popover-base-spacing-inline-start
+    );
+    --avonni-button-base-spacing-block-start: var(
+        --avonni-button-popover-base-spacing-block-start
+    );
+    --avonni-button-base-spacing-block-end: var(
+        --avonni-button-popover-base-spacing-block-end
+    );
+    /* border */
+    --avonni-button-border-color-background: var(
+        --avonni-button-popover-border-color-background
+    );
+    --avonni-button-border-color-border: var(
+        --avonni-button-popover-border-color-border
+    );
+    --avonni-button-border-text-color: var(
+        --avonni-button-popover-border-text-color
+    );
+    --avonni-button-border-spacing-inline-end: var(
+        --avonni-button-popover-border-spacing-inline-end
+    );
+    --avonni-button-border-spacing-inline-start: var(
+        --avonni-button-popover-border-spacing-inline-start
+    );
+    --avonni-button-border-spacing-block-start: var(
+        --avonni-button-popover-border-spacing-block-start
+    );
+    --avonni-button-border-spacing-block-end: var(
+        --avonni-button-popover-border-spacing-block-end
+    );
+    /* border-filled */
+    --avonni-button-border-filled-color-background: var(
+        --avonni-button-popover-border-filled-color-background
+    );
+    --avonni-button-border-filled-color-border: var(
+        --avonni-button-popover-border-filled-color-border
+    );
+    --avonni-button-border-filled-text-color: var(
+        --avonni-button-popover-border-filled-text-color
+    );
+    --avonni-button-border-filled-spacing-inline-end: var(
+        --avonni-button-popover-border-filled-spacing-inline-end
+    );
+    --avonni-button-border-filled-spacing-inline-start: var(
+        --avonni-button-popover-border-filled-spacing-inline-start
+    );
+    --avonni-button-border-filled-spacing-block-start: var(
+        --avonni-button-popover-border-filled-spacing-block-start
+    );
+    --avonni-button-border-filled-spacing-block-end: var(
+        --avonni-button-popover-border-filled-spacing-block-end
+    );
+    /* border-inverse */
+    --avonni-button-border-inverse-color-background: var(
+        --avonni-button-popover-border-inverse-color-background
+    );
+    --avonni-button-border-inverse-color-border: var(
+        --avonni-button-popover-border-inverse-color-border
+    );
+    --avonni-button-border-inverse-text-color: var(
+        --avonni-button-popover-border-inverse-text-color
+    );
+    --avonni-button-border-inverse-spacing-inline-end: var(
+        --avonni-button-popover-border-inverse-spacing-inline-end
+    );
+    --avonni-button-border-inverse-spacing-inline-start: var(
+        --avonni-button-popover-border-inverse-spacing-inline-start
+    );
+    --avonni-button-border-inverse-spacing-block-start: var(
+        --avonni-button-popover-border-inverse-spacing-block-start
+    );
+    --avonni-button-border-inverse-spacing-block-end: var(
+        --avonni-button-popover-border-inverse-spacing-block-end
+    );
+    /* brand */
+    --avonni-button-brand-color-background: var(
+        --avonni-button-popover-brand-color-background
+    );
+    --avonni-button-brand-color-border: var(
+        --avonni-button-popover-brand-color-border
+    );
+    --avonni-button-brand-text-color: var(
+        --avonni-button-popover-brand-text-color
+    );
+    --avonni-button-brand-spacing-inline-end: var(
+        --avonni-button-popover-brand-spacing-inline-end
+    );
+    --avonni-button-brand-spacing-inline-start: var(
+        --avonni-button-popover-brand-spacing-inline-start
+    );
+    --avonni-button-brand-spacing-block-start: var(
+        --avonni-button-popover-brand-spacing-block-start
+    );
+    --avonni-button-brand-spacing-block-end: var(
+        --avonni-button-popover-brand-spacing-block-end
+    );
+    /* brand-outline */
+    --avonni-button-outline-brand-color-background: var(
+        --avonni-button-popover-outline-brand-color-background
+    );
+    --avonni-button-outline-brand-color-border: var(
+        --avonni-button-popover-outline-brand-color-border
+    );
+    --avonni-button-outline-brand-text-color: var(
+        --avonni-button-popover-text-color
+    );
+    --avonni-button-outline-brand-spacing-inline-end: var(
+        --avonni-button-popover-outline-brand-spacing-inline-end
+    );
+    --avonni-button-outline-brand-spacing-inline-start: var(
+        --avonni-button-popover-outline-brand-spacing-inline-start
+    );
+    --avonni-button-outline-brand-spacing-block-start: var(
+        --avonni-button-popover-outline-brand-spacing-block-start
+    );
+    --avonni-button-outline-brand-spacing-block-end: var(
+        --avonni-button-popover-outline-brand-spacing-block-end
+    );
+    /* container */
+    --avonni-button-container-color-background: var(
+        --avonni-button-popover-container-color-background
+    );
+    --avonni-button-container-color-border: var(
+        --avonni-button-popover-container-color-border
+    );
+    --avonni-button-container-text-color: var(
+        --avonni-button-popover-container-text-color
+    );
+    --avonni-button-container-spacing-inline-end: var(
+        --avonni-button-popover-container-spacing-inline-end
+    );
+    --avonni-button-container-spacing-inline-start: var(
+        --avonni-button-popover-container-spacing-inline-start
+    );
+    --avonni-button-container-spacing-block-start: var(
+        --avonni-button-popover-container-spacing-block-start
+    );
+    --avonni-button-container-spacing-block-end: var(
+        --avonni-button-popover-container-spacing-block-end
+    );
+    /* destructive */
+    --avonni-button-destructive-color-background: var(
+        --avonni-button-popover-destructive-color-background
+    );
+    --avonni-button-destructive-color-border: var(
+        --avonni-button-popover-destructive-color-border
+    );
+    --avonni-button-destructive-text-color: var(
+        --avonni-button-popover-destructive-text-color
+    );
+    --avonni-button-destructive-spacing-inline-end: var(
+        --avonni-button-popover-destructive-spacing-inline-end
+    );
+    --avonni-button-destructive-spacing-inline-start: var(
+        --avonni-button-popover-destructive-spacing-inline-start
+    );
+    --avonni-button-destructive-spacing-block-start: var(
+        --avonni-button-popover-destructive-spacing-block-start
+    );
+    --avonni-button-destructive-spacing-block-end: var(
+        --avonni-button-popover-destructive-spacing-block-end
+    );
+    /* destructive-text */
+    --avonni-button-text-destructive-color-background: var(
+        --avonni-button-popover-text-destructive-color-background
+    );
+    --avonni-button-text-destructive-color-border: var(
+        --avonni-button-popover-text-destructive-color-border
+    );
+    --avonni-button-text-destructive-text-color: var(
+        --avonni-button-popover-text-destructive-text-color
+    );
+    --avonni-button-text-destructive-spacing-inline-end: var(
+        --avonni-button-popover-text-destructive-spacing-inline-end
+    );
+    --avonni-button-text-destructive-spacing-inline-start: var(
+        --avonni-button-popover-text-destructive-spacing-inline-start
+    );
+    --avonni-button-text-destructive-spacing-block-start: var(
+        --avonni-button-popover-text-destructive-spacing-block-start
+    );
+    --avonni-button-text-destructive-spacing-block-end: var(
+        --avonni-button-popover-text-destructive-spacing-block-end
+    );
+    /* inverse */
+    --avonni-button-inverse-color-background: var(
+        --avonni-button-popover-inverse-color-background
+    );
+    --avonni-button-inverse-color-border: var(
+        --avonni-button-popover-inverse-color-border
+    );
+    --avonni-button-inverse-text-color: var(
+        --avonni-button-popover-inverse-text-color
+    );
+    --avonni-button-inverse-spacing-inline-end: var(
+        --avonni-button-popover-inverse-spacing-inline-end
+    );
+    --avonni-button-inverse-spacing-inline-start: var(
+        --avonni-button-popover-inverse-spacing-inline-start
+    );
+    --avonni-button-inverse-spacing-block-start: var(
+        --avonni-button-popover-inverse-spacing-block-start
+    );
+    --avonni-button-inverse-spacing-block-end: var(
+        --avonni-button-popover-inverse-spacing-block-end
+    );
+    /* neutral */
+    --avonni-button-neutral-color-background: var(
+        --avonni-button-popover-neutral-color-background
+    );
+    --avonni-button-neutral-color-border: var(
+        --avonni-button-popover-neutral-color-border
+    );
+    --avonni-button-neutral-text-color: var(--avonni-button-popover-text-color);
+    --avonni-button-neutral-spacing-inline-end: var(
+        --avonni-button-popover-neutral-spacing-inline-end
+    );
+    --avonni-button-neutral-spacing-inline-start: var(
+        --avonni-button-popover-neutral-spacing-inline-start
+    );
+    --avonni-button-neutral-spacing-block-start: var(
+        --avonni-button-popover-neutral-spacing-block-start
+    );
+    --avonni-button-neutral-spacing-block-end: var(
+        --avonni-button-popover-neutral-spacing-block-end
+    );
+    /* success */
+    --avonni-button-success-color-background: var(
+        --avonni-button-popover-success-color-background
+    );
+    --avonni-button-success-color-border: var(
+        --avonni-button-popover-success-color-border
+    );
+    --avonni-button-success-text-color: var(
+        --avonni-button-popover-success-text-color
+    );
+    --avonni-button-success-spacing-inline-end: var(
+        --avonni-button-popover-success-spacing-inline-end
+    );
+    --avonni-button-success-spacing-inline-start: var(
+        --avonni-button-popover-success-spacing-inline-start
+    );
+    --avonni-button-success-spacing-block-start: var(
+        --avonni-button-popover-success-spacing-block-start
+    );
+    --avonni-button-success-spacing-block-end: var(
+        --avonni-button-popover-success-spacing-block-end
+    );
+}
+
+.avonni-button-popover:hover,
+.avonni-button-popover:focus {
+    /* bare */
+    --avonni-button-bare-color-background-hover: var(
+        --avonni-button-popover-bare-color-background-hover
+    );
+    --avonni-button-bare-color-border-hover: var(
+        --avonni-button-popover-bare-color-border-hover
+    );
+    --avonni-button-bare-text-color-hover: var(
+        --avonni-button-popover-bare-text-color-hover
+    );
+    /* bare-inverse */
+    --avonni-button-bare-inverse-color-background-hover: var(
+        --avonni-button-popover-bare-inverse-color-background-hover
+    );
+    --avonni-button-bare-inverse-color-border-hover: var(
+        --avonni-button-popover-bare-inverse-color-border-hover
+    );
+    --avonni-button-bare-inverse-text-color-hover: var(
+        --avonni-button-popover-bare-inverse-text-color-hover
+    );
+    /* base */
+    --avonni-button-base-color-background-hover: var(
+        --avonni-button-popover-base-color-background-hover
+    );
+    --avonni-button-base-color-border-hover: var(
+        --avonni-button-popover-base-color-border-hover
+    );
+    --avonni-button-base-text-color-hover: var(
+        --avonni-button-popover-base-text-color-hover
+    );
+    /* border */
+    --avonni-button-border-color-background-hover: var(
+        --avonni-button-popover-border-color-background-hover
+    );
+    --avonni-button-border-color-border-hover: var(
+        --avonni-button-popover-border-color-border-hover
+    );
+    --avonni-button-border-text-color-hover: var(
+        --avonni-button-popover-border-text-color-hover
+    );
+    /* border-inverse */
+    --avonni-button-border-inverse-color-background-hover: var(
+        --avonni-button-popover-border-inverse-color-background-hover
+    );
+    --avonni-button-border-inverse-color-border-hover: var(
+        --avonni-button-popover-border-inverse-color-border-hover
+    );
+    --avonni-button-border-inverse-text-color-hover: var(
+        --avonni-button-popover-border-inverse-text-color-hover
+    );
+    /* border-filled */
+    --avonni-button-border-filled-color-background-hover: var(
+        --avonni-button-popover-border-filled-color-background-hover
+    );
+    --avonni-button-border-filled-color-border-hover: var(
+        --avonni-button-popover-border-filled-color-border-hover
+    );
+    --avonni-button-border-filled-text-color-hover: var(
+        --avonni-button-popover-border-filled-text-color-hover
+    );
+    /* brand */
+    --avonni-button-brand-color-background-hover: var(
+        --avonni-button-popover-brand-color-background-hover
+    );
+    --avonni-button-brand-color-border-hover: var(
+        --avonni-button-popover-brand-color-border-hover
+    );
+    --avonni-button-brand-text-color-hover: var(
+        --avonni-button-popover-brand-text-color-hover
+    );
+    /* brand-outline */
+    --avonni-button-outline-brand-color-background-hover: var(
+        --avonni-button-popover-outline-brand-color-background-hover
+    );
+    --avonni-button-outline-brand-color-border-hover: var(
+        --avonni-button-popover-outline-brand-color-border-hover
+    );
+    --avonni-button-outline-brand-text-color-hover: var(
+        --avonni-button-popover-text-color-hover
+    );
+    /* container */
+    --avonni-button-container-color-background-hover: var(
+        --avonni-button-popover-container-color-background-hover
+    );
+    --avonni-button-container-color-border-hover: var(
+        --avonni-button-popover-container-color-border-hover
+    );
+    --avonni-button-container-text-color-hover: var(
+        --avonni-button-popover-container-text-color-hover
+    );
+    /* destructive */
+    --avonni-button-destructive-color-background-hover: var(
+        --avonni-button-popover-destructive-color-background-hover
+    );
+    --avonni-button-destructive-color-border-hover: var(
+        --avonni-button-popover-destructive-color-border-hover
+    );
+    --avonni-button-destructive-text-color-hover: var(
+        --avonni-button-popover-destructive-text-color-hover
+    );
+    /* destructive-text */
+    --avonni-button-text-destructive-color-background-hover: var(
+        --avonni-button-popover-text-destructive-color-background-hover
+    );
+    --avonni-button-text-destructive-color-border-hover: var(
+        --avonni-button-popover-text-destructive-color-border-hover
+    );
+    --avonni-button-text-destructive-text-color-hover: var(
+        --avonni-button-popover-text-destructive-text-color-hover
+    );
+    /* inverse */
+    --avonni-button-inverse-color-background-hover: var(
+        --avonni-button-popover-inverse-color-background-hover
+    );
+    --avonni-button-inverse-color-border-hover: var(
+        --avonni-button-popover-inverse-color-border-hover
+    );
+    --avonni-button-inverse-text-color-hover: var(
+        --avonni-button-popover-inverse-text-color-hover
+    );
+    /* neutral */
+    --avonni-button-neutral-color-background-hover: var(
+        --avonni-button-popover-neutral-color-background-hover
+    );
+    --avonni-button-neutral-color-border-hover: var(
+        --avonni-button-popover-neutral-color-border-hover
+    );
+    --avonni-button-neutral-text-color-hover: var(
+        --avonni-button-popover-text-color-hover
+    );
+    /* success */
+    --avonni-button-success-color-background-hover: var(
+        --avonni-button-popover-success-color-background-hover
+    );
+    --avonni-button-success-color-border-hover: var(
+        --avonni-button-popover-success-color-border-hover
+    );
+    --avonni-button-success-text-color-hover: var(
+        --avonni-button-popover-success-text-color-hover
+    );
+}
+
+.avonni-button-popover:active {
+    /* bare */
+    --avonni-button-bare-color-background-active: var(
+        --avonni-button-popover-bare-color-background-active
+    );
+    --avonni-button-bare-color-border-active: var(
+        --avonni-button-popover-bare-color-border-active
+    );
+    --avonni-button-bare-text-color-active: var(
+        --avonni-button-popover-bare-text-color-active
+    );
+    /* bare-inverse */
+    --avonni-button-bare-inverse-color-background-active: var(
+        --avonni-button-popover-bare-inverse-color-background-active
+    );
+    --avonni-button-bare-inverse-color-border-active: var(
+        --avonni-button-popover-bare-inverse-color-border-active
+    );
+    --avonni-button-bare-inverse-text-color-active: var(
+        --avonni-button-popover-bare-inverse-text-color-active
+    );
+    /* base */
+    --avonni-button-base-color-background-active: var(
+        --avonni-button-popover-base-color-background-active
+    );
+    --avonni-button-base-color-border-active: var(
+        --avonni-button-popover-base-color-border-active
+    );
+    --avonni-button-base-text-color-active: var(
+        --avonni-button-popover-base-text-color-active
+    );
+    /* border */
+    --avonni-button-border-color-background-active: var(
+        --avonni-button-popover-border-color-background-active
+    );
+    --avonni-button-border-color-border-active: var(
+        --avonni-button-popover-border-color-border-active
+    );
+    --avonni-button-border-text-color-active: var(
+        --avonni-button-popover-border-text-color-active
+    );
+    /* border-filled */
+    --avonni-button-border-filled-color-background-active: var(
+        --avonni-button-popover-border-filled-color-background-active
+    );
+    --avonni-button-border-filled-color-border-active: var(
+        --avonni-button-popover-border-filled-color-border-active
+    );
+    --avonni-button-border-filled-text-color-active: var(
+        --avonni-button-popover-border-filled-text-color-active
+    );
+    /* border-inverse */
+    --avonni-button-border-inverse-color-background-active: var(
+        --avonni-button-popover-border-inverse-color-background-active
+    );
+    --avonni-button-border-inverse-color-border-active: var(
+        --avonni-button-popover-border-inverse-color-border-active
+    );
+    --avonni-button-border-inverse-text-color-active: var(
+        --avonni-button-popover-border-inverse-text-color-active
+    );
+    /* brand */
+    --avonni-button-brand-color-background-active: var(
+        --avonni-button-popover-brand-color-background-active
+    );
+    --avonni-button-brand-color-border-active: var(
+        --avonni-button-popover-brand-color-border-active
+    );
+    --avonni-button-brand-text-color-active: var(
+        --avonni-button-popover-brand-text-color-active
+    );
+    /* brand-outline */
+    --avonni-button-outline-brand-color-background-active: var(
+        --avonni-button-popover-outline-brand-color-background-active
+    );
+    --avonni-button-outline-brand-color-border-active: var(
+        --avonni-button-popover-outline-brand-color-border-active
+    );
+    --avonni-button-outline-brand-text-color-active: var(
+        --avonni-button-popover-text-color-active
+    );
+    /* destructive */
+    --avonni-button-destructive-color-background-active: var(
+        --avonni-button-popover-destructive-color-background-active
+    );
+    --avonni-button-destructive-color-border-active: var(
+        --avonni-button-popover-destructive-color-border-active
+    );
+    --avonni-button-destructive-text-color-active: var(
+        --avonni-button-popover-destructive-text-color-active
+    );
+    /* destructive-text */
+    --avonni-button-text-destructive-color-background-active: var(
+        --avonni-button-popover-text-destructive-color-background-active
+    );
+    --avonni-button-text-destructive-color-border-active: var(
+        --avonni-button-popover-text-destructive-color-border-active
+    );
+    --avonni-button-text-destructive-text-color-active: var(
+        --avonni-button-popover-destructive-text-color-hover-active
+    );
+    /* inverse */
+    --avonni-button-inverse-color-background-active: var(
+        --avonni-button-popover-inverse-color-background-active
+    );
+    --avonni-button-inverse-color-border-active: var(
+        --avonni-button-popover-inverse-color-border-active
+    );
+    --avonni-button-inverse-text-color-active: var(
+        --avonni-button-popover-inverse-text-color-active
+    );
+    /* neutral */
+    --avonni-button-neutral-color-background-active: var(
+        --avonni-button-popover-neutral-color-background-active
+    );
+    --avonni-button-neutral-color-border-active: var(
+        --avonni-button-popover-neutral-color-border-active
+    );
+    --avonni-button-neutral-text-color-active: var(
+        --avonni-button-popover-text-color-active
+    );
+    /* success */
+    --avonni-button-success-color-background-active: var(
+        --avonni-button-popover-success-color-background-active
+    );
+    --avonni-button-success-color-border-active: var(
+        --avonni-button-popover-success-color-border-active
+    );
+    --avonni-button-success-text-color-active: var(
+        --avonni-button-popover-success-text-color-active
+    );
+}

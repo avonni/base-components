@@ -23,6 +23,10 @@
             "path": "src/modules/base/iso8601Utils/iso8601Utils.js"
         },
         {
+            "name": "c/ariaObserver",
+            "path": "src/modules/base/ariaObserver/ariaObserver.js"
+        },
+        {
             "name": "c/resizeObserver",
             "path": "src/modules/base/resizeObserver/resizeObserver.js"
         },
@@ -71,8 +75,16 @@
             "path": "src/modules/base/blockquote/blockquote.js"
         },
         {
+            "name": "c/button",
+            "path": "src/modules/base/button/button.js"
+        },
+        {
             "name": "c/buttonDialog",
             "path": "src/modules/base/buttonDialog/buttonDialog.js"
+        },
+        {
+            "name": "c/buttonIcon",
+            "path": "src/modules/base/buttonIcon/buttonIcon.js"
         },
         {
             "name": "c/buttonIconDialog",
@@ -313,6 +325,10 @@
         {
             "name": "c/primitiveBubble",
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
+        },
+        {
+            "name": "c/primitiveButton",
+            "path": "src/modules/base/primitiveButton/primitiveButton.js"
         },
         {
             "name": "c/primitiveCarouselItem",
@@ -683,8 +699,16 @@
             "path": "src/modules/base/blockquote/blockquote.js"
         },
         {
+            "name": "avonni/button",
+            "path": "src/modules/base/button/button.js"
+        },
+        {
             "name": "avonni/buttonDialog",
             "path": "src/modules/base/buttonDialog/buttonDialog.js"
+        },
+        {
+            "name": "avonni/buttonIcon",
+            "path": "src/modules/base/buttonIcon/buttonIcon.js"
         },
         {
             "name": "avonni/buttonIconDialog",
@@ -1002,6 +1026,7 @@
         "avonni/avatarGroup",
         "avonni/barcode",
         "avonni/blockquote",
+        "avonni/button",
         "avonni/buttonDialog",
         "avonni/buttonIconDialog",
         "avonni/buttonIconPopover",

@@ -6,10 +6,11 @@ const DEFAULT_BUTTON_VARIANT = 'border';
 export default class ButtonIconDialog extends LightningElement {
     @api accessKey;
     @api alternativeText;
-    @api tooltip;
     @api iconClass;
     @api iconName;
+    @api iconSrc;
     @api disabled;
     @api size = DEFAULT_BUTTON_SIZE;
+    @api tooltip;
     @api variant = DEFAULT_BUTTON_VARIANT;
 }
