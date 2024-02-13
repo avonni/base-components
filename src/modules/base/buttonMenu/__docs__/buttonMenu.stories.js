@@ -422,10 +422,9 @@ customElements.define(
     'ac-base-button-menu-sizes',
     ButtonMenuSizesComponent.CustomElementConstructor
 );
-const ButtonMenuSizes = ({ label, variant }) => {
+const ButtonMenuSizes = ({ variant }) => {
     const element = document.createElement('ac-base-button-menu-sizes');
     element.variant = variant;
-    element.label = label;
     return element;
 };
 const TemplateSizes = (args) => ButtonMenuSizes(args);
