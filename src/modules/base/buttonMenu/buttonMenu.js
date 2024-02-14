@@ -9,6 +9,7 @@ import {
 } from 'c/utilsPrivate';
 import { Tooltip } from 'c/tooltipLibrary';
 import PrimitiveButton from 'c/primitiveButton';
+import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
 
 const BUTTON_VARIANTS = {
     valid: [
@@ -418,6 +419,7 @@ export default class ButtonMenu extends PrimitiveButton {
                 'slds-button_text-destructive':
                     this.variant === 'destructive-text',
                 'slds-button_success': this.variant === 'success',
+                'avonni-button-menu__button_medium': this.iconSize === 'medium',
                 'avonni-button-menu__button_large': this.iconSize === 'large'
             });
         } else {
@@ -498,12 +500,7 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {boolean}
      */
     get computedHideDownIcon() {
-        return (
-            this.hideDownArrow ||
-            ((this.iconName === 'utility:down' ||
-                this.iconName === 'utility:chevrondown') &&
-                !this.iconSrc)
-        );
+        return this.hideDownArrow || (this.isDownIcon && !this.iconSrc);
     }
 
     /**
@@ -512,29 +509,21 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     get computedIconSize() {
-        if (this.label) {
-            return this.iconSize === 'large' || this.iconSize === 'xx-small'
-                ? this.iconSize
-                : 'x-small';
-        }
-        if (this.iconSize === 'medium') {
-            return 'x-small';
-        } else if (this.iconSize === 'large') {
-            return 'small';
-        }
+        if (this.isDownIcon && this.iconSize === 'large') return 'x-small';
+        if (this.iconSize === 'medium') return 'x-small';
+        if (this.iconSize === 'large') return 'small';
         return '';
     }
 
     /**
-     * Computed icon svg class styling.
+     * Computed icon svg class.
      *
      * @type {string}
      */
     get computedIconSvgClass() {
-        if (this.label) {
-            return 'slds-button__icon slds-button__icon_right';
-        }
-        return 'slds-button__icon';
+        return classSet('slds-button__icon').add({
+            'slds-button__icon_right': this.label
+        });
     }
 
     /**
@@ -558,6 +547,21 @@ export default class ButtonMenu extends PrimitiveButton {
         return this.loadingStateAlternativeText || i18n.loading;
     }
 
+    get computedMainIconClass() {
+        // Scale adjustment is needed for standard or custom icons.
+        const isCustomOrStandardIcon =
+            isCustomIconType(this.iconName) ||
+            isStandardIconType(this.iconName);
+        return classSet({
+            [`avonni-button-menu__main-icon-with-label_${this.iconSize}`]:
+                this.label && !this.isDownIcon && !isCustomOrStandardIcon,
+            [`avonni-button-menu__main-icon-with-label-adjust-scale_${this.iconSize}`]:
+                this.label && !this.isDownIcon && isCustomOrStandardIcon,
+            [`avonni-button-menu__main-icon-adjust-scale_${this.iconSize}`]:
+                !this.label && !this.isDownIcon && isCustomOrStandardIcon
+        });
+    }
+
     /**
      * Returns true if menu alignment is auto.
      *
@@ -565,6 +569,10 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     get isAutoAlignment() {
         return this.menuAlignment.startsWith('auto');
+    }
+
+    get isDownIcon() {
+        return ['utility:down', 'utility:chevrondown'].includes(this.iconName);
     }
 
     /**

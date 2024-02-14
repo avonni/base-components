@@ -19,8 +19,9 @@
             if:true={isDraft}
             class="slds-indicator_unsaved slds-p-right_xx-small"
             title={draftAlternativeText}
-            >*</abbr
         >
+            *
+        </abbr>
         <img
             if:true={iconSrc}
             class={computedImageClass}
@@ -30,6 +31,7 @@
         {label}
         <c-primitive-icon
             if:true={showIcon}
+            class={computedMainIconClass}
             icon-name={iconName}
             size={computedIconSize}
             svg-class={computedIconSvgClass}
@@ -39,12 +41,12 @@
         <c-primitive-icon
             if:false={computedHideDownIcon}
             icon-name="utility:down"
-            svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
+            svg-class="slds-button__icon slds-m-left_xx-small"
             variant="bare"
             data-element-id="avonni-primitive-icon-down"
         ></c-primitive-icon>
 
-        <span class="slds-assistive-text">{alternativeText}</span>
+        <span class="slds-assistive-text"> {alternativeText} </span>
     </button>
 
     <div
