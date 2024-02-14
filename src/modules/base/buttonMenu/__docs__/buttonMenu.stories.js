@@ -1,6 +1,6 @@
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
-import ButtonMenuSizesComponent from './sizes/sizes';
+import ButtonMenuSizesComponent from '../__examples__/sizes/sizes';
 
 export default {
     title: 'Example/Button Menu',
