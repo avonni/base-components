@@ -1210,3 +1210,57 @@ button {
 .avonni-button-menu__button_large {
     height: 3.5rem;
 }
+
+.avonni-button-menu__main-icon-with-label-adjust-scale_small,
+.avonni-button-menu__main-icon-with-label-adjust-scale_medium,
+.avonni-button-menu__main-icon-with-label-adjust-scale_large {
+    margin-right: 0.25rem;
+}
+
+.avonni-button-menu__main-icon-with-label_small,
+.avonni-button-menu__main-icon-with-label_medium,
+.avonni-button-menu__main-icon-with-label_large {
+    margin-right: 0.125rem;
+}
+
+.avonni-button-menu__main-icon-with-label_xx-small {
+    scale: 0.5715;
+}
+
+.avonni-button-menu__main-icon-with-label_x-small {
+    scale: 0.857;
+}
+
+.avonni-button-menu__main-icon-with-label-adjust-scale_xx-small {
+    scale: 0.857;
+}
+
+.avonni-button-menu__main-icon-with-label-adjust-scale_x-small {
+    scale: 1;
+}
+
+.avonni-button-menu__main-icon-with-label-adjust-scale_small {
+    scale: 1.25;
+}
+
+.avonni-button-menu__main-icon-with-label-adjust-scale_medium {
+    scale: 1.5;
+}
+
+.avonni-button-menu__main-icon-with-label-adjust-scale_large {
+    scale: 1.6;
+}
+
+.avonni-button-menu__main-icon-adjust-scale_xx-small,
+.avonni-button-menu__main-icon-adjust-scale_x-small,
+.avonni-button-menu__main-icon-adjust-scale_small {
+    scale: 1.25;
+}
+
+.avonni-button-menu__main-icon-adjust-scale_medium {
+    scale: 1.5;
+}
+
+.avonni-button-menu__main-icon-adjust-scale_large {
+    scale: 1.6;
+}
