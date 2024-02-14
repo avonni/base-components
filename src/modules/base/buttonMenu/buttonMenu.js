@@ -498,12 +498,7 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {boolean}
      */
     get computedHideDownIcon() {
-        return (
-            this.hideDownArrow ||
-            ((this.iconName === 'utility:down' ||
-                this.iconName === 'utility:chevrondown') &&
-                !this.iconSrc)
-        );
+        return this.hideDownArrow || (this.isDownIcon && !this.iconSrc);
     }
 
     /**
@@ -565,6 +560,10 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     get isAutoAlignment() {
         return this.menuAlignment.startsWith('auto');
+    }
+
+    get isDownIcon() {
+        return ['utility:down', 'utility:chevrondown'].includes(this.iconName);
     }
 
     /**
