@@ -1,5 +1,5 @@
 import { Avatar } from '../__examples__/avatar';
-import AvatarSizesComponent from './sizes/sizes';
+import AvatarSizesComponent from '../__examples__/sizes/sizes';
 
 export default {
     title: 'Example/Avatar',
