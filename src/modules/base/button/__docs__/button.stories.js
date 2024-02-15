@@ -286,7 +286,7 @@ Disabled.args = {
 };
 
 /**
- * Example with different combinations of sizes, fallback icon types.
+ * Example with different combinations of sizes, icon types.
  * Allows to quickly scan if there is any problems.
  */
 customElements.define(
