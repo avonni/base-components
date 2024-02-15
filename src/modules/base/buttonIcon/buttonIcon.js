@@ -3,6 +3,7 @@ import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
+import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
 
 const BUTTON_VARIANTS = {
     valid: [
@@ -236,46 +237,12 @@ export default class ButtonIcon extends PrimitiveButton {
      * @type {string}
      */
     get computedButtonClass() {
-        const classes = classSet(super.computedButtonClass);
-        const isBare =
-            this.variant === 'bare' ||
-            this.variant === 'bare-inverse' ||
-            this.variant === 'base';
-        const isAddedVariant =
-            this.variant === 'brand-outline' ||
-            this.variant === 'destructive' ||
-            this.variant === 'destructive-text' ||
-            this.variant === 'inverse' ||
-            this.variant === 'neutral' ||
-            this.variant === 'success';
-        classes.add('slds-button_icon avonni-button-icon');
-        if (!isBare) {
-            switch (this._size) {
-                case 'small':
-                    classes.add('slds-button_icon-small');
-                    break;
-                case 'x-small':
-                    classes.add('slds-button_icon-x-small');
-                    break;
-                case 'xx-small':
-                    classes.add('slds-button_icon-xx-small');
-                    break;
-                case 'large': // There is no `large` modifier for buttons so we should drop down one size to `medium`
-                    console.warn(
-                        `<lightning-button-icon> The non-bare variants of buttonIcon do not support a size value of "large". Supported values include "xx-small", "x-small", "small", and "medium". Falling back to size value "medium".`
-                    );
-                /* falls through */
-                case 'medium': // Medium is the default size, and the default size doesn't require a size modifier
-                default:
-            }
-        }
-        if (isAddedVariant) {
-            classes.add(`avonni-button-icon_${this.size}`);
-        }
-        return classes
+        return classSet(super.computedButtonClass)
+            .add('slds-button_icon avonni-button-icon')
             .add(`avonni-button-icon_${this.computedVariant}`)
             .add({
-                'slds-button_icon-bare': isBare,
+                'slds-button_icon-bare': this.isBare,
+                [`slds-button_icon-${this.size}`]: !this.isBare,
                 'slds-button_icon-container':
                     this.computedVariant === 'container',
                 'slds-button_icon-border': this.computedVariant === 'border',
@@ -285,9 +252,12 @@ export default class ButtonIcon extends PrimitiveButton {
                     this.computedVariant === 'border-inverse',
                 'slds-button_icon-inverse':
                     this.computedVariant === 'bare-inverse',
-                'slds-button_icon-brand': this.computedVariant === 'brand'
-            })
-            .toString();
+                'slds-button_icon-brand': this.computedVariant === 'brand',
+                'avonni-button-icon_large':
+                    !this.isBare && this.size === 'large',
+                'avonni-button-icon_medium':
+                    !this.isBare && this.size === 'medium'
+            });
     }
 
     /**
@@ -296,37 +266,16 @@ export default class ButtonIcon extends PrimitiveButton {
      * @type {string}
      */
     get computedIconClass() {
-        const isBare =
-            this.computedVariant === 'bare' ||
-            this.computedVariant === 'bare-inverse' ||
-            this.computedVariant === 'base';
-        const iconClass = this.iconClass || '';
-        const classes = classSet('slds-button__icon');
-        if (iconClass) classes.add(iconClass);
+        return classSet('slds-button__icon').add({
+            // [`slds-button__icon_${this.size}`]: this.isBare,
+            [this.iconClass]: this.iconClass
+        });
+    }
 
-        if (isBare) {
-            // If the variant is bare, then size the icon instead of the button
-            switch (this.size) {
-                case 'large':
-                    classes.add('slds-button__icon_large');
-                    break;
-                case 'small':
-                    classes.add('slds-button__icon_small');
-                    break;
-                case 'xx-small': // There is no `xx-small` modifier for bare so we should drop down one size to `x-small`
-                    console.warn(
-                        `<lightning-button-icon> The bare variant of buttonIcon does not support a size value of "xx-small". Supported values include "x-small", "small", "medium", and "large". The default is "medium".`
-                    );
-                /* falls through */
-                case 'x-small':
-                    classes.add('slds-button__icon_x-small');
-                    break;
-                case 'medium': // Medium is the default size, and the default size doesn't require a size modifier
-                default:
-            }
-        }
-
-        return classes.toString();
+    get computedIconSize() {
+        if (this.size === 'medium') return 'x-small';
+        if (this.size === 'large') return 'small';
+        return '';
     }
 
     /**
@@ -335,17 +284,28 @@ export default class ButtonIcon extends PrimitiveButton {
      * @type {string}
      */
     get computedImageClass() {
-        const isBare =
-            this.computedVariant === 'bare' ||
-            this.computedVariant === 'bare-inverse' ||
-            this.computedVariant === 'base';
-        const classes = classSet('avonni-button-icon__image');
-        if (isBare) {
-            classes.add(`avonni-button-icon__image_${this.size}-bare`);
-        } else {
-            classes.add(`avonni-button-icon__image_${this.size}`);
-        }
-        return classes.toString();
+        return classSet('avonni-button-icon__image').add(
+            `avonni-button-icon__image_${this.size}`
+        );
+    }
+
+    get computedPrimitiveIconClass() {
+        // Scale adjustment is needed for standard or custom icons.
+        const isCustomOrStandardIcon =
+            isCustomIconType(this.iconName) ||
+            isStandardIconType(this.iconName);
+        return classSet('slds-grid').add({
+            'avonni-button-icon__icon-adjust-scale':
+                !this.isBare && isCustomOrStandardIcon,
+            [`avonni-button-icon__icon-bare_${this.size}`]:
+                this.isBare && !isCustomOrStandardIcon,
+            [`avonni-button-icon__icon-bare-adjust-scale_${this.size}`]:
+                this.isBare && isCustomOrStandardIcon
+        });
+    }
+
+    get isBare() {
+        return ['bare', 'bare-inverse', 'base'].includes(this.computedVariant);
     }
 
     /**
