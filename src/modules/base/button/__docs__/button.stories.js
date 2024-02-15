@@ -1,5 +1,5 @@
 import { Button } from '../__examples__/button';
-import ButtonVariantsComponent from '../__examples__/variants/variants';
+import ButtonSizesComponent from '../__examples__/sizes/sizes';
 
 export default {
     title: 'Example/Button',
@@ -290,12 +290,13 @@ Disabled.args = {
  * Allows to quickly scan if there is any problems.
  */
 customElements.define(
-    'ac-base-button-variants',
-    ButtonVariantsComponent.CustomElementConstructor
+    'ac-base-button-sizes',
+    ButtonSizesComponent.CustomElementConstructor
 );
-const ButtonVariants = () => {
-    const element = document.createElement('ac-base-button-variants');
+const ButtonSizes = ({ variant }) => {
+    const element = document.createElement('ac-base-button-sizes');
+    element.variant = variant;
     return element;
 };
-const TemplateVariants = (args) => ButtonVariants(args);
-export const Variants = TemplateVariants.bind({});
+const TemplateSizes = (args) => ButtonSizes(args);
+export const Sizes = TemplateSizes.bind({});
