@@ -557,7 +557,7 @@ export default class ButtonMenu extends PrimitiveButton {
                 this.label && !this.isDownIcon && !isCustomOrStandardIcon,
             [`avonni-button-menu__main-icon-with-label-adjust-scale_${this.iconSize}`]:
                 this.label && !this.isDownIcon && isCustomOrStandardIcon,
-            [`avonni-button-menu__main-icon-adjust-scale_${this.iconSize}`]:
+            'avonni-button-menu__main-icon-adjust-scale':
                 !this.label && !this.isDownIcon && isCustomOrStandardIcon
         });
     }
