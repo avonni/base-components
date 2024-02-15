@@ -2,10 +2,11 @@ import { api } from 'lwc';
 import { normalizeBoolean, normalizeString, isCSR } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
+import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
 
 const ICON_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large'],
-    default: 'x-small'
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
 };
 
 /**
@@ -221,22 +222,27 @@ export default class Button extends PrimitiveButton {
             .toString();
     }
 
+    get computedPrimitiveIconClass() {
+        // Scale adjustment is needed for standard or custom icons.
+        const isCustomOrStandardIcon =
+            isCustomIconType(this.iconName) ||
+            isStandardIconType(this.iconName);
+        return classSet('slds-grid').add({
+            [`avonni-button__icon_${this.iconSize}`]: !isCustomOrStandardIcon,
+            [`avonni-button__icon-adjust-scale_${this.iconSize}`]:
+                isCustomOrStandardIcon
+        });
+    }
+
     /**
      * Computed size for the icon.
      *
      * @type {string}
      */
     get computedIconSize() {
-        switch (this.iconSize) {
-            case 'x-small':
-                return 'xx-small';
-            case 'small':
-                return 'x-small';
-            case 'medium':
-                return 'small';
-            default:
-                return this.iconSize;
-        }
+        if (this.iconSize === 'medium') return 'x-small';
+        if (this.iconSize === 'large') return 'small';
+        return '';
     }
 
     /**
