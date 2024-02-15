@@ -60,21 +60,23 @@
                             class="slds-media__figure slds-listbox__option-icon"
                         >
                             <c-avatar
-                                data-element-id="avonni-avatar"
+                                class="avonni-primitive-combobox__avatar"
                                 aria-hidden="true"
                                 fallback-icon-name={option.avatar.fallbackIconName}
+                                hide-avatar-details="true"
                                 initials={option.avatar.initials}
                                 presence={option.avatar.presence}
                                 presence-position={option.avatar.presencePosition}
                                 size="small"
                                 src={option.avatar.src}
                                 variant={option.avatar.variant}
-                                hide-avatar-details="true"
+                                data-element-id="avonni-avatar"
                             ></c-avatar>
                         </div>
                         <div class="slds-media__body">
                             <span
                                 class="
+                                    avonni-primitive-combobox__option-label
                                     slds-listbox__option-text
                                     slds-listbox__option-text_entity
                                 "
@@ -84,6 +86,7 @@
                             <span
                                 if:true={option.secondaryText}
                                 class="
+                                    avonni-primitive-combobox__option-secondary-text
                                     slds-listbox__option-meta
                                     slds-listbox__option-meta_entity
                                     slds-truncate
