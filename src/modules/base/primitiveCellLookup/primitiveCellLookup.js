@@ -1,5 +1,9 @@
 import { LightningElement, api } from 'lwc';
-import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
+import {
+    isEditable,
+    getResolvedCellChanges,
+    startPanelPositioning
+} from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellLookup extends LightningElement {
     @api colKeyValue;
@@ -38,6 +42,8 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
     set value(value) {
         this._value = value;
+        // If the value changes, we need to update the name.
+        this.dispatchValueChangeEvent();
     }
 
     @api
@@ -75,7 +81,9 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     get recordDirtyValues() {
-        return this.state.inlineEdit.dirtyValues[this.rowKeyValue];
+        return this.state.inlineEdit.dirtyValues[this.rowKeyValue][
+            this.colKeyValue
+        ];
     }
 
     /**
@@ -92,12 +100,45 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     /*----------- Inline Editing Functions -------------*/
+    dispatchCellChangeEvent(state) {
+        const dirtyValues = state.inlineEdit.dirtyValues;
+        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    dirtyValue: this.value,
+                    draftValues: getResolvedCellChanges(state, dirtyValues),
+                    callbacks: {
+                        setLookupName: this.setName.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
                 detail: {
                     callbacks: {
                         getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchValueChangeEvent() {
+        this.dispatchEvent(
+            new CustomEvent('valuechange', {
+                detail: {
+                    dirtyValue: this._value,
+                    callbacks: {
+                        setLookupName: this.setName.bind(this)
                     }
                 },
                 bubbles: true,
@@ -120,21 +161,19 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     handleChange(event) {
-        if (!this.hasDirtyValue) {
-            return;
-        }
-        event.stopPropagation();
-        this.visible = false;
-
+        const value = event.detail.value || null;
+        const detail = {
+            value,
+            colKeyValue: this.colKeyValue,
+            rowKeyValue: this.rowKeyValue,
+            callbacks: {
+                dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
+            }
+        };
+        this._value = value;
         this.dispatchEvent(
-            new CustomEvent('cellchangecustom', {
-                detail: {
-                    dirtyValue: this.recordDirtyValues[this.colKeyValue],
-                    draftValues: event.detail.draftValues,
-                    callbacks: {
-                        setLookupName: this.setName.bind(this)
-                    }
-                },
+            new CustomEvent('privateeditcustomcell', {
+                detail: detail,
                 bubbles: true,
                 composed: true
             })
