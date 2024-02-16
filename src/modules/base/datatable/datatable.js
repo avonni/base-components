@@ -365,13 +365,16 @@ export default class Datatable extends LightningDatatable {
 
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
-        const edited = Array.from(
+        const tdEdited = Array.from(
             this.template.querySelectorAll('td.slds-is-edited')
+        );
+        const thEdited = Array.from(
+            this.template.querySelectorAll('th.slds-is-edited')
         );
         const error = Array.from(
             this.template.querySelectorAll('td.slds-has-error')
         );
-        const editCells = edited.concat(error);
+        const editCells = tdEdited.concat(thEdited).concat(error);
 
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
@@ -1059,7 +1062,10 @@ export default class Datatable extends LightningDatatable {
 
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
-        if (value !== this.state.inlineEdit.editedValue) {
+        if (
+            value !== this.state.inlineEdit.editedValue ||
+            this.state.inlineEdit.massEditEnabled
+        ) {
             // Show yellow background and save/cancel button
             super.updateRowsState(this.state);
         }

@@ -13,7 +13,6 @@ export default class PrimitiveCellDateRange extends LightningElement {
     @api labelEndDate;
     @api type;
 
-    _columnsWidth = 0;
     _index;
     _value;
 
