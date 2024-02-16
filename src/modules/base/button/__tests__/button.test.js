@@ -22,7 +22,7 @@ describe('Button', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
-            expect(element.iconSize).toBe('x-small');
+            expect(element.iconSize).toBe('small');
             expect(element.iconSrc).toBeUndefined();
             expect(element.label).toBeUndefined();
             expect(element.name).toBeUndefined();
@@ -99,26 +99,38 @@ describe('Button', () => {
         });
 
         describe('Icon Size', () => {
-            it('X-small', () => {
+            it('Xx-small', () => {
                 element.iconName = 'utility:close';
+                element.iconSize = 'xx-small';
 
                 return Promise.resolve().then(() => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="primitive-icon"]'
                     );
-                    expect(icon.size).toBe('xx-small');
+                    expect(icon.size).toBe('');
+                });
+            });
+
+            it('X-small', () => {
+                element.iconName = 'utility:close';
+                element.iconSize = 'x-small';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="primitive-icon"]'
+                    );
+                    expect(icon.size).toBe('');
                 });
             });
 
             it('Small', () => {
                 element.iconName = 'utility:close';
-                element.iconSize = 'small';
 
                 return Promise.resolve().then(() => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="primitive-icon"]'
                     );
-                    expect(icon.size).toBe('x-small');
+                    expect(icon.size).toBe('');
                 });
             });
 
@@ -130,7 +142,7 @@ describe('Button', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="primitive-icon"]'
                     );
-                    expect(icon.size).toBe('small');
+                    expect(icon.size).toBe('x-small');
                 });
             });
 
@@ -142,7 +154,7 @@ describe('Button', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="primitive-icon"]'
                     );
-                    expect(icon.size).toBe('large');
+                    expect(icon.size).toBe('small');
                 });
             });
         });
@@ -164,9 +176,25 @@ describe('Button', () => {
         });
 
         describe('Icon Src Size', () => {
+            it('Xx-small', () => {
+                element.iconSrc =
+                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
+                element.iconSize = 'xx-small';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="image"]'
+                    );
+                    expect(icon.classList).toContain(
+                        'avonni-button__image_xx-small'
+                    );
+                });
+            });
+
             it('X-small', () => {
                 element.iconSrc =
                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
+                element.iconSize = 'x-small';
 
                 return Promise.resolve().then(() => {
                     const icon = element.shadowRoot.querySelector(
@@ -181,7 +209,6 @@ describe('Button', () => {
             it('Small', () => {
                 element.iconSrc =
                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
-                element.iconSize = 'small';
 
                 return Promise.resolve().then(() => {
                     const icon = element.shadowRoot.querySelector(

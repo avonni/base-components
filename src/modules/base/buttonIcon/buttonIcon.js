@@ -267,7 +267,6 @@ export default class ButtonIcon extends PrimitiveButton {
      */
     get computedIconClass() {
         return classSet('slds-button__icon').add({
-            // [`slds-button__icon_${this.size}`]: this.isBare,
             [this.iconClass]: this.iconClass
         });
     }

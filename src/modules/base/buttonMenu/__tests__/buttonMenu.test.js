@@ -43,7 +43,7 @@ describe('Button Menu', () => {
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.value).toBeUndefined();
-            expect(element.variant).toBe('neutral');
+            expect(element.variant).toBe('border');
         });
 
         describe('Access Key', () => {
@@ -145,7 +145,7 @@ describe('Button Menu', () => {
         });
 
         describe('Icon', () => {
-            describe('icon name', () => {
+            describe('Name', () => {
                 it('Passed to the component', () => {
                     element.iconName = 'utility:close';
                     const icon = element.shadowRoot.querySelector(
@@ -158,7 +158,7 @@ describe('Button Menu', () => {
                 });
             });
 
-            describe('icon size', () => {
+            describe('Size', () => {
                 it('Xx-small', () => {
                     element.iconSrc =
                         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -212,7 +212,7 @@ describe('Button Menu', () => {
                             '[data-element-id="image"]'
                         );
                         expect(image.className).toContain(
-                            'slds-m-left_xx-small'
+                            'avonni-button-menu__image avonni-button-menu__image_x-small slds-m-right_xx-small'
                         );
                     });
                 });
@@ -228,7 +228,7 @@ describe('Button Menu', () => {
                         );
 
                         return Promise.resolve().then(() => {
-                            expect(icon.size).toBe('x-small');
+                            expect(icon.size).toBe('');
                         });
                     });
                 });
@@ -263,7 +263,7 @@ describe('Button Menu', () => {
                     );
 
                     return Promise.resolve().then(() => {
-                        expect(icon.size).toBe('x-small');
+                        expect(icon.size).toBe('');
                     });
                 });
 
@@ -305,6 +305,7 @@ describe('Button Menu', () => {
                 it('Medium with label', () => {
                     element.iconSize = 'medium';
                     element.label = 'Label';
+                    element.iconName = 'utility:call';
 
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-icon-main"]'
@@ -312,6 +313,9 @@ describe('Button Menu', () => {
 
                     return Promise.resolve().then(() => {
                         expect(icon.size).toBe('x-small');
+                        expect(icon.className).toContain(
+                            'avonni-button-menu__main-icon-with-label_medium'
+                        );
                     });
                 });
 
@@ -337,28 +341,35 @@ describe('Button Menu', () => {
                 });
 
                 it('Large only icon', () => {
-                    element.iconName = 'utility:close';
-
+                    element.iconName = 'standard:call';
                     element.iconSize = 'large';
+
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-icon-main"]'
                     );
 
                     return Promise.resolve().then(() => {
                         expect(icon.size).toBe('small');
+                        expect(icon.className).toContain(
+                            'avonni-button-menu__main-icon-adjust-scale'
+                        );
                     });
                 });
 
                 it('Large with label', () => {
                     element.iconSize = 'large';
                     element.label = 'Label';
+                    element.iconName = 'standard:call';
 
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-icon-main"]'
                     );
 
                     return Promise.resolve().then(() => {
-                        expect(icon.size).toBe('large');
+                        expect(icon.size).toBe('small');
+                        expect(icon.className).toContain(
+                            'avonni-button-menu__main-icon-with-label-adjust-scale_large'
+                        );
                     });
                 });
             });
