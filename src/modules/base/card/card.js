@@ -48,13 +48,11 @@ export default class Card extends LightningElement {
 
     _mediaPosition = MEDIA_POSITIONS.default;
 
-    showHeader = true;
     showMediaSlot = true;
     showTitleSlot = true;
     showActionsSlot = true;
     showDefaultSlot = true;
     showFooterSlot = true;
-    showCenterMediaContent = true;
 
     renderedCallback() {
         this.showMediaSlot =
@@ -76,11 +74,6 @@ export default class Card extends LightningElement {
             this.titleSlot.assignedElements().length !== 0;
         this.showFooterSlot =
             this.footerSlot && this.footerSlot.assignedElements().length !== 0;
-
-        this.showCenterMediaContent =
-            this.showDefaultSlot && this.mediaPosition === 'center';
-
-        this.showHeader = this.title || this.showTitleSlot || this.iconName;
 
         /**
          * The event fired when the card is rendered.
@@ -358,5 +351,13 @@ export default class Card extends LightningElement {
             .add({
                 'avonni-card__media-border-top': this.mediaHasTopBorder
             });
+    }
+
+    get showCenterMediaContent() {
+        return this.showDefaultSlot && this.mediaPosition === 'center';
+    }
+
+    get showHeader() {
+        return this.title || this.showTitleSlot || this.iconName;
     }
 }
