@@ -15,7 +15,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api isMultiSelect;
     @api placeholder;
 
-    _columnsWidth = 0;
     _index;
     _options = [];
     _value;
