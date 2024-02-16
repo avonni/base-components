@@ -200,3 +200,11 @@ export const createAvatar = (
 export const isActionIconType = (iconName) => {
     return typeof iconName === 'string' && iconName.startsWith('action');
 };
+
+export const isCustomIconType = (iconName) => {
+    return typeof iconName === 'string' && iconName.startsWith('custom');
+};
+
+export const isStandardIconType = (iconName) => {
+    return typeof iconName === 'string' && iconName.startsWith('standard');
+};

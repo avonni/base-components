@@ -1,6 +1,6 @@
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
-import ButtonMenuVariantsComponent from '../__examples__/variants/variants';
+import ButtonMenuSizesComponent from '../__examples__/sizes/sizes';
 
 export default {
     title: 'Example/Button Menu',
@@ -419,85 +419,13 @@ export const Illustration = TemplateIllustration.bind({});
  * Allows to quickly scan if there is any problems.
  */
 customElements.define(
-    'ac-base-button-menu-variants',
-    ButtonMenuVariantsComponent.CustomElementConstructor
+    'ac-base-button-menu-sizes',
+    ButtonMenuSizesComponent.CustomElementConstructor
 );
-const ButtonMenuVariants = ({ variant }) => {
-    const element = document.createElement('ac-base-button-menu-variants');
+const ButtonMenuSizes = ({ variant }) => {
+    const element = document.createElement('ac-base-button-menu-sizes');
     element.variant = variant;
     return element;
 };
-const TemplateVariants = (args) => ButtonMenuVariants(args);
-
-export const BareVariant = TemplateVariants.bind({});
-BareVariant.args = {
-    variant: 'bare'
-};
-
-export const BareInverseVariant = TemplateVariants.bind({});
-BareInverseVariant.parameters = darkBackground;
-BareInverseVariant.args = {
-    variant: 'bare-inverse'
-};
-
-export const BaseVariant = TemplateVariants.bind({});
-BaseVariant.args = {
-    variant: 'base'
-};
-
-export const BorderVariant = TemplateVariants.bind({});
-BorderVariant.args = {
-    variant: 'border'
-};
-
-export const BorderFilledVariant = TemplateVariants.bind({});
-BorderFilledVariant.args = {
-    variant: 'border-filled'
-};
-
-export const BorderInverseVariant = TemplateVariants.bind({});
-BorderInverseVariant.parameters = darkBackground;
-BorderInverseVariant.args = {
-    variant: 'border-inverse'
-};
-
-export const BrandVariant = TemplateVariants.bind({});
-BrandVariant.args = {
-    variant: 'brand'
-};
-
-export const BrandOutlineVariant = TemplateVariants.bind({});
-BrandOutlineVariant.args = {
-    variant: 'brand-outline'
-};
-
-export const ContainerVariant = TemplateVariants.bind({});
-ContainerVariant.args = {
-    variant: 'container'
-};
-
-export const DestructiveVariant = TemplateVariants.bind({});
-DestructiveVariant.args = {
-    variant: 'destructive'
-};
-
-export const DestructiveTextVariant = TemplateVariants.bind({});
-DestructiveTextVariant.args = {
-    variant: 'destructive-text'
-};
-
-export const InverseVariant = TemplateVariants.bind({});
-InverseVariant.parameters = darkBackground;
-InverseVariant.args = {
-    variant: 'inverse'
-};
-
-export const NeutralVariant = TemplateVariants.bind({});
-NeutralVariant.args = {
-    variant: 'neutral'
-};
-
-export const SuccessVariant = TemplateVariants.bind({});
-SuccessVariant.args = {
-    variant: 'success'
-};
+const TemplateSizes = (args) => ButtonMenuSizes(args);
+export const Sizes = TemplateSizes.bind({});
