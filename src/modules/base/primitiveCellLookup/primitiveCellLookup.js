@@ -81,9 +81,7 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     get recordDirtyValues() {
-        return this.state.inlineEdit.dirtyValues[this.rowKeyValue][
-            this.colKeyValue
-        ];
+        return this.state.inlineEdit.dirtyValues[this.rowKeyValue];
     }
 
     /**
