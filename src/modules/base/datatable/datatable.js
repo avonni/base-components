@@ -1062,7 +1062,10 @@ export default class Datatable extends LightningDatatable {
 
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
-        if (value !== this.state.inlineEdit.editedValue) {
+        if (
+            value !== this.state.inlineEdit.editedValue ||
+            this.state.inlineEdit.massEditEnabled
+        ) {
             // Show yellow background and save/cancel button
             super.updateRowsState(this.state);
         }
