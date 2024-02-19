@@ -1,5 +1,5 @@
 import { ButtonIcon } from '../__examples__/buttonIcon';
-import ButtonIconVariantsComponent from '../__examples__/variants/variants';
+import ButtonIconSizesComponent from '../__examples__/sizes/sizes';
 
 export default {
     title: 'Example/Button Icon',
@@ -257,16 +257,17 @@ Disabled.args = {
 };
 
 /**
- * Example with different combinations of sizes, fallback icon types.
+ * Example with different combinations of sizes, icon types.
  * Allows to quickly scan if there is any problems.
  */
 customElements.define(
-    'ac-base-button-icon-variants',
-    ButtonIconVariantsComponent.CustomElementConstructor
+    'ac-base-button-icon-sizes',
+    ButtonIconSizesComponent.CustomElementConstructor
 );
-const ButtonIconVariants = () => {
-    const element = document.createElement('ac-base-button-icon-variants');
+const ButtonIconSizes = ({ variant }) => {
+    const element = document.createElement('ac-base-button-icon-sizes');
+    element.variant = variant;
     return element;
 };
-const TemplateVariants = (args) => ButtonIconVariants(args);
-export const Variants = TemplateVariants.bind({});
+const TemplateSizes = (args) => ButtonIconSizes(args);
+export const Sizes = TemplateSizes.bind({});

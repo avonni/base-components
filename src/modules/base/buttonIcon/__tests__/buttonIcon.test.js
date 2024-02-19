@@ -82,14 +82,14 @@ describe('Button Icon', () => {
         describe('Icon', () => {
             describe('Icon Class', () => {
                 it('Passed to the component', () => {
-                    element.iconClass = 'custom-class';
+                    element.iconClass = 'customClass';
                     element.iconName = 'utility:close';
 
                     return Promise.resolve().then(() => {
                         const icon = element.shadowRoot.querySelector(
                             '[data-element-id="primitive-icon"]'
                         );
-                        expect(icon.svgClass).toContain('custom-class');
+                        expect(icon.svgClass.customClass).toBeTruthy();
                     });
                 });
             });
@@ -108,19 +108,58 @@ describe('Button Icon', () => {
             });
 
             describe('Size Bare', () => {
+                it('Xx-small', () => {
+                    element.iconName = 'utility:close';
+                    element.size = 'xx-small';
+                    element.variant = 'bare';
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare_xx-small'
+                            );
+                            element.iconName = 'standard:call';
+                        })
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare-adjust-scale_xx-small'
+                            );
+                        });
+                });
+
                 it('X-small', () => {
                     element.iconName = 'utility:close';
                     element.size = 'x-small';
                     element.variant = 'bare';
 
-                    return Promise.resolve().then(() => {
-                        const icon = element.shadowRoot.querySelector(
-                            '[data-element-id="primitive-icon"]'
-                        );
-                        expect(icon.svgClass).toContain(
-                            'slds-button__icon_x-small'
-                        );
-                    });
+                    return Promise.resolve()
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare_x-small'
+                            );
+                            element.iconName = 'standard:call';
+                        })
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare-adjust-scale_x-small'
+                            );
+                        });
                 });
 
                 it('Small', () => {
@@ -128,14 +167,26 @@ describe('Button Icon', () => {
                     element.size = 'small';
                     element.variant = 'bare';
 
-                    return Promise.resolve().then(() => {
-                        const icon = element.shadowRoot.querySelector(
-                            '[data-element-id="primitive-icon"]'
-                        );
-                        expect(icon.svgClass).toContain(
-                            'slds-button__icon_small'
-                        );
-                    });
+                    return Promise.resolve()
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare_small'
+                            );
+                            element.iconName = 'standard:call';
+                        })
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare-adjust-scale_small'
+                            );
+                        });
                 });
 
                 it('Medium', () => {
@@ -143,12 +194,26 @@ describe('Button Icon', () => {
                     element.size = 'medium';
                     element.variant = 'bare';
 
-                    return Promise.resolve().then(() => {
-                        const icon = element.shadowRoot.querySelector(
-                            '[data-element-id="primitive-icon"]'
-                        );
-                        expect(icon.svgClass).toContain('slds-button__icon');
-                    });
+                    return Promise.resolve()
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('x-small');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare_medium'
+                            );
+                            element.iconName = 'standard:call';
+                        })
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('x-small');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare-adjust-scale_medium'
+                            );
+                        });
                 });
 
                 it('Large', () => {
@@ -156,69 +221,127 @@ describe('Button Icon', () => {
                     element.size = 'large';
                     element.variant = 'bare';
 
-                    return Promise.resolve().then(() => {
-                        const icon = element.shadowRoot.querySelector(
-                            '[data-element-id="primitive-icon"]'
-                        );
-                        expect(icon.svgClass).toContain(
-                            'slds-button__icon_large'
-                        );
-                    });
+                    return Promise.resolve()
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('small');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare_large'
+                            );
+                            element.iconName = 'standard:call';
+                        })
+                        .then(() => {
+                            const icon = element.shadowRoot.querySelector(
+                                '[data-element-id="primitive-icon"]'
+                            );
+                            expect(icon.size).toBe('small');
+                            expect(icon.className).toContain(
+                                'avonni-button-icon__icon-bare-adjust-scale_large'
+                            );
+                        });
                 });
             });
 
             describe('Size Non Bare', () => {
                 it('Xx-small', () => {
-                    element.iconName = 'utility:close';
+                    element.iconName = 'standard:call';
                     element.size = 'xx-small';
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="button"]'
                         );
+                        const icon = element.shadowRoot.querySelector(
+                            '[data-element-id="primitive-icon"]'
+                        );
                         expect(button.classList).toContain(
                             'slds-button_icon-xx-small'
+                        );
+                        expect(icon.className).toContain(
+                            'avonni-button-icon__icon-adjust-scale'
                         );
                     });
                 });
 
                 it('X-small', () => {
-                    element.iconName = 'utility:close';
+                    element.iconName = 'standard:call';
                     element.size = 'x-small';
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="button"]'
                         );
+                        const icon = element.shadowRoot.querySelector(
+                            '[data-element-id="primitive-icon"]'
+                        );
                         expect(button.classList).toContain(
                             'slds-button_icon-x-small'
+                        );
+                        expect(icon.className).toContain(
+                            'avonni-button-icon__icon-adjust-scale'
                         );
                     });
                 });
 
                 it('Small', () => {
-                    element.iconName = 'utility:close';
+                    element.iconName = 'standard:call';
                     element.size = 'small';
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="button"]'
                         );
+                        const icon = element.shadowRoot.querySelector(
+                            '[data-element-id="primitive-icon"]'
+                        );
                         expect(button.classList).toContain(
                             'slds-button_icon-small'
+                        );
+                        expect(icon.className).toContain(
+                            'avonni-button-icon__icon-adjust-scale'
                         );
                     });
                 });
 
                 it('Medium', () => {
-                    element.iconName = 'utility:close';
+                    element.iconName = 'standard:call';
                     element.size = 'medium';
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="button"]'
                         );
-                        expect(button.classList).toContain('slds-button_icon');
+                        const icon = element.shadowRoot.querySelector(
+                            '[data-element-id="primitive-icon"]'
+                        );
+                        expect(button.classList).toContain(
+                            'slds-button_icon-medium'
+                        );
+                        expect(icon.className).toContain(
+                            'avonni-button-icon__icon-adjust-scale'
+                        );
+                    });
+                });
+
+                it('Large', () => {
+                    element.iconName = 'standard:call';
+                    element.size = 'large';
+
+                    return Promise.resolve().then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        const icon = element.shadowRoot.querySelector(
+                            '[data-element-id="primitive-icon"]'
+                        );
+                        expect(button.classList).toContain(
+                            'slds-button_icon-large'
+                        );
+                        expect(icon.className).toContain(
+                            'avonni-button-icon__icon-adjust-scale'
+                        );
                     });
                 });
             });

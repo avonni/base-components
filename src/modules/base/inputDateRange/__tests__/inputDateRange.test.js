@@ -114,12 +114,12 @@ describe('Input Date Range', () => {
         });
         const startDay = startDate.getDate();
         const startYear = startDate.getFullYear();
-        const start = `${startMonth} ${startDay}, ${startYear}`;
+        const start = `${startMonth}. ${startDay}, ${startYear}`;
 
         const endMonth = endDate.toLocaleString('default', { month: 'short' });
         const endDay = endDate.getDate();
         const endYear = endDate.getFullYear();
-        const end = `${endMonth} ${endDay}, ${endYear}`;
+        const end = `${endMonth}. ${endDay}, ${endYear}`;
 
         element.startDate = startDate;
         element.endDate = endDate;

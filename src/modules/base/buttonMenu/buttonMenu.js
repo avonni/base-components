@@ -552,12 +552,12 @@ export default class ButtonMenu extends PrimitiveButton {
         const isCustomOrStandardIcon =
             isCustomIconType(this.iconName) ||
             isStandardIconType(this.iconName);
-        return classSet({
+        return classSet('slds-grid').add({
             [`avonni-button-menu__main-icon-with-label_${this.iconSize}`]:
                 this.label && !this.isDownIcon && !isCustomOrStandardIcon,
             [`avonni-button-menu__main-icon-with-label-adjust-scale_${this.iconSize}`]:
                 this.label && !this.isDownIcon && isCustomOrStandardIcon,
-            [`avonni-button-menu__main-icon-adjust-scale_${this.iconSize}`]:
+            'avonni-button-menu__main-icon-adjust-scale':
                 !this.label && !this.isDownIcon && isCustomOrStandardIcon
         });
     }

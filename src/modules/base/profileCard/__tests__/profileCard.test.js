@@ -51,44 +51,38 @@ describe('ProfileCard', () => {
         element.avatarAlternativeText = 'A string alternative text';
         element.avatarFallbackIconName = 'standard:user';
 
-        return Promise.resolve()
-            .then(() => {
-                const image = element.shadowRoot.querySelector(
-                    '[data-element-id="img"]'
-                );
-                image.dispatchEvent(new CustomEvent('error'));
-            })
-            .then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="avatar-lightning-icon"]'
-                );
-                expect(icon.alternativeText).toBe('A string alternative text');
-            });
+        return Promise.resolve().then(() => {
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(image).toBeNull();
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avatar-lightning-icon"]'
+            );
+            expect(icon.alternativeText).toBe('A string alternative text');
+        });
     });
 
     // avatar-fallback-icon-name
     it('Profile card: avatarFallbackIconName', () => {
         element.avatarFallbackIconName = 'standard:user';
 
-        return Promise.resolve()
-            .then(() => {
-                const image = element.shadowRoot.querySelector(
-                    '[data-element-id="img"]'
-                );
-                image.dispatchEvent(new CustomEvent('error'));
-            })
-            .then(() => {
-                const avatarWrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="avatar"]'
-                );
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="avatar-lightning-icon"]'
-                );
-                expect(icon.iconName).toBe('standard:user');
-                expect(avatarWrapper.classList).toContain(
-                    'slds-align_absolute-center'
-                );
-            });
+        return Promise.resolve().then(() => {
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(image).toBeNull();
+            const avatarWrapper = element.shadowRoot.querySelector(
+                '[data-element-id="avatar"]'
+            );
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avatar-lightning-icon"]'
+            );
+            expect(icon.fallbackIconName).toBe('standard:user');
+            expect(avatarWrapper.classList).toContain(
+                'slds-align_absolute-center'
+            );
+        });
     });
 
     // avatar-position
@@ -479,28 +473,25 @@ describe('ProfileCard', () => {
         element.avatarVariant = 'circle';
         element.avatarFallbackIconName = 'standard:user';
 
-        return Promise.resolve()
-            .then(() => {
-                const image = element.shadowRoot.querySelector(
-                    '[data-element-id="img"]'
-                );
-                image.dispatchEvent(new CustomEvent('error'));
-            })
-            .then(() => {
-                const avatar = element.shadowRoot.querySelector(
-                    '[data-element-id="avatar"]'
-                );
-                const iconWrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="icon-wrapper"]'
-                );
+        return Promise.resolve().then(() => {
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(image).toBeNull();
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avatar"]'
+            );
+            const iconWrapper = element.shadowRoot.querySelector(
+                '[data-element-id="icon-wrapper"]'
+            );
 
-                expect(avatar.classList).toContain(
-                    'avonni-profile-card__avatar-img-circle'
-                );
-                expect(iconWrapper.classList).toContain(
-                    'avonni-profile-card__avatar-img-circle'
-                );
-            });
+            expect(avatar.classList).toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
+            expect(iconWrapper.classList).toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
+        });
     });
 
     it('Profile card: avatarVariant = square, with image', () => {
@@ -529,28 +520,25 @@ describe('ProfileCard', () => {
         element.avatarVariant = 'square';
         element.avatarFallbackIconName = 'standard:user';
 
-        return Promise.resolve()
-            .then(() => {
-                const image = element.shadowRoot.querySelector(
-                    '[data-element-id="img"]'
-                );
-                image.dispatchEvent(new CustomEvent('error'));
-            })
-            .then(() => {
-                const avatar = element.shadowRoot.querySelector(
-                    '[data-element-id="avatar"]'
-                );
-                const iconWrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="icon-wrapper"]'
-                );
+        return Promise.resolve().then(() => {
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(image).toBeNull();
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avatar"]'
+            );
+            const iconWrapper = element.shadowRoot.querySelector(
+                '[data-element-id="icon-wrapper"]'
+            );
 
-                expect(avatar.classList).not.toContain(
-                    'avonni-profile-card__avatar-img-circle'
-                );
-                expect(iconWrapper.classList).not.toContain(
-                    'avonni-profile-card__avatar-img-circle'
-                );
-            });
+            expect(avatar.classList).not.toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
+            expect(iconWrapper.classList).not.toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
+        });
     });
 
     // background-alternative-text

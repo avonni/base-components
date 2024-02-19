@@ -18,32 +18,39 @@
     object-fit: var(--avonni-button-image-object-fit, cover);
 }
 
+.avonni-button__image_xx-small {
+    width: 0.5rem;
+    height: 0.5rem;
+    min-width: 0.5rem;
+    min-height: 0.5rem;
+}
+
 .avonni-button__image_x-small {
+    width: 0.75rem;
+    height: 0.75rem;
+    min-width: 0.75rem;
+    min-height: 0.75rem;
+}
+
+.avonni-button__image_small {
     width: 0.875rem;
     height: 0.875rem;
     min-width: 0.875rem;
     min-height: 0.875rem;
 }
 
-.avonni-button__image_small {
+.avonni-button__image_medium {
     width: 1rem;
     height: 1rem;
     min-width: 1rem;
     min-height: 1rem;
 }
 
-.avonni-button__image_medium {
+.avonni-button__image_large {
     width: 1.5rem;
     height: 1.5rem;
     min-width: 1.5rem;
     min-height: 1.5rem;
-}
-
-.avonni-button__image_large {
-    width: 3rem;
-    height: 3rem;
-    min-width: 3rem;
-    min-height: 3rem;
 }
 
 .avonni-button_label {
@@ -846,4 +853,32 @@
 
 .avonni-button__container_large {
     height: 3.5rem;
+}
+
+.avonni-button__icon-adjust-scale_xx-small {
+    scale: 0.825;
+}
+
+.avonni-button__icon_xx-small {
+    scale: 0.5715;
+}
+
+.avonni-button__icon-adjust-scale_x-small {
+    scale: 1.25;
+}
+
+.avonni-button__icon_x-small {
+    scale: 0.857;
+}
+
+.avonni-button__icon-adjust-scale_small,
+.avonni-button__icon-adjust-scale_medium,
+.avonni-button__icon-adjust-scale_large {
+    scale: 1.5;
+}
+
+.avonni-button__icon_small,
+.avonni-button__icon_medium,
+.avonni-button__icon_large {
+    scale: 1;
 }

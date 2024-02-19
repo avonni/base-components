@@ -1236,31 +1236,12 @@ button {
 }
 
 .avonni-button-menu__main-icon-with-label-adjust-scale_x-small {
-    scale: 1;
-}
-
-.avonni-button-menu__main-icon-with-label-adjust-scale_small {
     scale: 1.25;
 }
 
-.avonni-button-menu__main-icon-with-label-adjust-scale_medium {
+.avonni-button-menu__main-icon-with-label-adjust-scale_small,
+.avonni-button-menu__main-icon-with-label-adjust-scale_medium,
+.avonni-button-menu__main-icon-with-label-adjust-scale_large,
+.avonni-button-menu__main-icon-adjust-scale {
     scale: 1.5;
-}
-
-.avonni-button-menu__main-icon-with-label-adjust-scale_large {
-    scale: 1.6;
-}
-
-.avonni-button-menu__main-icon-adjust-scale_xx-small,
-.avonni-button-menu__main-icon-adjust-scale_x-small,
-.avonni-button-menu__main-icon-adjust-scale_small {
-    scale: 1.25;
-}
-
-.avonni-button-menu__main-icon-adjust-scale_medium {
-    scale: 1.5;
-}
-
-.avonni-button-menu__main-icon-adjust-scale_large {
-    scale: 1.6;
 }

@@ -11,47 +11,17 @@
     height: 2rem;
 }
 
+.avonni-button-icon_large {
+    width: 2.25rem;
+    height: 2.25rem;
+}
+
 .avonni-button-icon__image {
     border-radius: var(--avonni-button-icon-image-radius-border, 0.25rem);
     border-style: var(--avonni-button-icon-image-styling-border);
     border-width: var(--avonni-button-icon-image-sizing-border);
     border-color: var(--avonni-button-icon-image-color-border);
     object-fit: var(--avonni-button-icon-image-object-fit, cover);
-}
-
-.avonni-button-icon__image_xx-small-bare {
-    width: 0.875rem;
-    height: 0.875rem;
-    min-width: 0.875rem;
-    min-height: 0.875rem;
-}
-
-.avonni-button-icon__image_x-small-bare {
-    width: 0.5rem;
-    height: 0.5rem;
-    min-width: 0.5rem;
-    min-height: 0.5rem;
-}
-
-.avonni-button-icon__image_small-bare {
-    width: 0.75rem;
-    height: 0.75rem;
-    min-width: 0.75rem;
-    min-height: 0.75rem;
-}
-
-.avonni-button-icon__image_medium-bare {
-    width: 0.875rem;
-    height: 0.875rem;
-    min-width: 0.875rem;
-    min-height: 0.875rem;
-}
-
-.avonni-button-icon__image_large-bare {
-    width: 1.5rem;
-    height: 1.5rem;
-    min-width: 1.5rem;
-    min-height: 1.5rem;
 }
 
 .avonni-button-icon__image_xx-small {
@@ -83,10 +53,10 @@
 }
 
 .avonni-button-icon__image_large {
-    width: 1rem;
-    height: 1rem;
-    min-width: 1rem;
-    min-height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
 }
 
 .avonni-button-icon_bare:disabled,
@@ -753,4 +723,36 @@
         --avonni-button-icon-success-text-color-hover,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+}
+
+.avonni-button-icon__icon-adjust-scale {
+    scale: 1.5;
+}
+
+.avonni-button-icon__icon-bare_xx-small {
+    scale: 0.5715;
+}
+
+.avonni-button-icon__icon-bare-adjust-scale_xx-small {
+    scale: 0.825;
+}
+
+.avonni-button-icon__icon-bare_x-small {
+    scale: 0.857;
+}
+
+.avonni-button-icon__icon-bare-adjust-scale_x-small {
+    scale: 1.25;
+}
+
+.avonni-button-icon__icon-bare-adjust-scale_small,
+.avonni-button-icon__icon-bare-adjust-scale_medium,
+.avonni-button-icon__icon-bare-adjust-scale_large {
+    scale: 1.5;
+}
+
+.avonni-button-icon__icon-bare_small,
+.avonni-button-icon__icon-bare_medium,
+.avonni-button-icon__icon-bare_large {
+    scale: 1;
 }
