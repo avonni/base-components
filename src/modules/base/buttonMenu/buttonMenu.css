@@ -66,6 +66,10 @@ button {
     transition: border 0.15s linear;
 }
 
+.avonni-button-menu__dropdown {
+    max-width: var(--avonni-button-menu-dropdown-max-width, 20rem);
+}
+
 .avonni-button-menu_bare {
     background-color: var(
         --avonni-button-menu-button-bare-color-background,

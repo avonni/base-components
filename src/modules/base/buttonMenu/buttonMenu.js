@@ -470,7 +470,7 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     get computedDropdownClass() {
-        return classSet('slds-dropdown')
+        return classSet('slds-dropdown avonni-button-menu__dropdown')
             .add({
                 'slds-dropdown_left':
                     this.menuAlignment === 'left' || this.isAutoAlignment,

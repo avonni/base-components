@@ -13,6 +13,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-dropdown-max-width
+ * @type dimension
+ * @default 20rem
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-radius-border
  * @type radius
  * @default 0.25rem
