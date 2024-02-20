@@ -146,7 +146,7 @@ describe('ProgressBar', () => {
             expect(outerWrapper.classList).not.toContain(
                 'slds-progress-bar_vertical'
             );
-            expect(innerWrapper.style.width).toBe('0%');
+            expect(innerWrapper.style.clipPath).toBe(`rect(0% 0% auto 0)`);
 
             primitives.forEach((primitive) => {
                 expect(primitive.orientation).toBe('horizontal');
@@ -171,7 +171,7 @@ describe('ProgressBar', () => {
             expect(outerWrapper.classList).toContain(
                 'slds-progress-bar_vertical'
             );
-            expect(innerWrapper.style.height).toBe('0%');
+            expect(innerWrapper.style.clipPath).toBe(`rect(100% 100% auto 0)`);
 
             primitives.forEach((primitive) => {
                 expect(primitive.orientation).toBe('vertical');
@@ -925,7 +925,7 @@ describe('ProgressBar', () => {
 
             expect(value.textContent.trim()).toBe('56%');
             expect(assistiveText.textContent).toBe('Progress: 56%');
-            expect(innerWrapper.style.width).toBe('56%');
+            expect(innerWrapper.style.clipPath).toBe('rect(0% 56% auto 0)');
         });
     });
 
@@ -946,7 +946,7 @@ describe('ProgressBar', () => {
 
             expect(value.textContent.trim()).toBe('100%');
             expect(assistiveText.textContent).toBe('Progress: 100%');
-            expect(innerWrapper.style.width).toBe('100%');
+            expect(innerWrapper.style.clipPath).toBe('rect(0% 100% auto 0)');
         });
     });
 
@@ -967,7 +967,7 @@ describe('ProgressBar', () => {
 
             expect(value.textContent.trim()).toBe('0%');
             expect(assistiveText.textContent).toBe('Progress: 0%');
-            expect(innerWrapper.style.width).toBe('0%');
+            expect(innerWrapper.style.clipPath).toBe('rect(0% 0% auto 0)');
         });
     });
 

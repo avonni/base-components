@@ -10,6 +10,7 @@ import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
+const BORDER_RADIUS_REM = 0.5;
 const DEFAULT_VALUE = 0;
 
 const PROGRESS_BAR_SIZES = {
@@ -504,6 +505,8 @@ export default class ProgressBar extends LightningElement {
         return classSet('slds-progress-bar__value slds-is-relative')
             .add(`avonni-progress-bar__bar_theme-${this._theme}`)
             .add({
+                'avonni-progress-bar__vertical-bar':
+                    this._orientation === 'vertical',
                 'avonni-progress-bar__vertical-bar_size-x-small':
                     this._size === 'x-small' &&
                     this._orientation === 'vertical',
@@ -537,14 +540,21 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
-     * Computed orientation width or height depending on vertical or horizontal display.
+     * Computed color gradient or clipping area for the progress bar value based on vertical or horizontal display.
      *
      * @type {string}
      */
     get computedStyle() {
-        return this._orientation === 'horizontal'
-            ? `width: ${this._value}%`
-            : `height: ${this._value}%`;
+        let path = 'clip-path: rect(';
+        path +=
+            this._orientation === 'horizontal'
+                ? `0% ${this.value}% auto 0`
+                : `${100 - this.value}% 100% auto 0`;
+        if (this._variant === 'circular') {
+            path += ` round ${BORDER_RADIUS_REM}rem ${BORDER_RADIUS_REM}rem`;
+        }
+        path += ')';
+        return path;
     }
 
     /**
@@ -720,9 +730,9 @@ export default class ProgressBar extends LightningElement {
         const width = this.divPin.getBoundingClientRect().width;
         const height = this.divPin.getBoundingClientRect().height;
         if (this.orientation === 'horizontal' && width > 0) {
-            this.divPin.style.right = `${-width / 2}px`;
+            this.divPin.style.left = `calc(${this.value}% + ${-width / 2}px)`;
         } else if (this.orientation === 'vertical' && height > 0 && width > 0) {
-            this.divPin.style.bottom = `${-height / 2}px`;
+            this.divPin.style.top = `calc(${this.value}% + ${-height / 2}px)`;
         }
     }
 }
