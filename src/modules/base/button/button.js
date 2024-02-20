@@ -1,5 +1,5 @@
 import { api } from 'lwc';
-import { normalizeBoolean, normalizeString, isCSR } from 'c/utilsPrivate';
+import { normalizeString, isCSR } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
 import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
@@ -92,7 +92,6 @@ export default class Button extends PrimitiveButton {
      */
 
     _iconSize = ICON_SIZES.default;
-    _stretch = false;
 
     /*
      * ------------------------------------------------------------
@@ -134,22 +133,6 @@ export default class Button extends PrimitiveButton {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
-    }
-
-    /**
-     * Setting it to true allows the button to take up the entire available width.
-     * This value defaults to false.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get stretch() {
-        return this._stretch;
-    }
-    set stretch(value) {
-        this._stretch = normalizeBoolean(value);
     }
 
     /*

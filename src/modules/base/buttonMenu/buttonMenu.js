@@ -402,6 +402,10 @@ export default class ButtonMenu extends PrimitiveButton {
         classes.add(`avonni-button-menu_${this.variant}`);
         classes.add(buttonGroupOrderClass(this.groupOrder));
 
+        if (this.stretch) {
+            classes.add('slds-button_stretch');
+        }
+
         if (this.label) {
             classes.add({
                 'avonni-button-menu__button_label': this.label,
