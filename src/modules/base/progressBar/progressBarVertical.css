@@ -4,6 +4,10 @@
     height: 100%;
 }
 
+.avonni-progress-bar__vertical-bar {
+    transform: rotate(180deg);
+}
+
 .avonni-progress-bar__vertical-bar_size-x-small {
     height: var(--lwc-sizeXSmall, 12rem);
 }

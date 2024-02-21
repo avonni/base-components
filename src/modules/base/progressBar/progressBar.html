@@ -62,22 +62,18 @@
                         class={computedInnerClass}
                         style={computedStyle}
                         data-element-id="avonni-progress-bar-value"
+                    ></div>
+                    <div
+                        if:true={showPinValue}
+                        class={computedPinClass}
+                        data-element-id="avonni-progress-bar-pin"
                     >
-                        <div
-                            if:true={showPinValue}
-                            class={computedPinClass}
-                            data-element-id="avonni-progress-bar-pin"
+                        <span
+                            class="avonni-progress-bar__pin-value slds-truncate"
+                            aria-hidden="true"
                         >
-                            <span
-                                class="
-                                    avonni-progress-bar__pin-value
-                                    slds-truncate
-                                "
-                                aria-hidden="true"
-                            >
-                                {valueToDisplay}
-                            </span>
-                        </div>
+                            {valueToDisplay}
+                        </span>
                     </div>
                     <span class="slds-assistive-text">{assistiveText}</span>
                     <lightning-layout
