@@ -27,6 +27,10 @@
             "path": "src/modules/base/ariaObserver/ariaObserver.js"
         },
         {
+            "name": "c/numberFormat",
+            "path": "src/modules/base/numberFormat/numberFormat.js"
+        },
+        {
             "name": "c/resizeObserver",
             "path": "src/modules/base/resizeObserver/resizeObserver.js"
         },
