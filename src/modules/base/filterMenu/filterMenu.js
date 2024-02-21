@@ -12,7 +12,7 @@ import {
     animationFrame,
     timeout
 } from 'c/utilsPrivate';
-import { numberFormat } from 'c/internationalizationLibrary';
+import { numberFormat } from 'c/numberFormat';
 import { classSet } from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 import {

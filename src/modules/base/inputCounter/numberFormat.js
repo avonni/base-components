@@ -1,4 +1,4 @@
-import { numberFormat } from 'c/internationalizationLibrary';
+import { numberFormat } from 'c/numberFormat';
 
 const NUMBER_SYMBOLS = ['+', '-'];
 

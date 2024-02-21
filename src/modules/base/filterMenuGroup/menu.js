@@ -4,7 +4,7 @@ import {
     normalizeArray,
     normalizeObject
 } from 'c/utilsPrivate';
-import { numberFormat } from 'c/internationalizationLibrary';
+import { numberFormat } from 'c/numberFormat';
 
 /**
  * @class
