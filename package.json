@@ -59,11 +59,11 @@
         ]
     },
     "scripts": {
-        "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -s ./static",
+        "storybook": "start-storybook -s ./static",
         "prepublishOnly": "npx postcss **/*.css --use autoprefixer --replace --no-map",
         "deploy": "npm publish",
         "deploy-storybook": "echo 'storybook.avonnicomponents.com' > './storybook-static/CNAME' && storybook-to-ghpages",
-        "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook -s ./static",
+        "build-storybook": "build-storybook -s ./static",
         "prettier": "prettier --write '**/*.{cmp,component,css,html,js,json,md,page,yaml,yml}'",
         "prettier:verify": "prettier --list-different '**/*.{html,js,json,yaml,yml,md,cmp,page,component}'",
         "test:unit": "lwc-services test:unit",
