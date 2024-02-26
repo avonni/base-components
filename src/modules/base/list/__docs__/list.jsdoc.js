@@ -179,6 +179,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-info-text-color
+ * @default #444444
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-info-font-size
+ * @default 0.8125rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-info-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-info-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-sizing-border
  * @default 1px
  * @type dimension
