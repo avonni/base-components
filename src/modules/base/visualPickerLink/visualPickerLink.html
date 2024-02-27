@@ -2,13 +2,13 @@
     <div class="slds-welcome-mat">
         <div class={computedContainerClass} data-element-id="container">
             <a
-                href={href}
                 class="
                     slds-media
                     slds-p-around_medium
                     avonni-visual-picker-link__box
                     avonni-visual-picker-box_link
                 "
+                href={href}
                 data-element-id="a"
                 onclick={handleClick}
             >
@@ -29,8 +29,8 @@
                                     class="slds-icon-action-check"
                                     alternative-text="Completed"
                                     icon-name="utility:check"
-                                    variant="inverse"
                                     size="xx-small"
+                                    variant="inverse"
                                 ></lightning-icon>
                             </div>
                         </div>
@@ -38,21 +38,20 @@
                 </template>
                 <div class="slds-media__body">
                     <div class={computedTileBodyClass}>
-                        <template if:true={showTitle}>
-                            <div class="avonni-visual-picker-link__tile-title">
-                                <slot name="title"></slot>
-                            </div>
-                        </template>
+                        <div
+                            if:true={showTitle}
+                            class="avonni-visual-picker-link__tile-title"
+                        >
+                            <slot name="title"></slot>
+                        </div>
+
                         <template if:false={showTitle}>
-                            <template if:true={title}>
-                                <h3
-                                    class="
-                                        avonni-visual-picker-link__tile-title
-                                    "
-                                >
-                                    {title}
-                                </h3>
-                            </template>
+                            <h3
+                                if:true={title}
+                                class="avonni-visual-picker-link__tile-title"
+                            >
+                                {title}
+                            </h3>
                         </template>
                         <p class="avonni-visual-picker-link__tile-description">
                             <slot></slot>

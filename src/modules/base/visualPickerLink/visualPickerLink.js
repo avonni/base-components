@@ -20,7 +20,6 @@ export default class VisualPickerLink extends LightningElement {
      * @public
      */
     @api href;
-
     /**
      * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
@@ -36,18 +35,15 @@ export default class VisualPickerLink extends LightningElement {
      */
     @api title;
 
-    _disabled = false;
-
     _completed = false;
-
+    _disabled = false;
     _iconPosition = ICON_POSITIONS.default;
-
     _infoOnly = false;
 
     showTitle = true;
 
     render() {
-        return this._infoOnly || this._disabled
+        return this.infoOnly || this.disabled
             ? visualPickerLinkInfoOnly
             : visualPickerLink;
     }
@@ -74,7 +70,7 @@ export default class VisualPickerLink extends LightningElement {
      */
 
     /**
-     * If present, the visual picker is disabled and the user cannot interact with it.
+     * If present, the visual picker link is disabled and the user cannot interact with it.
      *
      * @type {boolean}
      * @public
@@ -84,7 +80,6 @@ export default class VisualPickerLink extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -100,7 +95,6 @@ export default class VisualPickerLink extends LightningElement {
     get completed() {
         return this._completed;
     }
-
     set completed(value) {
         this._completed = normalizeBoolean(value);
     }
@@ -116,7 +110,6 @@ export default class VisualPickerLink extends LightningElement {
     get iconPosition() {
         return this._iconPosition;
     }
-
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
             fallbackValue: ICON_POSITIONS.default,
@@ -135,7 +128,6 @@ export default class VisualPickerLink extends LightningElement {
     get infoOnly() {
         return this._infoOnly;
     }
-
     set infoOnly(value) {
         this._infoOnly = normalizeBoolean(value);
     }
@@ -155,28 +147,11 @@ export default class VisualPickerLink extends LightningElement {
         return classSet('avonni-visual-picker-link__tile')
             .add({
                 'slds-welcome-mat__tile_complete avonni-visual-picker-link__tile_complete':
-                    this._completed,
-                'avonni-visual-picker-link__tile_info-only': this._infoOnly,
-                'avonni-visual-picker-link__box':
-                    this._disabled && !this._infoOnly,
-                'avonni-visual-picker-link_disabled':
-                    this._disabled && !this._infoOnly,
-                'avonni-visual-picker-link_cursor-not-allowed': this._disabled
-            })
-            .toString();
-    }
-
-    /**
-     * Computed tile body class styling.
-     *
-     * @type {string}
-     */
-    get computedTileBodyClass() {
-        return classSet('slds-welcome-mat__tile-body')
-            .add({
-                'avonni-visual-picker-link__tile-body-right':
-                    this._iconPosition === 'right',
-                'avonni-visual-picker-link__tile-no-icon': !this.iconName
+                    this.completed,
+                'avonni-visual-picker-link__tile_info-only': this.infoOnly,
+                'avonni-visual-picker-link_cursor-not-allowed': this.disabled,
+                'avonni-visual-picker-link__box avonni-visual-picker-link_disabled':
+                    this.disabled && !this.infoOnly
             })
             .toString();
     }
@@ -192,8 +167,22 @@ export default class VisualPickerLink extends LightningElement {
         )
             .add({
                 'avonni-visual-picker-link__figure-right':
-                    this._iconPosition === 'right'
+                    this.iconPosition === 'right'
             })
+            .toString();
+    }
+
+    /**
+     * Computed tile body class styling.
+     *
+     * @type {string}
+     */
+    get computedTileBodyClass() {
+        return classSet('slds-welcome-mat__tile-body')
+            .add({
+                'avonni-visual-picker-link__tile-no-icon': !this.iconName
+            })
+            .add(`avonni-visual-picker-link__tile-body-${this.iconPosition}`)
             .toString();
     }
 
@@ -203,7 +192,7 @@ export default class VisualPickerLink extends LightningElement {
      * @type {boolean}
      */
     get leftPosition() {
-        return this._iconPosition === 'left';
+        return this.iconPosition === 'left';
     }
 
     /*
