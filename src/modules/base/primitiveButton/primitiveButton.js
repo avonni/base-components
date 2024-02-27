@@ -161,6 +161,7 @@ export default class PrimitiveButton extends LightningElement {
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
     _iconSrc;
+    _stretch = false;
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
 
@@ -544,6 +545,22 @@ export default class PrimitiveButton extends LightningElement {
     }
     set iconSrc(value) {
         this._iconSrc = value;
+    }
+
+    /**
+     * Setting it to true allows the button to take up the entire available width.
+     * This value defaults to false.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get stretch() {
+        return this._stretch;
+    }
+    set stretch(value) {
+        this._stretch = normalizeBoolean(value);
     }
 
     /**

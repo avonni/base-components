@@ -40,6 +40,7 @@ describe('Button Menu', () => {
             expect(element.loadingStateAlternativeText).toBe('Loading');
             expect(element.menuAlignment).toBe('left');
             expect(element.nubbin).toBeFalsy();
+            expect(element.stretch).toBeFalsy();
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.value).toBeUndefined();
@@ -679,6 +680,20 @@ describe('Button Menu', () => {
                             'slds-nubbin_bottom-right'
                         );
                     });
+            });
+        });
+
+        describe('Stretch', () => {
+            it('Passed to the component', () => {
+                element.stretch = true;
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(button.className).toContain('slds-button_stretch');
+                });
             });
         });
 

@@ -402,6 +402,10 @@ export default class ButtonMenu extends PrimitiveButton {
         classes.add(`avonni-button-menu_${this.variant}`);
         classes.add(buttonGroupOrderClass(this.groupOrder));
 
+        if (this.stretch) {
+            classes.add('slds-button_stretch');
+        }
+
         if (this.label) {
             classes.add({
                 'avonni-button-menu__button_label': this.label,
@@ -466,7 +470,7 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     get computedDropdownClass() {
-        return classSet('slds-dropdown')
+        return classSet('slds-dropdown avonni-button-menu__dropdown')
             .add({
                 'slds-dropdown_left':
                     this.menuAlignment === 'left' || this.isAutoAlignment,
