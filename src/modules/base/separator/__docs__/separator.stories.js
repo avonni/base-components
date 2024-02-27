@@ -34,7 +34,8 @@ export default {
             description:
                 "The name of the icon to be used in the format 'utility:down'.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         iconPosition: {
@@ -47,7 +48,8 @@ export default {
                 'Describes the position of the icon. Valid values include left and right.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                category: 'icon'
             }
         },
         iconSize: {
@@ -55,12 +57,45 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            options: [
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large'
+            ],
             description:
-                'The size of the icon. Options include xx-small, x-small, small, medium and large.',
+                'The size of the icon. Valid values include x-small, small, medium, large, x-large and xx-large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'small' }
+                defaultValue: { summary: 'small' },
+                category: 'icon'
+            }
+        },
+        iconSrc: {
+            name: 'icon-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
+        iconVariant: {
+            name: 'icon-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['circle', 'square'],
+            description:
+                'The variant changes the shape of the icon. Valid values include circle and square',
+            table: {
+                defaultValue: { summary: 'square' },
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         orientation: {
@@ -80,6 +115,7 @@ export default {
         alignContent: 'center',
         iconPosition: 'left',
         iconSize: 'small',
+        iconVariant: 'square',
         orientation: 'horizontal'
     }
 };
@@ -89,6 +125,12 @@ const Template = (args) => Separator(args);
 export const Base = Template.bind({});
 Base.args = {
     iconName: 'utility:event',
+    label: 'Today'
+};
+
+export const Image = Template.bind({});
+Image.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     label: 'Today'
 };
 

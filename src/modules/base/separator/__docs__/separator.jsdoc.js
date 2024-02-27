@@ -60,8 +60,28 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-separator-icon-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-separator-icon-radius-border
- * @type sizing
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-icon-sizing-border
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-icon-styling-border
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-icon-image-object-fit
+ * @type string
  */
 /**
  * @memberof stylingHooks
