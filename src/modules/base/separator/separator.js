@@ -210,12 +210,12 @@ export default class Separator extends LightningElement {
      * @type {string}
      */
     get computedLineOneClass() {
-        return classSet('avonni-separator__lines_styling slds-grow')
+        return classSet(
+            'avonni-separator__lines_styling avonni-separator__flex-col slds-grow'
+        )
             .add({
-                'slds-border_bottom avonni-separator__flex-col':
-                    this.orientation === 'horizontal',
-                'slds-border_left avonni-separator__flex-col slds-grow':
-                    this.orientation === 'vertical',
+                'slds-border_bottom ': this.orientation === 'horizontal',
+                'slds-border_left': this.orientation === 'vertical',
                 'slds-hide': this.alignContent === 'start'
             })
             .toString();
@@ -227,12 +227,12 @@ export default class Separator extends LightningElement {
      * @type {string}
      */
     get computedLineTwoClass() {
-        return classSet('avonni-separator__lines_styling slds-grow')
+        return classSet(
+            'avonni-separator__lines_styling avonni-separator__flex-col slds-grow'
+        )
             .add({
-                'slds-border_bottom avonni-separator__flex-col':
-                    this.orientation === 'horizontal',
-                'slds-border_left avonni-separator__flex-col slds-grow':
-                    this.orientation === 'vertical',
+                'slds-border_bottom ': this.orientation === 'horizontal',
+                'slds-border_left': this.orientation === 'vertical',
                 'slds-hide': this.alignContent === 'end'
             })
             .toString();

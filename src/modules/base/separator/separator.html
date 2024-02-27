@@ -1,5 +1,5 @@
 <template>
-    <div class={computedContainerClass}>
+    <div class={computedContainerClass} data-element-id="container">
         <div class={computedLineOneClass} data-element-id="line-one"></div>
         <div if:true={hasContent} class={computedContentClass}>
             <c-avatar
@@ -10,7 +10,7 @@
                 size={iconSize}
                 src={iconSrc}
                 variant={iconVariant}
-                data-element-id="avatar"
+                data-element-id="avonni-avatar"
             ></c-avatar>
             <h1
                 if:true={label}

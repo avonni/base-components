@@ -16,123 +16,171 @@ describe('Separator', () => {
         document.body.appendChild(element);
     });
 
-    it('Separator: Default attributes', () => {
+    it('Default attributes', () => {
+        expect(element.alignContent).toBe('center');
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
-        expect(element.iconPosition.default).toBe('left');
-        expect(element.iconSize.default).toBe('small');
-        expect(element.orientation.default).toBe('horizontal');
-        expect(element.alignContent.default).toBe('center');
+        expect(element.iconPosition).toBe('left');
+        expect(element.iconSize).toBe('small');
+        expect(element.iconSrc).toBeUndefined();
+        expect(element.iconVariant).toBe('square');
+        expect(element.orientation).toBe('horizontal');
     });
 
-    it('Separator: Label', () => {
-        element.label = 'Today';
+    describe('Align Content', () => {
+        it('Start', () => {
+            element.iconName = 'utility:check';
+            element.iconSize = 'x-small';
+            element.alignContent = 'start';
 
-        return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector(
-                '[data-element-id="h1"]'
-            );
-            expect(header.textContent).toBe('Today');
+            return Promise.resolve().then(() => {
+                const lineOne = element.shadowRoot.querySelector(
+                    '[data-element-id="line-one"]'
+                );
+                expect(lineOne.classList).toContain('slds-hide');
+            });
+        });
+
+        it('End', () => {
+            element.iconName = 'utility:check';
+            element.iconSize = 'x-small';
+            element.alignContent = 'end';
+
+            return Promise.resolve().then(() => {
+                const lineTwo = element.shadowRoot.querySelector(
+                    '[data-element-id="line-two"]'
+                );
+                expect(lineTwo.classList).toContain('slds-hide');
+            });
         });
     });
 
-    it('Separator: IconName', () => {
-        element.iconName = 'utility:check';
+    describe('Icon', () => {
+        it('IconName', () => {
+            element.iconName = 'utility:check';
 
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
-            expect(icon.iconName).toBe('utility:check');
+            return Promise.resolve().then(() => {
+                const avatar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar.fallbackIconName).toBe('utility:check');
+            });
+        });
+
+        it('IconPosition', () => {
+            element.iconName = 'utility:check';
+            element.iconPosition = 'right';
+
+            return Promise.resolve().then(() => {
+                const content = element.shadowRoot.querySelector(
+                    '.avonni-separator_content'
+                );
+                expect(content.classList).toContain('slds-grid_reverse');
+            });
+        });
+
+        it('IconSize', () => {
+            element.iconName = 'utility:check';
+            element.iconSize = 'x-small';
+
+            return Promise.resolve().then(() => {
+                const content = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(content.size).toBe('x-small');
+            });
+        });
+
+        it('IconSrc', () => {
+            element.iconSrc =
+                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
+
+            return Promise.resolve().then(() => {
+                const avatar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+
+                expect(avatar.src).toBe(
+                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+                );
+            });
+        });
+
+        it('IconVariant', () => {
+            element.iconName = 'utility:check';
+            element.iconVariant = 'circle';
+
+            return Promise.resolve().then(() => {
+                const avatar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar.variant).toBe('circle');
+            });
+        });
+
+        it('Icon Margin left', () => {
+            element.label = 'Tester';
+            element.iconName = 'utility:check';
+            element.iconSize = 'small';
+            element.iconPosition = 'left';
+
+            return Promise.resolve().then(() => {
+                const avatar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar.classList).toContain('slds-m-right_x-small');
+            });
+        });
+
+        it('Icon Margin Right', () => {
+            element.label = 'Tester';
+            element.iconName = 'utility:check';
+            element.iconSize = 'small';
+            element.iconPosition = 'right';
+
+            return Promise.resolve().then(() => {
+                const avatar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar.classList).toContain('slds-m-left_x-small');
+            });
         });
     });
 
-    it('Separator: IconPosition', () => {
-        element.iconName = 'utility:check';
-        element.iconPosition = 'right';
+    describe('Label', () => {
+        it('Label', () => {
+            element.label = 'Today';
 
-        return Promise.resolve().then(() => {
-            const content = element.shadowRoot.querySelector(
-                '.avonni-separator_content'
-            );
-            expect(content.classList).toContain('slds-grid_reverse');
+            return Promise.resolve().then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '[data-element-id="label"]'
+                );
+                expect(header.textContent).toBe('Today');
+            });
         });
     });
 
-    it('Separator: IconSize', () => {
-        element.iconName = 'utility:check';
-        element.iconSize = 'x-small';
+    describe('Orientation', () => {
+        it('Horizontal', () => {
+            element.orientation = 'horizontal';
 
-        return Promise.resolve().then(() => {
-            const content = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
-            expect(content.size).toBe('x-small');
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).not.toContain('slds-grid_vertical');
+            });
         });
-    });
 
-    it('Separator: Orientation', () => {
-        element.orientation = 'vertical';
+        it('Vertical', () => {
+            element.orientation = 'vertical';
 
-        return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector(
-                '.avonni-separator__container'
-            );
-            expect(container.classList).toContain('slds-grid_vertical');
-        });
-    });
-
-    it('Separator: Align Content start', () => {
-        element.iconName = 'utility:check';
-        element.iconSize = 'x-small';
-        element.alignContent = 'start';
-
-        return Promise.resolve().then(() => {
-            const lineOne = element.shadowRoot.querySelector(
-                '[data-element-id="line-one"]'
-            );
-            expect(lineOne.classList).toContain('slds-hide');
-        });
-    });
-
-    it('Separator: Align Content end', () => {
-        element.iconName = 'utility:check';
-        element.iconSize = 'x-small';
-        element.alignContent = 'end';
-
-        return Promise.resolve().then(() => {
-            const lineTwo = element.shadowRoot.querySelector(
-                '[data-element-id="line-two"]'
-            );
-            expect(lineTwo.classList).toContain('slds-hide');
-        });
-    });
-
-    it('Separator: Icon Margin left', () => {
-        element.label = 'Tester';
-        element.iconName = 'utility:check';
-        element.iconSize = 'small';
-        element.iconPosition = 'left';
-
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
-            expect(icon.classList).toContain('slds-m-right_x-small');
-        });
-    });
-
-    it('Separator: Icon Margin Right', () => {
-        element.label = 'Tester';
-        element.iconName = 'utility:check';
-        element.iconSize = 'small';
-        element.iconPosition = 'right';
-
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
-            expect(icon.classList).toContain('slds-m-left_x-small');
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).toContain('slds-grid_vertical');
+            });
         });
     });
 });
