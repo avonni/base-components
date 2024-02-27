@@ -27,194 +27,202 @@ describe('VisualPickerLink', () => {
             expect(element.title).toBeUndefined();
         });
 
-        it('completed = false', () => {
-            element.completed = false;
+        describe('Completed', () => {
+            it('false', () => {
+                element.completed = false;
 
-            return Promise.resolve().then(() => {
-                const wrapper = element.shadowRoot.querySelector(
-                    '.avonni-visual-picker-link__tile'
-                );
-                expect(wrapper.classList).not.toContain(
-                    'slds-welcome-mat__tile_complete'
-                );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.avonni-visual-picker-link__tile'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'slds-welcome-mat__tile_complete'
+                    );
+                });
+            });
+
+            it('true', () => {
+                element.completed = true;
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.avonni-visual-picker-link__tile'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'slds-welcome-mat__tile_complete'
+                    );
+                });
             });
         });
 
-        it('completed = true', () => {
-            element.completed = true;
+        describe('Disabled', () => {
+            it('true', () => {
+                element.disabled = true;
 
-            return Promise.resolve().then(() => {
-                const wrapper = element.shadowRoot.querySelector(
-                    '.avonni-visual-picker-link__tile'
-                );
-                expect(wrapper.classList).toContain(
-                    'slds-welcome-mat__tile_complete'
-                );
+                return Promise.resolve().then(() => {
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+
+                    expect(link.classList).toContain(
+                        'avonni-visual-picker-link_disabled'
+                    );
+                });
+            });
+
+            it('false', () => {
+                element.disabled = false;
+
+                return Promise.resolve().then(() => {
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+
+                    expect(link.classList).not.toContain(
+                        'avonni-visual-picker-link_disabled'
+                    );
+                });
             });
         });
 
-        it('href', () => {
-            element.href = 'https://www.avonni.app/';
+        describe('Href', () => {
+            it('Passed to the component', () => {
+                element.href = 'https://www.avonni.app/';
 
-            return Promise.resolve().then(() => {
-                const link = element.shadowRoot.querySelector(
-                    '[data-element-id="a"]'
-                );
-                expect(link.href).toBe('https://www.avonni.app/');
+                return Promise.resolve().then(() => {
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="a"]'
+                    );
+                    expect(link.href).toBe('https://www.avonni.app/');
+                });
             });
         });
 
-        it('iconName', () => {
-            element.iconName = 'utility:apps';
+        describe('Icon', () => {
+            it('iconName', () => {
+                element.iconName = 'utility:apps';
 
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-left"]'
-                );
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
 
-                expect(icon).toBeTruthy();
-                expect(icon.iconName).toBe('utility:apps');
+                    expect(icon).toBeTruthy();
+                    expect(icon.iconName).toBe('utility:apps');
+                });
+            });
+
+            it('no iconName', () => {
+                element.iconName = 'utility:apps';
+
+                return Promise.resolve().then(() => {
+                    const tileBody = element.shadowRoot.querySelector(
+                        '.slds-welcome-mat__tile-body'
+                    );
+
+                    expect(tileBody.classList).not.toContain(
+                        'avonni-visual-picker-link__tile-no-icon'
+                    );
+                });
+            });
+
+            it('iconPosition = left', () => {
+                element.iconName = 'utility:apps';
+                element.iconPosition = 'left';
+
+                return Promise.resolve().then(() => {
+                    const iconLeft = element.shadowRoot.querySelector(
+                        'a div:first-of-type.slds-media__figure'
+                    );
+                    const iconRight = element.shadowRoot.querySelector(
+                        '.avonni-visual-picker-link__figure-right'
+                    );
+                    const tileBody = element.shadowRoot.querySelector(
+                        '.slds-welcome-mat__tile-body'
+                    );
+
+                    expect(iconLeft).toBeTruthy();
+                    expect(iconRight).toBeFalsy();
+                    expect(tileBody.classList).not.toContain(
+                        'avonni-visual-picker-link__tile-body-right'
+                    );
+                });
+            });
+
+            it('iconPosition = right', () => {
+                element.iconName = 'utility:apps';
+                element.iconPosition = 'right';
+
+                return Promise.resolve().then(() => {
+                    const iconRight = element.shadowRoot.querySelector(
+                        '.avonni-visual-picker-link__figure-right'
+                    );
+                    const tileBody = element.shadowRoot.querySelector(
+                        '.slds-welcome-mat__tile-body'
+                    );
+
+                    expect(iconRight).toBeTruthy();
+                    expect(tileBody.classList).toContain(
+                        'avonni-visual-picker-link__tile-body-right'
+                    );
+                });
             });
         });
 
-        it('no iconName', () => {
-            element.iconName = 'utility:apps';
+        describe('Info only', () => {
+            it('false', () => {
+                element.infoOnly = false;
 
-            return Promise.resolve().then(() => {
-                const tileBody = element.shadowRoot.querySelector(
-                    '.slds-welcome-mat__tile-body'
-                );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.avonni-visual-picker-link__tile'
+                    );
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="a"]'
+                    );
 
-                expect(tileBody.classList).not.toContain(
-                    'avonni-visual-picker-link__tile-no-icon'
-                );
+                    expect(link).toBeTruthy();
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-visual-picker-link__tile_info-only'
+                    );
+                });
+            });
+
+            it('true', () => {
+                element.infoOnly = true;
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.avonni-visual-picker-link__tile'
+                    );
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="a"]'
+                    );
+
+                    expect(link).toBeFalsy();
+                    expect(wrapper.classList).toContain(
+                        'avonni-visual-picker-link__tile_info-only'
+                    );
+                });
             });
         });
 
-        it('iconPosition = left', () => {
-            element.iconName = 'utility:apps';
-            element.iconPosition = 'left';
+        describe('Title', () => {
+            it('A string title', () => {
+                element.title = 'A string title';
 
-            return Promise.resolve().then(() => {
-                const iconLeft = element.shadowRoot.querySelector(
-                    'a div:first-of-type.slds-media__figure'
-                );
-                const iconRight = element.shadowRoot.querySelector(
-                    '.avonni-visual-picker-link__figure-right'
-                );
-                const tileBody = element.shadowRoot.querySelector(
-                    '.slds-welcome-mat__tile-body'
-                );
-
-                expect(iconLeft).toBeTruthy();
-                expect(iconRight).toBeFalsy();
-                expect(tileBody.classList).not.toContain(
-                    'avonni-visual-picker-link__tile-body-right'
-                );
-            });
-        });
-
-        it('iconPosition = right', () => {
-            element.iconName = 'utility:apps';
-            element.iconPosition = 'right';
-
-            return Promise.resolve().then(() => {
-                const iconLeft = element.shadowRoot.querySelector(
-                    'a div:first-of-type.slds-media__figure'
-                );
-                const iconRight = element.shadowRoot.querySelector(
-                    '.avonni-visual-picker-link__figure-right'
-                );
-                const tileBody = element.shadowRoot.querySelector(
-                    '.slds-welcome-mat__tile-body'
-                );
-
-                expect(iconLeft).toBeFalsy();
-                expect(iconRight).toBeTruthy();
-                expect(tileBody.classList).toContain(
-                    'avonni-visual-picker-link__tile-body-right'
-                );
-            });
-        });
-
-        it('infoOnly = false', () => {
-            element.infoOnly = false;
-
-            return Promise.resolve().then(() => {
-                const wrapper = element.shadowRoot.querySelector(
-                    '.avonni-visual-picker-link__tile'
-                );
-                const link = element.shadowRoot.querySelector(
-                    '[data-element-id="a"]'
-                );
-
-                expect(link).toBeTruthy();
-                expect(wrapper.classList).not.toContain(
-                    'avonni-visual-picker-link__tile_info-only'
-                );
-            });
-        });
-
-        it('infoOnly = true', () => {
-            element.infoOnly = true;
-
-            return Promise.resolve().then(() => {
-                const wrapper = element.shadowRoot.querySelector(
-                    '.avonni-visual-picker-link__tile'
-                );
-                const link = element.shadowRoot.querySelector(
-                    '[data-element-id="a"]'
-                );
-
-                expect(link).toBeFalsy();
-                expect(wrapper.classList).toContain(
-                    'avonni-visual-picker-link__tile_info-only'
-                );
-            });
-        });
-
-        it('disabled = true', () => {
-            element.disabled = true;
-
-            return Promise.resolve().then(() => {
-                const link = element.shadowRoot.querySelector(
-                    '[data-element-id="container"]'
-                );
-
-                expect(link.classList).toContain(
-                    'avonni-visual-picker-link_disabled'
-                );
-            });
-        });
-
-        it('disabled = false', () => {
-            element.disabled = false;
-
-            return Promise.resolve().then(() => {
-                const link = element.shadowRoot.querySelector(
-                    '[data-element-id="container"]'
-                );
-
-                expect(link.classList).not.toContain(
-                    'avonni-visual-picker-link_disabled'
-                );
-            });
-        });
-
-        it('title', () => {
-            element.title = 'A string title';
-
-            return Promise.resolve().then(() => {
-                const title = element.shadowRoot.querySelector(
-                    '.avonni-visual-picker-link__tile-title'
-                );
-                expect(title.textContent).toBe('A string title');
+                return Promise.resolve().then(() => {
+                    const title = element.shadowRoot.querySelector(
+                        '.avonni-visual-picker-link__tile-title'
+                    );
+                    expect(title.textContent).toBe('A string title');
+                });
             });
         });
     });
 
     describe('Events', () => {
-        it('click event', () => {
+        it('Click', () => {
             const handler = jest.fn();
             element.addEventListener('click', handler);
 

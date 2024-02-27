@@ -166,7 +166,7 @@ export default class VisualPickerLink extends LightningElement {
             'slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center'
         )
             .add({
-                'avonni-visual-picker-link__figure-right':
+                'avonni-visual-picker-link__figure-right slds-order_2':
                     this.iconPosition === 'right'
             })
             .toString();
@@ -184,15 +184,6 @@ export default class VisualPickerLink extends LightningElement {
             })
             .add(`avonni-visual-picker-link__tile-body-${this.iconPosition}`)
             .toString();
-    }
-
-    /**
-     * Verify if icon is left.
-     *
-     * @type {boolean}
-     */
-    get leftPosition() {
-        return this.iconPosition === 'left';
     }
 
     /*
