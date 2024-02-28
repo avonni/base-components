@@ -194,3 +194,11 @@
     cursor: auto !important;
     border: none !important;
 }
+
+.avonni-expandable-section__content {
+    display: none;
+}
+
+.slds-is-open .avonni-expandable-section__content {
+    display: block;
+}
