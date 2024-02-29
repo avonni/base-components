@@ -247,6 +247,9 @@ describe('Primitive Scheduler Agenda', () => {
         });
         expect(element.eventsTheme).toBe('default');
         expect(element.hideResourcesFilter).toBeFalsy();
+        expect(element.labelNoEventsFound).toBe(
+            'No events for the selected date.'
+        );
         expect(element.newEventTitle).toBe('New event');
         expect(element.readOnly).toBeFalsy();
         expect(element.resizeColumnDisabled).toBeFalsy();
@@ -868,6 +871,18 @@ describe('Primitive Scheduler Agenda', () => {
                 );
                 expect(panel).toBeFalsy();
             });
+    });
+
+    // read-only
+    it('Primitive Scheduler Agenda: labelNoEventsFound', () => {
+        element.labelNoEventsFound = 'some label';
+
+        return Promise.resolve().then(() => {
+            const illustration = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-illustration-no-events"]'
+            );
+            expect(illustration.title).toBe('some label');
+        });
     });
 
     // read-only

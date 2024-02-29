@@ -91,6 +91,9 @@ describe('Scheduler', () => {
         expect(element.hideSidePanel).toBeFalsy();
         expect(element.hideToolbar).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
+        expect(element.labelNoEventsFound).toBe(
+            'No events for the selected date.'
+        );
         expect(element.loadingStateAlternativeText).toBe('Loading');
         expect(element.readOnly).toBeFalsy();
         expect(element.recurrentEditModes).toEqual(['all', 'one']);
@@ -1671,6 +1674,19 @@ describe('Scheduler', () => {
                 '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeTruthy();
+        });
+    });
+
+    // label-no-events-found
+    it('Scheduler: labelNoEventsFound', () => {
+        element.labelNoEventsFound = 'Some text';
+        element.selectedDisplay = 'agenda';
+
+        return Promise.resolve().then(() => {
+            const agenda = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-agenda"]'
+            );
+            expect(agenda.labelNoEventsFound).toBe('Some text');
         });
     });
 
