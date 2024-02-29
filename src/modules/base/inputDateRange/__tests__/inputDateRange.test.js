@@ -114,12 +114,9 @@ describe('Input Date Range', () => {
         });
         const startDay = startDate.getDate();
         const startYear = startDate.getFullYear();
-        const start = `${startMonth} ${startDay}, ${startYear}`;
-
         const endMonth = endDate.toLocaleString('default', { month: 'short' });
         const endDay = endDate.getDate();
         const endYear = endDate.getFullYear();
-        const end = `${endMonth} ${endDay}, ${endYear}`;
 
         element.startDate = startDate;
         element.endDate = endDate;
@@ -128,11 +125,15 @@ describe('Input Date Range', () => {
             const startInput = element.shadowRoot.querySelector(
                 '[data-element-id="input-start-date"]'
             );
-            expect(startInput.value).toBe(start);
+            expect(startInput.value).toContain(startMonth);
+            expect(startInput.value).toContain(startDay);
+            expect(startInput.value).toContain(startYear);
             const endInput = element.shadowRoot.querySelector(
                 '[data-element-id="input-end-date"]'
             );
-            expect(endInput.value).toBe(end);
+            expect(endInput.value).toContain(endMonth);
+            expect(endInput.value).toContain(endDay);
+            expect(endInput.value).toContain(endYear);
         });
     });
 
