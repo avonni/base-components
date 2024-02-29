@@ -23,6 +23,7 @@ export default class Scheduler extends LightningElement {
     @api hideSidePanel;
     @api hideToolbar;
     @api isLoading;
+    @api labelNoEventsFound;
     @api loadingStateAlternativeText;
     @api readOnly;
     @api recurrentEditModes;

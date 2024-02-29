@@ -329,6 +329,18 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        labelNoEventsFound: {
+            name: 'label-no-events-found',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message shown in the agenda display, when there are no events for the selected date.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'No events for the selected date.' }
+            }
+        },
         loadingStateAlternativeText: {
             name: 'loading-state-alternative-text',
             control: {
@@ -557,6 +569,7 @@ export default {
         hideSidePanel: false,
         hideToolbar: false,
         isLoading: false,
+        labelNoEventsFound: 'No events for the selected date.',
         loadingStateAlternativeText: 'Loading',
         recurrentEditModes: ['all', 'one'],
         readOnly: false,

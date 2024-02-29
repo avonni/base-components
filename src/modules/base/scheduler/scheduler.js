@@ -32,6 +32,7 @@ import {
     DEFAULT_EVENTS_DISPLAY_FIELDS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
+    DEFAULT_LABEL_NO_EVENTS_FOUND,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
     DEFAULT_SELECTED_TIME_SPAN,
@@ -71,6 +72,7 @@ export default class Scheduler extends LightningElement {
     _hideSidePanel = false;
     _hideToolbar = false;
     _isLoading = false;
+    _labelNoEventsFound = DEFAULT_LABEL_NO_EVENTS_FOUND;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
@@ -672,6 +674,24 @@ export default class Scheduler extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * Message shown in the agenda display, when there are no events for the selected date.
+     *
+     * @type {string}
+     * @default No events for the selected date.
+     * @public
+     */
+    @api
+    get labelNoEventsFound() {
+        return this._labelNoEventsFound;
+    }
+    set labelNoEventsFound(value) {
+        this._labelNoEventsFound =
+            value && typeof value === 'string'
+                ? value
+                : DEFAULT_LABEL_NO_EVENTS_FOUND;
     }
 
     /**
