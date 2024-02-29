@@ -62,9 +62,12 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     get computedWrapTextClass() {
-        return this.wrapText && this._wrapTextMaxLines && !this.isMultiSelect
-            ? 'slds-line-clamp'
-            : 'slds-truncate';
+        if (this.wrapText && !this.isMultiSelect) {
+            return this._wrapTextMaxLines
+                ? 'slds-hyphenate slds-line-clamp'
+                : 'slds-hyphenate';
+        }
+        return 'slds-truncate';
     }
 
     get displayedValue() {
