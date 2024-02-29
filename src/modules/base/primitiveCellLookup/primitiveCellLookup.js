@@ -16,6 +16,7 @@ export default class PrimitiveCellLookup extends LightningElement {
     _name;
     _value;
     _wrapText;
+    _wrapTextMaxLines;
 
     visible = false;
     editable = false;
@@ -55,7 +56,12 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     get computedWrapTextClass() {
-        return this.wrapText ? 'slds-line-clamp' : 'slds-truncate';
+        if (this.wrapText) {
+            return this._wrapTextMaxLines
+                ? 'slds-hyphenate slds-line-clamp'
+                : 'slds-hyphenate';
+        }
+        return 'slds-truncate';
     }
 
     get editedValue() {
@@ -150,6 +156,7 @@ export default class PrimitiveCellLookup extends LightningElement {
         this.dt = dt;
         const { state, columns } = dt;
         this.state = state;
+        this._wrapTextMaxLines = state.wrapTextMaxLines;
         const index = state.headerIndexes[this.colKeyValue];
         this.editable = isEditable(this.state, index, columns);
     }

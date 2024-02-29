@@ -41,9 +41,12 @@ export default class PrimitiveCellTextarea extends LightningElement {
     }
 
     get computedWrapTextClass() {
-        return this.wrapText && this._wrapTextMaxLines
-            ? 'slds-line-clamp'
-            : 'slds-truncate';
+        if (this.wrapText) {
+            return this._wrapTextMaxLines
+                ? 'slds-hyphenate slds-line-clamp'
+                : 'slds-hyphenate';
+        }
+        return 'slds-truncate';
     }
 
     /**
