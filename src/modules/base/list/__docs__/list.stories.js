@@ -258,7 +258,8 @@ const InfiniteGridTemplate = (args) => InfiniteGrid(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items
+    items,
+    sortable: true
 };
 
 export const DividerOnTop = Template.bind({});
