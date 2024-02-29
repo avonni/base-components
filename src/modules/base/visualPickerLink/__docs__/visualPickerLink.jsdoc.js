@@ -27,7 +27,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-link-icon-radius-border
- * @type sizing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -51,6 +51,24 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-separator-color-border
+ * @type color
+ * @default #dddbda
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-separator-sizing-border
+ * @type dimension
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-separator-styling-border
+ * @type styling
+ * @default solid
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-color-background
  * @type color
  * @default #ffffff
@@ -68,6 +86,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-border
+ * @type color
+ * @default #c9c9c9
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-radius-border
  * @type radius
  * @default 0.25rem
@@ -75,7 +99,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-sizing-border
- * @type sizing
+ * @type dimension
  * @default 1px
  */
 /**
@@ -86,20 +110,20 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-link-tile-color-border
- * @type color
- * @default #c9c9c9
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-color-border-disabled
  * @type color
  * @default #c9c7c5
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-border-hover
+ * @type color
+ * @default #1b96ff
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-sizing-border-hover
- * @type sizing
+ * @type dimension
  * @default 1px
  */
 /**
@@ -110,30 +134,24 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-link-tile-color-border-hover
- * @type color
- * @default #1b96ff
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-color-background-complete
  * @type color
  * @default transparent
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-border-complete
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-sizing-border-complete
- * @type sizing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-styling-border-complete
  * @type styling
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-link-tile-color-border-complete
- * @type color
  */
 /**
  * @memberof stylingHooks
