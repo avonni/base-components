@@ -1759,6 +1759,9 @@ export default class List extends LightningElement {
         if (event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.computedItems[index];
+            if (!item) {
+                return;
+            }
 
             /**
              * The event fired when the mouse is pressed on an item.
@@ -1948,6 +1951,10 @@ export default class List extends LightningElement {
         event.stopPropagation();
         const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
+        if (!this.computedItems[itemIndex]) {
+            return;
+        }
+
         /**
          * The event fired when a user clicks on an action.
          *
@@ -2008,6 +2015,10 @@ export default class List extends LightningElement {
         event.stopPropagation();
         const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
+
+        if (!this.computedItems[itemIndex]) {
+            return;
+        }
         /**
          * The event fired when a user clicks on a media action.
          *
@@ -2138,6 +2149,10 @@ export default class List extends LightningElement {
         const itemIndex = Number(event.currentTarget.dataset.index);
         const item = this.computedItems[itemIndex];
 
+        if (!item) {
+            return;
+        }
+
         /**
          * The event fired when a user clicks on an item.
          *
@@ -2193,6 +2208,10 @@ export default class List extends LightningElement {
 
         const index = Number(event.currentTarget.dataset.index);
         const item = this.computedItems[index];
+
+        if (!item) {
+            return;
+        }
 
         /**
          * The event fired when the mouse is released on an item.

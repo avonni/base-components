@@ -237,6 +237,7 @@
                                                             avonni-list__item-header-link
                                                         "
                                                         href={item.href}
+                                                        onmousedown={stopPropagation}
                                                         onclick={handleAnchorTagClick}
                                                     >
                                                         {item.label}
@@ -330,6 +331,7 @@
                                                             href={info.href}
                                                             data-element-id="a-info"
                                                             onclick={handleAnchorTagClick}
+                                                            onmousedown={stopPropagation}
                                                         >
                                                             {info.label}
                                                         </a>
