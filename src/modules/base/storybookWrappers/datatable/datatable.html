@@ -2,7 +2,6 @@
     <c-datatable
         column-widths-mode={columnWidthsMode}
         columns={columns}
-        records={records}
         default-sort-direction={defaultSortDirection}
         draft-values={draftValues}
         enable-infinite-loading={enableInfiniteLoading}
@@ -15,6 +14,7 @@
         max-column-width={maxColumnWidth}
         max-row-selection={maxRowSelection}
         min-column-width={minColumnWidth}
+        records={records}
         render-config={renderConfig}
         resize-column-disabled={resizeColumnDisabled}
         resize-step={resizeStep}
@@ -24,6 +24,7 @@
         sorted-by={sortedBy}
         sorted-direction={sortedDirection}
         suppress-bottom-bar={suppressBottomBar}
+        wrap-table-header={wrapTableHeader}
         wrap-text-max-lines={wrapTextMaxLines}
     ></c-datatable>
 </template>

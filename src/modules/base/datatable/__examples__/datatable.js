@@ -3,9 +3,8 @@ import Component from '../../storybookWrappers/datatable/datatable';
 customElements.define('ac-base-datatable', Component.CustomElementConstructor);
 
 export const Datatable = ({
-    columnWidthsMode,
     columns,
-    records,
+    columnWidthsMode,
     defaultSortDirection,
     draftValues,
     enableInfiniteLoading,
@@ -18,6 +17,7 @@ export const Datatable = ({
     maxColumnWidth,
     maxRowSelection,
     minColumnWidth,
+    records,
     renderConfig,
     resizeColumnDisabled,
     resizeStep,
@@ -27,12 +27,12 @@ export const Datatable = ({
     sortedBy,
     sortedDirection,
     suppressBottomBar,
+    wrapTableHeader,
     wrapTextMaxLines
 }) => {
     const element = document.createElement('ac-base-datatable');
     element.columnWidthsMode = columnWidthsMode;
     element.columns = columns;
-    element.records = records;
     element.defaultSortDirection = defaultSortDirection;
     element.draftValues = draftValues;
     element.enableInfiniteLoading = enableInfiniteLoading;
@@ -45,6 +45,7 @@ export const Datatable = ({
     element.maxColumnWidth = maxColumnWidth;
     element.maxRowSelection = maxRowSelection;
     element.minColumnWidth = minColumnWidth;
+    element.records = records;
     element.renderConfig = renderConfig;
     element.resizeColumnDisabled = resizeColumnDisabled;
     element.resizeStep = resizeStep;
@@ -54,6 +55,7 @@ export const Datatable = ({
     element.sortedBy = sortedBy;
     element.sortedDirection = sortedDirection;
     element.suppressBottomBar = suppressBottomBar;
+    element.wrapTableHeader = wrapTableHeader;
     element.wrapTextMaxLines = wrapTextMaxLines;
     return element;
 };
