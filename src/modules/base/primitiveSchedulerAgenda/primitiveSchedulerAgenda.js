@@ -13,6 +13,7 @@ import {
 import DayGroup from './dayGroup';
 import { classSet } from 'c/utils';
 
+const DEFAULT_LABEL_NO_EVENTS_FOUND = 'No events for the selected date.';
 const DEFAULT_SELECTED_DATE = new Date();
 const SIDE_PANEL_POSITIONS = {
     valid: ['left', 'right'],
@@ -29,6 +30,7 @@ const SIDE_PANEL_POSITIONS = {
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     _hideResourcesFilter = false;
     _hideSidePanel = false;
+    _labelNoEventsFound = DEFAULT_LABEL_NO_EVENTS_FOUND;
     _selectedDate = DEFAULT_SELECTED_DATE;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
@@ -117,6 +119,24 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
     set hideSidePanel(value) {
         this._hideSidePanel = normalizeBoolean(value);
+    }
+
+    /**
+     * Message shown in the agenda display, when there are no events for the selected date.
+     *
+     * @type {string}
+     * @default No events for the selected date.
+     * @public
+     */
+    @api
+    get labelNoEventsFound() {
+        return this._labelNoEventsFound;
+    }
+    set labelNoEventsFound(value) {
+        this._labelNoEventsFound =
+            value && typeof value === 'string'
+                ? value
+                : DEFAULT_LABEL_NO_EVENTS_FOUND;
     }
 
     /**
