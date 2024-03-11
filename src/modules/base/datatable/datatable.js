@@ -407,7 +407,6 @@ export default class Datatable extends LightningDatatable {
     get columnWidthsMode() {
         return super.columnWidthsMode;
     }
-
     set columnWidthsMode(value) {
         super.columnWidthsMode = normalizeString(value, {
             fallbackValue: COLUMN_WIDTHS_MODES.default,
@@ -426,7 +425,6 @@ export default class Datatable extends LightningDatatable {
     get columns() {
         return super.columns;
     }
-
     set columns(value) {
         value = JSON.parse(JSON.stringify(value));
         this.removeWrapOption(value);
@@ -447,7 +445,6 @@ export default class Datatable extends LightningDatatable {
     get defaultSortDirection() {
         return super.defaultSortDirection;
     }
-
     set defaultSortDirection(value) {
         super.defaultSortDirection = normalizeString(value, {
             fallbackValue: SORT_DIRECTIONS.default,
@@ -464,7 +461,6 @@ export default class Datatable extends LightningDatatable {
     get draftValues() {
         return super.draftValues;
     }
-
     set draftValues(value) {
         super.draftValues = value;
     }
@@ -481,7 +477,6 @@ export default class Datatable extends LightningDatatable {
     get enableInfiniteLoading() {
         return super.enableInfiniteLoading;
     }
-
     set enableInfiniteLoading(value) {
         super.enableInfiniteLoading = normalizeBoolean(value);
     }
@@ -496,7 +491,6 @@ export default class Datatable extends LightningDatatable {
     get errors() {
         return super.errors;
     }
-
     set errors(value) {
         super.errors = value;
     }
@@ -511,7 +505,6 @@ export default class Datatable extends LightningDatatable {
     get hideCheckboxColumn() {
         return super.hideCheckboxColumn;
     }
-
     set hideCheckboxColumn(value) {
         super.hideCheckboxColumn = normalizeBoolean(value);
     }
@@ -526,7 +519,6 @@ export default class Datatable extends LightningDatatable {
     get hideTableHeader() {
         return super.hideTableHeader;
     }
-
     set hideTableHeader(value) {
         super.hideTableHeader = normalizeBoolean(value);
     }
@@ -541,7 +533,6 @@ export default class Datatable extends LightningDatatable {
     get isLoading() {
         return super.isLoading;
     }
-
     set isLoading(value) {
         super.isLoading = normalizeBoolean(value);
     }
@@ -557,7 +548,6 @@ export default class Datatable extends LightningDatatable {
     get keyField() {
         return super.keyField;
     }
-
     set keyField(value) {
         super.keyField = value;
     }
@@ -572,7 +562,6 @@ export default class Datatable extends LightningDatatable {
     get loadMoreOffset() {
         return super.loadMoreOffset;
     }
-
     set loadMoreOffset(value) {
         if (value === undefined) return;
         super.loadMoreOffset = value;
@@ -588,7 +577,6 @@ export default class Datatable extends LightningDatatable {
     get maxColumnWidth() {
         return super.maxColumnWidth;
     }
-
     set maxColumnWidth(value) {
         if (value === undefined) return;
         super.maxColumnWidth = value;
@@ -604,7 +592,6 @@ export default class Datatable extends LightningDatatable {
     get maxRowSelection() {
         return super.maxRowSelection;
     }
-
     set maxRowSelection(value) {
         if (
             this.maxRowSelection === 1 &&
@@ -628,7 +615,6 @@ export default class Datatable extends LightningDatatable {
     get minColumnWidth() {
         return super.minColumnWidth;
     }
-
     set minColumnWidth(value) {
         if (value === undefined) return;
         super.minColumnWidth = value;
@@ -653,7 +639,6 @@ export default class Datatable extends LightningDatatable {
     get records() {
         return super.data;
     }
-
     set records(value) {
         super.data = normalizeArray(value);
     }
@@ -668,7 +653,6 @@ export default class Datatable extends LightningDatatable {
     get renderConfig() {
         return super.renderConfig;
     }
-
     set renderConfig(value) {
         super.renderConfig = value;
     }
@@ -684,7 +668,6 @@ export default class Datatable extends LightningDatatable {
     get renderMode() {
         return super.renderMode;
     }
-
     set renderMode(value) {
         super.renderMode = value;
     }
@@ -699,7 +682,6 @@ export default class Datatable extends LightningDatatable {
     get resizeColumnDisabled() {
         return super.resizeColumnDisabled;
     }
-
     set resizeColumnDisabled(value) {
         super.resizeColumnDisabled = normalizeBoolean(value);
     }
@@ -714,7 +696,6 @@ export default class Datatable extends LightningDatatable {
     get resizeStep() {
         return super.resizeStep;
     }
-
     set resizeStep(value) {
         if (value === undefined) return;
         super.resizeStep = value;
@@ -730,7 +711,6 @@ export default class Datatable extends LightningDatatable {
     get rowNumberOffset() {
         return super.rowNumberOffset;
     }
-
     set rowNumberOffset(value) {
         if (value === undefined) return;
         super.rowNumberOffset = value;
@@ -765,7 +745,6 @@ export default class Datatable extends LightningDatatable {
     get selectedRows() {
         return super.selectedRows;
     }
-
     set selectedRows(value) {
         if (value === undefined) return;
         super.selectedRows = value;
@@ -781,7 +760,6 @@ export default class Datatable extends LightningDatatable {
     get showRowNumberColumn() {
         return super.showRowNumberColumn;
     }
-
     set showRowNumberColumn(value) {
         super.showRowNumberColumn = normalizeBoolean(value);
     }
@@ -796,7 +774,6 @@ export default class Datatable extends LightningDatatable {
     get sortedBy() {
         return super.sortedBy;
     }
-
     set sortedBy(value) {
         super.sortedBy = value;
     }
@@ -810,7 +787,6 @@ export default class Datatable extends LightningDatatable {
     get sortedDirection() {
         return super.sortedDirection;
     }
-
     set sortedDirection(value) {
         super.sortedDirection = normalizeString(value, {
             fallbackValue: SORT_DIRECTIONS.default,
@@ -828,7 +804,6 @@ export default class Datatable extends LightningDatatable {
     get suppressBottomBar() {
         return super.suppressBottomBar;
     }
-
     set suppressBottomBar(value) {
         super.suppressBottomBar = normalizeBoolean(value);
     }
@@ -843,10 +818,22 @@ export default class Datatable extends LightningDatatable {
     get wrapTextMaxLines() {
         return super.wrapTextMaxLines;
     }
-
     set wrapTextMaxLines(value) {
         if (value === undefined) return;
         super.wrapTextMaxLines = value;
+    }
+
+    /**
+     * If present, the table header is wrapped.
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get wrapTableHeader() {
+        return super.wrapTableHeader;
+    }
+    set wrapTableHeader(value) {
+        super.wrapTableHeader = normalizeBoolean(value);
     }
 
     /*

@@ -3,7 +3,6 @@ import { LightningElement, api } from 'lwc';
 export default class Datatable extends LightningElement {
     @api columnWidthsMode;
     @api columns;
-    @api records;
     @api defaultSortDirection;
     @api draftValues;
     @api enableInfiniteLoading;
@@ -16,6 +15,7 @@ export default class Datatable extends LightningElement {
     @api maxColumnWidth;
     @api maxRowSelection = 10;
     @api minColumnWidth;
+    @api records;
     @api renderConfig;
     @api resizeColumnDisabled;
     @api resizeStep;
@@ -25,5 +25,6 @@ export default class Datatable extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api suppressBottomBar;
+    @api wrapTableHeader;
     @api wrapTextMaxLines;
 }

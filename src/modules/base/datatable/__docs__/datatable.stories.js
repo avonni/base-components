@@ -302,6 +302,19 @@ export default {
                 category: 'Display'
             }
         },
+        wrapTableHeader: {
+            name: 'wrap-table-header',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                "If present, the column headers are wrapped up to 3 lines. By default, column headers display in a single line and content is clipped if it's too wide for the column width.",
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Display'
+            }
+        },
         wrapTextMaxLines: {
             name: 'wrap-text-max-lines',
             control: {
@@ -337,7 +350,8 @@ export default {
         resizeStep: 10,
         rowNumberOffset: 0,
         showRowNumberColumn: false,
-        suppressBottomBar: false
+        suppressBottomBar: false,
+        wrapTableHeader: false
     }
 };
 
