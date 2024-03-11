@@ -279,6 +279,13 @@ a.avonni-list__item-info-link:active {
     color: var(--avonni-list-item-infos-link-text-color-active, #014486);
 }
 
+.avonni-list__item-info {
+    font-size: var(--avonni-list-item-info-font-size, 0.8125rem);
+    font-weight: var(--avonni-list-item-info-font-weight, 400);
+    font-style: var(--avonni-list-item-info-font-style, normal);
+    color: var(--avonni-list-item-info-text-color, #444444);
+}
+
 .avonni-list__item-divider_sortable {
     border-color: var(--avonni-list-item-color-border, #747474);
     --avonni-card-color-border: var(--avonni-list-item-color-border, #747474);
@@ -319,14 +326,14 @@ a.avonni-list__item-info-link:active {
 
 .avonni-list__item-header_font {
     color: var(--avonni-list-item-header-text-color, #080707);
-    font-size: var(--avonni-list-item-header-font-size);
+    font-size: var(--avonni-list-item-header-font-size, 0.875rem);
     font-style: var(--avonni-list-item-header-font-style, normal);
     font-weight: var(--avonni-list-item-header-font-weight, 400);
 }
 
 .avonni-list__item-description_font {
     color: var(--avonni-list-item-description-text-color, #080707);
-    font-size: var(--avonni-list-item-description-font-size);
+    font-size: var(--avonni-list-item-description-font-size, 0.875rem);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
     -webkit-line-clamp: var(--avonni-list-item-description-line-clamp, 2);
