@@ -1,18 +1,21 @@
 <template>
-    <div class={computedContainerClass}>
+    <div class={computedContainerClass} data-element-id="container">
         <div class={computedLineOneClass} data-element-id="line-one"></div>
         <div if:true={hasContent} class={computedContentClass}>
-            <lightning-icon
-                if:true={iconName}
-                icon-name={iconName}
+            <c-avatar
+                if:true={hasAvatar}
+                class={computedAvatarClass}
+                fallback-icon-name={iconName}
+                hide-avatar-details
                 size={iconSize}
-                class={computedIconClass}
-                data-element-id="lightning-icon"
-            ></lightning-icon>
+                src={iconSrc}
+                variant={iconVariant}
+                data-element-id="avonni-avatar"
+            ></c-avatar>
             <h1
-                class="avonni-separator__label"
                 if:true={label}
-                data-element-id="h1"
+                class="avonni-separator__label"
+                data-element-id="label"
             >
                 {label}
             </h1>

@@ -2,19 +2,23 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
-const VALID_ALIGN_CONTENTS = {
+const ALIGN_CONTENTS = {
     valid: ['start', 'center', 'end'],
     default: 'center'
 };
-const VALID_ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+const ICON_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
     default: 'small'
 };
-const VALID_ORIENTATIONS = {
+const ICON_VARIANTS = {
+    valid: ['circle', 'square'],
+    default: 'square'
+};
+const ORIENTATIONS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
-const VALID_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 /**
  * @class
@@ -31,6 +35,13 @@ export default class Separator extends LightningElement {
      */
     @api iconName;
     /**
+     * URL to set for the image attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api iconSrc;
+    /**
      * Text to display in the separator.
      *
      * @type {string}
@@ -38,10 +49,11 @@ export default class Separator extends LightningElement {
      */
     @api label;
 
-    _alignContent = VALID_ALIGN_CONTENTS;
-    _iconPosition = VALID_ICON_POSITIONS;
-    _iconSize = VALID_ICON_SIZES;
-    _orientation = VALID_ORIENTATIONS;
+    _alignContent = ALIGN_CONTENTS.default;
+    _iconPosition = ICON_POSITIONS.default;
+    _iconSize = ICON_SIZES.default;
+    _iconVariant = ICON_VARIANTS.default;
+    _orientation = ORIENTATIONS.default;
 
     /*
      * ------------------------------------------------------------
@@ -60,11 +72,10 @@ export default class Separator extends LightningElement {
     get alignContent() {
         return this._alignContent;
     }
-
     set alignContent(value) {
         this._alignContent = normalizeString(value, {
-            fallbackValue: VALID_ALIGN_CONTENTS.default,
-            validValues: VALID_ALIGN_CONTENTS.valid
+            fallbackValue: ALIGN_CONTENTS.default,
+            validValues: ALIGN_CONTENTS.valid
         });
     }
 
@@ -79,16 +90,15 @@ export default class Separator extends LightningElement {
     get iconPosition() {
         return this._iconPosition;
     }
-
     set iconPosition(value) {
         this._iconPosition = normalizeString(value, {
-            fallbackValue: VALID_ICON_POSITIONS.default,
-            validValues: VALID_ICON_POSITIONS.valid
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
     /**
-     * The size of the icon. Options include xx-small, x-small, small, medium and large.
+     * The size of the icon. Valid values include x-small, small, medium, large, x-large and xx-large.
      *
      * @type {string}
      * @public
@@ -98,11 +108,28 @@ export default class Separator extends LightningElement {
     get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(value) {
         this._iconSize = normalizeString(value, {
-            fallbackValue: VALID_ICON_SIZES.default,
-            validValues: VALID_ICON_SIZES.valid
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * The variant changes the shape of the avatar. Valid values are circle and square.
+     *
+     * @public
+     * @type {string}
+     * @default square
+     */
+    @api
+    get iconVariant() {
+        return this._iconVariant;
+    }
+    set iconVariant(value) {
+        this._iconVariant = normalizeString(value, {
+            fallbackValue: ICON_VARIANTS.default,
+            validValues: ICON_VARIANTS.valid
         });
     }
 
@@ -117,11 +144,10 @@ export default class Separator extends LightningElement {
     get orientation() {
         return this._orientation;
     }
-
     set orientation(value) {
         this._orientation = normalizeString(value, {
-            fallbackValue: VALID_ORIENTATIONS.default,
-            validValues: VALID_ORIENTATIONS.valid
+            fallbackValue: ORIENTATIONS.default,
+            validValues: ORIENTATIONS.valid
         });
     }
 
@@ -132,12 +158,19 @@ export default class Separator extends LightningElement {
      */
 
     /**
-     * Verify if the content is populated.
+     * Computed icon class styling based on label and icon position.
      *
      * @type {string}
      */
-    get hasContent() {
-        return this.label || this.iconName;
+    get computedAvatarClass() {
+        return classSet('avonni-separator__avatar')
+            .add({
+                'slds-m-right_x-small':
+                    this.label && this.iconPosition === 'left',
+                'slds-m-left_x-small':
+                    this.label && this.iconPosition === 'right'
+            })
+            .toString();
     }
 
     /**
@@ -152,40 +185,6 @@ export default class Separator extends LightningElement {
             .add({
                 'slds-grid_vertical slds-grid_align-center':
                     this.orientation === 'vertical'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed line one class styling based on oritentaion and alignment.
-     *
-     * @type {string}
-     */
-    get computedLineOneClass() {
-        return classSet('avonni-separator__lines_styling slds-grow')
-            .add({
-                'slds-border_bottom avonni-separator__flex-col':
-                    this.orientation === 'horizontal',
-                'slds-border_left avonni-separator__flex-col slds-grow':
-                    this.orientation === 'vertical',
-                'slds-hide': this.alignContent === 'start'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed line two class styling based on oritentaion and alignment.
-     *
-     * @type {string}
-     */
-    get computedLineTwoClass() {
-        return classSet('avonni-separator__lines_styling slds-grow')
-            .add({
-                'slds-border_bottom avonni-separator__flex-col':
-                    this.orientation === 'horizontal',
-                'slds-border_left avonni-separator__flex-col slds-grow':
-                    this.orientation === 'vertical',
-                'slds-hide': this.alignContent === 'end'
             })
             .toString();
     }
@@ -206,18 +205,54 @@ export default class Separator extends LightningElement {
     }
 
     /**
-     * Computed icon class styling based on label and icon position.
+     * Computed line one class styling based on oritentaion and alignment.
      *
      * @type {string}
      */
-    get computedIconClass() {
-        return classSet('avonni-separator__icon')
+    get computedLineOneClass() {
+        return classSet(
+            'avonni-separator__lines_styling avonni-separator__flex-col slds-grow'
+        )
             .add({
-                'slds-m-right_x-small':
-                    this.label && this.iconPosition === 'left',
-                'slds-m-left_x-small':
-                    this.label && this.iconPosition === 'right'
+                'slds-border_bottom ': this.orientation === 'horizontal',
+                'slds-border_left': this.orientation === 'vertical',
+                'slds-hide': this.alignContent === 'start'
             })
             .toString();
+    }
+
+    /**
+     * Computed line two class styling based on oritentaion and alignment.
+     *
+     * @type {string}
+     */
+    get computedLineTwoClass() {
+        return classSet(
+            'avonni-separator__lines_styling avonni-separator__flex-col slds-grow'
+        )
+            .add({
+                'slds-border_bottom ': this.orientation === 'horizontal',
+                'slds-border_left': this.orientation === 'vertical',
+                'slds-hide': this.alignContent === 'end'
+            })
+            .toString();
+    }
+
+    /**
+     * Verify if the avatar is populated.
+     *
+     * @type {string}
+     */
+    get hasAvatar() {
+        return this.iconName || this.iconSrc;
+    }
+
+    /**
+     * Verify if the content is populated.
+     *
+     * @type {string}
+     */
+    get hasContent() {
+        return this.label || this.hasAvatar;
     }
 }
