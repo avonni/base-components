@@ -308,7 +308,7 @@ export default class ProgressCircle extends LightningElement {
      * @type {string}
      */
     get progressLabelClass() {
-        return `avonni-progress-circle__label slds-text-align_center slds-truncate avonni-progress-circle__label_size-${this._size}`;
+        return `avonni-progress-circle__label slds-text-align_center avonni-progress-circle__label_size-${this._size}`;
     }
 
     /**
@@ -388,7 +388,7 @@ export default class ProgressCircle extends LightningElement {
      * @type {string}
      */
     get progressTitleClass() {
-        return `slds-line-clamp_small slds-text-align_center avonni-progress-circle__title_size-${this._size} avonni-progress-circle__title`;
+        return `slds-text-align_center avonni-progress-circle__title_size-${this._size} avonni-progress-circle__title`;
     }
 
     /**
