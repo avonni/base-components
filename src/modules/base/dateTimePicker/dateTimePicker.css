@@ -11,6 +11,15 @@
     --avonni-layout-items-spacing-inline-between: 1.5rem;
 }
 
+.avonni-date-time-picker__toolbar-items-wrapper {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem)
+        var(--lwc-borderRadiusMedium, 0.25rem) 0 0;
+    border-bottom: none;
+    background-color: var(--avonni-date-time-picker-color-background, #f3f3f3);
+}
+
 .avonni-date-time-picker__label {
     float: none;
     color: var(--avonni-date-time-picker-label-text-color, #444444);
