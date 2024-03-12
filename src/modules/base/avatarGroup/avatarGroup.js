@@ -125,6 +125,7 @@ export default class AvatarGroup extends LightningElement {
     _focusAnimationFrame;
     _focusedIndex = 0;
     _hiddenItemsStartIndex = 0;
+    _itemIndex;
     _lastHiddenItemIndex;
     _maxVisibleCount;
     _popoverFocusoutAnimationFrame;
@@ -737,7 +738,34 @@ export default class AvatarGroup extends LightningElement {
      * @type {object}
      */
     get primaryItem() {
-        return this.hasTwoItems ? this.items[0] : {};
+        const item = this.hasTwoItems ? this.items[0] : {};
+        const hasTooltip =
+            this.isClassic &&
+            !isNaN(this._itemIndex) &&
+            this._itemIndex === 0 &&
+            item.primaryText;
+
+        let tooltipAdjustment = 0;
+        if (this.size === 'x-small') {
+            tooltipAdjustment = 0.5;
+        } else if (this.size === 'small') {
+            tooltipAdjustment = 0.6;
+        } else if (this.size === 'medium') {
+            tooltipAdjustment = 0.75;
+        } else if (this.size === 'large') {
+            tooltipAdjustment = 1.25;
+        } else if (this.size === 'x-large') {
+            tooltipAdjustment = 1.8;
+        } else if (this.size === 'xx-large') {
+            tooltipAdjustment = 2.25;
+        }
+        const tooltipStyle = `transform:translateX(calc(-50% + ${tooltipAdjustment}rem));`;
+
+        return {
+            ...item,
+            hasTooltip,
+            tooltipStyle
+        };
     }
 
     /**
@@ -746,7 +774,34 @@ export default class AvatarGroup extends LightningElement {
      * @type {object}
      */
     get secondaryItem() {
-        return this.hasTwoItems ? this.items[1] : {};
+        const item = this.hasTwoItems ? this.items[1] : {};
+        const hasTooltip =
+            this.isClassic &&
+            !isNaN(this._itemIndex) &&
+            this._itemIndex === 1 &&
+            item.primaryText;
+
+        let tooltipAdjustment = 0;
+        if (this.size === 'x-small') {
+            tooltipAdjustment = 0.35;
+        } else if (this.size === 'small') {
+            tooltipAdjustment = 0.5;
+        } else if (this.size === 'medium') {
+            tooltipAdjustment = 0.6;
+        } else if (this.size === 'large') {
+            tooltipAdjustment = 0.75;
+        } else if (this.size === 'x-large') {
+            tooltipAdjustment = 1;
+        } else if (this.size === 'xx-large') {
+            tooltipAdjustment = 1.25;
+        }
+        const tooltipStyle = `transform:translateY(calc(-50% + ${tooltipAdjustment}rem));`;
+
+        return {
+            ...item,
+            hasTooltip,
+            tooltipStyle
+        };
     }
 
     /**
@@ -843,9 +898,40 @@ export default class AvatarGroup extends LightningElement {
      * @type {object[]}
      */
     get visibleItems() {
-        return this.items.length > this.computedMaxCount
-            ? this.items.slice(0, this.computedMaxCount)
-            : this.items;
+        const items =
+            this.items.length > this.computedMaxCount
+                ? this.items.slice(0, this.computedMaxCount)
+                : this.items;
+
+        return items.map((item, index) => {
+            const hasTooltip =
+                this.isNotList &&
+                !isNaN(this._itemIndex) &&
+                this._itemIndex === index &&
+                item.primaryText;
+
+            let tooltipAdjustment = 0;
+            if (this.size === 'x-small') {
+                tooltipAdjustment = 0.6;
+            } else if (this.size === 'small') {
+                tooltipAdjustment = 0.75;
+            } else if (this.size === 'medium') {
+                tooltipAdjustment = 1;
+            } else if (this.size === 'large') {
+                tooltipAdjustment = 1.5;
+            } else if (this.size === 'x-large') {
+                tooltipAdjustment = 1.75;
+            } else if (this.size === 'xx-large') {
+                tooltipAdjustment = 2.25;
+            }
+            const tooltipStyle = `transform:translateX(calc(-50% - ${tooltipAdjustment}rem));`;
+
+            return {
+                ...item,
+                hasTooltip,
+                tooltipStyle
+            };
+        });
     }
 
     /**
@@ -1321,6 +1407,24 @@ export default class AvatarGroup extends LightningElement {
         if (index !== this._focusedIndex) {
             this.switchFocus(index);
         }
+    }
+
+    /**
+     * Handle a mouse enter event on an item.
+     *
+     * @param {Event} event `mouseenter` event.
+     */
+    handleItemMouseEnter(event) {
+        this._itemIndex = Number(event.target.dataset.index);
+    }
+
+    /**
+     * Handle a mouse leave event on an item.
+     *
+     * @param {Event} event `mouseleave` event.
+     */
+    handleItemMouseLeave() {
+        this._itemIndex = null;
     }
 
     /**

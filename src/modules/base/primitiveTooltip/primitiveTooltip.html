@@ -1,0 +1,23 @@
+<template>
+    <div class={computedTooltipClass} role="tooltip">
+        <div class="slds-popover__body">
+            <div class="slds-media">
+                <div class="slds-media__body">
+                    <header
+                        if:true={label}
+                        class="
+                            avonni-primitive-tooltip__header
+                            slds-popover__header
+                        "
+                    >
+                        {label}
+                    </header>
+                    <lightning-formatted-rich-text
+                        if:true={content}
+                        value={content}
+                    ></lightning-formatted-rich-text>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -33,7 +33,17 @@
             role="button"
             onkeyup={handleAvatarClick}
             tabindex="0"
+            onmouseenter={handleItemMouseEnter}
+            onmouseleave={handleItemMouseLeave}
         ></c-primitive-avatar>
+        <!-- Primary Item Tooltip -->
+        <c-primitive-tooltip
+            if:true={primaryItem.hasTooltip}
+            class="slds-is-absolute avonni-avatar-group__top-tooltip"
+            nubbin-position="top"
+            style={primaryItem.tooltipStyle}
+            label={primaryItem.primaryText}
+        ></c-primitive-tooltip>
         <c-primitive-avatar
             alternative-text={secondaryItem.alternativeText}
             fallback-icon-name={secondaryItem.fallbackIconName}
@@ -63,7 +73,17 @@
             role="button"
             onkeyup={handleAvatarClick}
             tabindex="0"
+            onmouseenter={handleItemMouseEnter}
+            onmouseleave={handleItemMouseLeave}
         ></c-primitive-avatar>
+        <!-- Secondary Item Tooltip -->
+        <c-primitive-tooltip
+            if:true={secondaryItem.hasTooltip}
+            class="slds-is-absolute avonni-avatar-group__left-tooltip"
+            nubbin-position="left"
+            style={secondaryItem.tooltipStyle}
+            label={secondaryItem.primaryText}
+        ></c-primitive-tooltip>
     </div>
 
     <template if:false={isClassic}>
@@ -89,6 +109,8 @@
                     data-index={index}
                     onclick={handleAvatarClick}
                     onfocus={handleItemFocus}
+                    onmouseenter={handleItemMouseEnter}
+                    onmouseleave={handleItemMouseLeave}
                 >
                     <c-avatar
                         class={avatarInlineClass}
@@ -124,6 +146,17 @@
                         data-index={index}
                     >
                     </c-avatar>
+                    <!-- Tooltip -->
+                    <c-primitive-tooltip
+                        if:true={item.hasTooltip}
+                        class="
+                            slds-is-absolute
+                            avonni-avatar-group__top-tooltip
+                        "
+                        nubbin-position="top"
+                        style={item.tooltipStyle}
+                        label={item.primaryText}
+                    ></c-primitive-tooltip>
                 </li>
             </template>
 
