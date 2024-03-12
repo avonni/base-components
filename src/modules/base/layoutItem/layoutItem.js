@@ -12,6 +12,8 @@ const CONTAINER_WIDTHS = {
     valid: ['default', 'small', 'medium', 'large']
 };
 
+const DEFAULT_GROW = 0;
+const DEFAULT_SHRINK = 1;
 const DEFAULT_SIZE = 'auto';
 
 /**
@@ -23,11 +25,13 @@ const DEFAULT_SIZE = 'auto';
  */
 export default class LayoutItem extends LightningElement {
     _alignmentBump = ALIGNMENT_BUMPS.default;
+    _grow = DEFAULT_GROW;
     _largeContainerOrder;
     _largeContainerSize;
     _mediumContainerOrder;
     _mediumContainerSize;
     _order;
+    _shrink = DEFAULT_SHRINK;
     _size;
     _smallContainerOrder;
     _smallContainerSize;
@@ -108,6 +112,29 @@ export default class LayoutItem extends LightningElement {
             fallbackValue: ALIGNMENT_BUMPS.default,
             validValues: ALIGNMENT_BUMPS.valid
         });
+
+        if (this._connected) {
+            this.updateClassAndStyle();
+        }
+    }
+
+    /**
+     * Positive number representing the grow factor of the column, which specifies how much of the layout's remaining space should be assigned to the item's.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get grow() {
+        return this._grow;
+    }
+    set grow(value) {
+        const normalizedNumber = parseFloat(value);
+        this._grow =
+            isNaN(normalizedNumber) || normalizedNumber < 0
+                ? DEFAULT_GROW
+                : normalizedNumber;
 
         if (this._connected) {
             this.updateClassAndStyle();
@@ -212,6 +239,29 @@ export default class LayoutItem extends LightningElement {
         const normalizedNumber = parseInt(value, 10);
         this._order = isNaN(normalizedNumber) ? 0 : normalizedNumber;
         this._orders.default = this.order;
+
+        if (this._connected) {
+            this.updateClassAndStyle();
+        }
+    }
+
+    /**
+     * Positive number representing the shrink factor of the column. If the size of all the items is larger than the size of the layout, items shrink to fit according to this factor.
+     *
+     * @type {number}
+     * @default 1
+     * @public
+     */
+    @api
+    get shrink() {
+        return this._shrink;
+    }
+    set shrink(value) {
+        const normalizedNumber = parseFloat(value);
+        this._shrink =
+            isNaN(normalizedNumber) || normalizedNumber < 0
+                ? DEFAULT_GROW
+                : normalizedNumber;
 
         if (this._connected) {
             this.updateClassAndStyle();
@@ -355,7 +405,8 @@ export default class LayoutItem extends LightningElement {
             'slds-col_bump-bottom': this.alignmentBump === 'bottom'
         });
 
-        this.template.host.style.flexBasis = this.getCurrentValue(this._sizes);
+        const flexBasis = this.getCurrentValue(this._sizes);
+        this.template.host.style.flex = `${this.grow} ${this.shrink} ${flexBasis}`;
         this.template.host.style.order = this.getCurrentValue(this._orders);
     }
 }

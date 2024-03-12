@@ -1,11 +1,9 @@
 <template>
     <div class="slds-box slds-p-around_none">
         <c-layout
-            column-gap={columnGap}
             direction={direction}
             horizontal-align={horizontalAlign}
             multiple-rows={multipleRows}
-            row-gap={rowGap}
             vertical-align={verticalAlign}
         >
             <c-layout-item
@@ -16,9 +14,9 @@
                 style="background: #eae4e9"
                 ><div class="slds-p-around_medium">Responsive sizes 1</div>
             </c-layout-item>
-            <c-layout-item grow="1" style="background: #fff1e6"
+            <c-layout-item grow="1" shrink="0" style="background: #fff1e6"
                 ><div class="slds-p-around_medium">
-                    Growing item
+                    Growing and unshrinkable item
                 </div></c-layout-item
             >
             <c-layout-item
@@ -44,7 +42,7 @@
             >
             <c-layout-item size="200px" style="background: #bee1e6"
                 ><div class="slds-p-around_medium">
-                    Fized size
+                    Fixed size
                 </div></c-layout-item
             >
         </c-layout>
