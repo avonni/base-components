@@ -64,7 +64,10 @@
                                 {currentDateRangeString}
                             </p>
                             <!-- Time zone -->
-                            <div if:true={showTimeZone}>
+                            <div
+                                if:true={showTimeZone}
+                                class="slds-p-bottom_x-small"
+                            >
                                 <lightning-combobox
                                     name="timezone"
                                     label="Time Zone:"
@@ -285,13 +288,14 @@
                 </p>
             </template>
             <!-- Hour table -->
-            <c-layout
-                class="
-                    slds-show
-                    slds-scrollable_x
-                    avonni-date-time-picker__hour-table
-                "
-            >
+            <c-layout class={computedTableClass}>
+                <c-layout-item
+                    if:true={isWeekly}
+                    class="
+                        avonni-date-time-picker__hour-table-header-border
+                        slds-border_bottom
+                    "
+                ></c-layout-item>
                 <template for:each={table} for:item="day">
                     <c-layout-item
                         if:true={day.show}
@@ -314,12 +318,10 @@
                                 class="
                                     avonni-date-time-picker__day-label
                                     avonni-date-time-picker__flex-col
-                                    slds-p-around_medium
                                 "
                             >
                                 {day.label}
                             </c-layout-item>
-
                             <!-- Hours -->
                             <template for:each={day.times} for:item="time">
                                 <!-- Timeline variant -->
@@ -424,7 +426,7 @@
                                             aria-selected={time.selected}
                                             class="
                                                 avonni-date-time-picker__time-button
-                                                slds-p-around_medium
+                                                slds-p-around_small
                                                 slds-theme_default
                                             "
                                             disabled={time.disabled}

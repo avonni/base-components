@@ -32,6 +32,9 @@
 .avonni-date-time-picker__day-label {
     text-transform: uppercase;
     color: var(--avonni-date-time-picker-weekly-day-header-text-color, #706e6b);
+    width: 100%;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .avonni-date-time-picker__date {
@@ -50,6 +53,23 @@
 .avonni-date-time-picker__hour-table {
     --avonni-layout-items-spacing-block-between: 4px;
     --avonni-layout-items-spacing-inline-between: 4px;
+}
+
+.avonni-date-time-picker__hour-table-inline {
+    --avonni-layout-items-spacing-block-between: 8px;
+    --avonni-layout-items-spacing-inline-between: 4px;
+}
+
+.avonni-date-time-picker__hour-table-weekly {
+    position: relative;
+    --avonni-layout-items-spacing-block-between: 8px;
+    --avonni-layout-items-spacing-inline-between: 28px;
+}
+
+.avonni-date-time-picker__hour-table-header-border {
+    position: absolute;
+    width: 100%;
+    top: 1.75rem;
 }
 
 .avonni-date-time-picker__date-picker,
@@ -120,6 +140,10 @@
     border-color: var(--avonni-date-time-picker-button-color-border, #747474);
     border-style: var(--avonni-date-time-picker-button-styling-border, solid);
     border-width: var(--avonni-date-time-picker-button-sizing-border, 1px);
+    border-radius: var(
+        --avonni-date-time-picker-button-radius-border,
+        var(--lwc-borderRadiusMedium, 0.25rem)
+    );
     background-color: var(
         --avonni-date-time-picker-button-color-background,
         #ffffff

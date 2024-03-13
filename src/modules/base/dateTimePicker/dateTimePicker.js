@@ -15,6 +15,7 @@ import {
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { TIME_ZONES } from './timezones';
 import { DateTime } from 'c/luxon';
+import { classSet } from 'c/utils';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -919,6 +920,17 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Computed CSS classes of the hour table.
+     *
+     * @type {string}
+     */
+    get computedTableClass() {
+        return classSet(
+            `slds-show slds-scrollable_x avonni-date-time-picker__hour-table avonni-date-time-picker__hour-table-${this.variant}`
+        );
+    }
+
+    /**
      * Returns a string with the date range depending on if variant is weekly or not.
      *
      * @type {string}
@@ -1030,6 +1042,15 @@ export default class DateTimePicker extends LightningElement {
      */
     get isMonthly() {
         return this.variant === 'monthly';
+    }
+
+    /**
+     * Returns true if variant is weekly.
+     *
+     * @type {boolean}
+     */
+    get isWeekly() {
+        return this.variant === 'weekly';
     }
 
     /**
