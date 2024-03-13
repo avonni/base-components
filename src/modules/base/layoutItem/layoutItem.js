@@ -260,7 +260,7 @@ export default class LayoutItem extends LightningElement {
         const normalizedNumber = parseFloat(value);
         this._shrink =
             isNaN(normalizedNumber) || normalizedNumber < 0
-                ? DEFAULT_GROW
+                ? DEFAULT_SHRINK
                 : normalizedNumber;
 
         if (this._connected) {
