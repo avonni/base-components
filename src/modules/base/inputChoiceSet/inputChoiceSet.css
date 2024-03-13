@@ -154,6 +154,14 @@
 }
 
 .avonni-input-choice-set__option-label-icon-container {
+    line-height: 1;
+}
+
+.slds-checkbox
+    .slds-checkbox__label
+    .avonni-input-choice-set__option-label-icon-container.slds-form-element__label {
+    display: flex;
+    align-items: center;
     padding-right: 0.5rem;
     color: var(--avonni-input-choice-set-option-label-text-color);
 }
