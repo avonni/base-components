@@ -7,7 +7,8 @@
         <c-layout-item class="avonni-date-time-picker__toolbar-items-wrapper">
             <c-layout multiple-rows class="slds-p-around_small slds-show">
                 <c-layout-item
-                    class="slds-p-right_small avonni-date-time-picker__flex-col"
+                    class="slds-p-right_small"
+                    grow="1"
                     size="12"
                     medium-container-size="auto"
                 >
@@ -27,9 +28,7 @@
                                 data-element-id="avonni-avatar"
                             ></c-avatar>
                         </c-layout-item>
-                        <c-layout-item
-                            class="avonni-date-time-picker__flex-col"
-                        >
+                        <c-layout-item grow="1">
                             <!-- Input label -->
                             <p
                                 if:false={hideLabel}
@@ -212,9 +211,9 @@
                                 key={day.date.ts}
                                 class="
                                     slds-text-align_center
-                                    avonni-date-time-picker__flex-col
                                     slds-has-flexi-truncate
                                 "
+                                grow="1"
                                 size={day.size}
                             >
                                 <button
@@ -281,7 +280,7 @@
             ></c-calendar>
         </c-layout-item>
 
-        <c-layout-item class="avonni-date-time-picker__flex-col">
+        <c-layout-item grow="1">
             <template if:true={entirePeriodIsDisabled}>
                 <p if:true={isMonthly} class="slds-text-align_right">
                     No available time slots for this period.
@@ -300,10 +299,8 @@
                     <c-layout-item
                         if:true={day.show}
                         key={day.key}
-                        class="
-                            slds-text-align_center
-                            avonni-date-time-picker__flex-col
-                        "
+                        class="slds-text-align_center"
+                        grow="1"
                         data-element-id="div-day"
                     >
                         <c-layout
@@ -313,12 +310,13 @@
                             <!-- Day label -->
                             <c-layout-item
                                 if:true={day.label}
-                                aria-selected={day.selected}
-                                data-today={day.isToday}
                                 class="
                                     avonni-date-time-picker__day-label
-                                    avonni-date-time-picker__flex-col
+                                    slds-p-around_medium
                                 "
+                                aria-selected={day.selected}
+                                grow="1"
+                                data-today={day.isToday}
                             >
                                 {day.label}
                             </c-layout-item>
@@ -348,11 +346,7 @@
                                             ></lightning-formatted-date-time>
                                         </c-layout-item>
 
-                                        <c-layout-item
-                                            class="
-                                                avonni-date-time-picker__flex-col
-                                            "
-                                        >
+                                        <c-layout-item grow="1">
                                             <c-layout multiple-rows>
                                                 <template
                                                     for:each={time.times}
@@ -412,9 +406,6 @@
                                 <template if:false={isTimeline}>
                                     <c-layout-item
                                         if:true={time.show}
-                                        class="
-                                            avonni-date-time-picker__no-grow-col
-                                        "
                                         key={time.startTimeISO}
                                         size="calc(100% / 3 - 8px)"
                                         small-container-size="calc(25% - 8px)"
