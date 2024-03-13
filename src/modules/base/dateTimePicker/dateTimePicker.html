@@ -5,63 +5,67 @@
         data-element-id="avonni-layout-toolbar"
     >
         <c-layout-item class="avonni-date-time-picker__toolbar-items-wrapper">
-            <c-layout multiple-rows class="slds-p-around_small slds-show">
+            <c-layout multiple-rows>
                 <c-layout-item
                     class="slds-p-right_small"
                     grow="1"
                     size="12"
                     medium-container-size="auto"
                 >
-                    <c-layout>
-                        <c-layout-item
-                            if:true={showAvatar}
-                            class="slds-m-right_small"
-                        >
-                            <c-avatar
-                                alternative-text={avatar.alternativeText}
-                                fallback-icon-name={avatar.fallbackIconName}
-                                hide-avatar-details
-                                initials={avatar.initials}
-                                size={avatar.size}
-                                src={avatar.src}
-                                variant={avatar.variant}
-                                data-element-id="avonni-avatar"
-                            ></c-avatar>
+                    <c-layout direction="column">
+                        <c-layout-item>
+                            <c-layout>
+                                <!-- Avatar -->
+                                <c-layout-item if:true={showAvatar}>
+                                    <c-avatar
+                                        alternative-text={avatar.alternativeText}
+                                        fallback-icon-name={avatar.fallbackIconName}
+                                        hide-avatar-details
+                                        initials={avatar.initials}
+                                        size={avatar.size}
+                                        src={avatar.src}
+                                        variant={avatar.variant}
+                                        data-element-id="avonni-avatar"
+                                    ></c-avatar>
+                                </c-layout-item>
+                                <c-layout-item grow="1">
+                                    <!-- Input label -->
+                                    <p
+                                        if:false={hideLabel}
+                                        class="
+                                            slds-form-element__legend
+                                            slds-form-element__label
+                                            avonni-date-time-picker__label
+                                            slds-p-top_none
+                                        "
+                                    >
+                                        <abbr
+                                            if:true={required}
+                                            title="required"
+                                            aria-label="required"
+                                            class="slds-required"
+                                            >*</abbr
+                                        >
+                                        {label}
+                                    </p>
+                                    <!-- Help text -->
+                                    <lightning-helptext
+                                        if:true={fieldLevelHelp}
+                                        content={fieldLevelHelp}
+                                        data-element-id="lightning-helptext"
+                                    ></lightning-helptext>
+                                    <!-- Current date range -->
+                                    <p
+                                        if:false={hideDateLabel}
+                                        class="avonni-date-time-picker__date"
+                                        data-element-id="p-date-label"
+                                    >
+                                        {currentDateRangeString}
+                                    </p>
+                                </c-layout-item>
+                            </c-layout>
                         </c-layout-item>
-                        <c-layout-item grow="1">
-                            <!-- Input label -->
-                            <p
-                                if:false={hideLabel}
-                                class="
-                                    slds-form-element__legend
-                                    slds-form-element__label
-                                    avonni-date-time-picker__label
-                                    slds-p-top_none
-                                "
-                            >
-                                <abbr
-                                    if:true={required}
-                                    title="required"
-                                    aria-label="required"
-                                    class="slds-required"
-                                    >*</abbr
-                                >
-                                {label}
-                            </p>
-                            <!-- Help text -->
-                            <lightning-helptext
-                                if:true={fieldLevelHelp}
-                                content={fieldLevelHelp}
-                                data-element-id="lightning-helptext"
-                            ></lightning-helptext>
-                            <!-- Current date range -->
-                            <p
-                                if:false={hideDateLabel}
-                                class="avonni-date-time-picker__date"
-                                data-element-id="p-date-label"
-                            >
-                                {currentDateRangeString}
-                            </p>
+                        <c-layout-item>
                             <!-- Time zone -->
                             <div
                                 if:true={showTimeZone}
