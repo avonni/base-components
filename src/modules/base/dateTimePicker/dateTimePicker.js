@@ -129,15 +129,16 @@ export default class DateTimePicker extends LightningElement {
     _value;
     _variant = DATE_TIME_VARIANTS.default;
 
-    computedMin;
     computedMax;
-    table;
-    firstWeekDay;
-    lastWeekDay;
-    helpMessage;
+    computedMin;
     datePickerValue;
-    timezones = TIME_ZONES;
     datePickerWeekdays = [];
+    firstWeekDay;
+    helpMessage;
+    lastWeekDay;
+    table;
+    timezones = TIME_ZONES;
+    showActionsSlot = true;
 
     _computedEndTime;
     _computedStartTime;
@@ -216,6 +217,11 @@ export default class DateTimePicker extends LightningElement {
                 monthlyCalendar.goToDate(this._goToDate);
             }
             this._goToDate = undefined;
+        }
+
+        if (this.actionSlot) {
+            this.showActionsSlot =
+                this.actionSlot.assignedElements().length !== 0;
         }
     }
 
@@ -867,6 +873,15 @@ export default class DateTimePicker extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Get actions slot DOM element.
+     *
+     * @type {Element}
+     */
+    get actionSlot() {
+        return this.template.querySelector('slot[name=actions]');
+    }
 
     /**
      * Retrieve constraint API for validation.

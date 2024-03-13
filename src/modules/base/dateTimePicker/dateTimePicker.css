@@ -55,7 +55,7 @@
 .avonni-date-time-picker__hour-table-weekly {
     position: relative;
     --avonni-layout-items-spacing-block-between: 8px;
-    --avonni-layout-items-spacing-inline-between: 40px;
+    --avonni-layout-items-spacing-inline-between: 35px;
 }
 
 .avonni-date-time-picker__hour-table-header-border {

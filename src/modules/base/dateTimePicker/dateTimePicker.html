@@ -86,61 +86,67 @@
                     </c-layout>
                 </c-layout-item>
 
-                <!-- Navigation -->
-                <c-layout-item
-                    if:false={hideNavigation}
-                    class="slds-p-right_small"
-                >
-                    <lightning-button-group class="slds-m-bottom_small">
-                        <lightning-button-icon
-                            alternative-text="Previous dates"
-                            icon-name="utility:left"
-                            onclick={handlePrevNextClick}
-                            title="Previous dates"
-                            variant="border-filled"
-                            disabled={prevButtonIsDisabled}
-                            data-direction="previous"
-                            data-element-id="lightning-button-icon-previous"
-                        ></lightning-button-icon>
-                        <lightning-button
-                            label="Today"
-                            data-element-id="lightning-button-today"
-                            onclick={handleTodayClick}
-                        ></lightning-button>
-                        <lightning-button-icon
-                            alternative-text="Next dates"
-                            icon-name="utility:right"
-                            onclick={handlePrevNextClick}
-                            title="Next dates"
-                            variant="border-filled"
-                            disabled={nextButtonIsDisabled}
-                            data-direction="next"
-                            data-element-id="lightning-button-icon-next"
-                        ></lightning-button-icon>
-                    </lightning-button-group>
+                <c-layout-item if:true={showActionsSlot}>
+                    <slot name="actions"></slot>
                 </c-layout-item>
 
-                <!-- Date picker -->
-                <template if:false={showInlineDatePicker}>
+                <template if:false={showActionsSlot}>
+                    <!-- Navigation -->
                     <c-layout-item
-                        if:false={hideDatePicker}
-                        class="avonni-date-time-picker__date-picker"
-                        size={datePickerColumnSize}
+                        if:false={hideNavigation}
+                        class="slds-p-right_small"
                     >
-                        <!-- Input date picker -->
-                        <lightning-input
-                            label="Date"
-                            name={name}
-                            max={maxToString}
-                            min={minToString}
-                            timezone={timezone}
-                            type="date"
-                            value={datePickerValue}
-                            variant="label-hidden"
-                            data-element-id="lightning-input"
-                            onchange={handleDateChange}
-                        ></lightning-input>
+                        <lightning-button-group class="slds-m-bottom_small">
+                            <lightning-button-icon
+                                alternative-text="Previous dates"
+                                icon-name="utility:left"
+                                onclick={handlePrevNextClick}
+                                title="Previous dates"
+                                variant="border-filled"
+                                disabled={prevButtonIsDisabled}
+                                data-direction="previous"
+                                data-element-id="lightning-button-icon-previous"
+                            ></lightning-button-icon>
+                            <lightning-button
+                                label="Today"
+                                data-element-id="lightning-button-today"
+                                onclick={handleTodayClick}
+                            ></lightning-button>
+                            <lightning-button-icon
+                                alternative-text="Next dates"
+                                icon-name="utility:right"
+                                onclick={handlePrevNextClick}
+                                title="Next dates"
+                                variant="border-filled"
+                                disabled={nextButtonIsDisabled}
+                                data-direction="next"
+                                data-element-id="lightning-button-icon-next"
+                            ></lightning-button-icon>
+                        </lightning-button-group>
                     </c-layout-item>
+
+                    <!-- Date picker -->
+                    <template if:false={showInlineDatePicker}>
+                        <c-layout-item
+                            if:false={hideDatePicker}
+                            class="avonni-date-time-picker__date-picker"
+                            size={datePickerColumnSize}
+                        >
+                            <!-- Input date picker -->
+                            <lightning-input
+                                label="Date"
+                                name={name}
+                                max={maxToString}
+                                min={minToString}
+                                timezone={timezone}
+                                type="date"
+                                value={datePickerValue}
+                                variant="label-hidden"
+                                data-element-id="lightning-input"
+                                onchange={handleDateChange}
+                            ></lightning-input>
+                        </c-layout-item>
+                    </template>
                 </template>
             </c-layout>
         </c-layout-item>
