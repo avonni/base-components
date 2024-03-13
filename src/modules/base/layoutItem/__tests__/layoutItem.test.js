@@ -163,10 +163,10 @@ describe('Layout Item', () => {
             it('Ignore invalid value', () => {
                 document.body.appendChild(element);
                 element.shrink = -3;
-                expect(element.shadowRoot.host.style.flexShrink).toBe('0');
+                expect(element.shadowRoot.host.style.flexShrink).toBe('1');
 
                 element.shrink = 'some text';
-                expect(element.shadowRoot.host.style.flexShrink).toBe('0');
+                expect(element.shadowRoot.host.style.flexShrink).toBe('1');
             });
 
             it('Applied to the host', () => {

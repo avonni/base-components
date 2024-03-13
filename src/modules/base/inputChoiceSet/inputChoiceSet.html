@@ -85,6 +85,7 @@
                                     <label
                                         class={computedLabelClass}
                                         for={option.id}
+                                        style={option.computedButtonLabelStyle}
                                         data-element-id="label"
                                     >
                                         <div
@@ -95,6 +96,7 @@
                                             <div
                                                 class={computedCheckContainerClass}
                                                 data-element-id="div-check-container"
+                                                style={option.computedFauxInputStyle}
                                             >
                                                 <span
                                                     if:true={checkboxVariant}
@@ -115,8 +117,8 @@
                                                     size={computedTypeAttributes.size}
                                                     value={option.value}
                                                     variant="label-hidden"
-                                                    onblur={handleBlur}
                                                     data-element-id="input-toggle"
+                                                    onblur={handleBlur}
                                                     onchange={handleToggleChange}
                                                     onfocus={handleFocus}
                                                 >
@@ -232,6 +234,7 @@
                             <label
                                 class={computedLabelClass}
                                 for={option.id}
+                                style={option.computedButtonLabelStyle}
                                 data-element-id="label"
                             >
                                 <div class="slds-grid">
