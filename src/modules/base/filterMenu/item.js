@@ -5,6 +5,10 @@ export default class FilterMenuItem {
         Object.assign(this, props);
     }
 
+    get colorStyle() {
+        return this.color ? `color: ${this.color}` : null;
+    }
+
     get wrapperClass() {
         return classSet('slds-dropdown__item slds-truncate')
             .add({
