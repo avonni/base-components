@@ -142,6 +142,7 @@
     );
     color: var(--avonni-date-time-picker-button-text-color, #0176d3);
     width: 100%;
+    height: 100%;
 }
 
 .avonni-date-time-picker__time-button:disabled {
