@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} Option
  * @name options
+ * @property {string} color CSS color value. If present, the checkbox, radio button or button will take this color.
  * @property {string} label Label of the option.
  * @property {boolean} hideLabel If present, the label of the option is hidden.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.

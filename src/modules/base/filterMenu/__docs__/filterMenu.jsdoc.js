@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} Item
  * @name items
+ * @property {string} color CSS color value. If present, the option input is colored (vertical variant) or a color chip is displayed next to the option (horizontal variant).
  * @property {string} label Label of the item.
  * @property {string} value Value of the item.
  * @property {boolean} disabled If true, the item is disabled and users cannot interact with it.

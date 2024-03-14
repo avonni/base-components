@@ -9,6 +9,11 @@ const options = [
     { label: 'Fri', value: 'fri' }
 ];
 
+const optionsWithColors = [
+    { label: 'First option', value: 'first', color: 'red' },
+    { label: 'Second option', value: 'second', color: 'blue' }
+];
+
 const optionsWithIcon = [
     {
         label: 'Left',
@@ -285,6 +290,72 @@ describe('Input choice set', () => {
                         expect(label.control.value).toBe(
                             element.options[index++].value
                         );
+                    });
+                });
+            });
+
+            describe('Colors', () => {
+                it('Radio with colors', () => {
+                    element.options = optionsWithColors;
+
+                    return Promise.resolve().then(() => {
+                        const containers = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="div-check-container"]'
+                        );
+                        containers.forEach((container, index) => {
+                            const color = optionsWithColors[index].color;
+                            expect(container.style.cssText).toBe(
+                                `--slds-c-checkbox-color-border: ${color}; --slds-c-checkbox-mark-color-foreground: ${color}; --slds-c-checkbox-color-border-checked: ${color}; --slds-c-checkbox-color-border-focus: ${color}; --slds-c-radio-color-border-checked: ${color}; --slds-c-radio-color-border: ${color}; --slds-c-radio-mark-color-foreground: ${color}; --slds-c-radio-color-border-focus: ${color};`
+                            );
+                        });
+
+                        const labels = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="label"]'
+                        );
+                        labels.forEach((label) => {
+                            expect(label.style.cssText).toBe('');
+                        });
+                    });
+                });
+
+                it('Button with colors', () => {
+                    element.options = optionsWithColors;
+                    element.type = 'button';
+                    element.value = optionsWithColors[1].value;
+
+                    return Promise.resolve().then(() => {
+                        const labels = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="label"]'
+                        );
+                        expect(labels[0].style.cssText).toBe('color: red;');
+                        expect(labels[1].style.cssText).toBe(
+                            'background-color: blue; border-color: blue;'
+                        );
+                    });
+                });
+
+                it('Toggle with colors', () => {
+                    element.options = optionsWithColors;
+                    element.type = 'toggle';
+                    element.value = optionsWithColors[1].value;
+
+                    return Promise.resolve().then(() => {
+                        const labels = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="label"]'
+                        );
+                        labels.forEach((label) => {
+                            expect(label.style.cssText).toBe('');
+                        });
+
+                        const containers = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="div-check-container"]'
+                        );
+                        containers.forEach((container, index) => {
+                            const color = optionsWithColors[index].color;
+                            expect(container.style.cssText).toBe(
+                                `--sds-c-checkbox-toggle-color-border-checked: ${color}; --sds-c-checkbox-toggle-color-background-checked: ${color}; --slds-c-checkbox-toggle-color-background-checked-focus: ${color};`
+                            );
+                        });
                     });
                 });
             });

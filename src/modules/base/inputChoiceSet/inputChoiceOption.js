@@ -17,7 +17,8 @@ const POSITION_ICON = {
  * @param {string} value Value of the option.
  */
 export default class InputChoiceOption {
-    constructor(option, value, index) {
+    constructor(option, value, index, type) {
+        this.color = option.color;
         this.id = `checkbox-${index}`;
         this.iconName = option.iconName;
         this.iconPosition = option.iconPosition;
@@ -25,12 +26,45 @@ export default class InputChoiceOption {
         this.label = option.label;
         this.value = option.value;
         this.displayLabel = this.label && !this.hideLabel;
+        this.type = type;
 
         if (value && Array.isArray(value)) {
             this.isChecked = value.includes(option.value);
         } else {
             this.isChecked = value === option.value;
         }
+    }
+
+    get computedButtonLabelStyle() {
+        if (!this.color || this.type !== 'button') {
+            return undefined;
+        }
+        return this.isChecked
+            ? `background-color: ${this.color}; border-color: ${this.color};`
+            : `color: ${this.color};`;
+    }
+
+    get computedFauxInputStyle() {
+        if (!this.color) {
+            return undefined;
+        }
+        if (this.type === 'toggle') {
+            return `
+                --sds-c-checkbox-toggle-color-border-checked: ${this.color};
+                --sds-c-checkbox-toggle-color-background-checked: ${this.color};
+                --slds-c-checkbox-toggle-color-background-checked-focus: ${this.color};
+            `;
+        }
+        return `
+            --slds-c-checkbox-color-border: ${this.color};
+            --slds-c-checkbox-mark-color-foreground: ${this.color};
+            --slds-c-checkbox-color-border-checked: ${this.color};
+            --slds-c-checkbox-color-border-focus: ${this.color};
+            --slds-c-radio-color-border-checked: ${this.color};
+            --slds-c-radio-color-border: ${this.color};
+            --slds-c-radio-mark-color-foreground: ${this.color};
+            --slds-c-radio-color-border-focus: ${this.color};
+        `;
     }
 
     /**

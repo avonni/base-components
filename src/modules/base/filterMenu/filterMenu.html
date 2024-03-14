@@ -105,6 +105,17 @@
                                                 size="x-small"
                                             ></c-primitive-icon>
                                             <c-primitive-icon
+                                                if:true={item.color}
+                                                class="
+                                                    slds-current-color
+                                                    slds-m-right_x-small
+                                                "
+                                                icon-name="utility:record"
+                                                size="x-small"
+                                                style={item.colorStyle}
+                                                data-element-id="avonni-primitive-icon-color"
+                                            ></c-primitive-icon>
+                                            <c-primitive-icon
                                                 if:true={item.prefixIconName}
                                                 class="slds-m-right_x-small"
                                                 icon-name={item.prefixIconName}

@@ -1,6 +1,19 @@
 import { LightningElement, api } from 'lwc';
 import { deepCopy, normalizeObject } from 'c/utilsPrivate';
 
+const COLORS = [
+    '#001219',
+    '#005f73',
+    '#0a9396',
+    '#94d2bd',
+    '#e9d8a6',
+    '#ee9b00',
+    '#ca6702',
+    '#bb3e03',
+    '#ae2012',
+    '#9b2226'
+];
+
 export default class FilterMenuInfiniteLoading extends LightningElement {
     @api accessKey;
     @api alternativeText;
@@ -58,7 +71,8 @@ export default class FilterMenuInfiniteLoading extends LightningElement {
                 : `Item ${number}`;
             this.items.push({
                 label,
-                value: `item-${number}`
+                value: `item-${number}`,
+                color: COLORS[i]
             });
         }
     }

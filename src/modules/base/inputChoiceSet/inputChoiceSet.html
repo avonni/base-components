@@ -52,13 +52,14 @@
                             for:item="option"
                         >
                             <c-layout-item
-                                data-element-id="layout-item"
-                                class="slds-grid"
                                 key={option.value}
-                                size={computedOrientationAttributes.cols}
+                                class="slds-grid"
+                                grow="1"
                                 large-container-size={computedOrientationAttributes.largeContainerCols}
                                 medium-container-size={computedOrientationAttributes.mediumContainerCols}
+                                size={computedOrientationAttributes.cols}
                                 small-container-size={computedOrientationAttributes.smallContainerCols}
+                                data-element-id="layout-item"
                             >
                                 <span
                                     key={option.value}
@@ -84,6 +85,7 @@
                                     <label
                                         class={computedLabelClass}
                                         for={option.id}
+                                        style={option.computedButtonLabelStyle}
                                         data-element-id="label"
                                     >
                                         <div
@@ -94,6 +96,7 @@
                                             <div
                                                 class={computedCheckContainerClass}
                                                 data-element-id="div-check-container"
+                                                style={option.computedFauxInputStyle}
                                             >
                                                 <span
                                                     if:true={checkboxVariant}
@@ -114,8 +117,8 @@
                                                     size={computedTypeAttributes.size}
                                                     value={option.value}
                                                     variant="label-hidden"
-                                                    onblur={handleBlur}
                                                     data-element-id="input-toggle"
+                                                    onblur={handleBlur}
                                                     onchange={handleToggleChange}
                                                     onfocus={handleFocus}
                                                 >
@@ -128,16 +131,23 @@
                                                 "
                                                 data-element-id="label-icon-container"
                                             >
-                                                <lightning-formatted-rich-text
-                                                    if:true={option.displayLabel}
+                                                <div
                                                     class="
-                                                        slds-order_1
-                                                        avonni-input-choice-set__option-label_line-clamp
+                                                        slds-show_inline-block
+                                                        slds-m-right_x-small
                                                     "
-                                                    disable-linkify
-                                                    title={option.label}
-                                                    value={option.label}
-                                                ></lightning-formatted-rich-text>
+                                                >
+                                                    <lightning-formatted-rich-text
+                                                        if:true={option.displayLabel}
+                                                        class="
+                                                            slds-order_1
+                                                            avonni-input-choice-set__option-label_line-clamp
+                                                        "
+                                                        disable-linkify
+                                                        title={option.label}
+                                                        value={option.label}
+                                                    ></lightning-formatted-rich-text>
+                                                </div>
                                                 <lightning-icon
                                                     if:true={option.iconName}
                                                     class={option.computedIconClass}
@@ -224,6 +234,7 @@
                             <label
                                 class={computedLabelClass}
                                 for={option.id}
+                                style={option.computedButtonLabelStyle}
                                 data-element-id="label"
                             >
                                 <div class="slds-grid">

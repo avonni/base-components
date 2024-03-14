@@ -1163,6 +1163,33 @@ describe('Filter Menu', () => {
                 });
             });
 
+            it('items with colors', () => {
+                const colorItems = [
+                    { label: 'Item 1', value: '1', color: 'tomato' },
+                    { label: 'Item 2', value: '2', color: 'green' },
+                    { label: 'Item 3', value: '3', color: 'blue' }
+                ];
+                element.typeAttributes = { items: colorItems };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+
+                    items.forEach((item, index) => {
+                        const color = item.querySelector(
+                            '[data-element-id="avonni-primitive-icon-color"]'
+                        );
+                        expect(color).toBeTruthy();
+                        expect(color.style.color).toBe(colorItems[index].color);
+                    });
+                });
+            });
+
             it('No items shows empty message and hides buttons', () => {
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
