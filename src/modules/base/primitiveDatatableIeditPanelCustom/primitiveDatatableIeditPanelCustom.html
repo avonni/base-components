@@ -18,11 +18,10 @@
         <div class="slds-popover__body">
             <form onsubmit={handleEditFormSubmit} novalidate>
                 <c-primitive-datatable-iedit-input-wrapper-custom
-                    required={required}
                     class="slds-grid slds-p-left_xx-small"
+                    required={required}
                 >
                     <c-primitive-datatable-iedit-type-factory-custom
-                        data-element-id="dt-type-edit-factory-custom"
                         class="avonni-datatable-iedit-panel-custom__flex-col"
                         colors={colors}
                         column-def={columnDef}
@@ -51,6 +50,7 @@
                         object-api-name={objectApiName}
                         opacity={opacity}
                         placeholder={placeholder}
+                        relationship-field-name={relationshipFieldName}
                         required={required}
                         row-key-value={rowKeyValue}
                         start-date={startDate}
@@ -58,58 +58,51 @@
                         type={type}
                         time-style={timeStyle}
                         timezone={timezone}
+                        data-element-id="dt-type-edit-factory-custom"
                         onblur={handleTypeElemBlur}
                         onfocus={handleTypeElemFocus}
                     ></c-primitive-datatable-iedit-type-factory-custom>
                 </c-primitive-datatable-iedit-input-wrapper-custom>
-                <template if:true={isMassEditEnabled}>
-                    <lightning-input
-                        data-mass-selection="true"
-                        type="checkbox"
-                        name="dt-iedit-mass-edit"
-                        label={massEditCheckboxLabel}
-                        onfocus={handleTypeElemFocus}
-                        onclick={handleMassEditCheckboxClick}
-                        class="slds-m-left_xx-small"
-                    ></lightning-input>
-                </template>
-                <template if:false={isMassEditEnabled}>
-                    <button
-                        type="submit"
-                        aria-hidden="true"
-                        tabindex="-1"
-                        class="slds-hide"
-                        value="save"
-                    ></button>
-                </template>
+                <lightning-input
+                    if:true={isMassEditEnabled}
+                    class="slds-m-left_xx-small"
+                    label={massEditCheckboxLabel}
+                    name="dt-iedit-mass-edit"
+                    type="checkbox"
+                    data-mass-selection="true"
+                    onfocus={handleTypeElemFocus}
+                    onclick={handleMassEditCheckboxClick}
+                ></lightning-input>
+                <button
+                    if:false={isMassEditEnabled}
+                    class="slds-hide"
+                    aria-hidden="true"
+                    tabindex="-1"
+                    type="submit"
+                    value="save"
+                ></button>
             </form>
         </div>
-        <template if:true={showButtons}>
-            <div class="slds-popover__footer">
-                <div class="slds-grid slds-grid_align-end">
-                    <lightning-button
-                        label="Cancel"
-                        onblur={handleTypeElemBlur}
-                        onfocus={handleTypeElemFocus}
-                        onclick={cancelEdition}
-                    ></lightning-button>
-                    <lightning-button
-                        data-form-last-element="true"
-                        label="Apply"
-                        class="slds-var-m-left_xx-small"
-                        variant="brand"
-                        onblur={handleTypeElemBlur}
-                        onfocus={handleTypeElemFocus}
-                        onclick={processSubmission}
-                    >
-                    </lightning-button>
-                </div>
+        <div if:true={showButtons} class="slds-popover__footer">
+            <div class="slds-grid slds-grid_align-end">
+                <lightning-button
+                    label="Cancel"
+                    onblur={handleTypeElemBlur}
+                    onclick={cancelEdition}
+                    onfocus={handleTypeElemFocus}
+                ></lightning-button>
+                <lightning-button
+                    class="slds-var-m-left_xx-small"
+                    label="Apply"
+                    variant="brand"
+                    data-form-last-element="true"
+                    onblur={handleTypeElemBlur}
+                    onclick={processSubmission}
+                    onfocus={handleTypeElemFocus}
+                >
+                </lightning-button>
             </div>
-        </template>
-        <div
-            class="inline-edit-form-end"
-            onfocus={handleFormEndsFocus}
-            tabindex="0"
-        ></div>
+        </div>
+        <div onfocus={handleFormEndsFocus} tabindex="0"></div>
     </section>
 </template>

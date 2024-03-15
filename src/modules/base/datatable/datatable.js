@@ -182,7 +182,12 @@ export default class Datatable extends LightningDatatable {
         },
         lookup: {
             template: lookup,
-            typeAttributes: ['name', 'objectApiName', 'path']
+            typeAttributes: [
+                'name',
+                'objectApiName',
+                'path',
+                'relationshipFieldName'
+            ]
         },
         'name-lookup': {
             template: nameLookup,
@@ -985,8 +990,8 @@ export default class Datatable extends LightningDatatable {
     /**
      * If the data type is editable, transforms the value into an object containing the editable property.
      */
-    computeEditableOption(columns) {
-        if (columns && this._data) {
+    computeEditableOption(columns = this._columns) {
+        if (columns?.length && this._data?.length) {
             columns.forEach((column) => {
                 if (CUSTOM_TYPES_EDITABLE.includes(column.type)) {
                     const fieldName = column.fieldName;
