@@ -92,14 +92,14 @@
                         </template>
                     </div>
                     <ul
-                        data-element-id="ul"
                         class="slds-carousel__indicators"
                         role="tablist"
+                        data-element-id="ul"
                         onkeydown={keyDownHandler}
                     >
                         <!-- Pagination items -->
                         <template
-                            if:false={hideIndicator}
+                            if:true={showIndicator}
                             for:each={paginationItems}
                             for:item="paginationItem"
                             for:index="paginationIndex"
@@ -146,7 +146,13 @@
             </lightning-layout-item>
             <template if:false={hidePreviousNextPanelNavigation}>
                 <!-- Next navigation -->
-                <lightning-layout-item>
+                <lightning-layout-item class="slds-is-relative">
+                    <lightning-spinner
+                        if:true={showLoading}
+                        class="slds-m-left_medium slds-m-bottom_large"
+                        alternative-text="Loading..."
+                        size="x-small"
+                    ></lightning-spinner>
                     <button
                         data-element-id="lightning-button-icon-next"
                         class="

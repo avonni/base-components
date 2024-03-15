@@ -48,6 +48,7 @@ const IMAGE_POSITIONS = {
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 const DEFAULT_ITEMS_PER_PANEL = 1;
+const DEFAULT_LOAD_MORE_OFFSET = 1;
 const DEFAULT_SCROLL_DURATION = 5;
 const DEFAULT_ASSISTIVE_TEXT_AUTOPLAY_BUTTON = 'Play / Stop auto-play';
 const DEFAULT_ASSISTIVE_TEXT_PREVIOUS_PANEL = 'Previous Panel';
@@ -116,10 +117,13 @@ export default class Carousel extends LightningElement {
         autoplayButton: i18n.autoplayButton
     };
     _carouselItems = [];
+    _enableInfiniteLoading = false;
     _hideIndicator = false;
     _imagePosition = IMAGE_POSITIONS.default;
     _indicatorVariant = INDICATOR_VARIANTS.default;
+    _isLoading = false;
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _scrollDuration = DEFAULT_SCROLL_DURATION;
 
     _rendered = false;
@@ -231,6 +235,23 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * If present, the carousel items can be loaded dynamically.
+     * As a consequence, the navigation is not disabled when the end of the items is reached, the indicator is always hidden, and `is-infinite` is ignored.
+     * Use in conjunction with `load-more-offset` to determine when the loadmore event should be fired.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the progress indicator is hidden.
      *
      * @type {boolean}
@@ -295,6 +316,21 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * If present, the carousel is in a loading state and shows the loading spinner.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Number of items to be displayed at a time in the carousel. Maximum of 10 items per panel.
      *
      * @type {number}
@@ -332,6 +368,23 @@ export default class Carousel extends LightningElement {
             fallbackValue: IMAGE_POSITIONS.default,
             validValues: IMAGE_POSITIONS.valid
         });
+    }
+
+    /**
+     * Number of hidden panels left when the `loadmore` event should be fired. For example, if the value is `2`, the `loadmore` event will be fired when the user clicks on the “next” navigation button, and from this screen, they could click two more times on “next” before reaching the end of the items.
+     * Depends on `enable-infinite-loading` being true.
+     *
+     * @type {number}
+     * @default 1
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        const number = parseInt(value, 10);
+        this._loadMoreOffset = number >= 0 ? number : DEFAULT_LOAD_MORE_OFFSET;
     }
 
     /**
@@ -446,7 +499,7 @@ export default class Carousel extends LightningElement {
      * @type {string}
      */
     get computedAutoScrollAutoplayButton() {
-        return this._hideIndicator
+        return !this.showIndicator
             ? 'avonni-carousel__autoscroll-button-without-indicator'
             : 'avonni-carousel__autoscroll-button-with-indicator';
     }
@@ -469,6 +522,24 @@ export default class Carousel extends LightningElement {
      */
     get previousPanelNavigationDisabled() {
         return !this.isInfinite ? this.activeIndexPanel === 0 : null;
+    }
+
+    /**
+     * True if the bottom indicator should be visible.
+     *
+     * @type {boolean}
+     */
+    get showIndicator() {
+        return !this.hideIndicator && !this.enableInfiniteLoading;
+    }
+
+    /**
+     * True if the loading spinner should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLoading() {
+        return this.isLoading && this.enableInfiniteLoading;
     }
 
     /*
@@ -561,8 +632,17 @@ export default class Carousel extends LightningElement {
      */
     @api
     next() {
+        const numberOfPanels = Math.ceil(
+            this._carouselItems.length / this.currentItemsPerPanel
+        );
+        const nbPanelsLeft = numberOfPanels - (this.activeIndexPanel + 2);
+        if (this.enableInfiniteLoading && nbPanelsLeft <= this.loadMoreOffset) {
+            this.dispatchLoadMoreEvent();
+        }
+
         this.pause();
         this.unselectCurrentPanel();
+
         if (this.activeIndexPanel < this.paginationItems.length - 1) {
             this.activeIndexPanel += 1;
         } else {
@@ -613,6 +693,7 @@ export default class Carousel extends LightningElement {
         ) {
             this.currentItemsPerPanel = calculatedItemsPerPanel;
             this.initCarousel();
+            this.dispatchPrivateItemsPerPanelChange();
         }
     }
 
@@ -897,5 +978,37 @@ export default class Carousel extends LightningElement {
         } else {
             activePaginationItem.className = INDICATOR_ACTION;
         }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    dispatchLoadMoreEvent() {
+        /**
+         * The event fired when more items should be loaded.
+         *
+         * @event
+         * @name loadmore
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('loadmore'));
+    }
+
+    dispatchPrivateItemsPerPanelChange() {
+        /**
+         * The event fired when the number of visible items per panel changes.
+         *
+         * @event
+         * @name privateitemsperpanelchange
+         * @param {number} value Number of visible items per panel.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privateitemsperpanelchange', {
+                detail: { value: this.currentItemsPerPanel }
+            })
+        );
     }
 }
