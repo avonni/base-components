@@ -1,8 +1,9 @@
 <template>
-    <template if:true={required}>
-        <abbr aria-hidden="true" class="slds-required slds-m-right_xx-small"
-            >*</abbr
-        >
-    </template>
+    <abbr
+        if:true={required}
+        class="slds-required slds-m-right_xx-small"
+        aria-hidden="true"
+        >*
+    </abbr>
     <slot></slot>
 </template>

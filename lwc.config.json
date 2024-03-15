@@ -575,6 +575,10 @@
             "path": "src/modules/base/recordEditForm/recordEditForm.js"
         },
         {
+            "name": "c/recordPicker",
+            "path": "src/modules/base/recordPicker/recordPicker.js"
+        },
+        {
             "name": "c/slider",
             "path": "src/modules/base/slider/slider.js"
         },
