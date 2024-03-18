@@ -1484,6 +1484,9 @@ export default class DateTimePicker extends LightningElement {
         }
 
         this._resizeObserver = new AvonniResizeObserver(container, () => {
+            if (this._resizeIsHandledByParent) {
+                return;
+            }
             this.renderDateTimePicker();
         });
     }
