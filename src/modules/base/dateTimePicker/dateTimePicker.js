@@ -175,7 +175,7 @@ export default class DateTimePicker extends LightningElement {
          * @event
          * @name privatedatetimepickerconnected
          * @param {object} callbacks Object with two keys:
-         * * `rerenderDateTimePicker`: When called, the date time picker is render again.
+         * * `renderDateTimePicker`: When called, the date time picker is render again.
          * * `setIsResizedByParent`: If called with `true`, the resizing of the date time picker is handled by its parent.
          * @bubbles
          * @composed
@@ -184,8 +184,8 @@ export default class DateTimePicker extends LightningElement {
             new CustomEvent('privatedatetimepickerconnected', {
                 detail: {
                     callbacks: {
-                        rerenderDateTimePicker:
-                            this.rerenderDateTimePicker.bind(this),
+                        renderDateTimePicker:
+                            this.renderDateTimePicker.bind(this),
                         setIsResizedByParent:
                             this.setIsResizedByParent.bind(this)
                     }
@@ -921,6 +921,10 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._setFirstWeekDay();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -1205,10 +1209,11 @@ export default class DateTimePicker extends LightningElement {
      * Move the position of the picker so the specified date is visible.
      *
      * @param {(string | number | Date)} date Date the picker should be positioned on.
+     * @param {boolean} disableRender If present, the picker is rendered again.
      * @public
      */
     @api
-    goToDate(date) {
+    goToDate(date, disableRender) {
         const normalizedDate = this._processDate(date);
         if (!normalizedDate) {
             console.error(
@@ -1228,9 +1233,11 @@ export default class DateTimePicker extends LightningElement {
         this._goToDate = normalizedDate;
 
         if (this._connected) {
-            requestAnimationFrame(() => {
-                this._queueRecompute();
-            });
+            if (!disableRender) {
+                requestAnimationFrame(() => {
+                    this._queueRecompute();
+                });
+            }
             this.dispatchNavigate();
         }
     }
@@ -1307,9 +1314,9 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Re-render the date time picker.
+     * Render the date time picker.
      */
-    rerenderDateTimePicker() {
+    renderDateTimePicker() {
         const container = this.template.querySelector(
             '[data-element-id="avonni-date-time-picker"]'
         );
@@ -1322,7 +1329,9 @@ export default class DateTimePicker extends LightningElement {
         }
         this._containerWidthWhenLastResized = containerWidth;
         this.updateInlineDatePickerMaxVisibleDays();
-        this._queueRecompute();
+        if (!this.isMonthly && !this.isDaily) {
+            this._queueRecompute();
+        }
     }
 
     /*
@@ -1443,7 +1452,7 @@ export default class DateTimePicker extends LightningElement {
         }
 
         this._resizeObserver = new AvonniResizeObserver(container, () => {
-            this.rerenderDateTimePicker();
+            this.renderDateTimePicker();
         });
     }
 
@@ -1531,7 +1540,7 @@ export default class DateTimePicker extends LightningElement {
         } else if (date > this.max) {
             date = this._processDate(this.max);
         }
-        this.goToDate(date);
+        this.goToDate(date, true);
     }
 
     _setInlineDatePickerFirstDay() {
