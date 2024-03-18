@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement } from 'lwc';
 
 const IMAGES = [
     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
@@ -6,24 +6,7 @@ const IMAGES = [
     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg'
 ];
 
-export default class InfiniteLoadingCarousel extends LightningElement {
-    @api actionsPosition;
-    @api actionsVariant;
-    @api assistiveText;
-    @api currentPanel;
-    @api disableAutoRefresh;
-    @api disableAutoScroll;
-    @api hideIndicator;
-    @api hidePreviousNextPanelNavigation;
-    @api imagePosition;
-    @api indicatorVariant;
-    @api isInfinite;
-    @api itemsPerPanel;
-    @api largeItemsPerPanel;
-    @api mediumItemsPerPanel;
-    @api scrollDuration;
-    @api smallItemsPerPanel;
-
+export default class AvonniInfiniteLoadingCarousel extends LightningElement {
     isLoading = false;
     items = [];
 
