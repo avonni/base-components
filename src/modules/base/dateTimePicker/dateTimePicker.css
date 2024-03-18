@@ -182,11 +182,12 @@
     position: relative;
     z-index: 1;
     margin: 2px;
+    padding: var(--lwc-spacingMedium, 1rem);
 }
 
 .avonni-date-time-picker__timeline-hour-col::before {
     content: '';
-    border: 1px dashed #747474;
+    border: 1px dashed #dddbda;
     position: absolute;
     top: 0;
     bottom: 0;
