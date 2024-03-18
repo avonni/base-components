@@ -145,6 +145,7 @@ export default class DateTimePicker extends LightningElement {
     _computedValue = [];
     _connected = false;
     _containerWidthWhenLastResized = 0;
+    _dayLabelBorderPosition = 0;
     _goToDate;
     _inlineDatePickerFirstDay;
     _inlineDatePickerMaxVisibleDays = DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS;
@@ -995,6 +996,22 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Computed CSS style of the day label border.
+     *
+     * @type {string}
+     */
+    get computedDayLabelBorderStyle() {
+        if (!this.isWeekly) {
+            return '';
+        }
+        let style =
+            this._dayLabelBorderPosition > 0
+                ? `top: ${this._dayLabelBorderPosition}px`
+                : 'display: none';
+        return `${style}`;
+    }
+
+    /**
      * Computed CSS classes of the hour table.
      *
      * @type {string}
@@ -1329,9 +1346,7 @@ export default class DateTimePicker extends LightningElement {
         }
         this._containerWidthWhenLastResized = containerWidth;
         this.updateInlineDatePickerMaxVisibleDays();
-        if (!this.isMonthly && !this.isDaily) {
-            this._queueRecompute();
-        }
+        this._queueRecompute();
     }
 
     /*
@@ -1362,9 +1377,26 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Compute the min width for the time slot button.
+     * Compute the position of the border under the day label for weekly variant.
      */
-    _computeTimeSlotMinWidth() {
+    _computeDayLabelBorderPosition() {
+        const labels = this.template.querySelectorAll(
+            '[data-element-id="div-day-label"]'
+        );
+        let maxHeight = 0;
+        labels.forEach((label) => {
+            const labelRect = label.getBoundingClientRect();
+            if (labelRect.height > maxHeight) {
+                maxHeight = labelRect.height;
+            }
+        });
+        this._dayLabelBorderPosition = maxHeight;
+    }
+
+    /**
+     * Compute the min size for the time slot button.
+     */
+    _computeTimeSlotMinSize() {
         const timeSlotButtons = this.isTimeline
             ? this.template.querySelectorAll(
                   '[data-element-id="avonni-layout-item-time-timeline"]'
@@ -1752,9 +1784,15 @@ export default class DateTimePicker extends LightningElement {
     _queueRecompute = () => {
         this._timeSlotMinHeight = 0;
         this._timeSlotMinWidth = 0;
+        this._dayLabelBorderPosition = 0;
 
         requestAnimationFrame(() => {
-            this._computeTimeSlotMinWidth();
+            if (!this.isMonthly && !this.isDaily) {
+                this._computeTimeSlotMinSize();
+            }
+            if (this.isWeekly) {
+                this._computeDayLabelBorderPosition();
+            }
         });
     };
 

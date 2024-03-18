@@ -318,9 +318,11 @@
                     <c-layout-item
                         if:true={isWeekly}
                         class="
-                            avonni-date-time-picker__hour-table-header-border
+                            avonni-date-time-picker__day-label-border
                             slds-border_bottom
                         "
+                        style={computedDayLabelBorderStyle}
+                        data-element-id="div-day-label-border"
                     ></c-layout-item>
                     <template for:each={table} for:item="day">
                         <c-layout-item
@@ -344,6 +346,7 @@
                                     aria-selected={day.selected}
                                     grow="1"
                                     data-today={day.isToday}
+                                    data-element-id="div-day-label"
                                 >
                                     {day.label}
                                 </c-layout-item>

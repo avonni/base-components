@@ -58,10 +58,9 @@
     --avonni-layout-items-spacing-inline-between: 35px;
 }
 
-.avonni-date-time-picker__hour-table-header-border {
+.avonni-date-time-picker__day-label-border {
     position: absolute;
     width: 100%;
-    top: 1.75rem;
 }
 
 .avonni-date-time-picker__date-picker,
