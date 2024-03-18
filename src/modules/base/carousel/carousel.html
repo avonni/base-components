@@ -53,6 +53,7 @@
                                 aria-hidden={panel.ariaHidden}
                                 role="tabpanel"
                                 tabindex={panel.tabIndex}
+                                data-element-id="div-panel"
                             >
                                 <template
                                     for:each={panel.items}
@@ -148,10 +149,11 @@
                 <!-- Next navigation -->
                 <lightning-layout-item class="slds-is-relative">
                     <lightning-spinner
-                        if:true={showLoading}
+                        if:true={isLoading}
                         class="slds-m-left_medium slds-m-bottom_large"
                         alternative-text="Loading..."
                         size="x-small"
+                        data-element-id="lightning-spinner"
                     ></lightning-spinner>
                     <button
                         data-element-id="lightning-button-icon-next"

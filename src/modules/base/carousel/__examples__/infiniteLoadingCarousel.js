@@ -21,6 +21,7 @@ export const InfiniteLoadingCarousel = ({
     items,
     itemsPerPanel,
     largeItemsPerPanel,
+    loadMoreOffset,
     mediumItemsPerPanel,
     scrollDuration,
     smallItemsPerPanel
@@ -41,6 +42,7 @@ export const InfiniteLoadingCarousel = ({
     element.items = items;
     element.itemsPerPanel = itemsPerPanel;
     element.largeItemsPerPanel = largeItemsPerPanel;
+    element.loadMoreOffset = loadMoreOffset;
     element.mediumItemsPerPanel = mediumItemsPerPanel;
     element.scrollDuration = scrollDuration;
     element.smallItemsPerPanel = smallItemsPerPanel;

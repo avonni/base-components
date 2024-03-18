@@ -20,6 +20,7 @@ export default class InfiniteLoadingCarousel extends LightningElement {
     @api isInfinite;
     @api itemsPerPanel;
     @api largeItemsPerPanel;
+    @api loadMoreOffset;
     @api mediumItemsPerPanel;
     @api scrollDuration;
     @api smallItemsPerPanel;
