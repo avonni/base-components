@@ -117,8 +117,11 @@ export default class Carousel extends LightningElement {
     _indicatorVariant = INDICATOR_VARIANTS.default;
     _isLoading = false;
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
+    _largeItemsPerPanel;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    _mediumItemsPerPanel;
     _scrollDuration = DEFAULT_SCROLL_DURATION;
+    _smallItemsPerPanel;
 
     _rendered = false;
 
@@ -361,10 +364,11 @@ export default class Carousel extends LightningElement {
         return this._itemsPerPanel;
     }
     set itemsPerPanel(value) {
-        if (ITEMS_PER_PANEL.includes(value)) {
-            this._itemsPerPanel = value;
+        const number = parseInt(value, 10);
+        if (ITEMS_PER_PANEL.includes(number)) {
+            this._itemsPerPanel = number;
         } else {
-            this._itemsPerPanel = 1;
+            this._itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
         }
 
         this.columnsCount.default = this._itemsPerPanel;
@@ -929,9 +933,10 @@ export default class Carousel extends LightningElement {
      * Ensure items per panel is an accepted value, otherwise unset it.
      */
     normalizeItemsPerPanel(value, size) {
-        if (ITEMS_PER_PANEL.includes(value)) {
-            this.columnsCount[size] = value;
-            return value;
+        const number = parseInt(value, 10);
+        if (ITEMS_PER_PANEL.includes(number)) {
+            this.columnsCount[size] = number;
+            return number;
         }
         this.columnsCount[size] = undefined;
         return undefined;
