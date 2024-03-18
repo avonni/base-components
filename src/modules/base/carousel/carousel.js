@@ -70,13 +70,6 @@ const i18n = {
  */
 export default class Carousel extends LightningElement {
     /**
-     * Dictates the currently active/visible carousel panel. Use item’s name to select current panel.
-     *
-     * @type {string}
-     * @public
-     */
-    @api currentPanel;
-    /**
      * If present, the carousel doesn't loop after the last image is displayed.
      *
      * @type {boolean}
@@ -117,6 +110,7 @@ export default class Carousel extends LightningElement {
         autoplayButton: i18n.autoplayButton
     };
     _carouselItems = [];
+    _currentPanel;
     _enableInfiniteLoading = false;
     _hideIndicator = false;
     _imagePosition = IMAGE_POSITIONS.default;
@@ -235,6 +229,24 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Dictates the currently active/visible carousel panel. Use item’s name to select current panel.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get currentPanel() {
+        return this._currentPanel;
+    }
+    set currentPanel(value) {
+        this._currentPanel = value;
+
+        if (this._connected) {
+            this.initCarousel();
+        }
+    }
+
+    /**
      * If present, the carousel items can be loaded dynamically.
      * As a consequence, the navigation is not disabled when the end of the items is reached, the indicator is always hidden, and `is-infinite` is ignored.
      * Use in conjunction with `load-more-offset` to determine when the loadmore event should be fired.
@@ -296,10 +308,14 @@ export default class Carousel extends LightningElement {
         return this._carouselItems;
     }
     set items(value) {
-        let allItems = [];
-        allItems = normalizeArray(value);
+        if (this.panelItems.length && this.activeIndexPanel !== 0) {
+            // Zoom in on the currently visible item, if it still exists
+            this._currentPanel =
+                this.panelItems[this.activeIndexPanel].items[0].name;
+        }
+
         this._carouselItems = [];
-        allItems.forEach((item) => {
+        normalizeArray(value).forEach((item) => {
             this._carouselItems.push({
                 name: item.name,
                 title: item.title,
@@ -310,6 +326,7 @@ export default class Carousel extends LightningElement {
                 actions: item.actions || []
             });
         });
+
         if (this._connected) {
             this.initCarousel();
         }
@@ -328,6 +345,10 @@ export default class Carousel extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+
+        if (this.isLoading) {
+            this.pause();
+        }
     }
 
     /**
@@ -349,7 +370,10 @@ export default class Carousel extends LightningElement {
         }
 
         this.columnsCount.default = this._itemsPerPanel;
-        this.computeItemsPerPanel();
+
+        if (this._connected) {
+            this.computeItemsPerPanel();
+        }
     }
 
     /**
@@ -418,7 +442,10 @@ export default class Carousel extends LightningElement {
     }
     set smallItemsPerPanel(value) {
         this._smallItemsPerPanel = this.normalizeItemsPerPanel(value, 'small');
-        this.computeItemsPerPanel();
+
+        if (this._connected) {
+            this.computeItemsPerPanel();
+        }
     }
 
     /**
@@ -436,7 +463,9 @@ export default class Carousel extends LightningElement {
             value,
             'medium'
         );
-        this.computeItemsPerPanel();
+        if (this._connected) {
+            this.computeItemsPerPanel();
+        }
     }
 
     /**
@@ -451,7 +480,10 @@ export default class Carousel extends LightningElement {
     }
     set largeItemsPerPanel(value) {
         this._largeItemsPerPanel = this.normalizeItemsPerPanel(value, 'large');
-        this.computeItemsPerPanel();
+
+        if (this._connected) {
+            this.computeItemsPerPanel();
+        }
     }
 
     /*
@@ -753,22 +785,23 @@ export default class Carousel extends LightningElement {
             this._carouselItems.length / this.currentItemsPerPanel
         );
 
-        this.initCurrentPanel(numberOfPanels);
+        this.initCurrentPanel();
         this.initPaginationItems(numberOfPanels);
         this.initPanels();
     }
 
     /**
-     * Initialize current panel method.
-     *
-     * @param {number} numberOfPanels
+     * Set the active panel index, based on the value of `current-panel`.
      */
-    initCurrentPanel(numberOfPanels) {
-        const currentPanelIndex = this.currentPanel
+    initCurrentPanel() {
+        const itemIndex = this.currentPanel
             ? this.items.findIndex((item) => item.name === this.currentPanel)
             : 0;
-        const firstPanel = parseInt(currentPanelIndex, 10);
-        this.activeIndexPanel = firstPanel < numberOfPanels ? firstPanel : 0;
+        const panelIndex =
+            itemIndex > -1
+                ? Math.floor(itemIndex / this.currentItemsPerPanel)
+                : 0;
+        this.activeIndexPanel = panelIndex;
     }
 
     /**
@@ -825,9 +858,13 @@ export default class Carousel extends LightningElement {
             panelIndex += 1;
         }
         this.panelItems = panelItems;
-        this.panelStyle = `transform: translateX(-${
-            this.activeIndexPanel * 100
-        }%);`;
+
+        // Remove the transition so the carousel is not animated on render,
+        // if a current-panel was selected
+        this.panelStyle = `
+            transition: none;
+            transform: translateX(-${this.activeIndexPanel * 100}%);
+        `;
     }
 
     /**

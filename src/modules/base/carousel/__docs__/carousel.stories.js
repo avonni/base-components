@@ -404,5 +404,6 @@ ImagePositionLeft.args = {
 
 export const InfiniteLoading = TemplateInfiniteLoading.bind({});
 InfiniteLoading.args = {
-    itemsPerPanel: 3
+    itemsPerPanel: 3,
+    disableAutoScroll: true
 };
