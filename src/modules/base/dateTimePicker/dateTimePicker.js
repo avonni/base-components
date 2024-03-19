@@ -15,6 +15,7 @@ import {
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { TIME_ZONES } from './timezones';
 import { DateTime } from 'c/luxon';
+import { classSet } from 'c/utils';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -128,20 +129,23 @@ export default class DateTimePicker extends LightningElement {
     _value;
     _variant = DATE_TIME_VARIANTS.default;
 
-    computedMin;
     computedMax;
-    table;
-    firstWeekDay;
-    lastWeekDay;
-    helpMessage;
+    computedMin;
     datePickerValue;
-    timezones = TIME_ZONES;
     datePickerWeekdays = [];
+    firstWeekDay;
+    helpMessage;
+    lastWeekDay;
+    table;
+    timezones = TIME_ZONES;
+    showActionsSlot = true;
 
     _computedEndTime;
     _computedStartTime;
     _computedValue = [];
     _connected = false;
+    _containerWidthWhenLastResized = 0;
+    _dayLabelBorderPosition = 0;
     _goToDate;
     _inlineDatePickerFirstDay;
     _inlineDatePickerMaxVisibleDays = DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS;
@@ -149,6 +153,8 @@ export default class DateTimePicker extends LightningElement {
     _resizeObserver;
     _selectedDayTime;
     _today;
+    _timeSlotMinHeight = 0;
+    _timeSlotMinWidth = 0;
     _valid = true;
 
     connectedCallback() {
@@ -170,7 +176,7 @@ export default class DateTimePicker extends LightningElement {
          * @event
          * @name privatedatetimepickerconnected
          * @param {object} callbacks Object with two keys:
-         * * `updateInlineDatePickerMaxVisibleDays`: When called, the number of visible dates in the inline date picker is updated.
+         * * `renderDateTimePicker`: When called, the date time picker is render again.
          * * `setIsResizedByParent`: If called with `true`, the resizing of the date time picker is handled by its parent.
          * @bubbles
          * @composed
@@ -179,10 +185,8 @@ export default class DateTimePicker extends LightningElement {
             new CustomEvent('privatedatetimepickerconnected', {
                 detail: {
                     callbacks: {
-                        updateInlineDatePickerMaxVisibleDays:
-                            this.updateInlineDatePickerMaxVisibleDays.bind(
-                                this
-                            ),
+                        renderDateTimePicker:
+                            this.renderDateTimePicker.bind(this),
                         setIsResizedByParent:
                             this.setIsResizedByParent.bind(this)
                     }
@@ -194,16 +198,9 @@ export default class DateTimePicker extends LightningElement {
     }
 
     renderedCallback() {
-        if (
-            !this._resizeObserver &&
-            this.showInlineDatePicker &&
-            !this._resizeIsHandledByParent
-        ) {
+        if (!this._resizeObserver && !this._resizeIsHandledByParent) {
             this._initResizeObserver();
-        } else if (
-            this._resizeObserver &&
-            (!this.showInlineDatePicker || this._resizeIsHandledByParent)
-        ) {
+        } else if (this._resizeObserver && this._resizeIsHandledByParent) {
             this._removeResizeObserver();
         }
 
@@ -215,6 +212,11 @@ export default class DateTimePicker extends LightningElement {
                 monthlyCalendar.goToDate(this._goToDate);
             }
             this._goToDate = undefined;
+        }
+
+        if (this.actionSlot) {
+            this.showActionsSlot =
+                this.actionSlot.assignedElements().length !== 0;
         }
     }
 
@@ -275,7 +277,13 @@ export default class DateTimePicker extends LightningElement {
             validValues: DATE_TIME_FORMATS.valid
         });
 
-        if (this._connected && this.variant === 'weekly') this._generateTable();
+        if (this._connected && this.variant === 'weekly') {
+            this._generateTable();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
+        }
     }
 
     /**
@@ -315,7 +323,9 @@ export default class DateTimePicker extends LightningElement {
             validValues: WEEKDAY_FORMATS.valid
         });
 
-        if (this._connected && this.variant === 'weekly') this._generateTable();
+        if (this._connected && this.variant === 'weekly') {
+            this._generateTable();
+        }
     }
 
     /**
@@ -395,6 +405,10 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._generateTable();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -420,6 +434,10 @@ export default class DateTimePicker extends LightningElement {
             );
             this._initTimeSlots();
             this._generateTable();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -581,6 +599,10 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._generateTable();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -598,6 +620,12 @@ export default class DateTimePicker extends LightningElement {
 
     set showEndTime(boolean) {
         this._showEndTime = normalizeBoolean(boolean);
+
+        if (this._connected) {
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
+        }
     }
 
     /**
@@ -638,6 +666,10 @@ export default class DateTimePicker extends LightningElement {
             );
             this._initTimeSlots();
             this._generateTable();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -657,6 +689,12 @@ export default class DateTimePicker extends LightningElement {
         this._timeFormatHour = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
         });
+
+        if (this._connected) {
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
+        }
     }
 
     /**
@@ -674,6 +712,12 @@ export default class DateTimePicker extends LightningElement {
     set timeFormatHour12(boolean) {
         if (boolean !== undefined) {
             this._timeFormatHour12 = normalizeBoolean(boolean);
+        }
+
+        if (this._connected) {
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -693,6 +737,12 @@ export default class DateTimePicker extends LightningElement {
         this._timeFormatMinute = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
         });
+
+        if (this._connected) {
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
+        }
     }
 
     /**
@@ -710,6 +760,12 @@ export default class DateTimePicker extends LightningElement {
         this._timeFormatSecond = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
         });
+
+        if (this._connected) {
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
+        }
     }
 
     /**
@@ -748,6 +804,10 @@ export default class DateTimePicker extends LightningElement {
         if (this._connected) {
             this._initTimeSlots();
             this._generateTable();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -771,6 +831,10 @@ export default class DateTimePicker extends LightningElement {
                 this._today < this.computedMin ? this.computedMin : this._today;
             this._setFirstWeekDay(firstDay);
             this._generateTable();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -858,6 +922,10 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._setFirstWeekDay();
+
+            requestAnimationFrame(() => {
+                this._queueRecompute();
+            });
         }
     }
 
@@ -866,6 +934,15 @@ export default class DateTimePicker extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Get actions slot DOM element.
+     *
+     * @type {Element}
+     */
+    get actionSlot() {
+        return this.template.querySelector('slot[name=actions]');
+    }
 
     /**
      * Retrieve constraint API for validation.
@@ -916,6 +993,53 @@ export default class DateTimePicker extends LightningElement {
         });
 
         return dates;
+    }
+
+    /**
+     * Computed CSS style of the day label border.
+     *
+     * @type {string}
+     */
+    get computedDayLabelBorderStyle() {
+        if (!this.isWeekly) {
+            return '';
+        }
+        let style =
+            this._dayLabelBorderPosition > 0
+                ? `top: ${this._dayLabelBorderPosition}px`
+                : 'display: none';
+        return `${style}`;
+    }
+
+    /**
+     * Computed CSS classes of the hour table.
+     *
+     * @type {string}
+     */
+    get computedTableClass() {
+        return classSet(
+            `slds-show slds-scrollable_x avonni-date-time-picker__hour-table avonni-date-time-picker__hour-table-${this.variant}`
+        );
+    }
+
+    /**
+     * Computed CSS style of the time slots.
+     *
+     * @type {string}
+     */
+    get computedTimeSlotStyle() {
+        if (this.isMonthly || this.isDaily) {
+            return '';
+        }
+        let widthStyle =
+            this._timeSlotMinWidth > 0
+                ? `min-width: ${this._timeSlotMinWidth}px`
+                : 'width: fit-content';
+        let heightStyle =
+            this._timeSlotMinHeight > 0
+                ? `min-height: ${this._timeSlotMinHeight}px`
+                : 'height: fit-content';
+        return `${widthStyle}; ${heightStyle}`;
     }
 
     /**
@@ -1015,6 +1139,15 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Returns true if variant is daily.
+     *
+     * @type {boolean}
+     */
+    get isDaily() {
+        return this.variant === 'daily';
+    }
+
+    /**
      * Returns true if variant is timeline.
      *
      * @type {boolean}
@@ -1030,6 +1163,15 @@ export default class DateTimePicker extends LightningElement {
      */
     get isMonthly() {
         return this.variant === 'monthly';
+    }
+
+    /**
+     * Returns true if variant is weekly.
+     *
+     * @type {boolean}
+     */
+    get isWeekly() {
+        return this.variant === 'weekly';
     }
 
     /**
@@ -1084,10 +1226,11 @@ export default class DateTimePicker extends LightningElement {
      * Move the position of the picker so the specified date is visible.
      *
      * @param {(string | number | Date)} date Date the picker should be positioned on.
+     * @param {boolean} disableRender If present, the picker is rendered again.
      * @public
      */
     @api
-    goToDate(date) {
+    goToDate(date, disableRender) {
         const normalizedDate = this._processDate(date);
         if (!normalizedDate) {
             console.error(
@@ -1107,6 +1250,11 @@ export default class DateTimePicker extends LightningElement {
         this._goToDate = normalizedDate;
 
         if (this._connected) {
+            if (!disableRender) {
+                requestAnimationFrame(() => {
+                    this._queueRecompute();
+                });
+            }
             this.dispatchNavigate();
         }
     }
@@ -1182,6 +1330,25 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Render the date time picker.
+     */
+    renderDateTimePicker() {
+        const container = this.template.querySelector(
+            '[data-element-id="avonni-date-time-picker"]'
+        );
+        const containerWidth = container.getBoundingClientRect().width;
+        if (
+            !this._connected ||
+            this._containerWidthWhenLastResized === containerWidth
+        ) {
+            return;
+        }
+        this._containerWidthWhenLastResized = containerWidth;
+        this.updateInlineDatePickerMaxVisibleDays();
+        this._queueRecompute();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -1207,6 +1374,49 @@ export default class DateTimePicker extends LightningElement {
         return this._processDate(new Date())
             .set({ year, month, day })
             .startOf('day');
+    }
+
+    /**
+     * Compute the position of the border under the day label for weekly variant.
+     */
+    _computeDayLabelBorderPosition() {
+        const labels = this.template.querySelectorAll(
+            '[data-element-id="div-day-label"]'
+        );
+        let maxHeight = 0;
+        labels.forEach((label) => {
+            const labelRect = label.getBoundingClientRect();
+            if (labelRect.height > maxHeight) {
+                maxHeight = labelRect.height;
+            }
+        });
+        this._dayLabelBorderPosition = maxHeight;
+    }
+
+    /**
+     * Compute the min size for the time slot button.
+     */
+    _computeTimeSlotMinSize() {
+        const timeSlotButtons = this.isTimeline
+            ? this.template.querySelectorAll(
+                  '[data-element-id="avonni-layout-item-time-timeline"]'
+              )
+            : this.template.querySelectorAll(
+                  '[data-element-id="avonni-layout-item-time"]'
+              );
+        let minWidth = 0;
+        let minHeight = 0;
+        timeSlotButtons.forEach((timeSlotButton) => {
+            const buttonRect = timeSlotButton.getBoundingClientRect();
+            if (buttonRect.width > minWidth) {
+                minWidth = buttonRect.width;
+            }
+            if (buttonRect.height > minHeight) {
+                minHeight = buttonRect.height;
+            }
+        });
+        this._timeSlotMinWidth = minWidth;
+        this._timeSlotMinHeight = minHeight;
     }
 
     /**
@@ -1266,15 +1476,18 @@ export default class DateTimePicker extends LightningElement {
     }
 
     _initResizeObserver() {
-        const toolbar = this.template.querySelector(
-            '[data-element-id="avonni-layout-toolbar"]'
+        const container = this.template.querySelector(
+            '[data-element-id="avonni-date-time-picker"]'
         );
-        if (!toolbar) {
+        if (!container) {
             return;
         }
 
-        this._resizeObserver = new AvonniResizeObserver(toolbar, () => {
-            this.updateInlineDatePickerMaxVisibleDays();
+        this._resizeObserver = new AvonniResizeObserver(container, () => {
+            if (this._resizeIsHandledByParent) {
+                return;
+            }
+            this.renderDateTimePicker();
         });
     }
 
@@ -1362,7 +1575,7 @@ export default class DateTimePicker extends LightningElement {
         } else if (date > this.max) {
             date = this._processDate(this.max);
         }
-        this.goToDate(date);
+        this.goToDate(date, true);
     }
 
     _setInlineDatePickerFirstDay() {
@@ -1571,6 +1784,21 @@ export default class DateTimePicker extends LightningElement {
         return maxVisibleDates;
     }
 
+    _queueRecompute = () => {
+        this._timeSlotMinHeight = 0;
+        this._timeSlotMinWidth = 0;
+        this._dayLabelBorderPosition = 0;
+
+        requestAnimationFrame(() => {
+            if (!this.isMonthly && !this.isDaily) {
+                this._computeTimeSlotMinSize();
+            }
+            if (this.isWeekly) {
+                this._computeDayLabelBorderPosition();
+            }
+        });
+    };
+
     _removeResizeObserver() {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
@@ -1629,6 +1857,9 @@ export default class DateTimePicker extends LightningElement {
         this.firstWeekDay = this.firstWeekDay.plus({ day: dayRangeSign });
         this._generateTable();
         this.datePickerValue = this.firstWeekDay.toISO();
+        requestAnimationFrame(() => {
+            this._queueRecompute();
+        });
         this.dispatchNavigate();
     }
 
