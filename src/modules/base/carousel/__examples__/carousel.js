@@ -13,6 +13,7 @@ export const Carousel = ({
     currentPanel,
     hideIndicator,
     hidePreviousNextPanelNavigation,
+    isLoading,
     itemsPerPanel,
     smallItemsPerPanel,
     mediumItemsPerPanel,
@@ -32,6 +33,7 @@ export const Carousel = ({
     element.currentPanel = currentPanel;
     element.hideIndicator = hideIndicator;
     element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
+    element.isLoading = isLoading;
     element.itemsPerPanel = itemsPerPanel;
     element.smallItemsPerPanel = smallItemsPerPanel;
     element.mediumItemsPerPanel = mediumItemsPerPanel;

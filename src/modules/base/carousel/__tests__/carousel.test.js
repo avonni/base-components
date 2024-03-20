@@ -117,27 +117,30 @@ describe('Carousel', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.actionsPosition).toBe('bottom-center');
+            expect(element.actionsVariant).toBe('border');
             expect(element.assistiveText).toMatchObject({
                 autoplayButton: 'Play / Stop auto-play',
                 nextPanel: 'Next Panel',
                 previousPanel: 'Previous Panel'
             });
-            expect(element.items).toMatchObject([]);
+            expect(element.currentPanel).toBeUndefined();
             expect(element.disableAutoRefresh).toBeFalsy();
             expect(element.disableAutoScroll).toBeFalsy();
-            expect(element.scrollDuration).toBe(5);
-            expect(element.indicatorVariant).toBe('base');
-            expect(element.isInfinite).toBeFalsy();
-            expect(element.currentPanel).toBeUndefined();
+            expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.hideIndicator).toBeFalsy();
             expect(element.hidePreviousNextPanelNavigation).toBeFalsy();
-            expect(element.itemsPerPanel).toBe(1);
-            expect(element.smallItemsPerPanel).toBeUndefined();
-            expect(element.mediumItemsPerPanel).toBeUndefined();
-            expect(element.largeItemsPerPanel).toBeUndefined();
-            expect(element.actionsVariant).toBe('border');
-            expect(element.actionsPosition).toBe('bottom-center');
+            expect(element.items).toMatchObject([]);
             expect(element.imagePosition).toBe('top');
+            expect(element.indicatorVariant).toBe('base');
+            expect(element.isInfinite).toBeFalsy();
+            expect(element.isLoading).toBeFalsy();
+            expect(element.itemsPerPanel).toBe(1);
+            expect(element.largeItemsPerPanel).toBeUndefined();
+            expect(element.loadMoreOffset).toBe(1);
+            expect(element.mediumItemsPerPanel).toBeUndefined();
+            expect(element.scrollDuration).toBe(5);
+            expect(element.smallItemsPerPanel).toBeUndefined();
         });
 
         describe('Action Variant', () => {
@@ -342,10 +345,38 @@ describe('Carousel', () => {
 
                 return Promise.resolve().then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     const thirdPanel = panels[2];
                     expect(thirdPanel.ariaHidden).toBe('false');
+                });
+            });
+
+            it('Current panel, more than one item per panel', () => {
+                element.currentPanel = '3';
+                element.items = items;
+                element.itemsPerPanel = 2;
+
+                return Promise.resolve().then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-panel"]'
+                    );
+                    const secondPanel = panels[1];
+                    expect(secondPanel.ariaHidden).toBe('false');
+                });
+            });
+
+            it('Current panel is set automatically on navigation', () => {
+                element.items = items;
+                element.itemsPerPanel = 2;
+
+                return Promise.resolve().then(() => {
+                    expect(element.currentPanel).toBeUndefined();
+                    const next = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-next"]'
+                    );
+                    next.click();
+                    expect(element.currentPanel).toBe('3');
                 });
             });
         });
@@ -396,7 +427,7 @@ describe('Carousel', () => {
 
                 return Promise.resolve().then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     expect(element.itemsPerPanel).toBe(1);
                     expect(panels).toHaveLength(7);
@@ -409,7 +440,7 @@ describe('Carousel', () => {
 
                 return Promise.resolve().then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     expect(panels).toHaveLength(4);
                 });
@@ -468,6 +499,32 @@ describe('Carousel', () => {
                             'slds-is-active'
                         );
                     });
+            });
+        });
+    });
+
+    describe('Is loading', () => {
+        it('false', () => {
+            element.items = items;
+            element.isLoading = false;
+
+            return Promise.resolve().then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeFalsy();
+            });
+        });
+
+        it('true', () => {
+            element.items = items;
+            element.isLoading = true;
+
+            return Promise.resolve().then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeTruthy();
             });
         });
     });
@@ -563,7 +620,7 @@ describe('Carousel', () => {
                 })
                 .then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     const secondPanel = panels[1];
                     expect(secondPanel.getAttribute('aria-hidden')).toBe(
@@ -586,7 +643,7 @@ describe('Carousel', () => {
                 })
                 .then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     const secondPanel = panels[1];
                     expect(secondPanel.getAttribute('aria-hidden')).toBe(
@@ -607,7 +664,7 @@ describe('Carousel', () => {
                 })
                 .then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     const secondPanel = panels[1];
                     expect(secondPanel.ariaHidden).toBe('false');
@@ -629,7 +686,7 @@ describe('Carousel', () => {
                 })
                 .then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     const secondPanel = panels[1];
                     expect(secondPanel.ariaHidden).toBe('false');
@@ -639,7 +696,7 @@ describe('Carousel', () => {
                 })
                 .then(() => {
                     const panels = element.shadowRoot.querySelectorAll(
-                        '.avonni-carousel__panel'
+                        '[data-element-id="div-panel"]'
                     );
                     const secondPanel = panels[1];
                     const firstPanel = panels[0];
@@ -650,29 +707,6 @@ describe('Carousel', () => {
     });
 
     describe('Events', () => {
-        it('item click', () => {
-            const handler = jest.fn();
-            element.addEventListener('itemclick', handler);
-            element.items = items;
-
-            return Promise.resolve().then(() => {
-                const item = element.shadowRoot.querySelector(
-                    'c-primitive-carousel-item'
-                );
-                item.dispatchEvent(
-                    new CustomEvent('itemclick', {
-                        detail: {
-                            item: ex
-                        }
-                    })
-                );
-                expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            });
-        });
-
         it('actionclick', () => {
             element.items = items;
 
@@ -699,6 +733,105 @@ describe('Carousel', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        it('item click', () => {
+            const handler = jest.fn();
+            element.addEventListener('itemclick', handler);
+            element.items = items;
+
+            return Promise.resolve().then(() => {
+                const item = element.shadowRoot.querySelector(
+                    'c-primitive-carousel-item'
+                );
+                item.dispatchEvent(
+                    new CustomEvent('itemclick', {
+                        detail: {
+                            item: ex
+                        }
+                    })
+                );
+                expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        describe('Infinite loading', () => {
+            it('Fired on render if there are no items', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.itemsPerPanel = 3;
+                element.enableInfiniteLoading = true;
+
+                return Promise.resolve().then(() => {
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+
+            it('Fired if the number of items is below the loadMoreOffset', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.items = items;
+                element.itemsPerPanel = 3;
+                element.enableInfiniteLoading = true;
+
+                return Promise.resolve().then(() => {
+                    expect(handler).not.toHaveBeenCalled();
+
+                    element.loadMoreOffset = 2;
+                    expect(handler).toHaveBeenCalled();
+                });
+            });
+
+            it('Fired if the number of items per panel changes', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.items = items;
+                element.enableInfiniteLoading = true;
+
+                return Promise.resolve().then(() => {
+                    expect(handler).not.toHaveBeenCalled();
+
+                    element.itemsPerPanel = 4;
+                    expect(handler).toHaveBeenCalled();
+                });
+            });
+
+            it('Fired on click on the next button', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.items = items;
+                element.enableInfiniteLoading = true;
+                element.itemsPerPanel = 2;
+
+                return Promise.resolve()
+                    .then(() => {
+                        // Items 1-2 visible, three hidden panels
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-icon-next"]'
+                        );
+                        button.click();
+                        expect(handler).not.toHaveBeenCalled();
+                    })
+                    .then(() => {
+                        // Items 3-4 visible, two hidden panel
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-icon-next"]'
+                        );
+                        button.click();
+                        expect(handler).toHaveBeenCalled();
+                    });
             });
         });
     });
