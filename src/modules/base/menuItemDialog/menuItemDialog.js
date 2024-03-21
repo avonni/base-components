@@ -205,12 +205,11 @@ export default class MenuItemDialog extends LightningElement {
      * @param {Event} event
      */
     handleClick(event) {
+        event.preventDefault();
         if (this.disabled) {
-            event.preventDefault();
             return;
         }
 
-        event.preventDefault();
         this.dispatchSelect();
     }
 

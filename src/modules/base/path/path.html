@@ -47,19 +47,21 @@
                                                         class="
                                                             slds-assistive-text
                                                         "
-                                                        >Current Stage:</span
                                                     >
+                                                        Current Stage:
+                                                    </span>
                                                     <span
                                                         if:true={step.isComplete}
                                                         class="
                                                             slds-assistive-text
                                                         "
-                                                        >Stage Complete</span
                                                     >
+                                                        Stage Complete
+                                                    </span>
                                                 </span>
-                                                <span class="slds-path__title"
-                                                    >{step.label}</span
-                                                >
+                                                <span class="slds-path__title">
+                                                    {step.label}
+                                                </span>
                                             </a>
                                         </li>
                                     </template>
@@ -68,9 +70,9 @@
                         </div>
                     </div>
                     <div class="slds-grid slds-path__action slds-m-left_small">
-                        <span class="slds-path__stage-name"
-                            >Stage: {stageTitle}</span
-                        >
+                        <span class="slds-path__stage-name">
+                            Stage: {stageTitle}
+                        </span>
                         <lightning-button-group if:false={hideButtons}>
                             <lightning-button
                                 if:true={showSelectButton}
@@ -210,8 +212,9 @@
                                                     class="
                                                         slds-form-element__label
                                                     "
-                                                    >{field.label}</span
                                                 >
+                                                    {field.label}
+                                                </span>
                                                 <div
                                                     class="
                                                         slds-form-element__control

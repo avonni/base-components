@@ -20,7 +20,9 @@
                 ></avonni-avatar>
             </template>
             <div class="slds-text-heading_small slds-truncate">
-                <a if:true={href} href={href}>{label}</a>
+                <a if:true={href} href={href} onclick={handleAnchorTagClick}>
+                    {label}
+                </a>
                 <span if:false={href}>{label}</span>
             </div>
             <div slot="figure-inverse" if:true={actions}>

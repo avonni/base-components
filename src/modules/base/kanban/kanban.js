@@ -1388,6 +1388,15 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Prevent event default handler.
+     *
+     * @param {Event} event
+     */
+    handlePreventDefault(event) {
+        event.preventDefault();
+    }
+
+    /**
      *
      * Animates the tiles when autoscrolling
      * @param {HTMLElement[]} groups Groups containing the tiles to translate

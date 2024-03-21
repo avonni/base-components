@@ -225,6 +225,15 @@ export default class Submenu extends LightningElement {
     }
 
     /**
+     * Prevent event default handler.
+     *
+     * @param {Event} event
+     */
+    handlePreventDefault(event) {
+        event.preventDefault();
+    }
+
+    /**
      * Select event dispatcher.
      */
     dispatchSelect() {

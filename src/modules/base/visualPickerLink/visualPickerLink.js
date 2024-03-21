@@ -195,7 +195,10 @@ export default class VisualPickerLink extends LightningElement {
     /**
      * Click event handler.
      */
-    handleClick(e) {
+    handleClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
         /**
          * The event fired when the visual picker is clicked.
          *
@@ -204,6 +207,5 @@ export default class VisualPickerLink extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('click'));
-        e.stopPropagation();
     }
 }
