@@ -1,3 +1,8 @@
+.avonni-date-time-picker {
+    height: 100%;
+    overflow: hidden;
+}
+
 .avonni-date-time-picker__toolbar {
     --avonni-layout-items-spacing-inline-between: 1.5rem;
 }
@@ -10,6 +15,11 @@
     border-bottom: none;
     background-color: var(--avonni-date-time-picker-color-background, #f3f3f3);
     padding: 0.75rem;
+}
+
+.avonni-date-time-picker__content-wrapper {
+    overflow: auto;
+    flex: 1 1 auto;
 }
 
 .avonni-date-time-picker__label {
