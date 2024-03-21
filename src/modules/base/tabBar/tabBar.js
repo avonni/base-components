@@ -217,6 +217,15 @@ export default class TabBar extends LightningElement {
     }
 
     /**
+     * Prevent event default handler.
+     *
+     * @param {Event} event
+     */
+    handlePreventDefault(event) {
+        event.preventDefault();
+    }
+
+    /**
      * Handles a click on a visible tab.
      * @param {Event} event
      */

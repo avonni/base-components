@@ -579,15 +579,14 @@ export default class ColorPalette extends LightningElement {
      * @returns {string} value
      */
     handleClick(event) {
+        event.preventDefault();
         if (this.disabled || this.readOnly) {
-            event.preventDefault();
             return;
         }
 
         const { color, token } = event.currentTarget.dataset;
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = token || color;
-        event.preventDefault();
         this.dispatchChange(generateColors(color));
     }
 

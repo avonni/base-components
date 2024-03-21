@@ -1014,6 +1014,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * Prevent anchor tag from navigating when href leads to nothing.
+     *
+     * @param {Event} event
+     */
+    handleAnchorTagClick(event) {
+        const href = event.currentTarget.href;
+        if (
+            // eslint-disable-next-line no-script-url
+            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
+        ) {
+            event.preventDefault();
+        }
+    }
+
+    /**
      * Handle a click on the item.
      *
      * @param {Event} event

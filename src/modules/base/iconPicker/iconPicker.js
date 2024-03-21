@@ -1113,6 +1113,11 @@ export default class IconPicker extends LightningElement {
         }
     }
 
+    handlePreventDefaultStopPropagation(event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
     stopPropagation(event) {
         event.stopPropagation();
     }

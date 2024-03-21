@@ -21,7 +21,13 @@
                     ></avonni-avatar>
                 </template>
                 <h2 class="slds-truncate group-title">
-                    <a if:true={href} href={href}>{title}</a>
+                    <a
+                        if:true={href}
+                        href={href}
+                        onclick={handleAnchorTagClick}
+                    >
+                        {title}
+                    </a>
                     <span if:false={href}>{title}</span>
                 </h2>
                 <!-- Top actions -->
