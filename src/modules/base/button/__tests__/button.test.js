@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import Button from 'c/button';
+import Button from '../button';
 
 let element;
 describe('Button', () => {
@@ -19,6 +19,7 @@ describe('Button', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.accessKey).toBeUndefined();
+            expect(element.disableAnimation).toBeFalsy();
             expect(element.disabled).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
