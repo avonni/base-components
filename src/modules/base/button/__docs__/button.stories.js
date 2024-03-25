@@ -14,6 +14,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        disableAnimation: {
+            name: 'disable-animation',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Reserved for internal use. If present, disables button animation.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
         disabled: {
             name: 'disabled',
             control: {
@@ -155,6 +166,7 @@ export default {
         }
     },
     args: {
+        disableAnimation: false,
         disabled: false,
         iconPosition: 'left',
         iconSize: 'x-small',

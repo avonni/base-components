@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import Button from 'c/button';
+import Button from '../button';
 
 let element;
 describe('Button', () => {
@@ -19,6 +19,7 @@ describe('Button', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.accessKey).toBeUndefined();
+            expect(element.disableAnimation).toBeFalsy();
             expect(element.disabled).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
@@ -42,6 +43,34 @@ describe('Button', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.accessKey).toBe('K');
+                });
+            });
+        });
+
+        describe('Disable Animation', () => {
+            it('False', () => {
+                element.label = 'Label';
+                element.variant = 'brand';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.getAttribute('kx-scope')).toBe(
+                        'button-brand'
+                    );
+                });
+            });
+
+            it('True', () => {
+                element.disableAnimation = true;
+                element.label = 'Label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.getAttribute('kx-scope')).toBeFalsy();
                 });
             });
         });
