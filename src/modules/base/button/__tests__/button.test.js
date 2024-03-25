@@ -47,6 +47,34 @@ describe('Button', () => {
             });
         });
 
+        describe('Disable Animation', () => {
+            it('False', () => {
+                element.label = 'Label';
+                element.variant = 'brand';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.getAttribute('kx-scope')).toBe(
+                        'button-brand'
+                    );
+                });
+            });
+
+            it('True', () => {
+                element.disableAnimation = true;
+                element.label = 'Label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.getAttribute('kx-scope')).toBeFalsy();
+                });
+            });
+        });
+
         describe('Disabled', () => {
             it('Passed to the component', () => {
                 element.disabled = true;
