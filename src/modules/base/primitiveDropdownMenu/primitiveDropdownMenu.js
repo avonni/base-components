@@ -80,7 +80,7 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     get menuItems() {
         return Array.from(
             this.template.querySelectorAll(
-                '.slds-dropdown__list .slds-dropdown__item'
+                '[data-element-id="lightning-menu-item"]'
             )
         );
     }

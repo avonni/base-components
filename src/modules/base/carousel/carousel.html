@@ -121,10 +121,11 @@
                                     aria-selected={paginationItem.ariaSelected}
                                     title={paginationItem.tabTitle}
                                     data-element-id="a-pagination"
+                                    onclick={handlePreventDefault}
                                 >
-                                    <span class="slds-assistive-text"
-                                        >{paginationItem.tabTitle}</span
-                                    >
+                                    <span class="slds-assistive-text">
+                                        {paginationItem.tabTitle}
+                                    </span>
                                 </a>
                             </li>
                         </template>
@@ -169,9 +170,9 @@
                             svg-class="slds-button__icon"
                             variant="bare"
                         ></c-primitive-icon>
-                        <span class="slds-assistive-text"
-                            >{assistiveText.nextPanel}</span
-                        >
+                        <span class="slds-assistive-text">
+                            {assistiveText.nextPanel}
+                        </span>
                     </button>
                 </lightning-layout-item>
             </template>
