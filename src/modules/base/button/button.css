@@ -93,11 +93,11 @@
     --slds-c-button-color-background: var(
         --avonni-button-bare-color-background
     );
-    --slds-c-button-color-border: var(
-        --avonni-button-bare-color-border,
-        transparent
+    --slds-c-button-color-border: var(--avonni-button-bare-color-border);
+    --slds-c-button-text-color: var(
+        --avonni-button-bare-text-color,
+        var(--slds-g-color-neutral-base-50, #747474)
     );
-    --slds-c-button-text-color: var(--avonni-button-bare-text-color);
     padding-right: var(--avonni-button-bare-spacing-inline-end, 0);
     padding-left: var(--avonni-button-bare-spacing-inline-start, 0);
     padding-top: var(--avonni-button-bare-spacing-block-start, 0);
