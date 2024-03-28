@@ -156,15 +156,15 @@ export default class ColorPicker extends LightningElement {
     _inline = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
-    _menuNubbin = false;
     _menuIconSize = MENU_ICON_SIZES.default;
+    _menuNubbin = false;
     _menuVariant = MENU_VARIANTS.default;
     _name;
     _opacity = false;
     _paletteHideOutline = false;
     _paletteShowCheckmark = false;
-    _paletteTileWidth;
     _paletteTileHeight;
+    _paletteTileWidth;
     _readOnly = false;
     _required = false;
     _tokens = [];
@@ -172,25 +172,30 @@ export default class ColorPicker extends LightningElement {
     _value;
     _variant = VARIANTS.default;
 
-    _currentTab = DEFAULT_TAB;
-    _lastSelectedDefault;
-    _lastSelectedToken;
-
     currentToken = {};
+    denyBlurOnMenuButtonClick = false;
     dropdownOpened = false;
     dropdownVisible = false;
     helpMessage;
+    isInsideMenu = false;
     newValue;
     paletteIsLoading = false;
+    shiftPressed = false;
     showError = false;
     tabPressed = false;
-    shiftPressed = false;
-    isInsideMenu = false;
-    denyBlurOnMenuButtonClick = false;
 
+    _currentTab = DEFAULT_TAB;
     _inputValue = '';
     _isConnected = false;
+    _lastSelectedDefault;
+    _lastSelectedToken;
     _rendered = false;
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.interactingState = new InteractingState();
@@ -228,7 +233,6 @@ export default class ColorPicker extends LightningElement {
     get colors() {
         return this._colors;
     }
-
     set colors(value) {
         const colors = normalizeArray(value);
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
@@ -250,7 +254,6 @@ export default class ColorPicker extends LightningElement {
     get columns() {
         return this._columns;
     }
-
     set columns(value) {
         if (!value) {
             this._columns = value;
@@ -274,7 +277,6 @@ export default class ColorPicker extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -289,7 +291,6 @@ export default class ColorPicker extends LightningElement {
     get groups() {
         return this._groups;
     }
-
     set groups(value) {
         this._groups = normalizeArray(value);
         this.setPaletteData();
@@ -321,7 +322,6 @@ export default class ColorPicker extends LightningElement {
     get hideColorInput() {
         return this._hideColorInput;
     }
-
     set hideColorInput(value) {
         this._hideColorInput = normalizeBoolean(value);
     }
@@ -337,7 +337,6 @@ export default class ColorPicker extends LightningElement {
     get inline() {
         return this._inline;
     }
-
     set inline(value) {
         this._inline = normalizeBoolean(value);
     }
@@ -353,7 +352,6 @@ export default class ColorPicker extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -369,7 +367,6 @@ export default class ColorPicker extends LightningElement {
     get menuAlignment() {
         return this._menuAlignment;
     }
-
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
             fallbackValue: MENU_ALIGNMENTS.default,
@@ -388,7 +385,6 @@ export default class ColorPicker extends LightningElement {
     get menuIconSize() {
         return this._menuIconSize;
     }
-
     set menuIconSize(size) {
         this._menuIconSize = normalizeString(size, {
             fallbackValue: MENU_ICON_SIZES.default,
@@ -407,7 +403,6 @@ export default class ColorPicker extends LightningElement {
     get menuNubbin() {
         return this._menuNubbin;
     }
-
     set menuNubbin(value) {
         this._menuNubbin = normalizeBoolean(value);
     }
@@ -423,7 +418,6 @@ export default class ColorPicker extends LightningElement {
     get menuVariant() {
         return this._menuVariant;
     }
-
     set menuVariant(variant) {
         this._menuVariant = normalizeString(variant, {
             fallbackValue: MENU_VARIANTS.default,
@@ -441,7 +435,6 @@ export default class ColorPicker extends LightningElement {
     get name() {
         return this._name;
     }
-
     set name(value) {
         this._name = value ? value : generateUUID();
     }
@@ -457,7 +450,6 @@ export default class ColorPicker extends LightningElement {
     get opacity() {
         return this._opacity;
     }
-
     set opacity(value) {
         this._opacity = normalizeBoolean(value);
     }
@@ -473,7 +465,6 @@ export default class ColorPicker extends LightningElement {
     get paletteHideOutline() {
         return this._paletteHideOutline;
     }
-
     set paletteHideOutline(value) {
         this._paletteHideOutline = normalizeBoolean(value);
     }
@@ -489,7 +480,6 @@ export default class ColorPicker extends LightningElement {
     get paletteShowCheckmark() {
         return this._paletteShowCheckmark;
     }
-
     set paletteShowCheckmark(value) {
         this._paletteShowCheckmark = normalizeBoolean(value);
     }
@@ -505,7 +495,6 @@ export default class ColorPicker extends LightningElement {
     get paletteTileHeight() {
         return this._paletteTileHeight;
     }
-
     set paletteTileHeight(value) {
         this._paletteTileHeight = Number(value);
         this.setPaletteData();
@@ -522,7 +511,6 @@ export default class ColorPicker extends LightningElement {
     get paletteTileWidth() {
         return this._paletteTileWidth;
     }
-
     set paletteTileWidth(value) {
         this._paletteTileWidth = Number(value);
         this.setPaletteData();
@@ -539,7 +527,6 @@ export default class ColorPicker extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
@@ -555,7 +542,6 @@ export default class ColorPicker extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
     }
@@ -570,7 +556,6 @@ export default class ColorPicker extends LightningElement {
     get tokens() {
         return this._tokens;
     }
-
     set tokens(value) {
         this._tokens = normalizeArray(value);
 
@@ -592,7 +577,6 @@ export default class ColorPicker extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(type) {
         this._type = normalizeString(type, {
             fallbackValue: TYPES.default,
@@ -610,11 +594,10 @@ export default class ColorPicker extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         if (value && typeof value === 'string') {
             this._value = value;
-            this.inputValue = value;
+            this._inputValue = value;
         } else {
             this._value = null;
             this._inputValue = '';
@@ -624,6 +607,17 @@ export default class ColorPicker extends LightningElement {
             this.computeToken();
             this.setLastSelectedColor();
         }
+    }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
     }
 
     /**
@@ -652,6 +646,17 @@ export default class ColorPicker extends LightningElement {
      */
 
     /**
+     * HTML element for the color gradient.
+     *
+     * @type {HTMLElement}
+     */
+    get colorGradient() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-color-gradient"]'
+        );
+    }
+
+    /**
      * Variant of the color palette.
      *
      * @type {string}
@@ -661,102 +666,6 @@ export default class ColorPicker extends LightningElement {
         return this._currentTab === 'tokens' || this.type === 'tokens'
             ? 'list'
             : 'grid';
-    }
-
-    /**
-     * Tokens array or colors array, depending on the selected tab.
-     *
-     * @type {(object[]|string[])}
-     */
-    get computedColors() {
-        return this._currentTab === 'tokens' || this.type === 'tokens'
-            ? this.tokens
-            : this.colors;
-    }
-
-    get computedDropdownTriggerClass() {
-        return classSet('slds-dropdown-trigger slds-dropdown-trigger_click')
-            .add({ 'slds-is-open': this.dropdownVisible })
-            .toString();
-    }
-
-    /**
-     * Computed value for the gradient component. If the value is empty, the gradient is initialized with a white color.
-     *
-     * @type {string}
-     * @default #fff
-     */
-    get computedGradientValue() {
-        if (!this.value) return '#fff';
-        if (this.currentToken.color) return this.currentToken.color;
-        return this.value;
-    }
-
-    /**
-     * True if the type is 'base'.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get isBase() {
-        return this.type === 'base';
-    }
-
-    /**
-     * Computed icon class.
-     *
-     * @type {string}
-     */
-    get computedIconClass() {
-        return this.menuLabel ? 'slds-m-left_xx-small' : '';
-    }
-
-    /**
-     * Value of the color input.
-     *
-     * @type {string}
-     */
-    get inputValue() {
-        return this.currentToken.label || this._inputValue;
-    }
-
-    set inputValue(val) {
-        this._inputValue = val || '';
-    }
-
-    /**
-     * True if the input value is color type.
-     *
-     * @type {boolean}
-     */
-    get hasBadInput() {
-        return (
-            !this.tokens.length &&
-            !(
-                colorType(this.inputValue) === 'hex' ||
-                (colorType(this.inputValue) === 'hexa' && this.opacity)
-            )
-        );
-    }
-
-    /**
-     * HTML element for the swatch.
-     *
-     * @type {HTMLElement}
-     */
-    get elementSwatch() {
-        return this.template.querySelector('[data-element-id="swatch"]');
-    }
-
-    /**
-     * HTML element for the color gradient.
-     *
-     * @type {HTMLElement}
-     */
-    get colorGradient() {
-        return this.template.querySelector(
-            '[data-element-id="avonni-color-gradient"]'
-        );
     }
 
     /**
@@ -770,42 +679,12 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Computed container class styling.
-     *
-     * @type {string}
-     */
-    get computedContainerClass() {
-        return classSet()
-            .add({
-                'slds-form-element_stacked': this.variant === 'label-stacked',
-                'slds-grid slds-grid_vertical-align-center':
-                    this.variant === 'label-inline'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Legend class styling.
-     *
-     * @type {string}
-     */
-    get computedLabelClass() {
-        return classSet(
-            'slds-form-element__label avonni-color-picker__label slds-no-flex'
-        )
-            .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
-            })
-            .toString();
-    }
-
-    /**
      * Computed Button class styling.
      *
      * @type {string}
      */
     get computedButtonClass() {
-        const isDropdownIcon = !this.computedShowDownIcon;
+        const isDropdownIcon = !this.computedShowDownIcon || !this.menuIconName;
         const isBare =
             this.menuVariant === 'bare' || this.menuVariant === 'bare-inverse';
 
@@ -862,15 +741,29 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Compute show down Icon.
+     * Tokens array or colors array, depending on the selected tab.
      *
-     * @type {boolean}
+     * @type {(object[]|string[])}
      */
-    get computedShowDownIcon() {
-        return !(
-            this.menuIconName === 'utility:down' ||
-            this.menuIconName === 'utility:chevrondown'
-        );
+    get computedColors() {
+        return this._currentTab === 'tokens' || this.type === 'tokens'
+            ? this.tokens
+            : this.colors;
+    }
+
+    /**
+     * Computed container class styling.
+     *
+     * @type {string}
+     */
+    get computedContainerClass() {
+        return classSet()
+            .add({
+                'slds-form-element_stacked': this.variant === 'label-stacked',
+                'slds-grid slds-grid_vertical-align-center':
+                    this.variant === 'label-inline'
+            })
+            .toString();
     }
 
     /**
@@ -884,7 +777,7 @@ export default class ColorPicker extends LightningElement {
         )
             .add({
                 'slds-dropdown_left':
-                    this.menuAlignment === 'left' || this.isAutoAlignment(),
+                    this.menuAlignment === 'left' || this.isAutoAlignment,
                 'slds-dropdown_center': this.menuAlignment === 'center',
                 'slds-dropdown_right': this.menuAlignment === 'right',
                 'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
@@ -909,36 +802,76 @@ export default class ColorPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed dropdown trigger class.
+     *
+     * @type {string}
+     */
+    get computedDropdownTriggerClass() {
+        return classSet('slds-dropdown-trigger slds-dropdown-trigger_click')
+            .add({ 'slds-is-open': this.dropdownVisible })
+            .toString();
+    }
+
+    /**
+     * Computed value for the gradient component. If the value is empty, the gradient is initialized with a white color.
+     *
+     * @type {string}
+     * @default #fff
+     */
+    get computedGradientValue() {
+        if (!this.value) return '#fff';
+        if (this.currentToken.color) return this.currentToken.color;
+        return this.value;
+    }
+
+    /**
+     * Computed icon class.
+     *
+     * @type {string}
+     */
+    get computedIconClass() {
+        return this.menuLabel ? 'slds-m-left_xx-small' : '';
+    }
+
+    /**
+     * Computed label class styling.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        return classSet(
+            'slds-form-element__label avonni-color-picker__label slds-no-flex'
+        )
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden'
+            })
+            .toString();
+    }
+
+    /**
+     * Compute show down Icon.
+     *
+     * @type {boolean}
+     */
+    get computedShowDownIcon() {
+        return !(
+            this.menuIconName === 'utility:down' ||
+            this.menuIconName === 'utility:chevrondown'
+        );
+    }
+
+    /**
+     * Computed tab body class styling.
+     *
+     * @type {string}
+     */
     get computedTabBodyClass() {
         return classSet()
             .add({
                 'slds-tabs_default__content': this.isBase
             })
             .toString();
-    }
-
-    /**
-     * True if the clear icon should be visible.
-     *
-     * @type {boolean}
-     */
-    get showClearIcon() {
-        return !this.hideClearIcon && this.inputValue;
-    }
-
-    get showColorGradient() {
-        return this.type === 'custom' || this._currentTab === 'custom';
-    }
-
-    /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get validity() {
-        return this._constraint.validity;
     }
 
     /**
@@ -957,11 +890,92 @@ export default class ColorPicker extends LightningElement {
         return this._constraintApi;
     }
 
+    /**
+     * HTML element for the swatch.
+     *
+     * @type {HTMLElement}
+     */
+    get elementSwatch() {
+        return this.template.querySelector('[data-element-id="swatch"]');
+    }
+
+    /**
+     * True if the input value is color type.
+     *
+     * @type {boolean}
+     */
+    get hasBadInput() {
+        return (
+            !this.tokens.length &&
+            !(
+                colorType(this.inputValue) === 'hex' ||
+                (colorType(this.inputValue) === 'hexa' && this.opacity)
+            )
+        );
+    }
+
+    /**
+     * Value of the color input.
+     *
+     * @type {string}
+     */
+    get inputValue() {
+        return this.currentToken.label || this._inputValue;
+    }
+
+    /**
+     * Check if menu alignment is auto.
+     *
+     * @returns {boolean}
+     */
+    get isAutoAlignment() {
+        return this.menuAlignment === 'auto';
+    }
+
+    /**
+     * True if the type is 'base'.
+     *
+     * @type {boolean}
+     * @default true
+     */
+    get isBase() {
+        return this.type === 'base';
+    }
+
+    /**
+     * True if the clear icon should be visible.
+     *
+     * @type {boolean}
+     */
+    get showClearIcon() {
+        return !this.hideClearIcon && this.inputValue;
+    }
+
+    /**
+     * True if the color gradient should be visible.
+     *
+     * @type {boolean}
+     */
+    get showColorGradient() {
+        return this.type === 'custom' || this._currentTab === 'custom';
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.blur();
+    }
 
     /**
      * Checks if the input is valid.
@@ -972,6 +986,17 @@ export default class ColorPicker extends LightningElement {
     @api
     checkValidity() {
         return this._constraint.checkValidity();
+    }
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.focus();
     }
 
     /**
@@ -1009,28 +1034,6 @@ export default class ColorPicker extends LightningElement {
         this.reportValidity();
     }
 
-    /**
-     * Sets focus on the input element.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        const input = this.template.querySelector('[data-element-id="input"]');
-        if (input) input.focus();
-    }
-
-    /**
-     * Removes keyboard focus from the input element.
-     *
-     * @public
-     */
-    @api
-    blur() {
-        const input = this.template.querySelector('[data-element-id="input"]');
-        if (input) input.blur();
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -1038,13 +1041,16 @@ export default class ColorPicker extends LightningElement {
      */
 
     /**
-     * Initialize swatch colors.
+     * Clear color picker input.
      */
-    initSwatchColor() {
-        if (this.elementSwatch) {
-            const color = this.currentToken.color || this.value;
-            this.elementSwatch.style.background = color;
-        }
+    clearInput() {
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.value = undefined;
+        this._inputValue = '';
+        this.currentToken = {};
+        this.focus();
+
+        this.dispatchClear();
     }
 
     /**
@@ -1071,16 +1077,61 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Clear color picker input.
+     * Initialize swatch colors.
      */
-    clearInput() {
-        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.value = undefined;
-        this.inputValue = '';
-        this.currentToken = {};
-        this.focus();
+    initSwatchColor() {
+        if (this.elementSwatch) {
+            const color = this.currentToken.color || this.value;
+            this.elementSwatch.style.background = color;
+        }
+    }
 
-        this.dispatchClear();
+    /**
+     * Show a loading spinner while the palette is generated.
+     */
+    loadPalette() {
+        this.paletteIsLoading = true;
+        setTimeout(() => {
+            this.paletteIsLoading = false;
+        }, 0);
+    }
+
+    /**
+     * Poll bounding rect of the dropdown menu.
+     */
+    pollBoundingRect() {
+        if (this.isAutoAlignment && this.dropdownVisible) {
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                if (this._isConnected) {
+                    observePosition(this, 300, this._boundingRect, () => {
+                        this.close();
+                    });
+
+                    this.pollBoundingRect();
+                }
+            }, 250);
+        }
+    }
+
+    /**
+     * Sets the focus on an element inside the popover.
+     */
+    setInitialFocus() {
+        requestAnimationFrame(() => {
+            const tab = this.template.querySelector(
+                '[data-element-id="default"]'
+            );
+            const tabBody = this.template.querySelector(
+                '[data-element-id="tab-body"]'
+            );
+
+            if (tab) {
+                tab.focus();
+            } else if (tabBody) {
+                tabBody.focus();
+            }
+        });
     }
 
     /**
@@ -1098,6 +1149,9 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Sets the palette data.
+     */
     setPaletteData() {
         const palette = this.template.querySelector(
             '[data-element-id="avonni-color-palette"]'
@@ -1128,76 +1182,30 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Handle a change in the value. Temporarily save the value, in case the user cancels the change.
-     *
-     * @param {Event} event
+     * Dropdown menu visibility toggle.
      */
-    handleChange(event) {
-        event.stopPropagation();
+    toggleMenuVisibility() {
+        if (!this.disabled && !this.inline) {
+            this.dropdownVisible = !this.dropdownVisible;
 
-        if (event.detail) {
-            this.newValue =
-                event.detail.token ||
-                (this.opacity && Number(event.detail.alpha) < 1
-                    ? event.detail.hexa
-                    : event.detail.hex);
+            if (!this.dropdownOpened && this.dropdownVisible) {
+                this.dropdownOpened = true;
+            }
+
+            if (this.dropdownVisible) {
+                this.setInitialFocus();
+                this._boundingRect = this.getBoundingClientRect();
+                this.pollBoundingRect();
+                this.loadPalette();
+            }
         }
     }
 
-    /**
-     * Handle a change in the color gradient.
-     *
-     * @param {Event} event
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
      */
-    handleColorGradientChange(event) {
-        if (this.inline) {
-            this.handleChangeAndDone(event);
-        } else {
-            this.handleChange(event);
-        }
-    }
-
-    /**
-     * Handle a change in the color palette.
-     *
-     * @param {Event} event
-     */
-    handleColorPaletteChange(event) {
-        this.handleChangeAndDone(event);
-    }
-
-    /**
-     * Handle a color change. Save and close the popover right away.
-     *
-     * @param {Event} event
-     */
-    handleChangeAndDone(event) {
-        this.handleChange(event);
-        this.handleDone();
-    }
-
-    /**
-     * Handle new value change and update ui.
-     */
-    handleDone() {
-        if (!this.readOnly && this.newValue) {
-            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-            this.value = this.newValue;
-            this.newValue = null;
-            const color = this.currentToken.color || this.value;
-            this.dispatchChange(generateColors(color));
-        }
-
-        this.toggleMenuVisibility();
-    }
-
-    /**
-     * Handle new value canceled.
-     */
-    handleCancel() {
-        this.newValue = null;
-        this.toggleMenuVisibility();
-    }
 
     /**
      * Button click handler.
@@ -1232,12 +1240,115 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Handles a mouseenter in the color picker.
+     * Handle new value canceled.
+     */
+    handleCancel() {
+        this.newValue = null;
+        this.toggleMenuVisibility();
+    }
+
+    /**
+     * Handle a change in the value. Temporarily save the value, in case the user cancels the change.
      *
      * @param {Event} event
      */
-    handleMenuMouseEnter() {
-        this.isInsideMenu = true;
+    handleChange(event) {
+        event.stopPropagation();
+
+        if (event.detail) {
+            this.newValue =
+                event.detail.token ||
+                (this.opacity && Number(event.detail.alpha) < 1
+                    ? event.detail.hexa
+                    : event.detail.hex);
+        }
+    }
+
+    /**
+     * Handle a color change. Save and close the popover right away.
+     *
+     * @param {Event} event
+     */
+    handleChangeAndDone(event) {
+        this.handleChange(event);
+        this.handleDone();
+    }
+
+    /**
+     * Handle a change in the color gradient.
+     *
+     * @param {Event} event
+     */
+    handleColorGradientChange(event) {
+        if (this.inline) {
+            this.handleChangeAndDone(event);
+        } else {
+            this.handleChange(event);
+        }
+    }
+
+    /**
+     * Handle a change in the color palette.
+     *
+     * @param {Event} event
+     */
+    handleColorPaletteChange(event) {
+        this.handleChangeAndDone(event);
+    }
+
+    /**
+     * Handle new value change and update ui.
+     */
+    handleDone() {
+        if (!this.readOnly && this.newValue) {
+            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+            this.value = this.newValue;
+            this.newValue = null;
+            const color = this.currentToken.color || this.value;
+            this.dispatchChange(generateColors(color));
+        }
+
+        this.toggleMenuVisibility();
+    }
+
+    /**
+     * Input color event handler.
+     *
+     * @param {Event} event
+     */
+    handleInputColor(event) {
+        let color = event.target.value;
+        this._inputValue = color;
+
+        if (
+            colorType(color) === 'hex' ||
+            (colorType(color) === 'hexa' && this.opacity)
+        ) {
+            if (!this.menuIconName) {
+                this.elementSwatch.style.background = color;
+            }
+            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+            this.value = color;
+            this.dispatchChange(generateColors(color));
+        } else if (color === '') {
+            this.clearInput();
+        }
+        event.stopPropagation();
+    }
+
+    /**
+     * Handles the input focus
+     */
+    handleInputFocus() {
+        this.interactingState.enter();
+        /**
+         * The event fired when the focus is set on the color picker input.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
@@ -1262,15 +1373,6 @@ export default class ColorPicker extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    /**
-     * Handles a mouseleave from the color picker.
-     *
-     * @param {Event} event
-     */
-    handleMenuMouseLeave() {
-        this.isInsideMenu = false;
     }
 
     /**
@@ -1301,79 +1403,22 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
-    setInitialFocus() {
-        // Focus on an element inside the popover.
-        requestAnimationFrame(() => {
-            const tab = this.template.querySelector(
-                '[data-element-id="default"]'
-            );
-            const tabBody = this.template.querySelector(
-                '[data-element-id="tab-body"]'
-            );
-
-            if (tab) {
-                tab.focus();
-            } else if (tabBody) {
-                tabBody.focus();
-            }
-        });
-    }
-
     /**
-     * Dropdown menu visibility toggle.
-     */
-    toggleMenuVisibility() {
-        if (!this.disabled && !this.inline) {
-            this.dropdownVisible = !this.dropdownVisible;
-
-            if (!this.dropdownOpened && this.dropdownVisible) {
-                this.dropdownOpened = true;
-            }
-
-            if (this.dropdownVisible) {
-                this.setInitialFocus();
-                this._boundingRect = this.getBoundingClientRect();
-                this.pollBoundingRect();
-                this.loadPalette();
-            }
-        }
-    }
-
-    /**
-     * Check if auto aligned.
+     * Handles a mouseenter in the color picker.
      *
-     * @returns {boolean}
+     * @param {Event} event
      */
-    isAutoAlignment() {
-        return this.menuAlignment.startsWith('auto');
+    handleMenuMouseEnter() {
+        this.isInsideMenu = true;
     }
 
     /**
-     * Show a loading spinner while the palette is generated.
+     * Handles a mouseleave from the color picker.
+     *
+     * @param {Event} event
      */
-    loadPalette() {
-        this.paletteIsLoading = true;
-        setTimeout(() => {
-            this.paletteIsLoading = false;
-        }, 0);
-    }
-
-    /**
-     * Poll bounding rect of the dropdown menu.
-     */
-    pollBoundingRect() {
-        if (this.isAutoAlignment() && this.dropdownVisible) {
-            // eslint-disable-next-line @lwc/lwc/no-async-operation
-            setTimeout(() => {
-                if (this._isConnected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        this.close();
-                    });
-
-                    this.pollBoundingRect();
-                }
-            }, 250);
-        }
+    handleMenuMouseLeave() {
+        this.isInsideMenu = false;
     }
 
     /**
@@ -1424,49 +1469,6 @@ export default class ColorPicker extends LightningElement {
             palette.colors = [...this.computedColors];
         }
         this.loadPalette();
-    }
-
-    /**
-     * Input color event handler.
-     *
-     * @param {Event} event
-     */
-    handleInputColor(event) {
-        let color = event.target.value;
-        this.inputValue = color;
-
-        if (
-            colorType(color) === 'hex' ||
-            (colorType(color) === 'hexa' && this.opacity)
-        ) {
-            if (!this.menuIconName) {
-                this.elementSwatch.style.background = color;
-            }
-            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-            this.value = color;
-            this.dispatchChange(generateColors(color));
-        } else if (color === '') {
-            this.clearInput();
-        }
-        event.stopPropagation();
-    }
-
-    /*-------- Public events --------*/
-
-    /**
-     * Focus event dispatcher.
-     *
-     */
-    handleInputFocus() {
-        this.interactingState.enter();
-        /**
-         * The event fired when the focus is set on the color picker input.
-         *
-         * @event
-         * @name focus
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
