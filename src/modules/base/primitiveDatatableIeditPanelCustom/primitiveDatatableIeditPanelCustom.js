@@ -128,7 +128,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         return classSet('slds-popover slds-popover_edit')
             .add({
                 'slds-show': this.visible,
-                'slds-hide': !this.visible
+                'slds-hide': !this.visible,
+                'avonni-datatable-iedit-panel_size_large':
+                    this.isTypeTextArea || this.isTypeRichText
             })
             .toString();
     }
@@ -396,7 +398,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             this.processSubmission();
         } else if (this.visible) {
             this.triggerEditFinished({
-                reason: 'loosed-focus'
+                reason: 'lost-focus'
             });
         }
     }
