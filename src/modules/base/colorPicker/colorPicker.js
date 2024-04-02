@@ -684,7 +684,7 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        const isDropdownIcon = !this.computedShowDownIcon || !this.menuIconName;
+        const isDropdownIcon = !this.computedShowDownIcon;
         const isBare =
             this.menuVariant === 'bare' || this.menuVariant === 'bare-inverse';
 
@@ -857,7 +857,8 @@ export default class ColorPicker extends LightningElement {
     get computedShowDownIcon() {
         return !(
             this.menuIconName === 'utility:down' ||
-            this.menuIconName === 'utility:chevrondown'
+            this.menuIconName === 'utility:chevrondown' ||
+            this.menuIconName
         );
     }
 
