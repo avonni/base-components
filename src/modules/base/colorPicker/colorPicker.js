@@ -26,11 +26,12 @@ const TYPES = {
 const MENU_VARIANTS = {
     valid: [
         'bare',
-        'container',
+        'bare-inverse',
         'border',
         'border-filled',
-        'bare-inverse',
-        'border-inverse'
+        'border-inverse',
+        'container',
+        'neutral'
     ],
     default: 'border'
 };
@@ -699,12 +700,23 @@ export default class ColorPicker extends LightningElement {
 
         if (this.menuLabel && !this.readOnly) {
             classes.add({
-                'slds-button_neutral':
-                    this.menuVariant === 'border' && isDropdownIcon,
-                'slds-button_inverse': this.menuVariant === 'border-inverse'
+                'slds-button_neutral': this.menuVariant === 'neutral',
+                'slds-button_inverse': this.menuVariant === 'border-inverse',
+                'avonni-color-picker__button_bare': this.menuVariant === 'bare',
+                'avonni-color-picker__button_bare-inverse':
+                    this.menuVariant === 'bare-inverse',
+                'avonni-color-picker__button_border':
+                    this.menuVariant === 'border',
+                'avonni-color-picker__button_border-filled':
+                    this.menuVariant === 'border-filled',
+                'avonni-color-picker__button_border-inverse':
+                    this.menuVariant === 'border-inverse',
+                'avonni-color-picker__button_container':
+                    this.menuVariant === 'container'
             });
         } else if (!this.menuLabel && !this.readOnly) {
             classes.add({
+                'slds-button_neutral': this.menuVariant === 'neutral',
                 'slds-button_icon': !isDropdownIcon,
                 'slds-button_icon-bare': isBare,
                 'slds-button_icon-more': !useMoreContainer && !isDropdownIcon,
@@ -857,8 +869,7 @@ export default class ColorPicker extends LightningElement {
     get computedShowDownIcon() {
         return !(
             this.menuIconName === 'utility:down' ||
-            this.menuIconName === 'utility:chevrondown' ||
-            this.menuIconName
+            this.menuIconName === 'utility:chevrondown'
         );
     }
 
