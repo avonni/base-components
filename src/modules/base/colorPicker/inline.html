@@ -14,14 +14,15 @@
         ></lightning-helptext>
         <div>
             <!-- Loading spinner -->
-            <template if:true={isLoading}>
-                <div class="avonni-color-picker__spinner-container">
-                    <lightning-spinner
-                        size="small"
-                        data-element-id="lightning-spinner"
-                    ></lightning-spinner>
-                </div>
-            </template>
+            <div
+                if:true={isLoading}
+                class="avonni-color-picker__spinner-container"
+            >
+                <lightning-spinner
+                    size="small"
+                    data-element-id="lightning-spinner"
+                ></lightning-spinner>
+            </div>
 
             <template if:false={isLoading}>
                 <div class="avonni-color-picker-tabs_default">
@@ -95,11 +96,10 @@
                             >
                         </li>
                     </ul>
-
                     <div
                         class={computedTabBodyClass}
-                        data-element-id="tab-body"
                         tabindex="-1"
+                        data-element-id="tab-body"
                     >
                         <!-- Color palette -->
                         <c-color-palette

@@ -16,10 +16,10 @@
             <div class={computedDropdownTriggerClass}>
                 <button
                     class={computedButtonClass}
-                    disabled={disabled}
-                    aria-expanded={computedAriaExpanded}
                     accesskey={accessKey}
+                    aria-expanded={computedAriaExpanded}
                     aria-haspopup="true"
+                    disabled={disabled}
                     type="button"
                     data-element-id="button"
                     onclick={handleButtonClick}
@@ -27,14 +27,13 @@
                 >
                     <template if:false={readOnly}>
                         {menuLabel}
-                        <template if:true={menuIconName}>
-                            <lightning-icon
-                                icon-name={menuIconName}
-                                size={menuIconSize}
-                                class={computedIconClass}
-                                data-element-id="lightning-icon-menu-icon-name"
-                            ></lightning-icon>
-                        </template>
+                        <lightning-icon
+                            if:true={menuIconName}
+                            class={computedIconClass}
+                            icon-name={menuIconName}
+                            size={menuIconSize}
+                            data-element-id="lightning-icon-menu-icon-name"
+                        ></lightning-icon>
                         <template if:false={menuIconName}>
                             <span
                                 class="slds-swatch"
@@ -47,19 +46,18 @@
                             ></lightning-icon>
                         </template>
                     </template>
-                    <template if:true={readOnly}>
-                        <span
-                            class="slds-swatch"
-                            data-element-id="swatch"
-                        ></span>
-                    </template>
+                    <span
+                        if:true={readOnly}
+                        class="slds-swatch"
+                        data-element-id="swatch"
+                    ></span>
                 </button>
                 <template if:true={dropdownOpened}>
                     <c-focus-trap>
                         <div
                             class={computedDropdownClass}
-                            data-element-id="div-dropdown"
                             tabindex="-1"
+                            data-element-id="div-dropdown"
                             onmouseenter={handleMenuMouseEnter}
                             onmouseleave={handleMenuMouseLeave}
                             onkeydown={handleMenuKeydown}
@@ -67,18 +65,15 @@
                             onblur={handleMenuBlur}
                         >
                             <!-- Loading spinner -->
-                            <template if:true={isLoading}>
-                                <div
-                                    class="
-                                        avonni-color-picker__spinner-container
-                                    "
-                                >
-                                    <lightning-spinner
-                                        size="small"
-                                        data-element-id="lightning-spinner"
-                                    ></lightning-spinner>
-                                </div>
-                            </template>
+                            <div
+                                if:true={isLoading}
+                                class="avonni-color-picker__spinner-container"
+                            >
+                                <lightning-spinner
+                                    size="small"
+                                    data-element-id="lightning-spinner"
+                                ></lightning-spinner>
+                            </div>
 
                             <template if:false={isLoading}>
                                 <div
@@ -103,8 +98,8 @@
                                                 avonni-color-picker-tabs_default__item
                                                 slds-is-active
                                             "
-                                            title="Default"
                                             role="presentation"
+                                            title="Default"
                                         >
                                             <a
                                                 class="
@@ -168,11 +163,10 @@
                                             >
                                         </li>
                                     </ul>
-
                                     <div
                                         class={computedTabBodyClass}
-                                        data-element-id="tab-body"
                                         tabindex="-1"
+                                        data-element-id="tab-body"
                                         onblur={handleMenuBlur}
                                     >
                                         <!-- Color palette -->
@@ -252,8 +246,8 @@
 
             <!-- Input -->
             <div
-                class="slds-form-element slds-p-left_xx-small"
                 if:false={hideColorInput}
+                class="slds-form-element slds-p-left_xx-small"
             >
                 <div
                     class="
@@ -295,15 +289,14 @@
                             <span class="slds-assistive-text">Clear</span>
                         </button>
                     </template>
-                    <template if:true={readOnly}>
-                        <lightning-input
-                            data-element-id="lightning-input-read-only"
-                            label={label}
-                            value={inputValue}
-                            variant="label-hidden"
-                            read-only
-                        ></lightning-input>
-                    </template>
+                    <lightning-input
+                        if:true={readOnly}
+                        label={label}
+                        read-only
+                        value={inputValue}
+                        variant="label-hidden"
+                        data-element-id="lightning-input-read-only"
+                    ></lightning-input>
                 </div>
             </div>
         </div>
