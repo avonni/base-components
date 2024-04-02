@@ -1043,7 +1043,13 @@ export default class ActivityTimeline extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
-                detail: event.detail
+                detail: !this.isTimelineHorizontal
+                    ? event.detail
+                    : {
+                          name: event.detail.value,
+                          targetName: this.selectedItem.name,
+                          fieldData: deepCopy(this.selectedItem.fields)
+                      }
             })
         );
     }
