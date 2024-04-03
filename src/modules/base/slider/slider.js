@@ -896,7 +896,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Returns the current variable for styling hook of track radius.
-     * @type {number}
+     * @type {string}
      */
     get _trackRadius() {
         const thumbRadius = getComputedStyle(
