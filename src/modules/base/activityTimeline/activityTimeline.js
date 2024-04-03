@@ -1023,6 +1023,12 @@ export default class ActivityTimeline extends LightningElement {
         this.intervalMinDate = this.horizontalTimeline.intervalMinDate;
     }
 
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Handle the click on an action. Dispatch the actionclick event.
      *
@@ -1030,22 +1036,7 @@ export default class ActivityTimeline extends LightningElement {
      */
     handleActionClick(event) {
         event.stopPropagation();
-
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {string} targetName Unique name of the item the action belongs to.
-         * @param {object[]} fieldData Value of the item's fields.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: event.detail
-            })
-        );
+        this.dispatchActionClick(event.detail);
     }
 
     /**
@@ -1118,6 +1109,13 @@ export default class ActivityTimeline extends LightningElement {
                 }
             })
         );
+    }
+
+    handleHorizontalActionClick(event) {
+        const name = event.detail.value;
+        const targetName = this.selectedItem.name;
+        const fieldData = this.selectedItem.fields;
+        this.dispatchActionClick({ fieldData, name, targetName });
     }
 
     /**
@@ -1214,5 +1212,33 @@ export default class ActivityTimeline extends LightningElement {
             this._hasHiddenItems = !this._hasHiddenItems;
             this.initActivityTimeline();
         }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    dispatchActionClick({ fieldData, name, targetName }) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName Unique name of the item the action belongs to.
+         * @param {object[]} fieldData Value of the item's fields.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    fieldData,
+                    name,
+                    targetName
+                }
+            })
+        );
     }
 }
