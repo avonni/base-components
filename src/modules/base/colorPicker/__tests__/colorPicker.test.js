@@ -79,1150 +79,1192 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
     });
     describe('Attributes', () => {
-        it('Default attributes', () => {
-            expect(element.accessKey).toBeUndefined();
-            expect(element.colors).toMatchObject(defaultColors);
-            expect(element.columns).toBe(7);
-            expect(element.disabled).toBeFalsy();
-            expect(element.fieldLevelHelp).toBeUndefined();
-            expect(element.groups).toMatchObject([]);
-            expect(element.hideClearIcon).toBeFalsy();
-            expect(element.hideColorInput).toBeFalsy();
-            expect(element.inline).toBeFalsy();
-            expect(element.isLoading).toBeFalsy();
-            expect(element.label).toBeUndefined();
-            expect(element.menuVariant).toBe('border');
-            expect(element.menuIconName).toBeUndefined();
-            expect(element.menuIconSize).toBe('x-small');
-            expect(element.menuLabel).toBeUndefined();
-            expect(element.menuAlignment).toBe('left');
-            expect(element.menuNubbin).toBeFalsy();
-            expect(element.messageWhenBadInput).toBeUndefined();
-            expect(element.messageWhenValueMissing).toBeUndefined();
-            expect(element.name).toBeUndefined();
-            expect(element.opacity).toBeFalsy();
-            expect(element.paletteHideOutline).toBeFalsy();
-            expect(element.paletteShowCheckmark).toBeFalsy();
-            expect(element.paletteTileHeight).toBeUndefined();
-            expect(element.paletteTileWidth).toBeUndefined();
-            expect(element.tokens).toMatchObject([]);
-            expect(element.readOnly).toBeFalsy();
-            expect(element.required).toBeFalsy();
-            expect(element.value).toBeUndefined();
-            expect(element.validity).toMatchObject({});
-            expect(element.variant).toBe('standard');
-            expect(element.type).toBe('base');
-        });
-
-        /* ----- ATTRIBUTES ----- */
-
-        // access key
-        it('access key', () => {
-            element.accessKey = 'K';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.accessKey).toBe('K');
+        describe('Default Attributes', () => {
+            it('Passed to the component', () => {
+                expect(element.accessKey).toBeUndefined();
+                expect(element.colors).toMatchObject(defaultColors);
+                expect(element.columns).toBe(7);
+                expect(element.disabled).toBeFalsy();
+                expect(element.fieldLevelHelp).toBeUndefined();
+                expect(element.groups).toMatchObject([]);
+                expect(element.hideClearIcon).toBeFalsy();
+                expect(element.hideColorInput).toBeFalsy();
+                expect(element.inline).toBeFalsy();
+                expect(element.isLoading).toBeFalsy();
+                expect(element.label).toBeUndefined();
+                expect(element.menuAlignment).toBe('left');
+                expect(element.menuIconName).toBeUndefined();
+                expect(element.menuIconSize).toBe('x-small');
+                expect(element.menuLabel).toBeUndefined();
+                expect(element.menuNubbin).toBeFalsy();
+                expect(element.menuVariant).toBe('border');
+                expect(element.messageWhenBadInput).toBeUndefined();
+                expect(element.messageWhenValueMissing).toBeUndefined();
+                expect(element.name).toBeUndefined();
+                expect(element.opacity).toBeFalsy();
+                expect(element.paletteHideOutline).toBeFalsy();
+                expect(element.paletteShowCheckmark).toBeFalsy();
+                expect(element.paletteTileHeight).toBeUndefined();
+                expect(element.paletteTileWidth).toBeUndefined();
+                expect(element.readOnly).toBeFalsy();
+                expect(element.required).toBeFalsy();
+                expect(element.validity).toMatchObject({});
+                expect(element.value).toBeUndefined();
+                expect(element.variant).toBe('standard');
+                expect(element.tokens).toMatchObject([]);
+                expect(element.type).toBe('base');
             });
         });
 
-        // columns
-        // Depends on type
-        it('columns', () => {
-            element.columns = 5;
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            button.click();
+        describe('Access Key', () => {
+            it('Passed to the component', () => {
+                element.accessKey = 'K';
 
-            return Promise.resolve().then(() => {
-                const palette = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-color-palette"]'
-                );
-                expect(palette.columns).toBe(5);
-            });
-        });
-
-        // disabled
-        it('disabled', () => {
-            element.disabled = true;
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.disabled).toBeTruthy();
-            });
-        });
-
-        // field level help
-        it('field level help', () => {
-            element.fieldLevelHelp = 'This is a field level help text';
-
-            return Promise.resolve().then(() => {
-                const helpText = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-helptext"]'
-                );
-                expect(helpText.content).toBe(
-                    'This is a field level help text'
-                );
-            });
-        });
-
-        // groups
-        it('groups', () => {
-            const groups = ['firstGroup', 'secondGroup'];
-            element.groups = groups;
-
-            return Promise.resolve()
-                .then(() => {
+                return Promise.resolve().then(() => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    button.click();
-                })
-                .then(() => {
+                    expect(button.accessKey).toBe('K');
+                });
+            });
+        });
+
+        describe('Colors', () => {
+            it('Passed to the component', () => {
+                element.colors = colors;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette.colors).toMatchObject(colors);
+                    });
+            });
+        });
+
+        describe('Columns', () => {
+            // Depends on type
+            it('Passed to the component', () => {
+                element.columns = 5;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
                     const palette = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-color-palette"]'
                     );
-                    expect(palette.groups).toMatchObject(groups);
+                    expect(palette.columns).toBe(5);
                 });
+            });
         });
 
-        // isLoading
-        it('isLoading', () => {
-            element.isLoading = true;
+        describe('Disabled', () => {
+            it('Passed to the component', () => {
+                element.disabled = true;
 
-            return Promise.resolve()
-                .then(() => {
+                return Promise.resolve().then(() => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    button.click();
-                })
-                .then(() => {
-                    const spinner = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-spinner"]'
-                    );
-                    expect(spinner).toBeTruthy();
+                    expect(button.disabled).toBeTruthy();
                 });
-        });
-
-        // label
-        it('label', () => {
-            element.label = 'This is a label text';
-
-            return Promise.resolve().then(() => {
-                const label = element.shadowRoot.querySelector(
-                    '[data-element-id="label"]'
-                );
-                expect(label.textContent).toBe('This is a label text');
             });
         });
 
-        // name
-        it('name', () => {
-            element.name = 'This is a name text';
+        describe('Field Level Help', () => {
+            it('Passed to the component', () => {
+                element.fieldLevelHelp = 'This is a field level help text';
 
-            return Promise.resolve().then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="input"]'
-                );
-                expect(input.name).toBe('This is a name text');
+                return Promise.resolve().then(() => {
+                    const helpText = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-helptext"]'
+                    );
+                    expect(helpText.content).toBe(
+                        'This is a field level help text'
+                    );
+                });
             });
         });
 
-        // readOnly
-        it('readOnly', () => {
-            element.readOnly = true;
+        describe('Groups', () => {
+            it('Passed to the component', () => {
+                const groups = ['firstGroup', 'secondGroup'];
+                element.groups = groups;
 
-            return Promise.resolve().then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="input"]'
-                );
-                const readOnly = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input-read-only"]'
-                );
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette.groups).toMatchObject(groups);
+                    });
+            });
+        });
+
+        describe('Hide Clear Icon', () => {
+            it('False', () => {
+                element.hideClearIcon = false;
+                element.value = '#333';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button-clear"]'
+                    );
+                    expect(button).toBeTruthy();
+                });
+            });
+
+            it('True', () => {
+                element.hideClearIcon = true;
+                element.value = '#333';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button-clear"]'
+                    );
+                    expect(button).toBeFalsy();
+                });
+            });
+        });
+
+        describe('Hide Color Input', () => {
+            it('Passed to the component', () => {
+                element.hideColorInput = true;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input"]'
+                    );
+                    expect(input).toBeFalsy();
+                });
+            });
+        });
+
+        describe('Inline', () => {
+            it('Passed to the component', () => {
+                const groups = ['firstGroup', 'secondGroup'];
+                element.colors = colors;
+                element.groups = groups;
+                element.paletteHideOutline = true;
+                element.paletteShowCheckmark = true;
+                element.inline = true;
+                element.paletteTileHeight = 100;
+                element.paletteTileWidth = 30;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        expect(button).toBeFalsy();
+
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette).toBeTruthy();
+                        expect(palette.groups).toEqual(groups);
+                        expect(palette.colors).toEqual(colors);
+                        expect(palette.hideOutline).toBe(true);
+                        expect(palette.showCheckmark).toBe(true);
+                        expect(palette.tileHeight).toBe(100);
+                        expect(palette.tileWidth).toBe(30);
+
+                        const tab = element.shadowRoot.querySelector(
+                            '[data-element-id="custom"]'
+                        );
+                        tab.click();
+                    })
+                    .then(() => {
+                        const footer = element.shadowRoot.querySelector(
+                            '.slds-popover__footer'
+                        );
+                        expect(footer).toBeFalsy();
+                    });
+            });
+        });
+
+        describe('Is Loading', () => {
+            it('Passed to the component', () => {
+                element.isLoading = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const spinner = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-spinner"]'
+                        );
+                        expect(spinner).toBeTruthy();
+                    });
+            });
+        });
+
+        describe('Label', () => {
+            it('Passed to the component', () => {
+                element.label = 'This is a label text';
+
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '[data-element-id="label"]'
+                    );
+                    expect(label.textContent).toBe('This is a label text');
+                });
+            });
+        });
+
+        describe('Menu Alignment & Menu Nubbin', () => {
+            it('Left', () => {
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_left'
+                        );
+                    });
+            });
+
+            it('Left and menu nubbin', () => {
+                element.menuNubbin = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_left'
+                        );
+                        expect(dropdown.className).toContain(
+                            'slds-nubbin_top-left'
+                        );
+                    });
+            });
+
+            it('Right', () => {
+                element.menuAlignment = 'right';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_right'
+                        );
+                    });
+            });
+
+            it('Right and menu nubbin', () => {
+                element.menuAlignment = 'right';
+                element.menuNubbin = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_right'
+                        );
+                        expect(dropdown.className).toContain(
+                            'slds-nubbin_top-right'
+                        );
+                    });
+            });
+
+            it('Center', () => {
+                element.menuAlignment = 'center';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_center'
+                        );
+                    });
+            });
+
+            it('Center and menu nubbin', () => {
+                element.menuAlignment = 'center';
+                element.menuNubbin = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_center'
+                        );
+                        expect(dropdown.className).toContain('slds-nubbin_top');
+                    });
+            });
+
+            it('Bottom-center', () => {
+                element.menuAlignment = 'bottom-center';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_bottom'
+                        );
+                    });
+            });
+
+            it('Bottom-center and menu nubbin', () => {
+                element.menuAlignment = 'bottom-center';
+                element.menuNubbin = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_bottom'
+                        );
+                        expect(dropdown.className).toContain(
+                            'slds-nubbin_bottom'
+                        );
+                    });
+            });
+
+            it('Bottom-left', () => {
+                element.menuAlignment = 'bottom-left';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
+                        );
+                    });
+            });
+
+            it('Bottom-left and menu nubbin', () => {
+                element.menuAlignment = 'bottom-left';
+                element.menuNubbin = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
+                        );
+                        expect(dropdown.className).toContain(
+                            'slds-nubbin_bottom-left'
+                        );
+                    });
+            });
+
+            it('Bottom-right', () => {
+                element.menuAlignment = 'bottom-right';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
+                        );
+                    });
+            });
+
+            it('Bottom-right and menu nubbin', () => {
+                element.menuAlignment = 'bottom-right';
+                element.menuNubbin = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
+                        );
+                        expect(dropdown.className).toContain(
+                            'slds-nubbin_bottom-right'
+                        );
+                    });
+            });
+        });
+
+        describe('Menu Icon Size', () => {
+            it('Xx-small', () => {
+                element.menuIconSize = 'xx-small';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-no-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('xx-small');
+                });
+            });
+
+            it('X-small', () => {
+                element.menuIconSize = 'x-small';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-no-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('xx-small');
+                });
+            });
+
+            it('Medium', () => {
+                element.menuIconSize = 'medium';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-no-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('xx-small');
+                });
+            });
+
+            it('Large', () => {
+                element.menuIconSize = 'large';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-no-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('xx-small');
+                });
+            });
+
+            it('Xx-small with menu icon name', () => {
+                element.menuIconSize = 'xx-small';
+                element.menuIconName = 'utility:down';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('xx-small');
+                });
+            });
+
+            it('X-small with menu icon name', () => {
+                element.menuIconSize = 'x-small';
+                element.menuIconName = 'utility:down';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('x-small');
+                });
+            });
+
+            it('Medium with menu icon name', () => {
+                element.menuIconSize = 'medium';
+                element.menuIconName = 'utility:down';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('medium');
+                });
+            });
+
+            it('Large with menu icon name', () => {
+                element.menuIconSize = 'large';
+                element.menuIconName = 'utility:down';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-menu-icon-name"]'
+                    );
+                    expect(icon.size).toBe('large');
+                });
+            });
+        });
+
+        describe('Menu Label', () => {
+            it('Border', () => {
+                element.menuLabel = 'This is a menu label text';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.textContent).toBe(
+                        'This is a menu label text'
+                    );
+                    expect(button.className).toContain('slds-button');
+                });
+            });
+
+            it('Border-inverse', () => {
+                element.menuLabel = 'This is a menu label text';
+                element.menuVariant = 'border-inverse';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.textContent).toBe(
+                        'This is a menu label text'
+                    );
+                    expect(button.className).toContain('slds-button_inverse');
+                });
+            });
+        });
+
+        describe('Menu Variant', () => {
+            it('Bare', () => {
+                element.menuVariant = 'bare';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
+                    );
+                });
+            });
+
+            it('Bare-inverse', () => {
+                element.menuVariant = 'bare-inverse';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+                    );
+                });
+            });
+
+            it('Container', () => {
+                element.menuVariant = 'container';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more'
+                    );
+                });
+            });
+
+            it('Border', () => {
+                element.menuVariant = 'border';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more'
+                    );
+                });
+            });
+
+            it('Border-filled', () => {
+                element.menuVariant = 'border-filled';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+                    );
+                });
+            });
+
+            it('Border-inverse', () => {
+                element.menuVariant = 'border-inverse';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
+                    );
+                });
+            });
+
+            it('Bare without menu icon down', () => {
+                element.menuIconName = 'utility:down';
+                element.menuVariant = 'bare';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon-bare'
+                    );
+                });
+            });
+
+            it('Container without menu icon down', () => {
+                element.menuIconName = 'utility:down';
+                element.menuVariant = 'container';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon-container'
+                    );
+                });
+            });
+
+            it('Border without menu icon down', () => {
+                element.menuIconName = 'utility:down';
+                element.menuVariant = 'border';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon-border'
+                    );
+                });
+            });
+
+            it('Border-filled without menu icon down', () => {
+                element.menuIconName = 'utility:down';
+                element.menuVariant = 'border-filled';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon-border-filled'
+                    );
+                });
+            });
+
+            it('Bare-inverse without menu icon down', () => {
+                element.menuIconName = 'utility:down';
+                element.menuVariant = 'bare-inverse';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon-bare slds-button_icon-inverse'
+                    );
+                });
+            });
+
+            it('Border-inverse without menu icon down', () => {
+                element.menuIconName = 'utility:down';
+                element.menuVariant = 'border-inverse';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-button_icon-border-inverse'
+                    );
+                });
+            });
+        });
+
+        describe('Message When Bad Input Value', () => {
+            it('Passed to the component', () => {
+                element.messageWhenBadInput = 'Something is wrong';
+                element.value = 'hello';
+                element.showHelpMessageIfInvalid();
+
+                return Promise.resolve().then(() => {
+                    const help = element.shadowRoot.querySelector(
+                        '[data-help-message]'
+                    );
+                    expect(help.textContent).toBe('Something is wrong');
+                });
+            });
+        });
+
+        describe('Message When Value Missing', () => {
+            it('Passed to the component', () => {
+                element.messageWhenValueMissing = 'Something is wrong';
+                element.required = true;
+                element.showHelpMessageIfInvalid();
+
+                return Promise.resolve().then(() => {
+                    const help = element.shadowRoot.querySelector(
+                        '[data-help-message]'
+                    );
+                    expect(help.textContent).toBe('Something is wrong');
+                });
+            });
+        });
+
+        describe('Name', () => {
+            it('Passed to the component', () => {
+                element.name = 'This is a name text';
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input"]'
+                    );
+                    expect(input.name).toBe('This is a name text');
+                });
+            });
+        });
+
+        describe('Opacity', () => {
+            it('Passed to the component', () => {
+                element.opacity = true;
+                element.type = 'custom';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
                 );
+                button.click();
 
-                expect(readOnly).toBeTruthy();
-                expect(input).toBeFalsy();
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-swatch-read-only'
-                );
-            });
-        });
-
-        // required
-        it('required', () => {
-            element.required = true;
-
-            return Promise.resolve().then(() => {
-                const required =
-                    element.shadowRoot.querySelector('.slds-required');
-                expect(required).toBeTruthy();
-                expect(required.textContent).toBe('*');
-            });
-        });
-
-        // value
-        it('value', () => {
-            element.value = 'rgb(65, 159, 236)';
-
-            return Promise.resolve()
-                .then(() => {
-                    const input = element.shadowRoot.querySelector(
-                        '[data-element-id="input"]'
-                    );
-                    expect(input.value).toBe('rgb(65, 159, 236)');
-                })
-                .then(() => {
-                    const swatch = element.shadowRoot.querySelector(
-                        '[data-element-id="swatch"]'
-                    );
-                    expect(swatch.style.background).toBe('rgb(65, 159, 236)');
-                });
-        });
-
-        it('value with a token', () => {
-            element.tokens = tokens;
-            element.value = tokens[1].value;
-
-            return Promise.resolve()
-                .then(() => {
-                    const input = element.shadowRoot.querySelector(
-                        '[data-element-id="input"]'
-                    );
-                    expect(input.value).toBe(tokens[1].label);
-                })
-                .then(() => {
-                    const swatch = element.shadowRoot.querySelector(
-                        '[data-element-id="swatch"]'
-                    );
-                    // Spaces are added in css styles.
-                    expect(swatch.style.background).toBe('rgb(1, 68, 134)');
-                });
-        });
-
-        // variant
-        it('variant standard', () => {
-            element.variant = 'standard';
-
-            return Promise.resolve().then(() => {
-                const labelHidden = element.shadowRoot.querySelector(
-                    '[data-element-id="label"].slds-assistive-text'
-                );
-                const labelStacked = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-form-element_stacked'
-                );
-                const labelInline = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
-                );
-                expect(labelInline).toBeFalsy();
-                expect(labelStacked).toBeFalsy();
-                expect(labelHidden).toBeFalsy();
-            });
-        });
-
-        it('variant label-stacked', () => {
-            element.variant = 'label-stacked';
-
-            return Promise.resolve().then(() => {
-                const labelHidden = element.shadowRoot.querySelector(
-                    '[data-element-id="label"].slds-assistive-text'
-                );
-                const labelStacked = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-form-element_stacked'
-                );
-                const labelInline = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
-                );
-                expect(labelInline).toBeFalsy();
-                expect(labelStacked).toBeTruthy();
-                expect(labelHidden).toBeFalsy();
-            });
-        });
-
-        it('variant label-hidden', () => {
-            element.variant = 'label-hidden';
-            element.label = 'label-hidden';
-
-            return Promise.resolve().then(() => {
-                const labelHidden = element.shadowRoot.querySelector(
-                    '[data-element-id="label"].slds-assistive-text'
-                );
-                const labelStacked = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-form-element_stacked'
-                );
-                const labelInline = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
-                );
-                expect(labelInline).toBeFalsy();
-                expect(labelStacked).toBeFalsy();
-                expect(labelHidden).toBeTruthy();
-                expect(labelHidden.textContent).toBe('label-hidden');
-            });
-        });
-
-        it('variant label-inline', () => {
-            element.variant = 'label-inline';
-
-            return Promise.resolve().then(() => {
-                const labelHidden = element.shadowRoot.querySelector(
-                    '[data-element-id="label"].slds-assistive-text'
-                );
-                const labelStacked = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-form-element_stacked'
-                );
-                const labelInline = element.shadowRoot.querySelector(
-                    '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
-                );
-                expect(labelInline).toBeTruthy();
-                expect(labelStacked).toBeFalsy();
-                expect(labelHidden).toBeFalsy();
-            });
-        });
-
-        // type
-        // Depends on colors and tokens
-        it('type base', () => {
-            element.type = 'base';
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const tabs = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-tabs"]'
-                    );
-                    expect(tabs).toBeTruthy();
-                });
-        });
-
-        it('type predefined', () => {
-            element.type = 'predefined';
-            element.colors = colors;
-            element.tokens = tokens;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const tabs = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-tabs"]'
-                    );
-                    expect(tabs).toBeFalsy();
-
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
-                    );
-                    expect(palette).toBeTruthy();
-                    expect(palette.colors).toMatchObject(colors);
-                    expect(palette.variant).toBe('grid');
-                });
-        });
-
-        it('type custom', () => {
-            element.type = 'custom';
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const tabs = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-tabs"]'
-                    );
-                    expect(tabs).toBeFalsy();
-
+                return Promise.resolve().then(() => {
                     const gradient = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-color-gradient"]'
                     );
-                    expect(gradient).toBeTruthy();
+                    expect(gradient.opacity).toBe(true);
                 });
+            });
         });
 
-        it('type tokens', () => {
-            element.type = 'tokens';
-            element.tokens = tokens;
-            element.colors = colors;
+        describe('Palette Hide Outline', () => {
+            it('Passed to the component', () => {
+                element.paletteHideOutline = true;
 
-            return Promise.resolve()
-                .then(() => {
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette.hideOutline).toBeTruthy();
+                    });
+            });
+        });
+
+        describe('Palette Show Checkmark', () => {
+            it('Passed to the component', () => {
+                element.paletteShowCheckmark = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette.showCheckmark).toBeTruthy();
+                    });
+            });
+        });
+
+        describe('Palette Tile Height', () => {
+            it('Passed to the component', () => {
+                element.paletteTileHeight = 45;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette.tileHeight).toBe(45);
+                    });
+            });
+        });
+
+        describe('Palette Tile Width', () => {
+            it('Passed to the component', () => {
+                element.paletteTileWidth = 45;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette.tileWidth).toBe(45);
+                    });
+            });
+        });
+
+        describe('Read Only', () => {
+            it('Passed to the component', () => {
+                element.readOnly = true;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input"]'
+                    );
+                    const readOnly = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-read-only"]'
+                    );
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    button.click();
-                })
-                .then(() => {
-                    const tabs = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-tabs"]'
-                    );
-                    expect(tabs).toBeFalsy();
 
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
-                    );
-                    expect(palette).toBeTruthy();
-                    expect(palette.colors).toMatchObject(tokens);
-                    expect(palette.variant).toBe('list');
-                });
-        });
-
-        // Menu variant without menu icon name
-        it('menu variant bare', () => {
-            element.menuVariant = 'bare';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
-                );
-            });
-        });
-
-        it('menu variant container', () => {
-            element.menuVariant = 'container';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more'
-                );
-            });
-        });
-
-        it('menu variant border', () => {
-            element.menuVariant = 'border';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more'
-                );
-            });
-        });
-
-        it('menu variant border-filled', () => {
-            element.menuVariant = 'border-filled';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
-                );
-            });
-        });
-
-        it('menu variant bare-inverse', () => {
-            element.menuVariant = 'bare-inverse';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
-                );
-            });
-        });
-
-        it('menu variant border-inverse', () => {
-            element.menuVariant = 'border-inverse';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
-                );
-            });
-        });
-
-        // Menu variant with menu icon name
-        it('menu variant bare without menu icon down', () => {
-            element.menuIconName = 'utility:down';
-            element.menuVariant = 'bare';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon-bare'
-                );
-            });
-        });
-
-        it('menu variant container without menu icon down', () => {
-            element.menuIconName = 'utility:down';
-            element.menuVariant = 'container';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon-container'
-                );
-            });
-        });
-
-        it('menu variant border without menu icon down', () => {
-            element.menuIconName = 'utility:down';
-            element.menuVariant = 'border';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon-border'
-                );
-            });
-        });
-
-        it('menu variant border-filled without menu icon down', () => {
-            element.menuIconName = 'utility:down';
-            element.menuVariant = 'border-filled';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon-border-filled'
-                );
-            });
-        });
-
-        it('menu variant bare-inverse without menu icon down', () => {
-            element.menuIconName = 'utility:down';
-            element.menuVariant = 'bare-inverse';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon-bare slds-button_icon-inverse'
-                );
-            });
-        });
-
-        it('menu variant border-inverse without menu icon down', () => {
-            element.menuIconName = 'utility:down';
-            element.menuVariant = 'border-inverse';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.className).toBe(
-                    'slds-button avonni-color-picker__main-button slds-button_icon-border-inverse'
-                );
-            });
-        });
-
-        // Menu icon size without menu icon name
-        it('menu icon size xx-small', () => {
-            element.menuIconSize = 'xx-small';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-no-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('xx-small');
-            });
-        });
-
-        it('menu icon size x-small', () => {
-            element.menuIconSize = 'x-small';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-no-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('xx-small');
-            });
-        });
-
-        it('menu icon size medium', () => {
-            element.menuIconSize = 'medium';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-no-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('xx-small');
-            });
-        });
-
-        it('menu icon size large', () => {
-            element.menuIconSize = 'large';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-no-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('xx-small');
-            });
-        });
-
-        // Menu icon size with menu icon name
-        it('menu icon size xx-small with menu icon name', () => {
-            element.menuIconSize = 'xx-small';
-            element.menuIconName = 'utility:down';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('xx-small');
-            });
-        });
-
-        it('menu icon size x-small with menu icon name', () => {
-            element.menuIconSize = 'x-small';
-            element.menuIconName = 'utility:down';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('x-small');
-            });
-        });
-
-        it('menu icon size medium with menu icon name', () => {
-            element.menuIconSize = 'medium';
-            element.menuIconName = 'utility:down';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('medium');
-            });
-        });
-
-        it('menu icon size large with menu icon name', () => {
-            element.menuIconSize = 'large';
-            element.menuIconName = 'utility:down';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-menu-icon-name"]'
-                );
-                expect(icon.size).toBe('large');
-            });
-        });
-
-        // Menu label
-        it('menu label border', () => {
-            element.menuLabel = 'This is a menu label text';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.textContent).toBe('This is a menu label text');
-                expect(button.className).toContain('slds-button');
-            });
-        });
-
-        it('menu label border-inverse', () => {
-            element.menuLabel = 'This is a menu label text';
-            element.menuVariant = 'border-inverse';
-
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                expect(button.textContent).toBe('This is a menu label text');
-                expect(button.className).toContain('slds-button_inverse');
-            });
-        });
-
-        // Menu alignment & menu nubbin
-        it('menu alignment left', () => {
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain('slds-dropdown_left');
-                });
-        });
-
-        it('menu alignment left and menu nubbin', () => {
-            element.menuNubbin = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain('slds-dropdown_left');
-                    expect(dropdown.className).toContain(
-                        'slds-nubbin_top-left'
+                    expect(readOnly).toBeTruthy();
+                    expect(input).toBeFalsy();
+                    expect(button.className).toBe(
+                        'slds-button avonni-color-picker__main-button slds-swatch-read-only'
                     );
                 });
-        });
-
-        it('menu alignment right', () => {
-            element.menuAlignment = 'right';
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain('slds-dropdown_right');
-                });
-        });
-
-        it('menu alignment right and menu nubbin', () => {
-            element.menuAlignment = 'right';
-            element.menuNubbin = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain('slds-dropdown_right');
-                    expect(dropdown.className).toContain(
-                        'slds-nubbin_top-right'
-                    );
-                });
-        });
-
-        it('menu alignment center', () => {
-            element.menuAlignment = 'center';
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_center'
-                    );
-                });
-        });
-
-        it('menu alignment center and menu nubbin', () => {
-            element.menuAlignment = 'center';
-            element.menuNubbin = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_center'
-                    );
-                    expect(dropdown.className).toContain('slds-nubbin_top');
-                });
-        });
-
-        it('menu alignment bottom-center', () => {
-            element.menuAlignment = 'bottom-center';
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_bottom'
-                    );
-                });
-        });
-
-        it('menu alignment bottom-center and menu nubbin', () => {
-            element.menuAlignment = 'bottom-center';
-            element.menuNubbin = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_bottom'
-                    );
-                    expect(dropdown.className).toContain('slds-nubbin_bottom');
-                });
-        });
-
-        it('menu alignment bottom-left', () => {
-            element.menuAlignment = 'bottom-left';
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
-                    );
-                });
-        });
-
-        it('menu alignment bottom-left and menu nubbin', () => {
-            element.menuAlignment = 'bottom-left';
-            element.menuNubbin = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
-                    );
-                    expect(dropdown.className).toContain(
-                        'slds-nubbin_bottom-left'
-                    );
-                });
-        });
-
-        it('menu alignment bottom-right', () => {
-            element.menuAlignment = 'bottom-right';
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
-                    );
-                });
-        });
-
-        it('menu alignment bottom-right and menu nubbin', () => {
-            element.menuAlignment = 'bottom-right';
-            element.menuNubbin = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const dropdown =
-                        element.shadowRoot.querySelector('.slds-dropdown');
-                    expect(dropdown.className).toContain(
-                        'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
-                    );
-                    expect(dropdown.className).toContain(
-                        'slds-nubbin_bottom-right'
-                    );
-                });
-        });
-
-        // message when bad input
-        it('message when bad input value', () => {
-            element.messageWhenBadInput = 'Something is wrong';
-            element.value = 'hello';
-            element.showHelpMessageIfInvalid();
-
-            return Promise.resolve().then(() => {
-                const help = element.shadowRoot.querySelector(
-                    '[data-help-message]'
-                );
-                expect(help.textContent).toBe('Something is wrong');
             });
         });
 
-        // message when missing value
-        it('message when missing value', () => {
-            element.messageWhenValueMissing = 'Something is wrong';
-            element.required = true;
-            element.showHelpMessageIfInvalid();
+        describe('Required', () => {
+            it('Passed to the component', () => {
+                element.required = true;
 
-            return Promise.resolve().then(() => {
-                const help = element.shadowRoot.querySelector(
-                    '[data-help-message]'
-                );
-                expect(help.textContent).toBe('Something is wrong');
+                return Promise.resolve().then(() => {
+                    const required =
+                        element.shadowRoot.querySelector('.slds-required');
+                    expect(required).toBeTruthy();
+                    expect(required.textContent).toBe('*');
+                });
             });
         });
 
-        // colors
-        it('colors', () => {
-            element.colors = colors;
+        describe('Type', () => {
+            // Depends on colors and tokens
+            it('Base', () => {
+                element.type = 'base';
 
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
-                    );
-                    expect(palette.colors).toMatchObject(colors);
-                });
-        });
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const tabs = element.shadowRoot.querySelector(
+                            '[data-element-id="ul-tabs"]'
+                        );
+                        expect(tabs).toBeTruthy();
+                    });
+            });
 
-        // Hide clear icon
-        it('hideClearIcon = false', () => {
-            element.hideClearIcon = false;
-            element.value = '#333';
+            it('Predefined', () => {
+                element.type = 'predefined';
+                element.colors = colors;
+                element.tokens = tokens;
 
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-clear"]'
-                );
-                expect(button).toBeTruthy();
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const tabs = element.shadowRoot.querySelector(
+                            '[data-element-id="ul-tabs"]'
+                        );
+                        expect(tabs).toBeFalsy();
+
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette).toBeTruthy();
+                        expect(palette.colors).toMatchObject(colors);
+                        expect(palette.variant).toBe('grid');
+                    });
+            });
+
+            it('Custom', () => {
+                element.type = 'custom';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const tabs = element.shadowRoot.querySelector(
+                            '[data-element-id="ul-tabs"]'
+                        );
+                        expect(tabs).toBeFalsy();
+
+                        const gradient = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-gradient"]'
+                        );
+                        expect(gradient).toBeTruthy();
+                    });
+            });
+
+            it('Tokens', () => {
+                element.type = 'tokens';
+                element.tokens = tokens;
+                element.colors = colors;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const tabs = element.shadowRoot.querySelector(
+                            '[data-element-id="ul-tabs"]'
+                        );
+                        expect(tabs).toBeFalsy();
+
+                        const palette = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-color-palette"]'
+                        );
+                        expect(palette).toBeTruthy();
+                        expect(palette.colors).toMatchObject(tokens);
+                        expect(palette.variant).toBe('list');
+                    });
             });
         });
 
-        it('hideClearIcon = true', () => {
-            element.hideClearIcon = true;
-            element.value = '#333';
+        describe('Value', () => {
+            it('Without Token', () => {
+                element.value = 'rgb(65, 159, 236)';
 
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button-clear"]'
-                );
-                expect(button).toBeFalsy();
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="input"]'
+                        );
+                        expect(input.value).toBe('rgb(65, 159, 236)');
+                    })
+                    .then(() => {
+                        const swatch = element.shadowRoot.querySelector(
+                            '[data-element-id="swatch"]'
+                        );
+                        expect(swatch.style.background).toBe(
+                            'rgb(65, 159, 236)'
+                        );
+                    });
+            });
+
+            it('With Token', () => {
+                element.tokens = tokens;
+                element.value = tokens[1].value;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="input"]'
+                        );
+                        expect(input.value).toBe(tokens[1].label);
+                    })
+                    .then(() => {
+                        const swatch = element.shadowRoot.querySelector(
+                            '[data-element-id="swatch"]'
+                        );
+                        // Spaces are added in css styles.
+                        expect(swatch.style.background).toBe('rgb(1, 68, 134)');
+                    });
             });
         });
 
-        // Hide color input
-        it('hide color input', () => {
-            element.hideColorInput = true;
+        describe('Variant', () => {
+            it('Standard', () => {
+                element.variant = 'standard';
 
-            return Promise.resolve().then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="input"]'
-                );
-                expect(input).toBeFalsy();
+                return Promise.resolve().then(() => {
+                    const labelHidden = element.shadowRoot.querySelector(
+                        '[data-element-id="label"].slds-assistive-text'
+                    );
+                    const labelStacked = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-form-element_stacked'
+                    );
+                    const labelInline = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
+                    );
+                    expect(labelInline).toBeFalsy();
+                    expect(labelStacked).toBeFalsy();
+                    expect(labelHidden).toBeFalsy();
+                });
             });
-        });
 
-        // Inline
-        it('inline', () => {
-            const groups = ['firstGroup', 'secondGroup'];
-            element.colors = colors;
-            element.groups = groups;
-            element.paletteHideOutline = true;
-            element.paletteShowCheckmark = true;
-            element.inline = true;
-            element.paletteTileHeight = 100;
-            element.paletteTileWidth = 30;
+            it('Label-stacked', () => {
+                element.variant = 'label-stacked';
 
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
+                return Promise.resolve().then(() => {
+                    const labelHidden = element.shadowRoot.querySelector(
+                        '[data-element-id="label"].slds-assistive-text'
                     );
-                    expect(button).toBeFalsy();
-
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
+                    const labelStacked = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-form-element_stacked'
                     );
-                    expect(palette).toBeTruthy();
-                    expect(palette.groups).toEqual(groups);
-                    expect(palette.colors).toEqual(colors);
-                    expect(palette.hideOutline).toBe(true);
-                    expect(palette.showCheckmark).toBe(true);
-                    expect(palette.tileHeight).toBe(100);
-                    expect(palette.tileWidth).toBe(30);
-
-                    const tab = element.shadowRoot.querySelector(
-                        '[data-element-id="custom"]'
+                    const labelInline = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
                     );
-                    tab.click();
-                })
-                .then(() => {
-                    const footer = element.shadowRoot.querySelector(
-                        '.slds-popover__footer'
-                    );
-                    expect(footer).toBeFalsy();
+                    expect(labelInline).toBeFalsy();
+                    expect(labelStacked).toBeTruthy();
+                    expect(labelHidden).toBeFalsy();
                 });
-        });
-
-        // opacity
-        it('opacity', () => {
-            element.opacity = true;
-            element.type = 'custom';
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            button.click();
-
-            return Promise.resolve().then(() => {
-                const gradient = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-color-gradient"]'
-                );
-                expect(gradient.opacity).toBe(true);
             });
-        });
 
-        // palette-hide-outline
-        it('paletteHideOutline', () => {
-            element.paletteHideOutline = true;
+            it('Label-hidden', () => {
+                element.variant = 'label-hidden';
+                element.label = 'label-hidden';
 
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
+                return Promise.resolve().then(() => {
+                    const labelHidden = element.shadowRoot.querySelector(
+                        '[data-element-id="label"].slds-assistive-text'
                     );
-                    button.click();
-                })
-                .then(() => {
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
+                    const labelStacked = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-form-element_stacked'
                     );
-                    expect(palette.hideOutline).toBeTruthy();
+                    const labelInline = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
+                    );
+                    expect(labelInline).toBeFalsy();
+                    expect(labelStacked).toBeFalsy();
+                    expect(labelHidden).toBeTruthy();
+                    expect(labelHidden.textContent).toBe('label-hidden');
                 });
-        });
+            });
 
-        // palette-show-checkmark
-        it('paletteShowCheckmark', () => {
-            element.paletteShowCheckmark = true;
+            it('Label-inline', () => {
+                element.variant = 'label-inline';
 
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
+                return Promise.resolve().then(() => {
+                    const labelHidden = element.shadowRoot.querySelector(
+                        '[data-element-id="label"].slds-assistive-text'
                     );
-                    button.click();
-                })
-                .then(() => {
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
+                    const labelStacked = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-form-element_stacked'
                     );
-                    expect(palette.showCheckmark).toBeTruthy();
+                    const labelInline = element.shadowRoot.querySelector(
+                        '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
+                    );
+                    expect(labelInline).toBeTruthy();
+                    expect(labelStacked).toBeFalsy();
+                    expect(labelHidden).toBeFalsy();
                 });
-        });
-
-        // palette-tile-height
-        it('paletteTileHeight', () => {
-            element.paletteTileHeight = 45;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
-                    );
-                    expect(palette.tileHeight).toBe(45);
-                });
-        });
-
-        // palette-tile-width
-        it('paletteTileWidth', () => {
-            element.paletteTileWidth = 45;
-
-            return Promise.resolve()
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                })
-                .then(() => {
-                    const palette = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-color-palette"]'
-                    );
-                    expect(palette.tileWidth).toBe(45);
-                });
+            });
         });
     });
 

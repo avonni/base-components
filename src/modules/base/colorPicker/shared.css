@@ -49,7 +49,8 @@
     color: #181818;
 }
 
-.avonni-color-picker-tabs_default__item.slds-is-active .avonni-color-picker-tabs_default__link {
+.avonni-color-picker-tabs_default__item.slds-is-active
+    .avonni-color-picker-tabs_default__link {
     font-weight: 700;
 }
 
@@ -88,4 +89,125 @@
     display: flex;
     align-items: flex-start;
     border-bottom: 1px solid #e5e5e5;
+}
+
+.avonni-color-picker__button_bare {
+    --slds-c-button-text-color: var(--slds-g-color-neutral-base-50, #747474);
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.avonni-color-picker__button_bare-inverse {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--slds-g-color-neutral-base-100, #fff);
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.slds-button.avonni-color-picker__button_bare-inverse:active {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.avonni-color-picker__button_bare-inverse:hover,
+.avonni-color-picker__button_bare-inverse:focus {
+    background-color: transparent;
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.avonni-color-picker__button_border {
+    border-color: var(--slds-g-color-border-base-4, #747474);
+    color: var(--slds-g-color-neutral-base-50, #747474);
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.slds-button.avonni-color-picker__button_border:active {
+    border-color: var(--lwc-brandAccessibleActive, #014486);
+    color: var(--lwc-brandAccessibleActive, #014486);
+}
+
+.avonni-color-picker__button_border:hover,
+.avonni-color-picker__button_border:focus {
+    color: var(--lwc-brandAccessibleActive, #014486);
+}
+
+.avonni-color-picker__button_border-filled {
+    background-color: var(--slds-g-color-neutral-base-100, #fff);
+    border-color: var(--slds-g-color-border-base-4, #747474);
+    color: var(--slds-g-color-neutral-base-50, #747474);
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.slds-button.avonni-color-picker__button_border-filled:active {
+    background-color: var(--slds-g-color-neutral-base-100, #fff);
+    border-color: var(--lwc-brandAccessibleActive, #014486);
+    color: var(--lwc-brandAccessibleActive, #014486);
+}
+
+.avonni-color-picker__button_border-filled:hover,
+.avonni-color-picker__button_border-filled:focus {
+    background-color: var(--slds-g-color-neutral-base-100, #fff);
+    color: var(--lwc-brandAccessibleActive, #014486);
+}
+
+.avonni-color-picker__button_border-inverse {
+    background-color: transparent;
+    border-color: var(--slds-g-color-border-base-1, #c9c9c9);
+    color: var(--slds-g-color-neutral-base-100, #fff);
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.slds-button.avonni-color-picker__button_border-inverse:active {
+    background-color: transparent;
+    border-color: var(
+        --slds-g-color-neutral-100-opacity-50,
+        hsla(0, 0%, 100%, 0.5)
+    );
+    color: var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5));
+}
+
+.avonni-color-picker__button_border-inverse:hover,
+.avonni-color-picker__button_border-inverse:focus {
+    background-color: transparent;
+    border-color: var(--slds-g-color-border-base-1, #c9c9c9);
+    color: var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5));
+}
+
+.avonni-color-picker__button_container {
+    background-color: var(--slds-c-button-color-background, transparent);
+    border-color: var(--slds-c-button-color-border, transparent);
+    color: var(--lwc-colorTextIconDefault, #747474);
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.slds-button.avonni-color-picker__button_container:active {
+    background-color: var(--slds-c-button-color-background, transparent);
+    border-color: var(--lwc-brandAccessibleActive, #014486);
+    color: var(--lwc-brandAccessibleActive, #014486);
+}
+
+.avonni-color-picker__button_container:hover,
+.avonni-color-picker__button_container:focus {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--lwc-brandAccessibleActive, #014486);
 }
