@@ -10,6 +10,7 @@ import { classSet, generateUUID } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
+const BORDER_RADIUS_REM = 0.5;
 const DEFAULT_MIN = 0;
 const DEFAULT_MINIMUM_DISTANCE = 0;
 const DEFAULT_MAX = 100;
@@ -732,9 +733,7 @@ export default class Slider extends LightningElement {
      *
      */
     get highlightColor() {
-        return this.disabled
-            ? 'var(--avonni-slider-track-color-background, #919191)'
-            : 'var(--avonni-slider-track-color, #0176d3)';
+        return this.disabled ? '#919191' : '#0176d3';
     }
 
     /**
@@ -1202,11 +1201,7 @@ export default class Slider extends LightningElement {
                 line.dataset.tickValue <= this._trackInterval[1];
             line.setAttribute(
                 'stroke',
-                `${
-                    isColored
-                        ? this.highlightColor
-                        : 'var(--avonni-slider-track-color-background, #ecebea)'
-                }`
+                `${isColored ? this.highlightColor : '#ecebea'}`
             );
         });
     }
@@ -1300,14 +1295,7 @@ export default class Slider extends LightningElement {
             const isColored =
                 this._trackInterval[0] <= circle.dataset.tickValue &&
                 circle.dataset.tickValue <= this._trackInterval[1];
-            circle.setAttribute(
-                'fill',
-                `${
-                    isColored
-                        ? '#ffffff'
-                        : 'var(--avonni-slider-track-color-background, #ecebea)'
-                }`
-            );
+            circle.setAttribute('fill', `${isColored ? '#ffffff' : '#ecebea'}`);
             circle.style.filter = isColored
                 ? 'brightness(1)'
                 : 'brightness(0.4)';
@@ -1694,26 +1682,33 @@ export default class Slider extends LightningElement {
      * @param {number[]} values values to base track update on
      */
     updateTrack(values) {
-        if (this._computedValues.length >= 2) {
-            const lowestValue = Math.max(
-                ...[Math.min(...values), this.computedMin]
-            );
-            this._track.style.left =
-                this.getPercentOfValue(lowestValue) * PERCENT_SCALING_FACTOR +
-                '%';
-            this._trackInterval[0] = lowestValue - this.computedMin;
-        } else {
-            this._track.style.left = '0%';
-            this._trackInterval[0] = this.computedMin;
-        }
         const highestValue = Math.min(
             ...[Math.max(...values), this.computedMax]
         );
-        this._track.style.right =
+        const lowestValue =
+            this._computedValues.length >= 2
+                ? Math.max(...[Math.min(...values), this.computedMin])
+                : 0;
+        const left =
+            this.getPercentOfValue(lowestValue) * PERCENT_SCALING_FACTOR;
+        const right =
             PERCENT_SCALING_FACTOR -
-            this.getPercentOfValue(highestValue) * PERCENT_SCALING_FACTOR +
-            '%';
+            this.getPercentOfValue(highestValue) * PERCENT_SCALING_FACTOR;
+
+        this._trackInterval[0] = lowestValue - this.computedMin;
         this._trackInterval[1] = highestValue - this.computedMin;
+
+        if (this._computedValues.length > 2) {
+            this._track.style.left = `${left}%`;
+            this._track.style.right = `${right}%`;
+            this._track.style.width = '';
+        } else if (this._computedValues.length > 0) {
+            const start = left;
+            const end = PERCENT_SCALING_FACTOR - right;
+            this._track.style.width = '100%';
+            this._track.style.clipPath = `rect(0% ${end}% auto ${start}% round ${BORDER_RADIUS_REM}rem ${BORDER_RADIUS_REM}rem)`;
+        }
+
         if (this.showAnyTickMarks) {
             this.drawRuler(!this._rendered || this._domModified);
         }
