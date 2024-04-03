@@ -2,6 +2,7 @@ button {
     border-radius: var(--avonni-button-menu-radius-border, 0.25rem);
     border-width: var(--avonni-button-menu-sizing-border, 1px);
     border-style: var(--avonni-button-menu-styling-border, solid);
+    height: inherit;
 }
 
 .avonni-button-menu_bare:disabled,
