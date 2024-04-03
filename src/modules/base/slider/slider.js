@@ -895,6 +895,17 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Returns the current variable for styling hook of track radius.
+     * @type {number}
+     */
+    get _trackRadius() {
+        const thumbRadius = getComputedStyle(
+            this.template.querySelector('[data-element-id="track-container"]')
+        ).getPropertyValue('--avonni-slider-track-radius');
+        return thumbRadius ? thumbRadius : `${BORDER_RADIUS_REM}rem`;
+    }
+
+    /**
      *  Returns the tick ruler html element.
      * @type {object}
      *
@@ -1706,7 +1717,7 @@ export default class Slider extends LightningElement {
             const start = left;
             const end = PERCENT_SCALING_FACTOR - right;
             this._track.style.width = '100%';
-            this._track.style.clipPath = `rect(0% ${end}% auto ${start}% round ${BORDER_RADIUS_REM}rem ${BORDER_RADIUS_REM}rem)`;
+            this._track.style.clipPath = `rect(0% ${end}% auto ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
         }
 
         if (this.showAnyTickMarks) {
