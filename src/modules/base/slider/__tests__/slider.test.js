@@ -1293,10 +1293,10 @@ describe('Slider', () => {
                 expect(ruler).toBeTruthy();
                 expect(ruler.firstChild.tagName).toEqual('line');
                 expect(ruler.firstChild.getAttribute('stroke')).toEqual(
-                    'var(--avonni-slider-track-color, #0176d3)'
+                    '#0176d3'
                 );
                 expect(ruler.childNodes[2].getAttribute('stroke')).toEqual(
-                    'var(--avonni-slider-track-color-background, #ecebea)'
+                    '#ecebea'
                 );
                 expect(ruler.childElementCount).toEqual(101);
                 element.value = 50;
@@ -1305,10 +1305,10 @@ describe('Slider', () => {
             .then(() => {
                 expect(ruler.firstChild.tagName).toEqual('line');
                 expect(ruler.childNodes[1].getAttribute('stroke')).toEqual(
-                    'var(--avonni-slider-track-color, #0176d3)'
+                    '#0176d3'
                 );
                 expect(ruler.childNodes[23].getAttribute('stroke')).toEqual(
-                    'var(--avonni-slider-track-color-background, #ecebea)'
+                    '#ecebea'
                 );
                 expect(ruler.childElementCount).toEqual(101);
             });
