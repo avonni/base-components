@@ -54,8 +54,8 @@ div:focus {
     color: #adadad;
 }
 
-.avonni-calendar__date-cell>.slds-day,
-.avonni-calendar__week-cell>span {
+.avonni-calendar__date-cell > .slds-day,
+.avonni-calendar__week-cell > span {
     display: block;
     position: relative;
     width: var(--lwc-squareIconMediumBoundary, 2rem);
@@ -76,14 +76,20 @@ div:focus {
     z-index: 0;
 }
 
-.avonni-calendar__table-row>.avonni-calendar__date-cell:hover>.slds-day {
-    background-color: var(--avonni-calendar-date-color-background-hover,
-            #f3f2f2);
+.avonni-calendar__table-row > .avonni-calendar__date-cell:hover > .slds-day {
+    background-color: var(
+        --avonni-calendar-date-color-background-hover,
+        #f3f2f2
+    );
 }
 
-.avonni-calendar__table-row>.avonni-calendar__date-cell:hover.slds-is-selected>.slds-day {
-    background-color: var(--avonni-calendar-selected-date-color-background,
-            #0176d3);
+.avonni-calendar__table-row
+    > .avonni-calendar__date-cell:hover.slds-is-selected
+    > .slds-day {
+    background-color: var(
+        --avonni-calendar-selected-date-color-background,
+        var(--lwc-brandAccessible, #0176d3)
+    );
 }
 
 .avonni-calendar__background_color {
@@ -113,8 +119,10 @@ div:focus {
 }
 
 .slds-is-selected .slds-day {
-    background-color: var(--avonni-calendar-selected-date-color-background,
-            #0176d3);
+    background-color: var(
+        --avonni-calendar-selected-date-color-background,
+        var(--lwc-brandAccessible, #0176d3)
+    );
     color: var(--avonni-calendar-selected-date-text-color, #ffffff);
 }
 
@@ -125,23 +133,37 @@ div:focus {
 }
 
 .slds-is-selected .avonni-calendar__disabled-cell.slds-day {
-    background: var(--avonni-calendar-selected-date-color-background, #0176d3);
-    color: var(--avonni-calendar-selected-date-text-color,
-            rgba(255, 255, 255, 0.75));
+    background: var(
+        --avonni-calendar-selected-date-color-background,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    color: var(
+        --avonni-calendar-selected-date-text-color,
+        rgba(255, 255, 255, 0.75)
+    );
 }
 
 /* Interval selection 'bridges' */
-.slds-datepicker__month .avonni-calendar__date-cell.slds-is-selected-multi+.slds-is-selected-multi>.slds-day:before {
+.slds-datepicker__month
+    .avonni-calendar__date-cell.slds-is-selected-multi
+    + .slds-is-selected-multi
+    > .slds-day:before {
     content: '';
     position: absolute;
     height: 100%;
     width: var(--avonni-calendar-cell-sizing-width);
     transform: translateX(-0.5rem);
     z-index: -1;
-    background: var(--avonni-calendar-selected-date-color-background, #0176d3);
+    background: var(
+        --avonni-calendar-selected-date-color-background,
+        var(--lwc-brandAccessible, #0176d3)
+    );
 }
 
-.slds-datepicker__month.avonni-calendar__date-with-labels .avonni-calendar__date-cell.slds-is-selected-multi+.slds-is-selected-multi>.slds-day:before {
+.slds-datepicker__month.avonni-calendar__date-with-labels
+    .avonni-calendar__date-cell.slds-is-selected-multi
+    + .slds-is-selected-multi
+    > .slds-day:before {
     width: var(--avonni-calendar-cell-labeled-sizing-width);
     transform: translateX(calc(-50% + -2px));
 }
@@ -161,28 +183,44 @@ div:focus {
 }
 
 .avonni-calendar__cell_bordered-right:after {
-    border-right-color: var(--avonni-calendar-multi-selected-color-border-hover,
-            #d3d3d39a);
-    border-right-style: var(--avonni-calendar-multi-selected-styling-border-hover,
-            dashed);
+    border-right-color: var(
+        --avonni-calendar-multi-selected-color-border-hover,
+        #d3d3d39a
+    );
+    border-right-style: var(
+        --avonni-calendar-multi-selected-styling-border-hover,
+        dashed
+    );
 }
 
 .avonni-calendar__cell_bordered-left:after {
-    border-left-color: var(--avonni-calendar-multi-selected-color-border-hover,
-            #d3d3d39a);
-    border-left-style: var(--avonni-calendar-multi-selected-styling-border-hover,
-            dashed);
+    border-left-color: var(
+        --avonni-calendar-multi-selected-color-border-hover,
+        #d3d3d39a
+    );
+    border-left-style: var(
+        --avonni-calendar-multi-selected-styling-border-hover,
+        dashed
+    );
 }
 
 .avonni-calendar__cell_bordered-top_bottom:after {
-    border-bottom-color: var(--avonni-calendar-multi-selected-color-border-hover,
-            #d3d3d39a);
-    border-bottom-style: var(--avonni-calendar-multi-selected-styling-border-hover,
-            dashed);
-    border-top-color: var(--avonni-calendar-multi-selected-color-border-hover,
-            #d3d3d39a);
-    border-top-style: var(--avonni-calendar-multi-selected-styling-border-hover,
-            dashed);
+    border-bottom-color: var(
+        --avonni-calendar-multi-selected-color-border-hover,
+        #d3d3d39a
+    );
+    border-bottom-style: var(
+        --avonni-calendar-multi-selected-styling-border-hover,
+        dashed
+    );
+    border-top-color: var(
+        --avonni-calendar-multi-selected-color-border-hover,
+        #d3d3d39a
+    );
+    border-top-style: var(
+        --avonni-calendar-multi-selected-styling-border-hover,
+        dashed
+    );
 }
 
 /* Markers */
