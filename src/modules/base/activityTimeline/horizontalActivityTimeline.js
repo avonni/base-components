@@ -91,6 +91,10 @@ export class HorizontalActivityTimeline {
     _scrollAxisDiv;
     _scrollAxisSVG;
 
+    _scrollEndTimeout;
+    _scrollEnd = true;
+    _isVerticalScroll = false;
+
     constructor(activityTimeline, sortedItems) {
         this.addValidItemsToData(sortedItems);
         this._activityTimeline = activityTimeline;
@@ -1295,18 +1299,6 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Check if user is scrolling vertically.
-     *
-     * @return {boolean}
-     */
-    isScrollingVerticallyOnTimeline(event) {
-        return (
-            Math.abs(event.deltaY) > 0 &&
-            Math.abs(event.deltaY) > Math.abs(event.deltaX)
-        );
-    }
-
-    /**
      * Move interval (drag or scroll) on timeline's scroll axis to new valid position.
      */
     moveIntervalToPosition(position) {
@@ -2025,22 +2017,80 @@ export class HorizontalActivityTimeline {
      * Handle horizontal scroll (wheel event) of interval on timeline's scroll axis.
      */
     handleWheelOnInterval(event) {
-        if (this.isScrollingVerticallyOnTimeline(event)) {
+        const timeIntervalSelector = this._timeIntervalSelector.node();
+        const timeIntervalSelectorLeft =
+            timeIntervalSelector.getBoundingClientRect().left;
+        const timeIntervalSelectorRight =
+            timeIntervalSelector.getBoundingClientRect().right;
+
+        const isScrollingVertically =
+            Math.abs(event.deltaY) > 0 &&
+            Math.abs(event.deltaY) > Math.abs(event.deltaX);
+        const scrollToBottom = event.deltaY > 0;
+        const scrollToRight = event.deltaX > 0;
+
+        const scrollLeftEnd =
+            !isScrollingVertically &&
+            this.scrollAxisLeftPosition === timeIntervalSelectorLeft &&
+            !scrollToRight;
+        const scrollRightEnd =
+            !isScrollingVertically &&
+            timeIntervalSelectorRight >=
+                this.scrollAxisLeftPosition +
+                    this.scrollAxisRectangle.getBoundingClientRect().width &&
+            scrollToRight;
+
+        const scrollTopEnd =
+            isScrollingVertically &&
+            this.divTimelineScroll.scrollTop <= 0 &&
+            !scrollToBottom;
+        const scrollBottomEnd =
+            isScrollingVertically &&
+            this.divTimelineScroll.scrollTop +
+                this.divTimelineScroll.clientHeight >=
+                this.divTimelineScroll.scrollHeight &&
+            scrollToBottom;
+
+        if (
+            scrollTopEnd ||
+            scrollBottomEnd ||
+            scrollLeftEnd ||
+            scrollRightEnd
+        ) {
+            this._scrollEnd = true;
+            this._isVerticalScroll = false;
             return;
         }
 
-        event.stopPropagation();
-        event.preventDefault();
+        if (this._scrollEnd) {
+            this._scrollEnd = false;
+            this._isVerticalScroll = isScrollingVertically;
+        }
 
-        this.cancelSwipeLeftIfScrollLeft(event);
-        this.cancelEditIntervalSizeMode();
-        this.handleMouseOutOfPopover();
+        if (
+            !this._scrollEnd &&
+            !this._isVerticalScroll &&
+            !isScrollingVertically
+        ) {
+            event.stopPropagation();
+            event.preventDefault();
 
-        // Horizontal scroll of interval
-        const requestedPosition = this.extractScrollXPosition(event);
+            this.cancelSwipeLeftIfScrollLeft(event);
+            this.cancelEditIntervalSizeMode();
+            this.handleMouseOutOfPopover();
 
-        this.moveIntervalToPosition(
-            this.validateXMousePosition(requestedPosition)
-        );
+            // Horizontal scroll of interval
+            const requestedPosition = this.extractScrollXPosition(event);
+
+            this.moveIntervalToPosition(
+                this.validateXMousePosition(requestedPosition)
+            );
+        }
+
+        clearTimeout(this._scrollEndTimeout);
+        this._scrollEndTimeout = setTimeout(() => {
+            this._scrollEnd = true;
+            this._isVerticalScroll = false;
+        }, 100);
     }
 }
