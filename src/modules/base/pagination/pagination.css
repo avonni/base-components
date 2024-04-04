@@ -33,7 +33,7 @@
     );
     color: var(
         --avonni-pagination-button-text-color,
-        var(--sds-c-button-text-color, #0176d3)
+        var(--lwc-brandAccessible, #0176d3)
     );
 }
 
@@ -49,7 +49,7 @@
     );
     color: var(
         --avonni-pagination-button-text-color-active,
-        var(--sds-c-button-text-color-active, #014486)
+        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -64,18 +64,18 @@
     );
     color: var(
         --avonni-pagination-button-text-color-hover,
-        var(--sds-c-button-text-color-active, #014486)
+        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
 .avonni-pagination__button_active {
     background-color: var(
         --avonni-pagination-active-button-color-background,
-        var(--sds-c-button-brand-color-background, #0176d3)
+        var(--lwc-brandAccessible, #0176d3)
     );
     border-color: var(
         --avonni-pagination-active-button-color-border,
-        var(--sds-c-button-brand-color-border, #0176d3)
+        var(--lwc-brandAccessible, #0176d3)
     );
     color: var(
         --avonni-pagination-active-button-text-color,
