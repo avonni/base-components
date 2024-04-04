@@ -22,7 +22,7 @@
     background-color: var(--avonni-blockquote-brand-color-background, #fafaf9);
     border-left-color: var(
         --avonni-blockquote-brand-color-border-left,
-        #0176d3
+        var(--lwc-brandAccessible, #0176d3)
     );
     color: var(--avonni-blockquote-brand-text-color, #3e3e3c);
 }
@@ -122,7 +122,10 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
 
 .avonni-blockquote__theme-brand.avonni-blockquote__container
     .avonni-blockquote__title {
-    color: var(--avonni-blockquote-brand-title-text-color, #0176d3);
+    color: var(
+        --avonni-blockquote-brand-title-text-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
 }
 
 .avonni-blockquote__theme-brand .avonni-blockquote__primitive-icon_color {
