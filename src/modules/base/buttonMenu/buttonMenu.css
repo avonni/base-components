@@ -1,4 +1,4 @@
-button {
+.avonni-button-menu {
     border-radius: var(--avonni-button-menu-radius-border, 0.25rem);
     border-width: var(--avonni-button-menu-sizing-border, 1px);
     border-style: var(--avonni-button-menu-styling-border, solid);
@@ -54,11 +54,6 @@ button {
     font-weight: var(--avonni-button-menu-label-font-weight, 400);
 }
 
-.avonni-button-menu__button-icon_medium {
-    height: 2rem;
-    width: 2rem;
-}
-
 .avonni-button-menu__button-icon {
     text-align: center;
     justify-content: center;
@@ -76,7 +71,7 @@ button {
     --slds-c-button-color-border: var(
         --avonni-button-menu-button-bare-color-border
     );
-    --slds-c-button-text-color: var(
+    color: var(
         --avonni-button-menu-button-bare-text-color,
         var(--slds-g-color-neutral-base-50, #747474)
     );
@@ -93,8 +88,9 @@ button {
     --slds-c-button-color-border-active: var(
         --avonni-button-menu-button-bare-color-border-active
     );
-    --slds-c-button-text-color-active: var(
-        --avonni-button-menu-button-bare-text-color-active
+    color: var(
+        --avonni-button-menu-button-bare-text-color-active,
+        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -106,8 +102,9 @@ button {
     --slds-c-button-color-border: var(
         --avonni-button-menu-button-bare-color-border-hover
     );
-    --slds-c-button-text-color-hover: var(
-        --avonni-button-menu-button-bare-text-color-hover
+    color: var(
+        --avonni-button-menu-button-bare-text-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -180,8 +177,9 @@ button {
     --slds-c-button-color-border: var(
         --avonni-button-menu-button-base-color-border
     );
-    --slds-c-button-text-color: var(
-        --avonni-button-menu-button-base-text-color
+    color: var(
+        --avonni-button-menu-button-base-text-color,
+        var(--lwc-brandAccessible, #0176d3)
     );
     padding-right: var(--avonni-button-menu-button-base-spacing-inline-end, 0);
     padding-left: var(--avonni-button-menu-button-base-spacing-inline-start, 0);
@@ -190,27 +188,30 @@ button {
 }
 
 .slds-button.avonni-button-menu_base:active {
-    --slds-c-button-color-background-active: var(
+    background-color: var(
         --avonni-button-menu-button-base-color-background-active
     );
-    --slds-c-button-color-border-active: var(
-        --avonni-button-menu-button-base-color-border-active
+    border-color: var(
+        --avonni-button-menu-button-base-color-border-active,
+        var(--lwc-brandAccessibleActive, #014486)
     );
-    --slds-c-button-text-color-active: var(
-        --avonni-button-menu-button-base-text-color-active
+    color: var(
+        --avonni-button-menu-button-base-text-color-active,
+        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
 .avonni-button-menu_base:hover,
 .avonni-button-menu_base:focus {
-    --slds-c-button-color-background: var(
+    background-color: var(
         --avonni-button-menu-button-base-color-background-hover
     );
-    --slds-c-button-color-border: var(
+    --avonni-button-menu-button-base-color-border: var(
         --avonni-button-menu-button-base-color-border-hover
     );
-    --slds-c-button-text-color-hover: var(
-        --avonni-button-menu-button-base-text-color-hover
+    --avonni-button-menu-button-base-text-color: var(
+        --avonni-button-menu-button-base-text-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -993,8 +994,8 @@ button {
     width: 1.5rem;
 }
 .avonni-button-menu__icon_medium {
-    height: 2rem;
-    width: 2rem;
+    height: 2.125rem;
+    width: 2.125rem;
 }
 .avonni-button-menu__icon_large {
     height: 2.25rem;
@@ -1046,11 +1047,11 @@ button {
 }
 
 .avonni-button-menu__button_medium {
-    height: 2.5rem;
+    height: 2rem;
 }
 
 .avonni-button-menu__button_large {
-    height: 3.5rem;
+    height: 3rem;
 }
 
 .avonni-button-menu__main-icon-with-label-adjust-scale_small,

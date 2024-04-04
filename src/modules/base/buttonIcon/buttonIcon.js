@@ -237,19 +237,37 @@ export default class ButtonIcon extends PrimitiveButton {
      * @type {string}
      */
     get computedButtonClass() {
+        const isAddedVariant =
+            this.computedVariant === 'base' ||
+            this.computedVariant === 'brand-outline' ||
+            this.computedVariant === 'destructive' ||
+            this.computedVariant === 'destructive-text' ||
+            this.computedVariant === 'inverse' ||
+            this.computedVariant === 'neutral' ||
+            this.computedVariant === 'success';
         return classSet(super.computedButtonClass)
-            .add('slds-button_icon avonni-button-icon')
+            .add('avonni-button-icon')
             .add(`avonni-button-icon_${this.computedVariant}`)
             .add({
+                'slds-button_icon': !isAddedVariant,
+                'slds-button_outline-brand':
+                    this.computedVariant === 'brand-outline',
+                'slds-button_destructive':
+                    this.computedVariant === 'destructive',
+                'slds-button_text-destructive':
+                    this.computedVariant === 'destructive-text',
+                'slds-button_inverse': this.computedVariant === 'inverse',
+                'slds-button_neutral': this.computedVariant === 'neutral',
+                'slds-button_success': this.computedVariant === 'success',
                 'slds-button_icon-bare': this.isBare,
                 [`slds-button_icon-${this.size}`]: !this.isBare,
-                'slds-button_icon-container':
-                    this.computedVariant === 'container',
                 'slds-button_icon-border': this.computedVariant === 'border',
                 'slds-button_icon-border-filled':
                     this.computedVariant === 'border-filled',
                 'slds-button_icon-border-inverse':
                     this.computedVariant === 'border-inverse',
+                'slds-button_icon-container':
+                    this.computedVariant === 'container',
                 'slds-button_icon-inverse':
                     this.computedVariant === 'bare-inverse',
                 'slds-button_icon-brand': this.computedVariant === 'brand',
