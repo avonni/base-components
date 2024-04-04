@@ -86,11 +86,11 @@
 .slds-button.avonni-pagination__button_active:active {
     background-color: var(
         --avonni-pagination-active-button-color-background-active,
-        var(--sds-c-button-brand-color-background-active, #014486)
+        var(--lwc-brandAccessibleActive, #014486)
     );
     border-color: var(
         --avonni-pagination-active-button-color-border-active,
-        var(--sds-c-button-brand-color-border-active, #014486)
+        var(--lwc-brandAccessibleActive, #014486)
     );
     color: var(
         --avonni-pagination-active-button-text-color-active,
@@ -101,11 +101,11 @@
 .avonni-pagination__button_active:hover {
     background-color: var(
         --avonni-pagination-active-button-color-background-hover,
-        var(--sds-c-button-brand-color-background-active, #014486)
+        var(--lwc-brandAccessibleActive, #014486)
     );
     border-color: var(
         --avonni-pagination-active-button-color-border-hover,
-        var(--sds-c-button-brand-color-border-active, #014486)
+        var(--lwc-brandAccessibleActive, #014486)
     );
     color: var(
         --avonni-pagination-active-button-text-color-hover,
