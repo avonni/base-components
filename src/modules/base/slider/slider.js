@@ -151,14 +151,7 @@ export default class Slider extends LightningElement {
         }
         if (!this._rendered || this._domModified) {
             this.setVerticalResponsiveHeight();
-            if (this.showTrack) {
-                this.updateTrack(this._computedValues);
-            } else {
-                this._trackInterval = [
-                    this.computedMin - 1,
-                    this.computedMin - 1
-                ];
-            }
+            this.updateTrack(this._computedValues);
             this._computedValues.forEach((val, index) => {
                 this.setHitboxPosition(index);
             });
@@ -190,6 +183,7 @@ export default class Slider extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+        this._domModified = true;
     }
 
     /**
@@ -354,6 +348,7 @@ export default class Slider extends LightningElement {
             fallbackValue: SLIDER_SIZES.default,
             validValues: SLIDER_SIZES.valid
         });
+        this._domModified = true;
     }
 
     /**
@@ -1669,9 +1664,7 @@ export default class Slider extends LightningElement {
             this.getInput(i).value = newValues[i];
             this._computedValues[i] = newValues[i];
         }
-        if (this.showTrack) {
-            this.updateTrack(newValues);
-        }
+        this.updateTrack(newValues);
     }
 
     /**
@@ -1697,27 +1690,29 @@ export default class Slider extends LightningElement {
             ...[Math.max(...values), this.computedMax]
         );
         const lowestValue =
-            this._computedValues.length >= 2
+            this._computedValues.length > 1
                 ? Math.max(...[Math.min(...values), this.computedMin])
-                : 0;
-        const left =
-            this.getPercentOfValue(lowestValue) * PERCENT_SCALING_FACTOR;
-        const right =
-            PERCENT_SCALING_FACTOR -
-            this.getPercentOfValue(highestValue) * PERCENT_SCALING_FACTOR;
+                : this.computedMin;
 
         this._trackInterval[0] = lowestValue - this.computedMin;
         this._trackInterval[1] = highestValue - this.computedMin;
 
-        if (this._computedValues.length > 2) {
-            this._track.style.left = `${left}%`;
-            this._track.style.right = `${right}%`;
-            this._track.style.width = '';
-        } else if (this._computedValues.length > 0) {
-            const start = left;
-            const end = PERCENT_SCALING_FACTOR - right;
-            this._track.style.width = '100%';
-            this._track.style.clipPath = `rect(0% ${end}% auto ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
+        if (this.showTrack) {
+            const left =
+                this.getPercentOfValue(lowestValue) * PERCENT_SCALING_FACTOR;
+            const right =
+                PERCENT_SCALING_FACTOR -
+                this.getPercentOfValue(highestValue) * PERCENT_SCALING_FACTOR;
+            if (this._computedValues.length > 2) {
+                this._track.style.left = `${left}%`;
+                this._track.style.right = `${right}%`;
+                this._track.style.width = '';
+            } else if (this._computedValues.length > 0) {
+                const start = left;
+                const end = PERCENT_SCALING_FACTOR - right;
+                this._track.style.width = '100%';
+                this._track.style.clipPath = `rect(0% ${end}% auto ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
+            }
         }
 
         if (this.showAnyTickMarks) {
