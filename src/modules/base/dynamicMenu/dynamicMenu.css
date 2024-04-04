@@ -49,7 +49,10 @@ div:focus {
 }
 
 .slds-is-selected .avonni-dynamic-menu__check-mark_color {
-    color: var(--avonni-dynamic-menu-item-check-mark-color, #0176d3);
+    color: var(
+        --avonni-dynamic-menu-item-check-mark-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
 }
 
 .avonni-dynamic-menu__button_reset {
@@ -95,9 +98,12 @@ div:focus {
 .avonni-dynamic-menu__button_brand {
     background-color: var(
         --avonni-dynamic-menu-brand-color-background,
-        #0176d3
+        var(--lwc-brandAccessible, #0176d3)
     );
-    border-color: var(--avonni-dynamic-menu-brand-color-border, #0176d3);
+    border-color: var(
+        --avonni-dynamic-menu-brand-color-border,
+        var(--lwc-brandAccessible, #0176d3)
+    );
     color: var(--avonni-dynamic-menu-brand-label-text-color, white);
     font-size: var(--avonni-dynamic-menu-brand-label-font-size, 0.8125rem);
     font-style: var(--avonni-dynamic-menu-brand-label-font-style, normal);
@@ -107,9 +113,12 @@ div:focus {
 .avonni-dynamic-menu__button_brand:hover {
     background-color: var(
         --avonni-dynamic-menu-brand-color-background-hover,
-        #014486
+        var(--lwc-brandAccessibleActive, #014486)
     );
-    border-color: var(--avonni-dynamic-menu-brand-color-border-hover, #014486);
+    border-color: var(
+        --avonni-dynamic-menu-brand-color-border-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
     color: var(--avonni-dynamic-menu-brand-label-text-color-hover, white);
     font-size: var(
         --avonni-dynamic-menu-brand-label-font-size-hover,
@@ -122,15 +131,21 @@ div:focus {
 .avonni-dynamic-menu__button_brand:active {
     background-color: var(
         --avonni-dynamic-menu-brand-color-background-active,
-        #014486
+        var(--lwc-brandAccessibleActive, #014486)
     );
-    border-color: var(--avonni-dynamic-menu-brand-color-border-active, #014486);
+    border-color: var(
+        --avonni-dynamic-menu-brand-color-border-active,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
 }
 
 .avonni-dynamic-menu__button_border {
     background-color: var(--avonni-dynamic-menu-border-color-background, white);
     border-color: var(--avonni-dynamic-menu-border-color-border, #747474);
-    color: var(--avonni-dynamic-menu-border-label-text-color, #0176d3);
+    color: var(
+        --avonni-dynamic-menu-border-label-text-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
     font-size: var(--avonni-dynamic-menu-border-label-font-size, 0.8125rem);
     font-style: var(--avonni-dynamic-menu-border-label-font-style, normal);
     font-weight: var(--avonni-dynamic-menu-border-label-font-weight, 400);
@@ -142,7 +157,10 @@ div:focus {
         #fafaf9
     );
     border-color: var(--avonni-dynamic-menu-border-color-border-hover, #747474);
-    color: var(--avonni-dynamic-menu-border-label-text-color-hover, #014486);
+    color: var(
+        --avonni-dynamic-menu-border-label-text-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
     font-size: var(
         --avonni-dynamic-menu-border-label-font-size-hover,
         0.8125rem
@@ -168,7 +186,10 @@ div:focus {
         transparent
     );
     border-color: var(--avonni-dynamic-menu-bare-color-border, transparent);
-    color: var(--avonni-dynamic-menu-bare-label-text-color, #0176d3);
+    color: var(
+        --avonni-dynamic-menu-bare-label-text-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
     font-size: var(--avonni-dynamic-menu-bare-label-font-size, 0.8125rem);
     font-style: var(--avonni-dynamic-menu-bare-label-font-style, normal);
     font-weight: var(--avonni-dynamic-menu-bare-label-font-weight, 400);
@@ -183,7 +204,10 @@ div:focus {
         --avonni-dynamic-menu-bare-color-border-hover,
         transparent
     );
-    color: var(--avonni-dynamic-menu-bare-label-text-color-hover, #014486);
+    color: var(
+        --avonni-dynamic-menu-bare-label-text-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
     font-size: var(--avonni-dynamic-menu-bare-label-font-size-hover, 0.8125rem);
     font-style: var(--avonni-dynamic-menu-bare-label-font-style-hover, normal);
     font-weight: var(--avonni-dynamic-menu-bare-label-font-weight-hover, 400);
