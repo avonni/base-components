@@ -440,7 +440,7 @@ export default class ButtonMenu extends PrimitiveButton {
                     this.variant === 'container' && this.computedHideDownIcon,
                 'slds-button_icon-inverse': this.variant === 'bare-inverse',
                 'avonni-button-menu__button-icon': isAddedVariant,
-                [`slds-button_icon-${this.size}`]: !isBare
+                [`slds-button_icon-${this.iconSize}`]: !isBare
             });
             if (
                 !isBare &&

@@ -431,6 +431,11 @@
     );
 }
 
+.slds-button_brand.avonni-button-menu__button-icon {
+    --slds-c-button-brand-spacing-inline-start: 0rem;
+    --slds-c-button-brand-spacing-inline-end: 0rem;
+}
+
 .avonni-button-menu__button_label.avonni-button-menu_brand {
     padding-right: var(
         --avonni-button-menu-button-brand-spacing-inline-end,
@@ -490,6 +495,11 @@
     --slds-c-button-brand-text-color-hover: var(
         --avonni-button-menu-button-brand-text-color-hover
     );
+}
+
+.slds-button_outline-brand.avonni-button-menu__button-icon {
+    --slds-c-button-outline-brand-spacing-inline-start: 0rem;
+    --slds-c-button-outline-brand-spacing-inline-end: 0rem;
 }
 
 .avonni-button-menu__button_label.avonni-button-menu_brand-outline {
@@ -637,6 +647,11 @@
     );
 }
 
+.slds-button_destructive.avonni-button-menu__button-icon {
+    --slds-c-button-destructive-spacing-inline-start: 0rem;
+    --slds-c-button-destructive-spacing-inline-end: 0rem;
+}
+
 .avonni-button-menu__button_label.avonni-button-menu_destructive {
     padding-right: var(
         --avonni-button-menu-button-destructive-spacing-inline-end,
@@ -704,6 +719,11 @@
     );
 }
 
+.slds-button_text-destructive.avonni-button-menu__button-icon {
+    --slds-c-button-text-destructive-spacing-inline-start: 0rem;
+    --slds-c-button-text-destructive-spacing-inline-end: 0rem;
+}
+
 .avonni-button-menu__button_label.avonni-button-menu_destructive-text {
     padding-right: var(
         --avonni-button-menu-button-text-destructive-spacing-inline-end,
@@ -769,6 +789,11 @@
     --sds-c-button-text-destructive-text-color-hover: var(
         --avonni-button-menu-button-text-destructive-text-color-hover
     );
+}
+
+.slds-button_inverse.avonni-button-menu__button-icon {
+    --slds-c-button-inverse-spacing-inline-start: 0rem;
+    --slds-c-button-inverse-spacing-inline-end: 0rem;
 }
 
 .avonni-button-menu__button_label.avonni-button-menu_inverse {
@@ -843,6 +868,11 @@
     outline: none;
 }
 
+.slds-button_neutral.avonni-button-menu__button-icon {
+    --slds-c-button-neutral-spacing-inline-start: 0rem;
+    --slds-c-button-neutral-spacing-inline-end: 0rem;
+}
+
 .avonni-button-menu__button_label.avonni-button-menu_neutral {
     padding-right: var(
         --avonni-button-menu-button-neutral-spacing-inline-end,
@@ -908,6 +938,11 @@
     --slds-c-button-text-color-hover: var(
         --avonni-button-menu-button-neutral-text-color-hover
     );
+}
+
+.slds-button_success.avonni-button-menu__button-icon {
+    --slds-c-button-success-spacing-inline-start: 0rem;
+    --slds-c-button-success-spacing-inline-end: 0rem;
 }
 
 .avonni-button-menu__button_label.avonni-button-menu_success {
