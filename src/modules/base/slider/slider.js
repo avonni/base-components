@@ -728,7 +728,9 @@ export default class Slider extends LightningElement {
      *
      */
     get highlightColor() {
-        return this.disabled ? '#919191' : '#0176d3';
+        return this.disabled
+            ? '#919191'
+            : 'var(--avonni-slider-tick-mark-color, #0176d3)';
     }
 
     /**
@@ -1301,7 +1303,14 @@ export default class Slider extends LightningElement {
             const isColored =
                 this._trackInterval[0] <= circle.dataset.tickValue &&
                 circle.dataset.tickValue <= this._trackInterval[1];
-            circle.setAttribute('fill', `${isColored ? '#ffffff' : '#ecebea'}`);
+            circle.setAttribute(
+                'fill',
+                `${
+                    isColored
+                        ? 'var(--avonni-slider-tick-mark-color, #ffffff)'
+                        : '#ecebea'
+                }`
+            );
             circle.style.filter = isColored
                 ? 'brightness(1)'
                 : 'brightness(0.4)';

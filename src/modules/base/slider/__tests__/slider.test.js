@@ -1293,7 +1293,7 @@ describe('Slider', () => {
                 expect(ruler).toBeTruthy();
                 expect(ruler.firstChild.tagName).toEqual('line');
                 expect(ruler.firstChild.getAttribute('stroke')).toEqual(
-                    '#0176d3'
+                    'var(--avonni-slider-tick-mark-color, #0176d3)'
                 );
                 expect(ruler.childNodes[2].getAttribute('stroke')).toEqual(
                     '#ecebea'
@@ -1305,7 +1305,7 @@ describe('Slider', () => {
             .then(() => {
                 expect(ruler.firstChild.tagName).toEqual('line');
                 expect(ruler.childNodes[1].getAttribute('stroke')).toEqual(
-                    '#0176d3'
+                    'var(--avonni-slider-tick-mark-color, #0176d3)'
                 );
                 expect(ruler.childNodes[23].getAttribute('stroke')).toEqual(
                     '#ecebea'
