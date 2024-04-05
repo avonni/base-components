@@ -13,11 +13,11 @@
 .avonni-pagination__button_neutral:disabled {
     background-color: var(
         --avonni-pagination-button-color-background-disabled,
-        #fff
+        var(--slds-g-color-neutral-base-100, #fff)
     );
     border-color: var(
         --avonni-pagination-button-color-border-disabled,
-        #747474
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(--avonni-pagination-button-text-color-disabled, #c9c9c9);
 }
