@@ -670,7 +670,7 @@
     );
     color: var(
         --avonni-button-icon-success-text-color,
-        var(--slds-g-color-neutral-base-10, #181818)
+        var(--lwc-colorTextDefault, #181818)
     );
 }
 

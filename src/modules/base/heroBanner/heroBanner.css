@@ -587,7 +587,7 @@
     );
     --avonni-hero-banner-primary-button-text-color: var(
         --avonni-hero-banner-primary-button-success-text-color,
-        #181818
+        var(--lwc-colorTextDefault, #181818)
     );
 }
 
@@ -1113,7 +1113,7 @@
     );
     --avonni-hero-banner-secondary-button-text-color: var(
         --avonni-hero-banner-secondary-button-success-text-color,
-        #181818
+        var(--lwc-colorTextDefault, #181818)
     );
 }
 

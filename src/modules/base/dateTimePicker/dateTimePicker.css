@@ -100,7 +100,7 @@
     );
     color: var(
         --avonni-date-time-picker-date-picker-button-text-color-hover,
-        #181818
+        var(--lwc-colorTextDefault, #181818)
     );
 }
 

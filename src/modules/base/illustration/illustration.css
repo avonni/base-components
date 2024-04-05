@@ -1,5 +1,8 @@
 .avonni-illustration__title {
-    color: var(--avonni-illustration-title-text-color, #181818);
+    color: var(
+        --avonni-illustration-title-text-color,
+        var(--lwc-colorTextDefault, #181818)
+    );
     font-size: var(--avonni-illustration-title-font-size, 1.25rem);
     font-family: var(
         --avonni-illustration-title-font-family,
@@ -17,7 +20,10 @@
 }
 
 .avonni-illustration__content {
-    color: var(--avonni-illustration-content-text-color, #181818);
+    color: var(
+        --avonni-illustration-content-text-color,
+        var(--lwc-colorTextDefault, #181818)
+    );
     font-size: var(--avonni-illustration-content-font-size, 1.25rem);
     font-family: var(
         --avonni-illustration-content-font-family,

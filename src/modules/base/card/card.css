@@ -193,7 +193,10 @@ article.avonni-card {
 }
 
 .avonni-card__title-text {
-    color: var(--avonni-card-header-text-color, #181818);
+    color: var(
+        --avonni-card-header-text-color,
+        var(--lwc-colorTextDefault, #181818)
+    );
     font-family: var(
         --avonni-card-header-font-family,
         'Salesforce Sans',
