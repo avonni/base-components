@@ -260,7 +260,6 @@
         --avonni-hero-banner-primary-button-brand-color-background-active,
         var(--lwc-brandAccessibleActive, #014486)
     );
-
     --avonni-hero-banner-primary-button-text-color-active: var(
         --avonni-hero-banner-primary-button-brand-text-color-active,
         white
@@ -579,11 +578,11 @@
     );
     --avonni-hero-banner-primary-button-color-background: var(
         --avonni-hero-banner-primary-button-success-color-background,
-        #45c65a
+        var(--slds-g-color-success-base-70, #45c65a)
     );
     --avonni-hero-banner-primary-button-color-border: var(
         --avonni-hero-banner-primary-button-success-color-border,
-        #91db8b
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-primary-button-text-color: var(
         --avonni-hero-banner-primary-button-success-text-color,
@@ -594,11 +593,11 @@
 .avonni-hero-banner__primary-button_variant-success:active {
     --avonni-hero-banner-primary-button-color-background-active: var(
         --avonni-hero-banner-primary-button-success-color-background-active,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-primary-button-color-border-active: var(
         --avonni-hero-banner-primary-button-success-color-border-active,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-primary-button-text-color-active: var(
         --avonni-hero-banner-primary-button-success-text-color-active,
@@ -610,11 +609,11 @@
 .avonni-hero-banner__primary-button_variant-success:focus {
     --avonni-hero-banner-primary-button-color-background-hover: var(
         --avonni-hero-banner-primary-button-success-color-background-hover,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-primary-button-color-border-hover: var(
         --avonni-hero-banner-primary-button-success-color-border-hover,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-primary-button-text-color-hover: var(
         --avonni-hero-banner-primary-button-success-text-color-hover,
@@ -1105,7 +1104,7 @@
     );
     --avonni-hero-banner-secondary-button-color-background: var(
         --avonni-hero-banner-secondary-button-success-color-background,
-        #45c65a
+        var(--slds-g-color-success-base-70, #45c65a)
     );
     --avonni-hero-banner-secondary-button-color-border: var(
         --avonni-hero-banner-secondary-button-success-color-border,
@@ -1120,11 +1119,11 @@
 .avonni-hero-banner__secondary-button_variant-success:active {
     --avonni-hero-banner-secondary-button-color-background-active: var(
         --avonni-hero-banner-secondary-button-success-color-background-active,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-secondary-button-color-border-active: var(
         --avonni-hero-banner-secondary-button-success-color-border-active,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-secondary-button-text-color-active: var(
         --avonni-hero-banner-secondary-button-success-text-color-active,
@@ -1136,11 +1135,11 @@
 .avonni-hero-banner__secondary-button_variant-success:focus {
     --avonni-hero-banner-secondary-button-color-background-hover: var(
         --avonni-hero-banner-secondary-button-success-color-background-hover,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-secondary-button-color-border-hover: var(
         --avonni-hero-banner-secondary-button-success-color-border-hover,
-        #2e844a
+        var(--slds-g-color-success-base-50, #2e844a)
     );
     --avonni-hero-banner-secondary-button-text-color-hover: var(
         --avonni-hero-banner-secondary-button-success-text-color-hover,
