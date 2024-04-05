@@ -118,25 +118,37 @@ article.avonni-card {
 .avonni-card__media-border-top {
     border-top-width: var(--avonni-card-media-sizing-border, 1px);
     border-top-style: solid;
-    border-top-color: var(--avonni-card-media-color-border, #e5e5e5);
+    border-top-color: var(
+        --avonni-card-media-color-border,
+        var(--lwc-colorBorder, #e5e5e5)
+    );
 }
 
 .avonni-card__media-border-bottom {
     border-bottom-width: var(--avonni-card-media-sizing-border, 1px);
     border-bottom-style: solid;
-    border-bottom-color: var(--avonni-card-media-color-border, #e5e5e5);
+    border-bottom-color: var(
+        --avonni-card-media-color-border,
+        var(--lwc-colorBorder, #e5e5e5)
+    );
 }
 
 .avonni-card__media-border-left {
     border-left-width: var(--avonni-card-media-sizing-border, 1px);
     border-left-style: solid;
-    border-left-color: var(--avonni-card-media-color-border, #e5e5e5);
+    border-left-color: var(
+        --avonni-card-media-color-border,
+        var(--lwc-colorBorder, #e5e5e5)
+    );
 }
 
 .avonni-card__media-border-right {
     border-right-width: var(--avonni-card-media-sizing-border, 1px);
     border-right-style: solid;
-    border-right-color: var(--avonni-card-media-color-border, #e5e5e5);
+    border-right-color: var(
+        --avonni-card-media-color-border,
+        var(--lwc-colorBorder, #e5e5e5)
+    );
 }
 
 .avonni-card__media-left .avonni-card__media-container {
@@ -210,9 +222,7 @@ article.avonni-card {
     padding-bottom: var(--avonni-card-footer-spacing-block-end, 0.75rem);
     padding-left: var(--avonni-card-footer-spacing-inline-start, 1rem);
     padding-right: var(--avonni-card-footer-padding-right, 1rem);
-
     text-align: var(--avonni-card-footer-text-align, center);
-
     border-top-width: var(--avonni-card-footer-sizing-border, 1px);
     border-top-style: solid;
     border-top-color: var(--avonni-card-footer-color-border, #c9c9c9);
