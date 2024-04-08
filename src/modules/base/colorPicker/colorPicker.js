@@ -847,6 +847,20 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * Computed CSS class for the input wrapper.
+     *
+     * @type {string}
+     */
+    get computedInputClass() {
+        return classSet('slds-form-element__control')
+            .add({
+                'slds-input-has-icon slds-input-has-icon_right':
+                    !this.hideClearIcon && !this.disabled
+            })
+            .toString();
+    }
+
+    /**
      * Computed label class styling.
      *
      * @type {string}
