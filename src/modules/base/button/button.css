@@ -52,7 +52,7 @@
 
 .avonni-button_label {
     font-family: var(--avonni-button-label-font-family);
-    font-size: var(--avonni-button-label-font-size, 0.8175rem);
+    font-size: var(--avonni-button-label-font-size);
     font-style: var(--avonni-button-label-font-style, normal);
     font-weight: var(--avonni-button-label-font-weight, 400);
 }
