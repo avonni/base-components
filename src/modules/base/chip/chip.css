@@ -27,19 +27,28 @@
 }
 
 .avonni-chip_theme-alt-inverse {
-    background-color: var(--avonni-chip-alt-inverse-color-background, #032d60);
+    background-color: var(
+        --avonni-chip-alt-inverse-color-background,
+        var(--lwc-colorBackgroundAltInverse, #032d60)
+    );
     border-color: var(--avonni-chip-alt-inverse-color-border, transparent);
     color: var(--avonni-chip-alt-inverse-text-color, #ffffff);
 }
 
 .avonni-chip_theme-base {
-    background-color: var(--avonni-chip-base-color-background, #ecebea);
+    background-color: var(
+        --avonni-chip-base-color-background,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    );
     border-color: var(--avonni-chip-base-color-border, transparent);
     color: var(--avonni-chip-base-text-color, #080707);
 }
 
 .avonni-chip_theme-brand {
-    background-color: var(--avonni-chip-brand-color-background, #0070d1);
+    background-color: var(
+        --avonni-chip-brand-color-background,
+        var(--lwc-brandAccessible, #0176d3)
+    );
     border-color: var(--avonni-chip-brand-color-border, transparent);
     color: var(--avonni-chip-brand-text-color, #ffffff);
 }
@@ -81,8 +90,14 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-alt-inverse {
-    color: var(--avonni-chip-alt-inverse-outline-color, #032d60);
-    border-color: var(--avonni-chip-alt-inverse-outline-color, #032d60);
+    color: var(
+        --avonni-chip-alt-inverse-outline-color,
+        var(--lwc-colorBackgroundAltInverse, #032d60)
+    );
+    border-color: var(
+        --avonni-chip-alt-inverse-outline-color,
+        var(--lwc-colorBackgroundAltInverse, #032d60)
+    );
 }
 
 .avonni-chip_outline.avonni-chip_theme-base {
@@ -91,8 +106,14 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-brand {
-    border-color: var(--avonni-chip-brand-outline-color, #0070d1);
-    color: var(--avonni-chip-brand-outline-color, #0070d1);
+    border-color: var(
+        --avonni-chip-brand-outline-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    color: var(
+        --avonni-chip-brand-outline-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
 }
 
 .avonni-chip_outline.avonni-chip_theme-error {

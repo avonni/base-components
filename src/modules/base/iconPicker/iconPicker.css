@@ -8,7 +8,7 @@ div:focus {
 
 .avonni-builder-icon-picker-form-error {
     padding-top: 0.5rem;
-    color: #ba0517;
+    color: var(--slds-g-color-error-base-40, #ba0517);
     font-size: 0.75rem;
 }
 
