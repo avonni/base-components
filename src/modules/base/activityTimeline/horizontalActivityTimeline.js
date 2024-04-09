@@ -198,6 +198,15 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Select div container of timeline header
+     */
+    get divTimelineHeader() {
+        return this._activityTimeline.template.querySelector(
+            '[data-element-id="avonni-activity-horizontal-timeline-header"]'
+        );
+    }
+
+    /**
      * Select div container of timeline items
      */
     get divTimelineItemsSelector() {
@@ -934,7 +943,7 @@ export class HorizontalActivityTimeline {
                 'avonni-horizontal-activity-timeline__timeline-axis-svg'
             )
             .attr('width', this._timelineWidth + BORDER_OFFSET)
-            .attr('height', SVG_ICON_SIZE)
+            .attr('height', 25)
             .attr('transform', 'translate(0 ,0)');
 
         // Add upper and lower line of timeline axis
@@ -1635,11 +1644,18 @@ export class HorizontalActivityTimeline {
      * @return {object}
      */
     setPopoverPosition(tooltipElement, element) {
+        let offsetY = this.divTimelineHeader
+            ? this.divTimelineScroll.getBoundingClientRect().top -
+              this.divTimelineHeader.getBoundingClientRect().top
+            : 0;
+        offsetY -= this.divTimelineScroll.scrollTop;
+        if (this.hasBorder(element)) {
+            offsetY += AVATAR_MARGIN;
+        }
+
         const popoverPosition = {
             x: this.findEndPositionOfItem(element),
-            y: this.hasBorder(element)
-                ? element.yPosition + AVATAR_MARGIN
-                : element.yPosition,
+            y: element.yPosition + offsetY,
             direction: 'left'
         };
 
@@ -1886,7 +1902,7 @@ export class HorizontalActivityTimeline {
             if (!this._isMouseOverOnPopover) {
                 this._activityTimeline.handleTooltipClose();
             }
-        }, 1500);
+        }, 250);
     }
 
     /**

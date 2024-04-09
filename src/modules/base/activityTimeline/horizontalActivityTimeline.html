@@ -7,6 +7,7 @@
                     slds-m-bottom_x-small
                     slds-p-around_none
                 "
+                data-element-id="avonni-activity-horizontal-timeline-header"
             >
                 <div class="slds-media slds-media_center">
                     <div class="slds-media__figure" if:true={iconName}>
@@ -64,179 +65,6 @@
                     data-element-id="avonni-activity-timeline__horizontal-timeline-items"
                     lwc:dom="manual"
                 ></div>
-                <!-- Popover item -->
-                <div
-                    if:true={showItemPopOver}
-                    class="
-                        avonni-horizontal-activity-timeline__popover
-                        slds-popover slds-popover_large
-                        slds-is-absolute
-                        slds-p-around_none
-                    "
-                    name={selectedItem.name}
-                    data-element-id="avonni-horizontal-activity-timeline__item-popover"
-                    data-name={selectedItem.name}
-                >
-                    <!-- HEADER -->
-                    <header
-                        class="
-                            slds-theme_shade
-                            slds-media slds-media_center
-                            slds-p-vertical_x-small
-                            slds-p-left_medium
-                            slds-p-right_x-small
-                        "
-                        data-element-id="avonni-horizontal-activity-timeline__popover-header"
-                    >
-                        <!-- item's icon -->
-                        <c-avatar
-                            if:true={selectedItem.avatar}
-                            fallback-icon-name={selectedItem.avatar.fallbackIconName}
-                            hide-avatar-details="true"
-                            initials={selectedItem.avatar.initials}
-                            presence={selectedItem.avatar.presence}
-                            size={popoverIconSize}
-                            src={selectedItem.avatar.src}
-                            class="slds-media__figure"
-                        ></c-avatar>
-                        <!-- item's title -->
-                        <div
-                            class="
-                                slds-grid slds-grid_vertical
-                                slds-has-flexi-truncate
-                            "
-                        >
-                            <div
-                                class="
-                                    slds-text-heading_small
-                                    slds-p-top_xxx-small
-                                "
-                                data-name={selectedItem.name}
-                                onclick={handleItemClick}
-                            >
-                                <a
-                                    if:true={selectedItem.href}
-                                    href={selectedItem.href}
-                                    onclick={handleAnchorTagClick}
-                                >
-                                    <h3 class="slds-truncate">
-                                        {selectedItem.title}
-                                    </h3>
-                                </a>
-                                <h3
-                                    if:false={selectedItem.href}
-                                    class="slds-truncate"
-                                >
-                                    {selectedItem.title}
-                                </h3>
-                            </div>
-                            <!-- Formatted date -->
-                            <div
-                                if:true={selectedItemFormattedDate}
-                                class="slds-timeline__date slds-p-right_x-small"
-                                data-element-id="avonni-formatted-date-time"
-                            >
-                                {selectedItemFormattedDate}
-                            </div>
-                        </div>
-                        <!--Actions -->
-                        <div
-                            class="
-                                slds-timeline__actions
-                                slds-p-right_x-small
-                                slds-p-left_medium
-                                slds-p-top_none
-                                slds-align-top
-                            "
-                            if:true={actions.length}
-                            slot="figure-inverse"
-                        >
-                            <lightning-button-menu
-                                alternative-text="Show menu"
-                                variant="border-filled"
-                                icon-size="x-small"
-                                menu-alignment="right"
-                                data-element-id="lightning-button-menu-actions"
-                                onselect={handleActionClick}
-                            >
-                                <template for:each={actions} for:item="action">
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        class="slds-text-color_default"
-                                        disabled={action.disabled}
-                                        label={action.label}
-                                        prefix-icon-name={action.iconName}
-                                        value={action.name}
-                                        data-element-id="lightning-menu-item-action"
-                                    ></lightning-menu-item>
-                                </template>
-                            </lightning-button-menu>
-                        </div>
-                        <!-- Close button -->
-                        <lightning-button-icon
-                            icon-name="utility:close"
-                            size="medium"
-                            variant="bare"
-                            onclick={handleTooltipClose}
-                            class="
-                                slds-popover__close
-                                slds-float_right
-                                slds-align-top
-                                slds-p-around_none
-                                slds-m-around_none
-                            "
-                        ></lightning-button-icon>
-                    </header>
-                    <div
-                        class="
-                            slds-has-flexi-truncate
-                            slds-p-right_x-small
-                            slds-p-vertical_x-small
-                            slds-p-left_medium
-                        "
-                        if:true={selectedItem.description}
-                    >
-                        <p class="slds-line-clamp_x-small">
-                            {selectedItem.description}
-                        </p>
-                    </div>
-
-                    <!-- Fields -->
-                    <footer
-                        class="slds-grid slds-wrap slds-media__body"
-                        if:true={selectedItem.fields}
-                    >
-                        <div
-                            class="
-                                slds-has-flexi-truncate
-                                avonni-activity-timeline__horizontal-fields-container
-                            "
-                        >
-                            <c-layout multiple-rows>
-                                <template
-                                    for:each={selectedItem.fields}
-                                    for:item="field"
-                                    for:index="index"
-                                >
-                                    <c-layout-item
-                                        key={generateKey}
-                                        class="slds-truncate"
-                                        size={fieldAttributes.cols}
-                                    >
-                                        <c-output-data
-                                            label={field.label}
-                                            value={field.value}
-                                            type={field.type}
-                                            type-attributes={field.typeAttributes}
-                                            variant={horizontalFieldsVariant}
-                                            data-element-id="avonni-output-data"
-                                        ></c-output-data>
-                                    </c-layout-item>
-                                </template>
-                            </c-layout>
-                        </div>
-                    </footer>
-                </div>
             </div>
             <div
                 data-element-id="avonni-activity-timeline__horizontal-timeline-axis"
@@ -246,6 +74,169 @@
                 data-element-id="avonni-activity-timeline__horizontal-timeline-scroll-axis"
                 lwc:dom="manual"
             ></div>
+        </div>
+
+        <!-- Popover item -->
+        <div
+            if:true={showItemPopOver}
+            class="
+                avonni-horizontal-activity-timeline__popover
+                slds-popover slds-popover_large
+                slds-is-absolute
+                slds-p-around_none
+            "
+            name={selectedItem.name}
+            data-element-id="avonni-horizontal-activity-timeline__item-popover"
+            data-name={selectedItem.name}
+        >
+            <!-- HEADER -->
+            <header
+                class="
+                    slds-theme_shade
+                    slds-media slds-media_center
+                    slds-p-vertical_x-small
+                    slds-p-left_medium
+                    slds-p-right_x-small
+                "
+                data-element-id="avonni-horizontal-activity-timeline__popover-header"
+            >
+                <!-- item's icon -->
+                <c-avatar
+                    if:true={selectedItem.avatar}
+                    fallback-icon-name={selectedItem.avatar.fallbackIconName}
+                    hide-avatar-details="true"
+                    initials={selectedItem.avatar.initials}
+                    presence={selectedItem.avatar.presence}
+                    size={popoverIconSize}
+                    src={selectedItem.avatar.src}
+                    class="slds-media__figure"
+                ></c-avatar>
+                <!-- item's title -->
+                <div
+                    class="slds-grid slds-grid_vertical slds-has-flexi-truncate"
+                >
+                    <div
+                        class="slds-text-heading_small slds-p-top_xxx-small"
+                        data-name={selectedItem.name}
+                        onclick={handleItemClick}
+                    >
+                        <a
+                            if:true={selectedItem.href}
+                            href={selectedItem.href}
+                            onclick={handleAnchorTagClick}
+                        >
+                            <h3 class="slds-truncate">{selectedItem.title}</h3>
+                        </a>
+                        <h3 if:false={selectedItem.href} class="slds-truncate">
+                            {selectedItem.title}
+                        </h3>
+                    </div>
+                    <!-- Formatted date -->
+                    <div
+                        if:true={selectedItemFormattedDate}
+                        class="slds-timeline__date slds-p-right_x-small"
+                        data-element-id="avonni-formatted-date-time"
+                    >
+                        {selectedItemFormattedDate}
+                    </div>
+                </div>
+                <!--Actions -->
+                <div
+                    class="
+                        slds-timeline__actions
+                        slds-p-right_x-small
+                        slds-p-left_medium
+                        slds-p-top_none
+                        slds-align-top
+                    "
+                    if:true={actions.length}
+                    slot="figure-inverse"
+                >
+                    <lightning-button-menu
+                        alternative-text="Show menu"
+                        variant="border-filled"
+                        icon-size="x-small"
+                        menu-alignment="right"
+                        data-element-id="lightning-button-menu-actions"
+                        onselect={handleActionClick}
+                    >
+                        <template for:each={actions} for:item="action">
+                            <lightning-menu-item
+                                key={action.name}
+                                class="slds-text-color_default"
+                                disabled={action.disabled}
+                                label={action.label}
+                                prefix-icon-name={action.iconName}
+                                value={action.name}
+                                data-element-id="lightning-menu-item-action"
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
+                </div>
+                <!-- Close button -->
+                <lightning-button-icon
+                    icon-name="utility:close"
+                    size="medium"
+                    variant="bare"
+                    onclick={handleTooltipClose}
+                    class="
+                        slds-popover__close
+                        slds-float_right
+                        slds-align-top
+                        slds-p-around_none
+                        slds-m-around_none
+                    "
+                ></lightning-button-icon>
+            </header>
+            <div
+                class="
+                    slds-has-flexi-truncate
+                    slds-p-right_x-small
+                    slds-p-vertical_x-small
+                    slds-p-left_medium
+                "
+                if:true={selectedItem.description}
+            >
+                <p class="slds-line-clamp_x-small">
+                    {selectedItem.description}
+                </p>
+            </div>
+
+            <!-- Fields -->
+            <footer
+                class="slds-grid slds-wrap slds-media__body"
+                if:true={selectedItem.fields}
+            >
+                <div
+                    class="
+                        slds-has-flexi-truncate
+                        avonni-activity-timeline__horizontal-fields-container
+                    "
+                >
+                    <c-layout multiple-rows>
+                        <template
+                            for:each={selectedItem.fields}
+                            for:item="field"
+                            for:index="index"
+                        >
+                            <c-layout-item
+                                key={generateKey}
+                                class="slds-truncate"
+                                size={fieldAttributes.cols}
+                            >
+                                <c-output-data
+                                    label={field.label}
+                                    value={field.value}
+                                    type={field.type}
+                                    type-attributes={field.typeAttributes}
+                                    variant={horizontalFieldsVariant}
+                                    data-element-id="avonni-output-data"
+                                ></c-output-data>
+                            </c-layout-item>
+                        </template>
+                    </c-layout>
+                </div>
+            </footer>
         </div>
     </div>
 </template>

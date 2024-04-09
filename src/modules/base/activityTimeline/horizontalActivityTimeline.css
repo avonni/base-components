@@ -1,3 +1,7 @@
+.avonni-activity-timeline__container {
+    position: relative;
+}
+
 .avonni-activity-timeline__horizontal-timeline-items {
     margin: 0px;
     padding: 0px;
