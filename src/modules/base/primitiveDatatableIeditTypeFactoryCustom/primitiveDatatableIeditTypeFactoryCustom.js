@@ -207,10 +207,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     @api
     showHelpMessageIfInvalid() {
-        if (
-            this.columnDef.type !== 'rich-text' &&
-            this.columnDef.type !== 'lookup'
-        ) {
+        if (this.columnType !== 'rich-text' && this.columnType !== 'lookup') {
             this.concreteComponent.showHelpMessageIfInvalid();
         }
     }
@@ -222,7 +219,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
      */
 
     getComboboxOptionsEvent() {
-        if (this.columnDef.type !== 'combobox') return;
+        if (this.columnType !== 'combobox') return;
         this.dispatchEvent(
             new CustomEvent('getcomboboxoptions', {
                 detail: {
@@ -238,7 +235,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     getRichTextFormatsEvent() {
-        if (this.columnDef.type !== 'rich-text') return;
+        if (this.columnType !== 'rich-text') return;
         this.dispatchEvent(
             new CustomEvent('getrichtextformats', {
                 detail: {

@@ -722,7 +722,7 @@ const recordsPR = [
         progressRingVariant: 'warning',
         qrcode: 'https://www.avonni.app/',
         rating: '3',
-        richText: '<h1 style="text-align: left">With Value Left</h1>'
+        richText: '<h1 style="text-align: left;">With Value Left</h1>'
     },
     {
         id: 2,
@@ -736,7 +736,7 @@ const recordsPR = [
         qrcodeBorderColor: '#45c65a',
         qrcodeBorderWidth: 5,
         rating: '2',
-        richText: '<h2 style="text-align: center">With Value Centered</h2>'
+        richText: '<h2 style="text-align: center;">With Value Centered</h2>'
     },
     {
         id: 3,
@@ -747,7 +747,7 @@ const recordsPR = [
         qrcode: 'https://www.avonni.app/',
         ratingDisabled: true,
         richText:
-            '<h3 style="text-align: right">Disabled With Value Right</h3>',
+            '<h3 style="text-align: right;">Disabled With Value Right</h3>',
         richTextDisabled: true
     },
     {
@@ -760,7 +760,7 @@ const recordsPR = [
         progressRingVariant: 'expired',
         qrcode: 'https://www.avonni.app/',
         rating: '5',
-        richText: '<h4 style="text-align: center">With Value Centered</h4>',
+        richText: '<h4 style="text-align: center;">With Value Centered</h4>',
         richTextFormats: ['font']
     },
     {
@@ -784,7 +784,7 @@ const recordsPR = [
         ],
         qrcode: 'https://www.avonni.app/',
         rating: '4',
-        richText: '<h5 style="text-align: left">With Value Left</h5>'
+        richText: '<h5 style="text-align: left;">With Value Left</h5>'
     }
 ];
 
