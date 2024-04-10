@@ -91,10 +91,6 @@ export class HorizontalActivityTimeline {
     _scrollAxisDiv;
     _scrollAxisSVG;
 
-    _scrollEndTimeout;
-    _scrollEnd = true;
-    _isVerticalScroll = false;
-
     constructor(activityTimeline, sortedItems) {
         this.addValidItemsToData(sortedItems);
         this._activityTimeline = activityTimeline;
@@ -557,11 +553,13 @@ export class HorizontalActivityTimeline {
     addValidItemsToData(sortedItems) {
         this._sortedItems = [];
 
-        sortedItems.forEach((item) => {
-            if (!this.isDateInvalid(item.datetimeValue)) {
-                this._sortedItems.push(item);
-            }
-        });
+        if (sortedItems) {
+            sortedItems.forEach((item) => {
+                if (!this.isDateInvalid(item.datetimeValue)) {
+                    this._sortedItems.push(item);
+                }
+            });
+        }
     }
 
     /**
@@ -625,16 +623,6 @@ export class HorizontalActivityTimeline {
         if (!this._isResizingInterval) {
             this._changeIntervalSizeMode = false;
             this.setIntervalBoundsState();
-        }
-    }
-
-    /**
-     * Cancel swipe left (to go back to previous page) if user is scrolling left on interval.
-     */
-    cancelSwipeLeftIfScrollLeft(event) {
-        if (event.deltaX < 0) {
-            event.stopPropagation();
-            event.preventDefault();
         }
     }
 
@@ -1305,6 +1293,18 @@ export class HorizontalActivityTimeline {
      */
     isDateInvalid(date) {
         return new Date(date).toString() === 'Invalid Date' || !date;
+    }
+
+    /**
+     * Check if user is scrolling vertically.
+     *
+     * @return {boolean}
+     */
+    isScrollingVerticallyOnTimeline(event) {
+        return (
+            Math.abs(event.deltaY) > 0 &&
+            Math.abs(event.deltaY) > Math.abs(event.deltaX)
+        );
     }
 
     /**
@@ -2039,59 +2039,37 @@ export class HorizontalActivityTimeline {
         const timeIntervalSelectorRight =
             timeIntervalSelector.getBoundingClientRect().right;
 
+        const canScroll = Math.abs(event.deltaX) !== Math.abs(event.deltaY);
         const isScrollingVertically =
-            Math.abs(event.deltaY) > 0 &&
-            Math.abs(event.deltaY) > Math.abs(event.deltaX);
-        const scrollToBottom = event.deltaY > 0;
-        const scrollToRight = event.deltaX > 0;
+            this.isScrollingVerticallyOnTimeline(event);
 
         const scrollLeftEnd =
-            !isScrollingVertically &&
             this.scrollAxisLeftPosition === timeIntervalSelectorLeft &&
-            !scrollToRight;
+            event.deltaX <= 0;
         const scrollRightEnd =
-            !isScrollingVertically &&
             timeIntervalSelectorRight >=
                 this.scrollAxisLeftPosition +
                     this.scrollAxisRectangle.getBoundingClientRect().width &&
-            scrollToRight;
-
+            event.deltaX > 0;
         const scrollTopEnd =
-            isScrollingVertically &&
-            this.divTimelineScroll.scrollTop <= 0 &&
-            !scrollToBottom;
+            this.divTimelineScroll.scrollTop <= 0 && event.deltaY <= 0;
         const scrollBottomEnd =
-            isScrollingVertically &&
             this.divTimelineScroll.scrollTop +
                 this.divTimelineScroll.clientHeight >=
-                this.divTimelineScroll.scrollHeight &&
-            scrollToBottom;
+                this.divTimelineScroll.scrollHeight && event.deltaY > 0;
 
         if (
-            scrollTopEnd ||
-            scrollBottomEnd ||
-            scrollLeftEnd ||
-            scrollRightEnd
+            !canScroll ||
+            (!isScrollingVertically && (scrollLeftEnd || scrollRightEnd)) ||
+            (isScrollingVertically && (scrollTopEnd || scrollBottomEnd))
         ) {
-            this._scrollEnd = true;
-            this._isVerticalScroll = false;
             return;
         }
 
-        if (this._scrollEnd) {
-            this._scrollEnd = false;
-            this._isVerticalScroll = isScrollingVertically;
-        }
-
-        if (
-            !this._scrollEnd &&
-            !this._isVerticalScroll &&
-            !isScrollingVertically
-        ) {
+        if (!isScrollingVertically) {
             event.stopPropagation();
             event.preventDefault();
 
-            this.cancelSwipeLeftIfScrollLeft(event);
             this.cancelEditIntervalSizeMode();
             this.handleMouseOutOfPopover();
 
@@ -2102,11 +2080,5 @@ export class HorizontalActivityTimeline {
                 this.validateXMousePosition(requestedPosition)
             );
         }
-
-        clearTimeout(this._scrollEndTimeout);
-        this._scrollEndTimeout = setTimeout(() => {
-            this._scrollEnd = true;
-            this._isVerticalScroll = false;
-        }, 100);
     }
 }

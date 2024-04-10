@@ -2180,6 +2180,12 @@ describe('Activity Timeline', () => {
                 intervalRectangle = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
+                jest.spyOn(
+                    intervalRectangle,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: initialIntervalPosition };
+                });
                 expect(
                     Math.floor(Number(intervalRectangle.getAttribute('x')))
                 ).toBe(initialIntervalPosition);
@@ -2227,6 +2233,12 @@ describe('Activity Timeline', () => {
                 intervalRectangle = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
+                jest.spyOn(
+                    intervalRectangle,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: initialIntervalPosition };
+                });
                 expect(
                     Math.floor(Number(intervalRectangle.getAttribute('x')))
                 ).toBe(initialIntervalPosition);
