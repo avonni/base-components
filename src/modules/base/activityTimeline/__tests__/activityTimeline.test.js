@@ -1083,6 +1083,74 @@ describe('Activity Timeline', () => {
         });
     });
 
+    it('Activity Timeline: horizontal - actionclick event', () => {
+        SVGElement.prototype.getComputedTextLength = () => {
+            return 100;
+        };
+        element.actions = actions;
+        element.items = horizontalItemsTest;
+        element.orientation = 'horizontal';
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const timelineItemsSVG = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+                );
+                const itemSVGGroup = timelineItemsSVG.querySelector(
+                    '#timeline-item-item13'
+                );
+                itemSVGGroup.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                const popoverItem = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                );
+                const popoverActionsMenu = popoverItem.querySelector(
+                    '[data-element-id="lightning-button-menu-actions"]'
+                );
+                popoverActionsMenu.dispatchEvent(
+                    new CustomEvent('select', {
+                        detail: { value: actions[0].name }
+                    })
+                );
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.name).toBe('add-item');
+                expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                    'item13'
+                );
+                expect(handler.mock.calls[0][0].detail.fieldData).toEqual([
+                    {
+                        label: 'Name',
+                        value: 'Charlie Gomez',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Charlie Gomez'
+                        }
+                    },
+                    {
+                        label: 'Related To',
+                        value: 'Tesla Cloudhub + Anypoint Connectors',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Tesla Cloudhub + Anypoint Connectors'
+                        }
+                    },
+                    {
+                        label: 'Description',
+                        value: 'Need to finalize proposals and brand details before the meeting',
+                        type: 'text'
+                    }
+                ]);
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+    });
+
     it('Activity Timeline: horizontal - click on close button of popover should not trigger itemclick', () => {
         SVGElement.prototype.getComputedTextLength = () => {
             return 100;

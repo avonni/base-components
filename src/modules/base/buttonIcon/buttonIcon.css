@@ -636,8 +636,9 @@
     --slds-c-button-success-color-border: var(
         --avonni-button-icon-success-color-border
     );
-    --slds-c-button-success-text-color: var(
-        --avonni-button-icon-success-text-color
+    color: var(
+        --avonni-button-icon-success-text-color,
+        var(--lwc-colorTextDefault, #181818)
     );
 }
 

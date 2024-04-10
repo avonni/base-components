@@ -46,7 +46,7 @@
 }
 
 .avonni-color-picker-tabs_default__item.slds-is-active {
-    color: #181818;
+    color: var(--lwc-colorTextDefault, #181818);
 }
 
 .avonni-color-picker-tabs_default__item.slds-is-active
