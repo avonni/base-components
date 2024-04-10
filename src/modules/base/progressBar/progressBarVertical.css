@@ -158,13 +158,16 @@
 
 /* Base */
 .avonni-progress-bar__pin_theme-base {
-    background: var(--avonni-progress-bar-pin-color-background, #0176d3);
+    background: var(
+        --avonni-progress-bar-pin-color-background,
+        var(--lwc-brandAccessible, #0176d3)
+    );
 }
 
 .avonni-progress-bar__bar_theme-base {
     background: var(
         --avonni-progress-bar-bar-value-base-color-background,
-        #0176d3
+        var(--lwc-brandAccessible, #0176d3)
     );
 }
 

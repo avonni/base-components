@@ -41,21 +41,27 @@
     );
     border-color: var(
         --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
+        var(
+            --avonni-vertical-visual-picker-figure-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
         inset;
     box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
+        var(
+            --avonni-vertical-visual-picker-figure-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
         inset;
     border-right-color: var(
         --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     border-top-color: var(
         --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
 }
 
@@ -89,12 +95,21 @@
     cursor: pointer;
     outline: 0;
     border: 1px solid
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff);
+        var(
+            --avonni-vertical-visual-picker-figure-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        );
     -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
+        var(
+            --avonni-vertical-visual-picker-figure-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
         inset;
     box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
+        var(
+            --avonni-vertical-visual-picker-figure-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
         inset;
 }
 
@@ -117,18 +132,18 @@
     );
     border-color: var(
         --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     -webkit-box-shadow: 0 0 0 1px
         var(
             --avonni-vertical-visual-picker-figure-color-border-selected,
-            #1b96ff
+            var(--lwc-brandPrimary, #1b96ff)
         )
         inset;
     box-shadow: 0 0 0 1px
         var(
             --avonni-vertical-visual-picker-figure-color-border-selected,
-            #1b96ff
+            var(--lwc-brandPrimary, #1b96ff)
         )
         inset;
 }
@@ -137,11 +152,11 @@
     content: '';
     border-right-color: var(
         --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     border-top-color: var(
         --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
 }
 
@@ -152,11 +167,11 @@
     content: '';
     border-right-color: var(
         --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     border-top-color: var(
         --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
 }
 
@@ -170,11 +185,11 @@
 .slds-visual-picker input:checked ~ label .slds-visual-picker__icon {
     background-color: var(
         --avonni-vertical-visual-picker-figure-color-background-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     border-color: var(
         --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
 }
 
