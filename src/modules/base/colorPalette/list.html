@@ -13,81 +13,23 @@
     <div
         if:false={isLoading}
         class="avonni-color-palette__list-container slds-scrollable"
+        role="listbox"
+        aria-roledescription="Color palette"
     >
         <template for:each={computedGroups} for:item="group">
-            <div
+            <c-primitive-color-palette-group
                 key={group.name}
                 class={groupClass}
-                data-element-id="div-group"
-            >
-                <div
-                    if:true={group.label}
-                    class="
-                        slds-form-element__legend slds-form-element__label
-                        slds-float_none
-                        slds-m-horizontal_xx-small
-                    "
-                    data-element-id="div-group-label"
-                >
-                    {group.label}
-                </div>
-
-                <template for:each={group.colors} for:item="color">
-                    <div
-                        key={generateKey}
-                        class="slds-dropdown__item"
-                        role="presentation"
-                        data-color={color.color}
-                        data-label={color.label}
-                        data-selectable
-                        data-token={color.value}
-                        onclick={handleClick}
-                    >
-                        <a
-                            aria-checked="true"
-                            aria-disabled={disabled}
-                            aria-readonly={readOnly}
-                            href="javascript:void(0)"
-                            role="menuitemcheckbox"
-                            data-element-id="a-list"
-                            onblur={handleBlur}
-                            ondblclick={handleDblClick}
-                            onfocus={handleFocus}
-                        >
-                            <span
-                                class="slds-truncate"
-                                title={color.label}
-                                data-element-id="span-list-icon-wrapper"
-                            >
-                                <lightning-icon
-                                    class="
-                                        slds-icon_selected
-                                        slds-icon-text-default
-                                        slds-m-right_x-small
-                                    "
-                                    alternative-text="Checked"
-                                    icon-name="utility:check"
-                                    size="x-small"
-                                ></lightning-icon>
-                                {color.label}
-                            </span>
-                            <div role="presentation">
-                                <div class="slds-color-picker__swatch-trigger">
-                                    <span
-                                        class="slds-swatch"
-                                        data-color={color.color}
-                                        data-element-id="span-swatch"
-                                    >
-                                        <p class="slds-assistive-text">
-                                            {color.color}
-                                        </p>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </template>
-            </div>
+                colors={group.colors}
+                disabled={disabled}
+                label={group.label}
+                read-only={readOnly}
+                role="presentation"
+                onblur={handleBlur}
+                ondblclick={handleDblClick}
+                onfocus={handleFocus}
+                onprivatecolorselect={handleListColorSelect}
+            ></c-primitive-color-palette-group>
         </template>
     </div>
 </template>

@@ -43,7 +43,7 @@
                                 role="presentation"
                             >
                                 <a
-                                    class={computedSwatchTriggerClass}
+                                    class={color.gridItemClass}
                                     aria-disabled={disabled}
                                     aria-label={color.label}
                                     aria-readonly={readOnly}
@@ -66,14 +66,13 @@
                                             slds-grid
                                             slds-grid_align-center
                                             slds-grid_vertical-align-center
+                                            avonni-primitive-color-palette-group__swatch
                                         "
-                                        data-color={color.color}
-                                        data-element-id="span-swatch"
+                                        style={color.swatchStyle}
                                     >
                                         <span
-                                            class="
-                                                avonni-color-palette__selected-checkmark
-                                            "
+                                            if:true={color.showCheckMark}
+                                            style={color.checkMarkStyle}
                                         >
                                             <c-primitive-icon
                                                 icon-name="utility:check"
