@@ -6,6 +6,7 @@ const DISABLED_COLOR = '#dddbda';
 export default class ColorPaletteColor {
     constructor(props) {
         this.color = props.color;
+        this.disabled = props.disabled;
         this.displayCheckMark = props.displayCheckMark;
         this.hideOutline = props.hideOutline;
         this.label = props.label;

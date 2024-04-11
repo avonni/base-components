@@ -446,6 +446,14 @@ export default class ColorPalette extends LightningElement {
 
             if (color instanceof Object) {
                 const colorGroups = normalizeArray(color.groups);
+                computedColor = new Color({
+                    ...computedColor,
+                    ...color,
+                    selected:
+                        this.value &&
+                        (this.value === color.value ||
+                            this.value === color.color)
+                });
 
                 if (this.groups.length && colorGroups.length) {
                     colorGroups.forEach((groupName) => {
@@ -463,16 +471,7 @@ export default class ColorPalette extends LightningElement {
                                     colors: []
                                 };
                             }
-                            groups[groupName].colors.push(
-                                new Color({
-                                    ...computedColor,
-                                    ...color,
-                                    selected:
-                                        this.value &&
-                                        (this.value === color.value ||
-                                            this.value === color.color)
-                                })
-                            );
+                            groups[groupName].colors.push(computedColor);
                             hasBeenAddedToAGroup = true;
                         }
                     });
@@ -480,9 +479,10 @@ export default class ColorPalette extends LightningElement {
             } else {
                 computedColor.color = color;
                 computedColor.selected = this.value && this.value === color;
+                computedColor = new Color(computedColor);
             }
             if (!hasBeenAddedToAGroup) {
-                undefinedGroup.colors.push(new Color(computedColor));
+                undefinedGroup.colors.push(computedColor);
             }
         });
 
@@ -576,13 +576,6 @@ export default class ColorPalette extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = token || color;
         this.dispatchChange(generateColors(color));
-    }
-
-    handleListColorSelect(event) {
-        event.stopPropagation();
-        const { color, token } = event.detail;
-        this._value = token || color;
-        this.initGroups();
     }
 
     /**

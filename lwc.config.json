@@ -427,10 +427,6 @@
             "path": "src/modules/base/chipContainer/chipContainer.js"
         },
         {
-            "name": "c/primitiveColorPaletteGroup",
-            "path": "src/modules/base/primitiveColorPaletteGroup/primitiveColorPaletteGroup.js"
-        },
-        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
