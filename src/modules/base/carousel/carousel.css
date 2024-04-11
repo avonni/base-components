@@ -72,7 +72,10 @@
 }
 
 .avonni-carousel__nav-button:hover .avonni-carousel__nav-icon {
-    color: var(--avonni-carousel-navigation-icon-color-hover, #014486);
+    color: var(
+        --avonni-carousel-navigation-icon-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
 }
 
 .avonni-carousel__nav-button:disabled .avonni-carousel__nav-icon {
