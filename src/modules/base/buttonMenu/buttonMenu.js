@@ -385,6 +385,7 @@ export default class ButtonMenu extends PrimitiveButton {
             this.variant === 'bare-inverse' ||
             this.variant === 'base';
         const isAddedVariant =
+            this.variant === 'base' ||
             this.variant === 'brand' ||
             this.variant === 'brand-outline' ||
             this.variant === 'destructive' ||
@@ -397,63 +398,54 @@ export default class ButtonMenu extends PrimitiveButton {
             this.variant === 'bare-inverse' ||
             this.variant === 'border-inverse';
 
-        const classes = classSet('slds-button');
+        const classes = classSet('slds-button avonni-button-menu');
 
         classes.add(`avonni-button-menu_${this.variant}`);
         classes.add(buttonGroupOrderClass(this.groupOrder));
+        classes.add({
+            'slds-button_brand': this.variant === 'brand',
+            'slds-button_outline-brand': this.variant === 'brand-outline',
+            'slds-button_destructive': this.variant === 'destructive',
+            'slds-button_text-destructive': this.variant === 'destructive-text',
+            'slds-button_inverse': this.variant === 'inverse',
+            'slds-button_neutral': this.variant === 'neutral',
+            'slds-button_success': this.variant === 'success'
+        });
 
         if (this.stretch) {
             classes.add('slds-button_stretch');
         }
-
         if (this.label) {
             classes.add({
                 'avonni-button-menu__button_label': this.label,
-                'slds-button_neutral':
-                    this.variant === 'border' ||
-                    this.variant === 'border-filled' ||
-                    this.variant === 'neutral',
-                'slds-button_inverse':
-                    this.variant === 'inverse' ||
-                    this.variant === 'bare-inverse' ||
-                    this.variant === 'border-inverse',
-                'slds-button_brand': this.variant === 'brand',
-                'slds-button_outline-brand': this.variant === 'brand-outline',
-                'slds-button_destructive': this.variant === 'destructive',
-                'slds-button_text-destructive':
-                    this.variant === 'destructive-text',
-                'slds-button_success': this.variant === 'success',
                 'avonni-button-menu__button_medium': this.iconSize === 'medium',
                 'avonni-button-menu__button_large': this.iconSize === 'large'
             });
         } else {
             classes.add({
                 'slds-button_icon':
-                    !this.computedHideDownIcon && !this.variant === 'base',
+                    !this.computedHideDownIcon && !isAddedVariant,
                 'slds-button_icon-bare': isBare,
                 'avonni-button-menu__button-icon-more':
                     !useMoreContainer && !this.computedHideDownIcon,
                 'avonni-button-menu__button-icon-container-more':
                     useMoreContainer && !this.computedHideDownIcon,
-                'slds-button_icon-brand slds-button_icon':
-                    this.variant === 'brand',
-                'slds-button_icon-container':
-                    this.variant === 'container' && this.computedHideDownIcon,
                 'slds-button_icon-border':
                     this.variant === 'border' && this.computedHideDownIcon,
                 'slds-button_icon-border-filled':
                     this.variant === 'border-filled',
                 'slds-button_icon-border-inverse':
                     this.variant === 'border-inverse',
+                'slds-button_icon-container':
+                    this.variant === 'container' && this.computedHideDownIcon,
                 'slds-button_icon-inverse': this.variant === 'bare-inverse',
                 'avonni-button-menu__button-icon': isAddedVariant,
-                'slds-button_icon-xx-small': this.iconSize === 'xx-small',
-                'slds-button_icon-x-small': this.iconSize === 'x-small',
-                'slds-button_icon-small': this.iconSize === 'small'
+                [`slds-button_icon-${this.iconSize}`]: !isBare
             });
             if (
-                this.iconSrc ||
-                (this.iconName && !this.iconSrc && !this.label)
+                !isBare &&
+                (this.iconSrc ||
+                    (this.iconName && !this.iconSrc && !this.label))
             ) {
                 classes.add(`avonni-button-menu__icon_${this.iconSize}`).add({
                     'avonni-button-menu__button-icon':
@@ -551,6 +543,11 @@ export default class ButtonMenu extends PrimitiveButton {
         return this.loadingStateAlternativeText || i18n.loading;
     }
 
+    /**
+     * Computed main icon class styling.
+     *
+     * @type {string}
+     */
     get computedMainIconClass() {
         // Scale adjustment is needed for standard or custom icons.
         const isCustomOrStandardIcon =
@@ -575,6 +572,11 @@ export default class ButtonMenu extends PrimitiveButton {
         return this.menuAlignment.startsWith('auto');
     }
 
+    /**
+     * Returns true if icon is a down icon.
+     *
+     * @type {boolean}
+     */
     get isDownIcon() {
         return ['utility:down', 'utility:chevrondown'].includes(this.iconName);
     }

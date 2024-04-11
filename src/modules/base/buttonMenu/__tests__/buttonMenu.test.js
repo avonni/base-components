@@ -825,7 +825,9 @@ describe('Button Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.className).toContain('slds-button_neutral');
+                    expect(button.className).toContain(
+                        'avonni-button-menu_border avonni-button-menu__button_label'
+                    );
                 });
             });
 
@@ -870,9 +872,6 @@ describe('Button Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toContain(
-                        'slds-button_icon-border-inverse'
-                    );
-                    expect(button.className).toContain(
                         'avonni-button-menu_border-inverse'
                     );
                 });
@@ -886,7 +885,6 @@ describe('Button Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.className).toContain('slds-button_inverse');
                     expect(button.className).toContain(
                         'avonni-button-menu_border-inverse'
                     );
@@ -899,9 +897,6 @@ describe('Button Menu', () => {
                 return Promise.resolve().then(() => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
-                    );
-                    expect(button.className).toContain(
-                        'slds-button_icon-brand'
                     );
                     expect(button.className).toContain(
                         'avonni-button-menu_brand'

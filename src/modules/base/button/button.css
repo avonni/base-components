@@ -3,7 +3,7 @@
     --slds-c-button-shadow-focus: var(--avonni-button-shadow-focus);
     --slds-c-button-line-height: var(--avonni-button-line-height);
     --slds-c-button-radius-border: var(--avonni-button-radius-border);
-    --slds-c-button-sizing-border: var(--avonni-button-sizing-border);
+    border-width: var(--avonni-button-sizing-border, 1px);
     border-style: var(--avonni-button-styling-border, solid);
 }
 
