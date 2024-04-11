@@ -21,7 +21,7 @@
             actions={primaryItem.actions}
             action-position={primaryItem.actionPosition}
             action-menu-icon={primaryItem.actionMenuIcon}
-            data-element-id="avonni-primitive-avatar-classic-1"
+            data-element-id="li-visible"
             data-group-name="avatar"
             data-index="0"
             class="
@@ -35,14 +35,6 @@
             onmouseenter={handleItemMouseEnter}
             onmouseleave={handleItemMouseLeave}
         ></c-primitive-avatar>
-        <!-- Primary Item Tooltip -->
-        <c-primitive-tooltip
-            if:true={primaryItem.hasTooltip}
-            class="slds-is-absolute avonni-avatar-group__bottom-tooltip"
-            hide-nubbin="true"
-            style={primaryItem.tooltipStyle}
-            label={primaryItem.alternativeText}
-        ></c-primitive-tooltip>
         <c-primitive-avatar
             fallback-icon-name={secondaryItem.fallbackIconName}
             initials={secondaryItem.initials}
@@ -60,7 +52,7 @@
             entity-variant={secondaryItem.entityVariant}
             entity-src={secondaryItem.entitySrc}
             entity-position={secondaryItem.entityPosition}
-            data-element-id="avonni-primitive-avatar-classic-2"
+            data-element-id="li-visible"
             data-group-name="avatar"
             data-index="1"
             class="
@@ -74,14 +66,6 @@
             onmouseenter={handleItemMouseEnter}
             onmouseleave={handleItemMouseLeave}
         ></c-primitive-avatar>
-        <!-- Secondary Item Tooltip -->
-        <c-primitive-tooltip
-            if:true={secondaryItem.hasTooltip}
-            class="slds-is-absolute avonni-avatar-group__right-tooltip"
-            hide-nubbin="true"
-            style={secondaryItem.tooltipStyle}
-            label={secondaryItem.alternativeText}
-        ></c-primitive-tooltip>
     </div>
 
     <template if:false={isClassic}>
@@ -143,17 +127,6 @@
                         data-index={index}
                     >
                     </c-avatar>
-                    <!-- Tooltip -->
-                    <c-primitive-tooltip
-                        if:true={item.hasTooltip}
-                        class="
-                            slds-is-absolute
-                            avonni-avatar-group__bottom-tooltip
-                        "
-                        hide-nubbin="true"
-                        style={item.tooltipStyle}
-                        label={item.alternativeText}
-                    ></c-primitive-tooltip>
                 </li>
             </template>
 

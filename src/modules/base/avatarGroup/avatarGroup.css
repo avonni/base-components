@@ -312,16 +312,3 @@ button.avonni-avatar-group__avatar-in-line-button {
 .avonni-avatar-group__avatar-list_infinite-loading {
     height: 100%;
 }
-
-/* Tooltip */
-.avonni-avatar-group__bottom-tooltip {
-    top: calc(100% + 0.5rem);
-    transform: translateX(calc(-50%));
-    z-index: 1;
-}
-
-.avonni-avatar-group__right-tooltip {
-    left: calc(100% + 0.5rem);
-    transform: translateY(calc(-50%));
-    z-index: 1;
-}

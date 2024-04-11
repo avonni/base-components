@@ -359,6 +359,11 @@ export class Tooltip {
     }
 
     startPositioning() {
+        const target = this._target();
+        if (!target) {
+            return;
+        }
+
         if (!this._autoPosition) {
             this._autoPosition = new AutoPosition(this._root);
         }

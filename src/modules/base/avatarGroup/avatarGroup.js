@@ -13,6 +13,7 @@ import {
     startPositioning,
     stopPositioning
 } from 'c/positionLibrary';
+import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const AVATAR_GROUP_SIZES = {
@@ -120,12 +121,14 @@ export default class AvatarGroup extends LightningElement {
     _variant = AVATAR_GROUP_VARIANTS.default;
 
     showHiddenItems = false;
+
     _autoPosition;
     _connected = false;
     _focusAnimationFrame;
     _focusedIndex = 0;
     _hiddenItemsStartIndex = 0;
     _itemIndex;
+    _tooltips = [];
     _lastHiddenItemIndex;
     _maxVisibleCount;
     _popoverFocusoutAnimationFrame;
@@ -159,10 +162,11 @@ export default class AvatarGroup extends LightningElement {
         const avatars = this.template.querySelectorAll(
             '[data-group-name="avatar"]'
         );
-
         avatars.forEach((avatar, index) => {
             avatar.style.zIndex = avatars.length - index;
         });
+
+        this.initTooltips();
     }
 
     disconnectedCallback() {
@@ -245,6 +249,7 @@ export default class AvatarGroup extends LightningElement {
     set items(value) {
         this.keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
+        this._tooltips = [];
 
         if (
             this.showHiddenItems &&
@@ -513,12 +518,12 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Avatar Item HTML element.
+     * List of avatar Item HTML element.
      *
-     * @type {HTMLElement}
+     * @type {HTMLElement[]}
      */
-    get avatarItemElement() {
-        return this.template.querySelector('[data-element-id="li-visible"]');
+    get avatarItemElements() {
+        return this.template.querySelectorAll('[data-element-id="li-visible"]');
     }
 
     /**
@@ -738,34 +743,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {object}
      */
     get primaryItem() {
-        const item = this.hasTwoItems ? this.items[0] : {};
-        const hasTooltip =
-            this.isClassic &&
-            !isNaN(this._itemIndex) &&
-            this._itemIndex === 0 &&
-            item.alternativeText;
-
-        let tooltipAdjustment = 0;
-        if (this.size === 'x-small') {
-            tooltipAdjustment = 0.5;
-        } else if (this.size === 'small') {
-            tooltipAdjustment = 0.6;
-        } else if (this.size === 'medium') {
-            tooltipAdjustment = 0.75;
-        } else if (this.size === 'large') {
-            tooltipAdjustment = 1.25;
-        } else if (this.size === 'x-large') {
-            tooltipAdjustment = 1.8;
-        } else if (this.size === 'xx-large') {
-            tooltipAdjustment = 2.25;
-        }
-        const tooltipStyle = `transform:translateX(calc(-50% + ${tooltipAdjustment}rem));`;
-
-        return {
-            ...item,
-            hasTooltip,
-            tooltipStyle
-        };
+        return this.hasTwoItems ? this.items[0] : {};
     }
 
     /**
@@ -774,34 +752,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {object}
      */
     get secondaryItem() {
-        const item = this.hasTwoItems ? this.items[1] : {};
-        const hasTooltip =
-            this.isClassic &&
-            !isNaN(this._itemIndex) &&
-            this._itemIndex === 1 &&
-            item.alternativeText;
-
-        let tooltipAdjustment = 0;
-        if (this.size === 'x-small') {
-            tooltipAdjustment = 0.35;
-        } else if (this.size === 'small') {
-            tooltipAdjustment = 0.5;
-        } else if (this.size === 'medium') {
-            tooltipAdjustment = 0.6;
-        } else if (this.size === 'large') {
-            tooltipAdjustment = 0.75;
-        } else if (this.size === 'x-large') {
-            tooltipAdjustment = 1;
-        } else if (this.size === 'xx-large') {
-            tooltipAdjustment = 1.25;
-        }
-        const tooltipStyle = `transform:translateY(calc(-50% + ${tooltipAdjustment}rem));`;
-
-        return {
-            ...item,
-            hasTooltip,
-            tooltipStyle
-        };
+        return this.hasTwoItems ? this.items[1] : {};
     }
 
     /**
@@ -898,40 +849,9 @@ export default class AvatarGroup extends LightningElement {
      * @type {object[]}
      */
     get visibleItems() {
-        const items =
-            this.items.length > this.computedMaxCount
-                ? this.items.slice(0, this.computedMaxCount)
-                : this.items;
-
-        return items.map((item, index) => {
-            const hasTooltip =
-                this.isNotList &&
-                !isNaN(this._itemIndex) &&
-                this._itemIndex === index &&
-                item.alternativeText;
-
-            let tooltipAdjustment = 0;
-            if (this.size === 'x-small') {
-                tooltipAdjustment = 0.6;
-            } else if (this.size === 'small') {
-                tooltipAdjustment = 0.75;
-            } else if (this.size === 'medium') {
-                tooltipAdjustment = 1;
-            } else if (this.size === 'large') {
-                tooltipAdjustment = 1.5;
-            } else if (this.size === 'x-large') {
-                tooltipAdjustment = 1.75;
-            } else if (this.size === 'xx-large') {
-                tooltipAdjustment = 2.25;
-            }
-            const tooltipStyle = `transform:translateX(calc(-50% - ${tooltipAdjustment}rem));`;
-
-            return {
-                ...item,
-                hasTooltip,
-                tooltipStyle
-            };
-        });
+        return this.items.length > this.computedMaxCount
+            ? this.items.slice(0, this.computedMaxCount)
+            : this.items;
     }
 
     /**
@@ -984,6 +904,17 @@ export default class AvatarGroup extends LightningElement {
             }
         }
         return null;
+    }
+
+    /**
+     * Initialize the tooltips.
+     */
+    initTooltips() {
+        this._tooltips
+            .filter((tooltip) => tooltip && !tooltip.initialized)
+            .forEach((tooltip) => {
+                tooltip.initialize();
+            });
     }
 
     /**
@@ -1093,7 +1024,7 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
-    startPositioning() {
+    async startPositioning() {
         this._positioning = true;
         return animationFrame()
             .then(() => {
@@ -1133,6 +1064,7 @@ export default class AvatarGroup extends LightningElement {
             .then(() => {
                 // Use a flag to prevent this async function from executing multiple times in a single lifecycle
                 this._positioning = false;
+                return Promise.resolve();
             });
     }
 
@@ -1147,12 +1079,12 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Toggle the visibility of the hidden items popover.
      */
-    toggleItemsVisibility() {
+    async toggleItemsVisibility() {
         this.showHiddenItems = !this.showHiddenItems;
 
         if (this.showHiddenItems) {
             if (this.isNotList) {
-                this.startPositioning();
+                await this.startPositioning();
             }
 
             this._hiddenItemsStartIndex = this.computedMaxCount;
@@ -1203,7 +1135,9 @@ export default class AvatarGroup extends LightningElement {
     updateVisibleMaxCount() {
         if (
             !this.wrapperElement ||
-            (!this.avatarItemElement && !this.showMoreButtonElement) ||
+            (this.avatarItemElements.length > 0 &&
+                this.avatarItemElements[0] &&
+                !this.showMoreButtonElement) ||
             this.items.length <= 1
         ) {
             if (this.enableInfiniteLoading && !this.isLoading) {
@@ -1219,7 +1153,9 @@ export default class AvatarGroup extends LightningElement {
             : totalWidth;
 
         const referenceElement =
-            this.avatarItemElement || this.showMoreButtonElement;
+            (this.avatarItemElements.length > 0 &&
+                this.avatarItemElements[0]) ||
+            this.showMoreButtonElement;
 
         const referenceElementStyles =
             window.getComputedStyle(referenceElement);
@@ -1416,6 +1352,33 @@ export default class AvatarGroup extends LightningElement {
      */
     handleItemMouseEnter(event) {
         this._itemIndex = Number(event.target.dataset.index);
+
+        if (
+            (this.isClassic || this.isNotList) &&
+            this._itemIndex >= 0 &&
+            !this._tooltips[this._itemIndex]
+        ) {
+            const tooltipValue =
+                this.items[this._itemIndex].alternativeText || '';
+
+            if (tooltipValue) {
+                this._tooltips[this._itemIndex] = new Tooltip(tooltipValue, {
+                    type: TooltipType.Toggle,
+                    root: this,
+                    target: () => this.avatarItemElements[this._itemIndex],
+                    align: {
+                        horizontal: Direction.Center,
+                        vertical: Direction.Top
+                    },
+                    targetAlign: {
+                        horizontal: Direction.Center,
+                        vertical: Direction.Bottom
+                    }
+                });
+                this._tooltips[this._itemIndex].initialize();
+                this._tooltips[this._itemIndex].show();
+            }
+        }
     }
 
     /**

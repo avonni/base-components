@@ -527,10 +527,6 @@
             "path": "src/modules/base/primitiveTreeItem/primitiveTreeItem.js"
         },
         {
-            "name": "c/primitiveTooltip",
-            "path": "src/modules/base/primitiveTooltip/primitiveTooltip.js"
-        },
-        {
             "name": "c/primitiveVisualPickerHeader",
             "path": "src/modules/base/primitiveVisualPickerHeader/primitiveVisualPickerHeader.js"
         },
