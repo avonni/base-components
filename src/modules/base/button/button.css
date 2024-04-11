@@ -225,7 +225,7 @@
     );
     color: var(
         --avonni-button-border-text-color,
-        var(--slds-g-color-neutral-base-50 #747474)
+        var(--slds-g-color-neutral-base-50, #747474)
     );
     padding-right: var(--avonni-button-border-spacing-inline-end, 1rem);
     padding-left: var(--avonni-button-border-spacing-inline-start, 1rem);
