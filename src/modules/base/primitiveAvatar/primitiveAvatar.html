@@ -2,7 +2,7 @@
     <div class={wrapperClass} if:true={showAvatar}>
         <!-- Main avatar with link -->
         <a
-            lwc:if={href}
+            if:true={href}
             class={avatarClass}
             data-element-id="avatar-container"
             href={href}
@@ -38,7 +38,11 @@
         </a>
 
         <!-- Main avatar without link-->
-        <div lwc:else class={avatarClass} data-element-id="avatar-container">
+        <div
+            if:false={href}
+            class={avatarClass}
+            data-element-id="avatar-container"
+        >
             <!-- Image -->
             <img
                 if:true={src}
