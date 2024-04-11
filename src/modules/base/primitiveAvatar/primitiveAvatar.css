@@ -301,9 +301,6 @@
         --avonni-avatar-action-button-color-background,
         #ffffff
     );
-    border-color: white;
-    border-width: 2px;
-    border-style: solid;
 }
 
 .avonni-avatar-action-button-icon {
