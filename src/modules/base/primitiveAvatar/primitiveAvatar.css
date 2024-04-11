@@ -11,7 +11,14 @@
     border-radius: var(--avonni-avatar-radius-border, 0.25rem);
 }
 
-.avonni-avatar_link * {
+.avonni-avatar_link:link,
+.avonni-avatar_link:visited,
+.avonni-avatar_link:hover,
+.avonni-avatar_link:active {
+    text-decoration: none;
+}
+
+.avonni-avatar_link > * {
     cursor: pointer;
 }
 
