@@ -59,6 +59,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _entityTitle = DEFAULT_ENTITY_TITLE;
     _entityVariant = AVATAR_VARIANTS.default;
     _fallbackIconName;
+    _href;
     _presence = PRESENCE.default;
     _presencePosition = POSITIONS.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
@@ -211,6 +212,16 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set fallbackIconName(value) {
         this._fallbackIconName = value;
+        this._updateClassList();
+    }
+
+    @api
+    get href() {
+        return this._href;
+    }
+
+    set href(value) {
+        this._href = value;
         this._updateClassList();
     }
 
@@ -443,7 +454,8 @@ export default class PrimitiveAvatar extends LightningElement {
 
         const avatarClass = classSet('avonni-avatar')
             .add({
-                'avonni-avatar__border-radius_circle': variant === 'circle'
+                'avonni-avatar__border-radius_circle': variant === 'circle',
+                'avonni-avatar_link': this.href
             })
             .add(computeSldsClass(fallbackIconName));
 
@@ -550,5 +562,20 @@ export default class PrimitiveAvatar extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Prevent anchor tag from navigating when href leads to nothing.
+     *
+     * @param {Event} event
+     */
+    handleAnchorTagClick(event) {
+        const href = event.currentTarget.href;
+        if (
+            // eslint-disable-next-line no-script-url
+            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
+        ) {
+            event.preventDefault();
+        }
     }
 }

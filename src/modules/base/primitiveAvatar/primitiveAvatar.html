@@ -1,7 +1,44 @@
 <template>
     <div class={wrapperClass} if:true={showAvatar}>
-        <!-- Main avatar -->
-        <div class={avatarClass} data-element-id="avatar-container">
+        <!-- Main avatar with link -->
+        <a
+            lwc:if={href}
+            class={avatarClass}
+            data-element-id="avatar-container"
+            href={href}
+            onclick={handleAnchorTagClick}
+        >
+            <!-- Image -->
+            <img
+                if:true={src}
+                src={src}
+                onerror={handleImageError}
+                alt={alternativeText}
+                title={alternativeText}
+                class="avonni-avatar__image"
+            />
+            <!-- Initials -->
+            <abbr
+                if:true={showInitials}
+                class={computedInitialsClass}
+                title={alternativeText}
+                data-element-id="avatar-initials"
+            >
+                {initials}
+            </abbr>
+            <!-- Fallback icon -->
+            <lightning-icon
+                class={fallbackIconClass}
+                size={size}
+                if:true={showIcon}
+                icon-name={fallbackIconName}
+                alternative-text={alternativeText}
+                title={alternativeText}
+            ></lightning-icon>
+        </a>
+
+        <!-- Main avatar without link-->
+        <div lwc:else class={avatarClass} data-element-id="avatar-container">
             <!-- Image -->
             <img
                 if:true={src}
@@ -30,6 +67,7 @@
                 title={alternativeText}
             ></lightning-icon>
         </div>
+
         <!-- Presence -->
         <div
             if:true={presence}
@@ -37,6 +75,7 @@
             title={presenceTitle}
             aria-label={presenceTitle}
         ></div>
+
         <!-- Status -->
         <template if:true={status}>
             <c-primitive-icon
@@ -46,6 +85,7 @@
             ></c-primitive-icon>
             <span class="slds-assistive-text">{statusComputed.title}</span>
         </template>
+
         <!-- Entity -->
         <div if:true={showEntity} class={entityClass}>
             <!-- Image -->
@@ -61,16 +101,16 @@
                 if:true={entityInitials}
                 class={computedEntityInitialsClass}
                 title={entityTitle}
-                >{entityInitials}</abbr
             >
+                {entityInitials}
+            </abbr>
             <!-- Fallback icon -->
             <template if:true={showEntityIcon}>
                 <c-primitive-icon
                     class="avonni-avatar__entity-icon"
                     icon-name={entityIconName}
                     title={entityTitle}
-                >
-                </c-primitive-icon>
+                ></c-primitive-icon>
                 <span class="slds-assistive-text">{entityTitle}</span>
             </template>
         </div>
@@ -98,8 +138,7 @@
                             icon-name={action.iconName}
                             value={action.name}
                             label={action.label}
-                        >
-                        </lightning-menu-item>
+                        ></lightning-menu-item>
                     </template>
                 </c-button-menu>
             </template>
@@ -111,7 +150,6 @@
                         avonni-avatar-action-button
                         slds-button slds-button_icon
                     "
-                    alternative-text={action.label}
                     disabled={action.disabled}
                     title={action.label}
                     type="button"
@@ -122,8 +160,7 @@
                         data-element-id="primitive-icon-action"
                         class="avonni-avatar-action-button-icon"
                         icon-name={computedActionMenuIcon}
-                    >
-                    </c-primitive-icon>
+                    ></c-primitive-icon>
                 </button>
             </template>
         </div>

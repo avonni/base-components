@@ -2,6 +2,9 @@
     display: inline-block;
     position: relative;
     transition: transform 0.1s ease-out 0s;
+}
+
+.avonni-avatar-group__avatar-link {
     cursor: pointer;
 }
 

@@ -11,6 +11,10 @@
     border-radius: var(--avonni-avatar-radius-border, 0.25rem);
 }
 
+.avonni-avatar_link * {
+    cursor: pointer;
+}
+
 .avonni-avatar__display_inline-block .avonni-avatar:first-child {
     border-style: var(--avonni-avatar-styling-border, solid);
     border-color: var(--avonni-avatar-color-border, transparent);
@@ -19,12 +23,6 @@
 
 .avonni-avatar__border-radius_circle {
     border-radius: 50%;
-}
-
-/* If the avatar is in a group, the cursor changes for a pointer */
-:host(.avonni-avatar-group__avatar) .avonni-avatar,
-:host(.avonni-avatar-group__avatar) .slds-avatar__initials {
-    cursor: pointer;
 }
 
 /**
