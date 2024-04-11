@@ -14,6 +14,7 @@ const NUBBIN_POSITIONS = {
 export default class PrimitiveTooltip extends LightningElement {
     @api label;
     @api content;
+    @api hideNubbin = false;
 
     _nubbinPosition = NUBBIN_POSITIONS.default;
 
@@ -40,7 +41,18 @@ export default class PrimitiveTooltip extends LightningElement {
      */
     get computedTooltipClass() {
         return classSet(
-            `avonni-primitive-tooltip slds-popover slds-popover_tooltip slds-nubbin_${this.nubbinPosition}`
-        ).toString();
+            'avonni-primitive-tooltip slds-popover slds-popover_tooltip'
+        )
+            .add({
+                'slds-nubbin_top':
+                    !this.hideNubbin && this.nubbinPosition === 'top',
+                'slds-nubbin_bottom':
+                    !this.hideNubbin && this.nubbinPosition === 'bottom',
+                'slds-nubbin_left':
+                    !this.hideNubbin && this.nubbinPosition === 'left',
+                'slds-nubbin_right':
+                    !this.hideNubbin && this.nubbinPosition === 'right'
+            })
+            .toString();
     }
 }

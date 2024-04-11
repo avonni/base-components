@@ -2,7 +2,6 @@
     <!-- Stacked with exactly two avatars -->
     <div if:true={isClassic} class={avatarGroupClass}>
         <c-primitive-avatar
-            alternative-text={primaryItem.alternativeText}
             fallback-icon-name={primaryItem.fallbackIconName}
             initials={primaryItem.initials}
             src={primaryItem.src}
@@ -39,13 +38,12 @@
         <!-- Primary Item Tooltip -->
         <c-primitive-tooltip
             if:true={primaryItem.hasTooltip}
-            class="slds-is-absolute avonni-avatar-group__top-tooltip"
-            nubbin-position="top"
+            class="slds-is-absolute avonni-avatar-group__bottom-tooltip"
+            hide-nubbin="true"
             style={primaryItem.tooltipStyle}
-            label={primaryItem.primaryText}
+            label={primaryItem.alternativeText}
         ></c-primitive-tooltip>
         <c-primitive-avatar
-            alternative-text={secondaryItem.alternativeText}
             fallback-icon-name={secondaryItem.fallbackIconName}
             initials={secondaryItem.initials}
             src={secondaryItem.src}
@@ -79,10 +77,10 @@
         <!-- Secondary Item Tooltip -->
         <c-primitive-tooltip
             if:true={secondaryItem.hasTooltip}
-            class="slds-is-absolute avonni-avatar-group__left-tooltip"
-            nubbin-position="left"
+            class="slds-is-absolute avonni-avatar-group__right-tooltip"
+            hide-nubbin="true"
             style={secondaryItem.tooltipStyle}
-            label={secondaryItem.primaryText}
+            label={secondaryItem.alternativeText}
         ></c-primitive-tooltip>
     </div>
 
@@ -118,7 +116,6 @@
                         actions={item.actions}
                         action-menu-icon={item.actionMenuIcon}
                         action-position={item.actionPosition}
-                        alternative-text={item.alternativeText}
                         entity-icon-name={item.entityIconName}
                         entity-initials={item.entityInitials}
                         entity-position={item.entityPosition}
@@ -151,11 +148,11 @@
                         if:true={item.hasTooltip}
                         class="
                             slds-is-absolute
-                            avonni-avatar-group__top-tooltip
+                            avonni-avatar-group__bottom-tooltip
                         "
-                        nubbin-position="top"
+                        hide-nubbin="true"
                         style={item.tooltipStyle}
-                        label={item.primaryText}
+                        label={item.alternativeText}
                     ></c-primitive-tooltip>
                 </li>
             </template>

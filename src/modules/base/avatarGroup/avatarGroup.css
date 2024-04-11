@@ -314,18 +314,14 @@ button.avonni-avatar-group__avatar-in-line-button {
 }
 
 /* Tooltip */
-.avonni-avatar-group__top-tooltip {
-    top: calc(100% + 1rem);
+.avonni-avatar-group__bottom-tooltip {
+    top: calc(100% + 0.5rem);
     transform: translateX(calc(-50%));
     z-index: 1;
 }
 
-.avonni-avatar-group__left-tooltip {
-    left: calc(100% + 1rem);
+.avonni-avatar-group__right-tooltip {
+    left: calc(100% + 0.5rem);
     transform: translateY(calc(-50%));
     z-index: 1;
-}
-
-.avonni-avatar-group__tooltip-header {
-    padding: 0 0 0.25rem 0;
 }

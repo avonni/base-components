@@ -743,7 +743,7 @@ export default class AvatarGroup extends LightningElement {
             this.isClassic &&
             !isNaN(this._itemIndex) &&
             this._itemIndex === 0 &&
-            item.primaryText;
+            item.alternativeText;
 
         let tooltipAdjustment = 0;
         if (this.size === 'x-small') {
@@ -779,7 +779,7 @@ export default class AvatarGroup extends LightningElement {
             this.isClassic &&
             !isNaN(this._itemIndex) &&
             this._itemIndex === 1 &&
-            item.primaryText;
+            item.alternativeText;
 
         let tooltipAdjustment = 0;
         if (this.size === 'x-small') {
@@ -908,7 +908,7 @@ export default class AvatarGroup extends LightningElement {
                 this.isNotList &&
                 !isNaN(this._itemIndex) &&
                 this._itemIndex === index &&
-                item.primaryText;
+                item.alternativeText;
 
             let tooltipAdjustment = 0;
             if (this.size === 'x-small') {
