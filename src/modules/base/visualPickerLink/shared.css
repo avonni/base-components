@@ -166,10 +166,14 @@
     );
     border-color: var(
         --avonni-visual-picker-link-tile-color-border-hover,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-link-tile-color-border-hover, #1b96ff) inset;
+        var(
+            --avonni-visual-picker-link-tile-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
+        inset;
 }
 
 .avonni-visual-picker-link__tile_info-only

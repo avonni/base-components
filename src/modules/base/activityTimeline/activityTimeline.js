@@ -3,7 +3,7 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     deepCopy,
     normalizeArray,
@@ -735,6 +735,13 @@ export default class ActivityTimeline extends LightningElement {
         return this._hasHiddenItems
             ? this.buttonShowMoreIconPosition
             : this.buttonShowLessIconPosition;
+    }
+
+    /**
+     * Generate unique ID key.
+     */
+    get generateKey() {
+        return generateUUID();
     }
 
     /**
