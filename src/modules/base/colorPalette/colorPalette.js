@@ -3,12 +3,12 @@ import {
     normalizeArray,
     normalizeBoolean,
     normalizeString,
-    generateColors,
-    isLightColor
+    generateColors
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
 import grid from './grid.html';
 import list from './list.html';
+import Color from './color';
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -105,7 +105,10 @@ export default class ColorPalette extends LightningElement {
     set colors(value) {
         const colors = normalizeArray(value);
         this._colors = colors.length ? colors : DEFAULT_COLORS;
-        if (this._isConnected) this.initGroups();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -138,7 +141,10 @@ export default class ColorPalette extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -172,7 +178,10 @@ export default class ColorPalette extends LightningElement {
 
     set hideOutline(value) {
         this._hideOutline = normalizeBoolean(value);
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -189,7 +198,10 @@ export default class ColorPalette extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -206,7 +218,10 @@ export default class ColorPalette extends LightningElement {
 
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -223,7 +238,10 @@ export default class ColorPalette extends LightningElement {
 
     set showCheckmark(value) {
         this._showCheckmark = normalizeBoolean(value);
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -240,7 +258,10 @@ export default class ColorPalette extends LightningElement {
 
     set tileWidth(value) {
         this._tileWidth = Number(value);
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -257,7 +278,10 @@ export default class ColorPalette extends LightningElement {
 
     set tileHeight(value) {
         this._tileHeight = Number(value);
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -273,7 +297,10 @@ export default class ColorPalette extends LightningElement {
 
     set value(value) {
         this._value = value;
-        this.initContainer();
+
+        if (this._isConnected) {
+            this.initGroups();
+        }
     }
 
     /**
@@ -334,7 +361,7 @@ export default class ColorPalette extends LightningElement {
      */
     get groupClass() {
         return this.computedGroups.length > 1
-            ? 'slds-m-bottom_x-small'
+            ? 'slds-show slds-m-bottom_x-small'
             : undefined;
     }
 
@@ -391,49 +418,10 @@ export default class ColorPalette extends LightningElement {
         );
         if (container) {
             container.style.width = this.columns
-                ? `${this.columns * (Number(this.tileWidth) + 8)}px`
+                ? `${this.columns * (this.tileWidth + 8)}px`
                 : '';
-            container.style.minHeight = `${Number(this.tileHeight) + 8}px`;
+            container.style.minHeight = `${this.tileHeight + 8}px`;
         }
-
-        [
-            ...this.template.querySelectorAll('[data-element-id="span-swatch"]')
-        ].forEach((element) => {
-            const backgroundColor = this.disabled
-                ? '#dddbda'
-                : element.dataset.color;
-            element.style.backgroundColor = backgroundColor;
-            element.style.borderRadius =
-                'var(--avonni-color-palette-swatch-border-radius, 0.125rem)';
-            element.style.height = `${this.tileHeight}px`;
-            element.style.width = `${this.tileWidth}px`;
-
-            if (this.variant === 'grid') {
-                // Style checkmark
-                if (this._showCheckmark) {
-                    const smallestLength = Math.min(
-                        this.tileHeight,
-                        this.tileWidth
-                    );
-                    const lengthStyle = `${
-                        smallestLength - smallestLength * 0.4
-                    }px`;
-                    element.firstChild.style.height = lengthStyle;
-                    element.firstChild.style.width = lengthStyle;
-
-                    const { R, G, B } = generateColors(element.dataset.color);
-                    const color = isLightColor(R, G, B) ? 'black' : 'white';
-                    element.firstChild.style.fill = `var(--avonni-color-palette-swatch-selected-checkmark-color, ${color})`;
-                }
-
-                // Style outline
-                if (!this._hideOutline) {
-                    element.style.outlineColor = `var(--avonni-color-palette-swatch-selected-outline-color, ${backgroundColor})`;
-                }
-            }
-        });
-
-        this.selectColor();
     }
 
     /**
@@ -448,9 +436,24 @@ export default class ColorPalette extends LightningElement {
 
         this.colors.forEach((color) => {
             let hasBeenAddedToAGroup = false;
+            let computedColor = {
+                disabled: this.disabled,
+                displayCheckMark: this.showCheckmark,
+                hideOutline: this.hideOutline,
+                tileHeight: this.tileHeight,
+                tileWidth: this.tileWidth
+            };
 
             if (color instanceof Object) {
                 const colorGroups = normalizeArray(color.groups);
+                computedColor = new Color({
+                    ...computedColor,
+                    ...color,
+                    selected:
+                        this.value &&
+                        (this.value === color.value ||
+                            this.value === color.color)
+                });
 
                 if (this.groups.length && colorGroups.length) {
                     colorGroups.forEach((groupName) => {
@@ -468,18 +471,18 @@ export default class ColorPalette extends LightningElement {
                                     colors: []
                                 };
                             }
-                            groups[groupName].colors.push(color);
+                            groups[groupName].colors.push(computedColor);
                             hasBeenAddedToAGroup = true;
                         }
                     });
                 }
             } else {
-                color = {
-                    color: color
-                };
+                computedColor.color = color;
+                computedColor.selected = this.value && this.value === color;
+                computedColor = new Color(computedColor);
             }
             if (!hasBeenAddedToAGroup) {
-                undefinedGroup.colors.push(color);
+                undefinedGroup.colors.push(computedColor);
             }
         });
 
@@ -499,28 +502,11 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Mark a color as selected.
-     */
-    selectColor() {
-        // Unselect last selected color.
-        const selectedColor = this.template.querySelector('.slds-is-selected');
-        if (selectedColor) selectedColor.classList.remove('slds-is-selected');
-
-        // Select new token or color.
-        const elem = this.currentColor.value
-            ? this.template.querySelector(
-                  `[data-selectable][data-token="${this.currentColor.value}"]`
-              )
-            : this.template.querySelector(
-                  `[data-selectable][data-color="${this.value}"]`
-              );
-        if (elem) elem.classList.add('slds-is-selected');
-    }
-
-    /**
      * Private focus event handler.
      */
-    handleFocus() {
+    handleFocus(event) {
+        event.stopPropagation();
+
         /**
          * The event fired when the focus is set on the palette.
          *
@@ -547,7 +533,9 @@ export default class ColorPalette extends LightningElement {
     /**
      * Blur and private blur event handler.
      */
-    handleBlur() {
+    handleBlur(event) {
+        event.stopPropagation();
+
         /**
          * The event fired when the focus is removed from the palette.
          * @event
@@ -634,7 +622,9 @@ export default class ColorPalette extends LightningElement {
      * Double click event handler.
      *
      */
-    handleDblClick() {
+    handleDblClick(event) {
+        event.stopPropagation();
+
         /**
          * The event fired when a color is clicked twice.
          *
