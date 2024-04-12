@@ -309,7 +309,7 @@ describe('Color Palette', () => {
 
         return Promise.resolve().then(() => {
             const labels = element.shadowRoot.querySelectorAll(
-                '[data-element-id="span-list-icon-wrapper"]'
+                '[data-element-id="span-label"]'
             );
             expect(labels).toHaveLength(COLORS.length);
             labels.forEach((label, index) => {
