@@ -1016,24 +1016,24 @@
 * Size
 */
 .avonni-button-menu__icon_xx-small {
-    height: 1rem;
+    min-height: 1rem;
     width: 1rem;
     line-height: 0;
 }
 .avonni-button-menu__icon_x-small {
-    height: 1.25rem;
+    min-height: 1.25rem;
     width: 1.25rem;
 }
 .avonni-button-menu__icon_small {
-    height: 1.5rem;
+    min-height: 1.5rem;
     width: 1.5rem;
 }
 .avonni-button-menu__icon_medium {
-    height: 2rem;
+    min-height: 2rem;
     width: 2rem;
 }
 .avonni-button-menu__icon_large {
-    height: 2.25rem;
+    min-height: 2.25rem;
     width: 2.25rem;
     line-height: 1.25;
 }
@@ -1082,11 +1082,11 @@
 }
 
 .avonni-button-menu__button_medium {
-    height: 2rem;
+    min-height: 2rem;
 }
 
 .avonni-button-menu__button_large {
-    height: 3rem;
+    min-height: 3rem;
 }
 
 .avonni-button-menu__main-icon-with-label-adjust-scale_small,
