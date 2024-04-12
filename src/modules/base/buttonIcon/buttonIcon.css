@@ -9,12 +9,12 @@
 
 .avonni-button-icon_medium {
     width: 2rem;
-    height: 2rem;
+    min-height: 2rem;
 }
 
 .avonni-button-icon_large {
     width: 2.25rem;
-    height: 2.25rem;
+    min-height: 2.25rem;
 }
 
 .avonni-button-icon__image {
