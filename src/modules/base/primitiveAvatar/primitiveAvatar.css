@@ -286,6 +286,11 @@
 */
 .avonni-avatar__actions {
     position: absolute;
+    font-size: 10px; /* Fix for experience actions positioning */
+    --sds-c-button-radius-border: var(
+        --avonni-avatar-action-button-radius-border,
+        30px
+    );
     --avonni-button-menu-radius-border: var(
         --avonni-avatar-action-button-radius-border,
         30px
