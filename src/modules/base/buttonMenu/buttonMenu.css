@@ -1082,11 +1082,11 @@
 }
 
 .avonni-button-menu__button_medium {
-    height: 2rem;
+    min-height: 2rem;
 }
 
 .avonni-button-menu__button_large {
-    height: 3rem;
+    min-height: 3rem;
 }
 
 .avonni-button-menu__main-icon-with-label-adjust-scale_small,
