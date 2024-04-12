@@ -578,4 +578,8 @@ export default class PrimitiveAvatar extends LightningElement {
             event.preventDefault();
         }
     }
+
+    handleStopPropagation(event) {
+        event.stopPropagation();
+    }
 }

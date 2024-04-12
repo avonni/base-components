@@ -124,6 +124,7 @@
             if:true={showActions}
             data-element-id="action-section"
             class={computedActionClasses}
+            onclick={handleStopPropagation}
         >
             <template if:true={actionMenu}>
                 <c-button-menu
