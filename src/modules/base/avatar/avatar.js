@@ -86,6 +86,13 @@ export default class Avatar extends LightningElement {
      */
     @api fallbackIconName;
     /**
+     * The URL of the page the link goes to.
+     *
+     * @public
+     * @type {string}
+     */
+    @api href;
+    /**
      * If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
      *
      * @public
