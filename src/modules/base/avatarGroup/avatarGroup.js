@@ -127,8 +127,6 @@ export default class AvatarGroup extends LightningElement {
     _focusAnimationFrame;
     _focusedIndex = 0;
     _hiddenItemsStartIndex = 0;
-    _itemIndex;
-    _tooltips = [];
     _lastHiddenItemIndex;
     _maxVisibleCount;
     _popoverFocusoutAnimationFrame;
@@ -136,6 +134,7 @@ export default class AvatarGroup extends LightningElement {
     _positioning = false;
     _preventPopoverClosing = false;
     _resizeObserver;
+    _tooltips = [];
 
     connectedCallback() {
         this.template.addEventListener(
@@ -166,7 +165,7 @@ export default class AvatarGroup extends LightningElement {
             avatar.style.zIndex = avatars.length - index;
         });
 
-        this.initTooltips();
+        this.initAllTooltips();
     }
 
     disconnectedCallback() {
@@ -249,7 +248,8 @@ export default class AvatarGroup extends LightningElement {
     set items(value) {
         this.keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
-        this._tooltips = [];
+
+        this.destroyAllTooltips();
 
         if (
             this.showHiddenItems &&
@@ -849,9 +849,20 @@ export default class AvatarGroup extends LightningElement {
      * @type {object[]}
      */
     get visibleItems() {
-        return this.items.length > this.computedMaxCount
-            ? this.items.slice(0, this.computedMaxCount)
-            : this.items;
+        const items =
+            this.items.length > this.computedMaxCount
+                ? this.items.slice(0, this.computedMaxCount)
+                : this.items;
+
+        return items.map((item) => {
+            return {
+                ...item,
+                alternativeText:
+                    !this.isClassic && !this.isNotList
+                        ? item.alternativeText
+                        : ''
+            };
+        });
     }
 
     /**
@@ -868,6 +879,16 @@ export default class AvatarGroup extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Clear all tooltips and remove all event listeners.
+     */
+    destroyAllTooltips() {
+        this._tooltips.forEach((tooltip) => {
+            tooltip.destroy();
+        });
+        this._tooltips = [];
+    }
 
     /**
      * Set the focus on the item at the saved focused index.
@@ -907,9 +928,32 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Initialize the tooltips.
+     * Initialize all the tooltips.
      */
-    initTooltips() {
+    initAllTooltips() {
+        if (this.isClassic || this.isNotList) {
+            for (let i = 0; i < this.avatarItemElements.length; i++) {
+                if (!this._tooltips[i]) {
+                    const tooltipValue = this.items[i].alternativeText || '';
+                    if (tooltipValue) {
+                        this._tooltips[i] = new Tooltip(tooltipValue, {
+                            type: TooltipType.Toggle,
+                            root: this,
+                            target: () => this.avatarItemElements[i],
+                            align: {
+                                horizontal: Direction.Center,
+                                vertical: Direction.Top
+                            },
+                            targetAlign: {
+                                horizontal: Direction.Center,
+                                vertical: Direction.Bottom
+                            }
+                        });
+                        this._tooltips[i].initialize();
+                    }
+                }
+            }
+        }
         this._tooltips
             .filter((tooltip) => tooltip && !tooltip.initialized)
             .forEach((tooltip) => {
@@ -926,10 +970,11 @@ export default class AvatarGroup extends LightningElement {
         if (!this.wrapperElement) {
             return null;
         }
-        return new AvonniResizeObserver(
-            this.wrapperElement,
-            this.updateVisibleMaxCount.bind(this)
-        );
+        return new AvonniResizeObserver(this.wrapperElement, () => {
+            this.updateVisibleMaxCount();
+            this.destroyAllTooltips();
+            this.initAllTooltips();
+        });
     }
 
     /**
@@ -1343,51 +1388,6 @@ export default class AvatarGroup extends LightningElement {
         if (index !== this._focusedIndex) {
             this.switchFocus(index);
         }
-    }
-
-    /**
-     * Handle a mouse enter event on an item.
-     *
-     * @param {Event} event `mouseenter` event.
-     */
-    handleItemMouseEnter(event) {
-        this._itemIndex = Number(event.target.dataset.index);
-
-        if (
-            (this.isClassic || this.isNotList) &&
-            this._itemIndex >= 0 &&
-            !this._tooltips[this._itemIndex]
-        ) {
-            const tooltipValue =
-                this.items[this._itemIndex].alternativeText || '';
-
-            if (tooltipValue) {
-                this._tooltips[this._itemIndex] = new Tooltip(tooltipValue, {
-                    type: TooltipType.Toggle,
-                    root: this,
-                    target: () => this.avatarItemElements[this._itemIndex],
-                    align: {
-                        horizontal: Direction.Center,
-                        vertical: Direction.Top
-                    },
-                    targetAlign: {
-                        horizontal: Direction.Center,
-                        vertical: Direction.Bottom
-                    }
-                });
-                this._tooltips[this._itemIndex].initialize();
-                this._tooltips[this._itemIndex].show();
-            }
-        }
-    }
-
-    /**
-     * Handle a mouse leave event on an item.
-     *
-     * @param {Event} event `mouseleave` event.
-     */
-    handleItemMouseLeave() {
-        this._itemIndex = null;
     }
 
     /**

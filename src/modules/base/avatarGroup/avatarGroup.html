@@ -32,8 +32,6 @@
             role="button"
             onkeyup={handleAvatarClick}
             tabindex="0"
-            onmouseenter={handleItemMouseEnter}
-            onmouseleave={handleItemMouseLeave}
         ></c-primitive-avatar>
         <c-primitive-avatar
             fallback-icon-name={secondaryItem.fallbackIconName}
@@ -63,8 +61,6 @@
             role="button"
             onkeyup={handleAvatarClick}
             tabindex="0"
-            onmouseenter={handleItemMouseEnter}
-            onmouseleave={handleItemMouseLeave}
         ></c-primitive-avatar>
     </div>
 
@@ -91,8 +87,6 @@
                     data-index={index}
                     onclick={handleAvatarClick}
                     onfocus={handleItemFocus}
-                    onmouseenter={handleItemMouseEnter}
-                    onmouseleave={handleItemMouseLeave}
                 >
                     <c-avatar
                         class={avatarInlineClass}
@@ -100,6 +94,7 @@
                         actions={item.actions}
                         action-menu-icon={item.actionMenuIcon}
                         action-position={item.actionPosition}
+                        alternative-text={item.alternativeText}
                         entity-icon-name={item.entityIconName}
                         entity-initials={item.entityInitials}
                         entity-position={item.entityPosition}
