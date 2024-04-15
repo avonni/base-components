@@ -10,6 +10,7 @@ export default class PrimitiveCellLookup extends LightningElement {
     @api linkify;
     @api objectApiName;
     @api path;
+    @api relationshipFieldName;
     @api rowKeyValue;
 
     _index;

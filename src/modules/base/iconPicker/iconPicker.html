@@ -189,7 +189,7 @@
                                                             tabindex="0"
                                                             data-element-id="a-color"
                                                             data-icon={icon.value}
-                                                            onclick={stopPropagation}
+                                                            onclick={handlePreventDefaultStopPropagation}
                                                             onkeydown={handleSelectIconFromKeyboard}
                                                         >
                                                             <span
@@ -234,7 +234,7 @@
                                                             read-only={readOnly}
                                                             role="option"
                                                             tabindex="0"
-                                                            onclick={stopPropagation}
+                                                            onclick={handlePreventDefaultStopPropagation}
                                                             onkeydown={handleSelectIconFromKeyboard}
                                                         >
                                                             <span

@@ -410,9 +410,9 @@ export default class PrimitiveCarouselItem extends LightningElement {
     /**
      * Item clicked event handler.
      *
-     * @param {event}
+     * @param {Event} event
      */
-    handleItemClick() {
+    handleItemClick(event) {
         const {
             title,
             description,
@@ -422,6 +422,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
             imageAssistiveText,
             name
         } = this;
+
+        if (
+            // eslint-disable-next-line no-script-url
+            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
+        ) {
+            event.preventDefault();
+        }
+
         /**
          * The event fired when an item is clicked.
          *

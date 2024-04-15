@@ -73,7 +73,10 @@
 
 .avonni-image__compare-slider {
     position: relative;
-    background-color: var(--avonni-image-compare-slider-color-border, #1b96ff);
+    background-color: var(
+        --avonni-image-compare-slider-color-border,
+        var(--lwc-brandAccessible, #0176d3)
+    );
 }
 
 .avonni-image__compare-slider_horizontal {
@@ -95,16 +98,24 @@
     left: calc(50% - 35px / 2);
     width: 35px;
     height: 35px;
-    background-color: var(--avonni-image-compare-slider-handle-color-background,
-            white);
+    background-color: var(
+        --avonni-image-compare-slider-handle-color-background,
+        white
+    );
     border-radius: 50%;
-    border: 2px solid var(--avonni-image-compare-slider-color-border, #1a94ffcc);
+    border: 2px solid
+        var(
+            --avonni-image-compare-slider-color-border,
+            var(--lwc-brandAccessible, #0176d3)
+        );
     transition: all 0.2s ease;
 }
 
 .avonni-image__compare-slider-handle lightning-icon {
-    --slds-c-icon-color-foreground-default: var(--avonni-image-compare-slider-handle-icon-color-foreground,
-            #747474);
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-image-compare-slider-handle-icon-color-foreground,
+        #747474
+    );
 }
 
 .avonni-image__compare-slider-handle:hover {
@@ -116,8 +127,10 @@
 .avonni-image__compare-overlay {
     width: fit-content;
     height: fit-content;
-    background-color: var(--avonni-image-compare-label-color-background,
-            #ffffffcc);
+    background-color: var(
+        --avonni-image-compare-label-color-background,
+        #ffffffcc
+    );
     padding: 5px;
     border-width: var(--avonni-image-compare-label-sizing-border, 0);
     border-style: var(--avonni-image-compare-label-styling-border, none);
@@ -156,11 +169,13 @@
     max-width: none;
 }
 
-.avonni-image__container_compare-labels-on-hover .avonni-image__compare-overlay {
+.avonni-image__container_compare-labels-on-hover
+    .avonni-image__compare-overlay {
     display: none;
 }
 
-.avonni-image__container_compare-labels-on-hover:hover .avonni-image__compare-overlay {
+.avonni-image__container_compare-labels-on-hover:hover
+    .avonni-image__compare-overlay {
     display: block;
 }
 

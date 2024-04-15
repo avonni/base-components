@@ -28,6 +28,7 @@ describe('Avatar', () => {
         expect(element.entityPosition).toBe('top-left');
         expect(element.fallbackIconName).toBeUndefined();
         expect(element.hideAvatarDetails).toBeFalsy();
+        expect(element.href).toBeUndefined();
         expect(element.initials).toBeUndefined();
         expect(element.presence).toBeNull();
         expect(element.presenceTitle).toBe('Presence');
@@ -285,6 +286,19 @@ describe('Avatar', () => {
                 '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.fallbackIconName).toBe('standard:account');
+        });
+    });
+
+    // href
+    it('Avatar: url', () => {
+        element.href = 'url';
+        element.hideAvatarDetails = true;
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
+            );
+            expect(avatar.href).toBe('url');
         });
     });
 

@@ -8,6 +8,7 @@ const item = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
+        href: 'url',
         alternativeText: 'This is the alternative text',
         status: 'locked',
         statusTitle: 'Locked',
@@ -33,6 +34,7 @@ const items = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
+        href: 'url',
         alternativeText: 'This is the alternative text',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
@@ -42,6 +44,7 @@ const items = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
+        href: 'url',
         initials: 'UA',
         alternativeText: 'This is the alternative text',
         primaryText: 'Jane Doe',
@@ -307,6 +310,7 @@ describe('Avatar Group', () => {
                     expect(avatar.fallbackIconName).toBe(
                         correspondingField.fallbackIconName
                     );
+                    expect(avatar.href).toBe(correspondingField.href);
                     expect(avatar.initials).toBe(correspondingField.initials);
                     expect(avatar.src).toBe(correspondingField.src);
                     expect(avatar.status).toBe(correspondingField.status);

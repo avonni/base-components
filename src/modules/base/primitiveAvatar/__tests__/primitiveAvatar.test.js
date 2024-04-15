@@ -32,6 +32,7 @@ describe('PrimitiveAvatar', () => {
 
     it('Primitive Avatar: Default attributes', () => {
         expect(element.initials).toBeFalsy();
+        expect(element.href).toBeUndefined();
         expect(element.variant).toBe('square');
         expect(element.size).toBe('medium');
 
@@ -119,6 +120,35 @@ describe('PrimitiveAvatar', () => {
 
             expect(actionButton.iconName).toBe('utility:down');
         });
+    });
+
+    it('Primitive Avatar: href', () => {
+        element.initials = 'LG';
+
+        return Promise.resolve()
+            .then(() => {
+                const avatarContainerLink = element.shadowRoot.querySelector(
+                    'a[data-element-id="avatar-container"]'
+                );
+                const avatarContainerNoLink = element.shadowRoot.querySelector(
+                    'div[data-element-id="avatar-container"]'
+                );
+
+                expect(avatarContainerLink).toBeNull();
+                expect(avatarContainerNoLink).not.toBeNull();
+                element.href = 'url';
+            })
+            .then(() => {
+                const avatarContainerLink = element.shadowRoot.querySelector(
+                    'a[data-element-id="avatar-container"]'
+                );
+                const avatarContainerNoLink = element.shadowRoot.querySelector(
+                    'div[data-element-id="avatar-container"]'
+                );
+                expect(avatarContainerLink).not.toBeNull();
+                expect(avatarContainerLink.href).not.toBeUndefined();
+                expect(avatarContainerNoLink).toBeNull();
+            });
     });
 
     /* ----- METHODS ----- */

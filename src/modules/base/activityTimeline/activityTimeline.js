@@ -3,7 +3,7 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     deepCopy,
     normalizeArray,
@@ -738,6 +738,13 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Generate unique ID key.
+     */
+    get generateKey() {
+        return generateUUID();
+    }
+
+    /**
      * Assign header by title or icon-name.
      *
      * @type {boolean}
@@ -1043,9 +1050,30 @@ export default class ActivityTimeline extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
-                detail: event.detail
+                detail: !this.isTimelineHorizontal
+                    ? event.detail
+                    : {
+                          name: event.detail.value,
+                          targetName: this.selectedItem.name,
+                          fieldData: deepCopy(this.selectedItem.fields)
+                      }
             })
         );
+    }
+
+    /**
+     * Prevent anchor tag from navigating when href leads to nothing.
+     *
+     * @param {Event} event
+     */
+    handleAnchorTagClick(event) {
+        const href = event.currentTarget.href;
+        if (
+            // eslint-disable-next-line no-script-url
+            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
+        ) {
+            event.preventDefault();
+        }
     }
 
     /**

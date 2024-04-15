@@ -70,6 +70,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     @api fieldName;
     @api objectApiName;
     @api rowKeyValue;
+    @api relationshipFieldName;
 
     // rich-text attributes
     @api variant;
@@ -96,37 +97,23 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
             return;
         }
         this.concreteComponent.addEventListener('change', this._changeHandler);
-
-        if (this.columnDef.type === 'lookup') {
-            // The lightning input field does not dispatch focus and blur events
-            this.concreteComponent.addEventListener(
-                'focusout',
-                this._blurHandler
-            );
-            this.concreteComponent.addEventListener(
-                'focusin',
-                this._focusHandler
-            );
-            requestAnimationFrame(() => {
-                if (this.concreteComponent) {
-                    this.concreteComponent.focus();
-                }
-            });
-        } else {
-            this.concreteComponent.addEventListener('blur', this._blurHandler);
-            this.concreteComponent.addEventListener(
-                'focus',
-                this._focusHandler
-            );
-            this.concreteComponent.focus();
-        }
+        this.concreteComponent.addEventListener('blur', this._blurHandler);
+        this.concreteComponent.addEventListener('focus', this._focusHandler);
+        requestAnimationFrame(() => {
+            this.focus();
+        });
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get columnDef() {
         return this._columnDef;
     }
-
     set columnDef(value) {
         // eslint-disable-next-line no-prototype-builtins
         if (!CUSTOM_TYPES_TPL.hasOwnProperty(value.type)) {
@@ -142,7 +129,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
             ? this.editedValue.endDate
             : undefined;
     }
-
     set endDate(value) {
         this._endDate = value;
     }
@@ -151,7 +137,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     get formats() {
         return this._formats;
     }
-
     set formats(value) {
         this._formats = value;
     }
@@ -160,7 +145,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     get options() {
         return this._options;
     }
-
     set options(options) {
         this._options = options;
     }
@@ -171,10 +155,25 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
             ? this.editedValue.startDate
             : undefined;
     }
-
     set startDate(value) {
         this._startDate = value;
     }
+
+    @api
+    get validity() {
+        return this.concreteComponent.validity;
+    }
+
+    @api
+    get value() {
+        return this.concreteComponent.value;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Gets the data inputable element.
@@ -186,18 +185,20 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     get columnType() {
-        return this._columnDef.type;
+        return this.columnDef.type;
     }
 
-    @api
-    get value() {
-        return this.concreteComponent.value;
+    get displayInfo() {
+        return {
+            primaryField: this.relationshipFieldName
+        };
     }
 
-    @api
-    get validity() {
-        return this.concreteComponent.validity;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     @api
     focus() {
@@ -206,16 +207,19 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     @api
     showHelpMessageIfInvalid() {
-        if (
-            this.columnDef.type !== 'rich-text' &&
-            this.columnDef.type !== 'lookup'
-        ) {
+        if (this.columnType !== 'rich-text' && this.columnType !== 'lookup') {
             this.concreteComponent.showHelpMessageIfInvalid();
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
     getComboboxOptionsEvent() {
-        if (this.columnDef.type !== 'combobox') return;
+        if (this.columnType !== 'combobox') return;
         this.dispatchEvent(
             new CustomEvent('getcomboboxoptions', {
                 detail: {
@@ -231,7 +235,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     getRichTextFormatsEvent() {
-        if (this.columnDef.type !== 'rich-text') return;
+        if (this.columnType !== 'rich-text') return;
         this.dispatchEvent(
             new CustomEvent('getrichtextformats', {
                 detail: {
@@ -254,19 +258,13 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         this._formats = formats;
     }
 
-    handleComponentFocus() {
-        this.dispatchEvent(new CustomEvent('focus'));
-    }
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
-    handleComponentBlur() {
-        this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    handleComponentChange() {
-        this.showHelpMessageIfInvalid();
-    }
-
-    handleOnChange(event) {
+    handleComboboxChange(event) {
         if (this.isMultiSelect || this.isMassEditEnabled) return;
         const valid = this.validity.valid;
         this.dispatchEvent(
@@ -279,5 +277,17 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
                 composed: true
             })
         );
+    }
+
+    handleComponentBlur() {
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    handleComponentChange() {
+        this.showHelpMessageIfInvalid();
+    }
+
+    handleComponentFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

@@ -20,7 +20,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-image-compare-slider-color-border
- * @default #1a94ffcc
+ * @default #0176d3
  * @type color
  */
 /**

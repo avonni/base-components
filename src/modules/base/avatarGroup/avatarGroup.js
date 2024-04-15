@@ -548,6 +548,15 @@ export default class AvatarGroup extends LightningElement {
             .toString();
     }
 
+    get computedItems() {
+        return this.items.map((item) => {
+            return {
+                ...item,
+                class: this.getAvatarClass(item, false)
+            };
+        });
+    }
+
     /**
      * Maximum number of visible items.
      *
@@ -657,10 +666,11 @@ export default class AvatarGroup extends LightningElement {
             this.items.length
         );
 
-        return items.map((it, index) => {
+        return items.map((item, index) => {
             return {
-                ...it,
-                index: index + this._hiddenItemsStartIndex
+                ...item,
+                index: index + this._hiddenItemsStartIndex,
+                class: this.getAvatarClass(item, true)
             };
         });
     }
@@ -849,12 +859,13 @@ export default class AvatarGroup extends LightningElement {
      * @type {object[]}
      */
     get visibleItems() {
-        const items =
-            this.items.length > this.computedMaxCount
-                ? this.items.slice(0, this.computedMaxCount)
-                : this.items;
+        let computedItems = this.computedItems;
+        computedItems =
+            computedItems.length > this.computedMaxCount
+                ? computedItems.slice(0, this.computedMaxCount)
+                : computedItems;
 
-        return items.map((item) => {
+        return computedItems.map((item) => {
             return {
                 ...item,
                 alternativeText:
@@ -900,6 +911,16 @@ export default class AvatarGroup extends LightningElement {
         if (focusedItem) {
             focusedItem.focus();
         }
+    }
+
+    getAvatarClass(item, isHidden) {
+        let avatarClass = isHidden
+            ? this.hiddenAvatarInlineClass
+            : this.avatarInlineClass;
+
+        return classSet(avatarClass)
+            .add({ 'avonni-avatar-group__avatar-link': item.href })
+            .toString();
     }
 
     /**

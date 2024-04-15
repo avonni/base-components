@@ -1,11 +1,11 @@
 <template>
-    <c-record-edit-form object-api-name={objectApiName} record-id={rowKeyValue}>
-        <c-input-field
-            field-name={fieldName}
-            required={required}
-            value={editedValue}
-            variant="label-hidden"
-            data-inputable="true"
-        ></c-input-field>
-    </c-record-edit-form>
+    <c-record-picker
+        display-info={displayInfo}
+        label={fieldName}
+        object-api-name={objectApiName}
+        value={editedValue}
+        variant="label-hidden"
+        data-inputable="true"
+        onready={focus}
+    ></c-record-picker>
 </template>

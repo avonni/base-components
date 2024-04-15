@@ -3,6 +3,7 @@
     <div if:true={isClassic} class={avatarGroupClass}>
         <c-primitive-avatar
             fallback-icon-name={primaryItem.fallbackIconName}
+            href={primaryItem.href}
             initials={primaryItem.initials}
             src={primaryItem.src}
             variant={variant}
@@ -35,6 +36,7 @@
         ></c-primitive-avatar>
         <c-primitive-avatar
             fallback-icon-name={secondaryItem.fallbackIconName}
+            href={secondaryItem.href}
             initials={secondaryItem.initials}
             src={secondaryItem.src}
             variant={variant}
@@ -65,9 +67,9 @@
     </div>
 
     <template if:false={isClassic}>
-        <span id="list-description" class="slds-assistive-text"
-            >Move between the items by using arrow keys.</span
-        >
+        <span id="list-description" class="slds-assistive-text">
+            Move between the items by using arrow keys.
+        </span>
         <ul
             class={avatarFlexWrapperClass}
             aria-describedby="list-description"
@@ -89,7 +91,7 @@
                     onfocus={handleItemFocus}
                 >
                     <c-avatar
-                        class={avatarInlineClass}
+                        class={item.class}
                         role="button"
                         actions={item.actions}
                         action-menu-icon={item.actionMenuIcon}
@@ -103,6 +105,7 @@
                         entity-variant={item.entityVariant}
                         fallback-icon-name={item.fallbackIconName}
                         hide-avatar-details={isNotList}
+                        href={item.href}
                         initials={item.initials}
                         presence={item.presence}
                         presence-title={item.presenceTitle}
@@ -120,8 +123,7 @@
                         data-group-name="avatar"
                         data-element-id="avonni-avatar"
                         data-index={index}
-                    >
-                    </c-avatar>
+                    ></c-avatar>
                 </li>
             </template>
 
@@ -206,9 +208,9 @@
                     onfocusout={handleHiddenItemsFocusOut}
                     onscroll={handleHiddenItemsScroll}
                 >
-                    <span class="slds-assistive-text" id="show-more-label"
-                        >Expanded items</span
-                    >
+                    <span class="slds-assistive-text" id="show-more-label">
+                        Expanded items
+                    </span>
                     <ul aria-orientation="vertical">
                         <template for:each={hiddenItems} for:item="item">
                             <li
@@ -220,7 +222,7 @@
                                 onclick={handleAvatarClick}
                             >
                                 <c-avatar
-                                    class={hiddenAvatarInlineClass}
+                                    class={item.class}
                                     role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}
@@ -232,6 +234,7 @@
                                     entity-src={item.entitySrc}
                                     entity-variant={item.entityVariant}
                                     fallback-icon-name={item.fallbackIconName}
+                                    href={item.href}
                                     initials={item.initials}
                                     presence={item.presence}
                                     presence-position={item.presencePosition}

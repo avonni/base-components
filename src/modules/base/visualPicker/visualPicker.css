@@ -15,11 +15,22 @@
 }
 
 .avonni-visual-picker__figure:hover {
-    border-color: var(--avonni-visual-picker-color-border-hover, #1b96ff);
+    border-color: var(
+        --avonni-visual-picker-color-border-hover,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
     -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
+        var(
+            --avonni-visual-picker-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
+        inset;
     box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
+        var(
+            --avonni-visual-picker-color-border-hover,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
+        inset;
     background-color: var(
         --avonni-visual-picker-color-background-hover,
         #ffffff
@@ -193,31 +204,42 @@
     .slds-visual-picker__figure {
     cursor: pointer;
     outline: 0;
-    border: 1px solid #1b96ff;
-    -webkit-box-shadow: 0 0 0 1px #1b96ff inset;
-    box-shadow: 0 0 0 1px #1b96ff inset;
+    border: 1px solid var(--lwc-brandPrimary, #1b96ff);
+    -webkit-box-shadow: 0 0 0 1px var(--lwc-brandPrimary, #1b96ff) inset;
+    box-shadow: 0 0 0 1px var(--lwc-brandPrimary, #1b96ff) inset;
 }
 
 /*-- Checked --*/
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text {
     border-width: 1px;
     border-style: solid;
-    border-color: var(--avonni-visual-picker-color-border-selected, #1b96ff);
+    border-color: var(
+        --avonni-visual-picker-color-border-selected,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
     -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
+        var(
+            --avonni-visual-picker-color-border-selected,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
+        inset;
     box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
+        var(
+            --avonni-visual-picker-color-border-selected,
+            var(--lwc-brandPrimary, #1b96ff)
+        )
+        inset;
 }
 
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text:after {
     content: '';
     border-right-color: var(
         --avonni-visual-picker-color-border-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
     border-top-color: var(
         --avonni-visual-picker-color-border-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
 }
 
@@ -231,9 +253,12 @@
 .slds-visual-picker input:checked ~ label .slds-visual-picker__icon {
     background-color: var(
         --avonni-visual-picker-color-background-selected,
-        #1b96ff
+        var(--lwc-brandPrimary, #1b96ff)
     );
-    border-color: var(--avonni-visual-picker-color-border-selected, #1b96ff);
+    border-color: var(
+        --avonni-visual-picker-color-border-selected,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
 }
 
 .avonni-visual-picker__chek-icon {

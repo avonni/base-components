@@ -50,6 +50,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     // Primitive cell lookup
     @api fieldName;
     @api objectApiName;
+    @api relationshipFieldName;
 
     // primitive cell rich-text
     @api formats;
@@ -127,7 +128,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         return classSet('slds-popover slds-popover_edit')
             .add({
                 'slds-show': this.visible,
-                'slds-hide': !this.visible
+                'slds-hide': !this.visible,
+                'avonni-datatable-iedit-panel_size_large':
+                    this.isTypeTextArea || this.isTypeRichText
             })
             .toString();
     }
@@ -255,10 +258,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      * @type {boolean}
      */
     get required() {
-        return (
-            this.columnDef.typeAttributes &&
-            this.columnDef.typeAttributes.required
-        );
+        return this.columnDef.typeAttributes?.required;
     }
 
     /**
@@ -304,7 +304,8 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     comboboxFormattedValue(value) {
         if (value.length === 0) {
             return null;
-        } else if (value.length === 1) {
+        }
+        if (value.length === 1) {
             return value[0];
         }
         return value;
@@ -352,7 +353,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         if (!this.isMassEditEnabled && !this.isTypeColorPicker) {
             this.processSubmission();
         }
-
         return false;
     }
 
@@ -398,7 +398,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             this.processSubmission();
         } else if (this.visible) {
             this.triggerEditFinished({
-                reason: 'loosed-focus'
+                reason: 'lost-focus'
             });
         }
     }
@@ -421,7 +421,24 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         this._allowBlur = false;
     }
 
+    processOnChange = (event) => {
+        if (event.detail.validity) {
+            this.triggerEditFinished({
+                reason: 'on-change',
+                validity: event.detail.validity
+            });
+        } else {
+            this.inputableElement.showHelpMessageIfInvalid();
+        }
+    };
+
     processSubmission() {
+        if (this.value === this.editedValue) {
+            this.triggerEditFinished({
+                reason: 'edit-canceled'
+            });
+            return;
+        }
         const validity =
             this.isTypeRichText ||
             this.isTypeLookup ||
@@ -454,17 +471,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             this.inputableElement.showHelpMessageIfInvalid();
         }
     }
-
-    processOnChange = (event) => {
-        if (event.detail.validity) {
-            this.triggerEditFinished({
-                reason: 'on-change',
-                validity: event.detail.validity
-            });
-        } else {
-            this.inputableElement.showHelpMessageIfInvalid();
-        }
-    };
 
     triggerEditFinished(detail) {
         const details = {

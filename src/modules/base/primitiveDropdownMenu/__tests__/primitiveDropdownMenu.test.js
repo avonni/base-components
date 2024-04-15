@@ -73,7 +73,9 @@ describe('PrimitiveDropdownMenu', () => {
         element.show = false;
 
         return Promise.resolve().then(() => {
-            const popover = element.shadowRoot.querySelector('.slds-popover');
+            const popover = element.shadowRoot.querySelector(
+                '[data-element-id="div-popover"]'
+            );
             expect(popover).toBeFalsy();
         });
     });
@@ -82,7 +84,9 @@ describe('PrimitiveDropdownMenu', () => {
         element.show = true;
 
         return Promise.resolve().then(() => {
-            const popover = element.shadowRoot.querySelector('.slds-popover');
+            const popover = element.shadowRoot.querySelector(
+                '[data-element-id="div-popover"]'
+            );
             expect(popover).toBeTruthy();
         });
     });
@@ -101,14 +105,18 @@ describe('PrimitiveDropdownMenu', () => {
                     '[data-element-id="lightning-menu-item"]'
                 );
                 item.dispatchEvent(
+                    new CustomEvent('mouseout', { bubbles: true })
+                );
+                item.dispatchEvent(
                     new CustomEvent('privateblur', {
                         bubbles: true
                     })
                 );
             })
             .then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-popover"]'
+                );
                 expect(popover).toBeFalsy();
             });
     });
@@ -137,8 +145,9 @@ describe('PrimitiveDropdownMenu', () => {
                 );
             })
             .then(() => {
-                const popover =
-                    element.shadowRoot.querySelector('.slds-popover');
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-popover"]'
+                );
                 expect(popover).toBeFalsy();
 
                 expect(handler).toHaveBeenCalled();

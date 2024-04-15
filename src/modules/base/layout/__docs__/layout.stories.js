@@ -3,18 +3,6 @@ import { Layout } from '../__examples__/layout';
 export default {
     title: 'Example/Layout',
     argTypes: {
-        columnGap: {
-            name: 'column-gap',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Space between columns of items, given as a number of pixels, or as a valid CSS length. If an item has an alignment bump, the gap in this direction will be half the given size.',
-            table: {
-                type: { summary: 'string|number' },
-                defaultValue: { summary: '0' }
-            }
-        },
         direction: {
             control: {
                 type: 'select'
@@ -52,18 +40,6 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        rowGap: {
-            name: 'row-gap',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Space between rows of items, given as a number of pixels, or as a valid CSS length. Only used if `multiple-rows` is true. If an item has an alignment bump, the gap in this direction will be half the given size.',
-            table: {
-                type: { summary: 'string|number' },
-                defaultValue: { summary: '0' }
-            }
-        },
         verticalAlign: {
             name: 'vertical-align',
             control: {
@@ -79,11 +55,9 @@ export default {
         }
     },
     args: {
-        columnGap: 0,
         direction: 'row',
         horizontalAlign: 'start',
         multipleRows: false,
-        rowGap: 0,
         verticalAlign: 'stretch'
     }
 };

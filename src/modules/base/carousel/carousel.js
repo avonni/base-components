@@ -665,6 +665,15 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Prevent event default handler.
+     *
+     * @param {Event} event
+     */
+    handlePreventDefault(event) {
+        event.preventDefault();
+    }
+
+    /**
      * Initialize Carousel method.
      */
     initCarousel() {

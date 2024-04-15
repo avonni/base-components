@@ -229,6 +229,13 @@ const optionsWithoutIcon = [
     { label: 'Thu', value: 'thu' },
     { label: 'Fri', value: 'fri' }
 ];
+const optionsWithColors = [
+    { label: 'Pacific Cyan', value: 'pacificCyan', color: '#06AED5' },
+    { label: 'Cerulean', value: 'cerulean', color: '#086788' },
+    { label: 'School Bus Yellow', value: 'schoolBusYellow', color: '#F8D525' },
+    { label: 'Harvest Gold', value: 'harvestGold', color: '#F5AB00' },
+    { label: 'Rojo', value: 'rojo', color: '#DD1C1A' }
+];
 const dayValue = 'fri';
 const daysValue = ['thu', 'fri'];
 const alignmentValue = ['center'];
@@ -278,7 +285,7 @@ CheckboxesWithNoLabel.args = {
     label: 'Please select a value',
     variant: 'label-hidden',
     messageWhenValueMissing: 'Value missing',
-    options: optionsWithoutIcon,
+    options: optionsWithColors,
     value: dayValue,
     isMultiSelect: true
 };
@@ -327,7 +334,7 @@ ButtonsCheckmark.args = {
     label: 'Please select a value',
     type: 'button',
     messageWhenValueMissing: 'Value missing',
-    options: optionsWithoutIcon,
+    options: optionsWithColors,
     value: dayValue,
     typeAttributes: {
         showCheckmark: true
@@ -436,7 +443,7 @@ export const ToggleStretch = Template.bind({});
 ToggleStretch.args = {
     label: 'Please select a value',
     type: 'toggle',
-    options: optionsWithoutIcon,
+    options: optionsWithColors,
     value: dayValue,
     typeAttributes: {
         stretch: true

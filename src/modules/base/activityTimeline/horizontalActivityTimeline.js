@@ -194,6 +194,15 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Select div container of timeline header
+     */
+    get divTimelineHeader() {
+        return this._activityTimeline.template.querySelector(
+            '[data-element-id="avonni-activity-horizontal-timeline-header"]'
+        );
+    }
+
+    /**
      * Select div container of timeline items
      */
     get divTimelineItemsSelector() {
@@ -544,11 +553,13 @@ export class HorizontalActivityTimeline {
     addValidItemsToData(sortedItems) {
         this._sortedItems = [];
 
-        sortedItems.forEach((item) => {
-            if (!this.isDateInvalid(item.datetimeValue)) {
-                this._sortedItems.push(item);
-            }
-        });
+        if (sortedItems) {
+            sortedItems.forEach((item) => {
+                if (!this.isDateInvalid(item.datetimeValue)) {
+                    this._sortedItems.push(item);
+                }
+            });
+        }
     }
 
     /**
@@ -612,16 +623,6 @@ export class HorizontalActivityTimeline {
         if (!this._isResizingInterval) {
             this._changeIntervalSizeMode = false;
             this.setIntervalBoundsState();
-        }
-    }
-
-    /**
-     * Cancel swipe left (to go back to previous page) if user is scrolling left on interval.
-     */
-    cancelSwipeLeftIfScrollLeft(event) {
-        if (event.deltaX < 0) {
-            event.stopPropagation();
-            event.preventDefault();
         }
     }
 
@@ -930,7 +931,7 @@ export class HorizontalActivityTimeline {
                 'avonni-horizontal-activity-timeline__timeline-axis-svg'
             )
             .attr('width', this._timelineWidth + BORDER_OFFSET)
-            .attr('height', SVG_ICON_SIZE)
+            .attr('height', 25)
             .attr('transform', 'translate(0 ,0)');
 
         // Add upper and lower line of timeline axis
@@ -1643,11 +1644,18 @@ export class HorizontalActivityTimeline {
      * @return {object}
      */
     setPopoverPosition(tooltipElement, element) {
+        let offsetY = this.divTimelineHeader
+            ? this.divTimelineScroll.getBoundingClientRect().top -
+              this.divTimelineHeader.getBoundingClientRect().top
+            : 0;
+        offsetY -= this.divTimelineScroll.scrollTop;
+        if (this.hasBorder(element)) {
+            offsetY += AVATAR_MARGIN;
+        }
+
         const popoverPosition = {
             x: this.findEndPositionOfItem(element),
-            y: this.hasBorder(element)
-                ? element.yPosition + AVATAR_MARGIN
-                : element.yPosition,
+            y: element.yPosition + offsetY,
             direction: 'left'
         };
 
@@ -1894,7 +1902,7 @@ export class HorizontalActivityTimeline {
             if (!this._isMouseOverOnPopover) {
                 this._activityTimeline.handleTooltipClose();
             }
-        }, 1500);
+        }, 250);
     }
 
     /**
@@ -2025,22 +2033,52 @@ export class HorizontalActivityTimeline {
      * Handle horizontal scroll (wheel event) of interval on timeline's scroll axis.
      */
     handleWheelOnInterval(event) {
-        if (this.isScrollingVerticallyOnTimeline(event)) {
+        const timeIntervalSelector = this._timeIntervalSelector.node();
+        const timeIntervalSelectorLeft =
+            timeIntervalSelector.getBoundingClientRect().left;
+        const timeIntervalSelectorRight =
+            timeIntervalSelector.getBoundingClientRect().right;
+
+        const canScroll = Math.abs(event.deltaX) !== Math.abs(event.deltaY);
+        const isScrollingVertically =
+            this.isScrollingVerticallyOnTimeline(event);
+
+        const scrollLeftEnd =
+            this.scrollAxisLeftPosition === timeIntervalSelectorLeft &&
+            event.deltaX <= 0;
+        const scrollRightEnd =
+            timeIntervalSelectorRight >=
+                this.scrollAxisLeftPosition +
+                    this.scrollAxisRectangle.getBoundingClientRect().width &&
+            event.deltaX > 0;
+        const scrollTopEnd =
+            this.divTimelineScroll.scrollTop <= 0 && event.deltaY <= 0;
+        const scrollBottomEnd =
+            this.divTimelineScroll.scrollTop +
+                this.divTimelineScroll.clientHeight >=
+                this.divTimelineScroll.scrollHeight && event.deltaY > 0;
+
+        if (
+            !canScroll ||
+            (!isScrollingVertically && (scrollLeftEnd || scrollRightEnd)) ||
+            (isScrollingVertically && (scrollTopEnd || scrollBottomEnd))
+        ) {
             return;
         }
 
-        event.stopPropagation();
-        event.preventDefault();
+        if (!isScrollingVertically) {
+            event.stopPropagation();
+            event.preventDefault();
 
-        this.cancelSwipeLeftIfScrollLeft(event);
-        this.cancelEditIntervalSizeMode();
-        this.handleMouseOutOfPopover();
+            this.cancelEditIntervalSizeMode();
+            this.handleMouseOutOfPopover();
 
-        // Horizontal scroll of interval
-        const requestedPosition = this.extractScrollXPosition(event);
+            // Horizontal scroll of interval
+            const requestedPosition = this.extractScrollXPosition(event);
 
-        this.moveIntervalToPosition(
-            this.validateXMousePosition(requestedPosition)
-        );
+            this.moveIntervalToPosition(
+                this.validateXMousePosition(requestedPosition)
+            );
+        }
     }
 }

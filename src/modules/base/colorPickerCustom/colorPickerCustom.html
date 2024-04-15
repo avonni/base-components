@@ -22,17 +22,18 @@
                 onmousedrag={handlePreventDefault}
                 onmousedown={handlePreventDefault}
                 onkeydown={handleKeydown}
+                onclick={handlePreventDefault}
             >
-                <span class="slds-assistive-text"
-                    >{computedSaturationAndBrightness}</span
-                >
+                <span class="slds-assistive-text">
+                    {computedSaturationAndBrightness}
+                </span>
             </a>
         </div>
         <!--Slider & thumbnail -->
         <div class="slds-color-picker__hue-and-preview">
-            <label class="slds-assistive-text" for="rainbow"
-                >{i18n.hueInput}</label
-            >
+            <label class="slds-assistive-text" for="rainbow">
+                {i18n.hueInput}
+            </label>
             <input
                 data-id="hue-slider"
                 type="range"
@@ -49,9 +50,9 @@
                 data-id="color-preview"
                 style={thumbnailStyle}
             >
-                <span class="slds-assistive-text" aria-hidden="true"
-                    >{_hex}</span
-                >
+                <span class="slds-assistive-text" aria-hidden="true">
+                    {_hex}
+                </span>
             </span>
         </div>
         <!--Custom Inputs-->

@@ -41,7 +41,8 @@ export default {
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         },
         fieldLevelHelp: {
@@ -198,14 +199,15 @@ export default {
             },
             options: [
                 'bare',
-                'container',
+                'bare-inverse',
                 'border',
                 'border-filled',
-                'bare-inverse',
-                'border-inverse'
+                'border-inverse',
+                'container',
+                'neutral'
             ],
             description:
-                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, border, border-filled,border-inverse and container.',
             table: {
                 defaultValue: { summary: 'border' },
                 type: { summary: 'string' },
@@ -220,7 +222,8 @@ export default {
             description:
                 'Error message to be displayed when a bad input is detected.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validation'
             }
         },
         messageWhenValueMissing: {
@@ -231,7 +234,8 @@ export default {
             description:
                 'Error message to be displayed when the value is missing and input is required.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validation'
             }
         },
         name: {
@@ -306,7 +310,8 @@ export default {
                 'If present, the palette is read-only and cannot be edited by users.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         },
         required: {
@@ -317,7 +322,8 @@ export default {
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         },
         type: {
@@ -372,11 +378,20 @@ export default {
     args: {
         disabled: false,
         readOnly: false,
-        isLoading: false,
-        menuNubbin: false,
         hideClearIcon: false,
         hideColorInput: false,
-        opacity: false
+        inline: false,
+        isLoading: false,
+        menuAlignment: 'left',
+        menuIconSize: 'x-small',
+        menuNubbin: false,
+        menuVariant: 'border',
+        opacity: false,
+        paletteHideOutline: false,
+        paletteShowCheckmark: false,
+        required: false,
+        type: 'base',
+        variant: 'standard'
     }
 };
 

@@ -708,7 +708,12 @@ export default class InputChoiceSet extends LightningElement {
         const { options, value } = this;
         if (Array.isArray(options)) {
             return options.map((option) => {
-                return new InputChoiceOption(option, value, this.itemIndex++);
+                return new InputChoiceOption(
+                    option,
+                    value,
+                    this.itemIndex++,
+                    this.type
+                );
             });
         }
         return [];

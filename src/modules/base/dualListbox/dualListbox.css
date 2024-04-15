@@ -20,7 +20,10 @@
         --avonni-dual-listbox-option-color-background,
         #ffffff
     );
-    color: var(--avonni-dual-listbox-option-text-color, #181818);
+    color: var(
+        --avonni-dual-listbox-option-text-color,
+        var(--lwc-colorTextDefault, #181818)
+    );
 }
 
 .avonni-dual-listbox__option:hover {
@@ -28,7 +31,10 @@
         --avonni-dual-listbox-option-color-background-hover,
         #f3f2f2
     );
-    color: var(--avonni-dual-listbox-option-text-color-hover, #181818);
+    color: var(
+        --avonni-dual-listbox-option-text-color-hover,
+        var(--lwc-colorTextDefault, #181818)
+    );
 }
 
 .avonni-dual-listbox__buttons_centered .button {
@@ -100,7 +106,10 @@
         --avonni-dual-listbox-option-color-background-selected,
         #edeceb
     );
-    color: var(--avonni-dual-listbox-option-text-color-selected, #181818);
+    color: var(
+        --avonni-dual-listbox-option-text-color-selected,
+        var(--lwc-colorTextDefault, #181818)
+    );
 }
 
 .avonni-dual-listbox__option_border-bottom {
