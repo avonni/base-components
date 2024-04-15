@@ -73,5 +73,10 @@ export default class AvatarGroupBaseWithMoreThanTwoAvatars extends LightningElem
         ...ITEMS,
         ...ITEMS,
         ...ITEMS
-    ];
+    ].map((item, index) => {
+        return {
+            ...item,
+            name: `user-${index + 1}`
+        };
+    });
 }

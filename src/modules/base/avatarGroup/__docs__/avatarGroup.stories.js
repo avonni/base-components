@@ -422,6 +422,15 @@ const itemsWithStatusAndEntity = [
     }
 ];
 
+function createUniqueItems(avatarItems) {
+    return avatarItems.map((item, index) => {
+        return {
+            ...item,
+            name: `user-${index + 1}`
+        };
+    });
+}
+
 export const BaseWithTwoAvatars = Template.bind({});
 BaseWithTwoAvatars.args = {
     items: items,
@@ -438,7 +447,7 @@ BaseExtraLargeWithTwoAvatars.args = {
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});
 BaseWithMoreThanTwoAvatars.args = {
-    items: [
+    items: createUniqueItems([
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
@@ -465,12 +474,12 @@ BaseWithMoreThanTwoAvatars.args = {
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence
-    ]
+    ])
 };
 
 export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
 BaseLargeWithMoreThanTwoAvatars.args = {
-    items: [...items, ...items, ...items],
+    items: createUniqueItems([...items, ...items, ...items]),
     size: 'large',
     maxCount: 6,
     variant: 'circle',
@@ -480,7 +489,14 @@ BaseLargeWithMoreThanTwoAvatars.args = {
 
 export const Grid = Template.bind({});
 Grid.args = {
-    items: [...items, ...items, ...items, ...items, ...items, ...items],
+    items: createUniqueItems([
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items
+    ]),
     layout: 'grid',
     maxCount: 6,
     name: 'avatar-group'
@@ -488,14 +504,14 @@ Grid.args = {
 
 export const GridWithPresence = Template.bind({});
 GridWithPresence.args = {
-    items: [
+    items: createUniqueItems([
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence
-    ],
+    ]),
     layout: 'grid',
     maxCount: 6,
     variant: 'circle',
@@ -504,7 +520,14 @@ GridWithPresence.args = {
 
 export const GridSmall = Template.bind({});
 GridSmall.args = {
-    items: [...items, ...items, ...items, ...items, ...items, ...items],
+    items: createUniqueItems([
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items
+    ]),
     size: 'small',
     layout: 'grid',
     maxCount: 7,
@@ -513,11 +536,11 @@ GridSmall.args = {
 
 export const ListDoubleExtraLarge = Template.bind({});
 ListDoubleExtraLarge.args = {
-    items: [
+    items: createUniqueItems([
         ...itemsWithStatusAndEntity,
         ...itemsWithStatusAndEntity,
         ...itemsWithStatusAndEntity
-    ],
+    ]),
     layout: 'list',
     maxCount: 3,
     size: 'xx-large',
