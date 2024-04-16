@@ -1,26 +1,26 @@
 import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellAvatarGroup extends LightningElement {
+    @api actionIconName;
     @api colKeyValue;
-    @api rowKeyValue;
     @api items;
     @api layout;
     @api maxCount;
+    @api name;
+    @api rowKeyValue;
     @api size;
     @api variant;
-    @api actionIconName;
-    @api name;
-    @api value;
 
     handleAvatarClick(event) {
+        const { detail, bubbles, composed, cancelable, type } = event;
         this.dispatchEvent(
             new CustomEvent('privateavatarclick', {
                 detail: {
-                    detail: event.detail,
-                    bubbles: event.bubbles,
-                    composed: event.composed,
-                    cancelable: event.cancelable,
-                    type: event.type
+                    detail,
+                    bubbles,
+                    composed,
+                    cancelable,
+                    type
                 },
                 bubbles: true,
                 composed: true
@@ -29,14 +29,15 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
     }
 
     handleActionClick(event) {
+        const { detail, bubbles, composed, cancelable, type } = event;
         this.dispatchEvent(
             new CustomEvent('privateactionclick', {
                 detail: {
-                    detail: event.detail,
-                    bubbles: event.bubbles,
-                    composed: event.composed,
-                    cancelable: event.cancelable,
-                    type: event.type
+                    detail,
+                    bubbles,
+                    composed,
+                    cancelable,
+                    type
                 },
                 bubbles: true,
                 composed: true
