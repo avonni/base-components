@@ -1,5 +1,8 @@
 import { createElement } from 'lwc';
 import AvatarGroup from 'c/avatarGroup';
+import { Tooltip } from 'c/tooltipLibrary';
+
+jest.mock('c/tooltipLibrary');
 
 // Not tested:
 // Focus handling on items and hidden items.
@@ -90,6 +93,7 @@ describe('Avatar Group', () => {
             setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
+        Tooltip.mockClear();
     });
 
     describe('Attributes', () => {
@@ -304,9 +308,13 @@ describe('Avatar Group', () => {
                 avatars.forEach((avatar, index) => {
                     const correspondingField = item[index];
                     expect(correspondingField).toBeTruthy();
-                    expect(avatar.alternativeText).toBe(
+                    expect(Tooltip).toHaveBeenCalled();
+                    expect(Tooltip.mock.calls[0][0]).toBe(
                         correspondingField.alternativeText
                     );
+                    const instance = Tooltip.mock.instances[0];
+                    expect(instance.initialize).toHaveBeenCalled();
+
                     expect(avatar.fallbackIconName).toBe(
                         correspondingField.fallbackIconName
                     );
