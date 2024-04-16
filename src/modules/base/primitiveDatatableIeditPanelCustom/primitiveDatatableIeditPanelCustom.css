@@ -1,3 +1,7 @@
+.avonni-datatable-iedit-panel {
+    z-index: 9000 !important;
+}
+
 .avonni-datatable-iedit-panel-custom__flex-col {
     flex: 1 1 auto;
 }

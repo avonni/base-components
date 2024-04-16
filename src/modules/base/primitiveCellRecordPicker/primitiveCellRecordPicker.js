@@ -5,12 +5,13 @@ import {
     startPanelPositioning
 } from 'c/primitiveCellUtils';
 
-export default class PrimitiveCellLookup extends LightningElement {
+export default class PrimitiveCellRecordPicker extends LightningElement {
     @api colKeyValue;
     @api linkify;
     @api objectApiName;
     @api path;
     @api relationshipFieldName;
+    @api relationshipObjectApiName;
     @api rowKeyValue;
 
     _index;
@@ -24,19 +25,8 @@ export default class PrimitiveCellLookup extends LightningElement {
     readOnly = true;
 
     connectedCallback() {
-        // Dispatches the inline edit event to the parent component.
-        this.template.addEventListener('inlineeditchange', (event) => {
-            this.handleChange(event);
-        });
-
-        this.template.addEventListener('ieditfinishedcustom', (event) => {
-            if (
-                !event.detail.isMassEditEnabled ||
-                event.detail.reason === 'edit-canceled' ||
-                event.detail.reason === 'submit-action'
-            ) {
-                this.toggleInlineEdit();
-            }
+        this.template.addEventListener('ieditfinishedcustom', () => {
+            this.toggleInlineEdit();
         });
         this.dispatchStateAndColumnsEvent();
     }

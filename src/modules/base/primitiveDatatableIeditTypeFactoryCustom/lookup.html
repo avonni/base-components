@@ -1,11 +1,12 @@
 <template>
-    <c-record-picker
-        display-info={displayInfo}
-        label={fieldName}
-        object-api-name={objectApiName}
-        value={editedValue}
-        variant="label-hidden"
-        data-inputable="true"
-        onready={focus}
-    ></c-record-picker>
+    <c-record-edit-form object-api-name={objectApiName} record-id={rowKeyValue}>
+        <lightning-input-field
+            field-name={fieldName}
+            required={required}
+            value={editedValue}
+            variant="label-hidden"
+            data-inputable="true"
+            onchange={handleLookupChange}
+        ></lightning-input-field>
+    </c-record-edit-form>
 </template>
