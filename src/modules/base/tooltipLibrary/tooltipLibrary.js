@@ -434,22 +434,12 @@ export class Tooltip {
         if (!target) {
             return;
         }
-
-        if (this.handleTargetTouchStart) {
-            target.removeEventListener(
-                'touchstart',
-                this.handleTargetTouchStart
-            );
-        }
-        if (this.handleTargetMouseEnter) {
-            ['mouseenter', 'focus'].forEach((name) =>
-                target.removeEventListener(name, this.handleTargetMouseEnter)
-            );
-        }
-        if (this.handleTargetMouseLeave) {
-            ['mouseleave', 'blur', 'click', 'keydown'].forEach((name) =>
-                target.removeEventListener(name, this.handleTargetMouseLeave)
-            );
-        }
+        ['mouseenter', 'focus'].forEach((name) =>
+            target.removeEventListener(name, this.handleTargetMouseEnter)
+        );
+        ['mouseleave', 'blur', 'click', 'keydown'].forEach((name) =>
+            target.removeEventListener(name, this.handleTargetMouseLeave)
+        );
+        target.removeEventListener('touchstart', this.handleTargetTouchStart);
     }
 }

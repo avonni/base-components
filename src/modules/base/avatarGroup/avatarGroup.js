@@ -135,6 +135,7 @@ export default class AvatarGroup extends LightningElement {
     _preventPopoverClosing = false;
     _resizeObserver;
     _tooltips = [];
+    _tooltipTimeout;
 
     connectedCallback() {
         this.template.addEventListener(
@@ -1090,7 +1091,7 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
-    async startPositioning() {
+    startPositioning() {
         this._positioning = true;
         return animationFrame()
             .then(() => {
@@ -1130,7 +1131,6 @@ export default class AvatarGroup extends LightningElement {
             .then(() => {
                 // Use a flag to prevent this async function from executing multiple times in a single lifecycle
                 this._positioning = false;
-                return Promise.resolve();
             });
     }
 
@@ -1145,12 +1145,12 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Toggle the visibility of the hidden items popover.
      */
-    async toggleItemsVisibility() {
+    toggleItemsVisibility() {
         this.showHiddenItems = !this.showHiddenItems;
 
         if (this.showHiddenItems) {
             if (this.isNotList) {
-                await this.startPositioning();
+                this.startPositioning();
             }
 
             this._hiddenItemsStartIndex = this.computedMaxCount;
@@ -1408,6 +1408,24 @@ export default class AvatarGroup extends LightningElement {
         const index = Number(event.currentTarget.dataset.index);
         if (index !== this._focusedIndex) {
             this.switchFocus(index);
+        }
+    }
+
+    /**
+     * Handle a mouse enter on an item.
+     *
+     * @param {Event} event `mouseenter` event.
+     */
+    handleItemHover(event) {
+        if (this.isClassic || this.isNotList) {
+            // Reposition the tooltip
+            const index = Number(event.currentTarget.dataset.index);
+            if (this._tooltipTimeout) {
+                clearTimeout(this._tooltipTimeout);
+            }
+            this._tooltipTimeout = setTimeout(() => {
+                this._tooltips[index].startPositioning();
+            }, 50);
         }
     }
 
