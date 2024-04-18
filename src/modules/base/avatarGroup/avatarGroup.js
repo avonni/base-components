@@ -524,7 +524,9 @@ export default class AvatarGroup extends LightningElement {
      * @type {HTMLElement[]}
      */
     get avatarItemElements() {
-        return this.template.querySelectorAll('[data-element-id="li-visible"]');
+        return this.template.querySelectorAll(
+            '[data-element-id="avonni-avatar"]'
+        );
     }
 
     /**
@@ -1199,11 +1201,12 @@ export default class AvatarGroup extends LightningElement {
      * Update the number of visible and collapsed items, depending on the available space.
      */
     updateVisibleMaxCount() {
+        const firstVisibleItem = this.template.querySelector(
+            '[data-element-id="li-visible"]'
+        );
         if (
             !this.wrapperElement ||
-            (this.avatarItemElements.length > 0 &&
-                this.avatarItemElements[0] &&
-                !this.showMoreButtonElement) ||
+            (firstVisibleItem && !this.showMoreButtonElement) ||
             this.items.length <= 1
         ) {
             if (this.enableInfiniteLoading && !this.isLoading) {
@@ -1218,10 +1221,7 @@ export default class AvatarGroup extends LightningElement {
             ? totalWidth - this.actionButtonElement.offsetWidth
             : totalWidth;
 
-        const referenceElement =
-            (this.avatarItemElements.length > 0 &&
-                this.avatarItemElements[0]) ||
-            this.showMoreButtonElement;
+        const referenceElement = firstVisibleItem || this.showMoreButtonElement;
 
         const referenceElementStyles =
             window.getComputedStyle(referenceElement);
@@ -1424,7 +1424,9 @@ export default class AvatarGroup extends LightningElement {
                 clearTimeout(this._tooltipTimeout);
             }
             this._tooltipTimeout = setTimeout(() => {
-                this._tooltips[index].startPositioning();
+                if (this._tooltips[index]) {
+                    this._tooltips[index].startPositioning();
+                }
             }, 50);
         }
     }
