@@ -87,16 +87,31 @@
                 ></c-primitive-avatar>
             </div>
         </template>
-        <p
-            data-element-id="avonni-avatar-primary-text"
-            class="
-                slds-text-title_bold
-                avonni-avatar__primary-text avonni-avatar__truncate
-            "
-            title={primaryText}
-        >
-            {primaryText}
-        </p>
+        <template lwc:if={primaryTextUrl}>
+            <a
+                href={primaryTextUrl}
+                data-element-id="avonni-avatar-primary-text"
+                class="
+                    slds-text-title_bold
+                    avonni-avatar__primary-text avonni-avatar__truncate
+                "
+                title={primaryText}
+            >
+                {primaryText}
+            </a>
+        </template>
+        <template lwc:else>
+            <p
+                data-element-id="avonni-avatar-primary-text"
+                class="
+                    slds-text-title_bold
+                    avonni-avatar__primary-text avonni-avatar__truncate
+                "
+                title={primaryText}
+            >
+                {primaryText}
+            </p>
+        </template>
         <p
             data-element-id="avonni-avatar-secondary-text"
             class="avonni-avatar__secondary-text avonni-avatar__truncate"
