@@ -659,6 +659,47 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         });
     });
 
+    // to
+    it('Scheduler event occurence: class is added when the event is done', () => {
+        // Event is in the future
+        element.from = new Date().getTime() + 60000;
+        element.to = new Date().getTime() + 120000;
+
+        return Promise.resolve()
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="div-event-content"]'
+                );
+                expect(event.classList).not.toContain(
+                    'avonni-scheduler__event_past'
+                );
+
+                // Event is in the past
+                element.from = new Date().getTime() - 60000;
+                element.to = new Date().getTime() - 10000;
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="div-event-content"]'
+                );
+                expect(event.classList).toContain(
+                    'avonni-scheduler__event_past'
+                );
+
+                // Event is currently happening
+                element.from = new Date().getTime() - 60000;
+                element.to = new Date().getTime() + 120000;
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="div-event-content"]'
+                );
+                expect(event.classList).not.toContain(
+                    'avonni-scheduler__event_past'
+                );
+            });
+    });
+
     // x
     it('Scheduler event occurence: x', () => {
         element.x = 70;
