@@ -565,6 +565,7 @@ export default class Slider extends LightningElement {
             .add({
                 'avonni-slider__vertical': this.isVertical,
                 'slds-is-absolute': this.isVertical,
+                'slds-is-relative': !this.isVertical,
                 'slds-m-left_xx-small': this.isVertical,
                 [`avonni-slider__container-vertical-origin_${this._size}`]:
                     this.isVertical
@@ -1089,6 +1090,21 @@ export default class Slider extends LightningElement {
                     totalWidth - this.getPercentOfValue(value) * totalWidth
                 }px`;
             } else {
+                const ruler = this._ruler;
+                const wrapper = this.template.querySelector(
+                    '[data-element-id="div-range"]'
+                );
+                let offsetTop = wrapper ? wrapper.clientHeight : 0;
+                offsetTop -= ruler ? ruler.clientHeight : 0;
+                if (wrapper && ruler && this.tickMarkStyle === 'tick') {
+                    const rulerStyle = getComputedStyle(ruler);
+                    if (rulerStyle) {
+                        offsetTop += Math.abs(
+                            parseInt(rulerStyle.marginBottom.split('px')[0], 10)
+                        );
+                    }
+                }
+                element.style.top = `${offsetTop}px`;
                 element.style.left = `${
                     this.getPercentOfValue(value) * totalWidth
                 }px`;
