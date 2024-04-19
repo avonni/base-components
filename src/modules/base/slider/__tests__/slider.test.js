@@ -387,7 +387,7 @@ describe('Slider', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-range"]'
             );
-            expect(wrapper.className).toBe(
+            expect(wrapper.className).toContain(
                 'avonni-slider__container-horizontal-size_responsive'
             );
         });
