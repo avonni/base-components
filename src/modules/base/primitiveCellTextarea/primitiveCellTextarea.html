@@ -1,36 +1,32 @@
 <template>
-    <template if:true={visible}>
-        <c-primitive-datatable-iedit-panel-custom
-            data-iedit-panel-custom="true"
-            visible={state.inlineEdit.panelVisible}
-            row-key-value={state.inlineEdit.rowKeyValue}
-            col-key-value={state.inlineEdit.colKeyValue}
-            edited-value={state.inlineEdit.editedValue}
-            column-def={state.inlineEdit.columnDef}
-            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
-            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            max-length={maxLength}
-            min-length={minLength}
-            placeholder={placeholder}
-        ></c-primitive-datatable-iedit-panel-custom>
-    </template>
-    <template if:false={visible}>
-        <span
-            class="
-                slds-grid slds-cell-edit
-                slds-grid_align-spread slds-grid_vertical-align-center
-            "
-        >
-            <div class={computedWrapTextClass}>
-                <lightning-formatted-text
-                    value={value}
-                ></lightning-formatted-text>
-            </div>
-            <c-primitive-cell-editable-button
-                if:true={showEditButton}
-                onclick={handleEditButtonClick}
-                column-label="Textarea"
-            ></c-primitive-cell-editable-button>
-        </span>
-    </template>
+    <c-primitive-datatable-iedit-panel-custom
+        if:true={visible}
+        visible={state.inlineEdit.panelVisible}
+        col-key-value={state.inlineEdit.colKeyValue}
+        column-def={state.inlineEdit.columnDef}
+        edited-value={state.inlineEdit.editedValue}
+        is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
+        max-length={maxLength}
+        min-length={minLength}
+        number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
+        placeholder={placeholder}
+        row-key-value={state.inlineEdit.rowKeyValue}
+        data-iedit-panel-custom="true"
+    ></c-primitive-datatable-iedit-panel-custom>
+    <span
+        if:false={visible}
+        class="
+            slds-grid slds-cell-edit
+            slds-grid_align-spread slds-grid_vertical-align-center
+        "
+    >
+        <div class={computedWrapTextClass}>
+            <lightning-formatted-text value={value}></lightning-formatted-text>
+        </div>
+        <c-primitive-cell-editable-button
+            if:true={showEditButton}
+            column-label="Textarea"
+            onclick={handleEditButtonClick}
+        ></c-primitive-cell-editable-button>
+    </span>
 </template>

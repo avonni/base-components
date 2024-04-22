@@ -3,10 +3,10 @@ import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellTextarea extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
     @api maxLength;
     @api minLength;
     @api placeholder;
+    @api rowKeyValue;
 
     _index;
     _value;

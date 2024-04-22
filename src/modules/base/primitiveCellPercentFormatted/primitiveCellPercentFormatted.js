@@ -64,21 +64,6 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /*----------- Inline Editing Functions -------------*/
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
     getStateAndColumns(dt) {
         this.dt = dt;
@@ -87,6 +72,17 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
         const index = state.headerIndexes[this.colKeyValue];
         this.editable = isEditable(this.state, index, columns);
     }
+
+    // Toggles the visibility of the inline edit panel
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     // Handles the edit button click and dispatches the event.
     handleEditButtonClick() {
@@ -114,8 +110,17 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
         }
     }
 
-    // Toggles the visibility of the inline edit panel
-    toggleInlineEdit() {
-        this.visible = !this.visible;
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }
