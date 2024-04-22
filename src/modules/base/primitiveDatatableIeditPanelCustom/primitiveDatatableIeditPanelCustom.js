@@ -246,10 +246,11 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      */
     get isTypeWithMenu() {
         return (
-            this.isTypeRichText ||
-            this.isTypeDateRange ||
             this.isTypeColorPicker ||
             this.isTypeCounter ||
+            this.isTypeDateRange ||
+            this.isTypeLookup ||
+            this.isTypeRichText ||
             this.isTypeTextArea ||
             (this.isTypeCombobox && this.isMultiSelect)
         );
