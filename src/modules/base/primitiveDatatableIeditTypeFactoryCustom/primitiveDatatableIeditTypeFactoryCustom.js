@@ -99,26 +99,14 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         if (!this.concreteComponent) return;
         this.concreteComponent.addEventListener('change', this._changeHandler);
 
-        if (this.columnDef.type === 'lookup') {
-            // The lightning input field does not dispatch focus and blur events
-            this.concreteComponent.addEventListener(
-                'focusout',
-                this._blurHandler
-            );
-            this.concreteComponent.addEventListener(
-                'focusin',
-                this._focusHandler
-            );
-        } else {
+        if (this.columnType !== 'lookup') {
             this.concreteComponent.addEventListener('blur', this._blurHandler);
             this.concreteComponent.addEventListener(
                 'focus',
                 this._focusHandler
             );
-        }
-        requestAnimationFrame(() => {
             this.focus();
-        });
+        }
     }
 
     /*
@@ -312,25 +300,11 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
-    handleLookupChange(event) {
-        let value;
-        if (
-            event.detail &&
-            event.detail.value &&
-            event.detail.value.length > 0
-        ) {
-            value = event.detail.value[0];
-        }
-
-        this.dispatchEvent(
-            new CustomEvent('inlineeditchange', {
-                detail: {
-                    value: value,
-                    validity: true
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
+    handleLoad() {
+        this.concreteComponent.addEventListener('focusout', this._blurHandler);
+        this.concreteComponent.addEventListener('focusin', this._focusHandler);
+        requestAnimationFrame(() => {
+            this.focus();
+        });
     }
 }
