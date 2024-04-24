@@ -41,6 +41,12 @@ export default class PrimitiveCellLookup extends LightningElement {
         this.dispatchStateAndColumnsEvent();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
     get name() {
         return this._name;
@@ -66,6 +72,12 @@ export default class PrimitiveCellLookup extends LightningElement {
     set wrapText(value) {
         this._wrapText = value;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get computedWrapTextClass() {
         if (this.wrapText) {
@@ -115,53 +127,11 @@ export default class PrimitiveCellLookup extends LightningElement {
         return this.path && this.name && !this.hasDirtyValue;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-    dispatchCellChangeEvent(state) {
-        const dirtyValues = state.inlineEdit.dirtyValues;
-        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
-        this.dispatchEvent(
-            new CustomEvent('cellchangecustom', {
-                detail: {
-                    dirtyValue: this.value,
-                    draftValues: getResolvedCellChanges(state, dirtyValues),
-                    callbacks: {
-                        setLookupName: this.setName.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    dispatchValueChangeEvent() {
-        this.dispatchEvent(
-            new CustomEvent('valuechange', {
-                detail: {
-                    dirtyValue: this._value,
-                    callbacks: {
-                        setLookupName: this.setName.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
     getStateAndColumns(dt) {
@@ -176,6 +146,16 @@ export default class PrimitiveCellLookup extends LightningElement {
     setName(name) {
         this._name = name;
     }
+
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     handleChange(event) {
         const value = event.detail.value || null;
@@ -223,7 +203,50 @@ export default class PrimitiveCellLookup extends LightningElement {
         }
     }
 
-    toggleInlineEdit() {
-        this.visible = !this.visible;
+    dispatchCellChangeEvent(state) {
+        const dirtyValues = state.inlineEdit.dirtyValues;
+        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    dirtyValue: this.value,
+                    draftValues: getResolvedCellChanges(state, dirtyValues),
+                    callbacks: {
+                        setLookupName: this.setName.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchValueChangeEvent() {
+        this.dispatchEvent(
+            new CustomEvent('valuechange', {
+                detail: {
+                    dirtyValue: this._value,
+                    callbacks: {
+                        setLookupName: this.setName.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

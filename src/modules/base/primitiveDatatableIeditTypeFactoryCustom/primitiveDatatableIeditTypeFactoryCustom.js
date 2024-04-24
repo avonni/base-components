@@ -96,9 +96,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     renderedCallback() {
-        if (!this.concreteComponent) {
-            return;
-        }
+        if (!this.concreteComponent) return;
         this.concreteComponent.addEventListener('change', this._changeHandler);
 
         if (this.columnDef.type === 'lookup') {
@@ -111,21 +109,16 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
                 'focusin',
                 this._focusHandler
             );
-            requestAnimationFrame(() => {
-                if (this.concreteComponent) {
-                    this.concreteComponent.focus();
-                }
-            });
         } else {
             this.concreteComponent.addEventListener('blur', this._blurHandler);
             this.concreteComponent.addEventListener(
                 'focus',
                 this._focusHandler
             );
-            requestAnimationFrame(() => {
-                this.focus();
-            });
         }
+        requestAnimationFrame(() => {
+            this.focus();
+        });
     }
 
     /*

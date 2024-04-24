@@ -19,7 +19,6 @@ export default class PrimitiveCellProgressBar extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value * 100;
     }

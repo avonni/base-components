@@ -8,12 +8,12 @@ import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrimitiveCellCombobox extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
     @api disabled;
     @api dropdownAlignment;
     @api dropdownLength;
     @api isMultiSelect;
     @api placeholder;
+    @api rowKeyValue;
 
     _index;
     _options = [];
@@ -36,6 +36,12 @@ export default class PrimitiveCellCombobox extends LightningElement {
         });
         this.dispatchStateAndColumnsEvent();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get options() {
@@ -60,6 +66,12 @@ export default class PrimitiveCellCombobox extends LightningElement {
     set wrapText(value) {
         this._wrapText = value;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get computedWrapTextClass() {
         if (this.wrapText && !this.isMultiSelect) {
@@ -117,34 +129,11 @@ export default class PrimitiveCellCombobox extends LightningElement {
         return this.editable && !this.disabled;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-    dispatchCellChangeEvent(state) {
-        const dirtyValues = state.inlineEdit.dirtyValues;
-        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
-        this.dispatchEvent(
-            new CustomEvent('cellchangecustom', {
-                detail: {
-                    draftValues: getResolvedCellChanges(state, dirtyValues)
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
     getStateAndColumns(dt) {
@@ -155,6 +144,18 @@ export default class PrimitiveCellCombobox extends LightningElement {
         const index = state.headerIndexes[this.colKeyValue];
         this.editable = isEditable(this.state, index, columns);
     }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     handleChange(event) {
         const value = event.detail.value || null;
@@ -203,9 +204,31 @@ export default class PrimitiveCellCombobox extends LightningElement {
         }
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
-    toggleInlineEdit() {
-        this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
+    dispatchCellChangeEvent(state) {
+        const dirtyValues = state.inlineEdit.dirtyValues;
+        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    draftValues: getResolvedCellChanges(state, dirtyValues)
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

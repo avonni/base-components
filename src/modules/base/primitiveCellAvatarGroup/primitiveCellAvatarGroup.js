@@ -1,20 +1,20 @@
 import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellAvatarGroup extends LightningElement {
+    @api actionIconName;
     @api colKeyValue;
-    @api rowKeyValue;
     @api items;
     @api layout;
     @api maxCount;
-    @api size;
-    @api variant;
-    @api actionIconName;
     @api name;
+    @api rowKeyValue;
+    @api size;
     @api value;
+    @api variant;
 
-    handleAvatarClick(event) {
+    handleActionClick(event) {
         this.dispatchEvent(
-            new CustomEvent('privateavatarclick', {
+            new CustomEvent('privateactionclick', {
                 detail: {
                     detail: event.detail,
                     bubbles: event.bubbles,
@@ -28,9 +28,9 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
         );
     }
 
-    handleActionClick(event) {
+    handleAvatarClick(event) {
         this.dispatchEvent(
-            new CustomEvent('privateactionclick', {
+            new CustomEvent('privateavatarclick', {
                 detail: {
                     detail: event.detail,
                     bubbles: event.bubbles,

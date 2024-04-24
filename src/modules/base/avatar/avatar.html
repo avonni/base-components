@@ -1,7 +1,6 @@
 <template>
     <c-primitive-avatar
         if:true={hideAvatarDetails}
-        data-element-id="avonni-primitive-avatar-no-details"
         actions={actions}
         action-position={actionPosition}
         action-menu-icon={actionMenuIcon}
@@ -24,17 +23,17 @@
         status-title={statusTitle}
         status-position={statusPosition}
         variant={variant}
+        data-element-id="avonni-primitive-avatar-no-details"
     ></c-primitive-avatar>
     <c-media-object
         if:false={hideAvatarDetails}
-        inline={computedMediaObjectInline}
         class={mediaObjectClass}
+        inline={computedMediaObjectInline}
         data-element-id="avonni-media-object"
     >
         <template if:true={showAvatar}>
             <div if:true={textPositionLeft} slot="figure-inverse">
                 <c-primitive-avatar
-                    data-element-id="avonni-primitive-avatar-details-left"
                     actions={actions}
                     action-position={actionPosition}
                     action-menu-icon={actionMenuIcon}
@@ -57,11 +56,11 @@
                     status-title={statusTitle}
                     status-position={statusPosition}
                     variant={variant}
+                    data-element-id="avonni-primitive-avatar-details-left"
                 ></c-primitive-avatar>
             </div>
             <div if:false={textPositionLeft} slot="figure">
                 <c-primitive-avatar
-                    data-element-id="avonni-primitive-avatar-details-right"
                     actions={actions}
                     action-position={actionPosition}
                     action-menu-icon={actionMenuIcon}
@@ -84,56 +83,57 @@
                     status-title={statusTitle}
                     status-position={statusPosition}
                     variant={variant}
+                    data-element-id="avonni-primitive-avatar-details-right"
                 ></c-primitive-avatar>
             </div>
         </template>
-        <template lwc:if={primaryTextUrl}>
-            <a
-                href={primaryTextUrl}
-                data-element-id="avonni-avatar-primary-text"
-                class="
-                    slds-text-title_bold
-                    avonni-avatar__primary-text avonni-avatar__truncate
-                "
-                title={primaryText}
-            >
-                {primaryText}
-            </a>
-        </template>
-        <template lwc:else>
+        <a
+            if:true={primaryTextUrl}
+            class="
+                slds-text-title_bold
+                avonni-avatar__primary-text avonni-avatar__truncate
+            "
+            href={primaryTextUrl}
+            title={primaryText}
+            data-element-id="avonni-avatar-primary-text"
+        >
+            {primaryText}
+        </a>
+        <template if:false={primaryTextUrl}>
             <p
-                data-element-id="avonni-avatar-primary-text"
+                if:true={primaryText}
                 class="
                     slds-text-title_bold
                     avonni-avatar__primary-text avonni-avatar__truncate
                 "
                 title={primaryText}
+                data-element-id="avonni-avatar-primary-text"
             >
                 {primaryText}
             </p>
         </template>
         <p
-            data-element-id="avonni-avatar-secondary-text"
             class="avonni-avatar__secondary-text avonni-avatar__truncate"
             title={secondaryText}
+            data-element-id="avonni-avatar-secondary-text"
         >
             {secondaryText}
         </p>
         <p
             if:true={showTertiaryText}
-            data-element-id="avonni-avatar-tertiary-text"
             class="avonni-avatar__tertiary-text avonni-avatar__truncate"
             title={tertiaryText}
+            data-element-id="avonni-avatar-tertiary-text"
         >
             {tertiaryText}
         </p>
         <div class="avonni-avatar__tags">
             <c-chip-container
                 if:true={showChipContainer}
-                data-element-id="avonni-avatar-tags"
+                is-collapsible
                 items={tags}
                 single-line
-                is-collapsible
+                data-element-id="avonni-avatar-tags"
             ></c-chip-container>
         </div>
     </c-media-object>
