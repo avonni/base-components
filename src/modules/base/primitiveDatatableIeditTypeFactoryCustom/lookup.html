@@ -1,5 +1,9 @@
 <template>
-    <c-record-edit-form object-api-name={objectApiName} record-id={rowKeyValue}>
+    <c-record-edit-form
+        object-api-name={objectApiName}
+        record-id={rowKeyValue}
+        onload={handleLoad}
+    >
         <c-input-field
             field-name={fieldName}
             required={required}
