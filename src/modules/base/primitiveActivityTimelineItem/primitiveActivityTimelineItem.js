@@ -660,7 +660,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        console.log('got here horizontal');
         const href = event.currentTarget.href;
         if (
             // eslint-disable-next-line no-script-url
