@@ -2,7 +2,6 @@
     <!-- Stacked with exactly two avatars -->
     <div if:true={isClassic} class={avatarGroupClass}>
         <c-primitive-avatar
-            alternative-text={primaryItem.alternativeText}
             fallback-icon-name={primaryItem.fallbackIconName}
             href={primaryItem.href}
             initials={primaryItem.initials}
@@ -23,7 +22,7 @@
             actions={primaryItem.actions}
             action-position={primaryItem.actionPosition}
             action-menu-icon={primaryItem.actionMenuIcon}
-            data-element-id="avonni-primitive-avatar-classic-1"
+            data-element-id="avonni-avatar"
             data-group-name="avatar"
             data-index="0"
             class="
@@ -33,10 +32,10 @@
             onclick={handleAvatarClick}
             role="button"
             onkeyup={handleAvatarClick}
+            onmouseenter={handleItemHover}
             tabindex="0"
         ></c-primitive-avatar>
         <c-primitive-avatar
-            alternative-text={secondaryItem.alternativeText}
             fallback-icon-name={secondaryItem.fallbackIconName}
             href={secondaryItem.href}
             initials={secondaryItem.initials}
@@ -54,7 +53,7 @@
             entity-variant={secondaryItem.entityVariant}
             entity-src={secondaryItem.entitySrc}
             entity-position={secondaryItem.entityPosition}
-            data-element-id="avonni-primitive-avatar-classic-2"
+            data-element-id="avonni-avatar"
             data-group-name="avatar"
             data-index="1"
             class="
@@ -64,6 +63,7 @@
             onclick={handleAvatarClick}
             role="button"
             onkeyup={handleAvatarClick}
+            onmouseenter={handleItemHover}
             tabindex="0"
         ></c-primitive-avatar>
     </div>
@@ -91,6 +91,7 @@
                     data-index={index}
                     onclick={handleAvatarClick}
                     onfocus={handleItemFocus}
+                    onmouseenter={handleItemHover}
                 >
                     <c-avatar
                         class={item.class}

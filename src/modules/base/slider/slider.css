@@ -242,7 +242,7 @@
 }
 
 .avonni-slider__custom-label-container_horizontal {
-    position: relative;
+    position: absolute;
     display: inline-block;
     left: var(--avonni-slider-thumb-sizing-width, 8px);
     width: calc(100% - calc(var(--avonni-slider-thumb-sizing-width, 8px) * 2));
@@ -257,7 +257,6 @@
 
 .avonni-slider__custom-label-wrapper {
     position: absolute;
-    top: -50px;
 }
 
 .avonni-slider__custom-label-container_vertical {
@@ -286,10 +285,6 @@
         12.5px - calc(0.7 * var(--avonni-slider-track-sizing-height, 4px))
     );
     z-index: 3;
-}
-
-.avonni-slider__custom-label-container_close {
-    top: -10px;
 }
 
 .avonni-slider__unit-container_ticks-horizontal {

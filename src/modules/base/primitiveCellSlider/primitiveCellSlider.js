@@ -2,11 +2,11 @@ import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellSlider extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
     @api disabled;
     @api label;
     @api max;
     @api min;
+    @api rowKeyValue;
     @api size;
     @api step;
 

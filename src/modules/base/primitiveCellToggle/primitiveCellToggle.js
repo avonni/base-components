@@ -2,13 +2,13 @@ import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellToggle extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
     @api disabled;
     @api hideMark;
     @api label;
     @api messageToggleActive;
     @api messageToggleInactive;
     @api name;
+    @api rowKeyValue;
     @api size;
 
     checked;

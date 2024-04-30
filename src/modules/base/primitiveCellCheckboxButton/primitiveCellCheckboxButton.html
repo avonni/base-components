@@ -1,14 +1,13 @@
 <template>
-    <template if:true={showInput}>
-        <lightning-input
-            checked={value}
-            read-only={readOnly}
-            type="checkbox-button"
-            variant="label-hidden"
-            disabled={computedDisabled}
-            label={label}
-            name={name}
-            onchange={handleChange}
-        ></lightning-input>
-    </template>
+    <lightning-input
+        if:true={showInput}
+        checked={value}
+        disabled={computedDisabled}
+        label={label}
+        name={name}
+        read-only={readOnly}
+        type="checkbox-button"
+        variant="label-hidden"
+        onchange={handleChange}
+    ></lightning-input>
 </template>

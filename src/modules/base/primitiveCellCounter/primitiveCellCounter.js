@@ -3,20 +3,20 @@ import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellCounter extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
-    @api name;
+    @api disabled;
     @api label;
     @api max;
     @api min;
+    @api name;
+    @api rowKeyValue;
     @api step;
-    @api disabled;
 
     _index;
     _value;
 
-    visible = false;
     editable = false;
     readOnly = true;
+    visible = false;
 
     connectedCallback() {
         this.template.addEventListener('ieditfinishedcustom', () => {
@@ -29,7 +29,6 @@ export default class PrimitiveCellCounter extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
@@ -43,20 +42,11 @@ export default class PrimitiveCellCounter extends LightningElement {
         return this.editable && !this.disabled;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
     getStateAndColumns(dt) {
@@ -66,6 +56,18 @@ export default class PrimitiveCellCounter extends LightningElement {
         const index = state.headerIndexes[this.colKeyValue];
         this.editable = isEditable(this.state, index, columns);
     }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     // Handles the edit button click and dispatches the event.
     handleEditButtonClick() {
@@ -93,9 +95,17 @@ export default class PrimitiveCellCounter extends LightningElement {
         }
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
-    toggleInlineEdit() {
-        this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

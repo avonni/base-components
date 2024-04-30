@@ -1,15 +1,21 @@
 import { LightningElement, api } from 'lwc';
-import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
+import {
+    isEditable,
+    getResolvedCellChanges,
+    startPanelPositioning
+} from 'c/primitiveCellUtils';
 
-export default class PrimitiveCellRichText extends LightningElement {
+export default class PrimitiveCellRecordPicker extends LightningElement {
     @api colKeyValue;
-    @api disabled;
-    @api formats;
-    @api placeholder;
+    @api linkify;
+    @api objectApiName;
+    @api path;
+    @api relationshipFieldName;
+    @api relationshipObjectApiName;
     @api rowKeyValue;
-    @api variant;
 
     _index;
+    _name;
     _value;
     _wrapText;
     _wrapTextMaxLines;
@@ -32,11 +38,21 @@ export default class PrimitiveCellRichText extends LightningElement {
      */
 
     @api
+    get name() {
+        return this._name;
+    }
+    set name(value) {
+        this._name = value;
+    }
+
+    @api
     get value() {
         return this._value;
     }
     set value(value) {
         this._value = value;
+        // If the value changes, we need to update the name.
+        this.dispatchValueChangeEvent();
     }
 
     @api
@@ -62,13 +78,43 @@ export default class PrimitiveCellRichText extends LightningElement {
         return 'slds-truncate';
     }
 
+    get editedValue() {
+        return this.state.inlineEdit.editedValue;
+    }
+
+    get fieldName() {
+        const column = this.state.columns.find(
+            (c) => c.colKeyValue === this.colKeyValue
+        );
+        if (column) {
+            return column.fieldName;
+        }
+        return null;
+    }
+
+    get hasDirtyValue() {
+        return (
+            this.recordDirtyValues &&
+            typeof this.recordDirtyValues === 'object' &&
+            Object.keys(this.recordDirtyValues).includes(this.colKeyValue)
+        );
+    }
+
+    get recordDirtyValues() {
+        return this.state.inlineEdit.dirtyValues[this.rowKeyValue];
+    }
+
     /**
      * Return true if cell is editable and not disabled.
      *
      * @type {Boolean}
      */
     get showEditButton() {
-        return this.editable && !this.disabled;
+        return this.editable;
+    }
+
+    get showLink() {
+        return this.path && this.name && !this.hasDirtyValue;
     }
 
     /*
@@ -87,10 +133,12 @@ export default class PrimitiveCellRichText extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
+    setName(name) {
+        this._name = name;
+    }
+
     toggleInlineEdit() {
         this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
     }
 
     /*
@@ -98,6 +146,26 @@ export default class PrimitiveCellRichText extends LightningElement {
      *  EVENT HANDLERS && DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    handleChange(event) {
+        const value = event.detail.value || null;
+        const detail = {
+            value,
+            colKeyValue: this.colKeyValue,
+            rowKeyValue: this.rowKeyValue,
+            callbacks: {
+                dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
+            }
+        };
+        this._value = value;
+        this.dispatchEvent(
+            new CustomEvent('privateeditcustomcell', {
+                detail: detail,
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
 
     // Handles the edit button click and dispatches the event.
     handleEditButtonClick() {
@@ -125,12 +193,45 @@ export default class PrimitiveCellRichText extends LightningElement {
         }
     }
 
+    dispatchCellChangeEvent(state) {
+        const dirtyValues = state.inlineEdit.dirtyValues;
+        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    dirtyValue: this.value,
+                    draftValues: getResolvedCellChanges(state, dirtyValues),
+                    callbacks: {
+                        setLookupName: this.setName.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
                 detail: {
                     callbacks: {
                         getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchValueChangeEvent() {
+        this.dispatchEvent(
+            new CustomEvent('valuechange', {
+                detail: {
+                    dirtyValue: this._value,
+                    callbacks: {
+                        setLookupName: this.setName.bind(this)
                     }
                 },
                 bubbles: true,

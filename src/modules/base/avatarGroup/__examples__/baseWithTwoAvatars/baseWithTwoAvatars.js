@@ -5,7 +5,7 @@ export default class AvatarGroupBaseWithTwoAvatars extends LightningElement {
         {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'John Doe',
             primaryText: 'John Doe',
             secondaryText: 'VP, Human Resources',
             tertiaryText: 'FakeCompany Inc.',
@@ -15,7 +15,7 @@ export default class AvatarGroupBaseWithTwoAvatars extends LightningElement {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Jane Doe',
             primaryText: 'Jane Doe',
             secondaryText: 'VP, Engineering',
             tertiaryText: 'FakeCompany Inc.',

@@ -29,6 +29,7 @@ import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
+import recordPicker from './recordPicker.html';
 import richText from './richText.html';
 import slider from './slider.html';
 import textarea from './textarea.html';
@@ -203,7 +204,8 @@ export default class Datatable extends LightningDatatable {
                 'name',
                 'objectApiName',
                 'path',
-                'relationshipFieldName'
+                'relationshipFieldName',
+                'relationshipObjectApiName'
             ]
         },
         'name-lookup': {
@@ -278,6 +280,16 @@ export default class Datatable extends LightningDatatable {
                 'min',
                 'selection',
                 'valueHidden'
+            ]
+        },
+        'record-picker': {
+            template: recordPicker,
+            typeAttributes: [
+                'name',
+                'objectApiName',
+                'path',
+                'relationshipFieldName',
+                'relationshipObjectApiName'
             ]
         },
         'rich-text': {

@@ -107,6 +107,13 @@ export default class Avatar extends LightningElement {
      */
     @api primaryText;
     /**
+     * Primary text url
+     *
+     * @public
+     * @type {string}
+     */
+    @api primaryTextUrl;
+    /**
      * Secondary text to display, usually the role of the user.
      *
      * @public

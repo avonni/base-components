@@ -263,7 +263,7 @@ const items = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'John Doe',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
         tertiaryText: 'FakeCompany Inc.',
@@ -273,7 +273,7 @@ const items = [
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
         initials: 'UA',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Jane Doe',
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
         tertiaryText: 'FakeCompany Inc.',
@@ -284,7 +284,7 @@ const itemsWithPresence = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         fallbackIconName: 'standard:user',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'John Doe',
         presence: 'online',
         presenceTitle: 'Online',
         primaryText: 'John Doe',
@@ -296,7 +296,7 @@ const itemsWithPresence = [
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
         initials: 'UA',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Jane Doe',
         presence: 'blocked',
         presenceTitle: 'Blocked',
         primaryText: 'Jane Doe',
@@ -306,7 +306,7 @@ const itemsWithPresence = [
     },
     {
         fallbackIconName: 'standard:user',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Vishnu Doe',
         presence: 'offline',
         presenceTitle: 'Offline',
         primaryText: 'Vishnu Doe',
@@ -317,7 +317,7 @@ const itemsWithPresence = [
     {
         fallbackIconName: 'standard:user',
         initials: 'EB',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Eliott Beauchesne',
         presence: 'busy',
         presenceTitle: 'Busy',
         primaryText: 'Eliott Beauchesne',
@@ -330,7 +330,7 @@ const itemsWithStatusAndEntity = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'John Doe',
         status: 'locked',
         statusTitle: 'Locked',
         statusPosition: 'top-left',
@@ -364,7 +364,7 @@ const itemsWithStatusAndEntity = [
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
         initials: 'UA',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Jane Doe',
         status: 'approved',
         statusTitle: 'Approved',
         statusPosition: 'top-left',
@@ -383,7 +383,7 @@ const itemsWithStatusAndEntity = [
     },
     {
         fallbackIconName: 'standard:user',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Vishnu Doe',
         status: 'declined',
         statusTitle: 'Declined',
         statusPosition: 'top-left',
@@ -403,7 +403,7 @@ const itemsWithStatusAndEntity = [
     {
         fallbackIconName: 'standard:user',
         initials: 'EB',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Eliott Beauchesne',
         status: 'unknown',
         statusTitle: 'Unknown',
         statusPosition: 'top-left',
@@ -422,6 +422,15 @@ const itemsWithStatusAndEntity = [
     }
 ];
 
+function createUniqueItems(avatarItems) {
+    return avatarItems.map((item, index) => {
+        return {
+            ...item,
+            name: `user-${index + 1}`
+        };
+    });
+}
+
 export const BaseWithTwoAvatars = Template.bind({});
 BaseWithTwoAvatars.args = {
     items: items,
@@ -438,7 +447,7 @@ BaseExtraLargeWithTwoAvatars.args = {
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});
 BaseWithMoreThanTwoAvatars.args = {
-    items: [
+    items: createUniqueItems([
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
@@ -465,12 +474,12 @@ BaseWithMoreThanTwoAvatars.args = {
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence
-    ]
+    ])
 };
 
 export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
 BaseLargeWithMoreThanTwoAvatars.args = {
-    items: [...items, ...items, ...items],
+    items: createUniqueItems([...items, ...items, ...items]),
     size: 'large',
     maxCount: 6,
     variant: 'circle',
@@ -480,7 +489,14 @@ BaseLargeWithMoreThanTwoAvatars.args = {
 
 export const Grid = Template.bind({});
 Grid.args = {
-    items: [...items, ...items, ...items, ...items, ...items, ...items],
+    items: createUniqueItems([
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items
+    ]),
     layout: 'grid',
     maxCount: 6,
     name: 'avatar-group'
@@ -488,14 +504,14 @@ Grid.args = {
 
 export const GridWithPresence = Template.bind({});
 GridWithPresence.args = {
-    items: [
+    items: createUniqueItems([
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence,
         ...itemsWithPresence
-    ],
+    ]),
     layout: 'grid',
     maxCount: 6,
     variant: 'circle',
@@ -504,7 +520,14 @@ GridWithPresence.args = {
 
 export const GridSmall = Template.bind({});
 GridSmall.args = {
-    items: [...items, ...items, ...items, ...items, ...items, ...items],
+    items: createUniqueItems([
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items,
+        ...items
+    ]),
     size: 'small',
     layout: 'grid',
     maxCount: 7,
@@ -513,11 +536,11 @@ GridSmall.args = {
 
 export const ListDoubleExtraLarge = Template.bind({});
 ListDoubleExtraLarge.args = {
-    items: [
+    items: createUniqueItems([
         ...itemsWithStatusAndEntity,
         ...itemsWithStatusAndEntity,
         ...itemsWithStatusAndEntity
-    ],
+    ]),
     layout: 'list',
     maxCount: 3,
     size: 'xx-large',
