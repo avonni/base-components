@@ -70,6 +70,23 @@ const CUSTOM_TYPES_EDITABLE = [
     'toggle'
 ];
 
+const COLUMNS_TYPES_NON_EDITABLE = [
+    'action',
+    'avatar',
+    'avatar-group',
+    'badge',
+    'button',
+    'button-icon',
+    'dynamic-icon',
+    'image',
+    'location',
+    'progress-bar',
+    'progress-circle',
+    'progress-ring',
+    'qrcode',
+    'urls'
+];
+
 const COLUMN_WIDTHS_MODES = { valid: ['fixed', 'auto'], default: 'fixed' };
 
 const SORT_DIRECTIONS = { valid: ['asc', 'desc'], default: 'desc' };
@@ -445,6 +462,7 @@ export default class Datatable extends LightningDatatable {
     set columns(value) {
         value = JSON.parse(JSON.stringify(value));
         this.removeWrapOption(value);
+        this.removeNonEditableColumns(value);
         this.computeEditableOption(value);
         super.columns = value;
 
@@ -986,21 +1004,9 @@ export default class Datatable extends LightningDatatable {
      */
 
     /**
-     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
-     */
-    removeWrapOption(columns) {
-        if (columns) {
-            columns.forEach((column) => {
-                if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
-                    column.wrapText = true;
-                    column.hideDefaultActions = true;
-                }
-            });
-        }
-    }
-
-    /**
      * If the data type is editable, transforms the value into an object containing the editable property.
+     *
+     * @param {Array} columns - The array of column definitions.
      */
     computeEditableOption(columns = this._columns) {
         if (columns?.length && this._data?.length) {
@@ -1014,6 +1020,36 @@ export default class Datatable extends LightningDatatable {
                             editable: !!column.editable
                         };
                     });
+                }
+            });
+        }
+    }
+
+    /**
+     * Adjusts the `editable` attribute of columns based on their type's eligibility for editing.
+     *
+     * @param {Array} columns - The array of column definitions.
+     */
+    removeNonEditableColumns(columns) {
+        if (!columns) return;
+        columns.forEach((column) => {
+            if (COLUMNS_TYPES_NON_EDITABLE.includes(column.type)) {
+                column.editable = false;
+            }
+        });
+    }
+
+    /**
+     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
+     *
+     * @param {Array} columns - The array of column definitions.
+     */
+    removeWrapOption(columns) {
+        if (columns) {
+            columns.forEach((column) => {
+                if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
+                    column.wrapText = true;
+                    column.hideDefaultActions = true;
                 }
             });
         }

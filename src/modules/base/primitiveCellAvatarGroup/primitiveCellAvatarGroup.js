@@ -13,14 +13,15 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
     @api variant;
 
     handleActionClick(event) {
+        const { detail, bubbles, composed, cancelable, type } = event;
         this.dispatchEvent(
             new CustomEvent('privateactionclick', {
                 detail: {
-                    detail: event.detail,
-                    bubbles: event.bubbles,
-                    composed: event.composed,
-                    cancelable: event.cancelable,
-                    type: event.type
+                    detail,
+                    bubbles,
+                    composed,
+                    cancelable,
+                    type
                 },
                 bubbles: true,
                 composed: true
@@ -29,14 +30,15 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
     }
 
     handleAvatarClick(event) {
+        const { detail, bubbles, composed, cancelable, type } = event;
         this.dispatchEvent(
             new CustomEvent('privateavatarclick', {
                 detail: {
-                    detail: event.detail,
-                    bubbles: event.bubbles,
-                    composed: event.composed,
-                    cancelable: event.cancelable,
-                    type: event.type
+                    detail,
+                    bubbles,
+                    composed,
+                    cancelable,
+                    type
                 },
                 bubbles: true,
                 composed: true
