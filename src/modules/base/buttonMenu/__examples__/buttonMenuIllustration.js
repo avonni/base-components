@@ -22,6 +22,7 @@ export const ButtonMenuIllustration = ({
     nubbin,
     title,
     tooltip,
+    triggers,
     value,
     variant
 }) => {
@@ -42,6 +43,7 @@ export const ButtonMenuIllustration = ({
     element.nubbin = nubbin;
     element.title = title;
     element.tooltip = tooltip;
+    element.triggers = triggers;
     element.value = value;
     element.variant = variant;
     return element;

@@ -1,7 +1,7 @@
 import Component from '../../storybookWrappers/buttonMenu/base';
 
 customElements.define(
-    'ac-base-button-menu',
+    'ac-button-menu-base',
     Component.CustomElementConstructor
 );
 
@@ -22,10 +22,11 @@ export const ButtonMenuBase = ({
     nubbin,
     title,
     tooltip,
+    triggers,
     value,
     variant
 }) => {
-    const element = document.createElement('ac-base-button-menu');
+    const element = document.createElement('ac-button-menu-base');
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
     element.disabled = disabled;
@@ -42,6 +43,7 @@ export const ButtonMenuBase = ({
     element.nubbin = nubbin;
     element.title = title;
     element.tooltip = tooltip;
+    element.triggers = triggers;
     element.value = value;
     element.variant = variant;
     return element;
