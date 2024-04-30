@@ -870,8 +870,11 @@ export default class ButtonMenu extends PrimitiveButton {
         event.preventDefault();
         const key = event.key;
         const isValidKey = key === 'Enter' || key === ' ' || key === 'Spacebar';
-        if (isValidKey && this.button) {
-            this.button.click();
+        if (isValidKey && (this.isTriggerClick || this.isTriggerHover)) {
+            this.toggleMenuVisibility();
+            requestAnimationFrame(() => {
+                this.focusOnMenuItem(0);
+            });
         }
     }
 
