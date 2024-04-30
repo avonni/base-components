@@ -974,6 +974,22 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Updates the checkbox column state.
+     *
+     * @param {boolean} disabled If true, columns are to be disabled.
+     * @param {number} nbSelectedRows The number of selected rows.
+     * @public
+     */
+    @api
+    updateCheckboxColumn(disabled, nbSelectedRows) {
+        const rows = this.state.rows;
+        rows.forEach((row) => {
+            row.isDisabled = !isSelectedRow(this.state, row.key) && disabled;
+        });
+        this.updateBulkSelectionState(nbSelectedRows);
+    }
+
+    /**
      * Returns data in each selected row.
      *
      * @name getSelectedRows
@@ -1026,6 +1042,14 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Returns the bulk selection state of the checkbox column in the table header
+     */
+    getBulkSelectionState(selected) {
+        const total = this.maxRowSelection || this.state.rows.length;
+        return selected === 0 ? 'none' : selected === total ? 'all' : 'some';
+    }
+
+    /**
      * Adjusts the `editable` attribute of columns based on their type's eligibility for editing.
      *
      * @param {Array} columns - The array of column definitions.
@@ -1054,6 +1078,27 @@ export default class Datatable extends LightningDatatable {
             });
         }
     }
+
+    /**
+     * Updates the bulk selection state of the checkbox column in the table header
+     */
+    updateBulkSelectionState(selected) {
+        const selectBoxesColumnIndex = this.state.columns.findIndex(
+            (column) => column.type === 'SELECTABLE_CHECKBOX'
+        );
+        if (selectBoxesColumnIndex >= 0) {
+            this.state.columns[selectBoxesColumnIndex] = {
+                ...this.state.columns[selectBoxesColumnIndex],
+                bulkSelection: this.getBulkSelectionState(selected)
+            };
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Handles the edit button click event of each custom cell type.
@@ -1112,23 +1157,6 @@ export default class Datatable extends LightningDatatable {
     };
 
     /**
-     * Dispatches event from the lighnting-datatable.
-     *
-     * @param {event} event
-     */
-    handleDispatchEvents(event) {
-        event.stopPropagation();
-        this.dispatchEvent(
-            new CustomEvent(`${event.detail.type}`, {
-                detail: event.detail.detail,
-                bubbles: event.detail.bubbles,
-                composed: event.detail.composed,
-                cancelable: event.detail.cancelable
-            })
-        );
-    }
-
-    /**
      * Handles the finish of inline editing of custom cell type.
      *
      * @param {event} event
@@ -1153,4 +1181,21 @@ export default class Datatable extends LightningDatatable {
         );
         super.state = this.state;
     };
+
+    /**
+     * Dispatches event from the lighnting-datatable.
+     *
+     * @param {event} event
+     */
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+        this.dispatchEvent(
+            new CustomEvent(`${event.detail.type}`, {
+                detail: event.detail.detail,
+                bubbles: event.detail.bubbles,
+                composed: event.detail.composed,
+                cancelable: event.detail.cancelable
+            })
+        );
+    }
 }
