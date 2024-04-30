@@ -1106,7 +1106,6 @@ export default class Datatable extends LightningDatatable {
      * @param {event} event
      */
     handleEditButtonClickCustom(event) {
-        event.stopPropagation();
         const { colKeyValue, rowKeyValue } = event.detail;
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         const inlineEdit = this.state.inlineEdit;
