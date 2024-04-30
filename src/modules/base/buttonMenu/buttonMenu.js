@@ -170,8 +170,6 @@ export default class ButtonMenu extends PrimitiveButton {
     _dropdownIgnoreNextFocusOut = false;
     _needsFocusAfterRender = false;
 
-    dropdownOpened = false;
-
     /*
      * ------------------------------------------------------------
      *  LIFECYCLE HOOKS
@@ -596,6 +594,10 @@ export default class ButtonMenu extends PrimitiveButton {
         });
     }
 
+    get dropdownOpened() {
+        return this._dropdownVisible;
+    }
+
     /**
      * Returns true if menu alignment is auto.
      *
@@ -796,10 +798,6 @@ export default class ButtonMenu extends PrimitiveButton {
                 });
             }
 
-            if (!this.dropdownOpened && this._dropdownVisible) {
-                this.dropdownOpened = true;
-            }
-
             if (this._dropdownVisible) {
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
@@ -867,10 +865,12 @@ export default class ButtonMenu extends PrimitiveButton {
      * @param {Event} event `keydown` event.
      */
     handleButtonKeyDown(event) {
-        event.preventDefault();
-        const key = event.key;
-        const isValidKey = key === 'Enter' || key === ' ' || key === 'Spacebar';
-        if (isValidKey && (this.isTriggerClick || this.isTriggerHover)) {
+        const validTriggerKeys = ['Enter', ' ', 'Spacebar'];
+        if (
+            validTriggerKeys.includes(event.key) &&
+            (this.isTriggerClick || this.isTriggerHover)
+        ) {
+            event.preventDefault();
             this.toggleMenuVisibility();
             requestAnimationFrame(() => {
                 this.focusOnMenuItem(0);
@@ -891,11 +891,7 @@ export default class ButtonMenu extends PrimitiveButton {
 
         // Ignore focus out when the new focused element is the toggler.
         const isButtonReceivingFocus = this.button === event.relatedTarget;
-        if (isButtonReceivingFocus && this.isTriggerFocus) {
-            requestAnimationFrame(() => {
-                this.button.blur();
-            });
-        } else if (!isButtonReceivingFocus && !this.isTriggerHover) {
+        if (!isButtonReceivingFocus && !this.isTriggerHover) {
             requestAnimationFrame(() => {
                 if (!this._dropdownIsFocused) {
                     this.toggleMenuVisibility();

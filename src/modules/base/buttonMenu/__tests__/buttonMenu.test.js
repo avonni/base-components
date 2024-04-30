@@ -1162,19 +1162,6 @@ describe('Button Menu', () => {
     });
 
     describe('Methods', () => {
-        it('blur', () => {
-            let blurEvent = false;
-            element.addEventListener('blur', () => {
-                blurEvent = true;
-            });
-
-            element.focus();
-            element.blur();
-            return Promise.resolve().then(() => {
-                expect(blurEvent).toBeTruthy();
-            });
-        });
-
         it('click', () => {
             let clickEvent = false;
             element.addEventListener('click', () => {
@@ -1202,19 +1189,78 @@ describe('Button Menu', () => {
     });
 
     describe('Events', () => {
-        it('close', () => {
+        it('Trigger Click, close', () => {
             const handler = jest.fn();
             element.addEventListener('close', handler);
             element.click();
-            element.blur();
 
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            return Promise.resolve().then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown).not.toBeNull();
+
+                element.click();
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
         });
 
-        it('open', () => {
+        it('Trigger Click, close, focus out', () => {
+            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(
+                (cb) => Promise.resolve().then(() => cb())
+            );
+            const handler = jest.fn();
+            element.triggers = 'click';
+            element.addEventListener('close', handler);
+            element.click();
+
+            return Promise.resolve()
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).not.toBeNull();
+                    dropdown.dispatchEvent(new CustomEvent('focusout'));
+                })
+                .then(() => {
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
+        });
+
+        it('Trigger Click, does not close when focus out on button', () => {
+            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(
+                (cb) => Promise.resolve().then(() => cb())
+            );
+            const handler = jest.fn();
+            element.triggers = 'click';
+            element.addEventListener('close', handler);
+            element.click();
+
+            return Promise.resolve()
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).not.toBeNull();
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    dropdown.dispatchEvent(
+                        new FocusEvent('focusout', { relatedTarget: button })
+                    );
+                })
+                .then(() => {
+                    expect(handler).not.toHaveBeenCalled();
+                });
+        });
+
+        it('Trigger Click, open', () => {
             const handler = jest.fn();
             element.addEventListener('open', handler);
             element.click();
@@ -1225,22 +1271,9 @@ describe('Button Menu', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
 
-        it('open triggered by keyboard', () => {
-            const handler = jest.fn();
-            element.addEventListener('open', handler);
-
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            const event = new CustomEvent('keydown');
-            event.key = 'Enter';
-            button.dispatchEvent(event);
-
-            expect(handler).toHaveBeenCalled();
-        });
-
-        it('select', () => {
+        it('Trigger Click, select', () => {
             element.iconName = 'utility:down';
+            element.triggers = 'click';
 
             const button = element.shadowRoot.querySelector(
                 '[data-element-id="button"]'
@@ -1272,7 +1305,229 @@ describe('Button Menu', () => {
                     expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeNull();
                 });
+        });
+
+        it('Trigger Hover, close', () => {
+            const handler = jest.fn();
+            element.triggers = 'hover';
+            element.addEventListener('close', handler);
+            element.dispatchEvent(new CustomEvent('mouseenter'));
+
+            return Promise.resolve().then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown).not.toBeNull();
+
+                element.dispatchEvent(new CustomEvent('mouseleave'));
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+        });
+
+        it('Trigger Hover, open', () => {
+            const handler = jest.fn();
+            element.triggers = 'hover';
+            element.addEventListener('open', handler);
+            element.dispatchEvent(new CustomEvent('mouseenter'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+
+        it('Trigger Hover, select', () => {
+            element.iconName = 'utility:down';
+            element.triggers = 'hover';
+
+            const handler = jest.fn();
+            element.addEventListener('select', handler);
+
+            return Promise.resolve()
+                .then(() => {
+                    element.dispatchEvent(new CustomEvent('mouseenter'));
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeTruthy();
+                    const list = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown-list"]'
+                    );
+                    list.dispatchEvent(
+                        new CustomEvent('privateselect', {
+                            detail: {
+                                value: 'acme'
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toBe('acme');
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeNull();
+                });
+        });
+
+        it('Trigger Focus, close, button blur', () => {
+            const handler = jest.fn();
+            element.triggers = 'focus';
+            element.addEventListener('close', handler);
+            element.focus();
+
+            return Promise.resolve().then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown).not.toBeNull();
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.blur();
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+        });
+
+        it('Trigger Focus, close, focus out', () => {
+            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(
+                (cb) => Promise.resolve().then(() => cb())
+            );
+            const handler = jest.fn();
+            element.triggers = 'focus';
+            element.addEventListener('close', handler);
+            element.focus();
+
+            return Promise.resolve()
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).not.toBeNull();
+                    dropdown.dispatchEvent(new CustomEvent('focusout'));
+                })
+                .then(() => {
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
+        });
+
+        it('Trigger Focus, does not close when focus out on button', () => {
+            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(
+                (cb) => Promise.resolve().then(() => cb())
+            );
+            const handler = jest.fn();
+            element.triggers = 'focus';
+            element.addEventListener('close', handler);
+            element.focus();
+
+            return Promise.resolve()
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).not.toBeNull();
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    dropdown.dispatchEvent(
+                        new FocusEvent('focusout', { relatedTarget: button })
+                    );
+                })
+                .then(() => {
+                    expect(handler).not.toHaveBeenCalled();
+                });
+        });
+
+        it('Trigger Focus, open', () => {
+            const handler = jest.fn();
+            element.triggers = 'focus';
+            element.addEventListener('open', handler);
+            element.focus();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+
+        it('Trigger Focus, select', () => {
+            element.iconName = 'utility:down';
+            element.triggers = 'focus';
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            const handler = jest.fn();
+            element.addEventListener('select', handler);
+
+            return Promise.resolve()
+                .then(() => {
+                    button.focus();
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeTruthy();
+                    const list = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown-list"]'
+                    );
+                    list.dispatchEvent(
+                        new CustomEvent('privateselect', {
+                            detail: {
+                                value: 'acme'
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toBe('acme');
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeNull();
+                });
+        });
+
+        it('open triggered by keyboard', () => {
+            const handler = jest.fn();
+            element.addEventListener('open', handler);
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            const event = new CustomEvent('keydown');
+            event.key = 'Enter';
+            button.dispatchEvent(event);
+
+            expect(handler).toHaveBeenCalled();
         });
     });
 });
