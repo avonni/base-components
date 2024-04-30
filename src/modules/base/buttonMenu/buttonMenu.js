@@ -394,6 +394,10 @@ export default class ButtonMenu extends PrimitiveButton {
         return this.template.querySelector('[data-element-id="button"]');
     }
 
+    get buttonTabIdex() {
+        return this._dropdownVisible ? -1 : 0;
+    }
+
     /**
      * Return a true string if the popover is visible and a false string if not.
      *
