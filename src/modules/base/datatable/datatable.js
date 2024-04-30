@@ -359,7 +359,7 @@ export default class Datatable extends LightningDatatable {
         );
         this.template.addEventListener('getcomboboxoptions', (event) => {
             const fieldName = event.detail.name;
-            const column = this.columns.find((c) => c.fieldName === fieldName);
+            const column = this._columns.find((c) => c.fieldName === fieldName);
             if (!column) return;
 
             const options = column.typeAttributes.options;
@@ -987,6 +987,23 @@ export default class Datatable extends LightningDatatable {
             row.isDisabled = !isSelectedRow(this.state, row.key) && disabled;
         });
         this.updateBulkSelectionState(nbSelectedRows);
+    }
+
+    /**
+     * Updates the options of the picklist column.
+     *
+     * @param {string} fieldName The field name of the picklist column.
+     * @param {object[]} options The new options of the picklist column.
+     * @public
+     */
+    @api
+    updatePicklistColumnOptions(fieldName, options) {
+        const columns = JSON.parse(JSON.stringify(this.columns));
+        const column = columns.find((c) => c.fieldName === fieldName);
+        if (column && column.type === 'combobox') {
+            column.typeAttributes.options = options;
+            this._columns = columns;
+        }
     }
 
     /**
