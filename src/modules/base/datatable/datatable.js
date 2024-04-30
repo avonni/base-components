@@ -958,8 +958,8 @@ export default class Datatable extends LightningDatatable {
     /**
      * Updates the checkbox column state.
      *
-     * @param {string} rowKeyField The key field value of the row.
-     * @param {number} height The new height of the row, in pixels.
+     * @param {boolean} disabled If true, columns are to be disabled.
+     * @param {number} nbSelectedRows The number of selected rows.
      * @public
      */
     @api
