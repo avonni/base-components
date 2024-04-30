@@ -956,6 +956,22 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Updates the checkbox column state.
+     *
+     * @param {string} rowKeyField The key field value of the row.
+     * @param {number} height The new height of the row, in pixels.
+     * @public
+     */
+    @api
+    updateCheckboxColumn(disabled, nbSelectedRows) {
+        const rows = this.state.rows;
+        rows.forEach((row) => {
+            row.isDisabled = !isSelectedRow(this.state, row.key) && disabled;
+        });
+        this.updateBulkSelectionState(nbSelectedRows);
+    }
+
+    /**
      * Returns data in each selected row.
      *
      * @name getSelectedRows
@@ -986,20 +1002,6 @@ export default class Datatable extends LightningDatatable {
      */
 
     /**
-     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
-     */
-    removeWrapOption(columns) {
-        if (columns) {
-            columns.forEach((column) => {
-                if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
-                    column.wrapText = true;
-                    column.hideDefaultActions = true;
-                }
-            });
-        }
-    }
-
-    /**
      * If the data type is editable, transforms the value into an object containing the editable property.
      */
     computeEditableOption(columns = this._columns) {
@@ -1018,6 +1020,49 @@ export default class Datatable extends LightningDatatable {
             });
         }
     }
+
+    /**
+     * Returns the bulk selection state of the checkbox column in the table header
+     */
+    getBulkSelectionState(selected) {
+        const total = this.maxRowSelection || this.state.rows.length;
+        return selected === 0 ? 'none' : selected === total ? 'all' : 'some';
+    }
+
+    /**
+     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
+     */
+    removeWrapOption(columns) {
+        if (columns) {
+            columns.forEach((column) => {
+                if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
+                    column.wrapText = true;
+                    column.hideDefaultActions = true;
+                }
+            });
+        }
+    }
+
+    /**
+     * Updates the bulk selection state of the checkbox column in the table header
+     */
+    updateBulkSelectionState(selected) {
+        const selectBoxesColumnIndex = this.state.columns.findIndex(
+            (column) => column.type === 'SELECTABLE_CHECKBOX'
+        );
+        if (selectBoxesColumnIndex >= 0) {
+            this.state.columns[selectBoxesColumnIndex] = {
+                ...this.state.columns[selectBoxesColumnIndex],
+                bulkSelection: this.getBulkSelectionState(selected)
+            };
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Handles the edit button click event of each custom cell type.
@@ -1076,23 +1121,6 @@ export default class Datatable extends LightningDatatable {
     };
 
     /**
-     * Dispatches event from the lighnting-datatable.
-     *
-     * @param {event} event
-     */
-    handleDispatchEvents(event) {
-        event.stopPropagation();
-        this.dispatchEvent(
-            new CustomEvent(`${event.detail.type}`, {
-                detail: event.detail.detail,
-                bubbles: event.detail.bubbles,
-                composed: event.detail.composed,
-                cancelable: event.detail.cancelable
-            })
-        );
-    }
-
-    /**
      * Handles the finish of inline editing of custom cell type.
      *
      * @param {event} event
@@ -1117,4 +1145,21 @@ export default class Datatable extends LightningDatatable {
         );
         super.state = this.state;
     };
+
+    /**
+     * Dispatches event from the lighnting-datatable.
+     *
+     * @param {event} event
+     */
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+        this.dispatchEvent(
+            new CustomEvent(`${event.detail.type}`, {
+                detail: event.detail.detail,
+                bubbles: event.detail.bubbles,
+                composed: event.detail.composed,
+                cancelable: event.detail.cancelable
+            })
+        );
+    }
 }
