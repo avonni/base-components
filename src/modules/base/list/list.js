@@ -849,7 +849,8 @@ export default class List extends LightningElement {
                     ['none', 'top', 'bottom'].includes(this.divider) &&
                     this._currentColumnCount === 1,
                 'avonni-list__item-menu_horizontal-compact':
-                    this._currentColumnCount === 1
+                    this._currentColumnCount === 1,
+                'slds-p-bottom_xx-small': this.variant === 'base'
             })
             .toString();
     }
