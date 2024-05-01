@@ -1,7 +1,13 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const DEFAULT_TAB_INDEX = '0';
+
+const MENU_ALIGNMENTS = {
+    valid: ['right', 'left'],
+    default: 'right'
+};
 
 /**
  * @class
@@ -48,6 +54,7 @@ export default class Submenu extends LightningElement {
 
     _disabled = false;
     _isDraft = false;
+    _menuAlignment = MENU_ALIGNMENTS.default;
     _tabIndex = DEFAULT_TAB_INDEX;
 
     isOpen = false;
@@ -98,6 +105,24 @@ export default class Submenu extends LightningElement {
     }
 
     /**
+     * Determines the alignment of the menu relative to the item. Available options are: left or right.
+     *
+     * @public
+     * @type {string}
+     * @default left
+     */
+    @api
+    get menuAlignment() {
+        return this._menuAlignment;
+    }
+    set menuAlignment(value) {
+        this._menuAlignment = normalizeString(value, {
+            fallbackValue: MENU_ALIGNMENTS.default,
+            validValues: MENU_ALIGNMENTS.valid
+        });
+    }
+
+    /**
      * Reserved for internal use. Use tabindex instead to indicate if an element should be focusable. tabindex can be set to 0 or -1.
      * The default tabindex value is 0, which means that the menu item is focusable and participates in sequential keyboard navigation. The value -1 means that the menu item is focusable but does not participate in keyboard navigation.
      *
@@ -112,6 +137,15 @@ export default class Submenu extends LightningElement {
 
     set tabIndex(newValue) {
         this._tabIndex = newValue;
+    }
+
+    get dropdownClass() {
+        return classSet('slds-dropdown slds-dropdown_submenu')
+            .add({
+                'slds-dropdown_submenu-right': this.menuAlignment === 'right',
+                'slds-dropdown_submenu-left': this.menuAlignment === 'left'
+            })
+            .toString();
     }
 
     /*

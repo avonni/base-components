@@ -17,6 +17,7 @@ export default class ButtonMenuIllustration extends LightningElement {
     @api nubbin;
     @api title;
     @api tooltip;
+    @api triggers;
     @api value;
     @api variant;
 }

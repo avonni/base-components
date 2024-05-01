@@ -419,9 +419,6 @@ describe('DateTimePicker', () => {
                 '[data-element-id="button-default"]'
             );
             wedHours.forEach((timeSlot) => {
-                if (!timeSlot.disabled) {
-                    console.log(timeSlot.dataset.time);
-                }
                 expect(timeSlot.disabled).toBeTruthy();
             });
             const day16Hours = days[1].querySelectorAll(

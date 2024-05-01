@@ -48,6 +48,11 @@ const MENU_ALIGNMENTS = {
     default: 'left'
 };
 
+const MENU_TRIGGERS = {
+    valid: ['click', 'hover', 'focus'],
+    default: 'click'
+};
+
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'small'
@@ -156,15 +161,14 @@ export default class ButtonMenu extends PrimitiveButton {
     _menuAlignment = MENU_ALIGNMENTS.default;
     _nubbin = false;
     _tooltip;
+    _triggers = MENU_TRIGGERS.default;
     _variant = BUTTON_VARIANTS.default;
 
     _boundingRect = {};
+    _dropdownIsFocused = false;
     _dropdownVisible = false;
-    _focusOnIndexDuringRenderedCallback = null;
+    _dropdownIgnoreNextFocusOut = false;
     _needsFocusAfterRender = false;
-    _rerenderFocus = false;
-
-    dropdownOpened = false;
 
     /*
      * ------------------------------------------------------------
@@ -174,23 +178,25 @@ export default class ButtonMenu extends PrimitiveButton {
 
     connectedCallback() {
         super.connectedCallback();
+
         this.classList.add(
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
+
+        this.addEventListener('mouseenter', this.handleMouseEnter);
+        this.addEventListener('mouseleave', this.handleMouseLeave);
     }
 
     renderedCallback() {
         super.renderedCallback();
         this.initTooltip();
-
-        if (this._dropdownVisible && this._rerenderFocus) {
-            this.focusOnMenuItemAfterRender();
-        }
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
+        this.removeEventListener('mouseenter', this.handleMouseEnter);
+        this.removeEventListener('mouseleave', this.handleMouseLeave);
     }
 
     /*
@@ -333,11 +339,28 @@ export default class ButtonMenu extends PrimitiveButton {
         } else if (value) {
             this._tooltip = new Tooltip(value, {
                 root: this,
-                target: () =>
-                    this.template.querySelector('[data-element-id="button"]')
+                target: () => this.button
             });
             this._tooltip.initialize();
         }
+    }
+
+    /**
+     * Specify which trigger will show the menu. Supported values are 'click', 'hover' and 'focus'.
+     *
+     * @type {string}
+     * @default click
+     * @public
+     */
+    @api
+    get triggers() {
+        return this._triggers;
+    }
+    set triggers(value) {
+        this._triggers = normalizeString(value, {
+            fallbackValue: MENU_TRIGGERS.default,
+            validValues: MENU_TRIGGERS.valid
+        });
     }
 
     /**
@@ -364,6 +387,14 @@ export default class ButtonMenu extends PrimitiveButton {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    get button() {
+        return this.template.querySelector('[data-element-id="button"]');
+    }
+
+    get buttonTabIdex() {
+        return this._dropdownVisible ? -1 : 0;
+    }
 
     /**
      * Return a true string if the popover is visible and a false string if not.
@@ -563,6 +594,10 @@ export default class ButtonMenu extends PrimitiveButton {
         });
     }
 
+    get dropdownOpened() {
+        return this._dropdownVisible;
+    }
+
     /**
      * Returns true if menu alignment is auto.
      *
@@ -579,6 +614,18 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     get isDownIcon() {
         return ['utility:down', 'utility:chevrondown'].includes(this.iconName);
+    }
+
+    get isTriggerClick() {
+        return this.triggers === 'click';
+    }
+
+    get isTriggerFocus() {
+        return this.triggers === 'focus';
+    }
+
+    get isTriggerHover() {
+        return this.triggers === 'hover';
     }
 
     /**
@@ -603,8 +650,8 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     @api
     click() {
-        if (this._connected) {
-            this.template.querySelector('[data-element-id="button"]').click();
+        if (this.button) {
+            this.button.click();
         }
     }
 
@@ -615,8 +662,8 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     @api
     focus() {
-        if (this._connected) {
-            this.focusOnButton();
+        if (this.button) {
+            this.button.focus();
         }
     }
 
@@ -625,32 +672,6 @@ export default class ButtonMenu extends PrimitiveButton {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Allow blur.
-     */
-    allowBlur() {
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Cancel blur.
-     */
-    cancelBlur() {
-        this._cancelBlur = true;
-    }
-
-    /**
-     * Blur cancel and set focus on menu item.
-     *
-     * @param {object} menuItem
-     */
-    cancelBlurAndFocusOnMenuItem(menuItem) {
-        if (menuItem) {
-            this.cancelBlur();
-            menuItem.focus();
-        }
-    }
 
     /**
      * Close menu.
@@ -695,13 +716,6 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
-     * Button focus.
-     */
-    focusOnButton() {
-        this.template.querySelector('[data-element-id="button"]').focus();
-    }
-
-    /**
      * Set focus on menu item via Item Index.
      *
      * @param {object} itemIndex
@@ -709,34 +723,10 @@ export default class ButtonMenu extends PrimitiveButton {
     focusOnMenuItem(itemIndex) {
         if (this._dropdownVisible) {
             const menuItem = this.getMenuItemByIndex(itemIndex);
-            this.cancelBlurAndFocusOnMenuItem(menuItem);
-        }
-    }
-
-    /**
-     * Return focus on menu item after render.
-     */
-    focusOnMenuItemAfterRender() {
-        let focusOnIndex = this._focusOnIndexDuringRenderedCallback || 0;
-        const menuItems = this.getMenuItems();
-
-        if (focusOnIndex === 'LAST') {
-            focusOnIndex = menuItems.length - 1;
-
-            if (focusOnIndex < 0) {
-                focusOnIndex = 'LAST';
+            if (menuItem) {
+                menuItem.focus();
             }
         }
-
-        if (focusOnIndex !== 'LAST') {
-            if (focusOnIndex > menuItems.length - 1 && menuItems.length > 0) {
-                focusOnIndex = menuItems.length - 1;
-            }
-
-            this.focusOnMenuItem(focusOnIndex);
-            this._focusOnIndexDuringRenderedCallback = null;
-        }
-        this._rerenderFocus = false;
     }
 
     /**
@@ -801,16 +791,11 @@ export default class ButtonMenu extends PrimitiveButton {
     toggleMenuVisibility() {
         if (!this.disabled) {
             this._dropdownVisible = !this._dropdownVisible;
-            this._rerenderFocus = this._dropdownVisible;
 
             if (!this._dropdownVisible) {
                 this.querySelectorAll('.avonni-submenu').forEach((submenu) => {
                     submenu.close();
                 });
-            }
-
-            if (!this.dropdownOpened && this._dropdownVisible) {
-                this.dropdownOpened = true;
             }
 
             if (this._dropdownVisible) {
@@ -834,35 +819,44 @@ export default class ButtonMenu extends PrimitiveButton {
     /**
      * Blur handler.
      */
-    handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
-
-        if (this._dropdownVisible) {
+    handleButtonBlur(event) {
+        const isMenuItemFocused =
+            event.relatedTarget &&
+            event.relatedTarget.tagName === MENU_ITEM_TAG.toUpperCase();
+        if (this.isTriggerFocus && !isMenuItemFocused) {
             this.toggleMenuVisibility();
         }
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
+     * Button click handler.
+     */
+    handleButtonClick() {
+        if (!this.disabled && this.isTriggerClick) {
+            this.toggleMenuVisibility();
+            requestAnimationFrame(() => {
+                this.focusOnMenuItem(0);
+            });
+        }
+    }
+
+    /**
      * Focus handler.
      */
-    handleFocus() {
+    handleButtonFocus() {
         /**
          * @event
          * @name focus
          */
         this.dispatchEvent(new CustomEvent('focus'));
-    }
 
-    /**
-     * Button click handler.
-     */
-    handleButtonClick() {
-        this.allowBlur();
-        this.toggleMenuVisibility();
-        this.focusOnButton();
+        if (this.isTriggerFocus && !this._dropdownVisible && !this.disabled) {
+            this.toggleMenuVisibility();
+            requestAnimationFrame(() => {
+                this.focusOnMenuItem(0);
+            });
+        }
     }
 
     /**
@@ -871,50 +865,38 @@ export default class ButtonMenu extends PrimitiveButton {
      * @param {Event} event `keydown` event.
      */
     handleButtonKeyDown(event) {
-        const key = event.key;
-        const isValidKey = key === 'Enter' || key === ' ' || key === 'Spacebar';
-        if (isValidKey) {
-            this.handleButtonClick();
+        const validTriggerKeys = ['Enter', ' ', 'Spacebar'];
+        if (
+            validTriggerKeys.includes(event.key) &&
+            (this.isTriggerClick || this.isTriggerHover)
+        ) {
+            event.preventDefault();
+            this.toggleMenuVisibility();
+            requestAnimationFrame(() => {
+                this.focusOnMenuItem(0);
+            });
         }
     }
 
-    /**
-     * Button mouse down handler.
-     *
-     * @param {Event} event
-     */
-    handleButtonMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
+    handleDropdownFocus() {
+        this.focusOnMenuItem(0);
     }
 
-    /**
-     * Dropdown menu mouse down handler.
-     *
-     * @param {Event} event
-     */
-    handleDropdownMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
+    handleDropdownFocusIn() {
+        this._dropdownIsFocused = true;
     }
 
-    /**
-     * Dropdown menu mouse up handler.
-     */
-    handleDropdownMouseUp() {
-        this.allowBlur();
-    }
+    handleDropdownFocusOut(event) {
+        this._dropdownIsFocused = false;
 
-    /**
-     * Dropdown menu mouse leave handler.
-     */
-    handleDropdownMouseLeave() {
-        if (!this._menuHasFocus) {
-            this.close();
+        // Ignore focus out when the new focused element is the toggler.
+        const isButtonReceivingFocus = this.button === event.relatedTarget;
+        if (!isButtonReceivingFocus && !this.isTriggerHover) {
+            requestAnimationFrame(() => {
+                if (!this._dropdownIsFocused) {
+                    this.toggleMenuVisibility();
+                }
+            });
         }
     }
 
@@ -932,21 +914,11 @@ export default class ButtonMenu extends PrimitiveButton {
      *
      * @param {Event} event
      */
-    handleKeyOnMenuItem(event) {
+    handleMenuItemKeyDown(event) {
         const menuItem = this.findMenuItemFromEventTarget(event.target);
-        if (menuItem)
-            this.handleKeyDownOnMenuItem(
-                event,
-                this.findMenuItemIndex(menuItem)
-            );
-    }
+        if (!menuItem) return;
 
-    /**
-     * Menu item keydown handler to change focus on correct item.
-     *
-     * @param {Event} event
-     */
-    handleKeyDownOnMenuItem(event, menuItemIndex) {
+        const menuItemIndex = this.findMenuItemIndex(menuItem);
         switch (event.keyCode) {
             case keyCodes.down:
             case keyCodes.up: {
@@ -965,13 +937,11 @@ export default class ButtonMenu extends PrimitiveButton {
                 break;
             }
             case keyCodes.escape: {
-                if (this._dropdownVisible) {
-                    if (event.keyCode === keyCodes.escape) {
-                        this.preventDefaultAndStopPropagation(event);
-                    }
+                if (this._dropdownVisible && !this.isTriggerFocus) {
+                    this.preventDefaultAndStopPropagation(event);
                     this.toggleMenuVisibility();
+                    this.button.focus();
                 }
-                this.focusOnMenuItem(0);
                 break;
             }
             default:
@@ -979,51 +949,11 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
-     * Menu item selector handler.
-     *
-     * @param {Event} event
-     */
-    handleMenuItemPrivateSelect(event) {
-        if (event.detail.type === 'submenu') {
-            event.target.parentElement
-                .querySelectorAll('.avonni-submenu')
-                .forEach((submenu) => {
-                    submenu.close();
-                });
-            if (!this._dropdownVisible) {
-                this.toggleMenuVisibility();
-                event.target.focus();
-            }
-        } else {
-            if (this._dropdownVisible) {
-                this.toggleMenuVisibility();
-                this.focusOnButton();
-            }
-        }
-
-        event.stopPropagation();
-
-        if (event.detail.type === 'dialog') {
-            let dialog = this.querySelector(
-                '[dialog-name=' + event.detail.value + ']'
-            );
-            if (dialog) {
-                dialog.show();
-                this.template
-                    .querySelector('[data-element-id="button"]')
-                    .blur();
-            }
-        }
-
-        this.dispatchSelect(event);
-    }
-
-    /**
      * Menu item mouse over handler.
      *
      * @param {Event} event
      */
-    handleMouseOverOnMenuItem(event) {
+    handleMenuItemMouseOver(event) {
         const menuItem = this.findMenuItemFromEventTarget(event.target);
 
         if (event.target.classList.value.indexOf('avonni-submenu') === -1) {
@@ -1041,28 +971,56 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
-     * Private blur handler.
+     * Menu item selector handler.
      *
      * @param {Event} event
      */
-    handlePrivateBlur(event) {
+    handleMenuItemSelect(event) {
+        if (event.detail.type === 'submenu') {
+            event.target.parentElement
+                .querySelectorAll('.avonni-submenu')
+                .forEach((submenu) => {
+                    submenu.close();
+                });
+            if (!this._dropdownVisible) {
+                this.toggleMenuVisibility();
+                event.target.focus();
+            }
+        } else {
+            if (this._dropdownVisible) {
+                this.toggleMenuVisibility();
+                this.button.focus();
+            }
+        }
+
         event.stopPropagation();
 
-        this.handleBlur();
-        this._menuHasFocus = false;
+        if (event.detail.type === 'dialog') {
+            let dialog = this.querySelector(
+                '[dialog-name=' + event.detail.value + ']'
+            );
+            if (dialog) {
+                dialog.show();
+                this.button.blur();
+            }
+        }
+
+        this.dispatchSelect(event);
     }
 
-    /**
-     * Private focus handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateFocus(event) {
-        event.stopPropagation();
+    handleMouseEnter = () => {
+        if (this.disabled || !this.isTriggerHover || this._dropdownVisible) {
+            return;
+        }
+        this.toggleMenuVisibility();
+    };
 
-        this.allowBlur();
-        this._menuHasFocus = true;
-    }
+    handleMouseLeave = () => {
+        if (this.disabled || !this.isTriggerHover || !this._dropdownVisible) {
+            return;
+        }
+        this.toggleMenuVisibility();
+    };
 
     /*
      * -------------------------------------------------------------

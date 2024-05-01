@@ -5,15 +5,15 @@
         aria-expanded={computedAriaExpanded}
         aria-haspopup="true"
         disabled={disabled}
+        tabindex={buttonTabIdex}
         title={title}
         value={value}
         type="button"
         data-element-id="button"
+        onblur={handleButtonBlur}
         onclick={handleButtonClick}
-        onblur={handleBlur}
-        onfocus={handleFocus}
+        onfocus={handleButtonFocus}
         onkeydown={handleButtonKeyDown}
-        onmousedown={handleButtonMouseDown}
     >
         <abbr
             if:true={isDraft}
@@ -46,19 +46,18 @@
             variant="bare"
             data-element-id="avonni-primitive-icon-down"
         ></c-primitive-icon>
-
         <span class="slds-assistive-text">{alternativeText}</span>
     </button>
-
     <div
         if:true={dropdownOpened}
         class={computedDropdownClass}
-        onmousedown={handleDropdownMouseDown}
-        onmouseup={handleDropdownMouseUp}
-        onmouseleave={handleDropdownMouseLeave}
+        onfocus={handleDropdownFocus}
+        onfocusin={handleDropdownFocusIn}
+        onfocusout={handleDropdownFocusOut}
         onscroll={handleDropdownScroll}
         data-element-id="dropdown"
     >
+        <div class="avonni-button-menu__dropdown-gap-cover"></div>
         <template if:true={isLoading}>
             <lightning-spinner
                 size="small"
@@ -70,12 +69,9 @@
             <div
                 class="slds-dropdown__list"
                 role="menu"
-                onprivateselect={handleMenuItemPrivateSelect}
-                onprivateblur={handlePrivateBlur}
-                onprivatefocus={handlePrivateFocus}
-                onmouseover={handleMouseOverOnMenuItem}
-                onmouseout={allowBlur}
-                onkeydown={handleKeyOnMenuItem}
+                onkeydown={handleMenuItemKeyDown}
+                onprivateselect={handleMenuItemSelect}
+                onmouseover={handleMenuItemMouseOver}
                 data-element-id="dropdown-list"
             >
                 <slot></slot>

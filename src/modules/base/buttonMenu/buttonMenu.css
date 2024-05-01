@@ -64,6 +64,20 @@
     max-width: var(--avonni-button-menu-dropdown-max-width, 20rem);
 }
 
+.avonni-button-menu__dropdown-gap-cover {
+    /* To avoi mouseleave when passing from button to dropdown when trigger is hover */
+    height: 0.25rem; /* Equal to margin-top of dropdown */
+    width: 100%;
+    position: absolute;
+    top: -0.25rem;
+    left: 0;
+}
+
+.slds-dropdown_bottom .avonni-button-menu__dropdown-gap-cover {
+    top: unset;
+    bottom: -0.25rem;
+}
+
 .avonni-button-menu_bare {
     --slds-c-button-color-background: var(
         --avonni-button-menu-button-bare-color-background
