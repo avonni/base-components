@@ -37,6 +37,7 @@ describe('ProgressBar', () => {
     });
 
     it('Progress Bar: Default attributes', () => {
+        expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.showPin).toBeFalsy();
         expect(element.showValue).toBeFalsy();
@@ -55,6 +56,47 @@ describe('ProgressBar', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // is-loading
+    it('Progress Bar: isLoading = false', () => {
+        element.isLoading = false;
+
+        return Promise.resolve()
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeFalsy();
+
+                element.orientation = 'vertical';
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeFalsy();
+            });
+    });
+
+    it('Progress Bar: isLoading = true', () => {
+        element.isLoading = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeTruthy();
+
+                element.orientation = 'vertical';
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeTruthy();
+            });
+    });
 
     // label
     it('Progress Bar: label', () => {
@@ -193,10 +235,10 @@ describe('ProgressBar', () => {
             );
 
             expect(pin).toBeTruthy();
-            expect(pin.classList).toContain('avonni-progress-bar__circle-pin')
+            expect(pin.classList).toContain('avonni-progress-bar__circle-pin');
         });
     });
-    
+
     it('Progress Bar: pinAttributes, type = rectangle, position = left, with vertical orientation', () => {
         element.showValue = true;
         element.showPin = true;
@@ -212,8 +254,10 @@ describe('ProgressBar', () => {
             );
 
             expect(pin).toBeTruthy();
-            expect(pin.classList).toContain('avonni-progress-bar__rectangle-pin')
-            expect(pin.classList).toContain('avonni-progress-bar__pin-left')
+            expect(pin.classList).toContain(
+                'avonni-progress-bar__rectangle-pin'
+            );
+            expect(pin.classList).toContain('avonni-progress-bar__pin-left');
         });
     });
 

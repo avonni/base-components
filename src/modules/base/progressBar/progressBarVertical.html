@@ -36,6 +36,12 @@
             aria-valuenow={value}
             role="progressbar"
         >
+            <lightning-spinner
+                if:true={isLoading}
+                alternative-text="Loading..."
+                size="x-small"
+                data-element-id="lightning-spinner"
+            ></lightning-spinner>
             <div
                 class={computedInnerClass}
                 style={computedStyle}
