@@ -14,6 +14,12 @@ export default class PrimitiveCellToggle extends LightningElement {
     checked;
     readOnly;
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
     get value() {
         return this.checked;
@@ -29,6 +35,15 @@ export default class PrimitiveCellToggle extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handles the change event and dispatches it.
+     */
     handleChange(event) {
         const detail = {
             value: event.detail.checked,
@@ -48,6 +63,9 @@ export default class PrimitiveCellToggle extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the cell change event.
+     */
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         this.dispatchEvent(

@@ -16,6 +16,12 @@ export default class PrimitiveCellRating extends LightningElement {
 
     readOnly;
 
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
     get value() {
         return this._value;
@@ -31,6 +37,15 @@ export default class PrimitiveCellRating extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handles the change event and dispatches it.
+     */
     handleChange(event) {
         const detail = {
             value: event.detail.value,
@@ -50,6 +65,9 @@ export default class PrimitiveCellRating extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the cell change event.
+     */
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         this.dispatchEvent(

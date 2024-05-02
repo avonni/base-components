@@ -3,22 +3,22 @@ import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellDateRange extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
     @api dateStyle;
-    @api timeStyle;
-    @api timezone;
     @api disabled;
     @api label;
     @api labelStartDate;
     @api labelEndDate;
+    @api rowKeyValue;
+    @api timeStyle;
+    @api timezone;
     @api type;
 
     _index;
     _value;
 
-    visible = false;
     editable = false;
     readOnly = true;
+    visible = false;
 
     connectedCallback() {
         this.template.addEventListener('ieditfinishedcustom', () => {
@@ -27,17 +27,32 @@ export default class PrimitiveCellDateRange extends LightningElement {
         this.dispatchStateAndColumnsEvent();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     get endDate() {
         return typeof this.value === 'object' ? this.value.endDate : undefined;
+    }
+
+    get showEditButton() {
+        return this.editable && !this.disabled;
     }
 
     get startDate() {
@@ -46,31 +61,15 @@ export default class PrimitiveCellDateRange extends LightningElement {
             : undefined;
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
      */
-    get showEditButton() {
-        return this.editable && !this.disabled;
-    }
 
-    /*----------- Inline Editing Functions -------------*/
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -79,7 +78,23 @@ export default class PrimitiveCellDateRange extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Toggles the visibility of the inline edit panel and the readOnly property of date range.
+     */
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -105,9 +120,20 @@ export default class PrimitiveCellDateRange extends LightningElement {
         }
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
-    toggleInlineEdit() {
-        this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
+    /**
+     * Dispatches the state change event.
+     */
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

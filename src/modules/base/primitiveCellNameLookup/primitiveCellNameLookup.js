@@ -3,8 +3,8 @@ import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellNameLookup extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
     @api path;
+    @api rowKeyValue;
     @api target;
 
     _index;
@@ -12,9 +12,9 @@ export default class PrimitiveCellNameLookup extends LightningElement {
     _wrapText;
     _wrapTextMaxLines;
 
-    visible = false;
     editable = false;
     readOnly = true;
+    visible = false;
 
     connectedCallback() {
         this.template.addEventListener('ieditfinishedcustom', () => {
@@ -22,6 +22,12 @@ export default class PrimitiveCellNameLookup extends LightningElement {
         });
         this.dispatchStateAndColumnsEvent();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get value() {
@@ -39,6 +45,12 @@ export default class PrimitiveCellNameLookup extends LightningElement {
         this._wrapText = value;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     get computedWrapTextClass() {
         if (this.wrapText) {
             return this._wrapTextMaxLines
@@ -52,31 +64,19 @@ export default class PrimitiveCellNameLookup extends LightningElement {
         return this.state.inlineEdit.editedValue;
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
-     */
     get showEditButton() {
         return this.editable;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -86,7 +86,22 @@ export default class PrimitiveCellNameLookup extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Toggles the visibility of the inline edit panel.
+     */
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -112,7 +127,20 @@ export default class PrimitiveCellNameLookup extends LightningElement {
         }
     }
 
-    toggleInlineEdit() {
-        this.visible = !this.visible;
+    /**
+     * Dispatches the state change event.
+     */
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

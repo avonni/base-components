@@ -120,11 +120,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
-     */
     get showEditButton() {
         return this.editable && !this.disabled;
     }
@@ -135,7 +130,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -145,7 +142,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    /**
+     * Toggles the visibility of the inline edit panel and the readOnly property of the combobox.
+     */
     toggleInlineEdit() {
         this.visible = !this.visible;
         this.readOnly = !this.readOnly;
@@ -157,6 +156,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handles the change event and dispatches it.
+     */
     handleChange(event) {
         const value = event.detail.value || null;
         const detail = {
@@ -177,7 +179,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
     }
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -204,6 +208,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
         }
     }
 
+    /**
+     * Dispatches the cell change event.
+     */
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
@@ -218,6 +225,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the state change event.
+     */
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {

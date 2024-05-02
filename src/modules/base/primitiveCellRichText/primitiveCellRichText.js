@@ -62,11 +62,6 @@ export default class PrimitiveCellRichText extends LightningElement {
         return 'slds-truncate';
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
-     */
     get showEditButton() {
         return this.editable && !this.disabled;
     }
@@ -77,7 +72,9 @@ export default class PrimitiveCellRichText extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -87,7 +84,9 @@ export default class PrimitiveCellRichText extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
+    /**
+     * Toggles the visibility of the inline edit panel and the readOnly property of rich text.
+     */
     toggleInlineEdit() {
         this.visible = !this.visible;
         this.readOnly = !this.readOnly;
@@ -99,7 +98,9 @@ export default class PrimitiveCellRichText extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -125,6 +126,9 @@ export default class PrimitiveCellRichText extends LightningElement {
         }
     }
 
+    /**
+     * Gets the state and columns information from the parent component.
+     */
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {

@@ -61,19 +61,19 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     // date-range attributes
     @api dateStyle;
+    @api labelEndDate;
+    @api labelStartDate;
     @api timeStyle;
     @api timezone;
-    @api labelStartDate;
-    @api labelEndDate;
     _startDate;
     _endDate;
 
     // lookup/record-picker attributes
     @api objectApiName;
     @api fieldName;
+    @api relationshipFieldName;
     @api relationshipObjectApiName;
     @api rowKeyValue;
-    @api relationshipFieldName;
 
     // rich-text attributes
     @api variant;

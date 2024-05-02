@@ -8,7 +8,14 @@ export default class PrimitiveCellCheckboxButton extends LightningElement {
     @api rowKeyValue;
 
     _value;
+
     readOnly;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get value() {
@@ -25,14 +32,29 @@ export default class PrimitiveCellCheckboxButton extends LightningElement {
         }
     }
 
-    get showInput() {
-        return this.value || !this.computedDisabled;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get computedDisabled() {
         return this.disabled || this.readOnly;
     }
 
+    get showInput() {
+        return this.value || !this.computedDisabled;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handles the change event and dispatches it.
+     */
     handleChange(event) {
         const detail = {
             value: event.detail.checked,
@@ -52,6 +74,9 @@ export default class PrimitiveCellCheckboxButton extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the cell change event.
+     */
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         this.dispatchEvent(

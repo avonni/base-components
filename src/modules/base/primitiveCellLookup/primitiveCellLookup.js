@@ -19,9 +19,9 @@ export default class PrimitiveCellLookup extends LightningElement {
     _wrapText;
     _wrapTextMaxLines;
 
-    visible = false;
     editable = false;
     readOnly = true;
+    visible = false;
 
     connectedCallback() {
         // Dispatches the inline edit event to the parent component.
@@ -114,11 +114,6 @@ export default class PrimitiveCellLookup extends LightningElement {
         return this.state.inlineEdit.dirtyValues[this.rowKeyValue];
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
-     */
     get showEditButton() {
         return this.editable;
     }
@@ -133,7 +128,9 @@ export default class PrimitiveCellLookup extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -143,10 +140,16 @@ export default class PrimitiveCellLookup extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
+    /**
+     * Sets the name of the lookup.
+     */
     setName(name) {
         this._name = name;
     }
 
+    /**
+     * Toggles the visibility of the inline edit panel.
+     */
     toggleInlineEdit() {
         this.visible = !this.visible;
     }
@@ -157,6 +160,9 @@ export default class PrimitiveCellLookup extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handles the change event and dispatches it.
+     */
     handleChange(event) {
         const value = event.detail.value || null;
         const detail = {
@@ -177,7 +183,9 @@ export default class PrimitiveCellLookup extends LightningElement {
         );
     }
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -203,6 +211,9 @@ export default class PrimitiveCellLookup extends LightningElement {
         }
     }
 
+    /**
+     * Dispatches the cell change event.
+     */
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
@@ -221,6 +232,9 @@ export default class PrimitiveCellLookup extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the state change event.
+     */
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
@@ -235,6 +249,9 @@ export default class PrimitiveCellLookup extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the value change event.
+     */
     dispatchValueChangeEvent() {
         this.dispatchEvent(
             new CustomEvent('valuechange', {

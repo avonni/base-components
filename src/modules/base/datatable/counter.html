@@ -2,14 +2,14 @@
     <div class="slds-p-around_x-small">
         <c-primitive-cell-counter
             col-key-value={colKeyValue}
-            row-key-value={rowKeyValue}
-            value={value}
-            name={typeAttributes.name}
+            disabled={typeAttributes.disabled}
             label={typeAttributes.label}
             max={typeAttributes.max}
             min={typeAttributes.min}
+            name={typeAttributes.name}
+            row-key-value={rowKeyValue}
             step={typeAttributes.step}
-            disabled={typeAttributes.disabled}
+            value={value}
         ></c-primitive-cell-counter>
     </div>
 </template>

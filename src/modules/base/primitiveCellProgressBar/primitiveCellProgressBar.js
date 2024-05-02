@@ -15,6 +15,12 @@ export default class PrimitiveCellProgressBar extends LightningElement {
 
     _value;
 
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
     get value() {
         return this._value;

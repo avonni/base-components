@@ -104,11 +104,6 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
         return this.state.inlineEdit.dirtyValues[this.rowKeyValue];
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
-     */
     get showEditButton() {
         return this.editable;
     }
@@ -123,7 +118,9 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -133,10 +130,16 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
+    /**
+     * Sets the name of the record picker
+     */
     setName(name) {
         this._name = name;
     }
 
+    /**
+     * Toggles the visibility of the inline edit panel.
+     */
     toggleInlineEdit() {
         this.visible = !this.visible;
     }
@@ -147,6 +150,9 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handles the change event and dispatches it.
+     */
     handleChange(event) {
         const value = event.detail.value || null;
         const detail = {
@@ -167,7 +173,9 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
         );
     }
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -193,6 +201,9 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
         }
     }
 
+    /**
+     * Dispatches the cell change event.
+     */
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
@@ -211,6 +222,9 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the state change event.
+     */
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
@@ -225,6 +239,9 @@ export default class PrimitiveCellRecordPicker extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the value change event.
+     */
     dispatchValueChangeEvent() {
         this.dispatchEvent(
             new CustomEvent('valuechange', {

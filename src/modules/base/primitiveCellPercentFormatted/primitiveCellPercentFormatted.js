@@ -43,7 +43,6 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
@@ -64,7 +63,9 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -73,7 +74,9 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Toggles the visibility of the inline edit panel
+    /**
+     * Toggles the visibility of the inline edit panel.
+     */
     toggleInlineEdit() {
         this.visible = !this.visible;
     }
@@ -84,7 +87,9 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -110,6 +115,9 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
         }
     }
 
+    /**
+     * Dispatches the state change event.
+     */
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {

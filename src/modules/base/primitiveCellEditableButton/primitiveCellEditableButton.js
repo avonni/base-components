@@ -11,12 +11,29 @@ export default class PrivateCellEditableButton extends LightningElement {
 
     _htmlButton = null;
 
-    @api
-    focus() {
-        if (this.htmlButton) {
-            this.htmlButton.focus();
-        }
+    disconnectedCallback() {
+        this._htmlButton = null;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    @api
+    get tabIndex() {
+        return this.getAttribute('tabindex');
+    }
+    set tabIndex(value) {
+        this.setAttribute('tabindex', value);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     @api
     click() {
@@ -26,29 +43,27 @@ export default class PrivateCellEditableButton extends LightningElement {
     }
 
     @api
-    get tabIndex() {
-        return this.getAttribute('tabindex');
+    focus() {
+        if (this.htmlButton) {
+            this.htmlButton.focus();
+        }
     }
 
-    set tabIndex(value) {
-        this.setAttribute('tabindex', value);
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get assistiveText() {
+        const suffix = this.hasError ? ` ${i18n.editHasError}` : '';
+        return `${i18n.edit} ${this.columnLabel}${suffix}`;
     }
 
     get htmlButton() {
         if (!this._htmlButton) {
             this._htmlButton = this.template.querySelector('button');
         }
-
         return this._htmlButton;
-    }
-
-    disconnectedCallback() {
-        this._htmlButton = null;
-    }
-
-    get assistiveText() {
-        const suffix = this.hasError ? ` ${i18n.editHasError}` : '';
-
-        return `${i18n.edit} ${this.columnLabel}${suffix}`;
     }
 }
