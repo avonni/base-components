@@ -1479,7 +1479,7 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
 
@@ -1499,7 +1499,7 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
                 element.enableInfiniteLoading = true;
@@ -1516,7 +1516,7 @@ describe('Avatar Group', () => {
                         const avatarShow = element.shadowRoot.querySelectorAll(
                             '[data-element-id^="avonni-avatar"]'
                         );
-                        expect(avatarShow).toHaveLength(3);
+                        expect(avatarShow).toHaveLength(4);
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
                         );
@@ -1535,11 +1535,11 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
                 element.enableInfiniteLoading = true;
-                element.items = longItems.slice(0, 3);
+                element.items = longItems.slice(0, 4);
 
                 const handler = jest.fn();
                 element.addEventListener('loadmore', handler);
@@ -1552,7 +1552,7 @@ describe('Avatar Group', () => {
                         const avatarShow = element.shadowRoot.querySelectorAll(
                             '[data-element-id^="avonni-avatar"]'
                         );
-                        expect(avatarShow).toHaveLength(3);
+                        expect(avatarShow).toHaveLength(4);
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
                         );
@@ -1568,7 +1568,7 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
                 element.enableInfiniteLoading = true;
@@ -1586,7 +1586,7 @@ describe('Avatar Group', () => {
                         const avatarShow = element.shadowRoot.querySelectorAll(
                             '[data-element-id^="avonni-avatar"]'
                         );
-                        expect(avatarShow).toHaveLength(3);
+                        expect(avatarShow).toHaveLength(4);
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
                         );

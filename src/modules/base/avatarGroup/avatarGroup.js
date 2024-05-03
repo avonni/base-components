@@ -885,7 +885,9 @@ export default class AvatarGroup extends LightningElement {
      * @type {HTMLElement}
      */
     get wrapperElement() {
-        return this.template.querySelector('[data-element-id="ul"]');
+        return this.template.querySelector(
+            '[data-element-id="avatar-group-wrapper"]'
+        );
     }
 
     /*
@@ -1217,12 +1219,26 @@ export default class AvatarGroup extends LightningElement {
         }
 
         const totalWidth = this.wrapperElement.offsetWidth;
-        const availableWidth = this.actionButtonElement
-            ? totalWidth - this.actionButtonElement.offsetWidth
-            : totalWidth;
+        let availableWidth = totalWidth;
+
+        if (this.actionButtonElement) {
+            availableWidth -= this.actionButtonElement.offsetWidth;
+        }
+        if (this.showMoreButtonElement) {
+            availableWidth -= this.showMoreButtonElement.offsetWidth;
+        }
+        if (this.layout === 'stack') {
+            // The size of the first item in the stack layout is different than the others
+            const firstStackElement =
+                this.avatarItemElements.length > 0
+                    ? this.avatarItemElements[0]
+                    : null;
+            if (firstStackElement) {
+                availableWidth -= firstStackElement.offsetWidth;
+            }
+        }
 
         const referenceElement = firstVisibleItem || this.showMoreButtonElement;
-
         const referenceElementStyles =
             window.getComputedStyle(referenceElement);
         const referenceElementWidth =
@@ -1231,11 +1247,12 @@ export default class AvatarGroup extends LightningElement {
             parseFloat(referenceElementStyles.marginRight);
 
         if (!referenceElementStyles || !referenceElementWidth) return;
-        this._maxVisibleCount = Math.max(
+        const maxVisibleCount = Math.max(
             0,
             Math.floor(availableWidth / referenceElementWidth)
         );
-
+        this._maxVisibleCount =
+            this.layout === 'stack' ? maxVisibleCount + 1 : maxVisibleCount;
         if (
             this.enableInfiniteLoading &&
             !this.isLoading &&
