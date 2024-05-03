@@ -6,15 +6,9 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { generateUUID } from 'c/utils';
+import PaginationItem from './paginationItem';
 
-const INDICATOR_ACTION =
-    'slds-carousel__indicator-action avonni-carousel__progress-indicator_inactive';
-const INDICATOR_ACTION_SHADED =
-    'slds-carousel__indicator-action avonni-carousel__progress-indicator_shaded-inactive';
-const SLDS_ACTIVE = 'slds-is-active avonni-carousel__progress-indicator_active';
-const SLDS_ACTIVE_SHADED =
-    'slds-is-active avonni-carousel__progress-indicator_shaded-active';
+const MAX_NB_PANELS_INFINITE_LOADING = 6;
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
@@ -543,9 +537,16 @@ export default class Carousel extends LightningElement {
     }
 
     get nbOfPanels() {
-        return Math.ceil(
+        const nbOfPanels = Math.ceil(
             this._carouselItems.length / this.currentItemsPerPanel
         );
+
+        if (!this.enableInfiniteLoading) {
+            return nbOfPanels;
+        }
+        return nbOfPanels > MAX_NB_PANELS_INFINITE_LOADING
+            ? MAX_NB_PANELS_INFINITE_LOADING
+            : nbOfPanels;
     }
 
     /**
@@ -554,7 +555,7 @@ export default class Carousel extends LightningElement {
      * @type {number}
      */
     get nextPanelNavigationDisabled() {
-        return !this.isInfinite
+        return !this.isInfinite && !this.enableInfiniteLoading
             ? this.activeIndexPanel === this.paginationItems.length - 1
             : null;
     }
@@ -566,15 +567,6 @@ export default class Carousel extends LightningElement {
      */
     get previousPanelNavigationDisabled() {
         return !this.isInfinite ? this.activeIndexPanel === 0 : null;
-    }
-
-    /**
-     * True if the bottom indicator should be visible.
-     *
-     * @type {boolean}
-     */
-    get showIndicator() {
-        return !this.hideIndicator && !this.enableInfiniteLoading;
     }
 
     /*
@@ -667,16 +659,52 @@ export default class Carousel extends LightningElement {
      */
     @api
     next() {
-        this.pause();
-        this.unselectCurrentPanel();
+        const paginationItems = this.template.querySelectorAll(
+            '[data-element-id="a-pagination"]'
+        );
+        paginationItems[0].classList.add(
+            'avonni-carousel__progress-indicator_to-visible-right'
+        );
+        paginationItems[1].classList.add(
+            'avonni-carousel__progress-indicator_to-right-big'
+        );
+        paginationItems[2].classList.add(
+            'avonni-carousel__progress-indicator_to-right'
+        );
+        paginationItems[3].classList.add(
+            'avonni-carousel__progress-indicator_to-small-right'
+        );
+        paginationItems[4].classList.add(
+            'avonni-carousel__progress-indicator_to-hidden-right'
+        );
 
-        if (this.activeIndexPanel < this.paginationItems.length - 1) {
-            this.activeIndexPanel += 1;
-        } else {
-            this.activeIndexPanel = 0;
-        }
-        this.selectNewPanel(this.activeIndexPanel);
-        this.checkIfShouldLoadMore();
+        setTimeout(() => {
+            paginationItems[0].classList.remove(
+                'avonni-carousel__progress-indicator_to-visible-right'
+            );
+            paginationItems[1].classList.remove(
+                'avonni-carousel__progress-indicator_to-right-big'
+            );
+            paginationItems[2].classList.remove(
+                'avonni-carousel__progress-indicator_to-right'
+            );
+            paginationItems[3].classList.remove(
+                'avonni-carousel__progress-indicator_to-small-right'
+            );
+            paginationItems[4].classList.remove(
+                'avonni-carousel__progress-indicator_to-hidden-right'
+            );
+        }, 500);
+        // this.pause();
+        // this.unselectCurrentPanel();
+
+        // if (this.activeIndexPanel < this.paginationItems.length - 1) {
+        //     this.activeIndexPanel += 1;
+        // } else {
+        //     this.activeIndexPanel = 0;
+        // }
+        // this.selectNewPanel(this.activeIndexPanel);
+        // this.checkIfShouldLoadMore();
     }
 
     /*
@@ -812,26 +840,16 @@ export default class Carousel extends LightningElement {
      */
     initPaginationItems() {
         this.paginationItems = [];
-        const indicatorVariantClass =
-            this.indicatorVariant === 'base'
-                ? INDICATOR_ACTION
-                : INDICATOR_ACTION_SHADED;
-        const activeIndicatorClass =
-            this.indicatorVariant === 'base' ? SLDS_ACTIVE : SLDS_ACTIVE_SHADED;
 
         for (let i = 0; i < this.nbOfPanels; i++) {
-            const id = generateUUID();
-            const isItemActive = i === this.activeIndexPanel;
-            this.paginationItems.push({
-                key: id,
-                id: `pagination-item-${i}`,
-                className: isItemActive
-                    ? `${indicatorVariantClass} ${activeIndicatorClass}`
-                    : indicatorVariantClass,
-                tabIndex: isItemActive ? '0' : '-1',
-                ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
-                tabTitle: `Tab ${i}`
-            });
+            this.paginationItems.push(
+                new PaginationItem({
+                    enableInfiniteLoading: this.enableInfiniteLoading,
+                    index: i,
+                    isActive: i === this.activeIndexPanel,
+                    variant: this.indicatorVariant
+                })
+            );
         }
     }
 
@@ -970,15 +988,7 @@ export default class Carousel extends LightningElement {
         if (!activePaginationItem || !activePanelItem) return;
 
         activePanelItem.ariaHidden = FALSE_STRING;
-        activePaginationItem.tabIndex = '0';
-        activePaginationItem.ariaHidden = TRUE_STRING;
-        if (this.indicatorVariant === 'base') {
-            activePaginationItem.className =
-                INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
-        } else if (this.indicatorVariant === 'shaded') {
-            activePaginationItem.className =
-                INDICATOR_ACTION_SHADED + ' ' + SLDS_ACTIVE_SHADED;
-        }
+        activePaginationItem.isActive = true;
 
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
         this.activeIndexPanel = panelIndex;
@@ -1015,15 +1025,8 @@ export default class Carousel extends LightningElement {
         const activePanelItem = this.panelItems[this.activeIndexPanel];
 
         if (!activePaginationItem || !activePanelItem) return;
-
+        activePaginationItem.isActive = false;
         activePanelItem.ariaHidden = TRUE_STRING;
-        activePaginationItem.tabIndex = '-1';
-        activePaginationItem.ariaSelected = FALSE_STRING;
-        if (this.indicatorVariant === 'shaded') {
-            activePaginationItem.className = INDICATOR_ACTION_SHADED;
-        } else {
-            activePaginationItem.className = INDICATOR_ACTION;
-        }
     }
 
     /*

@@ -93,14 +93,17 @@
                         </template>
                     </div>
                     <ul
-                        class="slds-carousel__indicators"
+                        class="
+                            slds-carousel__indicators
+                            slds-grid slds-grid_vertical-align-center
+                        "
                         role="tablist"
                         data-element-id="ul"
                         onkeydown={keyDownHandler}
                     >
                         <!-- Pagination items -->
                         <template
-                            if:true={showIndicator}
+                            if:false={hideIndicator}
                             for:each={paginationItems}
                             for:item="paginationItem"
                             for:index="paginationIndex"
@@ -114,7 +117,7 @@
                                 data-index={paginationIndex}
                             >
                                 <a
-                                    id={paginationItem.id}
+                                    id={paginationItem.elementId}
                                     class={paginationItem.className}
                                     href="javascript:void(0);"
                                     role="tab"
