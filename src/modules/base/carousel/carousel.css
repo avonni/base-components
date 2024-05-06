@@ -1,3 +1,5 @@
+@import './paginationItems.css';
+
 .avonni-carousel__stage_min-width {
     min-width: 20%;
 }
@@ -188,73 +190,4 @@
         --avonni-carousel-active-indicator-shaded-color-border,
         #dddbda
     );
-}
-
-@keyframes tobig {
-    from {
-        transform: scale(0.5);
-    }
-    to {
-        transform: scale(1);
-    }
-}
-
-@keyframes tohidden {
-    from {
-        transform: scale(0.5);
-    }
-    to {
-        transform: scale(0);
-    }
-}
-
-@keyframes toright {
-    from {
-        left: 0;
-    }
-    to {
-        left: 1.5rem;
-    }
-}
-
-@keyframes tosmall {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(0.5);
-    }
-}
-
-@keyframes tovisible {
-    from {
-        transform: scale(0);
-    }
-    to {
-        transform: scale(0.5);
-    }
-}
-
-.avonni-carousel__progress-indicator_to-right-big {
-    animation: 500ms linear toright, 500ms linear tobig;
-}
-.avonni-carousel__progress-indicator_to-hidden-right {
-    animation: 500ms linear toright, 500ms linear tohidden;
-}
-.avonni-carousel__progress-indicator_to-right {
-    animation: 500ms linear toright;
-}
-.avonni-carousel__progress-indicator_to-small-right {
-    animation: 500ms linear toright, 500ms linear tosmall;
-}
-.avonni-carousel__progress-indicator_to-visible-right {
-    animation: 500ms linear toright, 500ms linear tovisible;
-}
-
-.avonni-carousel__progress-indicator__hidden {
-    transform: scale(0);
-}
-
-.avonni-carousel__progress-indicator__small {
-    transform: scale(0.5);
 }

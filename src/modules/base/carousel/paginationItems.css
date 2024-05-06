@@ -1,0 +1,126 @@
+@keyframes tobig {
+    from {
+        transform: scale(0.5);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes tohidden {
+    from {
+        transform: scale(0.5);
+    }
+
+    to {
+        transform: scale(0);
+    }
+}
+
+@keyframes toleft {
+    from {
+        left: 0;
+    }
+
+    to {
+        left: -1.5rem;
+    }
+}
+
+@keyframes toright {
+    from {
+        left: 0;
+    }
+
+    to {
+        left: 1.5rem;
+    }
+}
+
+@keyframes tosmall {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0.5);
+    }
+}
+
+@keyframes tovisible {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(0.5);
+    }
+}
+
+@keyframes tovisiblebig {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.avonni-carousel__progress-indicator_infinite-loading {
+    animation-duration: 500ms;
+    animation-timing-function: linear;
+}
+
+.avonni-carousel__progress-indicator_to-big-right {
+    animation-name: toright, tobig;
+}
+
+.avonni-carousel__progress-indicator_to-hidden-right {
+    animation-name: toright, tohidden;
+}
+
+.avonni-carousel__progress-indicator_to-right {
+    animation-name: toright;
+}
+
+.avonni-carousel__progress-indicator_to-small-right {
+    animation-name: toright, tosmall;
+}
+
+.avonni-carousel__progress-indicator_to-visible-right {
+    animation-name: toright, tovisible;
+}
+
+.avonni-carousel__progress-indicator_to-visible-big-right {
+    animation-name: toright, tovisiblebig;
+}
+
+.avonni-carousel__progress-indicator_to-big-left {
+    animation-name: toleft, tobig;
+}
+
+.avonni-carousel__progress-indicator_to-hidden-left {
+    animation-name: toleft, tohidden;
+}
+
+.avonni-carousel__progress-indicator_to-left {
+    animation-name: toleft;
+}
+
+.avonni-carousel__progress-indicator_to-small-left {
+    animation-name: toleft, tosmall;
+}
+
+.avonni-carousel__progress-indicator_to-visible-left {
+    animation-name: toleft, tovisible;
+}
+
+.avonni-carousel__progress-indicator__hidden {
+    transform: scale(0);
+}
+
+.avonni-carousel__progress-indicator__small:not(.avonni-carousel__progress-indicator_to-right) {
+    transform: scale(0.5);
+}
