@@ -1,4 +1,4 @@
-function _getMovedPaginationIndex({ goToPrevious, nbOfPanels, panelIndex }) {
+function _getMovedActiveItemIndex({ goToPrevious, nbOfPanels, panelIndex }) {
     const isMovingToBeginning = panelIndex === 2;
     const isEnd = panelIndex >= nbOfPanels - 3;
     return (goToPrevious && !isMovingToBeginning) || (!goToPrevious && isEnd)
@@ -6,26 +6,20 @@ function _getMovedPaginationIndex({ goToPrevious, nbOfPanels, panelIndex }) {
         : 3;
 }
 
-function _getPaginationElements(carousel) {
+function _getItemElements(carousel) {
     return carousel.template.querySelectorAll(
         '[data-element-id="a-pagination"]'
     );
 }
 
-function _animatePaginationItem({
-    carousel,
-    goToPrevious,
-    items,
-    nbOfPanels,
-    panelIndex
-}) {
-    let elements = _getPaginationElements(carousel);
+function _animate({ carousel, goToPrevious, items, nbOfPanels, panelIndex }) {
+    let elements = _getItemElements(carousel);
     elements.forEach((element, index) => {
         const item = items[index];
         if (item) {
             item.isActive =
                 index ===
-                _getMovingActivePaginationIndex({
+                _getMovingActiveItemIndex({
                     goToPrevious,
                     nbOfPanels,
                     panelIndex
@@ -41,13 +35,17 @@ function _animatePaginationItem({
     });
 
     setTimeout(() => {
+        if (!carousel.enableInfiniteLoading) {
+            // The property value may change before the timeout is executed
+            return;
+        }
         _disableItems(items);
-        const newIndex = _getMovedPaginationIndex({
+        const newIndex = _getMovedActiveItemIndex({
             goToPrevious,
             nbOfPanels,
             panelIndex
         });
-        elements = _getPaginationElements(carousel);
+        elements = _getItemElements(carousel);
         elements.forEach((element, index) => {
             items[index].isActive = index === newIndex;
             element.classList = items[index].className;
@@ -67,11 +65,7 @@ function _disableItems(items) {
  * @param {boolean} True if the user is moving to the previous item.
  * @returns {number} Index of the active pagination item.
  */
-function _getMovingActivePaginationIndex({
-    goToPrevious,
-    nbOfPanels,
-    panelIndex
-}) {
+function _getMovingActiveItemIndex({ goToPrevious, nbOfPanels, panelIndex }) {
     if (goToPrevious && panelIndex < 3) {
         return 2;
     } else if (goToPrevious) {
@@ -88,7 +82,7 @@ function _getMovingActivePaginationIndex({
  * @param {boolean} goToPrevious True if the user is moving to the previous item.
  * @returns {number} Index of the active pagination item, or undefined.
  */
-function _getVisibleActivePaginationIndex({
+function _getVisibleActiveItemIndex({
     activeItemIndex,
     goToPrevious,
     nbOfPanels,
@@ -112,22 +106,26 @@ function updateActivePaginationItem({
     activeItemIndex,
     carousel,
     goToPrevious,
+    infiniteLoading,
     items,
     nbOfPanels,
     panelIndex
 }) {
-    const index = _getVisibleActivePaginationIndex({
-        activeItemIndex,
-        goToPrevious,
-        items,
-        nbOfPanels,
-        panelIndex
-    });
+    const index = infiniteLoading
+        ? _getVisibleActiveItemIndex({
+              activeItemIndex,
+              goToPrevious,
+              items,
+              nbOfPanels,
+              panelIndex
+          })
+        : panelIndex;
+
     _disableItems(items);
     items.forEach((item) => {
         item.activeIndexPanel = panelIndex;
     });
-    const elements = _getPaginationElements(carousel);
+    const elements = _getItemElements(carousel);
     elements.forEach((element, i) => {
         if (items[i]) {
             element.className = items[i].className;
@@ -146,19 +144,19 @@ function updateActivePaginationItem({
         const noAnimation =
             (goToPrevious && !isMovingToBeginning) ||
             (!goToPrevious && !isMovingToEnd);
-        if (noAnimation) {
+        if (!infiniteLoading || noAnimation) {
             return index;
         }
     }
 
-    _animatePaginationItem({
+    _animate({
         carousel,
         goToPrevious,
         items,
         nbOfPanels,
         panelIndex
     });
-    return _getMovedPaginationIndex({ goToPrevious, nbOfPanels, panelIndex });
+    return _getMovedActiveItemIndex({ goToPrevious, nbOfPanels, panelIndex });
 }
 
 export { updateActivePaginationItem };

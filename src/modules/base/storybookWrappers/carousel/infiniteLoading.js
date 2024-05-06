@@ -44,6 +44,9 @@ export default class InfiniteLoadingCarousel extends LightningElement {
     }
 
     handleLoadMore() {
+        if (this.items.length > 50) {
+            return;
+        }
         this.isLoading = true;
 
         setTimeout(() => {

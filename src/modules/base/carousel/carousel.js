@@ -118,7 +118,7 @@ export default class Carousel extends LightningElement {
     _scrollDuration = DEFAULT_SCROLL_DURATION;
     _smallItemsPerPanel;
 
-    _activePaginationItemIndex = 1;
+    _activePaginationItemIndex;
     _rendered = false;
 
     activeIndexPanel = 0;
@@ -153,6 +153,7 @@ export default class Carousel extends LightningElement {
 
     connectedCallback() {
         this._connected = true;
+        this._activePaginationItemIndex = this.enableInfiniteLoading ? 1 : 0;
     }
 
     disconnectedCallback() {
@@ -259,9 +260,15 @@ export default class Carousel extends LightningElement {
         return this._enableInfiniteLoading;
     }
     set enableInfiniteLoading(value) {
-        this._enableInfiniteLoading = normalizeBoolean(value);
+        const boolean = normalizeBoolean(value);
+        if (boolean === this._enableInfiniteLoading) {
+            return;
+        }
+        this._enableInfiniteLoading = boolean;
 
         if (this._connected) {
+            this.first();
+            this.initPaginationItems();
             this.checkIfShouldLoadMore();
         }
     }
@@ -406,7 +413,7 @@ export default class Carousel extends LightningElement {
     }
     set loadMoreOffset(value) {
         const number = parseInt(value, 10);
-        this._loadMoreOffset = number >= 0 ? number : DEFAULT_LOAD_MORE_OFFSET;
+        this._loadMoreOffset = number > 1 ? number : DEFAULT_LOAD_MORE_OFFSET;
 
         if (this._connected) {
             this.checkIfShouldLoadMore();
@@ -550,8 +557,8 @@ export default class Carousel extends LightningElement {
      * @type {number}
      */
     get nextPanelNavigationDisabled() {
-        return !this.isInfinite && !this.enableInfiniteLoading
-            ? this.activeIndexPanel === this.paginationItems.length - 1
+        return !this.isInfinite || this.enableInfiniteLoading
+            ? this.activeIndexPanel === this.nbOfPanels - 1
             : null;
     }
 
@@ -972,6 +979,7 @@ export default class Carousel extends LightningElement {
             activeItemIndex: this._activePaginationItemIndex,
             carousel: this,
             goToPrevious,
+            infiniteLoading: this.enableInfiniteLoading,
             items: this.paginationItems,
             nbOfPanels: this.nbOfPanels,
             panelIndex
