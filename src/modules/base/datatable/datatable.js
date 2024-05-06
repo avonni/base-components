@@ -21,7 +21,6 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
-import lookup from './lookup.html';
 import nameLookup from './nameLookup.html';
 import percentFormatted from './percentFormatted.html';
 import progressBar from './progressBar.html';
@@ -60,7 +59,6 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'counter',
     'date-range',
-    'lookup',
     'name-lookup',
     'percent-formatted',
     'rating',
@@ -197,16 +195,6 @@ export default class Datatable extends LightningDatatable {
                 'width'
             ],
             standardCellLayout: true
-        },
-        lookup: {
-            template: lookup,
-            typeAttributes: [
-                'name',
-                'objectApiName',
-                'path',
-                'relationshipFieldName',
-                'relationshipObjectApiName'
-            ]
         },
         'name-lookup': {
             template: nameLookup,
