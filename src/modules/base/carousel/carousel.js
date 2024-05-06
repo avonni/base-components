@@ -118,6 +118,7 @@ export default class Carousel extends LightningElement {
     _scrollDuration = DEFAULT_SCROLL_DURATION;
     _smallItemsPerPanel;
 
+    _activePaginationItemIndex = 1;
     _rendered = false;
 
     activeIndexPanel = 0;
@@ -396,7 +397,7 @@ export default class Carousel extends LightningElement {
      * Depends on `enable-infinite-loading` being true.
      *
      * @type {number}
-     * @default 1
+     * @default 3
      * @public
      */
     @api
@@ -808,7 +809,7 @@ export default class Carousel extends LightningElement {
                     activeIndexPanel: this.activeIndexPanel,
                     enableInfiniteLoading: this.enableInfiniteLoading,
                     index: i,
-                    isActive: i === 1,
+                    isActive: i === this._activePaginationItemIndex,
                     lastPanelIndex: this.nbOfPanels - 1,
                     variant: this.indicatorVariant
                 })
@@ -954,7 +955,8 @@ export default class Carousel extends LightningElement {
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
         const goToPrevious = panelIndex < this.activeIndexPanel;
         this.activeIndexPanel = panelIndex;
-        updateActivePaginationItem({
+        this._activePaginationItemIndex = updateActivePaginationItem({
+            activeItemIndex: this._activePaginationItemIndex,
             carousel: this,
             goToPrevious,
             items: this.paginationItems,

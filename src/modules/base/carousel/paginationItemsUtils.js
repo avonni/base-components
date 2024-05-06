@@ -89,15 +89,14 @@ function _getMovingActivePaginationIndex({
  * @returns {number} Index of the active pagination item, or undefined.
  */
 function _getVisibleActivePaginationIndex({
+    activeItemIndex,
     goToPrevious,
-    items,
     nbOfPanels,
     panelIndex
 }) {
-    const previousActiveItemIndex = items.findIndex((i) => i.isActive);
     const isBeginning = panelIndex < 3;
     const isEnd = panelIndex >= nbOfPanels - 3;
-    const isMovingToLeftItem = goToPrevious && previousActiveItemIndex === 3;
+    const isMovingToLeftItem = goToPrevious && activeItemIndex === 3;
 
     if (isMovingToLeftItem) {
         return 2;
@@ -110,6 +109,7 @@ function _getVisibleActivePaginationIndex({
 }
 
 function updateActivePaginationItem({
+    activeItemIndex,
     carousel,
     goToPrevious,
     items,
@@ -117,6 +117,7 @@ function updateActivePaginationItem({
     panelIndex
 }) {
     const index = _getVisibleActivePaginationIndex({
+        activeItemIndex,
         goToPrevious,
         items,
         nbOfPanels,
@@ -146,7 +147,7 @@ function updateActivePaginationItem({
             (goToPrevious && !isMovingToBeginning) ||
             (!goToPrevious && !isMovingToEnd);
         if (noAnimation) {
-            return;
+            return index;
         }
     }
 
@@ -157,6 +158,7 @@ function updateActivePaginationItem({
         nbOfPanels,
         panelIndex
     });
+    return _getMovedPaginationIndex({ goToPrevious, nbOfPanels, panelIndex });
 }
 
 export { updateActivePaginationItem };

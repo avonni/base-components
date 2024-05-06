@@ -76,7 +76,7 @@ export default {
             description:
                 'Number of hidden panels left when the loadmore event should be fired. For example, if the value is 2, the loadmore event will be fired when the user clicks on the “next” navigation button, and from this screen, they could click two more times on “next” before reaching the end of the items. Depends on enable-infinite-loading being true.',
             table: {
-                defaultValue: { summary: 1 },
+                defaultValue: { summary: 3 },
                 type: { summary: 'number' }
             }
         },
@@ -288,7 +288,7 @@ export default {
         hideIndicator: false,
         hidePreviousNextPanelNavigation: false,
         indicatorVariant: 'base',
-        loadMoreOffset: 1,
+        loadMoreOffset: 3,
         isInfinite: false,
         itemsPerPanel: 1,
         scrollDuration: 5,
