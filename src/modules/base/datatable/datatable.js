@@ -21,14 +21,12 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
-import nameLookup from './nameLookup.html';
 import percentFormatted from './percentFormatted.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
-import recordPicker from './recordPicker.html';
 import richText from './richText.html';
 import slider from './slider.html';
 import textarea from './textarea.html';
@@ -59,7 +57,6 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'counter',
     'date-range',
-    'name-lookup',
     'percent-formatted',
     'rating',
     'rich-text',
@@ -196,10 +193,6 @@ export default class Datatable extends LightningDatatable {
             ],
             standardCellLayout: true
         },
-        'name-lookup': {
-            template: nameLookup,
-            typeAttributes: ['path', 'target']
-        },
         'percent-formatted': {
             template: percentFormatted,
             typeAttributes: [
@@ -268,16 +261,6 @@ export default class Datatable extends LightningDatatable {
                 'min',
                 'selection',
                 'valueHidden'
-            ]
-        },
-        'record-picker': {
-            template: recordPicker,
-            typeAttributes: [
-                'name',
-                'objectApiName',
-                'path',
-                'relationshipFieldName',
-                'relationshipObjectApiName'
             ]
         },
         'rich-text': {

@@ -4,22 +4,16 @@ import ComboboxTpl from './combobox.html';
 import counterTpl from './counter.html';
 import dateRangeTpl from './dateRange.html';
 import percentFormatted from './percentFormatted.html';
-import recordPickerTpl from './recordPicker.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
-import lookupTpl from './lookup.html';
-import nameLookupTpl from './nameLookup.html';
 
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
     combobox: ComboboxTpl,
     counter: counterTpl,
     'date-range': dateRangeTpl,
-    lookup: lookupTpl,
-    'name-lookup': nameLookupTpl,
     'percent-formatted': percentFormatted,
-    'record-picker': recordPickerTpl,
     'rich-text': richTextTpl,
     textarea: textareaTpl
 };
@@ -68,13 +62,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     _startDate;
     _endDate;
 
-    // lookup/record-picker attributes
-    @api objectApiName;
-    @api fieldName;
-    @api relationshipFieldName;
-    @api relationshipObjectApiName;
-    @api rowKeyValue;
-
     // rich-text attributes
     @api variant;
     _formats;
@@ -98,15 +85,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     renderedCallback() {
         if (!this.concreteComponent) return;
         this.concreteComponent.addEventListener('change', this._changeHandler);
-
-        if (this.columnType !== 'lookup') {
-            this.concreteComponent.addEventListener('blur', this._blurHandler);
-            this.concreteComponent.addEventListener(
-                'focus',
-                this._focusHandler
-            );
-            this.focus();
-        }
     }
 
     /*
@@ -212,11 +190,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     @api
     showHelpMessageIfInvalid() {
-        if (
-            this.columnType !== 'rich-text' &&
-            this.columnType !== 'lookup' &&
-            this.columnType !== 'record-picker'
-        ) {
+        if (this.columnType !== 'rich-text') {
             this.concreteComponent.showHelpMessageIfInvalid();
         }
     }

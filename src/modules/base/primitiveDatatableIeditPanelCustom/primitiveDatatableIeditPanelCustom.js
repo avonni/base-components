@@ -47,12 +47,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api labelStartDate;
     @api labelEndDate;
 
-    // Primitive cell lookup/record-picker
-    @api fieldName;
-    @api objectApiName;
-    @api relationshipFieldName;
-    @api relationshipObjectApiName;
-
     // primitive cell rich-text
     @api formats;
     @api variant;
@@ -195,39 +189,12 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
-     * Returns true if column type is lookup.
-     *
-     * @type {boolean}
-     */
-    get isTypeLookup() {
-        return this.columnDef.type === 'lookup';
-    }
-
-    /**
-     * Returns true if column type is name-lookup.
-     *
-     * @type {boolean}
-     */
-    get isTypeNameLookup() {
-        return this.columnDef.type === 'name-lookup';
-    }
-
-    /**
      * Returns true if column type is percent-formatted.
      *
      * @type {boolean}
      */
     get isTypePercentFormatted() {
         return this.columnDef.type === 'percent-formatted';
-    }
-
-    /**
-     * Returns true if column type is record-picker.
-     *
-     * @type {boolean}
-     */
-    get isTypeRecordPicker() {
-        return this.columnDef.type === 'record-picker';
     }
 
     /**
@@ -249,7 +216,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             this.isTypeColorPicker ||
             this.isTypeCounter ||
             this.isTypeDateRange ||
-            this.isTypeLookup ||
             this.isTypeRichText ||
             this.isTypeTextArea ||
             (this.isTypeCombobox && this.isMultiSelect)
@@ -363,11 +329,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         event.preventDefault();
         event.stopPropagation();
 
-        if (
-            !this.isMassEditEnabled &&
-            !this.isTypeColorPicker &&
-            !this.isTypeLookup
-        ) {
+        if (!this.isMassEditEnabled && !this.isTypeColorPicker) {
             this.processSubmission();
         }
         return false;
@@ -406,14 +368,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handlePanelLoosedFocus() {
-        if (
-            (this.isTypeRecordPicker ||
-                this.isTypeNameLookup ||
-                this.isTypePercentFormatted) &&
-            this.visible
-        ) {
+        if (this.isTypePercentFormatted && this.visible) {
             this.processSubmission();
-        } else if (!this.isTypeLookup && this.visible) {
+        } else if (this.visible) {
             this.triggerEditFinished({
                 reason: 'lost-focus'
             });
@@ -457,10 +414,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             return;
         }
         const validity =
-            this.isTypeRichText ||
-            this.isTypeLookup ||
-            this.isTypeRecordPicker ||
-            this.inputableElement.validity.valid;
+            this.isTypeRichText || this.inputableElement.validity.valid;
         this.triggerEditFinished({ reason: 'submit-action', validity });
         const value = this.isTypeCombobox
             ? this.comboboxFormattedValue(this.value)
@@ -494,12 +448,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         const details = {
             rowKeyValue: detail.rowKeyValue || this.rowKeyValue,
             colKeyValue: detail.colKeyValue || this.colKeyValue,
-            valid:
-                this.isTypeRichText ||
-                this.isTypeLookup ||
-                this.isTypeRecordPicker
-                    ? true
-                    : detail.validity,
+            valid: this.isTypeRichText ? true : detail.validity,
             isMassEditChecked: this.isMassEditChecked,
             isMassEditEnabled: this.isMassEditEnabled,
             reason: detail.reason
