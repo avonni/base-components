@@ -769,6 +769,35 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Panel selection event method.
+     *
+     * @param {Event}
+     */
+    handlePaginationItemClick(event) {
+        if (this.isLoading) {
+            return;
+        }
+        this.pause();
+        const itemIndex = parseInt(event.currentTarget.dataset.index, 10);
+        let panelIndex;
+        if (itemIndex > this._activePaginationItemIndex) {
+            panelIndex =
+                this.activeIndexPanel +
+                (itemIndex - this._activePaginationItemIndex);
+        } else {
+            panelIndex =
+                this.activeIndexPanel -
+                (this._activePaginationItemIndex - itemIndex);
+        }
+
+        if (this.activeIndexPanel !== panelIndex) {
+            this.unselectCurrentPanel();
+            this.selectNewPanel(panelIndex);
+            this.checkIfShouldLoadMore();
+        }
+    }
+
+    /**
      * Initialize Carousel method.
      */
     initCarousel() {
@@ -922,22 +951,6 @@ export default class Carousel extends LightningElement {
         }
         this.columnsCount[size] = undefined;
         return undefined;
-    }
-
-    /**
-     * Panel selection event method.
-     *
-     * @param {Event}
-     */
-    onPanelSelect(event) {
-        const currentTarget = event.currentTarget;
-        const itemIndex = parseInt(currentTarget.dataset.index, 10);
-        this.pause();
-
-        if (this.activeIndexPanel !== itemIndex) {
-            this.unselectCurrentPanel();
-            this.selectNewPanel(itemIndex);
-        }
     }
 
     /**

@@ -112,7 +112,7 @@
                                 key={paginationItem.key}
                                 class="slds-carousel__indicator"
                                 role="presentation"
-                                onclick={onPanelSelect}
+                                onclick={handlePaginationItemClick}
                                 data-element-id="li-pagination"
                                 data-index={paginationIndex}
                             >
@@ -133,6 +133,7 @@
                             </li>
                         </template>
                     </ul>
+
                     <!-- Autoplay button -->
                     <template if:false={disableAutoScroll}>
                         <lightning-button-icon
