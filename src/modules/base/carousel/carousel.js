@@ -786,8 +786,9 @@ export default class Carousel extends LightningElement {
         }
         this.pause();
         const itemIndex = parseInt(event.currentTarget.dataset.index, 10);
+        const goToNext = itemIndex > this._activePaginationItemIndex;
         let panelIndex;
-        if (itemIndex > this._activePaginationItemIndex) {
+        if (goToNext) {
             panelIndex =
                 this.activeIndexPanel +
                 (itemIndex - this._activePaginationItemIndex);
@@ -800,7 +801,10 @@ export default class Carousel extends LightningElement {
         if (this.activeIndexPanel !== panelIndex) {
             this.unselectCurrentPanel();
             this.selectNewPanel(panelIndex);
-            this.checkIfShouldLoadMore();
+
+            if (goToNext) {
+                this.checkIfShouldLoadMore();
+            }
         }
     }
 
@@ -908,6 +912,9 @@ export default class Carousel extends LightningElement {
      * @param {Event}
      */
     keyDownHandler(event) {
+        if (this.isLoading) {
+            return;
+        }
         const key = event.keyCode;
         let indicatorActionsElements = this.indicatorActionsElements;
 
