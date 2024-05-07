@@ -68,7 +68,7 @@
         ></c-primitive-avatar>
     </div>
 
-    <template if:false={isClassic}>
+    <div if:false={isClassic} data-element-id="avatar-group-wrapper">
         <span id="list-description" class="slds-assistive-text">
             Move between the items by using arrow keys.
         </span>
@@ -299,5 +299,5 @@
                 </button>
             </li>
         </ul>
-    </template>
+    </div>
 </template>
