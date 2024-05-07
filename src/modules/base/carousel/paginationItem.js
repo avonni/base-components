@@ -3,14 +3,12 @@ import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class CarouselPaginationItem {
     constructor(props) {
-        this.activeIndexPanel = parseInt(props.activeIndexPanel, 10) || 0;
-        this.enableInfiniteLoading = normalizeBoolean(
-            props.enableInfiniteLoading
-        );
+        this.activePanelIndex = parseInt(props.activePanelIndex, 10) || 0;
         this.key = generateUUID();
         this.index = props.index;
         this.isActive = normalizeBoolean(props.isActive);
-        this.lastPanelIndex = parseInt(props.lastPanelIndex, 10) || 0;
+        this.maxItems = parseInt(props.maxItems, 10);
+        this.nbOfPanels = parseInt(props.nbOfPanels, 10) || 0;
         this.tabIndex = this.isActive ? '0' : '-1';
         this.variant = props.variant;
     }
@@ -23,15 +21,14 @@ export default class CarouselPaginationItem {
         return classSet('slds-carousel__indicator-action')
             .add({
                 'slds-is-relative avonni-carousel__progress-indicator_infinite-loading':
-                    this.enableInfiniteLoading,
+                    this.maxItems,
                 'avonni-carousel__progress-indicator__hidden':
-                    this.enableInfiniteLoading &&
-                    (this.index === 0 || this.index === 5),
+                    this.maxItems && (this.isFirst || this.isLast),
                 'avonni-carousel__progress-indicator__small':
-                    this.enableInfiniteLoading &&
-                    ((this.activeIndexPanel >= 3 && this.index === 1) ||
-                        (this.index === 4 &&
-                            this.activeIndexPanel < this.lastPanelIndex - 2)),
+                    this.maxItems &&
+                    ((this.activePanelIndex > 0 && this.index === 1) ||
+                        (this.index === this.maxItems &&
+                            this.activePanelIndex < this.nbOfPanels - 1)),
                 'avonni-carousel__progress-indicator_inactive':
                     this.variant === 'base',
                 'avonni-carousel__progress-indicator_shaded-inactive':
@@ -49,8 +46,16 @@ export default class CarouselPaginationItem {
         return `pagination-item-${this.index}`;
     }
 
+    get isFirst() {
+        return this.index === 0;
+    }
+
+    get isLast() {
+        return this.index === this.maxItems + 1;
+    }
+
     get previousAnimationClass() {
-        const isMovingToBeginning = this.activeIndexPanel < 3;
+        const isMovingToBeginning = this.activePanelIndex < 3;
         switch (this.index) {
             case 0:
                 return isMovingToBeginning

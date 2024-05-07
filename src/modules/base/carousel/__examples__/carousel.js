@@ -3,43 +3,45 @@ import Component from 'avonni/carousel';
 customElements.define('ac-base-carousel', Component.CustomElementConstructor);
 
 export const Carousel = ({
-    assistiveText,
-    items,
-    disableAutoRefresh,
-    disableAutoScroll,
-    scrollDuration,
-    indicatorVariant,
-    isInfinite,
-    currentPanel,
-    hideIndicator,
-    hidePreviousNextPanelNavigation,
-    isLoading,
-    itemsPerPanel,
-    smallItemsPerPanel,
-    mediumItemsPerPanel,
-    largeItemsPerPanel,
     actionsPosition,
     actionsVariant,
-    imagePosition
+    assistiveText,
+    currentPanel,
+    disableAutoRefresh,
+    disableAutoScroll,
+    hideIndicator,
+    hidePreviousNextPanelNavigation,
+    imagePosition,
+    indicatorVariant,
+    isInfinite,
+    isLoading,
+    items,
+    itemsPerPanel,
+    largeItemsPerPanel,
+    maxIndicatorItems,
+    mediumItemsPerPanel,
+    scrollDuration,
+    smallItemsPerPanel
 }) => {
     const element = document.createElement('ac-base-carousel');
-    element.assistiveText = assistiveText;
-    element.items = items;
-    element.disableAutoRefresh = disableAutoRefresh;
-    element.disableAutoScroll = disableAutoScroll;
-    element.scrollDuration = scrollDuration;
-    element.indicatorVariant = indicatorVariant;
-    element.isInfinite = isInfinite;
-    element.currentPanel = currentPanel;
-    element.hideIndicator = hideIndicator;
-    element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
-    element.isLoading = isLoading;
-    element.itemsPerPanel = itemsPerPanel;
-    element.smallItemsPerPanel = smallItemsPerPanel;
-    element.mediumItemsPerPanel = mediumItemsPerPanel;
-    element.largeItemsPerPanel = largeItemsPerPanel;
     element.actionsPosition = actionsPosition;
     element.actionsVariant = actionsVariant;
+    element.assistiveText = assistiveText;
+    element.currentPanel = currentPanel;
+    element.disableAutoRefresh = disableAutoRefresh;
+    element.disableAutoScroll = disableAutoScroll;
+    element.hideIndicator = hideIndicator;
+    element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
     element.imagePosition = imagePosition;
+    element.indicatorVariant = indicatorVariant;
+    element.isInfinite = isInfinite;
+    element.isLoading = isLoading;
+    element.items = items;
+    element.itemsPerPanel = itemsPerPanel;
+    element.largeItemsPerPanel = largeItemsPerPanel;
+    element.maxIndicatorItems = maxIndicatorItems;
+    element.mediumItemsPerPanel = mediumItemsPerPanel;
+    element.scrollDuration = scrollDuration;
+    element.smallItemsPerPanel = smallItemsPerPanel;
     return element;
 };

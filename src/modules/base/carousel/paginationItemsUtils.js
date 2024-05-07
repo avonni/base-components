@@ -1,29 +1,23 @@
-function _getMovedActiveItemIndex({ goToPrevious, nbOfPanels, panelIndex }) {
-    const isMovingToBeginning = panelIndex === 2;
-    const isEnd = panelIndex >= nbOfPanels - 3;
-    return (goToPrevious && !isMovingToBeginning) || (!goToPrevious && isEnd)
-        ? 2
-        : 3;
-}
-
 function _getItemElements(carousel) {
     return carousel.template.querySelectorAll(
         '[data-element-id="a-pagination"]'
     );
 }
 
-function _animate({ carousel, goToPrevious, items, nbOfPanels, panelIndex }) {
+function _animate({
+    carousel,
+    goToPrevious,
+    items,
+    maxItems,
+    nbOfPanels,
+    panelIndex
+}) {
     let elements = _getItemElements(carousel);
+    const activeIndex = goToPrevious ? 1 : maxItems;
     elements.forEach((element, index) => {
         const item = items[index];
         if (item) {
-            item.isActive =
-                index ===
-                _getMovingActiveItemIndex({
-                    goToPrevious,
-                    nbOfPanels,
-                    panelIndex
-                });
+            item.isActive = index === activeIndex;
             element.className = item.className;
             const classKey = goToPrevious
                 ? 'previousAnimationClass'
@@ -35,20 +29,26 @@ function _animate({ carousel, goToPrevious, items, nbOfPanels, panelIndex }) {
     });
 
     setTimeout(() => {
-        if (!carousel.enableInfiniteLoading) {
+        if (!carousel.maxIndicatorItems) {
             // The property value may change before the timeout is executed
             return;
         }
         _disableItems(items);
-        const newIndex = _getMovedActiveItemIndex({
-            goToPrevious,
-            nbOfPanels,
-            panelIndex
-        });
+        let newIndex;
+        if (goToPrevious && panelIndex === 0) {
+            newIndex = 1;
+        } else if (goToPrevious) {
+            newIndex = 2;
+        } else if (panelIndex === nbOfPanels - 1) {
+            newIndex = maxItems;
+        } else {
+            newIndex = maxItems - 1;
+        }
         elements = _getItemElements(carousel);
         elements.forEach((element, index) => {
-            items[index].isActive = index === newIndex;
-            element.classList = items[index].className;
+            const item = items[index];
+            item.isActive = index === newIndex;
+            element.classList = item.className;
         });
     }, 500);
 }
@@ -60,23 +60,6 @@ function _disableItems(items) {
 }
 
 /**
- * Return the index of the pagination item that should be displayed as active, when the pagination animation is running.
- *
- * @param {boolean} True if the user is moving to the previous item.
- * @returns {number} Index of the active pagination item.
- */
-function _getMovingActiveItemIndex({ goToPrevious, nbOfPanels, panelIndex }) {
-    if (goToPrevious && panelIndex < 3) {
-        return 2;
-    } else if (goToPrevious) {
-        return 1;
-    } else if (!goToPrevious && panelIndex >= nbOfPanels - 3) {
-        return 3;
-    }
-    return 4;
-}
-
-/**
  * If the active pagination item is already visible and big, return its index. Otherwise, if the active pagination item needs to be moved into the visible area and grown, return undefined.
  *
  * @param {boolean} goToPrevious True if the user is moving to the previous item.
@@ -85,19 +68,20 @@ function _getMovingActiveItemIndex({ goToPrevious, nbOfPanels, panelIndex }) {
 function _getVisibleActiveItemIndex({
     activeItemIndex,
     goToPrevious,
+    maxItems,
     nbOfPanels,
     panelIndex
 }) {
-    const isBeginning = panelIndex < 3;
-    const isEnd = panelIndex >= nbOfPanels - 3;
-    const isMovingToLeftItem = goToPrevious && activeItemIndex === 3;
+    const hasRightItem =
+        activeItemIndex < maxItems - 1 && panelIndex < nbOfPanels - 1;
+    const hasLeftItem = activeItemIndex > 1;
+    const goToLeftItem = goToPrevious && hasLeftItem;
+    const goToRightItem = !goToPrevious && hasRightItem;
 
-    if (isMovingToLeftItem) {
-        return 2;
-    } else if (isBeginning) {
-        return panelIndex + 1;
-    } else if (isEnd) {
-        return 5 - (nbOfPanels - panelIndex);
+    if (goToLeftItem) {
+        return activeItemIndex - 1;
+    } else if (goToRightItem) {
+        return activeItemIndex + 1;
     }
     return undefined;
 }
@@ -106,16 +90,16 @@ function updateActivePaginationItem({
     activeItemIndex,
     carousel,
     goToPrevious,
-    infiniteLoading,
+    maxItems,
     items,
     nbOfPanels,
     panelIndex
 }) {
-    const index = infiniteLoading
+    const index = maxItems
         ? _getVisibleActiveItemIndex({
               activeItemIndex,
               goToPrevious,
-              items,
+              maxItems,
               nbOfPanels,
               panelIndex
           })
@@ -123,12 +107,13 @@ function updateActivePaginationItem({
 
     _disableItems(items);
     items.forEach((item) => {
-        item.activeIndexPanel = panelIndex;
+        item.activePanelIndex = panelIndex;
     });
     const elements = _getItemElements(carousel);
     elements.forEach((element, i) => {
-        if (items[i]) {
-            element.className = items[i].className;
+        const item = items[i];
+        if (item) {
+            element.className = item.className;
         }
     });
 
@@ -138,25 +123,19 @@ function updateActivePaginationItem({
             activeItem.isActive = true;
             elements[index].className = activeItem.className;
         }
-
-        const isMovingToBeginning = panelIndex === 2;
-        const isMovingToEnd = panelIndex === nbOfPanels - 3;
-        const noAnimation =
-            (goToPrevious && !isMovingToBeginning) ||
-            (!goToPrevious && !isMovingToEnd);
-        if (!infiniteLoading || noAnimation) {
-            return index;
-        }
+        return index;
     }
 
     _animate({
+        activeItemIndex,
         carousel,
         goToPrevious,
         items,
+        maxItems,
         nbOfPanels,
         panelIndex
     });
-    return _getMovedActiveItemIndex({ goToPrevious, nbOfPanels, panelIndex });
+    return goToPrevious ? 2 : maxItems - 2;
 }
 
 export { updateActivePaginationItem };

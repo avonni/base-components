@@ -80,6 +80,17 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        maxIndicatorItems: {
+            name: 'max-indicator-items',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Maximum number of panels displayed in the indicator. If empty, one dot will be displayed for each panel.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         smallItemsPerPanel: {
             name: 'small-items-per-panel',
             control: {
