@@ -144,15 +144,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
-     * Returns true if column type is rich-text.
-     *
-     * @type {boolean}
-     */
-    get isTypeRichText() {
-        return this.columnDef.type === 'rich-text';
-    }
-
-    /**
      * Returns true if column type is date-range.
      *
      * @type {boolean}
@@ -195,6 +186,15 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      */
     get isTypePercentFormatted() {
         return this.columnDef.type === 'percent-formatted';
+    }
+
+    /**
+     * Returns true if column type is rich-text.
+     *
+     * @type {boolean}
+     */
+    get isTypeRichText() {
+        return this.columnDef.type === 'rich-text';
     }
 
     /**
@@ -291,10 +291,8 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     dateRangeFormattedValue(value) {
-        return {
-            startDate: value.startDate,
-            endDate: value.endDate
-        };
+        const { startDate, endDate } = value;
+        return { startDate, endDate };
     }
 
     dispatchCellChangeEvent(state) {

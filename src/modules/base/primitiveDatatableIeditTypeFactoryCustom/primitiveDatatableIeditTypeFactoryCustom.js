@@ -22,15 +22,14 @@ const INVALID_TYPE_FOR_EDIT =
     'column custom type not supported for inline edit';
 
 export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningElement {
-    @api editedValue;
-    @api isMassEditEnabled;
-    @api required;
-
     // shared attributes
     @api disabled;
+    @api editedValue;
+    @api isMassEditEnabled;
     @api label;
     @api name;
     @api placeholder;
+    @api required;
     @api type;
 
     // color picker attributes
@@ -85,6 +84,9 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     renderedCallback() {
         if (!this.concreteComponent) return;
         this.concreteComponent.addEventListener('change', this._changeHandler);
+        this.concreteComponent.addEventListener('blur', this._blurHandler);
+        this.concreteComponent.addEventListener('focus', this._focusHandler);
+        this.focus();
     }
 
     /*
@@ -272,13 +274,5 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     handleComponentFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    handleLoad() {
-        this.concreteComponent.addEventListener('focusout', this._blurHandler);
-        this.concreteComponent.addEventListener('focusin', this._focusHandler);
-        requestAnimationFrame(() => {
-            this.focus();
-        });
     }
 }
