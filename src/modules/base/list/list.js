@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import {
+    equal,
     normalizeArray,
     normalizeBoolean,
     normalizeString,
@@ -273,7 +274,11 @@ export default class List extends LightningElement {
         return this._actions;
     }
     set actions(proxy) {
-        this._actions = normalizeArray(proxy);
+        const actions = normalizeArray(proxy);
+        if (equal(this._actions, actions)) {
+            return;
+        }
+        this._actions = actions;
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
 
         if (this._connected) {
