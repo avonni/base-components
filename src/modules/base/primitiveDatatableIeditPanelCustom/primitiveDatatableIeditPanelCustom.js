@@ -281,13 +281,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     comboboxFormattedValue(value) {
-        if (value.length === 0) {
-            return null;
-        }
-        if (value.length === 1) {
-            return value[0];
-        }
-        return value;
+        return value.length <= 1 ? value[0] || null : value;
     }
 
     dateRangeFormattedValue(value) {
