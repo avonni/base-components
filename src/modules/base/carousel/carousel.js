@@ -33,6 +33,7 @@ const MEDIA_QUERY_BREAKPOINTS = {
     medium: 768,
     large: 1024
 };
+const MINIMUM_INDICATOR_ITEMS = 3;
 
 const IMAGE_POSITIONS = {
     valid: ['top', 'left', 'right', 'bottom'],
@@ -132,6 +133,7 @@ export default class Carousel extends LightningElement {
     currentItemsPerPanel;
     panelItems = [];
     paginationItems = [];
+    paginationItemsTimeout;
     panelStyle;
     resizeObserver;
 
@@ -153,7 +155,6 @@ export default class Carousel extends LightningElement {
 
     connectedCallback() {
         this._connected = true;
-        this._activePaginationItemIndex = this.maxIndicatorItems ? 1 : 0;
     }
 
     disconnectedCallback() {
@@ -286,6 +287,7 @@ export default class Carousel extends LightningElement {
     }
     set hideIndicator(value) {
         this._hideIndicator = normalizeBoolean(value);
+        clearTimeout(this.paginationItemsTimeout);
     }
 
     /**
@@ -304,6 +306,10 @@ export default class Carousel extends LightningElement {
             fallbackValue: INDICATOR_VARIANTS.default,
             validValues: INDICATOR_VARIANTS.valid
         });
+
+        if (this._connected) {
+            this.initPaginationItems();
+        }
     }
 
     /**
@@ -432,7 +438,13 @@ export default class Carousel extends LightningElement {
     }
     set maxIndicatorItems(value) {
         const number = parseInt(value, 10);
-        this._maxIndicatorItems = number >= 1 ? number : undefined;
+        this._maxIndicatorItems =
+            number >= MINIMUM_INDICATOR_ITEMS ? number : undefined;
+
+        if (this._connected) {
+            this.first();
+            this.initPaginationItems();
+        }
     }
 
     /**
@@ -823,6 +835,35 @@ export default class Carousel extends LightningElement {
         }
     }
 
+    initActivePaginationItemIndex() {
+        const maxItems = this.maxIndicatorItems;
+        const panelIndex = this.activePanelIndex;
+        const allPaginationItemsAreVisible =
+            !maxItems || maxItems >= this.nbOfPanels;
+
+        if (allPaginationItemsAreVisible) {
+            this._activePaginationItemIndex = panelIndex;
+            return;
+        }
+        if (!panelIndex) {
+            this._activePaginationItemIndex = 1;
+            return;
+        }
+
+        const isCloseToFirst = panelIndex < maxItems / 2;
+        const isCloseToLast = panelIndex > this.nbOfPanels - 1 - maxItems / 2;
+
+        if (isCloseToFirst) {
+            const second = panelIndex + 1;
+            this._activePaginationItemIndex = second;
+        } else if (isCloseToLast) {
+            const penultimate = maxItems - (this.nbOfPanels - 1 - panelIndex);
+            this._activePaginationItemIndex = penultimate;
+        } else {
+            this._activePaginationItemIndex = Math.floor(maxItems / 2);
+        }
+    }
+
     /**
      * Initialize Carousel method.
      */
@@ -844,12 +885,14 @@ export default class Carousel extends LightningElement {
                 ? Math.floor(itemIndex / this.currentItemsPerPanel)
                 : 0;
         this.activePanelIndex = panelIndex;
+        this.initActivePaginationItemIndex();
     }
 
     /**
      * Initialize Pagination items method.
      */
     initPaginationItems() {
+        clearTimeout(this.paginationItemsTimeout);
         this.paginationItems = [];
 
         const nbOfItems =

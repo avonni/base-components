@@ -73,6 +73,14 @@
     animation-timing-function: linear;
 }
 
+.avonni-carousel__progress-indicator_to-big {
+    animation-name: tobig;
+}
+
+.avonni-carousel__progress-indicator_to-small {
+    animation-name: tosmall;
+}
+
 .avonni-carousel__progress-indicator_to-big-right {
     animation-name: toright, tobig;
 }

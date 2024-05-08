@@ -18,6 +18,9 @@ export default class CarouselPaginationItem {
     }
 
     get className() {
+        const lastPanelIsActive = this.activePanelIndex === this.nbOfPanels - 1;
+        const firstPanelIsActive = this.activePanelIndex === 0;
+
         return classSet('slds-carousel__indicator-action')
             .add({
                 'slds-is-relative avonni-carousel__progress-indicator_infinite-loading':
@@ -26,9 +29,8 @@ export default class CarouselPaginationItem {
                     this.maxItems && (this.isFirst || this.isLast),
                 'avonni-carousel__progress-indicator__small':
                     this.maxItems &&
-                    ((this.activePanelIndex > 0 && this.index === 1) ||
-                        (this.index === this.maxItems &&
-                            this.activePanelIndex < this.nbOfPanels - 1)),
+                    ((!firstPanelIsActive && this.index === 1) ||
+                        (this.isPenultimate && !lastPanelIsActive)),
                 'avonni-carousel__progress-indicator_inactive':
                     this.variant === 'base',
                 'avonni-carousel__progress-indicator_shaded-inactive':
@@ -54,41 +56,58 @@ export default class CarouselPaginationItem {
         return this.index === this.maxItems + 1;
     }
 
+    get isPenultimate() {
+        return this.index === this.maxItems;
+    }
+
     get previousAnimationClass() {
-        const isMovingToBeginning = this.activePanelIndex < 3;
-        switch (this.index) {
-            case 0:
-                return isMovingToBeginning
-                    ? 'avonni-carousel__progress-indicator_to-visible-big-right'
-                    : 'avonni-carousel__progress-indicator_to-visible-right';
-            case 1:
-                return 'avonni-carousel__progress-indicator_to-big-right';
-            case 2:
-                return 'avonni-carousel__progress-indicator_to-right';
-            case 3:
-                return 'avonni-carousel__progress-indicator_to-small-right';
-            case 4:
-                return 'avonni-carousel__progress-indicator_to-hidden-right';
-            default:
-                return '';
+        const movingToBeginning = this.activePanelIndex === 0;
+        const movingFromEnd = this.activePanelIndex === this.nbOfPanels - 2;
+        const isInTheMiddle = this.index > 1 && this.index < this.maxItems - 1;
+
+        if (this.index === 1 && movingToBeginning) {
+            return 'avonni-carousel__progress-indicator_to-big';
+        } else if (this.isPenultimate && movingFromEnd) {
+            return 'avonni-carousel__progress-indicator_to-small';
+        } else if (movingToBeginning || movingFromEnd) {
+            return '';
+        } else if (this.isFirst) {
+            return 'avonni-carousel__progress-indicator_to-visible-right';
+        } else if (this.index === 1) {
+            return 'avonni-carousel__progress-indicator_to-big-right';
+        } else if (isInTheMiddle) {
+            return 'avonni-carousel__progress-indicator_to-right';
+        } else if (this.index === this.maxItems - 1) {
+            return 'avonni-carousel__progress-indicator_to-small-right';
+        } else if (this.isPenultimate) {
+            return 'avonni-carousel__progress-indicator_to-hidden-right';
         }
+        return '';
     }
 
     get nextAnimationClass() {
-        switch (this.index) {
-            case 1:
-                return 'avonni-carousel__progress-indicator_to-hidden-left';
-            case 2:
-                return 'avonni-carousel__progress-indicator_to-small-left';
-            case 3:
-                return 'avonni-carousel__progress-indicator_to-left';
-            case 4:
-                return 'avonni-carousel__progress-indicator_to-big-left';
-            case 5:
-                return 'avonni-carousel__progress-indicator_to-visible-left';
-            default:
-                return '';
+        const movingFromBeginning = this.activePanelIndex === 1;
+        const movingToEnd = this.activePanelIndex === this.nbOfPanels - 1;
+        const isInTheMiddle = this.index > 2 && this.index < this.maxItems;
+
+        if (this.isPenultimate && movingToEnd) {
+            return 'avonni-carousel__progress-indicator_to-big';
+        } else if (this.index === 1 && movingFromBeginning) {
+            return 'avonni-carousel__progress-indicator_to-small';
+        } else if (movingToEnd || movingFromBeginning) {
+            return '';
+        } else if (this.index === 1) {
+            return 'avonni-carousel__progress-indicator_to-hidden-left';
+        } else if (this.index === 2) {
+            return 'avonni-carousel__progress-indicator_to-small-left';
+        } else if (isInTheMiddle) {
+            return 'avonni-carousel__progress-indicator_to-left';
+        } else if (this.isPenultimate) {
+            return 'avonni-carousel__progress-indicator_to-big-left';
+        } else if (this.isLast) {
+            return 'avonni-carousel__progress-indicator_to-visible-left';
         }
+        return '';
     }
 
     get tabTitle() {

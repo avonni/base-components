@@ -4,6 +4,44 @@ function _getItemElements(carousel) {
     );
 }
 
+function _getMovedActiveItemIndex({
+    goToPrevious,
+    maxItems,
+    nbOfPanels,
+    panelIndex
+}) {
+    const wentToFirstDot = goToPrevious && panelIndex === 0;
+    const leftFirstDot = !goToPrevious && panelIndex === 1;
+    const wentToLastDot = !goToPrevious && panelIndex === nbOfPanels - 1;
+    const leftLastDot = goToPrevious && panelIndex === nbOfPanels - 2;
+
+    if (wentToFirstDot) {
+        return 1;
+    } else if (leftFirstDot || (goToPrevious && !leftLastDot)) {
+        return 2;
+    } else if (wentToLastDot) {
+        return maxItems;
+    }
+    return maxItems - 1;
+}
+
+function _getMovingActiveItemIndex({
+    goToPrevious,
+    maxItems,
+    nbOfPanels,
+    panelIndex
+}) {
+    const isLeavingFirstDot = !goToPrevious && panelIndex === 1;
+    const isLeavingLastDot = goToPrevious && panelIndex === nbOfPanels - 2;
+
+    if (isLeavingFirstDot) {
+        return 2;
+    } else if (isLeavingLastDot) {
+        return maxItems - 1;
+    }
+    return goToPrevious ? 1 : maxItems;
+}
+
 function _animate({
     carousel,
     goToPrevious,
@@ -13,7 +51,12 @@ function _animate({
     panelIndex
 }) {
     let elements = _getItemElements(carousel);
-    const activeIndex = goToPrevious ? 1 : maxItems;
+    const activeIndex = _getMovingActiveItemIndex({
+        goToPrevious,
+        maxItems,
+        nbOfPanels,
+        panelIndex
+    });
     elements.forEach((element, index) => {
         const item = items[index];
         if (item) {
@@ -28,22 +71,14 @@ function _animate({
         }
     });
 
-    setTimeout(() => {
-        if (!carousel.maxIndicatorItems) {
-            // The property value may change before the timeout is executed
-            return;
-        }
+    carousel.paginationItemsTimeout = setTimeout(() => {
         _disableItems(items);
-        let newIndex;
-        if (goToPrevious && panelIndex === 0) {
-            newIndex = 1;
-        } else if (goToPrevious) {
-            newIndex = 2;
-        } else if (panelIndex === nbOfPanels - 1) {
-            newIndex = maxItems;
-        } else {
-            newIndex = maxItems - 1;
-        }
+        const newIndex = _getMovedActiveItemIndex({
+            goToPrevious,
+            maxItems,
+            nbOfPanels,
+            panelIndex
+        });
         elements = _getItemElements(carousel);
         elements.forEach((element, index) => {
             const item = items[index];
@@ -72,11 +107,21 @@ function _getVisibleActiveItemIndex({
     nbOfPanels,
     panelIndex
 }) {
+    const isLeavingFirstDot = panelIndex === 1;
+    const isLeavingLastDot = panelIndex === nbOfPanels - 2;
+    const isGoingToFirstDot = panelIndex === 0;
+    const isGoingToLastDot = panelIndex === nbOfPanels - 1;
+
     const hasRightItem =
         activeItemIndex < maxItems - 1 && panelIndex < nbOfPanels - 1;
-    const hasLeftItem = activeItemIndex > 1;
-    const goToLeftItem = goToPrevious && hasLeftItem;
-    const goToRightItem = !goToPrevious && hasRightItem;
+    const hasLeftItem = activeItemIndex > 2;
+    const goToLeftItem =
+        goToPrevious && hasLeftItem && !isGoingToFirstDot && !isLeavingLastDot;
+    const goToRightItem =
+        !goToPrevious &&
+        hasRightItem &&
+        !isGoingToLastDot &&
+        !isLeavingFirstDot;
 
     if (goToLeftItem) {
         return activeItemIndex - 1;
@@ -95,15 +140,23 @@ function updateActivePaginationItem({
     nbOfPanels,
     panelIndex
 }) {
-    const index = maxItems
-        ? _getVisibleActiveItemIndex({
-              activeItemIndex,
-              goToPrevious,
-              maxItems,
-              nbOfPanels,
-              panelIndex
-          })
-        : panelIndex;
+    clearTimeout(carousel.paginationItemsTimeout);
+    const hasHiddenItems = maxItems < nbOfPanels;
+
+    let index;
+    if (hasHiddenItems) {
+        index = _getVisibleActiveItemIndex({
+            activeItemIndex,
+            goToPrevious,
+            maxItems,
+            nbOfPanels,
+            panelIndex
+        });
+    } else if (goToPrevious) {
+        index = activeItemIndex - 1;
+    } else {
+        index = activeItemIndex + 1;
+    }
 
     _disableItems(items);
     items.forEach((item) => {
@@ -135,7 +188,12 @@ function updateActivePaginationItem({
         nbOfPanels,
         panelIndex
     });
-    return goToPrevious ? 2 : maxItems - 2;
+    return _getMovedActiveItemIndex({
+        goToPrevious,
+        maxItems,
+        nbOfPanels,
+        panelIndex
+    });
 }
 
 export { updateActivePaginationItem };
