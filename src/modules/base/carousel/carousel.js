@@ -120,6 +120,7 @@ export default class Carousel extends LightningElement {
     _smallItemsPerPanel;
 
     _activePaginationItemIndex;
+    _elementToFocus;
     _rendered = false;
 
     activePanelIndex = 0;
@@ -149,6 +150,16 @@ export default class Carousel extends LightningElement {
             this.initWrapObserver();
         }
 
+        if (this._elementToFocus) {
+            const element = this.template.querySelector(
+                `[data-element-id="${this._elementToFocus}"]`
+            );
+            if (element) {
+                element.focus();
+            }
+            this._elementToFocus = undefined;
+        }
+
         this.computeItemsPerPanel();
         this._rendered = true;
     }
@@ -159,6 +170,7 @@ export default class Carousel extends LightningElement {
 
     disconnectedCallback() {
         this._connected = false;
+        clearTimeout(this.paginationItemsTimeout);
         if (this.resizeObserver) {
             this.resizeObserver.disconnect();
             this.resizeObserver = undefined;
@@ -269,6 +281,7 @@ export default class Carousel extends LightningElement {
 
         if (this._connected) {
             this.first();
+            this.initActivePaginationItemIndex();
             this.initPaginationItems();
             this.checkIfShouldLoadMore();
         }
@@ -355,6 +368,11 @@ export default class Carousel extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+
+        if (this.template.activeElement) {
+            this._elementToFocus =
+                this.template.activeElement.dataset.elementId;
+        }
     }
 
     /**
@@ -439,6 +457,7 @@ export default class Carousel extends LightningElement {
 
         if (this._connected) {
             this.first();
+            this.initActivePaginationItemIndex();
             this.initPaginationItems();
         }
     }
@@ -591,7 +610,9 @@ export default class Carousel extends LightningElement {
      * @type {number}
      */
     get previousPanelNavigationDisabled() {
-        return !this.isInfinite ? this.activePanelIndex === 0 : null;
+        return !this.isInfinite || this.enableInfiniteLoading
+            ? this.activePanelIndex === 0
+            : null;
     }
 
     /*
@@ -1001,14 +1022,16 @@ export default class Carousel extends LightningElement {
         // we cache them the first time
         if (!indicatorActionsElements) {
             indicatorActionsElements = this.template.querySelectorAll(
-                '.slds-carousel__indicator-action'
+                '[data-element-id="a-pagination"]'
             );
             this.indicatorActionsElements = indicatorActionsElements;
         }
 
         // we want to make sure that while we are using the keyboard
         // navigation we are focusing on the right indicator
-        indicatorActionsElements[this.activePanelIndex].focus();
+        if (indicatorActionsElements[this.activePanelIndex]) {
+            indicatorActionsElements[this.activePanelIndex].focus();
+        }
     }
 
     /**

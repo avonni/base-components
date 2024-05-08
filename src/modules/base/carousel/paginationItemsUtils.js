@@ -166,7 +166,9 @@ function updateActivePaginationItem({
         const activeItem = items[index];
         if (activeItem) {
             activeItem.isActive = true;
-            elements[index].className = activeItem.className;
+            if (elements[index]) {
+                elements[index].className = activeItem.className;
+            }
         }
         return index;
     }
