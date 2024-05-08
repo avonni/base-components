@@ -15,7 +15,7 @@ export default class AvonniInfiniteLoadingCarousel extends LightningElement {
     }
 
     loadMoreItems() {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 25; i++) {
             this.items.push({
                 src: IMAGES[i % 3],
                 name: `item-${this.items.length}`,
@@ -26,6 +26,9 @@ export default class AvonniInfiniteLoadingCarousel extends LightningElement {
     }
 
     handleLoadMore() {
+        if (this.items.length > 50) {
+            return;
+        }
         this.isLoading = true;
 
         setTimeout(() => {
