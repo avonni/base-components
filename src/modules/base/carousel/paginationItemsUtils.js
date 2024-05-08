@@ -1,3 +1,37 @@
+/**
+ * If the active pagination item is already visible and big, return its index. Otherwise, if the active pagination item needs to be moved into the visible area and grown, return undefined.
+ *
+ * @param {boolean} goToPrevious True if the user is moving to the previous item.
+ * @returns {number} Index of the active pagination item, or undefined.
+ */
+function _activeItemIsVisible({
+    activeItemIndex,
+    goToPrevious,
+    maxItems,
+    nbOfPanels,
+    panelIndex
+}) {
+    if (!maxItems || maxItems >= nbOfPanels) {
+        return true;
+    }
+    const isLeavingFirstDot = panelIndex === 1;
+    const isLeavingLastDot = panelIndex === nbOfPanels - 2;
+    const isGoingToFirstDot = panelIndex === 0;
+    const isGoingToLastDot = panelIndex === nbOfPanels - 1;
+
+    const hasRightItem = activeItemIndex !== maxItems;
+    const hasLeftItem = activeItemIndex !== 1;
+    const goToLeftItem =
+        goToPrevious && hasLeftItem && !isGoingToFirstDot && !isLeavingLastDot;
+    const goToRightItem =
+        !goToPrevious &&
+        hasRightItem &&
+        !isGoingToLastDot &&
+        !isLeavingFirstDot;
+
+    return goToLeftItem || goToRightItem;
+}
+
 function _getItemElements(carousel) {
     return carousel.template.querySelectorAll(
         '[data-element-id="a-pagination"]'
@@ -94,69 +128,27 @@ function _disableItems(items) {
     });
 }
 
-/**
- * If the active pagination item is already visible and big, return its index. Otherwise, if the active pagination item needs to be moved into the visible area and grown, return undefined.
- *
- * @param {boolean} goToPrevious True if the user is moving to the previous item.
- * @returns {number} Index of the active pagination item, or undefined.
- */
-function _getVisibleActiveItemIndex({
-    activeItemIndex,
-    goToPrevious,
-    maxItems,
-    nbOfPanels,
-    panelIndex
-}) {
-    const isLeavingFirstDot = panelIndex === 1;
-    const isLeavingLastDot = panelIndex === nbOfPanels - 2;
-    const isGoingToFirstDot = panelIndex === 0;
-    const isGoingToLastDot = panelIndex === nbOfPanels - 1;
-
-    const hasRightItem =
-        activeItemIndex < maxItems - 1 && panelIndex < nbOfPanels - 1;
-    const hasLeftItem = activeItemIndex > 2;
-    const goToLeftItem =
-        goToPrevious && hasLeftItem && !isGoingToFirstDot && !isLeavingLastDot;
-    const goToRightItem =
-        !goToPrevious &&
-        hasRightItem &&
-        !isGoingToLastDot &&
-        !isLeavingFirstDot;
-
-    if (goToLeftItem) {
-        return activeItemIndex - 1;
-    } else if (goToRightItem) {
-        return activeItemIndex + 1;
-    }
-    return undefined;
-}
-
 function updateActivePaginationItem({
     activeItemIndex,
     carousel,
     goToPrevious,
+    jumpedPanels,
     maxItems,
     items,
     nbOfPanels,
     panelIndex
 }) {
     clearTimeout(carousel.paginationItemsTimeout);
-    const hasHiddenItems = maxItems < nbOfPanels;
-
-    let index;
-    if (hasHiddenItems) {
-        index = _getVisibleActiveItemIndex({
-            activeItemIndex,
-            goToPrevious,
-            maxItems,
-            nbOfPanels,
-            panelIndex
-        });
-    } else if (goToPrevious) {
-        index = activeItemIndex - 1;
-    } else {
-        index = activeItemIndex + 1;
-    }
+    const index = goToPrevious
+        ? activeItemIndex - jumpedPanels
+        : activeItemIndex + jumpedPanels;
+    const activeItemIsVisible = _activeItemIsVisible({
+        activeItemIndex: index,
+        goToPrevious,
+        maxItems,
+        nbOfPanels,
+        panelIndex
+    });
 
     _disableItems(items);
     items.forEach((item) => {
@@ -170,7 +162,7 @@ function updateActivePaginationItem({
         }
     });
 
-    if (!isNaN(index)) {
+    if (activeItemIsVisible) {
         const activeItem = items[index];
         if (activeItem) {
             activeItem.isActive = true;
@@ -180,7 +172,6 @@ function updateActivePaginationItem({
     }
 
     _animate({
-        activeItemIndex,
         carousel,
         goToPrevious,
         items,

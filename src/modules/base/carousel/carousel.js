@@ -1041,11 +1041,13 @@ export default class Carousel extends LightningElement {
         activePanelItem.ariaHidden = FALSE_STRING;
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
         const goToPrevious = panelIndex < this.activePanelIndex;
+        const jumpedPanels = Math.abs(this.activePanelIndex - panelIndex);
         this.activePanelIndex = panelIndex;
         this._activePaginationItemIndex = updateActivePaginationItem({
             activeItemIndex: this._activePaginationItemIndex,
             carousel: this,
             goToPrevious,
+            jumpedPanels,
             maxItems: this.maxIndicatorItems,
             items: this.paginationItems,
             nbOfPanels: this.nbOfPanels,
