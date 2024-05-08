@@ -7,15 +7,14 @@ export default class PrimitiveCellTextarea extends LightningElement {
     @api minLength;
     @api placeholder;
     @api rowKeyValue;
+    @api wrapText;
 
-    _index;
     _value;
-    _wrapText;
     _wrapTextMaxLines;
 
-    visible = false;
+    dt;
     editable = false;
-    readOnly = true;
+    visible = false;
 
     connectedCallback() {
         this.template.addEventListener('ieditfinishedcustom', () => {
@@ -36,14 +35,6 @@ export default class PrimitiveCellTextarea extends LightningElement {
     }
     set value(value) {
         this._value = value;
-    }
-
-    @api
-    get wrapText() {
-        return this._wrapText;
-    }
-    set wrapText(value) {
-        this._wrapText = value;
     }
 
     /*
@@ -84,11 +75,10 @@ export default class PrimitiveCellTextarea extends LightningElement {
     }
 
     /**
-     * Toggles the visibility of the inline edit panel and the readOnly property of textarea.
+     * Toggles the visibility of the inline edit panel of textarea.
      */
     toggleInlineEdit() {
         this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
     }
 
     /*

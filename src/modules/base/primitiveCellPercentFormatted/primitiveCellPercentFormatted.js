@@ -1,16 +1,23 @@
 import { LightningElement, api } from 'lwc';
 import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
-import { normalizeObject } from 'c/utilsPrivate';
 
 export default class PrimitiveCellPercentFormatted extends LightningElement {
     @api colKeyValue;
+    @api maximumFractionDigits;
+    @api maximumSignificantDigits;
+    @api minimumFractionDigits;
+    @api minimumIntegerDigits;
+    @api minimumSignificantDigits;
     @api rowKeyValue;
+    @api step;
+    @api wrapText;
 
-    _typeAttributes = {};
     _value;
+    _wrapTextMaxLines;
 
-    visible = false;
+    dt;
     editable = false;
+    visible = false;
 
     /*
      * -------------------------------------------------------------
@@ -32,14 +39,6 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
      */
 
     @api
-    get typeAttributes() {
-        return this._typeAttributes;
-    }
-    set typeAttributes(value) {
-        this._typeAttributes = normalizeObject(value);
-    }
-
-    @api
     get value() {
         return this._value;
     }
@@ -52,6 +51,15 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    get computedWrapTextClass() {
+        if (this.wrapText) {
+            return this._wrapTextMaxLines
+                ? 'slds-hyphenate slds-line-clamp'
+                : 'slds-hyphenate';
+        }
+        return 'slds-truncate';
+    }
 
     get dividedValue() {
         return isNaN(this.value) ? undefined : this.value / 100;
@@ -71,6 +79,7 @@ export default class PrimitiveCellPercentFormatted extends LightningElement {
         const { state, columns } = dt;
         this.state = state;
         const index = state.headerIndexes[this.colKeyValue];
+        this._wrapTextMaxLines = state.wrapTextMaxLines;
         this.editable = isEditable(this.state, index, columns);
     }
 

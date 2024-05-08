@@ -8,15 +8,14 @@ export default class PrimitiveCellRichText extends LightningElement {
     @api placeholder;
     @api rowKeyValue;
     @api variant;
+    @api wrapText;
 
-    _index;
     _value;
-    _wrapText;
     _wrapTextMaxLines;
 
-    visible = false;
+    dt;
     editable = false;
-    readOnly = true;
+    visible = false;
 
     connectedCallback() {
         this.template.addEventListener('ieditfinishedcustom', () => {
@@ -37,14 +36,6 @@ export default class PrimitiveCellRichText extends LightningElement {
     }
     set value(value) {
         this._value = value;
-    }
-
-    @api
-    get wrapText() {
-        return this._wrapText;
-    }
-    set wrapText(value) {
-        this._wrapText = value;
     }
 
     /*
@@ -85,11 +76,10 @@ export default class PrimitiveCellRichText extends LightningElement {
     }
 
     /**
-     * Toggles the visibility of the inline edit panel and the readOnly property of rich text.
+     * Toggles the visibility of the inline edit panel of rich text.
      */
     toggleInlineEdit() {
         this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
     }
 
     /*

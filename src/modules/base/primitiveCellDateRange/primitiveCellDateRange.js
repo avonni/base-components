@@ -6,16 +6,16 @@ export default class PrimitiveCellDateRange extends LightningElement {
     @api dateStyle;
     @api disabled;
     @api label;
-    @api labelStartDate;
     @api labelEndDate;
+    @api labelStartDate;
     @api rowKeyValue;
     @api timeStyle;
     @api timezone;
     @api type;
 
-    _index;
     _value;
 
+    dt;
     editable = false;
     readOnly = true;
     visible = false;

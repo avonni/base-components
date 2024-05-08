@@ -14,16 +14,15 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api isMultiSelect;
     @api placeholder;
     @api rowKeyValue;
+    @api wrapText;
 
-    _index;
     _options = [];
     _value;
-    _wrapText;
     _wrapTextMaxLines;
 
+    dt;
     visible = false;
     editable = false;
-    readOnly = true;
 
     connectedCallback() {
         // Dispatches the inline edit event to the parent component.
@@ -57,14 +56,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
     set value(value) {
         this._value = value;
-    }
-
-    @api
-    get wrapText() {
-        return this._wrapText;
-    }
-    set wrapText(value) {
-        this._wrapText = value;
     }
 
     /*
@@ -143,11 +134,10 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     /**
-     * Toggles the visibility of the inline edit panel and the readOnly property of the combobox.
+     * Toggles the visibility of the inline edit panel of the combobox.
      */
     toggleInlineEdit() {
         this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
     }
 
     /*

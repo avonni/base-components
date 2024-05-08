@@ -11,9 +11,9 @@ export default class PrimitiveCellCounter extends LightningElement {
     @api rowKeyValue;
     @api step;
 
-    _index;
     _value;
 
+    dt;
     editable = false;
     readOnly = true;
     visible = false;
