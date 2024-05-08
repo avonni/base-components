@@ -96,6 +96,7 @@
                         class="
                             slds-carousel__indicators
                             slds-grid slds-grid_vertical-align-center
+                            slds-is-relative
                         "
                         role="tablist"
                         data-element-id="ul"
@@ -132,6 +133,12 @@
                                 </a>
                             </li>
                         </template>
+                        <lightning-spinner
+                            if:true={isLoading}
+                            alternative-text="Loading..."
+                            role="tab"
+                            size="x-small"
+                        ></lightning-spinner>
                     </ul>
 
                     <!-- Autoplay button -->

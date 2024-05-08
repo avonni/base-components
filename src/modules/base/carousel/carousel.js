@@ -355,10 +355,6 @@ export default class Carousel extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-
-        if (this.isLoading) {
-            this.pause();
-        }
     }
 
     /**
@@ -627,8 +623,9 @@ export default class Carousel extends LightningElement {
         const carouselPanelsLength = this.panelItems.length;
 
         if (
-            this.activePanelIndex === carouselPanelsLength - 1 &&
-            (this.disableAutoRefresh || !this.isInfinite)
+            this.isLoading ||
+            (this.activePanelIndex === carouselPanelsLength - 1 &&
+                (this.disableAutoRefresh || !this.isInfinite))
         ) {
             this.pause();
             return;
