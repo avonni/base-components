@@ -564,7 +564,8 @@
         var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     --sds-c-button-outline-brand-color-border-active: var(
-        --avonni-button-menu-button-outline-brand-color-border-active
+        --avonni-button-menu-button-outline-brand-color-border-active,
+        var(--sds-c-button-outline-brand-color-border-hover, #0176d3)
     );
     --slds-c-button-text-color-active: var(
         --avonni-button-menu-button-outline-brand-text-color-active
@@ -578,7 +579,8 @@
         var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     --slds-c-button-outline-brand-color-border-hover: var(
-        --avonni-button-menu-button-outline-brand-color-border-hover
+        --avonni-button-menu-button-outline-brand-color-border-hover,
+        var(--sds-c-button-outline-brand-color-border-hover, #0176d3)
     );
     --slds-c-button-text-color-hover: var(
         --avonni-button-menu-button-outline-brand-text-color-hover
@@ -782,10 +784,12 @@
 
 .slds-button.avonni-button-menu_destructive-text:active {
     --slds-c-button-color-background-active: var(
-        --avonni-button-menu-button-text-destructive-color-background-active
+        --avonni-button-menu-button-text-destructive-color-background-active,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     --sds-c-button-text-destructive-color-border-active: var(
-        --avonni-button-menu-button-text-destructive-color-border-active
+        --avonni-button-menu-button-text-destructive-color-border-active,
+        var(--slds-g-color-border-base-4, #c9c9c9)
     );
     --slds-c-button-text-destructive-text-color-active: var(
         --avonni-button-menu-button-text-destructive-text-color-active
@@ -795,10 +799,12 @@
 .avonni-button-menu_destructive-text:hover,
 .avonni-button-menu_destructive-text:focus {
     --slds-c-button-color-background-hover: var(
-        --avonni-button-menu-button-text-destructive-color-background-hover
+        --avonni-button-menu-button-text-destructive-color-background-hover,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     --slds-c-button-text-destructive-color-border-hover: var(
-        --avonni-button-menu-button-text-destructive-color-border-hover
+        --avonni-button-menu-button-text-destructive-color-border-hover,
+        var(--slds-g-color-border-base-4, #c9c9c9)
     );
     --sds-c-button-text-destructive-text-color-hover: var(
         --avonni-button-menu-button-text-destructive-text-color-hover
@@ -931,10 +937,12 @@
 
 .slds-button.avonni-button-menu_neutral:active {
     --slds-c-button-color-background-active: var(
-        --avonni-button-menu-button-neutral-color-background-active
+        --avonni-button-menu-button-neutral-color-background-active,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     --slds-c-button-color-border-active: var(
-        --avonni-button-menu-button-neutral-color-border-active
+        --avonni-button-menu-button-neutral-color-border-active,
+        var(--slds-g-color-border-base-4, #c9c9c9)
     );
     --slds-c-button-text-color-active: var(
         --avonni-button-menu-button-neutral-text-color-active
@@ -944,10 +952,12 @@
 .avonni-button-menu_neutral:hover,
 .avonni-button-menu_neutral:focus {
     --slds-c-button-color-background-hover: var(
-        --avonni-button-menu-button-neutral-color-background-hover
+        --avonni-button-menu-button-neutral-color-background-hover,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     --slds-c-button-neutral-color-border-hover: var(
-        --avonni-button-menu-button-neutral-color-border-hover
+        --avonni-button-menu-button-neutral-color-border-hover,
+        var(--slds-g-color-border-base-4, #c9c9c9)
     );
     --slds-c-button-text-color-hover: var(
         --avonni-button-menu-button-neutral-text-color-hover

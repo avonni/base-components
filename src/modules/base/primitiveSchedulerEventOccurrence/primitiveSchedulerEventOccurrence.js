@@ -731,6 +731,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get computedClass() {
         const theme = this.theme;
+        const isPast = this.to < Date.now();
         const centerLabel = normalizeObject(this.labels.center);
         let classes = classSet(
             'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col'
@@ -738,7 +739,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
                 'avonni-scheduler__event_horizontal': !this.isVertical,
-                'slds-text-color_inverse slds-current-color':
+                'avonni-scheduler__event_inverse-label slds-current-color':
+                    !isPast &&
                     !this.displayAsDot &&
                     (theme === 'default' ||
                         theme === 'rounded' ||
@@ -758,7 +760,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     !this.displayAsDot && this.occurrence.startsInPreviousCell,
                 'avonni-scheduler__event_standalone-multi-day-ends-in-later-cell':
                     !this.displayAsDot && this.occurrence.endsInLaterCell,
-                'avonni-scheduler__event_past': this.to < Date.now()
+                'avonni-scheduler__event_past': isPast
             })
             .toString();
 
