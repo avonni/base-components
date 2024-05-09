@@ -8,7 +8,10 @@ import {
 import { classSet } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import PaginationItem from './paginationItem';
-import { updateActivePaginationItem } from './paginationItemsUtils';
+import {
+    endAnimation,
+    updateActivePaginationItem
+} from './paginationItemsUtils';
 
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
@@ -820,6 +823,14 @@ export default class Carousel extends LightningElement {
                 }
             })
         );
+    }
+
+    handlePaginationItemAnimationEnd(event) {
+        endAnimation({
+            activeIndex: this._activePaginationItemIndex,
+            element: event.currentTarget,
+            items: this.paginationItems
+        });
     }
 
     /**

@@ -126,6 +126,8 @@
                                     aria-selected={paginationItem.ariaSelected}
                                     title={paginationItem.tabTitle}
                                     data-element-id="a-pagination"
+                                    data-index={paginationIndex}
+                                    onanimationend={handlePaginationItemAnimationEnd}
                                 >
                                     <span class="slds-assistive-text"
                                         >{paginationItem.tabTitle}</span

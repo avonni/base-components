@@ -34,7 +34,7 @@ export default class InfiniteLoadingCarousel extends LightningElement {
     }
 
     loadMoreItems() {
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 16; i++) {
             this.items.push({
                 src: IMAGES[i % 3],
                 name: `item-${this.items.length}`,
@@ -53,6 +53,6 @@ export default class InfiniteLoadingCarousel extends LightningElement {
         setTimeout(() => {
             this.loadMoreItems();
             this.isLoading = false;
-        }, 3000);
+        }, 500);
     }
 }

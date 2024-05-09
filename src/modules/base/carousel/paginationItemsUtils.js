@@ -76,7 +76,7 @@ function _getMovingActiveItemIndex({
     return goToPrevious ? 1 : maxItems;
 }
 
-function _animate({
+function _startAnimation({
     carousel,
     goToPrevious,
     items,
@@ -104,28 +104,13 @@ function _animate({
             }
         }
     });
-
-    carousel.paginationItemsTimeout = setTimeout(() => {
-        _disableItems(items);
-        const newIndex = _getMovedActiveItemIndex({
-            goToPrevious,
-            maxItems,
-            nbOfPanels,
-            panelIndex
-        });
-        elements = _getItemElements(carousel);
-        elements.forEach((element, index) => {
-            const item = items[index];
-            item.isActive = index === newIndex;
-            element.classList = item.className;
-        });
-    }, 500);
 }
 
-function _disableItems(items) {
-    items.forEach((item) => {
-        item.isActive = false;
-    });
+function endAnimation({ activeIndex, element, items }) {
+    const index = Number(element.dataset.index);
+    const item = items[index];
+    item.isActive = index === activeIndex;
+    element.className = item.className;
 }
 
 function updateActivePaginationItem({
@@ -150,9 +135,9 @@ function updateActivePaginationItem({
         panelIndex
     });
 
-    _disableItems(items);
     items.forEach((item) => {
         item.activePanelIndex = panelIndex;
+        item.isActive = false;
     });
     const elements = _getItemElements(carousel);
     elements.forEach((element, i) => {
@@ -173,7 +158,7 @@ function updateActivePaginationItem({
         return index;
     }
 
-    _animate({
+    _startAnimation({
         carousel,
         goToPrevious,
         items,
@@ -189,4 +174,4 @@ function updateActivePaginationItem({
     });
 }
 
-export { updateActivePaginationItem };
+export { endAnimation, updateActivePaginationItem };
