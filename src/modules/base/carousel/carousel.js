@@ -5,6 +5,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import PaginationItem from './paginationItem';
 import { updateActivePaginationItem } from './paginationItemsUtils';
@@ -582,9 +583,10 @@ export default class Carousel extends LightningElement {
      * @type {string}
      */
     get computedAutoScrollAutoplayButton() {
-        return !this.showIndicator
-            ? 'avonni-carousel__autoscroll-button-without-indicator'
-            : 'avonni-carousel__autoscroll-button-with-indicator';
+        return classSet('slds-m-left_x-small slds-m-top_xx-small').add({
+            'avonni-carousel__autoscroll-button-with-indicator':
+                !this.hideIndicator
+        });
     }
 
     get nbOfPanels() {
