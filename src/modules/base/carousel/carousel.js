@@ -861,6 +861,10 @@ export default class Carousel extends LightningElement {
         const allPaginationItemsAreVisible =
             !maxItems || maxItems >= this.nbOfPanels;
 
+        if (this._activePaginationItemIndex && this.activePanelIndex) {
+            return;
+        }
+
         if (allPaginationItemsAreVisible) {
             this._activePaginationItemIndex = panelIndex;
             return;
