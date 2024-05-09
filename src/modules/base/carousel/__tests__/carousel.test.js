@@ -1,9 +1,10 @@
 import { createElement } from 'lwc';
 import Carousel from 'c/carousel';
 
-// not tested
-// scroll duration,
-// smallItemsPerPanel, mediumItemsPerPanel, largeItemsPerPanel as they depend on the resize observer
+// Not tested:
+// * scroll duration,
+// * smallItemsPerPanel, mediumItemsPerPanel, largeItemsPerPanel as they depend on the resize observer
+// * The maxIndicatorItems animations are not fully tested, as it is mostly a visual effect. We only check that the process of adding/removing classes is present.
 
 const bareActions = [
     {
@@ -138,6 +139,7 @@ describe('Carousel', () => {
             expect(element.itemsPerPanel).toBe(1);
             expect(element.largeItemsPerPanel).toBeUndefined();
             expect(element.loadMoreOffset).toBe(1);
+            expect(element.maxIndicatorItems).toBeUndefined();
             expect(element.mediumItemsPerPanel).toBeUndefined();
             expect(element.scrollDuration).toBe(5);
             expect(element.smallItemsPerPanel).toBeUndefined();
@@ -236,7 +238,7 @@ describe('Carousel', () => {
                         'Next Panel Assistive Text'
                     );
                     const autoPlayButton = element.shadowRoot.querySelector(
-                        '.avonni-carousel__autoscroll-button-without-indicator'
+                        '[data-element-id="lightning-button-icon"]'
                     );
                     expect(autoPlayButton.title).toBe(
                         'Start / Stop auto-play Panel Assistive Text'
@@ -496,6 +498,211 @@ describe('Carousel', () => {
                             '[data-element-id^="a-pagination"]'
                         );
                         expect(indicators[lastItem].className).toContain(
+                            'slds-is-active'
+                        );
+                    });
+            });
+        });
+
+        describe('Max indicator items', () => {
+            it('Only the maximum number of items is shown', () => {
+                element.items = items;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const paginationItems =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="a-pagination"]'
+                            );
+                        expect(paginationItems).toHaveLength(items.length);
+                        element.maxIndicatorItems = 3;
+                    })
+                    .then(() => {
+                        const paginationItems =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="a-pagination"]'
+                            );
+                        // Two items are added to make the scroll work
+                        expect(paginationItems).toHaveLength(5);
+                    });
+            });
+
+            it('Items are animated on next button click', () => {
+                element.maxIndicatorItems = 4;
+                element.items = items;
+
+                return Promise.resolve().then(() => {
+                    // No animation class
+                    const paginationItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-pagination"]'
+                    );
+                    expect(paginationItems[1].classList).not.toContain(
+                        'avonni-carousel__progress-indicator_to-small'
+                    );
+                    expect(paginationItems[1].classList).toContain(
+                        'slds-is-active'
+                    );
+
+                    // On click on next, the animation class is added
+                    const nextButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-next"]'
+                    );
+                    nextButton.click();
+
+                    expect(paginationItems[1].classList).toContain(
+                        'avonni-carousel__progress-indicator_to-small'
+                    );
+                    expect(paginationItems[1].classList).not.toContain(
+                        'slds-is-active'
+                    );
+                    expect(paginationItems[2].classList).toContain(
+                        'slds-is-active'
+                    );
+
+                    // On animation end, the class is removed
+                    paginationItems[1].dispatchEvent(
+                        new CustomEvent('animationend')
+                    );
+                    expect(paginationItems[1].classList).not.toContain(
+                        'avonni-carousel__progress-indicator_to-small'
+                    );
+                    expect(paginationItems[2].classList).toContain(
+                        'slds-is-active'
+                    );
+                });
+            });
+
+            describe('Set active item', () => {
+                it('The first item is displayed as active by default', () => {
+                    element.items = items;
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const paginationItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="a-pagination"]'
+                                );
+                            expect(paginationItems[0].classList).toContain(
+                                'slds-is-active'
+                            );
+                            [1, 2, 3, 4, 5, 6].forEach((index) => {
+                                expect(
+                                    paginationItems[index].classList
+                                ).not.toContain('slds-is-active');
+                            });
+
+                            element.maxIndicatorItems = 4;
+                        })
+                        .then(() => {
+                            const paginationItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="a-pagination"]'
+                                );
+                            expect(paginationItems[1].classList).toContain(
+                                'slds-is-active'
+                            );
+                            [0, 2, 3, 4, 5].forEach((index) => {
+                                expect(
+                                    paginationItems[index].classList
+                                ).not.toContain('slds-is-active');
+                            });
+                        });
+                });
+            });
+
+            it('Set current panel on second', () => {
+                element.items = items;
+                element.maxIndicatorItems = 4;
+                element.currentPanel = '2';
+
+                return Promise.resolve().then(() => {
+                    const paginationItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-pagination"]'
+                    );
+                    expect(paginationItems[2].classList).toContain(
+                        'slds-is-active'
+                    );
+                    [0, 1, 3, 4, 5].forEach((index) => {
+                        expect(paginationItems[index].classList).not.toContain(
+                            'slds-is-active'
+                        );
+                    });
+                });
+            });
+
+            it('Set current panel on third, all items are visible', () => {
+                element.items = items;
+                element.currentPanel = '3';
+
+                return Promise.resolve().then(() => {
+                    const paginationItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-pagination"]'
+                    );
+                    expect(paginationItems[2].classList).toContain(
+                        'slds-is-active'
+                    );
+                    [0, 1, 3, 4, 5].forEach((index) => {
+                        expect(paginationItems[index].classList).not.toContain(
+                            'slds-is-active'
+                        );
+                    });
+                });
+            });
+
+            it('Set a future panel as active', () => {
+                element.items = items;
+                element.maxIndicatorItems = 4;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.currentPanel = '3';
+                    })
+                    .then(() => {
+                        const paginationItems =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="a-pagination"]'
+                            );
+                        expect(paginationItems[2].classList).toContain(
+                            'slds-is-active'
+                        );
+                        [0, 1, 3, 4, 5].forEach((index) => {
+                            expect(
+                                paginationItems[index].classList
+                            ).not.toContain('slds-is-active');
+                        });
+                    });
+            });
+
+            it('Set the last panel as active', () => {
+                element.items = items;
+                element.maxIndicatorItems = 4;
+                element.currentPanel = items[items.length - 1].name;
+
+                return Promise.resolve().then(() => {
+                    const paginationItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-pagination"]'
+                    );
+                    expect(paginationItems[4].classList).toContain(
+                        'slds-is-active'
+                    );
+                });
+            });
+
+            it('Set a previous panel as active', () => {
+                element.items = items;
+                element.maxIndicatorItems = 4;
+                element.currentPanel = items[items.length - 1].name;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.currentPanel = items[3].name;
+                    })
+                    .then(() => {
+                        const paginationItems =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="a-pagination"]'
+                            );
+                        expect(paginationItems[3].classList).toContain(
                             'slds-is-active'
                         );
                     });

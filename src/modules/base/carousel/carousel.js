@@ -260,6 +260,7 @@ export default class Carousel extends LightningElement {
 
         if (this._connected) {
             this.initCarousel();
+            this.checkIfShouldLoadMore();
         }
     }
 
@@ -277,11 +278,7 @@ export default class Carousel extends LightningElement {
         return this._enableInfiniteLoading;
     }
     set enableInfiniteLoading(value) {
-        const boolean = normalizeBoolean(value);
-        if (boolean === this._enableInfiniteLoading) {
-            return;
-        }
-        this._enableInfiniteLoading = boolean;
+        this._enableInfiniteLoading = normalizeBoolean(value);
 
         if (this._connected) {
             this.first();
@@ -871,31 +868,27 @@ export default class Carousel extends LightningElement {
         const panelIndex = this.activePanelIndex;
         const allPaginationItemsAreVisible =
             !maxItems || maxItems >= this.nbOfPanels;
-
-        if (this._activePaginationItemIndex && this.activePanelIndex) {
-            return;
-        }
+        const currentPanelIsAtBeginning =
+            this.currentPanel &&
+            this.maxIndicatorItems - 2 > this.activePanelIndex;
+        const firstItemIsActive = this._activePaginationItemIndex === 1;
+        const firstPanelIsSelected = this.activePanelIndex === 0;
+        const lastItemIsActive = this._activePaginationItemIndex === maxItems;
+        const lastPanelIsSelected =
+            this.activePanelIndex === this.nbOfPanels - 1;
 
         if (allPaginationItemsAreVisible) {
-            this._activePaginationItemIndex = panelIndex;
-            return;
-        }
-        if (!panelIndex) {
+            this._activePaginationItemIndex = panelIndex || 0;
+        } else if (!panelIndex) {
             this._activePaginationItemIndex = 1;
-            return;
-        }
-
-        const isCloseToFirst = panelIndex < maxItems / 2;
-        const isCloseToLast = panelIndex > this.nbOfPanels - 1 - maxItems / 2;
-
-        if (isCloseToFirst) {
-            const second = panelIndex + 1;
-            this._activePaginationItemIndex = second;
-        } else if (isCloseToLast) {
-            const penultimate = maxItems - (this.nbOfPanels - 1 - panelIndex);
-            this._activePaginationItemIndex = penultimate;
-        } else {
-            this._activePaginationItemIndex = Math.floor(maxItems / 2);
+        } else if (currentPanelIsAtBeginning) {
+            this._activePaginationItemIndex = this.activePanelIndex + 1;
+        } else if (lastItemIsActive && !lastPanelIsSelected) {
+            this._activePaginationItemIndex = maxItems - 1;
+        } else if (lastPanelIsSelected) {
+            this._activePaginationItemIndex = maxItems;
+        } else if (firstItemIsActive && !firstPanelIsSelected) {
+            this._activePaginationItemIndex = 2;
         }
     }
 
