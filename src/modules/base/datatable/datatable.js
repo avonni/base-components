@@ -961,23 +961,6 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * Updates the options of the picklist column.
-     *
-     * @param {string} fieldName The field name of the picklist column.
-     * @param {object[]} options The new options of the picklist column.
-     * @public
-     */
-    @api
-    updatePicklistColumnOptions(fieldName, options) {
-        const columns = JSON.parse(JSON.stringify(this.columns));
-        const column = columns.find((c) => c.fieldName === fieldName);
-        if (column && column.type === 'combobox') {
-            column.typeAttributes.options = options;
-            this._columns = columns;
-        }
-    }
-
-    /**
      * Returns data in each selected row.
      *
      * @name getSelectedRows
