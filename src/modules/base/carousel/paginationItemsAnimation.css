@@ -1,0 +1,207 @@
+/*
+* Note on duplicates:
+*
+* Chaining animation-names doesn't work once on the Salesforce platform,
+* because the names are not correctly parsed. For example, the keyframe "tobig"
+* will be renamed into "tobig-avcmpbuilder-avonniCarousel_avonniCarousel",
+* but the animation-name will still be "tobig, toright".
+*
+* This is why we have to create a new animation for each combination of animations.
+*/
+
+@keyframes tobig {
+    from {
+        transform: scale(0.5);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes toleft {
+    from {
+        left: 0;
+    }
+
+    to {
+        left: -1.5rem;
+    }
+}
+
+@keyframes toleftbig {
+    from {
+        left: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        left: -1.5rem;
+        transform: scale(1);
+    }
+}
+
+@keyframes tolefthidden {
+    from {
+        left: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        left: -1.5rem;
+        transform: scale(0);
+    }
+}
+
+@keyframes toleftsmall {
+    from {
+        left: 0;
+        transform: scale(1);
+    }
+
+    to {
+        left: -1.5rem;
+        transform: scale(0.5);
+    }
+}
+
+@keyframes toleftvisible {
+    from {
+        left: 0;
+        transform: scale(0);
+    }
+
+    to {
+        left: -1.5rem;
+        transform: scale(0.5);
+    }
+}
+
+@keyframes toright {
+    from {
+        left: 0;
+    }
+
+    to {
+        left: 1.5rem;
+    }
+}
+
+@keyframes torightbig {
+    from {
+        left: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        left: 1.5rem;
+        transform: scale(1);
+    }
+}
+
+@keyframes torighthidden {
+    from {
+        left: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        left: 1.5rem;
+        transform: scale(0);
+    }
+}
+
+@keyframes torightsmall {
+    from {
+        left: 0;
+        transform: scale(1);
+    }
+
+    to {
+        left: 1.5rem;
+        transform: scale(0.5);
+    }
+}
+
+@keyframes torightvisible {
+    from {
+        left: 0;
+        transform: scale(0);
+    }
+
+    to {
+        left: 1.5rem;
+        transform: scale(0.5);
+    }
+}
+
+@keyframes tosmall {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0.5);
+    }
+}
+
+.avonni-carousel__progress-indicator_infinite-loading {
+    animation-duration: 500ms;
+    animation-timing-function: linear;
+}
+
+.avonni-carousel__progress-indicator_to-big {
+    animation-name: tobig;
+}
+
+.avonni-carousel__progress-indicator_to-small {
+    animation-name: tosmall;
+}
+
+.avonni-carousel__progress-indicator_to-big-right {
+    animation-name: torightbig;
+}
+
+.avonni-carousel__progress-indicator_to-hidden-right {
+    animation-name: torighthidden;
+}
+
+.avonni-carousel__progress-indicator_to-right {
+    animation-name: toright;
+}
+
+.avonni-carousel__progress-indicator_to-small-right {
+    animation-name: torightsmall;
+}
+
+.avonni-carousel__progress-indicator_to-visible-right {
+    animation-name: torightvisible;
+}
+
+.avonni-carousel__progress-indicator_to-big-left {
+    animation-name: toleftbig;
+}
+
+.avonni-carousel__progress-indicator_to-hidden-left {
+    animation-name: tolefthidden;
+}
+
+.avonni-carousel__progress-indicator_to-left {
+    animation-name: toleft;
+}
+
+.avonni-carousel__progress-indicator_to-small-left {
+    animation-name: toleftsmall;
+}
+
+.avonni-carousel__progress-indicator_to-visible-left {
+    animation-name: toleftvisible;
+}
+
+.avonni-carousel__progress-indicator__hidden {
+    transform: scale(0);
+}
+
+.avonni-carousel__progress-indicator__small:not(.avonni-carousel__progress-indicator_to-right) {
+    transform: scale(0.5);
+}

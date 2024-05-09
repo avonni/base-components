@@ -53,6 +53,7 @@
                                 aria-hidden={panel.ariaHidden}
                                 role="tabpanel"
                                 tabindex={panel.tabIndex}
+                                data-element-id="div-panel"
                             >
                                 <template
                                     for:each={panel.items}
@@ -92,14 +93,18 @@
                         </template>
                     </div>
                     <ul
-                        data-element-id="ul"
-                        class="slds-carousel__indicators"
+                        if:false={hideIndicator}
+                        class="
+                            slds-carousel__indicators
+                            slds-grid slds-grid_vertical-align-center
+                            slds-is-relative
+                        "
                         role="tablist"
+                        data-element-id="ul"
                         onkeydown={keyDownHandler}
                     >
                         <!-- Pagination items -->
                         <template
-                            if:false={hideIndicator}
                             for:each={paginationItems}
                             for:item="paginationItem"
                             for:index="paginationIndex"
@@ -108,12 +113,12 @@
                                 key={paginationItem.key}
                                 class="slds-carousel__indicator"
                                 role="presentation"
-                                onclick={onPanelSelect}
+                                onclick={handlePaginationItemClick}
                                 data-element-id="li-pagination"
                                 data-index={paginationIndex}
                             >
                                 <a
-                                    id={paginationItem.id}
+                                    id={paginationItem.elementId}
                                     class={paginationItem.className}
                                     href="javascript:void(0);"
                                     role="tab"
@@ -121,6 +126,8 @@
                                     aria-selected={paginationItem.ariaSelected}
                                     title={paginationItem.tabTitle}
                                     data-element-id="a-pagination"
+                                    data-index={paginationIndex}
+                                    onanimationend={handlePaginationItemAnimationEnd}
                                     onclick={handlePreventDefault}
                                 >
                                     <span class="slds-assistive-text">
@@ -129,7 +136,14 @@
                                 </a>
                             </li>
                         </template>
+                        <lightning-spinner
+                            if:true={isLoading}
+                            alternative-text="Loading..."
+                            role="tab"
+                            size="x-small"
+                        ></lightning-spinner>
                     </ul>
+
                     <!-- Autoplay button -->
                     <template if:false={disableAutoScroll}>
                         <lightning-button-icon
@@ -147,7 +161,14 @@
             </lightning-layout-item>
             <template if:false={hidePreviousNextPanelNavigation}>
                 <!-- Next navigation -->
-                <lightning-layout-item>
+                <lightning-layout-item class="slds-is-relative">
+                    <lightning-spinner
+                        if:true={isLoading}
+                        class="slds-m-left_medium slds-m-bottom_large"
+                        alternative-text="Loading..."
+                        size="x-small"
+                        data-element-id="lightning-spinner"
+                    ></lightning-spinner>
                     <button
                         data-element-id="lightning-button-icon-next"
                         class="

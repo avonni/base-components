@@ -1,8 +1,11 @@
-import Component from 'avonni/carousel';
+import Component from '../../storybookWrappers/carousel/infiniteLoading';
 
-customElements.define('ac-base-carousel', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-infinite-loading-carousel',
+    Component.CustomElementConstructor
+);
 
-export const Carousel = ({
+export const InfiniteLoadingCarousel = ({
     actionsPosition,
     actionsVariant,
     assistiveText,
@@ -18,12 +21,13 @@ export const Carousel = ({
     items,
     itemsPerPanel,
     largeItemsPerPanel,
+    loadMoreOffset,
     maxIndicatorItems,
     mediumItemsPerPanel,
     scrollDuration,
     smallItemsPerPanel
 }) => {
-    const element = document.createElement('ac-base-carousel');
+    const element = document.createElement('ac-base-infinite-loading-carousel');
     element.actionsPosition = actionsPosition;
     element.actionsVariant = actionsVariant;
     element.assistiveText = assistiveText;
@@ -39,6 +43,7 @@ export const Carousel = ({
     element.items = items;
     element.itemsPerPanel = itemsPerPanel;
     element.largeItemsPerPanel = largeItemsPerPanel;
+    element.loadMoreOffset = loadMoreOffset;
     element.maxIndicatorItems = maxIndicatorItems;
     element.mediumItemsPerPanel = mediumItemsPerPanel;
     element.scrollDuration = scrollDuration;

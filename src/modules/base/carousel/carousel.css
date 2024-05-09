@@ -1,3 +1,5 @@
+@import './paginationItemsAnimation.css';
+
 .avonni-carousel__stage_min-width {
     min-width: 20%;
 }
@@ -84,14 +86,7 @@
 
 .avonni-carousel__autoscroll-button-with-indicator {
     position: absolute;
-    bottom: 10px;
-    left: var(--lwc-spacingMedium, 1rem);
-}
-
-.avonni-carousel__autoscroll-button-without-indicator {
-    position: relative;
-    bottom: 10px;
-    left: var(--lwc-spacingMedium, 1rem);
+    bottom: 7px;
 }
 
 .avonni-carousel__progress-indicator_active {

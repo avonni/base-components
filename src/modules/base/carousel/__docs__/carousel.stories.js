@@ -1,4 +1,5 @@
 import { Carousel } from '../__examples__/carousel';
+import { InfiniteLoadingCarousel } from '../__examples__/infiniteLoadingCarousel';
 import { items, menuItems, imageItems } from './data';
 
 export default {
@@ -29,6 +30,31 @@ export default {
                 category: 'Content'
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the carousel items can be loaded dynamically. As a consequence, the navigation is not disabled when the end of the items is reached, the indicator is always hidden, and is-infinite is ignored. Use in conjunction with load-more-offset to determine when the loadmore event should be fired.',
+            readOnly: true,
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the carousel is in a loading state and shows the loading spinner.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
         itemsPerPanel: {
             name: 'items-per-panel',
             control: {
@@ -40,6 +66,29 @@ export default {
                 defaultValue: { summary: 1 },
                 type: { summary: 'number' },
                 category: 'Layout'
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number of hidden panels left when the loadmore event should be fired. For example, if the value is 2, the loadmore event will be fired when the user clicks on the “next” navigation button, and from this screen, they could click two more times on “next” before reaching the end of the items. Depends on enable-infinite-loading being true.',
+            table: {
+                defaultValue: { summary: 3 },
+                type: { summary: 'number' }
+            }
+        },
+        maxIndicatorItems: {
+            name: 'max-indicator-items',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Maximum number of panels displayed in the indicator. If empty, one dot will be displayed for each panel.',
+            table: {
+                type: { summary: 'number' }
             }
         },
         smallItemsPerPanel: {
@@ -250,6 +299,7 @@ export default {
         hideIndicator: false,
         hidePreviousNextPanelNavigation: false,
         indicatorVariant: 'base',
+        loadMoreOffset: 3,
         isInfinite: false,
         itemsPerPanel: 1,
         scrollDuration: 5,
@@ -264,6 +314,7 @@ const assistiveText = {
 };
 
 const Template = (args) => Carousel(args);
+const TemplateInfiniteLoading = (args) => InfiniteLoadingCarousel(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -360,4 +411,11 @@ ImagePositionLeft.args = {
     items: items,
     itemsPerPanel: 2,
     imagePosition: 'left'
+};
+
+export const InfiniteLoading = TemplateInfiniteLoading.bind({});
+InfiniteLoading.args = {
+    itemsPerPanel: 3,
+    maxIndicatorItems: 5,
+    disableAutoScroll: true
 };
