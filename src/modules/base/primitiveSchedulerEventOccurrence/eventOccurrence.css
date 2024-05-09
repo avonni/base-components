@@ -17,6 +17,10 @@
 
 .avonni-scheduler__event_past {
     opacity: 0.6;
+    color: var(
+        --avonni-scheduler-past-event-label-text-color,
+        var(--lwc-colorTextDefault, #181818)
+    );
 }
 
 .avonni-scheduler__event-wrapper {
@@ -41,6 +45,13 @@
 
 :host.avonni-scheduler__event-dragged .avonni-scheduler__event {
     cursor: grabbing;
+}
+
+.avonni-scheduler__event_inverse-label {
+    color: var(
+        --avonni-scheduler-event-label-text-color,
+        var(--lwc-colorTextInverse, #ffffff)
+    );
 }
 
 .avonni-scheduler__event-label_right {

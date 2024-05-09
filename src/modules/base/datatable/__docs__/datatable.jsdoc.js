@@ -161,17 +161,20 @@
  * * slider
  * @property {boolean} editable Specifies whether a column supports inline editing. The default is false.
  * This option is not supported for the following data types:
+ * * action
  * * avatar
  * * avatar-group
  * * badge
+ * * button
+ * * button-icon
  * * dynamic-icon
  * * image
+ * * location
  * * lookup
  * * progress-bar
  * * progress-circle
  * * progress-ring
  * * qrcode
- * * URL
  * * URLS
  * @property {string} fieldName Required. The name that binds the columns attributes to the associated data. Each columns attribute must correspond to an item in the data array.
  * @property {integer} fixedWidth Specifies the width of a column in pixels and makes the column non-resizable. If both <code>fixedWidth</code> and <code>initialWidth</code> values are provided, <code>initialWidth</code> is ignored.

@@ -29,6 +29,7 @@ import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
+import recordPicker from './recordPicker.html';
 import richText from './richText.html';
 import slider from './slider.html';
 import textarea from './textarea.html';
@@ -67,6 +68,23 @@ const CUSTOM_TYPES_EDITABLE = [
     'slider',
     'textarea',
     'toggle'
+];
+
+const COLUMNS_TYPES_NON_EDITABLE = [
+    'action',
+    'avatar',
+    'avatar-group',
+    'badge',
+    'button',
+    'button-icon',
+    'dynamic-icon',
+    'image',
+    'location',
+    'progress-bar',
+    'progress-circle',
+    'progress-ring',
+    'qrcode',
+    'urls'
 ];
 
 const COLUMN_WIDTHS_MODES = { valid: ['fixed', 'auto'], default: 'fixed' };
@@ -186,7 +204,8 @@ export default class Datatable extends LightningDatatable {
                 'name',
                 'objectApiName',
                 'path',
-                'relationshipFieldName'
+                'relationshipFieldName',
+                'relationshipObjectApiName'
             ]
         },
         'name-lookup': {
@@ -263,6 +282,16 @@ export default class Datatable extends LightningDatatable {
                 'valueHidden'
             ]
         },
+        'record-picker': {
+            template: recordPicker,
+            typeAttributes: [
+                'name',
+                'objectApiName',
+                'path',
+                'relationshipFieldName',
+                'relationshipObjectApiName'
+            ]
+        },
         'rich-text': {
             template: richText,
             typeAttributes: ['disabled', 'formats', 'placeholder', 'variant']
@@ -330,7 +359,7 @@ export default class Datatable extends LightningDatatable {
         );
         this.template.addEventListener('getcomboboxoptions', (event) => {
             const fieldName = event.detail.name;
-            const column = this.columns.find((c) => c.fieldName === fieldName);
+            const column = this._columns.find((c) => c.fieldName === fieldName);
             if (!column) return;
 
             const options = column.typeAttributes.options;
@@ -433,6 +462,7 @@ export default class Datatable extends LightningDatatable {
     set columns(value) {
         value = JSON.parse(JSON.stringify(value));
         this.removeWrapOption(value);
+        this.removeNonEditableColumns(value);
         this.computeEditableOption(value);
         super.columns = value;
 
@@ -944,6 +974,39 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Updates the checkbox column state.
+     *
+     * @param {boolean} disabled If true, columns are to be disabled.
+     * @param {number} nbSelectedRows The number of selected rows.
+     * @public
+     */
+    @api
+    updateCheckboxColumn(disabled, nbSelectedRows) {
+        const rows = this.state.rows;
+        rows.forEach((row) => {
+            row.isDisabled = !isSelectedRow(this.state, row.key) && disabled;
+        });
+        this.updateBulkSelectionState(nbSelectedRows);
+    }
+
+    /**
+     * Updates the options of the picklist column.
+     *
+     * @param {string} fieldName The field name of the picklist column.
+     * @param {object[]} options The new options of the picklist column.
+     * @public
+     */
+    @api
+    updatePicklistColumnOptions(fieldName, options) {
+        const columns = JSON.parse(JSON.stringify(this.columns));
+        const column = columns.find((c) => c.fieldName === fieldName);
+        if (column && column.type === 'combobox') {
+            column.typeAttributes.options = options;
+            this._columns = columns;
+        }
+    }
+
+    /**
      * Returns data in each selected row.
      *
      * @name getSelectedRows
@@ -974,21 +1037,9 @@ export default class Datatable extends LightningDatatable {
      */
 
     /**
-     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
-     */
-    removeWrapOption(columns) {
-        if (columns) {
-            columns.forEach((column) => {
-                if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
-                    column.wrapText = true;
-                    column.hideDefaultActions = true;
-                }
-            });
-        }
-    }
-
-    /**
      * If the data type is editable, transforms the value into an object containing the editable property.
+     *
+     * @param {Array} columns - The array of column definitions.
      */
     computeEditableOption(columns = this._columns) {
         if (columns?.length && this._data?.length) {
@@ -1008,12 +1059,70 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Returns the bulk selection state of the checkbox column in the table header
+     */
+    getBulkSelectionState(selected) {
+        const total = this.maxRowSelection || this.state.rows.length;
+        return selected === 0 ? 'none' : selected === total ? 'all' : 'some';
+    }
+
+    /**
+     * Adjusts the `editable` attribute of columns based on their type's eligibility for editing.
+     *
+     * @param {Array} columns - The array of column definitions.
+     */
+    removeNonEditableColumns(columns) {
+        if (!columns) return;
+        columns.forEach((column) => {
+            if (COLUMNS_TYPES_NON_EDITABLE.includes(column.type)) {
+                column.editable = false;
+            }
+        });
+    }
+
+    /**
+     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
+     *
+     * @param {Array} columns - The array of column definitions.
+     */
+    removeWrapOption(columns) {
+        if (columns) {
+            columns.forEach((column) => {
+                if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
+                    column.wrapText = true;
+                    column.hideDefaultActions = true;
+                }
+            });
+        }
+    }
+
+    /**
+     * Updates the bulk selection state of the checkbox column in the table header
+     */
+    updateBulkSelectionState(selected) {
+        const selectBoxesColumnIndex = this.state.columns.findIndex(
+            (column) => column.type === 'SELECTABLE_CHECKBOX'
+        );
+        if (selectBoxesColumnIndex >= 0) {
+            this.state.columns[selectBoxesColumnIndex] = {
+                ...this.state.columns[selectBoxesColumnIndex],
+                bulkSelection: this.getBulkSelectionState(selected)
+            };
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
      * Handles the edit button click event of each custom cell type.
      *
      * @param {event} event
      */
     handleEditButtonClickCustom(event) {
-        event.stopPropagation();
         const { colKeyValue, rowKeyValue } = event.detail;
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         const inlineEdit = this.state.inlineEdit;
@@ -1064,23 +1173,6 @@ export default class Datatable extends LightningDatatable {
     };
 
     /**
-     * Dispatches event from the lighnting-datatable.
-     *
-     * @param {event} event
-     */
-    handleDispatchEvents(event) {
-        event.stopPropagation();
-        this.dispatchEvent(
-            new CustomEvent(`${event.detail.type}`, {
-                detail: event.detail.detail,
-                bubbles: event.detail.bubbles,
-                composed: event.detail.composed,
-                cancelable: event.detail.cancelable
-            })
-        );
-    }
-
-    /**
      * Handles the finish of inline editing of custom cell type.
      *
      * @param {event} event
@@ -1105,4 +1197,21 @@ export default class Datatable extends LightningDatatable {
         );
         super.state = this.state;
     };
+
+    /**
+     * Dispatches event from the lighnting-datatable.
+     *
+     * @param {event} event
+     */
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+        this.dispatchEvent(
+            new CustomEvent(`${event.detail.type}`, {
+                detail: event.detail.detail,
+                bubbles: event.detail.bubbles,
+                composed: event.detail.composed,
+                cancelable: event.detail.cancelable
+            })
+        );
+    }
 }

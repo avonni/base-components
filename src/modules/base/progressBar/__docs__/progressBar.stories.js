@@ -3,6 +3,18 @@ import { ProgressBar } from '../__examples__/progressBar';
 export default {
     title: 'Example/Progress Bar',
     argTypes: {
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the progress bar is in a loading state and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -196,6 +208,7 @@ export default {
         }
     },
     args: {
+        isLoading: false,
         orientation: 'horizontal',
         showValue: false,
         size: 'full',

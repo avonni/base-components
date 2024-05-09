@@ -13,6 +13,7 @@ import {
     startPositioning,
     stopPositioning
 } from 'c/positionLibrary';
+import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const AVATAR_GROUP_SIZES = {
@@ -120,6 +121,7 @@ export default class AvatarGroup extends LightningElement {
     _variant = AVATAR_GROUP_VARIANTS.default;
 
     showHiddenItems = false;
+
     _autoPosition;
     _connected = false;
     _focusAnimationFrame;
@@ -132,6 +134,8 @@ export default class AvatarGroup extends LightningElement {
     _positioning = false;
     _preventPopoverClosing = false;
     _resizeObserver;
+    _tooltips = [];
+    _tooltipTimeout;
 
     connectedCallback() {
         this.template.addEventListener(
@@ -158,10 +162,11 @@ export default class AvatarGroup extends LightningElement {
         const avatars = this.template.querySelectorAll(
             '[data-group-name="avatar"]'
         );
-
         avatars.forEach((avatar, index) => {
             avatar.style.zIndex = avatars.length - index;
         });
+
+        this.initAllTooltips();
     }
 
     disconnectedCallback() {
@@ -244,6 +249,8 @@ export default class AvatarGroup extends LightningElement {
     set items(value) {
         this.keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
+
+        this.destroyAllTooltips();
 
         if (
             this.showHiddenItems &&
@@ -512,12 +519,14 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Avatar Item HTML element.
+     * List of avatar Item HTML element.
      *
-     * @type {HTMLElement}
+     * @type {HTMLElement[]}
      */
-    get avatarItemElement() {
-        return this.template.querySelector('[data-element-id="li-visible"]');
+    get avatarItemElements() {
+        return this.template.querySelectorAll(
+            '[data-element-id="avonni-avatar"]'
+        );
     }
 
     /**
@@ -540,6 +549,15 @@ export default class AvatarGroup extends LightningElement {
                 'slds-p-right_x-small': this.layout === 'grid'
             })
             .toString();
+    }
+
+    get computedItems() {
+        return this.items.map((item) => {
+            return {
+                ...item,
+                class: this.getAvatarClass(item, false)
+            };
+        });
     }
 
     /**
@@ -651,10 +669,11 @@ export default class AvatarGroup extends LightningElement {
             this.items.length
         );
 
-        return items.map((it, index) => {
+        return items.map((item, index) => {
             return {
-                ...it,
-                index: index + this._hiddenItemsStartIndex
+                ...item,
+                index: index + this._hiddenItemsStartIndex,
+                class: this.getAvatarClass(item, true)
             };
         });
     }
@@ -843,9 +862,21 @@ export default class AvatarGroup extends LightningElement {
      * @type {object[]}
      */
     get visibleItems() {
-        return this.items.length > this.computedMaxCount
-            ? this.items.slice(0, this.computedMaxCount)
-            : this.items;
+        let computedItems = this.computedItems;
+        computedItems =
+            computedItems.length > this.computedMaxCount
+                ? computedItems.slice(0, this.computedMaxCount)
+                : computedItems;
+
+        return computedItems.map((item) => {
+            return {
+                ...item,
+                alternativeText:
+                    !this.isClassic && !this.isNotList
+                        ? item.alternativeText
+                        : ''
+            };
+        });
     }
 
     /**
@@ -854,7 +885,9 @@ export default class AvatarGroup extends LightningElement {
      * @type {HTMLElement}
      */
     get wrapperElement() {
-        return this.template.querySelector('[data-element-id="ul"]');
+        return this.template.querySelector(
+            '[data-element-id="avatar-group-wrapper"]'
+        );
     }
 
     /*
@@ -862,6 +895,16 @@ export default class AvatarGroup extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Clear all tooltips and remove all event listeners.
+     */
+    destroyAllTooltips() {
+        this._tooltips.forEach((tooltip) => {
+            tooltip.destroy();
+        });
+        this._tooltips = [];
+    }
 
     /**
      * Set the focus on the item at the saved focused index.
@@ -873,6 +916,16 @@ export default class AvatarGroup extends LightningElement {
         if (focusedItem) {
             focusedItem.focus();
         }
+    }
+
+    getAvatarClass(item, isHidden) {
+        let avatarClass = isHidden
+            ? this.hiddenAvatarInlineClass
+            : this.avatarInlineClass;
+
+        return classSet(avatarClass)
+            .add({ 'avonni-avatar-group__avatar-link': item.href })
+            .toString();
     }
 
     /**
@@ -901,6 +954,40 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Initialize all the tooltips.
+     */
+    initAllTooltips() {
+        if (this.isClassic || this.isNotList) {
+            for (let i = 0; i < this.avatarItemElements.length; i++) {
+                if (!this._tooltips[i]) {
+                    const tooltipValue = this.items[i].alternativeText || '';
+                    if (tooltipValue) {
+                        this._tooltips[i] = new Tooltip(tooltipValue, {
+                            type: TooltipType.Toggle,
+                            root: this,
+                            target: () => this.avatarItemElements[i],
+                            align: {
+                                horizontal: Direction.Center,
+                                vertical: Direction.Top
+                            },
+                            targetAlign: {
+                                horizontal: Direction.Center,
+                                vertical: Direction.Bottom
+                            }
+                        });
+                        this._tooltips[i].initialize();
+                    }
+                }
+            }
+        }
+        this._tooltips
+            .filter((tooltip) => tooltip && !tooltip.initialized)
+            .forEach((tooltip) => {
+                tooltip.initialize();
+            });
+    }
+
+    /**
      * Initialize the screen resize observer.
      *
      * @returns {AvonniResizeObserver} Resize observer.
@@ -909,10 +996,11 @@ export default class AvatarGroup extends LightningElement {
         if (!this.wrapperElement) {
             return null;
         }
-        return new AvonniResizeObserver(
-            this.wrapperElement,
-            this.updateVisibleMaxCount.bind(this)
-        );
+        return new AvonniResizeObserver(this.wrapperElement, () => {
+            this.updateVisibleMaxCount();
+            this.destroyAllTooltips();
+            this.initAllTooltips();
+        });
     }
 
     /**
@@ -1115,9 +1203,12 @@ export default class AvatarGroup extends LightningElement {
      * Update the number of visible and collapsed items, depending on the available space.
      */
     updateVisibleMaxCount() {
+        const firstVisibleItem = this.template.querySelector(
+            '[data-element-id="li-visible"]'
+        );
         if (
             !this.wrapperElement ||
-            (!this.avatarItemElement && !this.showMoreButtonElement) ||
+            (firstVisibleItem && !this.showMoreButtonElement) ||
             this.items.length <= 1
         ) {
             if (this.enableInfiniteLoading && !this.isLoading) {
@@ -1128,13 +1219,26 @@ export default class AvatarGroup extends LightningElement {
         }
 
         const totalWidth = this.wrapperElement.offsetWidth;
-        const availableWidth = this.actionButtonElement
-            ? totalWidth - this.actionButtonElement.offsetWidth
-            : totalWidth;
+        let availableWidth = totalWidth;
 
-        const referenceElement =
-            this.avatarItemElement || this.showMoreButtonElement;
+        if (this.actionButtonElement) {
+            availableWidth -= this.actionButtonElement.offsetWidth;
+        }
+        if (this.showMoreButtonElement) {
+            availableWidth -= this.showMoreButtonElement.offsetWidth;
+        }
+        if (this.layout === 'stack') {
+            // The size of the first item in the stack layout is different than the others
+            const firstStackElement =
+                this.avatarItemElements.length > 0
+                    ? this.avatarItemElements[0]
+                    : null;
+            if (firstStackElement) {
+                availableWidth -= firstStackElement.offsetWidth;
+            }
+        }
 
+        const referenceElement = firstVisibleItem || this.showMoreButtonElement;
         const referenceElementStyles =
             window.getComputedStyle(referenceElement);
         const referenceElementWidth =
@@ -1143,11 +1247,12 @@ export default class AvatarGroup extends LightningElement {
             parseFloat(referenceElementStyles.marginRight);
 
         if (!referenceElementStyles || !referenceElementWidth) return;
-        this._maxVisibleCount = Math.max(
+        const maxVisibleCount = Math.max(
             0,
             Math.floor(availableWidth / referenceElementWidth)
         );
-
+        this._maxVisibleCount =
+            this.layout === 'stack' ? maxVisibleCount + 1 : maxVisibleCount;
         if (
             this.enableInfiniteLoading &&
             !this.isLoading &&
@@ -1320,6 +1425,26 @@ export default class AvatarGroup extends LightningElement {
         const index = Number(event.currentTarget.dataset.index);
         if (index !== this._focusedIndex) {
             this.switchFocus(index);
+        }
+    }
+
+    /**
+     * Handle a mouse enter on an item.
+     *
+     * @param {Event} event `mouseenter` event.
+     */
+    handleItemHover(event) {
+        if (this.isClassic || this.isNotList) {
+            // Reposition the tooltip
+            const index = Number(event.currentTarget.dataset.index);
+            if (this._tooltipTimeout) {
+                clearTimeout(this._tooltipTimeout);
+            }
+            this._tooltipTimeout = setTimeout(() => {
+                if (this._tooltips[index]) {
+                    this._tooltips[index].startPositioning();
+                }
+            }, 50);
         }
     }
 

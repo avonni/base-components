@@ -18,7 +18,7 @@
 
 .slds-form-error {
     padding-top: 0.5rem;
-    color: #c23934;
+    color: var(--slds-g-color-error-base-40, #ea001e);
     font-size: 0.75rem;
 }
 

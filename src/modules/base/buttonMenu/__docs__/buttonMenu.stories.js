@@ -196,6 +196,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        triggers: {
+            control: {
+                type: 'select'
+            },
+            options: ['click', 'hover', 'focus'],
+            description:
+                "Specify which triggers will show the menu. Supported values are 'click', 'hover', 'focus'.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'click' }
+            }
+        },
         value: {
             control: {
                 type: 'text'
@@ -244,6 +256,7 @@ export default {
         loadingStateAlternativeText: 'Loading',
         menuAlignment: 'left',
         nubbin: false,
+        triggers: 'click',
         variant: 'border'
     }
 };
@@ -419,11 +432,11 @@ export const Illustration = TemplateIllustration.bind({});
  * Allows to quickly scan if there is any problems.
  */
 customElements.define(
-    'ac-base-button-menu-sizes',
+    'ac-button-menu-sizes',
     ButtonMenuSizesComponent.CustomElementConstructor
 );
 const ButtonMenuSizes = ({ variant }) => {
-    const element = document.createElement('ac-base-button-menu-sizes');
+    const element = document.createElement('ac-button-menu-sizes');
     element.variant = variant;
     return element;
 };

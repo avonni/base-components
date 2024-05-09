@@ -50,6 +50,7 @@
                                         class="slds-path__link"
                                         role="option"
                                         tabindex="0"
+                                        onclick={handlePreventDefault}
                                     >
                                         <span
                                             class="
@@ -389,8 +390,9 @@
                                         slds-text-color_default
                                         slds-text-body_regular
                                     "
-                                    >{action.label}</span
                                 >
+                                    {action.label}
+                                </span>
                             </button>
                         </template>
                     </div>

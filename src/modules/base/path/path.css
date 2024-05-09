@@ -3,11 +3,11 @@
 }
 
 .path__item_error {
-    background: #ba0517;
+    background: var(--slds-g-color-error-base-40, #ba0517);
 }
 
 .path__item_error:hover {
-    background: #8e030f;
+    background: var(--slds-g-color-error-base-30, #8e030f);
 }
 
 .path__item_warning {

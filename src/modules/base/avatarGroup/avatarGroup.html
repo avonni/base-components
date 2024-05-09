@@ -2,8 +2,8 @@
     <!-- Stacked with exactly two avatars -->
     <div if:true={isClassic} class={avatarGroupClass}>
         <c-primitive-avatar
-            alternative-text={primaryItem.alternativeText}
             fallback-icon-name={primaryItem.fallbackIconName}
+            href={primaryItem.href}
             initials={primaryItem.initials}
             src={primaryItem.src}
             variant={variant}
@@ -22,7 +22,7 @@
             actions={primaryItem.actions}
             action-position={primaryItem.actionPosition}
             action-menu-icon={primaryItem.actionMenuIcon}
-            data-element-id="avonni-primitive-avatar-classic-1"
+            data-element-id="avonni-avatar"
             data-group-name="avatar"
             data-index="0"
             class="
@@ -32,11 +32,12 @@
             onclick={handleAvatarClick}
             role="button"
             onkeyup={handleAvatarClick}
+            onmouseenter={handleItemHover}
             tabindex="0"
         ></c-primitive-avatar>
         <c-primitive-avatar
-            alternative-text={secondaryItem.alternativeText}
             fallback-icon-name={secondaryItem.fallbackIconName}
+            href={secondaryItem.href}
             initials={secondaryItem.initials}
             src={secondaryItem.src}
             variant={variant}
@@ -52,7 +53,7 @@
             entity-variant={secondaryItem.entityVariant}
             entity-src={secondaryItem.entitySrc}
             entity-position={secondaryItem.entityPosition}
-            data-element-id="avonni-primitive-avatar-classic-2"
+            data-element-id="avonni-avatar"
             data-group-name="avatar"
             data-index="1"
             class="
@@ -62,14 +63,15 @@
             onclick={handleAvatarClick}
             role="button"
             onkeyup={handleAvatarClick}
+            onmouseenter={handleItemHover}
             tabindex="0"
         ></c-primitive-avatar>
     </div>
 
-    <template if:false={isClassic}>
-        <span id="list-description" class="slds-assistive-text"
-            >Move between the items by using arrow keys.</span
-        >
+    <div if:false={isClassic} data-element-id="avatar-group-wrapper">
+        <span id="list-description" class="slds-assistive-text">
+            Move between the items by using arrow keys.
+        </span>
         <ul
             class={avatarFlexWrapperClass}
             aria-describedby="list-description"
@@ -89,9 +91,10 @@
                     data-index={index}
                     onclick={handleAvatarClick}
                     onfocus={handleItemFocus}
+                    onmouseenter={handleItemHover}
                 >
                     <c-avatar
-                        class={avatarInlineClass}
+                        class={item.class}
                         role="button"
                         actions={item.actions}
                         action-menu-icon={item.actionMenuIcon}
@@ -105,6 +108,7 @@
                         entity-variant={item.entityVariant}
                         fallback-icon-name={item.fallbackIconName}
                         hide-avatar-details={isNotList}
+                        href={item.href}
                         initials={item.initials}
                         presence={item.presence}
                         presence-title={item.presenceTitle}
@@ -122,8 +126,7 @@
                         data-group-name="avatar"
                         data-element-id="avonni-avatar"
                         data-index={index}
-                    >
-                    </c-avatar>
+                    ></c-avatar>
                 </li>
             </template>
 
@@ -208,9 +211,9 @@
                     onfocusout={handleHiddenItemsFocusOut}
                     onscroll={handleHiddenItemsScroll}
                 >
-                    <span class="slds-assistive-text" id="show-more-label"
-                        >Expanded items</span
-                    >
+                    <span class="slds-assistive-text" id="show-more-label">
+                        Expanded items
+                    </span>
                     <ul aria-orientation="vertical">
                         <template for:each={hiddenItems} for:item="item">
                             <li
@@ -222,7 +225,7 @@
                                 onclick={handleAvatarClick}
                             >
                                 <c-avatar
-                                    class={hiddenAvatarInlineClass}
+                                    class={item.class}
                                     role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}
@@ -234,6 +237,7 @@
                                     entity-src={item.entitySrc}
                                     entity-variant={item.entityVariant}
                                     fallback-icon-name={item.fallbackIconName}
+                                    href={item.href}
                                     initials={item.initials}
                                     presence={item.presence}
                                     presence-position={item.presencePosition}
@@ -295,5 +299,5 @@
                 </button>
             </li>
         </ul>
-    </template>
+    </div>
 </template>

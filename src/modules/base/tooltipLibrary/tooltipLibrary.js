@@ -145,6 +145,13 @@ export class Tooltip {
 
     _config = {};
 
+    handleTargetMouseEnter = () => this.show();
+    handleTargetMouseLeave = (event) => this.hideIfNotSelfCover(event);
+    handleTargetTouchStart = (event) => {
+        event.stopPropagation();
+        this.toggle();
+    };
+
     /**
      * A shared instance of primitiveBubble is used when an element is not specified in the config
      * object.
@@ -227,13 +234,11 @@ export class Tooltip {
         const target = this._target();
         if (!this._initialized && target) {
             ['mouseenter', 'focus'].forEach((name) =>
-                target.addEventListener(name, () => this.show())
+                target.addEventListener(name, this.handleTargetMouseEnter)
             );
             // Unlike the tooltip in Aura, we want clicks and keys to dismiss the tooltip.
             ['mouseleave', 'blur', 'click', 'keydown'].forEach((name) =>
-                target.addEventListener(name, (event) =>
-                    this.hideIfNotSelfCover(event)
-                )
+                target.addEventListener(name, this.handleTargetMouseLeave)
             );
         }
     }
@@ -268,18 +273,13 @@ export class Tooltip {
     addToggleListeners() {
         const target = this._target();
         if (!this._initialized && target) {
-            target.addEventListener('touchstart', (e) => {
-                e.stopPropagation();
-                this.toggle();
-            });
+            target.addEventListener('touchstart', this.handleTargetTouchStart);
 
             ['mouseenter', 'focus'].forEach((name) =>
-                target.addEventListener(name, () => this.show())
+                target.addEventListener(name, this.handleTargetMouseEnter)
             );
             ['mouseleave', 'blur'].forEach((name) =>
-                target.addEventListener(name, (event) =>
-                    this.hideIfNotSelfCover(event)
-                )
+                target.addEventListener(name, this.handleTargetMouseLeave)
             );
         }
     }
@@ -359,6 +359,11 @@ export class Tooltip {
     }
 
     startPositioning() {
+        const target = this._target();
+        if (!target) {
+            return;
+        }
+
         if (!this._autoPosition) {
             this._autoPosition = new AutoPosition(this._root);
         }
@@ -374,7 +379,7 @@ export class Tooltip {
         };
 
         // Pads the tooltip so its nubbin is at the center of the target element.
-        const targetBox = this._target().getBoundingClientRect();
+        const targetBox = target.getBoundingClientRect();
         const padLeft = targetBox.width * 0.5 - NUBBIN_OFFSET;
 
         this._autoPosition
@@ -403,5 +408,38 @@ export class Tooltip {
         if (this._autoPosition) {
             this._autoPosition.stop();
         }
+    }
+
+    destroy() {
+        const target = this._target();
+        if (!target) {
+            return;
+        }
+        this.hide();
+        this.removeAllListeners();
+
+        const previousValue = target
+            .getAttribute(ARIA_DESCRIBEDBY)
+            .replace(`${this._element().id}`, '');
+        const ariaDescribedBy = normalizeAriaAttribute([previousValue]);
+        if (ariaDescribedBy) {
+            target.setAttribute(ARIA_DESCRIBEDBY, ariaDescribedBy);
+        } else {
+            target.removeAttribute(ARIA_DESCRIBEDBY);
+        }
+    }
+
+    removeAllListeners() {
+        const target = this._target();
+        if (!target) {
+            return;
+        }
+        ['mouseenter', 'focus'].forEach((name) =>
+            target.removeEventListener(name, this.handleTargetMouseEnter)
+        );
+        ['mouseleave', 'blur', 'click', 'keydown'].forEach((name) =>
+            target.removeEventListener(name, this.handleTargetMouseLeave)
+        );
+        target.removeEventListener('touchstart', this.handleTargetTouchStart);
     }
 }

@@ -29,7 +29,7 @@
 }
 
 .avonni-date-range__input_error {
-    box-shadow: #ba0517 0 0 0 1px inset;
+    box-shadow: var(--slds-g-color-error-base-40, #ba0517) 0 0 0 1px inset;
 }
 
 .avonni-input-date-range__labels {

@@ -74,7 +74,11 @@
                             data-element-id="div-title"
                             onclick={handleTitleClick}
                         >
-                            <a if:true={href} href={href}>
+                            <a
+                                if:true={href}
+                                href={href}
+                                onclick={handleAnchorTagClick}
+                            >
                                 <h3 class="slds-truncate">{title}</h3>
                             </a>
                             <h3 if:false={href} class="slds-truncate">

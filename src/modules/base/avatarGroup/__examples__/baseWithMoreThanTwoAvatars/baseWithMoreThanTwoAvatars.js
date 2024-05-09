@@ -4,7 +4,7 @@ const ITEMS = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         fallbackIconName: 'standard:user',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'John Doe',
         presence: 'online',
         presenceTitle: 'Online',
         primaryText: 'John Doe',
@@ -16,7 +16,7 @@ const ITEMS = [
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
         initials: 'UA',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Jane Doe',
         presence: 'blocked',
         presenceTitle: 'Blocked',
         primaryText: 'Jane Doe',
@@ -26,7 +26,7 @@ const ITEMS = [
     },
     {
         fallbackIconName: 'standard:user',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Vishnu Doe',
         presence: 'offline',
         presenceTitle: 'Offline',
         primaryText: 'Vishnu Doe',
@@ -37,7 +37,7 @@ const ITEMS = [
     {
         fallbackIconName: 'standard:user',
         initials: 'EB',
-        alternativeText: 'This is the alternative text',
+        alternativeText: 'Eliott Beauchesne',
         presence: 'busy',
         presenceTitle: 'Busy',
         primaryText: 'Eliott Beauchesne',
@@ -73,5 +73,10 @@ export default class AvatarGroupBaseWithMoreThanTwoAvatars extends LightningElem
         ...ITEMS,
         ...ITEMS,
         ...ITEMS
-    ];
+    ].map((item, index) => {
+        return {
+            ...item,
+            name: `user-${index + 1}`
+        };
+    });
 }

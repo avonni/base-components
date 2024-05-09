@@ -12,6 +12,7 @@
             onmouseenter={handleMouseEnter}
             onfocus={handleFocus}
             onblur={handleBlur}
+            onclick={handlePreventDefault}
         >
             <span
                 class="slds-truncate"
@@ -23,8 +24,9 @@
                     class="slds-indicator_unsaved"
                     title={draftAlternativeText}
                     data-element-id="abbr"
-                    >*</abbr
                 >
+                    *
+                </abbr>
                 <template if:true={prefixIconName}>
                     <lightning-icon
                         icon-name={prefixIconName}
@@ -48,11 +50,8 @@
                 ></lightning-icon>
             </template>
         </a>
-        <div
-            class="
-                slds-dropdown slds-dropdown_submenu slds-dropdown_submenu-right
-            "
-        >
+        <div class={dropdownClass}>
+            <div class="avonni-submenu_dropdown-gap-cover"></div>
             <div class="slds-dropdown__list" role="menu" aria-label={label}>
                 <slot></slot>
             </div>

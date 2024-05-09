@@ -1,7 +1,5 @@
 <template>
     <c-color-picker
-        name="dt-inline-edit-color-picker"
-        data-inputable="true"
         disabled={disabled}
         colors={colors}
         hide-color-input={hideColorInput}
@@ -10,11 +8,13 @@
         menu-icon-name={menuIconName}
         menu-icon-size={menuIconSize}
         menu-variant={menuVariant}
+        name="dt-inline-edit-color-picker"
         opacity={opacity}
         required={required}
         type={type}
         value={editedValue}
         variant="label-hidden"
+        data-inputable="true"
     >
     </c-color-picker>
 </template>

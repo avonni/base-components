@@ -100,7 +100,10 @@
 
 .avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled)
     .avonni-primitive-combobox__option-label {
-    color: var(--avonni-combobox-option-label-text-color, #181818);
+    color: var(
+        --avonni-combobox-option-label-text-color,
+        var(--lwc-colorTextDefault, #181818)
+    );
 }
 
 .avonni-primitive-combobox__option .avonni-primitive-combobox__option-label {
@@ -111,7 +114,10 @@
 
 .avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled):hover
     .avonni-primitive-combobox__option-label {
-    color: var(--avonni-combobox-option-label-text-color-hover, #181818);
+    color: var(
+        --avonni-combobox-option-label-text-color-hover,
+        var(--lwc-colorTextDefault, #181818)
+    );
 }
 
 .avonni-primitive-combobox__option_disabled

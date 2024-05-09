@@ -24,14 +24,12 @@ export default class PrimitiveCellAvatar extends LightningElement {
     @api src;
 
     _size = AVATAR_SIZE.default;
-
     _variant = AVATAR_VARIANTS.default;
 
     @api
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: AVATAR_SIZE.default,
@@ -43,7 +41,6 @@ export default class PrimitiveCellAvatar extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: AVATAR_VARIANTS.default,

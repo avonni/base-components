@@ -1,5 +1,8 @@
 import { createElement } from 'lwc';
 import AvatarGroup from 'c/avatarGroup';
+import { Tooltip } from 'c/tooltipLibrary';
+
+jest.mock('c/tooltipLibrary');
 
 // Not tested:
 // Focus handling on items and hidden items.
@@ -8,6 +11,7 @@ const item = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
+        href: 'url',
         alternativeText: 'This is the alternative text',
         status: 'locked',
         statusTitle: 'Locked',
@@ -33,6 +37,7 @@ const items = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
+        href: 'url',
         alternativeText: 'This is the alternative text',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
@@ -42,6 +47,7 @@ const items = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
+        href: 'url',
         initials: 'UA',
         alternativeText: 'This is the alternative text',
         primaryText: 'Jane Doe',
@@ -87,6 +93,7 @@ describe('Avatar Group', () => {
             setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
+        Tooltip.mockClear();
     });
 
     describe('Attributes', () => {
@@ -301,12 +308,17 @@ describe('Avatar Group', () => {
                 avatars.forEach((avatar, index) => {
                     const correspondingField = item[index];
                     expect(correspondingField).toBeTruthy();
-                    expect(avatar.alternativeText).toBe(
+                    expect(Tooltip).toHaveBeenCalled();
+                    expect(Tooltip.mock.calls[0][0]).toBe(
                         correspondingField.alternativeText
                     );
+                    const instance = Tooltip.mock.instances[0];
+                    expect(instance.initialize).toHaveBeenCalled();
+
                     expect(avatar.fallbackIconName).toBe(
                         correspondingField.fallbackIconName
                     );
+                    expect(avatar.href).toBe(correspondingField.href);
                     expect(avatar.initials).toBe(correspondingField.initials);
                     expect(avatar.src).toBe(correspondingField.src);
                     expect(avatar.status).toBe(correspondingField.status);
@@ -1467,7 +1479,7 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
 
@@ -1487,7 +1499,7 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
                 element.enableInfiniteLoading = true;
@@ -1504,7 +1516,7 @@ describe('Avatar Group', () => {
                         const avatarShow = element.shadowRoot.querySelectorAll(
                             '[data-element-id^="avonni-avatar"]'
                         );
-                        expect(avatarShow).toHaveLength(3);
+                        expect(avatarShow).toHaveLength(4);
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
                         );
@@ -1523,11 +1535,11 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
                 element.enableInfiniteLoading = true;
-                element.items = longItems.slice(0, 3);
+                element.items = longItems.slice(0, 4);
 
                 const handler = jest.fn();
                 element.addEventListener('loadmore', handler);
@@ -1540,7 +1552,7 @@ describe('Avatar Group', () => {
                         const avatarShow = element.shadowRoot.querySelectorAll(
                             '[data-element-id^="avonni-avatar"]'
                         );
-                        expect(avatarShow).toHaveLength(3);
+                        expect(avatarShow).toHaveLength(4);
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
                         );
@@ -1556,7 +1568,7 @@ describe('Avatar Group', () => {
                     marginRight: '10px'
                 });
                 const wrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="ul"]'
+                    '[data-element-id="avatar-group-wrapper"]'
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
                 element.enableInfiniteLoading = true;
@@ -1574,7 +1586,7 @@ describe('Avatar Group', () => {
                         const avatarShow = element.shadowRoot.querySelectorAll(
                             '[data-element-id^="avonni-avatar"]'
                         );
-                        expect(avatarShow).toHaveLength(3);
+                        expect(avatarShow).toHaveLength(4);
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
                         );

@@ -4,6 +4,7 @@ import ComboboxTpl from './combobox.html';
 import counterTpl from './counter.html';
 import dateRangeTpl from './dateRange.html';
 import percentFormatted from './percentFormatted.html';
+import recordPickerTpl from './recordPicker.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
@@ -18,6 +19,7 @@ const CUSTOM_TYPES_TPL = {
     lookup: lookupTpl,
     'name-lookup': nameLookupTpl,
     'percent-formatted': percentFormatted,
+    'record-picker': recordPickerTpl,
     'rich-text': richTextTpl,
     textarea: textareaTpl
 };
@@ -66,9 +68,10 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     _startDate;
     _endDate;
 
-    // lookup attributes
-    @api fieldName;
+    // lookup/record-picker attributes
     @api objectApiName;
+    @api fieldName;
+    @api relationshipObjectApiName;
     @api rowKeyValue;
     @api relationshipFieldName;
 
@@ -93,15 +96,17 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     renderedCallback() {
-        if (!this.concreteComponent) {
-            return;
-        }
+        if (!this.concreteComponent) return;
         this.concreteComponent.addEventListener('change', this._changeHandler);
-        this.concreteComponent.addEventListener('blur', this._blurHandler);
-        this.concreteComponent.addEventListener('focus', this._focusHandler);
-        requestAnimationFrame(() => {
+
+        if (this.columnType !== 'lookup') {
+            this.concreteComponent.addEventListener('blur', this._blurHandler);
+            this.concreteComponent.addEventListener(
+                'focus',
+                this._focusHandler
+            );
             this.focus();
-        });
+        }
     }
 
     /*
@@ -208,8 +213,9 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     @api
     showHelpMessageIfInvalid() {
         if (
-            this.columnDef.type !== 'rich-text' &&
-            this.columnDef.type !== 'lookup'
+            this.columnType !== 'rich-text' &&
+            this.columnType !== 'lookup' &&
+            this.columnType !== 'record-picker'
         ) {
             this.concreteComponent.showHelpMessageIfInvalid();
         }
@@ -222,7 +228,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
      */
 
     getComboboxOptionsEvent() {
-        if (this.columnDef.type !== 'combobox') return;
+        if (this.columnType !== 'combobox') return;
         this.dispatchEvent(
             new CustomEvent('getcomboboxoptions', {
                 detail: {
@@ -238,7 +244,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     getRichTextFormatsEvent() {
-        if (this.columnDef.type !== 'rich-text') return;
+        if (this.columnType !== 'rich-text') return;
         this.dispatchEvent(
             new CustomEvent('getrichtextformats', {
                 detail: {
@@ -292,5 +298,13 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     handleComponentFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    handleLoad() {
+        this.concreteComponent.addEventListener('focusout', this._blurHandler);
+        this.concreteComponent.addEventListener('focusin', this._focusHandler);
+        requestAnimationFrame(() => {
+            this.focus();
+        });
     }
 }

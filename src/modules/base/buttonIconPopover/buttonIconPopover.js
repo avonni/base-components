@@ -175,7 +175,7 @@ export default class ButtonIconPopover extends LightningElement {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
 
-        if (this.triggers === 'click') {
+        if (this.isTriggerClick) {
             this.focusOnPopover();
         }
     }
@@ -367,8 +367,8 @@ export default class ButtonIconPopover extends LightningElement {
     get triggers() {
         return this._triggers;
     }
-    set triggers(triggers) {
-        this._triggers = normalizeString(triggers, {
+    set triggers(value) {
+        this._triggers = normalizeString(value, {
             fallbackValue: BUTTON_TRIGGERS.default,
             validValues: BUTTON_TRIGGERS.valid
         });
@@ -473,6 +473,18 @@ export default class ButtonIconPopover extends LightningElement {
         return !!this.title;
     }
 
+    get isTriggerClick() {
+        return this.triggers === 'click';
+    }
+
+    get isTriggerFocus() {
+        return this.triggers === 'focus';
+    }
+
+    get isTriggerHover() {
+        return this.triggers === 'hover';
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -546,11 +558,11 @@ export default class ButtonIconPopover extends LightningElement {
      * If the trigger is click, it toggles the menu visibility and blurs the button-icon.
      */
     clickOnButton() {
-        if (!this._disabled && this.button) {
+        if (!this.disabled && this.button) {
             this.cancelBlur();
             this.focusOnButton();
 
-            if (this.triggers === 'click') {
+            if (this.isTriggerClick) {
                 this.toggleMenuVisibility();
             }
         }
@@ -563,11 +575,7 @@ export default class ButtonIconPopover extends LightningElement {
     focusOnButton() {
         this.allowBlur();
         this.button.focus();
-        if (
-            this.triggers === 'focus' &&
-            !this._popoverVisible &&
-            !this._disabled
-        ) {
+        if (this.isTriggerFocus && !this._popoverVisible && !this.disabled) {
             this.toggleMenuVisibility();
         }
     }
@@ -586,7 +594,7 @@ export default class ButtonIconPopover extends LightningElement {
         if (this._cancelBlur) {
             return;
         }
-        if (this.triggers !== 'click') {
+        if (!this.isTriggerClick) {
             this.toggleMenuVisibility();
         }
     }
@@ -599,7 +607,7 @@ export default class ButtonIconPopover extends LightningElement {
         if (this._cancelBlur) {
             return;
         }
-        if (this.triggers === 'click' && !isButton) {
+        if (this.isTriggerClick && !isButton) {
             this.toggleMenuVisibility();
         }
     }
@@ -610,18 +618,14 @@ export default class ButtonIconPopover extends LightningElement {
      */
     handleMouseEnter() {
         if (
-            this.triggers === 'hover' &&
+            this.isTriggerHover &&
             this._popoverVisible &&
-            !this._disabled &&
+            !this.disabled &&
             !this._cancelBlur
         ) {
             this.cancelBlur();
         }
-        if (
-            this.triggers === 'hover' &&
-            !this._popoverVisible &&
-            !this._disabled
-        ) {
+        if (this.isTriggerHover && !this._popoverVisible && !this.disabled) {
             this.allowBlur();
             this.toggleMenuVisibility();
         }
@@ -632,28 +636,25 @@ export default class ButtonIconPopover extends LightningElement {
      */
     handleMouseLeave() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
-        setTimeout(
-            function () {
-                if (
-                    !this._cancelBlur &&
-                    this.triggers === 'hover' &&
-                    this._popoverVisible &&
-                    !this._disabled
-                ) {
-                    this.cancelBlur();
-                    this.toggleMenuVisibility();
-                }
-                if (
-                    this._cancelBlur &&
-                    this.triggers === 'hover' &&
-                    this._popoverVisible &&
-                    !this._disabled
-                ) {
-                    this.allowBlur();
-                }
-            }.bind(this),
-            250
-        );
+        setTimeout(() => {
+            if (
+                !this._cancelBlur &&
+                this.isTriggerHover &&
+                this._popoverVisible &&
+                !this.disabled
+            ) {
+                this.cancelBlur();
+                this.toggleMenuVisibility();
+            }
+            if (
+                this._cancelBlur &&
+                this.isTriggerHover &&
+                this._popoverVisible &&
+                !this.disabled
+            ) {
+                this.allowBlur();
+            }
+        }, 250);
     }
 
     /**
@@ -661,11 +662,7 @@ export default class ButtonIconPopover extends LightningElement {
      * it sets the variable cancelBlur to true.
      */
     handleMouseEnterBody() {
-        if (
-            this.triggers === 'hover' &&
-            this._popoverVisible &&
-            !this._disabled
-        ) {
+        if (this.isTriggerHover && this._popoverVisible && !this.disabled) {
             this.cancelBlur();
         }
     }
@@ -676,28 +673,25 @@ export default class ButtonIconPopover extends LightningElement {
      */
     handleMouseLeaveBody() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
-        setTimeout(
-            function () {
-                if (
-                    !this._cancelBlur &&
-                    this.triggers === 'hover' &&
-                    this._popoverVisible &&
-                    !this._disabled
-                ) {
-                    this.cancelBlur();
-                    this.toggleMenuVisibility();
-                }
-                if (
-                    this._cancelBlur &&
-                    this.triggers === 'hover' &&
-                    this._popoverVisible &&
-                    !this._disabled
-                ) {
-                    this.allowBlur();
-                }
-            }.bind(this),
-            250
-        );
+        setTimeout(() => {
+            if (
+                !this._cancelBlur &&
+                this.isTriggerHover &&
+                this._popoverVisible &&
+                !this.disabled
+            ) {
+                this.cancelBlur();
+                this.toggleMenuVisibility();
+            }
+            if (
+                this._cancelBlur &&
+                this.isTriggerHover &&
+                this._popoverVisible &&
+                !this.disabled
+            ) {
+                this.allowBlur();
+            }
+        }, 250);
     }
 
     /**
@@ -731,10 +725,10 @@ export default class ButtonIconPopover extends LightningElement {
      * If trigger is click, keeps the popover visible when click on a slot.
      */
     handleSlotClick() {
-        if (this.triggers === 'focus') {
+        if (this.isTriggerFocus) {
             this.focusOnButton();
         }
-        if (this.triggers === 'click') {
+        if (this.isTriggerClick) {
             this._popoverVisible = true;
         }
     }

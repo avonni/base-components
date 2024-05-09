@@ -4,6 +4,7 @@ customElements.define('ac-base-button', Component.CustomElementConstructor);
 
 export const Button = ({
     accessKey,
+    disableAnimation,
     disabled,
     iconName,
     iconPosition,
@@ -18,6 +19,7 @@ export const Button = ({
 }) => {
     const element = document.createElement('ac-base-button');
     element.accessKey = accessKey;
+    element.disableAnimation = disableAnimation;
     element.disabled = disabled;
     element.iconName = iconName;
     element.iconPosition = iconPosition;

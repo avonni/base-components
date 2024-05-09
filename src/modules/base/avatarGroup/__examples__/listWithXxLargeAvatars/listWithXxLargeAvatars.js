@@ -5,7 +5,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'John Doe',
             status: 'locked',
             statusTitle: 'Locked',
             statusPosition: 'top-left',
@@ -28,7 +28,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Jane Doe',
             status: 'approved',
             statusTitle: 'Approved',
             statusPosition: 'top-left',
@@ -47,7 +47,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         },
         {
             fallbackIconName: 'standard:user',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Vishnu Doe',
             status: 'declined',
             statusTitle: 'Declined',
             statusPosition: 'top-left',
@@ -67,7 +67,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         {
             fallbackIconName: 'standard:user',
             initials: 'EB',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Eliott Beauchesne',
             status: 'unknown',
             statusTitle: 'Unknown',
             statusPosition: 'top-left',
@@ -87,7 +87,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'John Doe',
             status: 'locked',
             statusTitle: 'Locked',
             statusPosition: 'top-left',
@@ -110,7 +110,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Jane Doe',
             status: 'approved',
             statusTitle: 'Approved',
             statusPosition: 'top-left',
@@ -129,7 +129,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         },
         {
             fallbackIconName: 'standard:user',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Vishnu Doe',
             status: 'declined',
             statusTitle: 'Declined',
             statusPosition: 'top-left',
@@ -149,7 +149,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         {
             fallbackIconName: 'standard:user',
             initials: 'EB',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Eliott Beauchesne',
             status: 'unknown',
             statusTitle: 'Unknown',
             statusPosition: 'top-left',
@@ -169,7 +169,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'John Doe',
             status: 'locked',
             statusTitle: 'Locked',
             statusPosition: 'top-left',
@@ -192,7 +192,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Jane Doe',
             status: 'approved',
             statusTitle: 'Approved',
             statusPosition: 'top-left',
@@ -211,7 +211,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         },
         {
             fallbackIconName: 'standard:user',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Vishnu Doe',
             status: 'declined',
             statusTitle: 'Declined',
             statusPosition: 'top-left',
@@ -231,7 +231,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
         {
             fallbackIconName: 'standard:user',
             initials: 'EB',
-            alternativeText: 'This is the alternative text',
+            alternativeText: 'Eliott Beauchesne',
             status: 'unknown',
             statusTitle: 'Unknown',
             statusPosition: 'top-left',

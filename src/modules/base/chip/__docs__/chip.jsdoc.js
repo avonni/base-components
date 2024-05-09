@@ -66,7 +66,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-brand-color-background
- * @default #0070d1
+ * @default #0176d3
  * @type color
  */
 /**
@@ -84,7 +84,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-brand-outline-color
- * @default #0070d1
+ * @default #0176d3
  * @type color
  */
 /**

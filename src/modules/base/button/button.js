@@ -1,8 +1,14 @@
 import { api } from 'lwc';
-import { normalizeString, isCSR } from 'c/utilsPrivate';
+import {
+    hasAnimation,
+    normalizeBoolean,
+    normalizeString,
+    isCSR
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
 import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
+import { getKineticsAttributes, animate } from './kinetics';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -91,6 +97,7 @@ export default class Button extends PrimitiveButton {
      * @default neutral
      */
 
+    _disableAnimation = false;
     _iconSize = ICON_SIZES.default;
 
     /*
@@ -105,6 +112,27 @@ export default class Button extends PrimitiveButton {
 
     renderedCallback() {
         super.renderedCallback();
+
+        this.template.host.style.pointerEvents = this.disabled ? 'none' : '';
+
+        if (
+            !this.disabled &&
+            hasAnimation() &&
+            !this._disableAnimation &&
+            this.computedVariant
+        ) {
+            if (!this.button) return;
+            const attributes = getKineticsAttributes(this.computedVariant);
+            attributes.forEach(({ name, value }) => {
+                this.button.setAttribute(name, value);
+            });
+            animate(this.button);
+        } else {
+            const attributes = getKineticsAttributes(this.computedVariant);
+            attributes.forEach(({ name }) => {
+                this.button.removeAttribute(name);
+            });
+        }
     }
 
     disconnectedCallback() {
@@ -116,6 +144,17 @@ export default class Button extends PrimitiveButton {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Reserved for internal use. If present, disables button animation.
+     */
+    @api
+    get disableAnimation() {
+        return this._disableAnimation;
+    }
+    set disableAnimation(value) {
+        this._disableAnimation = normalizeBoolean(value);
+    }
 
     /**
      * The size of the icon. Options include x-small, small, medium or large.

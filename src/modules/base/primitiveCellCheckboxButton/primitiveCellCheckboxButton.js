@@ -2,10 +2,10 @@ import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellCheckboxButton extends LightningElement {
     @api colKeyValue;
-    @api rowKeyValue;
     @api disabled;
     @api label;
     @api name;
+    @api rowKeyValue;
 
     _value;
     readOnly;

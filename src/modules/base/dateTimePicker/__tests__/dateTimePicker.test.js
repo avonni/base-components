@@ -17,6 +17,9 @@ describe('DateTimePicker', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
+        jest.clearAllMocks();
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
@@ -24,6 +27,10 @@ describe('DateTimePicker', () => {
             is: DateTimePicker
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     it('Date time picker: default attributes', () => {
@@ -281,20 +288,21 @@ describe('DateTimePicker', () => {
                         expect(buttons).toHaveLength(7);
                         const datePickerWrapper =
                             element.shadowRoot.querySelector(
-                                '[data-element-id="div-inline-date-picker-wrapper"]'
+                                '[data-element-id="avonni-date-time-picker"]'
                             );
                         jest.spyOn(
                             datePickerWrapper,
-                            'offsetWidth',
-                            'get'
-                        ).mockReturnValue(300);
+                            'getBoundingClientRect'
+                        ).mockImplementation(() => {
+                            return { width: 300 };
+                        });
                         callObserver();
                     })
                     .then(() => {
                         const buttons = element.shadowRoot.querySelectorAll(
                             '[data-element-id="button-inline-date-picker"]'
                         );
-                        expect(buttons).toHaveLength(5);
+                        expect(buttons).toHaveLength(1);
                     });
             });
         });
@@ -411,9 +419,6 @@ describe('DateTimePicker', () => {
                 '[data-element-id="button-default"]'
             );
             wedHours.forEach((timeSlot) => {
-                if (!timeSlot.disabled) {
-                    console.log(timeSlot.dataset.time);
-                }
                 expect(timeSlot.disabled).toBeTruthy();
             });
             const day16Hours = days[1].querySelectorAll(
@@ -1251,7 +1256,7 @@ describe('DateTimePicker', () => {
                 expect(call.composed).toBeTruthy();
                 expect(call.cancelable).toBeFalsy();
                 expect(
-                    call.detail.callbacks.updateInlineDatePickerMaxVisibleDays
+                    call.detail.callbacks.renderDateTimePicker
                 ).toBeInstanceOf(Function);
                 expect(
                     call.detail.callbacks.setIsResizedByParent
@@ -1276,10 +1281,8 @@ describe('DateTimePicker', () => {
                 element.variant = 'weekly';
 
                 expect(handler).toHaveBeenCalled();
-                const {
-                    updateInlineDatePickerMaxVisibleDays,
-                    setIsResizedByParent
-                } = handler.mock.calls[0][0].detail.callbacks;
+                const { renderDateTimePicker, setIsResizedByParent } =
+                    handler.mock.calls[0][0].detail.callbacks;
                 setIsResizedByParent(true);
 
                 return Promise.resolve()
@@ -1290,13 +1293,14 @@ describe('DateTimePicker', () => {
                         expect(buttons).toHaveLength(7);
                         const datePickerWrapper =
                             element.shadowRoot.querySelector(
-                                '[data-element-id="div-inline-date-picker-wrapper"]'
+                                '[data-element-id="avonni-date-time-picker"]'
                             );
                         jest.spyOn(
                             datePickerWrapper,
-                            'offsetWidth',
-                            'get'
-                        ).mockReturnValue(300);
+                            'getBoundingClientRect'
+                        ).mockImplementation(() => {
+                            return { width: 300 };
+                        });
                         callObserver();
                     })
                     .then(() => {
@@ -1307,13 +1311,13 @@ describe('DateTimePicker', () => {
                         expect(buttons).toHaveLength(7);
 
                         // Trigger the resize
-                        updateInlineDatePickerMaxVisibleDays();
+                        renderDateTimePicker();
                     })
                     .then(() => {
                         const buttons = element.shadowRoot.querySelectorAll(
                             '[data-element-id="button-inline-date-picker"]'
                         );
-                        expect(buttons).toHaveLength(5);
+                        expect(buttons).toHaveLength(1);
                     });
             });
 

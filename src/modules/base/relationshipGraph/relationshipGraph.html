@@ -11,7 +11,9 @@
                 hide-avatar-details="true"
             ></avonni-avatar>
             <h1 class="slds-text-heading_small">
-                <a if:true={href} href={href}>{label}</a>
+                <a if:true={href} href={href} onclick={handleAnchorTagClick}>
+                    {label}
+                </a>
                 <span if:false={href}>{label}</span>
             </h1>
         </avonni-media-object>

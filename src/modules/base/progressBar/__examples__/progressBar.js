@@ -6,6 +6,7 @@ customElements.define(
 );
 
 export const ProgressBar = ({
+    isLoading,
     label,
     size,
     value,
@@ -23,6 +24,7 @@ export const ProgressBar = ({
     pinAttributes
 }) => {
     const element = document.createElement('ac-base-progress-bar');
+    element.isLoading = isLoading;
     element.label = label;
     element.size = size;
     element.showPin = showPin;

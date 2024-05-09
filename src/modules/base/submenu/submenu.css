@@ -1,0 +1,13 @@
+.avonni-submenu_dropdown-gap-cover {
+    /* To avoid mouseleave when passing from button to dropdown when trigger is hover */
+    width: 0.25rem; /* Equal to margin-top of dropdown */
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: -0.25rem;
+}
+
+.slds-dropdown_submenu-left .avonni-submenu_dropdown-gap-cover {
+    right: -0.25rem;
+    left: unset;
+}

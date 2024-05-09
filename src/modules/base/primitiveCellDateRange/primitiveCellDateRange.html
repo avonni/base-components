@@ -1,51 +1,49 @@
 <template>
-    <template if:true={visible}>
-        <c-primitive-datatable-iedit-panel-custom
-            data-iedit-panel-custom="true"
-            visible={state.inlineEdit.panelVisible}
-            row-key-value={state.inlineEdit.rowKeyValue}
-            col-key-value={state.inlineEdit.colKeyValue}
-            edited-value={state.inlineEdit.editedValue}
-            column-def={state.inlineEdit.columnDef}
-            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
-            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
+    <c-primitive-datatable-iedit-panel-custom
+        if:true={visible}
+        visible={state.inlineEdit.panelVisible}
+        col-key-value={state.inlineEdit.colKeyValue}
+        column-def={state.inlineEdit.columnDef}
+        date-style={dateStyle}
+        disabled={disabled}
+        edited-value={state.inlineEdit.editedValue}
+        end-date={endDate}
+        is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
+        label={label}
+        label-end-date={labelEndDate}
+        label-start-date={labelStartDate}
+        number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
+        row-key-value={state.inlineEdit.rowKeyValue}
+        start-date={startDate}
+        time-style={timeStyle}
+        timezone={timezone}
+        type={type}
+        data-iedit-panel-custom="true"
+    ></c-primitive-datatable-iedit-panel-custom>
+    <span
+        if:false={visible}
+        class="
+            slds-grid slds-cell-edit
+            slds-grid_align-spread slds-grid_vertical-align-center
+        "
+    >
+        <c-input-date-range
+            class="slds-truncate"
             date-style={dateStyle}
+            disabled={disabled}
+            end-date={endDate}
+            label={label}
+            read-only={readOnly}
+            start-date={startDate}
             time-style={timeStyle}
             timezone={timezone}
-            disabled={disabled}
-            label={label}
-            label-start-date={labelStartDate}
-            label-end-date={labelEndDate}
             type={type}
-            start-date={startDate}
-            end-date={endDate}
-        ></c-primitive-datatable-iedit-panel-custom>
-    </template>
-    <template if:false={visible}>
-        <span
-            class="
-                slds-grid slds-cell-edit
-                slds-grid_align-spread slds-grid_vertical-align-center
-            "
-        >
-            <c-input-date-range
-                class="slds-truncate"
-                start-date={startDate}
-                end-date={endDate}
-                date-style={dateStyle}
-                time-style={timeStyle}
-                timezone={timezone}
-                disabled={disabled}
-                label={label}
-                type={type}
-                read-only={readOnly}
-                variant="label-hidden"
-            ></c-input-date-range>
-            <c-primitive-cell-editable-button
-                if:true={showEditButton}
-                onclick={handleEditButtonClick}
-                column-label="Input Date Range"
-            ></c-primitive-cell-editable-button>
-        </span>
-    </template>
+            variant="label-hidden"
+        ></c-input-date-range>
+        <c-primitive-cell-editable-button
+            if:true={showEditButton}
+            column-label="Input Date Range"
+            onclick={handleEditButtonClick}
+        ></c-primitive-cell-editable-button>
+    </span>
 </template>

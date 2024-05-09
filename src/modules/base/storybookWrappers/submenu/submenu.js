@@ -1,3 +1,5 @@
-import { LightningElement } from 'lwc';
+import { api, LightningElement } from 'lwc';
 
-export default class Submenu extends LightningElement {}
+export default class Submenu extends LightningElement {
+    @api buttonMenuTriggers;
+}

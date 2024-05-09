@@ -47,10 +47,11 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api labelStartDate;
     @api labelEndDate;
 
-    // Primitive cell lookup
+    // Primitive cell lookup/record-picker
     @api fieldName;
     @api objectApiName;
     @api relationshipFieldName;
+    @api relationshipObjectApiName;
 
     // primitive cell rich-text
     @api formats;
@@ -125,10 +126,14 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      * @type {string}
      */
     get computedPanelClass() {
-        return classSet('slds-popover slds-popover_edit')
+        return classSet(
+            'slds-popover slds-popover_edit avonni-datatable-iedit-panel'
+        )
             .add({
                 'slds-show': this.visible,
-                'slds-hide': !this.visible
+                'slds-hide': !this.visible,
+                'avonni-datatable-iedit-panel_size_large':
+                    this.isTypeTextArea || this.isTypeRichText
             })
             .toString();
     }
@@ -217,6 +222,15 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
+     * Returns true if column type is record-picker.
+     *
+     * @type {boolean}
+     */
+    get isTypeRecordPicker() {
+        return this.columnDef.type === 'record-picker';
+    }
+
+    /**
      * Returns true if column type is textarea.
      *
      * @type {boolean}
@@ -232,10 +246,11 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      */
     get isTypeWithMenu() {
         return (
-            this.isTypeRichText ||
-            this.isTypeDateRange ||
             this.isTypeColorPicker ||
             this.isTypeCounter ||
+            this.isTypeDateRange ||
+            this.isTypeLookup ||
+            this.isTypeRichText ||
             this.isTypeTextArea ||
             (this.isTypeCombobox && this.isMultiSelect)
         );
@@ -348,7 +363,11 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         event.preventDefault();
         event.stopPropagation();
 
-        if (!this.isMassEditEnabled && !this.isTypeColorPicker) {
+        if (
+            !this.isMassEditEnabled &&
+            !this.isTypeColorPicker &&
+            !this.isTypeLookup
+        ) {
             this.processSubmission();
         }
         return false;
@@ -388,15 +407,15 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     handlePanelLoosedFocus() {
         if (
-            (this.isTypeLookup ||
+            (this.isTypeRecordPicker ||
                 this.isTypeNameLookup ||
                 this.isTypePercentFormatted) &&
             this.visible
         ) {
             this.processSubmission();
-        } else if (this.visible) {
+        } else if (!this.isTypeLookup && this.visible) {
             this.triggerEditFinished({
-                reason: 'loosed-focus'
+                reason: 'lost-focus'
             });
         }
     }
@@ -440,6 +459,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         const validity =
             this.isTypeRichText ||
             this.isTypeLookup ||
+            this.isTypeRecordPicker ||
             this.inputableElement.validity.valid;
         this.triggerEditFinished({ reason: 'submit-action', validity });
         const value = this.isTypeCombobox
@@ -475,10 +495,14 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             rowKeyValue: detail.rowKeyValue || this.rowKeyValue,
             colKeyValue: detail.colKeyValue || this.colKeyValue,
             valid:
-                this.isTypeRichText || this.isTypeLookup
+                this.isTypeRichText ||
+                this.isTypeLookup ||
+                this.isTypeRecordPicker
                     ? true
                     : detail.validity,
-            isMassEditChecked: this.isMassEditChecked
+            isMassEditChecked: this.isMassEditChecked,
+            isMassEditEnabled: this.isMassEditEnabled,
+            reason: detail.reason
         };
 
         if (this.isTypeCombobox) {

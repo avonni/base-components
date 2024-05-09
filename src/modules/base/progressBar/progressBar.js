@@ -89,6 +89,7 @@ export default class ProgressBar extends LightningElement {
      */
     @api valuePrefix;
 
+    _isLoading = false;
     _orientation = PROGRESS_BAR_ORIENTATIONS.default;
     _pinAttributes = {
         type: PROGRESS_BAR_PIN_TYPES.default,
@@ -143,6 +144,21 @@ export default class ProgressBar extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, the progress bar is in a loading state and shows a spinner.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
 
     /**
      * Orientation of the progress bar to be used. Valid values include horizontal and vertical.
