@@ -796,6 +796,8 @@ export default class ActivityTimeline extends LightningElement {
                 this.isLoading,
             'avonni-activity-timeline__spinner':
                 this.items.length && this.isLoading && this.isShowButtonHidden,
+            'slds-p-around_xx-large':
+                !this.items.length && this.isLoading && this.isShowButtonHidden,
             'slds-show_inline-block':
                 this.isLoading && !this.isShowButtonHidden,
             'slds-m-top_small slds-m-bottom_small slds-m-left_small':
