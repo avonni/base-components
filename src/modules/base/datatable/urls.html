@@ -3,9 +3,9 @@
         <template for:each={typeAttributes.urls} for:item="url">
             <li key={url.value}>
                 <lightning-formatted-url
-                    value={url.value}
                     label={url.label}
                     target={url.target}
+                    value={url.value}
                 ></lightning-formatted-url>
             </li>
         </template>

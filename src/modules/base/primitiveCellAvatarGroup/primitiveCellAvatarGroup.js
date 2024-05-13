@@ -12,6 +12,12 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
     @api value;
     @api variant;
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
     handleActionClick(event) {
         const { detail, bubbles, composed, cancelable, type } = event;
         this.dispatchEvent(

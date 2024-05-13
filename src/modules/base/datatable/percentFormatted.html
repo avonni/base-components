@@ -2,9 +2,15 @@
     <div class="slds-var-p-around_xx-small">
         <c-primitive-cell-percent-formatted
             col-key-value={colKeyValue}
+            maximum-fraction-digits={typeAttributes.maximumFractionDigits}
+            maximum-significant-digits={typeAttributes.maximumSignificantDigits}
+            minimum-fraction-digits={typeAttributes.minimumFractionDigits}
+            minimum-integer-digits={typeAttributes.minimumIntegerDigits}
+            minimum-significant-digits={typeAttributes.minimumSignificantDigits}
             row-key-value={rowKeyValue}
-            type-attributes={typeAttributes}
+            step={typeAttributes.step}
             value={value}
+            wrap-text={wrapText}
         ></c-primitive-cell-percent-formatted>
     </div>
 </template>

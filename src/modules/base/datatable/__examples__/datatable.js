@@ -31,8 +31,8 @@ export const Datatable = ({
     wrapTextMaxLines
 }) => {
     const element = document.createElement('ac-base-datatable');
-    element.columnWidthsMode = columnWidthsMode;
     element.columns = columns;
+    element.columnWidthsMode = columnWidthsMode;
     element.defaultSortDirection = defaultSortDirection;
     element.draftValues = draftValues;
     element.enableInfiniteLoading = enableInfiniteLoading;

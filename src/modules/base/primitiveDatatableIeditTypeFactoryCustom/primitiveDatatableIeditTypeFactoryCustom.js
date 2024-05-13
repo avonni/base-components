@@ -4,22 +4,16 @@ import ComboboxTpl from './combobox.html';
 import counterTpl from './counter.html';
 import dateRangeTpl from './dateRange.html';
 import percentFormatted from './percentFormatted.html';
-import recordPickerTpl from './recordPicker.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
-import lookupTpl from './lookup.html';
-import nameLookupTpl from './nameLookup.html';
 
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
     combobox: ComboboxTpl,
     counter: counterTpl,
     'date-range': dateRangeTpl,
-    lookup: lookupTpl,
-    'name-lookup': nameLookupTpl,
     'percent-formatted': percentFormatted,
-    'record-picker': recordPickerTpl,
     'rich-text': richTextTpl,
     textarea: textareaTpl
 };
@@ -28,15 +22,14 @@ const INVALID_TYPE_FOR_EDIT =
     'column custom type not supported for inline edit';
 
 export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningElement {
-    @api editedValue;
-    @api isMassEditEnabled;
-    @api required;
-
     // shared attributes
     @api disabled;
+    @api editedValue;
+    @api isMassEditEnabled;
     @api label;
     @api name;
     @api placeholder;
+    @api required;
     @api type;
 
     // color picker attributes
@@ -61,19 +54,12 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     // date-range attributes
     @api dateStyle;
+    @api labelEndDate;
+    @api labelStartDate;
     @api timeStyle;
     @api timezone;
-    @api labelStartDate;
-    @api labelEndDate;
     _startDate;
     _endDate;
-
-    // lookup/record-picker attributes
-    @api objectApiName;
-    @api fieldName;
-    @api relationshipObjectApiName;
-    @api rowKeyValue;
-    @api relationshipFieldName;
 
     // rich-text attributes
     @api variant;
@@ -98,15 +84,9 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     renderedCallback() {
         if (!this.concreteComponent) return;
         this.concreteComponent.addEventListener('change', this._changeHandler);
-
-        if (this.columnType !== 'lookup') {
-            this.concreteComponent.addEventListener('blur', this._blurHandler);
-            this.concreteComponent.addEventListener(
-                'focus',
-                this._focusHandler
-            );
-            this.focus();
-        }
+        this.concreteComponent.addEventListener('blur', this._blurHandler);
+        this.concreteComponent.addEventListener('focus', this._focusHandler);
+        this.focus();
     }
 
     /*
@@ -212,11 +192,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     @api
     showHelpMessageIfInvalid() {
-        if (
-            this.columnType !== 'rich-text' &&
-            this.columnType !== 'lookup' &&
-            this.columnType !== 'record-picker'
-        ) {
+        if (this.columnType !== 'rich-text') {
             this.concreteComponent.showHelpMessageIfInvalid();
         }
     }
@@ -298,13 +274,5 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     handleComponentFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    handleLoad() {
-        this.concreteComponent.addEventListener('focusout', this._blurHandler);
-        this.concreteComponent.addEventListener('focusin', this._focusHandler);
-        requestAnimationFrame(() => {
-            this.focus();
-        });
     }
 }

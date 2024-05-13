@@ -170,7 +170,6 @@
  * * dynamic-icon
  * * image
  * * location
- * * lookup
  * * progress-bar
  * * progress-circle
  * * progress-ring
@@ -191,7 +190,6 @@
  * * date
  * * email
  * * location
- * * lookup
  * * number
  * * percent
  * * phone

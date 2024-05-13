@@ -7,15 +7,14 @@ export default class PrimitiveCellTextarea extends LightningElement {
     @api minLength;
     @api placeholder;
     @api rowKeyValue;
+    @api wrapText;
 
-    _index;
     _value;
-    _wrapText;
     _wrapTextMaxLines;
 
-    visible = false;
+    dt;
     editable = false;
-    readOnly = true;
+    visible = false;
 
     connectedCallback() {
         this.template.addEventListener('ieditfinishedcustom', () => {
@@ -23,6 +22,12 @@ export default class PrimitiveCellTextarea extends LightningElement {
         });
         this.dispatchStateAndColumnsEvent();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get value() {
@@ -32,13 +37,11 @@ export default class PrimitiveCellTextarea extends LightningElement {
         this._value = value;
     }
 
-    @api
-    get wrapText() {
-        return this._wrapText;
-    }
-    set wrapText(value) {
-        this._wrapText = value;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get computedWrapTextClass() {
         if (this.wrapText) {
@@ -49,31 +52,19 @@ export default class PrimitiveCellTextarea extends LightningElement {
         return 'slds-truncate';
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
-     */
     get showEditButton() {
         return this.editable && !this.disabled;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -83,7 +74,22 @@ export default class PrimitiveCellTextarea extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Toggles the visibility of the inline edit panel of textarea.
+     */
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -109,9 +115,20 @@ export default class PrimitiveCellTextarea extends LightningElement {
         }
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
-    toggleInlineEdit() {
-        this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
+    /**
+     * Gets the state and columns information from the parent component.
+     */
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

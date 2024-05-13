@@ -1,18 +1,18 @@
 <template>
     <c-primitive-datatable-iedit-panel-custom
         if:true={visible}
-        data-iedit-panel-custom="true"
-        visible={state.inlineEdit.panelVisible}
-        row-key-value={state.inlineEdit.rowKeyValue}
         col-key-value={state.inlineEdit.colKeyValue}
-        edited-value={state.inlineEdit.editedValue}
         column-def={state.inlineEdit.columnDef}
-        is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
-        number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-        is-multi-select={isMultiSelect}
         disabled={disabled}
         dropdown-length={dropdownLength}
+        edited-value={state.inlineEdit.editedValue}
+        is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
+        is-multi-select={isMultiSelect}
+        number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
         placeholder={placeholder}
+        row-key-value={state.inlineEdit.rowKeyValue}
+        visible={state.inlineEdit.panelVisible}
+        data-iedit-panel-custom="true"
     ></c-primitive-datatable-iedit-panel-custom>
     <span
         if:false={visible}

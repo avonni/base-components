@@ -11,16 +11,17 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     @api menuIconName;
     @api menuIconSize;
     @api menuVariant;
+    @api name;
     @api opacity;
     @api rowKeyValue;
     @api type;
 
-    _index;
     _value;
 
-    visible = false;
+    dt;
     editable = false;
     readOnly = true;
+    visible = false;
 
     connectedCallback() {
         this.template.addEventListener('ieditfinishedcustom', () => {
@@ -28,6 +29,12 @@ export default class PrimitiveCellColorPicker extends LightningElement {
         });
         this.dispatchStateAndColumnsEvent();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get value() {
@@ -37,11 +44,12 @@ export default class PrimitiveCellColorPicker extends LightningElement {
         this._value = value;
     }
 
-    /**
-     * Return true if cell is editable and not disabled.
-     *
-     * @type {Boolean}
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
      */
+
     get showEditButton() {
         return this.editable && !this.disabled;
     }
@@ -52,7 +60,9 @@ export default class PrimitiveCellColorPicker extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    /**
+     * Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+     */
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
@@ -61,7 +71,9 @@ export default class PrimitiveCellColorPicker extends LightningElement {
         this.editable = isEditable(this.state, index, columns);
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
+    /**
+     * Toggles the visibility of the inline edit panel and the readOnly property of color picker.
+     */
     toggleInlineEdit() {
         this.visible = !this.visible;
         this.readOnly = !this.readOnly;
@@ -73,7 +85,9 @@ export default class PrimitiveCellColorPicker extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // Handles the edit button click and dispatches the event.
+    /**
+     * Handles the edit button click and dispatches the event.
+     */
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -99,6 +113,9 @@ export default class PrimitiveCellColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Dispatches the state change event.
+     */
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {

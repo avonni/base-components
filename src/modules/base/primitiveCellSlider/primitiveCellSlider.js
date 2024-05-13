@@ -13,6 +13,12 @@ export default class PrimitiveCellSlider extends LightningElement {
     _value;
     _readOnly;
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
     get value() {
         return this._value;
@@ -28,10 +34,25 @@ export default class PrimitiveCellSlider extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     get computedDisabled() {
         return this.disabled || this._readOnly;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handles the change event and dispatches it.
+     */
     handleChange(event) {
         const detail = {
             value: event.detail.value,
@@ -51,6 +72,9 @@ export default class PrimitiveCellSlider extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches the cell change event.
+     */
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         this.dispatchEvent(

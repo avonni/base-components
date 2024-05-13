@@ -231,10 +231,6 @@
             "path": "src/modules/base/inputDateRange/inputDateRange.js"
         },
         {
-            "name": "c/inputField",
-            "path": "src/modules/base/inputField/inputField.js"
-        },
-        {
             "name": "c/inputPen",
             "path": "src/modules/base/inputPen/inputPen.js"
         },
@@ -375,14 +371,6 @@
             "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
         },
         {
-            "name": "c/primitiveCellLookup",
-            "path": "src/modules/base/primitiveCellLookup/primitiveCellLookup.js"
-        },
-        {
-            "name": "c/primitiveCellNameLookup",
-            "path": "src/modules/base/primitiveCellNameLookup/primitiveCellNameLookup.js"
-        },
-        {
             "name": "c/primitiveCellPercentFormatted",
             "path": "src/modules/base/primitiveCellPercentFormatted/primitiveCellPercentFormatted.js"
         },
@@ -397,10 +385,6 @@
         {
             "name": "c/primitiveCellRating",
             "path": "src/modules/base/primitiveCellRating/primitiveCellRating.js"
-        },
-        {
-            "name": "c/primitiveCellRecordPicker",
-            "path": "src/modules/base/primitiveCellRecordPicker/primitiveCellRecordPicker.js"
         },
         {
             "name": "c/primitiveCellRichText",
@@ -573,14 +557,6 @@
         {
             "name": "c/range",
             "path": "src/modules/base/range/range.js"
-        },
-        {
-            "name": "c/recordEditForm",
-            "path": "src/modules/base/recordEditForm/recordEditForm.js"
-        },
-        {
-            "name": "c/recordPicker",
-            "path": "src/modules/base/recordPicker/recordPicker.js"
         },
         {
             "name": "c/slider",

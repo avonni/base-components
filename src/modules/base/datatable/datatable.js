@@ -21,15 +21,12 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
-import lookup from './lookup.html';
-import nameLookup from './nameLookup.html';
 import percentFormatted from './percentFormatted.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
-import recordPicker from './recordPicker.html';
 import richText from './richText.html';
 import slider from './slider.html';
 import textarea from './textarea.html';
@@ -60,8 +57,6 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'counter',
     'date-range',
-    'lookup',
-    'name-lookup',
     'percent-formatted',
     'rating',
     'rich-text',
@@ -198,20 +193,6 @@ export default class Datatable extends LightningDatatable {
             ],
             standardCellLayout: true
         },
-        lookup: {
-            template: lookup,
-            typeAttributes: [
-                'name',
-                'objectApiName',
-                'path',
-                'relationshipFieldName',
-                'relationshipObjectApiName'
-            ]
-        },
-        'name-lookup': {
-            template: nameLookup,
-            typeAttributes: ['path', 'target']
-        },
         'percent-formatted': {
             template: percentFormatted,
             typeAttributes: [
@@ -280,16 +261,6 @@ export default class Datatable extends LightningDatatable {
                 'min',
                 'selection',
                 'valueHidden'
-            ]
-        },
-        'record-picker': {
-            template: recordPicker,
-            typeAttributes: [
-                'name',
-                'objectApiName',
-                'path',
-                'relationshipFieldName',
-                'relationshipObjectApiName'
             ]
         },
         'rich-text': {
@@ -987,23 +958,6 @@ export default class Datatable extends LightningDatatable {
             row.isDisabled = !isSelectedRow(this.state, row.key) && disabled;
         });
         this.updateBulkSelectionState(nbSelectedRows);
-    }
-
-    /**
-     * Updates the options of the picklist column.
-     *
-     * @param {string} fieldName The field name of the picklist column.
-     * @param {object[]} options The new options of the picklist column.
-     * @public
-     */
-    @api
-    updatePicklistColumnOptions(fieldName, options) {
-        const columns = JSON.parse(JSON.stringify(this.columns));
-        const column = columns.find((c) => c.fieldName === fieldName);
-        if (column && column.type === 'combobox') {
-            column.typeAttributes.options = options;
-            this._columns = columns;
-        }
     }
 
     /**

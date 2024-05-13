@@ -21,11 +21,16 @@ export default class PrimitiveCellBadge extends LightningElement {
 
     _variant;
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTY
+     * -------------------------------------------------------------
+     */
+
     @api
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: BADGE_VARIANTS.default,
