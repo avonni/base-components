@@ -19,6 +19,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-horizontal-alignment
+ * @default center
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-radius-border
  * @type radius
  * @default 0.25rem
