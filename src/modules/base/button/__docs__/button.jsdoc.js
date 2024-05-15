@@ -4,6 +4,12 @@
 
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-horizontal-alignment
+ * @default center
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-shadow
  * @type shadow
  */
