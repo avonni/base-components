@@ -277,12 +277,21 @@ export default class Button extends PrimitiveButton {
     }
 
     /**
-     * Display icon only if iconName is set and src is not set.
+     * Display icon only if iconName is set or src is a svg image.
      *
      * @type {boolean}
      */
     get showIcon() {
-        return this.iconName && !this.iconSrc;
+        return !this.showIconImage && (this.iconName || this.iconSrc);
+    }
+
+    /**
+     * Display src only if src is not a svg image.
+     *
+     * @type {boolean}
+     */
+    get showIconImage() {
+        return this.iconSrc && !this.iconSrc.includes('.svg');
     }
 
     /**

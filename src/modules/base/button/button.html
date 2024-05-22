@@ -32,7 +32,7 @@
             data-element-id="icon-container"
         >
             <img
-                if:true={iconSrc}
+                if:true={showIconImage}
                 class={computedImageClass}
                 src={iconSrc}
                 data-element-id="image"
@@ -42,6 +42,7 @@
                 class={computedPrimitiveIconClass}
                 icon-name={iconName}
                 size={computedIconSize}
+                src={iconSrc}
                 svg-class={computedIconClass}
                 variant="bare"
                 data-element-id="primitive-icon"
