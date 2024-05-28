@@ -286,7 +286,6 @@ CheckboxesWithNoLabel.args = {
     variant: 'label-hidden',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithColors,
-    value: dayValue,
     isMultiSelect: true
 };
 

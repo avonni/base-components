@@ -259,6 +259,7 @@ export default class InputChoiceSet extends LightningElement {
     }
     set options(value) {
         this._options = normalizeArray(value);
+
         if (this._connected) {
             this._initOptions();
         }
@@ -467,37 +468,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Returns true, if type is default, toggle or button displayAsRow.
-     *
-     * @type {boolean}
-     */
-    get hasLayoutItem() {
-        return (
-            this.type === 'default' ||
-            this.type === 'toggle' ||
-            (this.type === 'button' &&
-                this.computedTypeAttributes?.displayAsRow)
-        );
-    }
-
-    /**
-     * Gets FieldConstraintApi for validation.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled &&
-                    this.required &&
-                    (!this.value || !this.value.length)
-            });
-        }
-        return this._constraintApi;
-    }
-
-    /**
      * Computed Button Class styling.
      *
      * @type {string}
@@ -578,6 +548,15 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
+     *
+     * @type {string}
+     */
+    get computedCheckboxShapeClass() {
+        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
+    }
+
+    /**
      * Computed Checkmark Class styling.
      *
      * @type {string}
@@ -592,15 +571,6 @@ export default class InputChoiceSet extends LightningElement {
                     checkmarkPosition === 'right'
             })
             .toString();
-    }
-
-    /**
-     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
-     *
-     * @type {string}
-     */
-    get computedCheckboxShapeClass() {
-        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
     }
 
     /**
@@ -689,6 +659,36 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Gets FieldConstraintApi for validation.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled &&
+                    this.required &&
+                    (!this.value || !this.value.length)
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /**
+     * Returns true, if type is default, toggle or button displayAsRow.
+     *
+     * @type {boolean}
+     */
+    get hasLayoutItem() {
+        return (
+            this.checkboxVariant ||
+            this.toggleVariant ||
+            (this.buttonVariant && this.computedTypeAttributes?.displayAsRow)
+        );
+    }
+
+    /**
      * Localization.
      *
      * @type {i18n}
@@ -733,6 +733,21 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Sets the focus on the first input option.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const firstCheckbox = this.template.querySelector(
+            '[data-element-id="input"]'
+        );
+        if (firstCheckbox) {
+            firstCheckbox.focus();
+        }
+    }
+
+    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
@@ -765,21 +780,6 @@ export default class InputChoiceSet extends LightningElement {
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
-    }
-
-    /**
-     * Sets the focus on the first input option.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        const firstCheckbox = this.template.querySelector(
-            '[data-element-id="input"]'
-        );
-        if (firstCheckbox) {
-            firstCheckbox.focus();
-        }
     }
 
     /*
@@ -820,6 +820,9 @@ export default class InputChoiceSet extends LightningElement {
         this._dispatchChangeEvent();
     }
 
+    /**
+     * Initialize the options.
+     */
     _initOptions() {
         const { options, value, type } = this;
         this._transformedOptions = Array.isArray(options)
@@ -1052,7 +1055,12 @@ export default class InputChoiceSet extends LightningElement {
             '[data-element-id="input"]'
         );
         this._handleChecking(checkboxes, value, event);
-        this._initOptions();
+        this._transformedOptions = this._transformedOptions.map((option) => {
+            option.isChecked = this.isMultiSelect
+                ? this.value.includes(option.value)
+                : this.value === option.value;
+            return option;
+        });
     }
 
     /**
