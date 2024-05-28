@@ -8,14 +8,13 @@
                         avonni-input-choice-set__label
                     "
                 >
-                    <template if:true={required}>
-                        <abbr
-                            class="slds-required"
-                            title={i18n.required}
-                            data-element-id="abbr"
-                            >*</abbr
-                        >
-                    </template>
+                    <abbr
+                        if:true={required}
+                        class="slds-required"
+                        title={i18n.required}
+                        data-element-id="abbr"
+                        >*
+                    </abbr>
                     {label}
                 </legend>
                 <lightning-helptext
@@ -67,13 +66,15 @@
                                     data-element-id="span-checkbox-container"
                                 >
                                     <input
-                                        type={computedInputType}
-                                        name={name}
-                                        id={option.id}
                                         checked={option.isChecked}
-                                        value={option.value}
                                         disabled={disabled}
+                                        id={option.id}
+                                        name={name}
                                         readonly={readOnly}
+                                        type={computedInputType}
+                                        value={option.value}
+                                        data-checked={option.isChecked}
+                                        data-color={option.color}
                                         data-element-id="input"
                                         onclick={handleClick}
                                         onchange={handleChange}
@@ -81,10 +82,9 @@
                                         onblur={handleBlur}
                                         onkeyup={handleKeyUp}
                                     />
-
                                     <label
-                                        class={computedLabelClass}
                                         for={option.id}
+                                        class={computedLabelClass}
                                         style={option.computedButtonLabelStyle}
                                         data-element-id="label"
                                     >
@@ -95,8 +95,8 @@
                                         >
                                             <div
                                                 class={computedCheckContainerClass}
-                                                data-element-id="div-check-container"
                                                 style={option.computedFauxInputStyle}
+                                                data-element-id="div-check-container"
                                             >
                                                 <span
                                                     if:true={checkboxVariant}
@@ -104,8 +104,8 @@
                                                 ></span>
                                                 <c-input-toggle
                                                     if:true={toggleVariant}
-                                                    aria-label={option.label}
                                                     class="slds-m-top_x-small"
+                                                    aria-label={option.label}
                                                     checked={option.isChecked}
                                                     disabled={disabled}
                                                     hide-mark={computedHideCheck}
@@ -121,8 +121,7 @@
                                                     onblur={handleBlur}
                                                     onchange={handleToggleChange}
                                                     onfocus={handleFocus}
-                                                >
-                                                </c-input-toggle>
+                                                ></c-input-toggle>
                                             </div>
                                             <div
                                                 class="
@@ -174,11 +173,11 @@
                                                 >
                                                 <lightning-icon
                                                     if:true={option.iconName}
-                                                    data-element-id="lightning-icon-button"
                                                     class={option.computedIconButtonClass}
                                                     icon-name={option.iconName}
                                                     size="x-small"
                                                     variant={option.computedVariantButton}
+                                                    data-element-id="lightning-icon-button"
                                                 ></lightning-icon>
                                                 <span
                                                     if:true={option.isIconTopLeft}
@@ -216,26 +215,29 @@
                             data-element-id="span-checkbox-container"
                         >
                             <input
-                                type={computedInputType}
-                                name={name}
-                                id={option.id}
                                 checked={option.isChecked}
-                                value={option.value}
                                 disabled={disabled}
+                                id={option.id}
+                                name={name}
                                 readonly={readOnly}
+                                type={computedInputType}
+                                value={option.value}
+                                data-checked={option.isChecked}
+                                data-color={option.color}
                                 data-element-id="input"
-                                onclick={handleClick}
-                                onchange={handleChange}
-                                onfocus={handleFocus}
                                 onblur={handleBlur}
+                                onchange={handleChange}
+                                onclick={handleClick}
+                                onfocus={handleFocus}
                                 onkeyup={handleKeyUp}
                             />
-
                             <label
                                 class={computedLabelClass}
                                 for={option.id}
                                 style={option.computedButtonLabelStyle}
+                                data-color={option.color}
                                 data-element-id="label"
+                                data-value={option.value}
                             >
                                 <div class="slds-grid">
                                     <div
@@ -251,11 +253,11 @@
                                         >
                                         <lightning-icon
                                             if:true={option.iconName}
-                                            data-element-id="lightning-icon-button"
                                             class={option.computedIconButtonClass}
                                             icon-name={option.iconName}
                                             size="x-small"
                                             variant={option.computedVariantButton}
+                                            data-element-id="lightning-icon-button"
                                         ></lightning-icon>
                                         <span
                                             if:true={option.isIconTopLeft}
@@ -263,33 +265,28 @@
                                             >{option.label}</span
                                         >
                                     </div>
-                                    <template
+                                    <lightning-icon
                                         if:true={computedTypeAttributes.showCheckmark}
-                                    >
-                                        <lightning-icon
-                                            if:true={option.isChecked}
-                                            class={computedCheckmarkClass}
-                                            icon-name="utility:check"
-                                            size="x-small"
-                                            variant="inverse"
-                                            data-element-id="lightning-icon-check"
-                                        ></lightning-icon>
-                                    </template>
+                                        class={computedCheckmarkClass}
+                                        icon-name="utility:check"
+                                        size="x-small"
+                                        variant="inverse"
+                                        data-element-id="lightning-icon-check"
+                                    ></lightning-icon>
                                 </div>
                             </label>
                         </span>
                     </template>
                 </div>
             </div>
-            <template if:true={helpMessage}>
-                <div
-                    id="helptext"
-                    data-helptext
-                    class="slds-form-element__help"
-                >
-                    {helpMessage}
-                </div>
-            </template>
+            <div
+                if:true={helpMessage}
+                class="slds-form-element__help"
+                id="helptext"
+                data-helptext
+            >
+                {helpMessage}
+            </div>
         </fieldset>
     </div>
 </template>

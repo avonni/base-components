@@ -207,7 +207,7 @@ const optionsWithIcon = [
         label: 'Left',
         value: 'left',
         iconName: 'utility:left_align_text',
-        iconPosition: 'top'
+        iconPosition: 'right'
     },
     {
         label: 'Center',
@@ -335,7 +335,6 @@ ButtonsCheckmark.args = {
     type: 'button',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithColors,
-    value: dayValue,
     typeAttributes: {
         showCheckmark: true
     }

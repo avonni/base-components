@@ -24,7 +24,7 @@
 }
 
 .slds-checkbox_button {
-    border-left: none;
+    border-left: none !important;
     border-bottom: 1px solid #747474;
 }
 
@@ -170,4 +170,8 @@
     --slds-c-checkbox-color-border: var(
         --avonni-input-choice-set-option-checkbox-color-border
     );
+}
+
+input[data-checked='false'] ~ label .avonni-input-choice-set__checkmark {
+    display: none;
 }

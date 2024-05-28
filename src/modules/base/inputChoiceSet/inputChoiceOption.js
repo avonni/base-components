@@ -27,12 +27,9 @@ export default class InputChoiceOption {
         this.value = option.value;
         this.displayLabel = this.label && !this.hideLabel;
         this.type = type;
-
-        if (value && Array.isArray(value)) {
-            this.isChecked = value.includes(option.value);
-        } else {
-            this.isChecked = value === option.value;
-        }
+        this.isChecked = Array.isArray(value)
+            ? value.includes(option.value)
+            : value === option.value;
     }
 
     get computedButtonLabelStyle() {
