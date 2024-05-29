@@ -88,6 +88,16 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-expandable-section-content-spacing-block-start
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-content-spacing-block-end
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-color-background
  * @default #f3f2f2
  * @type color
