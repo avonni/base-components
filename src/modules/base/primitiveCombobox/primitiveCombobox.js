@@ -1313,25 +1313,30 @@ export default class PrimitiveCombobox extends LightningElement {
             this._autoPosition = new AutoPosition(this);
         }
 
-        this._autoPosition.start({
-            target: () =>
-                this.template.querySelector('[data-element-id="input"]'),
-            element: () =>
-                this.template.querySelector('[data-element-id="div-dropdown"]'),
-            align: {
-                horizontal: Direction.Left,
-                vertical: Direction.Top
-            },
-            targetAlign: {
-                horizontal: Direction.Left,
-                vertical: Direction.Bottom
-            },
-            autoFlip: true,
-            alignWidth: true,
-            autoShrinkHeight: true,
-            minHeight:
-                // Same configuration as lightning-combobox
-                this.visibleOptions.length < 3 ? '2.25rem' : '6.75rem'
+        requestAnimationFrame(() => {
+            this._autoPosition.start({
+                target: () =>
+                    this.template.querySelector('[data-element-id="input"]'),
+                element: () =>
+                    this.template.querySelector(
+                        '[data-element-id="div-dropdown"]'
+                    ),
+                align: {
+                    horizontal: Direction.Left,
+                    vertical: Direction.Top
+                },
+                targetAlign: {
+                    horizontal: Direction.Left,
+                    vertical: Direction.Bottom
+                },
+                autoFlip: true,
+                alignWidth: true,
+                autoShrinkHeight: true,
+                minHeight:
+                    // Same configuration as lightning-combobox
+                    this.visibleOptions.length < 3 ? '2.25rem' : '6.75rem',
+                keepInViewport: true
+            });
         });
     }
 
