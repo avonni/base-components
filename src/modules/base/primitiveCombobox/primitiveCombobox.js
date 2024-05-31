@@ -1319,11 +1319,11 @@ export default class PrimitiveCombobox extends LightningElement {
             element: () =>
                 this.template.querySelector('[data-element-id="div-dropdown"]'),
             align: {
-                horizontal: Direction.Left,
+                horizontal: Direction.Right,
                 vertical: Direction.Top
             },
             targetAlign: {
-                horizontal: Direction.Left,
+                horizontal: Direction.Right,
                 vertical: Direction.Bottom
             },
             autoFlip: true,

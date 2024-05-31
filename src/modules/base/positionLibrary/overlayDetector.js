@@ -3,12 +3,17 @@ import { isShadowRoot } from './util';
 export const OVERLAY_TYPE = {
     NONE: 'none',
     MODAL: 'uiModal',
+    FORM: 'form-element',
     DIALOG: 'lightning-dialog',
     POPOVER: 'lightning-popover',
     PANEL: 'uiPanel'
 };
 
 export function isOverlay(element) {
+    const isForm = element?.className?.includes(OVERLAY_TYPE.FORM);
+    if (isForm) {
+        return OVERLAY_TYPE.FORM;
+    }
     const isDialog = element.localName === OVERLAY_TYPE.DIALOG;
     if (isDialog) {
         return OVERLAY_TYPE.DIALOG;
