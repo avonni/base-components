@@ -197,6 +197,8 @@
 
 .avonni-expandable-section__content {
     display: none;
+    margin-top: var(--avonni-expandable-section-content-spacing-block-start);
+    margin-bottom: var(--avonni-expandable-section-content-spacing-block-end);
 }
 
 .slds-is-open .avonni-expandable-section__content {
