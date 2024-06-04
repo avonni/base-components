@@ -1,4 +1,6 @@
 import { VisualPicker } from '../__examples__/visualPicker';
+import { InfiniteLoadingVisualPicker } from '../__examples__/infiniteLoading';
+import { InfiniteLoadingUsingShowMoreVisualPicker } from '../__examples__/infiniteLoadingUsingShowMore';
 import {
     items,
     itemsWithIcon,
@@ -17,7 +19,7 @@ import {
 } from './data';
 
 export default {
-    title: 'Example/VisualPicker',
+    title: 'Example/Visual Picker',
     argTypes: {
         disabled: {
             control: {
@@ -31,12 +33,36 @@ export default {
                 category: 'Validations'
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of items and then display more when users scroll to the end of the picker. Use with the loadmore event to retrieve more items. If present, `max-count` is ignored.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         hideCheckMark: {
             name: 'hide-check-mark',
             control: {
                 type: 'boolean'
             },
             description: 'If present, hide the check mark when selected.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is shown to indicate that more items are loading.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -50,6 +76,29 @@ export default {
                 'Array of items with attributes populating the visual picker.',
             table: {
                 type: { summary: 'object' }
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the picker.',
+            table: {
+                defaultValue: { summary: '20' },
+                type: { summary: 'number' }
+            }
+        },
+        maxCount: {
+            name: 'max-count',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Maximum of items allowed in the visible list. This attribute is ignored if `enable-infinite-loading` is present.',
+            table: {
+                type: { summary: 'number' }
             }
         },
         columnAttributes: {
@@ -240,7 +289,10 @@ export default {
     },
     args: {
         disabled: false,
+        enableInfiniteLoading: false,
         hideCheckMark: false,
+        isLoading: false,
+        loadMoreOffset: 20,
         ratio: '1-by-1',
         required: false,
         size: 'medium',
@@ -250,6 +302,9 @@ export default {
 };
 
 const Template = (args) => VisualPicker(args);
+const TemplateInfiniteLoading = (args) => InfiniteLoadingVisualPicker(args);
+const TemplateInfiniteLoadingUsingShowMore = (args) =>
+    InfiniteLoadingUsingShowMoreVisualPicker(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -414,4 +469,15 @@ Templates.args = {
     size: 'xx-large',
     label: 'Recommended Templates',
     name: 'templates'
+};
+
+export const InfiniteLoading = TemplateInfiniteLoading.bind({});
+InfiniteLoading.args = {
+    label: 'Infinite Loading'
+};
+
+export const InfiniteLoadingUsingShowMore =
+    TemplateInfiniteLoadingUsingShowMore.bind({});
+InfiniteLoadingUsingShowMore.args = {
+    maxCount: 5
 };
