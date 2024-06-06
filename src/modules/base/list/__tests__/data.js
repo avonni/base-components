@@ -7,7 +7,8 @@ export const ITEMS = [
         },
         imageSrc:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        name: 'item-1'
+        name: 'item-1',
+        checked: true
     },
     {
         label: 'Item 2',
@@ -17,7 +18,8 @@ export const ITEMS = [
         },
         imageSrc:
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
-        name: 'item-2'
+        name: 'item-2',
+        checked: true
     },
     {
         label: 'Item 3',
