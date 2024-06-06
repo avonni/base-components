@@ -2131,6 +2131,17 @@ export default class List extends LightningElement {
     }
 
     /**
+     * Handle a key pressed on a checkbox item.
+     *
+     * @param {Event} event
+     */
+    handleCheckboxKeyDown(event) {
+        if (event.key === 'Enter') {
+            event.currentTarget.click();
+        }
+    }
+
+    /**
      * Handle a key pressed on an item.
      *
      * @param {Event} event
@@ -2189,7 +2200,12 @@ export default class List extends LightningElement {
         }
     }
 
-    handleItemCheckChange(event) {
+    /**
+     * Handle the check and uncheck event on an item. Dispatch the check event.
+     *
+     * @param {Event} event
+     */
+    handleItemCheck(event) {
         const itemIndex = Number(event.currentTarget.dataset.index);
         const item = this.computedItems[itemIndex];
 
@@ -2202,17 +2218,17 @@ export default class List extends LightningElement {
         this.computedItems = [...this.computedItems];
 
         /**
-         * The event fired when a user clicks on an item.
+         * The event fired when an item is checked or unchecked.
          *
          * @event
          * @name itemclick
          * @param {object}  item Item clicked.
-         * @param {DOMRect} bounds The size and position of the item in the viewport.
          * @param {string}  name Name of the clicked item.
+         * @param {boolean} checked True if the item is checked, false otherwise.
          * @public
          */
         this.dispatchEvent(
-            new CustomEvent('itemcheckchange', {
+            new CustomEvent('itemcheck', {
                 detail: {
                     item: this.cleanUpItem(item),
                     name: item.name,

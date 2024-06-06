@@ -199,7 +199,8 @@
                                                 type="checkbox"
                                                 checked={item.checked}
                                                 id={item.key}
-                                                onchange={handleItemCheckChange}
+                                                onchange={handleItemCheck}
+                                                onkeydown={handleCheckboxKeyDown}
                                             />
                                             <label
                                                 class="slds-checkbox_faux"
