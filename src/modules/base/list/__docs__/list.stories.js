@@ -1,6 +1,7 @@
 import { List } from '../__examples__/list';
 import { InfiniteGrid } from '../__examples__/infiniteGrid';
 import {
+    checkListItems,
     items,
     itemsWithAvatars,
     itemsWithImages,
@@ -196,6 +197,17 @@ export default {
                 category: 'Sorting'
             }
         },
+        strikeThroughOnCheck: {
+            name: 'strike-through-on-check',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, strike through all checked items.',
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Check List'
+            }
+        },
         mediaActions: {
             control: {
                 type: 'object'
@@ -236,7 +248,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['base', 'single-line'],
+            options: ['base', 'check-list', 'single-line'],
             description: 'Variant of the list.',
             table: {
                 type: { summary: 'string' },
@@ -396,5 +408,14 @@ BaseWithInfiniteLoading.args = {
     actions: actions,
     sortable: true,
     divider: 'around',
+    enableInfiniteLoading: true
+};
+
+export const CheckList = Template.bind({});
+CheckList.args = {
+    label: 'Check List',
+    items: checkListItems,
+    variant: 'check-list',
+    strikeThroughOnCheck: true,
     enableInfiniteLoading: true
 };

@@ -38,7 +38,7 @@ const IMAGE_POSITION = {
 };
 
 const VARIANTS = {
-    valid: ['base', 'single-line'],
+    valid: ['base', 'single-line', 'check-list'],
     default: 'base'
 };
 
@@ -114,6 +114,7 @@ export default class List extends LightningElement {
     _smallContainerCols;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
+    _strikeThroughOnCheck = false;
     _variant = VARIANTS.default;
     _visibleActions;
     _visibleMediaActions;
@@ -644,8 +645,8 @@ export default class List extends LightningElement {
     get sortable() {
         return this._sortable;
     }
-    set sortable(bool) {
-        this._sortable = normalizeBoolean(bool);
+    set sortable(value) {
+        this._sortable = normalizeBoolean(value);
     }
 
     /**
@@ -664,6 +665,25 @@ export default class List extends LightningElement {
             fallbackValue: ICON_POSITIONS.default,
             validValues: ICON_POSITIONS.valid
         });
+    }
+
+    /**
+     * If present, strike through all checked items.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get strikeThroughOnCheck() {
+        return this._strikeThroughOnCheck;
+    }
+    set strikeThroughOnCheck(value) {
+        this._strikeThroughOnCheck = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.setItemProperties();
+        }
     }
 
     /**
@@ -824,6 +844,15 @@ export default class List extends LightningElement {
         return `${heightStyle} ${widthStyle} ${imageObjectPosition} ${objectFit}`;
     }
 
+    get computedItemHeaderClass() {
+        return classSet('slds-truncate avonni-list__item-header_font')
+            .add({
+                'avonni-list__checkbox-list-item-header_font':
+                    this.isCheckList && this.strikeThroughOnCheck
+            })
+            .toString();
+    }
+
     /**
      * Computed item class styling based on user specified attributes.
      *
@@ -968,12 +997,23 @@ export default class List extends LightningElement {
         return this.computedMediaActions.length > 1;
     }
 
+    get isCheckList() {
+        return this.variant === 'check-list';
+    }
+
     get isNotSingleLine() {
         return !this.isSingleLine;
     }
 
     get isSingleLine() {
         return this.variant === 'single-line';
+    }
+
+    get labelToDisplay() {
+        if (!this.isCheckList) {
+            return this.label;
+        }
+        return `${this.label} (${this.nbCheckedItems}/${this.computedItems.length})`;
     }
 
     get largeContainerColSize() {
@@ -1038,6 +1078,10 @@ export default class List extends LightningElement {
                 this._singleLinePageFirstIndex + this._currentColumnCount >=
                     this.computedItems.length)
         );
+    }
+
+    get nbCheckedItems() {
+        return this.computedItems.filter((item) => item.checked).length;
     }
 
     /**
@@ -2087,6 +2131,17 @@ export default class List extends LightningElement {
     }
 
     /**
+     * Handle a key pressed on a checkbox item.
+     *
+     * @param {Event} event
+     */
+    handleCheckboxKeyDown(event) {
+        if (event.key === 'Enter') {
+            event.currentTarget.click();
+        }
+    }
+
+    /**
      * Handle a key pressed on an item.
      *
      * @param {Event} event
@@ -2143,6 +2198,44 @@ export default class List extends LightningElement {
                 }
             }
         }
+    }
+
+    /**
+     * Handle the check and uncheck event on an item. Dispatch the check event.
+     *
+     * @param {Event} event
+     */
+    handleItemCheck(event) {
+        const itemIndex = Number(event.currentTarget.dataset.index);
+        const item = this.computedItems[itemIndex];
+
+        if (!item) {
+            return;
+        }
+
+        const checked = event.currentTarget.checked;
+        item.checked = checked;
+        this.computedItems = [...this.computedItems];
+
+        /**
+         * The event fired when an item is checked or unchecked.
+         *
+         * @event
+         * @name itemclick
+         * @param {object}  item Item clicked.
+         * @param {string}  name Name of the clicked item.
+         * @param {boolean} checked True if the item is checked, false otherwise.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemcheck', {
+                detail: {
+                    item: this.cleanUpItem(item),
+                    name: item.name,
+                    checked
+                }
+            })
+        );
     }
 
     /**

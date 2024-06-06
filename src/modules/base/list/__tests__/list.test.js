@@ -68,6 +68,7 @@ describe('List', () => {
             expect(element.sortable).toBeFalsy();
             expect(element.sortableIconName).toBeUndefined();
             expect(element.sortableIconPosition).toBe('right');
+            expect(element.strikeThroughOnCheck).toBeFalsy();
             expect(element.variant).toBe('base');
             expect(element.visibleActions).toBeUndefined();
             expect(element.visibleMediaActions).toBeUndefined();
@@ -720,6 +721,41 @@ describe('List', () => {
                     expect(nextButton).toBeTruthy();
                 });
             });
+
+            it('check-list', () => {
+                element.items = ITEMS;
+                element.variant = 'check-list';
+
+                return Promise.resolve().then(() => {
+                    const backButton = element.shadowRoot.querySelector(
+                        '[data-element-id="previous-page-button"]'
+                    );
+                    const nextButton = element.shadowRoot.querySelector(
+                        '[data-element-id="next-page-button"]'
+                    );
+                    const checkboxes = Array.from(
+                        element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item-input-checkbox"]'
+                        )
+                    );
+                    const checkedItems = checkboxes.slice(0, 2);
+                    const uncheckedItems = checkboxes.slice(
+                        2,
+                        checkboxes.length
+                    );
+
+                    expect(backButton).toBeFalsy();
+                    expect(nextButton).toBeFalsy();
+
+                    expect(checkboxes).toHaveLength(5);
+                    checkedItems.forEach((checkbox) => {
+                        expect(checkbox.checked).toBeTruthy();
+                    });
+                    uncheckedItems.forEach((checkbox) => {
+                        expect(checkbox.checked).toBeFalsy();
+                    });
+                });
+            });
         });
     });
 
@@ -876,6 +912,65 @@ describe('List', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+        });
+
+        // itemcheck
+        describe('itemcheck', () => {
+            it('Fired on click', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemcheck', handler);
+                element.items = ITEMS;
+                element.variant = 'check-list';
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="item-input-checkbox"]'
+                    );
+                    items[2].click();
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                        ITEMS[2]
+                    );
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ITEMS[2].name
+                    );
+                    expect(
+                        handler.mock.calls[0][0].detail.checked
+                    ).toBeTruthy();
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
+            });
+
+            it('Fired with keyboard', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemcheck', handler);
+                element.items = ITEMS;
+                element.variant = 'check-list';
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="item-input-checkbox"]'
+                    );
+                    const event = new CustomEvent('keydown');
+                    event.key = 'Enter';
+                    items[2].dispatchEvent(event);
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                        ITEMS[2]
+                    );
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ITEMS[2].name
+                    );
+                    expect(
+                        handler.mock.calls[0][0].detail.checked
+                    ).toBeTruthy();
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
             });
         });
 
