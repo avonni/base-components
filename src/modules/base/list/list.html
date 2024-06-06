@@ -6,7 +6,7 @@
                 class="slds-m-bottom_x-small avonni-list__header_font"
                 data-element-id="label"
             >
-                {label}
+                {labelToDisplay}
             </p>
             <span
                 lwc:dom="manual"
@@ -184,6 +184,32 @@
                                             avonni-list-item-body
                                         "
                                     >
+                                        <div
+                                            if:true={isCheckList}
+                                            class="
+                                                avonni-list__item-checkbox-button
+                                                slds-checkbox
+                                                slds-m-right_x-small
+                                            "
+                                        >
+                                            <input
+                                                data-element-id="item-input-checkbox"
+                                                data-index={item.index}
+                                                class="slds-assistive-text"
+                                                type="checkbox"
+                                                checked={item.checked}
+                                                id={item.key}
+                                                onchange={handleItemCheckChange}
+                                            />
+                                            <label
+                                                class="slds-checkbox_faux"
+                                                for={item.key}
+                                            >
+                                                <span
+                                                    class="slds-assistive-text"
+                                                ></span>
+                                            </label>
+                                        </div>
                                         <c-avatar
                                             if:true={item.isAvatarLeft}
                                             class={item.computedAvatarClass}
@@ -204,11 +230,7 @@
                                         >
                                             <!-- Item label and icons -->
                                             <div
-                                                class="
-                                                    slds-grid
-                                                    slds-grid_vertical-align-center
-                                                    slds-margin-bottom_xx-small
-                                                "
+                                                class={computedItemHeaderClass}
                                             >
                                                 <c-avatar
                                                     if:true={item.isAvatarLeftOfTitle}
@@ -250,7 +272,7 @@
                                                     </template>
                                                 </div>
                                                 <span
-                                                    if:true={item.icons}
+                                                    if:true={item.hasIcons}
                                                     class="
                                                         slds-p-left_xx-small
                                                         avonni-list__item-icons

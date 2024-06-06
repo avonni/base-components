@@ -26,6 +26,7 @@ export default class Item {
                 fallbackValue: AVATAR_POSITION.default
             }
         );
+        this.checked = value.checked;
         this.description = value.description;
         this.fallbackIconName = value.fallbackIconName;
         this.fields = normalizeArray(value.fields).map((f) => {
@@ -44,28 +45,28 @@ export default class Item {
      * Computes if the avatar is at the left.
      */
     get isAvatarLeft() {
-        return this.avatar && this.avatarPosition.endsWith('left');
+        return this.hasAvatar && this.avatarPosition.endsWith('left');
     }
 
     /**
      * Computes if the avatar is at the right.
      */
     get isAvatarRight() {
-        return this.avatar && this.avatarPosition.endsWith('right');
+        return this.hasAvatar && this.avatarPosition.endsWith('right');
     }
 
     /**
      * Computes if the avatar is at the left of the title.
      */
     get isAvatarLeftOfTitle() {
-        return this.avatar && this.avatarPosition === 'left-of-title';
+        return this.hasAvatar && this.avatarPosition === 'left-of-title';
     }
 
     /**
      * Computes if the avatar is at the right of the title.
      */
     get isAvatarRightOfTitle() {
-        return this.avatar && this.avatarPosition === 'right-of-title';
+        return this.hasAvatar && this.avatarPosition === 'right-of-title';
     }
 
     /**
@@ -99,6 +100,25 @@ export default class Item {
                     this.imagePosition === 'overlay'
             })
             .toString();
+    }
+
+    /**
+     * Computes if the item has an avatar.
+     */
+    get hasAvatar() {
+        return (
+            this.avatar &&
+            (this.avatar.fallbackIconName ||
+                this.avatar.src ||
+                this.avatar.initials)
+        );
+    }
+
+    /**
+     * Computes if the item has icons.
+     */
+    get hasIcons() {
+        return this.icons && this.icons.length > 0;
     }
 
     /**
