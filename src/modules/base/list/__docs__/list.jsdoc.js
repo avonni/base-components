@@ -2,6 +2,7 @@
  * @typedef {Object} ListItem
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
+ * @property {boolean} checked If true, the checkbox to the left of the item will be checked.
  * @property {string} description Description of the item.
  * @property {object[]} fields Array of output data objects. See <a href="/components/output-data">Output Data</a> for valid keys. The fields are displayed in the details section.
  * @property {string} href The URL of the page the link goes to.
@@ -453,4 +454,46 @@
  * @name --avonni-list-item-avatar-vertical-alignment
  * @default --avonni-list-item-body-vertical-alignment, center
  * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-checkbox-button-size
+ * @default 2rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-checkbox-button-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-checkbox-button-radius-border
+ * @default 0.25rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-checkbox-button-color-border
+ * @default rgb(201, 201, 201)
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-checkbox-button-color-background
+ * @default rgb(255, 255, 255)
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-checkbox-button-color-background-active
+ * @default rgb(1, 68, 134)
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-checkbox-button-icon-color-background
+ * @default rgb(255, 255, 255)
+ * @type color
  */
