@@ -800,3 +800,69 @@
 .avonni-visual-picker__tags-hidden {
     display: none;
 }
+
+/*-- infinite loading --*/
+.avonni-visual-picker__loading-spinner {
+    height: 3rem;
+}
+
+.avonni-visual-picker__wrapper_full-height {
+    height: 100%;
+}
+
+.avonni-visual-picker__item-wrapper_full-height {
+    display: block;
+    height: calc(100% - var(--avonni-visual-picker-legend-height, 0px));
+}
+
+.avonni-visual-picker__fieldset_full-height {
+    height: calc(100% - var(--avonni-visual-picker-help-message-height, 0px));
+}
+
+.avonni-visual-picker__show-more-button {
+    --slds-c-button-spacing-block-end: var(
+        --avonni-visual-picker-show-more-button-spacing-block-end
+    );
+    --slds-c-button-spacing-block-start: var(
+        --avonni-visual-picker-show-more-button-spacing-block-start
+    );
+    --slds-c-button-neutral-spacing-inline-end: var(
+        --avonni-visual-picker-show-more-button-spacing-inline-end
+    );
+    --slds-c-button-neutral-spacing-inline-start: var(
+        --avonni-visual-picker-show-more-button-spacing-inline-start
+    );
+    --slds-c-button-neutral-color-background: var(
+        --avonni-visual-picker-show-more-button-color-background
+    );
+    --slds-c-button-neutral-color-background-active: var(
+        --avonni-visual-picker-show-more-button-color-background-active
+    );
+    --slds-c-button-neutral-color-background-hover: var(
+        --avonni-visual-picker-show-more-button-color-background-hover
+    );
+    --slds-c-button-neutral-color-border: var(
+        --avonni-visual-picker-show-more-button-color-border
+    );
+    --slds-c-button-neutral-color-border-active: var(
+        --avonni-visual-picker-show-more-button-color-border-active
+    );
+    --slds-c-button-neutral-color-border-hover: var(
+        --avonni-visual-picker-show-more-button-color-border-hover
+    );
+    --slds-c-button-text-color: var(
+        --avonni-visual-picker-show-more-button-text-color
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-visual-picker-show-more-button-text-color-active
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-visual-picker-show-more-button-text-color-hover
+    );
+    --slds-c-button-radius-border: var(
+        --avonni-visual-picker-show-more-button-radius-border
+    );
+    --slds-c-button-sizing-border: var(
+        --avonni-visual-picker-show-more-button-sizing-border
+    );
+}

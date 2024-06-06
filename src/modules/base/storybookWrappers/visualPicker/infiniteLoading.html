@@ -1,0 +1,23 @@
+<template>
+    <c-visual-picker
+        class="slds-show"
+        disabled={disabled}
+        enable-infinite-loading
+        hide-check-mark={hideCheckMark}
+        is-loading={isLoading}
+        items={items}
+        label={label}
+        load-more-offset={loadMoreOffset}
+        max-count={maxCount}
+        message-when-value-missing={messageWhenValueMissing}
+        name={name}
+        required={required}
+        size={size}
+        style="height: 300px"
+        type={type}
+        value={value}
+        variant={variant}
+        onloadmore={handleLoadMore}
+        onitemsvisibilitytoggle={handleItemsVisibilityToggle}
+    ></c-visual-picker>
+</template>

@@ -24,7 +24,11 @@ export const VisualPicker = ({
     name,
     imageAttributes,
     fieldAttributes,
-    columnAttributes
+    columnAttributes,
+    enableInfiniteLoading,
+    isLoading,
+    loadMoreOffset,
+    maxCount
 }) => {
     const element = document.createElement('ac-base-visual-picker');
     element.label = label;
@@ -46,5 +50,9 @@ export const VisualPicker = ({
     element.imageAttributes = imageAttributes;
     element.fieldAttributes = fieldAttributes;
     element.columnAttributes = columnAttributes;
+    element.enableInfiniteLoading = enableInfiniteLoading;
+    element.isLoading = isLoading;
+    element.loadMoreOffset = loadMoreOffset;
+    element.maxCount = maxCount;
     return element;
 };

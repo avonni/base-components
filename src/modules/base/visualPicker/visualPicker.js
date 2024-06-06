@@ -1,6 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import {
+    equal,
     normalizeBoolean,
     normalizeString,
     normalizeArray,
@@ -117,9 +118,10 @@ const IMAGE_SIZE = {
 };
 
 const DEFAULT_MIN = 0;
-const DEFAULT_REQUIRED = false;
 const DEFAULT_DISABLED = false;
 const DEFAULT_HIDE_CHECK_MARK = false;
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_REQUIRED = false;
 
 /**
  * @class
@@ -174,27 +176,42 @@ export default class VisualPicker extends LightningElement {
     _smallContainerCols;
     _columnAttributes = {};
     _disabled = DEFAULT_DISABLED;
+    _enableInfiniteLoading = false;
     _fieldAttributes = {};
     _hideBorder;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
     _imageAttributes = {};
+    _isLoading = false;
     @track _items = [];
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _max;
+    _maxCount;
     _min = DEFAULT_MIN;
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
     _size = VISUAL_PICKER_SIZES.default;
     _type = INPUT_TYPES.default;
-    _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
+    _value = [];
 
     _cancelBlur = false;
     _connected = false;
     _computedItems = [];
     _columnSizes = {};
+    _itemRendersBeforeScrollUpdate = 0;
+    _isCollapsed = true;
     _isFallbackLoadedMap = {};
     _resizeObserver;
+    _scrollTop = 0;
+
     helpMessage = '';
+
+    connectedCallback() {
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+        this.recomputeTags();
+        this._connected = true;
+    }
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -211,15 +228,19 @@ export default class VisualPicker extends LightningElement {
             });
         }
 
+        // Wait for all the items to render before checking if the bottom is reached.
+        const items = this.template.querySelectorAll(
+            '[data-element-id="div-item-wrapper"]'
+        );
+        if (!items.length) {
+            this.handleScroll();
+        } else {
+            this._itemRendersBeforeScrollUpdate = items.length;
+        }
+
         // Reset loaded fallback map.
         this._isFallbackLoadedMap = {};
-    }
-
-    connectedCallback() {
-        this._connected = true;
-        this.interactingState = new InteractingState();
-        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-        this.recomputeTags();
+        this._setCssVariables();
     }
 
     disconnectedCallback() {
@@ -286,6 +307,26 @@ export default class VisualPicker extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, you can load a subset of items and then display more when users scroll to the end of the picker. Use with the `loadmore` event to retrieve more items.
+     * If present, `max-count` is ignored.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
     }
 
     /**
@@ -394,6 +435,21 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * If present, a spinner is shown to indicate that more items are loading.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Array of items with attributes populating the visual picker.
      *
      * @type {object[]}
@@ -413,6 +469,27 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the picker.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        this._loadMoreOffset = isNaN(value)
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : parseInt(value, 10);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
+    }
+
+    /**
      * Maximum number of selected items.
      *
      * @type {number}
@@ -426,6 +503,21 @@ export default class VisualPicker extends LightningElement {
 
     set max(value) {
         this._max = isNaN(parseInt(value, 10)) ? Infinity : parseInt(value, 10);
+    }
+
+    /**
+     * Maximum of items allowed in the visible list.
+     * This attribute is ignored if `enable-infinite-loading` is present.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get maxCount() {
+        return this._maxCount;
+    }
+    set maxCount(value) {
+        this._maxCount = isNaN(value) ? undefined : parseInt(value, 10);
     }
 
     /**
@@ -537,8 +629,16 @@ export default class VisualPicker extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value =
+        const normalizedValue =
             typeof value === 'string' ? [value] : normalizeArray(value);
+        if (equal(normalizedValue, this._value)) {
+            return;
+        }
+        this._value = normalizedValue;
+
+        if (this._connected) {
+            this.recomputeTags();
+        }
     }
 
     /**
@@ -566,6 +666,24 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
+     * Computed CSS classes for the div wrapping the loading spinner and the show more/less button.
+     *
+     * @type {string}
+     */
+    get buttonSpinnerWrapperClass() {
+        const classes = classSet('slds-is-relative').add({
+            'avonni-visual-picker__loading-spinner':
+                this.isLoading && !this.showMoreButton,
+            'slds-show_inline-block': this.isLoading && this.showMoreButton
+        });
+
+        if (this.isLoading && !this.showMoreButton) {
+            classes.add(`avonni-visual-picker__item_size-${this.size}`);
+        }
+        return classes.toString();
+    }
+
+    /**
      * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
@@ -588,12 +706,60 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Icon name of the show more/less button.
+     *
+     * @type {string}
+     */
+    get currentShowButtonIconName() {
+        return this._isCollapsed ? 'utility:down' : 'utility:up';
+    }
+
+    /**
+     * Label of the show more/less button.
+     *
+     * @type {string}
+     */
+    get currentShowButtonLabel() {
+        return this._isCollapsed ? 'Show more' : 'Show less';
+    }
+
+    /**
+     * Generate unique ID key.
+     */
+    get generateKey() {
+        return generateUUID();
+    }
+
+    /**
+     * True of the max count show more/less button is visible, or if the component is loading.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get showButtonOrSpinner() {
+        return this.isLoading || this.showMoreButton;
+    }
+
+    /**
+     * True if the show more/less button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showMoreButton() {
+        return (
+            !this.enableInfiniteLoading &&
+            !isNaN(this.maxCount) &&
+            this.items.length > this.maxCount
+        );
+    }
+
+    /**
      * Computed list items
      *
      * @type {object[]}
      */
-    get listItems() {
-        return this._computedItems.map((item, index) => {
+    get visibleItems() {
+        const items = this._computedItems.map((item) => {
             let {
                 avatar,
                 avatarPosition,
@@ -612,7 +778,7 @@ export default class VisualPicker extends LightningElement {
                 titlePosition,
                 value
             } = item;
-            const key = `visual-picker-key-${index}`;
+            const key = generateUUID();
             const maxReached =
                 this.type === 'checkbox' &&
                 this.max !== 1 &&
@@ -846,6 +1012,10 @@ export default class VisualPicker extends LightningElement {
                 computedBodyContentCenterClass
             };
         });
+
+        return this.showMoreButton && this._isCollapsed
+            ? items.slice(0, this.maxCount)
+            : items;
     }
 
     /**
@@ -942,6 +1112,13 @@ export default class VisualPicker extends LightningElement {
             : null;
     }
 
+    get numberOfMainItemsSelected() {
+        if (this.type === 'radio') return this.value ? 1 : 0;
+        return this.items
+            .map(({ value }) => value)
+            .filter((value) => this.value.includes(value)).length;
+    }
+
     /**
      * Add horizontal padding when size is responsive.
      *
@@ -1023,12 +1200,20 @@ export default class VisualPicker extends LightningElement {
                 valueMissing: () =>
                     !this.disabled && this.required && this.value.length === 0,
                 rangeUnderflow: () =>
-                    this.type === 'checkbox' && this._value.length < this.min,
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected < this.min,
                 rangeOverflow: () =>
-                    this.type === 'checkbox' && this._value.length > this.max
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected > this.max
             });
         }
         return this._constraintApi;
+    }
+
+    get visualPickerContainer() {
+        return this.template.querySelector(
+            '[data-element-id="div-items-wrapper"]'
+        );
     }
 
     /*
@@ -1414,6 +1599,42 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Set the CSS variables used to compute the height of the items wrapper.
+     */
+    _setCssVariables() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (!wrapper) {
+            return;
+        }
+        const legend = this.template.querySelector(
+            '[data-element-id="legend"]'
+        );
+        if (legend) {
+            wrapper.style.setProperty(
+                '--avonni-visual-picker-legend-height',
+                `${legend.offsetHeight}px`
+            );
+        }
+        const helpMessage = this.template.querySelector(
+            '[data-element-id="div-help-message"]'
+        );
+        if (helpMessage) {
+            wrapper.style.setProperty(
+                '--avonni-visual-picker-help-message-height',
+                `${helpMessage.offsetHeight}px`
+            );
+        }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    /**
      * Dispatches the blur event.
      */
     handleBlur() {
@@ -1421,13 +1642,6 @@ export default class VisualPicker extends LightningElement {
             return;
         }
         this.interactingState.leave();
-    }
-
-    /**
-     * Dispatches the focus event.
-     */
-    handleFocus() {
-        this.interactingState.enter();
     }
 
     /**
@@ -1474,22 +1688,11 @@ export default class VisualPicker extends LightningElement {
         );
     }
 
-    handleMouseEnter() {
-        this._cancelBlur = true;
-    }
-
-    handleMouseLeave() {
-        this._cancelBlur = false;
-    }
-
     /**
-     * Input keyup event handler.
-     *
-     * @param {Event} event
+     * Dispatches the focus event.
      */
-    handleKeyUp(event) {
-        if (event.key !== 'Enter') return;
-        event.currentTarget.click();
+    handleFocus() {
+        this.interactingState.enter();
     }
 
     /**
@@ -1517,5 +1720,93 @@ export default class VisualPicker extends LightningElement {
         event.target.onerror = null;
         event.target.src = fallbackSrc;
         this._isFallbackLoadedMap[itemIndex] = true;
+    }
+
+    /**
+     * Handle an iten render. If the visual picker was just rendered, triggers the `handleScroll()` method after the last item has been rendered.
+     */
+    handleItemRendered() {
+        if (this._itemRendersBeforeScrollUpdate === 1) {
+            if (this.enableInfiniteLoading) {
+                this.visualPickerContainer.scrollTop = this._scrollTop;
+            }
+            this.handleScroll();
+        }
+
+        if (this._itemRendersBeforeScrollUpdate) {
+            this._itemRendersBeforeScrollUpdate -= 1;
+        }
+    }
+
+    /**
+     * Input keyup event handler.
+     *
+     * @param {Event} event
+     */
+    handleKeyUp(event) {
+        if (event.key !== 'Enter') return;
+        event.currentTarget.click();
+    }
+
+    handleMouseEnter() {
+        this._cancelBlur = true;
+    }
+
+    handleMouseLeave() {
+        this._cancelBlur = false;
+    }
+
+    /**
+     * Handle the scroll of the items wrapper.
+     */
+    handleScroll() {
+        if (!this.enableInfiniteLoading || this.isLoading) {
+            return;
+        }
+
+        const { scrollTop, scrollHeight, clientHeight } =
+            this.visualPickerContainer;
+        const offsetFromBottom = scrollHeight - scrollTop - clientHeight;
+        const noScrollBar = scrollTop === 0 && scrollHeight === clientHeight;
+        this._scrollTop = scrollTop;
+
+        if (offsetFromBottom <= this.loadMoreOffset || noScrollBar) {
+            /**
+             * The event fired when you scroll to the end of the visual picker. This event is fired only if `enable-infinite-loading` is true.
+             *
+             * @event
+             * @name loadmore
+             * @public
+             */
+            this.dispatchEvent(new CustomEvent('loadmore'));
+        }
+    }
+
+    /**
+     * Handle a click on the show more/less button.
+     */
+    handleToggleShowMoreButton() {
+        /**
+         * The event fired when the show more/less button is clicked.
+         *
+         * @event
+         * @name itemsvisibilitytoggle
+         * @param {boolean} show True if items are currently hidden and the click was meant to show more of them. False if the click was meant to hide the visible items.
+         * @param {number} visibleItemsLength Length of the currently visible items.
+         * @public
+         * @cancelable
+         */
+        const event = new CustomEvent('itemsvisibilitytoggle', {
+            detail: {
+                show: this._isCollapsed,
+                visibleItemsLength: this.visibleItems.length
+            },
+            cancelable: true
+        });
+        this.dispatchEvent(event);
+
+        if (!event.defaultPrevented) {
+            this._isCollapsed = !this._isCollapsed;
+        }
     }
 }
