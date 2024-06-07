@@ -64,6 +64,7 @@ describe('List', () => {
             expect(element.loadMoreOffset).toBe(20);
             expect(element.mediaActions).toMatchObject([]);
             expect(element.mediumContainerCols).toBeUndefined();
+            expect(element.showCheckCounter).toBeFalsy();
             expect(element.smallContainerCols).toBeUndefined();
             expect(element.sortable).toBeFalsy();
             expect(element.sortableIconName).toBeUndefined();
@@ -96,6 +97,21 @@ describe('List', () => {
                     '[data-element-id="span-alternative-text"]'
                 );
                 expect(span.textContent).toBe('A string alternative text');
+            });
+        });
+
+        //show-check-count
+        it('ShowCheckCount', () => {
+            element.items = ITEMS;
+            element.label = 'List';
+            element.showCheckCounter = true;
+            element.variant = 'check-list';
+
+            return Promise.resolve().then(() => {
+                const label = element.shadowRoot.querySelector(
+                    '[data-element-id="label"]'
+                );
+                expect(label.innerHTML).toBe('List (2/5)');
             });
         });
 

@@ -173,6 +173,18 @@ export default {
                 category: 'Infinite Loading'
             }
         },
+        showCheckCounter: {
+            name: 'show-check-counter',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, displays the number of checked items out of the total.',
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Check List'
+            }
+        },
         sortable: {
             control: {
                 type: 'boolean'
@@ -416,6 +428,7 @@ CheckList.args = {
     label: 'Check List',
     items: checkListItems,
     variant: 'check-list',
+    showCheckCounter: true,
     strikeThroughOnCheck: true,
     enableInfiniteLoading: true
 };
