@@ -79,12 +79,28 @@ export default class List extends LightningElement {
      */
     @api label;
     /**
+     * If present, displays the number of checked items out of the total.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api showCheckCounter;
+    /**
      * The Lightning Design System name of the sortable icon. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
      *
      * @type {string}
      * @public
      */
     @api sortableIconName;
+    /**
+     * If present, strike through all checked items.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api strikeThroughOnCheck;
 
     _actions = [];
     _cols = 1;
@@ -114,7 +130,6 @@ export default class List extends LightningElement {
     _smallContainerCols;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
-    _strikeThroughOnCheck = false;
     _variant = VARIANTS.default;
     _visibleActions;
     _visibleMediaActions;
@@ -668,25 +683,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * If present, strike through all checked items.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get strikeThroughOnCheck() {
-        return this._strikeThroughOnCheck;
-    }
-    set strikeThroughOnCheck(value) {
-        this._strikeThroughOnCheck = normalizeBoolean(value);
-
-        if (this._connected) {
-            this.setItemProperties();
-        }
-    }
-
-    /**
      * Variant to display the items as list or single line. Accepted values are base or single-line. The base variant displays a list. The variant defaults to base.
      *
      * @type {string}
@@ -1010,7 +1006,7 @@ export default class List extends LightningElement {
     }
 
     get labelToDisplay() {
-        if (!this.isCheckList) {
+        if (!this.isCheckList || !this.showCheckCounter) {
             return this.label;
         }
         return `${this.label} (${this.nbCheckedItems}/${this.computedItems.length})`;
