@@ -51,7 +51,7 @@
                             for:item="option"
                         >
                             <c-layout-item
-                                key={option.value}
+                                key={option.id}
                                 class="slds-grid"
                                 grow="1"
                                 large-container-size={computedOrientationAttributes.largeContainerCols}
@@ -61,7 +61,6 @@
                                 data-element-id="layout-item"
                             >
                                 <span
-                                    key={option.value}
                                     class={computedInputContainerClass}
                                     data-element-id="span-checkbox-container"
                                 >

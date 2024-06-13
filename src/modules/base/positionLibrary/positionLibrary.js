@@ -92,6 +92,10 @@ function createRelationship(
             config.target.getBoundingClientRect().width + 'px';
     }
 
+    if (config.minHeight) {
+        config.element.style.minHeight = config.minHeight;
+    }
+
     const constraintList = [];
 
     // This observer and the test for scrolling children

@@ -18,9 +18,11 @@ export const List = ({
     mediaActions,
     mediumContainerCols,
     smallContainerCols,
+    showCheckCounter,
     sortable,
     sortableIconName,
     sortableIconPosition,
+    strikeThroughOnCheck,
     variant,
     visibleActions,
     visibleMediaActions
@@ -41,9 +43,11 @@ export const List = ({
     element.mediaActions = mediaActions;
     element.mediumContainerCols = mediumContainerCols;
     element.smallContainerCols = smallContainerCols;
+    element.showCheckCounter = showCheckCounter;
     element.sortable = sortable;
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
+    element.strikeThroughOnCheck = strikeThroughOnCheck;
     element.variant = variant;
     element.visibleActions = visibleActions;
     element.visibleMediaActions = visibleMediaActions;
