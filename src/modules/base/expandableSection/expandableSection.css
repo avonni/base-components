@@ -4,12 +4,30 @@
         --avonni-expandable-section-base-header-color-background,
         white
     );
+    --slds-c-button-color-border: var(
+        --avonni-expandable-section-base-header-color-border
+    );
+}
+
+.avonni-expandable-section__title-button_base:active {
+    --slds-c-button-color-border-active: var(
+        --avonni-expandable-section-base-header-color-border-active
+    );
 }
 
 .avonni-expandable-section__title-button_shaded {
     background-color: var(
         --avonni-expandable-section-shaded-header-color-background,
         #f3f2f2
+    );
+    --slds-c-button-color-border: var(
+        --avonni-expandable-section-shaded-header-color-border
+    );
+}
+
+.avonni-expandable-section__title-button_shaded:active {
+    --slds-c-button-color-border-active: var(
+        --avonni-expandable-section-base-header-color-border-active
     );
 }
 
