@@ -99,10 +99,14 @@ export function hasValidNumberSymbol(value) {
     return value.match(matchSymbols) ? true : false;
 }
 
-export function increaseNumberByStep({ value, increment, step }) {
+export function increaseNumberByStep({
+    value,
+    increment,
+    step,
+    fractionDigits
+}) {
     const startingValue = value === '' || value == null ? '0' : value;
     const stepAsFloat = parseFloat(step);
-
     let result;
     if (isNaN(stepAsFloat)) {
         result = parseFloat(startingValue) + increment;
@@ -110,5 +114,5 @@ export function increaseNumberByStep({ value, increment, step }) {
         const increaseBy = increment * stepAsFloat;
         result = parseFloat(startingValue) + increaseBy;
     }
-    return Number(result);
+    return fractionDigits ? parseFloat(result.toFixed(fractionDigits)) : result;
 }

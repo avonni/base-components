@@ -1,21 +1,16 @@
 <template>
-    <abbr
-        if:true={required}
-        title="required"
-        class="slds-required"
-        data-element-id="abbr"
-        >*</abbr
-    >
     <label
-        if:true={hasLabel}
-        class="
-            slds-form-element__label
-            slds-no-flex
-            avonni-input-counter__label
-        "
+        class={computedLabelClass}
         for="input-counter"
         data-element-id="input-counter-label"
     >
+        <abbr
+            if:true={required}
+            class="slds-required"
+            title="required"
+            data-element-id="abbr"
+            >*</abbr
+        >
         {label}
     </label>
     <lightning-helptext
@@ -23,23 +18,22 @@
         content={fieldLevelHelp}
         data-element-id="lightning-helptext"
     ></lightning-helptext>
-    <div class={formElementClass}>
+    <div class={computedFormElementClass}>
         <div class="slds-form-element__control">
             <lightning-button-icon
                 if:false={readOnly}
+                class="slds-input__button_decrement"
+                alternative-text="Decrement counter"
+                disabled={disabled}
                 icon-name="utility:ban"
                 size="medium"
                 title="Decrement counter"
                 variant="bare"
-                alternative-text="Decrement counter"
-                class="slds-input__button_decrement"
-                disabled={disabled}
                 data-element-id="lightning-button-icon-decrement"
                 onclick={handleDecrement}
             ></lightning-button-icon>
             <input
-                class={inputClass}
-                id="input-counter"
+                class={computedInputClass}
                 accesskey={accessKey}
                 aria-controls={computedAriaControls}
                 aria-describedby={computedAriaDescribedBy}
@@ -47,6 +41,7 @@
                 aria-labelledby={computedAriaLabelledBy}
                 autocomplete="off"
                 disabled={disabled}
+                id="input-counter"
                 inputmode="decimal"
                 name={name}
                 placeholder="0"
@@ -54,32 +49,31 @@
                 required={required}
                 step={step}
                 data-element-id="input"
+                onblur={handleBlur}
                 onchange={handleChange}
                 onfocus={handleFocus}
-                onblur={handleBlur}
                 onkeydown={handleKeyDown}
             />
             <lightning-button-icon
                 if:false={readOnly}
+                class="slds-input__button_increment"
+                alternative-text="Increment counter"
+                disabled={disabled}
                 icon-name="utility:new"
                 size="medium"
                 title="Increment counter"
                 variant="bare"
-                alternative-text="Increment counter"
-                class="slds-input__button_increment"
-                disabled={disabled}
                 data-element-id="lightning-button-icon-increment"
                 onclick={handleIncrement}
             ></lightning-button-icon>
-            <template if:true={helpMessage}>
-                <div
-                    id="message-id"
-                    class="slds-form-element__help slds-p-top_xx-small"
-                    aria-live="assertive"
-                >
-                    {helpMessage}
-                </div>
-            </template>
+            <div
+                if:true={helpMessage}
+                class="slds-form-element__help slds-p-top_xx-small"
+                aria-live="assertive"
+                id="message-id"
+            >
+                {helpMessage}
+            </div>
         </div>
     </div>
 </template>
