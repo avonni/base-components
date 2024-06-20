@@ -82,7 +82,23 @@ export default class Card extends LightningElement {
          * @event
          * @name privatecardrendered
          */
-        this.dispatchEvent(new CustomEvent('privatecardrendered'));
+        this.dispatchEvent(
+            new CustomEvent('privatecardrendered', {
+                detail: {
+                    callbacks: {
+                        // Used by the Component Builder in Salesforce
+                        // to show the empty slots when a component is being dragged
+                        recomputeSlotsVisibility: () => {
+                            this.showActionsSlot = true;
+                            this.showFooterSlot = true;
+                            this.showMediaSlot = true;
+                            this.showTitleSlot = true;
+                            this.showDefaultSlot = true;
+                        }
+                    }
+                }
+            })
+        );
     }
 
     /*
