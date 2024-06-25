@@ -374,6 +374,11 @@ export default class Card extends LightningElement {
     }
 
     get showHeader() {
-        return this.title || this.showTitleSlot || this.iconName;
+        return (
+            this.title ||
+            this.showTitleSlot ||
+            this.iconName ||
+            this.showActionsSlot
+        );
     }
 }
