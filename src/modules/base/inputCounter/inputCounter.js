@@ -341,7 +341,10 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.
+     * The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and
+     * label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but
+     * make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to
+     * place the label above the input field.
      *
      * @type {string}
      * @default standard
@@ -421,11 +424,11 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Form Element class add error if showError.
+     * Computed form element class add error if showError.
      *
      * @type {string}
      */
-    get formElementClass() {
+    get computedFormElementClass() {
         return classSet('slds-form-element')
             .add({
                 'slds-has-error': this.showError
@@ -434,20 +437,11 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Check if variant is inline.
-     *
-     * @type {boolean}
-     */
-    get hasLabel() {
-        return this.label && this._variant !== 'label-hidden';
-    }
-
-    /**
      * Computed CSS classes for the input element.
      *
      * @type {string}
      */
-    get inputClass() {
+    get computedInputClass() {
         return classSet('slds-input slds-input_counter')
             .add({
                 'slds-text-align_left slds-p-around_none': this.readOnly
@@ -456,14 +450,33 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated from the fractionDigits.
+     * Computed label class styling.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        return classSet(
+            'slds-form-element__label slds-no-flex avonni-input-counter__label'
+        )
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden'
+            })
+            .toString();
+    }
+
+    /**
+     * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated
+     * from the fractionDigits.
+     *
+     * @type {number}
      */
     get inputStep() {
         return this.fractionDigits ? 1 / Math.pow(10, this.fractionDigits) : 1;
     }
 
     /**
-     * Value normalized to be passed in the validation constraint. If the type is percent, the value is multiplied by 100 to reflect its end result (0.1 will be transformed into 10%).
+     * Value normalized to be passed in the validation constraint. If the type is percent, the value is multiplied by 100 to reflect its
+     * end result (0.1 will be transformed into 10%).
      *
      * @type {number}
      */
@@ -567,7 +580,8 @@ export default class InputCounter extends LightningElement {
         this._value = increaseNumberByStep({
             value: this.value,
             increment,
-            step: this.step
+            step: this.step,
+            fractionDigits: this.fractionDigits
         });
         this._normalizeValue();
         this.dispatchChange();
