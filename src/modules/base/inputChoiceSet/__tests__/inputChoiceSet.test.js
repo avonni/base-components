@@ -59,7 +59,7 @@ describe('Input choice set', () => {
             expect(element.label).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.name).toBeUndefined();
-            expect(element.options).toBeUndefined();
+            expect(element.options).toMatchObject([]);
             expect(element.orientation).toBe('vertical');
             expect(element.orientationAttributes).toMatchObject({});
             expect(element.readOnly).toBeFalsy();
@@ -582,7 +582,7 @@ describe('Input choice set', () => {
                         '[data-element-id="lightning-icon-check"]'
                     );
                     expect(icon.className).toBe(
-                        'slds-order_0 slds-p-left_x-small slds-align_absolute-center'
+                        'avonni-input-choice-set__checkmark slds-order_0 slds-p-left_x-small slds-align_absolute-center'
                     );
                 });
             });
@@ -601,7 +601,7 @@ describe('Input choice set', () => {
                         '[data-element-id="lightning-icon-check"]'
                     );
                     expect(icon.className).toBe(
-                        'slds-order_2 slds-p-right_x-small slds-align_absolute-center'
+                        'avonni-input-choice-set__checkmark slds-order_2 slds-p-right_x-small slds-align_absolute-center'
                     );
                 });
             });
