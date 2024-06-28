@@ -19,6 +19,17 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-color-border
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-color-border-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-expandable-section-base-header-text-color
  * @default #080707
  * @type color
@@ -100,6 +111,17 @@
  * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-color-background
  * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-color-border
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-color-border-active
  * @type color
  */
 /**
