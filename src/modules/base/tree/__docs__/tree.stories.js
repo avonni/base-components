@@ -138,6 +138,18 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
             }
+        },
+        placeholder: {
+            name: 'placeholder',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The default label given to a new branch when it is created.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'New branch' }
+            }
         }
     },
     args: {
@@ -226,4 +238,26 @@ IndependentMultiSelect.args = {
     isMultiSelect: true,
     selectedItems: ['node1-2-1', 'node1-1', 'node2', 'node1-1-1-2', 'node6'],
     independentMultiSelect: true
+};
+
+export const Placeholder = Template.bind({});
+Placeholder.args = {
+    items: ITEMS,
+    header: 'Tree With a Placeholder',
+    placeholder: '-',
+    actions: [
+        {
+            name: 'Standard.Tree.Add',
+            label: 'Add Item'
+        },
+        {
+            name: 'Standard.Tree.Edit',
+            label: 'Edit Item'
+        },
+        {
+            name: 'Standard.Tree.Delete',
+            label: 'Delete Item'
+        }
+    ],
+    editableFields: ['label', 'metatext']
 };
