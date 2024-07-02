@@ -40,7 +40,7 @@ describe('Tree', () => {
             expect(element.isMultiSelect).toBeFalsy();
             expect(element.items).toEqual([]);
             expect(element.loadingStateAlternativeText).toBe('Loading...');
-            expect(element.placeholder).toBe('New branch');
+            expect(element.placeholder).toBeUndefined();
             expect(element.selectedItems).toEqual([]);
             expect(element.sortable).toBeFalsy();
         });

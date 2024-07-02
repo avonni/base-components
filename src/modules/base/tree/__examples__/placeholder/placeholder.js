@@ -9,6 +9,10 @@ export default class TreePlaceholder extends LightningElement {
         {
             name: 'Standard.Tree.Edit',
             label: 'Edit Item'
+        },
+        {
+            name: 'Standard.Tree.Delete',
+            label: 'Delete Item'
         }
     ];
 

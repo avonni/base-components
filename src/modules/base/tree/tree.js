@@ -41,7 +41,7 @@ export default class Tree extends LightningElement {
      * @public
      */
     @api header;
-    @api placeholder = 'New branch';
+    @api placeholder;
 
     _actions = [];
     _actionsWhenDisabled = [];
@@ -396,7 +396,7 @@ export default class Tree extends LightningElement {
     addItem(parentKey) {
         const name = generateUUID();
         const newItem = {
-            label: this.placeholder,
+            label: this.placeholder || 'New branch',
             name,
             items: []
         };

@@ -253,6 +253,10 @@ Placeholder.args = {
         {
             name: 'Standard.Tree.Edit',
             label: 'Edit Item'
+        },
+        {
+            name: 'Standard.Tree.Delete',
+            label: 'Delete Item'
         }
     ],
     editableFields: ['label', 'metatext']
