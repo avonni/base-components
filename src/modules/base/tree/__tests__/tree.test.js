@@ -40,6 +40,7 @@ describe('Tree', () => {
             expect(element.isMultiSelect).toBeFalsy();
             expect(element.items).toEqual([]);
             expect(element.loadingStateAlternativeText).toBe('Loading...');
+            expect(element.placeholder).toBe('New branch');
             expect(element.selectedItems).toEqual([]);
             expect(element.sortable).toBeFalsy();
         });
@@ -326,6 +327,35 @@ describe('Tree', () => {
                         ]
                     }
                 ]);
+            });
+        });
+
+        it('Placeholder', () => {
+            const placeholder = 'Test branch';
+            element.items = ITEMS;
+            element.placeholder = placeholder;
+
+            return Promise.resolve().then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-tree-item"]'
+                );
+                const event = new CustomEvent('privateactionclick', {
+                    detail: {
+                        name: 'Standard.Tree.Add',
+                        key: '4'
+                    },
+                    bubbles: true
+                });
+                items[3].dispatchEvent(event);
+
+                const item = { ...ITEMS[3] };
+                item.items = [
+                    {
+                        label: placeholder
+                    }
+                ];
+
+                expect(element.items[3]).toMatchObject(item);
             });
         });
 
