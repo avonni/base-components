@@ -33,7 +33,10 @@
         </div>
         <div class={computedContainerClass} data-element-id="div-range">
             <template for:each={values} for:item="value" for:index="index">
-                <div class="slds-form-element" key={generateKey}>
+                <div
+                    class="avonni-slider__form-element slds-form-element"
+                    key={generateKey}
+                >
                     <div class="slds-form-element__control">
                         <div class="slds-slider">
                             <input
