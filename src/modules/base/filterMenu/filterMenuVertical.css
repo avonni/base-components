@@ -60,6 +60,6 @@
 }
 
 .avonni-filter-menu__form-element-legend {
-    /* Avoid Salesforce Experience site styles affecting the slider */
+    /* Avoid Salesforce Experience site styles affecting the section button */
     margin-bottom: 0;
 }
