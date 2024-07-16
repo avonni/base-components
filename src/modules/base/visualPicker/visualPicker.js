@@ -1658,6 +1658,29 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Handle the click on an item. Dispatch the itemclick event.
+     *
+     * @param {Event} event
+     */
+    handleClick(event) {
+        /**
+         * The event fired when an item is clicked.
+         *
+         * @event
+         * @name itemclick
+         * @param {string} value Clicked item value.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    value: event.currentTarget.value
+                }
+            })
+        );
+    }
+
+    /**
      * Dispatches the focus event.
      */
     handleFocus() {
