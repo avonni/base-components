@@ -4,7 +4,10 @@
         data-element-id="div-wrapper"
     >
         <fieldset
-            class="slds-form-element avonni-visual-picker__fieldset_full-height"
+            class="
+                avonni-visual-picker__fieldset_full-height
+                slds-form-element slds-grid slds-grid_vertical
+            "
             aria-required={required}
             data-element-id="fieldset"
         >
@@ -20,16 +23,13 @@
                     class="slds-required"
                     title="Required"
                     data-element-id="abbr"
-                    >*</abbr
                 >
+                    *
+                </abbr>
                 {label}
             </legend>
             <div
-                class="
-                    slds-form-element__control
-                    slds-scrollable_y
-                    avonni-visual-picker__item-wrapper_full-height
-                "
+                class="slds-form-element__control slds-scrollable_y slds-grow"
                 data-element-id="div-items-wrapper"
                 onscroll={handleScroll}
             >
