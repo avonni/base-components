@@ -806,17 +806,9 @@
     height: 3rem;
 }
 
-.avonni-visual-picker__wrapper_full-height {
-    height: 100%;
-}
-
-.avonni-visual-picker__item-wrapper_full-height {
-    display: block;
-    height: calc(100% - var(--avonni-visual-picker-legend-height, 0px));
-}
-
+.avonni-visual-picker__wrapper_full-height,
 .avonni-visual-picker__fieldset_full-height {
-    height: calc(100% - var(--avonni-visual-picker-help-message-height, 0px));
+    height: 100%;
 }
 
 .avonni-visual-picker__show-more-button {

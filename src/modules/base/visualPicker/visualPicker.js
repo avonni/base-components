@@ -240,7 +240,6 @@ export default class VisualPicker extends LightningElement {
 
         // Reset loaded fallback map.
         this._isFallbackLoadedMap = {};
-        this._setCssVariables();
     }
 
     disconnectedCallback() {
@@ -1598,36 +1597,6 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
-    /**
-     * Set the CSS variables used to compute the height of the items wrapper.
-     */
-    _setCssVariables() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        if (!wrapper) {
-            return;
-        }
-        const legend = this.template.querySelector(
-            '[data-element-id="legend"]'
-        );
-        if (legend) {
-            wrapper.style.setProperty(
-                '--avonni-visual-picker-legend-height',
-                `${legend.offsetHeight}px`
-            );
-        }
-        const helpMessage = this.template.querySelector(
-            '[data-element-id="div-help-message"]'
-        );
-        if (helpMessage) {
-            wrapper.style.setProperty(
-                '--avonni-visual-picker-help-message-height',
-                `${helpMessage.offsetHeight}px`
-            );
-        }
-    }
-
     /*
      * -------------------------------------------------------------
      *  EVENT HANDLERS
@@ -1683,6 +1652,29 @@ export default class VisualPicker extends LightningElement {
             new CustomEvent('change', {
                 detail: {
                     value: this.value
+                }
+            })
+        );
+    }
+
+    /**
+     * Handle the click on an item. Dispatch the itemclick event.
+     *
+     * @param {Event} event
+     */
+    handleClick(event) {
+        /**
+         * The event fired when an item is clicked.
+         *
+         * @event
+         * @name itemclick
+         * @param {string} value Clicked item value.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    value: event.currentTarget.value
                 }
             })
         );
