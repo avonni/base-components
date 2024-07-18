@@ -162,7 +162,7 @@ article.avonni-card {
 }
 
 .avonni-card__body-container:not(.avonni-card__media-left, .avonni-card__media-right)
-    .avonni-card__media-container {
+    > .avonni-card__media-container {
     width: 100%;
 }
 
