@@ -1,7 +1,3 @@
-.avonni-list__full-height {
-    max-height: 100%;
-}
-
 .avonni-list__flex-col {
     flex: 1 1 auto;
 }
