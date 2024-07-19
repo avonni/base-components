@@ -3,6 +3,39 @@ import { Dialog } from '../__examples__/dialog';
 export default {
     title: 'Example/Dialog',
     argTypes: {
+        ariaDescribedBy: {
+            name: 'aria-described-by',
+            control: {
+                type: 'text'
+            },
+            description: 'Id of the element that describes the dialog.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        ariaLabelledBy: {
+            name: 'aria-labelled-by',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Id of the element labelling the dialog. If a title is present, defaults to the title tag.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        closeButtonAlternativeText: {
+            name: 'close-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Alternative text for the close button. If the dialog contains a cancel button, the alternative text should be equal to the button label.',
+            table: {
+                defaultValue: { summary: 'Close' },
+                type: { summary: 'string' }
+            }
+        },
         dialogName: {
             name: 'dialog-name',
             control: {
