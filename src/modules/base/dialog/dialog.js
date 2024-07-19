@@ -35,7 +35,7 @@ export default class Dialog extends LightningElement {
     @api ariaLabelledBy;
 
     /**
-     * Alternative text for the close button.
+     * Alternative text for the close button. If the dialog contains a cancel button, the alternative text should be equal to the button label.
      *
      * @type {string}
      * @default Close
@@ -317,6 +317,9 @@ export default class Dialog extends LightningElement {
      */
     handleContentClick() {
         this._contentClicked = true;
+        if (!this.template.activeElement) {
+            this.focus();
+        }
     }
 
     /**
