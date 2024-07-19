@@ -6,7 +6,7 @@
             data-element-id="modal"
             onkeyup={handleKeyUp}
         >
-            <c-focus-trap>
+            <c-focus-trap onfocusin={handleFocusIn} onfocusout={handleFocusOut}>
                 <div class="slds-modal__container">
                     <header
                         class={computedHeaderClass}

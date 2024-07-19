@@ -71,6 +71,7 @@ export default class Dialog extends LightningElement {
     _isLoading = false;
     _size = DIALOG_SIZES.default;
 
+    _focusedIn = false;
     _showDialog = false;
     showFooter = true;
     showHeader = true;
@@ -317,9 +318,21 @@ export default class Dialog extends LightningElement {
      */
     handleContentClick() {
         this._contentClicked = true;
-        if (!this.template.activeElement) {
-            this.focus();
-        }
+    }
+
+    handleFocusIn() {
+        this._focusedIn = true;
+    }
+
+    handleFocusOut() {
+        this._focusedIn = false;
+
+        requestAnimationFrame(() => {
+            if (!this._focusedIn && this.showDialog) {
+                this.focus();
+                this._focusedIn = true;
+            }
+        });
     }
 
     /**
