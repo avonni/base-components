@@ -56,20 +56,28 @@
                         onclick={handleStepPopoverClick}
                     >
                         <div class="avonni-progress-step_overflow-hidden">
-                            <div class="slds-popover__body">
-                                <p
-                                    if:true={popoverLabel}
-                                    class="slds-text-title_bold"
-                                    data-element-id="p-popover-label"
+                            <div class={computedPopoverBody}>
+                                <div
+                                    class="avonni-progress-step__popover-text"
+                                    if:true={showPopoverText}
                                 >
-                                    {popoverLabel}
-                                </p>
-                                <p
-                                    if:true={popoverDescription}
-                                    data-element-id="p-popover-description"
-                                >
-                                    {popoverDescription}
-                                </p>
+                                    <p
+                                        if:true={popoverLabel}
+                                        class="slds-text-title_bold"
+                                        data-element-id="p-popover-label"
+                                    >
+                                        {popoverLabel}
+                                    </p>
+                                    <p
+                                        if:true={popoverDescription}
+                                        class="
+                                            avonni-progress-step__popover-description
+                                        "
+                                        data-element-id="p-popover-description"
+                                    >
+                                        {popoverDescription}
+                                    </p>
+                                </div>
                                 <template if:true={showPopoverIcon}>
                                     <c-primitive-icon
                                         icon-name={popoverIconName}
@@ -93,19 +101,27 @@
                     >
                         <div class="avonni-progress-step_overflow-hidden">
                             <div class={computedPopoverBody}>
-                                <p
-                                    if:true={popoverLabel}
-                                    class="slds-text-title_bold"
-                                    data-element-id="p-popover-label"
+                                <div
+                                    class="avonni-progress-step__popover-text"
+                                    if:true={showPopoverText}
                                 >
-                                    {popoverLabel}
-                                </p>
-                                <p
-                                    if:true={popoverDescription}
-                                    data-element-id="p-popover-description"
-                                >
-                                    {popoverDescription}
-                                </p>
+                                    <p
+                                        if:true={popoverLabel}
+                                        class="slds-text-title_bold"
+                                        data-element-id="p-popover-label"
+                                    >
+                                        {popoverLabel}
+                                    </p>
+                                    <p
+                                        if:true={popoverDescription}
+                                        class="
+                                            avonni-progress-step__popover-description
+                                        "
+                                        data-element-id="p-popover-description"
+                                    >
+                                        {popoverDescription}
+                                    </p>
+                                </div>
                                 <template if:true={showPopoverIcon}>
                                     <c-primitive-icon
                                         icon-name={popoverIconName}

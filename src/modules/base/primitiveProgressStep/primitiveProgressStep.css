@@ -222,6 +222,70 @@
     top: -71.25px;
 }
 
+.avonni-progress-step__popover-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avonni-progress-step__popover_size-small.ratio-1-by-1
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-small.ratio-4-by-3
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
+}
+
+.avonni-progress-step__popover_size-small.ratio-16-by-9
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
+}
+
+.avonni-progress-step__popover_size-medium.ratio-1-by-1
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-medium.ratio-16-by-9
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
+}
+
+.avonni-progress-step__popover_size-medium.ratio-4-by-3
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-large.ratio-1-by-1
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 4;
+}
+
+.avonni-progress-step__popover_size-large.ratio-4-by-3
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 3;
+}
+
+.avonni-progress-step__popover_size-large.ratio-16-by-9
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-small
+    .avonni-progress-step__popover-body-has-icon
+    .avonni-progress-step__popover-text,
+.avonni-progress-step__popover_size-medium
+    .avonni-progress-step__popover-body-has-icon
+    .avonni-progress-step__popover-text,
+.avonni-progress-step__popover_size-large
+    .avonni-progress-step__popover-body-has-icon
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
+}
+
 .avonni-progress-step__popover-completed {
     color: var(
         --avonni-progress-indicator-step-popover-completed-text-color,
@@ -309,6 +373,16 @@
 
 .avonni-progress-step_overflow-hidden {
     overflow: hidden;
+}
+
+.avonni-progress-step_overflow-hidden:has(.avonni-progress-step__popover-text) {
+    max-width: 100%;
+}
+
+.avonni-progress-step_overflow-hidden > * {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
 }
 
 .avonni-progress-step__label {
