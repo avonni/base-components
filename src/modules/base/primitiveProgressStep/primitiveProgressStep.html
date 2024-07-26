@@ -1,20 +1,17 @@
 <template>
     <div class="avonni-progress-step__outer-class">
         <li class="avonni-progress-step__inner-class slds-progress__item">
-            <div
-                if:true={hasTop}
-                class="avonni-progress-step_position-top slds-truncate"
-            >
+            <div if:true={hasTop} class="avonni-progress-step_position-top">
                 <p
                     if:true={showLabelTop}
-                    class="avonni-progress-step__label"
+                    class="avonni-progress-step__label slds-truncate"
                     data-element-id="p-top-label"
                 >
                     {label}
                 </p>
                 <p
                     if:true={showDescriptionTop}
-                    class="avonni-progress-step__description"
+                    class="avonni-progress-step__description slds-truncate"
                     data-element-id="p-top-description"
                 >
                     {description}
@@ -158,18 +155,18 @@
             >
             <div
                 if:true={hasBottom}
-                class="avonni-progress-step_position-bottom slds-truncate"
+                class="avonni-progress-step_position-bottom"
             >
                 <p
                     if:true={showLabelBottom}
-                    class="avonni-progress-step__label"
+                    class="avonni-progress-step__label slds-truncate"
                     data-element-id="p-bottom-label"
                 >
                     {label}
                 </p>
                 <p
                     if:true={showDescriptionBottom}
-                    class="avonni-progress-step__description"
+                    class="avonni-progress-step__description slds-truncate"
                     data-element-id="p-bottom-description"
                 >
                     {description}

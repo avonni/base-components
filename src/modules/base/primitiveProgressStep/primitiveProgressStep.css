@@ -138,14 +138,14 @@
 .avonni-progress-step_position-top {
     position: absolute;
     width: 100%;
-    bottom: 30px;
+    bottom: 1.75rem;
     left: 0;
 }
 
 .avonni-progress-step_position-bottom {
     position: absolute;
     width: 100%;
-    top: 30px;
+    top: 1.75rem;
     left: 0;
 }
 
