@@ -51,7 +51,7 @@
                             for:item="option"
                         >
                             <c-layout-item
-                                key={option.id}
+                                key={option.value}
                                 class="slds-grid"
                                 grow="1"
                                 large-container-size={computedOrientationAttributes.largeContainerCols}
@@ -67,7 +67,7 @@
                                     <input
                                         checked={option.isChecked}
                                         disabled={disabled}
-                                        id={option.id}
+                                        id={option.value}
                                         name={name}
                                         readonly={readOnly}
                                         type={computedInputType}
@@ -82,7 +82,7 @@
                                         onkeyup={handleKeyUp}
                                     />
                                     <label
-                                        for={option.id}
+                                        for={option.value}
                                         class={computedLabelClass}
                                         style={option.computedButtonLabelStyle}
                                         data-element-id="label"
@@ -127,6 +127,7 @@
                                                     avonni-input-choice-set__option-label-icon-container
                                                     slds-form-element__label
                                                 "
+                                                style={option.width}
                                                 data-element-id="label-icon-container"
                                             >
                                                 <div
@@ -168,8 +169,8 @@
                                                 <span
                                                     if:true={option.isIconBottomRight}
                                                     class={option.computedLabelButtonClass}
-                                                    >{option.label}</span
-                                                >
+                                                    >{option.label}
+                                                </span>
                                                 <lightning-icon
                                                     if:true={option.iconName}
                                                     class={option.computedIconButtonClass}
@@ -181,8 +182,8 @@
                                                 <span
                                                     if:true={option.isIconTopLeft}
                                                     class={option.computedLabelButtonClass}
-                                                    >{option.label}</span
-                                                >
+                                                    >{option.label}
+                                                </span>
                                             </div>
                                             <template
                                                 if:true={computedTypeAttributes.showCheckmark}
@@ -190,6 +191,7 @@
                                                 <lightning-icon
                                                     if:true={option.isChecked}
                                                     class={computedCheckmarkClass}
+                                                    style={option.computedCheckmarkStyle}
                                                     icon-name="utility:check"
                                                     size="x-small"
                                                     variant="inverse"
@@ -216,7 +218,7 @@
                             <input
                                 checked={option.isChecked}
                                 disabled={disabled}
-                                id={option.id}
+                                id={option.value}
                                 name={name}
                                 readonly={readOnly}
                                 type={computedInputType}
@@ -232,7 +234,7 @@
                             />
                             <label
                                 class={computedLabelClass}
-                                for={option.id}
+                                for={option.value}
                                 style={option.computedButtonLabelStyle}
                                 data-color={option.color}
                                 data-element-id="label"
@@ -248,8 +250,8 @@
                                         <span
                                             if:true={option.isIconBottomRight}
                                             class={option.computedLabelButtonClass}
-                                            >{option.label}</span
-                                        >
+                                            >{option.label}
+                                        </span>
                                         <lightning-icon
                                             if:true={option.iconName}
                                             class={option.computedIconButtonClass}
@@ -261,12 +263,13 @@
                                         <span
                                             if:true={option.isIconTopLeft}
                                             class={option.computedLabelButtonClass}
-                                            >{option.label}</span
-                                        >
+                                            >{option.label}
+                                        </span>
                                     </div>
                                     <lightning-icon
                                         if:true={computedTypeAttributes.showCheckmark}
                                         class={computedCheckmarkClass}
+                                        style={option.computedCheckmarkStyle}
                                         icon-name="utility:check"
                                         size="x-small"
                                         variant="inverse"

@@ -17,9 +17,8 @@ const POSITION_ICON = {
  * @param {string} value Value of the option.
  */
 export default class InputChoiceOption {
-    constructor(option, value, index, type) {
+    constructor(option, value, type, width) {
         this.color = option.color;
-        this.id = `checkbox-${index}`;
         this.iconName = option.iconName;
         this.iconPosition = option.iconPosition;
         this.hideLabel = option.hideLabel;
@@ -27,6 +26,7 @@ export default class InputChoiceOption {
         this.value = option.value;
         this.displayLabel = this.label && !this.hideLabel;
         this.type = type;
+        this.width = width;
         this.isChecked = Array.isArray(value)
             ? value.includes(option.value)
             : value === option.value;
@@ -39,6 +39,10 @@ export default class InputChoiceOption {
         return this.isChecked
             ? `background-color: ${this.color}; border-color: ${this.color};`
             : `color: ${this.color};`;
+    }
+
+    get computedCheckmarkStyle() {
+        return this.isChecked ? 'display: block;' : 'display: none;';
     }
 
     get computedFauxInputStyle() {
