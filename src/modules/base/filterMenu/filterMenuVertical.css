@@ -58,3 +58,8 @@
 .avonni-filter-menu__title-button_base:active .avonni-filter-menu__label {
     color: var(--avonni-filter-menu-vertical-label-text-color-active);
 }
+
+.avonni-filter-menu__form-element-legend {
+    /* Avoid Salesforce Experience site styles affecting the section button */
+    margin-bottom: 0;
+}

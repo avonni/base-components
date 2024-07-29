@@ -1217,6 +1217,55 @@ describe('Visual Picker', () => {
             });
         });
 
+        // itemclick
+        describe('itemclick', () => {
+            it('Radio type', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemclick', handler);
+
+                element.items = ITEMS;
+                element.type = 'radio';
+
+                return Promise.resolve().then(() => {
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input"]'
+                    );
+                    inputs[0].click();
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toBe(
+                        'lightning-professional'
+                    );
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                });
+            });
+
+            it('Checkbox type', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemclick', handler);
+
+                element.items = ITEMS;
+                element.type = 'checkbox';
+
+                return Promise.resolve().then(() => {
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input"]'
+                    );
+                    inputs[0].click();
+
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.value).toBe(
+                        'lightning-professional'
+                    );
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
+            });
+        });
+
         describe('itemsvisibilitytoggle', () => {
             it('itemsvisibilitytoggle', () => {
                 element.items = longItems;

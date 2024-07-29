@@ -398,6 +398,11 @@
     z-index: 20;
 }
 
+.avonni-slider__form-element {
+    /* Avoid Salesforce Experience site styles affecting the slider */
+    margin-bottom: 0;
+}
+
 @-moz-document url-prefix() {
     .avonni-slider__slider {
         transform: translate(

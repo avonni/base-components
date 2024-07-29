@@ -1,6 +1,6 @@
 <template>
-    <div class="slds-grid slds-grid_vertical avonni-list__full-height">
-        <div class="slds-grid slds-grid_vertical avonni-list__full-height">
+    <div class="slds-template__container slds-grid slds-grid_vertical">
+        <div class="slds-grid slds-grid_vertical">
             <p
                 if:true={label}
                 class="slds-m-bottom_x-small avonni-list__header_font"
@@ -19,8 +19,9 @@
                 if:true={alternativeText}
                 class="slds-assistive-text"
                 data-element-id="span-alternative-text"
-                >{alternativeText}</span
             >
+                {alternativeText}
+            </span>
         </div>
         <div
             class={computedListContainerClass}
