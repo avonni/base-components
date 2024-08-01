@@ -1829,6 +1829,7 @@ export default class DateTimePicker extends LightningElement {
      * Handles the onchange event of the combobox to change the time zone.
      */
     handleTimeZoneChange(event) {
+        event.stopPropagation();
         this._timezone = event.detail.value;
 
         this._initDates();
