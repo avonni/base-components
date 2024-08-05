@@ -118,17 +118,14 @@ export default class InputChoiceSet extends LightningElement {
 
     computedOrientationAttributes = {};
     computedTypeAttributes = {};
+    computedWidth;
     helpMessage;
     _connected = false;
     _containerWidth;
     _rendered = false;
     _resizeObserver;
     _transformedOptions = [];
-
-    constructor() {
-        super();
-        this.itemIndex = 0;
-    }
+    _valueInitialized = false;
 
     /**
      * Synchronize all inputs Aria help element ID.
@@ -164,6 +161,7 @@ export default class InputChoiceSet extends LightningElement {
         }
         if (!this._rendered) {
             this._setWidth();
+            this.focus();
         }
         this._rendered = true;
     }
@@ -394,6 +392,17 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
      * The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.
      *
      * @type {(string|string[])}
@@ -407,20 +416,10 @@ export default class InputChoiceSet extends LightningElement {
     set value(value) {
         this._value = value;
 
-        if (this._connected) {
+        if (!this._valueInitialized) {
             this._initOptions();
+            this._valueInitialized = true;
         }
-    }
-
-    /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get validity() {
-        return this._constraint.validity;
     }
 
     /**
@@ -793,10 +792,10 @@ export default class InputChoiceSet extends LightningElement {
      *
      * @param {array} checkboxes Array of checkboxes.
      * @param {string} value Value of the checkbox.
-     * @param {Event} event Change event.
+     * @param {HTMLElement} target event target.
      *
      */
-    _handleChecking(checkboxes, value, event) {
+    _handleChecking(checkboxes, value, target) {
         if (
             this.isMultiSelect ||
             (this.type === 'toggle' && checkboxes.length === 1)
@@ -805,7 +804,7 @@ export default class InputChoiceSet extends LightningElement {
         } else {
             if (this.value === value) {
                 // Prevent unselecting the current option when the type is 'button'
-                event.currentTarget.checked = true;
+                target.checked = true;
                 return;
             }
 
@@ -824,14 +823,14 @@ export default class InputChoiceSet extends LightningElement {
      * Initialize the options.
      */
     _initOptions() {
-        const { options, value, type } = this;
+        const { options, value, type, computedWidth } = this;
         this._transformedOptions = Array.isArray(options)
             ? options.map((option) => {
                   return new InputChoiceOption(
                       option,
                       value,
-                      this.itemIndex++,
-                      type
+                      type,
+                      computedWidth
                   );
               })
             : [];
@@ -984,6 +983,7 @@ export default class InputChoiceSet extends LightningElement {
                     : maxWidth;
             labelIconContainer.style.width = `${maxWidth + 4}px`;
         });
+        this.computedWidth = `width: ${maxWidth + 4}px;`;
     }
 
     /**
@@ -1005,6 +1005,38 @@ export default class InputChoiceSet extends LightningElement {
             'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
             'slds-form-element_horizontal':
                 this.variant === VARIANT.LABEL_INLINE
+        });
+    }
+
+    /**
+     * Update label styling.
+     */
+    _updateLabelStyles() {
+        const labels = this.template.querySelectorAll(
+            '[data-element-id="label"]'
+        );
+
+        labels.forEach((label) => {
+            const val = label.dataset.value;
+            const color = label.dataset.color;
+            const checkmark = label.querySelector(
+                '[data-element-id="lightning-icon-check"]'
+            );
+            if (val === this.value || this.value.includes(val)) {
+                label.style.backgroundColor = color;
+                label.style.borderColor = color;
+                label.style.color = 'white';
+                if (this.computedTypeAttributes.showCheckmark) {
+                    checkmark.style.display = 'block';
+                }
+            } else {
+                label.style.backgroundColor = '';
+                label.style.borderColor = '';
+                label.style.color = color;
+                if (this.computedTypeAttributes.showCheckmark) {
+                    checkmark.style.display = 'none';
+                }
+            }
         });
     }
 
@@ -1050,17 +1082,13 @@ export default class InputChoiceSet extends LightningElement {
      */
     handleChange(event) {
         event.stopPropagation();
-        const value = event.currentTarget.value;
+        const target = event.currentTarget;
+        const value = target.value;
         const checkboxes = this.template.querySelectorAll(
             '[data-element-id="input"]'
         );
-        this._handleChecking(checkboxes, value, event);
-        this._transformedOptions = this._transformedOptions.map((option) => {
-            option.isChecked = this.isMultiSelect
-                ? this.value.includes(option.value)
-                : this.value === option.value;
-            return option;
-        });
+        this._handleChecking(checkboxes, value, target);
+        this._updateLabelStyles();
     }
 
     /**
@@ -1110,11 +1138,12 @@ export default class InputChoiceSet extends LightningElement {
      */
     handleToggleChange(event) {
         event.stopPropagation();
-        const value = event.currentTarget.name;
+        const target = event.currentTarget;
+        const value = target.name;
         let checkboxes = Array.from(
             this.template.querySelectorAll('[data-element-id="input-toggle"]')
         );
-        this._handleChecking(checkboxes, value, event);
+        this._handleChecking(checkboxes, value, target);
     }
 
     /**
