@@ -285,9 +285,16 @@ export default class ProgressStep extends LightningElement {
     }
 
     get computedPopoverBody() {
-        return this.popoverIconNameWhenHover
-            ? 'slds-popover__body avonni-progress-step__popover-body-icon-hover'
-            : 'slds-popover__body avonni-progress-step__popover-body-no-icon-hover';
+        return classSet('slds-popover__body')
+            .add({
+                'avonni-progress-step__popover-body-icon-hover':
+                    this.popoverButton && this.popoverIconNameWhenHover,
+                'avonni-progress-step__popover-body-no-icon-hover':
+                    this.popoverButton && !this.popoverIconNameWhenHover,
+                'avonni-progress-step__popover-body-has-icon':
+                    this.showPopoverIcon
+            })
+            .toString();
     }
 
     get computedPopoverClass() {
@@ -379,6 +386,10 @@ export default class ProgressStep extends LightningElement {
 
     get showPopoverIconWhenHover() {
         return this.popoverIconSrcWhenHover || this.popoverIconNameWhenHover;
+    }
+
+    get showPopoverText() {
+        return this.popoverLabel || this.popoverDescription;
     }
 
     get stepIconName() {

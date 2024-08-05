@@ -120,7 +120,7 @@
     position: relative;
     min-width: 9rem;
     margin-right: var(--lwc-varSpacingHorizontalMedium, 1rem);
-    margin-top: 1.5rem;
+    margin-top: 1.6rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -138,14 +138,15 @@
 .avonni-progress-step_position-top {
     position: absolute;
     width: 100%;
-    bottom: 30px;
+    bottom: 1.75rem;
     left: 0;
 }
 
 .avonni-progress-step_position-bottom {
     position: absolute;
     width: 100%;
-    top: 30px;
+    top: 1.75rem;
+    left: 0;
 }
 
 .avonni-progress-step__popover-body {
@@ -178,47 +179,111 @@
 
 .avonni-progress-step__popover_size-small.ratio-1-by-1 {
     height: 48px;
-    top: -60px;
+    top: -63px;
 }
 
 .avonni-progress-step__popover_size-small.ratio-4-by-3 {
     height: 36px;
-    top: -47px;
+    top: -50px;
 }
 
 .avonni-progress-step__popover_size-small.ratio-16-by-9 {
     height: 27px;
-    top: -44px;
+    top: -47px;
 }
 
 .avonni-progress-step__popover_size-medium.ratio-1-by-1 {
     height: 72px;
-    top: -84px;
+    top: -87px;
 }
 
 .avonni-progress-step__popover_size-medium.ratio-4-by-3 {
     height: 54px;
-    top: -65px;
+    top: -68px;
 }
 
 .avonni-progress-step__popover_size-medium.ratio-16-by-9 {
     height: 40.5px;
-    top: -51.5px;
+    top: -54.5px;
 }
 
 .avonni-progress-step__popover_size-large.ratio-1-by-1 {
     height: 100px;
-    top: -112px;
+    top: -115px;
 }
 
 .avonni-progress-step__popover_size-large.ratio-4-by-3 {
     height: 75px;
-    top: -87px;
+    top: -90px;
 }
 
 .avonni-progress-step__popover_size-large.ratio-16-by-9 {
     height: 56.25px;
-    top: -68.25px;
+    top: -71.25px;
+}
+
+.avonni-progress-step__popover-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avonni-progress-step__popover_size-small.ratio-1-by-1
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-small.ratio-4-by-3
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
+}
+
+.avonni-progress-step__popover_size-small.ratio-16-by-9
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
+}
+
+.avonni-progress-step__popover_size-medium.ratio-1-by-1
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-medium.ratio-16-by-9
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
+}
+
+.avonni-progress-step__popover_size-medium.ratio-4-by-3
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-large.ratio-1-by-1
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 4;
+}
+
+.avonni-progress-step__popover_size-large.ratio-4-by-3
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 3;
+}
+
+.avonni-progress-step__popover_size-large.ratio-16-by-9
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 2;
+}
+
+.avonni-progress-step__popover_size-small
+    .avonni-progress-step__popover-body-has-icon
+    .avonni-progress-step__popover-text,
+.avonni-progress-step__popover_size-medium
+    .avonni-progress-step__popover-body-has-icon
+    .avonni-progress-step__popover-text,
+.avonni-progress-step__popover_size-large
+    .avonni-progress-step__popover-body-has-icon
+    .avonni-progress-step__popover-text {
+    -webkit-line-clamp: 1;
 }
 
 .avonni-progress-step__popover-completed {
@@ -308,6 +373,16 @@
 
 .avonni-progress-step_overflow-hidden {
     overflow: hidden;
+}
+
+.avonni-progress-step_overflow-hidden:has(.avonni-progress-step__popover-text) {
+    max-width: 100%;
+}
+
+.avonni-progress-step_overflow-hidden > * {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
 }
 
 .avonni-progress-step__label {
