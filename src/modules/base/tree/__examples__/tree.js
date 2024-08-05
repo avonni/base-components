@@ -10,9 +10,10 @@ export const Tree = ({
     header,
     independentMultiSelect,
     isLoading,
+    isMultiSelect,
     items,
     loadingStateAlternativeText,
-    isMultiSelect,
+    placeholder,
     selectedItems,
     sortable
 }) => {
@@ -24,9 +25,10 @@ export const Tree = ({
     element.header = header;
     element.independentMultiSelect = independentMultiSelect;
     element.isLoading = isLoading;
+    element.isMultiSelect = isMultiSelect;
     element.items = items;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.isMultiSelect = isMultiSelect;
+    element.placeholder = placeholder;
     element.selectedItems = selectedItems;
     element.sortable = sortable;
     return element;
