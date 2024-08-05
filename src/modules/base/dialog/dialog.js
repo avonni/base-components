@@ -1,5 +1,9 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    synchronizeAttrs
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const DIALOG_SIZES = {
@@ -15,12 +19,38 @@ const DIALOG_SIZES = {
  */
 export default class Dialog extends LightningElement {
     /**
+     * Id of the element that describes the dialog.
+     *
+     * @type {string}
+     * @public
+     */
+    @api ariaDescribedBy;
+
+    /**
+     * Id of the element labelling the dialog. If a title is present, defaults to the title tag.
+     *
+     * @type {string}
+     * @public
+     */
+    @api ariaLabelledBy;
+
+    /**
+     * Alternative text for the close button. If the dialog contains a cancel button, the alternative text should be equal to the button label.
+     *
+     * @type {string}
+     * @default Close
+     * @public
+     */
+    @api closeButtonAlternativeText = 'Close';
+
+    /**
      * Dialog name.
      *
      * @type {string}
      * @public
      */
     @api dialogName;
+
     /**
      * Message displayed while the modal box is in the loading state.
      *
@@ -28,6 +58,7 @@ export default class Dialog extends LightningElement {
      * @public
      */
     @api loadingStateAlternativeText;
+
     /**
      * The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.
      *
@@ -37,9 +68,10 @@ export default class Dialog extends LightningElement {
     @api title;
 
     _contentClicked = false;
-    _isLoading;
+    _isLoading = false;
     _size = DIALOG_SIZES.default;
 
+    _focusedIn = false;
     _showDialog = false;
     showFooter = true;
     showHeader = true;
@@ -62,6 +94,12 @@ export default class Dialog extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
+
+        const modal = this.template.querySelector('[data-element-id="modal"]');
+        synchronizeAttrs(modal, {
+            'aria-describedby': this.ariaDescribedBy,
+            'aria-labelledby': this.computedAriaLabelledby
+        });
     }
 
     /**
@@ -145,6 +183,12 @@ export default class Dialog extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get computedAriaLabelledby() {
+        return this.hasStringTitle && !this.ariaLabelledBy
+            ? 'h1-dialog'
+            : this.ariaLabelledBy;
+    }
+
     /**
      * Computed Header class styling.
      *
@@ -212,6 +256,24 @@ export default class Dialog extends LightningElement {
     }
 
     /**
+     * Set the focus on the given title, if any. Otherwise set the focus on the close button.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        if (this.template.activeElement) {
+            return;
+        }
+        const title = this.template.querySelector('[data-element-id="h1"]');
+        if (title) {
+            title.focus();
+        } else {
+            this.focusOnCloseButton();
+        }
+    }
+
+    /**
      * Set the focus on the close button.
      *
      * @public
@@ -256,5 +318,31 @@ export default class Dialog extends LightningElement {
      */
     handleContentClick() {
         this._contentClicked = true;
+    }
+
+    handleFocusIn() {
+        this._focusedIn = true;
+    }
+
+    handleFocusOut() {
+        this._focusedIn = false;
+
+        requestAnimationFrame(() => {
+            if (!this._focusedIn && this.showDialog) {
+                this.focus();
+                this._focusedIn = true;
+            }
+        });
+    }
+
+    /**
+     * Handle a key up event anywhere in the dialog. Close the dialog if Escape is pressed.
+     *
+     * @param {Event} event keyup event
+     */
+    handleKeyUp(event) {
+        if (event.key === 'Escape') {
+            this.hide();
+        }
     }
 }
