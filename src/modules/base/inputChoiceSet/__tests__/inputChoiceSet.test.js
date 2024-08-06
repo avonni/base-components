@@ -669,7 +669,7 @@ describe('Input choice set', () => {
                         '[data-element-id="input"]'
                     );
                     inputs.forEach((input) => {
-                        if (input.checked) {
+                        if (input.checked || input.dataset.checked === 'true') {
                             values.push(input.value);
                         }
                     });
