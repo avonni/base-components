@@ -161,7 +161,12 @@ export default class InputChoiceSet extends LightningElement {
         }
         if (!this._rendered) {
             this._setWidth();
-            this.focus();
+            this.checkboxes.forEach((checkbox) => {
+                const checked =
+                    this.value.includes(checkbox.value) ||
+                    this.value === checkbox.value;
+                checkbox.checked = checked;
+            });
         }
         this._rendered = true;
     }
@@ -455,6 +460,15 @@ export default class InputChoiceSet extends LightningElement {
      */
     get buttonVariant() {
         return this.type === 'button';
+    }
+
+    /**
+     *  Returns the list of checkboxes.
+     *
+     * @type {HTMLElement[]}
+     */
+    get checkboxes() {
+        return this.template.querySelectorAll('[data-element-id="input"]');
     }
 
     /**
@@ -805,6 +819,7 @@ export default class InputChoiceSet extends LightningElement {
             if (this.value === value) {
                 // Prevent unselecting the current option when the type is 'button'
                 target.checked = true;
+                target.dataset.checked = 'true';
                 return;
             }
 
@@ -813,6 +828,7 @@ export default class InputChoiceSet extends LightningElement {
             );
             checkboxesToUncheck.forEach((checkbox) => {
                 checkbox.checked = false;
+                checkbox.dataset.checked = 'false';
             });
             this._value = this._valueChangeHandler(checkboxes);
         }
@@ -1048,7 +1064,10 @@ export default class InputChoiceSet extends LightningElement {
      */
     _valueChangeHandler(inputs) {
         const checkedValues = Array.from(inputs)
-            .filter((checkbox) => checkbox.checked)
+            .filter(
+                (checkbox) =>
+                    checkbox.checked || checkbox.dataset.checked === 'true'
+            )
             .map((checkbox) => checkbox.value);
         return this.isMultiSelect ? checkedValues : checkedValues[0] || null;
     }
@@ -1084,10 +1103,7 @@ export default class InputChoiceSet extends LightningElement {
         event.stopPropagation();
         const target = event.currentTarget;
         const value = target.value;
-        const checkboxes = this.template.querySelectorAll(
-            '[data-element-id="input"]'
-        );
-        this._handleChecking(checkboxes, value, target);
+        this._handleChecking(this.checkboxes, value, target);
         this._updateLabelStyles();
     }
 
