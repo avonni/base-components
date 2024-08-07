@@ -8,16 +8,12 @@ export class StraightToolManager extends ToolManager {
      */
 
     /**
-     * Sets up coordinates for beginning of a line
+     * Finishes coordinate management for end of a line
      *
      * @param {Event} event
      */
-    setupLine(event) {
-        super.setupLine();
-        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
-        this.canvas.xPositions.unshift(event.clientX - clientRect.left);
-        this.canvas.yPositions.unshift(event.clientY - clientRect.top);
-        this.drawDot(this.canvas.size / 2);
+    closeLine() {
+        super.closeLine();
     }
 
     /**
@@ -45,11 +41,15 @@ export class StraightToolManager extends ToolManager {
     }
 
     /**
-     * Finishes coordinate management for end of a line
+     * Sets up coordinates for beginning of a line
      *
      * @param {Event} event
      */
-    closeLine() {
-        super.closeLine();
+    setupLine(event) {
+        super.setupLine();
+        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
+        this.canvas.xPositions.unshift(event.clientX - clientRect.left);
+        this.canvas.yPositions.unshift(event.clientY - clientRect.top);
+        this.drawDot(this.canvas.size / 2);
     }
 }
