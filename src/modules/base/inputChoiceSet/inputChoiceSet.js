@@ -163,7 +163,7 @@ export default class InputChoiceSet extends LightningElement {
             this._setWidth();
             this.checkboxes.forEach((checkbox) => {
                 const checked =
-                    this.value.includes(checkbox.value) ||
+                    this.value?.includes(checkbox.value) ||
                     this.value === checkbox.value;
                 checkbox.checked = checked;
             });
@@ -1038,7 +1038,7 @@ export default class InputChoiceSet extends LightningElement {
             const checkmark = label.querySelector(
                 '[data-element-id="lightning-icon-check"]'
             );
-            if (val === this.value || this.value.includes(val)) {
+            if (val === this.value || this.value?.includes(val)) {
                 label.style.backgroundColor = color;
                 label.style.borderColor = color;
                 label.style.color = 'white';
