@@ -238,7 +238,7 @@ export default class InputPen extends LightningElement {
         }
         this._backgroundColor = colorValue;
         this.fillBackground();
-        this.handleChangeEvent();
+        this.handleChange();
     }
 
     /**
@@ -794,7 +794,7 @@ export default class InputPen extends LightningElement {
                 this.canvasInfo.canvasElement.height
             );
             this.fillBackground();
-            this.handleChangeEvent();
+            this.handleChange();
         }
         if (!automatedClear) {
             this.saveAction({ type: 'state' });
@@ -843,7 +843,7 @@ export default class InputPen extends LightningElement {
                 : this.redoStack.slice(actionsRecreated);
 
         this.executeAction(currentState);
-        this.handleChangeEvent();
+        this.handleChange();
     }
 
     /**
@@ -926,7 +926,7 @@ export default class InputPen extends LightningElement {
         }
         this.redoStack.unshift(deepCopy(this.undoStack.pop()));
         this.executeAction(currentState);
-        this.handleChangeEvent();
+        this.handleChange();
     }
 
     /*
@@ -1043,7 +1043,7 @@ export default class InputPen extends LightningElement {
             let img = new Image();
             img.onload = () => {
                 this.canvasInfo.ctx.drawImage(img, 0, 0);
-                this.handleChangeEvent();
+                this.handleChange();
             };
             img.src = this._foregroundValue;
         } else {
@@ -1119,7 +1119,7 @@ export default class InputPen extends LightningElement {
                 if (this.isDownFlag) {
                     this.saveAction(event, true);
                     this._toolManager.closeLine(event);
-                    this.handleChangeEvent();
+                    this.handleChange();
                 }
                 this.isDownFlag = false;
                 break;
@@ -1304,13 +1304,13 @@ export default class InputPen extends LightningElement {
         this._backgroundColor = event.detail.hexa;
         this.fillBackground();
         this.saveAction({ type: 'fill' });
-        this.handleChangeEvent();
+        this.handleChange();
     }
 
     /**
      * Change event handler.
      */
-    handleChangeEvent() {
+    handleChange() {
         if (!this.canvasInfo.canvasElement) return;
 
         this._value = this.dataURL;
