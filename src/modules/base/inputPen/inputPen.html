@@ -7,8 +7,8 @@
         >
             <abbr
                 if:true={required}
-                title="required"
                 class="slds-required"
+                title="required"
                 data-element-id="required-asterix"
                 >*</abbr
             >
@@ -29,8 +29,8 @@
             >
                 <div
                     if:false={hideControls}
-                    role="toolbar"
                     class={computedToolbarClasses}
+                    role="toolbar"
                     data-element-id="toolbar"
                 >
                     <ul class="slds-grid slds-size_2-of-2 slds-wrap">
@@ -104,88 +104,82 @@
                                 </li>
                             </ul>
                         </li>
-
                         <li
                             if:true={showSize}
-                            title="Pen size"
                             class="slds-m-left_xx-small"
+                            title="Pen size"
                         >
                             <lightning-combobox
                                 class="avonni-input-pen__combobox"
-                                name="size"
-                                label="Size"
-                                variant="label-hidden"
-                                value={size}
-                                options={sizeList}
-                                onchange={handleSizeChange}
                                 disabled={disabled}
+                                label="Size"
+                                name="size"
+                                options={sizeList}
+                                value={size}
+                                variant="label-hidden"
+                                onchange={handleSizeChange}
                                 data-group-name="button"
                                 data-element-id="size-picker"
                             >
                             </lightning-combobox>
                         </li>
-
                         <li
                             if:true={showColor}
-                            title="Pen color"
                             class="slds-m-left_xx-small"
+                            title="Pen color"
                         >
                             <c-color-picker
-                                value={color}
-                                hide-color-input
                                 disabled={disabled}
+                                hide-color-input
+                                value={color}
                                 variant="label-hidden"
                                 onchange={handleColorChange}
                                 data-element-id="color-picker"
                             >
                             </c-color-picker>
                         </li>
-
                         <li
                             if:true={showBackground}
-                            title="Background color"
                             class="slds-m-left_xx-small"
+                            title="Background color"
                         >
                             <c-color-picker
-                                value={backgroundColor}
-                                hide-color-input
-                                disabled={disabled}
-                                data-group-name="button"
-                                menu-icon-name="utility:bucket"
-                                variant="label-hidden"
-                                menu-variant="border-filled"
-                                onchange={handleBackgroundColorChange}
-                                opacity
                                 colors={defaultBackgroundColors}
+                                disabled={disabled}
+                                hide-color-input
+                                menu-icon-name="utility:bucket"
+                                menu-variant="border-filled"
+                                opacity
+                                value={backgroundColor}
+                                variant="label-hidden"
                                 data-element-id="background-color-picker"
+                                data-group-name="button"
+                                onchange={handleBackgroundColorChange}
                             >
                             </c-color-picker>
                         </li>
-
                         <li
                             if:true={showExtraActions}
                             class="slds-button-group-list"
                         >
                             <slot name="actions"> </slot>
                         </li>
-
                         <li
                             if:true={showDownload}
-                            title="Download PNG"
                             class="slds-col_bump-left"
+                            title="Download PNG"
                         >
                             <lightning-button-icon
-                                variant=" container"
-                                icon-name="utility:download"
                                 alternative-text="download PNG"
-                                onclick={handleDownload}
                                 disabled={hasValue}
-                                data-group-name="button"
+                                icon-name="utility:download"
+                                variant="container"
                                 data-element-id="download"
+                                data-group-name="button"
+                                onclick={handleDownload}
                             >
                             </lightning-button-icon>
                         </li>
-
                         <li>
                             <ul
                                 if:true={showUndoRedo}
@@ -196,27 +190,27 @@
                             >
                                 <li if:true={showUndo} title="Undo">
                                     <lightning-button-icon
-                                        icon-name="utility:undo"
-                                        variant="base"
                                         alternative-text="Undo"
-                                        title="Undo"
-                                        onclick={handleUndo}
                                         disabled={disabledUndoButton}
-                                        data-group-name="button"
+                                        icon-name="utility:undo"
+                                        title="Undo"
+                                        variant="base"
                                         data-element-id="undo"
+                                        data-group-name="button"
+                                        onclick={handleUndo}
                                     >
                                     </lightning-button-icon>
                                 </li>
                                 <li if:true={showRedo} title="Redo">
                                     <lightning-button-icon
-                                        icon-name="utility:redo"
-                                        variant="base"
                                         alternative-text="Redo"
-                                        title="Redo"
-                                        onclick={handleRedo}
                                         disabled={disabledRedoButton}
-                                        data-group-name="button"
+                                        icon-name="utility:redo"
+                                        title="Redo"
+                                        variant="base"
                                         data-element-id="redo"
+                                        data-group-name="button"
+                                        onclick={handleRedo}
                                     >
                                     </lightning-button-icon>
                                 </li>
@@ -226,40 +220,39 @@
                 </div>
                 <div
                     class={computedTextAreaClasses}
+                    data-element-id="drawing-area"
                     onmouseenter={handleMouseEnter}
                     onmousedown={handleMouseDown}
                     ontouchstart={handleMouseDown}
                     onmouseleave={handleMouseLeave}
-                    data-element-id="drawing-area"
                 >
-                    <template if:true={showClear}>
-                        <lightning-button-icon
-                            class="avonni-input-pen__refresh-button"
-                            icon-name="utility:refresh"
-                            alternative-text="Refresh"
-                            title="Refresh"
-                            onmousedown={handleReset}
-                            variant="bare"
-                            size="large"
-                            disabled={disabled}
-                            data-group-name="button"
-                            onmouseenter={hideDrawCursor}
-                            onmouseleave={showDrawCursor}
-                            data-element-id="clear-button"
-                        >
-                        </lightning-button-icon>
-                    </template>
+                    <lightning-button-icon
+                        if:true={showClear}
+                        class="avonni-input-pen__refresh-button"
+                        alternative-text="Refresh"
+                        disabled={disabled}
+                        icon-name="utility:refresh"
+                        size="large"
+                        title="Refresh"
+                        variant="bare"
+                        data-element-id="clear-button"
+                        data-group-name="button"
+                        onmousedown={handleReset}
+                        onmouseenter={hideDrawCursor}
+                        onmouseleave={showDrawCursor}
+                    >
+                    </lightning-button-icon>
                     <canvas
-                        data-element-id="background-canvas"
                         class={computedCanvasClass}
+                        data-element-id="background-canvas"
                     ></canvas>
                     <template if:true={showSignaturePad}>
                         <lightning-icon
-                            icon-name="utility:close"
-                            alternative-text="close"
-                            title="close"
-                            size="small"
                             class="avonni-input-pen__x-icon"
+                            alternative-text="close"
+                            icon-name="utility:close"
+                            size="small"
+                            title="close"
                             data-element-id="x-field"
                         >
                         </lightning-icon>
@@ -269,8 +262,8 @@
                         ></div>
                     </template>
                     <canvas
-                        data-element-id="canvas"
                         class={computedCanvasClass}
+                        data-element-id="canvas"
                     ></canvas>
                     <div
                         class="avonni-input-pen__cursor"
@@ -280,14 +273,13 @@
             </div>
         </div>
     </div>
-    <template if:true={helpMessage}>
-        <div
-            id="message-id"
-            class="slds-form-element__help slds-p-top_xx-small"
-            aria-live="assertive"
-            data-element-id="help-message"
-        >
-            {helpMessage}
-        </div>
-    </template>
+    <div
+        if:true={helpMessage}
+        class="slds-form-element__help slds-p-top_xx-small"
+        aria-live="assertive"
+        id="message-id"
+        data-element-id="help-message"
+    >
+        {helpMessage}
+    </div>
 </template>

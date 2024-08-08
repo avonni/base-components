@@ -10,25 +10,26 @@ export class SmoothToolManager extends ToolManager {
      */
 
     /**
-     * Sets up coordinates for beginning of a line
+     * Finishes coordinate management for end of a line
      *
      * @param {Event} event
      */
-    setupLine(event) {
-        super.setupLine();
-        this.canvas.xPositions = [];
-        this.canvas.yPositions = [];
-        this.canvas.velocities = Array(4).fill(INITIAL_VELOCITY);
-        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
-        for (let i = 0; i < 4; i++) {
-            this.canvas.xPositions.unshift(event.clientX - clientRect.left);
-            this.canvas.yPositions.unshift(event.clientY - clientRect.top);
+    closeLine() {
+        for (let i = 0; i < this.moveCoordinatesAdded; i++) {
+            this.canvas.xPositions.shift();
+            this.canvas.yPositions.shift();
+            this.canvas.velocities.shift();
         }
-        super.drawDot(
-            this.canvas.mode === 'ink'
-                ? this.canvas.size / 3
-                : this.canvas.size / 2
-        );
+        for (let i = 0; i < 2; i++) {
+            // add two "phantom" points for calculations
+            for (let j = 0; j < 2; j++) {
+                this.canvas.xPositions.unshift(this.canvas.xPositions[0]);
+                this.canvas.yPositions.unshift(this.canvas.yPositions[0]);
+                this.canvas.velocities.unshift(this.canvas.velocities[0] + 2);
+            }
+            this.drawSpline();
+        }
+        super.closeLine();
     }
 
     /**
@@ -57,26 +58,25 @@ export class SmoothToolManager extends ToolManager {
     }
 
     /**
-     * Finishes coordinate management for end of a line
+     * Sets up coordinates for beginning of a line
      *
      * @param {Event} event
      */
-    closeLine() {
-        for (let i = 0; i < this.moveCoordinatesAdded; i++) {
-            this.canvas.xPositions.shift();
-            this.canvas.yPositions.shift();
-            this.canvas.velocities.shift();
+    setupLine(event) {
+        super.setupLine();
+        this.canvas.xPositions = [];
+        this.canvas.yPositions = [];
+        this.canvas.velocities = Array(4).fill(INITIAL_VELOCITY);
+        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
+        for (let i = 0; i < 4; i++) {
+            this.canvas.xPositions.unshift(event.clientX - clientRect.left);
+            this.canvas.yPositions.unshift(event.clientY - clientRect.top);
         }
-        for (let i = 0; i < 2; i++) {
-            // add two "phantom" points for calculations
-            for (let j = 0; j < 2; j++) {
-                this.canvas.xPositions.unshift(this.canvas.xPositions[0]);
-                this.canvas.yPositions.unshift(this.canvas.yPositions[0]);
-                this.canvas.velocities.unshift(this.canvas.velocities[0] + 2);
-            }
-            this.drawSpline();
-        }
-        super.closeLine();
+        super.drawDot(
+            this.canvas.mode === 'ink'
+                ? this.canvas.size / 3
+                : this.canvas.size / 2
+        );
     }
 
     /*
@@ -86,49 +86,30 @@ export class SmoothToolManager extends ToolManager {
      */
 
     /**
-     * Distance traveled since last point
-     * @param {Event} event
-     * @returns {number} distance
+     * Draws a basic spline using 4 coordinates.
+     *
+     * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
+     * @param {string} penSize Size of the pen to draw the spline. Default to current size.
      */
-    getDistanceTraveled(event) {
-        // get positions
-        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
-        const deltaX =
-            this.canvas.xPositions[0] - (event.clientX - clientRect.left);
-        const deltaY =
-            this.canvas.yPositions[0] - (event.clientY - clientRect.top);
-        this.canvas.xPositions[0] = event.clientX - clientRect.left;
-        this.canvas.yPositions[0] = event.clientY - clientRect.top;
-
-        // get velocity an distance
-        let velocity = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-        const deltaV = Math.abs(this.canvas.velocities[0] - velocity);
-        const distance = velocity + this.prevDist;
-
-        // prevent velocity change from being too drastic
-        velocity = Math.min(
-            Math.max(velocity, this.canvas.velocities[0] - 0.3 * deltaV),
-            this.canvas.velocities[0] + 0.3 * deltaV
+    drawBasicSpline(pts, penSize = this.canvas.size) {
+        super.setupStroke(penSize);
+        if (this.canvas.mode === 'paint') {
+            this.canvas.ctx.lineWidth = this.canvas.size;
+            this.canvas.ctx.shadowColor = this.canvas.color;
+            this.canvas.ctx.shadowBlur = 2;
+        }
+        this.canvas.ctx.moveTo(pts[0], pts[1]);
+        this.canvas.ctx.bezierCurveTo(
+            pts[2],
+            pts[3],
+            pts[4],
+            pts[5],
+            pts[6],
+            pts[7]
         );
-
-        // adds coordinate to buffer if we have moved 2 pixels at least since last time
-        if (distance > 2) {
-            this.moveCoordinatesAdded++;
-            this.canvas.xPositions.unshift(event.clientX - clientRect.left);
-            this.canvas.yPositions.unshift(event.clientY - clientRect.top);
-            this.canvas.velocities.unshift(velocity);
-        }
-        return distance;
-    }
-
-    /**
-     * Smooth the current velocity buffer
-     */
-    smoothVelocities() {
-        for (let i = this.canvas.velocities.length - 1; i >= 2; i = i - 1) {
-            this.canvas.velocities[i - 1] =
-                (this.canvas.velocities[i] + this.canvas.velocities[i - 2]) / 2;
-        }
+        this.canvas.ctx.stroke();
+        this.canvas.ctx.shadowColor = 'none';
+        this.canvas.ctx.shadowBlur = 0;
     }
 
     /**
@@ -155,10 +136,10 @@ export class SmoothToolManager extends ToolManager {
 
     /**
      * Draws a tapering spline using the initial and final radius.
+     *
      * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
      * @param {number} firstRadius Size of first radius (beginning of spline)
      * @param {number} secondRadius Size of second radius (end of spline)
-     *
      */
     drawTaperSpline(pts, firstRadius, secondRadius) {
         const adjustedPoints = this.findAdjustedPoints(
@@ -177,37 +158,11 @@ export class SmoothToolManager extends ToolManager {
     }
 
     /**
-     * Draws a basic spline using 4 coordinates.
-     * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
-     * @param {string} penSize Size of the pen to draw the spline. Default to current size.
-     */
-    drawBasicSpline(pts, penSize = this.canvas.size) {
-        super.setupStroke(penSize);
-        if (this.canvas.mode === 'paint') {
-            this.canvas.ctx.lineWidth = this.canvas.size;
-            this.canvas.ctx.shadowColor = this.canvas.color;
-            this.canvas.ctx.shadowBlur = 2;
-        }
-        this.canvas.ctx.moveTo(pts[0], pts[1]);
-        this.canvas.ctx.bezierCurveTo(
-            pts[2],
-            pts[3],
-            pts[4],
-            pts[5],
-            pts[6],
-            pts[7]
-        );
-        this.canvas.ctx.stroke();
-        this.canvas.ctx.shadowColor = 'none';
-        this.canvas.ctx.shadowBlur = 0;
-    }
-
-    /**
      * Finds the coordinates for the two splines needed to draw a tapering spline.
+     *
      * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
      * @param {number} bigRadius Size of first radius (beginning of spline)
      * @param {number} smallRadius Size of second radius (end of spline)
-     *
      */
     findAdjustedPoints(splinePoints, smallRadius, bigRadius) {
         if (smallRadius > bigRadius) {
@@ -257,7 +212,45 @@ export class SmoothToolManager extends ToolManager {
     }
 
     /**
+     * Distance traveled since last point
+     *
+     * @param {Event} event
+     * @returns {number} distance
+     */
+    getDistanceTraveled(event) {
+        // get positions
+        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
+        const deltaX =
+            this.canvas.xPositions[0] - (event.clientX - clientRect.left);
+        const deltaY =
+            this.canvas.yPositions[0] - (event.clientY - clientRect.top);
+        this.canvas.xPositions[0] = event.clientX - clientRect.left;
+        this.canvas.yPositions[0] = event.clientY - clientRect.top;
+
+        // get velocity an distance
+        let velocity = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+        const deltaV = Math.abs(this.canvas.velocities[0] - velocity);
+        const distance = velocity + this.prevDist;
+
+        // prevent velocity change from being too drastic
+        velocity = Math.min(
+            Math.max(velocity, this.canvas.velocities[0] - 0.3 * deltaV),
+            this.canvas.velocities[0] + 0.3 * deltaV
+        );
+
+        // adds coordinate to buffer if we have moved 2 pixels at least since last time
+        if (distance > 2) {
+            this.moveCoordinatesAdded++;
+            this.canvas.xPositions.unshift(event.clientX - clientRect.left);
+            this.canvas.yPositions.unshift(event.clientY - clientRect.top);
+            this.canvas.velocities.unshift(velocity);
+        }
+        return distance;
+    }
+
+    /**
      * Computes spline points and control points following catmull-rom method.
+     *
      * @returns {number[]} 8 coords: start coords [0,1] && end coords [6,7] and set of control points [2,3] && [4,5]
      */
     getSplinePoints() {
@@ -315,5 +308,15 @@ export class SmoothToolManager extends ToolManager {
             spline.push(cp1x, cp1y, cp2x, cp2y, x2, y2);
         }
         return spline.slice(6, 14);
+    }
+
+    /**
+     * Smooth the current velocity buffer
+     */
+    smoothVelocities() {
+        for (let i = this.canvas.velocities.length - 1; i >= 2; i = i - 1) {
+            this.canvas.velocities[i - 1] =
+                (this.canvas.velocities[i] + this.canvas.velocities[i - 2]) / 2;
+        }
     }
 }

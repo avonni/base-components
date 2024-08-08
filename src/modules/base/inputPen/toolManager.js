@@ -1,7 +1,7 @@
 export class ToolManager {
     canvas;
-    prevDist = 0;
     moveCoordinatesAdded = 0;
+    prevDist = 0;
 
     constructor(canvasInfo) {
         this.canvas = canvasInfo;
@@ -12,24 +12,6 @@ export class ToolManager {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Sets up coordinates for beginning of a line
-     *
-     * @param {Event} event
-     */
-    setupLine() {
-        // setup all tools should do
-    }
-
-    /**
-     * Draws a stroke between coordinates
-     *
-     * @param {Event} event
-     */
-    draw() {
-        // draw all tools should do
-    }
 
     /**
      * Finishes coordinate management for end of a line
@@ -45,24 +27,29 @@ export class ToolManager {
         this.prevDist = 0;
     }
 
+    /**
+     * Draws a stroke between coordinates
+     *
+     * @param {Event} event
+     */
+    draw() {
+        // draw all tools should do
+    }
+
+    /**
+     * Sets up coordinates for beginning of a line
+     *
+     * @param {Event} event
+     */
+    setupLine() {
+        // setup all tools should do
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Sets up a stroke for the canvas ctx
-     *
-     * @param {number} strokeSize
-     */
-    setupStroke(strokeSize) {
-        this.canvas.ctx.beginPath();
-        this.canvas.ctx.lineCap = 'round';
-        this.canvas.ctx.lineJoin = 'round';
-        this.canvas.ctx.strokeStyle = this.canvas.color;
-        this.canvas.ctx.lineWidth = strokeSize;
-    }
 
     /**
      * Draws a dot at position[0] coordinates
@@ -83,5 +70,18 @@ export class ToolManager {
         );
         this.canvas.ctx.fillStyle = this.canvas.color;
         this.canvas.ctx.fill();
+    }
+
+    /**
+     * Sets up a stroke for the canvas ctx
+     *
+     * @param {number} strokeSize
+     */
+    setupStroke(strokeSize) {
+        this.canvas.ctx.beginPath();
+        this.canvas.ctx.lineCap = 'round';
+        this.canvas.ctx.lineJoin = 'round';
+        this.canvas.ctx.strokeStyle = this.canvas.color;
+        this.canvas.ctx.lineWidth = strokeSize;
     }
 }
