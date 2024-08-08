@@ -167,6 +167,7 @@ export default class InputChoiceSet extends LightningElement {
                     this.value === checkbox.value;
                 checkbox.checked = checked;
             });
+            this._updateLabelStyles();
         }
         this._rendered = true;
     }
@@ -814,6 +815,7 @@ export default class InputChoiceSet extends LightningElement {
             this.isMultiSelect ||
             (this.type === 'toggle' && checkboxes.length === 1)
         ) {
+            target.dataset.checked = target.checked;
             this._value = this._valueChangeHandler(checkboxes);
         } else {
             if (this.value === value) {
@@ -1034,24 +1036,23 @@ export default class InputChoiceSet extends LightningElement {
 
         labels.forEach((label) => {
             const val = label.dataset.value;
+            const hasValue = this.value?.includes(val) || this.value === val;
+            if (this.computedTypeAttributes.showCheckmark) {
+                const checkmark = label.querySelector(
+                    '[data-element-id="lightning-icon-check"]'
+                );
+                checkmark.style.display = hasValue ? 'block' : 'none';
+            }
             const color = label.dataset.color;
-            const checkmark = label.querySelector(
-                '[data-element-id="lightning-icon-check"]'
-            );
-            if (val === this.value || this.value.includes(val)) {
+            if (!color) return;
+            if (hasValue) {
                 label.style.backgroundColor = color;
                 label.style.borderColor = color;
-                label.style.color = 'white';
-                if (this.computedTypeAttributes.showCheckmark) {
-                    checkmark.style.display = 'block';
-                }
+                label.style.color = this.buttonVariant ? 'white' : color;
             } else {
                 label.style.backgroundColor = '';
                 label.style.borderColor = '';
                 label.style.color = color;
-                if (this.computedTypeAttributes.showCheckmark) {
-                    checkmark.style.display = 'none';
-                }
             }
         });
     }
