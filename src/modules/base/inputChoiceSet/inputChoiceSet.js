@@ -1037,6 +1037,12 @@ export default class InputChoiceSet extends LightningElement {
         labels.forEach((label) => {
             const val = label.dataset.value;
             const hasValue = this.value?.includes(val) || this.value === val;
+            const icon = label.querySelector(
+                '[data-element-id="lightning-icon-button"]'
+            );
+            if (icon) {
+                icon.variant = hasValue ? 'inverse' : 'base';
+            }
             if (
                 this.computedTypeAttributes?.showCheckmark &&
                 this.buttonVariant
