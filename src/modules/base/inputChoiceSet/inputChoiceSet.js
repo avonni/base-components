@@ -163,7 +163,7 @@ export default class InputChoiceSet extends LightningElement {
             this._setWidth();
             this.checkboxes.forEach((checkbox) => {
                 const checked =
-                    this.value.includes(checkbox.value) ||
+                    this.value?.includes(checkbox.value) ||
                     this.value === checkbox.value;
                 checkbox.checked = checked;
             });
