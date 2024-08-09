@@ -163,7 +163,7 @@ export default class InputChoiceSet extends LightningElement {
             this._setWidth();
             this.checkboxes.forEach((checkbox) => {
                 const checked =
-                    this.value.includes(checkbox.value) ||
+                    this.value?.includes(checkbox.value) ||
                     this.value === checkbox.value;
                 checkbox.checked = checked;
             });
@@ -555,7 +555,7 @@ export default class InputChoiceSet extends LightningElement {
                 'slds-grid_vertical-align-center': !this.toggleVariant,
                 'avonni-input-choice-set__toggle_stretch':
                     this.toggleVariant &&
-                    this.computedTypeAttributes.stretch &&
+                    this.computedTypeAttributes?.stretch &&
                     this.orientation === 'vertical'
             })
             .toString();
@@ -593,7 +593,7 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedHideCheck() {
-        return !this.computedTypeAttributes.showCheckmark;
+        return !this.computedTypeAttributes?.showCheckmark;
     }
 
     /**
@@ -683,7 +683,7 @@ export default class InputChoiceSet extends LightningElement {
                 valueMissing: () =>
                     !this.disabled &&
                     this.required &&
-                    (!this.value || !this.value.length)
+                    (!this.value || !this.value?.length)
             });
         }
         return this._constraintApi;
@@ -1037,10 +1037,14 @@ export default class InputChoiceSet extends LightningElement {
         labels.forEach((label) => {
             const val = label.dataset.value;
             const hasValue = this.value?.includes(val) || this.value === val;
-            if (this.computedTypeAttributes.showCheckmark) {
+            if (
+                this.computedTypeAttributes?.showCheckmark &&
+                this.buttonVariant
+            ) {
                 const checkmark = label.querySelector(
                     '[data-element-id="lightning-icon-check"]'
                 );
+                if (!checkmark) return;
                 checkmark.style.display = hasValue ? 'block' : 'none';
             }
             const color = label.dataset.color;
