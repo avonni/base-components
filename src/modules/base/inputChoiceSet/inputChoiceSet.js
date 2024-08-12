@@ -159,17 +159,13 @@ export default class InputChoiceSet extends LightningElement {
         if (!this._resizeObserver) {
             this._initResizeObserver();
         }
+
         if (!this._rendered) {
             this._setWidth();
-            this.checkboxes.forEach((checkbox) => {
-                const checked =
-                    this.value?.includes(checkbox.value) ||
-                    this.value === checkbox.value;
-                checkbox.checked = checked;
-            });
             this._updateLabelStyles();
         }
         this._rendered = true;
+        this._updateCheckboxCheckedState();
     }
 
     disconnectedCallback() {
@@ -1013,6 +1009,19 @@ export default class InputChoiceSet extends LightningElement {
         if (stretch === undefined) {
             this.computedTypeAttributes.stretch = this.stretch;
         }
+    }
+
+    /**
+     * Update the checkbox checked state.
+     */
+    _updateCheckboxCheckedState() {
+        this.checkboxes.forEach((checkbox) => {
+            const checked =
+                this.value?.includes(checkbox.value) ||
+                this.value === checkbox.value;
+            checkbox.checked = checked;
+            checkbox.dataset.checked = checked;
+        });
     }
 
     /**
