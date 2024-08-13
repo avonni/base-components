@@ -1,12 +1,13 @@
 <template>
     <avonni-input-choice-set
+        is-multi-select
         label="Please select a value"
+        message-when-value-missing="Value missing"
         options={optionsWithoutIcon}
         orientation="horizontal"
         orientation-attributes={orientationAttributes}
         type="button"
         type-attributes={typeAttributes}
-        message-when-value-missing="Value missing"
         value={dayValue}
     ></avonni-input-choice-set>
 </template>

@@ -465,7 +465,9 @@ export default class InputChoiceSet extends LightningElement {
      * @type {HTMLElement[]}
      */
     get checkboxes() {
-        return this.template.querySelectorAll('[data-element-id="input"]');
+        return this.toggleVariant
+            ? this.template.querySelectorAll('[data-element-id="input-toggle"]')
+            : this.template.querySelectorAll('[data-element-id="input"]');
     }
 
     /**
@@ -485,8 +487,7 @@ export default class InputChoiceSet extends LightningElement {
     get computedButtonClass() {
         const { stretch, displayAsRow } = this.computedTypeAttributes;
         return classSet(`avonni-input-choice-set__${this.orientation}`).add({
-            'slds-size_full':
-                this.orientation === 'horizontal' && !this.buttonVariant,
+            'slds-size_full': this.isHorizontal && !this.buttonVariant,
             'slds-checkbox_button-group': this.buttonVariant && !displayAsRow,
             'avonni-input-choice-set__button_stretch': stretch
         });
@@ -504,12 +505,9 @@ export default class InputChoiceSet extends LightningElement {
                 'slds-checkbox_button': !displayAsRow,
                 'avonni-input-choice-set__button__row': displayAsRow,
                 'avonni-input-choice-set__horizontal':
-                    this.orientation === 'horizontal' &&
-                    !displayAsRow &&
-                    !stretch,
+                    this.isHorizontal && !displayAsRow && !stretch,
                 'slds-grow': stretch,
-                'slds-grid':
-                    stretch && this.orientation === 'horizontal' && displayAsRow
+                'slds-grid': stretch && this.isHorizontal && displayAsRow
             })
             .toString();
     }
@@ -535,7 +533,7 @@ export default class InputChoiceSet extends LightningElement {
                     (this.toggleVariant &&
                         this.checkPosition === 'left' &&
                         this.orientation === 'vertical') ||
-                    (this.toggleVariant && this.orientation === 'horizontal')
+                    (this.toggleVariant && this.isHorizontal)
             })
             .toString();
     }
@@ -708,6 +706,15 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * True if orientation is horizontal.
+     *
+     * @type {boolean}
+     */
+    get isHorizontal() {
+        return this.orientation === 'horizontal';
+    }
+
+    /**
      * True if type is toggle.
      *
      * @type {boolean}
@@ -801,19 +808,31 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Handles the checking for the change event.
      *
-     * @param {array} checkboxes Array of checkboxes.
      * @param {string} value Value of the checkbox.
      * @param {HTMLElement} target event target.
-     *
+     * @param {boolean} isInput If the target is an input.
      */
-    _handleChecking(checkboxes, value, target) {
-        if (
-            this.isMultiSelect ||
-            (this.type === 'toggle' && checkboxes.length === 1)
-        ) {
-            target.dataset.checked = target.checked;
-            this._value = this._valueChangeHandler(checkboxes);
+    _handleChecking(value, target, isInput) {
+        const isSingleToggle =
+            this.type === 'toggle' && this.checkboxes.length === 1;
+        if (this.isMultiSelect || isSingleToggle) {
+            if (this.toggleVariant) {
+                const checked = target.checked;
+                if (!isInput) {
+                    target.checked = checked;
+                    target.dataset.checked = checked;
+                } else {
+                    target.checked = !checked;
+                    target.dataset.checked = !checked;
+                }
+            } else {
+                target.dataset.checked = target.checked;
+            }
         } else {
+            if (this.toggleVariant) {
+                target.checked = true;
+                target.dataset.checked = 'true';
+            }
             if (this.value === value) {
                 // Prevent unselecting the current option when the type is 'button'
                 target.checked = true;
@@ -821,15 +840,15 @@ export default class InputChoiceSet extends LightningElement {
                 return;
             }
 
-            const checkboxesToUncheck = Array.from(checkboxes).filter(
+            const checkboxesToUncheck = Array.from(this.checkboxes).filter(
                 (checkbox) => checkbox.value !== value
             );
             checkboxesToUncheck.forEach((checkbox) => {
                 checkbox.checked = false;
                 checkbox.dataset.checked = 'false';
             });
-            this._value = this._valueChangeHandler(checkboxes);
         }
+        this._value = this._valueChangeHandler();
         this._dispatchChangeEvent();
     }
 
@@ -867,23 +886,19 @@ export default class InputChoiceSet extends LightningElement {
         const defaults = this._normalizeHorizontalColumns(attributes.cols);
 
         // Keep same logic as in layoutItem.
-        attributes.cols =
-            this.orientation === 'horizontal'
-                ? defaults || DEFAULT_COLUMNS.default
-                : 12;
-        attributes.smallContainerCols =
-            this.orientation === 'horizontal'
-                ? small || defaults || DEFAULT_COLUMNS.small
-                : 12;
+        attributes.cols = this.isHorizontal
+            ? defaults || DEFAULT_COLUMNS.default
+            : 12;
+        attributes.smallContainerCols = this.isHorizontal
+            ? small || defaults || DEFAULT_COLUMNS.small
+            : 12;
 
-        attributes.mediumContainerCols =
-            this.orientation === 'horizontal'
-                ? medium || small || defaults || DEFAULT_COLUMNS.medium
-                : 12;
-        attributes.largeContainerCols =
-            this.orientation === 'horizontal'
-                ? large || medium || small || defaults || DEFAULT_COLUMNS.large
-                : 12;
+        attributes.mediumContainerCols = this.isHorizontal
+            ? medium || small || defaults || DEFAULT_COLUMNS.medium
+            : 12;
+        attributes.largeContainerCols = this.isHorizontal
+            ? large || medium || small || defaults || DEFAULT_COLUMNS.large
+            : 12;
 
         if (this.orientation === 'vertical') {
             attributes.multipleRows = true;
@@ -948,7 +963,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the input choice set.
+     * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated
+     * attributes and compute the input choice set.
      */
     _normalizeTypeAttributes() {
         const typeAttributes = {};
@@ -966,7 +982,6 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Set the width of the label icon container when check position is right and orientation vertical.
-     *
      */
     _setWidth() {
         const labelIconContainers = this.template.querySelectorAll(
@@ -980,10 +995,7 @@ export default class InputChoiceSet extends LightningElement {
             labelIconContainer.style.width = '';
         });
 
-        if (
-            this.orientation === 'horizontal' &&
-            !this.orientationAttributes?.multipleRows
-        )
+        if (this.isHorizontal && !this.orientationAttributes?.multipleRows)
             return;
 
         labelIconContainers.forEach((labelIconContainer) => {
@@ -1005,7 +1017,6 @@ export default class InputChoiceSet extends LightningElement {
      */
     _supportDeprecatedAttributes() {
         const { stretch } = this.computedTypeAttributes;
-
         if (stretch === undefined) {
             this.computedTypeAttributes.stretch = this.stretch;
         }
@@ -1016,9 +1027,8 @@ export default class InputChoiceSet extends LightningElement {
      */
     _updateCheckboxCheckedState() {
         this.checkboxes.forEach((checkbox) => {
-            const checked =
-                this.value?.includes(checkbox.value) ||
-                this.value === checkbox.value;
+            const value = checkbox.value || checkbox.name;
+            const checked = this.value?.includes(value) || this.value === value;
             checkbox.checked = checked;
             checkbox.dataset.checked = checked;
         });
@@ -1039,6 +1049,7 @@ export default class InputChoiceSet extends LightningElement {
      * Update label styling.
      */
     _updateLabelStyles() {
+        if (this.toggleVariant) return;
         const labels = this.template.querySelectorAll(
             '[data-element-id="label"]'
         );
@@ -1078,12 +1089,10 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Value change handler.
-     *
-     * @param {array} inputs All inputs.
      * @returns {array} Checked values.
      */
-    _valueChangeHandler(inputs) {
-        const checkedValues = Array.from(inputs)
+    _valueChangeHandler() {
+        const checkedValues = Array.from(this.checkboxes)
             .filter(
                 (checkbox) =>
                     checkbox.checked || checkbox.dataset.checked === 'true'
@@ -1099,7 +1108,7 @@ export default class InputChoiceSet extends LightningElement {
      */
 
     /**
-     * Dispatch the blur event.
+     * Handles and dispatches the blur event.
      */
     handleBlur() {
         this.interactingState.leave();
@@ -1121,9 +1130,17 @@ export default class InputChoiceSet extends LightningElement {
      */
     handleChange(event) {
         event.stopPropagation();
-        const target = event.currentTarget;
-        const value = target.value;
-        this._handleChecking(this.checkboxes, value, target);
+
+        let target = event.currentTarget;
+        const value = target.value || target.name;
+        const isInput = target.dataset.elementId === 'input';
+
+        if (this.toggleVariant && isInput) {
+            target = this.template.querySelector(
+                `[data-element-id="input-toggle"][data-value="${value}"]`
+            );
+        }
+        this._handleChecking(value, target, isInput);
         this._updateLabelStyles();
     }
 
@@ -1142,7 +1159,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Dispatch the focus event.
+     * Handles and Dispatches the focus event.
      */
     handleFocus() {
         this.interactingState.enter();
@@ -1165,21 +1182,6 @@ export default class InputChoiceSet extends LightningElement {
     handleKeyUp(event) {
         if (event.key !== 'Enter') return;
         event.currentTarget.click();
-    }
-
-    /**
-     * Handles the change event for toggle type.
-     *
-     * @param {Event} event
-     */
-    handleToggleChange(event) {
-        event.stopPropagation();
-        const target = event.currentTarget;
-        const value = target.name;
-        let checkboxes = Array.from(
-            this.template.querySelectorAll('[data-element-id="input-toggle"]')
-        );
-        this._handleChecking(checkboxes, value, target);
     }
 
     /**
