@@ -1077,12 +1077,21 @@ const ICON_TYPES = [
         icons: [
             { title: 'activity', value: 'utility:activity' },
             { title: 'ad_set', value: 'utility:ad_set' },
+            { title: 'add_above', value: 'utility:add_above' },
+            { title: 'add_below', value: 'utility:add_below' },
+            { title: 'add_source', value: 'utility:add_source' },
             { title: 'add', value: 'utility:add' },
             { title: 'adduser', value: 'utility:adduser' },
             { title: 'adjust_value', value: 'utility:adjust_value' },
             { title: 'advanced_function', value: 'utility:advanced_function' },
             { title: 'advertising', value: 'utility:advertising' },
+            { title: 'agent_home', value: 'utility:agent_home' },
             { title: 'agent_session', value: 'utility:agent_session' },
+            { title: 'aggregate', value: 'utility:aggregate' },
+            {
+                title: 'aggregation_policy',
+                value: 'utility:aggregation_policy'
+            },
             { title: 'alert', value: 'utility:alert' },
             { title: 'all', value: 'utility:all' },
             { title: 'anchor', value: 'utility:anchor' },
@@ -1092,15 +1101,23 @@ const ICON_TYPES = [
             { title: 'answered_twice', value: 'utility:answered_twice' },
             { title: 'anywhere_alert', value: 'utility:anywhere_alert' },
             { title: 'anywhere_chat', value: 'utility:anywhere_chat' },
+            { title: 'apex_alt', value: 'utility:apex_alt' },
             { title: 'apex_plugin', value: 'utility:apex_plugin' },
             { title: 'apex', value: 'utility:apex' },
+            { title: 'app_web_messaging', value: 'utility:app_web_messaging' },
             { title: 'approval', value: 'utility:approval' },
             { title: 'apps', value: 'utility:apps' },
             { title: 'archive', value: 'utility:archive' },
+            { title: 'array', value: 'utility:array' },
             { title: 'arrow_bottom', value: 'utility:arrow_bottom' },
+            { title: 'arrow_left', value: 'utility:arrow_left' },
+            { title: 'arrow_right', value: 'utility:arrow_right' },
             { title: 'arrow_top', value: 'utility:arrow_top' },
             { title: 'arrowdown', value: 'utility:arrowdown' },
             { title: 'arrowup', value: 'utility:arrowup' },
+            { title: 'asset_audit', value: 'utility:asset_audit' },
+            { title: 'asset_object', value: 'utility:asset_object' },
+            { title: 'asset_repossessed', value: 'utility:asset_repossessed' },
             { title: 'asset_warranty', value: 'utility:asset_warranty' },
             { title: 'assignment', value: 'utility:assignment' },
             { title: 'attach', value: 'utility:attach' },
@@ -1110,14 +1127,36 @@ const ICON_TYPES = [
             { title: 'ban', value: 'utility:ban' },
             { title: 'block_visitor', value: 'utility:block_visitor' },
             { title: 'bold', value: 'utility:bold' },
+            { title: 'bookmark_alt', value: 'utility:bookmark_alt' },
+            { title: 'bookmark_stroke', value: 'utility:bookmark_stroke' },
             { title: 'bookmark', value: 'utility:bookmark' },
+            { title: 'bottom_align', value: 'utility:bottom_align' },
+            {
+                title: 'bottom_group_alignment',
+                value: 'utility:bottom_group_alignment'
+            },
             { title: 'breadcrumbs', value: 'utility:breadcrumbs' },
             { title: 'broadcast', value: 'utility:broadcast' },
             { title: 'brush', value: 'utility:brush' },
             { title: 'bucket', value: 'utility:bucket' },
+            {
+                title: 'budget_category_value',
+                value: 'utility:budget_category_value'
+            },
+            { title: 'budget_period', value: 'utility:budget_period' },
             { title: 'bug', value: 'utility:bug' },
             { title: 'builder', value: 'utility:builder' },
+            { title: 'bundle_config', value: 'utility:bundle_config' },
+            { title: 'bundle_policy', value: 'utility:bundle_policy' },
             { title: 'button_choice', value: 'utility:button_choice' },
+            {
+                title: 'buyer_group_qualifier',
+                value: 'utility:buyer_group_qualifier'
+            },
+            {
+                title: 'calculated_insights',
+                value: 'utility:calculated_insights'
+            },
             { title: 'call', value: 'utility:call' },
             { title: 'campaign', value: 'utility:campaign' },
             {
@@ -1125,16 +1164,27 @@ const ICON_TYPES = [
                 value: 'utility:cancel_file_request'
             },
             { title: 'cancel_transfer', value: 'utility:cancel_transfer' },
+            { title: 'cant_sync', value: 'utility:cant_sync' },
+            { title: 'capacity_plan', value: 'utility:capacity_plan' },
             { title: 'capslock', value: 'utility:capslock' },
+            { title: 'captions', value: 'utility:captions' },
             { title: 'cart', value: 'utility:cart' },
             { title: 'case', value: 'utility:case' },
-            { title: 'cases', value: 'utility:cases' },
+            { title: 'cases', value: 'utility:cases' }
+        ],
+        iconsExtended: [
             { title: 'center_align_text', value: 'utility:center_align_text' },
+            { title: 'center_align', value: 'utility:center_align' },
+            {
+                title: 'center_group_alignment',
+                value: 'utility:center_group_alignment'
+            },
             { title: 'change_owner', value: 'utility:change_owner' },
             {
                 title: 'change_record_type',
                 value: 'utility:change_record_type'
             },
+            { title: 'change_request', value: 'utility:change_request' },
             { title: 'chart', value: 'utility:chart' },
             { title: 'chat', value: 'utility:chat' },
             { title: 'check', value: 'utility:check' },
@@ -1150,12 +1200,14 @@ const ICON_TYPES = [
             { title: 'clock', value: 'utility:clock' },
             { title: 'close', value: 'utility:close' },
             { title: 'collapse_all', value: 'utility:collapse_all' },
+            { title: 'collection_alt', value: 'utility:collection_alt' },
             {
                 title: 'collection_variable',
                 value: 'utility:collection_variable'
             },
             { title: 'collection', value: 'utility:collection' },
             { title: 'color_swatch', value: 'utility:color_swatch' },
+            { title: 'columns', value: 'utility:columns' },
             { title: 'comments', value: 'utility:comments' },
             { title: 'company', value: 'utility:company' },
             {
@@ -1164,20 +1216,39 @@ const ICON_TYPES = [
             },
             { title: 'connected_apps', value: 'utility:connected_apps' },
             { title: 'constant', value: 'utility:constant' },
-            { title: 'contact_request', value: 'utility:contact_request' }
-        ],
-        iconsExtended: [
+            { title: 'contact_request', value: 'utility:contact_request' },
+            { title: 'contact', value: 'utility:contact' },
             { title: 'contract_alt', value: 'utility:contract_alt' },
+            { title: 'contract_doc', value: 'utility:contract_doc' },
+            {
+                title: 'contract_line_outcome_data',
+                value: 'utility:contract_line_outcome_data'
+            },
+            {
+                title: 'contract_line_outcome',
+                value: 'utility:contract_line_outcome'
+            },
+            { title: 'contract_payment', value: 'utility:contract_payment' },
             { title: 'contract', value: 'utility:contract' },
             { title: 'copy_to_clipboard', value: 'utility:copy_to_clipboard' },
             { title: 'copy', value: 'utility:copy' },
+            { title: 'coupon_codes', value: 'utility:coupon_codes' },
             { title: 'crossfilter', value: 'utility:crossfilter' },
             { title: 'currency_input', value: 'utility:currency_input' },
             { title: 'currency', value: 'utility:currency' },
             { title: 'custom_apps', value: 'utility:custom_apps' },
+            {
+                title: 'customer_workspace',
+                value: 'utility:customer_workspace'
+            },
+            { title: 'customer', value: 'utility:customer' },
             { title: 'cut', value: 'utility:cut' },
             { title: 'dash', value: 'utility:dash' },
+            { title: 'data_cloud', value: 'utility:data_cloud' },
+            { title: 'data_graph', value: 'utility:data_graph' },
             { title: 'data_mapping', value: 'utility:data_mapping' },
+            { title: 'data_model', value: 'utility:data_model' },
+            { title: 'data_transforms', value: 'utility:data_transforms' },
             { title: 'database', value: 'utility:database' },
             { title: 'datadotcom', value: 'utility:datadotcom' },
             { title: 'date_input', value: 'utility:date_input' },
@@ -1189,23 +1260,32 @@ const ICON_TYPES = [
             { title: 'desktop_and_phone', value: 'utility:desktop_and_phone' },
             { title: 'desktop_console', value: 'utility:desktop_console' },
             { title: 'desktop', value: 'utility:desktop' },
+            { title: 'detach', value: 'utility:detach' },
             { title: 'dialing', value: 'utility:dialing' },
             { title: 'diamond', value: 'utility:diamond' },
+            { title: 'discounts', value: 'utility:discounts' },
             { title: 'dislike', value: 'utility:dislike' },
             { title: 'display_rich_text', value: 'utility:display_rich_text' },
             { title: 'display_text', value: 'utility:display_text' },
             { title: 'dock_panel', value: 'utility:dock_panel' },
+            { title: 'document_preview', value: 'utility:document_preview' },
             { title: 'down', value: 'utility:down' },
             { title: 'download', value: 'utility:download' },
             { title: 'drag_and_drop', value: 'utility:drag_and_drop' },
             { title: 'drag', value: 'utility:drag' },
             {
+                title: 'duration_downscale',
+                value: 'utility:duration_downscale'
+            },
+            {
                 title: 'dynamic_record_choice',
                 value: 'utility:dynamic_record_choice'
             },
             { title: 'edit_form', value: 'utility:edit_form' },
+            { title: 'edit_gpt', value: 'utility:edit_gpt' },
             { title: 'edit', value: 'utility:edit' },
             { title: 'education', value: 'utility:education' },
+            { title: 'einstein_alt', value: 'utility:einstein_alt' },
             { title: 'einstein', value: 'utility:einstein' },
             { title: 'email_open', value: 'utility:email_open' },
             { title: 'email', value: 'utility:email' },
@@ -1218,6 +1298,7 @@ const ICON_TYPES = [
             },
             { title: 'engage', value: 'utility:engage' },
             { title: 'enter', value: 'utility:enter' },
+            { title: 'entitlement', value: 'utility:entitlement' },
             { title: 'erect_window', value: 'utility:erect_window' },
             { title: 'error', value: 'utility:error' },
             { title: 'event_ext', value: 'utility:event_ext' },
@@ -1226,9 +1307,12 @@ const ICON_TYPES = [
             { title: 'expand_all', value: 'utility:expand_all' },
             { title: 'expand_alt', value: 'utility:expand_alt' },
             { title: 'expand', value: 'utility:expand' },
+            { title: 'expired', value: 'utility:expired' },
             { title: 'fallback', value: 'utility:fallback' },
+            { title: 'favorite_alt', value: 'utility:favorite_alt' },
             { title: 'favorite', value: 'utility:favorite' },
             { title: 'feed', value: 'utility:feed' },
+            { title: 'field_sales', value: 'utility:field_sales' },
             { title: 'file', value: 'utility:file' },
             {
                 title: 'filter_criteria_rule',
@@ -1248,9 +1332,21 @@ const ICON_TYPES = [
             { title: 'frozen', value: 'utility:frozen' },
             { title: 'fulfillment_order', value: 'utility:fulfillment_order' },
             { title: 'full_width_view', value: 'utility:full_width_view' },
+            { title: 'fully_synced', value: 'utility:fully_synced' },
+            {
+                title: 'funding_award_adjustment',
+                value: 'utility:funding_award_adjustment'
+            },
+            {
+                title: 'funding_requirement',
+                value: 'utility:funding_requirement'
+            },
             { title: 'global_constant', value: 'utility:global_constant' },
             { title: 'graph', value: 'utility:graph' },
             { title: 'groups', value: 'utility:groups' },
+            { title: 'guidance', value: 'utility:guidance' },
+            { title: 'hazmat_equipment', value: 'utility:hazmat_equipment' },
+            { title: 'heart', value: 'utility:heart' },
             { title: 'help_center', value: 'utility:help_center' },
             { title: 'help_doc_ext', value: 'utility:help_doc_ext' },
             { title: 'help', value: 'utility:help' },
@@ -1266,18 +1362,28 @@ const ICON_TYPES = [
                 value: 'utility:holiday_operating_hours'
             },
             { title: 'home', value: 'utility:home' },
+            { title: 'hourglass', value: 'utility:hourglass' },
+            { title: 'http', value: 'utility:http' },
             { title: 'identity', value: 'utility:identity' },
             { title: 'image', value: 'utility:image' },
             { title: 'in_app_assistant', value: 'utility:in_app_assistant' },
             { title: 'inbox', value: 'utility:inbox' },
+            { title: 'incident', value: 'utility:incident' },
             { title: 'incoming_call', value: 'utility:incoming_call' },
+            {
+                title: 'indicator_performance_period',
+                value: 'utility:indicator_performance_period'
+            },
             { title: 'info_alt', value: 'utility:info_alt' },
             { title: 'info', value: 'utility:info' },
+            { title: 'inner_join', value: 'utility:inner_join' },
             { title: 'insert_tag_field', value: 'utility:insert_tag_field' },
             { title: 'insert_template', value: 'utility:insert_template' },
             { title: 'inspector_panel', value: 'utility:inspector_panel' },
+            { title: 'integration', value: 'utility:integration' },
             { title: 'internal_share', value: 'utility:internal_share' },
             { title: 'italic', value: 'utility:italic' },
+            { title: 'join', value: 'utility:join' },
             { title: 'jump_to_bottom', value: 'utility:jump_to_bottom' },
             { title: 'jump_to_left', value: 'utility:jump_to_left' },
             { title: 'jump_to_right', value: 'utility:jump_to_right' },
@@ -1289,10 +1395,23 @@ const ICON_TYPES = [
             { title: 'keyboard_dismiss', value: 'utility:keyboard_dismiss' },
             { title: 'keypad', value: 'utility:keypad' },
             { title: 'knowledge_base', value: 'utility:knowledge_base' },
+            {
+                title: 'knowledge_smart_link',
+                value: 'utility:knowledge_smart_link'
+            },
+            { title: 'label', value: 'utility:label' },
+            { title: 'labels', value: 'utility:labels' },
             { title: 'layers', value: 'utility:layers' },
+            { title: 'layout_banner', value: 'utility:layout_banner' },
+            { title: 'layout_card', value: 'utility:layout_card' },
+            { title: 'layout_overlap', value: 'utility:layout_overlap' },
+            { title: 'layout_tile', value: 'utility:layout_tile' },
             { title: 'layout', value: 'utility:layout' },
+            { title: 'lead', value: 'utility:lead' },
             { title: 'leave_conference', value: 'utility:leave_conference' },
             { title: 'left_align_text', value: 'utility:left_align_text' },
+            { title: 'left_align', value: 'utility:left_align' },
+            { title: 'left_join', value: 'utility:left_join' },
             { title: 'left', value: 'utility:left' },
             { title: 'level_down', value: 'utility:level_down' },
             { title: 'level_up', value: 'utility:level_up' },
@@ -1315,6 +1434,10 @@ const ICON_TYPES = [
             { title: 'location', value: 'utility:location' },
             { title: 'lock', value: 'utility:lock' },
             {
+                title: 'locked_with_additions',
+                value: 'utility:locked_with_additions'
+            },
+            {
                 title: 'locker_service_api_viewer',
                 value: 'utility:locker_service_api_viewer'
             },
@@ -1328,7 +1451,9 @@ const ICON_TYPES = [
             { title: 'lower_flag', value: 'utility:lower_flag' },
             { title: 'macros', value: 'utility:macros' },
             { title: 'magicwand', value: 'utility:magicwand' },
+            { title: 'maintenance_plan', value: 'utility:maintenance_plan' },
             { title: 'mark_all_as_read', value: 'utility:mark_all_as_read' },
+            { title: 'market', value: 'utility:market' },
             { title: 'matrix', value: 'utility:matrix' },
             {
                 title: 'meet_content_source',
@@ -1350,12 +1475,19 @@ const ICON_TYPES = [
             { title: 'merge_field', value: 'utility:merge_field' },
             { title: 'merge', value: 'utility:merge' },
             { title: 'metrics', value: 'utility:metrics' },
+            { title: 'middle_align', value: 'utility:middle_align' },
             { title: 'minimize_window', value: 'utility:minimize_window' },
             { title: 'missed_call', value: 'utility:missed_call' },
+            {
+                title: 'mixed_sources_mapping',
+                value: 'utility:mixed_sources_mapping'
+            },
             { title: 'money', value: 'utility:money' },
             { title: 'moneybag', value: 'utility:moneybag' },
             { title: 'monthlyview', value: 'utility:monthlyview' },
+            { title: 'more', value: 'utility:more' },
             { title: 'move', value: 'utility:move' },
+            { title: 'mulesoft', value: 'utility:mulesoft' },
             { title: 'multi_picklist', value: 'utility:multi_picklist' },
             {
                 title: 'multi_select_checkbox',
@@ -1369,8 +1501,16 @@ const ICON_TYPES = [
             { title: 'new_window', value: 'utility:new_window' },
             { title: 'new', value: 'utility:new' },
             { title: 'news', value: 'utility:news' },
+            { title: 'no_return', value: 'utility:no_return' },
+            { title: 'not_in_sync', value: 'utility:not_in_sync' },
+            { title: 'not_saved', value: 'utility:not_saved' },
             { title: 'note', value: 'utility:note' },
             { title: 'notebook', value: 'utility:notebook' },
+            { title: 'notification_off', value: 'utility:notification_off' },
+            {
+                title: 'notification_snoozed',
+                value: 'utility:notification_snoozed'
+            },
             { title: 'notification', value: 'utility:notification' },
             { title: 'number_input', value: 'utility:number_input' },
             { title: 'office365', value: 'utility:office365' },
@@ -1381,18 +1521,26 @@ const ICON_TYPES = [
             { title: 'open_folder', value: 'utility:open_folder' },
             { title: 'open', value: 'utility:open' },
             { title: 'opened_folder', value: 'utility:opened_folder' },
+            { title: 'opportunity', value: 'utility:opportunity' },
+            { title: 'orchestrator', value: 'utility:orchestrator' },
+            { title: 'orders', value: 'utility:orders' },
+            { title: 'org_chart', value: 'utility:org_chart' },
             { title: 'outbound_call', value: 'utility:outbound_call' },
             { title: 'outcome', value: 'utility:outcome' },
+            { title: 'outer_join', value: 'utility:outer_join' },
             { title: 'overflow', value: 'utility:overflow' },
             { title: 'package_org_beta', value: 'utility:package_org_beta' },
             { title: 'package_org', value: 'utility:package_org' },
             { title: 'package', value: 'utility:package' },
+            { title: 'page_structure', value: 'utility:page_structure' },
             { title: 'page', value: 'utility:page' },
             { title: 'palette', value: 'utility:palette' },
             { title: 'password', value: 'utility:password' },
             { title: 'paste', value: 'utility:paste' },
+            { title: 'path_experiment', value: 'utility:path_experiment' },
             { title: 'pause_alt', value: 'utility:pause_alt' },
             { title: 'pause', value: 'utility:pause' },
+            { title: 'payment_deferred', value: 'utility:payment_deferred' },
             { title: 'payment_gateway', value: 'utility:payment_gateway' },
             { title: 'pdf_ext', value: 'utility:pdf_ext' },
             { title: 'people', value: 'utility:people' },
@@ -1405,6 +1553,7 @@ const ICON_TYPES = [
             { title: 'picklist', value: 'utility:picklist' },
             { title: 'pin', value: 'utility:pin' },
             { title: 'pinned', value: 'utility:pinned' },
+            { title: 'plane', value: 'utility:plane' },
             { title: 'planning_poker', value: 'utility:planning_poker' },
             { title: 'play', value: 'utility:play' },
             { title: 'podcast_webinar', value: 'utility:podcast_webinar' },
@@ -1420,7 +1569,16 @@ const ICON_TYPES = [
             { title: 'print', value: 'utility:print' },
             { title: 'priority', value: 'utility:priority' },
             { title: 'privately_shared', value: 'utility:privately_shared' },
+            { title: 'problem', value: 'utility:problem' },
             { title: 'process', value: 'utility:process' },
+            {
+                title: 'product_consumed_state',
+                value: 'utility:product_consumed_state'
+            },
+            {
+                title: 'product_quantity_rules',
+                value: 'utility:product_quantity_rules'
+            },
             {
                 title: 'product_service_campaign_item',
                 value: 'utility:product_service_campaign_item'
@@ -1430,29 +1588,64 @@ const ICON_TYPES = [
                 value: 'utility:product_service_campaign'
             },
             {
+                title: 'product_transfer_state',
+                value: 'utility:product_transfer_state'
+            },
+            { title: 'product_transfer', value: 'utility:product_transfer' },
+            {
                 title: 'product_warranty_term',
                 value: 'utility:product_warranty_term'
             },
             { title: 'product_workspace', value: 'utility:product_workspace' },
+            { title: 'product', value: 'utility:product' },
             { title: 'products', value: 'utility:products' },
+            { title: 'profile_alt', value: 'utility:profile_alt' },
+            { title: 'profile', value: 'utility:profile' },
+            {
+                title: 'program_cohort_member',
+                value: 'utility:program_cohort_member'
+            },
+            { title: 'program_cohort', value: 'utility:program_cohort' },
+            {
+                title: 'promotion_segments',
+                value: 'utility:promotion_segments'
+            },
+            { title: 'promotion_tiers', value: 'utility:promotion_tiers' },
+            {
+                title: 'promotions_workspace',
+                value: 'utility:promotions_workspace'
+            },
+            { title: 'promotions', value: 'utility:promotions' },
+            { title: 'prompt_builder', value: 'utility:prompt_builder' },
             { title: 'prompt_edit', value: 'utility:prompt_edit' },
             { title: 'prompt', value: 'utility:prompt' },
+            {
+                title: 'propagation_policy',
+                value: 'utility:propagation_policy'
+            },
+            { title: 'proposition', value: 'utility:proposition' },
             { title: 'push', value: 'utility:push' },
             { title: 'puzzle', value: 'utility:puzzle' },
+            { title: 'qualifications', value: 'utility:qualifications' },
             { title: 'question_mark', value: 'utility:question_mark' },
             { title: 'question', value: 'utility:question' },
             {
                 title: 'questions_and_answers',
                 value: 'utility:questions_and_answers'
             },
+            { title: 'queue', value: 'utility:queue' },
             { title: 'quick_text', value: 'utility:quick_text' },
             { title: 'quip', value: 'utility:quip' },
             { title: 'quotation_marks', value: 'utility:quotation_marks' },
             { title: 'quote', value: 'utility:quote' },
             { title: 'radio_button', value: 'utility:radio_button' },
             { title: 'rating', value: 'utility:rating' },
+            { title: 'real_time', value: 'utility:real_time' },
             { title: 'reassign', value: 'utility:reassign' },
             { title: 'recipe', value: 'utility:recipe' },
+            { title: 'record_alt', value: 'utility:record_alt' },
+            { title: 'record_collection', value: 'utility:record_collection' },
+            { title: 'record_consent', value: 'utility:record_consent' },
             { title: 'record_create', value: 'utility:record_create' },
             { title: 'record_delete', value: 'utility:record_delete' },
             { title: 'record_lookup', value: 'utility:record_lookup' },
@@ -1481,6 +1674,10 @@ const ICON_TYPES = [
                 title: 'resource_territory',
                 value: 'utility:resource_territory'
             },
+            {
+                title: 'restriction_policy',
+                value: 'utility:restriction_policy'
+            },
             { title: 'retail_execution', value: 'utility:retail_execution' },
             { title: 'retweet', value: 'utility:retweet' },
             { title: 'ribbon', value: 'utility:ribbon' },
@@ -1495,6 +1692,8 @@ const ICON_TYPES = [
             },
             { title: 'richtextoutdent', value: 'utility:richtextoutdent' },
             { title: 'right_align_text', value: 'utility:right_align_text' },
+            { title: 'right_align', value: 'utility:right_align' },
+            { title: 'right_join', value: 'utility:right_join' },
             { title: 'right', value: 'utility:right' },
             { title: 'rotate', value: 'utility:rotate' },
             { title: 'routing_offline', value: 'utility:routing_offline' },
@@ -1503,10 +1702,14 @@ const ICON_TYPES = [
             { title: 'salesforce_page', value: 'utility:salesforce_page' },
             { title: 'salesforce1', value: 'utility:salesforce1' },
             { title: 'save', value: 'utility:save' },
+            { title: 'scan', value: 'utility:scan' },
             { title: 'screen', value: 'utility:screen' },
             { title: 'search', value: 'utility:search' },
             { title: 'section', value: 'utility:section' },
+            { title: 'segments', value: 'utility:segments' },
+            { title: 'send_log', value: 'utility:send_log' },
             { title: 'send', value: 'utility:send' },
+            { title: 'sender_email', value: 'utility:sender_email' },
             {
                 title: 'sentiment_negative',
                 value: 'utility:sentiment_negative'
@@ -1519,6 +1722,16 @@ const ICON_TYPES = [
             {
                 title: 'serialized_product',
                 value: 'utility:serialized_product'
+            },
+            {
+                title: 'service_appointment',
+                value: 'utility:service_appointment'
+            },
+            { title: 'service_contract', value: 'utility:service_contract' },
+            { title: 'service_report', value: 'utility:service_report' },
+            {
+                title: 'service_territory_policy',
+                value: 'utility:service_territory_policy'
             },
             { title: 'settings', value: 'utility:settings' },
             {
@@ -1537,14 +1750,25 @@ const ICON_TYPES = [
                 value: 'utility:shift_pattern_entry'
             },
             { title: 'shift_pattern', value: 'utility:shift_pattern' },
+            {
+                title: 'shift_scheduling_operation',
+                value: 'utility:shift_scheduling_operation'
+            },
             { title: 'shift_ui', value: 'utility:shift_ui' },
             { title: 'shopping_bag', value: 'utility:shopping_bag' },
             { title: 'shortcuts', value: 'utility:shortcuts' },
             { title: 'side_list', value: 'utility:side_list' },
+            { title: 'signature', value: 'utility:signature' },
             { title: 'signpost', value: 'utility:signpost' },
+            { title: 'skill', value: 'utility:skill' },
             { title: 'skip_back', value: 'utility:skip_back' },
             { title: 'skip_forward', value: 'utility:skip_forward' },
             { title: 'skip', value: 'utility:skip' },
+            {
+                title: 'slack_conversations',
+                value: 'utility:slack_conversations'
+            },
+            { title: 'slack', value: 'utility:slack' },
             { title: 'slider', value: 'utility:slider' },
             { title: 'smiley_and_people', value: 'utility:smiley_and_people' },
             { title: 'sms', value: 'utility:sms' },
@@ -1555,7 +1779,11 @@ const ICON_TYPES = [
             },
             { title: 'sobject', value: 'utility:sobject' },
             { title: 'socialshare', value: 'utility:socialshare' },
+            { title: 'sort_policy', value: 'utility:sort_policy' },
             { title: 'sort', value: 'utility:sort' },
+            { title: 'spacer', value: 'utility:spacer' },
+            { title: 'sparkle', value: 'utility:sparkle' },
+            { title: 'sparkles', value: 'utility:sparkles' },
             { title: 'spinner', value: 'utility:spinner' },
             { title: 'stage_collection', value: 'utility:stage_collection' },
             { title: 'stage', value: 'utility:stage' },
@@ -1570,8 +1798,10 @@ const ICON_TYPES = [
             { title: 'summarydetail', value: 'utility:summarydetail' },
             { title: 'survey', value: 'utility:survey' },
             { title: 'swarm_request', value: 'utility:swarm_request' },
+            { title: 'swarm_session', value: 'utility:swarm_session' },
             { title: 'switch', value: 'utility:switch' },
             { title: 'symbols', value: 'utility:symbols' },
+            { title: 'sync_in_progress', value: 'utility:sync_in_progress' },
             { title: 'sync', value: 'utility:sync' },
             {
                 title: 'system_and_global_variable',
@@ -1579,11 +1809,20 @@ const ICON_TYPES = [
             },
             { title: 'table_settings', value: 'utility:table_settings' },
             { title: 'table', value: 'utility:table' },
+            { title: 'tableau', value: 'utility:tableau' },
             { title: 'tablet_landscape', value: 'utility:tablet_landscape' },
             { title: 'tablet_portrait', value: 'utility:tablet_portrait' },
             { title: 'tabset', value: 'utility:tabset' },
+            {
+                title: 'talent_development',
+                value: 'utility:talent_development'
+            },
+            { title: 'target_mode', value: 'utility:target_mode' },
             { title: 'target', value: 'utility:target' },
             { title: 'task', value: 'utility:task' },
+            { title: 'tax_policy', value: 'utility:tax_policy' },
+            { title: 'tax_rate', value: 'utility:tax_rate' },
+            { title: 'tax_treatment', value: 'utility:tax_treatment' },
             {
                 title: 'text_background_color',
                 value: 'utility:text_background_color'
@@ -1600,6 +1839,8 @@ const ICON_TYPES = [
             { title: 'threedots', value: 'utility:threedots' },
             { title: 'thunder', value: 'utility:thunder' },
             { title: 'tile_card_list', value: 'utility:tile_card_list' },
+            { title: 'toggle_off', value: 'utility:toggle_off' },
+            { title: 'toggle_on', value: 'utility:toggle_on' },
             {
                 title: 'toggle_panel_bottom',
                 value: 'utility:toggle_panel_bottom'
@@ -1611,17 +1852,37 @@ const ICON_TYPES = [
             },
             { title: 'toggle_panel_top', value: 'utility:toggle_panel_top' },
             { title: 'toggle', value: 'utility:toggle' },
+            { title: 'tollways', value: 'utility:tollways' },
+            { title: 'top_align', value: 'utility:top_align' },
+            {
+                title: 'top_group_alignment',
+                value: 'utility:top_group_alignment'
+            },
             { title: 'topic', value: 'utility:topic' },
             { title: 'topic2', value: 'utility:topic2' },
             { title: 'touch_action', value: 'utility:touch_action' },
+            { title: 'tour_check', value: 'utility:tour_check' },
+            { title: 'tour', value: 'utility:tour' },
             { title: 'tracker', value: 'utility:tracker' },
             { title: 'trail', value: 'utility:trail' },
             { title: 'trailblazer_ext', value: 'utility:trailblazer_ext' },
             { title: 'trailhead_alt', value: 'utility:trailhead_alt' },
             { title: 'trailhead_ext', value: 'utility:trailhead_ext' },
             { title: 'trailhead', value: 'utility:trailhead' },
+            { title: 'transparent', value: 'utility:transparent' },
+            { title: 'transport_bicycle', value: 'utility:transport_bicycle' },
+            {
+                title: 'transport_heavy_truck',
+                value: 'utility:transport_heavy_truck'
+            },
+            {
+                title: 'transport_light_truck',
+                value: 'utility:transport_light_truck'
+            },
+            { title: 'transport_walking', value: 'utility:transport_walking' },
             { title: 'travel_and_places', value: 'utility:travel_and_places' },
             { title: 'trending', value: 'utility:trending' },
+            { title: 'truck', value: 'utility:truck' },
             {
                 title: 'turn_off_notifications',
                 value: 'utility:turn_off_notifications'
@@ -1648,19 +1909,33 @@ const ICON_TYPES = [
                 title: 'variation_products',
                 value: 'utility:variation_products'
             },
+            { title: 'video_off', value: 'utility:video_off' },
             { title: 'video', value: 'utility:video' },
+            {
+                title: 'visibility_rule_assigned',
+                value: 'utility:visibility_rule_assigned'
+            },
             { title: 'voicemail_drop', value: 'utility:voicemail_drop' },
             { title: 'volume_high', value: 'utility:volume_high' },
             { title: 'volume_low', value: 'utility:volume_low' },
             { title: 'volume_off', value: 'utility:volume_off' },
             { title: 'waits', value: 'utility:waits' },
+            { title: 'walkthroughs', value: 'utility:walkthroughs' },
             { title: 'warning', value: 'utility:warning' },
             { title: 'warranty_term', value: 'utility:warranty_term' },
             { title: 'watchlist', value: 'utility:watchlist' },
+            { title: 'water', value: 'utility:water' },
             { title: 'weeklyview', value: 'utility:weeklyview' },
+            { title: 'wellness', value: 'utility:wellness' },
             { title: 'wifi', value: 'utility:wifi' },
+            { title: 'work_forecast', value: 'utility:work_forecast' },
             { title: 'work_order_type', value: 'utility:work_order_type' },
+            {
+                title: 'workforce_engagement',
+                value: 'utility:workforce_engagement'
+            },
             { title: 'world', value: 'utility:world' },
+            { title: 'your_account', value: 'utility:your_account' },
             { title: 'yubi_key', value: 'utility:yubi_key' },
             { title: 'zoomin', value: 'utility:zoomin' },
             { title: 'zoomout', value: 'utility:zoomout' }
