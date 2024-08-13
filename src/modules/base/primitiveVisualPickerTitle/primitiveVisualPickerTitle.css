@@ -1,4 +1,9 @@
 .avonni-visual-picker__figure-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: pre-line;
+    -webkit-line-clamp: var(--avonni-visual-picker-title-line-clamp, 1);
     color: var(--avonni-visual-picker-title-text-color, #080707);
     font-style: var(--avonni-visual-picker-title-font-style, normal);
     font-weight: var(--avonni-visual-picker-title-font-weight, 700);
@@ -7,8 +12,12 @@
 }
 
 .avonni-primitive-visual-picker-title__icon {
-    --avonni-avatar-fallback-icon-color-foreground: var(--avonni-visual-picker-title-avatar-fallback-icon-foreground);
-    --avonni-avatar-fallback-icon-color-foreground-default: var(--avonni-visual-picker-title-avatar-fallback-icon-foreground-default);
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-visual-picker-title-avatar-fallback-icon-foreground
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-visual-picker-title-avatar-fallback-icon-foreground-default
+    );
     align-self: center;
 }
 
