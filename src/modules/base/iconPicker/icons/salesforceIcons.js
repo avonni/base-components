@@ -6,6 +6,8 @@ const ICON_TYPES = [
         title: 'Standard',
         value: 'standard',
         icons: [
+            { title: 'account_info', value: 'standard:account_info' },
+            { title: 'account_score', value: 'standard:account_score' },
             { title: 'account', value: 'standard:account' },
             {
                 title: 'action_list_component',
@@ -18,7 +20,17 @@ const ICON_TYPES = [
             { title: 'activation_target', value: 'standard:activation_target' },
             { title: 'activations', value: 'standard:activations' },
             { title: 'address', value: 'standard:address' },
+            { title: 'agent_home', value: 'standard:agent_home' },
             { title: 'agent_session', value: 'standard:agent_session' },
+            { title: 'aggregate', value: 'standard:aggregate' },
+            {
+                title: 'aggregation_policy',
+                value: 'standard:aggregation_policy'
+            },
+            {
+                title: 'ai_accelerator_card',
+                value: 'standard:ai_accelerator_card'
+            },
             { title: 'all', value: 'standard:all' },
             { title: 'announcement', value: 'standard:announcement' },
             { title: 'answer_best', value: 'standard:answer_best' },
@@ -26,6 +38,14 @@ const ICON_TYPES = [
             { title: 'answer_public', value: 'standard:answer_public' },
             { title: 'apex_plugin', value: 'standard:apex_plugin' },
             { title: 'apex', value: 'standard:apex' },
+            {
+                title: 'app_form_participant',
+                value: 'standard:app_form_participant'
+            },
+            {
+                title: 'app_form_product_participant',
+                value: 'standard:app_form_product_participant'
+            },
             { title: 'app', value: 'standard:app' },
             { title: 'approval', value: 'standard:approval' },
             { title: 'apps_admin', value: 'standard:apps_admin' },
@@ -36,10 +56,12 @@ const ICON_TYPES = [
                 value: 'standard:asset_action_source'
             },
             { title: 'asset_action', value: 'standard:asset_action' },
+            { title: 'asset_audit', value: 'standard:asset_audit' },
             {
                 title: 'asset_downtime_period',
                 value: 'standard:asset_downtime_period'
             },
+            { title: 'asset_hierarchy', value: 'standard:asset_hierarchy' },
             { title: 'asset_object', value: 'standard:asset_object' },
             {
                 title: 'asset_relationship',
@@ -52,15 +74,39 @@ const ICON_TYPES = [
             { title: 'asset_warranty', value: 'standard:asset_warranty' },
             { title: 'assigned_resource', value: 'standard:assigned_resource' },
             { title: 'assignment', value: 'standard:assignment' },
+            { title: 'attach', value: 'standard:attach' },
+            {
+                title: 'attribute_based_pricing',
+                value: 'standard:attribute_based_pricing'
+            },
             { title: 'avatar_loading', value: 'standard:avatar_loading' },
             { title: 'avatar', value: 'standard:avatar' },
+            { title: 'bill_of_materials', value: 'standard:bill_of_materials' },
             { title: 'bot_training', value: 'standard:bot_training' },
             { title: 'bot', value: 'standard:bot' },
             { title: 'branch_merge', value: 'standard:branch_merge' },
             { title: 'brand', value: 'standard:brand' },
+            { title: 'budget_allocation', value: 'standard:budget_allocation' },
+            {
+                title: 'budget_category_value',
+                value: 'standard:budget_category_value'
+            },
+            { title: 'budget_period', value: 'standard:budget_period' },
+            { title: 'budget', value: 'standard:budget' },
+            { title: 'bundle_config', value: 'standard:bundle_config' },
+            { title: 'bundle_policy', value: 'standard:bundle_policy' },
+            { title: 'bundles_pricing', value: 'standard:bundles_pricing' },
             { title: 'business_hours', value: 'standard:business_hours' },
             { title: 'buyer_account', value: 'standard:buyer_account' },
+            {
+                title: 'buyer_group_qualifier',
+                value: 'standard:buyer_group_qualifier'
+            },
             { title: 'buyer_group', value: 'standard:buyer_group' },
+            {
+                title: 'calculated_insights',
+                value: 'standard:calculated_insights'
+            },
             { title: 'calibration', value: 'standard:calibration' },
             { title: 'call_coaching', value: 'standard:call_coaching' },
             { title: 'call_history', value: 'standard:call_history' },
@@ -69,6 +115,11 @@ const ICON_TYPES = [
             { title: 'campaign', value: 'standard:campaign' },
             { title: 'cancel_checkout', value: 'standard:cancel_checkout' },
             { title: 'canvas', value: 'standard:canvas' },
+            { title: 'capacity_plan', value: 'standard:capacity_plan' },
+            {
+                title: 'care_request_reviewer',
+                value: 'standard:care_request_reviewer'
+            },
             { title: 'carousel', value: 'standard:carousel' },
             {
                 title: 'case_change_status',
@@ -80,9 +131,12 @@ const ICON_TYPES = [
             { title: 'case_milestone', value: 'standard:case_milestone' },
             { title: 'case_transcript', value: 'standard:case_transcript' },
             { title: 'case_wrap_up', value: 'standard:case_wrap_up' },
-            { title: 'case', value: 'standard:case' },
+            { title: 'case', value: 'standard:case' }
+        ],
+        iconsExtended: [
             { title: 'catalog', value: 'standard:catalog' },
             { title: 'category', value: 'standard:category' },
+            { title: 'change_request', value: 'standard:change_request' },
             {
                 title: 'channel_program_history',
                 value: 'standard:channel_program_history'
@@ -103,11 +157,14 @@ const ICON_TYPES = [
             { title: 'cms', value: 'standard:cms' },
             { title: 'coaching', value: 'standard:coaching' },
             { title: 'code_playground', value: 'standard:code_playground' },
+            { title: 'code_set_bundle', value: 'standard:code_set_bundle' },
+            { title: 'code_set', value: 'standard:code_set' },
             {
                 title: 'collection_variable',
                 value: 'standard:collection_variable'
             },
             { title: 'collection', value: 'standard:collection' },
+            { title: 'connect_wallet', value: 'standard:connect_wallet' },
             { title: 'connected_apps', value: 'standard:connected_apps' },
             { title: 'constant', value: 'standard:constant' },
             { title: 'contact_list', value: 'standard:contact_list' },
@@ -117,11 +174,63 @@ const ICON_TYPES = [
                 title: 'contract_line_item',
                 value: 'standard:contract_line_item'
             },
+            {
+                title: 'contract_line_outcome_data',
+                value: 'standard:contract_line_outcome_data'
+            },
+            {
+                title: 'contract_line_outcome',
+                value: 'standard:contract_line_outcome'
+            },
+            { title: 'contract_payment', value: 'standard:contract_payment' },
             { title: 'contract', value: 'standard:contract' },
+            { title: 'cost_model', value: 'standard:cost_model' },
+            { title: 'coupon_codes', value: 'standard:coupon_codes' },
+            {
+                title: 'crypto_category_wallet_group',
+                value: 'standard:crypto_category_wallet_group'
+            },
+            {
+                title: 'crypto_product_category_wallet_role',
+                value: 'standard:crypto_product_category_wallet_role'
+            },
+            { title: 'crypto_product', value: 'standard:crypto_product' },
+            {
+                title: 'crypto_transaction_envelope_change_snapshot',
+                value: 'standard:crypto_transaction_envelope_change_snapshot'
+            },
+            {
+                title: 'crypto_transaction_envelope_item',
+                value: 'standard:crypto_transaction_envelope_item'
+            },
+            {
+                title: 'crypto_transaction_envelope',
+                value: 'standard:crypto_transaction_envelope'
+            },
+            {
+                title: 'crypto_transaction',
+                value: 'standard:crypto_transaction'
+            },
+            {
+                title: 'crypto_wallet_group_item',
+                value: 'standard:crypto_wallet_group_item'
+            },
+            {
+                title: 'crypto_wallet_group',
+                value: 'standard:crypto_wallet_group'
+            },
+            { title: 'crypto_wallet', value: 'standard:crypto_wallet' },
             { title: 'currency_input', value: 'standard:currency_input' },
-            { title: 'currency', value: 'standard:currency' }
-        ],
-        iconsExtended: [
+            { title: 'currency', value: 'standard:currency' },
+            {
+                title: 'custody_chain_entry',
+                value: 'standard:custody_chain_entry'
+            },
+            {
+                title: 'custody_entry_verification',
+                value: 'standard:custody_entry_verification'
+            },
+            { title: 'custody_override', value: 'standard:custody_override' },
             {
                 title: 'custom_component_task',
                 value: 'standard:custom_component_task'
@@ -140,9 +249,20 @@ const ICON_TYPES = [
                 title: 'customer_portal_users',
                 value: 'standard:customer_portal_users'
             },
+            {
+                title: 'customer_workspace',
+                value: 'standard:customer_workspace'
+            },
+            { title: 'customer', value: 'standard:customer' },
             { title: 'customers', value: 'standard:customers' },
+            {
+                title: 'dashboard_component',
+                value: 'standard:dashboard_component'
+            },
             { title: 'dashboard_ea', value: 'standard:dashboard_ea' },
             { title: 'dashboard', value: 'standard:dashboard' },
+            { title: 'data_cloud', value: 'standard:data_cloud' },
+            { title: 'data_graph', value: 'standard:data_graph' },
             {
                 title: 'data_integration_hub',
                 value: 'standard:data_integration_hub'
@@ -150,18 +270,47 @@ const ICON_TYPES = [
             { title: 'data_mapping', value: 'standard:data_mapping' },
             { title: 'data_model', value: 'standard:data_model' },
             { title: 'data_streams', value: 'standard:data_streams' },
+            { title: 'data_transforms', value: 'standard:data_transforms' },
             { title: 'datadotcom', value: 'standard:datadotcom' },
             { title: 'dataset', value: 'standard:dataset' },
+            { title: 'datashare_target', value: 'standard:datashare_target' },
+            { title: 'datashares', value: 'standard:datashares' },
             { title: 'date_input', value: 'standard:date_input' },
             { title: 'date_time', value: 'standard:date_time' },
             { title: 'decision', value: 'standard:decision' },
             { title: 'default', value: 'standard:default' },
             { title: 'delegated_account', value: 'standard:delegated_account' },
             { title: 'device', value: 'standard:device' },
+            {
+                title: 'digital_verification_config_group',
+                value: 'standard:digital_verification_config_group'
+            },
+            {
+                title: 'digital_verification_config',
+                value: 'standard:digital_verification_config'
+            },
+            {
+                title: 'disclosure_and_compliance',
+                value: 'standard:disclosure_and_compliance'
+            },
+            { title: 'discounts', value: 'standard:discounts' },
             { title: 'display_rich_text', value: 'standard:display_rich_text' },
             { title: 'display_text', value: 'standard:display_text' },
+            { title: 'document_preview', value: 'standard:document_preview' },
+            {
+                title: 'document_reference',
+                value: 'standard:document_reference'
+            },
             { title: 'document', value: 'standard:document' },
             { title: 'drafts', value: 'standard:drafts' },
+            {
+                title: 'duration_downscale',
+                value: 'standard:duration_downscale'
+            },
+            {
+                title: 'dynamic_highlights_panel',
+                value: 'standard:dynamic_highlights_panel'
+            },
             {
                 title: 'dynamic_record_choice',
                 value: 'standard:dynamic_record_choice'
@@ -208,8 +357,10 @@ const ICON_TYPES = [
             },
             { title: 'expense_report', value: 'standard:expense_report' },
             { title: 'expense', value: 'standard:expense' },
+            { title: 'facility_bed', value: 'standard:facility_bed' },
             { title: 'feed', value: 'standard:feed' },
             { title: 'feedback', value: 'standard:feedback' },
+            { title: 'field_sales', value: 'standard:field_sales' },
             { title: 'file', value: 'standard:file' },
             {
                 title: 'filter_criteria_rule',
@@ -224,16 +375,29 @@ const ICON_TYPES = [
             { title: 'form', value: 'standard:form' },
             { title: 'formula', value: 'standard:formula' },
             { title: 'fulfillment_order', value: 'standard:fulfillment_order' },
+            {
+                title: 'funding_award_adjustment',
+                value: 'standard:funding_award_adjustment'
+            },
+            {
+                title: 'funding_requirement',
+                value: 'standard:funding_requirement'
+            },
             { title: 'generic_loading', value: 'standard:generic_loading' },
             { title: 'global_constant', value: 'standard:global_constant' },
             { title: 'goals', value: 'standard:goals' },
             { title: 'group_loading', value: 'standard:group_loading' },
             { title: 'groups', value: 'standard:groups' },
             { title: 'guidance_center', value: 'standard:guidance_center' },
+            { title: 'header_discounts', value: 'standard:header_discounts' },
             { title: 'hierarchy', value: 'standard:hierarchy' },
             {
                 title: 'high_velocity_sales',
                 value: 'standard:high_velocity_sales'
+            },
+            {
+                title: 'historical_adherence',
+                value: 'standard:historical_adherence'
             },
             {
                 title: 'holiday_operating_hours',
@@ -241,7 +405,28 @@ const ICON_TYPES = [
             },
             { title: 'home', value: 'standard:home' },
             { title: 'household', value: 'standard:household' },
+            { title: 'identifier', value: 'standard:identifier' },
             { title: 'immunization', value: 'standard:immunization' },
+            { title: 'impact_outcome', value: 'standard:impact_outcome' },
+            {
+                title: 'impact_strategy_assignment',
+                value: 'standard:impact_strategy_assignment'
+            },
+            { title: 'impact_strategy', value: 'standard:impact_strategy' },
+            { title: 'incident', value: 'standard:incident' },
+            {
+                title: 'indicator_assignment',
+                value: 'standard:indicator_assignment'
+            },
+            {
+                title: 'indicator_definition',
+                value: 'standard:indicator_definition'
+            },
+            {
+                title: 'indicator_performance_period',
+                value: 'standard:indicator_performance_period'
+            },
+            { title: 'indicator_result', value: 'standard:indicator_result' },
             { title: 'individual', value: 'standard:individual' },
             { title: 'insights', value: 'standard:insights' },
             { title: 'instore_locations', value: 'standard:instore_locations' },
@@ -262,9 +447,11 @@ const ICON_TYPES = [
             { title: 'kanban', value: 'standard:kanban' },
             { title: 'key_dates', value: 'standard:key_dates' },
             { title: 'knowledge', value: 'standard:knowledge' },
+            { title: 'labels', value: 'standard:labels' },
             { title: 'lead_insights', value: 'standard:lead_insights' },
             { title: 'lead_list', value: 'standard:lead_list' },
             { title: 'lead', value: 'standard:lead' },
+            { title: 'learner_program', value: 'standard:learner_program' },
             { title: 'letterhead', value: 'standard:letterhead' },
             {
                 title: 'lightning_component',
@@ -272,7 +459,10 @@ const ICON_TYPES = [
             },
             { title: 'lightning_usage', value: 'standard:lightning_usage' },
             { title: 'link', value: 'standard:link' },
+            { title: 'linked', value: 'standard:linked' },
             { title: 'list_email', value: 'standard:list_email' },
+            { title: 'list_fee', value: 'standard:list_fee' },
+            { title: 'list_rate', value: 'standard:list_rate' },
             { title: 'live_chat_visitor', value: 'standard:live_chat_visitor' },
             { title: 'live_chat', value: 'standard:live_chat' },
             { title: 'location_permit', value: 'standard:location_permit' },
@@ -287,7 +477,34 @@ const ICON_TYPES = [
                 title: 'maintenance_work_rule',
                 value: 'standard:maintenance_work_rule'
             },
+            { title: 'manual_discounts', value: 'standard:manual_discounts' },
+            { title: 'market', value: 'standard:market' },
             { title: 'marketing_actions', value: 'standard:marketing_actions' },
+            {
+                title: 'med_rec_recommendation',
+                value: 'standard:med_rec_recommendation'
+            },
+            {
+                title: 'med_rec_statement_recommendation',
+                value: 'standard:med_rec_statement_recommendation'
+            },
+            {
+                title: 'medication_dispense',
+                value: 'standard:medication_dispense'
+            },
+            {
+                title: 'medication_ingredient',
+                value: 'standard:medication_ingredient'
+            },
+            {
+                title: 'medication_reconciliation',
+                value: 'standard:medication_reconciliation'
+            },
+            {
+                title: 'medication_statement',
+                value: 'standard:medication_statement'
+            },
+            { title: 'medication', value: 'standard:medication' },
             { title: 'merge', value: 'standard:merge' },
             {
                 title: 'messaging_conversation',
@@ -296,12 +513,17 @@ const ICON_TYPES = [
             { title: 'messaging_session', value: 'standard:messaging_session' },
             { title: 'messaging_user', value: 'standard:messaging_user' },
             { title: 'metrics', value: 'standard:metrics' },
+            { title: 'mulesoft', value: 'standard:mulesoft' },
             { title: 'multi_picklist', value: 'standard:multi_picklist' },
             {
                 title: 'multi_select_checkbox',
                 value: 'standard:multi_select_checkbox'
             },
+            { title: 'network_contract', value: 'standard:network_contract' },
             { title: 'news', value: 'standard:news' },
+            { title: 'nft_settings', value: 'standard:nft_settings' },
+            { title: 'nft_studio', value: 'standard:nft_studio' },
+            { title: 'no_code_model', value: 'standard:no_code_model' },
             { title: 'note', value: 'standard:note' },
             { title: 'number_input', value: 'standard:number_input' },
             {
@@ -319,10 +541,13 @@ const ICON_TYPES = [
                 value: 'standard:opportunity_splits'
             },
             { title: 'opportunity', value: 'standard:opportunity' },
+            { title: 'orchestrator', value: 'standard:orchestrator' },
             { title: 'order_item', value: 'standard:order_item' },
             { title: 'orders', value: 'standard:orders' },
+            { title: 'outcome_activity', value: 'standard:outcome_activity' },
             { title: 'outcome', value: 'standard:outcome' },
             { title: 'output', value: 'standard:output' },
+            { title: 'panel_detail', value: 'standard:panel_detail' },
             {
                 title: 'partner_fund_allocation',
                 value: 'standard:partner_fund_allocation'
@@ -340,12 +565,21 @@ const ICON_TYPES = [
                 value: 'standard:partner_marketing_budget'
             },
             { title: 'partners', value: 'standard:partners' },
+            { title: 'party_profile', value: 'standard:party_profile' },
             { title: 'password', value: 'standard:password' },
             { title: 'past_chat', value: 'standard:past_chat' },
+            { title: 'path_experiment', value: 'standard:path_experiment' },
+            {
+                title: 'patient_medication_dosage',
+                value: 'standard:patient_medication_dosage'
+            },
             { title: 'payment_gateway', value: 'standard:payment_gateway' },
+            { title: 'people_score', value: 'standard:people_score' },
             { title: 'people', value: 'standard:people' },
             { title: 'performance', value: 'standard:performance' },
             { title: 'person_account', value: 'standard:person_account' },
+            { title: 'person_language', value: 'standard:person_language' },
+            { title: 'person_name', value: 'standard:person_name' },
             { title: 'photo', value: 'standard:photo' },
             { title: 'picklist_choice', value: 'standard:picklist_choice' },
             { title: 'picklist_type', value: 'standard:picklist_type' },
@@ -360,22 +594,44 @@ const ICON_TYPES = [
             { title: 'post', value: 'standard:post' },
             { title: 'practitioner_role', value: 'standard:practitioner_role' },
             {
+                title: 'price_adjustment_matrix',
+                value: 'standard:price_adjustment_matrix'
+            },
+            {
+                title: 'price_adjustment_schedule',
+                value: 'standard:price_adjustment_schedule'
+            },
+            {
+                title: 'price_adjustment_tier',
+                value: 'standard:price_adjustment_tier'
+            },
+            {
                 title: 'price_book_entries',
                 value: 'standard:price_book_entries'
             },
             { title: 'price_books', value: 'standard:price_books' },
+            { title: 'price_sheet', value: 'standard:price_sheet' },
             { title: 'pricebook', value: 'standard:pricebook' },
             { title: 'pricing_workspace', value: 'standard:pricing_workspace' },
+            { title: 'problem', value: 'standard:problem' },
             { title: 'procedure_detail', value: 'standard:procedure_detail' },
             { title: 'procedure', value: 'standard:procedure' },
             { title: 'process_exception', value: 'standard:process_exception' },
             { title: 'process', value: 'standard:process' },
+            {
+                title: 'product_consumed_state',
+                value: 'standard:product_consumed_state'
+            },
             { title: 'product_consumed', value: 'standard:product_consumed' },
             {
                 title: 'product_item_transaction',
                 value: 'standard:product_item_transaction'
             },
             { title: 'product_item', value: 'standard:product_item' },
+            {
+                title: 'product_quantity_rules',
+                value: 'standard:product_quantity_rules'
+            },
             {
                 title: 'product_request_line_item',
                 value: 'standard:product_request_line_item'
@@ -390,6 +646,10 @@ const ICON_TYPES = [
                 title: 'product_service_campaign',
                 value: 'standard:product_service_campaign'
             },
+            {
+                title: 'product_transfer_state',
+                value: 'standard:product_transfer_state'
+            },
             { title: 'product_transfer', value: 'standard:product_transfer' },
             {
                 title: 'product_warranty_term',
@@ -398,7 +658,29 @@ const ICON_TYPES = [
             { title: 'product_workspace', value: 'standard:product_workspace' },
             { title: 'product', value: 'standard:product' },
             { title: 'products', value: 'standard:products' },
+            {
+                title: 'program_cohort_member',
+                value: 'standard:program_cohort_member'
+            },
+            { title: 'program_cohort', value: 'standard:program_cohort' },
+            {
+                title: 'promotion_segments',
+                value: 'standard:promotion_segments'
+            },
+            { title: 'promotion_tiers', value: 'standard:promotion_tiers' },
+            {
+                title: 'promotions_workspace',
+                value: 'standard:promotions_workspace'
+            },
+            { title: 'promotions', value: 'standard:promotions' },
+            { title: 'prompt_builder', value: 'standard:prompt_builder' },
+            { title: 'prompt', value: 'standard:prompt' },
+            {
+                title: 'propagation_policy',
+                value: 'standard:propagation_policy'
+            },
             { title: 'proposition', value: 'standard:proposition' },
+            { title: 'qualifications', value: 'standard:qualifications' },
             { title: 'question_best', value: 'standard:question_best' },
             { title: 'question_feed', value: 'standard:question_feed' },
             { title: 'queue', value: 'standard:queue' },
@@ -407,9 +689,12 @@ const ICON_TYPES = [
             { title: 'quip', value: 'standard:quip' },
             { title: 'quotes', value: 'standard:quotes' },
             { title: 'radio_button', value: 'standard:radio_button' },
+            { title: 'rate_adjustment', value: 'standard:rate_adjustment' },
             { title: 'read_receipts', value: 'standard:read_receipts' },
+            { title: 'real_time', value: 'standard:real_time' },
             { title: 'recent', value: 'standard:recent' },
             { title: 'recipe', value: 'standard:recipe' },
+            { title: 'record_consent', value: 'standard:record_consent' },
             { title: 'record_create', value: 'standard:record_create' },
             { title: 'record_delete', value: 'standard:record_delete' },
             { title: 'record_lookup', value: 'standard:record_lookup' },
@@ -420,9 +705,12 @@ const ICON_TYPES = [
             { title: 'record_update', value: 'standard:record_update' },
             { title: 'record', value: 'standard:record' },
             { title: 'recycle_bin', value: 'standard:recycle_bin' },
+            { title: 'registered_model', value: 'standard:registered_model' },
             { title: 'related_list', value: 'standard:related_list' },
             { title: 'relationship', value: 'standard:relationship' },
+            { title: 'repeaters', value: 'standard:repeaters' },
             { title: 'reply_text', value: 'standard:reply_text' },
+            { title: 'report_type', value: 'standard:report_type' },
             { title: 'report', value: 'standard:report' },
             { title: 'resource_absence', value: 'standard:resource_absence' },
             { title: 'resource_capacity', value: 'standard:resource_capacity' },
@@ -431,6 +719,10 @@ const ICON_TYPES = [
                 value: 'standard:resource_preference'
             },
             { title: 'resource_skill', value: 'standard:resource_skill' },
+            {
+                title: 'restriction_policy',
+                value: 'standard:restriction_policy'
+            },
             {
                 title: 'return_order_line_item',
                 value: 'standard:return_order_line_item'
@@ -457,10 +749,19 @@ const ICON_TYPES = [
                 value: 'standard:scheduling_constraint'
             },
             { title: 'scheduling_policy', value: 'standard:scheduling_policy' },
+            {
+                title: 'scheduling_workspace_territory',
+                value: 'standard:scheduling_workspace_territory'
+            },
+            {
+                title: 'scheduling_workspace',
+                value: 'standard:scheduling_workspace'
+            },
             { title: 'screen', value: 'standard:screen' },
             { title: 'search', value: 'standard:search' },
             { title: 'section', value: 'standard:section' },
             { title: 'segments', value: 'standard:segments' },
+            { title: 'selling_model', value: 'standard:selling_model' },
             {
                 title: 'serialized_product_transaction',
                 value: 'standard:serialized_product_transaction'
@@ -498,14 +799,23 @@ const ICON_TYPES = [
                 title: 'service_territory_member',
                 value: 'standard:service_territory_member'
             },
+            {
+                title: 'service_territory_policy',
+                value: 'standard:service_territory_policy'
+            },
             { title: 'service_territory', value: 'standard:service_territory' },
             { title: 'settings', value: 'standard:settings' },
+            { title: 'setup_modal', value: 'standard:setup_modal' },
             {
                 title: 'shift_pattern_entry',
                 value: 'standard:shift_pattern_entry'
             },
             { title: 'shift_pattern', value: 'standard:shift_pattern' },
             { title: 'shift_preference', value: 'standard:shift_preference' },
+            {
+                title: 'shift_scheduling_operation',
+                value: 'standard:shift_scheduling_operation'
+            },
             { title: 'shift_template', value: 'standard:shift_template' },
             { title: 'shift_type', value: 'standard:shift_type' },
             { title: 'shift', value: 'standard:shift' },
@@ -513,8 +823,14 @@ const ICON_TYPES = [
             { title: 'skill_entity', value: 'standard:skill_entity' },
             { title: 'skill_requirement', value: 'standard:skill_requirement' },
             { title: 'skill', value: 'standard:skill' },
+            {
+                title: 'slack_conversations',
+                value: 'standard:slack_conversations'
+            },
+            { title: 'slack', value: 'standard:slack' },
             { title: 'slider', value: 'standard:slider' },
             { title: 'sms', value: 'standard:sms' },
+            { title: 'snippet_alt', value: 'standard:snippet_alt' },
             { title: 'snippet', value: 'standard:snippet' },
             { title: 'snippets', value: 'standard:snippets' },
             {
@@ -524,6 +840,7 @@ const ICON_TYPES = [
             { title: 'sobject', value: 'standard:sobject' },
             { title: 'social', value: 'standard:social' },
             { title: 'solution', value: 'standard:solution' },
+            { title: 'sort_policy', value: 'standard:sort_policy' },
             { title: 'sort', value: 'standard:sort' },
             { title: 'sossession', value: 'standard:sossession' },
             { title: 'stage_collection', value: 'standard:stage_collection' },
@@ -535,12 +852,17 @@ const ICON_TYPES = [
             { title: 'strategy', value: 'standard:strategy' },
             { title: 'survey', value: 'standard:survey' },
             { title: 'swarm_request', value: 'standard:swarm_request' },
+            { title: 'swarm_session', value: 'standard:swarm_session' },
             {
                 title: 'system_and_global_variable',
                 value: 'standard:system_and_global_variable'
             },
+            { title: 'tableau', value: 'standard:tableau' },
             { title: 'task', value: 'standard:task' },
             { title: 'task2', value: 'standard:task2' },
+            { title: 'tax_policy', value: 'standard:tax_policy' },
+            { title: 'tax_rate', value: 'standard:tax_rate' },
+            { title: 'tax_treatment', value: 'standard:tax_treatment' },
             { title: 'team_member', value: 'standard:team_member' },
             { title: 'template', value: 'standard:template' },
             { title: 'text_template', value: 'standard:text_template' },
@@ -549,17 +871,26 @@ const ICON_TYPES = [
             { title: 'textbox', value: 'standard:textbox' },
             { title: 'thanks_loading', value: 'standard:thanks_loading' },
             { title: 'thanks', value: 'standard:thanks' },
+            { title: 'time_period', value: 'standard:time_period' },
             { title: 'timesheet_entry', value: 'standard:timesheet_entry' },
             { title: 'timesheet', value: 'standard:timesheet' },
             { title: 'timeslot', value: 'standard:timeslot' },
+            { title: 'title_party', value: 'standard:title_party' },
             { title: 'today', value: 'standard:today' },
             { title: 'toggle', value: 'standard:toggle' },
             { title: 'topic', value: 'standard:topic' },
             { title: 'topic2', value: 'standard:topic2' },
+            { title: 'tour_check', value: 'standard:tour_check' },
+            { title: 'tour', value: 'standard:tour' },
             { title: 'trailhead_alt', value: 'standard:trailhead_alt' },
             { title: 'trailhead', value: 'standard:trailhead' },
             { title: 'travel_mode', value: 'standard:travel_mode' },
+            {
+                title: 'unified_health_score',
+                value: 'standard:unified_health_score'
+            },
             { title: 'unmatched', value: 'standard:unmatched' },
+            { title: 'uploaded_model', value: 'standard:uploaded_model' },
             { title: 'user_role', value: 'standard:user_role' },
             { title: 'user', value: 'standard:user' },
             { title: 'variable', value: 'standard:variable' },
@@ -576,9 +907,13 @@ const ICON_TYPES = [
             { title: 'visits', value: 'standard:visits' },
             { title: 'visualforce_page', value: 'standard:visualforce_page' },
             { title: 'voice_call', value: 'standard:voice_call' },
+            { title: 'volume_discounts', value: 'standard:volume_discounts' },
             { title: 'waits', value: 'standard:waits' },
+            { title: 'walkthroughs', value: 'standard:walkthroughs' },
             { title: 'warranty_term', value: 'standard:warranty_term' },
+            { title: 'water', value: 'standard:water' },
             { title: 'webcart', value: 'standard:webcart' },
+            { title: 'whatsapp', value: 'standard:whatsapp' },
             {
                 title: 'work_capacity_limit',
                 value: 'standard:work_capacity_limit'
@@ -588,6 +923,7 @@ const ICON_TYPES = [
                 value: 'standard:work_capacity_usage'
             },
             { title: 'work_contract', value: 'standard:work_contract' },
+            { title: 'work_forecast', value: 'standard:work_forecast' },
             { title: 'work_order_item', value: 'standard:work_order_item' },
             { title: 'work_order', value: 'standard:work_order' },
             { title: 'work_plan_rule', value: 'standard:work_plan_rule' },
@@ -606,8 +942,14 @@ const ICON_TYPES = [
                 value: 'standard:work_step_template'
             },
             { title: 'work_step', value: 'standard:work_step' },
+            { title: 'work_summary', value: 'standard:work_summary' },
             { title: 'work_type_group', value: 'standard:work_type_group' },
-            { title: 'work_type', value: 'standard:work_type' }
+            { title: 'work_type', value: 'standard:work_type' },
+            {
+                title: 'workforce_engagement',
+                value: 'standard:workforce_engagement'
+            },
+            { title: 'your_account', value: 'standard:your_account' }
         ]
     },
     {
