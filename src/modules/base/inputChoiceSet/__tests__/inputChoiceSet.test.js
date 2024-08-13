@@ -321,15 +321,15 @@ describe('Input choice set', () => {
                 it('Button with colors', () => {
                     element.options = optionsWithColors;
                     element.type = 'button';
-                    element.value = optionsWithColors[1].value;
 
                     return Promise.resolve().then(() => {
+                        element.value = optionsWithColors[1].value;
                         const labels = element.shadowRoot.querySelectorAll(
                             '[data-element-id="label"]'
                         );
                         expect(labels[0].style.cssText).toBe('color: red;');
                         expect(labels[1].style.cssText).toBe(
-                            'background-color: blue; border-color: blue;'
+                            'color: white; background-color: blue; border-color: blue;'
                         );
                     });
                 });

@@ -125,7 +125,6 @@ export default class InputChoiceSet extends LightningElement {
     _rendered = false;
     _resizeObserver;
     _transformedOptions = [];
-    _valueInitialized = false;
 
     /**
      * Synchronize all inputs Aria help element ID.
@@ -162,7 +161,7 @@ export default class InputChoiceSet extends LightningElement {
 
         if (!this._rendered) {
             this._setWidth();
-            this._updateLabelStyles();
+            this._updateLabelsStyle();
         }
         this._rendered = true;
         this._updateCheckboxCheckedState();
@@ -418,9 +417,9 @@ export default class InputChoiceSet extends LightningElement {
     set value(value) {
         this._value = value;
 
-        if (!this._valueInitialized) {
-            this._initOptions();
-            this._valueInitialized = true;
+        if (this._connected) {
+            this._updateCheckboxCheckedState();
+            this._updateLabelsStyle();
         }
     }
 
@@ -1028,7 +1027,8 @@ export default class InputChoiceSet extends LightningElement {
     _updateCheckboxCheckedState() {
         this.checkboxes.forEach((checkbox) => {
             const value = checkbox.value || checkbox.name;
-            const checked = this.value?.includes(value) || this.value === value;
+            const valueSet = new Set(this.value);
+            const checked = valueSet.has(value) || this.value === value;
             checkbox.checked = checked;
             checkbox.dataset.checked = checked;
         });
@@ -1048,15 +1048,15 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Update label styling.
      */
-    _updateLabelStyles() {
-        if (this.toggleVariant) return;
+    _updateLabelsStyle() {
         const labels = this.template.querySelectorAll(
             '[data-element-id="label"]'
         );
 
         labels.forEach((label) => {
             const val = label.dataset.value;
-            const hasValue = this.value?.includes(val) || this.value === val;
+            const valueSet = new Set(this.value);
+            const hasValue = valueSet.has(val) || this.value === val;
             const icon = label.querySelector(
                 '[data-element-id="lightning-icon-button"]'
             );
@@ -1075,7 +1075,7 @@ export default class InputChoiceSet extends LightningElement {
             }
             const color = label.dataset.color;
             if (!color) return;
-            if (hasValue) {
+            if (hasValue && !this.toggleVariant) {
                 label.style.backgroundColor = color;
                 label.style.borderColor = color;
                 label.style.color = this.buttonVariant ? 'white' : color;
@@ -1135,13 +1135,14 @@ export default class InputChoiceSet extends LightningElement {
         const value = target.value || target.name;
         const isInput = target.dataset.elementId === 'input';
 
+        // When toggle variant, if we press on the label we need to get the target input-toggle
         if (this.toggleVariant && isInput) {
             target = this.template.querySelector(
                 `[data-element-id="input-toggle"][data-value="${value}"]`
             );
         }
         this._handleChecking(value, target, isInput);
-        this._updateLabelStyles();
+        this._updateLabelsStyle();
     }
 
     /**
