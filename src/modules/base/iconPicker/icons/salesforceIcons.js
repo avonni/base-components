@@ -1450,6 +1450,8 @@ const ICON_TYPES = [
             },
             { title: 'remove', value: 'action:remove' },
             { title: 'reset_password', value: 'action:reset_password' },
+            { title: 'scan_disabled', value: 'action:scan_disabled' },
+            { title: 'scan_enabled', value: 'action:scan_enabled' },
             { title: 'script', value: 'action:script' },
             { title: 'share_file', value: 'action:share_file' },
             { title: 'share_link', value: 'action:share_link' },
