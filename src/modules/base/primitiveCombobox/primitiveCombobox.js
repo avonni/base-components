@@ -1751,6 +1751,19 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Updates the visibility of the dropdown menu. If multi-select, prevents the dropdown menu from closing.
+     */
+    updateDropdownMenuVisibility() {
+        if (this.isMultiSelect) {
+            this.computedGroups = [...this.computedGroups];
+        } else {
+            this.close();
+            this.dispatchClose();
+        }
+        this.focus();
+    }
+
+    /**
      * Position the fixed actions and add their height to the listbox padding, to leave room for them in their original position.
      */
     updateFixedActionsHeight() {
@@ -2118,9 +2131,7 @@ export default class PrimitiveCombobox extends LightningElement {
                     );
                 }
             }
-            this.close();
-            this.dispatchClose();
-            this.focus();
+            this.updateDropdownMenuVisibility();
             return;
         }
 
@@ -2135,9 +2146,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         const action = selectedOption.selected ? 'select' : 'unselect';
         this.dispatchChange(action, selectedOption.levelPath);
-        this.close();
-        this.dispatchClose();
-        this.focus();
+        this.updateDropdownMenuVisibility();
     }
 
     /**
