@@ -115,18 +115,8 @@ export class TreeData {
      * @returns {object} Cloned item.
      */
     cloneItems(item) {
-        const newItem = {
-            avatar: item.avatar,
-            label: item.label,
-            name: item.name,
-            expanded: item.expanded,
-            metatext: item.metatext,
-            href: item.href,
-            disabled: item.disabled,
-            isLoading: item.isLoading,
-            items: [],
-            fields: item.fields
-        };
+        const newItem = JSON.parse(JSON.stringify(item));
+        newItem.items = [];
 
         if (item.items && item.items.length > 0) {
             newItem.items = item.items.map((leaf) => {
