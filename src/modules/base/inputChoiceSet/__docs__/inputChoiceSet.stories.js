@@ -370,8 +370,8 @@ buttonsHorizontalStretchRow.args = {
     value: dayValue
 };
 
-export const buttonsHorizontalStretchRowCols = Template.bind({});
-buttonsHorizontalStretchRowCols.args = {
+export const buttonsHorizontalStretchCols = Template.bind({});
+buttonsHorizontalStretchCols.args = {
     isMultiSelect: true,
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
@@ -442,7 +442,6 @@ ToggleStretch.args = {
     label: 'Please select a value',
     type: 'toggle',
     options: optionsWithColors,
-    value: dayValue,
     typeAttributes: {
         stretch: true
     }

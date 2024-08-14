@@ -159,7 +159,13 @@
 
 .slds-checkbox
     .slds-checkbox__label
-    .avonni-input-choice-set__option-label-icon-container.slds-form-element__label {
+    .avonni-input-choice-set__option-label-icon-container.slds-form-element__label,
+.slds-radio
+    .slds-radio__label
+    .avonni-input-choice-set__option-label-icon-container.slds-form-element__label,
+.slds-checkbox_toggle
+    .avonni-input-choice-set__option-label
+    .slds-form-element__label {
     display: flex;
     align-items: center;
     padding-right: 0.5rem;

@@ -1,14 +1,17 @@
 import { LightningElement } from 'lwc';
 
 export default class InputChoiceSetButtonsCheckmark extends LightningElement {
-    optionsWithoutIcon = [
-        { label: 'Mon', value: 'mon' },
-        { label: 'Tue', value: 'tue' },
-        { label: 'Wed', value: 'wed' },
-        { label: 'Thu', value: 'thu' },
-        { label: 'Fri', value: 'fri' }
+    options = [
+        { label: 'Pacific Cyan', value: 'pacificCyan', color: '#06AED5' },
+        { label: 'Cerulean', value: 'cerulean', color: '#086788' },
+        {
+            label: 'School Bus Yellow',
+            value: 'schoolBusYellow',
+            color: '#F8D525'
+        },
+        { label: 'Harvest Gold', value: 'harvestGold', color: '#F5AB00' },
+        { label: 'Rojo', value: 'rojo', color: '#DD1C1A' }
     ];
-    dayValue = ['fri'];
 
     typeAttributes = {
         showCheckmark: true

@@ -74,8 +74,8 @@
                                         data-checked={option.isChecked}
                                         data-color={option.color}
                                         data-element-id="input"
-                                        onclick={handleClick}
                                         onchange={handleChange}
+                                        onclick={handleClick}
                                         onfocus={handleFocus}
                                         onblur={handleBlur}
                                         onkeyup={handleKeyUp}
@@ -106,7 +106,6 @@
                                                     if:true={toggleVariant}
                                                     class="slds-m-top_x-small"
                                                     aria-label={option.label}
-                                                    checked={option.isChecked}
                                                     disabled={disabled}
                                                     hide-mark={computedHideCheck}
                                                     label={option.label}
@@ -118,8 +117,9 @@
                                                     value={option.value}
                                                     variant="label-hidden"
                                                     data-element-id="input-toggle"
+                                                    data-value={option.value}
                                                     onblur={handleBlur}
-                                                    onchange={handleToggleChange}
+                                                    onchange={handleChange}
                                                     onfocus={handleFocus}
                                                 ></c-input-toggle>
                                             </div>

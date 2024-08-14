@@ -1,10 +1,9 @@
 <template>
     <avonni-input-choice-set
         label="Please select a value"
-        options={optionsWithoutIcon}
+        message-when-value-missing="Value missing"
+        options={options}
         type="button"
         type-attributes={typeAttributes}
-        message-when-value-missing="Value missing"
-        value={dayValue}
     ></avonni-input-choice-set>
 </template>

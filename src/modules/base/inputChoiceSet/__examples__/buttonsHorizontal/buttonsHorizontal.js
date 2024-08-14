@@ -9,4 +9,8 @@ export default class InputChoiceSetButtonsHorizontal extends LightningElement {
         { label: 'Fri', value: 'fri' }
     ];
     dayValue = ['fri'];
+
+    typeAttributes = {
+        stretch: true
+    };
 }

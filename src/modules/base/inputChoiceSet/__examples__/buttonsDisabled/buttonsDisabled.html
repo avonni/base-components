@@ -1,10 +1,10 @@
 <template>
     <avonni-input-choice-set
+        disabled
         label="Please select a value"
+        message-when-value-missing="Value missing"
         options={optionsWithoutIcon}
         type="button"
-        disabled
-        message-when-value-missing="Value missing"
         value={dayValue}
     ></avonni-input-choice-set>
 </template>
