@@ -1842,7 +1842,7 @@ export default class List extends LightningElement {
         // Stop dragging if the click was on a button menu
         if (
             this._currentColumnCount > 1 ||
-            this.variant !== 'base' ||
+            (this.variant !== 'base' && !this.isCheckList) ||
             !this.sortable
         ) {
             return;
