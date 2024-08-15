@@ -2273,9 +2273,8 @@ export default class List extends LightningElement {
                 '[data-element-id="item-input-checkbox"]'
             );
             if (itemCheckbox) {
-                const checked = !itemCheckbox.checked;
-                const checkboxItemIndex = Number(itemCheckbox.dataset.index);
-                this.handleItemCheck(checkboxItemIndex, checked);
+                const checked = !item.checked;
+                this.handleItemCheck(itemIndex, checked);
             }
         }
     }

@@ -189,23 +189,18 @@
                                             if:true={isCheckList}
                                             class="
                                                 avonni-list__item-checkbox-button
-                                                slds-checkbox
                                                 slds-m-right_x-small
                                             "
                                         >
                                             <input
                                                 data-element-id="item-input-checkbox"
                                                 data-index={item.index}
-                                                class="slds-assistive-text"
                                                 type="checkbox"
                                                 checked={item.checked}
                                                 id={item.key}
                                                 onkeydown={handleCheckboxKeyDown}
                                             />
-                                            <label
-                                                class="slds-checkbox_faux"
-                                                for={item.key}
-                                            >
+                                            <label for={item.key}>
                                                 <span
                                                     class="slds-assistive-text"
                                                 ></span>

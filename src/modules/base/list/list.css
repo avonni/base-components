@@ -435,11 +435,10 @@ a.avonni-list__item-info-link:active {
     align-self: flex-start;
 }
 
-.avonni-list__item-checkbox-button [type='checkbox'] ~ .slds-checkbox_faux {
+.avonni-list__item-checkbox-button [type='checkbox'] {
     width: var(--avonni-list-item-checkbox-button-size, 2rem);
     height: var(--avonni-list-item-checkbox-button-size, 2rem);
     position: relative;
-    display: inline-block;
     border: var(--avonni-list-item-checkbox-button-sizing-border, 1px) solid
         var(--avonni-list-item-checkbox-button-color-border, rgb(201, 201, 201));
     border-radius: var(
@@ -451,64 +450,40 @@ a.avonni-list__item-info-link:active {
         rgb(255, 255, 255)
     );
     cursor: pointer;
+    outline: none;
+    appearance: none;
 }
 
-.avonni-list__item-checkbox-button .slds-checkbox_faux:before,
-.avonni-list__item-checkbox-button .slds-checkbox_faux:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-}
-
-.avonni-list__item-checkbox-button
-    [type='checkbox']:checked
-    ~ .slds-checkbox_faux {
-    border-color: transparent;
+.avonni-list__item-checkbox-button [type='checkbox']:checked {
     background: var(
         --avonni-list-item-checkbox-button-color-background-active,
         rgb(1, 68, 134)
     );
 }
 
-.avonni-list__item-checkbox-button
-    [type='checkbox']:checked
-    ~ .slds-checkbox_faux:before,
-.avonni-list__item-checkbox-button
-    [type='checkbox']:checked
-    ~ .slds-checkbox_faux:after {
-    border-bottom: 2px solid
+.avonni-list__item-checkbox-button [type='checkbox']:checked::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(
+        0.1 * var(--avonni-list-item-checkbox-button-size, 2rem)
+    ); /* Adjust for new size */
+    left: calc(
+        0.32 * var(--avonni-list-item-checkbox-button-size, 2rem)
+    ); /* Adjust for new size */
+    width: calc(
+        0.3 * var(--avonni-list-item-checkbox-button-size, 2rem)
+    ); /* Adjust for new size */
+    height: calc(
+        0.6 * var(--avonni-list-item-checkbox-button-size, 2rem)
+    ); /* Adjust for new size */
+    border: solid
         var(
             --avonni-list-item-checkbox-button-icon-color-background,
             rgb(255, 255, 255)
         );
-    border-left: 2px solid
-        var(
-            --avonni-list-item-checkbox-button-icon-color-background,
-            rgb(255, 255, 255)
-        );
-}
-
-.avonni-list__item-checkbox-button
-    [type='checkbox']:checked
-    ~ .slds-checkbox_faux:before {
-    left: 0.3125rem;
-    width: 0.125rem;
-    height: 1rem;
-    -webkit-transform: rotate(40deg);
-    transform: rotate(40deg);
-}
-
-.avonni-list__item-checkbox-button
-    [type='checkbox']:checked
-    ~ .slds-checkbox_faux:after {
-    top: 0.3125rem;
-    left: -0.625rem;
-    width: 0.5625rem;
-    height: 0.125rem;
-    -webkit-transform: rotate(40deg);
-    transform: rotate(40deg);
+    border-width: 0
+        calc(0.1 * var(--avonni-list-item-checkbox-button-size, 2rem))
+        calc(0.1 * var(--avonni-list-item-checkbox-button-size, 2rem)) 0; /* Adjust checkmark thickness for new size */
+    transform: rotate(45deg);
 }
