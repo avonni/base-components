@@ -461,15 +461,18 @@ a.avonni-list__item-info-link:active {
     );
 }
 
+/* Instead of using calc(), might be better to find an another way using flex */
 .avonni-list__item-checkbox-button [type='checkbox']:checked::before {
     content: '';
     display: block;
     position: absolute;
     top: calc(
-        0.1 * var(--avonni-list-item-checkbox-button-size, 2rem)
+        calc(0.1 * var(--avonni-list-item-checkbox-button-size, 2rem)) -
+            calc(var(--avonni-list-item-checkbox-button-sizing-border, 0px) / 2)
     ); /* Adjust for new size */
     left: calc(
-        0.32 * var(--avonni-list-item-checkbox-button-size, 2rem)
+        calc(0.3 * var(--avonni-list-item-checkbox-button-size, 2rem)) -
+            calc(var(--avonni-list-item-checkbox-button-sizing-border, 0px) / 2)
     ); /* Adjust for new size */
     width: calc(
         0.3 * var(--avonni-list-item-checkbox-button-size, 2rem)
