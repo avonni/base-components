@@ -786,7 +786,8 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_sortable':
                     this.sortable && this.divider !== 'none',
                 'avonni-list__item-divider':
-                    !this.sortable && this.divider !== 'none'
+                    !this.sortable && this.divider !== 'none',
+                'avonni-list__item_check-list': this.isCheckList
             })
             .add(`avonni-list__item-divider_${this.divider}`)
             .toString();
@@ -1841,7 +1842,7 @@ export default class List extends LightningElement {
         // Stop dragging if the click was on a button menu
         if (
             this._currentColumnCount > 1 ||
-            this.variant !== 'base' ||
+            (this.variant !== 'base' && !this.isCheckList) ||
             !this.sortable
         ) {
             return;
@@ -2201,15 +2202,14 @@ export default class List extends LightningElement {
      *
      * @param {Event} event
      */
-    handleItemCheck(event) {
-        const itemIndex = Number(event.currentTarget.dataset.index);
+    handleItemCheck(index, checked) {
+        const itemIndex = Number(index);
         const item = this.computedItems[itemIndex];
 
         if (!item) {
             return;
         }
 
-        const checked = event.currentTarget.checked;
         item.checked = checked;
         this.computedItems = [...this.computedItems];
 
@@ -2267,6 +2267,16 @@ export default class List extends LightningElement {
                 }
             })
         );
+
+        if (this.isCheckList) {
+            const itemCheckbox = event.currentTarget.querySelector(
+                '[data-element-id="item-input-checkbox"]'
+            );
+            if (itemCheckbox) {
+                const checked = !item.checked;
+                this.handleItemCheck(itemIndex, checked);
+            }
+        }
     }
 
     /**
