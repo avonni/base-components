@@ -108,7 +108,7 @@
     border-color: var(
         --avonni-carousel-active-indicator-color-border-hover,
         var(--lwc-brandAccessible, #0176d3)
-    );
+    ) !important;
 }
 
 .avonni-carousel__progress-indicator_inactive {
