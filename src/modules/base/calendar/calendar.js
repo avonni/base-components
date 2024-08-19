@@ -623,7 +623,7 @@ export default class Calendar extends LightningElement {
         // if a date was previously selected or focused, focus the same date in this month.
         let selectedMonthDate, rovingDate;
         if (this._focusDate) {
-            rovingDate = this._focusDate.day;
+            rovingDate = this._focusDate.ts;
             selectedMonthDate = this.displayDate.set({
                 day: this._focusDate.day
             }).ts;
@@ -634,7 +634,7 @@ export default class Calendar extends LightningElement {
 
         requestAnimationFrame(() => {
             const rovingFocusDate = this.template.querySelector(
-                `[data-element-id="td"][data-date="${rovingDate}"]`
+                `[data-element-id="td"][data-full-date="${rovingDate}"]`
             );
             const selectedDates = this.template.querySelectorAll(
                 '[data-selected="true"]'
