@@ -50,6 +50,18 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-blockquote-left-border-sizing-border
+ * @default 0.125rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-left-border-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-blockquote-brand-color-background
  * @default #fafaf9
  * @type color

@@ -72,8 +72,17 @@ blockquote.avonni-blockquote__container {
     font-style: var(--avonni-blockquote-container-font-style, normal);
     padding: 1rem;
     margin: 0 0 0 0;
-    border: 1px solid var(--avonni-blockquote-color-border, #f2f2f2);
-    border-left-width: 0.125rem;
+    border: var(--avonni-blockquote-sizing-border, 1px)
+        var(--avonni-blockquote-styling-border, solid)
+        var(--avonni-blockquote-color-border, #f2f2f2);
+    border-left-width: var(
+        --avonni-blockquote-left-border-sizing-border,
+        0.125rem
+    );
+    border-left-style: var(
+        --avonni-blockquote-left-border-styling-border,
+        solid
+    );
     height: var(--avonni-blockquote-sizing-height);
     width: var(--avonni-blockquote-sizing-width);
     overflow: var(--avonni-blockquote-sizing-overflow);
