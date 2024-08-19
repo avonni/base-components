@@ -366,7 +366,7 @@ export default class Calendar extends LightningElement {
         let disabled = this.disabled;
         const month = this.displayDate.month + 1;
         const nextDate = this.displayDate.set({ month, day: 1 });
-        const maxDate = this._computedMax.set({ day: 1 });
+        const maxDate = this._computedMax.endOf('month');
 
         if (nextDate > maxDate) {
             disabled = true;
@@ -382,7 +382,7 @@ export default class Calendar extends LightningElement {
         let disabled = this.disabled;
         const month = this.displayDate.month - 1;
         const previousDate = this.displayDate.set({ month, day: 1 });
-        const minDate = this._computedMin.set({ day: 1 });
+        const minDate = this._computedMin.startOf('month');
 
         if (previousDate < minDate) {
             disabled = true;
