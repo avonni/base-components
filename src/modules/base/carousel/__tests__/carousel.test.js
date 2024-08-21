@@ -943,6 +943,28 @@ describe('Carousel', () => {
             });
         });
 
+        it('currentpanelchange', () => {
+            element.items = items;
+
+            const handler = jest.fn();
+            element.addEventListener('currentpanelchange', handler);
+
+            return Promise.resolve().then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-pagination"]'
+                );
+                const secondIndicator = indicators[1];
+                secondIndicator.click();
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBe(items[1].name);
+                expect(call.detail.item).toMatchObject(items[1]);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+        });
+
         it('item click', () => {
             const handler = jest.fn();
             element.addEventListener('itemclick', handler);
