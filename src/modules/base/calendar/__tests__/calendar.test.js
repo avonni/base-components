@@ -123,13 +123,16 @@ describe('Calendar', () => {
 
     // Focus Date
     it('Calendar: focusDate', () => {
-        element.value = '05/12/2022';
+        element.value = new Date(2022, 8, 5);
 
         return Promise.resolve().then(() => {
-            const day8 = element.shadowRoot.querySelector('td[data-date="8"]');
+            const date = new Date(2022, 8, 8);
+            const day8 = element.shadowRoot.querySelector(
+                `td[data-full-date="${date.getTime()}"]`
+            );
             const spy8 = jest.spyOn(day8, 'focus');
 
-            element.focusDate(new Date(2022, 7, 8));
+            element.focusDate(date);
             jest.runAllTimers();
 
             expect(spy8).toHaveBeenCalled();
