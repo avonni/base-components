@@ -809,7 +809,7 @@ export default class Carousel extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name Name of the action clicked.
-         * @param {object} item Item clicked.
+         * @param {object} item Item the action belongs to.
          * @public
          */
         this.dispatchEvent(
@@ -1097,6 +1097,7 @@ export default class Carousel extends LightningElement {
             // Update the current panel for consistency
             // and to make sure there is no jump if more items are loaded
             this._currentPanel = activePanelItem.items[0].name;
+            this.dispatchCurrentPanelChange(activePanelItem.items[0]);
         }
     }
 
@@ -1133,6 +1134,26 @@ export default class Carousel extends LightningElement {
      *  EVENT DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    dispatchCurrentPanelChange(item) {
+        /**
+         * The event fired when the currently visible panel changes.
+         *
+         * @event
+         * @name currentpanelchange
+         * @param {object} item Data of the panel's first item.
+         * @param {string} name Name of the panel's first item.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('currentpanelchange', {
+                detail: {
+                    item,
+                    name: this.currentPanel
+                }
+            })
+        );
+    }
 
     dispatchLoadMoreEvent() {
         /**
