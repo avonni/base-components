@@ -17,6 +17,7 @@ describe('Color Gradient', () => {
             is: ColorGradient
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
     });
 
     it('Color Gradient: Default attributes', () => {
@@ -197,6 +198,7 @@ describe('Color Gradient', () => {
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector('.slds-input');
             input.dispatchEvent(new CustomEvent('input'));
+            jest.runAllTimers();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.hex).toBe('#ffffff');
             expect(handler.mock.calls[0][0].detail.hexa).toBe('#ffffffff');

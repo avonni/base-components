@@ -34,6 +34,7 @@ export default class ColorGradient extends LightningElement {
     _readOnly = false;
     _value = DEFAULT_VALUE;
 
+    _setColorChangeTimeout;
     colors = generateColors(DEFAULT_VALUE);
     positionX;
     positionY;
@@ -300,7 +301,11 @@ export default class ColorGradient extends LightningElement {
      * Change dispatcher.
      */
     dispatchChange() {
-        if (!this.disabled && !this.readOnly) {
+        if (this.disabled || this.readOnly) {
+            return;
+        }
+        clearTimeout(this._setColorChangeTimeout);
+        this._setColorChangeTimeout = setTimeout(() => {
             /**
              * The event fired when the color value changed.
              *
@@ -328,7 +333,7 @@ export default class ColorGradient extends LightningElement {
                     }
                 })
             );
-        }
+        }, 250);
     }
 
     /**
