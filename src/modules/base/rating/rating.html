@@ -36,11 +36,11 @@
                 <template for:each={items} for:item="item">
                     <button
                         class={item.buttonClass}
+                        disabled={isDisabled}
                         key={item.value}
                         title={item.value}
                         type="button"
                         value={item.value}
-                        disabled={isDisabled}
                         data-element-id="button"
                         onclick={handleItemClick}
                     >
@@ -63,19 +63,18 @@
                 if:true={showRating}
                 class="avonni-rating__value slds-p-left_medium"
                 data-element-id="avonni-rating-value"
-                >{value}/{max}</span
-            >
+                >{value}/{max}
+            </span>
         </div>
     </div>
-    <template if:true={helpMessage}>
-        <div
-            id="help-message"
-            class="slds-form-element__help"
-            data-help-message
-            data-element-id="form-element__help"
-            role="alert"
-        >
-            {helpMessage}
-        </div>
-    </template>
+    <div
+        if:true={helpMessage}
+        id="help-message"
+        class="slds-form-element__help"
+        role="alert"
+        data-help-message
+        data-element-id="form-element__help"
+    >
+        {helpMessage}
+    </div>
 </template>
