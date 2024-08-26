@@ -1,9 +1,9 @@
 .avonni-chip-container__wrapper {
-    background-color: var(--avonni-chip-container-color-background, #ffffff);
+    background-color: var(
+        --avonni-chip-container-color-background,
+        transparent
+    );
     border-radius: var(--avonni-chip-container-radius-border, 0.25rem);
-}
-
-.avonni-chip-container__wrapper {
     padding-top: var(--avonni-chip-container-spacing-block-start, 0);
     padding-bottom: var(--avonni-chip-container-spacing-block-end, 0);
     padding-left: var(--avonni-chip-container-spacing-inline-start, 0);
