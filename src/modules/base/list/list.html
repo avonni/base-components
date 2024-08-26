@@ -62,7 +62,7 @@
                     for:index="index"
                 >
                     <c-layout-item
-                        key={item.key}
+                        key={item.name}
                         class={computedItemWrapperClass}
                         aria-describedby="instructions"
                         aria-label={item.label}
@@ -197,10 +197,10 @@
                                                 data-index={item.index}
                                                 type="checkbox"
                                                 checked={item.checked}
-                                                id={item.key}
+                                                id={item.name}
                                                 onkeydown={handleCheckboxKeyDown}
                                             />
-                                            <label for={item.key}>
+                                            <label for={item.name}>
                                                 <span
                                                     class="slds-assistive-text"
                                                 ></span>
