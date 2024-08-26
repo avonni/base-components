@@ -284,7 +284,12 @@ export default class Layout extends LightningElement {
         event.stopPropagation();
         const { name, callbacks } = event.detail;
         this._items.set(name, callbacks);
-        callbacks.setContainerSize(this.width);
+
+        // We use requestAnimationFrame to improve rendering performance,
+        // especially when there is a lot of items.
+        requestAnimationFrame(() => {
+            callbacks.setContainerSize(this.width);
+        });
     }
 
     /**
