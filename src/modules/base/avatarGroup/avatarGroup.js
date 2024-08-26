@@ -460,6 +460,7 @@ export default class AvatarGroup extends LightningElement {
      */
     get avatarFlexWrapperClass() {
         return classSet({
+            'avonni-avatar-group__list': this.layout === 'list',
             'slds-grid': this.isNotList,
             'slds-scrollable_y avonni-avatar-group__avatar-list_infinite-loading':
                 this.enableInfiniteLoading && this.layout === 'list'
@@ -852,7 +853,8 @@ export default class AvatarGroup extends LightningElement {
      */
     get showMoreSectionClass() {
         return classSet({
-            'slds-grid slds-grid_vertical-reverse': this.layout === 'list',
+            'slds-grid slds-grid_vertical-reverse slds-m-top_x-small':
+                this.layout === 'list',
             'slds-show_inline slds-is-relative': this.isNotList
         }).toString();
     }
