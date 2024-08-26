@@ -1152,7 +1152,9 @@ describe('List', () => {
                     );
                     cards.forEach((card) => {
                         card.dispatchEvent(
-                            new CustomEvent('privatecardrendered')
+                            new CustomEvent('privatecardrendered', {
+                                bubbles: true
+                            })
                         );
                     });
                     expect(handler).toHaveBeenCalled();
