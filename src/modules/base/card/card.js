@@ -96,7 +96,8 @@ export default class Card extends LightningElement {
                             this.showDefaultSlot = true;
                         }
                     }
-                }
+                },
+                bubbles: true
             })
         );
     }

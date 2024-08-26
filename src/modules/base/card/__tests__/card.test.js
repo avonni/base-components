@@ -220,7 +220,7 @@ describe('Card', () => {
         return Promise.resolve().then(() => {
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.bubbles).toBeFalsy();
+            expect(call.bubbles).toBeTruthy();
             expect(call.cancelable).toBeFalsy();
             expect(call.composed).toBeFalsy();
         });

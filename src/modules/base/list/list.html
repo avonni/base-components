@@ -53,6 +53,7 @@
                 role="list"
                 vertical-align="stretch"
                 data-element-id="list-element"
+                onprivatecardrendered={handleCardRendered}
                 onsizechange={handleLayoutSizeChange}
             >
                 <template
@@ -91,7 +92,6 @@
                             <c-card
                                 media-position={item.imagePosition}
                                 data-element-id="avonni-card"
-                                onprivatecardrendered={handleCardRendered}
                             >
                                 <!-- Media Actions  -->
                                 <div
