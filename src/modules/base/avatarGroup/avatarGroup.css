@@ -48,6 +48,11 @@ button.avonni-avatar-group__avatar-in-line-button {
     height: 35px;
 }
 
+.avonni-avatar-group__list {
+    position: relative;
+    z-index: 1;
+}
+
 .avonni-avatar-group_xx-large {
     width: 5.5rem;
     height: 5.5rem;
@@ -143,6 +148,10 @@ button.avonni-avatar-group__avatar-in-line-button {
     padding-left: 0.5rem;
     white-space: nowrap;
     cursor: pointer;
+}
+
+.avonni-avatar-group__hidden-avatar-container > * {
+    width: 100%;
 }
 
 .slds-dropdown {

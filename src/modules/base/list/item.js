@@ -17,7 +17,6 @@ const AVATAR_POSITION = {
 
 export default class Item {
     constructor(value) {
-        this.key = generateUUID();
         this.avatar = value.avatar;
         this.avatarPosition = normalizeString(
             this.avatar && this.avatar.position,

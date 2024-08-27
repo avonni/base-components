@@ -1423,7 +1423,6 @@ export default class List extends LightningElement {
         const itemCopy = deepCopy(item);
         delete itemCopy.index;
         delete itemCopy.imagePosition;
-        delete itemCopy.key;
         delete itemCopy.variant;
         delete itemCopy.infos;
         delete itemCopy.icons;

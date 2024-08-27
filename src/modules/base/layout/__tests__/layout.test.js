@@ -25,6 +25,10 @@ describe('Layout', () => {
     beforeEach(() => {
         createLayout();
         addLayoutToDOM();
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     /*
@@ -272,6 +276,7 @@ describe('Layout', () => {
                         }
                     })
                 );
+                jest.runAllTimers();
                 expect(callback).toHaveBeenCalledTimes(1);
                 expect(callback.mock.calls[0][0]).toBe('default');
             });
@@ -322,7 +327,7 @@ describe('Layout', () => {
                             }
                         })
                     );
-
+                    jest.runAllTimers();
                     expect(callback).toHaveBeenCalledTimes(1);
                     jest.spyOn(
                         wrapper,
