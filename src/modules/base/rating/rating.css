@@ -1,13 +1,92 @@
+.slds-button.avonni-rating__button {
+    border-width: var(--avonni-rating-button-sizing-border, 1px);
+    border-style: var(--avonni-rating-button-styling-border, solid);
+    --slds-c-button-radius-border: var(--avonni-rating-button-radius-border);
+}
+
+.slds-button.avonni-rating__button.slds-button_outline-brand,
+.slds-button.avonni-rating__button.slds-button_outline-brand:focus {
+    --slds-c-button-outline-brand-color-background: var(
+        --avonni-rating-button-color-background,
+        #ffffff
+    );
+    --slds-c-button-outline-brand-color-background-hover: var(
+        --avonni-rating-button-color-background,
+        #ffffff
+    );
+    --slds-c-button-text-color: var(
+        --avonni-rating-button-text-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-button-text-color-hover: var(--avonni-rating-button-text-color);
+    --slds-c-button-outline-brand-color-border: var(
+        --avonni-rating-button-color-border
+    );
+    --slds-c-button-outline-brand-color-border-hover: var(
+        --avonni-rating-button-color-border
+    );
+}
+
+.slds-button.avonni-rating__button.slds-button_brand,
+.slds-button.avonni-rating__button.slds-button_brand:focus {
+    --slds-c-button-brand-color-background: var(
+        --avonni-rating-button-color-background-selected,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-button-color-background-hover: var(
+        --avonni-rating-button-color-background-selected,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-button-brand-text-color: var(
+        --avonni-rating-button-text-color-selected,
+        #ffffff
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-rating-button-text-color-selected,
+        #ffffff
+    );
+    --slds-c-button-brand-color-border: var(
+        --avonni-rating-button-color-border-selected,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-button-color-border-hover: var(
+        --avonni-rating-button-color-border-selected
+    );
+}
+
+.slds-button[disabled].avonni-rating__button.slds-button_outline-brand {
+    border-color: var(--avonni-rating-button-color-border-disabled, #c9c9c9);
+    background-color: var(
+        --avonni-rating-button-color-background-disabled,
+        #ffffff
+    );
+    color: var(--avonni-rating-button-text-color-disabled, #c9c7c5);
+}
+
+.slds-button[disabled].avonni-rating__button.slds-button_brand {
+    border-color: var(--avonni-rating-button-color-border-disabled-selected);
+    background-color: var(
+        --avonni-rating-button-color-background-disabled-selected
+    );
+    color: var(--avonni-rating-button-text-color-disabled-selected);
+}
+
 .avonni-rating__active.avonni-rating__continuous:hover
     ~ .avonni-rating__active.avonni-rating__continuous {
-    border: 1px solid var(--lwc-brandAccessibleActive, #014486);
-    background-color: #ffffff;
-    border-color: var(--lwc-brandAccessibleActive, #014486);
-    color: var(--lwc-brandAccessibleActive, #014486);
+    background-color: var(--avonni-rating-button-color-background, #ffffff);
+    border-color: var(
+        --avonni-rating-button-color-border,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    color: var(
+        --avonni-rating-button-text-color,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
     opacity: 0.85;
 }
 
-.avonni-rating__button.slds-button {
+.avonni-rating__button.slds-button,
+.avonni-rating__button-icon.slds-button {
     margin-left: 1px;
 }
 
@@ -15,15 +94,23 @@
 .avonni-rating__button-icon:focus {
     box-shadow: none;
     --slds-c-button-color-border-active: transparent;
+    background-color: var(--avonni-rating-button-color-background-selected);
 }
 
 .avonni-rating__container:hover
     .avonni-rating__active.avonni-rating__continuous,
 .avonni-rating__active:hover {
-    border: 1px solid #ffffff;
-    background-color: var(--lwc-brandAccessibleActive, #014486);
-    border-color: var(--lwc-brandAccessibleActive, #014486);
-    color: #ffffff;
+    border-width: 1px;
+    border-style: solid;
+    background-color: var(
+        --avonni-rating-button-color-background-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    border-color: var(
+        --avonni-rating-button-color-border-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    color: var(--avonni-rating-button-text-color-hover, #ffffff);
     opacity: 1;
 }
 
@@ -46,14 +133,14 @@
     height: 100%;
 }
 
-.avonni-rating__button {
+.avonni-rating__button-icon {
     --slds-c-icon-color-foreground: var(
         --avonni-rating-icon-color-foreground,
         var(--lwc-brandDisabled, #c9c7c5)
     );
 }
 
-.slds-button[disabled] {
+.slds-button[disabled] .avonni-rating__icon {
     --slds-c-icon-color-foreground: var(
         --avonni-rating-icon-color-foreground-disabled,
         var(--lwc-brandDisabled, #c9c7c5)
@@ -64,7 +151,7 @@
     );
 }
 
-.slds-button[disabled].avonni-rating__icon_selected {
+.slds-button[disabled].avonni-rating__icon_selected .avonni-rating__icon {
     /* Disabled selected icon */
     --slds-c-icon-color-foreground: var(
         --avonni-rating-icon-color-foreground-disabled-selected,
