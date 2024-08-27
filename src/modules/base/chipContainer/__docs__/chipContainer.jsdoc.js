@@ -27,7 +27,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-container-color-background
- * @default #ffffff
+ * @default transparent
  * @type color
  */
 /**
