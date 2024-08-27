@@ -21,7 +21,7 @@ export default class AvonniRatingItem {
 
     get buttonClass() {
         const isContinuous = this.selectionType === 'continuous';
-        const classes = classSet('slds-button avonni-rating__button');
+        const classes = classSet('slds-button');
         if (this.iconName) {
             classes
                 .add(
@@ -35,7 +35,7 @@ export default class AvonniRatingItem {
                     'avonni-rating__icon_read-only': this.readOnly
                 });
         } else {
-            classes.add({
+            classes.add('avonni-rating__button').add({
                 'slds-button_outline-brand': !this.selected,
                 'slds-button_brand': this.selected,
                 'avonni-rating__continuous': isContinuous,
