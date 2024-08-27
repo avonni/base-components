@@ -15,6 +15,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-progress-circle-bar-content-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-progress-circle-value-text-color
  * @default #0176d3
  * @type color
