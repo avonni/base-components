@@ -6,9 +6,6 @@
 .avonni-activity-timeline__container {
     height: 100%;
 }
-.avonni-activity-timeline__vertical-wrapper {
-    height: calc(100% - 44px);
-}
 
 .avonni-activity-timeline__spinner {
     top: -20px;

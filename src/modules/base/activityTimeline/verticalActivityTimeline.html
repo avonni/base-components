@@ -1,5 +1,7 @@
 <template>
-    <div class="avonni-activity-timeline__container">
+    <div
+        class="avonni-activity-timeline__container slds-grid slds-grid_vertical"
+    >
         <!-- Header -->
         <div if:true={hasHeader} class="slds-card__header">
             <div class="slds-media slds-media_center">
@@ -27,12 +29,7 @@
 
         <!-- Vertical timeline -->
         <div
-            class="
-                avonni-activity-timeline__vertical-wrapper
-                slds-scrollable_y
-                slds-p-bottom_small
-                slds-is-relative
-            "
+            class="slds-scrollable_y slds-p-bottom_small slds-is-relative"
             data-element-id="div-timeline-wrapper"
             onscroll={handleScroll}
         >
