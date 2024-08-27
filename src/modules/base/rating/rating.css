@@ -64,11 +64,15 @@
 }
 
 .slds-button[disabled].avonni-rating__button.slds-button_brand {
-    border-color: var(--avonni-rating-button-color-border-disabled-selected);
     background-color: var(
-        --avonni-rating-button-color-background-disabled-selected
+        --avonni-rating-button-color-background-disabled-selected,
+        #c9c7c5
     );
-    color: var(--avonni-rating-button-text-color-disabled-selected);
+    border-color: var(
+        --avonni-rating-button-color-border-disabled-selected,
+        #c9c7c5
+    );
+    color: var(--avonni-rating-button-text-color-disabled-selected, #ffffff);
 }
 
 .avonni-rating__active.avonni-rating__continuous:hover
