@@ -1,9 +1,9 @@
 <template>
-    <div role="group" aria-labelledby="group-label" class={computedOuterClass}>
-        <div id="group-label" class={computedGroupLabelClass}>
-            <template if:true={required}>
-                <abbr class="slds-required" title={i18n.required}>*</abbr>
-            </template>
+    <div class={computedOuterClass} aria-labelledby="group-label" role="group">
+        <div class={computedGroupLabelClass} id="group-label">
+            <abbr if:true={required} class="slds-required" title={i18n.required}
+                >*</abbr
+            >
             {label}
         </div>
         <lightning-helptext
@@ -24,8 +24,8 @@
                             avonni-dual-listbox__boxes-label
                         "
                         id="source-list-label"
-                        >{sourceLabel}</span
-                    >
+                        >{sourceLabel}
+                    </span>
                     <div
                         if:true={allowSearch}
                         class="avonni-dual-listbox__search-container"
@@ -48,17 +48,17 @@
                         onscroll={handleScroll}
                     >
                         <ul
-                            id="source-list"
-                            aria-describedby="keyboard-interacton"
-                            aria-labelledby="source-list-label"
-                            aria-multiselectable="true"
                             class="
                                 slds-listbox slds-listbox_vertical
                                 source-list
                             "
-                            role="listbox"
+                            id="source-list"
+                            aria-describedby="keyboard-interacton"
                             aria-disabled={ariaDisabled}
-                            data-element-id={sourceListId}
+                            aria-labelledby="source-list-label"
+                            aria-multiselectable="true"
+                            role="listbox"
+                            data-element-id="ul-source-list"
                         >
                             <template
                                 for:each={computedSourceGroups}
@@ -67,26 +67,21 @@
                                 <div
                                     if:true={group.label}
                                     key={generateKey}
-                                    role="presentation"
                                     class="
                                         slds-listbox__item
-                                        dual-listbox__group-title
+                                        avonni-dual-listbox__group
+                                        avonni-dual-listbox__option_border-bottom
                                     "
+                                    role="presentation"
                                 >
                                     <div
-                                        class="slds-media slds-media_small"
-                                        role="presentation"
+                                        class="
+                                            slds-media slds-media_small
+                                            slds-p-around_x-small
+                                        "
+                                        data-element-id="group-label"
                                     >
-                                        <h3
-                                            class="
-                                                slds-listbox__option-header
-                                                slds-p-around_x-small
-                                                slds-text-color_default
-                                            "
-                                            role="presentation"
-                                        >
-                                            {group.label}
-                                        </h3>
+                                        {group.label}
                                     </div>
                                 </div>
                                 <template
@@ -96,20 +91,20 @@
                                 >
                                     <li
                                         key={option.value}
-                                        role="presentation"
                                         class={computedListItemClass}
+                                        role="presentation"
                                         data-element-id="li-source"
                                     >
                                         <div
                                             class={option.classList}
                                             aria-selected={option.selected}
+                                            group-index={index}
                                             role="option"
                                             tabindex={option.tabIndex}
-                                            group-index={index}
                                             data-element-id="div-source"
                                             data-role="option"
                                             data-value={option.value}
-                                            data-type={sourceListId}
+                                            data-type="ul-source-list"
                                             onclick={handleOptionClick}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
@@ -117,36 +112,30 @@
                                             ondragstart={handleDragStart}
                                             ondragend={handleDragEndSource}
                                         >
-                                            <div
-                                                class="
-                                                    slds-media__figure
-                                                    slds-truncate
-                                                "
-                                            >
+                                            <div class="slds-media__figure">
                                                 <c-avatar
                                                     if:true={option.showAvatar}
                                                     fallback-icon-name={option.avatar.fallbackIconName}
-                                                    src={option.avatar.src}
                                                     initials={option.avatar.initials}
-                                                    size={option.avatar.size}
-                                                    variant={option.avatar.variant}
-                                                    primary-text={option.avatar.primaryText}
-                                                    secondary-text={option.avatar.secondaryText}
                                                     presence={option.avatar.presence}
                                                     presence-position={option.avatar.presencePosition}
+                                                    primary-text={option.avatar.primaryText}
+                                                    secondary-text={option.avatar.secondaryText}
+                                                    size={option.avatar.size}
+                                                    src={option.avatar.src}
+                                                    variant={option.avatar.variant}
                                                 ></c-avatar>
                                             </div>
-                                            <template
+                                            <span
                                                 if:false={option.avatar.primaryText}
+                                                class="slds-media__body"
                                             >
-                                                <span class="slds-media__body">
-                                                    <span
-                                                        class="slds-truncate"
-                                                        title={option.label}
-                                                        >{option.label}</span
-                                                    >
+                                                <span
+                                                    class="slds-truncate"
+                                                    title={option.label}
+                                                    >{option.label}
                                                 </span>
-                                            </template>
+                                            </span>
                                         </div>
                                     </li>
                                 </template>
@@ -154,8 +143,8 @@
                         </ul>
                         <div if:true={isLoading} class={loadingSpinnerClass}>
                             <lightning-spinner
-                                size="small"
                                 alternative-text={i18n.loadingText}
+                                size="small"
                                 data-element-id="lightning-spinner"
                             ></lightning-spinner>
                         </div>
@@ -168,27 +157,27 @@
                     "
                 >
                     <lightning-button-icon
-                        class="button"
+                        class="avonni-dual-listbox__button"
+                        alternative-text={addButtonLabel}
+                        disabled={disabled}
                         icon-name={addButtonIconName}
                         size={buttonSize}
-                        variant={buttonVariant}
-                        onclick={handleRightButtonClick}
-                        disabled={moveButtonsDisabled}
                         title={addButtonLabel}
-                        alternative-text={addButtonLabel}
+                        variant={buttonVariant}
                         data-element-id="lightning-button-icon-add"
+                        onclick={handleRightButtonClick}
                     >
                     </lightning-button-icon>
                     <lightning-button-icon
-                        class="button"
+                        class="avonni-dual-listbox__button"
+                        alternative-text={removeButtonLabel}
+                        disabled={disabled}
                         icon-name={removeButtonIconName}
                         size={buttonSize}
-                        variant={buttonVariant}
-                        onclick={handleLeftButtonClick}
-                        disabled={moveButtonsDisabled}
                         title={removeButtonLabel}
-                        alternative-text={removeButtonLabel}
+                        variant={buttonVariant}
                         data-element-id="lightning-button-icon-remove"
+                        onclick={handleLeftButtonClick}
                     >
                     </lightning-button-icon>
                 </div>
@@ -199,8 +188,8 @@
                             avonni-dual-listbox__boxes-label
                         "
                         id="selected-list-label"
-                        >{selectedLabel}</span
-                    >
+                        >{selectedLabel}
+                    </span>
                     <div
                         class={computedListboxSelectedContainerClass}
                         data-element-id="div-selected-list"
@@ -208,14 +197,14 @@
                         ondragleave={handleDragLeaveSelected}
                     >
                         <ul
-                            id="selected-list"
+                            class="slds-listbox slds-listbox_vertical"
                             aria-describedby="keyboard-interacton"
+                            aria-disabled={ariaDisabled}
                             aria-labelledby="selected-list-label"
                             aria-multiselectable="true"
-                            class="slds-listbox slds-listbox_vertical"
+                            id="selected-list"
                             role="listbox"
-                            aria-disabled={ariaDisabled}
-                            data-element-id={selectedListId}
+                            data-element-id="ul-selected-list"
                         >
                             <template
                                 for:each={computedSelectedGroups}
@@ -225,26 +214,21 @@
                                 <div
                                     if:true={group.label}
                                     key={generateKey}
-                                    role="presentation"
                                     class="
                                         slds-listbox__item
-                                        dual-listbox__group-title
+                                        avonni-dual-listbox__group
+                                        avonni-dual-listbox__option_border-bottom
                                     "
+                                    role="presentation"
                                 >
                                     <div
-                                        class="slds-media slds-media_small"
-                                        role="presentation"
+                                        class="
+                                            slds-media slds-media_small
+                                            slds-p-around_x-small
+                                        "
+                                        data-element-id="group-label"
                                     >
-                                        <h3
-                                            class="
-                                                slds-listbox__option-header
-                                                slds-p-around_x-small
-                                                slds-text-color_default
-                                            "
-                                            role="presentation"
-                                        >
-                                            {group.label}
-                                        </h3>
+                                        {group.label}
                                     </div>
                                 </div>
                                 <template
@@ -254,8 +238,8 @@
                                 >
                                     <li
                                         key={option.value}
-                                        role="presentation"
                                         class={computedListItemClass}
+                                        role="presentation"
                                         data-element-id="li-selected"
                                     >
                                         <div
@@ -268,7 +252,7 @@
                                             data-inside-group-index={insideGroupIndex}
                                             data-role="option"
                                             data-value={option.value}
-                                            data-type={selectedListId}
+                                            data-type="ul-selected-list"
                                             onclick={handleOptionClick}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
@@ -277,58 +261,53 @@
                                             ondragend={handleDragEndSelected}
                                             ondragover={handleDragOver}
                                         >
-                                            <div
-                                                class="
-                                                    slds-media__figure
-                                                    slds-truncate
-                                                "
-                                            >
+                                            <div class="slds-media__figure">
                                                 <c-avatar
                                                     if:true={option.showAvatar}
                                                     fallback-icon-name={option.avatar.fallbackIconName}
-                                                    src={option.avatar.src}
                                                     initials={option.avatar.initials}
-                                                    size={option.avatar.size}
-                                                    variant={option.avatar.variant}
+                                                    presence={option.avatar.presence}
+                                                    presence-position={option.avatar.presencePosition}
                                                     primary-text={option.avatar.primaryText}
                                                     secondary-text={option.avatar.secondaryText}
+                                                    size={option.avatar.size}
+                                                    src={option.avatar.src}
+                                                    variant={option.avatar.variant}
                                                 ></c-avatar>
                                             </div>
-                                            <template
+                                            <span
                                                 if:false={option.avatar.primaryText}
+                                                class="slds-media__body"
                                             >
-                                                <span class="slds-media__body">
-                                                    <span
-                                                        class="slds-truncate"
-                                                        title={option.label}
-                                                        >{option.label}</span
-                                                    >
-                                                </span>
-                                            </template>
-                                            <template if:true={option.isLocked}>
                                                 <span
-                                                    class="
-                                                        slds-media__figure
-                                                        slds-media__figure_reverse
-                                                    "
+                                                    class="slds-truncate"
+                                                    title={option.label}
+                                                    >{option.label}</span
                                                 >
-                                                    <lightning-icon
-                                                        icon-name="utility:lock"
-                                                        size="x-small"
-                                                        alternative-text={computedLockAssistiveText}
-                                                    ></lightning-icon>
-                                                </span>
-                                            </template>
+                                            </span>
+                                            <span
+                                                if:true={option.isLocked}
+                                                class="
+                                                    slds-media__figure
+                                                    slds-media__figure_reverse
+                                                "
+                                            >
+                                                <lightning-icon
+                                                    icon-name="utility:lock"
+                                                    size="x-small"
+                                                    alternative-text={computedLockAssistiveText}
+                                                ></lightning-icon>
+                                            </span>
                                         </div>
                                     </li>
                                 </template>
                             </template>
                         </ul>
-                        <template if:true={isSelectedBoxEmpty}>
-                            <span data-element-id="span-selected-placeholder"
-                                >{selectedPlaceholder}</span
-                            >
-                        </template>
+                        <span
+                            if:true={isSelectedBoxEmpty}
+                            data-element-id="span-selected-placeholder"
+                            >{selectedPlaceholder}
+                        </span>
                     </div>
                 </div>
                 <template if:false={disableReordering}>
@@ -339,43 +318,42 @@
                         "
                     >
                         <lightning-button-icon
-                            class="button"
+                            class="avonni-dual-listbox__button"
+                            alternative-text={upButtonLabel}
+                            disabled={upButtonDisabled}
                             icon-name={upButtonIconName}
                             size={buttonSize}
-                            variant={buttonVariant}
-                            onclick={handleUpButtonClick}
-                            disabled={_upButtonDisabled}
                             title={upButtonLabel}
-                            alternative-text={upButtonLabel}
+                            variant={buttonVariant}
                             data-element-id="lightning-button-icon-up"
+                            onclick={handleUpButtonClick}
                         >
                         </lightning-button-icon>
                         <lightning-button-icon
-                            class="button"
+                            class="avonni-dual-listbox__button"
+                            alternative-text={downButtonLabel}
+                            disabled={downButtonDisabled}
                             icon-name={downButtonIconName}
                             size={buttonSize}
-                            variant={buttonVariant}
-                            onclick={handleDownButtonClick}
-                            disabled={_downButtonDisabled}
                             title={downButtonLabel}
-                            alternative-text={downButtonLabel}
+                            variant={buttonVariant}
                             data-element-id="lightning-button-icon-down"
+                            onclick={handleDownButtonClick}
                         >
                         </lightning-button-icon>
                     </div>
                 </template>
             </div>
         </div>
-        <template if:true={errorMessage}>
-            <div
-                id="error-message"
-                class="slds-has-error slds-form-element__help"
-                aria-live="assertive"
-                role="alert"
-                data-element-id="div-alert"
-            >
-                {errorMessage}
-            </div>
-        </template>
+        <div
+            if:true={errorMessage}
+            class="slds-has-error slds-form-element__help"
+            aria-live="assertive"
+            id="error-message"
+            role="alert"
+            data-element-id="div-alert"
+        >
+            {errorMessage}
+        </div>
     </div>
 </template>

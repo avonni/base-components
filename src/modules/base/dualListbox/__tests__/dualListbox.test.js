@@ -26,41 +26,40 @@ describe('DualListbox', () => {
         it('Default attributes', () => {
             expect(element.addButtonIconName).toBe('utility:right');
             expect(element.addButtonLabel).toBeUndefined();
-            expect(element.hideBottomDivider).toBeFalsy();
+            expect(element.allowSearch).toBeFalsy();
             expect(element.buttonSize).toBe('medium');
             expect(element.buttonVariant).toBe('border');
-            expect(element.disableReordering).toBeFalsy();
             expect(element.disabled).toBeFalsy();
+            expect(element.disableReordering).toBeFalsy();
             expect(element.downButtonIconName).toBe('utility:down');
             expect(element.downButtonLabel).toBeUndefined();
             expect(element.draggable).toBeFalsy();
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.fieldLevelHelp).toBeUndefined();
+            expect(element.hideBottomDivider).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
             expect(element.max).toBeUndefined();
-            expect(element.min).toBe(0);
+            expect(element.maxVisibleOptions).toBe(5);
             expect(element.messageWhenRangerOverflow).toBeUndefined();
             expect(element.messageWhenRangerUnderflow).toBeUndefined();
             expect(element.messageWhenValueIsMissing).toBeUndefined();
+            expect(element.min).toBe(0);
             expect(element.name).toBeUndefined();
             expect(element.required).toBeFalsy();
             expect(element.requiredOptions).toMatchObject([]);
-            expect(element.allowSearch).toBeFalsy();
             expect(element.selectedLabel).toBeUndefined();
             expect(element.selectedPlaceholder).toBeUndefined();
-            expect(element.maxVisibleOptions).toBe(5);
+            expect(element.size).toBe('responsive');
             expect(element.sourceLabel).toBeUndefined();
             expect(element.upButtonIconName).toBe('utility:up');
             expect(element.upButtonLabel).toBeUndefined();
             expect(element.validity).toBeUndefined();
             expect(element.value).toMatchObject([]);
             expect(element.variant).toBe('standard');
-            expect(element.size).toBe('responsive');
         });
 
-        // add-button-icon-name & add-button-label
         describe('Add button icon name and label', () => {
             it('Add button icon name and label', () => {
                 element.addButtonIconName = 'utility:add';
@@ -77,7 +76,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // button-size
         describe('Button Size', () => {
             it('xx-small', () => {
                 element.buttonSize = 'xx-small';
@@ -156,7 +154,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // button-variant
         describe('Button Variant', () => {
             it('bare', () => {
                 element.buttonVariant = 'bare';
@@ -249,7 +246,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // disable-reordering
         describe('Disable Reordering', () => {
             it('True', () => {
                 element.disableReordering = true;
@@ -269,7 +265,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // disabled
         describe('Disabled', () => {
             it('True', () => {
                 element.disabled = true;
@@ -302,7 +297,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // down-button-icon-name & down-button-label
         describe('Down button icon name and label', () => {
             it('Down button icon name and label', () => {
                 element.downButtonIconName = 'utility:apex';
@@ -319,7 +313,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // draggagble
         describe('Draggable', () => {
             it('True', () => {
                 element.draggable = true;
@@ -351,7 +344,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // field-level-help
         describe('Field level help', () => {
             it('Field level help', () => {
                 element.fieldLevelHelp = 'A string help';
@@ -365,7 +357,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // hide bottom divider
         describe('Hide Bottom Divider', () => {
             it('Hidden', () => {
                 element.hideBottomDivider = true;
@@ -383,7 +374,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // isLoading
         describe('Is loading', () => {
             it('True', () => {
                 element.isLoading = true;
@@ -397,7 +387,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // label
         describe('Label', () => {
             it('Label', () => {
                 element.label = 'A string label';
@@ -446,7 +435,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // message-when-range-overflow and max
         describe('Message when range overflow and max', () => {
             it('Message is displayed when value is greater than max', () => {
                 element.max = 2;
@@ -477,7 +465,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // message-when-range-underflow and min
         describe('Message when range underflow and min', () => {
             it('Message is displayed when value is lesser than min', () => {
                 element.messageWhenRangeUnderflow = 'Minimum Capacity!';
@@ -508,7 +495,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // message-when-value-missing
         describe('Message when value missing', () => {
             it('Message is displayed when it is required and value is empty', () => {
                 element.required = true;
@@ -539,7 +525,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // options
         describe('Options', () => {
             it('Simple options', () => {
                 const options = [
@@ -616,7 +601,7 @@ describe('DualListbox', () => {
 
                 return Promise.resolve().then(() => {
                     const optionValue = element.shadowRoot.querySelectorAll(
-                        '.slds-listbox__option-header'
+                        '[data-element-id="group-label"]'
                     );
                     expect(optionValue[0].textContent).toBe('Odd');
                     expect(optionValue[1].textContent).toBe('Even');
@@ -624,7 +609,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // remove-button-icon-name & remove-button-label
         describe('Remove button icon name and label', () => {
             it('Remove button icon name and label', () => {
                 element.removeButtonIconName = 'utility:apex';
@@ -641,7 +625,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // required
         describe('Required', () => {
             it('True', () => {
                 element.required = true;
@@ -654,7 +637,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // required options
         describe('Required options', () => {
             it('Required options are always selected', () => {
                 return Promise.resolve()
@@ -670,7 +652,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // search
         describe('Search', () => {
             it('Allow search', () => {
                 element.allowSearch = true;
@@ -729,7 +710,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // selected label and source label
         describe('Selected and source labels', () => {
             it('Selected and source labels', () => {
                 element.sourceLabel = 'A string source label';
@@ -747,7 +727,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // selected placeholder
         describe('Selected placeholder', () => {
             it('Selected placeholder', () => {
                 element.value = [];
@@ -764,95 +743,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // up-button-icon-name & up-button-label
-        describe('Up button icon name and label', () => {
-            it('Icon name and label are set on button icon', () => {
-                element.upButtonIconName = 'utility:apex';
-                element.upButtonLabel = 'up';
-
-                return Promise.resolve().then(() => {
-                    const lightningButtonIcon =
-                        element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-icon-up"]'
-                        );
-                    expect(lightningButtonIcon.iconName).toBe('utility:apex');
-                    expect(lightningButtonIcon.title).toBe('up');
-                });
-            });
-        });
-
-        // value
-        describe('Value', () => {
-            it('Array', () => {
-                element.value = ['1', '2', '3'];
-
-                return Promise.resolve().then(() => {
-                    const source = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-source-list"]'
-                    );
-                    const selected = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-selected-list"]'
-                    );
-                    expect(
-                        source.querySelectorAll('[data-element-id="li-source"]')
-                    ).toHaveLength(7);
-                    expect(
-                        selected.querySelectorAll(
-                            '[data-element-id="li-selected"]'
-                        )
-                    ).toHaveLength(3);
-                });
-            });
-
-            it('String', () => {
-                element.value = '1';
-
-                return Promise.resolve().then(() => {
-                    const source = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-source-list"]'
-                    );
-                    const selected = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-selected-list"]'
-                    );
-                    expect(
-                        source.querySelectorAll('[data-element-id="li-source"]')
-                    ).toHaveLength(9);
-                    expect(
-                        selected.querySelectorAll(
-                            '[data-element-id="li-selected"]'
-                        )
-                    ).toHaveLength(1);
-                });
-            });
-        });
-
-        // variants
-        describe('Variants', () => {
-            it('Label hidden', () => {
-                element.label = 'This is a label-hidden';
-                element.variant = 'label-hidden';
-
-                return Promise.resolve().then(() => {
-                    const label = element.shadowRoot.querySelector(
-                        '.slds-assistive-text'
-                    );
-                    expect(label.textContent).toBe('This is a label-hidden');
-                });
-            });
-
-            it('Label stacked', () => {
-                element.variant = 'label-stacked';
-
-                return Promise.resolve().then(() => {
-                    const div = element.shadowRoot.querySelector(
-                        '.slds-form-element_stacked'
-                    );
-                    expect(div).toBeTruthy();
-                });
-            });
-        });
-
-        // size
         describe('Size', () => {
             it('small', () => {
                 element.size = 'small';
@@ -987,6 +877,91 @@ describe('DualListbox', () => {
                 });
             });
         });
+
+        describe('Up button icon name and label', () => {
+            it('Icon name and label are set on button icon', () => {
+                element.upButtonIconName = 'utility:apex';
+                element.upButtonLabel = 'up';
+
+                return Promise.resolve().then(() => {
+                    const lightningButtonIcon =
+                        element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-icon-up"]'
+                        );
+                    expect(lightningButtonIcon.iconName).toBe('utility:apex');
+                    expect(lightningButtonIcon.title).toBe('up');
+                });
+            });
+        });
+
+        describe('Value', () => {
+            it('Array', () => {
+                element.value = ['1', '2', '3'];
+
+                return Promise.resolve().then(() => {
+                    const source = element.shadowRoot.querySelector(
+                        '[data-element-id="ul-source-list"]'
+                    );
+                    const selected = element.shadowRoot.querySelector(
+                        '[data-element-id="ul-selected-list"]'
+                    );
+                    expect(
+                        source.querySelectorAll('[data-element-id="li-source"]')
+                    ).toHaveLength(7);
+                    expect(
+                        selected.querySelectorAll(
+                            '[data-element-id="li-selected"]'
+                        )
+                    ).toHaveLength(3);
+                });
+            });
+
+            it('String', () => {
+                element.value = '1';
+
+                return Promise.resolve().then(() => {
+                    const source = element.shadowRoot.querySelector(
+                        '[data-element-id="ul-source-list"]'
+                    );
+                    const selected = element.shadowRoot.querySelector(
+                        '[data-element-id="ul-selected-list"]'
+                    );
+                    expect(
+                        source.querySelectorAll('[data-element-id="li-source"]')
+                    ).toHaveLength(9);
+                    expect(
+                        selected.querySelectorAll(
+                            '[data-element-id="li-selected"]'
+                        )
+                    ).toHaveLength(1);
+                });
+            });
+        });
+
+        describe('Variants', () => {
+            it('Label hidden', () => {
+                element.label = 'This is a label-hidden';
+                element.variant = 'label-hidden';
+
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '.slds-assistive-text'
+                    );
+                    expect(label.textContent).toBe('This is a label-hidden');
+                });
+            });
+
+            it('Label stacked', () => {
+                element.variant = 'label-stacked';
+
+                return Promise.resolve().then(() => {
+                    const div = element.shadowRoot.querySelector(
+                        '.slds-form-element_stacked'
+                    );
+                    expect(div).toBeTruthy();
+                });
+            });
+        });
     });
 
     /*
@@ -996,7 +971,6 @@ describe('DualListbox', () => {
      */
 
     describe('User actions', () => {
-        // testing selection
         it('selection', () => {
             return Promise.resolve().then(() => {
                 const options = element.shadowRoot.querySelectorAll(
@@ -1010,7 +984,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // data-index
         it('data-index sourceBox', () => {
             element.options = OptionsWithGroups;
 
@@ -1054,7 +1027,6 @@ describe('DualListbox', () => {
      */
 
     describe('Events', () => {
-        // change
         describe('change', () => {
             it('Move an option down', () => {
                 element.value = ['1', '2', '3'];
@@ -1270,7 +1242,6 @@ describe('DualListbox', () => {
             });
         });
 
-        // optionclick
         describe('optionclick', () => {
             it('Triggered using the mouse', () => {
                 const handler = jest.fn();
@@ -1321,50 +1292,53 @@ describe('DualListbox', () => {
             });
         });
 
-        // search
-        it('search', () => {
-            const options = [
-                { label: 'Adam Mangrove', value: 'AM' },
-                { label: 'Adam Mantium', value: 'AMa' },
-                { label: 'Laurie Mantle', value: 'LM' }
-            ];
-            element.options = options;
-            element.allowSearch = true;
+        describe('search', () => {
+            it('search', () => {
+                const options = [
+                    { label: 'Adam Mangrove', value: 'AM' },
+                    { label: 'Adam Mantium', value: 'AMa' },
+                    { label: 'Laurie Mantle', value: 'LM' }
+                ];
+                element.options = options;
+                element.allowSearch = true;
 
-            const handler = jest.fn();
-            element.addEventListener('search', handler);
+                const handler = jest.fn();
+                element.addEventListener('search', handler);
 
-            return Promise.resolve()
-                .then(() => {
-                    const input = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input"]'
-                    );
-                    const sourceOptions = element.shadowRoot.querySelectorAll(
-                        '[data-type="ul-source-list"]'
-                    );
-                    expect(sourceOptions).toHaveLength(options.length);
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input"]'
+                        );
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(options.length);
 
-                    input.dispatchEvent(
-                        new CustomEvent('change', {
-                            detail: { value: 'dam' }
-                        })
-                    );
+                        input.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: { value: 'dam' }
+                            })
+                        );
 
-                    expect(handler).toHaveBeenCalled();
-                    const call = handler.mock.calls[0][0];
-                    expect(call.detail.value).toBe('dam');
-                    expect(call.bubbles).toBeFalsy();
-                    expect(call.composed).toBeFalsy();
-                    expect(call.cancelable).toBeFalsy();
-                })
-                .then(() => {
-                    const sourceOptions = element.shadowRoot.querySelectorAll(
-                        '[data-type="ul-source-list"]'
-                    );
-                    expect(sourceOptions).toHaveLength(2);
-                    expect(sourceOptions[0].dataset.value).toBe('AM');
-                    expect(sourceOptions[1].dataset.value).toBe('AMa');
-                });
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.value).toBe('dam');
+                        expect(call.bubbles).toBeFalsy();
+                        expect(call.composed).toBeFalsy();
+                        expect(call.cancelable).toBeFalsy();
+                    })
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(2);
+                        expect(sourceOptions[0].dataset.value).toBe('AM');
+                        expect(sourceOptions[1].dataset.value).toBe('AMa');
+                    });
+            });
         });
     });
 });
