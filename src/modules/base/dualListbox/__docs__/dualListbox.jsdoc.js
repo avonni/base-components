@@ -78,6 +78,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-dual-listbox-boxes-color-border
  * @default #747474
  * @type color

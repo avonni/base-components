@@ -96,6 +96,10 @@
 
 .avonni-dual-listbox__boxes {
     padding: 0;
+    background-color: var(
+        --avonni-dual-listbox-boxes-color-background,
+        #ffffff
+    );
     border-width: var(--avonni-dual-listbox-boxes-sizing-border, 1px);
     border-style: var(--avonni-dual-listbox-boxes-styling-border, solid);
     border-color: var(--avonni-dual-listbox-boxes-color-border, #747474);
