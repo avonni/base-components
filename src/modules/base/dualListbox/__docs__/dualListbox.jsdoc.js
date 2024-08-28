@@ -24,6 +24,107 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-color-border
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-group-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-group-label-text-color
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-group-label-font-size
+ * @default 0.875rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-group-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-group-label-font-weight
+ * @default 700
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-font-weight
+ * @default 700
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-dual-listbox-option-color-background
  * @default #ffffff
  * @type color
@@ -75,76 +176,4 @@
  * @name --avonni-dual-listbox-option-styling-border
  * @default solid
  * @type styling
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-color-background
- * @default #ffffff
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-color-border
- * @default #747474
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-sizing-border
- * @default 1px
- * @type sizing
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-styling-border
- * @default solid
- * @type styling
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-label-text-color
- * @default #3e3e3c
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-label-font-size
- * @default 0.75rem
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-label-font-style
- * @default normal
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-boxes-label-font-weight
- * @default 400
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-header-text-color
- * @default #3e3e3c
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-header-font-size
- * @default 0.75rem
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-header-font-style
- * @default normal
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dual-listbox-header-font-weight
- * @default 700
- * @type font
  */
