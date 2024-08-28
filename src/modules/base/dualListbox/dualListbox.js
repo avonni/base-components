@@ -119,8 +119,7 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      * @public
      */
-    @api
-    messageWhenValueMissing;
+    @api messageWhenValueMissing;
 
     /**
      * Specifies the name of an input element.
@@ -815,7 +814,7 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      */
     get computedOuterClass() {
-        return this._variant === 'label-stacked'
+        return this.variant === 'label-stacked'
             ? 'slds-form-element_stacked'
             : '';
     }
@@ -954,14 +953,11 @@ export default class DualListbox extends LightningElement {
 
         let sourceHeight = 0;
         if (this.allowSearch && this._computedSourceList.length === 0) {
-            sourceHeight = this._maxVisibleOptions * 41;
+            sourceHeight = this.maxVisibleOptions * 41;
         } else {
-            sourceHeight = getListHeight(
-                sourceOptions,
-                this._maxVisibleOptions
-            );
+            sourceHeight = getListHeight(sourceOptions, this.maxVisibleOptions);
             const sourceBoxNotFull =
-                this._computedSourceList.length < this._maxVisibleOptions;
+                this._computedSourceList.length < this.maxVisibleOptions;
 
             if (sourceBoxNotFull) {
                 const firstOption = sourceOptions[0];
@@ -969,7 +965,7 @@ export default class DualListbox extends LightningElement {
                     ? firstOption.offsetHeight
                     : BASE_OPTION_HEIGHT;
                 const numberOfMissingOptions =
-                    this._maxVisibleOptions - this._computedSourceList.length;
+                    this.maxVisibleOptions - this._computedSourceList.length;
                 sourceHeight += baseOptionHeight * numberOfMissingOptions;
             }
         }
@@ -1715,7 +1711,7 @@ export default class DualListbox extends LightningElement {
                 this.handleDragLeft();
             }
         } else if (!this._dropItSource) {
-            if (!this._disableReordering) {
+            if (!this.disableReordering) {
                 const values = this._computedSelectedList.map(
                     (option) => option.value
                 );
