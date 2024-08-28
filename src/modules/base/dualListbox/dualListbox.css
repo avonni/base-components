@@ -37,7 +37,7 @@
     );
 }
 
-.avonni-dual-listbox__buttons_centered .button {
+.avonni-dual-listbox__buttons_centered .avonni-dual-listbox__button {
     margin: var(--lwc-spacingSmall, 0.75rem) 0;
 }
 
