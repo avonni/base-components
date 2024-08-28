@@ -601,7 +601,7 @@ describe('DualListbox', () => {
 
                 return Promise.resolve().then(() => {
                     const optionValue = element.shadowRoot.querySelectorAll(
-                        '.slds-listbox__option-header'
+                        '[data-element-id="group-label"]'
                     );
                     expect(optionValue[0].textContent).toBe('Odd');
                     expect(optionValue[1].textContent).toBe('Even');
