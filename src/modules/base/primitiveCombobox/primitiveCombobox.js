@@ -153,6 +153,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _hideOptionsUntilSearch = false;
     _isLoading = false;
     _isMultiSelect = false;
+    _keepOpenOnSelect = false;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _multiLevelGroups = false;
@@ -440,6 +441,21 @@ export default class PrimitiveCombobox extends LightningElement {
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
         if (this._connected) this.initValue();
+    }
+
+    /**
+     * If present, the dropdown menu will remain open after an option is selected.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get keepOpenOnSelect() {
+        return this._keepOpenOnSelect;
+    }
+    set keepOpenOnSelect(value) {
+        this._keepOpenOnSelect = normalizeBoolean(value);
     }
 
     /**
@@ -1752,10 +1768,10 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Updates the visibility of the dropdown menu. If multi-select, prevents the dropdown menu from closing.
+     * Updates the visibility of the dropdown menu.
      */
     updateDropdownMenuVisibility() {
-        if (this.isMultiSelect) {
+        if (this.keepOpenOnSelect) {
             this.computedGroups = [...this.computedGroups];
         } else {
             this.close();

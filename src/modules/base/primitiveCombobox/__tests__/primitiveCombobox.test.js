@@ -51,6 +51,7 @@ describe('Primitive Combobox', () => {
             expect(element.hideOptionsUntilSearch).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.isMultiSelect).toBeFalsy();
+            expect(element.keepOpenOnSelect).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
             expect(element.loadingStateAlternativeText).toBe('Loading');
@@ -828,6 +829,84 @@ describe('Primitive Combobox', () => {
                     );
                     expect(spinner.alternativeText).toBe('An alternative help');
                 });
+            });
+        });
+
+        describe('keepOpenOnSelect', () => {
+            it('false', () => {
+                element.keepOpenOnSelect = false;
+                element.options = options;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.open();
+                    })
+                    .then(() => {
+                        const comboboxGroup = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-group"]'
+                        );
+                        jest.spyOn(
+                            comboboxGroup,
+                            'optionElements',
+                            'get'
+                        ).mockReturnValue([
+                            {
+                                dataset: {
+                                    ariaDisabled: 'false',
+                                    value: options[0].value
+                                }
+                            }
+                        ]);
+                        comboboxGroup.dispatchEvent(
+                            new CustomEvent('privateoptionclick', {
+                                detail: { value: options[0].value }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const comboboxGroup = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-group"]'
+                        );
+                        expect(comboboxGroup).toBeFalsy();
+                    });
+            });
+
+            it('true', () => {
+                element.keepOpenOnSelect = true;
+                element.options = options;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.open();
+                    })
+                    .then(() => {
+                        const comboboxGroup = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-group"]'
+                        );
+                        jest.spyOn(
+                            comboboxGroup,
+                            'optionElements',
+                            'get'
+                        ).mockReturnValue([
+                            {
+                                dataset: {
+                                    ariaDisabled: 'false',
+                                    value: options[0].value
+                                }
+                            }
+                        ]);
+                        comboboxGroup.dispatchEvent(
+                            new CustomEvent('privateoptionclick', {
+                                detail: { value: options[0].value }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const comboboxGroup = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-group"]'
+                        );
+                        expect(comboboxGroup).toBeTruthy();
+                    });
             });
         });
 
