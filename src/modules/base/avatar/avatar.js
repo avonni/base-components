@@ -516,15 +516,12 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * If true, the avatar is displayed as figure in the media object.
+     * If true, the avatar is not displayed in the media object.
      *
      * @type {boolean}
      */
-    get displayAvatarLeft() {
-        return (
-            this.showAvatar &&
-            (this.textPosition !== 'left' || this.hideAvatarDetails)
-        );
+    get displayAvatarNoDetails() {
+        return this.showAvatar && this.hideAvatarDetails;
     }
 
     /**
@@ -533,11 +530,7 @@ export default class Avatar extends LightningElement {
      * @type {boolean}
      */
     get displayAvatarRight() {
-        return (
-            this.showAvatar &&
-            this.textPosition === 'left' &&
-            !this.hideAvatarDetails
-        );
+        return this.textPosition === 'left';
     }
 
     /**
