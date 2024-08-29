@@ -533,7 +533,11 @@ export default class Avatar extends LightningElement {
      * @type {boolean}
      */
     get displayAvatarRight() {
-        return this.showAvatar && this.textPosition === 'left';
+        return (
+            this.showAvatar &&
+            this.textPosition === 'left' &&
+            !this.hideAvatarDetails
+        );
     }
 
     /**
