@@ -37,7 +37,6 @@ const PRESENCE = {
     valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
     default: null
 };
-
 const TEXT_POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: 'right'
@@ -144,16 +143,9 @@ export default class Avatar extends LightningElement {
     _status = STATUS.default;
     _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
-    _variant = AVATAR_VARIANTS.default;
     _tags = [];
     _textPosition = TEXT_POSITIONS.default;
-
-    mediaObjectClass;
-
-    connectedCallback() {
-        this._updateClassList();
-        this.template.addEventListener('actionclick', this.handleActionClick);
-    }
+    _variant = AVATAR_VARIANTS.default;
 
     /*
      * ------------------------------------------------------------
@@ -171,7 +163,6 @@ export default class Avatar extends LightningElement {
     get actions() {
         return this._actions;
     }
-
     set actions(value) {
         this._actions = normalizeArray(value);
     }
@@ -187,7 +178,6 @@ export default class Avatar extends LightningElement {
     get actionPosition() {
         return this._actionPosition;
     }
-
     set actionPosition(value) {
         this._actionPosition = normalizeString(value, {
             fallbackValue: POSITIONS.actionDefault,
@@ -207,7 +197,6 @@ export default class Avatar extends LightningElement {
     get alternativeText() {
         return this._alternativeText;
     }
-
     set alternativeText(value) {
         this._alternativeText =
             typeof value === 'string' ? value.trim() : DEFAULT_ALTERNATIVE_TEXT;
@@ -224,7 +213,6 @@ export default class Avatar extends LightningElement {
     get entityPosition() {
         return this._entityPosition;
     }
-
     set entityPosition(value) {
         this._entityPosition = normalizeString(value, {
             fallbackValue: POSITIONS.entityDefault,
@@ -242,7 +230,6 @@ export default class Avatar extends LightningElement {
     get entitySrc() {
         return this._entitySrc;
     }
-
     set entitySrc(value) {
         this._entitySrc = (typeof value === 'string' && value.trim()) || '';
     }
@@ -258,7 +245,6 @@ export default class Avatar extends LightningElement {
     get entityTitle() {
         return this._entityTitle;
     }
-
     set entityTitle(value) {
         this._entityTitle =
             (typeof value === 'string' && value.trim()) || DEFAULT_ENTITY_TITLE;
@@ -275,7 +261,6 @@ export default class Avatar extends LightningElement {
     get entityVariant() {
         return this._entityVariant;
     }
-
     set entityVariant(value) {
         this._entityVariant = normalizeString(value, {
             fallbackValue: AVATAR_VARIANTS.default,
@@ -294,7 +279,6 @@ export default class Avatar extends LightningElement {
     get hideAvatarDetails() {
         return this._hideAvatarDetails;
     }
-
     set hideAvatarDetails(value) {
         this._hideAvatarDetails = normalizeBoolean(value);
     }
@@ -309,7 +293,6 @@ export default class Avatar extends LightningElement {
     get presence() {
         return this._presence;
     }
-
     set presence(value) {
         this._presence = normalizeString(value, {
             fallbackValue: PRESENCE.default,
@@ -328,7 +311,6 @@ export default class Avatar extends LightningElement {
     get presencePosition() {
         return this._presencePosition;
     }
-
     set presencePosition(value) {
         this._presencePosition = normalizeString(value, {
             fallbackValue: POSITIONS.presenceDefault,
@@ -347,7 +329,6 @@ export default class Avatar extends LightningElement {
     get presenceTitle() {
         return this._presenceTitle;
     }
-
     set presenceTitle(value) {
         this._presenceTitle =
             typeof value === 'string' ? value.trim() : DEFAULT_PRESENCE_TITLE;
@@ -364,7 +345,6 @@ export default class Avatar extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(value) {
         this._size = normalizeString(value, {
             fallbackValue: AVATAR_SIZES.default,
@@ -383,7 +363,6 @@ export default class Avatar extends LightningElement {
     get src() {
         return this._src;
     }
-
     set src(value) {
         this._src = (typeof value === 'string' && value.trim()) || '';
     }
@@ -398,7 +377,6 @@ export default class Avatar extends LightningElement {
     get status() {
         return this._status;
     }
-
     set status(value) {
         this._status = normalizeString(value, {
             fallbackValue: STATUS.default,
@@ -417,7 +395,6 @@ export default class Avatar extends LightningElement {
     get statusPosition() {
         return this._statusPosition;
     }
-
     set statusPosition(value) {
         this._statusPosition = normalizeString(value, {
             fallbackValue: POSITIONS.statusDefault,
@@ -436,7 +413,6 @@ export default class Avatar extends LightningElement {
     get statusTitle() {
         return this._statusTitle;
     }
-
     set statusTitle(value) {
         this._statusTitle =
             typeof value === 'string' ? value.trim() : DEFAULT_STATUS_TITLE;
@@ -467,13 +443,11 @@ export default class Avatar extends LightningElement {
     get textPosition() {
         return this._textPosition;
     }
-
     set textPosition(position) {
         this._textPosition = normalizeString(position, {
             fallbackValue: TEXT_POSITIONS.default,
             validValues: TEXT_POSITIONS.valid
         });
-        this._updateClassList();
     }
 
     /**
@@ -487,7 +461,6 @@ export default class Avatar extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: AVATAR_VARIANTS.default,
@@ -512,8 +485,7 @@ export default class Avatar extends LightningElement {
         const icon = this.template.querySelector(
             '[data-element-id^="avonni-primitive-avatar"]'
         );
-        if (icon === null) return '';
-        return icon.getBackgroundColor();
+        return icon ? icon.getBackgroundColor() : '';
     }
 
     /*
@@ -523,12 +495,42 @@ export default class Avatar extends LightningElement {
      */
 
     /**
+     * Media object class based on text position.
+     *
+     * @type {string}
+     */
+    get computedMediaObjectClass() {
+        return classSet('').add({
+            'slds-text-align_right': this.textPosition === 'left',
+            'slds-text-align_center': this.textPosition === 'center'
+        });
+    }
+
+    /**
      * Text position centered.
      *
      * @type {boolean}
      */
     get computedMediaObjectInline() {
         return this.textPosition === 'center';
+    }
+
+    /**
+     * If true, the avatar is not displayed in the media object.
+     *
+     * @type {boolean}
+     */
+    get displayAvatarNoDetails() {
+        return this.showAvatar && this.hideAvatarDetails;
+    }
+
+    /**
+     * If true, the avatar is displayed as figure inverse in the media object.
+     *
+     * @type {boolean}
+     */
+    get displayAvatarRight() {
+        return this.textPosition === 'left';
     }
 
     /**
@@ -541,7 +543,7 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Chip container show.
+     * If true, the chip container is displayed.
      *
      * @type {boolean}
      */
@@ -555,42 +557,24 @@ export default class Avatar extends LightningElement {
      * @type {boolean}
      */
     get showTertiaryText() {
-        return this.size === 'x-large' || this.size === 'xx-large';
-    }
-
-    /**
-     * Text position left.
-     *
-     * @type {boolean}
-     */
-    get textPositionLeft() {
-        return this.textPosition === 'left';
+        return (
+            (this.size === 'x-large' || this.size === 'xx-large') &&
+            this.tertiaryText
+        );
     }
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Media object layout based on text position.
-     *
-     * @type {string}
-     */
-    _updateClassList() {
-        this.mediaObjectClass = classSet('').add({
-            'slds-text-align_right': this.textPosition === 'left',
-            'slds-text-align_center': this.textPosition === 'center'
-        });
-    }
 
     /**
      * Action clicked event handler.
      *
      * @param {event}
      */
-    handleActionClick = (event) => {
+    handleActionClick(event) {
         /**
          * The event fired when a user clicks on an action.
          *
@@ -608,5 +592,5 @@ export default class Avatar extends LightningElement {
                 }
             })
         );
-    };
+    }
 }

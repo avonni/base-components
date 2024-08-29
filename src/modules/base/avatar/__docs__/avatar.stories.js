@@ -141,7 +141,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'Hide primary, secondary and tertiary text.',
+            description: 'Hide primary, secondary, tertiary text and tags',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -209,6 +209,17 @@ export default {
             },
             description:
                 'Primary text to display, usually the name of the person.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Details'
+            }
+        },
+        primaryTextUrl: {
+            name: 'primary-text-url',
+            control: {
+                type: 'text'
+            },
+            description: 'The URL for the primary text.',
             table: {
                 type: { summary: 'string' },
                 category: 'Details'
