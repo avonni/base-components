@@ -35,6 +35,7 @@ describe('Combobox', () => {
             expect(element.hideSelectedOptions).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.isMultiSelect).toBeFalsy();
+            expect(element.keepOpenOnSelect).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
             expect(element.loadingStateAlternativeText).toBe('Loading');
@@ -313,6 +314,19 @@ describe('Combobox', () => {
                         '[data-element-id="avonni-primitive-combobox-main"]'
                     );
                     expect(combobox.isMultiSelect).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Keep Open On Select', () => {
+            it('Passed to the component', () => {
+                element.keepOpenOnSelect = true;
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.keepOpenOnSelect).toBeTruthy();
                 });
             });
         });
