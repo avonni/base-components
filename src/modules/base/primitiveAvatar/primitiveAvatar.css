@@ -286,7 +286,7 @@
 .avonni-avatar__actions {
     position: absolute;
     font-size: 10px; /* Fix for experience actions positioning */
-    --sds-c-button-radius-border: var(
+    --avonni-button-icon-radius-border: var(
         --avonni-avatar-action-button-radius-border,
         30px
     );
@@ -294,50 +294,60 @@
         --avonni-avatar-action-button-radius-border,
         30px
     );
-    --sds-c-button-spacing-block-end: var(
-        --avonni-avatar-action-button-spacing-block-end,
-        2px
+    --avonni-button-icon-border-filled-color-background: var(
+        --avonni-avatar-action-button-color-background
     );
-}
-
-.avonni-avatar-action-button {
-    background-color: var(
-        --avonni-avatar-action-button-color-background,
-        #ffffff
+    --avonni-button-menu-button-border-filled-color-background: var(
+        --avonni-avatar-action-button-color-background
     );
-}
-
-.avonni-avatar-action-button-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-avatar-action-button-color-foreground,
-        #706e6b
+    --avonni-button-icon-border-filled-color-border: var(
+        --avonni-avatar-action-button-color-border
     );
-    width: inherit;
-    display: flex;
-}
-
-.avonni-avatar_medium .avonni-avatar-action-button {
-    width: 6px;
-    height: 6px;
-    padding: 5px;
-}
-
-.avonni-avatar_large .avonni-avatar-action-button {
-    width: 8px;
-    height: 8px;
-    padding: 7px;
-}
-
-.avonni-avatar_x-large .avonni-avatar-action-button {
-    width: 10px;
-    height: 10px;
-    padding: 8px;
-}
-
-.avonni-avatar_xx-large .avonni-avatar-action-button {
-    width: 12px;
-    height: 12px;
-    padding: 10px;
+    --avonni-button-menu-button-border-filled-color-border: var(
+        --avonni-avatar-action-button-color-border
+    );
+    --avonni-button-icon-border-filled-text-color: var(
+        --avonni-avatar-action-button-color-foreground
+    );
+    --avonni-button-menu-button-border-filled-text-color: var(
+        --avonni-avatar-action-button-color-foreground
+    );
+    --avonni-button-icon-border-filled-color-background-hover: var(
+        --avonni-avatar-action-button-color-background
+    );
+    --avonni-button-menu-button-border-filled-color-background-hover: var(
+        --avonni-avatar-action-button-color-background
+    );
+    --avonni-button-icon-border-filled-color-border-hover: var(
+        --avonni-avatar-action-button-color-border
+    );
+    --avonni-button-menu-button-border-filled-color-border-hover: var(
+        --avonni-avatar-action-button-color-border
+    );
+    --avonni-button-icon-border-filled-text-color-hover: var(
+        --avonni-avatar-action-button-color-foreground
+    );
+    --avonni-button-menu-button-border-filled-text-color-hover: var(
+        --avonni-avatar-action-button-color-foreground
+    );
+    --avonni-button-icon-border-filled-color-background-active: var(
+        --avonni-avatar-action-button-color-background
+    );
+    --avonni-button-menu-button-border-filled-color-background-active: var(
+        --avonni-avatar-action-button-color-background
+    );
+    --avonni-button-icon-border-filled-color-border-active: var(
+        --avonni-avatar-action-button-color-border
+    );
+    --avonni-button-menu-button-border-filled-color-border-active: var(
+        --avonni-avatar-action-button-color-border
+    );
+    --avonni-button-icon-border-filled-text-color-active: var(
+        --avonni-avatar-action-button-color-foreground
+    );
+    --avonni-button-menu-button-border-filled-text-color-active: var(
+        --avonni-avatar-action-button-color-foreground
+    );
 }
 
 /**
@@ -455,14 +465,14 @@
 }
 
 .avonni-avatar_xx-small .avonni-avatar__entity,
-.avonni-avatar_xx-small .avonni-avatar-action-button {
+.avonni-avatar_xx-small .avonni-avatar__action-button {
     width: 8px;
     height: 8px;
     font-size: 0.1rem;
 }
 
 .avonni-avatar_x-small .avonni-avatar__entity,
-.avonni-avatar_x-small .avonni-avatar-action-button {
+.avonni-avatar_x-small .avonni-avatar__action-button {
     width: 10px;
     height: 10px;
     font-size: 0.1rem;
@@ -519,9 +529,6 @@
     object-fit: var(--avonni-avatar-image-object-fit, cover);
 }
 
-/** 
-* fallback icon
-*/
 .avonni-avatar__icon {
     --sds-c-icon-color-background: var(
         --avonni-avatar-fallback-icon-color-background

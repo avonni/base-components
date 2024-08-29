@@ -78,8 +78,8 @@ export default class PrimitiveAvatar extends LightningElement {
         this._updateClassList();
 
         if (this.status) this._computeStatus();
-        if (this.presence) this._computePresenceClasses();
-        if (this.showEntity) this._computeEntityClasses();
+        if (this.presence) this._computePresenceClass();
+        if (this.showEntity) this._computeEntityClass();
     }
 
     /*
@@ -130,7 +130,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
     set entityIconName(value) {
         this._entityIconName = value;
-        this._computeEntityClasses();
+        this._computeEntityClass();
     }
 
     @api
@@ -142,7 +142,7 @@ export default class PrimitiveAvatar extends LightningElement {
             fallbackValue: POSITIONS.entityDefault,
             validValues: POSITIONS.valid
         });
-        this._computeEntityClasses();
+        this._computeEntityClass();
     }
 
     @api
@@ -171,7 +171,7 @@ export default class PrimitiveAvatar extends LightningElement {
             fallbackValue: AVATAR_VARIANTS.default,
             validValues: AVATAR_VARIANTS.valid
         });
-        this._computeEntityClasses();
+        this._computeEntityClass();
     }
 
     @api
@@ -201,7 +201,7 @@ export default class PrimitiveAvatar extends LightningElement {
             fallbackValue: PRESENCE.default,
             validValues: PRESENCE.valid
         });
-        this._computePresenceClasses();
+        this._computePresenceClass();
     }
 
     @api
@@ -213,7 +213,7 @@ export default class PrimitiveAvatar extends LightningElement {
             fallbackValue: POSITIONS.presenceDefault,
             validValues: POSITIONS.valid
         });
-        this._computePresenceClasses();
+        this._computePresenceClass();
     }
 
     @api
@@ -319,7 +319,7 @@ export default class PrimitiveAvatar extends LightningElement {
         return this.actions.length > 1;
     }
 
-    get actionMenuSize() {
+    get computedActionMenuSize() {
         switch (this.size) {
             case 'x-large':
                 return 'x-small';
@@ -339,10 +339,9 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     get computedActionMenuIcon() {
-        if (this.actions.length === 1 && this.actions[0].iconName) {
-            return this.actions[0].iconName;
-        }
-        return this.actionMenuIcon;
+        return this.actions.length === 1 && this.actions[0].iconName
+            ? this.actions[0].iconName
+            : this.actionMenuIcon;
     }
 
     get computedEntityInitialsClass() {
@@ -370,7 +369,7 @@ export default class PrimitiveAvatar extends LightningElement {
         const { size, actions } = this;
         const isSmallSize =
             size === 'small' || size === 'x-small' || size === 'xx-small';
-        const hasActions = Array.isArray(actions) && actions.length > 0;
+        const hasActions = Array.isArray(actions) && actions.length;
 
         return !isSmallSize && hasActions;
     }
@@ -401,7 +400,7 @@ export default class PrimitiveAvatar extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    _computeEntityClasses() {
+    _computeEntityClass() {
         const { entityVariant, entityPosition, entityIconName } = this;
 
         const iconFullName =
@@ -420,7 +419,7 @@ export default class PrimitiveAvatar extends LightningElement {
             });
     }
 
-    _computePresenceClasses() {
+    _computePresenceClass() {
         const { presence, presencePosition } = this;
 
         this.computedPresenceClass = classSet('avonni-avatar__presence')
@@ -434,28 +433,27 @@ export default class PrimitiveAvatar extends LightningElement {
             .add(`avonni-avatar__status_${status}`)
             .add(`avonni-avatar_${statusPosition}`);
 
-        let iconName;
-        switch (status) {
-            case 'approved':
-                iconName = 'utility:check';
-                break;
-            case 'locked':
-                iconName = 'utility:lock';
-                break;
-            case 'declined':
-                iconName = 'utility:close';
-                break;
-            default:
-                iconName = 'utility:help';
-                break;
-        }
+        let iconName = this._getStatusIconName(status);
 
         this.computedStatus = {
             class: classes,
-            iconName: iconName,
+            iconName,
             type: status,
             title: statusTitle
         };
+    }
+
+    _getStatusIconName(status) {
+        switch (status) {
+            case 'approved':
+                return 'utility:check';
+            case 'locked':
+                return 'utility:lock';
+            case 'declined':
+                return 'utility:close';
+            default:
+                return 'utility:help';
+        }
     }
 
     _updateClassList() {

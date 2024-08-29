@@ -44,6 +44,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-avatar-image-object-fit
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-avatar-primary-text-color
  * @default #000000
  * @type color
@@ -320,6 +325,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-avatar-action-button-color-border
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-avatar-action-button-color-foreground
  * @type color
  * @default #706e6b
@@ -328,11 +339,5 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-action-button-radius-border
  * @default 30px
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-avatar-action-button-spacing-block-end
- * @default 2px
  * @type dimension
  */

@@ -110,7 +110,7 @@ describe('PrimitiveAvatar', () => {
 
                 return Promise.resolve().then(() => {
                     const actionButton = element.shadowRoot.querySelector(
-                        '[data-element-id="primitive-icon-action"]'
+                        '[data-element-id="action-icon"]'
                     );
 
                     expect(actionButton.iconName).toBe('utility:down');
@@ -174,17 +174,20 @@ describe('PrimitiveAvatar', () => {
         describe('Action Click', () => {
             it('actionclick event', () => {
                 element.initials = 'LG';
-                element.actions = new Array(ACTIONS[0]);
+                element.actions = ACTIONS;
                 const handler = jest.fn();
                 element.addEventListener('actionclick', handler);
 
                 return Promise.resolve().then(() => {
                     const actionButton = element.shadowRoot.querySelector(
-                        '[data-element-id="action-icon"]'
+                        '[data-element-id="action-menu-icon"]'
                     );
                     expect(actionButton).toBeTruthy();
-                    actionButton.click();
-
+                    actionButton.dispatchEvent(
+                        new CustomEvent('select', {
+                            detail: { value: 'edit-item' }
+                        })
+                    );
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.name).toBe(
                         'edit-item'

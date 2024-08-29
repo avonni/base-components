@@ -131,7 +131,7 @@
                 alternative-text="Actions"
                 hide-down-arrow
                 icon-name={actionMenuIcon}
-                icon-size={actionMenuSize}
+                icon-size={computedActionMenuSize}
                 variant="border-filled"
                 data-element-id="action-menu-icon"
                 onselect={handleActionClick}
@@ -146,25 +146,17 @@
                     ></lightning-menu-item>
                 </template>
             </c-button-menu>
-            <button
+            <c-button-icon
                 if:false={actionMenu}
-                class="
-                    avonni-avatar-action-button
-                    slds-button slds-button_icon slds-button_icon-border-filled
-                "
                 disabled={action.disabled}
+                icon-name={computedActionMenuIcon}
+                size={computedActionMenuSize}
                 title={action.label}
-                type="button"
                 value={action.name}
+                variant="border-filled"
                 data-element-id="action-icon"
                 onclick={handleActionClick}
-            >
-                <c-primitive-icon
-                    class="avonni-avatar-action-button-icon"
-                    icon-name={computedActionMenuIcon}
-                    data-element-id="primitive-icon-action"
-                ></c-primitive-icon>
-            </button>
+            ></c-button-icon>
         </div>
     </div>
 </template>
