@@ -150,6 +150,7 @@ export default class Combobox extends LightningElement {
     _hideSelectedOptions = false;
     _isLoading = false;
     _isMultiSelect = false;
+    _keepOpenOnSelect = false;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _max;
@@ -380,6 +381,21 @@ export default class Combobox extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the dropdown menu will remain open after an option is selected.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get keepOpenOnSelect() {
+        return this._keepOpenOnSelect;
+    }
+    set keepOpenOnSelect(value) {
+        this._keepOpenOnSelect = normalizeBoolean(value);
     }
 
     /**
