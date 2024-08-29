@@ -1,21 +1,21 @@
 <template>
-    <div class={wrapperClass} if:true={showAvatar}>
+    <div if:true={showAvatar} class={computedWrapperClass}>
         <!-- Main avatar with link -->
         <a
             if:true={href}
-            class={avatarClass}
-            data-element-id="avatar-container"
+            class={computedAvatarClass}
             href={href}
+            data-element-id="avatar-container"
             onclick={handleAnchorTagClick}
         >
             <!-- Image -->
             <img
                 if:true={src}
-                src={src}
-                onerror={handleImageError}
-                alt={alternativeText}
-                title={alternativeText}
                 class="avonni-avatar__image"
+                alt={alternativeText}
+                src={src}
+                title={alternativeText}
+                onerror={handleImageError}
             />
             <!-- Initials -->
             <abbr
@@ -28,11 +28,11 @@
             </abbr>
             <!-- Fallback icon -->
             <lightning-icon
-                class={fallbackIconClass}
-                size={size}
                 if:true={showIcon}
-                icon-name={fallbackIconName}
+                class={computedFallbackIconClass}
                 alternative-text={alternativeText}
+                icon-name={fallbackIconName}
+                size={size}
                 title={alternativeText}
             ></lightning-icon>
         </a>
@@ -40,17 +40,17 @@
         <!-- Main avatar without link-->
         <div
             if:false={href}
-            class={avatarClass}
+            class={computedAvatarClass}
             data-element-id="avatar-container"
         >
             <!-- Image -->
             <img
                 if:true={src}
-                src={src}
-                onerror={handleImageError}
-                alt={alternativeText}
-                title={alternativeText}
                 class="avonni-avatar__image"
+                alt={alternativeText}
+                src={src}
+                title={alternativeText}
+                onerror={handleImageError}
             />
             <!-- Initials -->
             <abbr
@@ -63,11 +63,11 @@
             </abbr>
             <!-- Fallback icon -->
             <lightning-icon
-                class={fallbackIconClass}
-                size={size}
                 if:true={showIcon}
-                icon-name={fallbackIconName}
+                class={computedFallbackIconClass}
                 alternative-text={alternativeText}
+                icon-name={fallbackIconName}
+                size={size}
                 title={alternativeText}
             ></lightning-icon>
         </div>
@@ -75,30 +75,30 @@
         <!-- Presence -->
         <div
             if:true={presence}
-            class={presenceClass}
-            title={presenceTitle}
+            class={computedPresenceClass}
             aria-label={presenceTitle}
+            title={presenceTitle}
         ></div>
 
         <!-- Status -->
         <template if:true={status}>
             <c-primitive-icon
-                class={statusComputed.class}
-                icon-name={statusComputed.iconName}
-                title={statusComputed.title}
+                class={computedStatus.class}
+                icon-name={computedStatus.iconName}
+                title={computedStatus.title}
             ></c-primitive-icon>
-            <span class="slds-assistive-text">{statusComputed.title}</span>
+            <span class="slds-assistive-text">{computedStatus.title}</span>
         </template>
 
         <!-- Entity -->
-        <div if:true={showEntity} class={entityClass}>
+        <div if:true={showEntity} class={computedEntityClass}>
             <!-- Image -->
             <img
                 if:true={entitySrc}
-                src={entitySrc}
-                onerror={handleImageError}
                 alt={entityTitle}
+                src={entitySrc}
                 title={entityTitle}
+                onerror={handleImageError}
             />
             <!-- Initials -->
             <abbr
@@ -122,54 +122,49 @@
         <!-- Actions -->
         <div
             if:true={showActions}
-            data-element-id="action-section"
             class={computedActionClasses}
+            data-element-id="action-section"
             onclick={handleStopPropagation}
         >
-            <template if:true={actionMenu}>
-                <c-button-menu
-                    data-element-id="action-menu-icon"
-                    alternative-text="Actions"
-                    hide-down-arrow
-                    icon-name={actionMenuIcon}
-                    icon-size={actionMenuSize}
-                    variant="border-filled"
-                    onselect={handleActionClick}
-                >
-                    <template for:each={actions} for:item="action">
-                        <lightning-menu-item
-                            key={action.name}
-                            disabled={action.disabled}
-                            icon-name={action.iconName}
-                            value={action.name}
-                            label={action.label}
-                        ></lightning-menu-item>
-                    </template>
-                </c-button-menu>
-            </template>
-
-            <template if:false={actionMenu}>
-                <button
-                    data-element-id="action-icon"
-                    class="
-                        avonni-avatar-action-button
-                        slds-button
-                        slds-button_icon
-                        slds-button_icon-border-filled
-                    "
-                    disabled={action.disabled}
-                    title={action.label}
-                    type="button"
-                    value={action.name}
-                    onclick={handleActionClick}
-                >
-                    <c-primitive-icon
-                        data-element-id="primitive-icon-action"
-                        class="avonni-avatar-action-button-icon"
-                        icon-name={computedActionMenuIcon}
-                    ></c-primitive-icon>
-                </button>
-            </template>
+            <c-button-menu
+                if:true={actionMenu}
+                alternative-text="Actions"
+                hide-down-arrow
+                icon-name={actionMenuIcon}
+                icon-size={actionMenuSize}
+                variant="border-filled"
+                data-element-id="action-menu-icon"
+                onselect={handleActionClick}
+            >
+                <template for:each={actions} for:item="action">
+                    <lightning-menu-item
+                        key={action.name}
+                        disabled={action.disabled}
+                        icon-name={action.iconName}
+                        label={action.label}
+                        value={action.name}
+                    ></lightning-menu-item>
+                </template>
+            </c-button-menu>
+            <button
+                if:false={actionMenu}
+                class="
+                    avonni-avatar-action-button
+                    slds-button slds-button_icon slds-button_icon-border-filled
+                "
+                disabled={action.disabled}
+                title={action.label}
+                type="button"
+                value={action.name}
+                data-element-id="action-icon"
+                onclick={handleActionClick}
+            >
+                <c-primitive-icon
+                    class="avonni-avatar-action-button-icon"
+                    icon-name={computedActionMenuIcon}
+                    data-element-id="primitive-icon-action"
+                ></c-primitive-icon>
+            </button>
         </div>
     </div>
 </template>

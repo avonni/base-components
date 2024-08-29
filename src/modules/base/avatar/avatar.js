@@ -485,9 +485,7 @@ export default class Avatar extends LightningElement {
         const icon = this.template.querySelector(
             '[data-element-id^="avonni-primitive-avatar"]'
         );
-
-        if (icon === null) return '';
-        return icon.getBackgroundColor();
+        return icon ? icon.getBackgroundColor() : '';
     }
 
     /*
