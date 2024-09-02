@@ -44,19 +44,19 @@
                             data-element-id="div-item-wrapper"
                             onprivatelayoutitemconnected={handleItemRendered}
                         >
-                            <div class={visualPickerClass}>
+                            <div class={computedVisualPickerClass}>
                                 <input
-                                    type={type}
-                                    id={item.value}
-                                    value={item.value}
-                                    name={name}
                                     disabled={item.disabled}
+                                    id={item.value}
+                                    name={name}
+                                    type={type}
+                                    value={item.value}
                                     data-element-id="input"
                                     onblur={handleBlur}
                                     onchange={handleChange}
-                                    onkeyup={handleKeyUp}
                                     onclick={handleClick}
                                     onfocus={handleFocus}
+                                    onkeyup={handleKeyUp}
                                 />
                                 <label
                                     for={item.value}
@@ -64,7 +64,7 @@
                                     onmouseenter={handleMouseEnter}
                                     onmouseleave={handleMouseLeave}
                                 >
-                                    <span class={visualPickerTypeClass}>
+                                    <span class={computedVisualPickerTypeClass}>
                                         <span
                                             if:true={item.displayCheckCoverable}
                                             class={item.computedSelectedClass}
@@ -94,14 +94,14 @@
                                                     "
                                                 >
                                                     <img
-                                                        loading="lazy"
-                                                        style={item.computedImgStyle}
                                                         class={computedImageMediaClass}
-                                                        src={item.imgSrc}
                                                         alt={item.imgAlternativeText}
                                                         draggable="false"
-                                                        onerror={handleItemImageError}
+                                                        loading="lazy"
+                                                        src={item.imgSrc}
+                                                        style={item.computedImgStyle}
                                                         data-element-id="avonni-visual-picker-img-horizontal"
+                                                        onerror={handleItemImageError}
                                                     />
                                                 </div>
                                             </div>
@@ -122,6 +122,9 @@
                                                     >
                                                         <c-primitive-visual-picker-header
                                                             if:true={item.headerIsTop}
+                                                            class="
+                                                                avonni-visual-picker__figure-header
+                                                            "
                                                             alternative-text={item.avatarAltText}
                                                             avatar={item.avatar}
                                                             avatar-position={item.avatarPosition}
@@ -131,9 +134,6 @@
                                                             hide-description={item.descriptionTopHidden}
                                                             size={size}
                                                             title={item.title}
-                                                            class="
-                                                                avonni-visual-picker__figure-header
-                                                            "
                                                         ></c-primitive-visual-picker-header>
                                                         <div
                                                             if:true={item.imgIsTop}
@@ -144,14 +144,14 @@
                                                             "
                                                         >
                                                             <img
-                                                                loading="lazy"
-                                                                style={item.computedImgStyle}
                                                                 class={computedImageMediaClass}
-                                                                src={item.imgSrc}
                                                                 alt={item.imgAlternativeText}
                                                                 draggable="false"
-                                                                onerror={handleItemImageError}
+                                                                loading="lazy"
+                                                                src={item.imgSrc}
+                                                                style={item.computedImgStyle}
                                                                 data-element-id="avonni-visual-picker-img-top"
+                                                                onerror={handleItemImageError}
                                                             />
                                                         </div>
                                                     </div>
@@ -161,18 +161,18 @@
                                                     >
                                                         <c-primitive-visual-picker-header
                                                             if:true={item.headerIsCenter}
+                                                            class="
+                                                                avonni-visual-picker__figure-header
+                                                            "
                                                             alternative-text={item.avatarAltText}
                                                             avatar={item.avatar}
                                                             avatar-position={item.avatarPosition}
                                                             description={item.description}
                                                             hide-avatar-top-bottom={item.avatarCenterHidden}
-                                                            hide-title={item.titleCenterHidden}
                                                             hide-description={item.descriptionCenterHidden}
+                                                            hide-title={item.titleCenterHidden}
                                                             size={size}
                                                             title={item.title}
-                                                            class="
-                                                                avonni-visual-picker__figure-header
-                                                            "
                                                         ></c-primitive-visual-picker-header>
                                                         <div
                                                             if:true={item.imgIsCenter}
@@ -183,14 +183,14 @@
                                                             "
                                                         >
                                                             <img
-                                                                loading="lazy"
                                                                 style={item.computedImgStyle}
                                                                 class={computedImageMediaClass}
-                                                                src={item.imgSrc}
                                                                 alt={item.imgAlternativeText}
                                                                 draggable="false"
-                                                                onerror={handleItemImageError}
+                                                                loading="lazy"
+                                                                src={item.imgSrc}
                                                                 data-element-id="avonni-visual-picker-img-center"
+                                                                onerror={handleItemImageError}
                                                             />
                                                         </div>
                                                         <div
@@ -209,22 +209,22 @@
                                                                     for:item="field"
                                                                 >
                                                                     <c-layout-item
-                                                                        key={generateKey}
                                                                         class="
                                                                             avonni-visual-picker__item-fields
                                                                             slds-truncate
                                                                         "
+                                                                        key={generateKey}
                                                                         size={fieldAttributes.cols}
                                                                     >
                                                                         <c-output-data
-                                                                            label={field.label}
-                                                                            value={field.value}
-                                                                            type={field.type}
-                                                                            type-attributes={field.typeAttributes}
-                                                                            variant={fieldAttributes.variant}
                                                                             class="
                                                                                 avonni-visual-picker__fields-label
                                                                             "
+                                                                            label={field.label}
+                                                                            type={field.type}
+                                                                            type-attributes={field.typeAttributes}
+                                                                            value={field.value}
+                                                                            variant={fieldAttributes.variant}
                                                                         ></c-output-data>
                                                                     </c-layout-item>
                                                                 </template>
@@ -237,6 +237,9 @@
                                                     >
                                                         <c-primitive-visual-picker-header
                                                             if:true={item.headerIsBottom}
+                                                            class="
+                                                                avonni-visual-picker__figure-header
+                                                            "
                                                             alternative-text={item.avatarAltText}
                                                             avatar={item.avatar}
                                                             avatar-position={item.avatarPosition}
@@ -246,9 +249,6 @@
                                                             hide-description={item.descriptionBottomHidden}
                                                             size={size}
                                                             title={item.title}
-                                                            class="
-                                                                avonni-visual-picker__figure-header
-                                                            "
                                                         ></c-primitive-visual-picker-header>
                                                         <div
                                                             if:true={item.imgIsBottom}
@@ -259,14 +259,14 @@
                                                             "
                                                         >
                                                             <img
-                                                                loading="lazy"
                                                                 style={item.computedImgStyle}
                                                                 class={computedImageMediaClass}
-                                                                src={item.imgSrc}
                                                                 alt={item.imgAlternativeText}
                                                                 draggable="false"
-                                                                onerror={handleItemImageError}
+                                                                loading="lazy"
+                                                                src={item.imgSrc}
                                                                 data-element-id="avonni-visual-picker-img-bottom"
+                                                                onerror={handleItemImageError}
                                                             />
                                                         </div>
                                                         <div
@@ -282,21 +282,21 @@
                                                             >
                                                                 <c-chip
                                                                     if:true={tag.label}
+                                                                    class={tag.tagClass}
                                                                     key={tag.label}
                                                                     label={tag.label}
                                                                     variant={tag.variant}
-                                                                    class={tag.tagClass}
                                                                     data-element-id="avonni-visual-picker-tag"
                                                                 ></c-chip>
                                                             </template>
                                                             <!-- Hidden Tags -->
                                                             <c-chip
                                                                 if:true={item.hasHiddenTags}
-                                                                label="..."
-                                                                variant="base"
                                                                 class="
                                                                     avonni-visual-picker__tags
                                                                 "
+                                                                label="..."
+                                                                variant="base"
                                                                 data-element-id="avonni-visual-picker-tag-overflow"
                                                             ></c-chip>
                                                         </div>
@@ -324,27 +324,24 @@
                                             {item.itemDescription}
                                         </span>
                                     </span>
-                                    <template
+                                    <span
                                         if:true={item.displayCheckNonCoverable}
+                                        class={computedCheckIconContainerClass}
                                     >
-                                        <span
-                                            class={computedCheckIconContainerClass}
-                                        >
-                                            <lightning-icon
-                                                icon-name="utility:check"
-                                                size="x-small"
-                                                class="slds-icon-text-check"
-                                                variant="inverse"
-                                            ></lightning-icon>
-                                        </span>
-                                    </template>
+                                        <lightning-icon
+                                            class="slds-icon-text-check"
+                                            icon-name="utility:check"
+                                            size="x-small"
+                                            variant="inverse"
+                                        ></lightning-icon>
+                                    </span>
                                 </label>
                             </div>
                         </c-layout-item>
                     </template>
                     <c-layout-item
                         if:true={showButtonOrSpinner}
-                        class={buttonSpinnerWrapperClass}
+                        class={computedButtonSpinnerWrapperClass}
                         size="12"
                         data-element-id="div-button-spinner-wrapper"
                     >
@@ -356,13 +353,11 @@
                             size="small"
                             data-element-id="loading-spinner"
                         ></lightning-spinner>
-
                         <!-- Show more button -->
                         <lightning-button
                             if:true={showMoreButton}
                             class="
-                                slds-m-top_small
-                                slds-m-bottom_small
+                                slds-m-vertical_small
                                 slds-show
                                 avonni-visual-picker__show-more-button
                             "
@@ -378,11 +373,11 @@
         </fieldset>
         <div
             if:true={helpMessage}
-            id="help-message"
             class="slds-form-element__help"
+            id="help-message"
+            role="alert"
             data-element-id="div-help-message"
             data-help-message
-            role="alert"
         >
             {helpMessage}
         </div>

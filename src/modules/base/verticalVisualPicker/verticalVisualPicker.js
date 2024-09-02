@@ -396,7 +396,7 @@ export default class VerticalVisualPicker extends LightningElement {
      *
      * @type {string}
      */
-    get buttonSpinnerWrapperClass() {
+    get computedButtonSpinnerWrapperClass() {
         const classes = classSet('slds-is-relative').add({
             'avonni-vertical-visual-picker__loading-spinner':
                 this.isLoading && !this.showMoreButton,
