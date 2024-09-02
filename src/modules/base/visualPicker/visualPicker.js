@@ -1612,9 +1612,6 @@ export default class VisualPicker extends LightningElement {
      * Handles the blur event.
      */
     handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
         this.interactingState.leave();
     }
 
