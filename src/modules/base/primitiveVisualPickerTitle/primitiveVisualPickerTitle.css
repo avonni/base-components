@@ -10,7 +10,7 @@
     line-height: var(--lwc-lineHeightHeading, 1.25);
 }
 
-.avonni-primitive-visual-picker-title__icon {
+.avonni-primitive-visual-picker-title__avatar {
     --avonni-avatar-fallback-icon-color-foreground: var(
         --avonni-visual-picker-title-avatar-fallback-icon-foreground
     );

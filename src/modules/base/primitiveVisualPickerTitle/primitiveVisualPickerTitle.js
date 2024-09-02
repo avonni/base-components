@@ -108,21 +108,19 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
      */
 
     /**
-     * Verify if avatar position is left and should display avatar.
+     * Computed avatar class.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get avatarIsLeft() {
-        return this._avatarPosition === 'left' && this._displayAvatar;
-    }
-
-    /**
-     * Verify if avatar position is right and should display avatar.
-     *
-     * @type {boolean}
-     */
-    get avatarIsRight() {
-        return this._avatarPosition === 'right' && this._displayAvatar;
+    get computedAvatarClass() {
+        return classSet('avonni-primitive-visual-picker-title__avatar')
+            .add({
+                'slds-order_0 slds-m-right_x-small':
+                    this.avatarPosition === 'left',
+                'slds-order_2 slds-m-left_x-small':
+                    this.avatarPosition === 'right'
+            })
+            .toString();
     }
 
     /**

@@ -178,8 +178,20 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
      */
     get displayTitleAvatar() {
         return (
-            this.avatarPositionToDisplay === 'right' ||
-            this.avatarPositionToDisplay === 'left'
+            this.hasAvatar &&
+            (this.avatarPositionToDisplay === 'right' ||
+                this.avatarPositionToDisplay === 'left')
+        );
+    }
+
+    /**
+     * Verify if there is an avatar to display.
+     *
+     * @type {boolean}
+     */
+    get hasAvatar() {
+        return (
+            this.avatar.imgSrc || this.avatar.iconName || this.avatar.initials
         );
     }
 }
