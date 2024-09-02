@@ -40,7 +40,7 @@
                             small-container-size={smallContainerCols}
                             medium-container-size={mediumContainerCols}
                             large-container-size={largeContainerCols}
-                            key={item.key}
+                            key={item.value}
                             data-element-id="div-item-wrapper"
                             onprivatelayoutitemconnected={handleItemRendered}
                         >
@@ -213,7 +213,7 @@
                                                                             avonni-visual-picker__item-fields
                                                                             slds-truncate
                                                                         "
-                                                                        key={generateKey}
+                                                                        key={item.value}
                                                                         size={fieldAttributes.cols}
                                                                     >
                                                                         <c-output-data

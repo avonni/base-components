@@ -775,13 +775,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Generate unique ID key.
-     */
-    get generateKey() {
-        return generateUUID();
-    }
-
-    /**
      * Get all inputs.
      *
      * @type {Element}
@@ -951,7 +944,6 @@ export default class VisualPicker extends LightningElement {
                 titlePosition,
                 value
             } = item;
-            const key = generateUUID();
             const maxReached =
                 this.type === 'checkbox' &&
                 this.max !== 1 &&
@@ -1158,7 +1150,6 @@ export default class VisualPicker extends LightningElement {
                 displayCheckCoverable,
                 displayCheckNonCoverable,
                 fields,
-                key,
                 hasBodyContent,
                 hasFields,
                 hasHiddenTags,
