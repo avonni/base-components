@@ -671,7 +671,7 @@ export default class VisualPicker extends LightningElement {
      * @type {number}
      */
     get cols() {
-        return this.isResponsive ? this._columnAttributes.cols : null;
+        return this.isResponsive ? this.columnAttributes.cols : null;
     }
 
     /**
@@ -725,8 +725,8 @@ export default class VisualPicker extends LightningElement {
      */
     get computedVisualPickerClass() {
         return classSet('slds-visual-picker slds-m-top_small')
-            .add(`avonni-visual-picker_${this._size}`)
-            .add(`ratio-${this._ratio}`)
+            .add(`avonni-visual-picker_${this.size}`)
+            .add(`ratio-${this.ratio}`)
             .add({ 'slds-p-right_small': this.isResponsive })
             .toString();
     }
@@ -849,7 +849,7 @@ export default class VisualPicker extends LightningElement {
      */
     get largeContainerCols() {
         return this.isResponsive
-            ? this._columnAttributes.largeContainerCols
+            ? this.columnAttributes.largeContainerCols
             : null;
     }
 
@@ -860,7 +860,7 @@ export default class VisualPicker extends LightningElement {
      */
     get mediumContainerCols() {
         return this.isResponsive
-            ? this._columnAttributes.mediumContainerCols
+            ? this.columnAttributes.mediumContainerCols
             : null;
     }
 
@@ -924,7 +924,7 @@ export default class VisualPicker extends LightningElement {
      */
     get smallContainerCols() {
         return this.isResponsive
-            ? this._columnAttributes.smallContainerCols
+            ? this.columnAttributes.smallContainerCols
             : null;
     }
 
@@ -935,7 +935,7 @@ export default class VisualPicker extends LightningElement {
      */
     get truncateRatio() {
         return (
-            (this._ratio === '4-by-3' || this._ratio === '16-by-9') &&
+            (this.ratio === '4-by-3' || this.ratio === '16-by-9') &&
             !this.isResponsive
         );
     }
@@ -1063,7 +1063,6 @@ export default class VisualPicker extends LightningElement {
             // Tag management
             const hasTags =
                 this.isBiggerThanXSmall &&
-                tags &&
                 Array.isArray(tags) &&
                 tags.length > 0;
 
@@ -1110,7 +1109,7 @@ export default class VisualPicker extends LightningElement {
                 imgIsBackground,
                 false
             );
-            const computedImageLayoutStyle = this._computeLayoutContainerStyle(
+            const computedImgLayoutStyle = this._computeLayoutContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground,
                 true
@@ -1147,56 +1146,56 @@ export default class VisualPicker extends LightningElement {
             const hasTitleOrDescription = itemTitle || itemDescription;
 
             return {
-                key,
-                itemTitle,
                 avatar,
-                itemDescription,
-                disabled,
-                value,
+                avatarAltText,
+                avatarBottomHidden,
+                avatarCenterHidden,
+                avatarPosition,
+                avatarTopHidden,
+                avatarVerticalAlignment,
                 checked,
+                computedBodyClass,
+                computedBodyContentBottomClass,
+                computedBodyContentCenterClass,
+                computedBodyContentTopClass,
+                computedBodyLayoutStyle,
+                computedImgContainerStyle,
+                computedImgLayoutStyle,
+                computedImgStyle,
+                computedNotSelectedClass,
+                computedSelectedClass,
+                description,
+                descriptionBottomHidden,
+                descriptionCenterHidden,
+                descriptionTopHidden,
+                disabled,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
+                fields,
+                key,
+                hasBodyContent,
+                hasFields,
+                hasHiddenTags,
+                hasTags,
+                hasTitleOrDescription,
+                headerIsBottom,
+                headerIsCenter,
+                headerIsTop,
                 imgAlternativeText,
                 imgIsBottom,
                 imgIsCenter,
                 imgIsTop,
                 imgPosition,
                 imgSrc,
-                headerIsTop,
-                headerIsCenter,
-                headerIsBottom,
-                title,
-                titleTopHidden,
-                titleCenterHidden,
-                titleBottomHidden,
-                description,
-                descriptionTopHidden,
-                descriptionCenterHidden,
-                descriptionBottomHidden,
-                avatarPosition,
-                avatarVerticalAlignment,
-                avatarAltText,
-                avatarTopHidden,
-                avatarBottomHidden,
-                avatarCenterHidden,
-                fields,
-                hasFields,
-                tags,
-                hasHiddenTags,
-                hasTags,
-                hasBodyContent,
-                hasTitleOrDescription,
+                itemDescription,
+                itemTitle,
                 layoutIsHorizontal,
-                computedBodyLayoutStyle,
-                computedImageLayoutStyle,
-                computedImgContainerStyle,
-                computedImgStyle,
-                computedNotSelectedClass,
-                computedSelectedClass,
-                computedBodyClass,
-                computedBodyContentBottomClass,
-                computedBodyContentTopClass,
-                computedBodyContentCenterClass
+                tags,
+                title,
+                titleBottomHidden,
+                titleCenterHidden,
+                titleTopHidden,
+                value
             };
         });
 
@@ -1438,8 +1437,7 @@ export default class VisualPicker extends LightningElement {
             'avonni-visual-picker__figure-container avonni-visual-picker__height'
         )
             .add({
-                'slds-is-not-selected':
-                    this.isCoverable && !this._hideCheckMark,
+                'slds-is-not-selected': this.isCoverable && !this.hideCheckMark,
                 'avonni-visual-picker__figure-container-reverse':
                     imgPosition === 'right',
                 'avonni-visual-picker__figure-image-background':
