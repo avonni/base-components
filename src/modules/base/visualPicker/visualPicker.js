@@ -8,7 +8,6 @@ import {
     normalizeObject
 } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const VISUAL_PICKER_VARIANTS = {
     valid: ['coverable', 'non-coverable'],
@@ -212,15 +211,10 @@ export default class VisualPicker extends LightningElement {
     connectedCallback() {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-        this._recomputeTags();
         this._connected = true;
     }
 
     renderedCallback() {
-        if (!this._resizeObserver) {
-            this._resizeObserver = this._initResizeObserver();
-        }
-
         if (this.inputs) {
             this.inputs.forEach((input) => {
                 if (this._value.indexOf(input.value) > -1) {
@@ -464,10 +458,6 @@ export default class VisualPicker extends LightningElement {
     set items(value) {
         this._items = normalizeArray(value);
         this._computedItems = [...this._items];
-
-        if (this._connected) {
-            this._recomputeTags();
-        }
     }
 
     /**
@@ -635,10 +625,6 @@ export default class VisualPicker extends LightningElement {
             return;
         }
         this._value = normalizedValue;
-
-        if (this._connected) {
-            this._recomputeTags();
-        }
     }
 
     /**
@@ -1473,20 +1459,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    _initResizeObserver() {
-        if (!this.wrapperElement) {
-            return null;
-        }
-        return new AvonniResizeObserver(this.wrapperElement, () => {
-            this._recomputeTags();
-        });
-    }
-
-    /**
      * Only accept predetermined number of columns.
      *
      * @param {number} value
@@ -1508,96 +1480,6 @@ export default class VisualPicker extends LightningElement {
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
             : null;
-    }
-
-    /**
-     * Recompute tags visibility.
-     */
-    _recomputeTags() {
-        requestAnimationFrame(() => {
-            const container = Array.from(
-                this.template.querySelectorAll(
-                    '.avonni-visual-picker__tags-container'
-                )
-            );
-            const tagClass = 'avonni-visual-picker__tags';
-            const hiddenTagClass = 'avonni-visual-picker__tags-hidden';
-
-            // Resets tags visibility
-            const items = this._items.map((item, index) => {
-                if (container && container[index]) {
-                    const tagElements = Array.from(
-                        container[index].querySelectorAll(
-                            '[data-element-id="avonni-visual-picker-tag"]'
-                        )
-                    );
-                    tagElements.forEach((tagElement) => {
-                        if (tagElement.classList.contains(hiddenTagClass)) {
-                            tagElement.classList.remove(hiddenTagClass);
-                        }
-                    });
-                }
-                let tags = [];
-                if (item.tags && Array.isArray(item.tags)) {
-                    tags = item.tags.map((tag) => {
-                        return {
-                            ...tag,
-                            hidden: false
-                        };
-                    });
-                }
-                return {
-                    ...item,
-                    tags,
-                    hasHiddenTags: false
-                };
-            });
-
-            // Calculate overflow
-            this._computedItems = items.map((item, index) => {
-                if (item.tags && Array.isArray(item.tags)) {
-                    if (container && container[index]) {
-                        const overflowElement = container[index].querySelector(
-                            '[data-element-id="avonni-visual-picker-tag-overflow"]'
-                        );
-                        const tagElements = Array.from(
-                            container[index].querySelectorAll(
-                                '[data-element-id="avonni-visual-picker-tag"]'
-                            )
-                        );
-                        let totalWidth = 0;
-                        let maxWidth =
-                            container[index].getBoundingClientRect().width - 30;
-                        if (overflowElement) {
-                            maxWidth -=
-                                overflowElement.getBoundingClientRect().width;
-                        }
-                        tagElements.forEach((tagElement, tagIndex) => {
-                            const width =
-                                tagElement.getBoundingClientRect().width;
-                            const isHidden = maxWidth <= totalWidth + width;
-                            if (!tagElement.classList.contains(tagClass)) {
-                                tagElement.classList.add(tagClass);
-                            }
-                            if (
-                                isHidden &&
-                                !tagElement.classList.contains(hiddenTagClass)
-                            ) {
-                                tagElement.classList.add(hiddenTagClass);
-                            }
-                            if (item.tags[tagIndex]) {
-                                item.tags[tagIndex].hidden = isHidden;
-                            }
-                            totalWidth += width;
-                        });
-                        item.hasHiddenTags = item.tags.some(
-                            (tag) => tag.hidden
-                        );
-                    }
-                }
-                return item;
-            });
-        });
     }
 
     /*

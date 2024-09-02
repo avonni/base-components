@@ -383,7 +383,7 @@ describe('Visual Picker', () => {
 
                 return Promise.resolve().then(() => {
                     const tags = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="avonni-visual-picker-tags-container"]'
+                        '[data-element-id="tags-container"]'
                     );
                     expect(tags.length).toBe(3);
                 });

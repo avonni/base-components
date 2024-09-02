@@ -274,31 +274,15 @@
                                                             class="
                                                                 avonni-visual-picker__tags-container
                                                             "
-                                                            data-element-id="avonni-visual-picker-tags-container"
                                                         >
-                                                            <template
-                                                                for:each={item.tags}
-                                                                for:item="tag"
-                                                            >
-                                                                <c-chip
-                                                                    if:true={tag.label}
-                                                                    class={tag.tagClass}
-                                                                    key={tag.label}
-                                                                    label={tag.label}
-                                                                    variant={tag.variant}
-                                                                    data-element-id="avonni-visual-picker-tag"
-                                                                ></c-chip>
-                                                            </template>
-                                                            <!-- Hidden Tags -->
-                                                            <c-chip
-                                                                if:true={item.hasHiddenTags}
+                                                            <c-chip-container
                                                                 class="
                                                                     avonni-visual-picker__tags
                                                                 "
-                                                                label="..."
-                                                                variant="base"
-                                                                data-element-id="avonni-visual-picker-tag-overflow"
-                                                            ></c-chip>
+                                                                is-collapsible
+                                                                items={item.tags}
+                                                                data-element-id="tags-container"
+                                                            ></c-chip-container>
                                                         </div>
                                                     </div>
                                                 </div>

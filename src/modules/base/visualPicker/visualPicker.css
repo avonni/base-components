@@ -628,9 +628,6 @@
 
 /*-- tags --*/
 .avonni-visual-picker__tags-container {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
     text-align: var(--avonni-visual-picker-tags-alignment, center);
     padding: var(--avonni-visual-picker-tags-padding, 0.5rem);
 }
