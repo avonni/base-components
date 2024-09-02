@@ -48,10 +48,10 @@ describe('Visual Picker', () => {
             expect(element.items).toMatchObject([]);
             expect(element.label).toBeUndefined();
             expect(element.max).toBeUndefined();
-            expect(element.min).toBe(0);
             expect(element.messageWhenRangeOverflow).toBeUndefined();
             expect(element.messageWhenRangeUnderflow).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
+            expect(element.min).toBe(0);
             expect(element.name).not.toBeUndefined();
             expect(element.ratio).toBe('1-by-1');
             expect(element.required).toBeFalsy();
@@ -62,7 +62,6 @@ describe('Visual Picker', () => {
             expect(element.variant).toBe('non-coverable');
         });
 
-        // column attributes
         describe('Column Attributes', () => {
             it('Default values', () => {
                 element.columnAttributes = {};
@@ -153,7 +152,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // disabled
         describe('Disabled', () => {
             it('false', () => {
                 element.disabled = false;
@@ -186,17 +184,19 @@ describe('Visual Picker', () => {
             });
         });
 
-        // field attributes
-        it('Field Attributes', () => {
-            element.fieldAttributes = { variant: 'label-hidden', cols: 12 };
+        describe('Field Attributes', () => {
+            it('Field Attributes', () => {
+                element.fieldAttributes = { variant: 'label-hidden', cols: 12 };
 
-            return Promise.resolve().then(() => {
-                expect(element.fieldAttributes.variant).toBe('label-hidden');
-                expect(element.fieldAttributes.cols).toBe(1);
+                return Promise.resolve().then(() => {
+                    expect(element.fieldAttributes.variant).toBe(
+                        'label-hidden'
+                    );
+                    expect(element.fieldAttributes.cols).toBe(1);
+                });
             });
         });
 
-        // hide-check-mark
         describe('Hide Check Mark', () => {
             it('false', () => {
                 element.hideCheckMark = false;
@@ -237,7 +237,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // image attributes
         describe('Image Attributes', () => {
             it('Image Attributes', () => {
                 const fallbackSrc =
@@ -391,102 +390,84 @@ describe('Visual Picker', () => {
             });
         });
 
-        // label
-        it('Label', () => {
-            element.label = 'A string label';
+        describe('Label', () => {
+            it('Label', () => {
+                element.label = 'A string label';
 
-            return Promise.resolve().then(() => {
-                const label = element.shadowRoot.querySelector(
-                    '.slds-form-element__label'
-                );
-                expect(label.textContent).toBe('A string label');
-            });
-        });
-
-        // message-when-range-overflow with max
-        it('Message when range overflow and Max', () => {
-            element.items = ITEMS;
-            element.max = 2;
-            element.messageWhenRangeOverflow = 'Maximum Capacity!';
-            element.type = 'checkbox';
-            element.value = [
-                'lightning-professional',
-                'lightning-enterprise',
-                'lightning-enterprise-plus'
-            ];
-
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    element.blur();
-                })
-                .then(() => {
-                    const message = element.shadowRoot.querySelector(
-                        '[data-help-message]'
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '.slds-form-element__label'
                     );
-                    expect(message).toBeTruthy();
-                    expect(message.textContent).toBe('Maximum Capacity!');
-                });
-        });
-
-        // message-when-range-overflow with min
-        it('Message when range underflow and Min', () => {
-            element.items = ITEMS;
-            element.min = 2;
-            element.messageWhenRangeUnderflow = 'Minimum Capacity!';
-            element.type = 'checkbox';
-            element.value = ['lightning-professional'];
-
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    element.blur();
-                })
-                .then(() => {
-                    const message = element.shadowRoot.querySelector(
-                        '[data-help-message]'
-                    );
-                    expect(message).toBeTruthy();
-                    expect(message.textContent).toBe('Minimum Capacity!');
-                });
-        });
-
-        // message-when-value-missing with required
-        it('Message when value missing and Required', () => {
-            element.items = ITEMS;
-            element.required = true;
-            element.messageWhenValueMissing = 'Value Missing!';
-            element.type = 'checkbox';
-
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    element.blur();
-                })
-                .then(() => {
-                    const message = element.shadowRoot.querySelector(
-                        '[data-help-message]'
-                    );
-                    expect(message).toBeTruthy();
-                    expect(message.textContent).toBe('Value Missing!');
-                });
-        });
-
-        // name
-        it('name', () => {
-            element.name = 'a-string-name';
-
-            return Promise.resolve().then(() => {
-                const inputs = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="input"]'
-                );
-                inputs.forEach((input) => {
-                    expect(input.name).toBe('a-string-name');
+                    expect(label.textContent).toBe('A string label');
                 });
             });
         });
 
-        // ratio
+        describe('Max', () => {
+            it('Message when range overflow and Max', () => {
+                element.items = ITEMS;
+                element.max = 2;
+                element.messageWhenRangeOverflow = 'Maximum Capacity!';
+                element.type = 'checkbox';
+                element.value = [
+                    'lightning-professional',
+                    'lightning-enterprise',
+                    'lightning-enterprise-plus'
+                ];
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.blur();
+                    })
+                    .then(() => {
+                        const message = element.shadowRoot.querySelector(
+                            '[data-help-message]'
+                        );
+                        expect(message).toBeTruthy();
+                        expect(message.textContent).toBe('Maximum Capacity!');
+                    });
+            });
+        });
+
+        describe('Min', () => {
+            it('Message when range underflow and Min', () => {
+                element.items = ITEMS;
+                element.min = 2;
+                element.messageWhenRangeUnderflow = 'Minimum Capacity!';
+                element.type = 'checkbox';
+                element.value = ['lightning-professional'];
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.blur();
+                    })
+                    .then(() => {
+                        const message = element.shadowRoot.querySelector(
+                            '[data-help-message]'
+                        );
+                        expect(message).toBeTruthy();
+                        expect(message.textContent).toBe('Minimum Capacity!');
+                    });
+            });
+        });
+
+        describe('Name', () => {
+            it('name', () => {
+                element.name = 'a-string-name';
+
+                return Promise.resolve().then(() => {
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input"]'
+                    );
+                    inputs.forEach((input) => {
+                        expect(input.name).toBe('a-string-name');
+                    });
+                });
+            });
+        });
+
         describe('Ratio', () => {
             it('ratio = 1-by-1', () => {
                 const ratios = [
@@ -649,7 +630,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // required
         describe('Required', () => {
             it('false', () => {
                 element.required = false;
@@ -682,9 +662,28 @@ describe('Visual Picker', () => {
                     expect(fieldset.ariaRequired).toBe('true');
                 });
             });
+
+            it('Message when value missing', () => {
+                element.items = ITEMS;
+                element.required = true;
+                element.messageWhenValueMissing = 'Value Missing!';
+                element.type = 'checkbox';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.blur();
+                    })
+                    .then(() => {
+                        const message = element.shadowRoot.querySelector(
+                            '[data-help-message]'
+                        );
+                        expect(message).toBeTruthy();
+                        expect(message.textContent).toBe('Value Missing!');
+                    });
+            });
         });
 
-        // size
         // Depends on items
         describe('Size', () => {
             it('Xx-small', () => {
@@ -984,7 +983,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // type
         describe('Type', () => {
             it('Radio', () => {
                 element.type = 'radio';
@@ -1015,7 +1013,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // value
         describe('Value', () => {
             it('Radio type', () => {
                 element.value = 'lightning-professional';
@@ -1049,7 +1046,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // variant
         describe('Variant', () => {
             it('Non-coverable', () => {
                 element.variant = 'non-coverable';
@@ -1095,12 +1091,6 @@ describe('Visual Picker', () => {
         });
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  METHODS
-     * -------------------------------------------------------------
-     */
-
     describe('Methods', () => {
         it('Transfer focus and blur', () => {
             element.items = ITEMS;
@@ -1115,7 +1105,6 @@ describe('Visual Picker', () => {
                 });
         });
 
-        // reportValidity
         // Depends on required
         it('reportValidity method', () => {
             element.required = true;
@@ -1129,7 +1118,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // showHelpMessageIfInvalid
         // Depends on required
         it('showHelpMessageIfInvalid method', () => {
             element.required = true;
@@ -1143,7 +1131,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // checkValidity
         it('checkValidity method', () => {
             const spy = jest.spyOn(element, 'checkValidity');
 
@@ -1151,7 +1138,6 @@ describe('Visual Picker', () => {
             expect(spy).toHaveBeenCalled();
         });
 
-        // setCustomValidity
         it('setCustomValidity method', () => {
             const spy = jest.spyOn(element, 'setCustomValidity');
 
@@ -1160,14 +1146,7 @@ describe('Visual Picker', () => {
         });
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
-
     describe('Events', () => {
-        // change
         describe('change', () => {
             it('Radio type', () => {
                 const handler = jest.fn();
@@ -1217,7 +1196,6 @@ describe('Visual Picker', () => {
             });
         });
 
-        // itemclick
         describe('itemclick', () => {
             it('Radio type', () => {
                 const handler = jest.fn();

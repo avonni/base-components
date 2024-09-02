@@ -727,7 +727,7 @@ export default class VisualPicker extends LightningElement {
         return classSet('slds-visual-picker slds-m-top_small')
             .add(`avonni-visual-picker_${this._size}`)
             .add(`ratio-${this._ratio}`)
-            .add({ 'slds-m-around_none slds-p-right_small': this.isResponsive })
+            .add({ 'slds-p-right_small': this.isResponsive })
             .toString();
     }
 
@@ -1609,7 +1609,7 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
-     * Dispatches the blur event.
+     * Handles the blur event.
      */
     handleBlur() {
         if (this._cancelBlur) {
