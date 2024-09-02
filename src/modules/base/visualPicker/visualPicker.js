@@ -727,8 +727,7 @@ export default class VisualPicker extends LightningElement {
         return classSet('slds-visual-picker slds-m-top_small')
             .add(`avonni-visual-picker_${this._size}`)
             .add(`ratio-${this._ratio}`)
-            .add({ 'slds-m-around_none': this.isResponsive })
-            .add({ 'slds-p-right_small': this.isResponsive })
+            .add({ 'slds-m-around_none slds-p-right_small': this.isResponsive })
             .toString();
     }
 
@@ -896,29 +895,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Number of columns on small container widths. See `cols` for accepted values.
-     *
-     * @type {number}
-     */
-    get smallContainerCols() {
-        return this.isResponsive
-            ? this._columnAttributes.smallContainerCols
-            : null;
-    }
-
-    /**
-     * Verify if is a truncate description ratio.
-     *
-     * @type {boolean}
-     */
-    get truncateRatio() {
-        return (
-            (this._ratio === '4-by-3' || this._ratio === '16-by-9') &&
-            !this.isResponsive
-        );
-    }
-
-    /**
      * True of the max count show more/less button is visible, or if the component is loading.
      *
      * @type {boolean}
@@ -938,6 +914,29 @@ export default class VisualPicker extends LightningElement {
             !this.enableInfiniteLoading &&
             !isNaN(this.maxCount) &&
             this.items.length > this.maxCount
+        );
+    }
+
+    /**
+     * Number of columns on small container widths. See `cols` for accepted values.
+     *
+     * @type {number}
+     */
+    get smallContainerCols() {
+        return this.isResponsive
+            ? this._columnAttributes.smallContainerCols
+            : null;
+    }
+
+    /**
+     * Verify if is a truncate description ratio.
+     *
+     * @type {boolean}
+     */
+    get truncateRatio() {
+        return (
+            (this._ratio === '4-by-3' || this._ratio === '16-by-9') &&
+            !this.isResponsive
         );
     }
 
