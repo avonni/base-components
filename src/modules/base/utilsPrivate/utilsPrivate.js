@@ -14,7 +14,6 @@ export {
     upperCase,
     upperFirst
 } from './fontCase';
-export { getChartColors } from './chartColorPalette';
 export {
     keyCodes,
     runActionOnBufferedTypedCharacters,
