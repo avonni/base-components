@@ -172,7 +172,7 @@
 }
 
 .slds-visual-picker
-    input:checked
+    input:checked:not(:disabled)
     ~ label
     .slds-visual-picker__text:hover:after {
     content: '';
