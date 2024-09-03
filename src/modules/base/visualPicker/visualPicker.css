@@ -819,10 +819,6 @@
     object-fit: none;
 }
 
-.avonni-visual-picker__tags-hidden {
-    display: none;
-}
-
 /*-- infinite loading --*/
 .avonni-visual-picker__loading-spinner {
     height: 3rem;
