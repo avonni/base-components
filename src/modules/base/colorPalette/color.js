@@ -1,5 +1,5 @@
 import { classSet } from 'c/utils';
-import { generateColors, isLightColor } from 'c/utilsPrivate';
+import { generateColors, isLightColor } from 'c/colorUtils';
 
 const DISABLED_COLOR = '#dddbda';
 
