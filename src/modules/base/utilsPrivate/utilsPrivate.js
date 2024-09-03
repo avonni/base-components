@@ -3,7 +3,6 @@ export { EventEmitter } from './eventEmitter';
 export { toNorthAmericanPhoneNumber } from './phonify';
 export * from './linkUtils';
 export { arraysEqual, ArraySlice, equal } from './utility';
-export { guid } from './guid';
 export { classListMutation } from './classListMutation';
 export {
     camelCase,
@@ -23,7 +22,6 @@ export {
 export { getListHeight } from './listHeight';
 export { raf } from './scroll';
 export { isChrome, isIE11, isSafari } from './browser';
-export { ContentMutation } from './contentMutation';
 export { observePosition } from './observers';
 export { hasOnlyAllowedVideoIframes } from './videoUtils';
 export {
