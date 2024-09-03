@@ -26,17 +26,16 @@
                         ></lightning-button-icon>
                     </template>
                 </template>
-                <c-avatar
+                <c-primitive-avatar
                     if:true={avatarToDisplay}
+                    class={timelineIconClass}
                     fallback-icon-name={avatar.fallbackIconName}
-                    hide-avatar-details="true"
                     initials={avatar.initials}
                     presence={avatar.presence}
                     size={iconSize}
                     src={avatar.src}
-                    class={timelineIconClass}
                     data-element-id="item-marker"
-                ></c-avatar>
+                ></c-primitive-avatar>
                 <div
                     if:false={avatarToDisplay}
                     class={timelineItemBullet}
