@@ -35,7 +35,6 @@ export {
     RGBtoHSV,
     HSVToHSL
 } from './colorUtils';
-export { getChartColors } from './chartColorPalette';
 export {
     keyCodes,
     runActionOnBufferedTypedCharacters,
