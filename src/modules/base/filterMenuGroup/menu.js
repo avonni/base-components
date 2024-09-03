@@ -1,4 +1,3 @@
-import { dateTimeObjectFrom, formatDateFromStyle } from 'c/dateTimeUtils';
 import { normalizeArray, normalizeObject } from 'c/utils';
 import { numberFormat } from 'c/numberFormat';
 
@@ -86,17 +85,14 @@ export default class FilterMenuGroupMenu {
 
         const selection = this.value.reduce((string, value) => {
             let normalizedValue = '';
-            if (
-                this.type === 'date-range' &&
-                value &&
-                !isNaN(new Date(value))
-            ) {
+            const date = new Date(value);
+            if (this.type === 'date-range' && value && !isNaN(date)) {
                 // Date range
-                const date = dateTimeObjectFrom(value, { zone: timezone });
-                normalizedValue = formatDateFromStyle(date, {
+                normalizedValue = this.formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
-                    timeStyle
+                    timeStyle,
+                    timeZone: timezone
                 });
             } else if (this.type === 'range' && !isNaN(value)) {
                 // Range
@@ -122,5 +118,25 @@ export default class FilterMenuGroupMenu {
                   }
               ]
             : [];
+    }
+
+    formatDateFromStyle(
+        date,
+        {
+            showTime = false,
+            dateStyle = 'medium',
+            timeStyle = 'short',
+            timeZone
+        }
+    ) {
+        if (!(date instanceof Date)) {
+            return '';
+        }
+        const time = showTime ? timeStyle : undefined;
+        return new Intl.DateTimeFormat('default', {
+            dateStyle,
+            timeStyle: time,
+            timeZone
+        }).format(date);
     }
 }

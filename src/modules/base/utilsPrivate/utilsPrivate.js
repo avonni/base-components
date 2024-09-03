@@ -24,21 +24,6 @@ export { getListHeight } from './listHeight';
 export { raf } from './scroll';
 export { isChrome, isIE11, isSafari } from './browser';
 export { observePosition } from './observers';
-export {
-    DATE_FORMAT_PRESETS,
-    addToDate,
-    dateTimeObjectFrom,
-    getFormattedDate,
-    getStartOfWeek,
-    getWeekday,
-    formatDateFromStyle,
-    getWeekNumber,
-    intervalFrom,
-    isInTimeFrame,
-    numberOfUnitsBetweenDates,
-    parseTimeFrame,
-    removeFromDate
-} from './dateTimeUtils';
 import { smartSetAttribute } from './smartSetAttribute';
 export { isCSR } from './ssr';
 
