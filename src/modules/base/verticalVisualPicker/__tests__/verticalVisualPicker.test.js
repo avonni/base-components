@@ -516,7 +516,6 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // type
         describe('type', () => {
             it('radio', () => {
                 element.type = 'radio';
@@ -547,7 +546,6 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // value
         describe('value', () => {
             it('radio type', () => {
                 element.value = 'lightning-professional';
@@ -582,7 +580,6 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // variant
         // Depends on items
         describe('variant', () => {
             it('non-coverable', () => {
@@ -635,7 +632,6 @@ describe('Vertical Visual Picker', () => {
      * -------------------------------------------------------------
      */
     describe('Methods', () => {
-        // Blur and focus methods
         it('Transfer focus and blur', () => {
             element.items = itemsWithIcons;
 
@@ -649,9 +645,8 @@ describe('Vertical Visual Picker', () => {
                 });
         });
 
-        // reportValidity
         // Depends on required
-        it('reportValidity method', () => {
+        it('reportValidity', () => {
             element.required = true;
             element.reportValidity();
 
@@ -663,9 +658,8 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // showHelpMessageIfInvalid
         // Depends on required
-        it('showHelpMessageIfInvalid method', () => {
+        it('showHelpMessageIfInvalid', () => {
             element.required = true;
             element.showHelpMessageIfInvalid();
 
@@ -677,16 +671,14 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // checkValidity
-        it('checkValidity method', () => {
+        it('checkValidity', () => {
             const spy = jest.spyOn(element, 'checkValidity');
 
             element.checkValidity();
             expect(spy).toHaveBeenCalled();
         });
 
-        // setCustomValidity
-        it('setCustomValidity method', () => {
+        it('setCustomValidity', () => {
             const spy = jest.spyOn(element, 'setCustomValidity');
 
             element.setCustomValidity('Something');
@@ -694,13 +686,7 @@ describe('Vertical Visual Picker', () => {
         });
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
     describe('Events', () => {
-        // change
         describe('change', () => {
             it('radio type', () => {
                 const handler = jest.fn();
@@ -862,7 +848,6 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // itemclick
         describe('itemclick', () => {
             it('radio type', () => {
                 const handler = jest.fn();
