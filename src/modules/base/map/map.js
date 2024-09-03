@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { classListMutation, guid } from 'c/utilsPrivate';
-import { deepCopy, normalizeString } from 'c/utils';
+import { classListMutation } from 'c/utilsPrivate';
+import { deepCopy, generateUUID, normalizeString } from 'c/utils';
 import {
     registerMessageHandler,
     createMessage,
@@ -280,7 +280,7 @@ export default class Map extends LightningElement {
         let marker = {};
 
         for (; index < mapMarkersLength; index++) {
-            key = guid();
+            key = generateUUID();
             marker = deepCopy(mapMarkers[index]);
             marker.key = key;
             marker.formattedAddress = getCoordinates(marker.location);

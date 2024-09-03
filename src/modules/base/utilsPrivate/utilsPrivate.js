@@ -3,7 +3,6 @@ export { EventEmitter } from './eventEmitter';
 export { toNorthAmericanPhoneNumber } from './phonify';
 export * from './linkUtils';
 export { arraysEqual, ArraySlice, equal } from './utility';
-export { guid } from './guid';
 export { classListMutation } from './classListMutation';
 export {
     camelCase,
