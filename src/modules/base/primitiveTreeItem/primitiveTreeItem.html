@@ -62,12 +62,11 @@
                     </span>
 
                     <!-- Avatar -->
-                    <c-avatar
+                    <c-primitive-avatar
                         if:true={avatar}
                         class="slds-m-right_x-small"
                         alternative-text={avatar.alternativeText}
                         fallback-icon-name={avatar.fallbackIconName}
-                        hide-avatar-details
                         initials={avatar.initials}
                         presence={avatar.presence}
                         presence-position={avatar.presencePosition}
@@ -75,7 +74,7 @@
                         src={avatar.src}
                         variant={avatar.variant}
                         data-element-id="avonni-avatar"
-                    ></c-avatar>
+                    ></c-primitive-avatar>
 
                     <!-- Label -->
                     <div if:false={labelIsEdited} class={labelClass}>

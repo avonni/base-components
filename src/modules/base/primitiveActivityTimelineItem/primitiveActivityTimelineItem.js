@@ -1,14 +1,13 @@
 import { LightningElement, api } from 'lwc';
+import { dateTimeObjectFrom, getFormattedDate } from 'c/utilsPrivate';
 import {
-    normalizeBoolean,
-    normalizeArray,
-    normalizeString,
-    normalizeObject,
+    classSet,
     deepCopy,
-    dateTimeObjectFrom,
-    getFormattedDate
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeArray,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const BUTTON_VARIANTS = {

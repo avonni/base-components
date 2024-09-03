@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeString } from 'c/utils';
 
 const BLOCKQUOTE_VARIANTS = {
     valid: ['default', 'brand', 'warning', 'error', 'success'],

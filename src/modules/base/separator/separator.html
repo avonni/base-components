@@ -2,16 +2,15 @@
     <div class={computedContainerClass} data-element-id="container">
         <div class={computedLineOneClass} data-element-id="line-one"></div>
         <div if:true={hasContent} class={computedContentClass}>
-            <c-avatar
+            <c-primitive-avatar
                 if:true={hasAvatar}
                 class={computedAvatarClass}
                 fallback-icon-name={iconName}
-                hide-avatar-details
                 size={iconSize}
                 src={iconSrc}
                 variant={iconVariant}
                 data-element-id="avonni-avatar"
-            ></c-avatar>
+            ></c-primitive-avatar>
             <h1
                 if:true={label}
                 class="avonni-separator__label"

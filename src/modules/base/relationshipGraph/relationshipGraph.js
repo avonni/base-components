@@ -1,10 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import {
-    normalizeString,
+    classSet,
     normalizeArray,
-    normalizeBoolean
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],

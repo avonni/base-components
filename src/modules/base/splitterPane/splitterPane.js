@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean } from 'c/utils';
 
 /**
  * @class

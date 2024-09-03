@@ -1,11 +1,11 @@
 import { LightningElement, api } from 'lwc';
 import {
-    normalizeBoolean,
-    normalizeString,
+    classSet,
     normalizeArray,
-    normalizeObject
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
 import { AvonniResizeObserver } from 'c/resizeObserver';

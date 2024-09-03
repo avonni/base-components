@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import tag from './tag.html';
 import noTag from './noTag.html';
 

@@ -1,12 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
 import {
     equal,
-    normalizeArray,
-    normalizeBoolean,
-    normalizeString,
     dateTimeObjectFrom,
     addToDate,
-    deepCopy,
     parseTimeFrame,
     removeFromDate
 } from 'c/utilsPrivate';
@@ -17,7 +13,14 @@ import {
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
-import { classSet, generateUUID } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    generateUUID,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import {
     EDIT_MODES,
     EVENTS_THEMES,

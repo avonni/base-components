@@ -1,5 +1,9 @@
-import { normalizeArray, normalizeString } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import {
+    classSet,
+    generateUUID,
+    normalizeArray,
+    normalizeString
+} from 'c/utils';
 
 const AVATAR_POSITION = {
     valid: [

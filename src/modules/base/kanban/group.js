@@ -1,9 +1,4 @@
-import {
-    normalizeArray,
-    normalizeBoolean,
-    normalizeObject
-} from 'c/utilsPrivate';
-
+import { normalizeArray, normalizeBoolean, normalizeObject } from 'c/utils';
 
 export default class KanbanGroup {
     constructor(props) {

@@ -1,6 +1,11 @@
 import { LightningElement, api } from 'lwc';
-import { classSet, generateUUID } from 'c/utils';
-import { keyCodes, normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import {
+    classSet,
+    generateUUID,
+    normalizeArray,
+    normalizeBoolean
+} from 'c/utils';
+import { keyCodes } from 'c/utilsPrivate';
 
 const i18n = {
     collapseBranch: 'Collapse Branch',

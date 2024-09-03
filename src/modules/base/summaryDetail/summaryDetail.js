@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean } from 'c/utils';
 
 const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';

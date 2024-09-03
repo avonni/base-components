@@ -1,9 +1,9 @@
-import { classSet } from 'c/utils';
 import {
+    classSet,
     normalizeAriaAttribute,
     normalizeBoolean,
     normalizeString
-} from 'c/utilsPrivate';
+} from 'c/utils';
 
 const POSITIONS = {
     valid: ['top', 'bottom'],

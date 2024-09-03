@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { classSet, normalizeString } from 'c/utils';
 
 const SCOPED_NOTIFICATION_VARIANTS = {
     valid: ['base', 'dark', 'warning', 'error', 'success'],

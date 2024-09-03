@@ -206,11 +206,10 @@
                                                 ></span>
                                             </label>
                                         </div>
-                                        <c-avatar
+                                        <c-primitive-avatar
                                             if:true={item.isAvatarLeft}
                                             class={item.computedAvatarClass}
                                             fallback-icon-name={item.avatar.fallbackIconName}
-                                            hide-avatar-details="true"
                                             initials={item.avatar.initials}
                                             presence={item.avatar.presence}
                                             presence-position={item.avatar.presencePosition}
@@ -219,7 +218,7 @@
                                             variant={item.avatar.variant}
                                             data-element-id="avonni-avatar"
                                             onmousedown={handleAvatarDragStart}
-                                        ></c-avatar>
+                                        ></c-primitive-avatar>
                                         <div
                                             class={item.computedTextColor}
                                             data-element-id="avonni-list-item-body-text-color"
@@ -228,11 +227,10 @@
                                             <div
                                                 class={computedItemHeaderClass}
                                             >
-                                                <c-avatar
+                                                <c-primitive-avatar
                                                     if:true={item.isAvatarLeftOfTitle}
                                                     class={item.computedAvatarClass}
                                                     fallback-icon-name={item.avatar.fallbackIconName}
-                                                    hide-avatar-details="true"
                                                     initials={item.avatar.initials}
                                                     presence={item.avatar.presence}
                                                     presence-position={item.avatar.presencePosition}
@@ -241,7 +239,7 @@
                                                     variant={item.avatar.variant}
                                                     data-element-id="avonni-avatar"
                                                     onmousedown={handleAvatarDragStart}
-                                                ></c-avatar>
+                                                ></c-primitive-avatar>
                                                 <div
                                                     class="
                                                         slds-truncate
@@ -294,20 +292,22 @@
                                                         </span>
                                                     </template>
                                                 </span>
-                                                <c-avatar
+                                                <div
                                                     if:true={item.isAvatarRightOfTitle}
                                                     class={item.computedAvatarClass}
-                                                    fallback-icon-name={item.avatar.fallbackIconName}
-                                                    hide-avatar-details="true"
-                                                    initials={item.avatar.initials}
-                                                    presence={item.avatar.presence}
-                                                    presence-position={item.avatar.presencePosition}
-                                                    size={item.avatar.size}
-                                                    src={item.avatar.src}
-                                                    variant={item.avatar.variant}
-                                                    data-element-id="avonni-avatar"
-                                                    onmousedown={handleAvatarDragStart}
-                                                ></c-avatar>
+                                                >
+                                                    <c-primitive-avatar
+                                                        fallback-icon-name={item.avatar.fallbackIconName}
+                                                        initials={item.avatar.initials}
+                                                        presence={item.avatar.presence}
+                                                        presence-position={item.avatar.presencePosition}
+                                                        size={item.avatar.size}
+                                                        src={item.avatar.src}
+                                                        variant={item.avatar.variant}
+                                                        data-element-id="avonni-avatar"
+                                                        onmousedown={handleAvatarDragStart}
+                                                    ></c-primitive-avatar>
+                                                </div>
                                             </div>
 
                                             <!-- Description -->
@@ -410,11 +410,10 @@
                                                 </c-layout>
                                             </div>
                                         </div>
-                                        <c-avatar
+                                        <c-primitive-avatar
                                             if:true={item.isAvatarRight}
                                             class={item.computedAvatarClass}
                                             fallback-icon-name={item.avatar.fallbackIconName}
-                                            hide-avatar-details="true"
                                             initials={item.avatar.initials}
                                             presence={item.avatar.presence}
                                             presence-position={item.avatar.presencePosition}
@@ -423,7 +422,7 @@
                                             variant={item.avatar.variant}
                                             data-element-id="avonni-avatar"
                                             onmousedown={handleAvatarDragStart}
-                                        ></c-avatar>
+                                        ></c-primitive-avatar>
                                     </div>
 
                                     <!-- Sort icon -->

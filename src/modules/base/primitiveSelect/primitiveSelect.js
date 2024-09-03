@@ -1,10 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import {
-    normalizeBoolean,
-    getRealDOMId,
-    classListMutation
-} from 'c/utilsPrivate';
+import { classSet, normalizeBoolean } from 'c/utils';
+import { getRealDOMId, classListMutation } from 'c/utilsPrivate';
 import {
     normalizeVariant,
     VARIANT,

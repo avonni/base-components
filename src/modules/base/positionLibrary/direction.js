@@ -1,4 +1,4 @@
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString } from 'c/utils';
 import { WindowManager } from './util';
 
 // TODO: Remove, not currently in use.

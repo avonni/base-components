@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeArray } from 'c/utilsPrivate';
+import { classSet, normalizeArray } from 'c/utils';
 
 export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api variant;

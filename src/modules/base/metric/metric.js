@@ -1,10 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import {
+    classSet,
     normalizeBoolean,
     normalizeObject,
     normalizeString
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+} from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 
 const AVATAR_POSITIONS = {

@@ -2,7 +2,7 @@ export { hasAnimation } from './animation';
 export { EventEmitter } from './eventEmitter';
 export { toNorthAmericanPhoneNumber } from './phonify';
 export * from './linkUtils';
-export { deepCopy, arraysEqual, ArraySlice, equal } from './utility';
+export { arraysEqual, ArraySlice, equal } from './utility';
 export { guid } from './guid';
 export { classListMutation } from './classListMutation';
 export {
@@ -14,13 +14,6 @@ export {
     upperCase,
     upperFirst
 } from './fontCase';
-export {
-    normalizeBoolean,
-    normalizeString,
-    normalizeArray,
-    normalizeAriaAttribute,
-    normalizeObject
-} from './normalize';
 export {
     generateColors,
     colorType,
@@ -42,7 +35,6 @@ export {
     RGBtoHSV,
     HSVToHSL
 } from './colorUtils';
-export { getChartColors } from './chartColorPalette';
 export {
     keyCodes,
     runActionOnBufferedTypedCharacters,

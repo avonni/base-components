@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeObject, normalizeString } from 'c/utilsPrivate';
+import { classSet, normalizeObject, normalizeString } from 'c/utils';
 
 const AVATAR_POSITIONS = {
     valid: [
