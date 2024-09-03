@@ -1107,6 +1107,19 @@ describe('DateTimePicker', () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    // getDateRangeBounds
+    it('Date time picker: getDateRangeBounds method', () => {
+        element.value = new Date(2024, 7, 30);
+
+        return Promise.resolve().then(() => {
+            const dateRange = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            const bounds = dateRange.getBoundingClientRect();
+            expect(bounds).toEqual(element.getDateRangeBounds());
+        });
+    });
+
     // goToDate
     it('Date time picker: goToDate method', () => {
         const date = new Date(2021, 12, 1);

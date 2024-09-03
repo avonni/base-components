@@ -1223,6 +1223,20 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Return the position of the date range label.
+     *
+     * @returns {DOMRect} Position of the date range label.
+     * @public
+     */
+    @api
+    getDateRangeBounds() {
+        const dateRange = this.template.querySelector(
+            '[data-element-id="p-date-label"]'
+        );
+        return dateRange ? dateRange.getBoundingClientRect() : {};
+    }
+
+    /**
      * Move the position of the picker so the specified date is visible.
      *
      * @param {(string | number | Date)} date Date the picker should be positioned on.
