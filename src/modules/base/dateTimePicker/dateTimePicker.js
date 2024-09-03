@@ -6,16 +6,18 @@ import {
     getStartOfWeek,
     getWeekday,
     intervalFrom,
-    isInTimeFrame,
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString,
-    normalizeArray
+    isInTimeFrame
 } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { TIME_ZONES } from './timezones';
 import { DateTime } from 'c/luxon';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

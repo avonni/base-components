@@ -1,12 +1,12 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeColumns, normalizeRecords } from './normalizer';
+import { arraysEqual } from 'c/utilsPrivate';
 import {
+    normalizeAriaAttribute,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    arraysEqual,
-    normalizeAriaAttribute
-} from 'c/utilsPrivate';
+    normalizeString
+} from 'c/utils';
 
 const DEFAULT_MAX_WIDTH = 1000;
 const DEFAULT_MIN_WIDTH = 50;

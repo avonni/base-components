@@ -64,15 +64,21 @@
                                             "
                                             data-element-id="path-group"
                                         >
-                                            <c-avatar
+                                            <span
                                                 if:true={item.avatar}
-                                                size="small"
-                                                class="avonni-kanban__avatar"
-                                                fallback-icon-name={item.avatar.fallbackIconName}
-                                                initials={item.avatar.initials}
-                                                variant={item.avatar.variant}
-                                                src={item.avatar.src}
-                                            ></c-avatar>
+                                                class="slds-var-p-right_x-small"
+                                            >
+                                                <c-primitive-avatar
+                                                    class="
+                                                        avonni-kanban__avatar
+                                                    "
+                                                    size="small"
+                                                    fallback-icon-name={item.avatar.fallbackIconName}
+                                                    initials={item.avatar.initials}
+                                                    variant={item.avatar.variant}
+                                                    src={item.avatar.src}
+                                                ></c-primitive-avatar>
+                                            </span>
                                             {item.label}&nbsp;
                                             <span if:true={item.showItemCount}>
                                                 ({item.tiles.length})</span
@@ -156,14 +162,18 @@
                                     slds-m-horizontal_xx-small
                                 "
                             >
-                                <c-avatar
+                                <div
                                     if:true={group.avatar}
-                                    class="avonni-kanban__avatar"
-                                    fallback-icon-name={group.avatar.fallbackIconName}
-                                    initials={group.avatar.initials}
-                                    variant={group.avatar.variant}
-                                    src={group.avatar.src}
-                                ></c-avatar>
+                                    class="slds-var-m-right_x-small"
+                                >
+                                    <c-primitive-avatar
+                                        class="avonni-kanban__avatar"
+                                        fallback-icon-name={group.avatar.fallbackIconName}
+                                        initials={group.avatar.initials}
+                                        variant={group.avatar.variant}
+                                        src={group.avatar.src}
+                                    ></c-primitive-avatar>
+                                </div>
                                 {group.label}&nbsp;
                                 <span if:true={group.showItemCount}>
                                     ({group.tiles.length})</span

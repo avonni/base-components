@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, keyCodes } from 'c/utilsPrivate';
+import { keyCodes } from 'c/utilsPrivate';
+import { normalizeBoolean } from 'c/utils';
 
 const DEFAULT_TAB_INDEX = '0';
 

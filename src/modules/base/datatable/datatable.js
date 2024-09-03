@@ -1,10 +1,6 @@
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
-import {
-    normalizeArray,
-    normalizeBoolean,
-    normalizeString
-} from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean, normalizeString } from 'c/utils';
 import {
     getCellValue,
     getCurrentSelectionLength,

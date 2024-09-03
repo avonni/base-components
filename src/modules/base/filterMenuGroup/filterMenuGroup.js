@@ -1,12 +1,12 @@
 import { LightningElement, api } from 'lwc';
 import {
+    classSet,
     deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
     normalizeString
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+} from 'c/utils';
 import Menu from './menu';
 
 const MENU_VARIANTS = {

@@ -1,16 +1,18 @@
 import { api } from 'lwc';
 import {
     addToDate,
-    deepCopy,
     equal,
     getWeekNumber,
     intervalFrom,
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString,
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import Column from './column';
 import {
     DEFAULT_ACTION_NAMES,

@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
 const ALERT_VARIANTS = {
     valid: ['base', 'error', 'offline', 'warning'],

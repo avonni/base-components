@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { classSet, normalizeString } from 'c/utils';
 
 const ALIGN_CONTENTS = {
     valid: ['start', 'center', 'end'],

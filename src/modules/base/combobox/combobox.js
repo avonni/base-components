@@ -1,12 +1,12 @@
 import { LightningElement, api } from 'lwc';
+import { classListMutation } from 'c/utilsPrivate';
 import {
+    classSet,
+    deepCopy,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    classListMutation,
-    deepCopy
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 
 const DROPDOWN_ALIGNMENTS = {
     valid: [

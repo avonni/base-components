@@ -1,10 +1,10 @@
 import { LightningElement, api, track } from 'lwc';
 import {
+    classSet,
+    normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    normalizeArray
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 
 const PATH_FORMATS = {

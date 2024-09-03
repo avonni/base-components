@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { classListMutation, normalizeString } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
+import { classListMutation } from 'c/utilsPrivate';
+import { generateUUID, normalizeString } from 'c/utils';
 
 const ALIGNMENT_BUMPS = {
     default: undefined,

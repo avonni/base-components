@@ -1,15 +1,17 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import { DateTime } from 'c/luxon';
 import {
     classListMutation,
     dateTimeObjectFrom,
     getWeekday,
-    getWeekNumber,
-    normalizeArray,
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString
+    getWeekNumber
 } from 'c/utilsPrivate';
 import {
     isAllDay,

@@ -1,11 +1,6 @@
 import { api } from 'lwc';
-import {
-    hasAnimation,
-    normalizeBoolean,
-    normalizeString,
-    isCSR
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { hasAnimation, isCSR } from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
 import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
 import { getKineticsAttributes, animate } from './kinetics';

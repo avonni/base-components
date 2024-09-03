@@ -1,11 +1,12 @@
 import { LightningElement, api } from 'lwc';
-import { classSet, generateUUID } from 'c/utils';
 import {
-    equal,
+    classSet,
+    generateUUID,
+    normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    normalizeArray
-} from 'c/utilsPrivate';
+    normalizeString
+} from 'c/utils';
+import { equal } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import Item from './item';
 

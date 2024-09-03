@@ -1,5 +1,5 @@
 import { api } from 'lwc';
-import { addToDate, normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { addToDate } from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
@@ -11,7 +11,7 @@ import {
     ScheduleBase
 } from 'c/schedulerUtils';
 import DayGroup from './dayGroup';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
 const DEFAULT_LABEL_NO_EVENTS_FOUND = 'No events for the selected date.';
 const DEFAULT_SELECTED_DATE = new Date();

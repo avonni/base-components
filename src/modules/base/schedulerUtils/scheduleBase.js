@@ -2,14 +2,17 @@ import { LightningElement, api } from 'lwc';
 import {
     addToDate,
     dateTimeObjectFrom,
-    deepCopy,
     getStartOfWeek,
-    intervalFrom,
+    intervalFrom
+} from 'c/utilsPrivate';
+import {
+    classSet,
+    deepCopy,
+    generateUUID,
     normalizeArray,
     normalizeBoolean,
     normalizeString
-} from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+} from 'c/utils';
 import {
     DEFAULT_ACTION_NAMES,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,

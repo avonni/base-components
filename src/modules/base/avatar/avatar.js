@@ -1,10 +1,10 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
 import {
-    normalizeString,
+    classSet,
+    normalizeArray,
     normalizeBoolean,
-    normalizeArray
-} from 'c/utilsPrivate';
+    normalizeString
+} from 'c/utils';
 
 const AVATAR_SIZES = {
     valid: [

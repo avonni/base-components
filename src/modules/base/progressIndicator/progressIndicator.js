@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeArray } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeArray, normalizeString } from 'c/utils';
 import Step from './step';
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };

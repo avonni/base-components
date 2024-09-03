@@ -1,10 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import {
-    deepCopy,
-    normalizeString,
-    classListMutation,
-    guid
-} from 'c/utilsPrivate';
+import { classListMutation, guid } from 'c/utilsPrivate';
+import { deepCopy, normalizeString } from 'c/utils';
 import {
     registerMessageHandler,
     createMessage,

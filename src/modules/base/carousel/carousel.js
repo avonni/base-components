@@ -1,11 +1,11 @@
 import { LightningElement, api } from 'lwc';
+import { keyCodes } from 'c/utilsPrivate';
 import {
-    keyCodes,
+    classSet,
+    normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    normalizeArray
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import PaginationItem from './paginationItem';
 import {

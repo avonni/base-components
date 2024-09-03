@@ -1,6 +1,5 @@
 import { api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeString } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
