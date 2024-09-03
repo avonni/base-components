@@ -38,19 +38,19 @@
             >
                 <template for:each={visibleItems} for:item="item">
                     <div
-                        class={verticalVisualPickerClass}
-                        key={item.key}
+                        class={computedVerticalVisualPickerClass}
+                        key={item.value}
                         data-element-id="div-item-wrapper"
-                        data-value={item.computedValue}
+                        data-value={item.value}
                     >
                         <input
                             class="avonni-vertical-visual-picker__input"
                             checked={item.isChecked}
                             disabled={item.disabled}
-                            id={item.computedValue}
+                            id={item.value}
                             name={name}
                             type={type}
-                            value={item.computedValue}
+                            value={item.value}
                             data-element-id="input"
                             onblur={handleBlur}
                             onfocus={handleFocus}
@@ -59,12 +59,12 @@
                             onkeyup={handleKeyUp}
                         />
                         <label
-                            for={item.computedValue}
+                            for={item.value}
                             data-element-id="label"
                             onmouseenter={handleMouseEnter}
                             onmouseleave={handleMouseLeave}
                         >
-                            <span class={verticalVisualPickerTypeClass}>
+                            <span class={computedVerticalVisualPickerTypeClass}>
                                 <template if:false={hideCheckMark}>
                                     <span
                                         if:true={isCoverable}
@@ -136,18 +136,29 @@
                                             </template>
                                         </div>
                                     </span>
-                                    <c-primitive-avatar
-                                        if:true={item.mediaIsRight}
-                                        class="slds-m-left_small"
-                                        alternative-text={item.alternativeText}
-                                        fallback-icon-name={item.avatar.iconName}
-                                        initials={item.avatar.initials}
-                                        presence={item.avatar.presence}
-                                        presence-position={item.avatar.presencePosition}
-                                        size={item.avatar.size}
-                                        src={item.avatar.imgSrc}
-                                        variant={item.avatar.variant}
-                                    ></c-primitive-avatar>
+                                    <template if:true={item.mediaIsRight}>
+                                        <c-primitive-avatar
+                                            if:false={item.imgSrc}
+                                            class="slds-m-left_small"
+                                            alternative-text={item.alternativeText}
+                                            fallback-icon-name={item.avatar.iconName}
+                                            initials={item.avatar.initials}
+                                            presence={item.avatar.presence}
+                                            presence-position={item.avatar.presencePosition}
+                                            size={item.avatar.size}
+                                            src={item.avatar.imgSrc}
+                                            variant={item.avatar.variant}
+                                        ></c-primitive-avatar>
+                                        <img
+                                            if:true={item.imgSrc}
+                                            class="
+                                                slds-m-left_small
+                                                avonni-vertical-visual-picker__image
+                                            "
+                                            alt={item.imgAlternativeText}
+                                            src={item.imgSrc}
+                                        />
+                                    </template>
                                 </span>
                             </span>
                             <span
@@ -182,7 +193,7 @@
                                 options={item.subItems}
                                 value={value}
                                 data-element-id="input-choice-set"
-                                data-value={item.computedValue}
+                                data-value={item.value}
                                 onchange={handleSubItemsChange}
                             ></c-input-choice-set>
                         </div>

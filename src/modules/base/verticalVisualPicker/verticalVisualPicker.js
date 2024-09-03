@@ -405,7 +405,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Compute NOT selected class styling.
+     * Computed NOT selected class styling.
      *
      * @type {string}
      */
@@ -414,6 +414,38 @@ export default class VerticalVisualPicker extends LightningElement {
             .add({
                 'slds-is-not-selected': this.isCoverable && !this.hideCheckMark,
                 'avonni-is-not-selected': this.isCoverable && this.hideCheckMark
+            })
+            .toString();
+    }
+
+    /**
+     * Compute visual picker type class styling based on selected attributes.
+     *
+     * @type {string}
+     */
+    get computedVerticalVisualPickerClass() {
+        return classSet(
+            'slds-visual-picker slds-visual-picker_vertical avonni-vertical-visual-picker'
+        )
+            .add(`avonni-vertical-visual-picker__item_size-${this.size}`)
+            .toString();
+    }
+
+    /**
+     * Computed visual picker type class styling based on selected attributes.
+     *
+     * @type {string}
+     */
+    get computedVerticalVisualPickerTypeClass() {
+        return classSet(
+            'slds-visual-picker__figure avonni-vertical-visual-picker__figure slds-align_absolute-left'
+        )
+            .add(`avonni-vertical-visual-picker__item_size-${this.size}`)
+            .add({
+                'slds-visual-picker__text': !this.isCoverable,
+                'slds-visual-picker__icon': this.isCoverable,
+                'avonni-hide-check-mark': this.hideCheckMark,
+                'avonni-vertical-visual-picker__figure-with-tags': this.hasTags
             })
             .toString();
     }
@@ -526,36 +558,6 @@ export default class VerticalVisualPicker extends LightningElement {
             !isNaN(this.maxCount) &&
             this.items.length > this.maxCount
         );
-    }
-
-    /**
-     * Compute visual picker type class styling based on selected attributes.
-     *
-     * @type {string}
-     */
-    get verticalVisualPickerClass() {
-        return classSet('slds-visual-picker slds-visual-picker_vertical')
-            .add(`avonni-vertical-visual-picker__item_size-${this.size}`)
-            .toString();
-    }
-
-    /**
-     * Compute visual picker type class styling based on selected attributes.
-     *
-     * @type {string}
-     */
-    get verticalVisualPickerTypeClass() {
-        return classSet(
-            'slds-visual-picker__figure avonni-vertical-visual-picker__figure slds-align_absolute-left'
-        )
-            .add(`avonni-vertical-visual-picker__item_size-${this.size}`)
-            .add({
-                'slds-visual-picker__text': !this.isCoverable,
-                'slds-visual-picker__icon': this.isCoverable,
-                'avonni-hide-check-mark': this.hideCheckMark,
-                'avonni-vertical-visual-picker__figure-with-tags': this.hasTags
-            })
-            .toString();
     }
 
     /**

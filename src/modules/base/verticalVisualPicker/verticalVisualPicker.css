@@ -1,3 +1,7 @@
+.avonni-vertical-visual-picker:last-child {
+    margin-bottom: var(--lwc-spacingMedium, 1rem);
+}
+
 .avonni-vertical-visual-picker__figure {
     border-radius: var(
         --avonni-vertical-visual-picker-figure-radius-border,
@@ -94,11 +98,18 @@
     .slds-visual-picker__figure {
     cursor: pointer;
     outline: 0;
-    border: 1px solid
-        var(
-            --avonni-vertical-visual-picker-figure-color-border-hover,
-            var(--lwc-brandPrimary, #1b96ff)
-        );
+    border-color: var(
+        --avonni-vertical-visual-picker-figure-color-border-hover,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
+    border-width: var(
+        --avonni-vertical-visual-picker-figure-sizing-border,
+        1px
+    );
+    border-style: var(
+        --avonni-vertical-visual-picker-figure-styling-border,
+        solid
+    );
     -webkit-box-shadow: 0 0 0 1px
         var(
             --avonni-vertical-visual-picker-figure-color-border-hover,
