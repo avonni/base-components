@@ -31,12 +31,6 @@ describe('Vertical Visual Picker', () => {
         document.body.appendChild(element);
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  ATTRIBUTES
-     * -------------------------------------------------------------
-     */
-
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.disabled).toBeFalsy();
@@ -47,11 +41,11 @@ describe('Vertical Visual Picker', () => {
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
             expect(element.max).toBeUndefined();
-            expect(element.min).toBe(0);
             expect(element.maxCount).toBeUndefined();
             expect(element.messageWhenRangeOverflow).toBeUndefined();
             expect(element.messageWhenRangeUnderflow).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
+            expect(element.min).toBe(0);
             expect(element.name).not.toBeUndefined();
             expect(element.required).toBeFalsy();
             expect(element.size).toBe('medium');
@@ -61,7 +55,6 @@ describe('Vertical Visual Picker', () => {
             expect(element.variant).toBe('non-coverable');
         });
 
-        // disabled
         describe('disabled', () => {
             it('false', () => {
                 element.disabled = false;
@@ -94,7 +87,6 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // hide-check-mark
         describe('hideCheckMark', () => {
             it('false', () => {
                 element.hideCheckMark = false;
@@ -181,131 +173,121 @@ describe('Vertical Visual Picker', () => {
             });
         });
 
-        // items
-        it('items', () => {
-            element.items = itemsWithIcons;
+        describe('items', () => {
+            it('items', () => {
+                element.items = itemsWithIcons;
 
-            return Promise.resolve().then(() => {
-                const inputs = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="input"]'
-                );
-                const figureAvatar = element.shadowRoot.querySelectorAll(
-                    '.avonni-vertical-visual-picker__figure c-primitive-avatar'
-                );
-                const figureTitles = element.shadowRoot.querySelectorAll(
-                    '.avonni-vertical-visual-picker__item-title'
-                );
-                const figureDescriptions = element.shadowRoot.querySelectorAll(
-                    '.avonni-vertical-visual-picker__item-description'
-                );
+                return Promise.resolve().then(() => {
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input"]'
+                    );
+                    const figureAvatar = element.shadowRoot.querySelectorAll(
+                        '.avonni-vertical-visual-picker__figure c-primitive-avatar'
+                    );
+                    const figureTitles = element.shadowRoot.querySelectorAll(
+                        '.avonni-vertical-visual-picker__item-title'
+                    );
+                    const figureDescriptions =
+                        element.shadowRoot.querySelectorAll(
+                            '.avonni-vertical-visual-picker__item-description'
+                        );
 
-                itemsWithIcons.forEach((item, index) => {
-                    expect(inputs[index].value).toBe(item.value);
-                    expect(inputs[index].disabled).toBe(item.disabled || false);
-                    expect(figureAvatar[index].iconName).toBe(item.iconName);
-                    expect(figureAvatar[index].size).toBe(
-                        item.iconSize || 'medium'
-                    );
-                    expect(figureTitles[index].textContent).toBe(item.title);
-                    expect(figureDescriptions[index].textContent).toBe(
-                        item.description
-                    );
+                    itemsWithIcons.forEach((item, index) => {
+                        expect(inputs[index].value).toBe(item.value);
+                        expect(inputs[index].disabled).toBe(
+                            item.disabled || false
+                        );
+                        expect(figureAvatar[index].iconName).toBe(
+                            item.iconName
+                        );
+                        expect(figureAvatar[index].size).toBe(
+                            item.iconSize || 'medium'
+                        );
+                        expect(figureTitles[index].textContent).toBe(
+                            item.title
+                        );
+                        expect(figureDescriptions[index].textContent).toBe(
+                            item.description
+                        );
+                    });
                 });
             });
         });
 
-        // label
-        it('label', () => {
-            element.label = 'A string label';
+        describe('label', () => {
+            it('label', () => {
+                element.label = 'A string label';
 
-            return Promise.resolve().then(() => {
-                const label = element.shadowRoot.querySelector(
-                    '.slds-form-element__label'
-                );
-                expect(label.textContent).toBe('A string label');
-            });
-        });
-
-        // message-when-range-overflow with max
-        it('Visual Picker: Message when range overflow and Max', () => {
-            element.items = baseItems;
-            element.max = 2;
-            element.messageWhenRangeOverflow = 'Maximum Capacity!';
-            element.type = 'checkbox';
-            element.value = ['item-1', 'item-2', 'item-3'];
-
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    element.blur();
-                })
-                .then(() => {
-                    const message = element.shadowRoot.querySelector(
-                        '[data-help-message]'
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '.slds-form-element__label'
                     );
-                    expect(message).toBeTruthy();
-                    expect(message.textContent).toBe('Maximum Capacity!');
-                });
-        });
-
-        // message-when-range-overflow with min
-        it('Visual Picker: Message when range underflow and Min', () => {
-            element.items = baseItems;
-            element.min = 2;
-            element.messageWhenRangeUnderflow = 'Minimum Capacity!';
-            element.type = 'checkbox';
-            element.value = ['item-1'];
-
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    element.blur();
-                })
-                .then(() => {
-                    const message = element.shadowRoot.querySelector(
-                        '[data-help-message]'
-                    );
-                    expect(message).toBeTruthy();
-                    expect(message.textContent).toBe('Minimum Capacity!');
-                });
-        });
-
-        // message-when-value-missing with required
-        it('Visual Picker: Message when value missing and Required', () => {
-            element.items = baseItems;
-            element.required = true;
-            element.messageWhenValueMissing = 'Value Missing!';
-            element.type = 'checkbox';
-
-            return Promise.resolve()
-                .then(() => {
-                    element.focus();
-                    element.blur();
-                })
-                .then(() => {
-                    const message = element.shadowRoot.querySelector(
-                        '[data-help-message]'
-                    );
-                    expect(message).toBeTruthy();
-                    expect(message.textContent).toBe('Value Missing!');
-                });
-        });
-
-        // name
-        it('name', () => {
-            element.name = 'a-string-name';
-
-            return Promise.resolve().then(() => {
-                const inputs = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="input"]'
-                );
-                inputs.forEach((input) => {
-                    expect(input.name).toBe('a-string-name');
+                    expect(label.textContent).toBe('A string label');
                 });
             });
         });
 
-        // required
+        describe('Max', () => {
+            it('Message when range overflow and Max', () => {
+                element.items = baseItems;
+                element.max = 2;
+                element.messageWhenRangeOverflow = 'Maximum Capacity!';
+                element.type = 'checkbox';
+                element.value = ['item-1', 'item-2', 'item-3'];
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.blur();
+                    })
+                    .then(() => {
+                        const message = element.shadowRoot.querySelector(
+                            '[data-help-message]'
+                        );
+                        expect(message).toBeTruthy();
+                        expect(message.textContent).toBe('Maximum Capacity!');
+                    });
+            });
+        });
+
+        describe('Min', () => {
+            it('Message when range underflow and Min', () => {
+                element.items = baseItems;
+                element.min = 2;
+                element.messageWhenRangeUnderflow = 'Minimum Capacity!';
+                element.type = 'checkbox';
+                element.value = ['item-1'];
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.blur();
+                    })
+                    .then(() => {
+                        const message = element.shadowRoot.querySelector(
+                            '[data-help-message]'
+                        );
+                        expect(message).toBeTruthy();
+                        expect(message.textContent).toBe('Minimum Capacity!');
+                    });
+            });
+        });
+
+        describe('Name', () => {
+            it('name', () => {
+                element.name = 'a-string-name';
+
+                return Promise.resolve().then(() => {
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input"]'
+                    );
+                    inputs.forEach((input) => {
+                        expect(input.name).toBe('a-string-name');
+                    });
+                });
+            });
+        });
+
         describe('required', () => {
             it('false', () => {
                 element.required = false;
@@ -338,9 +320,28 @@ describe('Vertical Visual Picker', () => {
                     expect(fieldset.ariaRequired).toBe('true');
                 });
             });
+
+            it('Message when value missing and Required', () => {
+                element.items = baseItems;
+                element.required = true;
+                element.messageWhenValueMissing = 'Value Missing!';
+                element.type = 'checkbox';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.blur();
+                    })
+                    .then(() => {
+                        const message = element.shadowRoot.querySelector(
+                            '[data-help-message]'
+                        );
+                        expect(message).toBeTruthy();
+                        expect(message.textContent).toBe('Value Missing!');
+                    });
+            });
         });
 
-        // size
         describe('size', () => {
             it('small', () => {
                 element.size = 'small';
