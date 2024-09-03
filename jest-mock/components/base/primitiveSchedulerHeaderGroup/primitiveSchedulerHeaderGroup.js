@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { dateTimeObjectFrom, addToDate } from 'c/utilsPrivate';
+import { dateTimeObjectFrom, addToDate } from 'c/dateTimeUtils';
 import { Interval, DateTime } from 'c/luxon';
 
 export default class PrimitiveSchedulerHeaderGroup extends LightningElement {

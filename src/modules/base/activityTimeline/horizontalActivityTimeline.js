@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { getFormattedDate } from 'c/utilsPrivate';
+import { getFormattedDate } from 'c/dateTimeUtils';
 import { computeSldsClass, createAvatar } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;

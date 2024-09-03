@@ -1,12 +1,11 @@
 import { LightningElement, api, track } from 'lwc';
 import {
-    dateTimeObjectFrom,
     equal,
-    formatDateFromStyle,
     observePosition,
     animationFrame,
     timeout
 } from 'c/utilsPrivate';
+import { dateTimeObjectFrom, formatDateFromStyle } from 'c/dateTimeUtils';
 import { numberFormat } from 'c/numberFormat';
 import {
     classSet,

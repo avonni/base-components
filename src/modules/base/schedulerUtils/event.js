@@ -1,4 +1,4 @@
-import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
+import { addToDate, dateTimeObjectFrom } from 'c/dateTimeUtils';
 import {
     deepCopy,
     generateUUID,

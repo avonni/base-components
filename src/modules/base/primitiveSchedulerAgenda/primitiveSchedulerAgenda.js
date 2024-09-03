@@ -1,5 +1,5 @@
 import { api } from 'lwc';
-import { addToDate } from 'c/utilsPrivate';
+import { addToDate } from 'c/dateTimeUtils';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,

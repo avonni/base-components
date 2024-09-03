@@ -1,10 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import {
-    animationFrame,
-    dateTimeObjectFrom,
-    keyCodes,
-    timeout
-} from 'c/utilsPrivate';
+import { dateTimeObjectFrom } from 'c/dateTimeUtils';
+import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import {
     Direction,

@@ -1,4 +1,4 @@
-import { dateTimeObjectFrom, formatDateFromStyle } from 'c/utilsPrivate';
+import { dateTimeObjectFrom, formatDateFromStyle } from 'c/dateTimeUtils';
 import { normalizeArray, normalizeObject } from 'c/utils';
 import { numberFormat } from 'c/numberFormat';
 

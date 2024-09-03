@@ -1,13 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
+import { equal } from 'c/utilsPrivate';
 import {
     dateTimeObjectFrom,
-    equal,
     getStartOfWeek,
     getWeekday,
     intervalFrom,
     isInTimeFrame
-} from 'c/utilsPrivate';
+} from 'c/dateTimeUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { TIME_ZONES } from './timezones';
 import { DateTime } from 'c/luxon';

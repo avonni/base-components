@@ -167,6 +167,10 @@
             "path": "src/modules/base/dateTimePicker/dateTimePicker.js"
         },
         {
+            "name": "c/dateTimeUtils",
+            "path": "src/modules/base/dateTimeUtils/dateTimeUtils.js"
+        },
+        {
             "name": "c/dialog",
             "path": "src/modules/base/dialog/dialog.js"
         },

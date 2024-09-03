@@ -4,7 +4,7 @@ import {
     dateTimeObjectFrom,
     getStartOfWeek,
     intervalFrom
-} from 'c/utilsPrivate';
+} from 'c/dateTimeUtils';
 import {
     classSet,
     deepCopy,

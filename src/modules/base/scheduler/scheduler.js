@@ -1,11 +1,11 @@
 import { LightningElement, api, track } from 'lwc';
+import { equal } from 'c/utilsPrivate';
 import {
-    equal,
     dateTimeObjectFrom,
     addToDate,
     parseTimeFrame,
     removeFromDate
-} from 'c/utilsPrivate';
+} from 'c/dateTimeUtils';
 import {
     getDisabledWeekdaysLabels,
     positionPopover,

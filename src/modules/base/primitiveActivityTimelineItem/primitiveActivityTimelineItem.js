@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { dateTimeObjectFrom, getFormattedDate } from 'c/utilsPrivate';
+import { dateTimeObjectFrom, getFormattedDate } from 'c/dateTimeUtils';
 import {
     classSet,
     deepCopy,

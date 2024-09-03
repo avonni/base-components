@@ -1,5 +1,5 @@
 import { classSet } from 'c/utils';
-import { dateTimeObjectFrom } from 'c/utilsPrivate';
+import { dateTimeObjectFrom } from 'c/dateTimeUtils';
 
 export default class KanbanTile {
     constructor(props) {

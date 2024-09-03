@@ -1,4 +1,4 @@
-import { dateTimeObjectFrom, getWeekNumber } from 'c/utilsPrivate';
+import { dateTimeObjectFrom, getWeekNumber } from 'c/dateTimeUtils';
 import { classSet, normalizeArray } from 'c/utils';
 
 /**

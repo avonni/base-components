@@ -1,10 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import {
-    dateTimeObjectFrom,
-    equal,
-    getStartOfWeek,
-    keyCodes
-} from 'c/utilsPrivate';
+import { dateTimeObjectFrom, getStartOfWeek } from 'c/dateTimeUtils';
+import { equal, keyCodes } from 'c/utilsPrivate';
 import {
     generateUUID,
     classSet,
