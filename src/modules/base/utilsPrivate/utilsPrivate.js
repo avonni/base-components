@@ -15,27 +15,6 @@ export {
     upperFirst
 } from './fontCase';
 export {
-    generateColors,
-    colorType,
-    isLightColor,
-    RGBToHex,
-    RGBAToHexA,
-    hexToRGB,
-    hexAToRGBA,
-    RGBToHSL,
-    RGBAToHSLA,
-    HSLToRGB,
-    HSLAToRGBA,
-    hexToHSL,
-    hexAToHSLA,
-    HSLToHex,
-    HSLAToHexA,
-    RGBAtoRGB,
-    RGBtoRGBA,
-    RGBtoHSV,
-    HSVToHSL
-} from './colorUtils';
-export {
     keyCodes,
     runActionOnBufferedTypedCharacters,
     normalizeKeyValue,
@@ -44,9 +23,7 @@ export {
 export { getListHeight } from './listHeight';
 export { raf } from './scroll';
 export { isChrome, isIE11, isSafari } from './browser';
-export { ContentMutation } from './contentMutation';
 export { observePosition } from './observers';
-export { hasOnlyAllowedVideoIframes } from './videoUtils';
 export {
     DATE_FORMAT_PRESETS,
     addToDate,

@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { colorType, generateColors, HSVToHSL } from 'c/utilsPrivate';
+import { colorType, generateColors, HSVToHSL } from 'c/colorUtils';
 import { classSet, normalizeBoolean } from 'c/utils';
 
 const INDICATOR_SIZE = 12;
