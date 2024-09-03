@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString } from 'c/utils';
 
 const SPLITTER_ORIENTATIONS = {
     valid: ['horizontal', 'vertical'],

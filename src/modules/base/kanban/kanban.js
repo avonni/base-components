@@ -2,13 +2,13 @@ import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import kanban from './kanban.html';
 import kanbanSubGroups from './kanbanSubGroups.html';
-import { classSet } from 'c/utils';
 import {
+    classSet,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
     normalizeString
-} from 'c/utilsPrivate';
+} from 'c/utils';
 import KanbanGroupsBuilder from './groupBuilder';
 
 const KANBAN_VARIANTS = {

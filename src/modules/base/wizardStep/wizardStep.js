@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean } from 'c/utils';
 
 /**
  * The Wizard Step is used in the Wizard slot.

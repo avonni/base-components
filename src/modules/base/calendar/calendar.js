@@ -3,13 +3,16 @@ import {
     dateTimeObjectFrom,
     equal,
     getStartOfWeek,
-    normalizeBoolean,
-    normalizeString,
-    normalizeArray,
-    keyCodes,
-    deepCopy
+    keyCodes
 } from 'c/utilsPrivate';
-import { generateUUID, classSet } from 'c/utils';
+import {
+    generateUUID,
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import CalendarDate from './date';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import visualPickerLink from './visualPickerLink.html';
 import visualPickerLinkInfoOnly from './visualPickerLinkInfoOnly.html';
 

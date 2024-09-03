@@ -1,10 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import {
-    normalizeBoolean,
-    normalizeString,
-    observePosition
-} from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { observePosition } from 'c/utilsPrivate';
 
 const POPOVER_SIZES = {
     valid: ['small', 'medium', 'large'],

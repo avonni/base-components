@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeString, normalizeArray } from 'c/utilsPrivate';
+import { classSet, normalizeArray, normalizeString } from 'c/utils';
 import { computeSldsClass, isActionIconType } from 'c/iconUtils';
 
 const AVATAR_SIZES = {

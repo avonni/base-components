@@ -1,9 +1,5 @@
-import {
-    addToDate,
-    dateTimeObjectFrom,
-    deepCopy,
-    normalizeArray
-} from 'c/utilsPrivate';
+import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
+import { deepCopy, normalizeArray } from 'c/utils';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
 import { getElementOnXAxis, getElementOnYAxis } from './positions';

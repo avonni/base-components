@@ -1,12 +1,13 @@
 import { LightningElement, api } from 'lwc';
+import { equal, getListHeight } from 'c/utilsPrivate';
 import {
-    equal,
-    normalizeBoolean,
-    normalizeString,
+    classSet,
+    formatLabel,
+    generateUUID,
     normalizeArray,
-    getListHeight
-} from 'c/utilsPrivate';
-import { classSet, formatLabel, generateUUID } from 'c/utils';
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { handleKeyDownOnOption } from './keyboard';
 import Option from './option';

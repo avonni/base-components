@@ -1,5 +1,4 @@
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
 const SELECTION_TYPES = {
     valid: ['continuous', 'single'],

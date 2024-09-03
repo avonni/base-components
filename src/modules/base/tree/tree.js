@@ -1,12 +1,12 @@
 import { LightningElement, api, track } from 'lwc';
 import { TreeData } from './treeData';
-import { generateUUID } from 'c/utils';
 import {
-    keyCodes,
+    generateUUID,
     deepCopy,
     normalizeArray,
     normalizeBoolean
-} from 'c/utilsPrivate';
+} from 'c/utils';
+import { keyCodes } from 'c/utilsPrivate';
 
 const DEFAULT_ACTION_NAMES = [
     'Standard.Tree.Add',

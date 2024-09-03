@@ -1,11 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
-import {
-    deepCopy,
-    keyCodes,
-    normalizeBoolean,
-    normalizeArray
-} from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { keyCodes } from 'c/utilsPrivate';
+import { classSet, deepCopy, normalizeArray, normalizeBoolean, generateUUID } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';

@@ -1,4 +1,4 @@
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean } from 'c/utils';
 
 export default class ProgressIndicatorStep {
     constructor(props) {

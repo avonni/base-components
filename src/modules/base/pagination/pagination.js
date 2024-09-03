@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString, generateUUID } from 'c/utils';
 
 const PAGINATION_ALIGNS = {
     valid: ['left', 'center', 'right', 'fill'],

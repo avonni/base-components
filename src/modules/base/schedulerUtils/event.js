@@ -1,12 +1,11 @@
+import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
 import {
     deepCopy,
+    generateUUID,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    addToDate,
-    dateTimeObjectFrom
-} from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 import { Interval } from 'c/luxon';
 import { SchedulerEventOccurrence } from './eventOccurrence';
 import { containsAllowedDateTimes } from './dateComputations';

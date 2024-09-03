@@ -1,14 +1,12 @@
 import { LightningElement, api } from 'lwc';
-import {
-    colorType,
-    generateColors,
-    observePosition,
-    normalizeBoolean,
-    normalizeString,
-    normalizeArray
-} from 'c/utilsPrivate';
+import { colorType, generateColors, observePosition } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import { generateUUID } from 'c/utils';
 import standard from './standard.html';
 import inline from './inline.html';

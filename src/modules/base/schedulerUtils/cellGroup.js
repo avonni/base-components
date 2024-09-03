@@ -1,4 +1,4 @@
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray } from 'c/utils';
 import Cell from './cell';
 
 /**

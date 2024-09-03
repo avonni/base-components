@@ -1,12 +1,11 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
 import {
-    normalizeBoolean,
-    normalizeString,
-    observePosition,
+    classSet,
     normalizeArray,
-    getListHeight
-} from 'c/utilsPrivate';
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
+import { observePosition, getListHeight } from 'c/utilsPrivate';
 
 const BUTTON_SIZES = {
     valid: ['auto', 'stretch'],

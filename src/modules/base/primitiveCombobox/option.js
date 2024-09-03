@@ -1,9 +1,9 @@
 import {
+    classSet,
     normalizeAriaAttribute,
     normalizeArray,
     normalizeBoolean
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+} from 'c/utils';
 
 /**
  * Option

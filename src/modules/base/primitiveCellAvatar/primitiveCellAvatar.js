@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString } from 'c/utils';
 
 const AVATAR_SIZE = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],

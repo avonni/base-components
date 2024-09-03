@@ -1,5 +1,6 @@
 import { SchedulerCellGroup } from 'c/schedulerUtils';
-import { dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
+import { dateTimeObjectFrom } from 'c/utilsPrivate';
+import { normalizeArray } from 'c/utils';
 
 /**
  * Column of the calendar (day, week and month views), or multi-day event row (day and week views).

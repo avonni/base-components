@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import { normalizeArray, normalizeString } from 'c/utils';
 import './confettiLib';
 
 const CONFETTI_VARIANTS = {

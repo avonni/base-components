@@ -1,10 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import {
-    normalizeBoolean,
-    normalizeString,
-    synchronizeAttrs
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { synchronizeAttrs } from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
 const DIALOG_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],

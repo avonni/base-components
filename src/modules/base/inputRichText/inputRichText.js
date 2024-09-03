@@ -1,13 +1,12 @@
 import { LightningElement, api } from 'lwc';
+import { getRealDOMId, isRTL } from 'c/utilsPrivate';
 import {
+    classSet,
+    deepCopy,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    deepCopy,
-    getRealDOMId,
-    isRTL
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 import { InputRichTextHelper } from './inputRichTextHelper';
 import {
     Quill,

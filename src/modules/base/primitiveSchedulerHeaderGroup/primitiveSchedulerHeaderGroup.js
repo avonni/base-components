@@ -4,14 +4,16 @@ import {
     addToDate,
     dateTimeObjectFrom,
     numberOfUnitsBetweenDates,
-    normalizeArray,
-    normalizeString,
-    normalizeBoolean,
     removeFromDate,
     equal
 } from 'c/utilsPrivate';
 import SchedulerHeader from './schedulerHeader';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 const DEFAULT_START_DATE = new Date();

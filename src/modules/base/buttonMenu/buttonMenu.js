@@ -1,8 +1,6 @@
 import { api } from 'lwc';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import {
-    normalizeBoolean,
-    normalizeString,
     observePosition,
     keyCodes,
     buttonGroupOrderClass

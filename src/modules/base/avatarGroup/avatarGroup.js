@@ -1,13 +1,11 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
 import {
-    animationFrame,
-    keyCodes,
+    classSet,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    timeout
-} from 'c/utilsPrivate';
+    normalizeString
+} from 'c/utils';
+import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
 import {
     Direction,
     startPositioning,

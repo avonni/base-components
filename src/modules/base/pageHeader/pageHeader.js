@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import pageHeader from './pageHeader.html';
 import pageHeaderVertical from './pageHeaderVertical.html';
 import { computeSldsClass } from 'c/iconUtils';

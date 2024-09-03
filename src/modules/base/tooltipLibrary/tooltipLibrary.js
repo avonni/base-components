@@ -1,6 +1,6 @@
 import { AutoPosition, Direction } from 'c/positionLibrary';
-import { guid, normalizeAriaAttribute, normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { guid } from 'c/utilsPrivate';
+import { classSet, normalizeAriaAttribute, normalizeString } from 'c/utils';
 
 export { Direction } from 'c/positionLibrary';
 

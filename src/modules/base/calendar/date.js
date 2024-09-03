@@ -1,10 +1,10 @@
-import { classSet } from 'c/utils';
 import {
-    getWeekNumber,
+    classSet,
     normalizeArray,
     normalizeBoolean,
     normalizeObject
-} from 'c/utilsPrivate';
+} from 'c/utils';
+import { getWeekNumber } from 'c/utilsPrivate';
 import Label from './dateLabel';
 
 export default class CalendarDate {

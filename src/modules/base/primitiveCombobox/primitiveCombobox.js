@@ -1,16 +1,16 @@
 import { LightningElement, api } from 'lwc';
 import Option from './option';
 import Action from './action';
+import { getListHeight, classListMutation } from 'c/utilsPrivate';
+import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import {
+    classSet,
+    generateUUID,
+    normalizeAriaAttribute,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    getListHeight,
-    normalizeAriaAttribute,
-    classListMutation
-} from 'c/utilsPrivate';
-import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
-import { classSet, generateUUID } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 import { AutoPosition, Direction } from 'c/positionLibrary';
 
 const DROPDOWN_ALIGNMENTS = {

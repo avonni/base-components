@@ -1,11 +1,12 @@
 import { LightningElement, api } from 'lwc';
+import { generateColors } from 'c/utilsPrivate';
 import {
+    classSet,
+    generateUUID,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    generateColors
-} from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 import grid from './grid.html';
 import list from './list.html';
 import Color from './color';
