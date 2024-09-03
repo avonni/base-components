@@ -45,6 +45,7 @@ describe('Visual Picker', () => {
             expect(element.fieldAttributes).toMatchObject({});
             expect(element.hideCheckMark).toBeFalsy();
             expect(element.imageAttributes).toMatchObject({});
+            expect(element.isLoading).toBeFalsy();
             expect(element.items).toMatchObject([]);
             expect(element.label).toBeUndefined();
             expect(element.max).toBeUndefined();

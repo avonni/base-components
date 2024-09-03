@@ -197,7 +197,6 @@ export default class VisualPicker extends LightningElement {
     _isCollapsed = true;
     _isFallbackLoadedMap = {};
     _itemRendersBeforeScrollUpdate = 0;
-    _resizeObserver;
     _scrollTop = 0;
 
     helpMessage = '';
@@ -215,13 +214,9 @@ export default class VisualPicker extends LightningElement {
     }
 
     renderedCallback() {
-        if (this.inputs) {
+        if (this.inputs.length) {
             this.inputs.forEach((input) => {
-                if (this._value.indexOf(input.value) > -1) {
-                    input.checked = true;
-                } else {
-                    input.checked = false;
-                }
+                input.checked = this._value.includes(input.value);
             });
         }
 
@@ -237,13 +232,6 @@ export default class VisualPicker extends LightningElement {
 
         // Reset loaded fallback map.
         this._isFallbackLoadedMap = {};
-    }
-
-    disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = undefined;
-        }
     }
 
     /*
@@ -856,24 +844,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Add horizontal padding when size is responsive.
-     *
-     * @type {string}
-     */
-    get responsivePadding() {
-        return this.isResponsive ? 'horizontal-small' : '';
-    }
-
-    /**
-     * Pull boundary small if size is responsive.
-     *
-     * @type {string}
-     */
-    get responsivePullBoundary() {
-        return this.isResponsive ? 'small' : '';
-    }
-
-    /**
      * True of the max count show more/less button is visible, or if the component is loading.
      *
      * @type {boolean}
@@ -905,18 +875,6 @@ export default class VisualPicker extends LightningElement {
         return this.isResponsive
             ? this.columnAttributes.smallContainerCols
             : null;
-    }
-
-    /**
-     * Verify if is a truncate description ratio.
-     *
-     * @type {boolean}
-     */
-    get truncateRatio() {
-        return (
-            (this.ratio === '4-by-3' || this.ratio === '16-by-9') &&
-            !this.isResponsive
-        );
     }
 
     /**
@@ -1190,15 +1148,6 @@ export default class VisualPicker extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="div-items-wrapper"]'
         );
-    }
-
-    /**
-     * Get the wrapper DOM elements.
-     *
-     * @type {Element}
-     */
-    get wrapperElement() {
-        return this.template.querySelector('[data-element-id="fieldset"]');
     }
 
     /*
