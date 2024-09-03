@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString } from 'c/utils';
 
 const BADGE_VARIANTS = {
     valid: [

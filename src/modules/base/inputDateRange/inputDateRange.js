@@ -2,12 +2,10 @@ import { LightningElement, api } from 'lwc';
 import {
     animationFrame,
     dateTimeObjectFrom,
-    normalizeBoolean,
-    normalizeString,
     keyCodes,
     timeout
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import {
     Direction,
     startPositioning,

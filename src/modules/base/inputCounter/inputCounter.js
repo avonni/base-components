@@ -1,10 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import {
-    classListMutation,
-    normalizeBoolean,
-    normalizeString
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classListMutation } from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import {
     formatNumber,

@@ -1,12 +1,13 @@
 import { LightningElement, api } from 'lwc';
+import { equal } from 'c/utilsPrivate';
 import {
-    equal,
-    normalizeBoolean,
-    normalizeString,
+    classSet,
+    generateUUID,
     normalizeArray,
-    normalizeObject
-} from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 

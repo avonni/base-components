@@ -3,7 +3,7 @@ import PrimitiveCombobox from '../primitiveCombobox';
 import Option from '../option';
 import Action from '../action';
 import { options, actions, topActions, bottomActions, groups } from './data';
-import { deepCopy } from 'c/utilsPrivate';
+import { deepCopy } from 'c/utils';
 
 // Not tested:
 // auto positionning

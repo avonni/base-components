@@ -1,9 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import {
-    normalizeArray,
-    normalizeBoolean,
-    normalizeString
-} from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean, normalizeString } from 'c/utils';
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 

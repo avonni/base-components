@@ -2,9 +2,9 @@ import {
     addToDate,
     dateTimeObjectFrom,
     isInTimeFrame,
-    normalizeArray,
     removeFromDate
 } from 'c/utilsPrivate';
+import { normalizeArray } from 'c/utils';
 import { DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK } from './defaults';
 
 /**

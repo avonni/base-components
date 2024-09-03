@@ -3,14 +3,15 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
-import { classSet, generateUUID } from 'c/utils';
 import {
+    classSet,
+    generateUUID,
     deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
     normalizeString
-} from 'c/utilsPrivate';
+} from 'c/utils';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 

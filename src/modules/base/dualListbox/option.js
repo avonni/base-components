@@ -1,5 +1,4 @@
-import { classSet } from 'c/utils';
-import { normalizeBoolean, normalizeObject } from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeObject } from 'c/utils';
 
 export default class DualListboxOption {
     constructor(props) {

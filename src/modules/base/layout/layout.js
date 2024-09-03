@@ -1,7 +1,11 @@
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet, generateUUID } from 'c/utils';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    classSet,
+    generateUUID,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 
 const HORIZONTAL_ALIGNMENTS = {
     valid: ['start', 'center', 'end', 'space', 'spread'],

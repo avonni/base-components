@@ -1,12 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
-import {
-    normalizeBoolean,
-    normalizeString,
-    buttonGroupOrderClass,
-    isIE11,
-    isCSR
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { buttonGroupOrderClass, isIE11, isCSR } from 'c/utilsPrivate';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import AvonniAriaObserver from 'c/ariaObserver';
 
 const BUTTON = 'button';

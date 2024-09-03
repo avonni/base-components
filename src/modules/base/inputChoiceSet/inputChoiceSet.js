@@ -1,10 +1,5 @@
 import { LightningElement, api } from 'lwc';
 import {
-    deepCopy,
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString,
-    normalizeArray,
     synchronizeAttrs,
     getRealDOMId,
     classListMutation
@@ -15,7 +10,14 @@ import {
     normalizeVariant,
     VARIANT
 } from 'c/inputUtils';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import InputChoiceOption from './inputChoiceOption';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 

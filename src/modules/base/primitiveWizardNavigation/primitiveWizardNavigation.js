@@ -1,7 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
 const BUTTON_POSITIONS = {
     valid: ['left', 'right'],

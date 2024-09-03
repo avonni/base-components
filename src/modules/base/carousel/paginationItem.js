@@ -1,5 +1,4 @@
-import { classSet, generateUUID } from 'c/utils';
-import { normalizeBoolean } from 'c/utilsPrivate';
+import { classSet, generateUUID, normalizeBoolean } from 'c/utils';
 
 export default class CarouselPaginationItem {
     constructor(props) {

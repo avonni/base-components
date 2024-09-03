@@ -1,9 +1,5 @@
-import {
-    dateTimeObjectFrom,
-    getWeekNumber,
-    normalizeArray
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { dateTimeObjectFrom, getWeekNumber } from 'c/utilsPrivate';
+import { classSet, normalizeArray } from 'c/utils';
 
 /**
  * Cell of the scheduler.

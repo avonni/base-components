@@ -1,7 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
 const BARCODE_TYPES = [
     'auspost',

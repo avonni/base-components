@@ -1,19 +1,21 @@
 import { LightningElement, api, track } from 'lwc';
 import {
     dateTimeObjectFrom,
-    deepCopy,
     equal,
     formatDateFromStyle,
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString,
-    normalizeArray,
     observePosition,
     animationFrame,
     timeout
 } from 'c/utilsPrivate';
 import { numberFormat } from 'c/numberFormat';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 import {
     Direction,

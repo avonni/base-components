@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
 const validVariants = ['base', 'comment'];
 

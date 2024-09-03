@@ -1,12 +1,11 @@
 import { LightningElement, api } from 'lwc';
+import { synchronizeAttrs, getRealDOMId } from 'c/utilsPrivate';
 import {
-    synchronizeAttrs,
-    getRealDOMId,
+    classSet,
+    normalizeAriaAttribute,
     normalizeBoolean,
-    normalizeString,
-    normalizeAriaAttribute
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeString
+} from 'c/utils';
 import {
     InteractingState,
     FieldConstraintApiWithProxyInput,

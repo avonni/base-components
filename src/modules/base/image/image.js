@@ -1,10 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import {
+    classSet,
     normalizeBoolean,
-    normalizeString,
-    normalizeObject
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import {
     applyBoundaries,
     followMagnifier,

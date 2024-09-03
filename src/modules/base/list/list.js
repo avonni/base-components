@@ -1,14 +1,15 @@
 import { LightningElement, api } from 'lwc';
+import { equal } from 'c/utilsPrivate';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
-    equal,
+    classSet,
+    deepCopy,
+    generateUUID,
     normalizeArray,
     normalizeBoolean,
     normalizeString,
-    normalizeObject,
-    deepCopy
-} from 'c/utilsPrivate';
-import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet, generateUUID } from 'c/utils';
+    normalizeObject
+} from 'c/utils';
 import Item from './item';
 
 const ICON_POSITIONS = {

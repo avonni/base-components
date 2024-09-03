@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { Direction, AutoPosition } from 'c/positionLibrary';
-import { normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean } from 'c/utils';
 
 const i18n = {
     a11yTriggerText: 'Choose a color. Current color: '

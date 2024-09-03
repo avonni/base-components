@@ -1,12 +1,12 @@
 import { LightningElement, api } from 'lwc';
-import {
-    normalizeBoolean,
-    normalizeString,
-    normalizeArray,
-    deepCopy
-} from 'c/utilsPrivate';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
-import { classSet } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import { StraightToolManager } from './straightToolManager';
 import { SmoothToolManager } from './smoothToolManager';
 import { AvonniResizeObserver } from 'c/resizeObserver';

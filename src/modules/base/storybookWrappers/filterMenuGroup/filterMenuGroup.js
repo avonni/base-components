@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { deepCopy, normalizeArray, normalizeObject } from 'c/utilsPrivate';
+import { deepCopy, normalizeArray, normalizeObject } from 'c/utils';
 
 const LANGUAGES = [
     {

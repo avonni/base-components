@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { deepCopy, normalizeObject } from 'c/utilsPrivate';
+import { deepCopy, normalizeObject } from 'c/utils';
 
 const COLORS = [
     '#001219',

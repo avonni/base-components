@@ -4,7 +4,7 @@ import {
     getResolvedCellChanges,
     startPanelPositioning
 } from 'c/primitiveCellUtils';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray } from 'c/utils';
 
 export default class PrimitiveCellCombobox extends LightningElement {
     @api colKeyValue;

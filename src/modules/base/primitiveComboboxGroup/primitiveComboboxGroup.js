@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
+import { generateUUID, normalizeArray, normalizeBoolean } from 'c/utils';
 
 export default class PrimitiveComboboxGroup extends LightningElement {
     @api label;

@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString as normalize } from 'c/utilsPrivate';
+import { normalizeString as normalize } from 'c/utils';
 import standardTemplate from './primitiveIcon.html';
 import {
     fetchIconLibrary,

@@ -1,10 +1,10 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
 import {
+    classSet,
     normalizeBoolean,
     normalizeObject,
     normalizeString
-} from 'c/utilsPrivate';
+} from 'c/utils';
 
 const AVATAR_POSITIONS = {
     valid: ['left', 'right', 'top', 'bottom', 'center'],
