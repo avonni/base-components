@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { colorType, generateColors, observePosition } from 'c/utilsPrivate';
+import { colorType, generateColors } from 'c/colorUtils';
+import { observePosition } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     classSet,

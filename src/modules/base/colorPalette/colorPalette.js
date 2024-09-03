@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { generateColors } from 'c/utilsPrivate';
+import { generateColors } from 'c/colorUtils';
 import {
     classSet,
     generateUUID,

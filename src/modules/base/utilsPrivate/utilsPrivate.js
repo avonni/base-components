@@ -14,27 +14,6 @@ export {
     upperCase,
     upperFirst
 } from './fontCase';
-export {
-    generateColors,
-    colorType,
-    isLightColor,
-    RGBToHex,
-    RGBAToHexA,
-    hexToRGB,
-    hexAToRGBA,
-    RGBToHSL,
-    RGBAToHSLA,
-    HSLToRGB,
-    HSLAToRGBA,
-    hexToHSL,
-    hexAToHSLA,
-    HSLToHex,
-    HSLAToHexA,
-    RGBAtoRGB,
-    RGBtoRGBA,
-    RGBtoHSV,
-    HSVToHSL
-} from './colorUtils';
 export { getChartColors } from './chartColorPalette';
 export {
     keyCodes,

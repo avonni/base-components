@@ -7,6 +7,10 @@
             "dir": "src/modules/base"
         },
         {
+            "name": "c/colorUtils",
+            "path": "src/modules/base/colorUtils/colorUtils.js"
+        },
+        {
             "name": "c/configProvider",
             "path": "src/modules/base/configProvider/configProvider.js"
         },
