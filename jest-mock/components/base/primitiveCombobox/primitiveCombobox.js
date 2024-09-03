@@ -13,6 +13,7 @@ export default class PrimitiveCombobox extends LightningElement {
     @api hideOptionsUntilSearch;
     @api isLoading;
     @api isMultiSelect;
+    @api keepOpenOnSelect;
     @api label;
     @api loadingStateAlternativeText;
     @api loadMoreOffset;
