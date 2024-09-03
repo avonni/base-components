@@ -1,5 +1,4 @@
 import { classSet } from 'c/utils';
-import { dateTimeObjectFrom } from 'c/dateTimeUtils';
 
 export default class KanbanTile {
     constructor(props) {
@@ -33,34 +32,17 @@ export default class KanbanTile {
     get dueDate() {
         return this._dueDate;
     }
-    set dueDate(dueDate) {
-        let date = dueDate;
-        if (!isNaN(Number(date))) {
-            date = Number(date);
-        }
-        date = dateTimeObjectFrom(date);
-        this._dueDate = !date || dueDate === null ? null : new Date(date.ts);
-        if (this._dueDate) {
-            const dateTZ = this.getDateWithTimeZone(this._dueDate);
-            this._dueDate = new Date(dateTZ.ts);
-        }
+    set dueDate(value) {
+        const date = !value || isNaN(new Date(value)) ? null : new Date(value);
+        this._dueDate = date;
     }
 
     get startDate() {
         return this._startDate;
     }
-    set startDate(startDate) {
-        let date = startDate;
-        if (!isNaN(Number(date))) {
-            date = Number(date);
-        }
-        date = dateTimeObjectFrom(date);
-        this._startDate =
-            !date || startDate === null ? null : new Date(date.ts);
-        if (this._startDate) {
-            const dateTZ = this.getDateWithTimeZone(this._startDate);
-            this._startDate = new Date(dateTZ.ts);
-        }
+    set startDate(value) {
+        const date = !value || isNaN(new Date(value)) ? null : new Date(value);
+        this._startDate = date;
     }
 
     get summarizeValue() {
@@ -108,17 +90,16 @@ export default class KanbanTile {
     }
 
     get isOverdue() {
-        const date = this.getDateWithTimeZone(this.dueDate);
-        const dueDate = new Date(date.ts);
         const currentDate = new Date();
-        if (dueDate) {
+        if (this.dueDate) {
             const isSameDate =
-                dueDate.getUTCFullYear() === currentDate.getUTCFullYear() &&
-                dueDate.getDay() === currentDate.getDay() &&
-                dueDate.getMonth() === currentDate.getMonth();
+                this.dueDate.getUTCFullYear() ===
+                    currentDate.getUTCFullYear() &&
+                this.dueDate.getDay() === currentDate.getDay() &&
+                this.dueDate.getMonth() === currentDate.getMonth();
             return isSameDate
                 ? false
-                : dueDate.getTime() < currentDate.getTime();
+                : this.dueDate.getTime() < currentDate.getTime();
         }
         return true;
     }
@@ -146,11 +127,5 @@ export default class KanbanTile {
 
     addField(field) {
         this._field.push(field);
-    }
-
-    getDateWithTimeZone(date) {
-        return dateTimeObjectFrom(date, {
-            locale: 'en-US'
-        });
     }
 }
