@@ -843,7 +843,9 @@ export default class List extends LightningElement {
     }
 
     get computedItemHeaderClass() {
-        return classSet('slds-truncate avonni-list__item-header_font')
+        return classSet(
+            'slds-truncate avonni-list__item-header_font slds-grid slds-grid_vertical-align-center slds-margin-bottom_xx-small'
+        )
             .add({
                 'avonni-list__checkbox-list-item-header_font':
                     this.isCheckList && this.strikeThroughOnCheck

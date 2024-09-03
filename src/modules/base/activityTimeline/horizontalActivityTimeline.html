@@ -101,16 +101,15 @@
                 data-element-id="avonni-horizontal-activity-timeline__popover-header"
             >
                 <!-- item's icon -->
-                <c-avatar
+                <c-primitive-avatar
                     if:true={selectedItem.avatar}
+                    class="slds-media__figure"
                     fallback-icon-name={selectedItem.avatar.fallbackIconName}
-                    hide-avatar-details="true"
                     initials={selectedItem.avatar.initials}
                     presence={selectedItem.avatar.presence}
                     size={popoverIconSize}
                     src={selectedItem.avatar.src}
-                    class="slds-media__figure"
-                ></c-avatar>
+                ></c-primitive-avatar>
                 <!-- item's title -->
                 <div
                     class="slds-grid slds-grid_vertical slds-has-flexi-truncate"

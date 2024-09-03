@@ -59,11 +59,10 @@
                             if:true={option.hasAvatar}
                             class="slds-media__figure slds-listbox__option-icon"
                         >
-                            <c-avatar
+                            <c-primitive-avatar
                                 class="avonni-primitive-combobox__avatar"
                                 aria-hidden="true"
                                 fallback-icon-name={option.avatar.fallbackIconName}
-                                hide-avatar-details="true"
                                 initials={option.avatar.initials}
                                 presence={option.avatar.presence}
                                 presence-position={option.avatar.presencePosition}
@@ -71,7 +70,7 @@
                                 src={option.avatar.src}
                                 variant={option.avatar.variant}
                                 data-element-id="avonni-avatar"
-                            ></c-avatar>
+                            ></c-primitive-avatar>
                         </div>
                         <div class="slds-media__body">
                             <span
