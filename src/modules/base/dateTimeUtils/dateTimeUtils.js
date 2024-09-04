@@ -191,9 +191,6 @@ function _parseCustomToken({ date, token, timeZone }) {
     };
 
     const ms = date.getMilliseconds();
-    const offset = -date.getTimezoneOffset() / 60;
-    const offsetSign = offset > 0 ? '+' : '-';
-    const paddedOffset = pad(offset, 2);
     switch (token) {
         case 'S':
             return pad(ms);
@@ -220,12 +217,42 @@ function _parseCustomToken({ date, token, timeZone }) {
             return getUnit('hour', 'numeric', false);
         case 'HH':
             return getUnit('hour', '2-digit', false);
-        case 'Z':
-            return `${offsetSign}${offset}`;
-        case 'ZZ':
-            return `${offsetSign}${paddedOffset}:00`;
-        case 'ZZZ':
-            return `${offsetSign}${paddedOffset}00`;
+        case 'Z': {
+            try {
+                let offset = getUnit('timeZoneName', 'shortOffset');
+                offset = offset && offset.match(/-|\+\d+$/);
+                return offset ? offset[0] : '';
+            } catch (e) {
+                // "shortOffset" is not supported by node version < 17.0.0
+                // and package indicates we support node version >= 12.18.3
+                console.error(e);
+                return '';
+            }
+        }
+        case 'ZZ': {
+            try {
+                // "longOffset" is not supported by node version < 17.0.0
+                // and package indicates we support node version >= 12.18.3
+                let offset = getUnit('timeZoneName', 'longOffset');
+                offset = offset && offset.match(/-|\+[\d:]+$/);
+                return offset ? offset[0] : '';
+            } catch (e) {
+                console.error(e);
+                return '';
+            }
+        }
+        case 'ZZZ': {
+            try {
+                // "longOffset" is not supported by node version < 17.0.0
+                // and package indicates we support node version >= 12.18.3
+                let offset = getUnit('timeZoneName', 'longOffset');
+                offset = offset && offset.match(/-|\+[\d:]+$/);
+                return offset ? offset[0].replace(':', '') : '';
+            } catch (e) {
+                console.error(e);
+                return '';
+            }
+        }
         case 'ZZZZ':
             return getUnit('timeZoneName', 'short');
         case 'ZZZZZ':
@@ -396,7 +423,6 @@ function _standardFormat({ date, timeZone }) {
     const timeOptions = {
         hour: 'numeric',
         minute: '2-digit',
-        hour12: true,
         timeZone
     };
     const formattedTime = new Intl.DateTimeFormat(
