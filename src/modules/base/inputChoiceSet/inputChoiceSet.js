@@ -529,11 +529,11 @@ export default class InputChoiceSet extends LightningElement {
                 'slds-p-left_x-small':
                     this.toggleVariant &&
                     this.checkPosition === 'right' &&
-                    this.orientation === 'vertical',
+                    !this.isHorizontal,
                 'slds-p-right_x-small':
                     (this.toggleVariant &&
                         this.checkPosition === 'left' &&
-                        this.orientation === 'vertical') ||
+                        !this.isHorizontal) ||
                     (this.toggleVariant && this.isHorizontal)
             })
             .toString();
@@ -551,7 +551,7 @@ export default class InputChoiceSet extends LightningElement {
                 'avonni-input-choice-set__toggle_stretch':
                     this.toggleVariant &&
                     this.computedTypeAttributes?.stretch &&
-                    this.orientation === 'vertical'
+                    !this.isHorizontal
             })
             .toString();
     }
@@ -651,8 +651,7 @@ export default class InputChoiceSet extends LightningElement {
         return classSet('')
             .add({
                 'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
-                'avonni-input-choice-set__display_flex':
-                    this.variant !== VARIANT.LABEL_INLINE
+                'slds-grid': this.variant !== VARIANT.LABEL_INLINE
             })
             .toString();
     }
@@ -901,7 +900,7 @@ export default class InputChoiceSet extends LightningElement {
             ? large || medium || small || defaults || DEFAULT_COLUMNS.large
             : 12;
 
-        if (this.orientation === 'vertical') {
+        if (!this.isHorizontal) {
             attributes.multipleRows = true;
         }
         this.computedOrientationAttributes = attributes;
