@@ -279,6 +279,10 @@
             "path": "src/modules/base/luxon/luxon.js"
         },
         {
+            "name": "c/luxonDateTimeUtils",
+            "path": "src/modules/base/luxonDateTimeUtils/luxonDateTimeUtils.js"
+        },
+        {
             "name": "c/map",
             "path": "src/modules/base/map/map.js"
         },

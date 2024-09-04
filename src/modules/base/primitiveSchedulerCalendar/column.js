@@ -1,5 +1,5 @@
 import { SchedulerCellGroup } from 'c/schedulerUtils';
-import { dateTimeObjectFrom } from 'c/dateTimeUtils';
+import { dateTimeObjectFrom } from 'c/luxonDateTimeUtils';
 import { normalizeArray } from 'c/utils';
 
 /**

@@ -7,7 +7,7 @@ import {
     getWeekday,
     intervalFrom,
     isInTimeFrame
-} from 'c/dateTimeUtils';
+} from 'c/luxonDateTimeUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { TIME_ZONES } from './timezones';
 import { DateTime } from 'c/luxon';

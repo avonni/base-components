@@ -1,271 +1,440 @@
-import { DateTime, Interval } from 'c/luxon';
+const DATE_FORMAT_PRESETS = {
+    DATE_SHORT: { dateStyle: 'short' },
+    DATE_MED: { dateStyle: 'medium' },
+    DATE_MED_WITH_WEEKDAY: {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        weekday: 'short'
+    },
+    DATE_FULL: { dateStyle: 'long' },
+    DATE_HUGE: { dateStyle: 'full' },
+    TIME_SIMPLE: { timeStyle: 'short' },
+    TIME_WITH_SECONDS: { timeStyle: 'medium' },
+    TIME_WITH_SHORT_OFFSET: { timeStyle: 'long' },
+    TIME_WITH_LONG_OFFSET: { timeStyle: 'full' },
+    TIME_24_SIMPLE: { timeStyle: 'short', hour12: false },
+    TIME_24_WITH_SECONDS: { timeStyle: 'medium', hour12: false },
+    TIME_24_WITH_SHORT_OFFSET: { timeStyle: 'long', hour12: false },
+    TIME_24_WITH_LONG_OFFSET: { timeStyle: 'full', hour12: false },
+    DATETIME_SHORT: { dateStyle: 'short', timeStyle: 'short' },
+    DATETIME_SHORT_WITH_SECONDS: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    },
+    DATETIME_MED: { dateStyle: 'medium', timeStyle: 'medium' },
+    DATETIME_MED_WITH_SECONDS: {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    },
+    DATETIME_MED_WITH_WEEKDAY: {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        weekday: 'short',
+        hour: 'numeric',
+        minute: 'numeric'
+    },
+    DATETIME_FULL: { dateStyle: 'long', timeStyle: 'long' },
+    DATETIME_FULL_WITH_SECONDS: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short'
+    },
+    DATETIME_HUGE: { dateStyle: 'full', timeStyle: 'full' },
+    DATETIME_HUGE_WITH_SECONDS: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'long'
+    }
+};
 
-/**
- * Convert a timestamp or a date object into a Luxon DateTime object.
- *
- * @param {(number | Date)} date Timestamp or date object to convert.
- * @returns {(DateTime | false)} DateTime object or false.
- */
-const dateTimeObjectFrom = (date, options) => {
-    let time;
-    if (date instanceof Date) {
-        time = date.getTime();
-    } else if (date instanceof DateTime) {
-        time = date.ts;
-        if (!options) {
-            options = { zone: date.zoneName };
+const millisecondsPerSecond = 1000;
+const secondsPerMinute = 60;
+const minutesPerHour = 60;
+const hoursPerDay = 24;
+const daysPerWeek = 7;
+const weeksPerYear = 52;
+const INTERVALS = {
+    year:
+        millisecondsPerSecond *
+        secondsPerMinute *
+        minutesPerHour *
+        hoursPerDay *
+        daysPerWeek *
+        weeksPerYear,
+    week:
+        millisecondsPerSecond *
+        secondsPerMinute *
+        minutesPerHour *
+        hoursPerDay *
+        daysPerWeek,
+    day:
+        millisecondsPerSecond * secondsPerMinute * minutesPerHour * hoursPerDay,
+    hour: millisecondsPerSecond * secondsPerMinute * minutesPerHour,
+    minute: millisecondsPerSecond * secondsPerMinute,
+    second: millisecondsPerSecond
+};
+
+const WEEKDAY_NUMBERS = {
+    Mon: 1,
+    Tue: 2,
+    Wed: 3,
+    Thu: 4,
+    Fri: 5,
+    Sat: 6,
+    Sun: 7
+};
+
+function _getTzDate(date, timeZone) {
+    const parts = new Intl.DateTimeFormat('en-US', {
+        day: '2-digit',
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).formatToParts(date);
+    const year = parts[4].value;
+    const month = parts[0].value;
+    const day = parts[2].value;
+    const hour = parts[6].value;
+    const minute = parts[8].value;
+    const second = parts[10].value;
+    return new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
+}
+
+function _getDayOfYear(date, timeZone) {
+    const startOfYear = _getTzDate(date, timeZone);
+    startOfYear.setMonth(0, 1);
+    const tzDate = _getTzDate(date, timeZone);
+    const day = 1 + Math.ceil((tzDate - startOfYear) / 86400000);
+    return day ? day.toString() : '';
+}
+
+function _getIsoWeek(date, timeZone) {
+    const target = _getTzDate(date, timeZone);
+    const day = (date.getDay() + 6) % 7;
+    target.setDate(target.getDate() - day + 3);
+    const firstThursday = target.valueOf();
+    target.setMonth(0, 1);
+    if (target.getDay() !== 4) {
+        target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
+    }
+    const isoWeek = 1 + Math.ceil((firstThursday - target) / 604800000);
+    return isoWeek ? isoWeek.toString() : '';
+}
+
+function _getIsoYear(date, timeZone) {
+    // Set to the Thursday of the current week
+    const d = _getTzDate(date, timeZone);
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+
+    // Calculate the ISO week year
+    const year = d.getFullYear();
+    const startOfYear = new Date(Date.UTC(year, 0, 1));
+    const isWeek53 =
+        startOfYear.getDay() === 4 ||
+        new Date(
+            Date.UTC(year, 0, 1 - ((startOfYear.getDay() + 6) % 7))
+        ).getDay() === 4;
+    const isoYear =
+        year + (isWeek53 && d.getTime() < startOfYear.getTime() ? -1 : 0);
+    return isoYear ? isoYear.toString() : '';
+}
+
+function _getQuarter(date, timeZone) {
+    const month = _getTzDate(date, timeZone).getMonth();
+    const quarter = Math.ceil(month / 3);
+    return quarter ? quarter.toString() : '';
+}
+
+function _parseCustomToken({ date, token, timeZone }) {
+    const pad = (value, length) => {
+        return value ? value.toString().padStart(length, '0') : '';
+    };
+
+    const getUnit = (unit, unitFormat = 'numeric', hour12 = true) => {
+        const parts = new Intl.DateTimeFormat('default', {
+            [unit]: unitFormat,
+            hour12,
+            timeZone
+        }).formatToParts(date);
+        const value = parts.find((part) => part.type === unit).value;
+        return value || '';
+    };
+
+    const format = (opt = {}) => {
+        return new Intl.DateTimeFormat('default', {
+            ...opt,
+            timeZone
+        }).format(date);
+    };
+
+    const ms = date.getMilliseconds();
+    const offset = -date.getTimezoneOffset() / 60;
+    const offsetSign = offset > 0 ? '+' : '-';
+    const paddedOffset = pad(offset, 2);
+    switch (token) {
+        case 'S':
+            return pad(ms);
+        case 'SSS':
+        case 'u':
+            return pad(ms, 3);
+        case 'uu':
+            return pad(Math.floor(ms / 10), 2);
+        case 'uuu':
+            return pad(Math.floor(ms / 100));
+        case 's':
+            return getUnit('second');
+        case 'ss':
+            return getUnit('second', '2-digit');
+        case 'm':
+            return getUnit('minute');
+        case 'mm':
+            return getUnit('minute', '2-digit');
+        case 'h':
+            return getUnit('hour');
+        case 'hh':
+            return getUnit('hour', '2-digit');
+        case 'H':
+            return getUnit('hour', 'numeric', false);
+        case 'HH':
+            return getUnit('hour', '2-digit', false);
+        case 'Z':
+            return `${offsetSign}${offset}`;
+        case 'ZZ':
+            return `${offsetSign}${paddedOffset}:00`;
+        case 'ZZZ':
+            return `${offsetSign}${paddedOffset}00`;
+        case 'ZZZZ':
+            return getUnit('timeZoneName', 'short');
+        case 'ZZZZZ':
+            return getUnit('timeZoneName', 'long');
+        case 'z':
+            return timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+        case 'a': {
+            const parts = new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                timeZone
+            }).formatToParts(date);
+            const value = parts.find((part) => part.type === 'dayPeriod').value;
+            return value || '';
         }
-    } else if (!isNaN(new Date(date).getTime())) {
-        time = new Date(date).getTime();
-    } else if (typeof date === 'string') {
-        // Add support for Salesforce format 2023-01-25, 12:00 p.m.
-        let normalizedDate = date.replace('p.m.', 'PM');
-        normalizedDate = normalizedDate.replace('a.m.', 'AM');
-
-        const dateTime = DateTime.fromFormat(normalizedDate, 'yyyy-MM-dd, t', {
-            locale: 'default'
-        });
-        if (dateTime.isValid) {
-            time = dateTime.ts;
+        case 'd':
+            return getUnit('day');
+        case 'dd':
+            return getUnit('day', '2-digit');
+        case 'c':
+        case 'E': {
+            const weekday = new Intl.DateTimeFormat('en-US', {
+                weekday: 'short',
+                timeZone
+            }).format(date);
+            return WEEKDAY_NUMBERS[weekday] ? WEEKDAY_NUMBERS.toString() : '';
         }
+        case 'ccc':
+        case 'EEE':
+            return getUnit('weekday', 'short');
+        case 'cccc':
+        case 'EEEE':
+            return getUnit('weekday', 'long');
+        case 'ccccc':
+        case 'EEEEE':
+            return getUnit('weekday', 'narrow');
+        case 'L':
+        case 'M':
+            return getUnit('month');
+        case 'LL':
+        case 'MM':
+            return getUnit('month', '2-digit');
+        case 'LLL':
+        case 'MMM':
+            return getUnit('month', 'short');
+        case 'LLLL':
+        case 'MMMM':
+            return getUnit('month', 'long');
+        case 'LLLLL':
+        case 'MMMMM':
+            return getUnit('month', 'narrow');
+        case 'y':
+            return getUnit('year');
+        case 'ii':
+        case 'yy':
+            return getUnit('year', '2-digit');
+        case 'iiii':
+        case 'yyyy':
+            return getUnit('year', 'numeric', 4);
+        case 'G':
+            return getUnit('era', 'short');
+        case 'GG':
+            return getUnit('era', 'long');
+        case 'GGGGG':
+            return getUnit('era', 'narrow');
+        case 'kk':
+            return _getIsoYear(date, timeZone).slice(-2);
+        case 'kkkk':
+            return _getIsoYear(date, timeZone);
+        case 'W':
+        case 'n':
+            return _getIsoWeek(date, timeZone);
+        case 'nn':
+        case 'WW':
+            return pad(_getIsoWeek(date, timeZone), 2);
+        case 'o':
+            return _getDayOfYear(date, timeZone);
+        case 'ooo':
+            return pad(_getDayOfYear(date, timeZone), 3);
+        case 'q':
+            return _getQuarter(date, timeZone);
+        case 'qq':
+            return pad(_getQuarter(date, timeZone), 2);
+        case 'D':
+            return format(DATE_FORMAT_PRESETS.DATE_SHORT);
+        case 'DD':
+            return format(DATE_FORMAT_PRESETS.DATE_MED);
+        case 'DDD':
+            return format(DATE_FORMAT_PRESETS.DATE_FULL);
+        case 'DDDD':
+            return format(DATE_FORMAT_PRESETS.DATE_HUGE);
+        case 't':
+            return format(DATE_FORMAT_PRESETS.TIME_SIMPLE);
+        case 'tt':
+            return format(DATE_FORMAT_PRESETS.TIME_WITH_SECONDS);
+        case 'ttt':
+            return format(DATE_FORMAT_PRESETS.TIME_WITH_SHORT_OFFSET);
+        case 'tttt':
+            return format(DATE_FORMAT_PRESETS.TIME_WITH_LONG_OFFSET);
+        case 'T':
+            return format(DATE_FORMAT_PRESETS.TIME_24_SIMPLE);
+        case 'TT':
+            return format(DATE_FORMAT_PRESETS.TIME_24_WITH_SECONDS);
+        case 'TTT':
+            return format(DATE_FORMAT_PRESETS.TIME_24_WITH_SHORT_OFFSET);
+        case 'TTTT':
+            return format(DATE_FORMAT_PRESETS.TIME_24_WITH_LONG_OFFSET);
+        case 'f':
+            return format(DATE_FORMAT_PRESETS.DATETIME_SHORT);
+        case 'ff':
+            return format(DATE_FORMAT_PRESETS.DATETIME_MED);
+        case 'fff':
+            return format(DATE_FORMAT_PRESETS.DATETIME_FULL);
+        case 'ffff':
+            return format(DATE_FORMAT_PRESETS.DATETIME_HUGE);
+        case 'F':
+            return format(DATE_FORMAT_PRESETS.DATETIME_SHORT_WITH_SECONDS);
+        case 'FF':
+            return format(DATE_FORMAT_PRESETS.DATETIME_MED_WITH_SECONDS);
+        case 'FFF':
+            return format(DATE_FORMAT_PRESETS.DATETIME_FULL_WITH_SECONDS);
+        case 'FFFF':
+            return format(DATE_FORMAT_PRESETS.DATETIME_HUGE_WITH_SECONDS);
+        case 'X':
+            return Math.floor(date.getTime() / 1000);
+        case 'x':
+            return date.getTime();
+        default:
+            return token;
     }
+}
 
-    if (time) {
-        const dateTime = DateTime.fromMillis(time, options);
-        if (dateTime.invalidExplanation) {
-            // Ignore invalid options but log the error
-            console.error(dateTime.invalidExplanation);
-            return DateTime.fromMillis(time);
+function _customFormat({ date, format, timeZone }) {
+    const regex = /'[^']*'|[^a-zA-Z]|[a-zA-Z]+/g;
+    const parts = format.match(regex);
+
+    let result = '';
+    parts.forEach((part) => {
+        if (part.match(/^[a-zA-Z]+$/)) {
+            result += _parseCustomToken({ date, token: part, timeZone });
+        } else {
+            result += part;
         }
-        return dateTime;
-    }
-    return false;
-};
-
-/**
- * Get the weekday of a date, starting the weeks from Sunday.
- *
- * @param {Date|DateTime|number|string} date The date we want to get the weekday of.
- * @returns {number|null} The weekday or null if the date is not a valid date. Weekdays go from 0 (Sunday) to 6 (Saturday).
- */
-const getWeekday = (date) => {
-    let normalizedDate = date;
-    if (!(date instanceof DateTime)) {
-        normalizedDate = dateTimeObjectFrom(date);
-        if (!normalizedDate) return null;
-    }
-
-    const weekday = normalizedDate.weekday;
-    return weekday === 7 ? 0 : weekday;
-};
-
-const intervalFrom = (start, end) => {
-    const normalizedStart = DateTime.isDateTime(start)
-        ? start
-        : dateTimeObjectFrom(start);
-    const normalizedEnd = DateTime.isDateTime(end)
-        ? end
-        : dateTimeObjectFrom(end);
-    if (!normalizedStart || !normalizedEnd) {
-        return null;
-    }
-    return Interval.fromDateTimes(start, end);
-};
-
-/**
- * Check if the given time frame is valid, and parse it into a start and an end date.
- *
- * @param {string} timeFrame Time frame to validate and parse.
- * @returns {object} Object with three possible keys: valid, start and end.
- */
-const parseTimeFrame = (timeFrame, options) => {
-    const startMatch = timeFrame.match(/^([0-9:]+(\.\d+)?)-/);
-    const endMatch = timeFrame.match(/-([0-9:]+(\.\d+)?)$/);
-
-    if (!startMatch || !endMatch) {
-        console.error(
-            `Wrong time frame format for ${timeFrame}. The time frame needs to follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.`
-        );
-        return { valid: false };
-    }
-    const start = DateTime.fromISO(startMatch[1], options);
-    const end = DateTime.fromISO(endMatch[1], options);
-
-    if (end < start) {
-        console.error(
-            `Wrong time frame format for ${timeFrame}. The end time is smaller than the start time.`
-        );
-        return { valid: false };
-    }
-
-    return { start, end, valid: true };
-};
-
-/**
- * Check if a time is included in a time frame.
- *
- * @param {DateTime} date DateTime object.
- * @param {string} timeFrame The time frame of reference, in the format '00:00-00:00'.
- * @returns {boolean} true or false.
- */
-const isInTimeFrame = (date, timeFrame) => {
-    const { start, end, valid } = parseTimeFrame(timeFrame, {
-        zone: date.zoneName
     });
-    if (!valid) {
-        return true;
+    return result;
+}
+
+function _isSameDate(date1, date2) {
+    return (
+        date1.toISOString().slice(0, 10) === date2.toISOString().slice(0, 10)
+    );
+}
+
+function _relativeFormat(date) {
+    const now = new Date();
+    if (now - date > 0 && now - date < 60000) {
+        return 'now';
     }
+    const diff = date - now;
+    const unit = Object.keys(INTERVALS).find(
+        (u) => Math.abs(diff) >= INTERVALS[u]
+    );
+    const numberOfUnits = Math.floor(diff / INTERVALS[unit]);
+    return new Intl.RelativeTimeFormat('default').format(numberOfUnits, unit);
+}
 
-    const time = date.set({
-        year: start.year,
-        month: start.month,
-        day: start.day
-    });
+function _standardFormat({ date, timeZone }) {
+    const now = new Date();
+    const timeOptions = {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone
+    };
+    const formattedTime = new Intl.DateTimeFormat(
+        'default',
+        timeOptions
+    ).format(date);
 
-    return time < end && time >= start;
-};
-
-/**
- * Add unit * span to the date.
- *
- * @param {DateTime} date The date we want to add time to.
- * @param {string} unit The time unit (minute, hour, day, week, month or year).
- * @param {number} span The number of unit to add.
- * @returns {DateTime} DateTime object with the added time.
- */
-const addToDate = (date, unit, span) => {
-    const options = {};
-    options[unit] = span;
-    return date.plus(options);
-};
-
-/**
- * Remove unit * span from the date.
- *
- * @param {DateTime} date The date we want to remove time from.
- * @param {string} unit The time unit (minute, hour, day, week, month or year).
- * @param {number} span The number of unit to remove.
- * @returns {DateTime} DateTime object with the removed time.
- */
-const removeFromDate = (date, unit, span) => {
-    const options = {};
-    options[unit] = -span;
-    return date.plus(options);
-};
-
-const getStartOfWeek = (date) => {
-    const isSunday = date.weekday === 7;
-    if (isSunday) {
-        return date.startOf('day');
+    if (_isSameDate(date, now)) {
+        return `Today ${formattedTime}`;
     }
-    const monday = date.startOf('week');
-    return removeFromDate(monday, 'day', 1);
-};
-
-/**
- * Get the week number of a date, starting the weeks from Sunday.
- *
- * @param {Date|DateTime|number|string} date The date we want to get the week number of.
- * @returns {number|null} The week number or null if the date is not a valid date.
- */
-const getWeekNumber = (date) => {
-    let normalizedDate = date;
-    if (!(date instanceof DateTime)) {
-        normalizedDate = dateTimeObjectFrom(date);
-        if (!normalizedDate) return null;
+    const yesterday = new Date(now - 86400000);
+    if (_isSameDate(date, yesterday)) {
+        return `Yesterday ${formattedTime}`;
     }
+    return new Intl.DateTimeFormat('default', {
+        ...timeOptions,
+        month: 'short',
+        day: 'numeric'
+    }).format(date);
+}
 
-    if (normalizedDate.weekday === 7) {
-        normalizedDate = addToDate(normalizedDate, 'day', 1);
-    }
-    return normalizedDate.weekNumber;
-};
-
-/**
- * Calculate the number of units between two dates, including partial units.
- *
- * @param {string} unit The time unit (minute, hour, day, week, month or year).
- * @param {DateTime} start The starting date.
- * @param {DateTime} end The ending date.
- * @returns {number} Number of units between the start and end dates.
- */
-const numberOfUnitsBetweenDates = (unit, start, end) => {
-    // Compensate the fact that luxon weeks start on Monday
-    const isWeek = unit === 'week';
-    let normalizedStart = isWeek ? addToDate(start, 'day', 1) : start;
-    let normalizedEnd = isWeek ? addToDate(end, 'day', 1) : end;
-
-    const interval = Interval.fromDateTimes(normalizedStart, normalizedEnd);
-    return interval.count(unit);
-};
-
-const DATE_FORMAT_PRESETS = [
-    'DATE_SHORT',
-    'DATE_MED',
-    'DATE_MED_WITH_WEEKDAY',
-    'DATE_FULL',
-    'DATE_HUGE',
-    'TIME_SIMPLE',
-    'TIME_WITH_SECONDS',
-    'TIME_WITH_SHORT_OFFSET',
-    'TIME_WITH_LONG_OFFSET',
-    'TIME_24_SIMPLE',
-    'TIME_24_WITH_SECONDS',
-    'TIME_24_WITH_SHORT_OFFSET',
-    'TIME_24_WITH_LONG_OFFSET',
-    'DATETIME_SHORT',
-    'DATETIME_MED',
-    'DATETIME_FULL',
-    'DATETIME_HUGE',
-    'DATETIME_SHORT_WITH_SECONDS',
-    'DATETIME_MED_WITH_SECONDS',
-    'DATETIME_FULL_WITH_SECONDS',
-    'DATETIME_HUGE_WITH_SECONDS'
-];
-
-const getFormattedDate = (date = new Date(), dateOptions, format) => {
-    const luxonDate = dateTimeObjectFrom(date, dateOptions);
-    const luxonDateNow = dateTimeObjectFrom(Date.now(), dateOptions);
+const getFormattedDate = ({ date = new Date(), timeZone, format }) => {
+    const givenDate = new Date(date);
 
     if (format === 'STANDARD') {
-        return getFormattedDateStandard(luxonDate, luxonDateNow);
+        return _standardFormat({ date: givenDate, timeZone });
     }
     if (format === 'RELATIVE') {
-        return getFormattedDateRelative(luxonDate, luxonDateNow);
+        return _relativeFormat(givenDate);
     }
-    if (DATE_FORMAT_PRESETS.includes(format)) {
-        return luxonDate.toLocaleString(DateTime[format]);
+    if (DATE_FORMAT_PRESETS[format]) {
+        return new Intl.DateTimeFormat('default', {
+            ...DATE_FORMAT_PRESETS[format],
+            timeZone
+        }).format(givenDate);
     }
 
-    return luxonDate.toFormat(format);
+    return _customFormat({ date: givenDate, format, timeZone });
 };
 
-function getFormattedDateRelative(luxonDate, luxonDateNow) {
-    const diff = luxonDate.diff(luxonDateNow).as('seconds');
-    const minuteInSeconds = 60;
-    if (Math.abs(diff) < minuteInSeconds) return 'now';
-    return luxonDate.toRelative();
-}
-
-function getFormattedDateStandard(luxonDate, luxonDateNow) {
-    if (luxonDate.hasSame(luxonDateNow, 'day'))
-        return `Today ${luxonDate.toFormat('h:mm a')}`;
-    if (luxonDate.hasSame(luxonDateNow.minus({ days: 1 }), 'day'))
-        return `Yesterday ${luxonDate.toFormat('h:mm a')}`;
-    return luxonDate.toFormat('LLL d, h:mm a');
-}
-
-export {
-    DATE_FORMAT_PRESETS,
-    addToDate,
-    dateTimeObjectFrom,
-    getFormattedDate,
-    getStartOfWeek,
-    getWeekday,
-    getWeekNumber,
-    intervalFrom,
-    isInTimeFrame,
-    numberOfUnitsBetweenDates,
-    parseTimeFrame,
-    removeFromDate
-};
+export { DATE_FORMAT_PRESETS, getFormattedDate };

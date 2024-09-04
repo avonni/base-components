@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { dateTimeObjectFrom } from 'c/dateTimeUtils';
+import { dateTimeObjectFrom } from 'c/luxonDateTimeUtils';
 import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import {

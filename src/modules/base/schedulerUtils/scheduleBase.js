@@ -4,7 +4,7 @@ import {
     dateTimeObjectFrom,
     getStartOfWeek,
     intervalFrom
-} from 'c/dateTimeUtils';
+} from 'c/luxonDateTimeUtils';
 import {
     classSet,
     deepCopy,

@@ -693,13 +693,11 @@ export class HorizontalActivityTimeline {
         if (this.isDateInvalid(date)) {
             return '';
         }
-        return getFormattedDate(
+        return getFormattedDate({
             date,
-            {
-                zone: this._activityTimeline.timezone
-            },
+            timeZone: this._activityTimeline.timezone,
             format
-        );
+        });
     }
 
     /**

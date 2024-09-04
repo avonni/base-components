@@ -5,7 +5,7 @@ import {
     dateTimeObjectFrom,
     numberOfUnitsBetweenDates,
     removeFromDate
-} from 'c/dateTimeUtils';
+} from 'c/luxonDateTimeUtils';
 import { equal } from 'c/utilsPrivate';
 import SchedulerHeader from './schedulerHeader';
 import {

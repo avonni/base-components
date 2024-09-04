@@ -1,7 +1,7 @@
 import { api, track } from 'lwc';
 import { equal } from 'c/utilsPrivate';
 import { classSet, deepCopy, normalizeArray, normalizeString } from 'c/utils';
-import { addToDate } from 'c/dateTimeUtils';
+import { addToDate } from 'c/luxonDateTimeUtils';
 import {
     DEFAULT_START_DATE,
     HEADERS,

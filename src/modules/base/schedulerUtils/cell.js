@@ -1,4 +1,4 @@
-import { dateTimeObjectFrom, getWeekNumber } from 'c/dateTimeUtils';
+import { dateTimeObjectFrom, getWeekNumber } from 'c/luxonDateTimeUtils';
 import { classSet, normalizeArray } from 'c/utils';
 
 /**

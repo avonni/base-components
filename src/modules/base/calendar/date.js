@@ -4,7 +4,7 @@ import {
     normalizeBoolean,
     normalizeObject
 } from 'c/utils';
-import { getWeekNumber } from 'c/dateTimeUtils';
+import { getWeekNumber } from 'c/luxonDateTimeUtils';
 import Label from './dateLabel';
 
 export default class CalendarDate {

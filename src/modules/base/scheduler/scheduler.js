@@ -5,7 +5,7 @@ import {
     addToDate,
     parseTimeFrame,
     removeFromDate
-} from 'c/dateTimeUtils';
+} from 'c/luxonDateTimeUtils';
 import {
     getDisabledWeekdaysLabels,
     positionPopover,

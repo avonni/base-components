@@ -5,7 +5,7 @@ import {
     getWeekNumber,
     intervalFrom,
     numberOfUnitsBetweenDates
-} from 'c/dateTimeUtils';
+} from 'c/luxonDateTimeUtils';
 import {
     classSet,
     deepCopy,
