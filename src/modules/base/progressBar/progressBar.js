@@ -121,21 +121,18 @@ export default class ProgressBar extends LightningElement {
      * @returns {File} progressBar.html | progressBarVertical.html
      */
     render() {
-        return this._orientation === 'horizontal'
-            ? progressBar
-            : progressBarVertical;
+        return this.isHorizontal ? progressBar : progressBarVertical;
     }
 
     connectedCallback() {
-        this.updatePinPosition();
         this._connected = true;
     }
 
     renderedCallback() {
         if (!this._resizeObserver) {
-            this._resizeObserver = this.initResizeObserver();
+            this._resizeObserver = this._initResizeObserver();
         }
-        this.updatePinPosition();
+        this._updatePinPosition();
     }
 
     disconnectedCallback() {
@@ -183,13 +180,12 @@ export default class ProgressBar extends LightningElement {
         });
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
     /**
      * Object of attributes for the pin.
-     * Pin attributes: type and position
      *
      * @type {object}
      * @public
@@ -212,7 +208,7 @@ export default class ProgressBar extends LightningElement {
         this._pinAttributes = { type, position };
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
@@ -231,7 +227,7 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
-     * If present, display the pin .
+     * If present, display the value in pin. Show value must be set to true.
      *
      * @type {boolean}
      * @public
@@ -245,7 +241,7 @@ export default class ProgressBar extends LightningElement {
         this._showPin = normalizeBoolean(value);
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
@@ -264,7 +260,7 @@ export default class ProgressBar extends LightningElement {
         this._showValue = normalizeBoolean(value);
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
@@ -286,7 +282,7 @@ export default class ProgressBar extends LightningElement {
         });
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
@@ -491,22 +487,39 @@ export default class ProgressBar extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed Pin class for the progress bar.
+     *
+     * @type {string}
+     */
     get computedPinClass() {
         return classSet('avonni-progress-bar__pin')
             .add(`avonni-progress-bar__pin_theme-${this.theme}`)
             .add(`avonni-progress-bar__${this.pinType}-pin`)
             .add({
                 'avonni-progress-bar__pin-left':
-                    this.pinAttributes &&
-                    this.pinAttributes.position === 'left' &&
-                    this.isVertical
-            })
-            .add({
+                    this.pinAttributes?.position === 'left' && this.isVertical,
                 'avonni-progress-bar__pin-right':
-                    this.pinAttributes &&
-                    this.pinAttributes.position === 'right' &&
-                    this.isVertical
-            });
+                    this.pinAttributes?.position === 'right' && this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed color gradient or clipping area for the progress bar value based on vertical or horizontal display.
+     *
+     * @type {string}
+     */
+    get computedProgressBarStyle() {
+        const clipValue = this.isHorizontal
+            ? `0% ${this.value}% auto 0`
+            : `${100 - this.value}% 100% auto 0`;
+        let path = `clip-path: rect(${clipValue})`;
+
+        if (this.variant === 'circular') {
+            path += ` round ${BORDER_RADIUS_REM}rem ${BORDER_RADIUS_REM}rem`;
+        }
+        return path;
     }
 
     /**
@@ -526,20 +539,12 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
-     * Computed color gradient or clipping area for the progress bar value based on vertical or horizontal display.
+     * If true, show the value.
      *
-     * @type {string}
+     * @type {boolean}
      */
-    get computedStyle() {
-        let path = 'clip-path: rect(';
-        path += this.isHorizontal
-            ? `0% ${this.value}% auto 0`
-            : `${100 - this.value}% 100% auto 0`;
-        if (this.variant === 'circular') {
-            path += ` round ${BORDER_RADIUS_REM}rem ${BORDER_RADIUS_REM}rem`;
-        }
-        path += ')';
-        return path;
+    get displayValue() {
+        return this.showValue && !this.showPin;
     }
 
     /**
@@ -590,23 +595,12 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
-     * Verify Show position left.
+     * Verify Show position bottom.
      *
-     * @type {string | boolean}
+     * @type {boolean}
      */
-    get showPositionLeft() {
-        return this.valuePosition === 'left' && this.showValue && !this.showPin;
-    }
-
-    /**
-     * Verify Show position right.
-     *
-     * @type {string | boolean}
-     */
-    get showPositionRight() {
-        return (
-            this.valuePosition === 'right' && this.showValue && !this.showPin
-        );
+    get showPositionBottom() {
+        return this.showPositionBottomLeft || this.showPositionBottomRight;
     }
 
     /**
@@ -615,11 +609,7 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionBottomLeft() {
-        return (
-            this.valuePosition === 'bottom-left' &&
-            this.showValue &&
-            !this.showPin
-        );
+        return this.valuePosition === 'bottom-left' && this.displayValue;
     }
 
     /**
@@ -628,44 +618,25 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionBottomRight() {
-        return (
-            this.valuePosition === 'bottom-right' &&
-            this.showValue &&
-            !this.showPin
-        );
+        return this.valuePosition === 'bottom-right' && this.displayValue;
     }
 
     /**
-     * Verify Show position top right.
+     * Verify Show position left.
      *
      * @type {string | boolean}
      */
-    get showPositionTopRight() {
-        return (
-            this.valuePosition === 'top-right' &&
-            this.showValue &&
-            !this.showPin
-        );
+    get showPositionLeft() {
+        return this.valuePosition === 'left' && this.displayValue;
     }
 
     /**
-     * Verify Show position top left.
+     * Verify Show position right.
      *
      * @type {string | boolean}
      */
-    get showPositionTopLeft() {
-        return (
-            this.valuePosition === 'top-left' && this.showValue && !this.showPin
-        );
-    }
-
-    /**
-     * Verify Show position bottom.
-     *
-     * @type {boolean}
-     */
-    get showPositionBottom() {
-        return this.showPositionBottomLeft || this.showPositionBottomRight;
+    get showPositionRight() {
+        return this.valuePosition === 'right' && this.displayValue;
     }
 
     /**
@@ -677,6 +648,24 @@ export default class ProgressBar extends LightningElement {
         return (
             this.showPositionTopLeft || this.showPositionTopRight || this.label
         );
+    }
+
+    /**
+     * Verify Show position top left.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionTopLeft() {
+        return this.valuePosition === 'top-left' && this.displayValue;
+    }
+
+    /**
+     * Verify Show position top right.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionTopRight() {
+        return this.valuePosition === 'top-right' && this.displayValue;
     }
 
     /**
@@ -708,20 +697,19 @@ export default class ProgressBar extends LightningElement {
      *
      * @returns {AvonniResizeObserver} Resize observer.
      */
-    initResizeObserver() {
+    _initResizeObserver() {
         if (!this.divPin) {
             return null;
         }
         return new AvonniResizeObserver(this.divPin, () => {
-            this.updatePinPosition();
+            this._updatePinPosition();
         });
     }
 
     /**
      * Update the position of the pin based on the orientation and the pin attributes.
-     *
      */
-    updatePinPosition() {
+    _updatePinPosition() {
         if (!this.divPin || !this.showPinValue) {
             return;
         }
