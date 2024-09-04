@@ -1,14 +1,11 @@
 <template>
-    <div class={computedSizing}>
-        <lightning-layout vertical-align="center" pull-to-boundary="small">
+    <div class={computedSizingClass}>
+        <lightning-layout pull-to-boundary="small" vertical-align="center">
             <lightning-layout-item
                 if:true={showPositionLeft}
                 data-position-left
             >
-                <span
-                    class="avonni-progress-bar__value_font"
-                    aria-hidden="true"
-                >
+                <span class="avonni-progress-bar__value" aria-hidden="true">
                     {valueToDisplay}
                 </span>
             </lightning-layout-item>
@@ -19,22 +16,22 @@
                 <lightning-layout horizontal-align="spread">
                     <lightning-layout-item>
                         <div
+                            if:true={label}
                             class="
                                 slds-m-bottom_x-small
-                                avonni-progress-bar__label_font
+                                avonni-progress-bar__label
                             "
-                            if:true={label}
                         >
                             {label}
                         </div>
                         <span
                             if:true={showPositionTopLeft}
-                            data-position-top-left
-                            aria-hidden="true"
                             class="
                                 slds-p-left_xx-small
-                                avonni-progress-bar__value_font
+                                avonni-progress-bar__value
                             "
+                            data-position-top-left
+                            aria-hidden="true"
                         >
                             {valueToDisplay}
                         </span>
@@ -44,7 +41,7 @@
                         data-position-top-right
                     >
                         <span
-                            class="avonni-progress-bar__value_font"
+                            class="avonni-progress-bar__value"
                             aria-hidden="true"
                         >
                             {valueToDisplay}
@@ -83,20 +80,20 @@
                     </div>
                     <span class="slds-assistive-text">{assistiveText}</span>
                     <lightning-layout
+                        class="slds-p-top_x-small"
                         horizontal-align="spread"
                         vertical-align="center"
-                        class="slds-p-top_x-small"
                     >
                         <lightning-layout-item
                             if:true={showPositionBottomRight}
                             data-position-bottom-right
                         >
                             <span
-                                aria-hidden="true"
                                 class="
                                     avonni-progress-bar__value_bottom-right
-                                    avonni-progress-bar__value_font
+                                    avonni-progress-bar__value
                                 "
+                                aria-hidden="true"
                             >
                                 {valueToDisplay}
                             </span>
@@ -106,11 +103,11 @@
                             data-position-bottom-left
                         >
                             <span
-                                aria-hidden="true"
                                 class="
                                     avonni-progress-bar__value_bottom-left
-                                    avonni-progress-bar__value_font
+                                    avonni-progress-bar__value
                                 "
+                                aria-hidden="true"
                             >
                                 {valueToDisplay}
                             </span>
@@ -122,12 +119,12 @@
                     >
                         <c-primitive-reference-line
                             key={referenceLine.label}
+                            border-style={referenceLine.borderStyle}
                             label={referenceLine.label}
+                            orientation={orientation}
+                            thickness={thickness}
                             value={referenceLine.value}
                             variant={referenceLine.variant}
-                            border-style={referenceLine.borderStyle}
-                            thickness={thickness}
-                            orientation={orientation}
                             data-element-id="avonni-primitive-reference-line"
                         ></c-primitive-reference-line>
                     </template>
@@ -137,10 +134,7 @@
                 if:true={showPositionRight}
                 data-position-right
             >
-                <span
-                    class="avonni-progress-bar__value_font"
-                    aria-hidden="true"
-                >
+                <span class="avonni-progress-bar__value" aria-hidden="true">
                     {valueToDisplay}
                 </span>
             </lightning-layout-item>
