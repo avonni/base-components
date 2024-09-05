@@ -180,7 +180,7 @@ describe('Date Time Utils', () => {
 
         it('5 hours ago', () => {
             const result = getFormattedDate({
-                date: new Date(new Date().getTime() - 18000000),
+                date: new Date(new Date().getTime() - 17000000),
                 format: 'RELATIVE'
             });
             expect(result).toBe('5 hours ago');
@@ -280,9 +280,9 @@ describe('Date Time Utils', () => {
 
     describe('Custom Format', () => {
         const date = new Date(2024, 0, 28, 15, 30);
-        const dateTime = DateTime.fromJSDate(date);
 
         it('Contains a custom string and multiple tokens', () => {
+            const dateTime = DateTime.fromJSDate(date);
             const result = getFormattedDate({
                 date,
                 format: "HH 'hours and' mm 'minutes'"
@@ -294,10 +294,24 @@ describe('Date Time Utils', () => {
 
         TOKENS.forEach((token) => {
             it(`Token ${token}`, () => {
+                const dateTime = DateTime.fromJSDate(date);
                 expect(
                     getFormattedDate({
                         date,
                         format: token
+                    })
+                ).toBe(dateTime.toFormat(token));
+            });
+
+            it(`Token ${token} with a time zone`, () => {
+                const dateTime = DateTime.fromJSDate(date, {
+                    zone: 'Pacific/Honolulu'
+                });
+                expect(
+                    getFormattedDate({
+                        date,
+                        format: token,
+                        timeZone: 'Pacific/Honolulu'
                     })
                 ).toBe(dateTime.toFormat(token));
             });
