@@ -368,7 +368,7 @@ describe('Kanban', () => {
             const dates = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-kanban__tile_dates"]'
             );
-            expect(dates[1].classList).not.toContain(
+            expect(dates[4].classList).not.toContain(
                 'avonni-kanban__tile_dates_overdue'
             );
         });

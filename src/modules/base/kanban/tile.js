@@ -33,16 +33,20 @@ export default class KanbanTile {
         return this._dueDate;
     }
     set dueDate(value) {
-        const date = !value || isNaN(new Date(value)) ? null : new Date(value);
-        this._dueDate = date;
+        const date = !isNaN(Number(value))
+            ? new Date(Number(value))
+            : new Date(value);
+        this._dueDate = !value || isNaN(date) ? null : date;
     }
 
     get startDate() {
         return this._startDate;
     }
     set startDate(value) {
-        const date = !value || isNaN(new Date(value)) ? null : new Date(value);
-        this._startDate = date;
+        const date = !isNaN(Number(value))
+            ? new Date(Number(value))
+            : new Date(value);
+        this._startDate = !value || isNaN(date) ? null : date;
     }
 
     get summarizeValue() {

@@ -220,7 +220,7 @@ describe('Date Time Utils', () => {
 
         it('In 5 hours', () => {
             const result = getFormattedDate({
-                date: new Date(new Date().getTime() + 18000000),
+                date: new Date(new Date().getTime() + 18000005),
                 format: 'RELATIVE'
             });
             expect(result).toBe('in 5 hours');
