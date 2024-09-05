@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { dateTimeObjectFrom } from 'c/luxonDateTimeUtils';
+import { getFormattedDate, DateTime } from 'c/dateTimeUtils';
 import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import {
@@ -181,8 +181,9 @@ export default class InputDateRange extends LightningElement {
     }
 
     set endDate(value) {
-        const date = dateTimeObjectFrom(value);
-        this._endDate = !date || value === null ? null : new Date(date.ts);
+        const date = new Date(value);
+        this._endDate = !value || isNaN(date) ? null : date;
+        this._initialEndDate = !this._endDate ? null : new Date(date);
 
         if (this._connected) {
             this.initEndDate();
@@ -233,10 +234,9 @@ export default class InputDateRange extends LightningElement {
     }
 
     set startDate(value) {
-        const date = dateTimeObjectFrom(value);
-        this._startDate = !date || value === null ? null : new Date(date.ts);
-        this._initialStartDate =
-            !date || value === null ? null : new Date(date.ts);
+        const date = new Date(value);
+        this._startDate = !value || isNaN(date) ? null : date;
+        this._initialStartDate = !this._startDate ? null : new Date(date);
 
         if (this._connected) {
             this.initStartDate();
@@ -617,6 +617,10 @@ export default class InputDateRange extends LightningElement {
      * ------------------------------------------------------------
      */
 
+    formatDate(date, format) {
+        return getFormattedDate({ date, format, timeZone: this.timezone });
+    }
+
     /**
      * Removes the slds-has-error class on the whole element if it's not valid.
      * Aplies it on every input we need it applied.
@@ -661,11 +665,9 @@ export default class InputDateRange extends LightningElement {
             this.startTimeString = '';
             return;
         }
-        const date = this.getDateWithTimeZone(this.startDate);
-        this._startDate = new Date(date.ts);
 
         if (this.type === 'datetime') {
-            this.startTime = date.toISOTime({ includeOffset: false });
+            this.startTime = this.formatDate(this.startDate, 'TT.SSS');
             this.startTimeString = this.timeFormat(this.startDate);
         }
     }
@@ -679,20 +681,11 @@ export default class InputDateRange extends LightningElement {
             this.endTimeString = '';
             return;
         }
-        const date = this.getDateWithTimeZone(this.endDate);
-        this._endDate = new Date(date.ts);
 
         if (this.type === 'datetime') {
-            this.endTime = date.toISOTime({ includeOffset: false });
+            this.endTime = this.formatDate(this.endDate, 'TT.SSS');
             this.endTimeString = this.timeFormat(this.endDate);
         }
-    }
-
-    getDateWithTimeZone(date) {
-        return dateTimeObjectFrom(date, {
-            zone: this.timezone,
-            locale: 'en-US'
-        });
     }
 
     /**
@@ -726,15 +719,13 @@ export default class InputDateRange extends LightningElement {
      * @returns {date} formatted date depending on the date style.
      */
     dateFormat(value) {
-        const date = this.getDateWithTimeZone(value);
-
         switch (this.dateStyle) {
             case 'medium':
-                return date.toFormat('LLL. d, y');
+                return this.formatDate(value, 'LLL. d, y');
             case 'long':
-                return date.toFormat('LLLL d, y');
+                return this.formatDate(value, 'LLLL d, y');
             default:
-                return date.toFormat('L/d/y');
+                return this.formatDate(value, 'L/d/y');
         }
     }
 
@@ -805,12 +796,11 @@ export default class InputDateRange extends LightningElement {
      * @returns {time} formatted time depending on the time style.
      */
     timeFormat(value) {
-        const date = this.getDateWithTimeZone(value);
         switch (this.timeStyle) {
             case 'short':
-                return date.toFormat('t');
+                return this.formatDate(value, 't');
             default:
-                return date.toFormat('tt');
+                return this.formatDate(value, 'tt');
         }
     }
 
@@ -818,7 +808,7 @@ export default class InputDateRange extends LightningElement {
         if (!dateObject) {
             return null;
         }
-        const date = this.getDateWithTimeZone(dateObject).toISO();
+        const date = new DateTime(dateObject, this.timezone).toISO();
         const time = timeString ? `T${timeString}` : 'T00:00:00.000';
         return date.replace(/T[0-9:.]+/, time);
     }
