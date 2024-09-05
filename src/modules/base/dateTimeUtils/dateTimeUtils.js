@@ -1,83 +1,101 @@
+// Constants used to make minification possible
+// and lighten the code once in production
+const short = 'short';
+const medium = 'medium';
+const long = 'long';
+const full = 'full';
+const numeric = 'numeric';
+const doubleDigit = '2-digit';
+const defaultLanguage = 'default';
+const second = 'second';
+const minute = 'minute';
+const hour = 'hour';
+const weekday = 'weekday';
+const month = 'month';
+const year = 'year';
+const era = 'era';
+const timeZoneName = 'timeZoneName';
+
 const DATE_FORMAT_PRESETS = {
-    DATE_SHORT: { dateStyle: 'short' },
-    DATE_MED: { dateStyle: 'medium' },
+    DATE_SHORT: { dateStyle: short },
+    DATE_MED: { dateStyle: medium },
     DATE_MED_WITH_WEEKDAY: {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        weekday: 'short'
+        year: numeric,
+        month: short,
+        day: numeric,
+        weekday: short
     },
-    DATE_FULL: { dateStyle: 'long' },
-    DATE_HUGE: { dateStyle: 'full' },
-    TIME_SIMPLE: { timeStyle: 'short' },
-    TIME_WITH_SECONDS: { timeStyle: 'medium' },
-    TIME_WITH_SHORT_OFFSET: { timeStyle: 'long' },
-    TIME_WITH_LONG_OFFSET: { timeStyle: 'full' },
-    TIME_24_SIMPLE: { timeStyle: 'short', hour12: false },
-    TIME_24_WITH_SECONDS: { timeStyle: 'medium', hour12: false },
-    TIME_24_WITH_SHORT_OFFSET: { timeStyle: 'long', hour12: false },
-    TIME_24_WITH_LONG_OFFSET: { timeStyle: 'full', hour12: false },
-    DATETIME_SHORT: { dateStyle: 'short', timeStyle: 'short' },
+    DATE_FULL: { dateStyle: long },
+    DATE_HUGE: { dateStyle: full },
+    TIME_SIMPLE: { timeStyle: short },
+    TIME_WITH_SECONDS: { timeStyle: medium },
+    TIME_WITH_SHORT_OFFSET: { timeStyle: long },
+    TIME_WITH_LONG_OFFSET: { timeStyle: full },
+    TIME_24_SIMPLE: { timeStyle: short, hour12: false },
+    TIME_24_WITH_SECONDS: { timeStyle: medium, hour12: false },
+    TIME_24_WITH_SHORT_OFFSET: { timeStyle: long, hour12: false },
+    TIME_24_WITH_LONG_OFFSET: { timeStyle: full, hour12: false },
+    DATETIME_SHORT: { dateStyle: short, timeStyle: short },
     DATETIME_SHORT_WITH_SECONDS: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
+        year: numeric,
+        month: numeric,
+        day: numeric,
+        hour: numeric,
+        minute: numeric,
+        second: numeric
     },
-    DATETIME_MED: { dateStyle: 'medium', timeStyle: 'short' },
+    DATETIME_MED: { dateStyle: medium, timeStyle: short },
     DATETIME_MED_WITH_SECONDS: {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
+        year: numeric,
+        month: short,
+        day: numeric,
+        hour: numeric,
+        minute: numeric,
+        second: numeric
     },
     DATETIME_MED_WITH_WEEKDAY: {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        weekday: 'short',
-        hour: 'numeric',
-        minute: 'numeric'
+        year: numeric,
+        month: short,
+        day: numeric,
+        weekday: short,
+        hour: numeric,
+        minute: numeric
     },
     DATETIME_FULL: {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        timeZoneName: 'short'
+        year: numeric,
+        month: long,
+        day: numeric,
+        hour: numeric,
+        minute: numeric,
+        timeZoneName: short
     },
     DATETIME_FULL_WITH_SECONDS: {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        timeZoneName: 'short'
+        year: numeric,
+        month: long,
+        day: numeric,
+        hour: numeric,
+        minute: numeric,
+        second: numeric,
+        timeZoneName: short
     },
     DATETIME_HUGE: {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long',
-        hour: 'numeric',
-        minute: 'numeric',
-        timeZoneName: 'long'
+        year: numeric,
+        month: long,
+        day: numeric,
+        weekday: long,
+        hour: numeric,
+        minute: numeric,
+        timeZoneName: long
     },
     DATETIME_HUGE_WITH_SECONDS: {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        timeZoneName: 'long'
+        year: numeric,
+        month: long,
+        day: numeric,
+        weekday: long,
+        hour: numeric,
+        minute: numeric,
+        second: numeric,
+        timeZoneName: long
     }
 };
 
@@ -120,22 +138,22 @@ const WEEKDAY_NUMBERS = {
 
 function _getTzDate(date, timeZone) {
     const parts = new Intl.DateTimeFormat('en-US', {
-        day: '2-digit',
+        day: doubleDigit,
         timeZone,
-        year: 'numeric',
-        month: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
+        year: numeric,
+        month: doubleDigit,
+        hour: doubleDigit,
+        minute: doubleDigit,
+        second: doubleDigit,
         hour12: false
     }).formatToParts(date);
-    const year = parts[4].value;
-    const month = parts[0].value;
-    const day = parts[2].value;
-    const hour = parts[6].value;
-    const minute = parts[8].value;
-    const second = parts[10].value;
-    return new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
+    const y = parts[4].value;
+    const mo = parts[0].value;
+    const d = parts[2].value;
+    const h = parts[6].value;
+    const min = parts[8].value;
+    const sec = parts[10].value;
+    return new Date(`${y}-${mo}-${d}T${h}:${min}:${sec}`);
 }
 
 function _getDayOfYear(date, timeZone) {
@@ -165,21 +183,21 @@ function _getIsoYear(date, timeZone) {
     d.setDate(d.getDate() + 4 - (d.getDay() || 7));
 
     // Calculate the ISO week year
-    const year = d.getFullYear();
-    const startOfYear = new Date(Date.UTC(year, 0, 1));
+    const y = d.getFullYear();
+    const startOfYear = new Date(Date.UTC(y, 0, 1));
     const isWeek53 =
         startOfYear.getDay() === 4 ||
         new Date(
-            Date.UTC(year, 0, 1 - ((startOfYear.getDay() + 6) % 7))
+            Date.UTC(y, 0, 1 - ((startOfYear.getDay() + 6) % 7))
         ).getDay() === 4;
     const isoYear =
-        year + (isWeek53 && d.getTime() < startOfYear.getTime() ? -1 : 0);
+        y + (isWeek53 && d.getTime() < startOfYear.getTime() ? -1 : 0);
     return isoYear ? isoYear.toString() : '';
 }
 
 function _getQuarter(date, timeZone) {
-    const month = _getTzDate(date, timeZone).getMonth();
-    const quarter = Math.ceil(month / 3);
+    const monthNumber = _getTzDate(date, timeZone).getMonth();
+    const quarter = Math.ceil(monthNumber / 3);
     return quarter === 0 ? '1' : quarter.toString();
 }
 
@@ -190,8 +208,8 @@ function _parseCustomToken({ date, token, timeZone }) {
             : '';
     };
 
-    const getUnit = (unit, unitFormat = 'numeric', hour12 = true) => {
-        const parts = new Intl.DateTimeFormat('default', {
+    const getUnit = (unit, unitFormat = numeric, hour12 = true) => {
+        const parts = new Intl.DateTimeFormat(defaultLanguage, {
             [unit]: unitFormat,
             hour12,
             timeZone
@@ -201,7 +219,7 @@ function _parseCustomToken({ date, token, timeZone }) {
     };
 
     const format = (opt = {}) => {
-        return new Intl.DateTimeFormat('default', {
+        return new Intl.DateTimeFormat(defaultLanguage, {
             ...opt,
             timeZone
         }).format(date);
@@ -219,24 +237,24 @@ function _parseCustomToken({ date, token, timeZone }) {
         case 'uuu':
             return pad(Math.floor(ms / 100));
         case 's':
-            return getUnit('second');
+            return getUnit(second);
         case 'ss':
-            return pad(getUnit('second'), 2);
+            return pad(getUnit(second), 2);
         case 'm':
-            return getUnit('minute');
+            return getUnit(minute);
         case 'mm':
-            return getUnit('minute', '2-digit');
+            return getUnit(minute, doubleDigit);
         case 'h':
-            return getUnit('hour');
+            return getUnit(hour);
         case 'hh':
-            return getUnit('hour', '2-digit');
+            return getUnit(hour, doubleDigit);
         case 'H':
-            return getUnit('hour', 'numeric', false);
+            return getUnit(hour, numeric, false);
         case 'HH':
-            return getUnit('hour', '2-digit', false);
+            return getUnit(hour, doubleDigit, false);
         case 'Z': {
             try {
-                let offset = getUnit('timeZoneName', 'shortOffset');
+                let offset = getUnit(timeZoneName, 'shortOffset');
                 offset = offset && offset.match(/-|\+\d+$/);
                 return offset ? offset[0] : '';
             } catch (e) {
@@ -250,7 +268,7 @@ function _parseCustomToken({ date, token, timeZone }) {
             try {
                 // "longOffset" is not supported by node version < 17.0.0
                 // and package indicates we support node version >= 12.18.3
-                let offset = getUnit('timeZoneName', 'longOffset');
+                let offset = getUnit(timeZoneName, 'longOffset');
                 offset = offset && offset.match(/-|\+[\d:]+$/);
                 return offset ? offset[0] : '';
             } catch (e) {
@@ -262,7 +280,7 @@ function _parseCustomToken({ date, token, timeZone }) {
             try {
                 // "longOffset" is not supported by node version < 17.0.0
                 // and package indicates we support node version >= 12.18.3
-                let offset = getUnit('timeZoneName', 'longOffset');
+                let offset = getUnit(timeZoneName, 'longOffset');
                 offset = offset && offset.match(/-|\+[\d:]+$/);
                 return offset ? offset[0].replace(':', '') : '';
             } catch (e) {
@@ -271,14 +289,14 @@ function _parseCustomToken({ date, token, timeZone }) {
             }
         }
         case 'ZZZZ':
-            return getUnit('timeZoneName', 'short');
+            return getUnit(timeZoneName, short);
         case 'ZZZZZ':
-            return getUnit('timeZoneName', 'long');
+            return getUnit(timeZoneName, long);
         case 'z':
             return timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
         case 'a': {
             const parts = new Intl.DateTimeFormat('en-US', {
-                hour: 'numeric',
+                hour: numeric,
                 timeZone
             }).formatToParts(date);
             const value = parts.find((part) => part.type === 'dayPeriod').value;
@@ -287,57 +305,55 @@ function _parseCustomToken({ date, token, timeZone }) {
         case 'd':
             return getUnit('day');
         case 'dd':
-            return getUnit('day', '2-digit');
+            return getUnit('day', doubleDigit);
         case 'c':
         case 'E': {
-            const weekday = new Intl.DateTimeFormat('en-US', {
-                weekday: 'short',
+            const day = new Intl.DateTimeFormat('en-US', {
+                weekday: short,
                 timeZone
             }).format(date);
-            return WEEKDAY_NUMBERS[weekday]
-                ? WEEKDAY_NUMBERS[weekday].toString()
-                : '';
+            return WEEKDAY_NUMBERS[day] ? WEEKDAY_NUMBERS[day].toString() : '';
         }
         case 'ccc':
         case 'EEE':
             // Remove trailing period
-            return getUnit('weekday', 'short').replace(/\.$/, '');
+            return getUnit(weekday, short).replace(/\.$/, '');
         case 'cccc':
         case 'EEEE':
-            return getUnit('weekday', 'long');
+            return getUnit(weekday, long);
         case 'ccccc':
         case 'EEEEE':
-            return getUnit('weekday', 'narrow');
+            return getUnit(weekday, 'narrow');
         case 'L':
         case 'M':
-            return getUnit('month');
+            return getUnit(month);
         case 'LL':
         case 'MM':
-            return getUnit('month', '2-digit');
+            return getUnit(month, doubleDigit);
         case 'LLL':
         case 'MMM':
             // Remove trailing period
-            return getUnit('month', 'short').replace(/\.$/, '');
+            return getUnit(month, short).replace(/\.$/, '');
         case 'LLLL':
         case 'MMMM':
-            return getUnit('month', 'long');
+            return getUnit(month, long);
         case 'LLLLL':
         case 'MMMMM':
-            return getUnit('month', 'narrow');
+            return getUnit(month, 'narrow');
         case 'y':
-            return getUnit('year');
+            return getUnit(year);
         case 'ii':
         case 'yy':
-            return getUnit('year', '2-digit');
+            return getUnit(year, doubleDigit);
         case 'iiii':
         case 'yyyy':
-            return getUnit('year', 'numeric', 4);
+            return getUnit(year, numeric, 4);
         case 'G':
-            return getUnit('era', 'short');
+            return getUnit(era, short);
         case 'GG':
-            return getUnit('era', 'long');
+            return getUnit(era, long);
         case 'GGGGG':
-            return getUnit('era', 'narrow');
+            return getUnit(era, 'narrow');
         case 'kk':
             return _getIsoYear(date, timeZone).slice(-2);
         case 'kkkk':
@@ -438,18 +454,21 @@ function _relativeFormat(date) {
         (u) => Math.abs(diff) >= INTERVALS[u]
     );
     const numberOfUnits = Math.floor(diff / INTERVALS[unit]);
-    return new Intl.RelativeTimeFormat('default').format(numberOfUnits, unit);
+    return new Intl.RelativeTimeFormat(defaultLanguage).format(
+        numberOfUnits,
+        unit
+    );
 }
 
 function _standardFormat({ date, timeZone }) {
     const now = new Date();
     const timeOptions = {
-        hour: 'numeric',
-        minute: '2-digit',
+        hour: numeric,
+        minute: doubleDigit,
         timeZone
     };
     const formattedTime = new Intl.DateTimeFormat(
-        'default',
+        defaultLanguage,
         timeOptions
     ).format(date);
 
@@ -460,10 +479,10 @@ function _standardFormat({ date, timeZone }) {
     if (_isSameDate(date, yesterday)) {
         return `Yesterday ${formattedTime}`;
     }
-    return new Intl.DateTimeFormat('default', {
+    return new Intl.DateTimeFormat(defaultLanguage, {
         ...timeOptions,
-        month: 'short',
-        day: 'numeric'
+        month: short,
+        day: numeric
     }).format(date);
 }
 
@@ -477,7 +496,7 @@ const getFormattedDate = ({ date = new Date(), timeZone, format }) => {
         return _relativeFormat(givenDate);
     }
     if (DATE_FORMAT_PRESETS[format]) {
-        return new Intl.DateTimeFormat('default', {
+        return new Intl.DateTimeFormat(defaultLanguage, {
             ...DATE_FORMAT_PRESETS[format],
             timeZone
         }).format(givenDate);
