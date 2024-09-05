@@ -204,19 +204,26 @@
     .slds-visual-picker__figure {
     cursor: pointer;
     outline: 0;
-    border: 1px solid var(--lwc-brandPrimary, #1b96ff);
+    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border-width: var(--avonni-visual-picker-sizing-border, 1px);
+    border-style: var(--avonni-visual-picker-styling-border, solid);
+    border-color: var(
+        --avonni-visual-picker-color-border-hover,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
     -webkit-box-shadow: 0 0 0 1px var(--lwc-brandPrimary, #1b96ff) inset;
     box-shadow: 0 0 0 1px var(--lwc-brandPrimary, #1b96ff) inset;
 }
 
 /*-- Checked --*/
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text {
-    border-width: 1px;
-    border-style: solid;
     border-color: var(
         --avonni-visual-picker-color-border-selected,
         var(--lwc-brandPrimary, #1b96ff)
     );
+    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border-style: var(--avonni-visual-picker-styling-border, solid);
+    border-width: var(--avonni-visual-picker-sizing-border, 1px);
     -webkit-box-shadow: 0 0 0 1px
         var(
             --avonni-visual-picker-color-border-selected,
@@ -243,6 +250,21 @@
     );
 }
 
+.slds-visual-picker
+    input:checked
+    ~ label:hover
+    .slds-visual-picker__text:after {
+    content: '';
+    border-right-color: var(
+        --avonni-visual-picker-color-border-hover,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
+    border-top-color: var(
+        --avonni-visual-picker-color-border-hover,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
+}
+
 .slds-visual-picker.avonni-visual-picker_responsive
     input:checked
     ~ label
@@ -259,6 +281,9 @@
         --avonni-visual-picker-color-border-selected,
         var(--lwc-brandPrimary, #1b96ff)
     );
+    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border-width: var(--avonni-visual-picker-sizing-border, 1px);
+    border-style: var(--avonni-visual-picker-styling-border, solid);
 }
 
 .avonni-visual-picker__chek-icon {
@@ -603,9 +628,6 @@
 
 /*-- tags --*/
 .avonni-visual-picker__tags-container {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
     text-align: var(--avonni-visual-picker-tags-alignment, center);
     padding: var(--avonni-visual-picker-tags-padding, 0.5rem);
 }
@@ -795,10 +817,6 @@
 
 .avonni-visual-picker__figure-image_object-fit-none {
     object-fit: none;
-}
-
-.avonni-visual-picker__tags-hidden {
-    display: none;
 }
 
 /*-- infinite loading --*/

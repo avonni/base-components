@@ -1,6 +1,8 @@
 <template>
     <div class={computedContainerClass}>
         <c-primitive-avatar
+            if:true={displayAvatar}
+            class={computedAvatarClass}
             alternative-text={alternativeText}
             fallback-icon-name={avatar.iconName}
             initials={avatar.initials}
@@ -9,27 +11,15 @@
             size={avatar.size}
             src={avatar.imgSrc}
             variant={avatar.variant}
-            class="
-                slds-m-right_x-small
-                avonni-primitive-visual-picker-title__icon
-            "
-            if:true={avatarIsLeft}
         ></c-primitive-avatar>
-        <div class="avonni-visual-picker__figure-title">{title}</div>
-        <c-primitive-avatar
-            alternative-text={alternativeText}
-            fallback-icon-name={avatar.iconName}
-            initials={avatar.initials}
-            presence={avatar.presence}
-            presence-position={avatar.presencePosition}
-            size={avatar.size}
-            src={avatar.imgSrc}
-            variant={avatar.variant}
+        <p
             class="
-                slds-m-left_x-small
-                avonni-primitive-visual-picker-title__icon
+                avonni-visual-picker__figure-title
+                slds-line-clamp
+                slds-order_1
             "
-            if:true={avatarIsRight}
-        ></c-primitive-avatar>
+        >
+            {title}
+        </p>
     </div>
 </template>
