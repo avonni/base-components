@@ -1,6 +1,10 @@
 import { AutoPosition, Direction } from 'c/positionLibrary';
-import { guid } from 'c/utilsPrivate';
-import { classSet, normalizeAriaAttribute, normalizeString } from 'c/utils';
+import {
+    classSet,
+    generateUUID,
+    normalizeAriaAttribute,
+    normalizeString
+} from 'c/utils';
 
 export { Direction } from 'c/positionLibrary';
 
@@ -9,7 +13,7 @@ const DEFAULT_ALIGN = {
     vertical: 'bottom'
 };
 
-const BUBBLE_ID = `salesforce-lightning-tooltip-bubble_${guid()}`;
+const BUBBLE_ID = `salesforce-lightning-tooltip-bubble_${generateUUID()}`;
 
 function isResizeObserverSupported() {
     return window.ResizeObserver != null;

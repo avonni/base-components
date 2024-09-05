@@ -48,24 +48,21 @@ export default class VerticalVisualPicker extends LightningElement {
      * @type {string}
      * @public
      */
-    @api
-    messageWhenRangeOverflow;
+    @api messageWhenRangeOverflow;
     /**
      * Error message to be displayed when a range underflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api
-    messageWhenRangeUnderflow;
+    @api messageWhenRangeUnderflow;
     /**
      * Error message to be displayed when the value is missing and input is required.
      *
      * @type {string}
      * @public
      */
-    @api
-    messageWhenValueMissing;
+    @api messageWhenValueMissing;
     /**
      * The name of the vertical visual picker.
      *
@@ -87,14 +84,20 @@ export default class VerticalVisualPicker extends LightningElement {
     _required = DEFAULT_REQUIRED;
     _size = ITEM_SIZES.default;
     _type = ITEM_TYPES.default;
-    _variant = ITEM_VARIANTS.default;
     _value = [];
+    _variant = ITEM_VARIANTS.default;
 
     _cancelBlur = false;
     _computedItems = [];
     _connected = false;
     _isCollapsed = true;
     helpMessage = '';
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.interactingState = new InteractingState();
@@ -125,7 +128,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
 
@@ -165,7 +167,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get hideCheckMark() {
         return this._hideCheckMark;
     }
-
     set hideCheckMark(value) {
         this._hideCheckMark = normalizeBoolean(value);
     }
@@ -195,7 +196,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get items() {
         return this._items;
     }
-
     set items(value) {
         this._items = normalizeArray(value);
 
@@ -236,7 +236,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         this._max = isNaN(parseInt(value, 10)) ? Infinity : parseInt(value, 10);
     }
@@ -267,7 +266,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get min() {
         return this._min;
     }
-
     set min(value) {
         this._min = isNaN(parseInt(value, 10))
             ? DEFAULT_MIN
@@ -285,7 +283,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
     }
@@ -301,7 +298,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: ITEM_SIZES.default,
@@ -324,7 +320,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(type) {
         this._type = normalizeString(type, {
             fallbackValue: ITEM_TYPES.default,
@@ -353,7 +348,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         const normalizedValue =
             typeof value === 'string' ? [value] : normalizeArray(value);
@@ -378,7 +372,6 @@ export default class VerticalVisualPicker extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: ITEM_VARIANTS.default,
@@ -413,59 +406,16 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Icon name of the show more/less button.
+     * Computed NOT selected class styling.
      *
      * @type {string}
      */
-    get currentShowButtonIconName() {
-        return this._isCollapsed ? 'utility:down' : 'utility:up';
-    }
-
-    /**
-     * Label of the show more/less button.
-     *
-     * @type {string}
-     */
-    get currentShowButtonLabel() {
-        return this._isCollapsed ? 'Show more' : 'Show less';
-    }
-
-    /**
-     * Verify if variant is coverable.
-     *
-     * @type {boolean}
-     */
-    get isCoverable() {
-        return this._variant === 'coverable';
-    }
-
-    /**
-     * Returns true if one of the items has tags.
-     *
-     * @type {boolean}
-     */
-    get hasTags() {
-        return this.items.some((item) => item.tags);
-    }
-
-    /**
-     * True of the max count show more/less button is visible, or if the component is loading.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get showButtonOrSpinner() {
-        return this.isLoading || this.showMoreButton;
-    }
-
-    /**
-     * Compute visual picker type class styling based on selected attributes.
-     *
-     * @type {string}
-     */
-    get verticalVisualPickerClass() {
-        return classSet('slds-visual-picker slds-visual-picker_vertical')
-            .add(`avonni-vertical-visual-picker__item_size-${this._size}`)
+    get computedNotSelectedClass() {
+        return classSet('avonni-vertical-visual-picker__content_container')
+            .add({
+                'slds-is-not-selected': this.isCoverable && !this.hideCheckMark,
+                'avonni-is-not-selected': this.isCoverable && this.hideCheckMark
+            })
             .toString();
     }
 
@@ -474,85 +424,31 @@ export default class VerticalVisualPicker extends LightningElement {
      *
      * @type {string}
      */
-    get verticalVisualPickerTypeClass() {
+    get computedVerticalVisualPickerClass() {
+        return classSet(
+            'slds-visual-picker slds-visual-picker_vertical avonni-vertical-visual-picker'
+        )
+            .add(`avonni-vertical-visual-picker__item_size-${this.size}`)
+            .toString();
+    }
+
+    /**
+     * Computed visual picker type class styling based on selected attributes.
+     *
+     * @type {string}
+     */
+    get computedVerticalVisualPickerTypeClass() {
         return classSet(
             'slds-visual-picker__figure avonni-vertical-visual-picker__figure slds-align_absolute-left'
         )
-            .add(`avonni-vertical-visual-picker__item_size-${this._size}`)
+            .add(`avonni-vertical-visual-picker__item_size-${this.size}`)
             .add({
                 'slds-visual-picker__text': !this.isCoverable,
                 'slds-visual-picker__icon': this.isCoverable,
-                'avonni-hide-check-mark': this._hideCheckMark,
+                'avonni-hide-check-mark': this.hideCheckMark,
                 'avonni-vertical-visual-picker__figure-with-tags': this.hasTags
             })
             .toString();
-    }
-
-    /**
-     * Array of visible items.
-     *
-     * @type {object[]}
-     */
-    get visibleItems() {
-        return this.showMoreButton && this._isCollapsed
-            ? this._computedItems.slice(0, this.maxCount)
-            : this._computedItems;
-    }
-
-    get numberOfMainItemsSelected() {
-        if (this.type === 'radio') return this.value ? 1 : 0;
-        return this.items
-            .map(({ value }) => value)
-            .filter((value) => this.value.includes(value)).length;
-    }
-
-    /**
-     * Compute NOT selected class styling.
-     *
-     * @type {string}
-     */
-    get notSelectedClass() {
-        return classSet('avonni-vertical-visual-picker__content_container')
-            .add({
-                'slds-is-not-selected':
-                    this.isCoverable && !this._hideCheckMark,
-                'avonni-is-not-selected':
-                    this.isCoverable && this._hideCheckMark
-            })
-            .toString();
-    }
-
-    /**
-     * Get all inputs.
-     *
-     * @type {Element}
-     */
-    get inputs() {
-        return Array.from(
-            this.template.querySelectorAll('[data-element-id="input"]')
-        );
-    }
-
-    /**
-     * Get input.
-     *
-     * @type {Element}
-     */
-    get input() {
-        return this.template.querySelector('[data-element-id="input"]');
-    }
-
-    /**
-     * True if the show more/less button should be visible.
-     *
-     * @type {boolean}
-     */
-    get showMoreButton() {
-        return (
-            !this.enableInfiniteLoading &&
-            !isNaN(this.maxCount) &&
-            this.items.length > this.maxCount
-        );
     }
 
     /**
@@ -576,11 +472,121 @@ export default class VerticalVisualPicker extends LightningElement {
         return this._constraintApi;
     }
 
+    /**
+     * Icon name of the show more/less button.
+     *
+     * @type {string}
+     */
+    get currentShowButtonIconName() {
+        return this._isCollapsed ? 'utility:down' : 'utility:up';
+    }
+
+    /**
+     * Label of the show more/less button.
+     *
+     * @type {string}
+     */
+    get currentShowButtonLabel() {
+        return this._isCollapsed ? 'Show more' : 'Show less';
+    }
+
+    /**
+     * Returns true if one of the items has tags.
+     *
+     * @type {boolean}
+     */
+    get hasTags() {
+        return this.items.some((item) => item.tags);
+    }
+
+    /**
+     * Get input.
+     *
+     * @type {Element}
+     */
+    get input() {
+        return this.template.querySelector('[data-element-id="input"]');
+    }
+
+    /**
+     * Get all inputs.
+     *
+     * @type {Element}
+     */
+    get inputs() {
+        return Array.from(
+            this.template.querySelectorAll('[data-element-id="input"]')
+        );
+    }
+
+    /**
+     * Verify if variant is coverable.
+     *
+     * @type {boolean}
+     */
+    get isCoverable() {
+        return this.variant === 'coverable';
+    }
+
+    /**
+     * Returns the number of selected main items.
+     */
+    get numberOfMainItemsSelected() {
+        if (this.type === 'radio') return this.value ? 1 : 0;
+        return this.items
+            .map(({ value }) => value)
+            .filter((value) => this.value.includes(value)).length;
+    }
+
+    /**
+     * True of the max count show more/less button is visible, or if the component is loading.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get showButtonOrSpinner() {
+        return this.isLoading || this.showMoreButton;
+    }
+
+    /**
+     * True if the show more/less button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showMoreButton() {
+        return (
+            !this.enableInfiniteLoading &&
+            !isNaN(this.maxCount) &&
+            this.items.length > this.maxCount
+        );
+    }
+
+    /**
+     * Array of visible items.
+     *
+     * @type {object[]}
+     */
+    get visibleItems() {
+        return this.showMoreButton && this._isCollapsed
+            ? this._computedItems.slice(0, this.maxCount)
+            : this._computedItems;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        this.input.blur();
+    }
 
     /**
      * Checks if the input is valid.
@@ -613,16 +619,6 @@ export default class VerticalVisualPicker extends LightningElement {
     getErrorMessage() {
         this.reportValidity();
         return this.helpMessage;
-    }
-
-    /**
-     * Removes keyboard focus from the input element.
-     *
-     * @public
-     */
-    @api
-    blur() {
-        this.input.blur();
     }
 
     /**
@@ -747,10 +743,7 @@ export default class VerticalVisualPicker extends LightningElement {
                     item.computedValue,
                     item.subItems
                 );
-                const input = wrapper.querySelector(
-                    '[data-element-id="input"]'
-                );
-                input.checked = item.isChecked;
+                this.input.checked = item.isChecked;
             }
         });
     }
@@ -799,13 +792,6 @@ export default class VerticalVisualPicker extends LightningElement {
             return;
         }
         this.interactingState.leave();
-    }
-
-    /**
-     * Dispatches the focus event.
-     */
-    handleFocus() {
-        this.interactingState.enter();
     }
 
     /**
@@ -894,12 +880,11 @@ export default class VerticalVisualPicker extends LightningElement {
         );
     }
 
-    handleMouseEnter() {
-        this._cancelBlur = true;
-    }
-
-    handleMouseLeave() {
-        this._cancelBlur = false;
+    /**
+     * Handles the focus event.
+     */
+    handleFocus() {
+        this.interactingState.enter();
     }
 
     /**
@@ -910,6 +895,20 @@ export default class VerticalVisualPicker extends LightningElement {
     handleKeyUp(event) {
         if (event.key !== 'Enter') return;
         event.currentTarget.click();
+    }
+
+    /**
+     * Handles the mouse enter event.
+     */
+    handleMouseEnter() {
+        this._cancelBlur = true;
+    }
+
+    /**
+     * Handles the mouse leave event.
+     */
+    handleMouseLeave() {
+        this._cancelBlur = false;
     }
 
     /**
