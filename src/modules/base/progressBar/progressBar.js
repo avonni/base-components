@@ -80,7 +80,6 @@ export default class ProgressBar extends LightningElement {
      * @public
      */
     @api label;
-
     /**
      * Text displayed before the value.
      *
@@ -104,11 +103,17 @@ export default class ProgressBar extends LightningElement {
     _thickness = PROGRESS_BAR_THICKNESSES.default;
     _value = DEFAULT_VALUE;
     _valuePosition = VALUE_POSITIONS.default;
-    _variant = PROGRESS_BAR_VARIANTS.default;
     _valueSuffix;
+    _variant = PROGRESS_BAR_VARIANTS.default;
 
     _connected = false;
     _resizeObserver;
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Render the progress bar depending on its orientation.
@@ -116,21 +121,18 @@ export default class ProgressBar extends LightningElement {
      * @returns {File} progressBar.html | progressBarVertical.html
      */
     render() {
-        return this._orientation === 'horizontal'
-            ? progressBar
-            : progressBarVertical;
+        return this.isHorizontal ? progressBar : progressBarVertical;
     }
 
     connectedCallback() {
-        this.updatePinPosition();
         this._connected = true;
     }
 
     renderedCallback() {
         if (!this._resizeObserver) {
-            this._resizeObserver = this.initResizeObserver();
+            this._resizeObserver = this._initResizeObserver();
         }
-        this.updatePinPosition();
+        this._updatePinPosition();
     }
 
     disconnectedCallback() {
@@ -171,7 +173,6 @@ export default class ProgressBar extends LightningElement {
     get orientation() {
         return this._orientation;
     }
-
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
             fallbackValue: PROGRESS_BAR_ORIENTATIONS.default,
@@ -179,13 +180,12 @@ export default class ProgressBar extends LightningElement {
         });
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
     /**
      * Object of attributes for the pin.
-     * Pin attributes: type and position
      *
      * @type {object}
      * @public
@@ -194,7 +194,6 @@ export default class ProgressBar extends LightningElement {
     get pinAttributes() {
         return this._pinAttributes;
     }
-
     set pinAttributes(value) {
         const pinAttributes = normalizeObject(value);
 
@@ -209,7 +208,7 @@ export default class ProgressBar extends LightningElement {
         this._pinAttributes = { type, position };
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
@@ -223,36 +222,12 @@ export default class ProgressBar extends LightningElement {
     get referenceLines() {
         return this._referenceLines;
     }
-
     set referenceLines(value) {
         this._referenceLines = normalizeArray(value);
     }
 
     /**
-     * The size of the progress bar. Valid values are x-small, small, medium, large and full.
-     *
-     * @type {string}
-     * @public
-     * @default full
-     */
-    @api
-    get size() {
-        return this._size;
-    }
-
-    set size(size) {
-        this._size = normalizeString(size, {
-            fallbackValue: PROGRESS_BAR_SIZES.default,
-            validValues: PROGRESS_BAR_SIZES.valid
-        });
-
-        if (this._connected) {
-            this.updatePinPosition();
-        }
-    }
-
-    /**
-     * If present, display the pin .
+     * If present, display the value in pin. Show value must be set to true.
      *
      * @type {boolean}
      * @public
@@ -262,12 +237,11 @@ export default class ProgressBar extends LightningElement {
     get showPin() {
         return this._showPin;
     }
-
     set showPin(value) {
         this._showPin = normalizeBoolean(value);
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
         }
     }
 
@@ -282,12 +256,33 @@ export default class ProgressBar extends LightningElement {
     get showValue() {
         return this._showValue;
     }
-
     set showValue(value) {
         this._showValue = normalizeBoolean(value);
 
         if (this._connected) {
-            this.updatePinPosition();
+            this._updatePinPosition();
+        }
+    }
+
+    /**
+     * The size of the progress bar. Valid values are x-small, small, medium, large and full.
+     *
+     * @type {string}
+     * @public
+     * @default full
+     */
+    @api
+    get size() {
+        return this._size;
+    }
+    set size(size) {
+        this._size = normalizeString(size, {
+            fallbackValue: PROGRESS_BAR_SIZES.default,
+            validValues: PROGRESS_BAR_SIZES.valid
+        });
+
+        if (this._connected) {
+            this._updatePinPosition();
         }
     }
 
@@ -302,7 +297,6 @@ export default class ProgressBar extends LightningElement {
     get textured() {
         return this._textured;
     }
-
     set textured(value) {
         this._textured = normalizeBoolean(value);
     }
@@ -318,7 +312,6 @@ export default class ProgressBar extends LightningElement {
     get theme() {
         return this._theme;
     }
-
     set theme(theme) {
         this._theme = normalizeString(theme, {
             fallbackValue: PROGRESS_BAR_THEMES.default,
@@ -337,7 +330,6 @@ export default class ProgressBar extends LightningElement {
     get thickness() {
         return this._thickness;
     }
-
     set thickness(thickness) {
         this._thickness = normalizeString(thickness, {
             fallbackValue: PROGRESS_BAR_THICKNESSES.default,
@@ -356,7 +348,6 @@ export default class ProgressBar extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         if (parseInt(value, 10) <= 0) {
             this._value = 0;
@@ -397,7 +388,6 @@ export default class ProgressBar extends LightningElement {
     get valuePosition() {
         return this._valuePosition;
     }
-
     set valuePosition(valuePosition) {
         this._valuePosition = normalizeString(valuePosition, {
             fallbackValue: VALUE_POSITIONS.default,
@@ -430,7 +420,6 @@ export default class ProgressBar extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: PROGRESS_BAR_VARIANTS.default,
@@ -450,42 +439,29 @@ export default class ProgressBar extends LightningElement {
      * @type {string}
      */
     get assistiveText() {
-        return `Progress: ${this._value}%`;
+        return `Progress: ${this.value}%`;
     }
 
     /**
-     * Computed Sizing class for the progress bar.
+     * Computed Inner class styling based on selected attributes.
      *
      * @type {string}
      */
-    get computedSizing() {
-        return classSet('')
+    get computedInnerClass() {
+        // for the progressBar in vertical we need to set a height on the outer div and inner div
+        return classSet('slds-progress-bar__value slds-is-relative')
+            .add(`avonni-progress-bar__bar_theme-${this.theme}`)
             .add({
-                'avonni-progress-bar__bar-horizontal_size-x-small':
-                    this._size === 'x-small' &&
-                    this._orientation === 'horizontal',
-                'avonni-progress-bar__bar-horizontal_size-small':
-                    this._size === 'small' &&
-                    this._orientation === 'horizontal',
-                'avonni-progress-bar__bar-horizontal_size-medium':
-                    this._size === 'medium' &&
-                    this._orientation === 'horizontal',
-                'avonni-progress-bar__bar-horizontal_size-large':
-                    this._size === 'large' &&
-                    this._orientation === 'horizontal',
-                'avonni-progress-bar__vertical-bar_size-x-small':
-                    this._size === 'x-small' &&
-                    this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-small':
-                    this._size === 'small' && this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-medium':
-                    this._size === 'medium' && this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-large':
-                    this._size === 'large' && this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-full':
-                    this._size === 'full' && this._orientation === 'vertical',
-                'slds-grid slds-grid_align-center':
-                    this.orientation === 'vertical'
+                'avonni-progress-bar__vertical-bar': this.isVertical,
+                'avonni-progress-bar__vertical_size-x-small':
+                    this.size === 'x-small' && this.isVertical,
+                'avonni-progress-bar__vertical_size-small':
+                    this.size === 'small' && this.isVertical,
+                'avonni-progress-bar__vertical_size-medium':
+                    this.size === 'medium' && this.isVertical,
+                'avonni-progress-bar__vertical_size-large':
+                    this.size === 'large' && this.isVertical,
+                'slds-theme_alert-texture': this.textured
             })
             .toString();
     }
@@ -498,13 +474,13 @@ export default class ProgressBar extends LightningElement {
     get computedOuterClass() {
         return classSet('slds-progress-bar slds-text-align_center')
             .add({
-                'slds-progress-bar_vertical': this._orientation === 'vertical',
-                'slds-progress-bar_circular': this._variant === 'circular',
-                'slds-progress-bar_x-small': this._thickness === 'x-small',
-                'slds-progress-bar_small': this._thickness === 'small',
-                'slds-progress-bar_large': this._thickness === 'large'
+                'slds-progress-bar_vertical': this.isVertical,
+                'slds-progress-bar_circular': this.variant === 'circular',
+                'slds-progress-bar_x-small': this.thickness === 'x-small',
+                'slds-progress-bar_small': this.thickness === 'small',
+                'slds-progress-bar_large': this.thickness === 'large'
             })
-            .add(`avonni-progress-bar__bar-background_theme-${this._theme}`)
+            .add(`avonni-progress-bar__bar-background_theme-${this.theme}`)
             .add({
                 'slds-m-bottom_large': this._referenceLines.length > 0
             })
@@ -512,47 +488,21 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
-     * Computed Inner class styling based on selected attributes.
+     * Computed Pin class for the progress bar.
      *
      * @type {string}
      */
-    get computedInnerClass() {
-        // for the progressBar in vertical we need to set a height on the outer div and inner div
-        return classSet('slds-progress-bar__value slds-is-relative')
-            .add(`avonni-progress-bar__bar_theme-${this._theme}`)
-            .add({
-                'avonni-progress-bar__vertical-bar':
-                    this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-x-small':
-                    this._size === 'x-small' &&
-                    this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-small':
-                    this._size === 'small' && this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-medium':
-                    this._size === 'medium' && this._orientation === 'vertical',
-                'avonni-progress-bar__vertical-bar_size-large':
-                    this._size === 'large' && this._orientation === 'vertical',
-                'slds-theme_alert-texture': this._textured
-            })
-            .toString();
-    }
-
     get computedPinClass() {
         return classSet('avonni-progress-bar__pin')
-            .add(`avonni-progress-bar__pin_theme-${this._theme}`)
+            .add(`avonni-progress-bar__pin_theme-${this.theme}`)
             .add(`avonni-progress-bar__${this.pinType}-pin`)
             .add({
                 'avonni-progress-bar__pin-left':
-                    this.pinAttributes &&
-                    this.pinAttributes.position === 'left' &&
-                    this.orientation === 'vertical'
-            })
-            .add({
+                    this.pinAttributes?.position === 'left' && this.isVertical,
                 'avonni-progress-bar__pin-right':
-                    this.pinAttributes &&
-                    this.pinAttributes.position === 'right' &&
-                    this.orientation === 'vertical'
-            });
+                    this.pinAttributes?.position === 'right' && this.isVertical
+            })
+            .toString();
     }
 
     /**
@@ -560,17 +510,41 @@ export default class ProgressBar extends LightningElement {
      *
      * @type {string}
      */
-    get computedStyle() {
+    get computedProgressBarStyle() {
         let path = 'clip-path: rect(';
-        path +=
-            this._orientation === 'horizontal'
-                ? `0% ${this.value}% auto 0`
-                : `${100 - this.value}% 100% auto 0`;
-        if (this._variant === 'circular') {
+        path += this.isHorizontal
+            ? `0% ${this.value}% auto 0`
+            : `${100 - this.value}% 100% auto 0`;
+        if (this.variant === 'circular') {
             path += ` round ${BORDER_RADIUS_REM}rem ${BORDER_RADIUS_REM}rem`;
         }
         path += ')';
         return path;
+    }
+
+    /**
+     * Computed Sizing class for the progress bar.
+     *
+     * @type {string}
+     */
+    get computedSizingClass() {
+        const classes = classSet('');
+        if (this.isHorizontal) {
+            classes.add(`avonni-progress-bar__horizontal_size-${this.size}`);
+        } else {
+            classes.add(`avonni-progress-bar__vertical_size-${this.size}`);
+            classes.add('slds-grid slds-grid_align-center');
+        }
+        return classes.toString();
+    }
+
+    /**
+     * If true, show the value.
+     *
+     * @type {boolean}
+     */
+    get displayValue() {
+        return this.showValue && !this.showPin;
     }
 
     /**
@@ -582,6 +556,24 @@ export default class ProgressBar extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="avonni-progress-bar-pin"]'
         );
+    }
+
+    /**
+     * Verify if the orientation is horizontal.
+     *
+     * @type {boolean}
+     */
+    get isHorizontal() {
+        return this.orientation === 'horizontal';
+    }
+
+    /**
+     * Verify if the orientation is vertical.
+     *
+     * @type {boolean}
+     */
+    get isVertical() {
+        return this.orientation === 'vertical';
     }
 
     /**
@@ -599,81 +591,7 @@ export default class ProgressBar extends LightningElement {
      * @type {boolean}
      */
     get showPinValue() {
-        return this._showPin && this._showValue;
-    }
-
-    /**
-     * Verify Show position left.
-     *
-     * @type {string | boolean}
-     */
-    get showPositionLeft() {
-        return (
-            this._valuePosition === 'left' && this._showValue && !this._showPin
-        );
-    }
-
-    /**
-     * Verify Show position right.
-     *
-     * @type {string | boolean}
-     */
-    get showPositionRight() {
-        return (
-            this._valuePosition === 'right' && this._showValue && !this._showPin
-        );
-    }
-
-    /**
-     * Verify Show position bottom left.
-     *
-     * @type {string | boolean}
-     */
-    get showPositionBottomLeft() {
-        return (
-            this._valuePosition === 'bottom-left' &&
-            this._showValue &&
-            !this._showPin
-        );
-    }
-
-    /**
-     * Verify Show position bottom right.
-     *
-     * @type {string | boolean}
-     */
-    get showPositionBottomRight() {
-        return (
-            this._valuePosition === 'bottom-right' &&
-            this._showValue &&
-            !this._showPin
-        );
-    }
-
-    /**
-     * Verify Show position top right.
-     *
-     * @type {string | boolean}
-     */
-    get showPositionTopRight() {
-        return (
-            this._valuePosition === 'top-right' &&
-            this._showValue &&
-            !this._showPin
-        );
-    }
-
-    /**
-     * Verify Show position top left.
-     *
-     * @type {string | boolean}
-     */
-    get showPositionTopLeft() {
-        return (
-            this._valuePosition === 'top-left' &&
-            this._showValue &&
-            !this._showPin
-        );
+        return this.showPin && this.showValue;
     }
 
     /**
@@ -686,6 +604,42 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
+     * Verify Show position bottom left.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionBottomLeft() {
+        return this.valuePosition === 'bottom-left' && this.displayValue;
+    }
+
+    /**
+     * Verify Show position bottom right.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionBottomRight() {
+        return this.valuePosition === 'bottom-right' && this.displayValue;
+    }
+
+    /**
+     * Verify Show position left.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionLeft() {
+        return this.valuePosition === 'left' && this.displayValue;
+    }
+
+    /**
+     * Verify Show position right.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionRight() {
+        return this.valuePosition === 'right' && this.displayValue;
+    }
+
+    /**
      * Verify Show position top.
      *
      * @type {string | boolean}
@@ -694,6 +648,24 @@ export default class ProgressBar extends LightningElement {
         return (
             this.showPositionTopLeft || this.showPositionTopRight || this.label
         );
+    }
+
+    /**
+     * Verify Show position top left.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionTopLeft() {
+        return this.valuePosition === 'top-left' && this.displayValue;
+    }
+
+    /**
+     * Verify Show position top right.
+     *
+     * @type {string | boolean}
+     */
+    get showPositionTopRight() {
+        return this.valuePosition === 'top-right' && this.displayValue;
     }
 
     /**
@@ -725,29 +697,27 @@ export default class ProgressBar extends LightningElement {
      *
      * @returns {AvonniResizeObserver} Resize observer.
      */
-    initResizeObserver() {
+    _initResizeObserver() {
         if (!this.divPin) {
             return null;
         }
         return new AvonniResizeObserver(this.divPin, () => {
-            this.updatePinPosition();
+            this._updatePinPosition();
         });
     }
 
     /**
      * Update the position of the pin based on the orientation and the pin attributes.
-     *
      */
-    updatePinPosition() {
+    _updatePinPosition() {
         if (!this.divPin || !this.showPinValue) {
             return;
         }
-
         const width = this.divPin.getBoundingClientRect().width;
         const height = this.divPin.getBoundingClientRect().height;
-        if (this.orientation === 'horizontal' && width > 0) {
+        if (this.isHorizontal && width > 0) {
             this.divPin.style.left = `calc(${this.value}% + ${-width / 2}px)`;
-        } else if (this.orientation === 'vertical' && height > 0 && width > 0) {
+        } else if (this.isVertical && height > 0 && width > 0) {
             this.divPin.style.top = `calc(${this.value}% + ${-height / 2}px)`;
         }
     }

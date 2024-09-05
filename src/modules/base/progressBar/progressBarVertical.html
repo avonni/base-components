@@ -1,10 +1,10 @@
 <template>
     <lightning-layout if:true={showPositionTop}>
-        <lightning-layout-item size="12" class="slds-text-align_center">
+        <lightning-layout-item class="slds-text-align_center" size="12">
             <div class="avonni-progress-bar__vertical-bar_top-container">
                 <span
                     if:true={showPositionTopLeft}
-                    class="avonni-progress-bar__value_font"
+                    class="avonni-progress-bar__value"
                     aria-hidden="true"
                 >
                     {valueToDisplay}
@@ -12,7 +12,7 @@
                 <span
                     if:true={label}
                     class="
-                        avonni-progress-bar__label_font
+                        avonni-progress-bar__label
                         slds-p-right_xx-small
                         slds-p-left_xx-small
                     "
@@ -20,7 +20,7 @@
                 >
                 <span
                     if:true={showPositionTopRight}
-                    class="avonni-progress-bar__value_font"
+                    class="avonni-progress-bar__value"
                     aria-hidden="true"
                 >
                     {valueToDisplay}
@@ -28,7 +28,7 @@
             </div>
         </lightning-layout-item>
     </lightning-layout>
-    <div class={computedSizing}>
+    <div class={computedSizingClass}>
         <div
             class={computedOuterClass}
             aria-valuemin="0"
@@ -44,7 +44,7 @@
             ></lightning-spinner>
             <div
                 class={computedInnerClass}
-                style={computedStyle}
+                style={computedProgressBarStyle}
                 data-element-id="avonni-progress-bar-value"
             ></div>
             <div
@@ -77,7 +77,7 @@
     </div>
     <lightning-layout if:true={showPositionBottom}>
         <lightning-layout-item size="12" class="slds-text-align_center">
-            <span class="avonni-progress-bar__value_font" aria-hidden="true">
+            <span class="avonni-progress-bar__value" aria-hidden="true">
                 {valueToDisplay}
             </span>
         </lightning-layout-item>

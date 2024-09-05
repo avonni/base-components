@@ -7,6 +7,12 @@
  * @property {string} borderStyle Style of the reference line. Valid values include solid, dashed, dotted and none. Defaults to dotted.
  *
  */
+/**
+ * @typedef {Object} PinAttributes
+ * @name pinAttributes
+ * @property {string} position Specify the position of the pin relative to the vertical bar. Valid values include left and right. Defaults to right.
+ * @property {string} type Specify the type of the pin. Valid values include circle and rectangle. Defaults to rectangle.
+ */
 
 /**
  * @namespace stylingHooks

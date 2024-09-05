@@ -210,6 +210,7 @@ export default {
     args: {
         isLoading: false,
         orientation: 'horizontal',
+        showPin: false,
         showValue: false,
         size: 'full',
         textured: false,
