@@ -69,6 +69,17 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-color-background-checked-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-color-background-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-input-choice-set-option-button-color-border
  * @default #747474
  * @type color
@@ -77,6 +88,17 @@
  * @memberof stylingHooks
  * @name --avonni-input-choice-set-option-button-color-border-checked
  * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-color-border-checked-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-color-border-hover
  * @type color
  */
 /**
@@ -108,6 +130,35 @@
  * @name --avonni-input-choice-set-option-button-label-text-color-checked
  * @default #ffffff
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-label-text-color-checked-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-label-text-color-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-label-font-size
+ * @default 0.8125rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-label-font-weight
+ * @default 400
+ * @type font
  */
 /**
  * @memberof stylingHooks
@@ -177,7 +228,19 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-toggle-color-background-checked
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-input-choice-set-option-toggle-color-background-checked-focus
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-toggle-color-background-checked-hover
  * @default #014486
  * @type color
  */
@@ -191,6 +254,12 @@
  * @memberof stylingHooks
  * @name --avonni-input-choice-set-option-toggle-color-border
  * @default #aeaeae
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-toggle-color-border-checked
+ * @default #0176d3
  * @type color
  */
 /**

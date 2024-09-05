@@ -105,7 +105,9 @@ export default class InputChoiceOption {
      * @type {string}
      */
     get computedLabelButtonClass() {
-        return classSet('slds-checkbox_faux slds-truncate')
+        return classSet(
+            'slds-checkbox_faux slds-truncate avonni-input-choice-set__option-button-label'
+        )
             .add({
                 'slds-align_absolute-center':
                     this.iconPosition === POSITION_ICON.TOP ||
