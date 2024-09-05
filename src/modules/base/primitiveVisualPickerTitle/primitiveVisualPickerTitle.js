@@ -20,22 +20,28 @@ const DEFAULT_DISPLAY_AVATAR = false;
 
 export default class PrimitiveVisualPickerTitle extends LightningElement {
     /**
-     * The title can include text and is displayed inside the figure.
-     *
-     * @type {string}
-     */
-    @api title;
-    /**
      * The alternative text used to describe the avatar, which is displayed as hover text on the image.
      *
      * @type {string}
      */
     @api alternativeText;
+    /**
+     * The title can include text and is displayed inside the figure.
+     *
+     * @type {string}
+     */
+    @api title;
 
     _avatar = {};
     _avatarPosition = AVATAR_POSITIONS.default;
     _displayAvatar = DEFAULT_DISPLAY_AVATAR;
     _size = VISUAL_PICKER_SIZES.default;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * An object with item fields to be rendered as an avatar.
@@ -95,22 +101,26 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
         });
     }
 
-    /**
-     * Verify if avatar position is left and should display avatar.
-     *
-     * @type {boolean}
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
      */
-    get avatarIsLeft() {
-        return this._avatarPosition === 'left' && this._displayAvatar;
-    }
 
     /**
-     * Verify if avatar position is right and should display avatar.
+     * Computed avatar class.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get avatarIsRight() {
-        return this._avatarPosition === 'right' && this._displayAvatar;
+    get computedAvatarClass() {
+        return classSet('avonni-primitive-visual-picker-title__avatar')
+            .add({
+                'slds-order_0 slds-m-right_x-small':
+                    this.avatarPosition === 'left',
+                'slds-order_2 slds-m-left_x-small':
+                    this.avatarPosition === 'right'
+            })
+            .toString();
     }
 
     /**

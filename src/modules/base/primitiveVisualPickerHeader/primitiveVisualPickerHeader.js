@@ -20,32 +20,23 @@ const VISUAL_PICKER_SIZES = {
 };
 
 export default class PrimitiveVisualPickerHeader extends LightningElement {
-    /**
-     * The alternative text used to describe the avatar, which is displayed as hover text on the image.
-     *
-     * @type {string}
-     */
     @api alternativeText;
-    /**
-     * The title can include text and is displayed inside the figure.
-     *
-     * @type {string}
-     */
-    @api title;
-    /**
-     * The description can include text and is displayed inside the figure.
-     *
-     * @type {string}
-     */
     @api description;
     @api descriptionClass;
     @api hideAvatarTopBottom = false;
-    @api hideTitle = false;
     @api hideDescription = false;
+    @api hideTitle = false;
+    @api title;
 
     _avatar = {};
     _avatarPosition = AVATAR_POSITIONS.default;
     _size = VISUAL_PICKER_SIZES.default;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * An object with item fields to be rendered as an avatar.
@@ -92,6 +83,32 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
         });
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Verify if avatar position is bottom and should display avatar.
+     *
+     * @type {boolean}
+     */
+    get avatarIsBottom() {
+        const isBiggerThanXSmall = !(
+            this.size === 'x-small' || this.size === 'xx-small'
+        );
+        return (
+            !this.hideAvatarTopBottom &&
+            (this.avatarPositionToDisplay === 'bottom' ||
+                this.avatarPositionToDisplay === 'center' ||
+                !isBiggerThanXSmall ||
+                (this.avatarPositionToDisplay !== 'bottom' &&
+                    this.avatarPositionToDisplay !== 'top' &&
+                    this.hideTitle))
+        );
+    }
+
     /**
      * Verify if avatar position is next to text content and should display avatar.
      *
@@ -117,23 +134,6 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
     }
 
     /**
-     * Verify if avatar position is bottom and should display avatar.
-     *
-     * @type {boolean}
-     */
-    get avatarIsBottom() {
-        return (
-            !this.hideAvatarTopBottom &&
-            (this.avatarPositionToDisplay === 'bottom' ||
-                this.avatarPositionToDisplay === 'center' ||
-                !this.isBiggerThanXSmall ||
-                (this.avatarPositionToDisplay !== 'bottom' &&
-                    this.avatarPositionToDisplay !== 'top' &&
-                    this.hideTitle))
-        );
-    }
-
-    /**
      * Returns the position of the avatar to be displayed.
      *
      * @type {string}
@@ -142,7 +142,8 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
         if (!this.hideTitle && this.hideDescription) {
             if (this._avatarPosition === 'left-of-content') {
                 return 'left';
-            } else if (this._avatarPosition === 'right-of-content') {
+            }
+            if (this._avatarPosition === 'right-of-content') {
                 return 'right';
             }
         }
@@ -176,17 +177,20 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
      */
     get displayTitleAvatar() {
         return (
-            this.avatarPositionToDisplay === 'right' ||
-            this.avatarPositionToDisplay === 'left'
+            this.hasAvatar &&
+            (this.avatarPositionToDisplay === 'right' ||
+                this.avatarPositionToDisplay === 'left')
         );
     }
 
     /**
-     * Verify if size is bigger than x-small.
+     * Verify if there is an avatar to display.
      *
      * @type {boolean}
      */
-    get isBiggerThanXSmall() {
-        return !(this.size === 'x-small' || this.size === 'xx-small');
+    get hasAvatar() {
+        return (
+            this.avatar.imgSrc || this.avatar.iconName || this.avatar.initials
+        );
     }
 }

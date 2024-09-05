@@ -11,19 +11,23 @@
     flex: 1 1 auto;
 }
 
-.avonni-visual-picker__figure-header-container-avatar-left .avonni-visual-picker__figure-avatar {
+.avonni-visual-picker__figure-header-container-avatar-left
+    .avonni-visual-picker__figure-avatar {
     order: 0;
 }
 
-.avonni-visual-picker__figure-header-container-avatar-left .avonni-visual-picker__figure-content {
+.avonni-visual-picker__figure-header-container-avatar-left
+    .avonni-visual-picker__figure-content {
     order: 1;
 }
 
-.avonni-visual-picker__figure-header-container-avatar-right .avonni-visual-picker__figure-avatar {
+.avonni-visual-picker__figure-header-container-avatar-right
+    .avonni-visual-picker__figure-avatar {
     order: 1;
 }
 
-.avonni-visual-picker__figure-header-container-avatar-right .avonni-visual-picker__figure-content {
+.avonni-visual-picker__figure-header-container-avatar-right
+    .avonni-visual-picker__figure-content {
     order: 0;
 }
 
@@ -33,14 +37,22 @@
 }
 
 .avonni-visual-picker__figure-avatar-icon {
-    --avonni-avatar-fallback-icon-color-foreground: var(--avonni-visual-picker-avatar-fallback-icon-foreground);
-    --avonni-avatar-fallback-icon-color-foreground-default: var(--avonni-visual-picker-avatar-fallback-icon-foreground-default);
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground-default
+    );
 }
 
 /*-- Figure Title --*/
 .avonni-visual-picker__figure-title {
-    --avonni-visual-picker-title-avatar-fallback-icon-foreground: var(--avonni-visual-picker-avatar-fallback-icon-foreground);
-    --avonni-visual-picker-title-avatar-fallback-icon-foreground-default: var(--avonni-visual-picker-avatar-fallback-icon-foreground-default);
+    --avonni-visual-picker-title-avatar-fallback-icon-foreground: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground
+    );
+    --avonni-visual-picker-title-avatar-fallback-icon-foreground-default: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground-default
+    );
     --avonni-visual-picker-title-padding: 0rem 0.75rem 0.15rem 0.75rem;
 }
 

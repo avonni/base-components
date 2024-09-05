@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class VisualPickerXSmallAvatarStory extends LightningElement {
+export default class VisualPickerSmallAvatarStory extends LightningElement {
     items = [
         {
             value: 'garret-jones',

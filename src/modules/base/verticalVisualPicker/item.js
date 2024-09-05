@@ -1,10 +1,9 @@
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 
 export default class VerticalVisualPickerItem {
     constructor(props) {
         Object.assign(this, props);
 
-        this.key = generateUUID();
         this.mediaPosition = this.mediaPosition || 'left';
     }
 
@@ -23,10 +22,6 @@ export default class VerticalVisualPickerItem {
                 'slds-border_right': this.mediaIsRight
             })
             .toString();
-    }
-
-    get computedValue() {
-        return this.value || this.key;
     }
 
     get descriptionClass() {
