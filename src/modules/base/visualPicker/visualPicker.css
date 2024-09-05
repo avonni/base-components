@@ -192,7 +192,9 @@
 
 /*-- Focus --*/
 .slds-visual-picker input:focus ~ label .slds-visual-picker__figure {
-    border: 1px solid transparent;
+    border-width: var(--avonni-visual-picker-sizing-border, 1px);
+    border-style: var(--avonni-visual-picker-styling-border, solid);
+    border-color: var(--avonni-visual-picker-color-border);
     -webkit-box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
     box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
 }
