@@ -26,7 +26,7 @@ const DATE_FORMAT_PRESETS = {
         minute: 'numeric',
         second: 'numeric'
     },
-    DATETIME_MED: { dateStyle: 'medium', timeStyle: 'medium' },
+    DATETIME_MED: { dateStyle: 'medium', timeStyle: 'short' },
     DATETIME_MED_WITH_SECONDS: {
         year: 'numeric',
         month: 'short',
@@ -43,7 +43,14 @@ const DATE_FORMAT_PRESETS = {
         hour: 'numeric',
         minute: 'numeric'
     },
-    DATETIME_FULL: { dateStyle: 'long', timeStyle: 'long' },
+    DATETIME_FULL: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZoneName: 'short'
+    },
     DATETIME_FULL_WITH_SECONDS: {
         year: 'numeric',
         month: 'long',
@@ -53,7 +60,15 @@ const DATE_FORMAT_PRESETS = {
         second: 'numeric',
         timeZoneName: 'short'
     },
-    DATETIME_HUGE: { dateStyle: 'full', timeStyle: 'full' },
+    DATETIME_HUGE: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long',
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZoneName: 'long'
+    },
     DATETIME_HUGE_WITH_SECONDS: {
         year: 'numeric',
         month: 'long',
@@ -165,12 +180,14 @@ function _getIsoYear(date, timeZone) {
 function _getQuarter(date, timeZone) {
     const month = _getTzDate(date, timeZone).getMonth();
     const quarter = Math.ceil(month / 3);
-    return quarter ? quarter.toString() : '';
+    return quarter === 0 ? '1' : quarter.toString();
 }
 
 function _parseCustomToken({ date, token, timeZone }) {
     const pad = (value, length) => {
-        return value ? value.toString().padStart(length, '0') : '';
+        return (typeof value === 'number' && !isNaN(value)) || value
+            ? value.toString().padStart(length, '0')
+            : '';
     };
 
     const getUnit = (unit, unitFormat = 'numeric', hour12 = true) => {
@@ -204,7 +221,7 @@ function _parseCustomToken({ date, token, timeZone }) {
         case 's':
             return getUnit('second');
         case 'ss':
-            return getUnit('second', '2-digit');
+            return pad(getUnit('second'), 2);
         case 'm':
             return getUnit('minute');
         case 'mm':
@@ -277,11 +294,14 @@ function _parseCustomToken({ date, token, timeZone }) {
                 weekday: 'short',
                 timeZone
             }).format(date);
-            return WEEKDAY_NUMBERS[weekday] ? WEEKDAY_NUMBERS.toString() : '';
+            return WEEKDAY_NUMBERS[weekday]
+                ? WEEKDAY_NUMBERS[weekday].toString()
+                : '';
         }
         case 'ccc':
         case 'EEE':
-            return getUnit('weekday', 'short');
+            // Remove trailing period
+            return getUnit('weekday', 'short').replace(/\.$/, '');
         case 'cccc':
         case 'EEEE':
             return getUnit('weekday', 'long');
@@ -296,7 +316,8 @@ function _parseCustomToken({ date, token, timeZone }) {
             return getUnit('month', '2-digit');
         case 'LLL':
         case 'MMM':
-            return getUnit('month', 'short');
+            // Remove trailing period
+            return getUnit('month', 'short').replace(/\.$/, '');
         case 'LLLL':
         case 'MMMM':
             return getUnit('month', 'long');
@@ -392,6 +413,8 @@ function _customFormat({ date, format, timeZone }) {
     parts.forEach((part) => {
         if (part.match(/^[a-zA-Z]+$/)) {
             result += _parseCustomToken({ date, token: part, timeZone });
+        } else if (part.match(/^'[^']*'$/)) {
+            result += part.match(/[^']+/)[0];
         } else {
             result += part;
         }
@@ -407,7 +430,7 @@ function _isSameDate(date1, date2) {
 
 function _relativeFormat(date) {
     const now = new Date();
-    if (now - date > 0 && now - date < 60000) {
+    if (now - date >= 0 && now - date < 60000) {
         return 'now';
     }
     const diff = date - now;
