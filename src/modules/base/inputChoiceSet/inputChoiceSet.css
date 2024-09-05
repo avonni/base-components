@@ -2,8 +2,43 @@
     display: block;
 }
 
+.avonni-input-choice-set__option-label {
+    cursor: pointer;
+}
+
+.avonni-input-choice-set__label {
+    color: var(--avonni-input-choice-set-header-text-color, #3e3e3c);
+    font-size: var(--avonni-input-choice-set-header-font-size, 0.75rem);
+    font-style: var(--avonni-input-choice-set-header-font-style, normal);
+    font-weight: var(--avonni-input-choice-set-header-font-weight, 400);
+}
+
 .avonni-input-choice-set__horizontal {
     display: inline-flex;
+}
+
+.slds-checkbox_faux {
+    padding: 0;
+}
+
+/* Button */
+.avonni-input-choice-set__option-button-label {
+    font-size: var(
+        --avonni-input-choice-set-option-button-label-font-size,
+        0.8125rem
+    );
+    font-style: var(
+        --avonni-input-choice-set-option-button-label-font-style,
+        normal
+    );
+    font-weight: var(
+        --avonni-input-choice-set-option-button-label-font-weight,
+        400
+    );
+}
+
+.slds-checkbox_button.avonni-input-choice-set__horizontal {
+    border-bottom: none;
 }
 
 .slds-checkbox_button-group.avonni-input-choice-set__vertical {
@@ -19,51 +54,41 @@
     height: 100%;
 }
 
-.slds-checkbox_faux {
-    padding: 0;
-}
-
 .slds-checkbox_button {
     border-left: none !important;
-    border-bottom: 1px solid #747474;
-}
-
-.avonni-input-choice-set__option-label {
-    cursor: pointer;
-}
-
-.slds-checkbox_button.avonni-input-choice-set__horizontal {
-    border-bottom: none;
+    border-bottom-color: var(
+        --avonni-input-choice-set-option-button-color-border,
+        #747474
+    );
+    border-bottom-style: var(
+        --avonni-input-choice-set-option-button-styling-border,
+        solid
+    );
+    border-bottom-width: var(
+        --avonni-input-choice-set-option-button-sizing-border,
+        1px
+    );
 }
 
 .slds-checkbox_button.avonni-input-choice-set__horizontal:not(:last-child) {
-    border-right: 1px solid #747474;
-}
-
-.avonni-input-choice-set__display_flex {
-    display: flex;
-}
-
-.avonni-input-choice-set__label {
-    color: var(--avonni-input-choice-set-header-text-color, #3e3e3c);
-    font-size: var(--avonni-input-choice-set-header-font-size, 0.75rem);
-    font-style: var(--avonni-input-choice-set-header-font-style, normal);
-    font-weight: var(--avonni-input-choice-set-header-font-weight, 400);
-}
-
-.avonni-input-choice-set__horizontal,
-.avonni-input-choice-set__vertical {
-    border-color: var(--slds-g-color-border-base-4, #747474);
+    border-right-color: var(
+        --avonni-input-choice-set-option-button-color-border,
+        #747474
+    );
+    border-right-style: var(
+        --avonni-input-choice-set-option-button-styling-border,
+        solid
+    );
+    border-right-width: var(
+        --avonni-input-choice-set-option-button-sizing-border,
+        1px
+    );
 }
 
 .avonni-input-choice-set__button_stretch {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-}
-
-.avonni-input-choice-set__toggle_stretch {
-    justify-content: space-between;
 }
 
 .avonni-input-choice-set__button_stretch.avonni-input-choice-set__vertical {
@@ -77,10 +102,6 @@
     flex-grow: 1;
 }
 
-.avonni-input-choice-set__loading {
-    height: 3rem;
-}
-
 .avonni-input-choice-set__button__row [type='checkbox'] {
     width: 1px;
     height: 1px;
@@ -92,24 +113,189 @@
     position: absolute;
 }
 
+.avonni-input-choice-set__horizontal.slds-checkbox_button-group,
+.avonni-input-choice-set__vertical.slds-checkbox_button-group {
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border,
+        #747474
+    );
+    border-style: var(
+        --avonni-input-choice-set-option-button-styling-border,
+        solid
+    );
+    border-width: var(
+        --avonni-input-choice-set-option-button-sizing-border,
+        1px
+    );
+    border-radius: var(
+        --avonni-input-choice-set-option-button-radius-border,
+        0.25rem
+    );
+}
+
+.avonni-input-choice-set__horizontal
+    [type='checkbox']:not(:disabled)
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__vertical
+    [type='checkbox']:not(:disabled)
+    + .slds-checkbox_button__label {
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border,
+        #747474
+    );
+    color: var(
+        --avonni-input-choice-set-option-button-label-text-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+}
+
+.avonni-input-choice-set__horizontal
+    [type='checkbox']:checked:not(:disabled)
+    + .slds-checkbox_button__label:hover,
+.avonni-input-choice-set__vertical
+    [type='checkbox']:checked:not(:disabled)
+    + .slds-checkbox_button__label:hover {
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background-checked-hover
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border-checked-hover
+    );
+    color: var(
+        --avonni-input-choice-set-option-button-label-text-color-checked-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-input-choice-set-option-button-label-text-color-checked-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+}
+
+.avonni-input-choice-set__horizontal
+    [type='checkbox']:not(:disabled):not(:checked)
+    + .slds-checkbox_button__label:hover,
+.avonni-input-choice-set__vertical
+    [type='checkbox']:not(:disabled):not(:checked)
+    + .slds-checkbox_button__label:hover {
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background-hover
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border-hover
+    );
+    color: var(
+        --avonni-input-choice-set-option-button-label-text-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-input-choice-set-option-button-label-text-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+}
+
+.avonni-input-choice-set__horizontal
+    [type='checkbox']:checked
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__vertical
+    [type='checkbox']:checked
+    + .slds-checkbox_button__label {
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background-checked,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border-checked,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    color: var(
+        --avonni-input-choice-set-option-button-label-text-color-checked,
+        #ffffff
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-input-choice-set-option-button-label-text-color-checked,
+        #ffffff
+    );
+}
+
 .avonni-input-choice-set__button__row
     [type='checkbox']
     + .slds-checkbox_button__label {
-    border: 1px solid #747474;
-    border-radius: 0.25rem;
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border,
+        #747474
+    );
+    border-style: var(
+        --avonni-input-choice-set-option-button-styling-border,
+        solid
+    );
+    border-width: var(
+        --avonni-input-choice-set-option-button-sizing-border,
+        1px
+    );
+    border-radius: var(
+        --avonni-input-choice-set-option-button-radius-border,
+        0.25rem
+    );
 }
 
 .avonni-input-choice-set__button__row
     [type='checkbox']:checked
     + .slds-checkbox_button__label {
-    background-color: var(--lwc-brandAccessible, #0176d3);
-    color: white;
-    border: 1px solid var(--lwc-brandAccessible, #0176d3);
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background-checked,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border-checked,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    border-style: var(
+        --avonni-input-choice-set-option-button-styling-border,
+        solid
+    );
+    border-width: var(
+        --avonni-input-choice-set-option-button-sizing-border,
+        1px
+    );
+    border-radius: var(
+        --avonni-input-choice-set-option-button-radius-border,
+        0.25rem
+    );
+}
+
+.avonni-input-choice-set__button__row
+    [type='checkbox']:checked
+    + .slds-checkbox_button__label:hover {
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background-checked-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border-checked-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
 }
 
 .avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
     .slds-checkbox_button:not(:last-child) {
-    border-right: 1px solid #747474;
+    border-right-color: var(
+        --avonni-input-choice-set-option-button-color-border,
+        #747474
+    );
+    border-right-style: var(
+        --avonni-input-choice-set-option-button-styling-border,
+        solid
+    );
+    border-right-width: var(
+        --avonni-input-choice-set-option-button-sizing-border,
+        1px
+    );
 }
 
 .avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
@@ -133,13 +319,19 @@
 .avonni-input-choice-set__vertical
     .slds-checkbox_button:only-child
     > .slds-checkbox_button__label {
-    border-radius: 0.25rem;
+    border-radius: var(
+        --avonni-input-choice-set-option-button-radius-border,
+        0.25rem
+    );
 }
 
 .avonni-input-choice-set__horizontal
     .slds-checkbox_button:only-child
     > .slds-checkbox_button__label {
-    border-radius: 0.25rem;
+    border-radius: var(
+        --avonni-input-choice-set-option-button-radius-border,
+        0.25rem
+    );
 }
 
 .avonni-input-choice-set__option-label_line-clamp {
@@ -169,15 +361,106 @@
     display: flex;
     align-items: center;
     padding-right: 0.5rem;
-    color: var(--avonni-input-choice-set-option-label-text-color);
+    color: var(--avonni-input-choice-set-option-label-text-color, #444);
+    font-size: var(--avonni-input-choice-set-option-label-font-size, 0.8125rem);
+    font-style: var(--avonni-input-choice-set-option-label-font-style, normal);
+    font-weight: var(--avonni-input-choice-set-option-label-font-weight, 400);
 }
 
 .avonni-input-choice-set__checkbox-container {
+    /* Checkbox */
+    --slds-c-checkbox-color-background: var(
+        --avonni-input-choice-set-option-checkbox-color-background
+    );
+    --slds-c-checkbox-color-background-checked: var(
+        --avonni-input-choice-set-option-checkbox-color-background-checked
+    );
+    --slds-c-checkbox-mark-color-foreground: var(
+        --avonni-input-choice-set-option-checkbox-color-foreground
+    );
     --slds-c-checkbox-color-border: var(
         --avonni-input-choice-set-option-checkbox-color-border
+    );
+    --slds-c-checkbox-color-border-checked: var(
+        --avonni-input-choice-set-option-checkbox-color-border-checked
+    );
+    --slds-c-checkbox-radius-border: var(
+        --avonni-input-choice-set-option-checkbox-radius-border
+    );
+    /* Radio */
+    --slds-c-radio-color-background: var(
+        --avonni-input-choice-set-option-checkbox-color-background
+    );
+    --slds-c-radio-color-background-checked: var(
+        --avonni-input-choice-set-option-checkbox-color-background-checked
+    );
+    --slds-c-radio-mark-color-foreground: var(
+        --avonni-input-choice-set-option-checkbox-color-foreground
+    );
+    --slds-c-radio-color-border: var(
+        --avonni-input-choice-set-option-checkbox-color-border
+    );
+    --slds-c-radio-color-border-checked: var(
+        --avonni-input-choice-set-option-checkbox-color-border-checked
+    );
+    /* Toggle */
+    --slds-c-checkbox-toggle-color-background: var(
+        --avonni-input-choice-set-option-toggle-color-background,
+        #aeaeae
+    );
+    --sds-c-checkbox-toggle-color-background-checked: var(
+        --avonni-input-choice-set-option-toggle-color-background-checked,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-checkbox-toggle-color-background-checked-focus: var(
+        --avonni-input-choice-set-option-toggle-color-background-checked-focus,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --sds-c-checkbox-toggle-color-background-checked-hover: var(
+        --avonni-input-choice-set-option-toggle-color-background-checked-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --slds-c-checkbox-toggle-color-background-hover: var(
+        --avonni-input-choice-set-option-toggle-color-background-hover,
+        #939393
+    );
+    --slds-c-checkbox-toggle-color-border: var(
+        --avonni-input-choice-set-option-toggle-color-border,
+        #aeaeae
+    );
+    --sds-c-checkbox-toggle-color-border-checked: var(
+        --avonni-input-choice-set-option-toggle-color-border-checked,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-checkbox-toggle-color-border-hover: var(
+        --avonni-input-choice-set-option-toggle-color-border-hover
+    );
+    --slds-c-checkbox-toggle-mark-color-foreground: var(
+        --avonni-input-choice-set-option-toggle-color-foreground,
+        #ffffff
+    );
+    --slds-c-checkbox-toggle-switch-color-background: var(
+        --avonni-input-choice-set-option-toggle-switch-color-background,
+        #ffffff
+    );
+    --slds-c-checkbox-toggle-switch-color-background-checked: var(
+        --avonni-input-choice-set-option-toggle-switch-color-background-checked,
+        #ffffff
+    );
+    --slds-c-checkbox-toggle-radius-border: var(
+        --avonni-input-choice-set-option-toggle-radius-border,
+        15rem
     );
 }
 
 input[data-checked='false'] ~ label .avonni-input-choice-set__checkmark {
     display: none;
+}
+
+.avonni-input-choice-set__toggle_stretch {
+    justify-content: space-between;
+}
+
+.avonni-input-choice-set__loading {
+    height: 3rem;
 }

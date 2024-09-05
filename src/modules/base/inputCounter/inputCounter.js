@@ -705,6 +705,10 @@ export default class InputCounter extends LightningElement {
      * @param {Event} event
      */
     handleKeyDown(event) {
+        if (this.readOnly) {
+            return;
+        }
+
         const key = event.key;
         switch (key) {
             case 'ArrowUp':
