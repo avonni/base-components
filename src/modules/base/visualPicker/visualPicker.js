@@ -9,7 +9,6 @@ import {
 } from 'c/utils';
 import { equal } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const VISUAL_PICKER_VARIANTS = {
     valid: ['coverable', 'non-coverable'],
@@ -144,24 +143,21 @@ export default class VisualPicker extends LightningElement {
      * @type {string}
      * @public
      */
-    @api
-    messageWhenRangeOverflow;
+    @api messageWhenRangeOverflow;
     /**
      * Error message to be displayed when a range underflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api
-    messageWhenRangeUnderflow;
+    @api messageWhenRangeUnderflow;
     /**
      * Error message to be displayed when the value is missing and input is required.
      *
      * @type {string}
      * @public
      */
-    @api
-    messageWhenValueMissing;
+    @api messageWhenValueMissing;
     /**
      * The name of the visual picker.
      *
@@ -172,9 +168,6 @@ export default class VisualPicker extends LightningElement {
     @api name = generateUUID();
 
     _cols = 1;
-    _mediumContainerCols;
-    _largeContainerCols;
-    _smallContainerCols;
     _columnAttributes = {};
     _disabled = DEFAULT_DISABLED;
     _enableInfiniteLoading = false;
@@ -184,48 +177,47 @@ export default class VisualPicker extends LightningElement {
     _imageAttributes = {};
     _isLoading = false;
     @track _items = [];
+    _largeContainerCols;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _max;
     _maxCount;
+    _mediumContainerCols;
     _min = DEFAULT_MIN;
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
     _size = VISUAL_PICKER_SIZES.default;
+    _smallContainerCols;
     _type = INPUT_TYPES.default;
-    _variant = VISUAL_PICKER_VARIANTS.default;
     _value = [];
+    _variant = VISUAL_PICKER_VARIANTS.default;
 
     _cancelBlur = false;
-    _connected = false;
-    _computedItems = [];
     _columnSizes = {};
-    _itemRendersBeforeScrollUpdate = 0;
+    _computedItems = [];
+    _connected = false;
     _isCollapsed = true;
     _isFallbackLoadedMap = {};
-    _resizeObserver;
+    _itemRendersBeforeScrollUpdate = 0;
     _scrollTop = 0;
 
     helpMessage = '';
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-        this.recomputeTags();
         this._connected = true;
     }
 
     renderedCallback() {
-        if (!this._resizeObserver) {
-            this._resizeObserver = this.initResizeObserver();
-        }
-
-        if (this.inputs) {
+        if (this.inputs.length) {
             this.inputs.forEach((input) => {
-                if (this._value.indexOf(input.value) > -1) {
-                    input.checked = true;
-                } else {
-                    input.checked = false;
-                }
+                input.checked = this._value.includes(input.value);
             });
         }
 
@@ -241,13 +233,6 @@ export default class VisualPicker extends LightningElement {
 
         // Reset loaded fallback map.
         this._isFallbackLoadedMap = {};
-    }
-
-    disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = undefined;
-        }
     }
 
     /*
@@ -269,16 +254,16 @@ export default class VisualPicker extends LightningElement {
     }
     set columnAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
-        const small = this.normalizeColumnAttributes(
+        const small = this._normalizeColumnAttributes(
             normalizedFieldAttributes.smallContainerCols
         );
-        const medium = this.normalizeColumnAttributes(
+        const medium = this._normalizeColumnAttributes(
             normalizedFieldAttributes.mediumContainerCols
         );
-        const large = this.normalizeColumnAttributes(
+        const large = this._normalizeColumnAttributes(
             normalizedFieldAttributes.largeContainerCols
         );
-        const defaults = this.normalizeColumnAttributes(
+        const defaults = this._normalizeColumnAttributes(
             normalizedFieldAttributes.cols
         );
 
@@ -341,7 +326,7 @@ export default class VisualPicker extends LightningElement {
     }
     set fieldAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
-        const defaults = this.normalizeColumnAttributes(
+        const defaults = this._normalizeColumnAttributes(
             normalizedFieldAttributes.cols
         );
 
@@ -462,10 +447,6 @@ export default class VisualPicker extends LightningElement {
     set items(value) {
         this._items = normalizeArray(value);
         this._computedItems = [...this._items];
-
-        if (this._connected) {
-            this.recomputeTags();
-        }
     }
 
     /**
@@ -500,7 +481,6 @@ export default class VisualPicker extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         this._max = isNaN(parseInt(value, 10)) ? Infinity : parseInt(value, 10);
     }
@@ -531,7 +511,6 @@ export default class VisualPicker extends LightningElement {
     get min() {
         return this._min;
     }
-
     set min(value) {
         this._min = isNaN(parseInt(value, 10))
             ? DEFAULT_MIN
@@ -635,10 +614,6 @@ export default class VisualPicker extends LightningElement {
             return;
         }
         this._value = normalizedValue;
-
-        if (this._connected) {
-            this.recomputeTags();
-        }
     }
 
     /**
@@ -666,11 +641,20 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
+     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     *
+     * @type {number}
+     */
+    get cols() {
+        return this.isResponsive ? this.columnAttributes.cols : null;
+    }
+
+    /**
      * Computed CSS classes for the div wrapping the loading spinner and the show more/less button.
      *
      * @type {string}
      */
-    get buttonSpinnerWrapperClass() {
+    get computedButtonSpinnerWrapperClass() {
         const classes = classSet('slds-is-relative').add({
             'avonni-visual-picker__loading-spinner':
                 this.isLoading && !this.showMoreButton,
@@ -684,12 +668,16 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Computed check icon container class styling.
      *
-     * @type {number}
+     * @type {string}
      */
-    get cols() {
-        return this.isResponsive ? this._columnAttributes.cols : null;
+    get computedCheckIconContainerClass() {
+        return classSet('slds-icon_container slds-visual-picker__text-check')
+            .add({
+                'avonni-visual-picker__chek-icon': this.isResponsive
+            })
+            .toString();
     }
 
     /**
@@ -703,6 +691,58 @@ export default class VisualPicker extends LightningElement {
                 `avonni-visual-picker__figure-image_object-fit-${this.imageAttributes.cropFit}`
             )
             .toString();
+    }
+
+    /**
+     * Compute visual picker class styling based on selected attributes. ( orientation, size, ratio)
+     *
+     * @type {string}
+     */
+    get computedVisualPickerClass() {
+        return classSet('slds-visual-picker slds-m-top_small')
+            .add(`avonni-visual-picker_${this.size}`)
+            .add(`ratio-${this.ratio}`)
+            .add({ 'slds-p-right_small': this.isResponsive })
+            .toString();
+    }
+
+    /**
+     * Computed visual picker type class styling based on selected attributes.
+     *
+     * @type {string}
+     */
+    get computedVisualPickerTypeClass() {
+        return classSet(
+            'slds-visual-picker__figure avonni-visual-picker__figure'
+        )
+            .add({
+                'slds-visual-picker__text': !this.isCoverable,
+                'slds-visual-picker__icon': this.isCoverable,
+                'avonni-hide-check-mark': this.hideCheckMark,
+                'slds-align_absolute-center': !this.isResponsive
+            })
+            .toString();
+    }
+
+    /**
+     * Validation with constraint Api.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0,
+                rangeUnderflow: () =>
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected < this.min,
+                rangeOverflow: () =>
+                    this.type === 'checkbox' &&
+                    this.numberOfMainItemsSelected > this.max
+            });
+        }
+        return this._constraintApi;
     }
 
     /**
@@ -724,10 +764,84 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Generate unique ID key.
+     * Get all inputs.
+     *
+     * @type {Element}
      */
-    get generateKey() {
-        return generateUUID();
+    get inputs() {
+        return Array.from(
+            this.template.querySelectorAll('[data-element-id="input"]')
+        );
+    }
+
+    /**
+     * Get input.
+     *
+     * @type {Element}
+     */
+    get input() {
+        return this.template.querySelector('[data-element-id="input"]');
+    }
+
+    /**
+     * Verify if size is bigger than x-small.
+     *
+     * @type {boolean}
+     */
+    get isBiggerThanXSmall() {
+        return !(this.size === 'x-small' || this.size === 'xx-small');
+    }
+
+    /**
+     * Verify if variant is coverable.
+     *
+     * @type {boolean}
+     */
+    get isCoverable() {
+        return this.variant === 'coverable';
+    }
+
+    /**
+     * Verify if size is responsive.
+     *
+     * @type {boolean}
+     */
+    get isResponsive() {
+        return this.size === 'responsive';
+    }
+
+    /**
+     * Number of columns on large container widths and above. See `cols` for accepted values.
+     *
+     * @type {number}
+     */
+    get largeContainerCols() {
+        return this.isResponsive
+            ? this.columnAttributes.largeContainerCols
+            : null;
+    }
+
+    /**
+     * Number of columns on medium container widths. See `cols` for accepted values.
+     *
+     * @type {number}
+     */
+    get mediumContainerCols() {
+        return this.isResponsive
+            ? this.columnAttributes.mediumContainerCols
+            : null;
+    }
+
+    /**
+     * Return the number of selected items.
+     *
+     * @type {number}
+     */
+    get numberOfMainItemsSelected() {
+        if (this.type === 'radio') return this.value ? 1 : 0;
+        return this.items
+            .map(({ value }) => value)
+            .filter((value) => this.value.includes(value)).length;
     }
 
     /**
@@ -751,6 +865,17 @@ export default class VisualPicker extends LightningElement {
             !isNaN(this.maxCount) &&
             this.items.length > this.maxCount
         );
+    }
+
+    /**
+     * Number of columns on small container widths. See `cols` for accepted values.
+     *
+     * @type {number}
+     */
+    get smallContainerCols() {
+        return this.isResponsive
+            ? this.columnAttributes.smallContainerCols
+            : null;
     }
 
     /**
@@ -778,7 +903,6 @@ export default class VisualPicker extends LightningElement {
                 titlePosition,
                 value
             } = item;
-            const key = generateUUID();
             const maxReached =
                 this.type === 'checkbox' &&
                 this.max !== 1 &&
@@ -876,7 +1000,6 @@ export default class VisualPicker extends LightningElement {
             // Tag management
             const hasTags =
                 this.isBiggerThanXSmall &&
-                tags &&
                 Array.isArray(tags) &&
                 tags.length > 0;
 
@@ -918,36 +1041,36 @@ export default class VisualPicker extends LightningElement {
                 hasImg && !layoutIsHorizontal && !imgIsTop && !imgIsBottom;
 
             // Class and styling management
-            const computedBodyLayoutStyle = this.computeLayoutContainerStyle(
+            const computedBodyLayoutStyle = this._computeLayoutContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground,
                 false
             );
-            const computedImageLayoutStyle = this.computeLayoutContainerStyle(
+            const computedImgLayoutStyle = this._computeLayoutContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground,
                 true
             );
-            const computedImgContainerStyle = this.computeImageContainerStyle(
+            const computedImgContainerStyle = this._computeImageContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground
             );
-            const computedImgStyle = this.computeImageStyle(
+            const computedImgStyle = this._computeImageStyle(
                 imgIsHorizontal,
                 imgIsBackground
             );
 
-            const computedNotSelectedClass = this.computeNotSelectedClass(
+            const computedNotSelectedClass = this._computeNotSelectedClass(
                 imgPosition,
                 value
             );
-            const computedBodyClass = this.computeBodyClass(imgIsBackground);
+            const computedBodyClass = this._computeBodyClass(imgIsBackground);
             const computedBodyContentTopClass =
-                this.computeVisualPickerItemsClass(imgIsTop, false);
+                this._computeVisualPickerItemsClass(imgIsTop, false);
             const computedBodyContentCenterClass =
-                this.computeVisualPickerItemsClass(imgIsCenter, hasFields);
+                this._computeVisualPickerItemsClass(imgIsCenter, hasFields);
             const computedBodyContentBottomClass =
-                this.computeVisualPickerItemsClass(imgIsBottom, false);
+                this._computeVisualPickerItemsClass(imgIsBottom, false);
 
             const hasBodyContent =
                 displayTitle ||
@@ -960,56 +1083,55 @@ export default class VisualPicker extends LightningElement {
             const hasTitleOrDescription = itemTitle || itemDescription;
 
             return {
-                key,
-                itemTitle,
                 avatar,
-                itemDescription,
-                disabled,
-                value,
+                avatarAltText,
+                avatarBottomHidden,
+                avatarCenterHidden,
+                avatarPosition,
+                avatarTopHidden,
+                avatarVerticalAlignment,
                 checked,
+                computedBodyClass,
+                computedBodyContentBottomClass,
+                computedBodyContentCenterClass,
+                computedBodyContentTopClass,
+                computedBodyLayoutStyle,
+                computedImgContainerStyle,
+                computedImgLayoutStyle,
+                computedImgStyle,
+                computedNotSelectedClass,
+                computedSelectedClass,
+                description,
+                descriptionBottomHidden,
+                descriptionCenterHidden,
+                descriptionTopHidden,
+                disabled,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
+                fields,
+                hasBodyContent,
+                hasFields,
+                hasHiddenTags,
+                hasTags,
+                hasTitleOrDescription,
+                headerIsBottom,
+                headerIsCenter,
+                headerIsTop,
                 imgAlternativeText,
                 imgIsBottom,
                 imgIsCenter,
                 imgIsTop,
                 imgPosition,
                 imgSrc,
-                headerIsTop,
-                headerIsCenter,
-                headerIsBottom,
-                title,
-                titleTopHidden,
-                titleCenterHidden,
-                titleBottomHidden,
-                description,
-                descriptionTopHidden,
-                descriptionCenterHidden,
-                descriptionBottomHidden,
-                avatarPosition,
-                avatarVerticalAlignment,
-                avatarAltText,
-                avatarTopHidden,
-                avatarBottomHidden,
-                avatarCenterHidden,
-                fields,
-                hasFields,
-                tags,
-                hasHiddenTags,
-                hasTags,
-                hasBodyContent,
-                hasTitleOrDescription,
+                itemDescription,
+                itemTitle,
                 layoutIsHorizontal,
-                computedBodyLayoutStyle,
-                computedImageLayoutStyle,
-                computedImgContainerStyle,
-                computedImgStyle,
-                computedNotSelectedClass,
-                computedSelectedClass,
-                computedBodyClass,
-                computedBodyContentBottomClass,
-                computedBodyContentTopClass,
-                computedBodyContentCenterClass
+                tags,
+                title,
+                titleBottomHidden,
+                titleCenterHidden,
+                titleTopHidden,
+                value
             };
         });
 
@@ -1019,197 +1141,10 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Compute visual picker class styling based on selected attributes. ( orientation, size, ratio)
-     *
-     * @type {string}
-     */
-    get visualPickerClass() {
-        return classSet('slds-visual-picker slds-m-top_small')
-            .add(`avonni-visual-picker_${this._size}`)
-            .add(`ratio-${this._ratio}`)
-            .add({ 'slds-m-around_none': this.isResponsive })
-            .add({ 'slds-p-right_small': this.isResponsive })
-            .toString();
-    }
-
-    /**
-     * Compute visual picker type class styling based on selected attributes.
-     *
-     * @type {string}
-     */
-    get visualPickerTypeClass() {
-        return classSet(
-            'slds-visual-picker__figure avonni-visual-picker__figure'
-        )
-            .add({
-                'slds-visual-picker__text': !this.isCoverable,
-                'slds-visual-picker__icon': this.isCoverable,
-                'avonni-hide-check-mark': this.hideCheckMark,
-                'slds-align_absolute-center': !this.isResponsive
-            })
-            .toString();
-    }
-
-    /**
-     * Computed check icon container class styling.
-     *
-     * @type {string}
-     */
-    get computedCheckIconContainerClass() {
-        return classSet('slds-icon_container slds-visual-picker__text-check')
-            .add({
-                'avonni-visual-picker__chek-icon': this.isResponsive
-            })
-            .toString();
-    }
-
-    /**
-     * Verify if size is bigger than x-small.
-     *
-     * @type {boolean}
-     */
-    get isBiggerThanXSmall() {
-        return !(this.size === 'x-small' || this.size === 'xx-small');
-    }
-
-    /**
-     * Verify if variant is coverable.
-     *
-     * @type {boolean}
-     */
-    get isCoverable() {
-        return this.variant === 'coverable';
-    }
-
-    /**
-     * Verify if size is responsive.
-     *
-     * @type {boolean}
-     */
-    get isResponsive() {
-        return this.size === 'responsive';
-    }
-
-    /**
-     * Number of columns on large container widths and above. See `cols` for accepted values.
-     *
-     * @type {number}
-     */
-    get largeContainerCols() {
-        return this.isResponsive
-            ? this._columnAttributes.largeContainerCols
-            : null;
-    }
-
-    /**
-     * Number of columns on medium container widths. See `cols` for accepted values.
-     *
-     * @type {number}
-     */
-    get mediumContainerCols() {
-        return this.isResponsive
-            ? this._columnAttributes.mediumContainerCols
-            : null;
-    }
-
-    get numberOfMainItemsSelected() {
-        if (this.type === 'radio') return this.value ? 1 : 0;
-        return this.items
-            .map(({ value }) => value)
-            .filter((value) => this.value.includes(value)).length;
-    }
-
-    /**
-     * Add horizontal padding when size is responsive.
-     *
-     * @type {string}
-     */
-    get responsivePadding() {
-        return this.isResponsive ? 'horizontal-small' : '';
-    }
-
-    /**
-     * Pull boundary small if size is responsive.
-     *
-     * @type {string}
-     */
-    get responsivePullBoundary() {
-        return this.isResponsive ? 'small' : '';
-    }
-
-    /**
-     * Number of columns on small container widths. See `cols` for accepted values.
-     *
-     * @type {number}
-     */
-    get smallContainerCols() {
-        return this.isResponsive
-            ? this._columnAttributes.smallContainerCols
-            : null;
-    }
-
-    /**
-     * Verify if is a truncate description ratio.
-     *
-     * @type {boolean}
-     */
-    get truncateRatio() {
-        return (
-            (this._ratio === '4-by-3' || this._ratio === '16-by-9') &&
-            !this.isResponsive
-        );
-    }
-
-    /**
-     * Get all inputs.
+     * Get the visual picker container DOM elements.
      *
      * @type {Element}
      */
-    get inputs() {
-        return Array.from(
-            this.template.querySelectorAll('[data-element-id="input"]')
-        );
-    }
-
-    /**
-     * Get input.
-     *
-     * @type {Element}
-     */
-    get input() {
-        return this.template.querySelector('[data-element-id="input"]');
-    }
-
-    /**
-     * Get the wrapper DOM elements.
-     *
-     * @type {Element}
-     */
-    get wrapperElement() {
-        return this.template.querySelector('[data-element-id="fieldset"]');
-    }
-
-    /**
-     * Validation with constraint Api.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0,
-                rangeUnderflow: () =>
-                    this.type === 'checkbox' &&
-                    this.numberOfMainItemsSelected < this.min,
-                rangeOverflow: () =>
-                    this.type === 'checkbox' &&
-                    this.numberOfMainItemsSelected > this.max
-            });
-        }
-        return this._constraintApi;
-    }
-
     get visualPickerContainer() {
         return this.template.querySelector(
             '[data-element-id="div-items-wrapper"]'
@@ -1233,16 +1168,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Sets focus on the input element.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        this.input.focus();
-    }
-
-    /**
      * Checks if the input is valid.
      *
      * @returns {boolean} Indicates whether the element meets all constraint validations.
@@ -1251,6 +1176,16 @@ export default class VisualPicker extends LightningElement {
     @api
     checkValidity() {
         return this._constraint.checkValidity();
+    }
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.input.focus();
     }
 
     /**
@@ -1309,13 +1244,28 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
+     * Computed items body content class styling.
+     *
+     * @param {boolean} imgIsBackground
+     * @returns {string}
+     */
+    _computeBodyClass(imgIsBackground) {
+        return classSet('avonni-visual-picker__figure-body')
+            .add({
+                'avonni-visual-picker__figure-body-image-background':
+                    imgIsBackground
+            })
+            .toString();
+    }
+
+    /**
      * Compute image container styling.
      *
      * @param {boolean} imgIsHorizontal
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    computeImageContainerStyle(imgIsHorizontal, imgIsBackground) {
+    _computeImageContainerStyle(imgIsHorizontal, imgIsBackground) {
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
 
@@ -1343,7 +1293,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    computeImageStyle(imgIsHorizontal, imgIsBackground) {
+    _computeImageStyle(imgIsHorizontal, imgIsBackground) {
         const objectFit = `object-fit: ${this.imageAttributes.cropFit};`;
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
@@ -1378,7 +1328,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} hasImage
      * @returns {string}
      */
-    computeLayoutContainerStyle(imgIsHorizontal, imgIsBackground, hasImage) {
+    _computeLayoutContainerStyle(imgIsHorizontal, imgIsBackground, hasImage) {
         let heightStyle = '';
         let widthStyle = '';
         if (!imgIsBackground) {
@@ -1402,35 +1352,19 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Computed items body content class styling.
-     *
-     * @param {boolean} imgIsBackground
-     * @returns {string}
-     */
-    computeBodyClass(imgIsBackground) {
-        return classSet('avonni-visual-picker__figure-body')
-            .add({
-                'avonni-visual-picker__figure-body-image-background':
-                    imgIsBackground
-            })
-            .toString();
-    }
-
-    /**
      * Computed NOT selected class styling.
      *
      * @param {string} imgPosition
      * @param {string} itemValue
      * @returns {string}
      */
-    computeNotSelectedClass(imgPosition, itemValue) {
+    _computeNotSelectedClass(imgPosition, itemValue) {
         const isSelected = this.value.includes(itemValue);
         return classSet(
             'avonni-visual-picker__figure-container avonni-visual-picker__height'
         )
             .add({
-                'slds-is-not-selected':
-                    this.isCoverable && !this._hideCheckMark,
+                'slds-is-not-selected': this.isCoverable && !this.hideCheckMark,
                 'avonni-visual-picker__figure-container-reverse':
                     imgPosition === 'right',
                 'avonni-visual-picker__figure-image-background':
@@ -1452,32 +1386,17 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} hasFields
      * @type {string}
      */
-    computeVisualPickerItemsClass(hasImg, hasFields) {
+    _computeVisualPickerItemsClass(hasImg, hasFields) {
         return classSet('slds-has-flexi-truncate')
             .add({
                 'avonni-visual-picker__items':
-                    this.size !== 'responsive' ||
-                    (this.size === 'responsive' && !hasImg),
+                    !this.isResponsive || (this.isResponsive && !hasImg),
                 'avonni-visual-picker__items_responsive_image':
-                    this.size === 'responsive' && hasImg,
+                    this.isResponsive && hasImg,
                 'avonni-visual-picker__items_responsive_image-fields':
-                    this.size === 'responsive' && hasImg && hasFields
+                    this.isResponsive && hasImg && hasFields
             })
             .toString();
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        if (!this.wrapperElement) {
-            return null;
-        }
-        return new AvonniResizeObserver(this.wrapperElement, () => {
-            this.recomputeTags();
-        });
     }
 
     /**
@@ -1486,16 +1405,9 @@ export default class VisualPicker extends LightningElement {
      * @param {number} value
      * @returns {number}
      */
-    normalizeColumns(value) {
+    _normalizeColumns(value) {
         const numValue = parseInt(value, 10);
-        if (isNaN(numValue)) {
-            return null;
-        }
-
-        if (COLUMNS.valid.includes(numValue)) {
-            return numValue;
-        }
-        return null;
+        return COLUMNS.valid.includes(numValue) ? numValue : null;
     }
 
     /**
@@ -1504,98 +1416,11 @@ export default class VisualPicker extends LightningElement {
      * @param {number} value
      * @returns {number}
      */
-    normalizeColumnAttributes(value) {
-        const normalizedCols = this.normalizeColumns(value);
+    _normalizeColumnAttributes(value) {
+        const normalizedCols = this._normalizeColumns(value);
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
             : null;
-    }
-
-    recomputeTags() {
-        requestAnimationFrame(() => {
-            const container = Array.from(
-                this.template.querySelectorAll(
-                    '.avonni-visual-picker__tags-container'
-                )
-            );
-            const tagClass = 'avonni-visual-picker__tags';
-            const hiddenTagClass = 'avonni-visual-picker__tags-hidden';
-
-            // Resets tags visibility
-            const items = this._items.map((item, index) => {
-                if (container && container[index]) {
-                    const tagElements = Array.from(
-                        container[index].querySelectorAll(
-                            '[data-element-id="avonni-visual-picker-tag"]'
-                        )
-                    );
-                    tagElements.forEach((tagElement) => {
-                        if (tagElement.classList.contains(hiddenTagClass)) {
-                            tagElement.classList.remove(hiddenTagClass);
-                        }
-                    });
-                }
-                let tags = [];
-                if (item.tags && Array.isArray(item.tags)) {
-                    tags = item.tags.map((tag) => {
-                        return {
-                            ...tag,
-                            hidden: false
-                        };
-                    });
-                }
-                return {
-                    ...item,
-                    tags,
-                    hasHiddenTags: false
-                };
-            });
-
-            // Calculate overflow
-            this._computedItems = items.map((item, index) => {
-                if (item.tags && Array.isArray(item.tags)) {
-                    if (container && container[index]) {
-                        const overflowElement = container[index].querySelector(
-                            '[data-element-id="avonni-visual-picker-tag-overflow"]'
-                        );
-                        const tagElements = Array.from(
-                            container[index].querySelectorAll(
-                                '[data-element-id="avonni-visual-picker-tag"]'
-                            )
-                        );
-                        let totalWidth = 0;
-                        let maxWidth =
-                            container[index].getBoundingClientRect().width - 30;
-                        if (overflowElement) {
-                            maxWidth -=
-                                overflowElement.getBoundingClientRect().width;
-                        }
-                        tagElements.forEach((tagElement, tagIndex) => {
-                            const width =
-                                tagElement.getBoundingClientRect().width;
-                            const isHidden = maxWidth <= totalWidth + width;
-                            if (!tagElement.classList.contains(tagClass)) {
-                                tagElement.classList.add(tagClass);
-                            }
-                            if (
-                                isHidden &&
-                                !tagElement.classList.contains(hiddenTagClass)
-                            ) {
-                                tagElement.classList.add(hiddenTagClass);
-                            }
-                            if (item.tags[tagIndex]) {
-                                item.tags[tagIndex].hidden = isHidden;
-                            }
-                            totalWidth += width;
-                        });
-                        item.hasHiddenTags = item.tags.some(
-                            (tag) => tag.hidden
-                        );
-                    }
-                }
-                return item;
-            });
-        });
     }
 
     /*
@@ -1605,12 +1430,9 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
-     * Dispatches the blur event.
+     * Handles the blur event.
      */
     handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
         this.interactingState.leave();
     }
 
@@ -1741,10 +1563,16 @@ export default class VisualPicker extends LightningElement {
         event.currentTarget.click();
     }
 
+    /**
+     * Handle the mouse enter event.
+     */
     handleMouseEnter() {
         this._cancelBlur = true;
     }
 
+    /**
+     * Handle the mouse leave event.
+     */
     handleMouseLeave() {
         this._cancelBlur = false;
     }

@@ -351,13 +351,13 @@ ItemsWithTags.args = {
     size: 'large'
 };
 
-export const NoMarkDoubleExtraSmall = Template.bind({});
-NoMarkDoubleExtraSmall.args = {
+export const NoMarkSmall = Template.bind({});
+NoMarkSmall.args = {
     hideCheckMark: true,
     items: itemsWithIcon,
-    label: 'Double extra small no mark',
-    name: 'xx-small',
-    size: 'xx-small',
+    label: 'Small no mark',
+    name: 'small',
+    size: 'small',
     value: 'lightning-enterprise'
 };
 
@@ -455,12 +455,12 @@ AvatarStory.args = {
     size: 'large'
 };
 
-export const X_SmallAvatarStory = Template.bind({});
-X_SmallAvatarStory.args = {
+export const SmallAvatarStory = Template.bind({});
+SmallAvatarStory.args = {
     items: xSmallAvatarStories,
     label: 'Select an avatar',
     name: 'small-avatar-story',
-    size: 'x-small'
+    size: 'small'
 };
 
 export const Templates = Template.bind({});

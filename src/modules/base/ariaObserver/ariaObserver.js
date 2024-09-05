@@ -1,4 +1,5 @@
-import { guid, synchronizeAttrs, isNativeComponent } from 'c/utilsPrivate';
+import { synchronizeAttrs, isNativeComponent } from 'c/utilsPrivate';
+import { generateUUID } from 'c/utils';
 
 import {
     setAriaActiveDescendant,
@@ -66,7 +67,7 @@ export default class AvonniAriaObserver {
         this.isNativeShadow = isNativeComponent(component);
         this.state = {};
         this.liveIds = {};
-        this.guid = guid();
+        this.guid = generateUUID();
         this.placeholderContainer = null;
     }
 

@@ -6,6 +6,7 @@
                 class="avonni-visual-picker__figure-avatar"
             >
                 <c-primitive-avatar
+                    class="avonni-visual-picker__figure-avatar-icon"
                     alternative-text={alternativeText}
                     fallback-icon-name={avatar.iconName}
                     initials={avatar.initials}
@@ -14,12 +15,12 @@
                     size={avatar.size}
                     src={avatar.imgSrc}
                     variant={avatar.variant}
-                    class="avonni-visual-picker__figure-avatar-icon"
                 ></c-primitive-avatar>
             </div>
-            <div class="avonni-visual-picker__figure-content slds-truncate">
+            <div class="avonni-visual-picker__figure-content">
                 <c-primitive-avatar
                     if:true={avatarIsTop}
+                    class="avonni-visual-picker__figure-avatar-icon"
                     alternative-text={alternativeText}
                     fallback-icon-name={avatar.iconName}
                     initials={avatar.initials}
@@ -28,7 +29,6 @@
                     size={avatar.size}
                     src={avatar.imgSrc}
                     variant={avatar.variant}
-                    class="avonni-visual-picker__figure-avatar-icon"
                 ></c-primitive-avatar>
                 <c-primitive-visual-picker-title
                     if:false={hideTitle}
@@ -52,6 +52,7 @@
                 </p>
                 <c-primitive-avatar
                     if:true={avatarIsBottom}
+                    class="avonni-visual-picker__figure-avatar-icon"
                     alternative-text={alternativeText}
                     fallback-icon-name={avatar.iconName}
                     initials={avatar.initials}
@@ -60,7 +61,6 @@
                     size={avatar.size}
                     src={avatar.imgSrc}
                     variant={avatar.variant}
-                    class="avonni-visual-picker__figure-avatar-icon"
                 ></c-primitive-avatar>
             </div>
         </div>
