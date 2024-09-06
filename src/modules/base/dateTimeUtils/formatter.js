@@ -248,7 +248,7 @@ function _standardFormat({ date, timeZone }) {
     }).format(date);
 }
 
-const getFormattedDate = ({ date = new Date(), timeZone, format }) => {
+function getFormattedDate({ date = new Date(), timeZone, format }) {
     const givenDate = new Date(date);
 
     if (format === 'STANDARD') {
@@ -265,6 +265,20 @@ const getFormattedDate = ({ date = new Date(), timeZone, format }) => {
     }
 
     return _customFormat({ date: givenDate, format, timeZone });
-};
+}
 
-export { getFormattedDate };
+function getISODate(date = new Date(), timeZone) {
+    if (!timeZone) {
+        return date.toISOString();
+    }
+    const dateWithoutTime = getFormattedDate({
+        date,
+        timeZone,
+        format: 'yyyy-MM-dd'
+    });
+    const time = getFormattedDate({ date, timeZone, format: 'HH:mm:ss.SSS' });
+    const offset = getFormattedDate({ date, timeZone, format: 'ZZ' });
+    return `${dateWithoutTime}T${time}${offset}`;
+}
+
+export { getFormattedDate, getISODate };
