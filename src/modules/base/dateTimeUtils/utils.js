@@ -1,3 +1,5 @@
+import { HOUR, DATE, MONTH, YEAR } from './constants';
+
 function getStartOfWeek(date) {
     const day = date.getDay();
     const timestamp = new Date(date).setDate(date.getDate() - day);
@@ -10,4 +12,19 @@ function pad(value, length) {
         : '';
 }
 
-export { getStartOfWeek, pad };
+function setDate(date, unit, ...value) {
+    switch (unit) {
+        case HOUR:
+            return new Date(new Date(date).setHours(...value));
+        case DATE:
+            return new Date(new Date(date).setDate(...value));
+        case MONTH:
+            return new Date(new Date(date).setMonth(...value));
+        case YEAR:
+            return new Date(new Date(date).setFullYear(...value));
+        default:
+            return new Date(date);
+    }
+}
+
+export { getStartOfWeek, pad, setDate };

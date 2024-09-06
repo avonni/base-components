@@ -1,9 +1,11 @@
 // Constants used to make minification possible
 // and lighten the code once in production
 const DEFAULT_LANGUAGE = 'default';
+const DATE = 'date';
 const DOUBLE_DIGIT = '2-digit';
 const ERA = 'era';
 const FULL = 'full';
+const HOUR = 'hour';
 const LONG = 'long';
 const MEDIUM = 'medium';
 const MONTH = 'month';
@@ -12,6 +14,7 @@ const NUMERIC = 'numeric';
 const SHORT = 'short';
 const TIME_ZONE_NAME = 'timeZoneName';
 const WEEKDAY = 'weekday';
+const YEAR = 'year';
 
 const DATE_FORMAT_PRESETS = {
     DATE_SHORT: { dateStyle: SHORT },
@@ -124,10 +127,12 @@ const INTERVALS = {
 };
 
 export {
+    DATE,
     DATE_FORMAT_PRESETS,
     DEFAULT_LANGUAGE,
     DOUBLE_DIGIT,
     ERA,
+    HOUR,
     INTERVALS,
     LONG,
     MONTH,
@@ -135,5 +140,6 @@ export {
     NUMERIC,
     SHORT,
     TIME_ZONE_NAME,
-    WEEKDAY
+    WEEKDAY,
+    YEAR
 };
