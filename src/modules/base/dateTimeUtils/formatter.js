@@ -53,13 +53,13 @@ function _parseCustomToken({ date, token, timeZone }) {
         case 'HH':
             return pad(tzDate.hour, 2);
         case 'Z': {
-            const offset = tzDate.offset;
+            const offset = tzDate.tzOffset;
             return offset.replace(/:\d{2}/, '');
         }
         case 'ZZ':
-            return tzDate.offset;
+            return tzDate.tzOffset;
         case 'ZZZ': {
-            const offset = tzDate.offset;
+            const offset = tzDate.tzOffset;
             return offset.replace(':', '');
         }
         case 'ZZZZ':

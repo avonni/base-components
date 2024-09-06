@@ -1,5 +1,5 @@
 import { pad } from './utils';
-import { DEFAULT_LANGUAGE, DOUBLE_DIGIT, NUMERIC } from './constants';
+import { DEFAULT_LANGUAGE, NUMERIC } from './constants';
 
 export class DateTime {
     constructor(date, timeZone) {
@@ -65,25 +65,6 @@ export class DateTime {
         return Number(this.getUnit('month'));
     }
 
-    get offset() {
-        // Date object representing the current time zone
-        const tzDate = this.tzDate;
-
-        // Remove the local timezone offset
-        const referenceTime =
-            this._originalDate.getTime() +
-            this._originalDate.getTimezoneOffset() * 60 * 1000;
-
-        const offsetMs = tzDate.getTime() - referenceTime;
-        const offsetHours = Math.floor(offsetMs / (1000 * 60 * 60));
-        const offsetMinutes = Math.abs(offsetMs / (1000 * 60)) % 60;
-        const sign = offsetHours >= 0 ? '+' : '-';
-
-        const offsetHoursString = pad(Math.abs(offsetHours), 2);
-        const offsetMinutesString = pad(Math.abs(offsetMinutes), 2);
-        return `${sign}${offsetHoursString}:${offsetMinutesString}`;
-    }
-
     get ordinal() {
         const startOfYear = new Date(this._originalDate);
         startOfYear.setMonth(0, 1);
@@ -111,23 +92,47 @@ export class DateTime {
             return new Date(this._originalDate);
         }
         const parts = new Intl.DateTimeFormat('en-US', {
-            day: DOUBLE_DIGIT,
+            day: NUMERIC,
             timeZone: this.timeZone,
             year: NUMERIC,
-            month: DOUBLE_DIGIT,
-            hour: DOUBLE_DIGIT,
-            minute: DOUBLE_DIGIT,
-            second: DOUBLE_DIGIT,
+            month: NUMERIC,
+            hour: NUMERIC,
+            minute: NUMERIC,
+            second: NUMERIC,
             hour12: false
         }).formatToParts(this._originalDate);
-        const y = parts[4].value;
-        const mo = parts[0].value;
-        const d = parts[2].value;
-        const h = parts[6].value;
-        const min = parts[8].value;
-        const sec = parts[10].value;
-        const isoDate = `${y}-${mo}-${d}T${h}:${min}:${sec}`;
-        return new Date(isoDate);
+        const y = Number(parts[4].value);
+        const mo = Number(parts[0].value);
+        const d = Number(parts[2].value);
+        const h = Number(parts[6].value);
+        const min = Number(parts[8].value);
+        const sec = Number(parts[10].value);
+        return new Date(y, mo - 1, d, h, min, sec);
+    }
+
+    /**
+     * Time zone offset, in the format '+HH:MM' or '-HH:MM'.
+     *
+     * @type {string}
+     */
+    get tzOffset() {
+        // Date if we were in the given time zone
+        const tzDate = this.tzDate;
+
+        // Time of the original date in the UTC time zone
+        const referenceTime =
+            this._originalDate.getTime() +
+            this._originalDate.getTimezoneOffset() * 60 * 1000;
+
+        // Calculate the offset between the given time zone and UTC
+        const offsetMs = tzDate.getTime() - referenceTime;
+        const offsetHours = Math.floor(offsetMs / (1000 * 60 * 60));
+        const offsetMinutes = Math.abs(offsetMs / (1000 * 60)) % 60;
+        const sign = offsetHours >= 0 ? '+' : '-';
+
+        const offsetHoursString = pad(Math.abs(offsetHours), 2);
+        const offsetMinutesString = pad(Math.abs(offsetMinutes), 2);
+        return `${sign}${offsetHoursString}:${offsetMinutesString}`;
     }
 
     get weekday() {
@@ -160,6 +165,6 @@ export class DateTime {
             return this._originalDate.toISOString();
         }
         const iso = this.tzDate.toISOString();
-        return iso.replace('Z', this.offset);
+        return iso.replace('Z', this.tzOffset);
     }
 }
