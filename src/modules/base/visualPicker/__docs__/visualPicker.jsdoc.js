@@ -29,6 +29,12 @@
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
  */
 /**
+ * @typedef {Object} VisualPickerField
+ * @name itemFields
+ * @property {string} label Field label.
+ * @property {string} value The value of the field.
+ */
+/**
  * @typedef {Object} VisualPickerTag
  * @name itemTags
  * @property {string} label Tag label.

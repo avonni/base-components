@@ -167,7 +167,6 @@ export default class VisualPicker extends LightningElement {
      */
     @api name = generateUUID();
 
-    _cols = 1;
     _columnAttributes = {};
     _disabled = DEFAULT_DISABLED;
     _enableInfiniteLoading = false;
@@ -764,6 +763,15 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Get input.
+     *
+     * @type {Element}
+     */
+    get input() {
+        return this.template.querySelector('[data-element-id="input"]');
+    }
+
+    /**
      * Get all inputs.
      *
      * @type {Element}
@@ -772,15 +780,6 @@ export default class VisualPicker extends LightningElement {
         return Array.from(
             this.template.querySelectorAll('[data-element-id="input"]')
         );
-    }
-
-    /**
-     * Get input.
-     *
-     * @type {Element}
-     */
-    get input() {
-        return this.template.querySelector('[data-element-id="input"]');
     }
 
     /**
