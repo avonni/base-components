@@ -107,7 +107,8 @@ export class DateTime {
         const h = Number(parts[6].value);
         const min = Number(parts[8].value);
         const sec = Number(parts[10].value);
-        return new Date(y, mo - 1, d, h, min, sec);
+        const ms = this._originalDate.getMilliseconds();
+        return new Date(y, mo - 1, d, h, min, sec, ms);
     }
 
     /**
