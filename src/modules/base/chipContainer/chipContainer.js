@@ -299,6 +299,20 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
+     * CSS classes of the popover element.
+     *
+     * @type {string}
+     */
+    get computedPopoverClass() {
+        return classSet(
+            'slds-dropdown slds-dropdown_length-7 slds-p-vertical_none slds-p-horizontal_xx-small'
+        ).add({
+            'slds-dropdown_right': this.singleLine,
+            'slds-dropdown_left': !this.singleLine
+        });
+    }
+
+    /**
      * CSS classes of the wrapper element.
      *
      * @type {string}
