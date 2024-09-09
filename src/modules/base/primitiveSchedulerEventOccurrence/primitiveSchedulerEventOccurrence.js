@@ -7,12 +7,12 @@ import {
     normalizeString
 } from 'c/utils';
 import { DateTime } from 'c/luxon';
+import { classListMutation } from 'c/utilsPrivate';
 import {
-    classListMutation,
     dateTimeObjectFrom,
     getWeekday,
     getWeekNumber
-} from 'c/utilsPrivate';
+} from 'c/luxonDateTimeUtils';
 import {
     isAllDay,
     spansOnMoreThanOneDay,

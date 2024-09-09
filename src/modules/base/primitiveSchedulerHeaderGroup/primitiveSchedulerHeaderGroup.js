@@ -4,9 +4,9 @@ import {
     addToDate,
     dateTimeObjectFrom,
     numberOfUnitsBetweenDates,
-    removeFromDate,
-    equal
-} from 'c/utilsPrivate';
+    removeFromDate
+} from 'c/luxonDateTimeUtils';
+import { equal } from 'c/utilsPrivate';
 import SchedulerHeader from './schedulerHeader';
 import {
     classSet,

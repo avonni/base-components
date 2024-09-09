@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { dateTimeObjectFrom, getFormattedDate } from 'c/utilsPrivate';
+import { getFormattedDate } from 'c/dateTimeUtils';
 import {
     classSet,
     deepCopy,
@@ -565,20 +565,16 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * Set the formatted date.
      */
     formatDate() {
-        const date = dateTimeObjectFrom(this.datetimeValue, {
-            zone: this.timezone
-        });
-        if (!date || !this.dateFormat) {
+        const date = new Date(this.datetimeValue);
+        if (!date || isNaN(date) || !this.dateFormat) {
             this.formattedDate = '';
             return;
         }
-        this.formattedDate = getFormattedDate(
-            this.datetimeValue,
-            {
-                zone: this.timezone
-            },
-            this.dateFormat
-        );
+        this.formattedDate = getFormattedDate({
+            date: this.datetimeValue,
+            timeZone: this.timezone,
+            format: this.dateFormat
+        });
     }
 
     /**

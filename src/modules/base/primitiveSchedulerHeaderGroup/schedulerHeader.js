@@ -4,7 +4,7 @@ import {
     addToDate,
     getStartOfWeek,
     numberOfUnitsBetweenDates
-} from 'c/utilsPrivate';
+} from 'c/luxonDateTimeUtils';
 import {
     nextAllowedDay,
     nextAllowedMonth,
