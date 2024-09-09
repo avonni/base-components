@@ -1,5 +1,10 @@
 import { LightningElement, api } from 'lwc';
-import { DateTime, getStartOfWeek, setDate, getISODate } from 'c/dateTimeUtils';
+import {
+    DateTime,
+    getFormattedDate,
+    getStartOfWeek,
+    setDate
+} from 'c/dateTimeUtils';
 import { equal, keyCodes } from 'c/utilsPrivate';
 import {
     generateUUID,
@@ -1034,8 +1039,17 @@ export default class Calendar extends LightningElement {
         return setDate(date, 'hour', 0, 0, 0, 0);
     }
 
-    toISO(date) {
-        return getISODate(this.startOfDay(date), this.timezone);
+    toISO(dateObject) {
+        const date = getFormattedDate({
+            date: dateObject,
+            format: 'yyyy-MM-dd'
+        });
+        const offset = getFormattedDate({
+            date,
+            timeZone: this.timezone,
+            format: 'ZZ'
+        });
+        return `${date}T00:00:00.000${offset}`;
     }
 
     /**
