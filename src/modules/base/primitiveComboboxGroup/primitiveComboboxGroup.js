@@ -9,6 +9,12 @@ export default class PrimitiveComboboxGroup extends LightningElement {
     _options = [];
     _removeSelectedOptions = false;
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     renderedCallback() {
         // The group is added to the id to be able to make the difference between
         // the two versions of the same option, when an option is in several groups.
@@ -20,13 +26,11 @@ export default class PrimitiveComboboxGroup extends LightningElement {
         });
     }
 
-    @api
-    get options() {
-        return this._options;
-    }
-    set options(value) {
-        this._options = normalizeArray(value);
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get groups() {
@@ -34,21 +38,6 @@ export default class PrimitiveComboboxGroup extends LightningElement {
     }
     set groups(value) {
         this._groups = normalizeArray(value);
-    }
-
-    @api
-    get removeSelectedOptions() {
-        return this._removeSelectedOptions;
-    }
-    set removeSelectedOptions(value) {
-        this._removeSelectedOptions = normalizeBoolean(value);
-    }
-
-    @api
-    get titleElement() {
-        return this.template.querySelector(
-            '[data-element-id="li-group-title"]'
-        );
     }
 
     @api
@@ -72,9 +61,44 @@ export default class PrimitiveComboboxGroup extends LightningElement {
         return options.flat();
     }
 
+    @api
+    get options() {
+        return this._options;
+    }
+    set options(value) {
+        this._options = normalizeArray(value);
+    }
+
+    @api
+    get removeSelectedOptions() {
+        return this._removeSelectedOptions;
+    }
+    set removeSelectedOptions(value) {
+        this._removeSelectedOptions = normalizeBoolean(value);
+    }
+
+    @api
+    get titleElement() {
+        return this.template.querySelector(
+            '[data-element-id="li-group-title"]'
+        );
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     get generateKey() {
         return generateUUID();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     handleAction(event) {
         if (event.currentTarget.dataset.ariaDisabled === 'true') return;

@@ -21,48 +21,42 @@ import {
  */
 export default class Option {
     constructor(option, levelPath) {
-        this.disabled = normalizeBoolean(option.disabled);
-        this.iconName = option.iconName;
-        this.isLoading = normalizeBoolean(option.isLoading);
-        this.levelPath = levelPath;
-        this.groups = normalizeArray(option.groups);
-        this.label = option.label;
-        this.options = normalizeArray(option.options);
-        this.secondaryText = option.secondaryText;
-        this.value = option.value;
         this.avatar = option.avatar || {};
         this.avatarFallbackIconName = option.avatarFallbackIconName
             ? option.avatarFallbackIconName
             : this.avatar && this.avatar.fallbackIconName
             ? this.avatar.fallbackIconName
             : undefined;
+        this.avatarInitials = this.avatar.avatarInitials;
         this.avatarSrc = option.avatarSrc
             ? option.avatarSrc
             : this.avatar && this.avatar.src
             ? this.avatar.src
             : undefined;
-        this.avatarInitials = this.avatar.avatarInitials;
+        this.disabled = normalizeBoolean(option.disabled);
+        this.groups = normalizeArray(option.groups);
+        this.iconName = option.iconName;
+        this.isLoading = normalizeBoolean(option.isLoading);
+        this.label = option.label;
+        this.levelPath = levelPath;
+        this.options = normalizeArray(option.options);
+        this.secondaryText = option.secondaryText;
+        this.value = option.value;
 
         if (this.hasAvatar) {
             this.avatar = {
                 fallbackIconName: this.avatarFallbackIconName,
-                initials:
-                    this.avatar && this.avatar.initials
-                        ? this.avatar.initials
-                        : undefined,
-                presence:
-                    this.avatar && this.avatar.presence
-                        ? this.avatar.presence
-                        : undefined,
-                presencePosition:
-                    this.avatar && this.avatar.presencePosition
-                        ? this.avatar.presencePosition
-                        : 'bottom-right',
+                initials: this.avatar?.initials
+                    ? this.avatar.initials
+                    : undefined,
+                presence: this.avatar?.presence
+                    ? this.avatar.presence
+                    : undefined,
+                presencePosition: this.avatar?.presencePosition
+                    ? this.avatar.presencePosition
+                    : 'bottom-right',
                 src: this.avatarSrc,
-                variant:
-                    this.avatar && this.avatar.variant
-                        ? this.avatar.variant
-                        : 'square'
+                variant: this.avatar?.variant ? this.avatar.variant : 'square'
             };
         }
     }

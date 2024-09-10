@@ -150,33 +150,33 @@ export default class PrimitiveCombobox extends LightningElement {
     _dropdownLength = DROPDOWN_LENGTHS.default;
     _enableInfiniteLoading = false;
     _groups = [{ name: DEFAULT_GROUP_NAME }];
+    _hideClearIcon = false;
     _hideOptionsUntilSearch = false;
     _isLoading = false;
     _isMultiSelect = false;
     _keepOpenOnSelect = false;
-    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _multiLevelGroups = false;
     _options = [];
     _placeholder;
     _readOnly = false;
     _removeSelectedOptions = false;
     _required = false;
-    _search = this.computeSearch;
-    _hideClearIcon = false;
+    _search = this._computeSearch;
     _value = [];
     _variant = VARIANTS.default;
 
     _autoPosition;
     _cancelBlur = false;
-    _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
     _highlightedOptionIndex = 0;
     _isSearching = false;
+    _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
     _previousScroll;
     _restoreScrollTimeout;
+    _scrollState;
     _searchTerm = '';
     _searchTimeout;
-    _scrollState;
     _visibleOptions = [];
     backLink;
     bottomActions = [];
@@ -190,11 +190,17 @@ export default class PrimitiveCombobox extends LightningElement {
     showLoader = false;
     topActions = [];
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
-        this.initValue();
+        this._initValue();
 
         if (this.removeSelectedOptions) {
-            this.visibleOptions = this.removeSelectedOptionsFrom(
+            this.visibleOptions = this._removeSelectedOptionsFrom(
                 this.visibleOptions
             );
         }
@@ -206,14 +212,11 @@ export default class PrimitiveCombobox extends LightningElement {
 
     renderedCallback() {
         if (this.dropdownVisible) {
-            this.updateDropdownHeight();
-            this.highlightOption(0);
+            this._updateDropdownHeight();
+            this._highlightOption(0);
 
             if (this.enableInfiniteLoading) {
-                const list = this.template.querySelector(
-                    '[data-element-id="ul-listbox"]'
-                );
-                if (list && list.scrollTop === 0) {
+                if (this.list?.scrollTop === 0) {
                     this.handleScroll();
                 }
             }
@@ -253,8 +256,8 @@ export default class PrimitiveCombobox extends LightningElement {
             }
         });
 
-        this.sortFixedActions(this.topActions, 'first');
-        this.sortFixedActions(this.bottomActions);
+        this._sortFixedActions(this.topActions, 'first');
+        this._sortFixedActions(this.bottomActions);
     }
 
     /**
@@ -366,7 +369,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this._enableInfiniteLoading &&
             this.showLoader
         ) {
-            this.restoreScroll();
+            this._restoreScroll();
         }
     }
 
@@ -385,7 +388,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         // Add a default group for options without groups
         this._groups.unshift({ name: DEFAULT_GROUP_NAME });
-        if (this.visibleOptions.length) this.computeGroups();
+        if (this.visibleOptions.length) this._computeGroups();
     }
 
     /**
@@ -423,7 +426,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.showLoader &&
             this.enableInfiniteLoading
         ) {
-            this.restoreScroll();
+            this._restoreScroll();
         }
     }
 
@@ -440,7 +443,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
-        if (this._connected) this.initValue();
+        if (this._connected) this._initValue();
     }
 
     /**
@@ -512,7 +515,7 @@ export default class PrimitiveCombobox extends LightningElement {
         this._multiLevelGroups = normalizeBoolean(value);
 
         if (this.groups.length && this.visibleOptions.length)
-            this.computeGroups();
+            this._computeGroups();
     }
 
     /**
@@ -527,11 +530,11 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set options(value) {
         const options = normalizeArray(value);
-        const optionObjects = this.initOptionObjects(options);
+        const optionObjects = this._initOptionObjects(options);
         this._options = optionObjects;
 
         if (this._connected) {
-            this.initValue();
+            this._initValue();
             this.visibleOptions = this.currentParent
                 ? this.currentParent.options
                 : this.options;
@@ -551,7 +554,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.showLoader &&
                 this.enableInfiniteLoading
             ) {
-                this.restoreScroll();
+                this._restoreScroll();
             }
         } else {
             this.visibleOptions = optionObjects;
@@ -639,7 +642,8 @@ export default class PrimitiveCombobox extends LightningElement {
         return this._search;
     }
     set search(value) {
-        this._search = typeof value === 'function' ? value : this.computeSearch;
+        this._search =
+            typeof value === 'function' ? value : this._computeSearch;
     }
 
     /**
@@ -685,7 +689,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 : [...normalizeArray(value)];
 
         if (this._connected) {
-            this.initValue();
+            this._initValue();
         }
     }
 
@@ -847,10 +851,19 @@ export default class PrimitiveCombobox extends LightningElement {
     get currentParent() {
         return (
             this.parentOptionsValues.length &&
-            this.getOption(
+            this._getOption(
                 this.parentOptionsValues[this.parentOptionsValues.length - 1]
             )
         );
+    }
+
+    /**
+     * Returns a dropdown element.
+     *
+     * @type {element}
+     */
+    get dropdown() {
+        return this.template.querySelector('[data-element-id="div-dropdown"]');
     }
 
     /**
@@ -868,7 +881,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {boolean}
      */
     get hasBadInput() {
-        return this.value.some((value) => value && !this.getOption(value));
+        return this.value.some((value) => value && !this._getOption(value));
     }
 
     /**
@@ -920,19 +933,25 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Returns a list element.
+     *
+     * @type {element}
+     */
+    get list() {
+        return this.template.querySelector('[data-element-id="ul-listbox"]');
+    }
+
+    /**
      * Maximum height of the dropdown, so it doesn't overflow the window.
      *
      * @type {number}
      */
     get maxDropdownHeight() {
-        const dropdown = this.template.querySelector(
-            '[data-element-id="div-dropdown"]'
-        );
-        if (!dropdown) {
+        if (!this.dropdown) {
             return 0;
         }
         const maxHeightBeforeOverflow =
-            window.innerHeight - dropdown.getBoundingClientRect().top - 20;
+            window.innerHeight - this.dropdown.getBoundingClientRect().top - 20;
 
         return maxHeightBeforeOverflow < MIN_DROPDOWN_HEIGHT
             ? MIN_DROPDOWN_HEIGHT
@@ -998,6 +1017,30 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Returns true if the dropdown is scrolled to the end.
+     *
+     * @type {boolean}
+     */
+    get scrolledToEnd() {
+        if (!this.list) return false;
+        const fullHeight = this.list.scrollHeight;
+        const scrolledDistance = this.list.scrollTop;
+        const visibleHeight = this.list.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + this.loadMoreOffset >= fullHeight
+        );
+    }
+
+    /**
+     * True if hide-clear-input is false and the input has a value.
+     *
+     * @type {boolean}
+     */
+    get showClearInputIcon() {
+        return !this.hideClearIcon && this.inputValue !== '';
+    }
+
+    /**
      * If true, display value avatar.
      *
      * @type {boolean}
@@ -1019,32 +1062,6 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get showInputValueIcon() {
         return this.selectedOption && this.selectedOption.iconName;
-    }
-
-    /**
-     * Returns true if the dropdown is scrolled to the end.
-     *
-     * @type {boolean}
-     */
-    get scrolledToEnd() {
-        const list = this.template.querySelector(
-            '[data-element-id="ul-listbox"]'
-        );
-        const fullHeight = list.scrollHeight;
-        const scrolledDistance = list.scrollTop;
-        const visibleHeight = list.offsetHeight;
-        return (
-            visibleHeight + scrolledDistance + this.loadMoreOffset >= fullHeight
-        );
-    }
-
-    /**
-     * True if hide-clear-input is false and the input has a value.
-     *
-     * @type {boolean}
-     */
-    get showClearInputIcon() {
-        return !this.hideClearIcon && this.inputValue !== '';
     }
 
     /**
@@ -1071,10 +1088,10 @@ export default class PrimitiveCombobox extends LightningElement {
     set visibleOptions(value) {
         this._visibleOptions =
             this._connected && this.removeSelectedOptions
-                ? this.removeSelectedOptionsFrom(value)
+                ? this._removeSelectedOptionsFrom(value)
                 : value;
 
-        this.computeGroups();
+        this._computeGroups();
     }
 
     /*
@@ -1116,7 +1133,7 @@ export default class PrimitiveCombobox extends LightningElement {
         if (this.dropdownVisible) {
             this.dropdownVisible = false;
             this._previousScroll = undefined;
-            this.stopDropdownPositioning();
+            this._stopDropdownPositioning();
 
             if (this.isMultiSelect) {
                 this.resetLevel();
@@ -1155,7 +1172,7 @@ export default class PrimitiveCombobox extends LightningElement {
         ) {
             this.dropdownVisible = true;
             requestAnimationFrame(() => {
-                this.startDropdownAutoPositioning();
+                this._startDropdownAutoPositioning();
             });
         }
     }
@@ -1169,10 +1186,10 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     removeSelectedOption(value) {
-        const selectedOption = this.getOption(value);
+        const selectedOption = this._getOption(value);
         selectedOption.selected = false;
 
-        this.computeSelection();
+        this._computeSelection();
         this._value = this.selectedOptions.map((option) => option.value);
         this.visibleOptions = this.options;
         this.dispatchChange('unselect', selectedOption.levelPath);
@@ -1233,9 +1250,238 @@ export default class PrimitiveCombobox extends LightningElement {
      */
 
     /**
+     * Computing the groups.
+     */
+    _computeGroups() {
+        const computedGroups = [];
+
+        // For each visible option
+        this.visibleOptions.forEach((option) => {
+            const optionGroups = option.groups;
+            let currentLevelGroups = computedGroups;
+
+            if (optionGroups.length && this.groups.length > 1) {
+                // For each group of the option
+                optionGroups.forEach((name, index) => {
+                    // If groups are nested
+                    if (this.multiLevelGroups) {
+                        // We push the option only if we have reached the deepest group
+                        currentLevelGroups = normalizeArray(
+                            this._groupOption({
+                                groups: currentLevelGroups,
+                                name,
+                                option:
+                                    index === optionGroups.length - 1
+                                        ? option
+                                        : undefined
+                            })
+                        );
+                    } else {
+                        this._groupOption({
+                            groups: computedGroups,
+                            name,
+                            option
+                        });
+                    }
+                });
+            } else {
+                // If the option does not have groups,
+                // push the option in the default group
+                this._groupOption({
+                    groups: computedGroups,
+                    option,
+                    name: DEFAULT_GROUP_NAME
+                });
+            }
+        });
+
+        this._sortGroups(computedGroups);
+        this.computedGroups = computedGroups;
+    }
+
+    /**
+     * Search function.
+     *
+     * @param {object} params The search term and an array of the options
+     * @returns {array} Array of options that includes the search term
+     */
+    _computeSearch(params) {
+        const { options, searchTerm } = params;
+        return options.filter((option) => {
+            return String(option.label)
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+        });
+    }
+
+    /**
+     * Computes the selected options.
+     */
+    _computeSelection() {
+        this.selectedOptions = this._getSelectedOptions();
+        this.selectedOptions.sort((a, b) => {
+            // Sort the selected options by their position in the value
+            const indexA = this.value.indexOf(a.value);
+            const indexB = this.value.indexOf(b.value);
+            return indexA - indexB;
+        });
+
+        this.dispatchEvent(
+            new CustomEvent('privateselect', {
+                detail: { selectedOptions: this.selectedOptions }
+            })
+        );
+    }
+
+    /**
+     * Find an option from its value.
+     *
+     * @param {string} value Unique value of the option to find.
+     * @param {array} options Array of options.
+     * @returns {object} option
+     */
+    _getOption(value, options = this.options) {
+        let option = options.find((opt) => {
+            return (
+                opt.value &&
+                (value || value === 0) &&
+                opt.value.toString() === value.toString()
+            );
+        });
+
+        // Search deeper levels
+        let i = 0;
+        while (!option && i < options.length) {
+            const childrenOptions = options[i].options;
+            if (childrenOptions.length) {
+                option = this._getOption(value, childrenOptions);
+            }
+            i += 1;
+        }
+
+        return option;
+    }
+
+    /**
+     * Return an array of all selected options.
+     *
+     * @param {array} options Array of all the options
+     * @returns {array} Array of all selected options
+     */
+    _getSelectedOptions(options = this.options) {
+        const selectedOptions = [];
+        options.forEach((option) => {
+            if (option.selected) selectedOptions.push(option);
+
+            const childrenOptions = normalizeArray(option.options);
+            if (childrenOptions.length) {
+                selectedOptions.push(this._getSelectedOptions(childrenOptions));
+            }
+        });
+
+        return selectedOptions.flat();
+    }
+
+    /**
+     * Finds a group based on its name, and adds an option to its list.
+     * Takes an object with three keys as an argument.
+     *
+     * @param {array} groups Array of the groups.
+     * @param {object} option (optional) The option we want to push in the group. If provided, when the group is found, the option will be added to its options.
+     * @param {string} name The name of the group the option belongs to.
+     *
+     * @returns {array} The children groups of the group that was selected.
+     */
+
+    // The rule is disabled, because the default "return" is to call the function again
+    // eslint-disable-next-line consistent-return
+    _groupOption(params) {
+        const { groups, option, name } = params;
+        const computedGroup = groups.find((grp) => grp.name === name);
+
+        if (computedGroup) {
+            // If the group already exists, push the new option in the list
+            if (option) computedGroup.options.push(option);
+            return computedGroup.groups;
+        }
+
+        // If the group does not exist yet but is in the global groups list,
+        // create a new group
+        const group = this.groups.find((grp) => {
+            return grp.name === name;
+        });
+        if (group) {
+            const newGroup = {
+                label: group.label,
+                name: name,
+                options: option ? [option] : [],
+                groups: []
+            };
+            groups.push(newGroup);
+
+            // If we just added the default group, move it up to the first entry
+            if (name === DEFAULT_GROUP_NAME) this._sortGroups(groups);
+
+            return newGroup.groups;
+        }
+        // If the group is not in the global groups list,
+        // push the option in the default group
+        this._groupOption({
+            groups,
+            option,
+            name: DEFAULT_GROUP_NAME
+        });
+    }
+
+    /**
+     * Hightlights the option with focus on.
+     *
+     * @param {number} index index of the option with focus on.
+     */
+    _highlightOption(index) {
+        if (!this._optionElements[index]) return;
+
+        if (this._highlightedOption)
+            this._highlightedOption.classList.remove(
+                'avonni-primitive-combobox__option_focused'
+            );
+        this._highlightedOptionIndex = index;
+        this._highlightedOption.classList.add(
+            'avonni-primitive-combobox__option_focused'
+        );
+        this.list.setAttribute(
+            'aria-activedescendant',
+            normalizeAriaAttribute(this._highlightedOption.id)
+        );
+    }
+
+    /**
+     * Option's object initialization.
+     */
+    _initOptionObjects(options, levelPath = []) {
+        const optionObjects = [];
+        options.forEach((option, index) => {
+            const optionLevelPath = levelPath.concat(index);
+            const optionObject = new Option(option, optionLevelPath);
+
+            // If the option has children, generate objects for them too
+            const childrenOptions = normalizeArray(option.options);
+            if (childrenOptions.length) {
+                optionObject.options = this._initOptionObjects(
+                    childrenOptions,
+                    optionLevelPath
+                );
+            }
+
+            optionObjects.push(optionObject);
+        });
+        return optionObjects;
+    }
+
+    /**
      * Value initialization.
      */
-    initValue() {
+    _initValue() {
         if (this.selectedOption) {
             this.selectedOption.selected = false;
             this.selectedOption = undefined;
@@ -1246,14 +1492,14 @@ export default class PrimitiveCombobox extends LightningElement {
                 option.selected = false;
             });
             this.value.forEach((value) => {
-                const selectedOption = this.getOption(value, this.options);
+                const selectedOption = this._getOption(value, this.options);
                 if (selectedOption) selectedOption.selected = true;
             });
             this.selectedOption = undefined;
             this.inputValue = this._searchTerm;
-            this.computeSelection();
+            this._computeSelection();
         } else {
-            const selectedOption = this.getOption(this.value[0], this.options);
+            const selectedOption = this._getOption(this.value[0], this.options);
             this.inputValue = '';
 
             if (selectedOption) {
@@ -1276,26 +1522,61 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Option's object initialization.
+     * Removes selected options from the options array.
+     *
+     * @param {array} options Array of all the options
+     * @returns {array} Array of all unselected options
      */
-    initOptionObjects(options, levelPath = []) {
-        const optionObjects = [];
+    _removeSelectedOptionsFrom(options, levelPath = []) {
+        const unselectedOptions = [];
         options.forEach((option, index) => {
-            const optionLevelPath = levelPath.concat(index);
-            const optionObject = new Option(option, optionLevelPath);
-
-            // If the option has children, generate objects for them too
-            const childrenOptions = normalizeArray(option.options);
-            if (childrenOptions.length) {
-                optionObject.options = this.initOptionObjects(
-                    childrenOptions,
+            if (option.options.length) {
+                const optionLevelPath = levelPath.concat(index);
+                const computedOption = new Option(option, optionLevelPath);
+                computedOption.options = this._removeSelectedOptionsFrom(
+                    computedOption.options,
                     optionLevelPath
                 );
+
+                // We want to show the option only if some children options are unselected
+                if (computedOption.options.length) {
+                    unselectedOptions.push(computedOption);
+                }
+            } else {
+                if (!option.selected) unselectedOptions.push(option);
+            }
+        });
+        return unselectedOptions;
+    }
+
+    /**
+     * Restore the scroll position to prevent a jump when the loading spinner appears, or more options are loaded.
+     */
+    _restoreScroll() {
+        if (!this.list) {
+            return;
+        }
+
+        const hasScrolled = this.list.scrollTop !== 0;
+        if (hasScrolled) {
+            // We make sure the scroll is restored only once,
+            // to the position it had before all renders
+            if (!this._scrollState) {
+                this._scrollState = {
+                    position: this.list.scrollTop,
+                    isAtEnd: this.scrolledToEnd
+                };
             }
 
-            optionObjects.push(optionObject);
-        });
-        return optionObjects;
+            clearTimeout(this._restoreScrollTimeout);
+            this._restoreScrollTimeout = setTimeout(() => {
+                const { isAtEnd, position } = this._scrollState;
+                this.list.scrollTop = isAtEnd
+                    ? this.list.scrollHeight
+                    : position;
+                this._scrollState = null;
+            }, 0);
+        }
     }
 
     /**
@@ -1304,7 +1585,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * @param {object[]} actions Array of actions to sort.
      * @param {string} position Position of the fixecd actions in the array. Valid values are first and last. Defaults to last.
      */
-    sortFixedActions(actions, position) {
+    _sortFixedActions(actions, position) {
         const fixedFirst = position === 'first';
 
         actions.sort((a, b) => {
@@ -1318,9 +1599,22 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Move the default group at the top.
+     */
+    _sortGroups(groups) {
+        const defaultGroupIndex = groups.findIndex(
+            (group) => group.name === DEFAULT_GROUP_NAME
+        );
+        if (defaultGroupIndex > -1) {
+            const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
+            groups.unshift(defaultGroup);
+        }
+    }
+
+    /**
      * Positioning for the dropdown.
      */
-    startDropdownAutoPositioning() {
+    _startDropdownAutoPositioning() {
         if (this.dropdownAlignment !== 'auto') {
             return;
         }
@@ -1330,10 +1624,8 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._autoPosition.start({
-            target: () =>
-                this.template.querySelector('[data-element-id="input"]'),
-            element: () =>
-                this.template.querySelector('[data-element-id="div-dropdown"]'),
+            target: () => this.input,
+            element: () => this.dropdown,
             align: {
                 horizontal: Direction.Right,
                 vertical: Direction.Top
@@ -1352,16 +1644,57 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     // remove-next-line-for-c-namespace
-    stopDropdownPositioning() {
+    _stopDropdownPositioning() {
         if (this._autoPosition) {
             this._autoPosition.stop();
         }
     }
 
     /**
+     * Unselects selected options.
+     *
+     * @param {array} options Array of all the options
+     */
+    _unselectOption(options = this.options) {
+        let selectedOption = options.find((option) => option.selected);
+        if (selectedOption) {
+            selectedOption.selected = false;
+            return;
+        }
+
+        // Search deeper levels
+        let i = 0;
+        while (!selectedOption && i < options.length) {
+            const childrenOptions = options[i].options;
+            if (childrenOptions.length) {
+                selectedOption = this._unselectOption(childrenOptions);
+            }
+            i += 1;
+        }
+    }
+
+    /**
+     * Updates the back link.
+     *
+     * @param {string} parentLabel
+     */
+    _updateBackLink(parentLabel) {
+        const { label, iconName, fixed, position, disabled } = this.backAction;
+
+        this.backLink = new Action({
+            disabled,
+            fixed,
+            iconName,
+            label: typeof label === 'string' ? label : parentLabel,
+            name: 'backlink',
+            position
+        });
+    }
+
+    /**
      * Calculating the dropdown's height.
      */
-    updateDropdownHeight() {
+    _updateDropdownHeight() {
         const groups = this.template.querySelectorAll(
             '[data-element-id^="avonni-primitive-combobox-group"]'
         );
@@ -1422,9 +1755,6 @@ export default class PrimitiveCombobox extends LightningElement {
             bottomActionsHeight = getListHeight(bottomActions);
         }
 
-        const dropdown = this.template.querySelector(
-            '[data-element-id="div-dropdown"]'
-        );
         let height =
             optionsHeight +
             titlesHeight +
@@ -1439,338 +1769,16 @@ export default class PrimitiveCombobox extends LightningElement {
         // Do not set the height when there is no actions or options
         // (for example 0 search results or is loading)
         if (height) {
-            dropdown.style.height = `${height + 5}px`;
+            this.dropdown.style.height = `${height + 5}px`;
         }
 
-        this.updateFixedActionsHeight();
-    }
-
-    /**
-     * Computing the groups.
-     */
-    computeGroups() {
-        const computedGroups = [];
-
-        // For each visible option
-        this.visibleOptions.forEach((option) => {
-            const optionGroups = option.groups;
-            let currentLevelGroups = computedGroups;
-
-            if (optionGroups.length && this.groups.length > 1) {
-                // For each group of the option
-                optionGroups.forEach((name, index) => {
-                    // If groups are nested
-                    if (this.multiLevelGroups) {
-                        // We push the option only if we have reached the deepest group
-                        currentLevelGroups = normalizeArray(
-                            this.groupOption({
-                                groups: currentLevelGroups,
-                                name,
-                                option:
-                                    index === optionGroups.length - 1
-                                        ? option
-                                        : undefined
-                            })
-                        );
-                    } else {
-                        this.groupOption({
-                            groups: computedGroups,
-                            name,
-                            option
-                        });
-                    }
-                });
-            } else {
-                // If the option does not have groups,
-                // push the option in the default group
-                this.groupOption({
-                    groups: computedGroups,
-                    option,
-                    name: DEFAULT_GROUP_NAME
-                });
-            }
-        });
-
-        this.sortGroups(computedGroups);
-        this.computedGroups = computedGroups;
-    }
-
-    /**
-     * Finds a group based on its name, and adds an option to its list.
-     * Takes an object with three keys as an argument.
-     *
-     * @param {array} groups Array of the groups.
-     * @param {object} option (optional) The option we want to push in the group. If provided, when the group is found, the option will be added to its options.
-     * @param {string} name The name of the group the option belongs to.
-     *
-     * @returns {array} The children groups of the group that was selected.
-     */
-
-    // The rule is disabled, because the default "return" is to call the function again
-    // eslint-disable-next-line consistent-return
-    groupOption(params) {
-        const { groups, option, name } = params;
-        const computedGroup = groups.find((grp) => grp.name === name);
-
-        if (computedGroup) {
-            // If the group already exists, push the new option in the list
-            if (option) computedGroup.options.push(option);
-            return computedGroup.groups;
-        }
-
-        // If the group does not exist yet but is in the global groups list,
-        // create a new group
-        const group = this.groups.find((grp) => {
-            return grp.name === name;
-        });
-        if (group) {
-            const newGroup = {
-                label: group.label,
-                name: name,
-                options: option ? [option] : [],
-                groups: []
-            };
-            groups.push(newGroup);
-
-            // If we just added the default group, move it up to the first entry
-            if (name === DEFAULT_GROUP_NAME) this.sortGroups(groups);
-
-            return newGroup.groups;
-        }
-        // If the group is not in the global groups list,
-        // push the option in the default group
-        this.groupOption({
-            groups,
-            option,
-            name: DEFAULT_GROUP_NAME
-        });
-    }
-
-    /**
-     * Move the default group at the top.
-     */
-    sortGroups(groups) {
-        const defaultGroupIndex = groups.findIndex(
-            (group) => group.name === DEFAULT_GROUP_NAME
-        );
-        if (defaultGroupIndex > -1) {
-            const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
-            groups.unshift(defaultGroup);
-        }
-    }
-
-    /**
-     * Computes the selected options.
-     */
-    computeSelection() {
-        this.selectedOptions = this.getSelectedOptions();
-        this.selectedOptions.sort((a, b) => {
-            // Sort the selected options by their position in the value
-            const indexA = this.value.indexOf(a.value);
-            const indexB = this.value.indexOf(b.value);
-            return indexA - indexB;
-        });
-
-        this.dispatchEvent(
-            new CustomEvent('privateselect', {
-                detail: { selectedOptions: this.selectedOptions }
-            })
-        );
-    }
-
-    /**
-     * Search function.
-     *
-     * @param {object} params The search term and an array of the options
-     * @returns {array} Array of options that includes the search term
-     */
-    computeSearch(params) {
-        const { options, searchTerm } = params;
-        return options.filter((option) => {
-            return String(option.label)
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase());
-        });
-    }
-
-    /**
-     * Removes selected options from the options array.
-     *
-     * @param {array} options Array of all the options
-     * @returns {array} Array of all unselected options
-     */
-    removeSelectedOptionsFrom(options, levelPath = []) {
-        const unselectedOptions = [];
-        options.forEach((option, index) => {
-            if (option.options.length) {
-                const optionLevelPath = levelPath.concat(index);
-                const computedOption = new Option(option, optionLevelPath);
-                computedOption.options = this.removeSelectedOptionsFrom(
-                    computedOption.options,
-                    optionLevelPath
-                );
-
-                // We want to show the option only if some children options are unselected
-                if (computedOption.options.length) {
-                    unselectedOptions.push(computedOption);
-                }
-            } else {
-                if (!option.selected) unselectedOptions.push(option);
-            }
-        });
-        return unselectedOptions;
-    }
-
-    /**
-     * Restore the scroll position to prevent a jump when the loading spinner appears, or more options are loaded.
-     */
-    restoreScroll() {
-        const list = this.template.querySelector(
-            '[data-element-id="ul-listbox"]'
-        );
-        if (!list) {
-            return;
-        }
-
-        const hasScrolled = list.scrollTop !== 0;
-        if (hasScrolled) {
-            // We make sure the scroll is restored only once,
-            // to the position it had before all renders
-            if (!this._scrollState) {
-                this._scrollState = {
-                    position: list.scrollTop,
-                    isAtEnd: this.scrolledToEnd
-                };
-            }
-
-            clearTimeout(this._restoreScrollTimeout);
-            this._restoreScrollTimeout = setTimeout(() => {
-                const { isAtEnd, position } = this._scrollState;
-                list.scrollTop = isAtEnd ? list.scrollHeight : position;
-                this._scrollState = null;
-            }, 0);
-        }
-    }
-
-    /**
-     * Unselects selected options.
-     *
-     * @param {array} options Array of all the options
-     */
-    unselectOption(options = this.options) {
-        let selectedOption = options.find((option) => option.selected);
-        if (selectedOption) {
-            selectedOption.selected = false;
-            return;
-        }
-
-        // Search deeper levels
-        let i = 0;
-        while (!selectedOption && i < options.length) {
-            const childrenOptions = options[i].options;
-            if (childrenOptions.length) {
-                selectedOption = this.unselectOption(childrenOptions);
-            }
-            i += 1;
-        }
-    }
-
-    /**
-     * Return an array of all selected options.
-     *
-     * @param {array} options Array of all the options
-     * @returns {array} Array of all selected options
-     */
-    getSelectedOptions(options = this.options) {
-        const selectedOptions = [];
-        options.forEach((option) => {
-            if (option.selected) selectedOptions.push(option);
-
-            const childrenOptions = normalizeArray(option.options);
-            if (childrenOptions.length) {
-                selectedOptions.push(this.getSelectedOptions(childrenOptions));
-            }
-        });
-
-        return selectedOptions.flat();
-    }
-
-    /**
-     * Find an option from its value.
-     *
-     * @param {string} value Unique value of the option to find.
-     * @param {array} options Array of options.
-     * @returns {object} option
-     */
-    getOption(value, options = this.options) {
-        let option = options.find((opt) => {
-            return (
-                opt.value &&
-                (value || value === 0) &&
-                opt.value.toString() === value.toString()
-            );
-        });
-
-        // Search deeper levels
-        let i = 0;
-        while (!option && i < options.length) {
-            const childrenOptions = options[i].options;
-            if (childrenOptions.length) {
-                option = this.getOption(value, childrenOptions);
-            }
-            i += 1;
-        }
-
-        return option;
-    }
-
-    /**
-     * Hightlights the option with focus on.
-     *
-     * @param {number} index index of the option with focus on.
-     */
-    highlightOption(index) {
-        if (!this._optionElements[index]) return;
-
-        if (this._highlightedOption)
-            this._highlightedOption.classList.remove(
-                'avonni-primitive-combobox__option_focused'
-            );
-        this._highlightedOptionIndex = index;
-        this._highlightedOption.classList.add(
-            'avonni-primitive-combobox__option_focused'
-        );
-        const listboxElement = this.template.querySelector(
-            '[data-element-id="ul-listbox"]'
-        );
-        listboxElement.setAttribute(
-            'aria-activedescendant',
-            normalizeAriaAttribute(this._highlightedOption.id)
-        );
-    }
-
-    /**
-     * Updates the back link.
-     *
-     * @param {string} parentLabel
-     */
-    updateBackLink(parentLabel) {
-        const { label, iconName, fixed, position, disabled } = this.backAction;
-
-        this.backLink = new Action({
-            disabled,
-            fixed,
-            iconName,
-            label: typeof label === 'string' ? label : parentLabel,
-            name: 'backlink',
-            position
-        });
+        this._updateFixedActionsHeight();
     }
 
     /**
      * Updates the visibility of the dropdown menu.
      */
-    updateDropdownMenuVisibility() {
+    _updateDropdownMenuVisibility() {
         if (this.keepOpenOnSelect) {
             this.computedGroups = [...this.computedGroups];
         } else {
@@ -1783,11 +1791,8 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Position the fixed actions and add their height to the listbox padding, to leave room for them in their original position.
      */
-    updateFixedActionsHeight() {
-        const listbox = this.template.querySelector(
-            '[data-element-id="ul-listbox"]'
-        );
-        if (!listbox) return;
+    _updateFixedActionsHeight() {
+        if (!this.list) return;
 
         let offset = 0;
         const fixedTopActions = Array.from(
@@ -1800,7 +1805,7 @@ export default class PrimitiveCombobox extends LightningElement {
             offset += action.offsetHeight;
         });
 
-        listbox.style.paddingTop = `${offset}px`;
+        this.list.style.paddingTop = `${offset}px`;
 
         offset = 0;
         const fixedBottomActions = Array.from(
@@ -1813,7 +1818,7 @@ export default class PrimitiveCombobox extends LightningElement {
             offset += action.offsetHeight;
         });
 
-        listbox.style.paddingBottom = `${offset}px`;
+        this.list.style.paddingBottom = `${offset}px`;
     }
 
     /*
@@ -1821,210 +1826,6 @@ export default class PrimitiveCombobox extends LightningElement {
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
-
-    /**
-     * If selected-option and input-value = '' closes the dropdown.
-     * Dispatches blur event.
-     */
-    handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
-        if (this.selectedOption) {
-            this.inputValue = this.selectedOption.label;
-        } else {
-            this.inputValue = '';
-        }
-        if (this._searchTerm) {
-            this._searchTerm = '';
-            this.handleSearch();
-        }
-
-        this.close();
-        this.dispatchClose();
-        this.interactingState.leave();
-        this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    /**
-     * Dispatches focus event.
-     */
-    handleFocus() {
-        this.interactingState.enter();
-
-        this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    /**
-     * Handles the input for the search function.
-     * Dispatches search event.
-     */
-    handleInput(event) {
-        this._searchTerm = event.currentTarget.value;
-        this.inputValue = this._searchTerm;
-        this.handleSearch();
-
-        // Update dropdown visibility when hideOptionsUntilSearch is present.
-        if (this.computedHideOptionsUntilSearch) {
-            if (!this.inputValue && this.dropdownVisible) {
-                this.close();
-                this.dispatchClose();
-            } else if (this.inputValue && !this.dropdownVisible) {
-                this.open();
-                this.dispatchOpen();
-            }
-        }
-    }
-
-    /**
-     * Handles a mouse press down on the dropdown.
-     *
-     * @param {Event} event
-     */
-    handleDropdownMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this._cancelBlur = true;
-        }
-    }
-
-    /**
-     * Sets cancelBlur to false on mouseup on dropdown.
-     */
-    handleDropdownMouseUp() {
-        // We need this to make sure that if a scrollbar is being dragged with the mouse, upon release
-        // of the drag we allow blur, otherwise the dropdown would not close on blur since we'd have cancel blur set
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Handles the click on highlighted options.
-     */
-    handleHighlightedOptionClick(event) {
-        // If the search is allowed, the options have to be selected with enter
-        if (this.allowSearch && (event.key === ' ' || event.key === 'Spacebar'))
-            return;
-
-        if (this._highlightedOption.dataset.value) {
-            this.handleOptionClick(event);
-        } else if (this._highlightedOption.dataset.name === 'backlink') {
-            this.handleBackLinkClick();
-        } else {
-            this.handleActionClick(this._highlightedOption.dataset.name);
-        }
-    }
-
-    /**
-     * Handles the input key down.
-     * If dropdown is closed, opens it and dispatch open event.
-     */
-    handleInputKeyDown(event) {
-        if (!this.dropdownVisible) {
-            this.open();
-            this.dispatchOpen();
-        } else {
-            const index = this._highlightedOptionIndex;
-            switch (event.key) {
-                case 'ArrowUp':
-                    if (index > 0) {
-                        this.highlightOption(index - 1);
-                    } else {
-                        this.highlightOption(this._optionElements.length - 1);
-                    }
-                    // Prevent the browser scrollbar from scrolling up
-                    event.preventDefault();
-                    break;
-                case 'ArrowDown':
-                    if (index < this._optionElements.length - 1) {
-                        this.highlightOption(index + 1);
-                    } else {
-                        this.highlightOption(0);
-                    }
-                    // Prevent the browser scrollbar from scrolling down
-                    event.preventDefault();
-                    break;
-                case 'ArrowLeft':
-                case 'GoBack':
-                    this.handleBackLinkClick();
-                    break;
-                case ' ':
-                case 'Spacebar':
-                case 'Enter':
-                    this.handleHighlightedOptionClick(event);
-
-                    if (
-                        !this.allowSearch &&
-                        (event.key === ' ' || event.key === 'Spacebar')
-                    ) {
-                        // Prevent the browser scrollbar from scrolling down
-                        event.preventDefault();
-                    }
-                    break;
-                case 'Escape':
-                    this.close();
-                    this.dispatchClose();
-                    break;
-                case 'Home':
-                    this.highlightOption(0);
-                    break;
-                case 'End':
-                    this.highlightOption(this._optionElements - 1);
-                    break;
-                default:
-                // do nothing
-            }
-        }
-    }
-
-    /**
-     * Handles the back link click.
-     */
-    handleBackLinkClick() {
-        const parents = this.parentOptionsValues;
-        parents.pop();
-
-        if (parents.length) {
-            const parent = this.getOption(parents[parents.length - 1]);
-            this.updateBackLink(parent.label);
-            this.visibleOptions = parent.options;
-            this.showLoader = parent.isLoading;
-        } else {
-            this.visibleOptions = this.options;
-            this.backLink = undefined;
-            this.showLoader = this.isLoading;
-        }
-
-        this.focus();
-        this.dispatchEvent(new CustomEvent('backactionclick'));
-    }
-
-    /**
-     * Clears the input value.
-     * Dispatches change event.
-     */
-    handleClearInput(event) {
-        event.stopPropagation();
-        if (this.disabled) return;
-
-        this.inputValue = '';
-        if (this._searchTerm) {
-            this._searchTerm = '';
-            this.handleSearch();
-        }
-
-        // Clear the value
-        if (!this.isMultiSelect && this.selectedOption) {
-            const levelPath = this.selectedOption.levelPath;
-            this.selectedOption.selected = false;
-            this.selectedOption = undefined;
-            this.computeSelection();
-            this._value = this.selectedOptions.map((option) => option.value);
-            this.dispatchChange('unselect', levelPath);
-        }
-
-        this.resetLevel();
-        this.focus();
-    }
 
     /**
      * Handles the click on action.
@@ -2072,6 +1873,209 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Handles the back link click.
+     */
+    handleBackLinkClick() {
+        const parents = this.parentOptionsValues;
+        parents.pop();
+
+        if (parents.length) {
+            const parent = this._getOption(parents[parents.length - 1]);
+            this._updateBackLink(parent.label);
+            this.visibleOptions = parent.options;
+            this.showLoader = parent.isLoading;
+        } else {
+            this.visibleOptions = this.options;
+            this.backLink = undefined;
+            this.showLoader = this.isLoading;
+        }
+
+        this.focus();
+        this.dispatchEvent(new CustomEvent('backactionclick'));
+    }
+
+    /**
+     * If selected-option and input-value = '' closes the dropdown.
+     * Dispatches blur event.
+     */
+    handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
+        if (this.selectedOption) {
+            this.inputValue = this.selectedOption.label;
+        } else {
+            this.inputValue = '';
+        }
+        if (this._searchTerm) {
+            this._searchTerm = '';
+            this.handleSearch();
+        }
+
+        this.close();
+        this.dispatchClose();
+        this.interactingState.leave();
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    /**
+     * Clears the input value.
+     * Dispatches change event.
+     */
+    handleClearInput(event) {
+        event.stopPropagation();
+        if (this.disabled) return;
+
+        this.inputValue = '';
+        if (this._searchTerm) {
+            this._searchTerm = '';
+            this.handleSearch();
+        }
+
+        // Clear the value
+        if (!this.isMultiSelect && this.selectedOption) {
+            const levelPath = this.selectedOption.levelPath;
+            this.selectedOption.selected = false;
+            this.selectedOption = undefined;
+            this._computeSelection();
+            this._value = this.selectedOptions.map((option) => option.value);
+            this.dispatchChange('unselect', levelPath);
+        }
+
+        this.resetLevel();
+        this.focus();
+    }
+
+    /**
+     * Handles a mouse press down on the dropdown.
+     *
+     * @param {Event} event
+     */
+    handleDropdownMouseDown(event) {
+        const mainButton = 0;
+        if (event.button === mainButton) {
+            this._cancelBlur = true;
+        }
+    }
+
+    /**
+     * Sets cancelBlur to false on mouseup on dropdown.
+     */
+    handleDropdownMouseUp() {
+        // We need this to make sure that if a scrollbar is being dragged with the mouse, upon release
+        // of the drag we allow blur, otherwise the dropdown would not close on blur since we'd have cancel blur set
+        this._cancelBlur = false;
+    }
+
+    /**
+     * Dispatches focus event.
+     */
+    handleFocus() {
+        this.interactingState.enter();
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
+     * Handles the click on highlighted options.
+     */
+    handleHighlightedOptionClick(event) {
+        // If the search is allowed, the options have to be selected with enter
+        if (this.allowSearch && (event.key === ' ' || event.key === 'Spacebar'))
+            return;
+
+        if (this._highlightedOption.dataset.value) {
+            this.handleOptionClick(event);
+        } else if (this._highlightedOption.dataset.name === 'backlink') {
+            this.handleBackLinkClick();
+        } else {
+            this.handleActionClick(this._highlightedOption.dataset.name);
+        }
+    }
+
+    /**
+     * Handles the input for the search function.
+     * Dispatches search event.
+     */
+    handleInput(event) {
+        this._searchTerm = event.currentTarget.value;
+        this.inputValue = this._searchTerm;
+        this.handleSearch();
+
+        // Update dropdown visibility when hideOptionsUntilSearch is present.
+        if (this.computedHideOptionsUntilSearch) {
+            if (!this.inputValue && this.dropdownVisible) {
+                this.close();
+                this.dispatchClose();
+            } else if (this.inputValue && !this.dropdownVisible) {
+                this.open();
+                this.dispatchOpen();
+            }
+        }
+    }
+
+    /**
+     * Handles the input key down.
+     * If dropdown is closed, opens it and dispatch open event.
+     */
+    handleInputKeyDown(event) {
+        if (!this.dropdownVisible) {
+            this.open();
+            this.dispatchOpen();
+        } else {
+            const index = this._highlightedOptionIndex;
+            switch (event.key) {
+                case 'ArrowUp':
+                    if (index > 0) {
+                        this._highlightOption(index - 1);
+                    } else {
+                        this._highlightOption(this._optionElements.length - 1);
+                    }
+                    // Prevent the browser scrollbar from scrolling up
+                    event.preventDefault();
+                    break;
+                case 'ArrowDown':
+                    if (index < this._optionElements.length - 1) {
+                        this._highlightOption(index + 1);
+                    } else {
+                        this._highlightOption(0);
+                    }
+                    // Prevent the browser scrollbar from scrolling down
+                    event.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                case 'GoBack':
+                    this.handleBackLinkClick();
+                    break;
+                case ' ':
+                case 'Spacebar':
+                case 'Enter':
+                    this.handleHighlightedOptionClick(event);
+
+                    if (
+                        !this.allowSearch &&
+                        (event.key === ' ' || event.key === 'Spacebar')
+                    ) {
+                        // Prevent the browser scrollbar from scrolling down
+                        event.preventDefault();
+                    }
+                    break;
+                case 'Escape':
+                    this.close();
+                    this.dispatchClose();
+                    break;
+                case 'Home':
+                    this._highlightOption(0);
+                    break;
+                case 'End':
+                    this._highlightOption(this._optionElements - 1);
+                    break;
+                default:
+                // do nothing
+            }
+        }
+    }
+
+    /**
      * Handles the click on option.
      * Dispatches change event.
      * Closes the dropdown.
@@ -2092,7 +2096,7 @@ export default class PrimitiveCombobox extends LightningElement {
         if (selectedOption.hasChildren) {
             this.visibleOptions = selectedOption.options;
             this.parentOptionsValues.push(selectedOption.value);
-            this.updateBackLink(this.currentParent.label);
+            this._updateBackLink(this.currentParent.label);
             if (selectedOption.isLoading) {
                 this.showLoader = true;
             }
@@ -2117,11 +2121,8 @@ export default class PrimitiveCombobox extends LightningElement {
 
             requestAnimationFrame(() => {
                 // Scroll back to top when opening a child option
-                const scrollableList = this.template.querySelector(
-                    '[data-element-id="ul-listbox"]'
-                );
-                if (scrollableList) {
-                    scrollableList.scrollTop = 0;
+                if (this.list) {
+                    this.list.scrollTop = 0;
                 }
             });
             return;
@@ -2129,11 +2130,11 @@ export default class PrimitiveCombobox extends LightningElement {
 
         // Toggle selection
         if (!this.isMultiSelect && !selectedOption.selected) {
-            this.unselectOption();
+            this._unselectOption();
         }
         selectedOption.selected = !selectedOption.selected;
 
-        this.computeSelection();
+        this._computeSelection();
 
         this._value = this.selectedOptions.map((option) => option.value);
 
@@ -2142,13 +2143,13 @@ export default class PrimitiveCombobox extends LightningElement {
             if (this.validity.rangeOverflow) {
                 if (selectedOption.selected) {
                     selectedOption.selected = false;
-                    this.computeSelection();
+                    this._computeSelection();
                     this._value = this.selectedOptions.map(
                         (option) => option.value
                     );
                 }
             }
-            this.updateDropdownMenuVisibility();
+            this._updateDropdownMenuVisibility();
             return;
         }
 
@@ -2163,7 +2164,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         const action = selectedOption.selected ? 'select' : 'unselect';
         this.dispatchChange(action, selectedOption.levelPath);
-        this.updateDropdownMenuVisibility();
+        this._updateDropdownMenuVisibility();
     }
 
     /**
@@ -2180,7 +2181,7 @@ export default class PrimitiveCombobox extends LightningElement {
             return option.id === id;
         });
 
-        this.highlightOption(index);
+        this._highlightOption(index);
     }
 
     /**
@@ -2190,16 +2191,16 @@ export default class PrimitiveCombobox extends LightningElement {
         if (
             !this.enableInfiniteLoading ||
             this.showLoader ||
-            this._isSearching
+            this._isSearching ||
+            !this.list
         ) {
             return;
         }
 
-        const list = this.template.querySelector(
-            '[data-element-id="ul-listbox"]'
-        );
         const loadLimit =
-            list.scrollHeight - list.offsetHeight - this.loadMoreOffset;
+            this.list.scrollHeight -
+            this.list.offsetHeight -
+            this.loadMoreOffset;
         const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
 
         if (
@@ -2226,7 +2227,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 })
             );
         }
-        this._previousScroll = list.scrollTop;
+        this._previousScroll = this.list.scrollTop;
     }
 
     /**

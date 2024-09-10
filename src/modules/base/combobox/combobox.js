@@ -564,6 +564,35 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * Array of scope objects. The scopes are displayed in a drop-down menu, to the left of the combobox input.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get scopes() {
+        return this._scopes;
+    }
+    set scopes(value) {
+        this._scopes = normalizeArray(value);
+        this.scopesValue = this.scopes.length && [this.scopes[0].value];
+    }
+
+    /**
+     * Array of group objects. The groups are used to separate the scopes inside the drop-down.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get scopesGroups() {
+        return this._scopesGroups;
+    }
+    set scopesGroups(value) {
+        this._scopesGroups = normalizeArray(value);
+    }
+
+    /**
      * Describes the selected options section to assistive technologies.
      *
      * @type {string}
@@ -597,35 +626,6 @@ export default class Combobox extends LightningElement {
             fallbackValue: SELECTED_OPTIONS_DIRECTIONS.default,
             validValues: SELECTED_OPTIONS_DIRECTIONS.valid
         });
-    }
-
-    /**
-     * Array of scope objects. The scopes are displayed in a drop-down menu, to the left of the combobox input.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get scopes() {
-        return this._scopes;
-    }
-    set scopes(value) {
-        this._scopes = normalizeArray(value);
-        this.scopesValue = this.scopes.length && [this.scopes[0].value];
-    }
-
-    /**
-     * Array of group objects. The groups are used to separate the scopes inside the drop-down.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get scopesGroups() {
-        return this._scopesGroups;
-    }
-    set scopesGroups(value) {
-        this._scopesGroups = normalizeArray(value);
     }
 
     /**
@@ -708,6 +708,15 @@ export default class Combobox extends LightningElement {
      */
 
     /**
+     * Computed CSS classes for the comboboxes wrapper.
+     *
+     * @type {string}
+     */
+    get computedComboboxGroupClass() {
+        return this.showScopes ? 'slds-combobox-group' : undefined;
+    }
+
+    /**
      * Computed label, with default value if the combobox is read-only.
      *
      * @type {string}
@@ -739,15 +748,6 @@ export default class Combobox extends LightningElement {
             'slds-combobox-addon_end avonni-combobox__main-combobox_scopes':
                 this.showScopes
         }).toString();
-    }
-
-    /**
-     * Computed CSS classes for the comboboxes wrapper.
-     *
-     * @type {string}
-     */
-    get computedComboboxGroupClass() {
-        return this.showScopes ? 'slds-combobox-group' : undefined;
     }
 
     /**

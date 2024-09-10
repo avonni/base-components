@@ -4,8 +4,8 @@
     <ul role="group" aria-label={label}>
         <li
             if:true={label}
-            role="presentation"
             class="slds-listbox__item"
+            role="presentation"
             data-element-id="li-group-title"
         >
             <div
@@ -107,9 +107,9 @@
                     "
                 >
                     <lightning-icon
+                        alternative-text="Open"
                         icon-name="utility:chevronright"
                         size="x-small"
-                        alternative-text="Open"
                     ></lightning-icon>
                 </div>
             </li>
@@ -119,11 +119,11 @@
             <template for:each={groups} for:item="group">
                 <c-primitive-combobox-group
                     key={generateKey}
-                    name={group.name}
+                    groups={group.groups}
                     label={group.label}
+                    name={group.name}
                     options={group.options}
                     remove-selected-options={removeSelectedOptions}
-                    groups={group.groups}
                     data-element-id="avonni-primitive-combobox-group"
                 ></c-primitive-combobox-group>
             </template>

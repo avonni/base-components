@@ -24,15 +24,15 @@ const POSITIONS = {
  */
 export default class Action {
     constructor(action) {
-        this.name = action.name;
-        this.label = action.label;
+        this.disabled = normalizeBoolean(action.disabled);
+        this.fixed = normalizeBoolean(action.fixed);
         this.iconName = action.iconName;
+        this.label = action.label;
+        this.name = action.name;
         this.position = normalizeString(action.position, {
             fallbackValue: POSITIONS.default,
             validValues: POSITIONS.valid
         });
-        this.disabled = normalizeBoolean(action.disabled);
-        this.fixed = normalizeBoolean(action.fixed);
     }
 
     /**
