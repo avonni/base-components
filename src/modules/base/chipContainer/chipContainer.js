@@ -47,7 +47,6 @@ export default class ChipContainer extends LightningElement {
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.initVisibleItemsCount();
-        this.saveItemsWidths();
         this.updateVisibleItems();
         this._connected = true;
     }
@@ -114,7 +113,6 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.saveItemsWidths();
             this.updateVisibleItems();
         }
     }
@@ -136,7 +134,6 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.saveItemsWidths();
             this.updateVisibleItems();
         }
     }
@@ -163,6 +160,7 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
+            this.updateVisibleItems();
         }
     }
 
@@ -180,6 +178,11 @@ export default class ChipContainer extends LightningElement {
     set singleLine(value) {
         this._singleLine = normalizeBoolean(value);
         this.clearDrag();
+
+        if (this._connected) {
+            this.initVisibleItemsCount();
+            this.updateVisibleItems();
+        }
     }
 
     /**
@@ -286,6 +289,20 @@ export default class ChipContainer extends LightningElement {
             'slds-p-right_xxx-small': !this.singleLine,
             'avonni-chip-container__item_sortable-single-line':
                 this.sortable && this.singleLine
+        });
+    }
+
+    /**
+     * CSS classes of the popover element.
+     *
+     * @type {string}
+     */
+    get computedPopoverClass() {
+        return classSet(
+            'slds-dropdown slds-dropdown_length-7 slds-p-vertical_none slds-p-horizontal_xx-small'
+        ).add({
+            'slds-dropdown_right': this.singleLine,
+            'slds-dropdown_left': !this.singleLine
         });
     }
 
@@ -509,7 +526,6 @@ export default class ChipContainer extends LightningElement {
             if (!this._connected) {
                 return;
             }
-            this.saveItemsWidths();
             this.updateVisibleItems();
         });
     }
@@ -750,6 +766,7 @@ export default class ChipContainer extends LightningElement {
                 return;
             }
 
+            this.saveItemsWidths();
             let fittingCount = 0;
             let width = 0;
             let totalWidth = this.wrapperElement.offsetWidth - 10;
