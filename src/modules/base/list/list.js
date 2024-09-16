@@ -884,7 +884,8 @@ export default class List extends LightningElement {
                     this._currentColumnCount === 1,
                 'avonni-list__item-menu_horizontal-compact':
                     this._currentColumnCount === 1,
-                'slds-p-bottom_xx-small': this.variant === 'base'
+                'slds-p-bottom_xx-small':
+                    this.variant === 'base' || this.isCheckList
             })
             .toString();
     }
