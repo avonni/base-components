@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { getFormattedDate } from 'c/utilsPrivate';
+import { getFormattedDate } from 'c/dateTimeUtils';
 import { computeSldsClass, createAvatar } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
@@ -693,13 +693,11 @@ export class HorizontalActivityTimeline {
         if (this.isDateInvalid(date)) {
             return '';
         }
-        return getFormattedDate(
+        return getFormattedDate({
             date,
-            {
-                zone: this._activityTimeline.timezone
-            },
+            timeZone: this._activityTimeline.timezone,
             format
-        );
+        });
     }
 
     /**

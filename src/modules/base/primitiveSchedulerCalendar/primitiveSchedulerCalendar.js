@@ -1,11 +1,11 @@
 import { api } from 'lwc';
+import { equal } from 'c/utilsPrivate';
 import {
     addToDate,
-    equal,
     getWeekNumber,
     intervalFrom,
     numberOfUnitsBetweenDates
-} from 'c/utilsPrivate';
+} from 'c/luxonDateTimeUtils';
 import {
     classSet,
     deepCopy,

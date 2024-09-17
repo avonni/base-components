@@ -4,7 +4,7 @@ import {
     normalizeBoolean,
     normalizeObject
 } from 'c/utils';
-import { getWeekNumber } from 'c/utilsPrivate';
+import { DateTime } from 'c/dateTimeUtils';
 import Label from './dateLabel';
 
 export default class CalendarDate {
@@ -18,6 +18,10 @@ export default class CalendarDate {
         this.chip = new Label(normalizeObject(props.chip));
         this.markers = normalizeArray(props.markers);
         this.selected = normalizeBoolean(props.selected);
+
+        // We don't include the time zone because the given date
+        // has already been converted to the correct time zone.
+        this._dateTime = new DateTime(this.date);
     }
 
     get appearsSelected() {
@@ -34,9 +38,9 @@ export default class CalendarDate {
 
     get label() {
         if (this.isWeekNumber) {
-            return getWeekNumber(this.date);
+            return this._dateTime.isoWeek;
         }
-        return this.date.day;
+        return this.date.getDate();
     }
 
     get labelClass() {
@@ -44,6 +48,10 @@ export default class CalendarDate {
             'slds-day': !this.isWeekNumber,
             'avonni-calendar__disabled-cell': this.disabled
         }).toString();
+    }
+
+    get ts() {
+        return this.date.getTime();
     }
 
     get wrapperClass() {

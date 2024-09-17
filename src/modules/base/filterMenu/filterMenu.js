@@ -1,8 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import {
-    dateTimeObjectFrom,
     equal,
-    formatDateFromStyle,
     observePosition,
     animationFrame,
     timeout
@@ -1383,15 +1381,16 @@ export default class FilterMenu extends LightningElement {
     computeSelectedRange() {
         const selection = this.value.reduce((string, value) => {
             let normalizedValue = '';
-            if (this.isDateRange && value && dateTimeObjectFrom(value)) {
+            const date = new Date(value);
+            if (this.isDateRange && value && !isNaN(date)) {
                 // Date range
                 const { dateStyle, timeStyle, timezone, type } =
                     this.computedTypeAttributes;
-                const date = dateTimeObjectFrom(value, { zone: timezone });
-                normalizedValue = formatDateFromStyle(date, {
+                normalizedValue = this.formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
-                    timeStyle
+                    timeStyle,
+                    timeZone: timezone
                 });
             } else if (this.isRange && !isNaN(value)) {
                 // Range
@@ -1483,6 +1482,26 @@ export default class FilterMenu extends LightningElement {
             item.focus();
             item.tabIndex = '0';
         }
+    }
+
+    formatDateFromStyle(
+        date,
+        {
+            showTime = false,
+            dateStyle = 'medium',
+            timeStyle = 'short',
+            timeZone
+        }
+    ) {
+        if (!(date instanceof Date)) {
+            return '';
+        }
+        const time = showTime ? timeStyle : undefined;
+        return new Intl.DateTimeFormat('default', {
+            dateStyle,
+            timeStyle: time,
+            timeZone
+        }).format(date);
     }
 
     /**

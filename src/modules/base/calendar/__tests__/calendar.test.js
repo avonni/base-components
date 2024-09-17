@@ -950,12 +950,12 @@ describe('Calendar', () => {
             weeks.forEach((week) => {
                 weekNumbers.push(week.textContent);
             });
+            expect(weekNumbers.includes('16')).toBeTruthy();
             expect(weekNumbers.includes('17')).toBeTruthy();
             expect(weekNumbers.includes('18')).toBeTruthy();
             expect(weekNumbers.includes('19')).toBeTruthy();
             expect(weekNumbers.includes('20')).toBeTruthy();
             expect(weekNumbers.includes('21')).toBeTruthy();
-            expect(weekNumbers.includes('22')).toBeTruthy();
         });
     });
 

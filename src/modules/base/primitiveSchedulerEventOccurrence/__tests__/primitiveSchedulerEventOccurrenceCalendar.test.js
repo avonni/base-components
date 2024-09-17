@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import { dateTimeObjectFrom } from 'c/utilsPrivate';
+import { dateTimeObjectFrom } from 'c/luxonDateTimeUtils';
 import PrimitiveSchedulerEventOccurrence from '../primitiveSchedulerEventOccurrence';
 import {
     CELL_DURATION,
