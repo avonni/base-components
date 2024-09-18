@@ -1,6 +1,16 @@
 import { LightningElement } from 'lwc';
 
 export default class ComboboxCustomSearch extends LightningElement {
+    actions = [
+        {
+            label: 'Create New Opportunity',
+            name: 'new-opportunity',
+            iconName: 'utility:add',
+            displayOnSearch: true,
+            displayWhenNoResults: true
+        }
+    ];
+
     options = [
         {
             label: 'Burlington Textiles Corp of America',

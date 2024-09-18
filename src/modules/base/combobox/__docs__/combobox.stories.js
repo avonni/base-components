@@ -657,5 +657,14 @@ CustomSearch.args = {
     label: 'Custom search in secondary text',
     allowSearch: true,
     options: optionsWithAvatars,
+    actions: [
+        {
+            label: 'Create New Opportunity',
+            name: 'new-opportunity',
+            iconName: 'utility:add',
+            displayOnSearch: true,
+            displayWhenNoResults: true
+        }
+    ],
     search: search
 };

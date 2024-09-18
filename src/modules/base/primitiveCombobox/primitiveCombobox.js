@@ -241,23 +241,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set actions(value) {
         const actions = normalizeArray(value);
-        this.topActions = [];
-        this.bottomActions = [];
-        this._actions = [];
-
-        actions.forEach((action) => {
-            const actionObject = new Action(action);
-            this._actions.push(actionObject);
-
-            if (actionObject.position === 'bottom') {
-                this.bottomActions.push(actionObject);
-            } else {
-                this.topActions.push(actionObject);
-            }
-        });
-
-        this._sortFixedActions(this.topActions, 'first');
-        this._sortFixedActions(this.bottomActions);
+        this._computeActions(actions);
     }
 
     /**
@@ -1250,6 +1234,34 @@ export default class PrimitiveCombobox extends LightningElement {
      */
 
     /**
+     * Computing the actions.
+     */
+    _computeActions(actions = this._actions) {
+        this.topActions = [];
+        this.bottomActions = [];
+        this._actions = [];
+        const nbOfResults = this.visibleOptions.length;
+
+        actions.forEach((action) => {
+            const actionObject = new Action(
+                action,
+                this._searchTerm,
+                nbOfResults
+            );
+            this._actions.push(actionObject);
+
+            if (actionObject.computedPosition === 'bottom') {
+                this.bottomActions.push(actionObject);
+            } else {
+                this.topActions.push(actionObject);
+            }
+        });
+
+        this._sortFixedActions(this.topActions, 'first');
+        this._sortFixedActions(this.bottomActions);
+    }
+
+    /**
      * Computing the groups.
      */
     _computeGroups() {
@@ -1583,15 +1595,15 @@ export default class PrimitiveCombobox extends LightningElement {
      * Place the fixed actions first or last in an array of action objects. Used to make sure items actual order matches the visual order.
      *
      * @param {object[]} actions Array of actions to sort.
-     * @param {string} position Position of the fixecd actions in the array. Valid values are first and last. Defaults to last.
+     * @param {string} position Position of the fixecd actions in the array.
      */
     _sortFixedActions(actions, position) {
         const fixedFirst = position === 'first';
 
         actions.sort((a, b) => {
-            if (a.fixed && !b.fixed) {
+            if (a.computedFixed && !b.computedFixed) {
                 return fixedFirst ? -1 : 1;
-            } else if (!a.fixed && b.fixed) {
+            } else if (!a.computedFixed && b.computedFixed) {
                 return fixedFirst ? 1 : -1;
             }
             return 0;
@@ -2244,6 +2256,7 @@ export default class PrimitiveCombobox extends LightningElement {
         });
 
         this.visibleOptions = result;
+        this._computeActions();
 
         clearTimeout(this._searchTimeout);
         this._isSearching = true;
