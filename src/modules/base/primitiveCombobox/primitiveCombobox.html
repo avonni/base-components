@@ -161,10 +161,11 @@
                         role="option"
                         aria-label="Action button"
                         aria-disabled={action.computedAriaDisabled}
+                        data-add={action.displayWhenNoResults}
                         data-aria-disabled={action.computedAriaDisabled}
                         data-element-id="li-top-action"
                         data-group-name="actions"
-                        data-fixed={action.fixed}
+                        data-fixed={action.computedFixed}
                         data-name={action.name}
                         data-position={action.position}
                         onclick={handleActionClick}

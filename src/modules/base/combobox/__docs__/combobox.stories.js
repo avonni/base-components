@@ -539,9 +539,7 @@ const search = (props) => {
     const optionsArray = props.options;
     const searchTerm = props.searchTerm;
     return optionsArray.filter((option) => {
-        return option.secondaryText
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
+        return option.label.toLowerCase().includes(searchTerm.toLowerCase());
     });
 };
 
