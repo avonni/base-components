@@ -8,3 +8,36 @@
 .avonni-combobox__main-combobox_scopes {
     flex: 1 1 auto;
 }
+
+.avonni-combobox__pill-container {
+    --avonni-pill-color-background: var(
+        --avonni-combobox-pill-color-background,
+        #ffffff
+    );
+    --avonni-pill-color-background-hover: var(
+        --avonni-combobox-pill-color-background-hover,
+        #f3f2f2
+    );
+    --avonni-pill-text-color: var(--avonni-combobox-pill-text-color, #181818);
+    --avonni-pill-text-color-hover: var(
+        --avonni-combobox-pill-text-color-hover,
+        #181818
+    );
+    --avonni-pill-color-border: var(
+        --avonni-combobox-pill-color-border,
+        #747474
+    );
+    --avonni-pill-color-border-hover: var(
+        --avonni-combobox-pill-color-border-hover,
+        #747474
+    );
+    --avonni-pill-sizing-border: var(--avonni-combobox-pill-sizing-border, 1px);
+    --avonni-pill-styling-border: var(
+        --avonni-combobox-pill-styling-border,
+        solid
+    );
+    --avonni-pill-radius-border: var(
+        --avonni-combobox-pill-radius-border,
+        0.25rem
+    );
+}

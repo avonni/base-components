@@ -389,3 +389,57 @@
  * @name --avonni-combobox-option-avatar-image-object-fit
  * @type string
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-color-background-hover
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-text-color
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-text-color-hover
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-color-border
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-color-border-hover
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-sizing-border
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-pill-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
