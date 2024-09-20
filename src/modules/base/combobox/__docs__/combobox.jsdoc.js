@@ -117,6 +117,42 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-combobox-action-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-icon-color-background-disabled
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-icon-color-foreground-disabled
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-icon-color-background-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-icon-color-foreground-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-icon-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-combobox-label-font-size
  * @default 0.75rem
  * @type font
