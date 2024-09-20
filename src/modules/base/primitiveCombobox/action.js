@@ -75,15 +75,16 @@ export default class Action {
      * @type {string}
      */
     get computedClass() {
+        const hideOption =
+            (this.displayOnSearch && !this.searchTerm) ||
+            (this.displayWhenNoResults && !!this.nbOfResults);
         return classSet(
             'slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term avonni-primitive-combobox__action'
         )
             .add({
                 'avonni-primitive-combobox__action_disabled': this.disabled,
                 'avonni-primitive-combobox__action_fixed': this.computedFixed,
-                'slds-hide':
-                    (this.displayOnSearch && !this.searchTerm) ||
-                    (this.displayWhenNoResults && this.nbOfResults)
+                'slds-hide': hideOption
             })
             .toString();
     }

@@ -1863,33 +1863,26 @@ export default class PrimitiveCombobox extends LightningElement {
             addAction = eventOrOption.currentTarget.dataset.add;
         }
 
-        if (addAction) {
-            const newOption = {
-                label: this.inputValue,
-                value: this.inputValue
-            };
-            this._options = this._initOptionObjects([
-                ...this._options,
-                newOption
-            ]);
-            this._searchTerm = '';
-            this.inputValue = '';
-            this._computeActions();
-        }
-
         /**
          * The event fired when a user clicks on an action.
          *
          * @event
          * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @public
+         * @param {string} name The name of the action clicked.
+         * @param {boolean} addAction If true, the action is to add a new option.
+         * @param {object} option the option to create.
          * @bubbles
+         * @public
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name
+                    name,
+                    addAction,
+                    option: new Option({
+                        value: this._searchTerm,
+                        label: this._searchTerm
+                    })
                 },
                 bubbles: true
             })
@@ -1898,6 +1891,7 @@ export default class PrimitiveCombobox extends LightningElement {
         this.close();
         this.dispatchClose();
         this.focus();
+        this._computeActions();
     }
 
     /**
