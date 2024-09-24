@@ -1849,7 +1849,6 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     handleActionClick(eventOrName) {
         // If the action is "clicked" through a keyboard event, the argument will be the name
-
         let name;
         if (typeof eventOrName === 'string') {
             name = eventOrName;
@@ -1867,15 +1866,13 @@ export default class PrimitiveCombobox extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name The name of the action clicked.
-         * @param {string} searchTerm Value of the search input.
          * @bubbles
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name,
-                    searchTerm: this._searchTerm
+                    name
                 },
                 bubbles: true
             })
