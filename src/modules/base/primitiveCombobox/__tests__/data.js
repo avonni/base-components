@@ -112,6 +112,22 @@ export const actions = [
     }
 ];
 
+export const searchActions = [
+    {
+        label: 'Action 1',
+        name: 'action-1',
+        displayOnSearch: true,
+        fixed: true
+    },
+    {
+        label: 'Action 2',
+        name: 'action-2',
+        displayOnSearch: true,
+        displayWhenNoResults: true,
+        fixed: true
+    }
+];
+
 export const topActions = actions.filter(
     (action) => action.position !== 'bottom'
 );

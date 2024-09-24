@@ -2,7 +2,14 @@ import { createElement } from 'lwc';
 import PrimitiveCombobox from '../primitiveCombobox';
 import Option from '../option';
 import Action from '../action';
-import { options, actions, topActions, bottomActions, groups } from './data';
+import {
+    options,
+    actions,
+    topActions,
+    bottomActions,
+    groups,
+    searchActions
+} from './data';
 import { deepCopy } from 'c/utils';
 
 // Not tested:
@@ -212,6 +219,99 @@ describe('Primitive Combobox', () => {
                         );
                         expect(icon).toBeTruthy();
                         expect(icon.iconName).toBe(bottomActions[1].iconName);
+                    });
+            });
+
+            it('Display On Search', () => {
+                jest.useFakeTimers();
+                element.allowSearch = true;
+                element.actions = searchActions;
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.open();
+                    })
+                    .then(() => {
+                        const topActionElements =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="li-top-action"]'
+                            );
+                        expect(topActionElements[0].classList).toContain(
+                            'avonni-primitive-combobox__action_fixed'
+                        );
+                        expect(topActionElements[0].classList).toContain(
+                            'slds-hide'
+                        );
+                        expect(topActionElements[1].classList).toContain(
+                            'avonni-primitive-combobox__action_fixed'
+                        );
+                        expect(topActionElements[1].classList).toContain(
+                            'slds-hide'
+                        );
+                    })
+                    .then(() => {
+                        input.value = 'test';
+                        input.dispatchEvent(new CustomEvent('input'));
+                        jest.runAllTimers();
+                        const topActionElements =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="li-top-action"]'
+                            );
+                        expect(topActionElements[0].classList).toContain(
+                            'avonni-primitive-combobox__action_fixed'
+                        );
+                        expect(topActionElements[0].classList).toContain(
+                            'slds-hide'
+                        );
+                        expect(topActionElements[1].classList).toContain(
+                            'avonni-primitive-combobox__action_fixed'
+                        );
+                        expect(topActionElements[1].classList).toContain(
+                            'slds-hide'
+                        );
+                    });
+            });
+
+            it('Display When No Results', () => {
+                jest.useFakeTimers();
+                const handler = jest.fn();
+                element.addEventListener('search', handler);
+                element.options = options;
+                element.allowSearch = true;
+                element.actions = searchActions;
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+
+                return Promise.resolve()
+                    .then(() => {
+                        input.value = 'Some search term';
+                        input.dispatchEvent(new CustomEvent('input'));
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        element.open();
+                    })
+                    .then(() => {
+                        const topActionElements =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="li-top-action"]'
+                            );
+                        expect(topActionElements[0].classList).not.toContain(
+                            'slds-hide'
+                        );
+                        expect(topActionElements[0].textContent).toBe(
+                            'Action 1'
+                        );
+                        expect(topActionElements[1].classList).not.toContain(
+                            'slds-hide'
+                        );
+                        expect(topActionElements[1].textContent).toBe(
+                            'Action 2 "Some search term"'
+                        );
                     });
             });
 

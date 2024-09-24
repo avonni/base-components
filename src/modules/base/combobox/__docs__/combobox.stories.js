@@ -539,9 +539,7 @@ const search = (props) => {
     const optionsArray = props.options;
     const searchTerm = props.searchTerm;
     return optionsArray.filter((option) => {
-        return option.secondaryText
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
+        return option.label.toLowerCase().includes(searchTerm.toLowerCase());
     });
 };
 
@@ -657,5 +655,14 @@ CustomSearch.args = {
     label: 'Custom search in secondary text',
     allowSearch: true,
     options: optionsWithAvatars,
+    actions: [
+        {
+            label: 'Create New Opportunity',
+            name: 'new-opportunity',
+            iconName: 'utility:add',
+            displayOnSearch: true,
+            displayWhenNoResults: true
+        }
+    ],
     search: search
 };

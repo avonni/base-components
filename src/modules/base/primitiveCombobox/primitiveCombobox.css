@@ -34,6 +34,18 @@ input.avonni-primitive-combobox__input {
     font-size: var(--avonni-combobox-action-text-font-size, 0.75rem);
     font-style: var(--avonni-combobox-action-text-font-style, normal);
     font-weight: var(--avonni-combobox-action-text-font-weight, 400);
+    --sds-c-icon-color-background: var(
+        --avonni-combobox-action-icon-color-background
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-combobox-action-icon-color-foreground
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-combobox-action-icon-color-foreground
+    );
+    --sds-c-icon-radius-border: var(
+        --avonni-combobox-action-icon-radius-border
+    );
 }
 
 .avonni-primitive-combobox__action.avonni-primitive-combobox__action_disabled {
@@ -42,6 +54,15 @@ input.avonni-primitive-combobox__input {
         transparent
     );
     color: var(--avonni-combobox-action-text-color-disabled, #dddbda);
+    --sds-c-icon-color-background: var(
+        --avonni-combobox-action-icon-color-background-disabled
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-combobox-action-icon-color-foreground-disabled
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-combobox-action-icon-color-foreground-disabled
+    );
 }
 
 .avonni-primitive-combobox__action:not(.avonni-primitive-combobox__action_disabled):hover,
@@ -50,6 +71,15 @@ input.avonni-primitive-combobox__input {
     color: var(
         --avonni-combobox-action-text-color-hover,
         var(--lwc-colorTextDefault, #181818)
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-combobox-action-icon-color-background-hover
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-combobox-action-icon-color-foreground-hover
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-combobox-action-icon-color-foreground-hover
     );
 }
 

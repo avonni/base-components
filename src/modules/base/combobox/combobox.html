@@ -1,8 +1,6 @@
 <template>
     <span class={computedLabelClass} data-element-id="span-label">
-        <template if:true={required}>
-            <abbr class="slds-required" title="Required">*</abbr>
-        </template>
+        <abbr if:true={required} class="slds-required" title="Required">*</abbr>
         {computedLabel}
     </span>
     <lightning-helptext
@@ -46,10 +44,11 @@
                 enable-infinite-loading={enableInfiniteLoading}
                 hide-options-until-search={hideOptionsUntilSearch}
                 groups={groups}
-                label={computedLabel}
+                hide-clear-icon={hideClearIcon}
                 is-loading={isLoading}
                 is-multi-select={isMultiSelect}
                 keep-open-on-select={keepOpenOnSelect}
+                label={computedLabel}
                 load-more-offset={loadMoreOffset}
                 loading-state-alternative-text={loadingStateAlternativeText}
                 max={max}
@@ -66,21 +65,20 @@
                 remove-selected-options={removeSelectedOptions}
                 required={required}
                 search={search}
-                hide-clear-icon={hideClearIcon}
                 value={value}
                 variant="label-hidden"
                 data-element-id="avonni-primitive-combobox-main"
-                onblur={handleBlur}
-                onclose={handleClose}
-                onfocus={handleFocus}
-                onopen={handleOpen}
-                onsearch={handleSearch}
                 onactionclick={handleActionClick}
                 onbackactionclick={handleBackActionClick}
+                onblur={handleBlur}
                 onchange={handleChange}
+                onclose={handleClose}
+                onfocus={handleFocus}
                 onlevelchange={handleLevelChange}
                 onloadmore={handleLoadMore}
+                onopen={handleOpen}
                 onprivateselect={handlePrivateSelect}
+                onsearch={handleSearch}
             ></c-primitive-combobox>
         </div>
 
@@ -90,6 +88,7 @@
             class="slds-p-bottom_xx-small"
         >
             <c-pill-container
+                class="avonni-combobox__pill-container"
                 actions={selectedOptionsActions}
                 alternative-text={selectedOptionsAriaLabel}
                 items={normalizedSelectedOptions}
