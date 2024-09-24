@@ -1250,7 +1250,7 @@ export default class PrimitiveCombobox extends LightningElement {
             );
             this._actions.push(actionObject);
 
-            if (actionObject.computedPosition === 'bottom') {
+            if (actionObject.position === 'bottom') {
                 this.bottomActions.push(actionObject);
             } else {
                 this.topActions.push(actionObject);
@@ -1601,9 +1601,9 @@ export default class PrimitiveCombobox extends LightningElement {
         const fixedFirst = position === 'first';
 
         actions.sort((a, b) => {
-            if (a.computedFixed && !b.computedFixed) {
+            if (a.fixed && !b.fixed) {
                 return fixedFirst ? -1 : 1;
-            } else if (!a.computedFixed && b.computedFixed) {
+            } else if (!a.fixed && b.fixed) {
                 return fixedFirst ? 1 : -1;
             }
             return 0;
@@ -1845,22 +1845,20 @@ export default class PrimitiveCombobox extends LightningElement {
      * Closes the dropdown.
      *
      * @param {event} event If clicked with mouse we receive the event
-     * @param {string} option If clicked with keyboard we receive the highlighted option
+     * @param {string} name If clicked with keyboard we receive the name
      */
-    handleActionClick(eventOrOption, keyboardEvent = false) {
-        // If the action is "clicked" through a keyboard event, the argument will be the option
+    handleActionClick(eventOrName) {
+        // If the action is "clicked" through a keyboard event, the argument will be the name
+
         let name;
-        let addAction;
-        if (keyboardEvent) {
-            name = eventOrOption.dataset.name;
-            addAction = eventOrOption.dataset.add;
+        if (typeof eventOrName === 'string') {
+            name = eventOrName;
         } else {
-            if (eventOrOption.currentTarget.dataset.ariaDisabled === 'true') {
+            if (eventOrName.currentTarget.dataset.ariaDisabled === 'true') {
                 this.focus();
                 return;
             }
-            name = eventOrOption.currentTarget.dataset.name;
-            addAction = eventOrOption.currentTarget.dataset.add;
+            name = eventOrName.currentTarget.dataset.name;
         }
 
         /**
@@ -1869,8 +1867,7 @@ export default class PrimitiveCombobox extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name The name of the action clicked.
-         * @param {boolean} addAction If true, the action is to add a new option.
-         * @param {object} option the option to create.
+         * @param {string} searchTerm Value of the search input.
          * @bubbles
          * @public
          */
@@ -1878,11 +1875,7 @@ export default class PrimitiveCombobox extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name,
-                    addAction,
-                    option: new Option({
-                        value: this._searchTerm,
-                        label: this._searchTerm
-                    })
+                    searchTerm: this._searchTerm
                 },
                 bubbles: true
             })
@@ -2010,7 +2003,7 @@ export default class PrimitiveCombobox extends LightningElement {
         } else if (this._highlightedOption.dataset.name === 'backlink') {
             this.handleBackLinkClick();
         } else {
-            this.handleActionClick(this._highlightedOption, true);
+            this.handleActionClick(this._highlightedOption.dataset.name);
         }
     }
 

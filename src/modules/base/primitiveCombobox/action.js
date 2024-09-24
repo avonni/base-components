@@ -53,16 +53,11 @@ export default class Action {
         return normalizeAriaAttribute(this.disabled.toString());
     }
 
-    get computedFixed() {
-        return this.fixed || this.displayOnSearch;
-    }
-
-    get computedPosition() {
-        return this.position === 'top' || this.displayOnSearch
-            ? 'top'
-            : 'bottom';
-    }
-
+    /**
+     * Label of the action.
+     *
+     * @type {string}
+     */
     get computedLabel() {
         return this.displayWhenNoResults && this.searchTerm
             ? `${this.label} "${this.searchTerm}"`
@@ -83,7 +78,7 @@ export default class Action {
         )
             .add({
                 'avonni-primitive-combobox__action_disabled': this.disabled,
-                'avonni-primitive-combobox__action_fixed': this.computedFixed,
+                'avonni-primitive-combobox__action_fixed': this.fixed,
                 'slds-hide': hideOption
             })
             .toString();

@@ -988,15 +988,14 @@ export default class Combobox extends LightningElement {
      * Dispatches action click event.
      */
     handleActionClick(event) {
-        const { name, addAction, option } = event.detail;
+        const { name, searchTerm } = event.detail;
         /**
          * The event fired when a user clicks on an action.
          *
          * @event
          * @name actionclick
          * @param {string} name The name of the action clicked.
-         * @param {boolean} addAction If true, the action is to add a new option.
-         * @param {object} option the option to create.
+         * @param {string} searchTerm Value of the search input.
          * @bubbles
          * @public
          */
@@ -1004,8 +1003,7 @@ export default class Combobox extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name,
-                    addAction,
-                    option
+                    searchTerm
                 },
                 bubbles: true
             })

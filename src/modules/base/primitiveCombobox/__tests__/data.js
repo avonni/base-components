@@ -116,13 +116,15 @@ export const searchActions = [
     {
         label: 'Action 1',
         name: 'action-1',
-        displayOnSearch: true
+        displayOnSearch: true,
+        fixed: true
     },
     {
         label: 'Action 2',
         name: 'action-2',
         displayOnSearch: true,
-        displayWhenNoResults: true
+        displayWhenNoResults: true,
+        fixed: true
     }
 ];
 
