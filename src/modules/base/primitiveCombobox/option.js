@@ -126,6 +126,10 @@ export default class Option {
         return this.options.length || this.isLoading;
     }
 
+    get index() {
+        return this.levelPath[this.levelPath.length - 1];
+    }
+
     /**
      * True if selected, options or icon-name.
      *

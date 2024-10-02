@@ -1,6 +1,4 @@
-<!-- 
-
---><template>
+<template>
     <ul role="group" aria-label={label}>
         <li
             if:true={label}
@@ -35,6 +33,7 @@
                 aria-selected={option.selected}
                 data-aria-disabled={option.computedAriaDisabled}
                 data-element-id="li-option"
+                data-index={option.index}
                 data-value={option.value}
                 onclick={handleAction}
                 onmouseenter={handleAction}
