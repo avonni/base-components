@@ -172,6 +172,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _autoPosition;
     _cancelBlur = false;
     _computedOptions = [];
+    _endIndex = MAX_LOADED_OPTIONS;
     _highlightedOptionIndex = 0;
     _isSearching = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
@@ -1519,20 +1520,23 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     _initVisibleOptions() {
-        if (!this.enableInfiniteLoading) {
-            this._visibleOptions = this._computedOptions;
-            return;
-        }
-        const start = this._startIndex;
-        let end = start + MAX_LOADED_OPTIONS;
+        if (this.enableInfiniteLoading) {
+            const lastIndex = this._computedOptions.length;
+            const loadAll = this._endIndex + LOADED_OPTIONS_SLICE >= lastIndex;
 
-        const lastIndex = this._computedOptions.length;
-        const loadAll = end + LOADED_OPTIONS_SLICE >= lastIndex;
-        if (loadAll) {
-            end = lastIndex;
+            if (loadAll) {
+                // Not many options left, load them all
+                this._endIndex = Math.max(lastIndex, MAX_LOADED_OPTIONS);
+            }
+        } else {
+            this._startIndex = 0;
+            this._endIndex = this._computedOptions.length;
         }
 
-        this._visibleOptions = this._computedOptions.slice(start, end);
+        this._visibleOptions = this._computedOptions.slice(
+            this._startIndex,
+            this._endIndex
+        );
     }
 
     /**
@@ -2212,30 +2216,31 @@ export default class PrimitiveCombobox extends LightningElement {
         const loadDown = scrolledDistance >= bottomLimit;
         const loadUp = scrolledDistance <= this.loadMoreOffset;
 
-        let newIndex;
+        let startIndex, endIndex;
         if (loadDown) {
-            newIndex = this._startIndex + LOADED_OPTIONS_SLICE;
+            startIndex = this._startIndex + LOADED_OPTIONS_SLICE;
+            endIndex = this._endIndex + LOADED_OPTIONS_SLICE;
         } else if (loadUp) {
-            const previousIndex = this._startIndex - LOADED_OPTIONS_SLICE;
-            newIndex = Math.max(previousIndex, 0);
+            const previousStart = this._startIndex - LOADED_OPTIONS_SLICE;
+            startIndex = Math.max(previousStart, 0);
+            endIndex = Math.max(
+                this._endIndex - LOADED_OPTIONS_SLICE,
+                MAX_LOADED_OPTIONS
+            );
         }
 
-        if (!isNaN(newIndex) && this._startIndex !== newIndex) {
+        if (!isNaN(startIndex) && this._startIndex !== startIndex) {
             this._topVisibleOption = this._getOptionFromPosition(listTop);
-            const nbOptions = this._visibleOptions.length;
-            let maxIndex =
+            const nbOptions = this._computedOptions.length;
+            const maxIndex =
                 nbOptions - MAX_LOADED_OPTIONS - LOADED_OPTIONS_SLICE;
-            maxIndex = Math.max(0, maxIndex);
 
-            if (newIndex > maxIndex) {
+            if (startIndex > maxIndex) {
                 this.dispatchLoadMore();
-
-                if (!nbOptions) {
-                    // Prevent the startIndex from growing if the combobox was empty
-                    return;
-                }
+                return;
             }
-            this._startIndex = newIndex;
+            this._startIndex = startIndex;
+            this._endIndex = endIndex;
             this._initVisibleOptions();
             this._computeGroups();
         }
