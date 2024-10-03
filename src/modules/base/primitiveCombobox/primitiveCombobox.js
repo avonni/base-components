@@ -1065,6 +1065,8 @@ export default class PrimitiveCombobox extends LightningElement {
     @api
     close() {
         this._searchTerm = '';
+        this._startIndex = 0;
+        this._endIndex = MAX_LOADED_OPTIONS;
 
         if (this.dropdownVisible) {
             this.dropdownVisible = false;
