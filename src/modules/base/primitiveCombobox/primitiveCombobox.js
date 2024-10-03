@@ -176,6 +176,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _highlightedOptionIndex = 0;
     _isSearching = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
+    _scrollTimeout;
     _searchTerm = '';
     _searchTimeout;
     _startIndex = 0;
@@ -190,7 +191,8 @@ export default class PrimitiveCombobox extends LightningElement {
     parentOptionsValues = [];
     selectedOption;
     selectedOptions = [];
-    showLoader = false;
+    showEndLoader = false;
+    showStartLoader = false;
     topActions = [];
 
     /*
@@ -403,7 +405,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-        this.showLoader = this._isLoading;
+        this.showEndLoader = this._isLoading;
     }
 
     /**
@@ -513,7 +515,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this._initValue();
             this._initComputedOptions();
 
-            this.showLoader =
+            this.showEndLoader =
                 this.currentParent && !this.enableInfiniteLoading
                     ? this.currentParent.isLoading
                     : this.isLoading;
@@ -1025,9 +1027,16 @@ export default class PrimitiveCombobox extends LightningElement {
     get showNoSearchResultMessage() {
         return (
             !this._isSearching &&
-            !this.showLoader &&
+            !this.showEndLoader &&
             !this._computedOptions.length
         );
+    }
+
+    get topActionsHeight() {
+        const topActions = this.template.querySelectorAll(
+            '[data-group-name="actions"][data-position="top"]'
+        );
+        return getListHeight(topActions);
     }
 
     /*
@@ -1152,7 +1161,7 @@ export default class PrimitiveCombobox extends LightningElement {
         this._initComputedOptions();
         this.parentOptionsValues = [];
         this.backLink = undefined;
-        this.showLoader = this.isLoading;
+        this.showEndLoader = this.isLoading;
     }
 
     /**
@@ -1324,7 +1333,9 @@ export default class PrimitiveCombobox extends LightningElement {
         return option;
     }
 
-    _getOptionFromPosition(y) {
+    _getTopOption() {
+        const listTop = this.list.getBoundingClientRect().top;
+        const top = listTop + this.topActionsHeight;
         const options = Array.from(this.groupElements)
             .map((g) => g.optionElements)
             .flat();
@@ -1332,11 +1343,11 @@ export default class PrimitiveCombobox extends LightningElement {
         for (let i = 0; i < options.length; i++) {
             const opt = options[i];
             const position = opt.getBoundingClientRect();
-            if (y + 1 >= position.top && y - 1 <= position.bottom) {
+            if (top + 1 >= position.top && top - 1 <= position.bottom) {
                 return {
                     index: Number(opt.dataset.index),
                     value: opt.dataset.value,
-                    offset: y - position.top
+                    offset: top - position.top
                 };
             }
         }
@@ -1522,15 +1533,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     _initVisibleOptions() {
-        if (this.enableInfiniteLoading) {
-            const lastIndex = this._computedOptions.length;
-            const loadAll = this._endIndex + LOADED_OPTIONS_SLICE >= lastIndex;
-
-            if (loadAll) {
-                // Not many options left, load them all
-                this._endIndex = Math.max(lastIndex, MAX_LOADED_OPTIONS);
-            }
-        } else {
+        if (!this.enableInfiniteLoading) {
             this._startIndex = 0;
             this._endIndex = this._computedOptions.length;
         }
@@ -1751,12 +1754,6 @@ export default class PrimitiveCombobox extends LightningElement {
         // Height of the title groups
         const titlesHeight = getListHeight(visibleGroupTitles);
 
-        // Height of the top actions
-        const topActions = this.template.querySelectorAll(
-            '[data-group-name="actions"][data-position="top"]'
-        );
-        const topActionsHeight = getListHeight(topActions);
-
         // If we can see all options, add the height of the bottom actions
         let bottomActionsHeight = 0;
         if (this._visibleOptions.length <= this._maxVisibleOptions) {
@@ -1769,7 +1766,7 @@ export default class PrimitiveCombobox extends LightningElement {
         let height =
             optionsHeight +
             titlesHeight +
-            topActionsHeight +
+            this.topActionsHeight +
             bottomActionsHeight;
 
         const maxHeight = this.maxDropdownHeight;
@@ -1893,11 +1890,11 @@ export default class PrimitiveCombobox extends LightningElement {
         if (parents.length) {
             this._updateBackLink(this.currentParent.label);
             this._initComputedOptions();
-            this.showLoader = this.currentParent.isLoading;
+            this.showEndLoader = this.currentParent.isLoading;
         } else {
             this._initComputedOptions();
             this.backLink = undefined;
-            this.showLoader = this.isLoading;
+            this.showEndLoader = this.isLoading;
         }
 
         this.focus();
@@ -2111,10 +2108,12 @@ export default class PrimitiveCombobox extends LightningElement {
             this._initComputedOptions();
             this._updateBackLink(this.currentParent.label);
             if (selectedOption.isLoading) {
-                this.showLoader = true;
+                this.showEndLoader = true;
             }
             this.focus();
             this._searchTerm = '';
+            this._startIndex = 0;
+            this._endIndex = MAX_LOADED_OPTIONS;
 
             /**
              * The event fired when an option with nested options has been selected.
@@ -2203,7 +2202,8 @@ export default class PrimitiveCombobox extends LightningElement {
     handleScroll() {
         if (
             !this.enableInfiniteLoading ||
-            this.showLoader ||
+            this.showEndLoader ||
+            this.showStartLoader ||
             this._isSearching ||
             !this.list
         ) {
@@ -2211,12 +2211,12 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         const list = this.list;
-        const listTop = list.getBoundingClientRect().top;
         const height = list.scrollHeight;
         const scrolledDistance = list.scrollTop;
         const bottomLimit = height - list.clientHeight - this.loadMoreOffset;
         const loadDown = scrolledDistance >= bottomLimit;
         const loadUp = scrolledDistance <= this.loadMoreOffset;
+        const nbOptions = this._computedOptions.length;
 
         let startIndex, endIndex;
         if (loadDown) {
@@ -2225,15 +2225,17 @@ export default class PrimitiveCombobox extends LightningElement {
         } else if (loadUp) {
             const previousStart = this._startIndex - LOADED_OPTIONS_SLICE;
             startIndex = Math.max(previousStart, 0);
-            endIndex = Math.max(
-                this._endIndex - LOADED_OPTIONS_SLICE,
-                MAX_LOADED_OPTIONS
-            );
+            endIndex = startIndex + MAX_LOADED_OPTIONS;
+        }
+
+        const loadAll = endIndex + LOADED_OPTIONS_SLICE >= nbOptions;
+        if (loadAll) {
+            // Not many options left, load them all
+            endIndex = Math.max(nbOptions, MAX_LOADED_OPTIONS);
         }
 
         if (!isNaN(startIndex) && this._startIndex !== startIndex) {
-            this._topVisibleOption = this._getOptionFromPosition(listTop);
-            const nbOptions = this._computedOptions.length;
+            this._topVisibleOption = this._getTopOption();
             const maxIndex =
                 nbOptions - MAX_LOADED_OPTIONS - LOADED_OPTIONS_SLICE;
 
@@ -2245,6 +2247,18 @@ export default class PrimitiveCombobox extends LightningElement {
             this._endIndex = endIndex;
             this._initVisibleOptions();
             this._computeGroups();
+
+            this.showStartLoader = loadUp;
+            this.showEndLoader = loadDown;
+
+            clearTimeout(this._scrollTimeout);
+            this._scrollTimeout = setTimeout(() => {
+                this.showStartLoader = false;
+                this.showEndLoader =
+                    this.currentParent && !this.enableInfiniteLoading
+                        ? this.currentParent.isLoading
+                        : this.isLoading;
+            }, 0);
         }
     }
 
