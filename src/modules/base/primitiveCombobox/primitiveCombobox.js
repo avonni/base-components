@@ -3,7 +3,6 @@ import Option from './option';
 import Action from './action';
 import {
     MAX_LOADED_OPTIONS,
-    LOADED_OPTIONS_SLICE,
     computeScroll,
     getTopOption,
     isOutsideOfView
@@ -2233,9 +2232,10 @@ export default class PrimitiveCombobox extends LightningElement {
             return;
         }
 
-        const { startIndex, endIndex, loadDown } = computeScroll({
+        const { startIndex, endIndex, loadDown, loadMore } = computeScroll({
             list: this.list,
             loadMoreOffset: this.loadMoreOffset,
+            nbOptions: this._computedOptions.length,
             previousStartIndex: this._startIndex,
             previousEndIndex: this._endIndex
         });
@@ -2246,29 +2246,13 @@ export default class PrimitiveCombobox extends LightningElement {
                 groupElements: this.groupElements,
                 topActionsHeight: this.topActionsHeight
             });
-            const nbOptions = this._computedOptions.length;
-            const loadAll =
-                nbOptions && endIndex + LOADED_OPTIONS_SLICE >= nbOptions;
 
-            if (loadAll) {
-                // Not many options left, load them all
-                const maxEnd = Math.max(nbOptions, MAX_LOADED_OPTIONS);
-
-                if (maxEnd !== this._endIndex) {
-                    this._endIndex = maxEnd;
-                    this._initVisibleOptions();
-                    return;
-                }
-            }
-
-            const maxStart =
-                nbOptions - MAX_LOADED_OPTIONS - LOADED_OPTIONS_SLICE;
-            if (startIndex > maxStart) {
+            if (loadMore) {
                 this.dispatchLoadMore();
-                return;
             }
             this._startIndex = startIndex;
             this._endIndex = endIndex;
+
             this._initVisibleOptions();
             this._showLoaders(loadDown);
         }

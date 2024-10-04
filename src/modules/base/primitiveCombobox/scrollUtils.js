@@ -4,6 +4,7 @@ const LOADED_OPTIONS_SLICE = MAX_LOADED_OPTIONS / 3;
 function computeScroll({
     list,
     loadMoreOffset,
+    nbOptions,
     previousStartIndex,
     previousEndIndex
 }) {
@@ -23,7 +24,19 @@ function computeScroll({
         endIndex = startIndex + MAX_LOADED_OPTIONS;
     }
 
-    return { startIndex, endIndex, loadDown };
+    const maxStart = nbOptions - MAX_LOADED_OPTIONS - LOADED_OPTIONS_SLICE;
+    const loadMore = startIndex > maxStart;
+    if (loadMore) {
+        startIndex = maxStart;
+    }
+
+    const loadAll = nbOptions && endIndex + LOADED_OPTIONS_SLICE >= nbOptions;
+    if (loadAll) {
+        // Not many options left, load them all
+        endIndex = Math.max(nbOptions, MAX_LOADED_OPTIONS);
+    }
+
+    return { startIndex, endIndex, loadDown, loadMore };
 }
 
 function getTopOption({ list, groupElements, topActionsHeight }) {
@@ -52,10 +65,4 @@ function isOutsideOfView(option, list) {
     return top < listBounds.top || bottom > listBounds.bottom;
 }
 
-export {
-    MAX_LOADED_OPTIONS,
-    LOADED_OPTIONS_SLICE,
-    computeScroll,
-    getTopOption,
-    isOutsideOfView
-};
+export { MAX_LOADED_OPTIONS, computeScroll, getTopOption, isOutsideOfView };
