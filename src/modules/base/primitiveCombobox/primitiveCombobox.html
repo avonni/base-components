@@ -205,6 +205,19 @@
 
                 <!-- Groups -->
                 <li>
+                    <!-- Top loading spinner -->
+                    <div
+                        if:true={showStartLoader}
+                        class="slds-p-around_large slds-is-relative"
+                        data-element-id="li-loading-spinner"
+                    >
+                        <lightning-spinner
+                            alternative-text={loadingStateAlternativeText}
+                            size="small"
+                            data-element-id="lightning-spinner"
+                        ></lightning-spinner>
+                    </div>
+
                     <template for:each={computedGroups} for:item="group">
                         <c-primitive-combobox-group
                             key={generateKey}
@@ -219,9 +232,10 @@
                             onprivateoptionmouseenter={handleMouseEnter}
                         ></c-primitive-combobox-group>
                     </template>
-                    <!-- Loading spinner -->
+
+                    <!-- End loading spinner -->
                     <div
-                        if:true={showLoader}
+                        if:true={showEndLoader}
                         class="slds-p-around_large slds-is-relative"
                         data-element-id="li-loading-spinner"
                     >

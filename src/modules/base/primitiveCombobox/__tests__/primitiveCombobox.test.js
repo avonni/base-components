@@ -17,6 +17,7 @@ import { deepCopy } from 'c/utils';
 // setCustomValidity()
 // dropdownHeight, because depends on DOM measurements (offsetHeight)
 // Event handler triggered by the keyboard
+// Automatic load more based on scroll position
 // Anything that depends on getting the <li> elements from the primitive groups via optionElements():
 //   * backAction
 //   * isMultiSelect
@@ -33,6 +34,7 @@ describe('Primitive Combobox', () => {
             document.body.removeChild(document.body.firstChild);
         }
         jest.restoreAllMocks();
+        jest.runAllTimers();
     });
 
     beforeEach(() => {
@@ -40,6 +42,7 @@ describe('Primitive Combobox', () => {
             is: PrimitiveCombobox
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
     });
 
     describe('Attributes', () => {
@@ -223,7 +226,6 @@ describe('Primitive Combobox', () => {
             });
 
             it('Display On Search', () => {
-                jest.useFakeTimers();
                 element.allowSearch = true;
                 element.actions = searchActions;
                 const input = element.shadowRoot.querySelector(
@@ -276,7 +278,6 @@ describe('Primitive Combobox', () => {
             });
 
             it('Display When No Results', () => {
-                jest.useFakeTimers();
                 const handler = jest.fn();
                 element.addEventListener('search', handler);
                 element.options = options;
@@ -1026,7 +1027,7 @@ describe('Primitive Combobox', () => {
         it('loadMoreOffset', () => {
             element.loadMoreOffset = 100;
             element.enableInfiniteLoading = true;
-            element.options = options;
+            element.options = options.slice(0, 2);
 
             const handler = jest.fn();
 
@@ -1039,20 +1040,32 @@ describe('Primitive Combobox', () => {
                         '[data-element-id="ul-listbox"]'
                     );
                     jest.spyOn(list, 'scrollHeight', 'get').mockImplementation(
-                        () => 500
+                        () => 600
+                    );
+                    jest.spyOn(list, 'clientHeight', 'get').mockImplementation(
+                        () => 100
                     );
                     jest.spyOn(list, 'scrollTop', 'get').mockImplementation(
                         () => 399
                     );
+                    jest.runAllTimers();
+                    element.options = options;
+                })
+                .then(() => {
+                    jest.runAllTimers();
+                    const list = element.shadowRoot.querySelector(
+                        '[data-element-id="ul-listbox"]'
+                    );
                     element.addEventListener('loadmore', handler);
-
                     list.dispatchEvent(new CustomEvent('scroll'));
+                    jest.runAllTimers();
                     expect(handler).not.toHaveBeenCalled();
 
                     jest.spyOn(list, 'scrollTop', 'get').mockImplementation(
                         () => 400
                     );
                     list.dispatchEvent(new CustomEvent('scroll'));
+                    jest.runAllTimers();
                     expect(handler).toHaveBeenCalled();
                 });
         });
@@ -1622,7 +1635,6 @@ describe('Primitive Combobox', () => {
         });
 
         it('Blur, input with search', () => {
-            jest.useFakeTimers();
             const handler = jest.fn();
             element.addEventListener('search', handler);
             element.options = options;
@@ -1708,7 +1720,6 @@ describe('Primitive Combobox', () => {
         });
 
         it('Loadmore, with a search term', () => {
-            jest.useFakeTimers();
             const handler = jest.fn();
             element.addEventListener('loadmore', handler);
             element.options = options;
@@ -1759,7 +1770,6 @@ describe('Primitive Combobox', () => {
 
         // Depends on options and allowSearch
         it('Search', () => {
-            jest.useFakeTimers();
             const handler = jest.fn();
             element.addEventListener('search', handler);
             element.options = options;
