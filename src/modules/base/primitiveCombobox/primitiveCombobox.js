@@ -1463,7 +1463,6 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._initVisibleOptions();
-        this._computeGroups();
     }
 
     /**
@@ -1533,15 +1532,18 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     _initVisibleOptions() {
+        const nbOptions = this._computedOptions.length;
         if (!this.enableInfiniteLoading) {
             this._startIndex = 0;
-            this._endIndex = this._computedOptions.length;
+            this._endIndex = nbOptions;
         }
 
         this._visibleOptions = this._computedOptions.slice(
             this._startIndex,
             this._endIndex
         );
+
+        this._computeGroups();
     }
 
     /**
@@ -2216,7 +2218,6 @@ export default class PrimitiveCombobox extends LightningElement {
         const bottomLimit = height - list.clientHeight - this.loadMoreOffset;
         const loadDown = scrolledDistance >= bottomLimit;
         const loadUp = scrolledDistance <= this.loadMoreOffset;
-        const nbOptions = this._computedOptions.length;
 
         let startIndex, endIndex;
         if (loadDown) {
@@ -2228,16 +2229,24 @@ export default class PrimitiveCombobox extends LightningElement {
             endIndex = startIndex + MAX_LOADED_OPTIONS;
         }
 
-        const loadAll = endIndex + LOADED_OPTIONS_SLICE >= nbOptions;
-        if (loadAll) {
-            // Not many options left, load them all
-            endIndex = Math.max(nbOptions, MAX_LOADED_OPTIONS);
-        }
-
         if (!isNaN(startIndex) && this._startIndex !== startIndex) {
             this._topVisibleOption = this._getTopOption();
+            const nbOptions = this._computedOptions.length;
             const maxIndex =
                 nbOptions - MAX_LOADED_OPTIONS - LOADED_OPTIONS_SLICE;
+            const loadAll =
+                nbOptions && endIndex + LOADED_OPTIONS_SLICE >= nbOptions;
+
+            if (loadAll) {
+                // Not many options left, load them all
+                endIndex = Math.max(nbOptions, MAX_LOADED_OPTIONS);
+
+                if (endIndex !== this._endIndex) {
+                    this._endIndex = endIndex;
+                    this._initVisibleOptions();
+                    return;
+                }
+            }
 
             if (startIndex > maxIndex) {
                 this.dispatchLoadMore();
@@ -2246,7 +2255,6 @@ export default class PrimitiveCombobox extends LightningElement {
             this._startIndex = startIndex;
             this._endIndex = endIndex;
             this._initVisibleOptions();
-            this._computeGroups();
 
             this.showStartLoader = loadUp;
             this.showEndLoader = loadDown;
@@ -2267,6 +2275,8 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     handleSearch() {
         // Search in the current level of options
+        this._startIndex = 0;
+        this._endIndex = MAX_LOADED_OPTIONS;
         this._initComputedOptions();
         this._computeActions();
 
