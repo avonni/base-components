@@ -1,6 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import Option from './option';
 import Action from './action';
+import {
+    MAX_LOADED_OPTIONS,
+    LOADED_OPTIONS_SLICE,
+    computeScroll,
+    getTopOption,
+    isOutsideOfView
+} from './scrollUtils';
 import { getListHeight, classListMutation } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import {
@@ -45,8 +52,6 @@ const DEFAULT_MIN = 0;
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_GROUP_NAME = 'ungrouped';
-const MAX_LOADED_OPTIONS = 30;
-const LOADED_OPTIONS_SLICE = MAX_LOADED_OPTIONS / 3;
 const MIN_DROPDOWN_HEIGHT = 60;
 
 /**
@@ -869,10 +874,10 @@ export default class PrimitiveCombobox extends LightningElement {
      *
      * @type {HTMLElement}
      */
-    get _highlightedOption() {
+    get highlightedOption() {
         return (
-            this._optionElements.length &&
-            this._optionElements[this._highlightedOptionIndex]
+            this.optionElements.length &&
+            this.optionElements[this._highlightedOptionIndex]
         );
     }
 
@@ -934,7 +939,7 @@ export default class PrimitiveCombobox extends LightningElement {
      *
      * @type {element}
      */
-    get _optionElements() {
+    get optionElements() {
         if (this.dropdownVisible) {
             const elements = [];
             const topActions = this.template.querySelectorAll(
@@ -1333,27 +1338,6 @@ export default class PrimitiveCombobox extends LightningElement {
         return option;
     }
 
-    _getTopOption() {
-        const listTop = this.list.getBoundingClientRect().top;
-        const top = listTop + this.topActionsHeight;
-        const options = Array.from(this.groupElements)
-            .map((g) => g.optionElements)
-            .flat();
-
-        for (let i = 0; i < options.length; i++) {
-            const opt = options[i];
-            const position = opt.getBoundingClientRect();
-            if (top + 1 >= position.top && top - 1 <= position.bottom) {
-                return {
-                    index: Number(opt.dataset.index),
-                    value: opt.dataset.value,
-                    offset: top - position.top
-                };
-            }
-        }
-        return null;
-    }
-
     /**
      * Return an array of all selected options.
      *
@@ -1431,20 +1415,24 @@ export default class PrimitiveCombobox extends LightningElement {
      * @param {number} index index of the option with focus on.
      */
     _highlightOption(index) {
-        if (!this._optionElements[index]) return;
+        if (!this.optionElements[index]) return;
 
-        if (this._highlightedOption)
-            this._highlightedOption.classList.remove(
+        if (this.highlightedOption) {
+            this.highlightedOption.classList.remove(
                 'avonni-primitive-combobox__option_focused'
             );
+        }
         this._highlightedOptionIndex = index;
-        this._highlightedOption.classList.add(
-            'avonni-primitive-combobox__option_focused'
-        );
-        this.list.setAttribute(
-            'aria-activedescendant',
-            normalizeAriaAttribute(this._highlightedOption.id)
-        );
+
+        if (this.highlightedOption) {
+            this.highlightedOption.classList.add(
+                'avonni-primitive-combobox__option_focused'
+            );
+            this.list.setAttribute(
+                'aria-activedescendant',
+                normalizeAriaAttribute(this.highlightedOption.id)
+            );
+        }
     }
 
     _initComputedOptions() {
@@ -1579,7 +1567,7 @@ export default class PrimitiveCombobox extends LightningElement {
             return;
         }
         let previousTopOption;
-        const { index, offset, value } = this._topVisibleOption;
+        const { offset, value } = this._topVisibleOption;
         const groups = this.groupElements;
 
         for (let i = 0; i < groups.length; i++) {
@@ -1593,8 +1581,28 @@ export default class PrimitiveCombobox extends LightningElement {
         if (previousTopOption) {
             this.list.scrollTop = previousTopOption.offsetTop + offset;
         }
-        this._highlightOption(index);
+        this._highlightOption(this._highlightedOptionIndex);
         this._topVisibleOption = null;
+    }
+
+    /**
+     * Show or hide the loaders.
+     *
+     * @param {boolean} loadDown If true, show the end loader. If false, show the start loader.
+     */
+    _showLoaders(loadDown) {
+        this.showStartLoader = !loadDown;
+        this.showEndLoader = loadDown;
+
+        clearTimeout(this._scrollTimeout);
+        this._scrollTimeout = setTimeout(() => {
+            this.showStartLoader = false;
+            this.showEndLoader =
+                this.currentParent && !this.enableInfiniteLoading
+                    ? this.currentParent.isLoading
+                    : this.isLoading;
+            this._highlightOption(this._highlightedOptionIndex);
+        }, 0);
     }
 
     /**
@@ -1995,12 +2003,12 @@ export default class PrimitiveCombobox extends LightningElement {
         if (this.allowSearch && (event.key === ' ' || event.key === 'Spacebar'))
             return;
 
-        if (this._highlightedOption.dataset.value) {
+        if (this.highlightedOption.dataset.value) {
             this.handleOptionClick(event);
-        } else if (this._highlightedOption.dataset.name === 'backlink') {
+        } else if (this.highlightedOption.dataset.name === 'backlink') {
             this.handleBackLinkClick();
         } else {
-            this.handleActionClick(this._highlightedOption.dataset.name);
+            this.handleActionClick(this.highlightedOption.dataset.name);
         }
     }
 
@@ -2038,17 +2046,31 @@ export default class PrimitiveCombobox extends LightningElement {
             switch (event.key) {
                 case 'ArrowUp':
                     if (index > 0) {
+                        const option = this.optionElements[index - 1];
+                        if (isOutsideOfView(option, this.list)) {
+                            const optionTop =
+                                option.getBoundingClientRect().top;
+                            const top = this.list.scrollTop;
+                            this.list.scrollTop = top - optionTop;
+                        }
                         this._highlightOption(index - 1);
-                    } else {
-                        this._highlightOption(this._optionElements.length - 1);
+                    } else if (!this.showStartLoader) {
+                        this._highlightOption(this.optionElements.length - 1);
                     }
                     // Prevent the browser scrollbar from scrolling up
                     event.preventDefault();
                     break;
                 case 'ArrowDown':
-                    if (index < this._optionElements.length - 1) {
+                    if (index < this.optionElements.length - 1) {
+                        const option = this.optionElements[index + 1];
+
+                        if (isOutsideOfView(option, this.list)) {
+                            const top = this.list.scrollTop;
+                            const optionBottom = option.offsetHeight;
+                            this.list.scrollTop = top + optionBottom;
+                        }
                         this._highlightOption(index + 1);
-                    } else {
+                    } else if (!this.showEndLoader) {
                         this._highlightOption(0);
                     }
                     // Prevent the browser scrollbar from scrolling down
@@ -2079,7 +2101,7 @@ export default class PrimitiveCombobox extends LightningElement {
                     this._highlightOption(0);
                     break;
                 case 'End':
-                    this._highlightOption(this._optionElements - 1);
+                    this._highlightOption(this.optionElements - 1);
                     break;
                 default:
                 // do nothing
@@ -2099,8 +2121,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         const selectedOption = this._visibleOptions.find((option) => {
             return (
-                option.value.toString() ===
-                this._highlightedOption.dataset.value
+                option.value.toString() === this.highlightedOption.dataset.value
             );
         });
 
@@ -2191,7 +2212,7 @@ export default class PrimitiveCombobox extends LightningElement {
         // If the mouse enters an option, the id will be sent through an event from the group
         const id = event.detail.id ? event.detail.id : event.currentTarget.id;
 
-        const index = this._optionElements.findIndex((option) => {
+        const index = this.optionElements.findIndex((option) => {
             return option.id === id;
         });
 
@@ -2212,61 +2233,44 @@ export default class PrimitiveCombobox extends LightningElement {
             return;
         }
 
-        const list = this.list;
-        const height = list.scrollHeight;
-        const scrolledDistance = list.scrollTop;
-        const bottomLimit = height - list.clientHeight - this.loadMoreOffset;
-        const loadDown = scrolledDistance >= bottomLimit;
-        const loadUp = scrolledDistance <= this.loadMoreOffset;
-
-        let startIndex, endIndex;
-        if (loadDown) {
-            startIndex = this._startIndex + LOADED_OPTIONS_SLICE;
-            endIndex = this._endIndex + LOADED_OPTIONS_SLICE;
-        } else if (loadUp) {
-            const previousStart = this._startIndex - LOADED_OPTIONS_SLICE;
-            startIndex = Math.max(previousStart, 0);
-            endIndex = startIndex + MAX_LOADED_OPTIONS;
-        }
+        const { startIndex, endIndex, loadDown } = computeScroll({
+            list: this.list,
+            loadMoreOffset: this.loadMoreOffset,
+            previousStartIndex: this._startIndex,
+            previousEndIndex: this._endIndex
+        });
 
         if (!isNaN(startIndex) && this._startIndex !== startIndex) {
-            this._topVisibleOption = this._getTopOption();
+            this._topVisibleOption = getTopOption({
+                list: this.list,
+                groupElements: this.groupElements,
+                topActionsHeight: this.topActionsHeight
+            });
             const nbOptions = this._computedOptions.length;
-            const maxIndex =
-                nbOptions - MAX_LOADED_OPTIONS - LOADED_OPTIONS_SLICE;
             const loadAll =
                 nbOptions && endIndex + LOADED_OPTIONS_SLICE >= nbOptions;
 
             if (loadAll) {
                 // Not many options left, load them all
-                endIndex = Math.max(nbOptions, MAX_LOADED_OPTIONS);
+                const maxEnd = Math.max(nbOptions, MAX_LOADED_OPTIONS);
 
-                if (endIndex !== this._endIndex) {
-                    this._endIndex = endIndex;
+                if (maxEnd !== this._endIndex) {
+                    this._endIndex = maxEnd;
                     this._initVisibleOptions();
                     return;
                 }
             }
 
-            if (startIndex > maxIndex) {
+            const maxStart =
+                nbOptions - MAX_LOADED_OPTIONS - LOADED_OPTIONS_SLICE;
+            if (startIndex > maxStart) {
                 this.dispatchLoadMore();
                 return;
             }
             this._startIndex = startIndex;
             this._endIndex = endIndex;
             this._initVisibleOptions();
-
-            this.showStartLoader = loadUp;
-            this.showEndLoader = loadDown;
-
-            clearTimeout(this._scrollTimeout);
-            this._scrollTimeout = setTimeout(() => {
-                this.showStartLoader = false;
-                this.showEndLoader =
-                    this.currentParent && !this.enableInfiniteLoading
-                        ? this.currentParent.isLoading
-                        : this.isLoading;
-            }, 0);
+            this._showLoaders(loadDown);
         }
     }
 
