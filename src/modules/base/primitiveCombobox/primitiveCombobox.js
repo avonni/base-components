@@ -7,7 +7,7 @@ import {
     getTopOption,
     isOutsideOfView
 } from './scrollUtils';
-import { getListHeight, classListMutation } from 'c/utilsPrivate';
+import { getListHeight, classListMutation, equal } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import {
     classSet,
@@ -410,6 +410,7 @@ export default class PrimitiveCombobox extends LightningElement {
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
         this.showEndLoader = this._isLoading;
+        this.showStartLoader = false;
     }
 
     /**
@@ -519,6 +520,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this._initValue();
             this._initComputedOptions();
 
+            this.showStartLoader = false;
             this.showEndLoader =
                 this.currentParent && !this.enableInfiniteLoading
                     ? this.currentParent.isLoading
@@ -1166,6 +1168,7 @@ export default class PrimitiveCombobox extends LightningElement {
         this.parentOptionsValues = [];
         this.backLink = undefined;
         this.showEndLoader = this.isLoading;
+        this.showStartLoader = false;
     }
 
     /**
@@ -1906,6 +1909,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.showEndLoader = this.isLoading;
         }
 
+        this.showStartLoader = false;
         this.focus();
         this.dispatchEvent(new CustomEvent('backactionclick'));
     }
@@ -2133,6 +2137,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.showEndLoader = true;
             }
             this.focus();
+            this.showStartLoader = false;
             this._searchTerm = '';
             this._startIndex = 0;
             this._endIndex = MAX_LOADED_OPTIONS;
@@ -2247,14 +2252,21 @@ export default class PrimitiveCombobox extends LightningElement {
                 topActionsHeight: this.topActionsHeight
             });
 
-            if (loadMore) {
-                this.dispatchLoadMore();
-            }
             this._startIndex = startIndex;
             this._endIndex = endIndex;
-
+            const firstOption = this._visibleOptions[0];
+            const nbOptions = this._visibleOptions.length;
             this._initVisibleOptions();
-            this._showLoaders(loadDown);
+            const optionsHaveChanged =
+                !equal(firstOption, this._visibleOptions[0]) ||
+                nbOptions !== this._visibleOptions.length;
+            if (optionsHaveChanged) {
+                this._showLoaders(loadDown);
+            }
+        }
+
+        if (loadDown && loadMore) {
+            this.dispatchLoadMore();
         }
     }
 
