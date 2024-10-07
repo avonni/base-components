@@ -1526,7 +1526,7 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._visibleOptions = this._computedOptions.slice(
-            this._startIndex,
+            Math.max(this._startIndex, 0),
             this._endIndex
         );
 
