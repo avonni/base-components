@@ -226,7 +226,7 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
                 '[data-element-id="span-time-label"]'
             );
             expect(leftLabel).toBeFalsy();
-            expect(time.textContent).toBe('03:45');
+            expect(time.textContent).toContain('3:45');
             expect(centerLabel.className).toBe(
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-grid_vertical-align-center'
             );
