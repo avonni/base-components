@@ -222,7 +222,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 if (this._topVisibleOption) {
                     this._scrollToTopVisibleOption();
                 }
-                if (this.list?.scrollTop === 0) {
+                if (this.list && this.list.scrollTop === 0) {
                     this.handleScroll();
                 }
             } else {
@@ -343,7 +343,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * If present, you can load a subset of options and then display more when users scroll to the end of the drop-down. Use with the `loadmore` event handler to retrieve more data.
+     * If present, only a subset of the options is displayed at a time. Use in conjunction with the `loadmore` event handler to retrieve more data when the users scroll down.
      *
      * @type {boolean}
      * @default false
@@ -410,6 +410,7 @@ export default class PrimitiveCombobox extends LightningElement {
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
         this.showEndLoader = this._isLoading;
+        this.showStartLoader = false;
     }
 
     /**
@@ -519,6 +520,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this._initValue();
             this._initComputedOptions();
 
+            this.showStartLoader = false;
             this.showEndLoader =
                 this.currentParent && !this.enableInfiniteLoading
                     ? this.currentParent.isLoading
@@ -1166,6 +1168,7 @@ export default class PrimitiveCombobox extends LightningElement {
         this.parentOptionsValues = [];
         this.backLink = undefined;
         this.showEndLoader = this.isLoading;
+        this.showStartLoader = false;
     }
 
     /**
@@ -1526,7 +1529,7 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._visibleOptions = this._computedOptions.slice(
-            this._startIndex,
+            Math.max(this._startIndex, 0),
             this._endIndex
         );
 
@@ -1592,9 +1595,13 @@ export default class PrimitiveCombobox extends LightningElement {
     _showLoaders(loadDown) {
         this.showStartLoader = !loadDown;
         this.showEndLoader = loadDown;
+        const topOption = this._topVisibleOption
+            ? { ...this._topVisibleOption }
+            : undefined;
 
         clearTimeout(this._scrollTimeout);
         this._scrollTimeout = setTimeout(() => {
+            this._topVisibleOption = topOption;
             this.showStartLoader = false;
             this.showEndLoader =
                 this.currentParent && !this.enableInfiniteLoading
@@ -1906,6 +1913,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.showEndLoader = this.isLoading;
         }
 
+        this.showStartLoader = false;
         this.focus();
         this.dispatchEvent(new CustomEvent('backactionclick'));
     }
@@ -2133,6 +2141,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.showEndLoader = true;
             }
             this.focus();
+            this.showStartLoader = false;
             this._searchTerm = '';
             this._startIndex = 0;
             this._endIndex = MAX_LOADED_OPTIONS;
@@ -2247,14 +2256,24 @@ export default class PrimitiveCombobox extends LightningElement {
                 topActionsHeight: this.topActionsHeight
             });
 
-            if (loadMore) {
-                this.dispatchLoadMore();
-            }
             this._startIndex = startIndex;
             this._endIndex = endIndex;
-
+            const firstOptionValue =
+                this._visibleOptions[0] && this._visibleOptions[0].value;
+            const nbOptions = this._visibleOptions.length;
             this._initVisibleOptions();
-            this._showLoaders(loadDown);
+            const optionsHaveChanged =
+                firstOptionValue !==
+                    (this._visibleOptions[0] &&
+                        this._visibleOptions[0].value) ||
+                nbOptions !== this._visibleOptions.length;
+            if (optionsHaveChanged) {
+                this._showLoaders(loadDown);
+            }
+        }
+
+        if (loadDown && loadMore) {
+            this.dispatchLoadMore();
         }
     }
 
