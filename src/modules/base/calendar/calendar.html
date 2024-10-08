@@ -66,6 +66,7 @@
                                     slds-var-p-left_small
                                 "
                                 disabled={disabled}
+                                data-element-id="select-year"
                                 onchange={handleYearChange}
                             >
                                 <template for:each={yearsList} for:item="year">
@@ -73,6 +74,7 @@
                                         key={year.value}
                                         selected={year.selected}
                                         value={year.value}
+                                        data-element-id="option-year"
                                     >
                                         {year.value}
                                     </option>
