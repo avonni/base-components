@@ -1595,9 +1595,13 @@ export default class PrimitiveCombobox extends LightningElement {
     _showLoaders(loadDown) {
         this.showStartLoader = !loadDown;
         this.showEndLoader = loadDown;
+        const topOption = this._topVisibleOption
+            ? { ...this._topVisibleOption }
+            : undefined;
 
         clearTimeout(this._scrollTimeout);
         this._scrollTimeout = setTimeout(() => {
+            this._topVisibleOption = topOption;
             this.showStartLoader = false;
             this.showEndLoader =
                 this.currentParent && !this.enableInfiniteLoading
