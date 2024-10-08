@@ -343,7 +343,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * If present, you can load a subset of options and then display more when users scroll to the end of the drop-down. Use with the `loadmore` event handler to retrieve more data.
+     * If present, only a subset of the options is displayed at a time. Use in conjunction with the `loadmore` event handler to retrieve more data when the users scroll down.
      *
      * @type {boolean}
      * @default false
