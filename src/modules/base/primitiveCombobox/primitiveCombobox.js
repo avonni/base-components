@@ -7,7 +7,7 @@ import {
     getTopOption,
     isOutsideOfView
 } from './scrollUtils';
-import { getListHeight, classListMutation, equal } from 'c/utilsPrivate';
+import { getListHeight, classListMutation } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import {
     classSet,
@@ -222,7 +222,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 if (this._topVisibleOption) {
                     this._scrollToTopVisibleOption();
                 }
-                if (this.list?.scrollTop === 0) {
+                if (this.list && this.list.scrollTop === 0) {
                     this.handleScroll();
                 }
             } else {
@@ -2254,11 +2254,14 @@ export default class PrimitiveCombobox extends LightningElement {
 
             this._startIndex = startIndex;
             this._endIndex = endIndex;
-            const firstOption = this._visibleOptions[0];
+            const firstOptionValue =
+                this._visibleOptions[0] && this._visibleOptions[0].value;
             const nbOptions = this._visibleOptions.length;
             this._initVisibleOptions();
             const optionsHaveChanged =
-                !equal(firstOption, this._visibleOptions[0]) ||
+                firstOptionValue !==
+                    (this._visibleOptions[0] &&
+                        this._visibleOptions[0].value) ||
                 nbOptions !== this._visibleOptions.length;
             if (optionsHaveChanged) {
                 this._showLoaders(loadDown);
