@@ -630,7 +630,7 @@ describe('IconPicker', () => {
                 const firstStandardIcon = element.shadowRoot.querySelectorAll(
                     '.slds-icon_container'
                 )[1].lastChild.title;
-                expect(firstStandardIcon).toBe('standard:account');
+                expect(firstStandardIcon).toBe('standard:account_info');
             });
     });
 
@@ -904,8 +904,8 @@ describe('IconPicker', () => {
                 const icon = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-icon-menu"]'
                 );
-                expect(icon.iconName).toBe('standard:action_list_component');
-                expect(element.value).toBe('standard:action_list_component');
+                expect(icon.iconName).toBe('standard:account_score');
+                expect(element.value).toBe('standard:account_score');
             });
     });
 
@@ -1021,7 +1021,7 @@ describe('IconPicker', () => {
             .then(() => {
                 expect(handler).toHaveBeenCalled();
                 expect(handler.mock.calls[0][0].detail.value).toBe(
-                    'standard:account'
+                    'standard:account_info'
                 );
             });
     });

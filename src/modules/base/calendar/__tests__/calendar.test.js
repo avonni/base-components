@@ -78,10 +78,10 @@ describe('Calendar', () => {
             buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
-            const combobox = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="select-year"]'
             );
-            expect(combobox.disabled).toBeTruthy();
+            expect(year.disabled).toBeTruthy();
             const tds = element.shadowRoot.querySelectorAll(
                 '[data-element-id^="span-day-label"]'
             );
@@ -149,12 +149,12 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             ).textContent;
 
-            const yearValue = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
-            ).value;
+            const yearOption = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2002"]'
+            );
 
             expect(monthValue).toBe('August');
-            expect(yearValue).toBe(2002);
+            expect(yearOption.selected).toBeTruthy();
         });
     });
 
@@ -358,10 +358,10 @@ describe('Calendar', () => {
                 );
             })
             .then(() => {
-                const comboBoxYear = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-combobox"]'
+                const year2023 = element.shadowRoot.querySelector(
+                    '[data-element-id="option-year"][value="2023"]'
                 );
-                expect(comboBoxYear.value).toBe(2023);
+                expect(year2023.selected).toBeTruthy();
                 expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
             });
     });
@@ -382,10 +382,10 @@ describe('Calendar', () => {
                 );
             })
             .then(() => {
-                const comboBoxYear = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-combobox"]'
+                const year2021 = element.shadowRoot.querySelector(
+                    '[data-element-id="option-year"][value="2021"]'
                 );
-                expect(comboBoxYear.value).toBe(2021);
+                expect(year2021.selected).toBeTruthy();
                 expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
             });
     });
@@ -547,10 +547,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('April');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2021 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2021"]'
             );
-            expect(year.value).toBe(2021);
+            expect(year2021.selected).toBeTruthy();
         });
     });
 
@@ -567,10 +567,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('December');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2030 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2030"]'
             );
-            expect(year.value).toBe(2030);
+            expect(year2030.selected).toBeTruthy();
         });
     });
 
@@ -587,10 +587,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('January');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2020 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2020"]'
             );
-            expect(year.value).toBe(2020);
+            expect(year2020.selected).toBeTruthy();
         });
     });
 
@@ -612,10 +612,11 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe(currentMonthName);
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const currentYear = currentDate.getFullYear();
+            const selectedYear = element.shadowRoot.querySelector(
+                `[data-element-id="option-year"][value="${currentYear}"]`
             );
-            expect(year.value).toBe(currentDate.getFullYear());
+            expect(selectedYear.selected).toBeTruthy();
         });
     });
 
@@ -638,10 +639,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('May');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2022 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2022"]'
             );
-            expect(year.value).toBe(2022);
+            expect(year2022.selected).toBeTruthy();
         });
     });
 
@@ -663,10 +664,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('January');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2020 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2020"]'
             );
-            expect(year.value).toBe(2020);
+            expect(year2020.selected).toBeTruthy();
         });
     });
 
@@ -688,10 +689,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('December');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2021 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2021"]'
             );
-            expect(year.value).toBe(2021);
+            expect(year2021.selected).toBeTruthy();
         });
     });
 
@@ -709,10 +710,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('January');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2020 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2020"]'
             );
-            expect(year.value).toBe(2020);
+            expect(year2020.selected).toBeTruthy();
         });
     });
 
@@ -729,10 +730,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('January');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2020 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2020"]'
             );
-            expect(year.value).toBe(2020);
+            expect(year2020.selected).toBeTruthy();
         });
     });
 
@@ -753,10 +754,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('January');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2020 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2020"]'
             );
-            expect(year.value).toBe(2020);
+            expect(year2020.selected).toBeTruthy();
         });
     });
 
@@ -777,10 +778,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('April');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2022 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2022"]'
             );
-            expect(year.value).toBe(2022);
+            expect(year2022.selected).toBeTruthy();
         });
     });
 
@@ -830,10 +831,10 @@ describe('Calendar', () => {
                 '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('April');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-combobox"]'
+            const year2021 = element.shadowRoot.querySelector(
+                '[data-element-id="option-year"][value="2021"]'
             );
-            expect(year.value).toBe(2021);
+            expect(year2021.selected).toBeTruthy();
         });
     });
 
