@@ -40,8 +40,17 @@ div:focus {
     width: fit-content;
 }
 
-.avonni-calendar__year-combobox {
-    width: 6rem;
+.avonni-calendar__year-select {
+    appearance: none;
+    border: 1px solid #747474;
+    background: transparent;
+}
+
+.avonni-calendar__year-select-icon {
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.9);
+    z-index: -1;
 }
 
 .avonni-calendar__week-cell,
