@@ -1063,7 +1063,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get startTime() {
-        return this.from ? this.from.toFormat('HH:mm') : '';
+        return this.from ? this.from.toFormat('t') : '';
     }
 
     /**

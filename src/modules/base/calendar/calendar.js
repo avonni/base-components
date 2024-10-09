@@ -439,8 +439,8 @@ export default class Calendar extends LightningElement {
         let endYear = this._computedMax.getFullYear();
 
         return [...Array(endYear - startYear + 1).keys()].map((x) => {
-            let year = x + startYear;
-            return { label: year, value: year };
+            const value = startYear + x;
+            return { selected: this.year === value, value };
         });
     }
 
@@ -1525,7 +1525,7 @@ export default class Calendar extends LightningElement {
         this.displayDate = setDate(
             this.displayDate,
             'year',
-            event.detail.value
+            event.target.value
         );
 
         if (this.displayDate.getTime() < this._computedMin.getTime()) {

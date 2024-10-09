@@ -56,21 +56,40 @@
                                 ></lightning-button-icon>
                             </div>
                         </div>
-                        <c-combobox
-                            class="avonni-calendar__year-combobox"
-                            hide-clear-icon
-                            name="years"
-                            label="Years"
-                            variant="label-hidden"
-                            dropdown-alignment="right"
-                            value={year}
-                            placeholder={year}
-                            options={yearsList}
-                            disabled={disabled}
-                            data-element-id="avonni-combobox"
-                            onchange={handleYearChange}
-                        >
-                        </c-combobox>
+                        <label class="slds-is-relative">
+                            <span class="slds-assistive-text">Pick a year</span>
+                            <select
+                                class="
+                                    slds-select
+                                    avonni-calendar__year-select
+                                    slds-var-p-right_x-large
+                                    slds-var-p-left_small
+                                "
+                                disabled={disabled}
+                                data-element-id="select-year"
+                                onchange={handleYearChange}
+                            >
+                                <template for:each={yearsList} for:item="year">
+                                    <option
+                                        key={year.value}
+                                        selected={year.selected}
+                                        value={year.value}
+                                        data-element-id="option-year"
+                                    >
+                                        {year.value}
+                                    </option>
+                                </template>
+                            </select>
+                            <c-primitive-icon
+                                class="
+                                    slds-is-absolute
+                                    avonni-calendar__year-select-icon
+                                "
+                                aria-hidden="true"
+                                icon-name="utility:down"
+                                size="xx-small"
+                            ></c-primitive-icon>
+                        </label>
                     </div>
                 </template>
                 <table
