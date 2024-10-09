@@ -7,7 +7,7 @@ import {
     getTopOption,
     isOutsideOfView
 } from './scrollUtils';
-import { getListHeight, classListMutation } from 'c/utilsPrivate';
+import { equal, getListHeight, classListMutation } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import {
     classSet,
@@ -249,6 +249,9 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set actions(value) {
         const actions = normalizeArray(value);
+        if (equal(actions, this._actions)) {
+            return;
+        }
         this._computeActions(actions);
     }
 
@@ -514,6 +517,9 @@ export default class PrimitiveCombobox extends LightningElement {
     set options(value) {
         const options = normalizeArray(value);
         const optionObjects = this._initOptionObjects(options);
+        if (equal(optionObjects, this._options)) {
+            return;
+        }
         this._options = optionObjects;
 
         if (this._connected) {
