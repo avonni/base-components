@@ -114,5 +114,17 @@ export function increaseNumberByStep({
         const increaseBy = increment * stepAsFloat;
         result = parseFloat(startingValue) + increaseBy;
     }
-    return fractionDigits ? parseFloat(result.toFixed(fractionDigits)) : result;
+
+    // Determine the number of fraction digits from step if fractionDigits is not provided
+    if (fractionDigits === null || fractionDigits === undefined) {
+        const stepDecimals = (
+            stepAsFloat.toString().split('.')[1] ||
+            stepAsFloat.toString().split(',')[1] ||
+            ''
+        ).length;
+        fractionDigits = stepDecimals;
+    }
+    const roundedResult = result.toFixed(fractionDigits);
+
+    return parseFloat(roundedResult);
 }
