@@ -35,13 +35,6 @@ export default class InputCounter extends LightningElement {
      */
     @api accessKey;
     /**
-     * Describes the input to assistive technologies.
-     *
-     * @type {string}
-     * @public
-     */
-    @api ariaLabel;
-    /**
      * A space-separated list of element IDs whose presence or content is controlled by the input.
      *
      * @type {string}
@@ -55,6 +48,13 @@ export default class InputCounter extends LightningElement {
      * @public
      */
     @api ariaDescribedBy;
+    /**
+     * Describes the input to assistive technologies.
+     *
+     * @type {string}
+     * @public
+     */
+    @api ariaLabel;
     /**
      * A space-separated list of element IDs that provide labels for the input.
      *
@@ -384,7 +384,7 @@ export default class InputCounter extends LightningElement {
                     value: () => this.validationValue,
                     max: () => this.max,
                     min: () => this.min,
-                    step: () => this.inputStep,
+                    step: () => this.step,
                     formatter: () => this.type,
                     disabled: () => this.disabled
                 });
@@ -402,15 +402,6 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Get Aria Labelled by.
-     *
-     * @type {string}
-     */
-    get computedAriaLabelledBy() {
-        return this.ariaLabelledBy || null;
-    }
-
-    /**
      * Get Aria Described By
      *
      * @type {string}
@@ -420,16 +411,12 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Computed form element class add error if showError.
+     * Get Aria Labelled by.
      *
      * @type {string}
      */
-    get computedFormElementClass() {
-        return classSet('slds-form-element')
-            .add({
-                'slds-has-error': this.showError
-            })
-            .toString();
+    get computedAriaLabelledBy() {
+        return this.ariaLabelledBy || null;
     }
 
     /**
@@ -458,16 +445,6 @@ export default class InputCounter extends LightningElement {
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
             .toString();
-    }
-
-    /**
-     * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated
-     * from the fractionDigits.
-     *
-     * @type {number}
-     */
-    get inputStep() {
-        return this.fractionDigits ? 1 / Math.pow(10, this.fractionDigits) : 1;
     }
 
     /**
@@ -587,11 +564,13 @@ export default class InputCounter extends LightningElement {
      * Normalize the value so it doesn't go above the max or below the min.
      */
     _normalizeValue() {
-        if ((this.min || this.min === 0) && this.value < this.min) {
-            this._value = this.min;
+        const computedMax = this.type === 'percent' ? this.max / 100 : this.max;
+        const computedMin = this.type === 'percent' ? this.min / 100 : this.min;
+        if ((this.min || this.min === 0) && this.value < computedMin) {
+            this._value = computedMin;
         }
-        if ((this.max || this.max === 0) && this.value > this.max) {
-            this._value = this.max;
+        if ((this.max || this.max === 0) && this.value > computedMax) {
+            this._value = computedMax;
         }
     }
 
