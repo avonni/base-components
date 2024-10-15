@@ -793,4 +793,34 @@ export default class Metric extends LightningElement {
             this._tooltip.initialize();
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    handlePrimaryMetricClick() {
+        /**
+         * The event fired when the primary metric is clicked.
+         *
+         * @event
+         * @name primarymetricclick
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(new CustomEvent('primarymetricclick'));
+    }
+
+    handleSecondaryMetricClick() {
+        /**
+         * The event fired when the secondary metric is clicked.
+         *
+         * @event
+         * @name secondarymetricclick
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(new CustomEvent('secondarymetricclick'));
+    }
 }
