@@ -743,4 +743,38 @@ describe('Metric', () => {
             expect(metric.valueSign).toBe('positive-and-negative');
         });
     });
+
+    describe('Events', () => {
+        it('Primary Metric Click', () => {
+            element.value = 3;
+
+            const handler = jest.fn();
+            element.addEventListener('primarymetricclick', handler);
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-metric-primary"]'
+                );
+                button.click();
+
+                expect(handler).toHaveBeenCalled();
+            });
+        });
+
+        it('Secondary Metric Click', () => {
+            element.secondaryValue = 16;
+
+            const handler = jest.fn();
+            element.addEventListener('secondarymetricclick', handler);
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-metric-secondary"]'
+                );
+                button.click();
+
+                expect(handler).toHaveBeenCalled();
+            });
+        });
+    });
 });
