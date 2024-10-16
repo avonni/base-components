@@ -43,7 +43,7 @@
 }
 
 .avonni-metric__primary {
-    cursor: var(--avonni-metric-primary-cursor, text);
+    cursor: var(--avonni-metric-cursor, text);
     --avonni-primitive-metric-prefix-font-size: var(
         --avonni-metric-prefix-font-size,
         1rem

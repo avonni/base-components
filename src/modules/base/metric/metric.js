@@ -805,11 +805,11 @@ export default class Metric extends LightningElement {
          * The event fired when the primary metric is clicked.
          *
          * @event
-         * @name primarymetricclick
+         * @name metricclick
          * @public
          * @bubbles
          */
-        this.dispatchEvent(new CustomEvent('primarymetricclick'));
+        this.dispatchEvent(new CustomEvent('metricclick'));
     }
 
     handleSecondaryMetricClick() {
