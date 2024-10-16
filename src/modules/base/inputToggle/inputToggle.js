@@ -150,7 +150,6 @@ export default class InputToggle extends LightningElement {
     get ariaControls() {
         return this._ariaControls;
     }
-
     set ariaControls(references) {
         this._ariaControls = normalizeAriaAttribute(references);
 
@@ -169,7 +168,6 @@ export default class InputToggle extends LightningElement {
     get ariaDescribedBy() {
         return this._ariaDescribedBy;
     }
-
     set ariaDescribedBy(references) {
         this._ariaDescribedBy = normalizeAriaAttribute(references);
 
@@ -188,7 +186,6 @@ export default class InputToggle extends LightningElement {
     get ariaLabelledBy() {
         return this._ariaLabelledBy;
     }
-
     set ariaLabelledBy(references) {
         this._ariaLabelledBy = normalizeAriaAttribute(references);
 
@@ -228,7 +225,6 @@ export default class InputToggle extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -259,7 +255,6 @@ export default class InputToggle extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
@@ -275,7 +270,6 @@ export default class InputToggle extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
         this._updateProxyInputAttributes('required');
@@ -292,7 +286,6 @@ export default class InputToggle extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(toggleSize) {
         this._size = normalizeString(toggleSize, {
             fallbackValue: INPUT_SIZES.default,
@@ -316,7 +309,6 @@ export default class InputToggle extends LightningElement {
     get variant() {
         return this._variant || VARIANT.STANDARD;
     }
-
     set variant(toggleVariant) {
         this._variant = normalizeVariant(toggleVariant);
     }
@@ -339,22 +331,15 @@ export default class InputToggle extends LightningElement {
      */
 
     /**
-     * Localization.
+     * Gets Aria Described By.
      */
-    get i18n() {
-        return i18n;
-    }
+    get computedAriaDescribedBy() {
+        const ariaValues = [
+            this.helpMessage ? this.computedUniqueHelpElementId : null,
+            this.ariaDescribedBy || null
+        ].filter(Boolean);
 
-    /**
-     * Computed Wrapper Class styling.
-     *
-     * @type {string}
-     */
-    get computedWrapperClass() {
-        return classSet('slds-checkbox_toggle label').add({
-            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
-            'slds-grid': this.variant === VARIANT.LABEL_INLINE
-        });
+        return normalizeAriaAttribute(ariaValues);
     }
 
     /**
@@ -395,29 +380,15 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Gets Aria Described By.
-     */
-    get computedAriaDescribedBy() {
-        const ariaValues = [];
-
-        if (this.helpMessage) {
-            ariaValues.push(this.computedUniqueHelpElementId);
-        }
-
-        if (this.ariaDescribedBy) {
-            ariaValues.push(this.ariaDescribedBy);
-        }
-
-        return normalizeAriaAttribute(ariaValues);
-    }
-
-    /**
-     * Gets input element.
+     * Computed Wrapper Class styling.
      *
-     * @type {element}
+     * @type {string}
      */
-    get _inputElement() {
-        return this.template.querySelector('[data-element-id="input"]');
+    get computedWrapperClass() {
+        return classSet('slds-checkbox_toggle label').add({
+            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
+            'slds-grid': this.variant === VARIANT.LABEL_INLINE
+        });
     }
 
     /**
@@ -439,6 +410,22 @@ export default class InputToggle extends LightningElement {
                 });
         }
         return this._constraintApi;
+    }
+
+    /**
+     * Localization.
+     */
+    get i18n() {
+        return i18n;
+    }
+
+    /**
+     * Gets input element.
+     *
+     * @type {element}
+     */
+    get _inputElement() {
+        return this.template.querySelector('[data-element-id="input"]');
     }
 
     /*
@@ -549,6 +536,12 @@ export default class InputToggle extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Dispatches the blur event.
      */
@@ -563,22 +556,6 @@ export default class InputToggle extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    /**
-     * Dispatches the focus event.
-     */
-    handleFocus() {
-        this.interactingState.enter();
-
-        /**
-         * The event fired when you focus the input toggle.
-         *
-         * @event
-         * @name focus
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
@@ -614,5 +591,21 @@ export default class InputToggle extends LightningElement {
                 composed: true
             })
         );
+    }
+
+    /**
+     * Dispatches the focus event.
+     */
+    handleFocus() {
+        this.interactingState.enter();
+
+        /**
+         * The event fired when you focus the input toggle.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

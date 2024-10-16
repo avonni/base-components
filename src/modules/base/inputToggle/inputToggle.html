@@ -2,9 +2,12 @@
     <div class="slds-show_inline-block">
         <label class={computedWrapperClass} for="avonni-input-toggle">
             <span class={computedLabelClass}>
-                <template if:true={required}>
-                    <abbr class="slds-required" title={i18n.required}>*</abbr>
-                </template>
+                <abbr
+                    if:true={required}
+                    class="slds-required"
+                    title={i18n.required}
+                    >*
+                </abbr>
                 {label}
             </span>
             <lightning-helptext
@@ -35,20 +38,23 @@
                 data-toggle-description
             >
                 <span class={computedFauxToggleClass}></span>
-                <span class="slds-checkbox_on">{messageToggleActive}</span>
-                <span class="slds-checkbox_off">{messageToggleInactive}</span>
+                <span if:true={messageToggleActive} class="slds-checkbox_on"
+                    >{messageToggleActive}
+                </span>
+                <span if:true={messageToggleInactive} class="slds-checkbox_off"
+                    >{messageToggleInactive}
+                </span>
             </span>
         </label>
     </div>
 
-    <template if:false={valid}>
-        <div
-            id="help-message"
-            class="slds-form-element__help"
-            data-help-message
-            role="alert"
-        >
-            {helpMessage}
-        </div>
-    </template>
+    <div
+        if:true={helpMessage}
+        id="help-message"
+        class="slds-form-element__help"
+        data-help-message
+        role="alert"
+    >
+        {helpMessage}
+    </div>
 </template>
