@@ -374,10 +374,22 @@
 .slds-button_brand:active {
     background-color: var(
         --avonni-button-brand-color-background-active,
-        #014486
+        var(
+            --slds-g-color-brand-base-30,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
     );
-    border-color: var(--avonni-button-brand-color-border-active, #014486);
-    color: var(--avonni-button-brand-text-color-active, white);
+    border-color: var(
+        --avonni-button-brand-color-border-active,
+        var(
+            --slds-g-color-brand-base-30,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
+    );
+    color: var(
+        --avonni-button-brand-text-color-active,
+        var(--slds-g-color-brand-base-100, #ffffff)
+    );
 }
 
 .avonni-button_brand:hover,
