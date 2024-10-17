@@ -36,6 +36,7 @@
                 <c-layout multiple-rows>
                     <template for:each={visibleItems} for:item="item">
                         <c-layout-item
+                            if:true={item.visible}
                             size={cols}
                             small-container-size={smallContainerCols}
                             medium-container-size={mediumContainerCols}

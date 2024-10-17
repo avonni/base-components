@@ -893,6 +893,7 @@ export default class VisualPicker extends LightningElement {
                 disabled,
                 fields,
                 hasHiddenTags,
+                hidden,
                 imgAlternativeText,
                 imgSrc,
                 itemDescription,
@@ -1130,7 +1131,8 @@ export default class VisualPicker extends LightningElement {
                 titleBottomHidden,
                 titleCenterHidden,
                 titleTopHidden,
-                value
+                value,
+                visible: !hidden
             };
         });
 
