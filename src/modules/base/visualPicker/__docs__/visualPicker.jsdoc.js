@@ -502,3 +502,15 @@
  * @default 0rem
  * @type padding
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-responsive-sizing-max-height
+ * @default 21rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-responsive-sizing-min-height
+ * @default 15rem
+ * @type sizing
+ */

@@ -444,8 +444,8 @@
 
 .avonni-visual-picker_responsive .avonni-visual-picker__figure {
     height: 1px;
-    min-height: 15rem;
-    max-height: 21rem;
+    min-height: var(--avonni-visual-picker-responsive-sizing-min-height, 15rem);
+    max-height: var(--avonni-visual-picker-responsive-sizing-max-height, 21rem);
 }
 
 .avonni-visual-picker_responsive .avonni-visual-picker__height {
