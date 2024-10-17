@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
 import { colorType, generateColors } from 'c/colorUtils';
-import { observePosition } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     classSet,
@@ -9,6 +8,7 @@ import {
     normalizeString
 } from 'c/utils';
 import { generateUUID } from 'c/utils';
+import { AutoPosition, Direction } from 'c/positionLibrary';
 import standard from './standard.html';
 import inline from './inline.html';
 
@@ -42,6 +42,7 @@ const MENU_ICON_SIZES = {
 
 const MENU_ALIGNMENTS = {
     valid: [
+        'auto',
         'left',
         'center',
         'right',
@@ -184,6 +185,7 @@ export default class ColorPicker extends LightningElement {
     showError = false;
     tabPressed = false;
 
+    _autoPosition;
     _currentTab = DEFAULT_TAB;
     _inputValue = '';
     _isConnected = false;
@@ -1122,24 +1124,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Poll bounding rect of the dropdown menu.
-     */
-    pollBoundingRect() {
-        if (this.isAutoAlignment && this.dropdownVisible) {
-            // eslint-disable-next-line @lwc/lwc/no-async-operation
-            setTimeout(() => {
-                if (this._isConnected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        this.close();
-                    });
-
-                    this.pollBoundingRect();
-                }
-            }, 250);
-        }
-    }
-
-    /**
      * Sets the focus on an element inside the popover.
      */
     setInitialFocus() {
@@ -1206,6 +1190,40 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    startMenuAutoPositioning() {
+        if (!this._autoPosition) {
+            this._autoPosition = new AutoPosition(this);
+        }
+
+        const target = this.template.querySelector(
+            '[data-element-id="div-button-input-wrapper"]'
+        );
+        const dropdown = this.template.querySelector(
+            '[data-element-id="div-dropdown"]'
+        );
+        this._autoPosition.start({
+            target: () => target,
+            element: () => dropdown,
+            align: {
+                horizontal: Direction.Left,
+                vertical: Direction.Bottom
+            },
+            targetAlign: {
+                horizontal: Direction.Left,
+                vertical: Direction.Top
+            },
+            autoFlipVertical: true,
+            autoShrinkHeight: true,
+            minHeight: '6rem'
+        });
+    }
+
+    stopMenuPositioning() {
+        if (this._autoPosition) {
+            this._autoPosition.stop();
+        }
+    }
+
     /**
      * Dropdown menu visibility toggle.
      */
@@ -1219,9 +1237,15 @@ export default class ColorPicker extends LightningElement {
 
             if (this.dropdownVisible) {
                 this.setInitialFocus();
-                this._boundingRect = this.getBoundingClientRect();
-                this.pollBoundingRect();
                 this.loadPalette();
+
+                if (this.isAutoAlignment) {
+                    requestAnimationFrame(() => {
+                        this.startMenuAutoPositioning();
+                    });
+                }
+            } else {
+                this.stopMenuPositioning();
             }
         }
     }
