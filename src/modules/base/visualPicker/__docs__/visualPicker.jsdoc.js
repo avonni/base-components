@@ -7,9 +7,11 @@
  * @property {string} description The description can include text, and is displayed under the title inside the figure.
  * @property {string} descriptionPosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
  * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
+ * @property {object[]} fields An object with fields displayed in the visual picker.
+ * @property {boolean} hidden If present, the item is hidden and won't be displayed. Default is false.
  * @property {string} imgAlternativeText The assistive text for the image in the figure.
- * @property {string} itemDescription The description can include text, and is displayed under the title.
  * @property {string} imgSrc The URL of the image in the figure.
+ * @property {string} itemDescription The description can include text, and is displayed under the title.
  * @property {string} itemTitle The title can include text and is displayed under the item.
  * @property {object[]} tags Array of tag objects. The tags will be displayed as badges in the visual picker item figure.
  * @property {string} title The title can include text and is displayed inside the figure.
@@ -501,4 +503,16 @@
  * @name --avonni-visual-picker-image-padding
  * @default 0rem
  * @type padding
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-responsive-sizing-max-height
+ * @default 21rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-responsive-sizing-min-height
+ * @default 15rem
+ * @type sizing
  */
