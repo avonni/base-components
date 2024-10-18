@@ -13,29 +13,27 @@
             >
                 <div class="slds-media">
                     <!-- Icon -->
-                    <template if:true={iconName}>
-                        <div class="slds-media__figure">
-                            <div class={computedIconClass}>
-                                <c-primitive-icon
-                                    svg-class="slds-icon slds-page-header__icon"
-                                    icon-name={iconName}
-                                    variant="bare"
-                                    data-element-id="avonni-primitive-icon-main"
-                                >
-                                </c-primitive-icon>
-                            </div>
-                            <div class={computedMobileIconClass}>
-                                <c-primitive-icon
-                                    svg-class="slds-icon"
-                                    icon-name={iconName}
-                                    variant="bare"
-                                    size="large"
-                                    data-element-id="avonni-primitive-icon-mobile"
-                                >
-                                </c-primitive-icon>
-                            </div>
+                    <div if:true={iconName} class="slds-media__figure">
+                        <div class={computedIconClass}>
+                            <c-primitive-icon
+                                svg-class="slds-icon slds-page-header__icon"
+                                icon-name={iconName}
+                                variant="bare"
+                                data-element-id="avonni-primitive-icon-main"
+                            >
+                            </c-primitive-icon>
                         </div>
-                    </template>
+                        <div class={computedMobileIconClass}>
+                            <c-primitive-icon
+                                svg-class="slds-icon"
+                                icon-name={iconName}
+                                variant="bare"
+                                size="large"
+                                data-element-id="avonni-primitive-icon-mobile"
+                            >
+                            </c-primitive-icon>
+                        </div>
+                    </div>
                     <div class="slds-media__body">
                         <div class="slds-page-header__name">
                             <div class="slds-page-header__name-title">
@@ -96,49 +94,49 @@
                     </div>
                 </div>
             </div>
-            <template if:true={showActions}>
-                <div class="slds-page-header__col-actions slds-col_bump-left">
-                    <div class="slds-page-header__controls">
-                        <div
-                            class="slds-page-header__control slds-m-around_none"
-                        >
-                            <slot name="actions"></slot>
-                        </div>
+            <div
+                if:true={showActionsSlot}
+                class="slds-page-header__col-actions slds-col_bump-left"
+            >
+                <div class="slds-page-header__controls">
+                    <div class="slds-page-header__control slds-m-around_none">
+                        <slot name="actions"></slot>
                     </div>
                 </div>
-            </template>
+            </div>
         </div>
         <div class="slds-page-header__row">
             <div class="slds-page-header__col-meta">
-                <template if:false={isBaseVariant}>
-                    <p class="slds-page-header__meta-text slds-truncate">
-                        <template if:true={hasStringInfo}>{info}</template>
-                        <template if:false={hasStringInfo}>
-                            <slot name="info"></slot>
-                        </template>
-                    </p>
-                </template>
+                <p
+                    if:false={isBaseVariant}
+                    class="slds-page-header__meta-text slds-truncate"
+                >
+                    <template if:true={hasStringInfo}>{info}</template>
+                    <template if:false={hasStringInfo}>
+                        <slot name="info"></slot>
+                    </template>
+                </p>
             </div>
-            <template if:true={showControls}>
-                <div class="slds-page-header__col-controls">
-                    <div class="slds-page-header__controls">
-                        <slot name="controls"></slot>
-                    </div>
+            <div
+                if:true={showControlsSlot}
+                class="slds-page-header__col-controls"
+            >
+                <div class="slds-page-header__controls">
+                    <slot name="controls"></slot>
                 </div>
-            </template>
+            </div>
         </div>
         <template if:true={isRecordHomeVariant}>
-            <template if:true={showDetails}>
-                <div
-                    class="slds-page-header__row slds-page-header__row_gutters"
-                >
-                    <div class="slds-page-header__col-details">
-                        <div class="slds-page-header__detail-row">
-                            <slot name="details"></slot>
-                        </div>
+            <div
+                if:true={showDetailsSlot}
+                class="slds-page-header__row slds-page-header__row_gutters"
+            >
+                <div class="slds-page-header__col-details">
+                    <div class="slds-page-header__detail-row">
+                        <slot name="details"></slot>
                     </div>
                 </div>
-            </template>
+            </div>
         </template>
     </div>
 </template>

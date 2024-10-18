@@ -2,25 +2,18 @@
  * @namespace slots
  */
 /**
- * Placeholder for the page header title. The title is displayed at the top of the page header, next to the icon.
- * Alternatively, use the title attribute if you don't need to pass in extra markup in your title.
- *
- * @memberof slots
- * @name title
- */
-/**
- * Placeholder for the page header label. The label is displayed at the top of the page header, next to the icon.
- * Alternatively, use the label attribute if you don't need to pass in extra markup in your label.
- *
- * @memberof slots
- * @name label
- */
-/**
  * Placeholder for actionable components, such as lightning-button or lightning-button-menu.
  *
  * @memberof slots
  * @name actions
  */
+/**
+ * Placeholder for the page header controls.
+ *
+ * @memberof slots
+ * @name controls
+ */
+
 /**
  * Placeholder for the page header details.
  *
@@ -34,10 +27,18 @@
  * @name info
  */
 /**
- * Placeholder for the page header controls.
+ * Placeholder for the page header label. The label is displayed at the top of the page header, next to the icon.
+ * Alternatively, use the label attribute if you don't need to pass in extra markup in your label.
  *
  * @memberof slots
- * @name controls
+ * @name label
+ */
+/**
+ * Placeholder for the page header title. The title is displayed at the top of the page header, next to the icon.
+ * Alternatively, use the title attribute if you don't need to pass in extra markup in your title.
+ *
+ * @memberof slots
+ * @name title
  */
 
 /**
