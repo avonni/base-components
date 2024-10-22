@@ -32,6 +32,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-avatar-scale
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-avatar-sizing-border
  * @default 0
  * @type sizing

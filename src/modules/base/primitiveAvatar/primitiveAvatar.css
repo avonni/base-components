@@ -9,6 +9,7 @@
     overflow: hidden;
     vertical-align: middle;
     border-radius: var(--avonni-avatar-radius-border, 0.25rem);
+    scale: var(--avonni-avatar-scale);
 }
 
 .avonni-avatar_link:link,

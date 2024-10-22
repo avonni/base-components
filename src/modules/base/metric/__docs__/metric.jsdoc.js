@@ -22,6 +22,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-cursor
+ * @default text
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-description-font-size
  * @default 0.75rem
  * @type dimension
@@ -119,6 +125,12 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-metric-secondary-alignment
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-secondary-cursor
+ * @default text
  * @type string
  */
 /**
