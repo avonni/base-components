@@ -151,7 +151,9 @@
                             title={customLabel.label}
                             data-group-name="custom-label"
                         >
-                            {customLabel.label}
+                            <lightning-formatted-rich-text
+                                value={customLabel.label}
+                            ></lightning-formatted-rich-text>
                         </div>
                     </div>
                 </template>
