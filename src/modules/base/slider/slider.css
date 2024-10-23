@@ -241,6 +241,20 @@
     font-size: var(--avonni-slider-unit-font-size, 0.75rem);
 }
 
+.avonni-slider__custom-label_horizontal,
+.avonni-slider__custom-label_vertical {
+    position: absolute;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: var(--avonni-slider-unit-custom-line-clamp, 1);
+    line-clamp: var(--avonni-slider-unit-custom-line-clamp, 1);
+    text-overflow: ellipsis;
+    text-align: center;
+    min-width: var(--avonni-slider-unit-custom-sizing-min-width, 3rem);
+    max-width: var(--avonni-slider-unit-custom-sizing-max-width, 6rem);
+}
+
 .avonni-slider__custom-label-container_horizontal {
     position: absolute;
     display: inline-block;
@@ -249,8 +263,6 @@
 }
 
 .avonni-slider__custom-label_horizontal {
-    position: absolute;
-    white-space: nowrap;
     left: 50%;
     transform: translate(-50%);
 }
@@ -268,7 +280,6 @@
 }
 
 .avonni-slider__custom-label_vertical {
-    position: absolute;
     white-space: nowrap;
     top: calc(var(--avonni-slider-thumb-sizing-width, 8px) - 2px);
     left: 1.5rem;

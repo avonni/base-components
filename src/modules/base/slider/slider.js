@@ -146,6 +146,12 @@ export default class Slider extends LightningElement {
         this._connected = true;
     }
 
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
+    }
+
     renderedCallback() {
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
@@ -858,6 +864,17 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Returns the custom label container html element
+     * @type {object}
+     *
+     */
+    get _customLabelContainer() {
+        return this.template.querySelector(
+            '[data-element-id="custom-label-container"]'
+        );
+    }
+
+    /**
      * Returns the current variable for styling hook of thumb radius.
      * @type {number}
      */
@@ -925,6 +942,15 @@ export default class Slider extends LightningElement {
             2 * this._thumbRadius -
             0.5
         );
+    }
+
+    /**
+     * Returns the div wrapper html element
+     * @type {object}
+     *
+     */
+    get _wrapper() {
+        return this.template.querySelector('[data-element-id="div-wrapper"]');
     }
 
     /*
@@ -1072,19 +1098,69 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Adjust the padding of the component when using custom labels.
+     */
+    computeCustomLabelsPaddingAdjustments() {
+        const customLabels = this.template.querySelectorAll(
+            '[data-group-name="custom-label"]'
+        );
+
+        let paddingLeft = 0;
+        let paddingRight = 0;
+        let paddingBottom = 0;
+        customLabels.forEach((label) => {
+            const { left, right, bottom } = label.getBoundingClientRect();
+            const containerRect =
+                this._customLabelContainer.getBoundingClientRect();
+            const rulerRect = this._ruler.getBoundingClientRect();
+
+            // Round up so we can compare with old value.
+            const differenceLeft = Math.ceil(containerRect.left - left);
+            const differenceRight = Math.ceil(right - containerRect.right);
+            const differenceBottom = Math.ceil(bottom - rulerRect.bottom);
+            if (differenceLeft > 0) {
+                paddingLeft = Math.max(differenceLeft, paddingLeft);
+            }
+            if (differenceRight > 0) {
+                paddingRight = Math.max(differenceRight, paddingRight);
+            }
+            if (differenceBottom > 0) {
+                paddingBottom = Math.max(differenceBottom, paddingBottom);
+            }
+        });
+
+        const oldPaddingLeft = this._wrapper.style.paddingLeft;
+        const oldPaddingRight = this._wrapper.style.paddingRight;
+        const oldPaddingBottom = this._wrapper.style.paddingBottom;
+        const newPaddingLeft = `${paddingLeft}px`;
+        const newPaddingRight = `${paddingRight}px`;
+        const newPaddingBottom = `${paddingBottom}px`;
+        this._wrapper.style.paddingLeft = newPaddingLeft;
+        this._wrapper.style.paddingRight = newPaddingRight;
+        this._wrapper.style.paddingBottom = newPaddingBottom;
+
+        if (
+            oldPaddingLeft !== newPaddingLeft ||
+            oldPaddingRight !== newPaddingRight ||
+            oldPaddingBottom !== newPaddingBottom
+        ) {
+            this.recomputeAfterResize();
+        }
+    }
+
+    /**
      * Displays and positions the custom labels for the slider
      */
     displayCustomLabels() {
-        const customLabelNodes = this.template.querySelectorAll(
-            '[data-group-name="custom-label-wrapper"]'
-        );
-        let totalWidth = this.template.querySelector(
-            '[data-element-id="custom-label-container"]'
-        ).clientWidth;
+        let totalWidth = this._customLabelContainer?.clientWidth;
         if (this.isVertical) {
             totalWidth = this._spacerHeight;
         }
-        customLabelNodes.forEach((element, index) => {
+
+        const customLabelWrappers = this.template.querySelectorAll(
+            '[data-group-name="custom-label-wrapper"]'
+        );
+        customLabelWrappers.forEach((element, index) => {
             const value = this.customLabels[index].value;
             if (this.isVertical) {
                 element.style.top = `${
@@ -1110,6 +1186,10 @@ export default class Slider extends LightningElement {
                     this.getPercentOfValue(value) * totalWidth
                 }px`;
             }
+        });
+
+        requestAnimationFrame(() => {
+            this.computeCustomLabelsPaddingAdjustments();
         });
     }
 
@@ -1340,21 +1420,17 @@ export default class Slider extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        if (!wrapper || !(this.showAnyTickMarks || this.isVerticalResponsive)) {
+        if (
+            !this._wrapper ||
+            !(this.showAnyTickMarks || this.isVerticalResponsive)
+        ) {
             return null;
         }
-        return new AvonniResizeObserver(wrapper, () => {
-            this.setVerticalResponsiveHeight();
-            if (this.showAnyTickMarks) {
-                this.drawRuler(true);
-            }
-            if (this.hasCustomLabels) {
-                this.displayCustomLabels();
-            }
-        });
+
+        return new AvonniResizeObserver(
+            this._wrapper,
+            this.recomputeAfterResize
+        );
     }
 
     /**
@@ -1457,6 +1533,19 @@ export default class Slider extends LightningElement {
             }
         }
     }
+
+    /**
+     * Recompute after resize
+     */
+    recomputeAfterResize = () => {
+        this.setVerticalResponsiveHeight();
+        if (this.showAnyTickMarks) {
+            this.drawRuler(true);
+        }
+        if (this.hasCustomLabels) {
+            this.displayCustomLabels();
+        }
+    };
 
     /**
      * Scale values if steps is smaller than 1.
