@@ -109,6 +109,25 @@
 
 /**
  * @memberof stylingHooks
+ * @name --avonni-slider-unit-custom-sizing-min-width
+ * @default 3rem
+ * @type size
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-unit-custom-sizing-max-width
+ * @default 6rem
+ * @type size
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-unit-custom-line-clamp
+ * @default 1
+ * @type number
+ */
+
+/**
+ * @memberof stylingHooks
  * @name --avonni-slider-unit-text-color
  * @default #3e3e3c
  * @type color
