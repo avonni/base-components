@@ -59,6 +59,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-input-choice-set-option-button-color-background
+ * @default #ffffff
  * @type color
  */
 /**
