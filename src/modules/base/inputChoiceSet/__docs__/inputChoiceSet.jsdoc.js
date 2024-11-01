@@ -77,6 +77,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-input-choice-set-option-button-color-background-hover
+ * @default #f3f3f3
  * @type color
  */
 /**

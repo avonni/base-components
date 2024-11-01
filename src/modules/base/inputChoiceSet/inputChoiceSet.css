@@ -184,7 +184,8 @@
     [type='checkbox']:not(:disabled):not(:checked)
     + .slds-checkbox_button__label:hover {
     background-color: var(
-        --avonni-input-choice-set-option-button-color-background-hover
+        --avonni-input-choice-set-option-button-color-background-hover,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border-hover
