@@ -140,7 +140,8 @@
     [type='checkbox']:not(:disabled)
     + .slds-checkbox_button__label {
     background-color: var(
-        --avonni-input-choice-set-option-button-color-background
+        --avonni-input-choice-set-option-button-color-background,
+        var(--slds-g-color-neutral-base-100, #ffffff)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border,
@@ -183,7 +184,8 @@
     [type='checkbox']:not(:disabled):not(:checked)
     + .slds-checkbox_button__label:hover {
     background-color: var(
-        --avonni-input-choice-set-option-button-color-background-hover
+        --avonni-input-choice-set-option-button-color-background-hover,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border-hover
@@ -226,7 +228,8 @@
     [type='checkbox']
     + .slds-checkbox_button__label {
     background-color: var(
-        --avonni-input-choice-set-option-button-color-background
+        --avonni-input-choice-set-option-button-color-background,
+        var(--slds-g-color-neutral-base-100, #ffffff)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border,
