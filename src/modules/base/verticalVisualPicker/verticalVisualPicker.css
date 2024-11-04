@@ -74,7 +74,8 @@
     ~ label
     .avonni-vertical-visual-picker__figure {
     background-color: var(
-        --avonni-vertical-visual-picker-figure-color-background-selected
+        --avonni-vertical-visual-picker-figure-color-background-selected,
+        #ffffff
     );
 }
 
