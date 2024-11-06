@@ -31,6 +31,7 @@
     font-size: var(--avonni-date-time-picker-label-font-size, 0.75rem);
     font-weight: var(--avonni-date-time-picker-label-font-weight, 700);
     font-style: var(--avonni-date-time-picker-label-font-style, normal);
+    text-align: var(--avonni-date-time-picker-label-horizontal-alignment, left);
     line-height: var(--avonni-date-time-picker-label-line-height, 1.5);
 }
 

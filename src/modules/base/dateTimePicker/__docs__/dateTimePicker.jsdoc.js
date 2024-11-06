@@ -145,6 +145,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-date-time-picker-label-horizontal-alignment
+ * @default left
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-date-time-picker-label-line-height
  * @default 1.5
  * @type number
