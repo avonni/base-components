@@ -39,8 +39,6 @@
                                             <p
                                                 if:false={hideLabel}
                                                 class="
-                                                    slds-form-element__legend
-                                                    slds-form-element__label
                                                     avonni-date-time-picker__label
                                                     slds-p-top_none
                                                 "
@@ -53,18 +51,20 @@
                                                     >*</abbr
                                                 >
                                                 {label}
+                                                <!-- Help text -->
+                                                <lightning-helptext
+                                                    if:true={fieldLevelHelp}
+                                                    content={fieldLevelHelp}
+                                                    class="slds-p-left_x-small"
+                                                    data-element-id="lightning-helptext"
+                                                ></lightning-helptext>
                                             </p>
-                                            <!-- Help text -->
-                                            <lightning-helptext
-                                                if:true={fieldLevelHelp}
-                                                content={fieldLevelHelp}
-                                                data-element-id="lightning-helptext"
-                                            ></lightning-helptext>
                                             <!-- Current date range -->
                                             <p
                                                 if:false={hideDateLabel}
                                                 class="
                                                     avonni-date-time-picker__date
+                                                    slds-p-bottom_xx-small
                                                 "
                                                 data-element-id="p-date-label"
                                             >
