@@ -749,7 +749,7 @@ describe('Metric', () => {
             element.value = 3;
 
             const handler = jest.fn();
-            element.addEventListener('primarymetricclick', handler);
+            element.addEventListener('metricclick', handler);
 
             return Promise.resolve().then(() => {
                 const button = element.shadowRoot.querySelector(

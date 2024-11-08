@@ -493,7 +493,7 @@ describe('DateTimePicker', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="p-label"]'
             );
             expect(label).toBeTruthy();
             expect(label.textContent).toBe('This is a label text');
@@ -507,7 +507,7 @@ describe('DateTimePicker', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="p-label"]'
             );
             expect(label).toBeFalsy();
         });
