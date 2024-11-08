@@ -2,7 +2,7 @@ export { hasAnimation } from './animation';
 export { EventEmitter } from './eventEmitter';
 export { toNorthAmericanPhoneNumber } from './phonify';
 export * from './linkUtils';
-export { arraysEqual, ArraySlice, equal } from './utility';
+export { arraysEqual, ArraySlice, equal, objectsEqual } from './utility';
 export { classListMutation } from './classListMutation';
 export {
     camelCase,
