@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { equal, getListHeight } from 'c/utilsPrivate';
 import {
     classSet,
+    deepCopy,
     formatLabel,
     generateUUID,
     normalizeArray,
@@ -538,9 +539,7 @@ export default class DualListbox extends LightningElement {
         return this._options;
     }
     set options(value) {
-        this._options = Array.isArray(value)
-            ? JSON.parse(JSON.stringify(value))
-            : [];
+        this._options = deepCopy(normalizeArray(value));
 
         if (this._connected) {
             this._initValue();
@@ -590,10 +589,7 @@ export default class DualListbox extends LightningElement {
         return this._requiredOptions;
     }
     set requiredOptions(newValue) {
-        const normalizedValue = Array.isArray(newValue)
-            ? JSON.parse(JSON.stringify(newValue))
-            : [];
-
+        const normalizedValue = deepCopy(normalizeArray(newValue));
         if (equal(this._requiredOptions, normalizedValue)) {
             return;
         }
@@ -1975,7 +1971,7 @@ export default class DualListbox extends LightningElement {
      * Change event dispatcher.
      */
     dispatchChangeEvent() {
-        this._value = JSON.parse(JSON.stringify(this.computedValue));
+        this._value = deepCopy(this.computedValue);
 
         /**
          * The event fired when one or several options are moved from one box to the other.

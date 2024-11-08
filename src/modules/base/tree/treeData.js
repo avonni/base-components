@@ -1,3 +1,4 @@
+import { deepCopy } from 'c/utils';
 import { getTreeNode } from './treeNode';
 
 /**
@@ -115,7 +116,7 @@ export class TreeData {
      * @returns {object} Cloned item.
      */
     cloneItems(item) {
-        const newItem = JSON.parse(JSON.stringify(item));
+        const newItem = deepCopy(item);
         newItem.items = [];
 
         if (item.items && item.items.length > 0) {

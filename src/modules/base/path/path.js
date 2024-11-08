@@ -1,6 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import {
     classSet,
+    deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeString
@@ -345,8 +346,7 @@ export default class Path extends LightningElement {
         return this._steps;
     }
     set steps(proxy) {
-        const array = normalizeArray(proxy);
-        this._steps = JSON.parse(JSON.stringify(array));
+        this._steps = deepCopy(normalizeArray(proxy));
 
         if (this._isConnected) {
             this.initSteps();

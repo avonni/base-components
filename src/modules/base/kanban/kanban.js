@@ -4,6 +4,7 @@ import kanban from './kanban.html';
 import kanbanSubGroups from './kanbanSubGroups.html';
 import {
     classSet,
+    deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
@@ -406,7 +407,7 @@ export default class Kanban extends LightningElement {
      * @type {object[]}
      */
     get computedSubGroups() {
-        const computedGroups = JSON.parse(JSON.stringify(this._computedGroups));
+        const computedGroups = deepCopy(this._computedGroups);
         this._computedGroups.forEach((group, i) => {
             computedGroups[i].subGroups =
                 group.subGroups[this._currentSubGroupIndex];

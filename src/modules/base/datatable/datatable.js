@@ -1,6 +1,11 @@
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
-import { normalizeArray, normalizeBoolean, normalizeString } from 'c/utils';
+import {
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import {
     getCellValue,
     getCurrentSelectionLength,
@@ -352,7 +357,7 @@ export default class Datatable extends LightningDatatable {
     renderedCallback() {
         super.renderedCallback();
 
-        this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
+        this._data = deepCopy(normalizeArray(super.data));
         this.computeEditableOption();
 
         if (this.isLoading) {
@@ -427,13 +432,13 @@ export default class Datatable extends LightningDatatable {
         return super.columns;
     }
     set columns(value) {
-        value = JSON.parse(JSON.stringify(value));
+        value = deepCopy(value);
         this.removeWrapOption(value);
         this.removeNonEditableColumns(value);
         this.computeEditableOption(value);
         super.columns = value;
 
-        this._columns = JSON.parse(JSON.stringify(super.columns));
+        this._columns = deepCopy(super.columns);
     }
 
     /**

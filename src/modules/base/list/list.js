@@ -296,7 +296,7 @@ export default class List extends LightningElement {
             return;
         }
         this._actions = actions;
-        this.computedActions = JSON.parse(JSON.stringify(this._actions));
+        this.computedActions = deepCopy(actions);
 
         if (this._connected) {
             this.setItemProperties();

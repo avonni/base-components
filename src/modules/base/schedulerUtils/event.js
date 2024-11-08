@@ -159,7 +159,7 @@ export default class SchedulerEvent {
         return this._resourceNames;
     }
     set resourceNames(value) {
-        this._resourceNames = JSON.parse(JSON.stringify(normalizeArray(value)));
+        this._resourceNames = deepCopy(normalizeArray(value));
     }
 
     get name() {

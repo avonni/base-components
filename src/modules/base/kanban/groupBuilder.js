@@ -1,6 +1,6 @@
+import { deepCopy } from 'c/utils';
 import KanbanGroup from './group';
 import KanbanTile from './tile';
-
 
 export default class KanbanGroupsBuilder {
     constructor(props) {
@@ -128,7 +128,7 @@ export default class KanbanGroupsBuilder {
         // Splits the tiles in diffenrent subgroups if needed
         if (this.subGroupFieldName) {
             this.groups.forEach((group) => {
-                group.subGroups = JSON.parse(JSON.stringify(subGroups));
+                group.subGroups = deepCopy(subGroups);
                 group.tiles.forEach((tile) => {
                     const subGroup = tile.subGroup;
                     if (subGroup) {
