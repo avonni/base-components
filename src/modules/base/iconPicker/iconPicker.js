@@ -1,5 +1,11 @@
 import { LightningElement, api, track } from 'lwc';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import { ICON_TYPES } from './icons/salesforceIcons';
 
 const VARIANTS = {
@@ -147,8 +153,7 @@ export default class IconPicker extends LightningElement {
 
     set hiddenCategories(value) {
         this._hiddenCategories = [];
-        const categories =
-            value === undefined ? [] : JSON.parse(JSON.stringify(value));
+        const categories = deepCopy(normalizeArray(value));
         for (const category of TABS.valid) {
             if (categories.includes(category)) {
                 this._hiddenCategories.push(category);

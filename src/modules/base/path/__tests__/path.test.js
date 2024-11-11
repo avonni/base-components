@@ -333,15 +333,13 @@ describe('Path', () => {
             fieldValues.forEach((field, index) => {
                 // Normalize data to be able to compare
                 const originalType = STEPS[2].keyFields[index].type;
-                const originalValue = JSON.parse(
-                    JSON.stringify(STEPS[2].keyFields[index].value)
-                );
+                const originalValue = STEPS[2].keyFields[index].value;
                 const originalTypeAttributes = JSON.stringify(
                     STEPS[2].keyFields[index].typeAttributes
                 );
                 const typeAttributes = JSON.stringify(field.typeAttributes);
 
-                expect(field.value).toBe(originalValue);
+                expect(field.value).toEqual(originalValue);
                 expect(field.type).toBe(originalType);
                 expect(typeAttributes).toBe(originalTypeAttributes);
             });
