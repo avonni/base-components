@@ -55,6 +55,17 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        maxLines: {
+            name: 'maxLines',
+            control: {
+                type: 'number'
+            },
+            description: '',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '4' }
+            }
+        },
         name: {
             control: {
                 type: 'text'
@@ -62,6 +73,16 @@ export default {
             description: 'Specifies the name of an input element.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        options: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of option objects.',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         placeholder: {
@@ -105,9 +126,11 @@ export default {
                 'currency',
                 'date',
                 'email',
+                'multipicklist',
                 'location',
                 'number',
                 'percent',
+                'picklist',
                 'phone',
                 'url',
                 'text'
@@ -202,6 +225,34 @@ BaseAsBoolean.args = {
     label: 'Boolean input',
     type: 'boolean',
     checked: true
+};
+
+export const MultiSelectPicklist = Template.bind({});
+MultiSelectPicklist.args = {
+    label: 'Multi-Select Picklist input',
+    type: 'multipicklist',
+    options: [
+        { label: 'Test 1', value: 'test1' },
+        { label: 'Test 2', value: 'test2' },
+        { label: 'Test 3', value: 'test3' },
+        { label: 'Test 4', value: 'test4' },
+        { label: 'Test 5', value: 'test5' },
+        { label: 'Test 6', value: 'test6' }
+    ]
+};
+
+export const Picklist = Template.bind({});
+Picklist.args = {
+    label: 'Picklist input',
+    type: 'picklist',
+    options: [
+        { label: 'Test 1', value: 'test1' },
+        { label: 'Test 2', value: 'test2' },
+        { label: 'Test 3', value: 'test3' },
+        { label: 'Test 4', value: 'test4' },
+        { label: 'Test 5', value: 'test5' },
+        { label: 'Test 6', value: 'test6' }
+    ]
 };
 
 export const Disabled = Template.bind({});

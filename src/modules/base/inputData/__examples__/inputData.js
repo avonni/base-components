@@ -8,7 +8,9 @@ export const InputData = ({
     label,
     latitude,
     longitude,
+    maxLines,
     name,
+    options,
     placeholder,
     readOnly,
     required,
@@ -22,6 +24,8 @@ export const InputData = ({
     element.label = label;
     element.latitude = latitude;
     element.longitude = longitude;
+    element.maxLines = maxLines;
+    element.options = options;
     element.name = name;
     element.placeholder = placeholder;
     element.readOnly = readOnly;

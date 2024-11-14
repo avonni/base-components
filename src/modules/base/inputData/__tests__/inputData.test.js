@@ -212,6 +212,53 @@ describe('InputData', () => {
         });
     });
 
+    it('Input data: Multi-select picklist options', () => {
+        element.label = 'Base input';
+        element.type = 'multipicklist';
+        const OPTIONS = [
+            { label: 'Test 1', value: 'test1' },
+            { label: 'Test 2', value: 'test3' }
+        ];
+        element.options = OPTIONS;
+
+        return Promise.resolve().then(() => {
+            const multiPicklistInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-multi-picklist"]'
+            );
+            expect(multiPicklistInput.options).toEqual(OPTIONS);
+        });
+    });
+
+    it('Input data: Multi-select picklist max number lines', () => {
+        element.label = 'Base input';
+        element.type = 'multipicklist';
+        element.maxLines = 8;
+
+        return Promise.resolve().then(() => {
+            const multiPicklistInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-multi-picklist"]'
+            );
+            expect(multiPicklistInput.size).toBe(8);
+        });
+    });
+
+    it('Input data: Picklist options', () => {
+        element.label = 'Base input';
+        element.type = 'picklist';
+        const OPTIONS = [
+            { label: 'Test 1', value: 'test1' },
+            { label: 'Test 2', value: 'test3' }
+        ];
+        element.options = OPTIONS;
+
+        return Promise.resolve().then(() => {
+            const picklistInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-picklist"]'
+            );
+            expect(picklistInput.options).toEqual(OPTIONS);
+        });
+    });
+
     /* ----- DATA INPUT TYPES ----- */
 
     it('Input data: Boolean input', () => {
@@ -305,6 +352,22 @@ describe('InputData', () => {
         });
     });
 
+    it('Input data: Picklist input', () => {
+        element.label = 'Label';
+        element.type = 'picklist';
+
+        return Promise.resolve().then(() => {
+            const baseInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
+            const picklistInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-picklist"]'
+            );
+            expect(baseInput).toBeFalsy();
+            expect(picklistInput).toBeTruthy();
+        });
+    });
+
     it('Input data: Phone input', () => {
         element.label = 'Label';
         element.type = 'phone';
@@ -328,6 +391,22 @@ describe('InputData', () => {
                 '[data-element-id="lightning-input-phone"]'
             );
             expect(input.value).toBe('123-456-7890');
+        });
+    });
+
+    it('Input data: Multi-Select Picklist input', () => {
+        element.label = 'Label';
+        element.type = 'multipicklist';
+
+        return Promise.resolve().then(() => {
+            const baseInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
+            const multiPicklistInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-multi-picklist"]'
+            );
+            expect(baseInput).toBeFalsy();
+            expect(multiPicklistInput).toBeTruthy();
         });
     });
 

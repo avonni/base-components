@@ -14,14 +14,22 @@ const DATA_TYPES = {
         'date',
         'email',
         'location',
+        'multipicklist',
         'number',
         'percent',
         'phone',
+        'picklist',
         'text',
         'url'
     ],
     default: 'text'
 };
+
+/**
+ * @constant
+ * @type {number}
+ */
+const DEFAULT_MULTI_PICKLIST_MAX_LINES = 4;
 
 /**
  * @constant
@@ -60,6 +68,14 @@ export default class InputData extends LightningElement {
     @api name;
 
     /**
+     * Available options for picklist and multi-select picklist.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api options;
+
+    /**
      * Message to be displayed when input field is empty, to prompt the user for a valid entry.
      *
      * @type {string}
@@ -71,6 +87,7 @@ export default class InputData extends LightningElement {
     _disabled = false;
     _latitude;
     _longitude;
+    _maxLines = DEFAULT_MULTI_PICKLIST_MAX_LINES;
     _readOnly = false;
     _required = false;
     _type = DATA_TYPES.default;
@@ -153,7 +170,7 @@ export default class InputData extends LightningElement {
     }
 
     /**
-     * If present, the input field is read-only and cannot be edited by users.
+     * Maximum number of lines in the dual list box for multi-select picklist.
      *
      * @type {boolean}
      * @default false
@@ -165,6 +182,24 @@ export default class InputData extends LightningElement {
     }
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the input field is read-only and cannot be edited by users.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get maxLines() {
+        return this._maxLines;
+    }
+    set maxLines(value) {
+        const number = parseInt(value, 10);
+        this._maxLines = isNaN(number)
+            ? DEFAULT_MULTI_PICKLIST_MAX_LINES
+            : number;
     }
 
     /**
@@ -279,6 +314,14 @@ export default class InputData extends LightningElement {
     }
 
     /**
+     * Whether the data input type is a multipicklist.
+     * @type {boolean}
+     */
+    get isMultiPicklist() {
+        return this.type === 'multipicklist';
+    }
+
+    /**
      * Whether the data input type is a phone number.
      * @type {boolean}
      */
@@ -287,11 +330,24 @@ export default class InputData extends LightningElement {
     }
 
     /**
+     * Whether the data input type is a picklist.
+     * @type {boolean}
+     */
+    get isPicklist() {
+        return this.type === 'picklist';
+    }
+
+    /**
      * Whether the data input type is different from a location and a phone number.
      * @type {boolean}
      */
     get isBaseInput() {
-        return !this.isLocation && !this.isPhone;
+        return (
+            !this.isLocation &&
+            !this.isPhone &&
+            !this.isPicklist &&
+            !this.isMultiPicklist
+        );
     }
 
     /**

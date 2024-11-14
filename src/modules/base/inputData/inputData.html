@@ -18,8 +18,7 @@
         oncommit={handleInputCommit}
         onblur={handleBlur}
         onfocus={handleFocus}
-    >
-    </lightning-input>
+    ></lightning-input>
 
     <lightning-input
         if:true={isPhone}
@@ -39,22 +38,47 @@
         oncommit={handleInputCommit}
         onblur={handleBlur}
         onfocus={handleFocus}
-    >
-    </lightning-input>
+    ></lightning-input>
 
     <lightning-input-location
         if:true={isLocation}
-        variant={inputVariant}
         label={inputLabel}
         latitude={latitude}
         longitude={longitude}
         disabled={disabled}
         read-only={readOnly}
         required={required}
+        variant={inputVariant}
         data-element-id="lightning-input-location"
         onchange={handleInputChange}
         onblur={handleBlur}
         onfocus={handleFocus}
-    >
-    </lightning-input-location>
+    ></lightning-input-location>
+
+    <lightning-dual-listbox
+        if:true={isMultiPicklist}
+        label={inputLabel}
+        name={name}
+        options={options}
+        required={required}
+        selected-label="Chosen"
+        size={maxLines}
+        source-label="Available"
+        data-element-id="lightning-input-multi-picklist"
+        onchange={handleInputChange}
+        onblur={handleBlur}
+        onfocus={handleFocus}
+    ></lightning-dual-listbox>
+
+    <lightning-combobox
+        if:true={isPicklist}
+        name={name}
+        label={inputLabel}
+        required={required}
+        options={options}
+        data-element-id="lightning-input-picklist"
+        onchange={handleInputChange}
+        onblur={handleBlur}
+        onfocus={handleFocus}
+    ></lightning-combobox>
 </template>
