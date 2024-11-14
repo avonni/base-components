@@ -1086,8 +1086,7 @@ export default class PrimitiveCombobox extends LightningElement {
     @api
     close() {
         this._searchTerm = '';
-        this._startIndex = 0;
-        this._endIndex = MAX_LOADED_OPTIONS;
+        this._resetVisibleOptions();
 
         if (this.dropdownVisible) {
             this.dropdownVisible = false;
@@ -1170,6 +1169,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     resetLevel() {
+        this._resetVisibleOptions();
         this._initComputedOptions();
         this.parentOptionsValues = [];
         this.backLink = undefined;
@@ -1570,6 +1570,11 @@ export default class PrimitiveCombobox extends LightningElement {
         return unselectedOptions;
     }
 
+    _resetVisibleOptions() {
+        this._startIndex = 0;
+        this._endIndex = MAX_LOADED_OPTIONS;
+    }
+
     _scrollToTopVisibleOption() {
         if (!this.list) {
             return;
@@ -1908,6 +1913,7 @@ export default class PrimitiveCombobox extends LightningElement {
     handleBackLinkClick() {
         const parents = this.parentOptionsValues;
         parents.pop();
+        this._resetVisibleOptions();
 
         if (parents.length) {
             this._updateBackLink(this.currentParent.label);
@@ -2140,6 +2146,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         // If the option has children options, change the visible options
         if (selectedOption.hasChildren) {
+            this._resetVisibleOptions();
             this.parentOptionsValues.push(selectedOption.value);
             this._initComputedOptions();
             this._updateBackLink(this.currentParent.label);
@@ -2149,8 +2156,6 @@ export default class PrimitiveCombobox extends LightningElement {
             this.focus();
             this.showStartLoader = false;
             this._searchTerm = '';
-            this._startIndex = 0;
-            this._endIndex = MAX_LOADED_OPTIONS;
 
             /**
              * The event fired when an option with nested options has been selected.
@@ -2288,8 +2293,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     handleSearch() {
         // Search in the current level of options
-        this._startIndex = 0;
-        this._endIndex = MAX_LOADED_OPTIONS;
+        this._resetVisibleOptions();
         this._initComputedOptions();
         this._computeActions();
 
