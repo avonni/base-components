@@ -12,7 +12,6 @@ import {
     Aria Reflection is used if supported by browser.
     If Aria Reflection is not available, fallback to polyfill
     Aria Reflection: https://wicg.github.io/aom/aria-reflection-explainer.html
-    Polyfill: https://git.soma.salesforce.com/lwc/aria-element-reflection
 */
 const SUPPORTED_ATTRIBUTES = new Map([
     [
