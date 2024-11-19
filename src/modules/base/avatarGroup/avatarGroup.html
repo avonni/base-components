@@ -68,7 +68,11 @@
         ></c-primitive-avatar>
     </div>
 
-    <div if:false={isClassic} data-element-id="avatar-group-wrapper">
+    <div
+        if:false={isClassic}
+        class="slds-template__container"
+        data-element-id="avatar-group-wrapper"
+    >
         <span id="list-description" class="slds-assistive-text">
             Move between the items by using arrow keys.
         </span>
