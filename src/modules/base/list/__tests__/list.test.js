@@ -988,6 +988,21 @@ describe('List', () => {
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 });
             });
+
+            it('Itemclick not fired for click on checkbox', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemclick', handler);
+                element.items = ITEMS;
+                element.variant = 'check-list';
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="item-input-checkbox"]'
+                    );
+                    items[2].click();
+                    expect(handler).not.toHaveBeenCalled();
+                });
+            });
         });
 
         // itemclick
@@ -1042,6 +1057,33 @@ describe('List', () => {
                     expect(handler.mock.calls[0][0].detail.name).toBe(
                         ITEMS[1].name
                     );
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
+            });
+
+            it('Itemcheck is also fired if variant is check-list', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemcheck', handler);
+                element.items = ITEMS;
+                element.variant = 'check-list';
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-item"]'
+                    );
+                    items[2].dispatchEvent(new CustomEvent('click'));
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                        ITEMS[2]
+                    );
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ITEMS[2].name
+                    );
+                    expect(
+                        handler.mock.calls[0][0].detail.checked
+                    ).toBeTruthy();
                     expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();

@@ -2205,14 +2205,15 @@ export default class List extends LightningElement {
      *
      * @param {Event} event
      */
-    handleItemCheck(index, checked) {
-        const itemIndex = Number(index);
+    handleItemCheck(event) {
+        event.stopPropagation();
+        const itemIndex = Number(event.currentTarget.dataset.index);
         const item = this.computedItems[itemIndex];
 
-        if (!item) {
+        if (!item || !this.isCheckList) {
             return;
         }
-
+        const checked = !item.checked;
         item.checked = checked;
         this.computedItems = [...this.computedItems];
 
@@ -2272,13 +2273,7 @@ export default class List extends LightningElement {
         );
 
         if (this.isCheckList) {
-            const itemCheckbox = event.currentTarget.querySelector(
-                '[data-element-id="item-input-checkbox"]'
-            );
-            if (itemCheckbox) {
-                const checked = !item.checked;
-                this.handleItemCheck(itemIndex, checked);
-            }
+            this.handleItemCheck(event);
         }
     }
 
