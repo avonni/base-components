@@ -180,6 +180,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _highlightedOptionIndex = 0;
     _isSearching = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
+    _originalOptions = [];
     _scrollTimeout;
     _searchTerm = '';
     _searchTimeout;
@@ -516,11 +517,11 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set options(value) {
         const options = normalizeArray(value);
-        const optionObjects = this._initOptionObjects(options);
-        if (equal(optionObjects, this._options)) {
+        if (equal(this._originalOptions, options)) {
             return;
         }
-        this._options = optionObjects;
+        this._originalOptions = options;
+        this._options = this._initOptionObjects(options);
 
         if (this._connected) {
             this._initValue();
