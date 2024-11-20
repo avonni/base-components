@@ -28,7 +28,7 @@
                 </template>
                 <lightning-button-menu
                     if:true={hasActionsButtonMenu}
-                    menu-alignment="right"
+                    menu-alignment="auto"
                     variant="border-filled"
                     onselect={handleActionButtonMenuClick}
                 >
@@ -47,7 +47,7 @@
                 if:true={hasZeroActionButtons}
                 data-value={value}
                 icon-size="x-small"
-                menu-alignment="right"
+                menu-alignment="auto"
                 variant="border-filled"
                 onselect={handleActionButtonMenuClick}
             >
