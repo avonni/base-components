@@ -87,7 +87,8 @@ export default class ComboboxInfiniteLoading extends LightningElement {
     }
 
     loadNestedOption(optionValue, searchTerm) {
-        const option = this.getOption(optionValue.value);
+        const newOptions = JSON.parse(JSON.stringify(this.options));
+        const option = this.getOption(optionValue.value, newOptions);
         if (!option.options) {
             option.options = [];
         }
@@ -102,11 +103,11 @@ export default class ComboboxInfiniteLoading extends LightningElement {
                     searchTerm
                 );
                 this.isLoading = false;
-                this.options = [...this.options];
+                this.options = newOptions;
             }, 1000);
         } else {
             this.isLoading = false;
-            this.options = [...this.options];
+            this.options = newOptions;
         }
     }
 
