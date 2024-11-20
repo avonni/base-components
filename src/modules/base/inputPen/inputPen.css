@@ -31,7 +31,8 @@
     z-index: 2;
 }
 
-.avonni-input-pen__combobox {
+.avonni-input-pen__size-picker {
+    display: block;
     width: 80px;
 }
 
