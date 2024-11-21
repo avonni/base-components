@@ -811,6 +811,56 @@ describe('Pill Container', () => {
         });
     });
 
+    // itemclick
+    it('Pill container: itemclick event', () => {
+        element.items = ITEMS;
+        element.sortable = true;
+
+        const handler = jest.fn();
+        element.addEventListener('itemclick', handler);
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-item"]'
+            );
+            const mousedown = new MouseEvent('mousedown');
+            mousedown.pageX = 100;
+            mousedown.pageY = 100;
+            items[0].dispatchEvent(mousedown);
+            jest.runAllTimers();
+
+            const mousemove = new CustomEvent('mousemove');
+            mousemove.pageX = 102; // not enough to be considered as a drag
+            mousemove.pageY = 100;
+            items[0].dispatchEvent(mousemove);
+
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-pill-container__list_dragging'
+            );
+
+            items[0].dispatchEvent(new MouseEvent('mouseup'));
+            expect(handler).toHaveBeenCalled();
+            const event = handler.mock.calls[0][0];
+            expect(event.detail).toEqual({
+                index: 0,
+                targetName: ITEMS[0].name
+            });
+            expect(event.bubbles).toBeFalsy();
+            expect(event.cancelable).toBeFalsy();
+            expect(event.composed).toBeFalsy();
+
+            expect(wrapper.classList).not.toContain(
+                'avonni-pill-container__list_dragging'
+            );
+            expect(items[1].classList).not.toContain(
+                'avonni-pill-container__pill_after-border'
+            );
+        });
+    });
+
     // reorder
     it('Pill container: reorder event, to the right', () => {
         element.items = ITEMS;
