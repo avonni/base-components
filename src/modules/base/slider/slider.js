@@ -1660,9 +1660,6 @@ export default class Slider extends LightningElement {
      */
     handleThumbHovered(event) {
         if (this._pinLocked || this.thumbIsHovered(event)) {
-            this.getInput(event.currentTarget.dataset.index).classList.add(
-                'avonni-slider__slider-thumb_hovered'
-            );
             if (this._pin) {
                 this.setPinPosition(event);
                 this.template
@@ -1679,9 +1676,6 @@ export default class Slider extends LightningElement {
      */
     handleThumbExit(event) {
         if (!this.thumbIsHovered(event) && !this._pinLocked) {
-            this.getInput(event.currentTarget.dataset.index).classList.remove(
-                'avonni-slider__slider-thumb_hovered'
-            );
             if (this._pin) {
                 this.template
                     .querySelector(`[data-group-name="pin"][data-index="0"]`)

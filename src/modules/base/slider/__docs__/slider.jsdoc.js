@@ -59,15 +59,21 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-thumb-radius
- * @default 0.5rem
- * @type radius
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-slider-thumb-color-hover
  * @default #014486
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-thumb-color-active
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-thumb-radius
+ * @default 0.5rem
+ * @type radius
  */
 /**
  * @memberof stylingHooks
