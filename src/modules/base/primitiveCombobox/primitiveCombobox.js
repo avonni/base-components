@@ -11,6 +11,7 @@ import { equal, getListHeight, classListMutation } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import {
     classSet,
+    deepCopy,
     generateUUID,
     normalizeAriaAttribute,
     normalizeArray,
@@ -520,7 +521,7 @@ export default class PrimitiveCombobox extends LightningElement {
         if (equal(this._originalOptions, options)) {
             return;
         }
-        this._originalOptions = options;
+        this._originalOptions = deepCopy(options);
         this._options = this._initOptionObjects(options);
 
         if (this._connected) {
