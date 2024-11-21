@@ -23,6 +23,7 @@
 }
 
 .avonni-primitive-pill {
+    cursor: var(--avonni-pill-cursor);
     color: var(--avonni-pill-text-color, var(--lwc-colorTextDefault, #181818));
     background-color: var(--avonni-pill-color-background, #ffffff);
     border-color: var(--avonni-pill-color-border, #747474);

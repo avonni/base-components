@@ -59,7 +59,7 @@
 .avonni-pill-container__pill-sortable {
     user-select: none;
     -webkit-user-select: none;
-    cursor: grab;
+    --avonni-pill-cursor: grab;
 }
 
 .avonni-pill-container__item_sortable-single-line {
@@ -69,7 +69,7 @@
 .avonni-pill-container__list_dragging,
 .avonni-pill-container__list_dragging .avonni-pill-container__pill-sortable,
 .avonni-pill-container__list_dragging .avonni-pill-container__pill-sortable a {
-    cursor: grabbing;
+    --avonni-pill-cursor: grabbing;
 }
 
 /* Sortable moving border */
