@@ -516,26 +516,26 @@ describe('Pill Container', () => {
             const focusLinkSpy = jest.spyOn(pills[0], 'focusLink');
 
             // Press right
-            keyDown.keyCode = 39;
+            keyDown.key = 'ArrowRight';
             ul.dispatchEvent(keyDown);
             expect(pills[1].tabIndex).toBe(0);
             expect(focusSpy).toHaveBeenCalled();
 
             // Press left
-            keyDown.keyCode = 37;
+            keyDown.key = 'ArrowLeft';
             ul.dispatchEvent(keyDown);
             expect(pills[1].tabIndex).toBe(-1);
             expect(pills[0].tabIndex).toBe(0);
             expect(focusLinkSpy).toHaveBeenCalled();
 
             // Press left again, to loop back to the last item
-            keyDown.keyCode = 37;
+            keyDown.key = 'ArrowLeft';
             ul.dispatchEvent(keyDown);
             expect(pills[0].tabIndex).toBe(-1);
             expect(pills[2].tabIndex).toBe(0);
 
             // Press right again, to loop back to the first item
-            keyDown.keyCode = 39;
+            keyDown.key = 'ArrowRight';
             ul.dispatchEvent(keyDown);
             expect(pills[0].tabIndex).toBe(0);
             expect(pills[2].tabIndex).toBe(-1);
@@ -823,16 +823,11 @@ describe('Pill Container', () => {
             const items = element.shadowRoot.querySelectorAll(
                 '[data-element-id="li-item"]'
             );
-            items[0].dispatchEvent(new MouseEvent('mousedown'));
+            const mousedown = new MouseEvent('mousedown');
+            mousedown.pageX = 100;
+            mousedown.pageY = 100;
+            items[0].dispatchEvent(mousedown);
             jest.runAllTimers();
-
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-pill-container__list_dragging'
-            );
-            expect(0).toHavePosition(1);
 
             items[1].getBoundingClientRect = jest
                 .fn()
@@ -843,13 +838,21 @@ describe('Pill Container', () => {
                     };
                 });
             const mousemove = new CustomEvent('mousemove');
+            mousemove.pageX = 110;
+            mousemove.pageY = 100;
             mousemove.clientX = 70;
             items[1].dispatchEvent(mousemove);
 
-            expect(0).toHavePosition(2);
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-pill-container__list_dragging'
+            );
             expect(items[1].classList).toContain(
                 'avonni-pill-container__pill_after-border'
             );
+            expect(0).toHavePosition(2);
 
             element.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
             expect(handler).toHaveBeenCalled();
@@ -879,16 +882,11 @@ describe('Pill Container', () => {
             const items = element.shadowRoot.querySelectorAll(
                 '[data-element-id="li-item"]'
             );
-            items[2].dispatchEvent(new MouseEvent('mousedown'));
+            const mousedown = new MouseEvent('mousedown');
+            mousedown.pageX = 100;
+            mousedown.pageY = 100;
+            items[2].dispatchEvent(mousedown);
             jest.runAllTimers();
-
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-pill-container__list_dragging'
-            );
-            expect(2).toHavePosition(3);
 
             items[1].getBoundingClientRect = jest
                 .fn()
@@ -899,13 +897,21 @@ describe('Pill Container', () => {
                     };
                 });
             const mousemove = new CustomEvent('mousemove');
+            mousemove.pageX = 100;
+            mousemove.pageY = 110;
             mousemove.clientX = 30;
             items[1].dispatchEvent(mousemove);
 
-            expect(2).toHavePosition(2);
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-pill-container__list_dragging'
+            );
             expect(items[1].classList).toContain(
                 'avonni-pill-container__pill_before-border'
             );
+            expect(2).toHavePosition(2);
 
             element.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
             expect(handler).toHaveBeenCalled();
@@ -935,7 +941,7 @@ describe('Pill Container', () => {
                 );
 
                 // Press space
-                keyDown.keyCode = 32;
+                keyDown.key = ' ';
                 ul.dispatchEvent(keyDown);
                 const wrapper = element.shadowRoot.querySelector(
                     '[data-element-id="div-wrapper"]'
@@ -946,7 +952,7 @@ describe('Pill Container', () => {
                 expect(0).toHavePosition(1);
 
                 // Press right more times than the length of the list
-                keyDown.keyCode = 39;
+                keyDown.key = 'ArrowRight';
                 ul.dispatchEvent(keyDown);
                 expect(items[1].classList).toContain(
                     'avonni-pill-container__pill_after-border'
@@ -962,7 +968,7 @@ describe('Pill Container', () => {
                 expect(0).toHavePosition(3);
 
                 // Press space
-                keyDown.keyCode = 32;
+                keyDown.key = ' ';
                 ul.dispatchEvent(keyDown);
                 expect(handler).toHaveBeenCalledTimes(1);
                 expect(handler.mock.calls[0][0].detail.items).toEqual([
@@ -984,7 +990,7 @@ describe('Pill Container', () => {
                 expect(2).toHavePosition(3);
 
                 // Press left more times than the length of the list
-                keyDown.keyCode = 37;
+                keyDown.key = 'ArrowLeft';
                 ul.dispatchEvent(keyDown);
                 expect(items[1].classList).toContain(
                     'avonni-pill-container__pill_before-border'
@@ -1000,7 +1006,7 @@ describe('Pill Container', () => {
                 expect(2).toHavePosition(1);
 
                 // Press space
-                keyDown.keyCode = 32;
+                keyDown.key = ' ';
                 ul.dispatchEvent(keyDown);
                 expect(handler).toHaveBeenCalledTimes(2);
                 expect(handler.mock.calls[1][0].detail.items).toEqual([
@@ -1025,15 +1031,15 @@ describe('Pill Container', () => {
             );
 
             // Press space
-            keyDown.keyCode = 32;
+            keyDown.key = ' ';
             ul.dispatchEvent(keyDown);
 
             // Press right
-            keyDown.keyCode = 39;
+            keyDown.key = 'ArrowRight';
             ul.dispatchEvent(keyDown);
 
             // Press escape
-            keyDown.keyCode = 27;
+            keyDown.key = 'Escape';
             ul.dispatchEvent(keyDown);
             expect(handler).not.toHaveBeenCalled();
         });
@@ -1077,7 +1083,10 @@ describe('Pill Container', () => {
                 const hiddenItems = element.shadowRoot.querySelectorAll(
                     '[data-element-id="li-item-hidden"]'
                 );
-                hiddenItems[0].dispatchEvent(new CustomEvent('mousedown'));
+                const mousedown = new CustomEvent('mousedown');
+                mousedown.pageX = 100;
+                mousedown.pageY = 100;
+                hiddenItems[0].dispatchEvent(mousedown);
                 jest.runAllTimers();
 
                 // Move at the beginning of the list
@@ -1091,6 +1100,8 @@ describe('Pill Container', () => {
                     return { left: 3, width: 50, top: 120, height: 20 };
                 });
                 const mouseMove = new CustomEvent('mousemove');
+                mouseMove.pageX = 100;
+                mouseMove.pageY = 110;
                 mouseMove.clientX = 12;
                 items[0].dispatchEvent(mouseMove);
 
@@ -1143,7 +1154,10 @@ describe('Pill Container', () => {
                         () => 50
                     );
                 });
-                items[0].dispatchEvent(new CustomEvent('mousedown'));
+                const mousedown = new CustomEvent('mousedown');
+                mousedown.pageX = 100;
+                mousedown.pageY = 100;
+                items[0].dispatchEvent(mousedown);
                 jest.runAllTimers();
 
                 // Hover the button to open the popover
@@ -1170,6 +1184,8 @@ describe('Pill Container', () => {
                     return { left: 3, width: 50, top: 120, height: 20 };
                 });
                 const mouseMove = new CustomEvent('mousemove');
+                mouseMove.pageX = 110;
+                mouseMove.pageY = 100;
                 mouseMove.clientY = 135;
                 hiddenItems[0].dispatchEvent(mouseMove);
                 expect(hiddenItems[0].classList).toContain(
