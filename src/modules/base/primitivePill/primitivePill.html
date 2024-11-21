@@ -20,10 +20,11 @@
             class="slds-pill__label avonni-primitive-pill__label-link"
             data-element-id="a-label"
             onmousedown={handleDraggableMouseDown}
-            >{label}</a
         >
-        <span if:false={href} class="slds-pill__label"
-            ><lightning-formatted-rich-text
+            {label}
+        </a>
+        <span if:false={href} class="slds-pill__label">
+            <lightning-formatted-rich-text
                 title={label}
                 value={label}
                 data-element-id="lightning-formatted-rich-text"

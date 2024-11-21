@@ -166,6 +166,9 @@ export default class PrimitivePill extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
+        // Do not dispatch it as a regular click.
+        event.stopPropagation();
+
         if (this.actions.length > 1) {
             this.dispatchEvent(
                 new CustomEvent('openactionmenu', {

@@ -96,6 +96,18 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-pill-container-dropdown-sizing-max-height
+ * @default 17.5rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-dropdown-sizing-width
+ * @default 13rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-pill-container-radius-border
  * @default 0.25rem
  * @type dimension

@@ -1,5 +1,4 @@
 import { LightningElement, api, track } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet, deepCopy, normalizeArray, normalizeBoolean } from 'c/utils';
 
@@ -28,7 +27,6 @@ export default class PillContainer extends LightningElement {
 
     _selectedAction;
     _dragState;
-    _dragTimeOut;
     _expandTimeOut;
     _focusedIndex = 0;
     _focusOnRender = false;
@@ -244,11 +242,9 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedHiddenListItemClass() {
-        return classSet('avonni-pill-container__hidden-pill')
-            .add({
-                'slds-is-relative': this.sortable
-            })
-            .toString();
+        return classSet('avonni-pill-container__item-hidden').add({
+            'slds-is-relative': this.sortable
+        });
     }
 
     /**
@@ -266,11 +262,12 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedListboxClass() {
-        return classSet('slds-listbox slds-is-relative slds-listbox_horizontal')
-            .add({
-                'slds-listbox_inline': this.singleLine
-            })
-            .toString();
+        return classSet(
+            'slds-listbox slds-is-relative slds-listbox_horizontal'
+        ).add({
+            'slds-nowrap slds-listbox_inline': this.singleLine,
+            'slds-scrollable_x': this.singleLine && this.computedIsExpanded
+        });
     }
 
     /**
@@ -280,7 +277,7 @@ export default class PillContainer extends LightningElement {
      */
     get computedListItemClass() {
         return classSet(
-            'slds-listbox-item avonni-pill-container__item slds-p-top_xxx-small'
+            'slds-listbox-item avonni-pill-container__item slds-p-vertical_xxx-small'
         ).add({
             'slds-is-relative': this.sortable,
             'slds-p-right_xxx-small': !this.singleLine,
@@ -295,11 +292,9 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedPillClass() {
-        return classSet('avonni-pill-container__pill')
-            .add({
-                'avonni-pill-container__pill-sortable': this.sortable
-            })
-            .toString();
+        return classSet('avonni-pill-container__pill').add({
+            'avonni-pill-container__pill-sortable': this.sortable
+        });
     }
 
     /**
@@ -443,7 +438,6 @@ export default class PillContainer extends LightningElement {
      * Clear the reorder state.
      */
     clearDrag() {
-        clearTimeout(this._dragTimeOut);
         clearInterval(this._scrollingInterval);
         if (!this._dragState) return;
 
@@ -494,24 +488,6 @@ export default class PillContainer extends LightningElement {
     }
 
     /**
-     * Initialize the reordering of a pill.
-     *
-     * @param {number} index Index of the reordered pill.
-     */
-    initDragState(index) {
-        if (!this.sortable) return;
-
-        this._dragState = {
-            initialIndex: index,
-            lastHoveredIndex: index
-        };
-        this.wrapperElement.classList.add(
-            'avonni-pill-container__list_dragging'
-        );
-        this.updateAssistiveText(index + 1);
-    }
-
-    /**
      * Initialize the screen resize observer.
      *
      * @returns {AvonniResizeObserver} Resize observer.
@@ -536,6 +512,16 @@ export default class PillContainer extends LightningElement {
                 ? maxCount
                 : DEFAULT_NUMBER_OF_VISIBLE_ITEMS;
         this._visibleItemsCount = !this.computedIsExpanded ? count : maxCount;
+    }
+
+    /**
+     * Predicate function to verify if drag can start.
+     */
+    isConsideredAsADrag(diffX, diffY) {
+        const DIFF_CONSIDERED_AS_DRAG = 4;
+        return (
+            diffX > DIFF_CONSIDERED_AS_DRAG || diffY > DIFF_CONSIDERED_AS_DRAG
+        );
     }
 
     /**
@@ -711,6 +697,19 @@ export default class PillContainer extends LightningElement {
     }
 
     /**
+     * Initialize the reordering of a pill.
+     *
+     * @param {number} index Index of the reordered pill.
+     */
+    startDrag(index) {
+        this._dragState.isDragging = true;
+        this.wrapperElement.classList.add(
+            'avonni-pill-container__list_dragging'
+        );
+        this.updateAssistiveText(index + 1);
+    }
+
+    /**
      * Update the focused index.
      *
      * @param {number} index Index of the new focused pill.
@@ -733,7 +732,9 @@ export default class PillContainer extends LightningElement {
         const pill = this.template.querySelector(
             `[data-element-id^="avonni-primitive-pill"][data-index="${normalizedIndex}"]`
         );
-        pill.tabIndex = '0';
+        if (pill) {
+            pill.tabIndex = '0';
+        }
         this.focus();
     }
 
@@ -890,9 +891,9 @@ export default class PillContainer extends LightningElement {
             ? this._dragState.lastHoveredIndex
             : this._focusedIndex;
 
-        switch (event.keyCode) {
-            case keyCodes.left:
-            case keyCodes.up: {
+        switch (event.key) {
+            case 'ArrowLeft':
+            case 'ArrowUp': {
                 // Prevent the page from scrolling
                 event.preventDefault();
 
@@ -911,8 +912,8 @@ export default class PillContainer extends LightningElement {
                 }
                 break;
             }
-            case keyCodes.right:
-            case keyCodes.down: {
+            case 'ArrowRight':
+            case 'ArrowDown': {
                 // Prevent the page from scrolling
                 event.preventDefault();
 
@@ -931,23 +932,37 @@ export default class PillContainer extends LightningElement {
                 }
                 break;
             }
-            case keyCodes.space:
+            case ' ': {
+                // Space key
                 // Prevent the page from scrolling
                 event.preventDefault();
 
                 if (this._dragState) {
                     this.handleMouseUp();
                 } else if (this.sortable) {
-                    this.initDragState(index);
+                    this._dragState = {
+                        initialIndex: index,
+                        lastHoveredIndex: index
+                    };
+                    this.startDrag(index);
                 }
                 break;
-            case keyCodes.escape:
+            }
+            case 'Escape': {
                 this.clearDrag();
                 if (this.showPopover) {
                     this._popoverHasFocus = false;
                     this.togglePopover();
                 }
                 break;
+            }
+            case 'Enter': {
+                this.dispatchItemClick({
+                    index,
+                    targetName: this._items[index].name
+                });
+                break;
+            }
             default:
                 this.focus();
         }
@@ -979,7 +994,9 @@ export default class PillContainer extends LightningElement {
      */
     handleMouseUp = () => {
         if (
+            !this.sortable ||
             !this._dragState ||
+            !this._dragState.isDragging ||
             this._dragState.lastHoveredIndex === this._dragState.initialIndex
         ) {
             this.clearDrag();
@@ -1119,12 +1136,13 @@ export default class PillContainer extends LightningElement {
      * @param {Event} event
      */
     handlePillMouseDown(event) {
-        if (!this.sortable) return;
-
         const index = Number(event.currentTarget.dataset.index);
-        this._dragTimeOut = setTimeout(() => {
-            this.initDragState(index);
-        }, 200);
+        this._dragState = {
+            initialIndex: index,
+            lastHoveredIndex: index,
+            initialMousePosX: event.pageX,
+            initialMousePosY: event.pageY
+        };
     }
 
     /**
@@ -1133,28 +1151,51 @@ export default class PillContainer extends LightningElement {
      * @param {Event} event
      */
     handlePillMouseMove(event) {
+        if (!this._dragState || !this.sortable) return;
+        const { isDragging, initialIndex, initialMousePosX, initialMousePosY } =
+            this._dragState;
+
+        const diffX = Math.abs(initialMousePosX - event.pageX);
+        const diffY = Math.abs(initialMousePosY - event.pageY);
+        if (!isDragging && this.isConsideredAsADrag(diffX, diffY)) {
+            this.startDrag(initialIndex);
+        }
+
+        if (this._dragState.isDragging) {
+            const pill = event.currentTarget;
+            const index = Number(pill.dataset.index);
+            const coordinates = pill.getBoundingClientRect();
+            const isHidden = pill.dataset.elementId === 'li-item-hidden';
+            const onLeft =
+                event.clientX < coordinates.left + coordinates.width / 2;
+            const onTop =
+                event.clientY < coordinates.top + coordinates.height / 2;
+
+            if ((!isHidden && onLeft) || (isHidden && onTop)) {
+                // The cursor is on the left side of a visible pill
+                // or on the top side of a hidden pill
+                this.moveBefore(index);
+            } else {
+                // The cursor is on the right side of a visible pill
+                // or on the bottom side of a hidden pill
+                this.moveAfter(index);
+            }
+
+            if (isHidden) {
+                this.autoScrollPopover(event.clientY, index);
+            }
+        }
+    }
+
+    handlePillMouseUp(event) {
         if (!this._dragState) return;
-
-        const pill = event.currentTarget;
-        const index = Number(pill.dataset.index);
-        const coordinates = pill.getBoundingClientRect();
-        const isHidden = pill.dataset.elementId === 'li-item-hidden';
-        const onLeft = event.clientX < coordinates.left + coordinates.width / 2;
-        const onTop = event.clientY < coordinates.top + coordinates.height / 2;
-
-        if ((!isHidden && onLeft) || (isHidden && onTop)) {
-            // The cursor is on the left side of a visible pill
-            // or on the top side of a hidden pill
-            this.moveBefore(index);
-        } else {
-            // The cursor is on the right side of a visible pill
-            // or on the bottom side of a hidden pill
-            this.moveAfter(index);
-        }
-
-        if (isHidden) {
-            this.autoScrollPopover(event.clientY, index);
-        }
+        const { initialIndex, isDragging } = this._dragState;
+        const index = Number(event.currentTarget.dataset.index);
+        if (isDragging || initialIndex !== index) return;
+        this.dispatchItemClick({
+            targetName: this._items[initialIndex].name,
+            index: initialIndex
+        });
     }
 
     /**
@@ -1217,7 +1258,10 @@ export default class PillContainer extends LightningElement {
                 const previousTopItem = this.template.querySelector(
                     `[data-element-id="li-item-hidden"][data-name="${topItem.name}"]`
                 );
-                popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
+                if (previousTopItem) {
+                    popover.scrollTop =
+                        previousTopItem.offsetTop + topItem.offset;
+                }
 
                 if (this._focusedIndex < topItem.index) {
                     // If the scroll was triggered using the mouse,
@@ -1249,5 +1293,23 @@ export default class PillContainer extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('actionclick', { detail }));
+    }
+
+    /**
+     * Dispatch the `actionclick` event.
+     *
+     * @param {object} detail Detail of the event.
+     */
+    dispatchItemClick(detail) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {number} index Index of the item clicked.
+         * @param {string} targetName Name of the item the action belongs to.
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('itemclick', { detail }));
     }
 }

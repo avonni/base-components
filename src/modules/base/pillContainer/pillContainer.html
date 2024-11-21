@@ -13,8 +13,9 @@
             id="label"
             class="slds-assistive-text"
             data-element-id="span-alternative-text"
-            >{alternativeText}</span
         >
+            {alternativeText}
+        </span>
 
         <ul
             class={computedListboxClass}
@@ -37,6 +38,7 @@
                     role="presentation"
                     onmousemove={handlePillMouseMove}
                     onmousedown={handlePillMouseDown}
+                    onmouseup={handlePillMouseUp}
                 >
                     <c-primitive-pill
                         data-element-id="avonni-primitive-pill"
@@ -72,6 +74,7 @@
                 if:true={showPopover}
                 data-element-id="div-popover"
                 class="
+                    avonni-pill-container__dropdown
                     slds-dropdown slds-dropdown_right slds-dropdown_length-7
                     slds-p-vertical_none
                     slds-p-horizontal_xx-small
@@ -98,6 +101,7 @@
                                 role="presentation"
                                 onmousemove={handlePillMouseMove}
                                 onmousedown={handlePillMouseDown}
+                                onmouseup={handlePillMouseUp}
                             >
                                 <c-primitive-pill
                                     data-element-id="avonni-primitive-pill-hidden"
