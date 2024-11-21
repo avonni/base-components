@@ -97,17 +97,17 @@
 }
 
 /* Sortable moving border in single-line collapsed popover */
-.avonni-pill-container__hidden-pill.avonni-pill-container__pill_after-border::after,
-.avonni-pill-container__hidden-pill.avonni-pill-container__pill_before-border::before {
+.avonni-pill-container__item-hidden.avonni-pill-container__pill_after-border::after,
+.avonni-pill-container__item-hidden.avonni-pill-container__pill_before-border::before {
     right: 0;
     left: 0;
     height: 2px;
 }
 
-.avonni-pill-container__hidden-pill.avonni-pill-container__pill_after-border::after {
+.avonni-pill-container__item-hidden.avonni-pill-container__pill_after-border::after {
     bottom: -1px;
 }
 
-.avonni-pill-container__hidden-pill.avonni-pill-container__pill_before-border::before {
+.avonni-pill-container__item-hidden.avonni-pill-container__pill_before-border::before {
     top: -1px;
 }

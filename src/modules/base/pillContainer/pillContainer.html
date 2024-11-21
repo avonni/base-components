@@ -13,8 +13,9 @@
             id="label"
             class="slds-assistive-text"
             data-element-id="span-alternative-text"
-            >{alternativeText}</span
         >
+            {alternativeText}
+        </span>
 
         <ul
             class={computedListboxClass}
@@ -37,6 +38,7 @@
                     role="presentation"
                     onmousemove={handlePillMouseMove}
                     onmousedown={handlePillMouseDown}
+                    onmouseup={handlePillMouseUp}
                 >
                     <c-primitive-pill
                         data-element-id="avonni-primitive-pill"
@@ -98,6 +100,7 @@
                                 role="presentation"
                                 onmousemove={handlePillMouseMove}
                                 onmousedown={handlePillMouseDown}
+                                onmouseup={handlePillMouseUp}
                             >
                                 <c-primitive-pill
                                     data-element-id="avonni-primitive-pill-hidden"
