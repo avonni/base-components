@@ -109,9 +109,10 @@
                             class="slds-m-left_xx-small"
                             title="Pen size"
                         >
-                            <lightning-combobox
-                                class="avonni-input-pen__combobox"
+                            <c-combobox
+                                class="avonni-input-pen__size-picker"
                                 disabled={disabled}
+                                hide-clear-icon
                                 label="Size"
                                 name="size"
                                 options={sizeList}
@@ -121,7 +122,7 @@
                                 data-group-name="button"
                                 data-element-id="size-picker"
                             >
-                            </lightning-combobox>
+                            </c-combobox>
                         </li>
                         <li
                             if:true={showColor}
