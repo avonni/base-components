@@ -462,6 +462,9 @@ ToggleHorizontalCols.args = {
     label: 'Please select a value',
     type: 'toggle',
     orientation: 'horizontal',
+    typeAttributes: {
+        size: 'small'
+    },
     orientationAttributes: {
         cols: 2,
         multipleRows: true
