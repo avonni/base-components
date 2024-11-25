@@ -354,6 +354,10 @@
     line-height: 1;
 }
 
+.avonni-input-choice-set__option-label-icon-container_toggle {
+    padding-top: 0;
+}
+
 .slds-checkbox
     .slds-checkbox__label
     .avonni-input-choice-set__option-label-icon-container.slds-form-element__label,

@@ -519,13 +519,10 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedCheckContainerClass() {
-        const { size } = this.computedTypeAttributes;
         return classSet('avonni-input-choice-set__checkbox-container')
             .add({
                 'slds-order_3': this.checkPosition === 'right',
-                'slds-p-top_xx-small':
-                    this.toggleVariant &&
-                    (size === 'small' || size === 'x-small'),
+                'slds-p-top_xx-small': this.toggleVariant,
                 'slds-p-left_x-small':
                     this.toggleVariant &&
                     this.checkPosition === 'right' &&
@@ -545,9 +542,8 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedCheckLabelClass() {
-        return classSet('slds-grid')
+        return classSet('slds-grid slds-grid_vertical-align-center')
             .add({
-                'slds-grid_vertical-align-center': !this.toggleVariant,
                 'avonni-input-choice-set__toggle_stretch':
                     this.toggleVariant &&
                     this.computedTypeAttributes?.stretch &&
@@ -640,6 +636,17 @@ export default class InputChoiceSet extends LightningElement {
             label += ' avonni-input-choice-set__option-label';
         }
         return label;
+    }
+
+    get computedLabelContainerClass() {
+        return classSet(
+            'avonni-input-choice-set__option-label-icon-container slds-form-element__label'
+        )
+            .add({
+                'avonni-input-choice-set__option-label-icon-container_toggle':
+                    this.toggleVariant
+            })
+            .toString();
     }
 
     /**

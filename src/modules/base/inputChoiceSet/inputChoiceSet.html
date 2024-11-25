@@ -104,7 +104,6 @@
                                                 ></span>
                                                 <c-input-toggle
                                                     if:true={toggleVariant}
-                                                    class="slds-m-top_x-small"
                                                     aria-label={option.label}
                                                     disabled={disabled}
                                                     hide-mark={computedHideCheck}
@@ -124,10 +123,7 @@
                                                 ></c-input-toggle>
                                             </div>
                                             <div
-                                                class="
-                                                    avonni-input-choice-set__option-label-icon-container
-                                                    slds-form-element__label
-                                                "
+                                                class={computedLabelContainerClass}
                                                 style={option.width}
                                                 data-element-id="label-icon-container"
                                             >
