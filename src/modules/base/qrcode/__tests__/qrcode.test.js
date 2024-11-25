@@ -30,116 +30,122 @@ describe('Qrcode', () => {
         document.body.appendChild(element);
     });
 
-    it('Qrcode: Default attributes', () => {
-        expect(element.background).toBeUndefined();
-        expect(element.borderColor).toBeUndefined();
-        expect(element.borderWidth).toBe(0);
-        expect(element.color).toBeUndefined();
-        expect(element.encoding).toBe('ISO_8859_1');
-        expect(element.errorCorrection).toBe('L');
-        expect(element.padding).toBe(0);
-        expect(element.renderAs).toBe('svg');
-        expect(element.size).toBe(200);
-        expect(element.value).toBeUndefined();
-    });
-
-    /* ----- ATTRIBUTES ----- */
-    // background
-    it('Qrcode: background', () => {
-        element.background = '#000000';
-
-        return Promise.resolve().then(() => {
-            expect(element.background).toBe('#000000');
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.background).toBeUndefined();
+            expect(element.borderColor).toBeUndefined();
+            expect(element.borderWidth).toBe(0);
+            expect(element.color).toBeUndefined();
+            expect(element.encoding).toBe('ISO_8859_1');
+            expect(element.errorCorrection).toBe('L');
+            expect(element.padding).toBe(0);
+            expect(element.renderAs).toBe('svg');
+            expect(element.size).toBe(200);
+            expect(element.value).toBeUndefined();
         });
-    });
 
-    // border-color and border-width
-    // Depends on renderAs and value
-    it('Qrcode: borderColor and borderWidth', () => {
-        element.borderColor = 'tomato';
-        element.borderWidth = 25;
-        element.renderAs = 'canvas';
-        element.value = 'A string value';
+        describe('background', () => {
+            it('Passed to the component', () => {
+                element.background = '#000000';
 
-        return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector(
-                '[data-element-id="canvas"]'
-            );
-            expect(canvas.style.border).toBe('25px solid tomato');
+                return Promise.resolve().then(() => {
+                    expect(element.background).toBe('#000000');
+                });
+            });
         });
-    });
 
-    // color
-    it('Qrcode: color', () => {
-        element.color = '#ffffff';
+        describe('borderColor and borderWidth', () => {
+            it('Passed to the component', () => {
+                element.borderColor = 'tomato';
+                element.borderWidth = 25;
+                element.renderAs = 'canvas';
+                element.value = 'A string value';
 
-        return Promise.resolve().then(() => {
-            expect(element.color).toBe('#ffffff');
+                return Promise.resolve().then(() => {
+                    const canvas = element.shadowRoot.querySelector(
+                        '[data-element-id="canvas"]'
+                    );
+                    expect(canvas.style.border).toBe('25px solid tomato');
+                });
+            });
         });
-    });
 
-    // padding
-    // Depends on renderAs and value
-    it('Qrcode: padding', () => {
-        element.padding = 34;
-        element.renderAs = 'canvas';
-        element.value = 'A string value';
+        describe('color', () => {
+            it('Passed to the component', () => {
+                element.color = '#ffffff';
 
-        return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector(
-                '[data-element-id="canvas"]'
-            );
-            expect(canvas.style.padding).toBe('34px');
+                return Promise.resolve().then(() => {
+                    expect(element.color).toBe('#ffffff');
+                });
+            });
         });
-    });
 
-    // render-as
-    it('Qrcode: renderAs = svg', () => {
-        element.renderAs = 'svg';
+        // Depends on renderAs and value
+        describe('padding', () => {
+            it('Passed to the component', () => {
+                element.padding = 34;
+                element.renderAs = 'canvas';
+                element.value = 'A string value';
 
-        return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector(
-                '[data-element-id="canvas"]'
-            );
-            const svg = element.shadowRoot.querySelector(
-                '[data-element-id="span"]'
-            );
-
-            expect(canvas).toBeFalsy();
-            expect(svg).toBeTruthy();
+                return Promise.resolve().then(() => {
+                    const canvas = element.shadowRoot.querySelector(
+                        '[data-element-id="canvas"]'
+                    );
+                    expect(canvas.style.padding).toBe('34px');
+                });
+            });
         });
-    });
 
-    it('Qrcode: renderAs = canvas', () => {
-        element.renderAs = 'canvas';
+        describe('Render As', () => {
+            it('renderAs = svg', () => {
+                element.renderAs = 'svg';
 
-        return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector(
-                '[data-element-id="canvas"]'
-            );
-            const svg = element.shadowRoot.querySelector(
-                '[data-element-id="span"]'
-            );
+                return Promise.resolve().then(() => {
+                    const canvas = element.shadowRoot.querySelector(
+                        '[data-element-id="canvas"]'
+                    );
+                    const svg = element.shadowRoot.querySelector(
+                        '[data-element-id="span"]'
+                    );
 
-            expect(canvas).toBeTruthy();
-            expect(svg).toBeFalsy();
+                    expect(canvas).toBeFalsy();
+                    expect(svg).toBeTruthy();
+                });
+            });
+
+            it('renderAs = canvas', () => {
+                element.renderAs = 'canvas';
+
+                return Promise.resolve().then(() => {
+                    const canvas = element.shadowRoot.querySelector(
+                        '[data-element-id="canvas"]'
+                    );
+                    const svg = element.shadowRoot.querySelector(
+                        '[data-element-id="span"]'
+                    );
+
+                    expect(canvas).toBeTruthy();
+                    expect(svg).toBeFalsy();
+                });
+            });
         });
-    });
 
-    // size
-    // Depends on value and renderAs
-    it('Qrcode: size', () => {
-        element.renderAs = 'canvas';
-        element.value = 'A string value';
-        element.size = 45;
+        // Depends on value and renderAs
+        describe('size', () => {
+            it('Passed to the component', () => {
+                element.renderAs = 'canvas';
+                element.value = 'A string value';
+                element.size = 45;
 
-        return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector(
-                '[data-element-id="canvas"]'
-            );
-            expect(canvas.width).toBe(45);
-            expect(canvas.height).toBe(45);
-            expect(canvas.style.maxWidth).toBe('45px');
+                return Promise.resolve().then(() => {
+                    const canvas = element.shadowRoot.querySelector(
+                        '[data-element-id="canvas"]'
+                    );
+                    expect(canvas.width).toBe(45);
+                    expect(canvas.height).toBe(45);
+                    expect(canvas.style.maxWidth).toBe('45px');
+                });
+            });
         });
     });
 });

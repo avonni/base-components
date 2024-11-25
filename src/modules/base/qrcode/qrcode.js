@@ -54,7 +54,6 @@ export default class Qrcode extends LightningElement {
     get background() {
         return this._background;
     }
-
     set background(color) {
         if (color && typeof color === 'string') {
             let styles = new Option().style;
@@ -62,15 +61,13 @@ export default class Qrcode extends LightningElement {
 
             if (
                 styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
+                this._isHexColor(color.replace('#', ''))
             ) {
                 this._background = color;
             }
         }
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -83,7 +80,6 @@ export default class Qrcode extends LightningElement {
     get borderColor() {
         return this._borderColor;
     }
-
     set borderColor(color) {
         if (color && typeof color === 'string') {
             let styles = new Option().style;
@@ -91,15 +87,13 @@ export default class Qrcode extends LightningElement {
 
             if (
                 styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
+                this._isHexColor(color.replace('#', ''))
             ) {
                 this._borderColor = color;
             }
         }
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -113,15 +107,12 @@ export default class Qrcode extends LightningElement {
     get borderWidth() {
         return this._borderWidth;
     }
-
     set borderWidth(value) {
         this._borderWidth = isNaN(parseInt(value, 10))
             ? DEFAULT_BORDER_WIDTH
             : value;
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -135,7 +126,6 @@ export default class Qrcode extends LightningElement {
     get color() {
         return this._color;
     }
-
     set color(color) {
         if (color && typeof color === 'string') {
             let styles = new Option().style;
@@ -143,15 +133,13 @@ export default class Qrcode extends LightningElement {
 
             if (
                 styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
+                this._isHexColor(color.replace('#', ''))
             ) {
                 this._color = color;
             }
         }
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -167,7 +155,6 @@ export default class Qrcode extends LightningElement {
     get encoding() {
         return this._encoding;
     }
-
     set encoding(encoding) {
         this._encoding = normalizeString(encoding, {
             fallbackValue: QR_ENCODINGS.default,
@@ -175,9 +162,7 @@ export default class Qrcode extends LightningElement {
             toLowerCase: false
         });
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -195,7 +180,6 @@ export default class Qrcode extends LightningElement {
     get errorCorrection() {
         return this._errorCorrection;
     }
-
     set errorCorrection(value) {
         this._errorCorrection = normalizeString(value, {
             fallbackValue: QR_ERROR_CORRECTIONS.default,
@@ -203,9 +187,7 @@ export default class Qrcode extends LightningElement {
             toLowerCase: false
         });
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -219,13 +201,10 @@ export default class Qrcode extends LightningElement {
     get padding() {
         return this._padding;
     }
-
     set padding(value) {
         this._padding = isNaN(parseInt(value, 10)) ? DEFAULT_PADDING : value;
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -241,7 +220,6 @@ export default class Qrcode extends LightningElement {
     get renderAs() {
         return this._renderAs;
     }
-
     set renderAs(value) {
         this._renderAs = normalizeString(value, {
             fallbackValue: QR_RENDER_AS.default,
@@ -255,9 +233,7 @@ export default class Qrcode extends LightningElement {
                 ? DEFAULT_BACKGROUND_COLOR
                 : null;
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /**
@@ -272,17 +248,13 @@ export default class Qrcode extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(value) {
-        if ((!isNaN(value) && Number(value) < 1) || isNaN(value)) {
-            this._size = DEFAULT_SIZE;
-        } else {
-            this._size = Number(value);
-        }
+        const parsedValue = Number(value);
+        const isValidSize = !isNaN(parsedValue) && parsedValue >= 1;
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._size = isValidSize ? parsedValue : DEFAULT_SIZE;
+
+        this._redraw();
     }
 
     /**
@@ -296,13 +268,10 @@ export default class Qrcode extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
 
-        if (this._rendered) {
-            this.redraw();
-        }
+        this._redraw();
     }
 
     /*
@@ -312,20 +281,30 @@ export default class Qrcode extends LightningElement {
      */
 
     /**
+     * Check if background is null.
+     *
+     * @type {boolean}
+     */
+    get isBackgroundNull() {
+        return !this.background;
+    }
+
+    /**
+     * Check if color is null.
+     *
+     * @type {boolean}
+     */
+    get isColorNull() {
+        return !this.color;
+    }
+
+    /**
      * Render QR Code as SVG.
      *
      * @type {string}
      */
     get renderAsSvg() {
-        return this._renderAs === 'svg';
-    }
-
-    get isColorNull() {
-        return !this._color;
-    }
-
-    get isBackgroundNull() {
-        return !this._background;
+        return this.renderAs === 'svg';
     }
 
     /*
@@ -356,7 +335,7 @@ export default class Qrcode extends LightningElement {
                 },
                 bg: {
                     enabled: true,
-                    fill: this._background
+                    fill: this.background
                 },
                 margin: 0,
                 svgSize: this.size,
@@ -366,12 +345,14 @@ export default class Qrcode extends LightningElement {
             });
 
             if (this.renderAsSvg) {
-                let element = this.template.querySelector('.qrcode');
+                let element = this.template.querySelector(
+                    '[data-element="qrcode-span"]'
+                );
                 if (!element) return;
                 // eslint-disable-next-line @lwc/lwc/no-inner-html
                 element.innerHTML = svgCode;
 
-                element.firstElementChild.style.border = `${this.borderWidth}px solid ${this._borderColor}`;
+                element.firstElementChild.style.border = `${this.borderWidth}px solid ${this.borderColor}`;
                 element.firstElementChild.style.padding = `${this.padding}px`;
                 element.firstElementChild.style.maxWidth = '100%';
             } else {
@@ -390,7 +371,7 @@ export default class Qrcode extends LightningElement {
                     canvas.style.maxWidth = this.offsetWidth + 'px';
                 }
 
-                canvas.style.border = `${this.borderWidth}px solid ${this._borderColor}`;
+                canvas.style.border = `${this.borderWidth}px solid ${this.borderColor}`;
                 canvas.style.padding = `${this.padding}px`;
 
                 let ctx = canvas.getContext('2d');
@@ -414,16 +395,24 @@ export default class Qrcode extends LightningElement {
      */
 
     /**
-     * Verify if color is hexadecimal.
+     * Verify if a color is a valid hexadecimal value.
      *
-     * @param {string} hex
-     * @returns {boolean}
+     * @param {string} hex - The color string to verify.
+     * @returns {boolean} - Returns true if the string is a valid hexadecimal color, otherwise false.
      */
-    isHexColor(hex) {
-        return (
-            typeof hex === 'string' &&
-            hex.length === 6 &&
-            !isNaN(Number('0x' + hex))
-        );
+    _isHexColor(hex) {
+        const hexRegex = /^[0-9A-Fa-f]{6}$/;
+        return typeof hex === 'string' && hexRegex.test(hex);
+    }
+
+    /**
+     * Calls the redraw method on the next animation frame.
+     */
+    _redraw() {
+        if (this._rendered) {
+            requestAnimationFrame(() => {
+                this.redraw();
+            });
+        }
     }
 }
