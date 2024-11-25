@@ -345,9 +345,8 @@ export default class Qrcode extends LightningElement {
             });
 
             if (this.renderAsSvg) {
-                let element = this.template.querySelector(
-                    '[data-element="qrcode-span"]'
-                );
+                let element = this.template.querySelector('.qrcode');
+
                 if (!element) return;
                 // eslint-disable-next-line @lwc/lwc/no-inner-html
                 element.innerHTML = svgCode;
