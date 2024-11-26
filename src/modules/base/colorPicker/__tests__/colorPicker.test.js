@@ -588,7 +588,7 @@ describe('Color Picker', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-icon-no-menu-icon-name"]'
                     );
-                    expect(icon.size).toBe('xx-small');
+                    expect(icon.size).toBe('medium');
                 });
             });
 
@@ -599,7 +599,7 @@ describe('Color Picker', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-icon-no-menu-icon-name"]'
                     );
-                    expect(icon.size).toBe('xx-small');
+                    expect(icon.size).toBe('medium');
                 });
             });
 
@@ -610,7 +610,7 @@ describe('Color Picker', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-icon-no-menu-icon-name"]'
                     );
-                    expect(icon.size).toBe('xx-small');
+                    expect(icon.size).toBe('medium');
                 });
             });
 
@@ -621,7 +621,7 @@ describe('Color Picker', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-icon-no-menu-icon-name"]'
                     );
-                    expect(icon.size).toBe('xx-small');
+                    expect(icon.size).toBe('medium');
                 });
             });
 
