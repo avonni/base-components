@@ -62,7 +62,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-vertical-visual-picker-header-font-weight
- * @default 700
+ * @default 400
  * @type font
  */
 /**
