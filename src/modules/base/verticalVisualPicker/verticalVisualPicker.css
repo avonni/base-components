@@ -223,7 +223,7 @@
     color: var(--avonni-vertical-visual-picker-header-text-color, #3e3e3c);
     font-size: var(--avonni-vertical-visual-picker-header-font-size, 0.75rem);
     font-style: var(--avonni-vertical-visual-picker-header-font-style, normal);
-    font-weight: var(--avonni-vertical-visual-picker-header-font-weight, 700);
+    font-weight: var(--avonni-vertical-visual-picker-header-font-weight, 400);
 }
 
 /*-- title --*/
