@@ -42,7 +42,9 @@
                     <c-layout
                         if:true={hasLayoutItem}
                         class="slds-size_full"
+                        direction={computedDirection}
                         multiple-rows={computedOrientationAttributes.multipleRows}
+                        vertical-align={computedVerticalAlign}
                         data-element-id="layout"
                     >
                         <!-- Vertical/Horizontal toggle, checkbox, radio and displayAsRow button -->

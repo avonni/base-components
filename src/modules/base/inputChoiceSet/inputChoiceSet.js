@@ -579,6 +579,16 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Computed direction based on orientation.
+     * If orientation is horizontal, direction is row. If orientation is vertical, direction is column.
+     *
+     * @type {string}
+     */
+    get computedDirection() {
+        return this.isHorizontal ? 'row' : 'column';
+    }
+
+    /**
      * Computed hide check attributes for c-input-toggle based on typeAttributes showCheckmark.
      *
      * @type {string}
@@ -638,6 +648,11 @@ export default class InputChoiceSet extends LightningElement {
         return label;
     }
 
+    /**
+     * Computed Label Container Class styling.
+     *
+     * @type {string}
+     */
     get computedLabelContainerClass() {
         return classSet(
             'avonni-input-choice-set__option-label-icon-container slds-form-element__label'
@@ -671,6 +686,15 @@ export default class InputChoiceSet extends LightningElement {
     get computedUniqueHelpElementId() {
         const helpElement = this.template.querySelector('[data-helptext]');
         return getRealDOMId(helpElement);
+    }
+
+    /**
+     * Computed vertical align based on typeAttributes stretch.
+     *
+     * @type {string}
+     */
+    get computedVerticalAlign() {
+        return this.computedTypeAttributes?.stretch ? 'stretch' : 'start';
     }
 
     /**
