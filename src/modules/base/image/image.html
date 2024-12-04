@@ -1,116 +1,118 @@
 <template>
-    <div data-element-id="container" class={computedImageClass}>
-        <div class="slds-is-relative">
-            <img
-                alt={alternativeText}
-                class="avonni-image_img_border-radius"
-                data-element-id="img"
-                src={src}
-                srcset={srcset}
-                sizes={sizes}
-                style={computedStyle}
-                loading={lazyLoading}
-                onload={handleLoadImage}
-                onmousemove={handleMagnifierMove}
-                ontouchstart={handleMagnifierMove}
-                ontouchmove={handleMagnifierMove}
-                onmouseout={handleMagnifierOut}
-                ontouchend={handleMagnifierOut}
-            />
-            <div
-                if:true={compareAttributes.compareLabel}
-                class={computedOverlayAfterClass}
-                data-element-id="compare-overlay-after"
-            >
-                {compareAttributes.compareLabel}
-            </div>
-            <div
-                data-element-id="magnifier-lens"
-                class="
-                    avonni-image_magnifier-lens
-                    slds-is-absolute
-                    avonni-image_pointer-events-none
-                "
-            ></div>
-            <div
-                data-element-id="magnifier"
-                class="
-                    avonni-image_magnifier
-                    slds-scrollable_none
-                    slds-is-absolute
-                    avonni-image_pointer-events-none
-                "
-            >
+    <div class="avonni-image">
+        <div data-element-id="container" class={computedImageClass}>
+            <div class="slds-is-relative">
                 <img
+                    alt={alternativeText}
+                    class="avonni-image_img_border-radius"
+                    data-element-id="img"
                     src={src}
-                    alt=""
-                    class="
-                        avonni-image_fit-content
-                        avonni-image_pointer-events-none
-                    "
+                    srcset={srcset}
                     sizes={sizes}
-                    style={computedMagnifiedImgStyle}
-                    data-element-id="magnified-img"
+                    style={computedStyle}
+                    loading={lazyLoading}
+                    onload={handleLoadImage}
+                    onmousemove={handleMagnifierMove}
+                    ontouchstart={handleMagnifierMove}
+                    ontouchmove={handleMagnifierMove}
+                    onmouseout={handleMagnifierOut}
+                    ontouchend={handleMagnifierOut}
                 />
-            </div>
-            <div
-                if:true={compareSrc}
-                class={computedCompareContainerClass}
-                data-element-id="compare-container"
-                onmousemove={handleCompareMouseMove}
-                ontouchstart={handleCompareMouseDown}
-                ontouchmove={handleCompareMouseMove}
-                onmousedown={handleCompareMouseDown}
-            >
                 <div
-                    class="
-                        avonni-image__compare-img-container
-                        slds-is-absolute
-                        slds-scrollable_none
-                    "
-                    data-element-id="compare-img-container"
-                    style={computedCompareImgContainerStyle}
+                    if:true={compareAttributes.compareLabel}
+                    class={computedOverlayAfterClass}
+                    data-element-id="compare-overlay-after"
                 >
-                    <img
-                        data-element-id="compare-img"
-                        src={compareSrc}
-                        class="avonni-image__compare-img"
-                        style={computedCompareImgStyle}
-                        loading={lazyLoading}
-                    />
-                    <div
-                        if:true={compareAttributes.originalLabel}
-                        class={computedOverlayBeforeClass}
-                        data-element-id="compare-overlay-before"
-                    >
-                        {compareAttributes.originalLabel}
-                    </div>
+                    {compareAttributes.compareLabel}
                 </div>
                 <div
-                    class={computedSliderClass}
-                    data-element-id="compare-slider"
-                    style={computedSliderStyle}
+                    data-element-id="magnifier-lens"
+                    class="
+                        avonni-image_magnifier-lens
+                        slds-is-absolute
+                        avonni-image_pointer-events-none
+                    "
+                ></div>
+                <div
+                    data-element-id="magnifier"
+                    class="
+                        avonni-image_magnifier
+                        slds-scrollable_none
+                        slds-is-absolute
+                        avonni-image_pointer-events-none
+                    "
+                >
+                    <img
+                        src={src}
+                        alt=""
+                        class="
+                            avonni-image_fit-content
+                            avonni-image_pointer-events-none
+                        "
+                        sizes={sizes}
+                        style={computedMagnifiedImgStyle}
+                        data-element-id="magnified-img"
+                    />
+                </div>
+                <div
+                    if:true={compareSrc}
+                    class={computedCompareContainerClass}
+                    data-element-id="compare-container"
+                    onmousemove={handleCompareMouseMove}
+                    ontouchstart={handleCompareMouseDown}
+                    ontouchmove={handleCompareMouseMove}
+                    onmousedown={handleCompareMouseDown}
                 >
                     <div
-                        class={computedSliderHandleClass}
-                        data-element-id="compare-slider-handle"
-                        role="button"
-                        aria-pressed="false"
-                        tabindex="0"
-                        onkeydown={handleCompareKeydown}
+                        class="
+                            avonni-image__compare-img-container
+                            slds-is-absolute
+                            slds-scrollable_none
+                        "
+                        data-element-id="compare-img-container"
+                        style={computedCompareImgContainerStyle}
                     >
-                        <lightning-icon
-                            icon-name={compareIconName1}
-                            alternative-text="Press left to show the original image"
-                            size="x-small"
+                        <img
+                            data-element-id="compare-img"
+                            src={compareSrc}
+                            class="avonni-image__compare-img"
+                            style={computedCompareImgStyle}
+                            loading={lazyLoading}
+                        />
+                        <div
+                            if:true={compareAttributes.originalLabel}
+                            class={computedOverlayBeforeClass}
+                            data-element-id="compare-overlay-before"
                         >
-                        </lightning-icon>
-                        <lightning-icon
-                            icon-name={compareIconName2}
-                            alternative-text="Press right to show the compared image"
-                            size="x-small"
+                            {compareAttributes.originalLabel}
+                        </div>
+                    </div>
+                    <div
+                        class={computedSliderClass}
+                        data-element-id="compare-slider"
+                        style={computedSliderStyle}
+                    >
+                        <div
+                            class={computedSliderHandleClass}
+                            data-element-id="compare-slider-handle"
+                            role="button"
+                            aria-pressed="false"
+                            tabindex="0"
+                            onkeydown={handleCompareKeydown}
                         >
-                        </lightning-icon>
+                            <lightning-icon
+                                icon-name={compareIconName1}
+                                alternative-text="Press left to show the original image"
+                                size="x-small"
+                            >
+                            </lightning-icon>
+                            <lightning-icon
+                                icon-name={compareIconName2}
+                                alternative-text="Press right to show the compared image"
+                                size="x-small"
+                            >
+                            </lightning-icon>
+                        </div>
                     </div>
                 </div>
             </div>
