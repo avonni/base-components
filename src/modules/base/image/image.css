@@ -1,3 +1,7 @@
+.avonni-image {
+    overflow: hidden;
+}
+
 .avonni-image_fluid {
     max-width: 100% !important;
     height: auto;
