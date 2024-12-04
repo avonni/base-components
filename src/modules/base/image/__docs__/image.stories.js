@@ -277,20 +277,20 @@ const ListTemplate = (args) => ImageList(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text'
 };
 
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '150'
 };
 
 export const BaseLarge = Template.bind({});
 BaseLarge.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '600'
 };
@@ -298,9 +298,9 @@ BaseLarge.args = {
 export const BaseWithLazyLoading = ListTemplate.bind({});
 BaseWithLazyLoading.args = {
     src: [
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
@@ -321,10 +321,10 @@ BaseWithLazyLoading.args = {
 
 export const Compare = Template.bind({});
 Compare.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     compareSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
     compareAttributes: {
         originalLabel: 'Before',
         compareLabel: 'After'
@@ -333,14 +333,14 @@ Compare.args = {
 
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     thumbnail: true
 };
 
 export const Center = Template.bind({});
 Center.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     position: 'center',
     width: '600'
@@ -348,7 +348,7 @@ Center.args = {
 
 export const Right = Template.bind({});
 Right.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     position: 'right',
     width: '600'
@@ -361,7 +361,7 @@ CropImageStaticThumbnailMobile.parameters = {
     }
 };
 CropImageStaticThumbnailMobile.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '280',
     cropSize: '1x1',
@@ -374,7 +374,7 @@ CropImageStaticThumbnailMobile.args = {
 
 export const Magnifier = Template.bind({});
 Magnifier.args = {
-    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     magnifierType: 'standard'
 };
