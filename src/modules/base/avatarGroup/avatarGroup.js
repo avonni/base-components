@@ -768,6 +768,19 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * True if the show more button is visible and the popover is toggled.
+     *
+     * @type {boolean}
+     */
+    get showHiddenItemsPopover() {
+        return (
+            this.showMoreButton &&
+            this.showHiddenItems &&
+            this.hiddenItems.length > 0
+        );
+    }
+
+    /**
      * True if is loading, there is no show more button or the layout is not "list"
      *
      * @type {boolean}
@@ -1096,8 +1109,15 @@ export default class AvatarGroup extends LightningElement {
     }
 
     startPositioning() {
+        const popover = this.template.querySelector(
+            '[data-element-id="div-hidden-items-popover"]'
+        );
+        if (!popover) {
+            return;
+        }
+
         this._positioning = true;
-        return animationFrame()
+        animationFrame()
             .then(() => {
                 this.stopPositioning();
                 this._autoPosition = startPositioning(
