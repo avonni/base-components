@@ -32,7 +32,7 @@
     border-radius: var(--avonni-carousel-item-image-radius-border, 0.25rem);
 }
 
-.avonni-carousel__actions {
+.avonni-carousel__actions-container {
     display: flex;
     width: 100%;
     align-items: center;
@@ -115,43 +115,7 @@
     font-weight: var(--avonni-carousel-item-description-font-weight, 400);
 }
 
-.avonni-carousel__actions {
-    --avonni-button-base-color-background: var(
-        --avonni-carousel-item-action-bare-color-background
-    );
-    --avonni-button-icon-base-color-background: var(
-        --avonni-carousel-item-action-bare-color-background
-    );
-    --avonni-button-neutral-color-background: var(
-        --avonni-carousel-item-action-neutral-color-background
-    );
-    --avonni-button-icon-neutral-color-background: var(
-        --avonni-carousel-item-action-neutral-color-background
-    );
-    --avonni-button-base-text-color: var(
-        --avonni-carousel-item-action-bare-text-color
-    );
-    --avonni-button-icon-base-text-color: var(
-        --avonni-carousel-item-action-bare-text-color
-    );
-    --avonni-button-neutral-text-color: var(
-        --avonni-carousel-item-action-neutral-text-color
-    );
-    --avonni-button-icon-neutral-text-color: var(
-        --avonni-carousel-item-action-neutral-text-color
-    );
-    --avonni-button-base-color-border: var(
-        --avonni-carousel-item-action-bare-color-border
-    );
-    --avonni-button-icon-base-color-border: var(
-        --avonni-carousel-item-action-bare-color-border
-    );
-    --avonni-button-neutral-color-border: var(
-        --avonni-carousel-item-action-neutral-color-border
-    );
-    --avonni-button-icon-neutral-color-border: var(
-        --avonni-carousel-item-action-neutral-color-border
-    );
+.avonni-carousel__actions-menu {
     --avonni-button-menu-button-border-filled-color-background: var(
         --avonni-carousel-item-action-button-menu-color-background
     );
@@ -160,42 +124,6 @@
     );
     --avonni-button-menu-button-border-filled-text-color: var(
         --avonni-carousel-item-action-button-menu-text-color
-    );
-    --avonni-button-sizing-border: var(
-        --avonni-carousel-item-action-bare-sizing-border
-    );
-    --avonni-button-sizing-border: var(
-        --avonni-carousel-item-action-neutral-sizing-border
-    );
-    --avonni-button-icon-sizing-border: var(
-        --avonni-carousel-item-action-bare-sizing-border
-    );
-    --avonni-button-icon-sizing-border: var(
-        --avonni-carousel-item-action-neutral-sizing-border
-    );
-    --avonni-button-styling-border: var(
-        --avonni-carousel-item-action-bare-styling-border
-    );
-    --avonni-button-icon-styling-border: var(
-        --avonni-carousel-item-action-bare-styling-border
-    );
-    --avonni-button-styling-border: var(
-        --avonni-carousel-item-action-neutral-styling-border
-    );
-    --avonni-button-icon-styling-border: var(
-        --avonni-carousel-item-action-neutral-styling-border
-    );
-    --avonni-button-radius-border: var(
-        --avonni-carousel-item-action-bare-radius-border
-    );
-    --avonni-button-radius-border: var(
-        --avonni-carousel-item-action-neutral-radius-border
-    );
-    --avonni-button-icon-radius-border: var(
-        --avonni-carousel-item-action-bare-radius-border
-    );
-    --avonni-button-icon-radius-border: var(
-        --avonni-carousel-item-action-neutral-radius-border
     );
     --avonni-button-menu-sizing-border: var(
         --avonni-carousel-item-action-button-menu-sizing-border
@@ -208,43 +136,7 @@
     );
 }
 
-.avonni-carousel__actions:hover {
-    --avonni-button-base-color-background-hover: var(
-        --avonni-carousel-item-action-bare-color-background-hover
-    );
-    --avonni-button-icon-base-color-background-hover: var(
-        --avonni-carousel-item-action-bare-color-background-hover
-    );
-    --avonni-button-neutral-color-background-hover: var(
-        --avonni-carousel-item-action-neutral-color-background-hover
-    );
-    --avonni-button-icon-neutral-color-background-hover: var(
-        --avonni-carousel-item-action-neutral-color-background-hover
-    );
-    --avonni-button-base-text-color-hover: var(
-        --avonni-carousel-item-action-bare-text-color-hover
-    );
-    --avonni-button-icon-base-text-color-hover: var(
-        --avonni-carousel-item-action-bare-text-color-hover
-    );
-    --avonni-button-neutral-text-color-hover: var(
-        --avonni-carousel-item-action-neutral-text-color-hover
-    );
-    --avonni-button-icon-neutral-text-color-hover: var(
-        --avonni-carousel-item-action-neutral-text-color-hover
-    );
-    --avonni-button-base-color-border-hover: var(
-        --avonni-carousel-item-action-bare-color-border-hover
-    );
-    --avonni-button-icon-base-color-border-hover: var(
-        --avonni-carousel-item-action-bare-color-border-hover
-    );
-    --avonni-button-neutral-color-border-hover: var(
-        --avonni-carousel-item-action-neutral-color-border-hover
-    );
-    --avonni-button-icon-neutral-color-border-hover: var(
-        --avonni-carousel-item-action-neutral-color-border-hover
-    );
+.avonni-carousel__actions-menu:hover {
     --avonni-button-menu-button-border-filled-color-background-hover: var(
         --avonni-carousel-item-action-button-menu-color-background-hover
     );
@@ -256,18 +148,84 @@
     );
 }
 
-.avonni-carousel__actions:active {
+.avonni-carousel__actions-menu:active {
+    --avonni-button-menu-button-border-filled-color-background-active: var(
+        --avonni-carousel-item-action-button-menu-color-background-active
+    );
+    --avonni-button-menu-button-border-filled-text-color-active: var(
+        --avonni-carousel-item-action-button-menu-text-color-active
+    );
+    --avonni-button-menu-button-border-filled-color-border-active: var(
+        --avonni-carousel-item-action-button-menu-color-border-active
+    );
+}
+
+.avonni-carousel__actions-bare {
+    --avonni-button-base-color-background: var(
+        --avonni-carousel-item-action-bare-color-background
+    );
+    --avonni-button-icon-base-color-background: var(
+        --avonni-carousel-item-action-bare-color-background
+    );
+    --avonni-button-base-text-color: var(
+        --avonni-carousel-item-action-bare-text-color
+    );
+    --avonni-button-icon-base-text-color: var(
+        --avonni-carousel-item-action-bare-text-color
+    );
+    --avonni-button-base-color-border: var(
+        --avonni-carousel-item-action-bare-color-border
+    );
+    --avonni-button-icon-base-color-border: var(
+        --avonni-carousel-item-action-bare-color-border
+    );
+    --avonni-button-sizing-border: var(
+        --avonni-carousel-item-action-bare-sizing-border
+    );
+    --avonni-button-icon-sizing-border: var(
+        --avonni-carousel-item-action-bare-sizing-border
+    );
+    --avonni-button-styling-border: var(
+        --avonni-carousel-item-action-bare-styling-border
+    );
+    --avonni-button-icon-styling-border: var(
+        --avonni-carousel-item-action-bare-styling-border
+    );
+    --avonni-button-radius-border: var(
+        --avonni-carousel-item-action-bare-radius-border
+    );
+    --avonni-button-icon-radius-border: var(
+        --avonni-carousel-item-action-bare-radius-border
+    );
+}
+
+.avonni-carousel__actions-bare:hover {
+    --avonni-button-base-color-background-hover: var(
+        --avonni-carousel-item-action-bare-color-background-hover
+    );
+    --avonni-button-icon-base-color-background-hover: var(
+        --avonni-carousel-item-action-bare-color-background-hover
+    );
+    --avonni-button-base-text-color-hover: var(
+        --avonni-carousel-item-action-bare-text-color-hover
+    );
+    --avonni-button-icon-base-text-color-hover: var(
+        --avonni-carousel-item-action-bare-text-color-hover
+    );
+    --avonni-button-base-color-border-hover: var(
+        --avonni-carousel-item-action-bare-color-border-hover
+    );
+    --avonni-button-icon-base-color-border-hover: var(
+        --avonni-carousel-item-action-bare-color-border-hover
+    );
+}
+
+.avonni-carousel__actions-bare:active {
     --avonni-button-base-color-background-active: var(
         --avonni-carousel-item-action-bare-color-background-active
     );
     --avonni-button-icon-base-color-background-active: var(
         --avonni-carousel-item-action-bare-color-background-active
-    );
-    --avonni-button-neutral-color-background-active: var(
-        --avonni-carousel-item-action-neutral-color-background-active
-    );
-    --avonni-button-icon-neutral-color-background-active: var(
-        --avonni-carousel-item-action-neutral-color-background-active
     );
     --avonni-button-base-text-color-active: var(
         --avonni-carousel-item-action-bare-text-color-active
@@ -275,31 +233,91 @@
     --avonni-button-icon-base-text-color-active: var(
         --avonni-carousel-item-action-bare-text-color-active
     );
-    --avonni-button-neutral-text-color-active: var(
-        --avonni-carousel-item-action-neutral-text-color-active
-    );
-    --avonni-button-icon-neutral-text-color-active: var(
-        --avonni-carousel-item-action-neutral-text-color-active
-    );
     --avonni-button-base-color-border-active: var(
         --avonni-carousel-item-action-bare-color-border-active
     );
     --avonni-button-icon-base-color-border-active: var(
         --avonni-carousel-item-action-bare-color-border-active
     );
+}
+
+.avonni-carousel__actions-border {
+    --avonni-button-neutral-color-background: var(
+        --avonni-carousel-item-action-neutral-color-background
+    );
+    --avonni-button-icon-neutral-color-background: var(
+        --avonni-carousel-item-action-neutral-color-background
+    );
+    --avonni-button-neutral-text-color: var(
+        --avonni-carousel-item-action-neutral-text-color
+    );
+    --avonni-button-icon-neutral-text-color: var(
+        --avonni-carousel-item-action-neutral-text-color
+    );
+    --avonni-button-neutral-color-border: var(
+        --avonni-carousel-item-action-neutral-color-border
+    );
+    --avonni-button-icon-neutral-color-border: var(
+        --avonni-carousel-item-action-neutral-color-border
+    );
+    --avonni-button-sizing-border: var(
+        --avonni-carousel-item-action-neutral-sizing-border
+    );
+    --avonni-button-icon-sizing-border: var(
+        --avonni-carousel-item-action-neutral-sizing-border
+    );
+    --avonni-button-styling-border: var(
+        --avonni-carousel-item-action-neutral-styling-border
+    );
+    --avonni-button-icon-styling-border: var(
+        --avonni-carousel-item-action-neutral-styling-border
+    );
+    --avonni-button-radius-border: var(
+        --avonni-carousel-item-action-neutral-radius-border
+    );
+    --avonni-button-icon-radius-border: var(
+        --avonni-carousel-item-action-neutral-radius-border
+    );
+}
+
+.avonni-carousel__actions-border:hover {
+    --avonni-button-neutral-color-background-hover: var(
+        --avonni-carousel-item-action-neutral-color-background-hover
+    );
+    --avonni-button-icon-neutral-color-background-hover: var(
+        --avonni-carousel-item-action-neutral-color-background-hover
+    );
+    --avonni-button-neutral-text-color-hover: var(
+        --avonni-carousel-item-action-neutral-text-color-hover
+    );
+    --avonni-button-icon-neutral-text-color-hover: var(
+        --avonni-carousel-item-action-neutral-text-color-hover
+    );
+    --avonni-button-neutral-color-border-hover: var(
+        --avonni-carousel-item-action-neutral-color-border-hover
+    );
+    --avonni-button-icon-neutral-color-border-hover: var(
+        --avonni-carousel-item-action-neutral-color-border-hover
+    );
+}
+
+.avonni-carousel__actions-border:active {
+    --avonni-button-neutral-color-background-active: var(
+        --avonni-carousel-item-action-neutral-color-background-active
+    );
+    --avonni-button-icon-neutral-color-background-active: var(
+        --avonni-carousel-item-action-neutral-color-background-active
+    );
+    --avonni-button-neutral-text-color-active: var(
+        --avonni-carousel-item-action-neutral-text-color-active
+    );
+    --avonni-button-icon-neutral-text-color-active: var(
+        --avonni-carousel-item-action-neutral-text-color-active
+    );
     --avonni-button-neutral-color-border-active: var(
         --avonni-carousel-item-action-neutral-color-border-active
     );
     --avonni-button-icon-neutral-color-border-active: var(
         --avonni-carousel-item-action-neutral-color-border-active
-    );
-    --avonni-button-menu-button-border-filled-color-background-active: var(
-        --avonni-carousel-item-action-button-menu-color-background-active
-    );
-    --avonni-button-menu-button-border-filled-color-border-active: var(
-        --avonni-carousel-item-action-button-menu-color-border-active
-    );
-    --avonni-button-menu-button-border-filled-text-color-active: var(
-        --avonni-carousel-item-action-button-menu-text-color-active
     );
 }

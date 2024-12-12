@@ -214,7 +214,7 @@ describe('Primitive Carousel Item', () => {
                         'avonni-carousel__content-bottom'
                     );
                     const actionContainer = element.shadowRoot.querySelector(
-                        '.avonni-carousel__actions'
+                        '.avonni-carousel__actions-container'
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-bottom-center'
@@ -234,7 +234,7 @@ describe('Primitive Carousel Item', () => {
                         'avonni-carousel__content-bottom'
                     );
                     const actionContainer = element.shadowRoot.querySelector(
-                        '.avonni-carousel__actions'
+                        '.avonni-carousel__actions-container'
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-right'
@@ -254,7 +254,7 @@ describe('Primitive Carousel Item', () => {
                         'avonni-carousel__content-bottom'
                     );
                     const actionContainer = element.shadowRoot.querySelector(
-                        '.avonni-carousel__actions'
+                        '.avonni-carousel__actions-container'
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-left'
@@ -268,7 +268,7 @@ describe('Primitive Carousel Item', () => {
 
                 return Promise.resolve().then(() => {
                     const actionContainer = element.shadowRoot.querySelector(
-                        '.avonni-carousel__actions'
+                        '.avonni-carousel__actions-container'
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-left'
@@ -282,7 +282,7 @@ describe('Primitive Carousel Item', () => {
 
                 return Promise.resolve().then(() => {
                     const actionContainer = element.shadowRoot.querySelector(
-                        '.avonni-carousel__actions'
+                        '.avonni-carousel__actions-container'
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-right'

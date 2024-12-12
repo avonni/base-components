@@ -16,32 +16,32 @@
                     <template for:each={actions} for:item="action">
                         <div
                             if:true={action.label}
-                            class={computedButtonActionClass}
+                            class={computedDivActionClass}
                             key={action.name}
                         >
                             <avonni-button
-                                class="avonni-carousel__actions"
+                                class={computedActionButtonClass}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 label={action.label}
                                 name={action.name}
                                 stretch={isStretchVariant}
-                                variant={computedActionsVariantButton}
+                                variant={computedActionsVariant}
                                 data-element-id="avonni-button-actions"
                                 onclick={handleActionClick}
                             ></avonni-button>
                         </div>
                         <div
                             if:false={action.label}
-                            class={computedButtonIconActionClass}
+                            class={computedDivActionClass}
                             key={action.name}
                         >
                             <avonni-button-icon
-                                class="avonni-carousel__actions"
+                                class={computedActionButtonClass}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 name={action.name}
-                                variant={computedActionsVariantButtonIcon}
+                                variant={computedActionsVariant}
                                 data-element-id="avonni-button-icon-actions"
                                 onclick={handleActionClick}
                             ></avonni-button-icon>
@@ -50,7 +50,7 @@
                 </div>
                 <avonni-button-menu
                     if:true={isMenuVariant}
-                    class="avonni-carousel__actions"
+                    class={computedActionButtonClass}
                     alternative-text="Show menu"
                     icon-size="x-small"
                     variant="border-filled"
@@ -112,11 +112,11 @@
                     <template for:each={actions} for:item="action">
                         <div
                             if:true={action.label}
-                            class={computedButtonActionClass}
+                            class={computedDivActionClass}
                             key={action.name}
                         >
                             <avonni-button
-                                class="avonni-carousel__actions"
+                                class={computedActionButtonClass}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 label={action.label}
@@ -129,11 +129,11 @@
                         </div>
                         <div
                             if:false={action.label}
-                            class={computedButtonIconActionClass}
+                            class={computedDivActionClass}
                             key={action.name}
                         >
                             <avonni-button-icon
-                                class="avonni-carousel__actions"
+                                class={computedActionButtonClass}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 name={action.name}
@@ -146,7 +146,7 @@
                 </div>
                 <avonni-button-menu
                     if:true={isMenuVariant}
-                    class="avonni-carousel__actions"
+                    class={computedActionButtonClass}
                     alternative-text="Show menu"
                     icon-size="x-small"
                     menu-alignment="auto"

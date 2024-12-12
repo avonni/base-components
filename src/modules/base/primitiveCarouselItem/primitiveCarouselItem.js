@@ -69,7 +69,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
     set actions(actions) {
         this._actions = actions;
-        this.initializeCarouselHeight();
+        this._initializeCarouselHeight();
     }
 
     /**
@@ -106,7 +106,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
             fallbackValue: ACTIONS_VARIANTS.default,
             validValues: ACTIONS_VARIANTS.valid
         });
-        this.initializeCarouselHeight();
+        this._initializeCarouselHeight();
     }
 
     /**
@@ -134,6 +134,23 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
 
     /**
+     * Computed actions button class styling based on action variant attributes.
+     *
+     * @type {string}
+     */
+    get computedActionButtonClass() {
+        return classSet('')
+            .add({
+                'avonni-carousel__actions-bare': this.actionsVariant === 'bare',
+                'avonni-carousel__actions-border':
+                    this.actionsVariant === 'border' ||
+                    this.actionsVariant === 'stretch',
+                'avonni-carousel__actions-menu': this.actionsVariant === 'menu'
+            })
+            .toString();
+    }
+
+    /**
      * Computed actions container class styling based on action position attributes.
      *
      * @type {string}
@@ -149,7 +166,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
                     this.actionsPosition.includes('left'),
                 'slds-p-around_small slds-is-absolute': this.isTopPosition,
                 'avonni-carousel__actions_stretch': this.isStretchVariant,
-                'avonni-carousel__actions': !this.isStretchVariant
+                'avonni-carousel__actions-container': !this.isStretchVariant
             })
             .toString();
     }
@@ -175,27 +192,11 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Action button icon class styling based on attributes.
+     * Action button div class styling based on attributes.
      *
      * @type {string}
      */
-    get computedButtonIconActionClass() {
-        return classSet('')
-            .add({
-                'avonni-carousel-item__float':
-                    this.actionsVariant === 'border' ||
-                    this.actionsVariant === 'bare',
-                'slds-p-around_xx-small slds-grid': this.isStretchVariant
-            })
-            .toString();
-    }
-
-    /**
-     * Action button class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get computedButtonActionClass() {
+    get computedDivActionClass() {
         return classSet('')
             .add({
                 'avonni-carousel-item__float':
@@ -291,15 +292,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Verify if actions position is at the top.
-     *
-     * @type {boolean}
-     */
-    get isTopPosition() {
-        return this.actionsPosition.includes('top') && this.hasActions;
-    }
-
-    /**
      * Verify if the actions variant is menu.
      *
      * @type {boolean}
@@ -317,6 +309,15 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return this.actionsVariant === 'stretch';
     }
 
+    /**
+     * Verify if actions position is at the top.
+     *
+     * @type {boolean}
+     */
+    get isTopPosition() {
+        return this.actionsPosition.includes('top') && this.hasActions;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -326,7 +327,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
     /**
      * Carousel height initialization.
      */
-    initializeCarouselHeight() {
+    _initializeCarouselHeight() {
         const isStretch = this.isStretchVariant ? 8.5 : 7.5;
         this._carouselContentHeight = this.isBottomPosition ? isStretch : 6.625;
     }
