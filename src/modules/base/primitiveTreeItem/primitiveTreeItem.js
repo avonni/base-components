@@ -50,6 +50,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _allowInlineEdit = false;
     _avatar;
     _childItems = [];
+    _collapseDisabled = false;
     _disabled = false;
     _editableFields = DEFAULT_EDIT_FIELDS;
     _fields = [];
@@ -214,6 +215,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     set childItems(value) {
         this._childItems = normalizeArray(value);
         if (this._connected) this.computeSelection();
+    }
+
+    /**
+     * If present, all branches in the tree are expanded and cannot be collapsed.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get collapseDisabled() {
+        return this._collapseDisabled;
+    }
+    set collapseDisabled(value) {
+        this._collapseDisabled = normalizeBoolean(value);
     }
 
     /**
@@ -550,7 +566,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @type {boolean}
      */
     get showChildren() {
-        return !this.disabled && this.expanded;
+        return (!this.disabled && this.expanded) || this.collapseDisabled;
     }
 
     /**
@@ -1039,7 +1055,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @param {Event} event
      */
     handleClick(event) {
-        if (!this.disabled) {
+        if (!this.disabled && !this.collapseDisabled) {
             let target = 'anchor';
             if (
                 event.target.dataset.elementId ===

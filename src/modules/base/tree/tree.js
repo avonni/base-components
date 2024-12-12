@@ -46,6 +46,7 @@ export default class Tree extends LightningElement {
     _actions = [];
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
+    _collapseDisabled = false;
     _editableFields = DEFAULT_EDITABLE_FIELDS;
     _independentMultiSelect = false;
     _isLoading = false;
@@ -143,6 +144,22 @@ export default class Tree extends LightningElement {
 
     set allowInlineEdit(value) {
         this._allowInlineEdit = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, all branches in the tree are expanded and cannot be collapsed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get collapseDisabled() {
+        return this._collapseDisabled;
+    }
+
+    set collapseDisabled(value) {
+        this._collapseDisabled = normalizeBoolean(value);
     }
 
     /**

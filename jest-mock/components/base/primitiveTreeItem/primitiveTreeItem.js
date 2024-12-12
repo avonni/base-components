@@ -8,6 +8,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api allowInlineEdit;
     @api avatar;
     @api childItems;
+    @api collapseDisabled;
     @api disabled;
     @api editableFields;
     @api fields;

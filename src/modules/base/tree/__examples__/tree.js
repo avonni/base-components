@@ -6,6 +6,7 @@ export const Tree = ({
     actions,
     actionsWhenDisabled,
     allowInlineEdit,
+    collapseDisabled,
     editableFields,
     header,
     independentMultiSelect,
@@ -21,6 +22,7 @@ export const Tree = ({
     element.actions = actions;
     element.actionsWhenDisabled = actionsWhenDisabled;
     element.allowInlineEdit = allowInlineEdit;
+    element.collapseDisabled = collapseDisabled;
     element.editableFields = editableFields;
     element.header = header;
     element.independentMultiSelect = independentMultiSelect;

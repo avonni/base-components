@@ -150,6 +150,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'New branch' }
             }
+        },
+        collapseDisabled: {
+            name: 'collapse-disabled',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, all branches in the tree are expanded and cannot be collapsed.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
         }
     },
     args: {
@@ -167,7 +179,8 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
         sortable: false,
-        isMultiSelect: false
+        isMultiSelect: false,
+        collapseDisabled: false
     }
 };
 
@@ -260,4 +273,11 @@ Placeholder.args = {
         }
     ],
     editableFields: ['label', 'metatext']
+};
+
+export const CollapseDisabled = Template.bind({});
+CollapseDisabled.args = {
+    items: ITEMS,
+    header: 'Collapse Disabled',
+    collapseDisabled: true
 };
