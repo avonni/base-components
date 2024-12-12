@@ -142,16 +142,20 @@ export default class Carousel extends LightningElement {
     panelStyle;
     resizeObserver;
 
+    connectedCallback() {
+        this._connected = true;
+    }
+
     renderedCallback() {
         if (!this._rendered) {
-            this.initCarousel();
+            this._initCarousel();
             if (!this.disableAutoScroll) {
                 this.play();
             }
         }
 
         if (!this.resizeObserver && this.carouselIsResponsive) {
-            this.initWrapObserver();
+            this._initWrapObserver();
         }
 
         if (this._elementToFocus) {
@@ -164,12 +168,8 @@ export default class Carousel extends LightningElement {
             this._elementToFocus = undefined;
         }
 
-        this.computeItemsPerPanel();
+        this._computeItemsPerPanel();
         this._rendered = true;
-    }
-
-    connectedCallback() {
-        this._connected = true;
     }
 
     disconnectedCallback() {
@@ -188,7 +188,7 @@ export default class Carousel extends LightningElement {
      */
 
     /**
-     * Position of the actions. Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
+     * Position of the actions. Valid values include top-left, top-right, bottom-left, bottom-right and bottom-center.
      *
      * @type {string}
      * @public
@@ -206,7 +206,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Changes the appearance of the actions. Valid values include bare, border and menu.
+     * Changes the appearance of the actions. Valid values include bare, border, menu and stretch.
      *
      * @type {string}
      * @public
@@ -259,8 +259,8 @@ export default class Carousel extends LightningElement {
         this._currentPanel = value;
 
         if (this._connected) {
-            this.initCarousel();
-            this.checkIfShouldLoadMore();
+            this._initCarousel();
+            this._checkIfShouldLoadMore();
         }
     }
 
@@ -282,9 +282,9 @@ export default class Carousel extends LightningElement {
 
         if (this._connected) {
             this.first();
-            this.initActivePaginationItemIndex();
-            this.initPaginationItems();
-            this.checkIfShouldLoadMore();
+            this._initActivePaginationItemIndex();
+            this._initPaginationItems();
+            this._checkIfShouldLoadMore();
         }
     }
 
@@ -305,6 +305,24 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Position of the media. Valid values include top, left, right and bottom.
+     *
+     * @type {string}
+     * @public
+     * @default top
+     */
+    @api
+    get imagePosition() {
+        return this._imagePosition;
+    }
+    set imagePosition(imagePosition) {
+        this._imagePosition = normalizeString(imagePosition, {
+            fallbackValue: IMAGE_POSITIONS.default,
+            validValues: IMAGE_POSITIONS.valid
+        });
+    }
+
+    /**
      * Changes the appearance of the progress indicators. Valid values are base or shaded.
      *
      * @type {string}
@@ -322,7 +340,27 @@ export default class Carousel extends LightningElement {
         });
 
         if (this._connected) {
-            this.initPaginationItems();
+            this._initPaginationItems();
+        }
+    }
+
+    /**
+     * If present, the carousel is in a loading state and shows the loading spinner.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+
+        if (this.template.activeElement) {
+            this._elementToFocus =
+                this.template.activeElement.dataset.elementId;
         }
     }
 
@@ -352,27 +390,7 @@ export default class Carousel extends LightningElement {
         });
 
         if (this._connected) {
-            this.initCarousel();
-        }
-    }
-
-    /**
-     * If present, the carousel is in a loading state and shows the loading spinner.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get isLoading() {
-        return this._isLoading;
-    }
-    set isLoading(value) {
-        this._isLoading = normalizeBoolean(value);
-
-        if (this.template.activeElement) {
-            this._elementToFocus =
-                this.template.activeElement.dataset.elementId;
+            this._initCarousel();
         }
     }
 
@@ -398,26 +416,26 @@ export default class Carousel extends LightningElement {
         this.columnsCount.default = this._itemsPerPanel;
 
         if (this._connected) {
-            this.computeItemsPerPanel();
+            this._computeItemsPerPanel();
         }
     }
 
     /**
-     * Position of the media. Valid values include top, left, right and bottom.
+     * Number of items to be displayed at a time in the carousel when the component is 1024px wide or more. Maximum of 10 items per panel.
      *
-     * @type {string}
+     * @type {number}
      * @public
-     * @default top
      */
     @api
-    get imagePosition() {
-        return this._imagePosition;
+    get largeItemsPerPanel() {
+        return this._largeItemsPerPanel;
     }
-    set imagePosition(imagePosition) {
-        this._imagePosition = normalizeString(imagePosition, {
-            fallbackValue: IMAGE_POSITIONS.default,
-            validValues: IMAGE_POSITIONS.valid
-        });
+    set largeItemsPerPanel(value) {
+        this._largeItemsPerPanel = this._normalizeItemsPerPanel(value, 'large');
+
+        if (this._connected) {
+            this._computeItemsPerPanel();
+        }
     }
 
     /**
@@ -437,7 +455,7 @@ export default class Carousel extends LightningElement {
         this._loadMoreOffset = number > 1 ? number : DEFAULT_LOAD_MORE_OFFSET;
 
         if (this._connected) {
-            this.checkIfShouldLoadMore();
+            this._checkIfShouldLoadMore();
         }
     }
 
@@ -458,8 +476,28 @@ export default class Carousel extends LightningElement {
 
         if (this._connected) {
             this.first();
-            this.initActivePaginationItemIndex();
-            this.initPaginationItems();
+            this._initActivePaginationItemIndex();
+            this._initPaginationItems();
+        }
+    }
+
+    /**
+     * Number of items to be displayed at a time when the component is 768px wide or more. Maximum of 10 items per panel.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get mediumItemsPerPanel() {
+        return this._mediumItemsPerPanel;
+    }
+    set mediumItemsPerPanel(value) {
+        this._mediumItemsPerPanel = this._normalizeItemsPerPanel(
+            value,
+            'medium'
+        );
+        if (this._connected) {
+            this._computeItemsPerPanel();
         }
     }
 
@@ -493,48 +531,10 @@ export default class Carousel extends LightningElement {
         return this._smallItemsPerPanel;
     }
     set smallItemsPerPanel(value) {
-        this._smallItemsPerPanel = this.normalizeItemsPerPanel(value, 'small');
+        this._smallItemsPerPanel = this._normalizeItemsPerPanel(value, 'small');
 
         if (this._connected) {
-            this.computeItemsPerPanel();
-        }
-    }
-
-    /**
-     * Number of items to be displayed at a time when the component is 768px wide or more. Maximum of 10 items per panel.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get mediumItemsPerPanel() {
-        return this._mediumItemsPerPanel;
-    }
-    set mediumItemsPerPanel(value) {
-        this._mediumItemsPerPanel = this.normalizeItemsPerPanel(
-            value,
-            'medium'
-        );
-        if (this._connected) {
-            this.computeItemsPerPanel();
-        }
-    }
-
-    /**
-     * Number of items to be displayed at a time in the carousel when the component is 1024px wide or more. Maximum of 10 items per panel.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get largeItemsPerPanel() {
-        return this._largeItemsPerPanel;
-    }
-    set largeItemsPerPanel(value) {
-        this._largeItemsPerPanel = this.normalizeItemsPerPanel(value, 'large');
-
-        if (this._connected) {
-            this.computeItemsPerPanel();
+            this._computeItemsPerPanel();
         }
     }
 
@@ -589,6 +589,11 @@ export default class Carousel extends LightningElement {
         });
     }
 
+    /**
+     * Return the number of panels.
+     *
+     * @type {number}
+     */
     get nbOfPanels() {
         return Math.ceil(
             this._carouselItems.length / this.currentItemsPerPanel
@@ -624,6 +629,43 @@ export default class Carousel extends LightningElement {
      */
 
     /**
+     * Go to first slide.
+     *
+     * @public
+     */
+    @api
+    first() {
+        this._selectNewPanel(0);
+    }
+
+    /**
+     * Go to last slide.
+     *
+     * @public
+     */
+    @api
+    last() {
+        this._selectNewPanel(this.paginationItems.length - 1);
+    }
+
+    /**
+     * Go to next slide.
+     *
+     * @public
+     */
+    @api
+    next() {
+        this.pause();
+        this._unselectCurrentPanel();
+        const panelIndex =
+            this.activePanelIndex < this.nbOfPanels - 1
+                ? this.activePanelIndex + 1
+                : 0;
+        this._selectNewPanel(panelIndex);
+        this._checkIfShouldLoadMore();
+    }
+
+    /**
      * Pause the slide cycle.
      *
      * @public
@@ -656,32 +698,12 @@ export default class Carousel extends LightningElement {
 
         this.pause();
         this.autoScrollTimeOut = setTimeout(
-            this.startAutoScroll.bind(this),
+            this._startAutoScroll.bind(this),
             scrollDuration
         );
 
         this.autoScrollOn = true;
         this.autoScrollIcon = DEFAULT_AUTOCROLL_PAUSE_ICON;
-    }
-
-    /**
-     * Go to first slide.
-     *
-     * @public
-     */
-    @api
-    first() {
-        this.selectNewPanel(0);
-    }
-
-    /**
-     * Go to last slide.
-     *
-     * @public
-     */
-    @api
-    last() {
-        this.selectNewPanel(this.paginationItems.length - 1);
     }
 
     /**
@@ -692,29 +714,12 @@ export default class Carousel extends LightningElement {
     @api
     previous() {
         this.pause();
-        this.unselectCurrentPanel();
+        this._unselectCurrentPanel();
         const panelIndex =
             this.activePanelIndex > 0
                 ? this.activePanelIndex - 1
                 : this.nbOfPanels - 1;
-        this.selectNewPanel(panelIndex);
-    }
-
-    /**
-     * Go to next slide.
-     *
-     * @public
-     */
-    @api
-    next() {
-        this.pause();
-        this.unselectCurrentPanel();
-        const panelIndex =
-            this.activePanelIndex < this.nbOfPanels - 1
-                ? this.activePanelIndex + 1
-                : 0;
-        this.selectNewPanel(panelIndex);
-        this.checkIfShouldLoadMore();
+        this._selectNewPanel(panelIndex);
     }
 
     /*
@@ -723,7 +728,10 @@ export default class Carousel extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    checkIfShouldLoadMore() {
+    /**
+     * Verifies if the carousel should load more items.
+     */
+    _checkIfShouldLoadMore() {
         if (!this.enableInfiniteLoading) {
             return;
         }
@@ -736,7 +744,7 @@ export default class Carousel extends LightningElement {
     /**
      * Computes the items per panel.
      */
-    computeItemsPerPanel() {
+    _computeItemsPerPanel() {
         if (!this.carouselContainer) return;
 
         const previousItemsPerPanel = this.currentItemsPerPanel;
@@ -768,102 +776,13 @@ export default class Carousel extends LightningElement {
             this._connected
         ) {
             this.currentItemsPerPanel = calculatedItemsPerPanel;
-            this.initCarousel();
-            this.checkIfShouldLoadMore();
+            this._initCarousel();
+            this._checkIfShouldLoadMore();
             this.dispatchPrivateItemsPerPanelChange();
         }
     }
 
-    /**
-     * Item clicked event handler.
-     *
-     * @param {event}
-     */
-    handleItemClick(event) {
-        /**
-         * The event fired when an item is clicked.
-         *
-         * @event
-         * @name itemclick
-         * @param {object} item The item data clicked.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('itemclick', {
-                detail: {
-                    item: event.detail.item
-                }
-            })
-        );
-    }
-
-    /**
-     * Item clicked event handler.
-     *
-     * @param {event}
-     */
-    handleActionClick(event) {
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {object} item Item the action belongs to.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: event.detail.name,
-                    item: event.detail.item
-                }
-            })
-        );
-    }
-
-    handlePaginationItemAnimationEnd(event) {
-        endAnimation({
-            activeIndex: this._activePaginationItemIndex,
-            element: event.currentTarget,
-            items: this.paginationItems
-        });
-    }
-
-    /**
-     * Panel selection event method.
-     *
-     * @param {Event}
-     */
-    handlePaginationItemClick(event) {
-        if (this.isLoading) {
-            return;
-        }
-        this.pause();
-        const itemIndex = parseInt(event.currentTarget.dataset.index, 10);
-        const goToNext = itemIndex > this._activePaginationItemIndex;
-        let panelIndex;
-        if (goToNext) {
-            panelIndex =
-                this.activePanelIndex +
-                (itemIndex - this._activePaginationItemIndex);
-        } else {
-            panelIndex =
-                this.activePanelIndex -
-                (this._activePaginationItemIndex - itemIndex);
-        }
-
-        if (this.activePanelIndex !== panelIndex) {
-            this.unselectCurrentPanel();
-            this.selectNewPanel(panelIndex);
-
-            if (goToNext) {
-                this.checkIfShouldLoadMore();
-            }
-        }
-    }
-
-    initActivePaginationItemIndex() {
+    _initActivePaginationItemIndex() {
         const maxItems = this.maxIndicatorItems;
         const panelIndex = this.activePanelIndex;
         const allPaginationItemsAreVisible =
@@ -893,27 +812,18 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Prevent event default handler.
-     *
-     * @param {Event} event
-     */
-    handlePreventDefault(event) {
-        event.preventDefault();
-    }
-
-    /**
      * Initialize Carousel method.
      */
-    initCarousel() {
-        this.initCurrentPanel();
-        this.initPaginationItems();
-        this.initPanels();
+    _initCarousel() {
+        this._initCurrentPanel();
+        this._initPaginationItems();
+        this._initPanels();
     }
 
     /**
      * Set the active panel index, based on the value of `current-panel`.
      */
-    initCurrentPanel() {
+    _initCurrentPanel() {
         const itemIndex = this.currentPanel
             ? this.items.findIndex((item) => item.name === this.currentPanel)
             : 0;
@@ -922,13 +832,13 @@ export default class Carousel extends LightningElement {
                 ? Math.floor(itemIndex / this.currentItemsPerPanel)
                 : 0;
         this.activePanelIndex = panelIndex;
-        this.initActivePaginationItemIndex();
+        this._initActivePaginationItemIndex();
     }
 
     /**
      * Initialize Pagination items method.
      */
-    initPaginationItems() {
+    _initPaginationItems() {
         clearTimeout(this.paginationItemsTimeout);
         this.paginationItems = [];
 
@@ -957,7 +867,7 @@ export default class Carousel extends LightningElement {
     /**
      * Creates an array of panels, each containing an array of items.
      */
-    initPanels() {
+    _initPanels() {
         const panelItems = [];
         let panelIndex = 0;
         for (
@@ -993,13 +903,145 @@ export default class Carousel extends LightningElement {
      *
      * @returns {AvonniResizeObserver} Resize observer.
      */
-    initWrapObserver() {
+    _initWrapObserver() {
         if (!this.carouselContainer) {
             return;
         }
         this.resizeObserver = new AvonniResizeObserver(
             this.carouselContainer,
-            this.computeItemsPerPanel.bind(this)
+            this._computeItemsPerPanel.bind(this)
+        );
+    }
+
+    /**
+     * Ensure items per panel is an accepted value, otherwise unset it.
+     */
+    _normalizeItemsPerPanel(value, size) {
+        const number = parseInt(value, 10);
+        if (ITEMS_PER_PANEL.includes(number)) {
+            this.columnsCount[size] = number;
+            return number;
+        }
+        this.columnsCount[size] = undefined;
+        return undefined;
+    }
+
+    /**
+     * New panel selection method.
+     *
+     * @param {number} panelIndex
+     */
+    _selectNewPanel(panelIndex) {
+        const activePanelItem = this.panelItems[panelIndex];
+        if (!activePanelItem) {
+            return;
+        }
+
+        activePanelItem.ariaHidden = FALSE_STRING;
+        this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
+        const goToPrevious = panelIndex < this.activePanelIndex;
+        const jumpedPanels = Math.abs(this.activePanelIndex - panelIndex);
+        this.activePanelIndex = panelIndex;
+        this._activePaginationItemIndex = updateActivePaginationItem({
+            activeItemIndex: this._activePaginationItemIndex,
+            carousel: this,
+            goToPrevious,
+            jumpedPanels,
+            maxItems: this.maxIndicatorItems,
+            items: this.paginationItems,
+            nbOfPanels: this.nbOfPanels,
+            panelIndex
+        });
+
+        if (activePanelItem.items[0]) {
+            // Update the current panel for consistency
+            // and to make sure there is no jump if more items are loaded
+            this._currentPanel = activePanelItem.items[0].name;
+            this.dispatchCurrentPanelChange(activePanelItem.items[0]);
+        }
+    }
+
+    /**
+     * Call the auto scroll.
+     */
+    _startAutoScroll() {
+        this.next();
+        this.play();
+    }
+
+    /**
+     * Auto Scroll toggler method.
+     */
+    toggleAutoScroll() {
+        /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
+        this.autoScrollOn ? this.pause() : this.play();
+    }
+
+    /**
+     * Selection removed from current panel.
+     */
+    _unselectCurrentPanel() {
+        const activePaginationItem =
+            this.paginationItems[this.activePanelIndex];
+        const activePanelItem = this.panelItems[this.activePanelIndex];
+
+        if (!activePaginationItem || !activePanelItem) return;
+        activePanelItem.ariaHidden = TRUE_STRING;
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Item clicked event handler.
+     *
+     * @param {event}
+     */
+    handleActionClick(event) {
+        const { name, item } = event.detail;
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {object} item Item the action belongs to.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name,
+                    item
+                }
+            })
+        );
+    }
+
+    /**
+     * Item clicked event handler.
+     *
+     * @param {event}
+     */
+    handleItemClick(event) {
+        const { item } = event.detail;
+        /**
+         * The event fired when an item is clicked.
+         *
+         * @event
+         * @name itemclick
+         * @param {object} item The item data clicked.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    item
+                }
+            })
         );
     }
 
@@ -1008,7 +1050,7 @@ export default class Carousel extends LightningElement {
      *
      * @param {Event}
      */
-    keyDownHandler(event) {
+    handleKeyDown(event) {
         if (this.isLoading) {
             return;
         }
@@ -1054,86 +1096,59 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Ensure items per panel is an accepted value, otherwise unset it.
+     * Animation end event handler.
+     *
+     * @param {event}
      */
-    normalizeItemsPerPanel(value, size) {
-        const number = parseInt(value, 10);
-        if (ITEMS_PER_PANEL.includes(number)) {
-            this.columnsCount[size] = number;
-            return number;
-        }
-        this.columnsCount[size] = undefined;
-        return undefined;
+    handlePaginationItemAnimationEnd(event) {
+        endAnimation({
+            activeIndex: this._activePaginationItemIndex,
+            element: event.currentTarget,
+            items: this.paginationItems
+        });
     }
 
     /**
-     * New panel selection method.
+     * Panel selection event method.
      *
-     * @param {number} panelIndex
+     * @param {Event}
      */
-    selectNewPanel(panelIndex) {
-        const activePanelItem = this.panelItems[panelIndex];
-        if (!activePanelItem) {
+    handlePaginationItemClick(event) {
+        if (this.isLoading) {
             return;
         }
+        this.pause();
+        const itemIndex = parseInt(event.currentTarget.dataset.index, 10);
+        const goToNext = itemIndex > this._activePaginationItemIndex;
+        let panelIndex;
+        if (goToNext) {
+            panelIndex =
+                this.activePanelIndex +
+                (itemIndex - this._activePaginationItemIndex);
+        } else {
+            panelIndex =
+                this.activePanelIndex -
+                (this._activePaginationItemIndex - itemIndex);
+        }
 
-        activePanelItem.ariaHidden = FALSE_STRING;
-        this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
-        const goToPrevious = panelIndex < this.activePanelIndex;
-        const jumpedPanels = Math.abs(this.activePanelIndex - panelIndex);
-        this.activePanelIndex = panelIndex;
-        this._activePaginationItemIndex = updateActivePaginationItem({
-            activeItemIndex: this._activePaginationItemIndex,
-            carousel: this,
-            goToPrevious,
-            jumpedPanels,
-            maxItems: this.maxIndicatorItems,
-            items: this.paginationItems,
-            nbOfPanels: this.nbOfPanels,
-            panelIndex
-        });
+        if (this.activePanelIndex !== panelIndex) {
+            this._unselectCurrentPanel();
+            this._selectNewPanel(panelIndex);
 
-        if (activePanelItem.items[0]) {
-            // Update the current panel for consistency
-            // and to make sure there is no jump if more items are loaded
-            this._currentPanel = activePanelItem.items[0].name;
-            this.dispatchCurrentPanelChange(activePanelItem.items[0]);
+            if (goToNext) {
+                this._checkIfShouldLoadMore();
+            }
         }
     }
 
     /**
-     * Call the auto scroll.
+     * Prevent event default handler.
+     *
+     * @param {Event} event
      */
-    startAutoScroll() {
-        this.next();
-        this.play();
+    handlePreventDefault(event) {
+        event.preventDefault();
     }
-
-    /**
-     * Auto Scroll toggler method.
-     */
-    toggleAutoScroll() {
-        /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
-        this.autoScrollOn ? this.pause() : this.play();
-    }
-
-    /**
-     * Selection removed from current panel.
-     */
-    unselectCurrentPanel() {
-        const activePaginationItem =
-            this.paginationItems[this.activePanelIndex];
-        const activePanelItem = this.panelItems[this.activePanelIndex];
-
-        if (!activePaginationItem || !activePanelItem) return;
-        activePanelItem.ariaHidden = TRUE_STRING;
-    }
-
-    /*
-     * -------------------------------------------------------------
-     *  EVENT DISPATCHERS
-     * -------------------------------------------------------------
-     */
 
     dispatchCurrentPanelChange(item) {
         /**

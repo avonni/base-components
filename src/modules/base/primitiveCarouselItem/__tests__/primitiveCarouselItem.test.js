@@ -157,7 +157,9 @@ describe('Primitive Carousel Item', () => {
                         element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-menu"'
                         );
-                    expect(button.className).toBe('slds-show_small');
+                    expect(button.className).toBe(
+                        'slds-show_small slds-grid slds-grid_vertical-align-center'
+                    );
                     expect(buttonMenu.className).toBe('slds-hide_small');
                     expect(button.contains(lightningButton)).toBeTruthy();
                     expect(
@@ -186,7 +188,9 @@ describe('Primitive Carousel Item', () => {
                         element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-menu"'
                         );
-                    expect(button.className).toBe('slds-show_small');
+                    expect(button.className).toBe(
+                        'slds-show_small slds-grid slds-grid_vertical-align-center'
+                    );
                     expect(buttonMenu.className).toBe('slds-hide_small');
                     expect(button.contains(lightningButton)).toBeTruthy();
                     expect(

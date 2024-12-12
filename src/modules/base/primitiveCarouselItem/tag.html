@@ -8,75 +8,73 @@
         onclick={handleItemClick}
     >
         <div class={computedCarouselImageClass}>
-            <template if:false={isBottomPosition}>
-                <div class={computedActionsContainerClass} if:true={hasActions}>
-                    <template if:false={isMenuVariant}>
-                        <div
-                            class={computedButtonsContainerClass}
-                            data-element-id="button-bare-border"
-                        >
-                            <template for:each={actions} for:item="action">
-                                <div
-                                    if:true={action.label}
-                                    key={action.name}
-                                    class={computedButtonActionClass}
-                                >
-                                    <lightning-button
-                                        class={computedButtonClass}
-                                        disabled={action.disabled}
-                                        icon-name={action.iconName}
-                                        label={action.label}
-                                        name={action.name}
-                                        stretch={isStretchVariant}
-                                        variant={computedActionsVariantButton}
-                                        data-element-id="lightning-button-actions"
-                                        onclick={handleActionClick}
-                                    ></lightning-button>
-                                </div>
-                                <div
-                                    if:false={action.label}
-                                    key={action.name}
-                                    class={computedButtonIconActionClass}
-                                >
-                                    <lightning-button-icon
-                                        disabled={action.disabled}
-                                        icon-name={action.iconName}
-                                        name={action.name}
-                                        variant={computedActionsVariantButtonIcon}
-                                        data-element-id="lightning-button-icon-actions"
-                                        onclick={handleActionClick}
-                                    ></lightning-button-icon>
-                                </div>
-                            </template>
-                        </div>
-                    </template>
+            <div if:true={isTopPosition} class={computedActionsContainerClass}>
+                <template if:false={isMenuVariant}>
                     <div
-                        class={computedButtonMenuActionClass}
-                        data-element-id="button-menu"
+                        class={computedButtonsContainerClass}
+                        data-element-id="button-bare-border"
                     >
-                        <lightning-button-menu
-                            alternative-text="Show menu"
-                            icon-size="x-small"
-                            menu-alignment="auto"
-                            variant="border-filled"
-                            data-element-id="lightning-button-menu"
-                            onselect={handleMenuSelect}
-                            onclick={handleButtonMenuClick}
-                        >
-                            <template for:each={actions} for:item="action">
-                                <lightning-menu-item
-                                    key={action.name}
-                                    value={action.name}
-                                    label={action.label}
+                        <template for:each={actions} for:item="action">
+                            <div
+                                if:true={action.label}
+                                class={computedButtonActionClass}
+                                key={action.name}
+                            >
+                                <lightning-button
+                                    class={computedButtonClass}
                                     disabled={action.disabled}
-                                    prefix-icon-name={action.iconName}
-                                    class="slds-text-color_default"
-                                ></lightning-menu-item>
-                            </template>
-                        </lightning-button-menu>
+                                    icon-name={action.iconName}
+                                    label={action.label}
+                                    name={action.name}
+                                    stretch={isStretchVariant}
+                                    variant={computedActionsVariantButton}
+                                    data-element-id="lightning-button-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button>
+                            </div>
+                            <div
+                                if:false={action.label}
+                                class={computedButtonIconActionClass}
+                                key={action.name}
+                            >
+                                <lightning-button-icon
+                                    disabled={action.disabled}
+                                    icon-name={action.iconName}
+                                    name={action.name}
+                                    variant={computedActionsVariantButtonIcon}
+                                    data-element-id="lightning-button-icon-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button-icon>
+                            </div>
+                        </template>
                     </div>
+                </template>
+                <div
+                    class={computedButtonMenuActionClass}
+                    data-element-id="button-menu"
+                >
+                    <lightning-button-menu
+                        alternative-text="Show menu"
+                        icon-size="x-small"
+                        menu-alignment="auto"
+                        variant="border-filled"
+                        data-element-id="lightning-button-menu"
+                        onselect={handleMenuSelect}
+                        onclick={handleButtonMenuClick}
+                    >
+                        <template for:each={actions} for:item="action">
+                            <lightning-menu-item
+                                class="slds-text-color_default"
+                                key={action.name}
+                                disabled={action.disabled}
+                                label={action.label}
+                                prefix-icon-name={action.iconName}
+                                value={action.name}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
                 </div>
-            </template>
+            </div>
             <img
                 class="avonni-carousel__image"
                 alt={imageAssistiveText}
@@ -107,75 +105,75 @@
                     {description}
                 </p>
             </div>
-            <template if:true={isBottomPosition}>
-                <div class={computedActionsContainerClass} if:true={hasActions}>
-                    <template if:false={isMenuVariant}>
+            <div
+                if:true={isBottomPosition}
+                class={computedActionsContainerClass}
+            >
+                <div
+                    if:false={isMenuVariant}
+                    class={computedButtonsContainerClass}
+                    data-element-id="button-bare-border"
+                >
+                    <template for:each={actions} for:item="action">
                         <div
-                            class={computedButtonsContainerClass}
-                            data-element-id="button-bare-border"
+                            if:true={action.label}
+                            class={computedButtonActionClass}
+                            key={action.name}
                         >
-                            <template for:each={actions} for:item="action">
-                                <div
-                                    if:true={action.label}
-                                    key={action.name}
-                                    class={computedButtonActionClass}
-                                >
-                                    <lightning-button
-                                        class={computedButtonClass}
-                                        disabled={action.disabled}
-                                        icon-name={action.iconName}
-                                        label={action.label}
-                                        name={action.name}
-                                        stretch={isStretchVariant}
-                                        variant={computedActionsVariantButton}
-                                        data-element-id="lightning-button-actions"
-                                        onclick={handleActionClick}
-                                    ></lightning-button>
-                                </div>
-                                <div
-                                    if:false={action.label}
-                                    key={action.name}
-                                    class={computedButtonIconActionClass}
-                                >
-                                    <lightning-button-icon
-                                        disabled={action.disabled}
-                                        icon-name={action.iconName}
-                                        name={action.name}
-                                        variant={computedActionsVariantButtonIcon}
-                                        data-element-id="lightning-button-icon-actions"
-                                        onclick={handleActionClick}
-                                    ></lightning-button-icon>
-                                </div>
-                            </template>
+                            <lightning-button
+                                class={computedButtonClass}
+                                disabled={action.disabled}
+                                icon-name={action.iconName}
+                                label={action.label}
+                                name={action.name}
+                                stretch={isStretchVariant}
+                                variant={computedActionsVariantButton}
+                                data-element-id="lightning-button-actions"
+                                onclick={handleActionClick}
+                            ></lightning-button>
+                        </div>
+                        <div
+                            if:false={action.label}
+                            class={computedButtonIconActionClass}
+                            key={action.name}
+                        >
+                            <lightning-button-icon
+                                disabled={action.disabled}
+                                icon-name={action.iconName}
+                                name={action.name}
+                                variant={computedActionsVariantButtonIcon}
+                                data-element-id="lightning-button-icon-actions"
+                                onclick={handleActionClick}
+                            ></lightning-button-icon>
                         </div>
                     </template>
-                    <div
-                        class={computedButtonMenuActionClass}
-                        data-element-id="button-menu"
-                    >
-                        <lightning-button-menu
-                            alternative-text="Show menu"
-                            icon-size="x-small"
-                            menu-alignment="auto"
-                            variant="border-filled"
-                            data-element-id="lightning-button-menu"
-                            onselect={handleMenuSelect}
-                            onclick={handleButtonMenuClick}
-                        >
-                            <template for:each={actions} for:item="action">
-                                <lightning-menu-item
-                                    key={action.name}
-                                    value={action.name}
-                                    label={action.label}
-                                    disabled={action.disabled}
-                                    prefix-icon-name={action.iconName}
-                                    class="slds-text-color_default"
-                                ></lightning-menu-item>
-                            </template>
-                        </lightning-button-menu>
-                    </div>
                 </div>
-            </template>
+                <div
+                    class={computedButtonMenuActionClass}
+                    data-element-id="button-menu"
+                >
+                    <lightning-button-menu
+                        alternative-text="Show menu"
+                        icon-size="x-small"
+                        menu-alignment="auto"
+                        variant="border-filled"
+                        data-element-id="lightning-button-menu"
+                        onselect={handleMenuSelect}
+                        onclick={handleButtonMenuClick}
+                    >
+                        <template for:each={actions} for:item="action">
+                            <lightning-menu-item
+                                class="slds-text-color_default"
+                                disabled={action.disabled}
+                                key={action.name}
+                                label={action.label}
+                                prefix-icon-name={action.iconName}
+                                value={action.name}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
+                </div>
+            </div>
         </div>
     </a>
 </template>
