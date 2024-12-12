@@ -25,7 +25,7 @@ describe('Tree', () => {
             expect(element.actions).toEqual([]);
             expect(element.actionsWhenDisabled).toEqual([]);
             expect(element.allowInlineEdit).toBeFalsy();
-            expect(element.independentMultiSelect).toBeFalsy();
+            expect(element.collapseDisabled).toBeFalsy();
             expect(element.editableFields).toEqual([
                 'label',
                 'metatext',
@@ -36,6 +36,7 @@ describe('Tree', () => {
                 'isLoading'
             ]);
             expect(element.header).toBeUndefined();
+            expect(element.independentMultiSelect).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.isMultiSelect).toBeFalsy();
             expect(element.items).toEqual([]);
@@ -100,6 +101,20 @@ describe('Tree', () => {
                 );
                 items.forEach((item) =>
                     expect(item.allowInlineEdit).toBeTruthy()
+                );
+            });
+        });
+
+        it('Collapse Disabled', () => {
+            element.collapseDisabled = true;
+            element.items = ITEMS;
+
+            return Promise.resolve().then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-tree-item"]'
+                );
+                items.forEach((item) =>
+                    expect(item.collapseDisabled).toBeTruthy()
                 );
             });
         });

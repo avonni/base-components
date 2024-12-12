@@ -105,6 +105,7 @@ describe('Primitive Tree Item', () => {
         expect(element.allowInlineEdit).toBeFalsy();
         expect(element.avatar).toBeUndefined();
         expect(element.childItems).toEqual([]);
+        expect(element.collapseDisabled).toBeFalsy();
         expect(element.disabled).toBeFalsy();
         expect(element.independentMultiSelect).toBeFalsy();
         expect(element.editableFields).toEqual([
@@ -395,6 +396,17 @@ describe('Primitive Tree Item', () => {
                 expect(child.showCheckbox).toBeTruthy();
                 expect(child.sortable).toBeTruthy();
             });
+        });
+    });
+
+    it('Primitive tree item: collapseDisabled', () => {
+        element.collapseDisabled = true;
+
+        return Promise.resolve().then(() => {
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-expand"]'
+            );
+            expect(expandButton).toBeFalsy();
         });
     });
 

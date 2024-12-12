@@ -6,6 +6,7 @@
             onclick={handleClick}
         >
             <lightning-button-icon
+                if:false={collapseDisabled}
                 class={expandButtonClass}
                 alternative-text={expandButtonLabel}
                 aria-expanded={expanded}
@@ -303,6 +304,7 @@
                     aria-level={item.level}
                     avatar={item.avatar}
                     child-items={item.children}
+                    collapse-disabled={collapseDisabled}
                     independent-multi-select={independentMultiSelect}
                     disabled={item.disabled}
                     editable-fields={editableFields}
