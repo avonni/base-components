@@ -155,36 +155,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Set actions variant button icon to bare if the action variant is bare, if not, set the button icon to border-filled.
+     * Set actions variant button to base if the action variant is bare, if not, set the button to neutral.
      *
      * @type {string}
      */
-    get computedActionsVariantButtonIcon() {
-        return this.actionsVariant === 'bare' ? 'bare' : 'border-filled';
-    }
-
-    /**
-     * Set actions variant button to base if the action variant is bare, if not , set the button to neutral.
-     *
-     * @type {string}
-     */
-    get computedActionsVariantButton() {
+    get computedActionsVariant() {
         return this.actionsVariant === 'bare' ? 'base' : 'neutral';
-    }
-
-    /**
-     * Lightning Button class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get computedButtonClass() {
-        return classSet('')
-            .add({
-                'avonni-carousel__actions_bare': this.actionsVariant === 'bare',
-                'avonni-carousel__actions_neutral':
-                    this.actionsVariant === 'border' || this.isStretchVariant
-            })
-            .toString();
     }
 
     /**
@@ -228,15 +204,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 'slds-p-around_xx-small': this.isStretchVariant
             })
             .toString();
-    }
-
-    /**
-     * Action button menu action class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get computedButtonMenuActionClass() {
-        return !this.isMenuVariant ? 'slds-hide_small' : '';
     }
 
     /**
@@ -355,7 +322,75 @@ export default class PrimitiveCarouselItem extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-    actionDispatcher(actionName) {
+
+    /**
+     * Carousel height initialization.
+     */
+    initializeCarouselHeight() {
+        const isStretch = this.isStretchVariant ? 8.5 : 7.5;
+        this._carouselContentHeight = this.isBottomPosition ? isStretch : 6.625;
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Action click event handler.
+     *
+     * @param {Event}
+     */
+    handleActionClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        const actionName = event.currentTarget.name;
+        this._dispatchActionClick(actionName);
+    }
+
+    /**
+     * Prevent the default event browser behavior and stop the event propagation.
+     *
+     * @param {Event}
+     */
+    handleButtonMenuClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    /**
+     * Item clicked event handler.
+     *
+     * @param {Event} event
+     */
+    handleItemClick(event) {
+        if (
+            // eslint-disable-next-line no-script-url
+            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(
+                this.href
+            )
+        ) {
+            event.preventDefault();
+        }
+
+        this._dispatchItemClick();
+    }
+
+    /**
+     * Menu select event handler
+     *
+     * @param {Event}
+     */
+    handleMenuSelect(event) {
+        const actionName = event.currentTarget.name;
+        this._dispatchActionClick(actionName);
+    }
+
+    /**
+     * Action click event dispatcher.
+     */
+    _dispatchActionClick(actionName) {
         const {
             title,
             description,
@@ -394,33 +429,9 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Action click event handler.
-     *
-     * @param {Event}
+     * Item click event dispatcher.
      */
-    handleActionClick(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        const actionName = event.currentTarget.name;
-        this.actionDispatcher(actionName);
-    }
-
-    /**
-     * Prevent the default event browser behavior and stop the event propagation.
-     *
-     * @param {Event}
-     */
-    handleButtonMenuClick(event) {
-        event.stopPropagation();
-        event.preventDefault();
-    }
-
-    /**
-     * Item clicked event handler.
-     *
-     * @param {Event} event
-     */
-    handleItemClick(event) {
+    _dispatchItemClick() {
         const {
             title,
             description,
@@ -430,13 +441,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
             imageAssistiveText,
             name
         } = this;
-
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
 
         /**
          * The event fired when an item is clicked.
@@ -461,23 +465,5 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
-    }
-
-    /**
-     * Menu select event handler
-     *
-     * @param {Event}
-     */
-    handleMenuSelect(event) {
-        const actionName = event.currentTarget.name;
-        this.actionDispatcher(actionName);
-    }
-
-    /**
-     * Carousel height initialization.
-     */
-    initializeCarouselHeight() {
-        const isStretch = this.isStretchVariant ? 8.5 : 7.5;
-        this._carouselContentHeight = this.isBottomPosition ? isStretch : 6.625;
     }
 }

@@ -20,60 +20,58 @@
                                 class={computedButtonActionClass}
                                 key={action.name}
                             >
-                                <lightning-button
-                                    class={computedButtonClass}
+                                <avonni-button
+                                    class="avonni-carousel__actions"
                                     disabled={action.disabled}
                                     icon-name={action.iconName}
                                     label={action.label}
                                     name={action.name}
                                     stretch={isStretchVariant}
-                                    variant={computedActionsVariantButton}
-                                    data-element-id="lightning-button-actions"
+                                    variant={computedActionsVariant}
+                                    data-element-id="avonni-button-actions"
                                     onclick={handleActionClick}
-                                ></lightning-button>
+                                ></avonni-button>
                             </div>
                             <div
                                 if:false={action.label}
                                 class={computedButtonIconActionClass}
                                 key={action.name}
                             >
-                                <lightning-button-icon
+                                <avonni-button-icon
+                                    class="avonni-carousel__actions"
                                     disabled={action.disabled}
                                     icon-name={action.iconName}
                                     name={action.name}
-                                    variant={computedActionsVariantButtonIcon}
-                                    data-element-id="lightning-button-icon-actions"
+                                    variant={computedActionsVariant}
+                                    data-element-id="avonni-button-icon-actions"
                                     onclick={handleActionClick}
-                                ></lightning-button-icon>
+                                ></avonni-button-icon>
                             </div>
                         </template>
                     </div>
                 </template>
-                <div
-                    class={computedButtonMenuActionClass}
-                    data-element-id="button-menu"
+                <avonni-button-menu
+                    if:true={isMenuVariant}
+                    class="avonni-carousel__actions"
+                    alternative-text="Show menu"
+                    icon-size="x-small"
+                    menu-alignment="auto"
+                    variant="border-filled"
+                    data-element-id="avonni-button-menu"
+                    onselect={handleMenuSelect}
+                    onclick={handleButtonMenuClick}
                 >
-                    <lightning-button-menu
-                        alternative-text="Show menu"
-                        icon-size="x-small"
-                        menu-alignment="auto"
-                        variant="border-filled"
-                        data-element-id="lightning-button-menu"
-                        onselect={handleMenuSelect}
-                        onclick={handleButtonMenuClick}
-                    >
-                        <template for:each={actions} for:item="action">
-                            <lightning-menu-item
-                                class="slds-text-color_default"
-                                key={action.name}
-                                disabled={action.disabled}
-                                label={action.label}
-                                prefix-icon-name={action.iconName}
-                                value={action.name}
-                            ></lightning-menu-item>
-                        </template>
-                    </lightning-button-menu>
-                </div>
+                    <template for:each={actions} for:item="action">
+                        <lightning-menu-item
+                            class="slds-text-color_default"
+                            key={action.name}
+                            disabled={action.disabled}
+                            label={action.label}
+                            prefix-icon-name={action.iconName}
+                            value={action.name}
+                        ></lightning-menu-item>
+                    </template>
+                </avonni-button-menu>
             </div>
             <img
                 class="avonni-carousel__image"
@@ -120,59 +118,56 @@
                             class={computedButtonActionClass}
                             key={action.name}
                         >
-                            <lightning-button
-                                class={computedButtonClass}
+                            <avonni-button
+                                class="avonni-carousel__actions"
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 label={action.label}
                                 name={action.name}
                                 stretch={isStretchVariant}
                                 variant={computedActionsVariantButton}
-                                data-element-id="lightning-button-actions"
+                                data-element-id="avonni-button-actions"
                                 onclick={handleActionClick}
-                            ></lightning-button>
+                            ></avonni-button>
                         </div>
                         <div
                             if:false={action.label}
                             class={computedButtonIconActionClass}
                             key={action.name}
                         >
-                            <lightning-button-icon
+                            <avonni-button-icon
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 name={action.name}
                                 variant={computedActionsVariantButtonIcon}
-                                data-element-id="lightning-button-icon-actions"
+                                data-element-id="avonni-button-icon-actions"
                                 onclick={handleActionClick}
-                            ></lightning-button-icon>
+                            ></avonni-button-icon>
                         </div>
                     </template>
                 </div>
-                <div
-                    class={computedButtonMenuActionClass}
-                    data-element-id="button-menu"
+                <avonni-button-menu
+                    if:true={isMenuVariant}
+                    class="avonni-carousel__actions"
+                    alternative-text="Show menu"
+                    icon-size="x-small"
+                    menu-alignment="auto"
+                    variant="border-filled"
+                    data-element-id="avonni-button-menu"
+                    onselect={handleMenuSelect}
+                    onclick={handleButtonMenuClick}
                 >
-                    <lightning-button-menu
-                        alternative-text="Show menu"
-                        icon-size="x-small"
-                        menu-alignment="auto"
-                        variant="border-filled"
-                        data-element-id="lightning-button-menu"
-                        onselect={handleMenuSelect}
-                        onclick={handleButtonMenuClick}
-                    >
-                        <template for:each={actions} for:item="action">
-                            <lightning-menu-item
-                                class="slds-text-color_default"
-                                disabled={action.disabled}
-                                key={action.name}
-                                label={action.label}
-                                prefix-icon-name={action.iconName}
-                                value={action.name}
-                            ></lightning-menu-item>
-                        </template>
-                    </lightning-button-menu>
-                </div>
+                    <template for:each={actions} for:item="action">
+                        <lightning-menu-item
+                            class="slds-text-color_default"
+                            key={action.name}
+                            disabled={action.disabled}
+                            label={action.label}
+                            prefix-icon-name={action.iconName}
+                            value={action.name}
+                        ></lightning-menu-item>
+                    </template>
+                </avonni-button-menu>
             </div>
         </div>
     </a>

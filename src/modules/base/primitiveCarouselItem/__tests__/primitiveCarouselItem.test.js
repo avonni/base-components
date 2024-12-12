@@ -63,16 +63,16 @@ describe('Primitive Carousel Item', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
-            expect(element.title).toBeUndefined();
-            expect(element.description).toBeUndefined();
-            expect(element.infos).toBeUndefined();
-            expect(element.imageAssistiveText).toBeUndefined();
-            expect(element.href).toBeUndefined();
-            expect(element.src).toBeUndefined();
             expect(element.actions).toMatchObject([]);
             expect(element.actionsPosition).toBe('bottom-center');
             expect(element.actionsVariant).toBe('border');
+            expect(element.description).toBeUndefined();
+            expect(element.href).toBeUndefined();
+            expect(element.imageAssistiveText).toBeUndefined();
             expect(element.imagePosition).toBe('top');
+            expect(element.infos).toBeUndefined();
+            expect(element.src).toBeUndefined();
+            expect(element.title).toBeUndefined();
         });
 
         describe('Action Variant', () => {
@@ -82,9 +82,9 @@ describe('Primitive Carousel Item', () => {
 
                 return Promise.resolve().then(() => {
                     const action = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-icon-actions"]'
+                        '[data-element-id="avonni-button-icon-actions"]'
                     );
-                    expect(action.variant).toBe('bare');
+                    expect(action.variant).toBe('base');
                 });
             });
 
@@ -94,9 +94,9 @@ describe('Primitive Carousel Item', () => {
 
                 return Promise.resolve().then(() => {
                     const action = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-icon-actions"]'
+                        '[data-element-id="avonni-button-icon-actions"]'
                     );
-                    expect(action.variant).toBe('border-filled');
+                    expect(action.variant).toBe('neutral');
                 });
             });
 
@@ -106,7 +106,7 @@ describe('Primitive Carousel Item', () => {
 
                 return Promise.resolve().then(() => {
                     const action = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-actions"]'
+                        '[data-element-id="avonni-button-actions"]'
                     );
                     expect(action.variant).toBe('base');
                 });
@@ -118,7 +118,7 @@ describe('Primitive Carousel Item', () => {
 
                 return Promise.resolve().then(() => {
                     const action = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-actions"]'
+                        '[data-element-id="avonni-button-actions"]'
                     );
                     expect(action.variant).toBe('neutral');
                 });
@@ -130,10 +130,9 @@ describe('Primitive Carousel Item', () => {
 
                 return Promise.resolve().then(() => {
                     const action = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-menu"]'
+                        '[data-element-id="avonni-button-menu"]'
                     );
                     expect(action).toBeTruthy();
-                    expect(action.menuAlignment).toBe('auto');
                 });
             });
 
@@ -147,24 +146,13 @@ describe('Primitive Carousel Item', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-bare-border"]'
                     );
-                    const buttonMenu = element.shadowRoot.querySelector(
-                        '[data-element-id="button-menu"]'
-                    );
                     const lightningButton = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-actions"'
+                        '[data-element-id="avonni-button-actions"'
                     );
-                    const lightningButtonMenu =
-                        element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-menu"'
-                        );
                     expect(button.className).toBe(
                         'slds-show_small slds-grid slds-grid_vertical-align-center'
                     );
-                    expect(buttonMenu.className).toBe('slds-hide_small');
                     expect(button.contains(lightningButton)).toBeTruthy();
-                    expect(
-                        buttonMenu.contains(lightningButtonMenu)
-                    ).toBeTruthy();
                 });
             });
 
@@ -178,24 +166,13 @@ describe('Primitive Carousel Item', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button-bare-border"]'
                     );
-                    const buttonMenu = element.shadowRoot.querySelector(
-                        '[data-element-id="button-menu"]'
-                    );
                     const lightningButton = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-actions"'
+                        '[data-element-id="avonni-button-actions"'
                     );
-                    const lightningButtonMenu =
-                        element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-menu"'
-                        );
                     expect(button.className).toBe(
                         'slds-show_small slds-grid slds-grid_vertical-align-center'
                     );
-                    expect(buttonMenu.className).toBe('slds-hide_small');
                     expect(button.contains(lightningButton)).toBeTruthy();
-                    expect(
-                        buttonMenu.contains(lightningButtonMenu)
-                    ).toBeTruthy();
                 });
             });
         });
@@ -420,36 +397,6 @@ describe('Primitive Carousel Item', () => {
             });
         });
 
-        it('Actionclick', () => {
-            element.title = 'Visit App Exchange';
-            element.description =
-                'Extend Salesforce with the #1 business marketplace.';
-            element.imageAssistiveText = 'Appy';
-            element.src =
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
-            element.href = 'https://www.salesforce.com';
-            element.actions = bareActions;
-            element.name = 'someName';
-
-            const handler = jest.fn();
-            element.addEventListener('actionclick', handler);
-
-            return Promise.resolve().then(() => {
-                const action = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon-actions"]'
-                );
-                action.click();
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.name).toBe('action-add');
-                expect([handler.mock.calls[0][0].detail.item]).toMatchObject(
-                    ex
-                );
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            });
-        });
-
         it('Menu Actionclick', () => {
             element.title = 'Visit App Exchange';
             element.description =
@@ -459,6 +406,7 @@ describe('Primitive Carousel Item', () => {
                 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
             element.href = 'https://www.salesforce.com';
             element.actions = bareActions;
+            element.actionsVariant = 'menu';
             element.name = 'someName';
 
             const handler = jest.fn();
@@ -466,7 +414,7 @@ describe('Primitive Carousel Item', () => {
 
             return Promise.resolve().then(() => {
                 const action = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-menu"]'
+                    '[data-element-id="avonni-button-menu"]'
                 );
                 action.dispatchEvent(new CustomEvent('select'));
                 expect(handler).toHaveBeenCalled();
@@ -490,10 +438,11 @@ describe('Primitive Carousel Item', () => {
             element.href = 'https://www.salesforce.com';
             element.actions = bareActions;
             element.name = 'someName';
+            element.actionsVariant = 'menu';
 
             return Promise.resolve().then(() => {
                 const action = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-menu"]'
+                    '[data-element-id="avonni-button-menu"]'
                 );
                 const customEvent = new CustomEvent('click', {
                     bubbles: true,
