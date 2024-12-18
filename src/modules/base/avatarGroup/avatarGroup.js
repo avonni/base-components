@@ -169,6 +169,7 @@ export default class AvatarGroup extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
+        this._destroyTooltip();
     }
 
     /*
