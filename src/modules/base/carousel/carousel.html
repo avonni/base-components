@@ -8,8 +8,6 @@
                 <lightning-layout-item>
                     <!-- Previous navigation -->
                     <button
-                        data-element-id="lightning-button-icon-previous"
-                        title={assistiveText.previousPanel}
                         class="
                             slds-button
                             slds-button_icon
@@ -20,8 +18,10 @@
                             avonni-carousel__nav-button
                         "
                         disabled={previousPanelNavigationDisabled}
-                        onclick={previous}
+                        title={assistiveText.previousPanel}
                         type="button"
+                        data-element-id="lightning-button-icon-previous"
+                        onclick={previous}
                     >
                         <c-primitive-icon
                             class="avonni-carousel__nav-icon"
@@ -36,8 +36,8 @@
                 </lightning-layout-item>
             </template>
             <lightning-layout-item
-                flexibility="auto"
                 class="avonni-carousel__stage_min-width"
+                flexibility="auto"
             >
                 <div class="slds-carousel__stage">
                     <!-- Carousel panels -->
@@ -62,11 +62,11 @@
                                 >
                                     <!-- Carousel items -->
                                     <div
-                                        key={item.name}
                                         class="
                                             slds-carousel__panel
                                             slds-p-horizontal_x-small
                                         "
+                                        key={item.name}
                                         style={carouselItemStyle}
                                     >
                                         <c-primitive-carousel-item
@@ -101,7 +101,7 @@
                         "
                         role="tablist"
                         data-element-id="ul"
-                        onkeydown={keyDownHandler}
+                        onkeydown={handleKeyDown}
                     >
                         <!-- Pagination items -->
                         <template
@@ -113,17 +113,17 @@
                                 key={paginationItem.key}
                                 class="slds-carousel__indicator"
                                 role="presentation"
-                                onclick={handlePaginationItemClick}
                                 data-element-id="li-pagination"
                                 data-index={paginationIndex}
+                                onclick={handlePaginationItemClick}
                             >
                                 <a
-                                    id={paginationItem.elementId}
                                     class={paginationItem.className}
+                                    aria-selected={paginationItem.ariaSelected}
                                     href="javascript:void(0);"
+                                    id={paginationItem.elementId}
                                     role="tab"
                                     tabindex={paginationItem.tabIndex}
-                                    aria-selected={paginationItem.ariaSelected}
                                     title={paginationItem.tabTitle}
                                     data-element-id="a-pagination"
                                     data-index={paginationIndex}
@@ -145,58 +145,59 @@
                     </ul>
 
                     <!-- Autoplay button -->
-                    <template if:false={disableAutoScroll}>
-                        <lightning-button-icon
-                            alternative-text={assistiveText.autoplayButton}
-                            class={computedAutoScrollAutoplayButton}
-                            icon-name={autoScrollIcon}
-                            size="x-small"
-                            title={assistiveText.autoplayButton}
-                            variant="border-filled"
-                            data-element-id="lightning-button-icon"
-                            onclick={toggleAutoScroll}
-                        ></lightning-button-icon>
-                    </template>
+                    <lightning-button-icon
+                        if:false={disableAutoScroll}
+                        alternative-text={assistiveText.autoplayButton}
+                        class={computedAutoScrollAutoplayButton}
+                        icon-name={autoScrollIcon}
+                        size="x-small"
+                        title={assistiveText.autoplayButton}
+                        variant="border-filled"
+                        data-element-id="lightning-button-icon"
+                        onclick={toggleAutoScroll}
+                    ></lightning-button-icon>
                 </div>
             </lightning-layout-item>
-            <template if:false={hidePreviousNextPanelNavigation}>
-                <!-- Next navigation -->
-                <lightning-layout-item class="slds-is-relative">
-                    <lightning-spinner
-                        if:true={isLoading}
-                        class="slds-m-left_medium slds-m-bottom_large"
-                        alternative-text="Loading..."
-                        size="x-small"
-                        data-element-id="lightning-spinner"
-                    ></lightning-spinner>
-                    <button
-                        data-element-id="lightning-button-icon-next"
-                        class="
-                            slds-button
-                            slds-button_icon
-                            slds-button_icon-small
-                            slds-button_icon-border-filled
-                            slds-m-left_medium
-                            slds-m-bottom_large
-                            avonni-carousel__nav-button
-                        "
-                        disabled={nextPanelNavigationDisabled}
-                        title={assistiveText.nextPanel}
-                        onclick={next}
-                        type="button"
-                    >
-                        <c-primitive-icon
-                            class="avonni-carousel__nav-icon"
-                            icon-name="utility:chevronright"
-                            svg-class="slds-button__icon"
-                            variant="bare"
-                        ></c-primitive-icon>
-                        <span class="slds-assistive-text">
-                            {assistiveText.nextPanel}
-                        </span>
-                    </button>
-                </lightning-layout-item>
-            </template>
+
+            <!-- Next navigation -->
+            <lightning-layout-item
+                if:false={hidePreviousNextPanelNavigation}
+                class="slds-is-relative"
+            >
+                <lightning-spinner
+                    if:true={isLoading}
+                    class="slds-m-left_medium slds-m-bottom_large"
+                    alternative-text="Loading..."
+                    size="x-small"
+                    data-element-id="lightning-spinner"
+                ></lightning-spinner>
+                <button
+                    class="
+                        slds-button
+                        slds-button_icon
+                        slds-button_icon-small
+                        slds-button_icon-border-filled
+                        slds-m-left_medium
+                        slds-m-bottom_large
+                        avonni-carousel__nav-button
+                    "
+                    disabled={nextPanelNavigationDisabled}
+                    title={assistiveText.nextPanel}
+                    type="button"
+                    data-element-id="lightning-button-icon-next"
+                    onclick={next}
+                >
+                    <c-primitive-icon
+                        class="avonni-carousel__nav-icon"
+                        icon-name="utility:chevronright"
+                        svg-class="slds-button__icon"
+                        variant="bare"
+                    ></c-primitive-icon>
+                    <span class="slds-assistive-text">
+                        {assistiveText.nextPanel}
+                    </span>
+                </button>
+            </lightning-layout-item>
         </lightning-layout>
     </div>
 </template>
