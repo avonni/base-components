@@ -130,6 +130,7 @@ export default class InputChoiceSet extends LightningElement {
     _rendered = false;
     _resizeObserver;
     _tooltip;
+    _tooltipTimeout;
     _transformedOptions = [];
 
     /**
@@ -850,6 +851,9 @@ export default class InputChoiceSet extends LightningElement {
      * Clear all tooltips and remove all event listeners.
      */
     _destroyTooltip() {
+        if (this._tooltipTimeout) {
+            clearTimeout(this._tooltipTimeout);
+        }
         if (this._tooltip) {
             this._tooltip.destroy();
         }
@@ -1242,6 +1246,12 @@ export default class InputChoiceSet extends LightningElement {
                 this._tooltip = tooltip;
                 this._tooltip.initialize();
                 this._tooltip.show();
+
+                this._tooltipTimeout = setTimeout(() => {
+                    if (this._tooltip) {
+                        this._tooltip.startPositioning();
+                    }
+                }, 50);
             }
         }
     }
@@ -1268,7 +1278,9 @@ export default class InputChoiceSet extends LightningElement {
      * @param {Event} event
      */
     handleLeave() {
-        this._destroyTooltip();
+        if (this.buttonVariant) {
+            this._destroyTooltip();
+        }
     }
 
     /**
