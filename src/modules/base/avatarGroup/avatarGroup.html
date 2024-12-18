@@ -32,7 +32,8 @@
             onclick={handleAvatarClick}
             role="button"
             onkeyup={handleAvatarClick}
-            onmouseenter={handleItemHover}
+            onmouseenter={handleItemEnter}
+            onmouseleave={handleItemLeave}
             tabindex="0"
         ></c-primitive-avatar>
         <c-primitive-avatar
@@ -63,7 +64,8 @@
             onclick={handleAvatarClick}
             role="button"
             onkeyup={handleAvatarClick}
-            onmouseenter={handleItemHover}
+            onmouseenter={handleItemEnter}
+            onmouseleave={handleItemLeave}
             tabindex="0"
         ></c-primitive-avatar>
     </div>
@@ -95,7 +97,8 @@
                     data-index={index}
                     onclick={handleAvatarClick}
                     onfocus={handleItemFocus}
-                    onmouseenter={handleItemHover}
+                    onmouseenter={handleItemEnter}
+                    onmouseleave={handleItemLeave}
                 >
                     <c-avatar
                         class={item.class}

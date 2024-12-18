@@ -132,7 +132,7 @@ export default class AvatarGroup extends LightningElement {
     _positioning = false;
     _preventPopoverClosing = false;
     _resizeObserver;
-    _tooltips = [];
+    _tooltip;
     _tooltipTimeout;
 
     connectedCallback() {
@@ -163,14 +163,13 @@ export default class AvatarGroup extends LightningElement {
         avatars.forEach((avatar, index) => {
             avatar.style.zIndex = avatars.length - index;
         });
-
-        this.initAllTooltips();
     }
 
     disconnectedCallback() {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
+        this._destroyTooltip();
     }
 
     /*
@@ -248,7 +247,7 @@ export default class AvatarGroup extends LightningElement {
         this.keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
 
-        this.destroyAllTooltips();
+        this._destroyTooltip();
 
         if (
             this.showHiddenItems &&
@@ -912,11 +911,13 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Clear all tooltips and remove all event listeners.
      */
-    destroyAllTooltips() {
-        this._tooltips.forEach((tooltip) => {
-            tooltip.destroy();
-        });
-        this._tooltips = [];
+    _destroyTooltip() {
+        if (this._tooltipTimeout) {
+            clearTimeout(this._tooltipTimeout);
+        }
+        if (this._tooltip) {
+            this._tooltip.destroy();
+        }
     }
 
     /**
@@ -967,40 +968,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Initialize all the tooltips.
-     */
-    initAllTooltips() {
-        if (this.isClassic || this.isNotList) {
-            for (let i = 0; i < this.avatarItemElements.length; i++) {
-                if (!this._tooltips[i]) {
-                    const tooltipValue = this.items[i].alternativeText || '';
-                    if (tooltipValue) {
-                        this._tooltips[i] = new Tooltip(tooltipValue, {
-                            type: TooltipType.Toggle,
-                            root: this,
-                            target: () => this.avatarItemElements[i],
-                            align: {
-                                horizontal: Direction.Center,
-                                vertical: Direction.Top
-                            },
-                            targetAlign: {
-                                horizontal: Direction.Center,
-                                vertical: Direction.Bottom
-                            }
-                        });
-                        this._tooltips[i].initialize();
-                    }
-                }
-            }
-        }
-        this._tooltips
-            .filter((tooltip) => tooltip && !tooltip.initialized)
-            .forEach((tooltip) => {
-                tooltip.initialize();
-            });
-    }
-
-    /**
      * Initialize the screen resize observer.
      *
      * @returns {AvonniResizeObserver} Resize observer.
@@ -1011,8 +978,7 @@ export default class AvatarGroup extends LightningElement {
         }
         return new AvonniResizeObserver(this.wrapperElement, () => {
             this.updateVisibleMaxCount();
-            this.destroyAllTooltips();
-            this.initAllTooltips();
+            this._destroyTooltip();
         });
     }
 
@@ -1437,6 +1403,53 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Handle a mouse enter on an item.
+     *
+     * @param {Event} event `mouseenter` event.
+     */
+    handleItemEnter(event) {
+        if (this.isClassic || this.isNotList) {
+            const target = event.currentTarget;
+            const index = Number(event.currentTarget.dataset.index);
+            const item = this.isClassic
+                ? index === 0
+                    ? this.primaryItem
+                    : this.secondaryItem
+                : this.items[index];
+
+            const tooltipValue =
+                item?.alternativeText || item?.['alternative-text'];
+            if (tooltipValue) {
+                const tooltip = new Tooltip(tooltipValue, {
+                    type: TooltipType.Toggle,
+                    root: this,
+                    target: () => target,
+                    align: {
+                        horizontal: Direction.Left,
+                        vertical: Direction.Top
+                    },
+                    targetAlign: {
+                        horizontal: Direction.Left,
+                        vertical: Direction.Bottom
+                    }
+                });
+                this._tooltip = tooltip;
+                this._tooltip.initialize();
+                this._tooltip.show();
+
+                if (this._tooltipTimeout) {
+                    clearTimeout(this._tooltipTimeout);
+                }
+                this._tooltipTimeout = setTimeout(() => {
+                    if (this._tooltip) {
+                        this._tooltip.startPositioning();
+                    }
+                }, 50);
+            }
+        }
+    }
+
+    /**
      * Handle a focus on an item.
      *
      * @param {Event} event `focus` event.
@@ -1449,22 +1462,13 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Handle a mouse enter on an item.
+     * Handle a mouse leave on an item.
      *
-     * @param {Event} event `mouseenter` event.
+     * @param {Event} event `mouseleave` event.
      */
-    handleItemHover(event) {
+    handleItemLeave() {
         if (this.isClassic || this.isNotList) {
-            // Reposition the tooltip
-            const index = Number(event.currentTarget.dataset.index);
-            if (this._tooltipTimeout) {
-                clearTimeout(this._tooltipTimeout);
-            }
-            this._tooltipTimeout = setTimeout(() => {
-                if (this._tooltips[index]) {
-                    this._tooltips[index].startPositioning();
-                }
-            }, 50);
+            this._destroyTooltip();
         }
     }
 

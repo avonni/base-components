@@ -6,6 +6,7 @@
  * @property {boolean} hideLabel If present, the label of the option is hidden.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
  * @property {string} iconPosition The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
+ * @property {string} tooltip Tooltip of the option.
  * @property {string} value Value of the option.
  */
 /**
