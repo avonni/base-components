@@ -223,11 +223,11 @@ const optionsWithIcon = [
     }
 ];
 const optionsWithoutIcon = [
-    { label: 'Mon', value: 'mon' },
-    { label: 'Tue', value: 'tue' },
-    { label: 'Wed', value: 'wed' },
-    { label: 'Thu', value: 'thu' },
-    { label: 'Fri', value: 'fri' }
+    { label: 'Mon', value: 'mon', tooltip: 'Monday' },
+    { label: 'Tue', value: 'tue', tooltip: 'Tuesday' },
+    { label: 'Wed', value: 'wed', tooltip: 'Wednesday' },
+    { label: 'Thu', value: 'thu', tooltip: 'Thursday' },
+    { label: 'Fri', value: 'fri', tooltip: 'Friday' }
 ];
 const optionsWithColors = [
     { label: 'Pacific Cyan', value: 'pacificCyan', color: '#06AED5' },

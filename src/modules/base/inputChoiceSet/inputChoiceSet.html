@@ -65,6 +65,9 @@
                                 <span
                                     class={computedInputContainerClass}
                                     data-element-id="span-checkbox-container"
+                                    data-value={option.value}
+                                    onmouseenter={handleEnter}
+                                    onmouseleave={handleLeave}
                                 >
                                     <input
                                         disabled={disabled}
@@ -212,6 +215,9 @@
                             key={option.value}
                             class={computedButtonContainerClass}
                             data-element-id="span-checkbox-container"
+                            data-value={option.value}
+                            onmouseenter={handleEnter}
+                            onmouseleave={handleLeave}
                         >
                             <input
                                 disabled={disabled}

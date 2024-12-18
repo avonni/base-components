@@ -20,6 +20,8 @@ import {
 } from 'c/utils';
 import InputChoiceOption from './inputChoiceOption';
 import { AvonniResizeObserver } from 'c/resizeObserver';
+import { Tooltip, TooltipType } from 'c/tooltipLibrary';
+import { Direction } from 'c/positionLibrary';
 
 const i18n = {
     required: 'required'
@@ -122,10 +124,12 @@ export default class InputChoiceSet extends LightningElement {
     computedTypeAttributes = {};
     computedWidth;
     helpMessage;
+
     _connected = false;
     _containerWidth;
     _rendered = false;
     _resizeObserver;
+    _tooltip;
     _transformedOptions = [];
 
     /**
@@ -174,6 +178,7 @@ export default class InputChoiceSet extends LightningElement {
             this._resizeObserver.disconnect();
             this._resizeObserver = undefined;
         }
+        this._destroyTooltip();
     }
 
     /*
@@ -285,6 +290,7 @@ export default class InputChoiceSet extends LightningElement {
         if (this._connected) {
             this._initOrientationAttributes();
             this._setWidth();
+            this._destroyTooltip();
         }
     }
 
@@ -376,6 +382,7 @@ export default class InputChoiceSet extends LightningElement {
         });
         if (this._connected) {
             this._initOptions();
+            this._destroyTooltip();
         }
     }
 
@@ -392,6 +399,9 @@ export default class InputChoiceSet extends LightningElement {
     set typeAttributes(value) {
         this._typeAttributes = normalizeObject(value);
         this._normalizeTypeAttributes();
+        if (this._connected) {
+            this._destroyTooltip();
+        }
     }
 
     /**
@@ -837,6 +847,16 @@ export default class InputChoiceSet extends LightningElement {
      */
 
     /**
+     * Clear all tooltips and remove all event listeners.
+     */
+    _destroyTooltip() {
+        if (this._tooltip) {
+            this._tooltip.destroy();
+        }
+        this._tooltip = null;
+    }
+
+    /**
      * Handles the checking for the change event.
      *
      * @param {string} value Value of the checkbox.
@@ -949,6 +969,7 @@ export default class InputChoiceSet extends LightningElement {
         this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
             this._containerWidth = wrapper.getBoundingClientRect().width;
             this._setWidth();
+            this._destroyTooltip();
         });
     }
 
@@ -1192,6 +1213,40 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Handle a mouse enter.
+     *
+     * @param {Event} event
+     */
+    handleEnter(event) {
+        if (this.buttonVariant && !this._tooltip) {
+            const target = event.currentTarget;
+            const buttonValue = event.currentTarget.dataset.value;
+            const option = this.options.find(
+                (opt) => opt.value === buttonValue
+            );
+
+            if (option && option.tooltip) {
+                const tooltip = new Tooltip(option.tooltip, {
+                    type: TooltipType.Toggle,
+                    root: this,
+                    target: () => target,
+                    align: {
+                        horizontal: Direction.Left,
+                        vertical: Direction.Top
+                    },
+                    targetAlign: {
+                        horizontal: Direction.Left,
+                        vertical: Direction.Bottom
+                    }
+                });
+                this._tooltip = tooltip;
+                this._tooltip.initialize();
+                this._tooltip.show();
+            }
+        }
+    }
+
+    /**
      * Handles and Dispatches the focus event.
      */
     handleFocus() {
@@ -1205,6 +1260,15 @@ export default class InputChoiceSet extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
+     * Handle a mouse leave.
+     *
+     * @param {Event} event
+     */
+    handleLeave() {
+        this._destroyTooltip();
     }
 
     /**

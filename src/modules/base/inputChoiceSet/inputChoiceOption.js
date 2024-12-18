@@ -14,6 +14,7 @@ const POSITION_ICON = {
  * @param {boolean} hideLabel If present, the label of the option is hidden.
  * @param {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
  * @param {string} iconPosition The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
+ * @param {string} tooltip Tooltip of the option.
  * @param {string} value Value of the option.
  */
 export default class InputChoiceOption {
@@ -23,6 +24,7 @@ export default class InputChoiceOption {
         this.iconPosition = option.iconPosition;
         this.hideLabel = option.hideLabel;
         this.label = option.label;
+        this.tooltip = option.tooltip;
         this.value = option.value;
         this.displayLabel = this.label && !this.hideLabel;
         this.type = type;
