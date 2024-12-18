@@ -56,6 +56,7 @@ function getCachedBubbleElement() {
         });
 
         CONTENT = document.createElement('div');
+        CONTENT.style.maxWidth = '500px';
         CONTENT.classList.add('slds-popover__body');
         CONTENT.addEventListener('mouseleave', () => {
             handleMouseLeave();
