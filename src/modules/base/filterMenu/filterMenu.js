@@ -1705,7 +1705,7 @@ export default class FilterMenu extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  EVENT HNALDERS AND DISPATCHERS
+     *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
 

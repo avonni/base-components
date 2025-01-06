@@ -255,16 +255,23 @@ export default {
             },
             options: [
                 'bare',
-                'container',
-                'brand',
+                'bare-inverse',
+                'base',
                 'border',
                 'border-filled',
-                'bare-inverse',
                 'border-inverse',
-                'reset'
+                'brand',
+                'brand-outline',
+                'container',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'neutral',
+                'reset',
+                'success'
             ],
             description:
-                'The variant changes the look of the button. Accepted variants when no label include bare, container, border, border-filled, bare-inverse, and border-inverse. Accepted variants when label include bare, border, brand and reset.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral, reset and success.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
@@ -272,6 +279,7 @@ export default {
         }
     },
     args: {
+        allowSearch: false,
         buttonSize: 'auto',
         disabled: false,
         hideCheckMark: false,
@@ -283,8 +291,7 @@ export default {
         menuWidth: 'small',
         nubbin: false,
         searchInputPlaceholder: 'Search…',
-        variant: 'border',
-        allowSearch: false
+        variant: 'border'
     }
 };
 

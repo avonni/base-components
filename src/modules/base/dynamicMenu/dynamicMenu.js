@@ -16,12 +16,19 @@ const BUTTON_VARIANTS = {
     valid: [
         'bare',
         'bare-inverse',
+        'base',
         'border',
-        'border-inverse',
         'border-filled',
+        'border-inverse',
         'brand',
+        'brand-outline',
         'container',
-        'reset'
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'neutral',
+        'reset',
+        'success'
     ],
     default: 'border'
 };
@@ -38,12 +45,13 @@ const ICON_POSITIONS = {
 
 const MENU_ALIGNMENTS = {
     valid: [
-        'left',
-        'center',
-        'right',
-        'bottom-left',
+        'auto',
         'bottom-center',
-        'bottom-right'
+        'bottom-left',
+        'bottom-right',
+        'center',
+        'left',
+        'right'
     ],
     default: 'left'
 };
@@ -138,14 +146,14 @@ export default class DynamicMenu extends LightningElement {
     _value;
     _variant = BUTTON_VARIANTS.default;
 
-    queryTerm;
-    showFooter = true;
+    displayActionIcons = false;
+    dropdownOpened = false;
     filteredItems = [];
     hoverItem;
     listHeight;
-    displayActionIcons = false;
+    queryTerm;
+    showFooter = true;
 
-    _dropdownOpened = false;
     _dropdownVisible = false;
     _order;
     _boundingRect = {};
@@ -177,7 +185,7 @@ export default class DynamicMenu extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
-        if (this._dropdownOpened) {
+        if (this.dropdownOpened) {
             this.calculateListHeight();
         }
     }
@@ -223,7 +231,6 @@ export default class DynamicMenu extends LightningElement {
     get allowSearch() {
         return this._allowSearch;
     }
-
     set allowSearch(value) {
         this._allowSearch = normalizeBoolean(value);
     }
@@ -239,7 +246,6 @@ export default class DynamicMenu extends LightningElement {
     get buttonSize() {
         return this._buttonSize;
     }
-
     set buttonSize(value) {
         this._buttonSize = normalizeString(value, {
             fallbackValue: BUTTON_SIZES.default,
@@ -264,7 +270,6 @@ export default class DynamicMenu extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -280,7 +285,6 @@ export default class DynamicMenu extends LightningElement {
     get hideCheckMark() {
         return this._hideCheckMark;
     }
-
     set hideCheckMark(value) {
         this._hideCheckMark = normalizeBoolean(value);
     }
@@ -296,7 +300,6 @@ export default class DynamicMenu extends LightningElement {
     get iconPosition() {
         return this._iconPosition;
     }
-
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
             fallbackValue: ICON_POSITIONS.default,
@@ -315,7 +318,6 @@ export default class DynamicMenu extends LightningElement {
     get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(iconSize) {
         this._iconSize = normalizeString(iconSize, {
             fallbackValue: ICON_SIZES.default,
@@ -334,7 +336,6 @@ export default class DynamicMenu extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -349,7 +350,6 @@ export default class DynamicMenu extends LightningElement {
     get items() {
         return this._items;
     }
-
     set items(value) {
         this._items = normalizeArray(value);
         this.filteredItems = this._items;
@@ -366,7 +366,6 @@ export default class DynamicMenu extends LightningElement {
     get menuAlignment() {
         return this._menuAlignment;
     }
-
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
             fallbackValue: MENU_ALIGNMENTS.default,
@@ -385,7 +384,6 @@ export default class DynamicMenu extends LightningElement {
     get menuLength() {
         return this._menuLength;
     }
-
     set menuLength(value) {
         this._menuLength = normalizeString(value, {
             fallbackValue: MENU_LENGTHS.default,
@@ -404,7 +402,6 @@ export default class DynamicMenu extends LightningElement {
     get menuWidth() {
         return this._menuWidth;
     }
-
     set menuWidth(value) {
         this._menuWidth = normalizeString(value, {
             fallbackValue: MENU_WIDTHS.default,
@@ -423,7 +420,6 @@ export default class DynamicMenu extends LightningElement {
     get nubbin() {
         return this._nubbin;
     }
-
     set nubbin(value) {
         this._nubbin = normalizeBoolean(value);
     }
@@ -438,13 +434,12 @@ export default class DynamicMenu extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants when no label include bare, container, border, border-filled, bare-inverse, and border-inverse. Accepted variants when label include bare, border, brand and reset.
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse brand, brand-outline, container, destructive, destructive-text, inverse, neutral, reset and success.
      *
      * @type {string}
      * @public
@@ -454,7 +449,6 @@ export default class DynamicMenu extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -487,6 +481,75 @@ export default class DynamicMenu extends LightningElement {
      */
 
     /**
+     * Computed Aria Expanded from dropdown menu.
+     *
+     * @type {string}
+     */
+    get computedAriaExpanded() {
+        return String(this._dropdownVisible);
+    }
+
+    /**
+     * Computed Button class styling.
+     *
+     * @type {string}
+     */
+    get computedButtonClass() {
+        return classSet('')
+            .add({
+                'avonni-dynamic-menu__button': this.variant !== 'reset',
+                'avonni-dynamic-menu__button_reset': this.variant === 'reset'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Button variant.
+     *
+     * @type {string}
+     */
+    get computedButtonVariant() {
+        return this.variant === 'reset' ? 'bare' : this.variant;
+    }
+
+    /**
+     * Computed Dropdown class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownClass() {
+        return classSet(
+            'slds-dropdown slds-popover slds-dynamic-menu avonni-dynamic-menu__dropdown_color-background'
+        )
+            .add({
+                'slds-dropdown_left':
+                    this.menuAlignment === 'left' || this.isAutoAlignment,
+                'slds-dropdown_center': this.menuAlignment === 'center',
+                'slds-dropdown_right': this.menuAlignment === 'right',
+                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                    this.menuAlignment === 'bottom-right',
+                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                    this.menuAlignment === 'bottom-left',
+                'slds-nubbin_top-left':
+                    this.menuAlignment === 'left' && this.nubbin,
+                'slds-nubbin_top-right':
+                    this.menuAlignment === 'right' && this.nubbin,
+                'slds-nubbin_top':
+                    this.menuAlignment === 'center' && this.nubbin,
+                'slds-nubbin_bottom-left':
+                    this.menuAlignment === 'bottom-left' && this.nubbin,
+                'slds-nubbin_bottom-right':
+                    this.menuAlignment === 'bottom-right' && this.nubbin,
+                'slds-nubbin_bottom':
+                    this.menuAlignment === 'bottom-center' && this.nubbin,
+                'slds-p-vertical_large': this.isLoading
+            })
+            .add(`slds-dropdown_${this.menuWidth}`)
+            .toString();
+    }
+
+    /**
      * Computed list items.
      * @type {object[]}
      */
@@ -516,69 +579,35 @@ export default class DynamicMenu extends LightningElement {
         });
     }
 
-    /**
-     * Computed button class, when the dynamic menu has a label.
-     *
-     * @type {string}
-     */
-    get computedButtonClass() {
-        const { variant, order, buttonSize } = this;
-        return classSet('')
-            .add({
-                'slds-button': variant !== 'reset',
-                'slds-button_reset avonni-dynamic-menu__button_reset':
-                    variant === 'reset',
-                'slds-button_stretch': buttonSize === 'stretch',
-                'slds-button_first': order === 'first',
-                'slds-button_middle': order === 'middle',
-                'slds-button_last': order === 'last',
-                'slds-button_neutral':
-                    variant !== 'brand' &&
-                    variant !== 'reset' &&
-                    variant !== 'bare',
-                'avonni-dynamic-menu__button_border': variant === 'border',
-                'avonni-dynamic-menu__button_bare': variant === 'bare',
-                'slds-button_brand avonni-dynamic-menu__button_brand':
-                    variant === 'brand'
-            })
-            .toString();
+    get computedStrech() {
+        return this.buttonSize === 'stretch';
     }
 
     /**
-     * Computed Dropdown class styling.
+     * Verify if the icon position is left.
      *
-     * @type {string}
+     * @type {boolean}
      */
-    get computedDropdownClass() {
-        return classSet(
-            'slds-dropdown slds-popover slds-dynamic-menu avonni-dynamic-menu__dropdown_color-background'
-        )
-            .add({
-                'slds-dropdown_left':
-                    this._menuAlignment === 'left' || this.isAutoAlignment(),
-                'slds-dropdown_center': this._menuAlignment === 'center',
-                'slds-dropdown_right': this._menuAlignment === 'right',
-                'slds-dropdown_bottom': this._menuAlignment === 'bottom-center',
-                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                    this._menuAlignment === 'bottom-right',
-                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                    this._menuAlignment === 'bottom-left',
-                'slds-nubbin_top-left':
-                    this._menuAlignment === 'left' && this._nubbin,
-                'slds-nubbin_top-right':
-                    this._menuAlignment === 'right' && this._nubbin,
-                'slds-nubbin_top':
-                    this._menuAlignment === 'center' && this._nubbin,
-                'slds-nubbin_bottom-left':
-                    this._menuAlignment === 'bottom-left' && this._nubbin,
-                'slds-nubbin_bottom-right':
-                    this._menuAlignment === 'bottom-right' && this._nubbin,
-                'slds-nubbin_bottom':
-                    this._menuAlignment === 'bottom-center' && this._nubbin,
-                'slds-p-vertical_large': this.isLoading
-            })
-            .add(`slds-dropdown_${this._menuWidth}`)
-            .toString();
+    get iconIsLeft() {
+        return this.iconPosition === 'left' && this.iconName;
+    }
+
+    /**
+     * Verify if the icon position is right.
+     *
+     * @type {boolean}
+     */
+    get iconIsRight() {
+        return this.iconPosition === 'right' && this.iconName;
+    }
+
+    /**
+     * Check if menu is Auto Aligned.
+     *
+     * @type {boolean}
+     */
+    get isAutoAlignment() {
+        return this.menuAlignment.startsWith('auto');
     }
 
     /**
@@ -590,38 +619,31 @@ export default class DynamicMenu extends LightningElement {
         return this.computedListItems.length;
     }
 
-    /**
-     * Verify if the icon position is left.
-     *
-     * @type {boolean}
-     */
-    get iconIsLeft() {
-        return this._iconPosition === 'left' && this.iconName;
-    }
-
-    /**
-     * Verify if the icon position is right.
-     *
-     * @type {boolean}
-     */
-    get iconIsRight() {
-        return this._iconPosition === 'right' && this.iconName;
-    }
-
-    /**
-     * Computed Aria Expanded from dropdown menu.
-     *
-     * @type {string}
-     */
-    get computedAriaExpanded() {
-        return String(this._dropdownVisible);
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Simulates a mouse click on the button.
+     *
+     * @public
+     */
+    @api
+    click() {
+        if (this._connected) {
+            if (this.label) {
+                this.template
+                    .querySelector('[data-element-id="button"]')
+                    .click();
+            } else {
+                this.template
+                    .querySelector('[data-element-id="button-icon"]')
+                    .click();
+            }
+        }
+    }
 
     /**
      * Set focus on the button.
@@ -642,31 +664,18 @@ export default class DynamicMenu extends LightningElement {
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
-    /**
-     * Simulates a mouse click on the button.
-     *
-     * @public
-     */
-    @api
-    click() {
-        if (this._connected) {
-            if (this.label) {
-                this.template
-                    .querySelector('[data-element-id="button"]')
-                    .click();
-            } else {
-                this.template
-                    .querySelector('[data-element-id="lightning-button-icon"]')
-                    .click();
-            }
-        }
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Allows Blur.
+     */
+    allowBlur() {
+        this._cancelBlur = false;
+    }
 
     /**
      * Return the list height.
@@ -676,9 +685,9 @@ export default class DynamicMenu extends LightningElement {
     calculateListHeight() {
         let height = 0;
         let length = 7;
-        if (this._menuLength === '5-items') {
+        if (this.menuLength === '5-items') {
             length = 5;
-        } else if (this._menuLength === '10-items') {
+        } else if (this.menuLength === '10-items') {
             length = 10;
         }
 
@@ -693,11 +702,112 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Cancels Blur.
+     */
+    cancelBlur() {
+        this._cancelBlur = true;
+    }
+
+    /**
+     * Close Dropdown menu.
+     */
+    close() {
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Button focus handler.
+     */
+    focusOnButton() {
+        if (this.label) {
+            this.template.querySelector('[data-element-id="button"]').focus();
+        } else {
+            this.template
+                .querySelector('[data-element-id="button-icon"]')
+                .focus();
+        }
+    }
+
+    /**
+     * Get bounding rect coordinates for dropdown menu.
+     */
+    pollBoundingRect() {
+        if (this.isAutoAlignment && this._dropdownVisible) {
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                if (this._connected) {
+                    observePosition(this, 300, this._boundingRect, () => {
+                        this.close();
+                    });
+
+                    this.pollBoundingRect();
+                }
+            }, 250);
+        }
+    }
+
+    /**
      * Sets the order value of the button when in the context of a button-group or other ordered component
      * @param {string} order -  The order string (first, middle, last)
      */
     setOrder(order) {
         this._order = order;
+    }
+
+    /**
+     * Dropdown menu Visibility toggle.
+     */
+    toggleMenuVisibility() {
+        if (!this.disabled) {
+            this._dropdownVisible = !this._dropdownVisible;
+            this.dropdownOpened = !this.dropdownOpened;
+
+            if (this._dropdownVisible) {
+                /**
+                 * The event fired when you open the dropdown menu.
+                 *
+                 * @event
+                 * @name open
+                 * @public
+                 */
+                this.dispatchEvent(new CustomEvent('open'));
+                this._boundingRect = this.getBoundingClientRect();
+                this.pollBoundingRect();
+            } else {
+                /**
+                 * The event fired when you close the dropdown menu.
+                 *
+                 * @event
+                 * @name close
+                 * @public
+                 */
+                this.dispatchEvent(new CustomEvent('close'));
+                this.filteredItems = this.items;
+            }
+
+            this.classList.toggle('slds-is-open');
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Blur Handler.
+     */
+    handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
+
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
     }
 
     /**
@@ -750,133 +860,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * Button focus handler.
-     */
-    focusOnButton() {
-        if (this.label) {
-            this.template.querySelector('[data-element-id="button"]').focus();
-        } else {
-            this.template
-                .querySelector('[data-element-id="lightning-button-icon"]')
-                .focus();
-        }
-    }
-
-    /**
-     * Check if menu is Auto Aligned.
-     *
-     * @returns boolean
-     */
-    isAutoAlignment() {
-        return this.menuAlignment.startsWith('auto');
-    }
-
-    /**
-     * Dropdown menu Visibility toggle.
-     */
-    toggleMenuVisibility() {
-        if (!this.disabled) {
-            this._dropdownVisible = !this._dropdownVisible;
-            this._dropdownOpened = !this._dropdownOpened;
-
-            if (this._dropdownVisible) {
-                /**
-                 * The event fired when you open the dropdown menu.
-                 *
-                 * @event
-                 * @name open
-                 * @public
-                 */
-                this.dispatchEvent(new CustomEvent('open'));
-                this._boundingRect = this.getBoundingClientRect();
-                this.pollBoundingRect();
-            } else {
-                /**
-                 * The event fired when you close the dropdown menu.
-                 *
-                 * @event
-                 * @name close
-                 * @public
-                 */
-                this.dispatchEvent(new CustomEvent('close'));
-                this.filteredItems = this.items;
-            }
-
-            this.classList.toggle('slds-is-open');
-        }
-    }
-
-    /**
-     * Blur Handler.
-     */
-    handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
-
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Allows Blur.
-     */
-    allowBlur() {
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Cancels Blur.
-     */
-    cancelBlur() {
-        this._cancelBlur = true;
-    }
-
-    /**
-     * Close Dropdown menu.
-     */
-    close() {
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Get bounding rect coordinates for dropdown menu.
-     */
-    pollBoundingRect() {
-        if (this.isAutoAlignment() && this._dropdownVisible) {
-            // eslint-disable-next-line @lwc/lwc/no-async-operation
-            setTimeout(() => {
-                if (this._connected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        this.close();
-                    });
-
-                    this.pollBoundingRect();
-                }
-            }, 250);
-        }
-    }
-
-    /**
-     * Key up event handler.
-     *
-     * @param {Event} event
-     */
-    handleKeyUp(event) {
-        let filter = event.target.value.toLowerCase();
-        this.filteredItems = this.items.filter((item) => {
-            return (
-                item.label.toLowerCase().indexOf(filter) > -1 ||
-                item.value.toLowerCase().indexOf(filter) > -1
-            );
-        });
-    }
-
-    /**
-     * Click handler.
+     * Item Click handler.
      *
      * @param {Event} event
      */
@@ -926,14 +910,18 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * Clear filtered Items.
+     * Key up event handler.
      *
      * @param {Event} event
      */
-    clearFilter(event) {
-        if (!event.target.value) {
-            this.filteredItems = this.items;
-        }
+    handleKeyUp(event) {
+        let filter = event.target.value.toLowerCase();
+        this.filteredItems = this.items.filter((item) => {
+            return (
+                item.label.toLowerCase().indexOf(filter) > -1 ||
+                item.value.toLowerCase().indexOf(filter) > -1
+            );
+        });
     }
 
     /**
@@ -956,5 +944,16 @@ export default class DynamicMenu extends LightningElement {
         event.currentTarget.classList.remove(
             'avonni-dynamic-menu__display_action'
         );
+    }
+
+    /**
+     * Handles the search change event.
+     *
+     * @param {Event} event
+     */
+    handleSearchChange(event) {
+        if (!event.target.value) {
+            this.filteredItems = this.items;
+        }
     }
 }
