@@ -135,6 +135,28 @@ export default class ProfileCard extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
+
+        /**
+         * The event fired when the profile card is rendered.
+         *
+         * @event
+         * @name privateprofilecardrendered
+         */
+        this.dispatchEvent(
+            new CustomEvent('privateprofilecardrendered', {
+                detail: {
+                    callbacks: {
+                        // Used by the Component Builder in Salesforce
+                        // to show the empty slots when a component is being dragged
+                        recomputeSlotsVisibility: () => {
+                            this.showActions = true;
+                            this.showFooter = true;
+                        }
+                    }
+                },
+                bubbles: true
+            })
+        );
     }
 
     @api
