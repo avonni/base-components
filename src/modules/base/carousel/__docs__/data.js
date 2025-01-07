@@ -26,8 +26,7 @@ const menuActions = [
     },
     {
         name: 'action-priority',
-        iconName: 'utility:priority',
-        label: 'Prioritize'
+        iconName: 'utility:priority'
     }
 ];
 

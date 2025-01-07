@@ -59,31 +59,6 @@ export default class CarouselPaginationItem {
         return this.index === this.maxItems;
     }
 
-    get previousAnimationClass() {
-        const movingToBeginning = this.activePanelIndex === 0;
-        const movingFromEnd = this.activePanelIndex === this.nbOfPanels - 2;
-        const isInTheMiddle = this.index > 1 && this.index < this.maxItems - 1;
-
-        if (this.index === 1 && movingToBeginning) {
-            return 'avonni-carousel__progress-indicator_to-big';
-        } else if (this.isPenultimate && movingFromEnd) {
-            return 'avonni-carousel__progress-indicator_to-small';
-        } else if (movingToBeginning || movingFromEnd) {
-            return '';
-        } else if (this.isFirst) {
-            return 'avonni-carousel__progress-indicator_to-visible-right';
-        } else if (this.index === 1) {
-            return 'avonni-carousel__progress-indicator_to-big-right';
-        } else if (isInTheMiddle) {
-            return 'avonni-carousel__progress-indicator_to-right';
-        } else if (this.index === this.maxItems - 1) {
-            return 'avonni-carousel__progress-indicator_to-small-right';
-        } else if (this.isPenultimate) {
-            return 'avonni-carousel__progress-indicator_to-hidden-right';
-        }
-        return '';
-    }
-
     get nextAnimationClass() {
         const movingFromBeginning = this.activePanelIndex === 1;
         const movingToEnd = this.activePanelIndex === this.nbOfPanels - 1;
@@ -105,6 +80,31 @@ export default class CarouselPaginationItem {
             return 'avonni-carousel__progress-indicator_to-big-left';
         } else if (this.isLast) {
             return 'avonni-carousel__progress-indicator_to-visible-left';
+        }
+        return '';
+    }
+
+    get previousAnimationClass() {
+        const movingToBeginning = this.activePanelIndex === 0;
+        const movingFromEnd = this.activePanelIndex === this.nbOfPanels - 2;
+        const isInTheMiddle = this.index > 1 && this.index < this.maxItems - 1;
+
+        if (this.index === 1 && movingToBeginning) {
+            return 'avonni-carousel__progress-indicator_to-big';
+        } else if (this.isPenultimate && movingFromEnd) {
+            return 'avonni-carousel__progress-indicator_to-small';
+        } else if (movingToBeginning || movingFromEnd) {
+            return '';
+        } else if (this.isFirst) {
+            return 'avonni-carousel__progress-indicator_to-visible-right';
+        } else if (this.index === 1) {
+            return 'avonni-carousel__progress-indicator_to-big-right';
+        } else if (isInTheMiddle) {
+            return 'avonni-carousel__progress-indicator_to-right';
+        } else if (this.index === this.maxItems - 1) {
+            return 'avonni-carousel__progress-indicator_to-small-right';
+        } else if (this.isPenultimate) {
+            return 'avonni-carousel__progress-indicator_to-hidden-right';
         }
         return '';
     }

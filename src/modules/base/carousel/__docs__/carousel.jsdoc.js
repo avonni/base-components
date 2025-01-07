@@ -345,6 +345,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-carousel-item-action-bare-radius-border
  * @default 0.25rem
  * @type dimension
@@ -411,6 +417,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-carousel-item-action-neutral-radius-border
  * @default 0.25rem
  * @type dimension
@@ -450,4 +462,76 @@
  * @name --avonni-carousel-item-action-neutral-color-border-active
  * @default #747474
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-text-color
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-color-border
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-color-background-hover
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-text-color-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-color-border-hover
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-color-background-active
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-text-color-active
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-color-border-active
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-button-menu-radius-border
+ * @default 0.25rem
+ * @type dimension
  */

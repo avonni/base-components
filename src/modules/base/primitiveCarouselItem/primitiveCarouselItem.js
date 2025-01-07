@@ -57,9 +57,9 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
 
     /**
-     * Valid values include bare, border and menu.
+     * An array of action objects.
      *
-     * @type {string}
+     * @type {object[]}
      * @public
      * @default border
      */
@@ -69,11 +69,11 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
     set actions(actions) {
         this._actions = actions;
-        this.initializeCarouselHeight();
+        this._initializeCarouselHeight();
     }
 
     /**
-     * Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
+     * Valid values include top-left, top-right, bottom-left, bottom-right and bottom-center.
      *
      * @type {string}
      * @public
@@ -106,7 +106,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
             fallbackValue: ACTIONS_VARIANTS.default,
             validValues: ACTIONS_VARIANTS.valid
         });
-        this.initializeCarouselHeight();
+        this._initializeCarouselHeight();
     }
 
     /**
@@ -134,6 +134,23 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
 
     /**
+     * Computed actions button class styling based on action variant attributes.
+     *
+     * @type {string}
+     */
+    get computedActionButtonClass() {
+        return classSet('')
+            .add({
+                'avonni-carousel__actions-bare': this.actionsVariant === 'bare',
+                'avonni-carousel__actions-border':
+                    this.actionsVariant === 'border' ||
+                    this.actionsVariant === 'stretch',
+                'avonni-carousel__actions-menu': this.actionsVariant === 'menu'
+            })
+            .toString();
+    }
+
+    /**
      * Computed actions container class styling based on action position attributes.
      *
      * @type {string}
@@ -142,55 +159,25 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return classSet('')
             .add({
                 'avonni-carousel__actions-bottom-center':
-                    this._actionsPosition === 'bottom-center',
+                    this.actionsPosition === 'bottom-center',
                 'avonni-carousel__actions-right':
-                    this._actionsPosition.includes('right'),
+                    this.actionsPosition.includes('right'),
                 'avonni-carousel__actions-left':
-                    this._actionsPosition.includes('left')
-            })
-            .add({
-                'slds-p-around_small': !this.isBottomPosition,
-                'slds-is-absolute': !this.isBottomPosition
-            })
-            .add({
+                    this.actionsPosition.includes('left'),
+                'slds-p-around_small slds-is-absolute': this.isTopPosition,
                 'avonni-carousel__actions_stretch': this.isStretchVariant,
-                'avonni-carousel__actions': !this.isStretchVariant
+                'avonni-carousel__actions-container': !this.isStretchVariant
             })
             .toString();
     }
 
     /**
-     * Set actions variant button icon to bare if the action variant is bare, if not , set the button icon to border-filled.
+     * Set actions variant button to base if the action variant is bare, if not, set the button to neutral.
      *
      * @type {string}
      */
-    get computedActionsVariantButtonIcon() {
-        return this._actionsVariant === 'bare' ? 'bare' : 'border-filled';
-    }
-
-    /**
-     * Set actions variant button to base if the action variant is bare, if not , set the button to neutral.
-     *
-     * @type {string}
-     */
-    get computedActionsVariantButton() {
-        return this._actionsVariant === 'bare' ? 'base' : 'neutral';
-    }
-
-    /**
-     * Lightning Button class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get computedButtonClass() {
-        return classSet('')
-            .add({
-                'avonni-carousel__actions_bare':
-                    this._actionsVariant === 'bare',
-                'avonni-carousel__actions_neutral':
-                    this._actionsVariant === 'border' || this.isStretchVariant
-            })
-            .toString();
+    get computedActionsVariant() {
+        return this.actionsVariant === 'bare' ? 'base' : 'neutral';
     }
 
     /**
@@ -199,50 +186,32 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedButtonsContainerClass() {
-        return !this.isStretchVariant ? 'slds-show_small' : 'slds-show_small';
+        return !this.isStretchVariant
+            ? 'slds-show_small slds-grid slds-grid_vertical-align-center'
+            : 'slds-show_small';
     }
 
     /**
-     * Action button icon class styling based on attributes.
+     * Action button div class styling based on attributes.
      *
      * @type {string}
      */
-    get computedButtonIconActionClass() {
+    get computedDivActionClass() {
         return classSet('')
             .add({
                 'avonni-carousel-item__float':
-                    this._actionsVariant === 'border' ||
-                    this._actionsVariant === 'bare',
-                'slds-p-around_xx-small slds-grid': this.isStretchVariant
-            })
-            .toString();
-    }
-
-    /**
-     * Action button class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get computedButtonActionClass() {
-        return classSet('')
-            .add({
-                'avonni-carousel-item__float':
-                    this._actionsVariant === 'border' ||
-                    this._actionsVariant === 'bare',
+                    this.actionsVariant === 'border' ||
+                    this.actionsVariant === 'bare',
                 'slds-p-around_xx-small': this.isStretchVariant
             })
             .toString();
     }
 
     /**
-     * Action button menu action class styling based on attributes.
+     * Carousel class styling based on attributes.
      *
      * @type {string}
      */
-    get computedButtonMenuActionClass() {
-        return !this.isMenuVariant ? 'slds-hide_small' : '';
-    }
-
     get computedCarouselClass() {
         return classSet(
             `slds-carousel__panel-action avonni-carousel__panel-action avonni-carousel__image-${this.imagePosition}`
@@ -260,8 +229,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return classSet(
             'slds-carousel__content avonni-carousel__content avonni-primitive-carousel-item__content_background'
         ).add({
-            'avonni-carousel__content-bottom':
-                this.hasActions && this.isBottomPosition
+            'avonni-carousel__content-bottom': this.isBottomPosition
         });
     }
 
@@ -283,7 +251,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return classSet(
             'avonni-carousel__image-container slds-carousel__image'
         ).add({
-            'slds-is-relative': !this.isBottomPosition
+            'slds-is-relative': this.isTopPosition
         });
     }
 
@@ -293,7 +261,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {boolean}
      */
     get displayContentContainer() {
-        return this.hasText || (this.hasActions && this.isBottomPosition);
+        return this.hasText || this.isBottomPosition;
     }
 
     /**
@@ -302,7 +270,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {boolean}
      */
     get hasActions() {
-        return this._actions.length > 0;
+        return this.actions.length;
     }
 
     /**
@@ -320,7 +288,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {boolean}
      */
     get isBottomPosition() {
-        return this._actionsPosition.includes('bottom');
+        return this.actionsPosition.includes('bottom') && this.hasActions;
     }
 
     /**
@@ -329,7 +297,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {boolean}
      */
     get isMenuVariant() {
-        return this._actionsVariant === 'menu';
+        return this.actionsVariant === 'menu';
     }
 
     /**
@@ -338,7 +306,16 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {boolean}
      */
     get isStretchVariant() {
-        return this._actionsVariant === 'stretch';
+        return this.actionsVariant === 'stretch';
+    }
+
+    /**
+     * Verify if actions position is at the top.
+     *
+     * @type {boolean}
+     */
+    get isTopPosition() {
+        return this.actionsPosition.includes('top') && this.hasActions;
     }
 
     /*
@@ -346,7 +323,75 @@ export default class PrimitiveCarouselItem extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-    actionDispatcher(actionName) {
+
+    /**
+     * Carousel height initialization.
+     */
+    _initializeCarouselHeight() {
+        const isStretch = this.isStretchVariant ? 8.5 : 7.5;
+        this._carouselContentHeight = this.isBottomPosition ? isStretch : 6.625;
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Action click event handler.
+     *
+     * @param {Event}
+     */
+    handleActionClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        const actionName = event.currentTarget.name;
+        this._dispatchActionClick(actionName);
+    }
+
+    /**
+     * Prevent the default event browser behavior and stop the event propagation.
+     *
+     * @param {Event}
+     */
+    handleButtonMenuClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    /**
+     * Item clicked event handler.
+     *
+     * @param {Event} event
+     */
+    handleItemClick(event) {
+        if (
+            // eslint-disable-next-line no-script-url
+            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(
+                this.href
+            )
+        ) {
+            event.preventDefault();
+        }
+
+        this._dispatchItemClick();
+    }
+
+    /**
+     * Menu select event handler
+     *
+     * @param {Event}
+     */
+    handleMenuSelect(event) {
+        const actionName = event.currentTarget.name;
+        this._dispatchActionClick(actionName);
+    }
+
+    /**
+     * Action click event dispatcher.
+     */
+    _dispatchActionClick(actionName) {
         const {
             title,
             description,
@@ -385,33 +430,9 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Action click event handler.
-     *
-     * @param {Event}
+     * Item click event dispatcher.
      */
-    handleActionClick(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        const actionName = event.currentTarget.name;
-        this.actionDispatcher(actionName);
-    }
-
-    /**
-     * Prevent the default event browser behavior and stop the event propagation.
-     *
-     * @param {Event}
-     */
-    handleButtonMenuClick(event) {
-        event.stopPropagation();
-        event.preventDefault();
-    }
-
-    /**
-     * Item clicked event handler.
-     *
-     * @param {Event} event
-     */
-    handleItemClick(event) {
+    _dispatchItemClick() {
         const {
             title,
             description,
@@ -421,13 +442,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
             imageAssistiveText,
             name
         } = this;
-
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
 
         /**
          * The event fired when an item is clicked.
@@ -452,26 +466,5 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
-    }
-
-    /**
-     * Menu select event handler
-     *
-     * @param {Event}
-     */
-    handleMenuSelect(event) {
-        const actionName = event.currentTarget.name;
-        this.actionDispatcher(actionName);
-    }
-
-    /**
-     * Carousel height initialization.
-     */
-    initializeCarouselHeight() {
-        const isStretch = this.isStretchVariant ? 8.5 : 7.5;
-        this._carouselContentHeight =
-            this.actions.length > 0 && this.isBottomPosition
-                ? isStretch
-                : 6.625;
     }
 }
