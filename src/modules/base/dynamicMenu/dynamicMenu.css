@@ -950,3 +950,10 @@ div:focus {
 .avonni-dynamic-menu__item_min-height {
     min-height: 32px;
 }
+
+.avonni-dynamic-menu__item-label {
+    color: var(--avonni-dynamic-menu-item-text-color, #080707);
+    font-size: var(--avonni-dynamic-menu-item-font-size, 0.75rem);
+    font-style: var(--avonni-dynamic-menu-item-font-style, normal);
+    font-weight: var(--avonni-dynamic-menu-item-font-weight, 400);
+}

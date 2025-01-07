@@ -580,26 +580,13 @@ export default class DynamicMenu extends LightningElement {
         });
     }
 
+    /**
+     * Check if the button size is stretch.
+     *
+     * @type {boolean}
+     */
     get computedStrech() {
         return this.buttonSize === 'stretch';
-    }
-
-    /**
-     * Verify if the icon position is left.
-     *
-     * @type {boolean}
-     */
-    get iconIsLeft() {
-        return this.iconPosition === 'left' && this.iconName;
-    }
-
-    /**
-     * Verify if the icon position is right.
-     *
-     * @type {boolean}
-     */
-    get iconIsRight() {
-        return this.iconPosition === 'right' && this.iconName;
     }
 
     /**

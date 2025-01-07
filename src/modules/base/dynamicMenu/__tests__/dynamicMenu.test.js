@@ -575,6 +575,42 @@ describe('Dynamic Menu', () => {
             });
         });
 
+        describe('Menu Length', () => {
+            it('5 items', () => {
+                element.items = baseItems;
+                element.menuLength = '5-items';
+                element.label = 'label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                    });
+            });
+
+            it('10 items', () => {
+                element.items = baseItems;
+                element.menuLength = '10-items';
+                element.label = 'label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                    });
+            });
+        });
+
         describe('Menu Width', () => {
             it('Xx-small', () => {
                 element.menuWidth = 'xx-small';

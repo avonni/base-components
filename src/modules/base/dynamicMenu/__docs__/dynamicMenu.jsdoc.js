@@ -940,3 +940,27 @@
  * @default #0176d3
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-font-weight
+ * @default 400
+ * @type font
+ */
