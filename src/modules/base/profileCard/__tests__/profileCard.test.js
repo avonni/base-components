@@ -596,4 +596,26 @@ describe('ProfileCard', () => {
             expect(title.textContent).toBe('A string title');
         });
     });
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
+
+    // privateprofilecardrendered
+    it('Profile Card: privateprofilecardrendered event', () => {
+        const handler = jest.fn();
+        element.addEventListener('privateprofilecardrendered', handler);
+        element.title = 'some title';
+        expect(handler).not.toHaveBeenCalled();
+
+        return Promise.resolve().then(() => {
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeTruthy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+        });
+    });
 });
