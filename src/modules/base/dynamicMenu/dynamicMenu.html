@@ -1,222 +1,204 @@
 <template>
-    <button
+    <c-button
         if:true={label}
         class={computedButtonClass}
-        accesskey={accessKey}
+        access-key={accessKey}
         aria-expanded={computedAriaExpanded}
         aria-haspopup="true"
         disabled={disabled}
+        icon-name={iconName}
+        icon-position={iconPosition}
+        icon-size={iconSize}
+        label={label}
+        stretch={computedStrech}
         title={title}
-        type="button"
         value={value}
+        variant={computedButtonVariant}
         data-element-id="button"
         onblur={handleBlur}
         onclick={handleButtonClick}
         onfocus={focus}
         onmousedown={handleButtonMouseDown}
-    >
-        <c-primitive-icon
-            if:true={iconIsLeft}
-            icon-name={iconName}
-            svg-class="slds-button__icon slds-button__icon_left"
-            variant="bare"
-            data-element-id="avonni-primitive-icon"
-        ></c-primitive-icon>
-        <span>{label}</span>
-        <c-primitive-icon
-            if:true={iconIsRight}
-            icon-name={iconName}
-            svg-class="slds-button__icon slds-button__icon_right"
-            variant="bare"
-            data-element-id="avonni-primitive-icon"
-        ></c-primitive-icon>
-    </button>
-
-    <lightning-button-icon
+    ></c-button>
+    <c-button-icon
         if:false={label}
-        disabled={disabled}
-        aria-expanded={computedAriaExpanded}
-        alternative-text={alternativeText}
+        class={computedButtonClass}
         access-key={accessKey}
-        value={value}
+        alternative-text={alternativeText}
+        aria-expanded={computedAriaExpanded}
         aria-haspopup="true"
+        disabled={disabled}
         icon-name={iconName}
         size={iconSize}
-        variant={variant}
         title={title}
         tooltip={tooltip}
-        data-element-id="lightning-button-icon"
-        onclick={handleButtonClick}
+        value={value}
+        variant={computedButtonVariant}
+        data-element-id="button-icon"
         onblur={handleBlur}
+        onclick={handleButtonClick}
         onfocus={focus}
         onmousedown={handleButtonMouseDown}
     >
-    </lightning-button-icon>
+    </c-button-icon>
 
-    <template if:true={_dropdownOpened}>
-        <div
-            class={computedDropdownClass}
-            onmousedown={handleDropdownMouseDown}
-            onmouseup={handleDropdownMouseUp}
-            onscroll={handleDropdownScroll}
-            onblur={handleBlur}
-            tabindex="0"
-            data-element-id="dropdown"
-        >
-            <template if:true={isLoading}>
-                <lightning-spinner
-                    alternative-text={loadingStateAlternativeText}
-                    size="small"
-                    data-element-id="lightning-spinner"
-                ></lightning-spinner>
-            </template>
-            <template if:false={isLoading}>
-                <div class="slds-dropdown__list" role="menu">
-                    <template if:true={allowSearch}>
-                        <div onkeyup={handleKeyUp}>
-                            <lightning-input
-                                name="enter-search"
-                                label="Search"
-                                variant="label-hidden"
-                                placeholder={searchInputPlaceholder}
-                                type="search"
-                                class="slds-m-around_small"
-                                data-element-id="lightning-input"
-                                onblur={handleBlur}
-                                onchange={clearFilter}
-                            ></lightning-input>
-                        </div>
-                    </template>
-                    <div class="slds-popover__body slds-p-around_none">
-                        <slot></slot>
+    <div
+        if:true={dropdownOpened}
+        class={computedDropdownClass}
+        tabindex="0"
+        data-element-id="dropdown"
+        onmousedown={handleDropdownMouseDown}
+        onmouseup={handleDropdownMouseUp}
+        onscroll={handleDropdownScroll}
+        onblur={handleBlur}
+    >
+        <lightning-spinner
+            if:true={isLoading}
+            alternative-text={loadingStateAlternativeText}
+            size="small"
+            data-element-id="lightning-spinner"
+        ></lightning-spinner>
+        <div if:false={isLoading} class="slds-dropdown__list" role="menu">
+            <div if:true={allowSearch} onkeyup={handleKeyUp}>
+                <lightning-input
+                    class="slds-m-around_small"
+                    label="Search"
+                    name="enter-search"
+                    placeholder={searchInputPlaceholder}
+                    type="search"
+                    variant="label-hidden"
+                    data-element-id="lightning-input"
+                    onblur={handleBlur}
+                    onchange={handleSearchChange}
+                ></lightning-input>
+            </div>
+
+            <div class="slds-popover__body slds-p-around_none">
+                <slot></slot>
+                <div
+                    if:true={showItems}
+                    class="slds-listbox slds-listbox_vertical"
+                    style={listHeight}
+                >
+                    <template for:each={computedListItems} for:item="item">
                         <div
-                            if:true={showItems}
-                            class="slds-listbox slds-listbox_vertical"
-                            style={listHeight}
+                            class="
+                                slds-listbox__option
+                                avonni-dynamic-menu__item_min-height
+                            "
+                            aria-selected={item.selected}
+                            key={item.key}
+                            data-element-id="item"
+                            data-value={item.value}
+                            onclick={handleItemClick}
+                            onmouseenter={handleOptionMouseEnter}
+                            onmouseleave={handleOptionMouseLeave}
                         >
-                            <template
-                                for:each={computedListItems}
-                                for:item="item"
-                            >
+                            <div class={item.computedItemClass}>
                                 <div
+                                    if:true={item.displayFigure}
                                     class="
-                                        slds-listbox__option
-                                        avonni-dynamic-menu__item_min-height
+                                        slds-media__figure
+                                        slds-listbox__option-icon
+                                        avonni-dynamic-menu__check-mark_color
                                     "
-                                    key={item.key}
-                                    data-value={item.value}
-                                    onclick={handleItemClick}
-                                    onmouseenter={handleOptionMouseEnter}
-                                    onmouseleave={handleOptionMouseLeave}
-                                    data-element-id="item"
-                                    aria-selected={item.selected}
                                 >
-                                    <div class={item.computedItemClass}>
-                                        <div
+                                    <template if:false={hideCheckMark}>
+                                        <lightning-icon
+                                            if:true={item.selected}
                                             class="
-                                                slds-media__figure
-                                                slds-listbox__option-icon
-                                                avonni-dynamic-menu__check-mark_color
+                                                slds-icon-utility-check
+                                                slds-current-color
+                                                slds-icon_container
                                             "
-                                            if:true={item.displayFigure}
-                                        >
-                                            <template if:false={hideCheckMark}>
-                                                <lightning-icon
-                                                    if:true={item.selected}
-                                                    class="
-                                                        slds-icon-utility-check
-                                                        slds-current-color
-                                                        slds-icon_container
-                                                    "
-                                                    icon-name="utility:check"
-                                                    size="x-small"
-                                                    aria-hidden="true"
-                                                    data-element-id="check-mark"
-                                                ></lightning-icon>
-                                            </template>
-                                            <template if:true={hideCheckMark}>
-                                                <template if:true={item.avatar}>
-                                                    <lightning-icon
-                                                        if:true={item.avatar.fallbackIconName}
-                                                        icon-name={item.avatar.fallbackIconName}
-                                                        size="small"
-                                                        alternative-text={item.avatar.alternativeText}
-                                                        variant={variantInverse}
-                                                    ></lightning-icon>
-                                                </template>
-                                            </template>
-                                        </div>
+                                            icon-name="utility:check"
+                                            size="x-small"
+                                            aria-hidden="true"
+                                            data-element-id="check-mark"
+                                        ></lightning-icon>
+                                    </template>
+                                    <template if:true={hideCheckMark}>
                                         <template if:true={item.avatar}>
-                                            <div
-                                                if:false={hideCheckMark}
-                                                class="
-                                                    slds-media__figure
-                                                    slds-listbox__option-icon
-                                                "
-                                            >
-                                                <lightning-icon
-                                                    icon-name={item.avatar.fallbackIconName}
-                                                    size="small"
-                                                    alternative-text={item.avatar.alternativeText}
-                                                    variant={variantInverse}
-                                                ></lightning-icon>
-                                            </div>
+                                            <lightning-icon
+                                                if:true={item.avatar.fallbackIconName}
+                                                icon-name={item.avatar.fallbackIconName}
+                                                size="small"
+                                                alternative-text={item.avatar.alternativeText}
+                                                variant={variantInverse}
+                                            ></lightning-icon>
                                         </template>
-                                        <div class="slds-media__body">
-                                            <div class="slds-truncate">
-                                                {item.label}
-                                            </div>
-                                            <div
-                                                if:true={item.metaJoin}
-                                                class="
-                                                    slds-listbox__option-meta
-                                                    slds-listbox__option-meta_entity
-                                                "
-                                            >
-                                                {item.metaJoin}
-                                            </div>
-                                        </div>
-                                        <template if:true={item.actions}>
-                                            <div
-                                                class="
-                                                    slds-media__figure
-                                                    slds-media__figure_reverse
-                                                    avonni-dynamic-menu__actions-icon
-                                                "
-                                                if:true={item.actions}
-                                            >
-                                                <template
-                                                    for:each={item.actions}
-                                                    for:item="action"
-                                                >
-                                                    <lightning-button-icon
-                                                        key={action.name}
-                                                        icon-name={action.iconName}
-                                                        variant="bare"
-                                                        disabled={action.disabled}
-                                                        alternative-text={action.alternativeText}
-                                                        data-element-id="action"
-                                                        name={action.name}
-                                                        size="small"
-                                                        class="
-                                                            slds-m-left_x-small
-                                                        "
-                                                    ></lightning-button-icon>
-                                                </template>
-                                            </div>
-                                        </template>
+                                    </template>
+                                </div>
+                                <template if:true={item.avatar}>
+                                    <div
+                                        if:false={hideCheckMark}
+                                        class="
+                                            slds-media__figure
+                                            slds-listbox__option-icon
+                                        "
+                                    >
+                                        <lightning-icon
+                                            icon-name={item.avatar.fallbackIconName}
+                                            size="small"
+                                            alternative-text={item.avatar.alternativeText}
+                                            variant={variantInverse}
+                                        ></lightning-icon>
+                                    </div>
+                                </template>
+                                <div class="slds-media__body">
+                                    <div
+                                        class="
+                                            avonni-dynamic-menu__item-label
+                                            slds-truncate
+                                        "
+                                    >
+                                        {item.label}
+                                    </div>
+                                    <div
+                                        if:true={item.metaJoin}
+                                        class="
+                                            slds-listbox__option-meta
+                                            slds-listbox__option-meta_entity
+                                        "
+                                    >
+                                        {item.metaJoin}
                                     </div>
                                 </div>
-                            </template>
-                        </div>
-                    </div>
-                    <template if:true={showFooter}>
-                        <div class="slds-popover__footer">
-                            <slot name="footer"></slot>
+                                <template if:true={item.actions}>
+                                    <div
+                                        class="
+                                            slds-media__figure
+                                            slds-media__figure_reverse
+                                            avonni-dynamic-menu__actions-icon
+                                        "
+                                        if:true={item.actions}
+                                    >
+                                        <template
+                                            for:each={item.actions}
+                                            for:item="action"
+                                        >
+                                            <lightning-button-icon
+                                                class="slds-m-left_x-small"
+                                                alternative-text={action.alternativeText}
+                                                disabled={action.disabled}
+                                                icon-name={action.iconName}
+                                                key={action.name}
+                                                name={action.name}
+                                                size="small"
+                                                variant="bare"
+                                                data-element-id="action"
+                                            ></lightning-button-icon>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
                         </div>
                     </template>
                 </div>
-            </template>
+            </div>
+            <div if:true={showFooter} class="slds-popover__footer">
+                <slot name="footer"></slot>
+            </div>
         </div>
-    </template>
+    </div>
 </template>
