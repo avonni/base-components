@@ -100,7 +100,12 @@ describe('ProfileCard', () => {
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('top-left-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
+            );
         });
     });
 
@@ -117,7 +122,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-center'
             );
-            expect(mainContainer.classList).toContain('top-center-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
+            );
         });
     });
 
@@ -134,7 +144,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-end'
             );
-            expect(mainContainer.classList).toContain('top-right-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
+            );
         });
     });
 
@@ -151,7 +166,12 @@ describe('ProfileCard', () => {
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('bottom-left-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
+            );
         });
     });
 
@@ -168,7 +188,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-center'
             );
-            expect(mainContainer.classList).toContain('bottom-center-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
+            );
         });
     });
 
@@ -185,7 +210,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-end'
             );
-            expect(mainContainer.classList).toContain('bottom-right-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
+            );
         });
     });
 
@@ -205,7 +235,12 @@ describe('ProfileCard', () => {
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('mobile-top-left');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-left'
+            );
         });
     });
 
@@ -224,7 +259,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-center'
             );
-            expect(mainContainer.classList).toContain('mobile-top-center');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-center'
+            );
         });
     });
 
@@ -243,7 +283,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-end'
             );
-            expect(mainContainer.classList).toContain('mobile-top-right');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-right'
+            );
         });
     });
 
@@ -262,7 +307,12 @@ describe('ProfileCard', () => {
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('mobile-bottom-left');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-left'
+            );
         });
     });
 
@@ -281,7 +331,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-center'
             );
-            expect(mainContainer.classList).toContain('mobile-bottom-center');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-center'
+            );
         });
     });
 
@@ -300,7 +355,12 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-end'
             );
-            expect(mainContainer.classList).toContain('mobile-bottom-right');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile-right'
+            );
         });
     });
 

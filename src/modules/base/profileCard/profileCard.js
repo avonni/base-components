@@ -159,42 +159,6 @@ export default class ProfileCard extends LightningElement {
         );
     }
 
-    @api
-    get avatarSrc() {
-        return this._avatarSrc;
-    }
-
-    set avatarSrc(value) {
-        this._avatarSrc = (typeof value === 'string' && value.trim()) || '';
-    }
-
-    /**
-     * Get the avatar action slot DOM element.
-     *
-     * @type {Element}
-     */
-    get avatarActionsSlot() {
-        return this.template.querySelector('slot[name=avataractions]');
-    }
-
-    /**
-     * Get the action slot DOM element.
-     *
-     * @type {Element}
-     */
-    get actionsSlot() {
-        return this.template.querySelector('slot[name=actions]');
-    }
-
-    /**
-     * Get the footer slot DOM element.
-     *
-     * @type {Element}
-     */
-    get footerSlot() {
-        return this.template.querySelector('slot[name=footer]');
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
@@ -211,7 +175,6 @@ export default class ProfileCard extends LightningElement {
     get avatarMobilePosition() {
         return this._avatarMobilePosition;
     }
-
     set avatarMobilePosition(avatarMobilePosition) {
         this._avatarMobilePosition = normalizeString(avatarMobilePosition, {
             fallbackValue: AVATAR_POSITIONS.default,
@@ -230,7 +193,6 @@ export default class ProfileCard extends LightningElement {
     get avatarPosition() {
         return this._avatarPosition;
     }
-
     set avatarPosition(avatarPosition) {
         this._avatarPosition = normalizeString(avatarPosition, {
             fallbackValue: AVATAR_POSITIONS.default,
@@ -249,12 +211,19 @@ export default class ProfileCard extends LightningElement {
     get avatarSize() {
         return this._avatarSize;
     }
-
     set avatarSize(avatarSize) {
         this._avatarSize = normalizeString(avatarSize, {
             fallbackValue: AVATAR_SIZES.default,
             validValues: AVATAR_SIZES.valid
         });
+    }
+
+    @api
+    get avatarSrc() {
+        return this._avatarSrc;
+    }
+    set avatarSrc(value) {
+        this._avatarSrc = (typeof value === 'string' && value.trim()) || '';
     }
 
     /**
@@ -268,7 +237,6 @@ export default class ProfileCard extends LightningElement {
     get avatarVariant() {
         return this._avatarVariant;
     }
-
     set avatarVariant(avatarVariant) {
         this._avatarVariant = normalizeString(avatarVariant, {
             fallbackValue: AVATAR_VARIANTS.default,
@@ -301,21 +269,37 @@ export default class ProfileCard extends LightningElement {
      */
 
     /**
-     * Convert profile card avatar size to primitive avatar size
+     * Get the action slot DOM element.
      *
-     * @type {boolean}
+     * @type {Element}
      */
-    get primitiveAvatarSize() {
-        switch (this.avatarSize) {
-            case 'x-small':
-                return 'medium';
-            case 'small':
-                return 'large';
-            case 'medium':
-                return 'x-large';
-            default:
-                return 'xx-large';
-        }
+    get actionsSlot() {
+        return this.template.querySelector('slot[name=actions]');
+    }
+
+    /**
+     * Get the avatar action slot DOM element.
+     *
+     * @type {Element}
+     */
+    get avatarActionsSlot() {
+        return this.template.querySelector('slot[name=avataractions]');
+    }
+
+    /**
+     * Computed avatar class styling.
+     *
+     * @type {string}
+     */
+    get computedAvatarClass() {
+        return classSet('avonni-profile-card__avatar-img')
+            .add(`avonni-profile-card__avatar_size-${this._avatarSize}`)
+            .add({
+                'avonni-profile-card__avatar-img-circle':
+                    this._avatarVariant === 'circle',
+                'slds-align_absolute-center': this.showAvatarFallbackIcon
+            })
+            .toString();
     }
 
     /**
@@ -345,19 +329,6 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Computed Main container class styling based on selected attributes.
-     *
-     * @type {string}
-     */
-    get computedMainContainerClass() {
-        return classSet('')
-            .add(`${this._avatarPosition}-desktop`)
-            .add(`mobile-${this._avatarMobilePosition}`)
-            .add(`avonni-profile-card__card_size-${this._avatarSize}`)
-            .toString();
-    }
-
-    /**
      * Computed header class background size.
      *
      * @type {string}
@@ -371,37 +342,47 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Computed avatar class styling.
+     * Computed Main container class styling based on selected attributes.
      *
      * @type {string}
      */
-    get computedAvatarClass() {
-        return classSet('avonni-profile-card__avatar-img')
-            .add(`avonni-profile-card__avatar_size-${this._avatarSize}`)
+    get computedMainContainerClass() {
+        return classSet('')
             .add({
-                'avonni-profile-card__avatar-img-circle':
-                    this._avatarVariant === 'circle',
-                'slds-align_absolute-center': this.showAvatarFallbackIcon
+                'avonni-profile-card__avatar-top':
+                    this._avatarPosition.includes('top'),
+                'avonni-profile-card__avatar-bottom':
+                    this._avatarPosition.includes('bottom'),
+                'avonni-profile-card__avatar-left':
+                    this._avatarPosition.includes('left'),
+                'avonni-profile-card__avatar-right':
+                    this._avatarPosition.includes('right'),
+                'avonni-profile-card__avatar-center':
+                    this._avatarPosition.includes('center')
             })
+            .add({
+                'avonni-profile-card__avatar-mobile-top':
+                    this._avatarMobilePosition.includes('top'),
+                'avonni-profile-card__avatar-mobile-bottom':
+                    this._avatarMobilePosition.includes('bottom'),
+                'avonni-profile-card__avatar-mobile-left':
+                    this._avatarMobilePosition.includes('left'),
+                'avonni-profile-card__avatar-mobile-right':
+                    this._avatarMobilePosition.includes('right'),
+                'avonni-profile-card__avatar-mobile-center':
+                    this._avatarMobilePosition.includes('center')
+            })
+            .add(`avonni-profile-card__card_size-${this._avatarSize}`)
             .toString();
     }
 
     /**
-     * Show avatar fallback icon.
+     * Get the footer slot DOM element.
      *
-     * @type {boolean}
+     * @type {Element}
      */
-    get showAvatarFallbackIcon() {
-        return !this.avatarSrc && !this.initials;
-    }
-
-    /**
-     * Show header slot.
-     *
-     * @type {boolean}
-     */
-    get showHeaderSlot() {
-        return !this.title && !this.subtitle;
+    get footerSlot() {
+        return this.template.querySelector('slot[name=footer]');
     }
 
     /**
@@ -415,9 +396,45 @@ export default class ProfileCard extends LightningElement {
             : '';
     }
 
+    /**
+     * Convert profile card avatar size to primitive avatar size
+     *
+     * @type {boolean}
+     */
+    get primitiveAvatarSize() {
+        switch (this.avatarSize) {
+            case 'x-small':
+                return 'medium';
+            case 'small':
+                return 'large';
+            case 'medium':
+                return 'x-large';
+            default:
+                return 'xx-large';
+        }
+    }
+
+    /**
+     * Show avatar fallback icon.
+     *
+     * @type {boolean}
+     */
+    get showAvatarFallbackIcon() {
+        return !this.avatarSrc;
+    }
+
+    /**
+     * Show header slot.
+     *
+     * @type {boolean}
+     */
+    get showHeaderSlot() {
+        return !this.title && !this.subtitle;
+    }
+
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
 

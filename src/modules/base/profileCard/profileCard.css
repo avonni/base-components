@@ -199,165 +199,168 @@ article.avonni-profile-card {
         top: 0.5rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-small {
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small {
         margin-top: 0.75rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-small']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         left: 0.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-small']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         right: 0.75rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-small {
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-small {
         margin-top: 1rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-small
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-small
         .avonni-profile-card__avatar-img {
         top: -1rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-small
         .avonni-profile-card__avatar-img {
         top: 1rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-small']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-small
         .avonni-profile-card__avatar-img {
         left: 1rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-small']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-small
         .avonni-profile-card__avatar-img {
         right: 1rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-medium {
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-medium {
         margin-top: 1.25rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-medium
         .avonni-profile-card__avatar-img {
         top: -1.25rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-medium
         .avonni-profile-card__avatar-img {
         top: 1.25rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-medium']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-medium
         .avonni-profile-card__avatar-img {
         left: 1.25rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-medium']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-medium
         .avonni-profile-card__avatar-img {
         right: 1.25rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-large {
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-large {
         margin-top: 1.5rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-large
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-large
         .avonni-profile-card__avatar-img {
         top: -1.5rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-large
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-large
         .avonni-profile-card__avatar-img {
         top: 1.5rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-large']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-large
         .avonni-profile-card__avatar-img {
         left: 1.5rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-large']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-large
         .avonni-profile-card__avatar-img {
         right: 1.5rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-large {
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-large {
         margin-top: 1.75rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-large
         .avonni-profile-card__avatar-img {
         top: -1.75rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-large
         .avonni-profile-card__avatar-img {
         top: 1.75rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-large']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-large
         .avonni-profile-card__avatar-img {
         left: 1.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-large']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-large
         .avonni-profile-card__avatar-img {
         right: 1.75rem;
     }
 
-    .bottom-center-desktop [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center
+        [data-element-id='text-container'] {
         padding: 0 1rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-x-small
         [data-element-id='text-container'] {
         margin-top: 1.5rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-small
         [data-element-id='text-container'] {
         margin-top: 1.75rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-medium
         [data-element-id='text-container'] {
         margin-top: 2rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-large
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-large
         [data-element-id='text-container'] {
         margin-top: 2.25rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-x-large
         [data-element-id='text-container'] {
         margin-top: 2.5rem;
         padding: 0 1rem;
     }
 
-    .top-center-desktop [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-top.avonni-profile-card__avatar-center
+        [data-element-id='text-container'] {
         padding: 1rem 1rem 0 1rem;
     }
 
-    .bottom-center-desktop [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center
+        [data-element-id='text-container'] {
         padding: 0 1rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-small']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-small
         [data-element-id='text-container'] {
         position: absolute;
         padding: 0.5rem;
@@ -365,7 +368,7 @@ article.avonni-profile-card {
         padding-right: 0.75rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-small']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-small
         [data-element-id='text-container'] {
         position: absolute;
         padding: 0.8rem;
@@ -373,7 +376,7 @@ article.avonni-profile-card {
         padding-right: 1rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-medium']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-medium
         [data-element-id='text-container'] {
         position: absolute;
         padding: 1.5rem;
@@ -381,7 +384,7 @@ article.avonni-profile-card {
         padding-right: 1.25rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-large']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-large
         [data-element-id='text-container'] {
         position: absolute;
         padding: 2.8rem;
@@ -389,7 +392,7 @@ article.avonni-profile-card {
         padding-right: 1.5rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-large']
+    .avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-large
         [data-element-id='text-container'] {
         position: absolute;
         padding: 3.8rem;
@@ -397,7 +400,7 @@ article.avonni-profile-card {
         padding-right: 1.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-small']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-small
         [data-element-id='text-container'] {
         position: absolute;
         padding: 0.5rem;
@@ -405,7 +408,7 @@ article.avonni-profile-card {
         padding-left: 0.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-small']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-small
         [data-element-id='text-container'] {
         position: absolute;
         padding: 0.8rem;
@@ -413,7 +416,7 @@ article.avonni-profile-card {
         padding-left: 1rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-medium']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-medium
         [data-element-id='text-container'] {
         position: absolute;
         padding: 1.5rem;
@@ -421,7 +424,7 @@ article.avonni-profile-card {
         padding-left: 1.25rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-large']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-large
         [data-element-id='text-container'] {
         position: absolute;
         padding: 2.8rem;
@@ -429,7 +432,7 @@ article.avonni-profile-card {
         padding-left: 1.5rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-large']
+    .avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-large
         [data-element-id='text-container'] {
         position: absolute;
         padding: 3.8rem;
@@ -437,53 +440,56 @@ article.avonni-profile-card {
         padding-left: 1.75rem;
     }
 
-    .bottom-left-desktop.avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-small
         .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-small
         .slds-card__body {
         margin-top: 1.5rem;
         margin-bottom: 1rem;
     }
 
-    .bottom-left-desktop.avonni-profile-card__card_size-small .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-small
+        .slds-card__body,
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-small
         .slds-card__body {
         margin-top: 1.75rem;
         margin-bottom: 1rem;
     }
 
-    .bottom-left-desktop.avonni-profile-card__card_size-medium .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-medium
+        .slds-card__body,
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-medium
         .slds-card__body {
         margin-top: 2rem;
         margin-bottom: 1rem;
     }
 
-    .bottom-left-desktop.avonni-profile-card__card_size-large .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-large
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-large
+        .slds-card__body,
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-large
         .slds-card__body {
         margin-top: 2.25rem;
         margin-bottom: 1rem;
     }
 
-    .bottom-left-desktop.avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-large
         .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-large
         .slds-card__body {
         margin-top: 2.5rem;
         margin-bottom: 1rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-small {
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small {
         margin-top: 0.75rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
@@ -512,267 +518,297 @@ article.avonni-profile-card {
         z-index: 1000;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-small {
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-x-small {
         margin-top: 0.75rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
 
-    [class$='-left card_size-x-small'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-x-small
+        .avonni-profile-card__avatar-img {
         left: 0.75rem;
     }
 
-    [class$='-right card_size-x-small'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-x-small
+        .avonni-profile-card__avatar-img {
         right: 0.75rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-small {
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-small {
         margin-top: 1rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-small
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-small
         .avonni-profile-card__avatar-img {
         top: -1rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-small
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__card_size-small
         .avonni-profile-card__avatar-img {
         top: 1rem;
     }
 
-    [class$='-left card_size-small'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-small
+        .avonni-profile-card__avatar-img {
         left: 1rem;
     }
 
-    [class$='-right card_size-small'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-small
+        .avonni-profile-card__avatar-img {
         right: 1rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-medium {
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-medium {
         margin-top: 1.25rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-medium
         .avonni-profile-card__avatar-img {
         top: -1.25rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__card_size-medium
         .avonni-profile-card__avatar-img {
         top: 1.25rem;
     }
 
-    [class$='-left card_size-medium'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-medium
+        .avonni-profile-card__avatar-img {
         left: 1.25rem;
     }
 
-    [class$='-right card_size-medium'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-medium
+        .avonni-profile-card__avatar-img {
         right: 1.25rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-large {
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-large {
         margin-top: 1.5rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-large
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-large
         .avonni-profile-card__avatar-img {
         top: -1.5rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-large
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__card_size-large
         .avonni-profile-card__avatar-img {
         top: 1.5rem;
     }
 
-    [class$='-left card_size-large'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-large
+        .avonni-profile-card__avatar-img {
         left: 1.5rem;
     }
 
-    [class$='-right card_size-large'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-large
+        .avonni-profile-card__avatar-img {
         right: 1.5rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-large {
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-x-large {
         margin-top: 1.75rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-x-large
         .avonni-profile-card__avatar-img {
         top: -1.75rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__card_size-x-large
         .avonni-profile-card__avatar-img {
         top: 1.75rem;
     }
 
-    [class$='-left card_size-x-large'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-x-large
+        .avonni-profile-card__avatar-img {
         left: 1.75rem;
     }
 
-    [class$='-right card_size-x-large'] .avonni-profile-card__avatar-img {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-x-large
+        .avonni-profile-card__avatar-img {
         right: 1.75rem;
     }
 
-    .mobile-bottom-center [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-center
+        [data-element-id='text-container'] {
         padding: 0 1rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-center.avonni-profile-card__card_size-x-small
         [data-element-id='text-container'] {
         margin-top: 1.5rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-small
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-center.avonni-profile-card__card_size-small
         [data-element-id='text-container'] {
         margin-top: 1.75rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-center.avonni-profile-card__card_size-medium
         [data-element-id='text-container'] {
         margin-top: 2rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-large
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-center.avonni-profile-card__card_size-large
         [data-element-id='text-container'] {
         margin-top: 2.25rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-center.avonni-profile-card__card_size-x-large
         [data-element-id='text-container'] {
         margin-top: 2.5rem;
         padding: 0 1rem;
     }
 
-    .mobile-top-center [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__avatar-mobile-center
+        [data-element-id='text-container'] {
         padding: 1rem 1rem 0 1rem;
     }
 
-    .mobile-bottom-center [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-center
+        [data-element-id='text-container'] {
         padding: 0 1rem;
     }
 
-    [class$='-left card_size-x-small'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-x-small
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 0.5rem;
         padding-left: 4.75rem;
         padding-right: 0.75rem;
     }
 
-    [class$='-left card_size-small'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-small
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 0.8rem;
         padding-left: 6.5rem;
         padding-right: 1rem;
     }
 
-    [class$='-left card_size-medium'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-medium
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 1.5rem;
         padding-left: 8.25rem;
         padding-right: 1.25rem;
     }
 
-    [class$='-left card_size-large'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-large
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 2.8rem;
         padding-left: 12.25rem;
         padding-right: 1.5rem;
     }
 
-    [class$='-left card_size-x-large'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-x-large
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 3.8rem;
         padding-left: 14.75rem;
         padding-right: 1.75rem;
     }
 
-    [class$='-right card_size-x-small'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-x-small
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 0.5rem;
         padding-right: 4.75rem;
         padding-left: 0.75rem;
     }
 
-    [class$='-right card_size-small'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-small
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 0.8rem;
         padding-right: 6.5rem;
         padding-left: 1rem;
     }
 
-    [class$='-right card_size-medium'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-medium
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 1.5rem;
         padding-right: 8.25rem;
         padding-left: 1.25rem;
     }
 
-    [class$='-right card_size-large'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-large
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 2.8rem;
         padding-right: 12.25rem;
         padding-left: 1.5rem;
     }
 
-    [class$='-right card_size-x-large'] [data-element-id='text-container'] {
+    .avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-x-large
+        [data-element-id='text-container'] {
         position: absolute;
         padding: 3.8rem;
         padding-right: 14.75rem;
         padding-left: 1.75rem;
     }
 
-    .mobile-bottom-left.avonni-profile-card__card_size-x-small .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-x-small
+        .slds-card__body,
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-x-small
         .slds-card__body {
         margin-top: 1.5rem;
         margin-bottom: 1rem;
     }
 
-    .mobile-bottom-left.avonni-profile-card__card_size-small .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-small .slds-card__body {
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-small
+        .slds-card__body,
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-small
+        .slds-card__body {
         margin-top: 1.75rem;
         margin-bottom: 1rem;
     }
 
-    .mobile-bottom-left.avonni-profile-card__card_size-medium .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-medium
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-medium
+        .slds-card__body,
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-medium
         .slds-card__body {
         margin-top: 2rem;
         margin-bottom: 1rem;
     }
 
-    .mobile-bottom-left.avonni-profile-card__card_size-large .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-large .slds-card__body {
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-large
+        .slds-card__body,
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-large
+        .slds-card__body {
         margin-top: 2.25rem;
         margin-bottom: 1rem;
     }
 
-    .mobile-bottom-left.avonni-profile-card__card_size-x-large .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-x-large
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-left.avonni-profile-card__card_size-x-large
+        .slds-card__body,
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__avatar-mobile-right.avonni-profile-card__card_size-x-large
         .slds-card__body {
         margin-top: 2.5rem;
         margin-bottom: 1rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-small {
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-x-small {
         margin-top: 0.75rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-mobile-top.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-small
+    .avonni-profile-card__avatar-mobile-bottom.avonni-profile-card__card_size-x-small
         .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
