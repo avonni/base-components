@@ -154,6 +154,7 @@ export default class DynamicMenu extends LightningElement {
     queryTerm;
     showFooter = true;
 
+    _cancelBlur = false;
     _dropdownVisible = false;
     _order;
     _boundingRect = {};
