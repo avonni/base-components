@@ -101,43 +101,6 @@ export default class ProfileCard extends LightningElement {
 
         if (this.actionsSlot) {
             this.showActions = this.actionsSlot.assignedElements().length !== 0;
-
-            if (
-                this.showActions &&
-                this._avatarPosition.indexOf('right') > -1
-            ) {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-left'
-                );
-            } else {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-right'
-                );
-            }
-            if (
-                this.showActions &&
-                this._avatarMobilePosition.indexOf('right') > -1
-            ) {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-left'
-                );
-            } else {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-right'
-                );
-            }
         }
 
         if (this.footerSlot) {
@@ -298,6 +261,27 @@ export default class ProfileCard extends LightningElement {
      */
     get avatarActionsSlot() {
         return this.template.querySelector('slot[name=avataractions]');
+    }
+
+    /**
+     * Computed actions class styling.
+     *
+     * @type {string}
+     */
+    get computedActionsClass() {
+        const isLeft =
+            this.showActions &&
+            ((!this._isSmallContainer &&
+                this._avatarPosition.includes('right')) ||
+                (this._isSmallContainer &&
+                    this._avatarMobilePosition.includes('right')));
+
+        return classSet('slds-is-absolute')
+            .add({
+                'avonni-profile-card__actions-right': !isLeft,
+                'avonni-profile-card__actions-left': isLeft
+            })
+            .toString();
     }
 
     /**
