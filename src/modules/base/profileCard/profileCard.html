@@ -67,7 +67,7 @@
                 </div>
                 <template if:true={showActions}>
                     <div
-                        class="slds-is-absolute"
+                        class={computedActionsClass}
                         data-element-id="avonni-actions"
                     >
                         <slot name="actions"></slot>

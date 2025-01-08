@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import ProfileCard from 'c/profileCard';
+import { callObserver } from 'c/resizeObserver';
 
 let element;
 describe('ProfileCard', () => {
@@ -100,7 +101,15 @@ describe('ProfileCard', () => {
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('top-left-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
+            );
         });
     });
 
@@ -117,7 +126,15 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-center'
             );
-            expect(mainContainer.classList).toContain('top-center-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
+            );
         });
     });
 
@@ -134,7 +151,15 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-end'
             );
-            expect(mainContainer.classList).toContain('top-right-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
+            );
         });
     });
 
@@ -151,7 +176,15 @@ describe('ProfileCard', () => {
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('bottom-left-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
+            );
         });
     });
 
@@ -168,7 +201,15 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-center'
             );
-            expect(mainContainer.classList).toContain('bottom-center-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
+            );
         });
     });
 
@@ -185,122 +226,178 @@ describe('ProfileCard', () => {
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-end'
             );
-            expect(mainContainer.classList).toContain('bottom-right-desktop');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
+            );
         });
     });
 
     // avatar-mobile-position
     it('Profile card: avatarMobilePosition = top-left', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'top-left';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
-            );
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('mobile-top-left');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
+            );
         });
     });
 
     it('Profile card: avatarMobilePosition = top-center', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'top-center';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
-            );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-center'
             );
-            expect(mainContainer.classList).toContain('mobile-top-center');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
+            );
         });
     });
 
     it('Profile card: avatarMobilePosition = top-right', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'top-right';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
-            );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-end'
             );
-            expect(mainContainer.classList).toContain('mobile-top-right');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
+            );
         });
     });
 
     it('Profile card: avatarMobilePosition = bottom-left', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'bottom-left';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
             );
-            expect(mainContainer.classList).toContain('mobile-bottom-left');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
+            );
         });
     });
 
     it('Profile card: avatarMobilePosition = bottom-center', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'bottom-center';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-center'
             );
-            expect(mainContainer.classList).toContain('mobile-bottom-center');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
+            );
         });
     });
 
     it('Profile card: avatarMobilePosition = bottom-right', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'bottom-right';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
-            );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-end'
             );
-            expect(mainContainer.classList).toContain('mobile-bottom-right');
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-mobile'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
+            );
         });
     });
 

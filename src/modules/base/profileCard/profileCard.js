@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet, normalizeString } from 'c/utils';
 
 const AVATAR_SIZES = {
@@ -75,11 +76,18 @@ export default class ProfileCard extends LightningElement {
     _avatarSrc;
     _avatarVariant = AVATAR_VARIANTS.default;
 
+    _isSmallContainer = false;
+    _resizeObserver;
+
     showActions = true;
     showFooter = true;
     showAvatarActions = true;
 
     renderedCallback() {
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+
         let header = this.template.querySelector('[data-element-id="header"]');
 
         if (this.backgroundSrc) {
@@ -93,43 +101,6 @@ export default class ProfileCard extends LightningElement {
 
         if (this.actionsSlot) {
             this.showActions = this.actionsSlot.assignedElements().length !== 0;
-
-            if (
-                this.showActions &&
-                this._avatarPosition.indexOf('right') > -1
-            ) {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-left'
-                );
-            } else {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-right'
-                );
-            }
-            if (
-                this.showActions &&
-                this._avatarMobilePosition.indexOf('right') > -1
-            ) {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-left'
-                );
-            } else {
-                let actionsContainer = this.template.querySelector(
-                    '[data-element-id="avonni-actions"]'
-                );
-                actionsContainer.classList.add(
-                    'avonni-profile-card__actions-right'
-                );
-            }
         }
 
         if (this.footerSlot) {
@@ -159,40 +130,10 @@ export default class ProfileCard extends LightningElement {
         );
     }
 
-    @api
-    get avatarSrc() {
-        return this._avatarSrc;
-    }
-
-    set avatarSrc(value) {
-        this._avatarSrc = (typeof value === 'string' && value.trim()) || '';
-    }
-
-    /**
-     * Get the avatar action slot DOM element.
-     *
-     * @type {Element}
-     */
-    get avatarActionsSlot() {
-        return this.template.querySelector('slot[name=avataractions]');
-    }
-
-    /**
-     * Get the action slot DOM element.
-     *
-     * @type {Element}
-     */
-    get actionsSlot() {
-        return this.template.querySelector('slot[name=actions]');
-    }
-
-    /**
-     * Get the footer slot DOM element.
-     *
-     * @type {Element}
-     */
-    get footerSlot() {
-        return this.template.querySelector('slot[name=footer]');
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
     }
 
     /*
@@ -211,7 +152,6 @@ export default class ProfileCard extends LightningElement {
     get avatarMobilePosition() {
         return this._avatarMobilePosition;
     }
-
     set avatarMobilePosition(avatarMobilePosition) {
         this._avatarMobilePosition = normalizeString(avatarMobilePosition, {
             fallbackValue: AVATAR_POSITIONS.default,
@@ -230,7 +170,6 @@ export default class ProfileCard extends LightningElement {
     get avatarPosition() {
         return this._avatarPosition;
     }
-
     set avatarPosition(avatarPosition) {
         this._avatarPosition = normalizeString(avatarPosition, {
             fallbackValue: AVATAR_POSITIONS.default,
@@ -249,12 +188,19 @@ export default class ProfileCard extends LightningElement {
     get avatarSize() {
         return this._avatarSize;
     }
-
     set avatarSize(avatarSize) {
         this._avatarSize = normalizeString(avatarSize, {
             fallbackValue: AVATAR_SIZES.default,
             validValues: AVATAR_SIZES.valid
         });
+    }
+
+    @api
+    get avatarSrc() {
+        return this._avatarSrc;
+    }
+    set avatarSrc(value) {
+        this._avatarSrc = (typeof value === 'string' && value.trim()) || '';
     }
 
     /**
@@ -268,7 +214,6 @@ export default class ProfileCard extends LightningElement {
     get avatarVariant() {
         return this._avatarVariant;
     }
-
     set avatarVariant(avatarVariant) {
         this._avatarVariant = normalizeString(avatarVariant, {
             fallbackValue: AVATAR_VARIANTS.default,
@@ -301,21 +246,58 @@ export default class ProfileCard extends LightningElement {
      */
 
     /**
-     * Convert profile card avatar size to primitive avatar size
+     * Get the action slot DOM element.
      *
-     * @type {boolean}
+     * @type {Element}
      */
-    get primitiveAvatarSize() {
-        switch (this.avatarSize) {
-            case 'x-small':
-                return 'medium';
-            case 'small':
-                return 'large';
-            case 'medium':
-                return 'x-large';
-            default:
-                return 'xx-large';
-        }
+    get actionsSlot() {
+        return this.template.querySelector('slot[name=actions]');
+    }
+
+    /**
+     * Get the avatar action slot DOM element.
+     *
+     * @type {Element}
+     */
+    get avatarActionsSlot() {
+        return this.template.querySelector('slot[name=avataractions]');
+    }
+
+    /**
+     * Computed actions class styling.
+     *
+     * @type {string}
+     */
+    get computedActionsClass() {
+        const isLeft =
+            this.showActions &&
+            ((!this._isSmallContainer &&
+                this._avatarPosition.includes('right')) ||
+                (this._isSmallContainer &&
+                    this._avatarMobilePosition.includes('right')));
+
+        return classSet('slds-is-absolute')
+            .add({
+                'avonni-profile-card__actions-right': !isLeft,
+                'avonni-profile-card__actions-left': isLeft
+            })
+            .toString();
+    }
+
+    /**
+     * Computed avatar class styling.
+     *
+     * @type {string}
+     */
+    get computedAvatarClass() {
+        return classSet('avonni-profile-card__avatar-img')
+            .add(`avonni-profile-card__avatar_size-${this._avatarSize}`)
+            .add({
+                'avonni-profile-card__avatar-img-circle':
+                    this._avatarVariant === 'circle',
+                'slds-align_absolute-center': this.showAvatarFallbackIcon
+            })
+            .toString();
     }
 
     /**
@@ -345,19 +327,6 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Computed Main container class styling based on selected attributes.
-     *
-     * @type {string}
-     */
-    get computedMainContainerClass() {
-        return classSet('')
-            .add(`${this._avatarPosition}-desktop`)
-            .add(`mobile-${this._avatarMobilePosition}`)
-            .add(`avonni-profile-card__card_size-${this._avatarSize}`)
-            .toString();
-    }
-
-    /**
      * Computed header class background size.
      *
      * @type {string}
@@ -371,37 +340,55 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Computed avatar class styling.
+     * Computed Main container class styling based on selected attributes.
      *
      * @type {string}
      */
-    get computedAvatarClass() {
-        return classSet('avonni-profile-card__avatar-img')
-            .add(`avonni-profile-card__avatar_size-${this._avatarSize}`)
+    get computedMainContainerClass() {
+        const containerClass = classSet('')
             .add({
-                'avonni-profile-card__avatar-img-circle':
-                    this._avatarVariant === 'circle',
-                'slds-align_absolute-center': this.showAvatarFallbackIcon
+                'avonni-profile-card__avatar-mobile': this._isSmallContainer,
+                'avonni-profile-card__avatar-desktop': !this._isSmallContainer
             })
-            .toString();
+            .add({
+                'avonni-profile-card__avatar-top':
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('top')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('top')),
+                'avonni-profile-card__avatar-bottom':
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('bottom')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('bottom')),
+                'avonni-profile-card__avatar-left':
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('left')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('left')),
+                'avonni-profile-card__avatar-right':
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('right')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('right')),
+                'avonni-profile-card__avatar-center':
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('center')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('center'))
+            })
+            .add(`avonni-profile-card__card_size-${this._avatarSize}`);
+
+        return containerClass.toString();
     }
 
     /**
-     * Show avatar fallback icon.
+     * Get the footer slot DOM element.
      *
-     * @type {boolean}
+     * @type {Element}
      */
-    get showAvatarFallbackIcon() {
-        return !this.avatarSrc && !this.initials;
-    }
-
-    /**
-     * Show header slot.
-     *
-     * @type {boolean}
-     */
-    get showHeaderSlot() {
-        return !this.title && !this.subtitle;
+    get footerSlot() {
+        return this.template.querySelector('slot[name=footer]');
     }
 
     /**
@@ -415,9 +402,77 @@ export default class ProfileCard extends LightningElement {
             : '';
     }
 
+    /**
+     * Convert profile card avatar size to primitive avatar size
+     *
+     * @type {boolean}
+     */
+    get primitiveAvatarSize() {
+        switch (this.avatarSize) {
+            case 'x-small':
+                return 'medium';
+            case 'small':
+                return 'large';
+            case 'medium':
+                return 'x-large';
+            default:
+                return 'xx-large';
+        }
+    }
+
+    /**
+     * HTML element for the profile card container.
+     *
+     * @type {HTMLElement}
+     */
+    get profileCardContainer() {
+        return this.template.querySelector(
+            '[data-element-id="main-container"]'
+        );
+    }
+
+    /**
+     * Show avatar fallback icon.
+     *
+     * @type {boolean}
+     */
+    get showAvatarFallbackIcon() {
+        return !this.avatarSrc;
+    }
+
+    /**
+     * Show header slot.
+     *
+     * @type {boolean}
+     */
+    get showHeaderSlot() {
+        return !this.title && !this.subtitle;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.profileCardContainer) {
+            return null;
+        }
+        return new AvonniResizeObserver(this.profileCardContainer, () => {
+            const width = this.profileCardContainer.clientWidth || 0;
+            this._isSmallContainer = width <= 480;
+        });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
 
