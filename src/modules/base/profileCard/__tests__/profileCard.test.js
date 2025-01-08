@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import ProfileCard from 'c/profileCard';
+import { callObserver } from 'c/resizeObserver';
 
 let element;
 describe('ProfileCard', () => {
@@ -221,16 +222,16 @@ describe('ProfileCard', () => {
 
     // avatar-mobile-position
     it('Profile card: avatarMobilePosition = top-left', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'top-left';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
@@ -245,16 +246,16 @@ describe('ProfileCard', () => {
     });
 
     it('Profile card: avatarMobilePosition = top-center', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'top-center';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-center'
@@ -269,16 +270,16 @@ describe('ProfileCard', () => {
     });
 
     it('Profile card: avatarMobilePosition = top-right', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'top-right';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-end'
@@ -293,16 +294,16 @@ describe('ProfileCard', () => {
     });
 
     it('Profile card: avatarMobilePosition = bottom-left', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'bottom-left';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
@@ -317,16 +318,16 @@ describe('ProfileCard', () => {
     });
 
     it('Profile card: avatarMobilePosition = bottom-center', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'bottom-center';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-center'
@@ -341,16 +342,16 @@ describe('ProfileCard', () => {
     });
 
     it('Profile card: avatarMobilePosition = bottom-right', () => {
-        window.innerWidth = 200;
-
+        const mainContainer = element.shadowRoot.querySelector(
+            '[data-element-id="main-container"]'
+        );
+        jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(200);
         element.avatarMobilePosition = 'bottom-right';
+        callObserver();
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
-            );
-            const mainContainer = element.shadowRoot.querySelector(
-                '[data-element-id="main-container"]'
             );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container-mobile_align-end'
