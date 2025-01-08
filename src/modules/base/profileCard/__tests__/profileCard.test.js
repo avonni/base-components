@@ -102,6 +102,9 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container'
             );
             expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
                 'avonni-profile-card__avatar-top'
             );
             expect(mainContainer.classList).toContain(
@@ -122,6 +125,9 @@ describe('ProfileCard', () => {
             );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-center'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
             );
             expect(mainContainer.classList).toContain(
                 'avonni-profile-card__avatar-top'
@@ -146,6 +152,9 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container_align-end'
             );
             expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
                 'avonni-profile-card__avatar-top'
             );
             expect(mainContainer.classList).toContain(
@@ -166,6 +175,9 @@ describe('ProfileCard', () => {
             );
             expect(container.className).toBe(
                 'avonni-profile-card__flex-container'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
             );
             expect(mainContainer.classList).toContain(
                 'avonni-profile-card__avatar-bottom'
@@ -190,6 +202,9 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container_align-center'
             );
             expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
+            );
+            expect(mainContainer.classList).toContain(
                 'avonni-profile-card__avatar-bottom'
             );
             expect(mainContainer.classList).toContain(
@@ -210,6 +225,9 @@ describe('ProfileCard', () => {
             );
             expect(container.classList).toContain(
                 'avonni-profile-card__flex-container_align-end'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-desktop'
             );
             expect(mainContainer.classList).toContain(
                 'avonni-profile-card__avatar-bottom'
@@ -237,10 +255,13 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-top'
+                'avonni-profile-card__avatar-mobile'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-left'
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
             );
         });
     });
@@ -261,10 +282,13 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container-mobile_align-center'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-top'
+                'avonni-profile-card__avatar-mobile'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-center'
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
             );
         });
     });
@@ -285,10 +309,13 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container-mobile_align-end'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-top'
+                'avonni-profile-card__avatar-mobile'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-right'
+                'avonni-profile-card__avatar-top'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
             );
         });
     });
@@ -309,10 +336,13 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-bottom'
+                'avonni-profile-card__avatar-mobile'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-left'
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-left'
             );
         });
     });
@@ -333,10 +363,13 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container-mobile_align-center'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-bottom'
+                'avonni-profile-card__avatar-mobile'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-center'
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-center'
             );
         });
     });
@@ -357,10 +390,13 @@ describe('ProfileCard', () => {
                 'avonni-profile-card__flex-container-mobile_align-end'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-bottom'
+                'avonni-profile-card__avatar-mobile'
             );
             expect(mainContainer.classList).toContain(
-                'avonni-profile-card__avatar-mobile-right'
+                'avonni-profile-card__avatar-bottom'
+            );
+            expect(mainContainer.classList).toContain(
+                'avonni-profile-card__avatar-right'
             );
         });
     });

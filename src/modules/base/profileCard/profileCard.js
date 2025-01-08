@@ -368,32 +368,33 @@ export default class ProfileCard extends LightningElement {
             })
             .add({
                 'avonni-profile-card__avatar-top':
-                    this._avatarPosition.includes('top'),
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('top')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('top')),
                 'avonni-profile-card__avatar-bottom':
-                    this._avatarPosition.includes('bottom'),
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('bottom')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('bottom')),
                 'avonni-profile-card__avatar-left':
-                    this._avatarPosition.includes('left'),
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('left')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('left')),
                 'avonni-profile-card__avatar-right':
-                    this._avatarPosition.includes('right'),
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('right')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('right')),
                 'avonni-profile-card__avatar-center':
-                    this._avatarPosition.includes('center')
+                    (!this._isSmallContainer &&
+                        this._avatarPosition.includes('center')) ||
+                    (this._isSmallContainer &&
+                        this._avatarMobilePosition.includes('center'))
             })
             .add(`avonni-profile-card__card_size-${this._avatarSize}`);
 
-        if (this._isSmallContainer) {
-            containerClass.add({
-                'avonni-profile-card__avatar-mobile-top':
-                    this._avatarMobilePosition.includes('top'),
-                'avonni-profile-card__avatar-mobile-bottom':
-                    this._avatarMobilePosition.includes('bottom'),
-                'avonni-profile-card__avatar-mobile-left':
-                    this._avatarMobilePosition.includes('left'),
-                'avonni-profile-card__avatar-mobile-right':
-                    this._avatarMobilePosition.includes('right'),
-                'avonni-profile-card__avatar-mobile-center':
-                    this._avatarMobilePosition.includes('center')
-            });
-        }
         return containerClass.toString();
     }
 
