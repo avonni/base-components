@@ -68,6 +68,7 @@
 
 .avonni-button-menu__dropdown {
     max-width: var(--avonni-button-menu-dropdown-max-width, 20rem);
+    width: max-content;
 }
 
 .avonni-button-menu__dropdown-gap-cover {
