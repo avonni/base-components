@@ -48,11 +48,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-separator-radius-border
- * @type radius
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-separator-sizing-border
  * @default 1px
  * @type sizing
