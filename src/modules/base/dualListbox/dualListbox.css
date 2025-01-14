@@ -103,6 +103,7 @@
     border-width: var(--avonni-dual-listbox-boxes-sizing-border, 1px);
     border-style: var(--avonni-dual-listbox-boxes-styling-border, solid);
     border-color: var(--avonni-dual-listbox-boxes-color-border, #747474);
+    border-radius: var(--avonni-dual-listbox-boxes-radius-border);
 }
 
 .avonni-dual-listbox__boxes.slds-dueling-list__options [aria-selected='true'] {
