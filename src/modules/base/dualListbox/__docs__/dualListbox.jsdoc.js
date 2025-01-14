@@ -31,6 +31,11 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-dual-listbox-boxes-color-border
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-radius-border
  * @default #747474
  * @type color
  */
