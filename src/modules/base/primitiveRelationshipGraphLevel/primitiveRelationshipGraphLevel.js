@@ -93,6 +93,12 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             : undefined;
     }
 
+    get hasSelectedGroups() {
+        return (
+            Array.isArray(this.selectedGroups) && this.selectedGroups.length > 0
+        );
+    }
+
     get lineClass() {
         return classSet('line').add({
             line_active: this.containsActiveItem,

@@ -154,7 +154,11 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         }
         const selectedItem =
             this.items && this.items.find((item) => item.selected);
-        return selectedItem && selectedItem.groups && true;
+        return (
+            selectedItem &&
+            Array.isArray(selectedItem.groups) &&
+            selectedItem.groups.length > 0
+        );
     }
     set hasSelectedChildren(value) {
         this._hasSelectedChildren = value;

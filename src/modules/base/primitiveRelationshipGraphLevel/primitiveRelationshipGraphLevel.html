@@ -37,9 +37,9 @@
             </div>
         </div>
         <!-- Vertical line -->
-        <div class={lineClass} if:true={selectedGroups}></div>
+        <div class={lineClass} if:true={hasSelectedGroups}></div>
         <!-- Selected level -->
-        <div class="slds-grid" if:true={selectedGroups}>
+        <div class="slds-grid" if:true={hasSelectedGroups}>
             <c-primitive-relationship-graph-level
                 onselect={dispatchSelectEvent}
                 onactionclick={dispatchActionClickEvent}
