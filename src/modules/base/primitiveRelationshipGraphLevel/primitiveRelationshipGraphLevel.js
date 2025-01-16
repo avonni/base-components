@@ -219,6 +219,17 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         );
     }
 
+    dispatchToggleEvent(event) {
+        this.dispatchEvent(
+            new CustomEvent('toggle', {
+                detail: {
+                    name: event.detail.name,
+                    closed: event.detail.closed
+                }
+            })
+        );
+    }
+
     dispatchActionClickEvent(event) {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
@@ -230,6 +241,13 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     handleSelect(event) {
         this.cleanSelection();
         this.dispatchSelectEvent(event);
+    }
+
+    handleToggle(event) {
+        this.dispatchToggleEvent(event);
+        if (event.detail.closed && event.detail.isActiveGroup) {
+            this.cleanSelection();
+        }
     }
 
     handleCloseActiveGroup() {

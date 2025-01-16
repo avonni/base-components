@@ -446,6 +446,29 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
+     * Toggle event dispatch.
+     *
+     * @param {Event} event
+     */
+    dispatchToggleEvent(event) {
+        /**
+         * The event fired when a user toggles a group.
+         *
+         * @event
+         * @name toggle
+         * @param {string} name Name of the group toggled.
+         * @param {boolean} closed
+         *
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('toggle', {
+                detail: event.detail
+            })
+        );
+    }
+
+    /**
      * Action click event dispatcher.
      *
      * @param {Event} event

@@ -7,7 +7,7 @@
                 <template iterator:group={groups}>
                     <c-primitive-relationship-graph-group
                         onselect={handleSelect}
-                        oncloseactivegroup={handleCloseActiveGroup}
+                        ontoggle={handleToggle}
                         onactionclick={dispatchActionClickEvent}
                         onheightchange={handleGroupHeightChange}
                         key={group.value.name}

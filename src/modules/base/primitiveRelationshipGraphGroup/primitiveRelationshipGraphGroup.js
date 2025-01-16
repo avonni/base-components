@@ -238,12 +238,19 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
                 this.dispatchEvent(new CustomEvent('heightchange'));
             }
         });
+        const closed = event.detail.closed;
+        this.dispatchEvent(
+            new CustomEvent('toggle', {
+                detail: {
+                    name: this.name,
+                    closed,
+                    isActiveGroup: !!this.selectedItemComponent
+                }
+            })
+        );
 
         if (!this.selectedItemComponent) return;
-
-        const closed = event.detail.closed;
         if (closed) {
-            this.dispatchEvent(new CustomEvent('closeactivegroup'));
             this._hasSelectedChildren = false;
         } else {
             // When reopening the group, make sure the items are unselected
