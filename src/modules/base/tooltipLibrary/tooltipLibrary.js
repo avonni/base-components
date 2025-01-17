@@ -423,9 +423,10 @@ export class Tooltip {
         this.hide();
         this.removeAllListeners();
 
-        const previousValue = target
-            .getAttribute(ARIA_DESCRIBEDBY)
-            .replace(`${this._element().id}`, '');
+        let previousValue = target.getAttribute(ARIA_DESCRIBEDBY);
+        if (previousValue) {
+            previousValue = previousValue.replace(`${this._element().id}`, '');
+        }
         const ariaDescribedBy = normalizeAriaAttribute([previousValue]);
         if (ariaDescribedBy) {
             target.setAttribute(ARIA_DESCRIBEDBY, ariaDescribedBy);
