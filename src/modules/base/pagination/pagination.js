@@ -1,5 +1,10 @@
 import { LightningElement, api } from 'lwc';
-import { classSet, normalizeBoolean, normalizeString, generateUUID } from 'c/utils';
+import {
+    classSet,
+    normalizeBoolean,
+    normalizeString,
+    generateUUID
+} from 'c/utils';
 
 const PAGINATION_ALIGNS = {
     valid: ['left', 'center', 'right', 'fill'],
@@ -185,7 +190,8 @@ export default class Pagination extends LightningElement {
         return this._perPage;
     }
     set perPage(value) {
-        this._perPage = !isNaN(value) ? parseInt(value, 10) : DEFAULT_PER_PAGE;
+        const number = parseInt(value, 10);
+        this._perPage = isNaN(number) ? DEFAULT_PER_PAGE : number;
     }
 
     /**
@@ -220,9 +226,8 @@ export default class Pagination extends LightningElement {
         return this._totalRows;
     }
     set totalRows(value) {
-        this._totalRows = !isNaN(value)
-            ? parseInt(value, 10)
-            : DEFAULT_TOTAL_ROWS;
+        const number = parseInt(value, 10);
+        this._totalRows = isNaN(number) ? DEFAULT_TOTAL_ROWS : number;
     }
 
     /**
