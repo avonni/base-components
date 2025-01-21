@@ -1,6 +1,6 @@
-import { createElement } from 'lwc';
 import ButtonIcon from 'c/buttonIcon';
 import { Tooltip } from 'c/tooltipLibrary';
+import { createElement } from 'lwc';
 
 jest.mock('c/tooltipLibrary');
 
@@ -359,6 +359,42 @@ describe('Button Icon', () => {
                             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
                         );
                     });
+                });
+            });
+        });
+
+        describe('Is Button Loading', () => {
+            it('Passed to the component', () => {
+                element.iconName = 'utility:delete';
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('x-small');
+
+                    const computedStyle = getComputedStyle(element);
+                    expect(computedStyle.pointerEvents).toBe('none');
+                });
+            });
+
+            it('Smaller Size', () => {
+                element.label = 'Label';
+                element.isButtonLoading = true;
+                element.iconName = 'utility:delete';
+                element.size = 'small';
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('xx-small');
+
+                    const computedStyle = getComputedStyle(element);
+                    expect(computedStyle.pointerEvents).toBe('none');
                 });
             });
         });

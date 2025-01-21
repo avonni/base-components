@@ -4,20 +4,28 @@
         class={computedButtonClass}
         accesskey={accessKey}
         aria-atomic={computedAriaAtomic}
-        aria-disabled={disabled}
+        aria-disabled={computedDisabled}
         aria-expanded={computedAriaExpanded}
         aria-haspopup={computedAriaHasPopup}
         aria-label={ariaLabel}
         aria-live={computedAriaLive}
-        disabled={disabled}
+        disabled={computedDisabled}
         name={name}
         type={type}
         value={value}
-        tabindex={tabIndex}
+        tabindex={buttonTabIndex}
         data-element-id="button"
         onblur={handleButtonBlur}
         onfocus={handleButtonFocus}
     >
+        <lightning-spinner
+            if:true={isButtonLoading}
+            class="avonni-button-icon__spinner"
+            alternative-text="Loading..."
+            size={spinnerSize}
+            variant="brand"
+            data-element-id="spinner"
+        ></lightning-spinner>
         <img
             if:true={showIconImage}
             class={computedImageClass}

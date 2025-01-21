@@ -1,13 +1,13 @@
-import { api } from 'lwc';
+import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
+import PrimitiveButton from 'c/primitiveButton';
+import { Tooltip } from 'c/tooltipLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import {
-    observePosition,
+    buttonGroupOrderClass,
     keyCodes,
-    buttonGroupOrderClass
+    observePosition
 } from 'c/utilsPrivate';
-import { Tooltip } from 'c/tooltipLibrary';
-import PrimitiveButton from 'c/primitiveButton';
-import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
+import { api } from 'lwc';
 
 const BUTTON_VARIANTS = {
     valid: [
@@ -386,12 +386,21 @@ export default class ButtonMenu extends PrimitiveButton {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Return the button element
+     */
     get button() {
         return this.template.querySelector('[data-element-id="button"]');
     }
 
-    get buttonTabIdex() {
-        return this._dropdownVisible ? -1 : 0;
+    /**
+     * Computed focusability of the button
+     */
+    get buttonTabIndex() {
+        if (this.isButtonLoading || this._dropdownVisible) {
+            return -1;
+        }
+        return this.tabIndex;
     }
 
     /**
@@ -635,6 +644,19 @@ export default class ButtonMenu extends PrimitiveButton {
         return this.iconName && !this.iconSrc;
     }
 
+    /**
+     * Compute the spinner size depending on the button size
+     */
+    get spinnerSize() {
+        const mediaPresent = this.iconName || this.iconSrc;
+        if (mediaPresent && !this.label) {
+            return ['xx-small', 'x-small', 'small'].includes(this.iconSize)
+                ? 'xx-small'
+                : 'x-small';
+        }
+        return mediaPresent && this.iconSize === 'large' ? 'small' : 'x-small';
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -787,7 +809,7 @@ export default class ButtonMenu extends PrimitiveButton {
      * Menu visibility toggle handler.
      */
     toggleMenuVisibility() {
-        if (!this.disabled) {
+        if (!this.computedDisabled) {
             this._dropdownVisible = !this._dropdownVisible;
 
             if (!this._dropdownVisible) {
@@ -831,7 +853,7 @@ export default class ButtonMenu extends PrimitiveButton {
      * Button click handler.
      */
     handleButtonClick() {
-        if (!this.disabled && this.isTriggerClick) {
+        if (!this.computedDisabled && this.isTriggerClick) {
             this.toggleMenuVisibility();
             requestAnimationFrame(() => {
                 this.focusOnMenuItem(0);
@@ -849,7 +871,11 @@ export default class ButtonMenu extends PrimitiveButton {
          */
         this.dispatchEvent(new CustomEvent('focus'));
 
-        if (this.isTriggerFocus && !this._dropdownVisible && !this.disabled) {
+        if (
+            this.isTriggerFocus &&
+            !this._dropdownVisible &&
+            !this.computedDisabled
+        ) {
             this.toggleMenuVisibility();
             requestAnimationFrame(() => {
                 this.focusOnMenuItem(0);
@@ -1007,14 +1033,22 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     handleMouseEnter = () => {
-        if (this.disabled || !this.isTriggerHover || this._dropdownVisible) {
+        if (
+            this.computedDisabled ||
+            !this.isTriggerHover ||
+            this._dropdownVisible
+        ) {
             return;
         }
         this.toggleMenuVisibility();
     };
 
     handleMouseLeave = () => {
-        if (this.disabled || !this.isTriggerHover || !this._dropdownVisible) {
+        if (
+            this.computedDisabled ||
+            !this.isTriggerHover ||
+            !this._dropdownVisible
+        ) {
             return;
         }
         this.toggleMenuVisibility();

@@ -1,7 +1,7 @@
-import { LightningElement, api, track } from 'lwc';
-import { buttonGroupOrderClass, isIE11, isCSR } from 'c/utilsPrivate';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import AvonniAriaObserver from 'c/ariaObserver';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { buttonGroupOrderClass, isCSR, isIE11 } from 'c/utilsPrivate';
+import { LightningElement, api, track } from 'lwc';
 
 const BUTTON = 'button';
 const ROLE = 'role';
@@ -155,6 +155,7 @@ export default class PrimitiveButton extends LightningElement {
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
     _iconSrc;
+    _isButtonLoading = false;
     _stretch = false;
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
@@ -210,6 +211,10 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     renderedCallback() {
+        this.template.host.style.pointerEvents = this.computedDisabled
+            ? 'none'
+            : '';
+
         if (this._connected) {
             this.ariaObserver.sync();
         }
@@ -542,6 +547,22 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
+     * Setting it to true show a loading spinner over the button.
+     * This value defaults to false.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isButtonLoading() {
+        return this._isButtonLoading;
+    }
+    set isButtonLoading(value) {
+        this._isButtonLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Setting it to true allows the button to take up the entire available width.
      * This value defaults to false.
      *
@@ -634,6 +655,10 @@ export default class PrimitiveButton extends LightningElement {
         const classes = classSet('slds-button');
         classes.add(buttonGroupOrderClass(this.groupOrder));
         return classes.toString();
+    }
+
+    get computedDisabled() {
+        return this.disabled || this.isButtonLoading;
     }
 
     get computedIconClass() {

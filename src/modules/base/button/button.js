@@ -1,9 +1,9 @@
-import { api } from 'lwc';
-import { hasAnimation, isCSR } from 'c/utilsPrivate';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import PrimitiveButton from 'c/primitiveButton';
 import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
-import { getKineticsAttributes, animate } from './kinetics';
+import PrimitiveButton from 'c/primitiveButton';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { hasAnimation, isCSR } from 'c/utilsPrivate';
+import { api } from 'lwc';
+import { animate, getKineticsAttributes } from './kinetics';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -108,10 +108,8 @@ export default class Button extends PrimitiveButton {
     renderedCallback() {
         super.renderedCallback();
 
-        this.template.host.style.pointerEvents = this.disabled ? 'none' : '';
-
         if (
-            !this.disabled &&
+            !this.computedDisabled &&
             hasAnimation() &&
             !this._disableAnimation &&
             this.computedVariant
@@ -184,6 +182,16 @@ export default class Button extends PrimitiveButton {
         return isCSR
             ? this.template.querySelector('[data-element-id="button"]')
             : null;
+    }
+
+    /**
+     * Computed focusability of the button
+     */
+    get buttonTabIndex() {
+        if (this.isButtonLoading) {
+            return -1;
+        }
+        return this.tabIndex;
     }
 
     /**
@@ -300,6 +308,17 @@ export default class Button extends PrimitiveButton {
         return this.iconName || this.iconSrc;
     }
 
+    /**
+     * Compute the spinner size depending on the button size
+     */
+    get spinnerSize() {
+        if (this.showMedia && this.iconSize === 'large') {
+            return 'small';
+        }
+
+        return 'x-small';
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -349,6 +368,11 @@ export default class Button extends PrimitiveButton {
     handleButtonClick(event) {
         event.preventDefault();
         event.stopPropagation();
+
+        if (this.isButtonLoading) {
+            return;
+        }
+
         // In native shadow mode, parent form can't be submitted from within the
         // shadow boundary, so we need to manually find the parent form and submit.
         // Once TD-0118070 is delivered, we can access the parent form using `elementInternals.form`

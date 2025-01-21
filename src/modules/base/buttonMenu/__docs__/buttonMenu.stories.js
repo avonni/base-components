@@ -1,5 +1,5 @@
-import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
+import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import ButtonMenuSizesComponent from '../__examples__/sizes/sizes';
 
 export default {
@@ -95,6 +95,17 @@ export default {
             table: {
                 type: { summary: 'string' },
                 category: 'icon'
+            }
+        },
+        isButtonLoading: {
+            name: 'is-button-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Setting it to true show a loading spinner over the button.',
+            table: {
+                type: { summary: 'boolean' }
             }
         },
         isDraft: {
@@ -435,8 +446,9 @@ customElements.define(
     'ac-button-menu-sizes',
     ButtonMenuSizesComponent.CustomElementConstructor
 );
-const ButtonMenuSizes = ({ variant }) => {
+const ButtonMenuSizes = ({ isButtonLoading, variant }) => {
     const element = document.createElement('ac-button-menu-sizes');
+    element.isButtonLoading = isButtonLoading;
     element.variant = variant;
     return element;
 };

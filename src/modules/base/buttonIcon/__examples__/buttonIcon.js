@@ -12,6 +12,7 @@ export const ButtonIcon = ({
     iconClass,
     iconName,
     iconSrc,
+    isButtonLoading,
     name,
     size,
     tooltip,
@@ -26,6 +27,7 @@ export const ButtonIcon = ({
     element.iconClass = iconClass;
     element.iconName = iconName;
     element.iconSrc = iconSrc;
+    element.isButtonLoading = isButtonLoading;
     element.name = name;
     element.size = size;
     element.tooltip = tooltip;

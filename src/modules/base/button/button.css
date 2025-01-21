@@ -8,6 +8,12 @@
     justify-content: var(--avonni-button-horizontal-alignment, center);
 }
 
+.avonni-button__spinner {
+    /* The spinner does not need a big z-index in that case */
+    z-index: 1;
+    border-radius: var(--avonni-button-radius-border, 0.25rem);
+}
+
 .avonni-button__image {
     border-radius: var(--avonni-button-image-radius-border, 0.25rem);
     border-style: var(--avonni-button-image-styling-border);

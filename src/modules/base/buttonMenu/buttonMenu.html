@@ -4,10 +4,10 @@
         accesskey={accessKey}
         aria-expanded={computedAriaExpanded}
         aria-haspopup="true"
-        disabled={disabled}
-        tabindex={buttonTabIdex}
+        disabled={computedDisabled}
         title={title}
         value={value}
+        tabindex={buttonTabIndex}
         type="button"
         data-element-id="button"
         onblur={handleButtonBlur}
@@ -15,6 +15,14 @@
         onfocus={handleButtonFocus}
         onkeydown={handleButtonKeyDown}
     >
+        <lightning-spinner
+            if:true={isButtonLoading}
+            class="avonni-button-menu__spinner"
+            alternative-text="Loading..."
+            size={spinnerSize}
+            variant="brand"
+            data-element-id="spinner"
+        ></lightning-spinner>
         <abbr
             if:true={isDraft}
             class="slds-indicator_unsaved slds-p-right_xx-small"

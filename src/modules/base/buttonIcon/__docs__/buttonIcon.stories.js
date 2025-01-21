@@ -49,6 +49,17 @@ export default {
                 category: 'icon'
             }
         },
+        isButtonLoading: {
+            name: 'is-button-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Setting it to true show a loading spinner over the button.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
         size: {
             name: 'icon-size',
             control: {
@@ -264,8 +275,9 @@ customElements.define(
     'ac-base-button-icon-sizes',
     ButtonIconSizesComponent.CustomElementConstructor
 );
-const ButtonIconSizes = ({ variant }) => {
+const ButtonIconSizes = ({ isButtonLoading, variant }) => {
     const element = document.createElement('ac-base-button-icon-sizes');
+    element.isButtonLoading = isButtonLoading;
     element.variant = variant;
     return element;
 };

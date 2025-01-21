@@ -62,6 +62,12 @@
     min-height: 1.5rem;
 }
 
+.avonni-button-icon__spinner {
+    /* The spinner does not need a big z-index in that case */
+    z-index: 1;
+    border-radius: var(--avonni-button-icon-radius-border, 0.25rem);
+}
+
 .avonni-button-icon_bare:disabled,
 .avonni-button-icon_bare-inverse:disabled,
 .avonni-button-icon_base:disabled,
