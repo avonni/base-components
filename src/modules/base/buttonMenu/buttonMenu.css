@@ -1154,3 +1154,9 @@
 .avonni-button-menu__main-icon-adjust-scale {
     scale: 1.5;
 }
+
+.avonni-button-menu__spinner {
+    /* The spinner does not need a big z-index in that case */
+    z-index: 1;
+    border-radius: var(--avonni-button-menu-radius-border, 0.25rem);
+}

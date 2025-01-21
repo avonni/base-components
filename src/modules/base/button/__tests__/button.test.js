@@ -280,6 +280,42 @@ describe('Button', () => {
             });
         });
 
+        describe('Is Button Loading', () => {
+            it('Passed to the component', () => {
+                element.label = 'Label';
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('x-small');
+
+                    const computedStyle = getComputedStyle(element);
+                    expect(computedStyle.pointerEvents).toBe('none');
+                });
+            });
+
+            it('Larger Size', () => {
+                element.label = 'Label';
+                element.isButtonLoading = true;
+                element.iconName = 'utility:delete';
+                element.iconSize = 'large';
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('small');
+
+                    const computedStyle = getComputedStyle(element);
+                    expect(computedStyle.pointerEvents).toBe('none');
+                });
+            });
+        });
+
         describe('Label', () => {
             it('Passed to the component', () => {
                 element.label = 'Label';

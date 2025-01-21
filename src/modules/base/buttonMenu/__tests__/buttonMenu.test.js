@@ -1,6 +1,6 @@
+import { Tooltip } from 'c/tooltipLibrary';
 import { createElement } from 'lwc';
 import ButtonMenu from '../buttonMenu';
-import { Tooltip } from 'c/tooltipLibrary';
 
 jest.mock('c/tooltipLibrary');
 
@@ -388,6 +388,84 @@ describe('Button Menu', () => {
                             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
                         );
                     });
+                });
+            });
+        });
+
+        describe('Is Button Loading', () => {
+            it('Label Only', () => {
+                element.label = 'Label';
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('x-small');
+
+                    const computedStyle = getComputedStyle(element);
+                    expect(computedStyle.pointerEvents).toBe('none');
+                });
+            });
+
+            it('Label and large media', () => {
+                element.label = 'Label';
+                element.iconSrc = 'test';
+                element.iconSize = 'large';
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('small');
+
+                    const computedStyle = getComputedStyle(element);
+                    expect(computedStyle.pointerEvents).toBe('none');
+                });
+            });
+
+            it('No Label', () => {
+                element.iconName = 'utility:delete';
+                element.iconSize = 'medium';
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('x-small');
+                });
+            });
+
+            it('No Label, smaller size', () => {
+                element.iconName = 'utility:delete';
+                element.iconSize = 'small';
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('xx-small');
+                });
+            });
+
+            it('Icon only, smaller Size', () => {
+                element.isButtonLoading = true;
+                element.iconName = 'utility:delete';
+                element.size = 'small';
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="spinner"]'
+                    );
+                    expect(spinner).not.toBeNull();
+                    expect(spinner.size).toBe('xx-small');
                 });
             });
         });

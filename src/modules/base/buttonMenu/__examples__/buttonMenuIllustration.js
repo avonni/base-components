@@ -14,6 +14,7 @@ export const ButtonMenuIllustration = ({
     iconName,
     iconSize,
     iconSrc,
+    isButtonLoading,
     isDraft,
     isLoading,
     label,
@@ -35,6 +36,7 @@ export const ButtonMenuIllustration = ({
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.iconSrc = iconSrc;
+    element.isButtonLoading = isButtonLoading;
     element.isDraft = isDraft;
     element.isLoading = isLoading;
     element.label = label;

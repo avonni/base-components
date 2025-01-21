@@ -17,12 +17,20 @@
         part="button"
         type={type}
         value={value}
-        tabindex={tabIndex}
+        tabindex={buttonTabIndex}
         data-element-id="button"
         onblur={handleButtonBlur}
         onclick={handleButtonClick}
         onfocus={handleButtonFocus}
     >
+        <lightning-spinner
+            if:true={isButtonLoading}
+            class="avonni-button__spinner"
+            alternative-text="Loading..."
+            size={spinnerSize}
+            variant="brand"
+            data-element-id="spinner"
+        ></lightning-spinner>
         <span class="slds-order_1 avonni-button_label" data-element-id="label">
             {label}
         </span>

@@ -1,8 +1,8 @@
-import { api } from 'lwc';
-import { classSet, normalizeString } from 'c/utils';
+import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
 import PrimitiveButton from 'c/primitiveButton';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
-import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
+import { classSet, normalizeString } from 'c/utils';
+import { api } from 'lwc';
 
 const BUTTON_VARIANTS = {
     valid: [
@@ -231,6 +231,16 @@ export default class ButtonIcon extends PrimitiveButton {
     }
 
     /**
+     * Computed focusability of the button
+     */
+    get buttonTabIndex() {
+        if (this.isButtonLoading) {
+            return -1;
+        }
+        return this.tabIndex;
+    }
+
+    /**
      * Computed button class styling.
      *
      * @type {string}
@@ -349,6 +359,17 @@ export default class ButtonIcon extends PrimitiveButton {
      */
     get showIconImage() {
         return this.iconSrc && !this.iconSrc.includes('.svg');
+    }
+
+    /**
+     * Compute the spinner size depending on the button size
+     */
+    get spinnerSize() {
+        if (['xx-small', 'x-small', 'small'].includes(this.size)) {
+            return 'xx-small';
+        }
+
+        return 'x-small';
     }
 
     /*

@@ -10,6 +10,7 @@ export const Button = ({
     iconPosition,
     iconSize,
     iconSrc,
+    isButtonLoading,
     label,
     name,
     stretch,
@@ -25,6 +26,7 @@ export const Button = ({
     element.iconPosition = iconPosition;
     element.iconSize = iconSize;
     element.iconSrc = iconSrc;
+    element.isButtonLoading = isButtonLoading;
     element.label = label;
     element.name = name;
     element.stretch = stretch;
