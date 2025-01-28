@@ -117,21 +117,21 @@ function _parseCustomToken({ date, token, timeZone }) {
         case 'GGGGG':
             return tzDate.getUnit(ERA, NARROW);
         case 'kk':
-            return tzDate.isoYear.slice(-2);
+            return tzDate.isoYear.toString().slice(-2);
         case 'kkkk':
-            return tzDate.isoYear;
+            return tzDate.isoYear.toString();
         case 'W':
         case 'n':
-            return tzDate.isoWeek;
+            return tzDate.isoWeek.toString();
         case 'nn':
         case 'WW':
             return pad(tzDate.isoWeek, 2);
         case 'o':
-            return tzDate.ordinal;
+            return tzDate.ordinal.toString();
         case 'ooo':
             return pad(tzDate.ordinal, 3);
         case 'q':
-            return tzDate.quarter;
+            return tzDate.quarter.toString();
         case 'qq':
             return pad(tzDate.quarter, 2);
         case 'D':
