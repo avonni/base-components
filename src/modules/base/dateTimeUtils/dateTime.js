@@ -1,5 +1,5 @@
-import { pad } from './utils';
 import { DEFAULT_LANGUAGE, NUMERIC } from './constants';
+import { pad } from './utils';
 
 export class DateTime {
     constructor(date, timeZone) {
@@ -12,6 +12,27 @@ export class DateTime {
      *  PROPERTIES
      * -------------------------------------------------------------
      */
+
+    get dateParts() {
+        const parts = new Intl.DateTimeFormat('en-US', {
+            day: NUMERIC,
+            timeZone: this.timeZone,
+            year: NUMERIC,
+            month: NUMERIC,
+            hour: NUMERIC,
+            minute: NUMERIC,
+            second: NUMERIC,
+            hour12: false
+        }).formatToParts(this._originalDate);
+        const y = Number(parts[4].value);
+        const mo = Number(parts[0].value);
+        const d = Number(parts[2].value);
+        const h = Number(parts[6].value) === 24 ? 0 : Number(parts[6].value);
+        const min = Number(parts[8].value);
+        const sec = Number(parts[10].value);
+        const ms = this._originalDate.getMilliseconds();
+        return { y, mo, d, h, min, sec, ms };
+    }
 
     get day() {
         return Number(this.getUnit('day'));
@@ -35,8 +56,7 @@ export class DateTime {
         if (target.getDay() !== 4) {
             target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
         }
-        const isoWeek = 1 + Math.ceil((firstThursday - target) / 604800000);
-        return isoWeek ? isoWeek.toString() : '';
+        return 1 + Math.ceil((firstThursday - target) / 604800000);
     }
 
     get isoYear() {
@@ -52,9 +72,7 @@ export class DateTime {
             new Date(
                 Date.UTC(y, 0, 1 - ((startOfYear.getDay() + 6) % 7))
             ).getDay() === 4;
-        const isoYear =
-            y + (isWeek53 && d.getTime() < startOfYear.getTime() ? -1 : 0);
-        return isoYear ? isoYear.toString() : '';
+        return y + (isWeek53 && d.getTime() < startOfYear.getTime() ? -1 : 0);
     }
 
     get minute() {
@@ -66,15 +84,17 @@ export class DateTime {
     }
 
     get ordinal() {
-        const startOfYear = new Date(this._originalDate);
-        startOfYear.setMonth(0, 1);
-        const day = 1 + Math.ceil((this.tzDate - startOfYear) / 86400000);
-        return day ? day.toString() : '';
+        const oneDay = 86400000;
+        const januaryFirst = new Date(this.year, 0, 1, 0, 0, 0);
+        const ordinal = Math.ceil((this.tzDate - januaryFirst) / oneDay);
+        if (ordinal === 0) {
+            return 1;
+        }
+        return ordinal;
     }
 
     get quarter() {
-        const quarter = Math.ceil(this.month / 3);
-        return quarter.toString();
+        return Math.ceil(this.month / 3);
     }
 
     get second() {
@@ -91,23 +111,7 @@ export class DateTime {
         if (!this.timeZone) {
             return new Date(this._originalDate);
         }
-        const parts = new Intl.DateTimeFormat('en-US', {
-            day: NUMERIC,
-            timeZone: this.timeZone,
-            year: NUMERIC,
-            month: NUMERIC,
-            hour: NUMERIC,
-            minute: NUMERIC,
-            second: NUMERIC,
-            hour12: false
-        }).formatToParts(this._originalDate);
-        const y = Number(parts[4].value);
-        const mo = Number(parts[0].value);
-        const d = Number(parts[2].value);
-        const h = Number(parts[6].value);
-        const min = Number(parts[8].value);
-        const sec = Number(parts[10].value);
-        const ms = this._originalDate.getMilliseconds();
+        const { y, mo, d, h, min, sec, ms } = this.dateParts;
         return new Date(y, mo - 1, d, h, min, sec, ms);
     }
 
@@ -165,7 +169,10 @@ export class DateTime {
         if (!this.timeZone) {
             return this._originalDate.toISOString();
         }
-        const iso = this.tzDate.toISOString();
-        return iso.replace('Z', this.tzOffset);
+        const { y, mo, d, h, min, sec, ms } = this.dateParts;
+        const date = `${y}-${pad(mo, 2)}-${pad(d, 2)}`;
+        const time = `${pad(h, 2)}:${pad(min, 2)}:${pad(sec, 2)}.${pad(ms, 3)}`;
+        const offset = this.tzOffset === '+00:00' ? 'Z' : this.tzOffset;
+        return `${date}T${time}${offset}`;
     }
 }
