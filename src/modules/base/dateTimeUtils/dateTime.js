@@ -1,5 +1,5 @@
-import { pad } from './utils';
 import { DEFAULT_LANGUAGE, NUMERIC } from './constants';
+import { pad } from './utils';
 
 export class DateTime {
     constructor(date, timeZone) {
@@ -165,7 +165,25 @@ export class DateTime {
         if (!this.timeZone) {
             return this._originalDate.toISOString();
         }
-        const iso = this.tzDate.toISOString();
-        return iso.replace('Z', this.tzOffset);
+        const parts = new Intl.DateTimeFormat('en-US', {
+            day: NUMERIC,
+            timeZone: this.timeZone,
+            year: NUMERIC,
+            month: NUMERIC,
+            hour: NUMERIC,
+            minute: NUMERIC,
+            second: NUMERIC,
+            hour12: false
+        }).formatToParts(this._originalDate);
+        const y = Number(parts[4].value);
+        const mo = Number(parts[0].value);
+        const d = Number(parts[2].value);
+        const h = Number(parts[6].value);
+        const min = Number(parts[8].value);
+        const sec = Number(parts[10].value);
+        const ms = this._originalDate.getMilliseconds();
+        const date = `${y}-${pad(mo, 2)}-${pad(d, 2)}`;
+        const time = `${pad(h, 2)}:${pad(min, 2)}:${pad(sec, 2)}.${pad(ms, 3)}`;
+        return `${date}T${time}${this.tzOffset}`;
     }
 }
