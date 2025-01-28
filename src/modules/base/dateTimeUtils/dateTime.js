@@ -66,10 +66,10 @@ export class DateTime {
     }
 
     get ordinal() {
-        const startOfYear = new Date(this._originalDate);
-        startOfYear.setMonth(0, 1);
-        const day = 1 + Math.ceil((this.tzDate - startOfYear) / 86400000);
-        return day ? day.toString() : '';
+        const ordinal = Math.ceil(
+            (this.tzDate - new Date(this.tzDate.getFullYear(), 0, 1)) / 86400000
+        );
+        return ordinal ? ordinal.toString() : ordinal;
     }
 
     get quarter() {
