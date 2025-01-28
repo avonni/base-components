@@ -7,8 +7,8 @@
             expand-icon-name={expandIconName}
             ontoggle={handleToggle}
             closed={closed}
-            hide-icon={isEmpty}
         >
+            <div if:true={isEmpty}>No items to display.</div>
             <avonni-media-object slot="title">
                 <template if:true={hasAvatar}>
                     <avonni-avatar

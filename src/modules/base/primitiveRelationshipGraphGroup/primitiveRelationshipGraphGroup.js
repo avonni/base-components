@@ -34,7 +34,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _defaultActions = [];
     _expanded = true;
     _hasSelectedChildren;
-    _isConnected = false;
     _items = [];
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
@@ -137,7 +136,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     get isEmpty() {
-        return !this.items;
+        return !Array.isArray(this.items) || this.items.length === 0;
     }
 
     get hasAvatar() {
