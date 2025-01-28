@@ -8,7 +8,20 @@
             ontoggle={handleToggle}
             closed={closed}
         >
-            <div if:true={isEmpty}>No items to display.</div>
+            <div
+                if:true={isLoading}
+                class="
+                    slds-is-relative
+                    avonni-relationship-graph__loading-spinner
+                "
+            >
+                <lightning-spinner
+                    alternative-text="Loading..."
+                    size="small"
+                    data-element-id="lightning-spinner"
+                ></lightning-spinner>
+            </div>
+            <div if:true={showEmptyMessage}>No items to display.</div>
             <avonni-media-object slot="title">
                 <template if:true={hasAvatar}>
                     <avonni-avatar

@@ -1,5 +1,10 @@
 import { LightningElement, api } from 'lwc';
-import { classSet, normalizeArray, normalizeString } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
@@ -34,6 +39,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _defaultActions = [];
     _expanded = true;
     _hasSelectedChildren;
+    _isLoading = false;
     _items = [];
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
@@ -118,6 +124,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    @api
     get variant() {
         return this._variant;
     }
@@ -128,15 +142,18 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         });
     }
 
+    get showEmptyMessage() {
+        return (
+            !this.isLoading &&
+            (!Array.isArray(this.items) || this.items.length === 0)
+        );
+    }
+
     get title() {
         if (this.hideItemsCount) return this.label;
 
         const count = this.items ? this.items.length : 0;
         return `${this.label} (${count})`;
-    }
-
-    get isEmpty() {
-        return !Array.isArray(this.items) || this.items.length === 0;
     }
 
     get hasAvatar() {
