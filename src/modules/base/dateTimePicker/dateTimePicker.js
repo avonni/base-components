@@ -9,7 +9,7 @@ import {
     isInTimeFrame
 } from 'c/luxonDateTimeUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
-import { TIME_ZONES } from './timezones';
+import { TIME_ZONES } from 'c/timeZones';
 import { DateTime } from 'c/luxon';
 import {
     classSet,

@@ -1056,7 +1056,7 @@ export default class Scheduler extends LightningElement {
         this._timezone = value;
 
         if (this._connected) {
-            this.selectedDate = this.createDate(this.start);
+            this.selectedDate.setZone(this.timezone);
             this.initReferenceLines();
             this.initEvents();
         }
