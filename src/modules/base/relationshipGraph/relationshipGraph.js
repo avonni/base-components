@@ -83,7 +83,7 @@ export default class RelationshipGraph extends LightningElement {
     _selectedItemName;
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
-    processedGroups;
+    processedGroups = [];
     selectedItemPosition;
     inlineHeader;
 
@@ -351,8 +351,12 @@ export default class RelationshipGraph extends LightningElement {
         const currentLevel = this.childLevel;
 
         if (this.variant === 'vertical') {
-            const width = currentLevel.offsetWidth;
-            line.setAttribute('style', `width: calc(${width}px - 21rem)`);
+            if (this.processedGroups.length === 1) {
+                line.setAttribute('style', `width: 0`);
+            } else {
+                const width = currentLevel.offsetWidth;
+                line.setAttribute('style', `width: calc(${width}px - 21rem)`);
+            }
         } else {
             const height = currentLevel.currentLevelHeight;
             line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
@@ -385,7 +389,7 @@ export default class RelationshipGraph extends LightningElement {
         while (!this._selectedItem && i < groups.length) {
             const items = groups[i].items;
 
-            if (items) {
+            if (Array.isArray(items)) {
                 const itemIndex = items.findIndex(
                     (currentItem) => currentItem.name === name
                 );
