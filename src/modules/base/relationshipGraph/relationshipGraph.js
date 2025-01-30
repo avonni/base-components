@@ -288,11 +288,17 @@ export default class RelationshipGraph extends LightningElement {
      */
     get headerClass() {
         const { variant } = this;
-        return classSet('slds-show_inline-block').add({
+        return classSet(
+            'avonni-relationship-graph__header slds-show_inline-block'
+        ).add({
             'slds-box': variant === 'vertical',
             group: variant === 'vertical',
             'slds-text-align_center': variant === 'vertical',
-            'slds-m-bottom_medium': variant === 'horizontal'
+            'slds-m-bottom_medium': variant === 'horizontal',
+            'avonni-relationship-graph__header-vertical-no-actions':
+                variant === 'vertical' &&
+                !this.hasActions &&
+                this.processedGroups.length > 1
         });
     }
 
