@@ -903,6 +903,14 @@
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
         {
+            "name": "avonni/primitiveCombobox",
+            "path": "src/modules/base/primitiveCombobox/primitiveCombobox.js"
+        },
+        {
+            "name": "avonni/primitiveComboboxGroup",
+            "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
+        },
+        {
             "name": "avonni/primitiveSchedulerHeaderGroup",
             "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
         },
@@ -1081,6 +1089,8 @@
         "avonni/path",
         "avonni/pillContainer",
         "avonni/primitiveIcon",
+        "avonni/primitiveCombobox",
+        "avonni/primitiveComboboxGroup",
         "avonni/profileCard",
         "avonni/progressBar",
         "avonni/progressCircle",
