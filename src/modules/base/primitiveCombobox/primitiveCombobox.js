@@ -1,14 +1,5 @@
-import { LightningElement, api } from 'lwc';
-import Option from './option';
-import Action from './action';
-import {
-    MAX_LOADED_OPTIONS,
-    computeScroll,
-    getTopOption,
-    isOutsideOfView
-} from './scrollUtils';
-import { equal, getListHeight, classListMutation } from 'c/utilsPrivate';
-import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { AutoPosition, Direction } from 'c/positionLibrary';
 import {
     classSet,
     deepCopy,
@@ -18,7 +9,16 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { AutoPosition, Direction } from 'c/positionLibrary';
+import { classListMutation, equal, getListHeight } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
+import Action from './action';
+import Option from './option';
+import {
+    MAX_LOADED_OPTIONS,
+    computeScroll,
+    getTopOption,
+    isOutsideOfView
+} from './scrollUtils';
 
 const DROPDOWN_ALIGNMENTS = {
     valid: [
@@ -1676,11 +1676,11 @@ export default class PrimitiveCombobox extends LightningElement {
             target: () => this.input,
             element: () => this.dropdown,
             align: {
-                horizontal: Direction.Right,
+                horizontal: Direction.Left,
                 vertical: Direction.Top
             },
             targetAlign: {
-                horizontal: Direction.Right,
+                horizontal: Direction.Left,
                 vertical: Direction.Bottom
             },
             autoFlip: true,
