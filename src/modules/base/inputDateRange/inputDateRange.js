@@ -1200,10 +1200,10 @@ export default class InputDateRange extends LightningElement {
         if (this._startDate > this._endDate) this._endDate = null;
 
         this.dispatchChange();
+        this.stopPositioning();
+        this.showStartDate = false;
 
         requestAnimationFrame(() => {
-            this.showStartDate = false;
-            this.stopPositioning();
             if (this.calendarKeyEvent === 'keyboard') {
                 this.startDateIcon.focus();
             } else if (!this.endDate) {
