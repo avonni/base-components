@@ -517,23 +517,7 @@ export default class PrimitiveCombobox extends LightningElement {
         return this._options;
     }
     set options(value) {
-        const options = normalizeArray(value);
-        if (equal(this._originalOptions, options)) {
-            return;
-        }
-        this._originalOptions = deepCopy(options);
-        this._options = this._initOptionObjects(options);
-
-        if (this._connected) {
-            this._initValue();
-            this._initComputedOptions();
-
-            this.showStartLoader = false;
-            this.showEndLoader =
-                this.currentParent && !this.enableInfiniteLoading
-                    ? this.currentParent.isLoading
-                    : this.isLoading;
-        }
+        this._setOptions(value);
     }
 
     /**
@@ -1598,6 +1582,26 @@ export default class PrimitiveCombobox extends LightningElement {
         }
         this._highlightOption(this._highlightedOptionIndex);
         this._topVisibleOption = null;
+    }
+
+    _setOptions(value) {
+        const options = normalizeArray(value);
+        if (equal(this._originalOptions, options)) {
+            return;
+        }
+        this._originalOptions = deepCopy(options);
+        this._options = this._initOptionObjects(options);
+
+        if (this._connected) {
+            this._initValue();
+            this._initComputedOptions();
+
+            this.showStartLoader = false;
+            this.showEndLoader =
+                this.currentParent && !this.enableInfiniteLoading
+                    ? this.currentParent.isLoading
+                    : this.isLoading;
+        }
     }
 
     /**
