@@ -57,6 +57,8 @@ const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
 
+const SELECTED_CLASS = 'avonni-list__item-sortable_selected';
+
 /**
  * @class
  * @storyId example-list--base
@@ -140,10 +142,11 @@ export default class List extends LightningElement {
         default: 1
     };
     _connected = false;
-    _currentItemDraggedHeight;
+    _currentItemsDraggedHeight;
     _currentColumnCount = 1;
     _displayWidth = 'default';
     _draggedElement;
+    _draggedElements = [];
     _draggedIndex;
     _dragging = false;
     _fieldsResizeIsHandledByParent = false;
@@ -1260,18 +1263,20 @@ export default class List extends LightningElement {
         const itemHoveringLargerItem =
             draggedIndex < hoveredIndex || tempHoveredIndex < hoveredIndex;
 
+        const offset = this._draggedElements.length;
+
         if (itemHasMoved) {
             delete hoveredItem.dataset.moved;
             hoveredItem.style.transform = 'translateY(0px)';
             hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
         } else if (itemHoveringSmallerItem) {
             hoveredItem.dataset.moved = 'moved';
-            hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
-            hoveredItem.dataset.elementTempIndex = tempHoveredIndex + 1;
+            hoveredItem.style.transform = `translateY(${this._currentItemsDraggedHeight}px)`;
+            hoveredItem.dataset.elementTempIndex = tempHoveredIndex + offset;
         } else if (itemHoveringLargerItem) {
             hoveredItem.dataset.moved = 'moved';
-            hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
-            hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
+            hoveredItem.style.transform = `translateY(-${this._currentItemsDraggedHeight}px)`;
+            hoveredItem.dataset.elementTempIndex = tempHoveredIndex - offset;
         }
 
         // Get all items in between the dragged and hovered.
@@ -1295,8 +1300,8 @@ export default class List extends LightningElement {
                         10
                     );
                     item.dataset.moved = 'moved';
-                    item.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
-                    item.dataset.elementTempIndex = tempIndex + 1;
+                    item.style.transform = `translateY(${this._currentItemsDraggedHeight}px)`;
+                    item.dataset.elementTempIndex = tempIndex + offset;
                 });
             } else if (draggedIndex < hoveredIndex) {
                 itemsBetween.forEach((item) => {
@@ -1305,8 +1310,8 @@ export default class List extends LightningElement {
                         10
                     );
                     item.dataset.moved = 'moved';
-                    item.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
-                    item.dataset.elementTempIndex = tempIndex - 1;
+                    item.style.transform = `translateY(-${this._currentItemsDraggedHeight}px)`;
+                    item.dataset.elementTempIndex = tempIndex - offset;
                 });
             }
         }
@@ -1319,9 +1324,34 @@ export default class List extends LightningElement {
      */
     animateItems(currentY) {
         if (currentY && this._draggedElement) {
-            this._draggedElement.style.transform = `translate( 0px, ${
-                currentY - this._initialY
-            }px)`;
+            this._draggedElements.forEach((draggedElement) => {
+                if (draggedElement === this._draggedElement) {
+                    draggedElement.style.transform = `translate( 0px, ${
+                        currentY - this._initialY
+                    }px)`;
+                    return;
+                }
+                const hoveredIndex = Number(draggedElement.dataset.index);
+                const isLarger = hoveredIndex > this._draggedIndex;
+                const itemsBetween = this._itemElements.filter((item) => {
+                    const itemIndex = Number(item.dataset.index);
+                    const min = isLarger ? this._draggedIndex : hoveredIndex;
+                    const max = isLarger ? hoveredIndex : this._draggedIndex;
+                    const isDragging = this._draggedElements.find((i) => {
+                        const index = Number(i.dataset.index);
+                        return index === itemIndex;
+                    });
+                    return itemIndex > min && itemIndex < max && !isDragging;
+                });
+                let height = 0;
+                itemsBetween.forEach((item) => {
+                    height += this.computeItemHeight(item);
+                });
+                const offset = isLarger ? -1 : 1;
+                draggedElement.style.transform = `translate( 0px, ${
+                    currentY - this._initialY + height * offset
+                }px)`;
+            });
 
             const hoveredItem = this.getHoveredItem(currentY);
             if (hoveredItem) {
@@ -1813,6 +1843,41 @@ export default class List extends LightningElement {
                 return;
             }
 
+            if (event.shiftKey) {
+                // Selecting multiple items;
+                if (event.currentTarget.classList.contains(SELECTED_CLASS)) {
+                    // Remove from selection
+                    const itemIndex = this._draggedElements.indexOf(
+                        event.currentTarget
+                    );
+                    if (itemIndex > -1) {
+                        this._draggedElements[itemIndex].classList.remove(
+                            'avonni-list__item-sortable_selected'
+                        );
+                        this._draggedElements.splice(itemIndex, 1);
+                    }
+                } else {
+                    // Add to selection
+                    event.currentTarget.classList.add(
+                        'avonni-list__item-sortable_selected'
+                    );
+                    this._draggedElements.push(event.currentTarget);
+                }
+            } else if (
+                !event.currentTarget.classList.contains(SELECTED_CLASS)
+            ) {
+                // Single item selected
+                this._draggedElements.forEach((element) => {
+                    element.classList.remove(
+                        'avonni-list__item-sortable_selected'
+                    );
+                });
+                event.currentTarget.classList.add(
+                    'avonni-list__item-sortable_selected'
+                );
+                this._draggedElements = [event.currentTarget];
+            }
+
             /**
              * The event fired when the mouse is pressed on an item.
              *
@@ -1856,12 +1921,8 @@ export default class List extends LightningElement {
         );
 
         this._draggedElement = event.currentTarget;
-        this._currentItemDraggedHeight = this.computeItemHeight(
-            event.currentTarget
-        );
 
         this._draggedIndex = Number(this._draggedElement.dataset.index);
-        this._initialDraggedIndex = this._draggedIndex;
         this._initialDraggedIndex = this._draggedIndex;
 
         if (event.type !== 'keydown') {
@@ -1894,7 +1955,13 @@ export default class List extends LightningElement {
             return;
         }
 
-        this._dragging = true;
+        if (!this._dragging) {
+            this._currentItemsDraggedHeight = 0;
+            this._draggedElements.forEach((draggedElement) => {
+                this._currentItemsDraggedHeight +=
+                    this.computeItemHeight(draggedElement);
+            });
+        }
 
         this._dragging = true;
         this._draggedElement.classList.add(
@@ -1946,14 +2013,50 @@ export default class List extends LightningElement {
 
         clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
-        this._dragging = false;
 
         if (!this._draggedElement) {
+            this._dragging = false;
             return;
         }
 
-        if (this._draggedIndex != null && this._hoveredIndex != null) {
-            this.switchWithItem(this._draggedIndex, this._hoveredIndex);
+        if (
+            this._draggedIndex != null &&
+            this._hoveredIndex != null &&
+            this._draggedIndex !== this._hoveredIndex
+        ) {
+            const direction = this._draggedIndex > this._hoveredIndex ? -1 : 1;
+            const originalItems = JSON.parse(
+                JSON.stringify(this.computedItems)
+            );
+            const sortedDraggedElements = this._draggedElements.sort((a, b) => {
+                const indexA = Number(a.dataset.index);
+                const indexB = Number(b.dataset.index);
+                return direction === -1 ? indexB - indexA : indexA - indexB;
+            });
+            sortedDraggedElements.forEach((element) => {
+                const index = Number(element.dataset.index);
+                const name = originalItems[index].name;
+                const draggedIndex = this.computedItems.findIndex(
+                    (i) => i.name === name
+                );
+                if (draggedIndex !== -1) {
+                    const draggedItem = this.computedItems.splice(
+                        draggedIndex,
+                        1
+                    )[0];
+                    this.computedItems.splice(
+                        this._hoveredIndex,
+                        0,
+                        draggedItem
+                    );
+                }
+            });
+            this.computedItems.forEach((item, index) => {
+                item.index = index;
+            });
+            this.computedItems = [...this.computedItems];
+            this.resetItemsAnimations();
+            this.updateAssistiveText();
         }
         const orderHasChanged = this._itemElements.some((item) => {
             return (
@@ -1988,7 +2091,13 @@ export default class List extends LightningElement {
                 })
             );
         }
-
+        if (this._dragging) {
+            this._draggedElements.forEach((element) => {
+                element.classList.remove('avonni-list__item-sortable_selected');
+            });
+            this._draggedElements = [];
+        }
+        this._dragging = false;
         this.clearSelection();
     }
 
