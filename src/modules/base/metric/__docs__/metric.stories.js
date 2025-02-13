@@ -69,6 +69,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        labelPosition: {
+            name: 'label-position',
+            control: {
+                type: 'select'
+            },
+            options: ['top', 'bottom'],
+            description: 'Position of label.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         maximumFractionDigits: {
             name: 'maximum-fraction-digits',
             control: {

@@ -28,6 +28,7 @@ describe('Metric', () => {
         expect(element.description).toBeUndefined();
         expect(element.formatStyle).toBe('decimal');
         expect(element.label).toBeUndefined();
+        expect(element.labelPosition).toBe('top');
         expect(element.maximumFractionDigits).toBeUndefined();
         expect(element.maximumSignificantDigits).toBeUndefined();
         expect(element.minimumFractionDigits).toBeUndefined();
@@ -194,6 +195,33 @@ describe('Metric', () => {
                 '[data-element-id="div-label"]'
             );
             expect(label.textContent).toBe('some label');
+        });
+    });
+
+    // label position
+    it('Metric: label position = top', () => {
+        element.labelPosition = 'top';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="div-label"]'
+            );
+            expect(label.classList).toContain('avonni-metric__label-top');
+            expect(label.classList).not.toContain(
+                'avonni-metric__label-bottom'
+            );
+        });
+    });
+
+    it('Metric: label position = bottom', () => {
+        element.labelPosition = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="div-label"]'
+            );
+            expect(label.classList).not.toContain('avonni-metric__label-top');
+            expect(label.classList).toContain('avonni-metric__label-bottom');
         });
     });
 
