@@ -13,10 +13,10 @@
         ></c-primitive-avatar>
 
         <div class="avonni-metric__flex-col slds-has-flexi-truncate">
-            <!-- Label -->
+            <!-- Top Label -->
             <div
-                if:true={label}
-                class="avonni-metric__label"
+                if:true={showTopLabel}
+                class="avonni-metric__label avonni-metric__label-top"
                 data-element-id="div-label"
             >
                 {label}
@@ -78,6 +78,14 @@
                 data-element-id="div-description"
             >
                 {description}
+            </div>
+            <!-- Bottom Label -->
+            <div
+                if:false={showTopLabel}
+                class="avonni-metric__label avonni-metric__label-bottom"
+                data-element-id="div-label"
+            >
+                {label}
             </div>
         </div>
     </div>

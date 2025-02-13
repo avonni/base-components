@@ -24,6 +24,11 @@ const FORMAT_STYLES = {
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
 
+const LABEL_POSITIONS = {
+    valid: ['top', 'bottom'],
+    default: 'top'
+};
+
 const POSITIONS = {
     valid: ['right', 'left', 'top', 'bottom'],
     default: 'right'
@@ -113,6 +118,7 @@ export default class Metric extends LightningElement {
     _avatar;
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
     _formatStyle = FORMAT_STYLES.default;
+    _labelPosition = LABEL_POSITIONS.default;
     _maximumFractionDigits;
     _maximumSignificantDigits;
     _minimumFractionDigits;
@@ -200,6 +206,24 @@ export default class Metric extends LightningElement {
         this._formatStyle = normalizeString(value, {
             fallbackValue: FORMAT_STYLES.default,
             validValues: FORMAT_STYLES.valid
+        });
+    }
+
+    /**
+     * Position of the label.
+     *
+     * @type {string}
+     * @default top
+     * @public
+     */
+    @api
+    get labelPosition() {
+        return this._labelPosition;
+    }
+    set labelPosition(value) {
+        this._labelPosition = normalizeString(value, {
+            fallbackValue: LABEL_POSITIONS.default,
+            validValues: LABEL_POSITIONS.valid
         });
     }
 
@@ -768,6 +792,15 @@ export default class Metric extends LightningElement {
                 .toString();
         }
         return classes.toString();
+    }
+
+    /**
+     * True if the label should be shown at the top.
+     *
+     * @type {boolean}
+     */
+    get showTopLabel() {
+        return this.labelPosition === 'top';
     }
 
     /**
