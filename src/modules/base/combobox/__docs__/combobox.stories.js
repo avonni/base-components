@@ -569,6 +569,14 @@ ReadOnlyMultiSelect.args = {
     value: ['no-avatar-edge', 'no-avatar-oil-sla']
 };
 
+export const Required = Template.bind({});
+Required.args = {
+    label: 'Required combobox',
+    options: options,
+    required: true,
+    value: 'no-avatar-united-oil'
+};
+
 export const VerticalSelectedOptions = Template.bind({});
 VerticalSelectedOptions.args = {
     label: 'Vertical selected options',
