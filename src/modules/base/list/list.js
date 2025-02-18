@@ -2474,7 +2474,7 @@ export default class List extends LightningElement {
         const itemIndex = Number(event.currentTarget.dataset.index);
         const item = this.computedItems[itemIndex];
 
-        if (!item) {
+        if (!item || event.ctrlKey || event.metaKey) {
             return;
         }
 
