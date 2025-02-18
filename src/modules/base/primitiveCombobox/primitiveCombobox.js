@@ -2209,6 +2209,15 @@ export default class PrimitiveCombobox extends LightningElement {
                     );
                 }
             }
+            if (
+                this.validity.valueMissing &&
+                !this.isMultiSelect &&
+                !selectedOption.selected
+            ) {
+                selectedOption.selected = true;
+                this.inputValue = selectedOption.label;
+                this.selectedOption = selectedOption;
+            }
             this._updateDropdownMenuVisibility();
             return;
         }
