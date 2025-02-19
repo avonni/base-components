@@ -149,6 +149,7 @@ export default class List extends LightningElement {
     _draggedElements = [];
     _draggedIndex;
     _dragging = false;
+    _hoveredDirection = 0;
     _fieldsResizeIsHandledByParent = false;
     _listHasFields = false;
     _hoveredIndex;
@@ -1288,7 +1289,7 @@ export default class List extends LightningElement {
      *
      * @param {HTMLElement} hoveredItem
      */
-    animateHoveredItem(hoveredItem, originalHoveredIndex, direction) {
+    animateHoveredItem(hoveredItem, originalHoveredIndex) {
         const hoveredIndex = this._hoveredIndex;
         const draggedIndex = this._draggedIndex;
 
@@ -1372,7 +1373,7 @@ export default class List extends LightningElement {
         itemsBetween.forEach((item) => {
             const itemIndex = Number(item.dataset.index);
             if (
-                direction === 1 &&
+                this._hoveredDirection === 1 &&
                 itemIndex >= originalHoveredIndex &&
                 itemIndex <= groupDraggedIndex
             ) {
@@ -1418,20 +1419,13 @@ export default class List extends LightningElement {
             this.animateDraggedItems(currentY);
 
             const hoveredItem = this.getHoveredItem(currentY);
-            const originalHoveredIndex = this.getOriginalHoveredIndex(currentY);
-
-            let mouseDirection = 0;
-            if (currentY > this._currentY) {
-                mouseDirection = -1;
-            } else if (currentY < this._currentY) {
-                mouseDirection = 1;
-            }
-            if (hoveredItem && mouseDirection !== 0) {
-                this.animateHoveredItem(
-                    hoveredItem,
-                    originalHoveredIndex,
-                    mouseDirection
-                );
+            if (hoveredItem) {
+                this._hoveredDirection = this.getHoveredDirection(currentY);
+                if (this._hoveredDirection !== 0) {
+                    const originalHoveredIndex =
+                        this.getOriginalHoveredIndex(currentY);
+                    this.animateHoveredItem(hoveredItem, originalHoveredIndex);
+                }
             }
         }
     }
@@ -1605,6 +1599,21 @@ export default class List extends LightningElement {
             page++;
         }
         return page;
+    }
+
+    /**
+     * Get the hovered direction Possible values are 1 (top) and -1 (bottom)
+     *
+     * @param {number} cursorY
+     */
+    getHoveredDirection(cursorY) {
+        let hoveredDirection = 0;
+        if (cursorY > this._currentY) {
+            hoveredDirection = -1;
+        } else if (cursorY < this._currentY) {
+            hoveredDirection = 1;
+        }
+        return hoveredDirection;
     }
 
     /**
@@ -2116,8 +2125,6 @@ export default class List extends LightningElement {
                 (el) => hoveredItemName && el.dataset.name === hoveredItemName
             );
             if (orderHasChanged) {
-                const direction =
-                    this._draggedIndex > this._hoveredIndex ? -1 : 1;
                 const indexes = this._draggedElements.map((el) => {
                     const index = Number(el.dataset.index);
                     const name = this.computedItems[index].name;
@@ -2135,7 +2142,7 @@ export default class List extends LightningElement {
                 let toIndex = this.computedItems.findIndex(
                     (i) => i.name === hoveredItemName
                 );
-                if (direction === 1) {
+                if (this._hoveredDirection === -1) {
                     toIndex += 1;
                 }
                 this.computedItems.splice(toIndex, 0, ...items);
