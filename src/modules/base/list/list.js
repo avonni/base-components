@@ -1390,6 +1390,9 @@ export default class List extends LightningElement {
         // Undragged items in between
         itemsBetween.forEach((item) => {
             const itemIndex = Number(item.dataset.index);
+            if (this._draggedIndex === itemIndex) {
+                return;
+            }
             const itemHoveringSmallerItem =
                 this._hoveredDirection === 1 &&
                 itemIndex >= originalHoveredIndex &&
@@ -1868,21 +1871,67 @@ export default class List extends LightningElement {
     /**
      * Compute swap between dragged items.
      *
-     * @param {number} hoveredIndex
-     * @param {number} draggedIndex
      */
-    switchWithItem(draggedIndex, hoveredIndex) {
-        const draggedItem = this.computedItems.splice(draggedIndex, 1)[0];
-        this.computedItems.splice(hoveredIndex, 0, draggedItem);
+    switchItems() {
+        let previousIndexes = [];
+        let newIndexes = [];
+        if (this._keyboardDragged) {
+            previousIndexes = [this._draggedIndex];
+            newIndexes = [this._hoveredIndex];
+            const draggedItem = this.computedItems.splice(
+                this._draggedIndex,
+                1
+            )[0];
+            this.computedItems.splice(this._hoveredIndex, 0, draggedItem);
+        } else {
+            const hoveredItemName = this.computedItems[this._hoveredIndex].name;
+            previousIndexes = this._draggedElements.map((el) => {
+                const index = Number(el.dataset.index);
+                const name = this.computedItems[index].name;
+                const draggedIndex = this.computedItems.findIndex(
+                    (i) => i.name === name
+                );
+                return draggedIndex;
+            });
+            previousIndexes.sort((a, b) => a - b);
+            const items = previousIndexes.map(
+                (index) => this.computedItems[index]
+            );
+
+            for (let i = previousIndexes.length - 1; i >= 0; i--) {
+                this.computedItems.splice(previousIndexes[i], 1);
+            }
+            let toIndex = this.computedItems.findIndex(
+                (i) => i.name === hoveredItemName
+            );
+            if (toIndex === -1) {
+                let maxIndex = -Infinity;
+                for (const index of previousIndexes) {
+                    if (index > maxIndex) {
+                        maxIndex = index;
+                    }
+                }
+                toIndex = maxIndex;
+            }
+            if (this._hoveredDirection === -1) {
+                toIndex += 1;
+            }
+            this.computedItems.splice(toIndex, 0, ...items);
+            newIndexes = Array.from(
+                { length: previousIndexes.length },
+                (_, i) => toIndex + i
+            );
+        }
 
         // Update indexes
         this.computedItems.forEach((item, index) => {
             item.index = index;
         });
+        this.computedItems = [...this.computedItems];
+        this.resetItemsAnimations();
+        this.updateAssistiveText();
 
-        // this.computedItems = [...this.computedItems];
-        // this.resetItemsAnimations();
-        // this.updateAssistiveText();
+        return { previousIndexes, newIndexes };
     }
 
     /**
@@ -2128,68 +2177,7 @@ export default class List extends LightningElement {
                 );
             });
             if (orderHasChanged) {
-                let previousIndexes = [];
-                let newIndexes = [];
-                if (this._keyboardDragged) {
-                    previousIndexes = [this._draggedIndex];
-                    newIndexes = [this._hoveredIndex];
-                    const draggedItem = this.computedItems.splice(
-                        this._draggedIndex,
-                        1
-                    )[0];
-                    this.computedItems.splice(
-                        this._hoveredIndex,
-                        0,
-                        draggedItem
-                    );
-                } else {
-                    const hoveredItemName =
-                        this.computedItems[this._hoveredIndex].name;
-                    previousIndexes = this._draggedElements.map((el) => {
-                        const index = Number(el.dataset.index);
-                        const name = this.computedItems[index].name;
-                        const draggedIndex = this.computedItems.findIndex(
-                            (i) => i.name === name
-                        );
-                        return draggedIndex;
-                    });
-                    previousIndexes.sort((a, b) => a - b);
-                    const items = previousIndexes.map(
-                        (index) => this.computedItems[index]
-                    );
-
-                    for (let i = previousIndexes.length - 1; i >= 0; i--) {
-                        this.computedItems.splice(previousIndexes[i], 1);
-                    }
-                    let toIndex = this.computedItems.findIndex(
-                        (i) => i.name === hoveredItemName
-                    );
-                    if (toIndex === -1) {
-                        let maxIndex = -Infinity;
-                        for (const index of previousIndexes) {
-                            if (index > maxIndex) {
-                                maxIndex = index;
-                            }
-                        }
-                        toIndex = maxIndex;
-                    }
-                    if (this._hoveredDirection === -1) {
-                        toIndex += 1;
-                    }
-                    this.computedItems.splice(toIndex, 0, ...items);
-                    newIndexes = Array.from(
-                        { length: previousIndexes.length },
-                        (_, i) => toIndex + i
-                    );
-                }
-                this.computedItems.forEach((item, index) => {
-                    item.index = index;
-                });
-                this.computedItems = [...this.computedItems];
-                this.resetItemsAnimations();
-                this.updateAssistiveText();
-
-                this.computedItems = [...this.computedItems];
+                const { previousIndexes, newIndexes } = this.switchItems();
                 const cleanItems = [];
                 this.computedItems.forEach((item) => {
                     cleanItems.push(this.cleanUpItem(item));
