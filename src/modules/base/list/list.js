@@ -142,7 +142,6 @@ export default class List extends LightningElement {
         default: 1
     };
     _connected = false;
-    _currentItemsDraggedHeight;
     _currentColumnCount = 1;
     _displayWidth = 'default';
     _draggedElement;
@@ -1350,61 +1349,53 @@ export default class List extends LightningElement {
                 hoveredItem.style.transform = 'translateY(0px)';
                 hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
             } else if (itemHoveringSmallerItem || itemHoveringLargerItem) {
-                const offset = this._draggedElements.length;
                 let height = 0;
                 sortedDraggedElements.forEach((el) => {
                     height += this.computeItemHeight(el);
                 });
+                const offset = this._draggedElements.length;
+
                 if (itemHoveringSmallerItem) {
-                    hoveredItem.dataset.moved = 'moved';
                     hoveredItem.style.transform = `translateY(${height}px)`;
                     hoveredItem.dataset.elementTempIndex =
                         tempHoveredIndex + offset;
                 } else {
-                    hoveredItem.dataset.moved = 'moved';
                     hoveredItem.style.transform = `translateY(-${height}px)`;
                     hoveredItem.dataset.elementTempIndex =
                         tempHoveredIndex - offset;
                 }
+                hoveredItem.dataset.moved = 'moved';
             }
         }
 
         // Undragged items in between
         itemsBetween.forEach((item) => {
             const itemIndex = Number(item.dataset.index);
-            if (
+            const itemHoveringSmallerItem =
                 this._hoveredDirection === 1 &&
                 itemIndex >= originalHoveredIndex &&
-                itemIndex <= groupDraggedIndex
-            ) {
-                const draggedItemsBetween = this._draggedElements.filter(
-                    (i) => {
-                        const index = Number(i.dataset?.index);
-                        return index >= 0 && index >= itemIndex;
-                    }
+                itemIndex <= groupDraggedIndex;
+            const draggedItemsBetween = this._draggedElements.filter((i) => {
+                const index = Number(i.dataset?.index);
+                return (
+                    index >= 0 &&
+                    (itemHoveringSmallerItem
+                        ? index >= itemIndex
+                        : index <= itemIndex)
                 );
-                let height = 0;
-                draggedItemsBetween.forEach((el) => {
-                    height += this.computeItemHeight(el);
-                });
-                item.dataset.elementTempIndex =
-                    itemIndex + draggedItemsBetween.length;
-                item.style.transform = `translateY(${height}px)`;
-            } else {
-                const draggedItemsBetween = this._draggedElements.filter(
-                    (i) => {
-                        const index = Number(i.dataset.index);
-                        return index >= 0 && index <= itemIndex;
-                    }
-                );
-                let height = 0;
-                draggedItemsBetween.forEach((el) => {
-                    height += this.computeItemHeight(el);
-                });
-                item.dataset.elementTempIndex =
-                    itemIndex - draggedItemsBetween.length;
-                item.style.transform = `translateY(${-height}px)`;
-            }
+            });
+            let height = 0;
+            draggedItemsBetween.forEach((el) => {
+                height += this.computeItemHeight(el);
+            });
+            const offset = draggedItemsBetween.length;
+
+            item.style.transform = `translateY(${
+                itemHoveringSmallerItem ? height : -height
+            }px)`;
+            item.dataset.elementTempIndex = itemHoveringSmallerItem
+                ? itemIndex + offset
+                : itemIndex - offset;
             item.dataset.moved = 'moved';
         });
     }
@@ -2069,14 +2060,6 @@ export default class List extends LightningElement {
             return;
         }
 
-        if (!this._dragging) {
-            this._currentItemsDraggedHeight = 0;
-            this._draggedElements.forEach((draggedElement) => {
-                this._currentItemsDraggedHeight +=
-                    this.computeItemHeight(draggedElement);
-            });
-        }
-
         this._dragging = true;
         this._draggedElement.classList.add(
             'avonni-list__item-sortable_dragged'
@@ -2125,27 +2108,45 @@ export default class List extends LightningElement {
                 (el) => hoveredItemName && el.dataset.name === hoveredItemName
             );
             if (orderHasChanged) {
-                const indexes = this._draggedElements.map((el) => {
-                    const index = Number(el.dataset.index);
-                    const name = this.computedItems[index].name;
-                    const draggedIndex = this.computedItems.findIndex(
-                        (i) => i.name === name
+                let previousIndexes = [];
+                let toIndex = -1;
+                if (this._keyboardDragged) {
+                    previousIndexes = [this._draggedIndex];
+                    toIndex = this._hoveredIndex;
+                    const draggedItem = this.computedItems.splice(
+                        this._draggedIndex,
+                        1
+                    )[0];
+                    this.computedItems.splice(
+                        this._hoveredIndex,
+                        0,
+                        draggedItem
                     );
-                    return draggedIndex;
-                });
-                indexes.sort((a, b) => a - b);
-                const items = indexes.map((index) => this.computedItems[index]);
+                } else {
+                    previousIndexes = this._draggedElements.map((el) => {
+                        const index = Number(el.dataset.index);
+                        const name = this.computedItems[index].name;
+                        const draggedIndex = this.computedItems.findIndex(
+                            (i) => i.name === name
+                        );
+                        return draggedIndex;
+                    });
+                    previousIndexes.sort((a, b) => a - b);
+                    const items = previousIndexes.map(
+                        (index) => this.computedItems[index]
+                    );
 
-                for (let i = indexes.length - 1; i >= 0; i--) {
-                    this.computedItems.splice(indexes[i], 1);
+                    for (let i = previousIndexes.length - 1; i >= 0; i--) {
+                        this.computedItems.splice(previousIndexes[i], 1);
+                    }
+                    toIndex = this.computedItems.findIndex(
+                        (i) => i.name === hoveredItemName
+                    );
+                    if (this._hoveredDirection === -1) {
+                        toIndex += 1;
+                    }
+                    this.computedItems.splice(toIndex, 0, ...items);
                 }
-                let toIndex = this.computedItems.findIndex(
-                    (i) => i.name === hoveredItemName
-                );
-                if (this._hoveredDirection === -1) {
-                    toIndex += 1;
-                }
-                this.computedItems.splice(toIndex, 0, ...items);
 
                 this.computedItems.forEach((item, index) => {
                     item.index = index;
@@ -2161,9 +2162,10 @@ export default class List extends LightningElement {
                 });
 
                 let newIndexes = Array.from(
-                    { length: indexes.length },
+                    { length: previousIndexes.length },
                     (_, i) => toIndex + i
                 );
+
                 /**
                  * The event fired when a user reordered the items.
                  *
@@ -2178,7 +2180,7 @@ export default class List extends LightningElement {
                     new CustomEvent('reorder', {
                         detail: {
                             items: cleanItems,
-                            previousIndexes: indexes,
+                            previousIndexes,
                             newIndexes
                         }
                     })
