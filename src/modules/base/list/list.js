@@ -57,8 +57,6 @@ const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
 
-const SELECTED_CLASS = 'avonni-list__item-sortable_selected';
-
 /**
  * @class
  * @storyId example-list--base
@@ -148,7 +146,6 @@ export default class List extends LightningElement {
     _draggedElements = [];
     _draggedIndex;
     _dragging = false;
-    _hoveredDirection = 0;
     _fieldsResizeIsHandledByParent = false;
     _listHasFields = false;
     _hoveredIndex;
@@ -1249,25 +1246,58 @@ export default class List extends LightningElement {
      */
     animateDraggedItems(currentY) {
         const cursorDeltaY = currentY - this._initialY;
-        const originalHoveredIndex = this.getOriginalHoveredIndex(currentY);
+        const currentDraggedIndex = this._draggedIndex;
+
+        const sortedDraggedElements = this._draggedElements.sort((a, b) => {
+            const indexA = Number(a.dataset.index);
+            const indexB = Number(b.dataset.index);
+            return indexB - indexA;
+        });
+        const previousIndexes = sortedDraggedElements.map((draggedElement) =>
+            Number(draggedElement.dataset.index)
+        );
+
+        if (this._hoveredIndex === null) {
+            const previousIndex = previousIndexes.findIndex(
+                (i) => i === currentDraggedIndex
+            );
+            const offset = previousIndexes.slice(0, previousIndex).length;
+            this._hoveredIndex = this._draggedIndex + offset;
+        }
+
+        let maxIndex =
+            this._hoveredIndex === 0
+                ? previousIndexes.length - 1
+                : this._hoveredIndex;
+        const newTempIndexes = Array.from(
+            { length: previousIndexes.length },
+            (_, i) => maxIndex - i
+        );
+
         this._draggedElements.forEach((draggedElement) => {
+            const draggedItemIndex = Number(draggedElement.dataset.index);
+
             if (draggedElement === this._draggedElement) {
                 draggedElement.style.transform = `translate(0px, ${cursorDeltaY}px)`;
-                draggedElement.dataset.elementTempIndex = originalHoveredIndex;
                 draggedElement.dataset.moved = 'moved';
+
+                const tempIndex = previousIndexes.findIndex(
+                    (i) => i === draggedItemIndex
+                );
+                draggedElement.dataset.elementTempIndex =
+                    newTempIndexes[tempIndex];
                 return;
             }
             if (this._draggedElements.length > 1) {
-                const draggedItemIndex = Number(draggedElement.dataset.index);
-                const isLarger = draggedItemIndex > this._draggedIndex;
+                const isLarger = draggedItemIndex > currentDraggedIndex;
                 const itemsBetween = this._itemElements.filter((item) => {
                     const itemIndex = Number(item.dataset.index);
                     const min = isLarger
-                        ? this._draggedIndex
+                        ? currentDraggedIndex
                         : draggedItemIndex;
                     const max = isLarger
                         ? draggedItemIndex
-                        : this._draggedIndex;
+                        : currentDraggedIndex;
                     const isDragging = this._draggedElements.find((i) => {
                         const index = Number(i.dataset.index);
                         return index === itemIndex;
@@ -1278,26 +1308,19 @@ export default class List extends LightningElement {
                 itemsBetween.forEach((item) => {
                     totalItemsHeight += this.computeItemHeight(item);
                 });
-                let offset = this._draggedElements.filter((item) => {
-                    const itemIndex = Number(item.dataset.index);
-                    const min = isLarger
-                        ? this._draggedIndex
-                        : draggedItemIndex;
-                    const max = isLarger
-                        ? draggedItemIndex
-                        : this._draggedIndex;
-                    return itemIndex >= min && itemIndex < max;
-                }).length;
                 if (isLarger) {
                     totalItemsHeight = -totalItemsHeight;
                 }
-                draggedElement.dataset.elementTempIndex = isLarger
-                    ? originalHoveredIndex + offset
-                    : originalHoveredIndex - offset;
                 draggedElement.style.transform = `translate(0px, ${
                     cursorDeltaY + totalItemsHeight
                 }px)`;
                 draggedElement.dataset.moved = 'moved';
+
+                const tempIndex = previousIndexes.findIndex(
+                    (i) => i === draggedItemIndex
+                );
+                draggedElement.dataset.elementTempIndex =
+                    newTempIndexes[tempIndex];
             }
         });
     }
@@ -1309,52 +1332,43 @@ export default class List extends LightningElement {
      */
     animateHoveredItem(hoveredItem, originalHoveredIndex) {
         const hoveredIndex = this._hoveredIndex;
-        const draggedIndex = this._draggedIndex;
 
-        const sortedDraggedElements = this._draggedElements.sort((a, b) => {
-            const indexA = Number(a.dataset.index);
-            const indexB = Number(b.dataset.index);
-            return indexA - indexB;
-        });
-        let startIndex = Number(sortedDraggedElements[0].dataset.index);
-        let endIndex = Number(
-            sortedDraggedElements[sortedDraggedElements.length - 1].dataset
-                .index
-        );
-        const groupDraggedIndex = endIndex;
-        const hoveredElementIndex = parseInt(hoveredItem.dataset.index, 10);
-        const tempHoveredIndex = parseInt(
-            hoveredItem.dataset.elementTempIndex,
-            10
-        );
+        let startIndex = this.getMinIndex(this._draggedElements);
+        const groupDraggedIndex = this.getMaxIndex(this._draggedElements);
 
         const itemsBetween = this._itemElements.filter((item) => {
             const itemIndex = Number(item.dataset.index);
-            return itemIndex > startIndex && itemIndex < endIndex;
+            return itemIndex > startIndex && itemIndex < groupDraggedIndex;
         });
-
         const undraggedItems = itemsBetween.filter(
             (el) =>
                 this._draggedElements.findIndex(
                     (i) => i.dataset.name === el.dataset.name
                 ) === -1
         );
-        const hoveredInBetween = undraggedItems.some(
-            (el) => el.dataset.name === hoveredItem.dataset.name
-        );
+        const hoveredInBetween =
+            hoveredItem &&
+            undraggedItems.some(
+                (el) => el.dataset.name === hoveredItem.dataset.name
+            );
 
         // Dragged items in between or items outside
         if (
-            sortedDraggedElements.length === 1 ||
-            (sortedDraggedElements.length > 1 &&
-                (itemsBetween.length === 0 || !hoveredInBetween))
+            hoveredItem &&
+            (this._draggedElements.length === 1 ||
+                (this._draggedElements.length > 1 &&
+                    (itemsBetween.length === 0 || !hoveredInBetween)))
         ) {
             // This breaks when the transform is animated with css because the item remains hovered for
             // a few milliseconds, reversing the animation unpredictably.
+            const tempHoveredIndex = parseInt(
+                hoveredItem.dataset.elementTempIndex,
+                10
+            );
             const currentDraggedIndex =
-                sortedDraggedElements.length > 1
+                this._draggedElements.length > 1
                     ? groupDraggedIndex
-                    : draggedIndex;
+                    : this._draggedIndex;
             const itemHasMoved = hoveredItem.dataset.moved === 'moved';
             const itemHoveringSmallerItem =
                 currentDraggedIndex > hoveredIndex ||
@@ -1365,11 +1379,15 @@ export default class List extends LightningElement {
 
             if (itemHasMoved) {
                 delete hoveredItem.dataset.moved;
+                const hoveredElementIndex = parseInt(
+                    hoveredItem.dataset.index,
+                    10
+                );
                 hoveredItem.style.transform = 'translateY(0px)';
                 hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
             } else if (itemHoveringSmallerItem || itemHoveringLargerItem) {
                 let height = 0;
-                sortedDraggedElements.forEach((el) => {
+                this._draggedElements.forEach((el) => {
                     height += this.computeItemHeight(el);
                 });
                 const offset = this._draggedElements.length;
@@ -1388,13 +1406,9 @@ export default class List extends LightningElement {
         }
 
         // Undragged items in between
-        itemsBetween.forEach((item) => {
+        undraggedItems.forEach((item) => {
             const itemIndex = Number(item.dataset.index);
-            if (this._draggedIndex === itemIndex) {
-                return;
-            }
             const itemHoveringSmallerItem =
-                this._hoveredDirection === 1 &&
                 itemIndex >= originalHoveredIndex &&
                 itemIndex <= groupDraggedIndex;
             const draggedItemsBetween = this._draggedElements.filter((i) => {
@@ -1430,16 +1444,9 @@ export default class List extends LightningElement {
     animateItems(currentY) {
         if (currentY && this._draggedElement) {
             this.animateDraggedItems(currentY);
-
             const hoveredItem = this.getHoveredItem(currentY);
-            if (hoveredItem) {
-                this._hoveredDirection = this.getHoveredDirection(currentY);
-                if (this._hoveredDirection !== 0) {
-                    const originalHoveredIndex =
-                        this.getOriginalHoveredIndex(currentY);
-                    this.animateHoveredItem(hoveredItem, originalHoveredIndex);
-                }
-            }
+            const originalHoveredIndex = this.getOriginalHoveredIndex(currentY);
+            this.animateHoveredItem(hoveredItem, originalHoveredIndex);
         }
     }
 
@@ -1614,27 +1621,13 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Get the hovered direction Possible values are 1 (top) and -1 (bottom)
-     *
-     * @param {number} cursorY
-     */
-    getHoveredDirection(cursorY) {
-        let hoveredDirection = 0;
-        if (cursorY > this._currentY) {
-            hoveredDirection = -1;
-        } else if (cursorY < this._currentY) {
-            hoveredDirection = 1;
-        }
-        return hoveredDirection;
-    }
-
-    /**
      * Get the item the cursor has entered.
      *
      * @param {number} cursorY
      * @returns {object} item
      */
     getHoveredItem(cursorY) {
+        const previousHoveredIndex = this._hoveredIndex;
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
                 const itemIndex = Number(item.dataset.index);
@@ -1649,10 +1642,14 @@ export default class List extends LightningElement {
                     itemIndex != null
                 ) {
                     if (item.dataset.elementTempIndex != null) {
-                        this._hoveredIndex = parseInt(
+                        const tempIndex = parseInt(
                             item.dataset.elementTempIndex,
                             10
                         );
+                        const hoveredUp = tempIndex < previousHoveredIndex;
+                        this._hoveredIndex = hoveredUp
+                            ? tempIndex + this._draggedElements.length - 1
+                            : tempIndex;
                     } else {
                         this._hoveredIndex = itemIndex;
                     }
@@ -1661,6 +1658,30 @@ export default class List extends LightningElement {
             }
             return undefined;
         });
+    }
+
+    getMaxIndex(items) {
+        let maxIndex = -Infinity;
+
+        for (const item of items) {
+            const index = Number(item.dataset.index);
+            if (index > maxIndex) {
+                maxIndex = index;
+            }
+        }
+        return maxIndex;
+    }
+
+    getMinIndex(items) {
+        let minIndex = Infinity;
+
+        for (const item of items) {
+            const index = Number(item.dataset.index);
+            if (index < minIndex) {
+                minIndex = index;
+            }
+        }
+        return minIndex;
     }
 
     getOriginalHoveredIndex(cursorY) {
@@ -1875,59 +1896,34 @@ export default class List extends LightningElement {
     switchItems() {
         let previousIndexes = [];
         let newIndexes = [];
+        const computedItems = [...this.computedItems];
+
         if (this._keyboardDragged) {
             previousIndexes = [this._draggedIndex];
             newIndexes = [this._hoveredIndex];
-            const draggedItem = this.computedItems.splice(
-                this._draggedIndex,
-                1
-            )[0];
-            this.computedItems.splice(this._hoveredIndex, 0, draggedItem);
+            const draggedItem = computedItems.splice(this._draggedIndex, 1)[0];
+            computedItems.splice(this._hoveredIndex, 0, draggedItem);
         } else {
-            const hoveredItemName = this.computedItems[this._hoveredIndex].name;
-            previousIndexes = this._draggedElements.map((el) => {
-                const index = Number(el.dataset.index);
-                const name = this.computedItems[index].name;
-                const draggedIndex = this.computedItems.findIndex(
-                    (i) => i.name === name
-                );
-                return draggedIndex;
-            });
-            previousIndexes.sort((a, b) => a - b);
-            const items = previousIndexes.map(
-                (index) => this.computedItems[index]
+            const movedItems = this._itemElements.filter(
+                (item) => item.dataset.moved === 'moved'
             );
-
-            for (let i = previousIndexes.length - 1; i >= 0; i--) {
-                this.computedItems.splice(previousIndexes[i], 1);
-            }
-            let toIndex = this.computedItems.findIndex(
-                (i) => i.name === hoveredItemName
+            previousIndexes = movedItems.map((item) =>
+                Number(item.dataset.index)
             );
-            if (toIndex === -1) {
-                let maxIndex = -Infinity;
-                for (const index of previousIndexes) {
-                    if (index > maxIndex) {
-                        maxIndex = index;
-                    }
-                }
-                toIndex = maxIndex;
-            }
-            if (this._hoveredDirection === -1) {
-                toIndex += 1;
-            }
-            this.computedItems.splice(toIndex, 0, ...items);
-            newIndexes = Array.from(
-                { length: previousIndexes.length },
-                (_, i) => toIndex + i
+            newIndexes = movedItems.map((item) =>
+                Number(item.dataset.elementTempIndex)
             );
+            for (let i = 0; i < newIndexes.length; i++) {
+                computedItems[newIndexes[i]] =
+                    this.computedItems[previousIndexes[i]];
+            }
         }
 
         // Update indexes
-        this.computedItems.forEach((item, index) => {
+        computedItems.forEach((item, index) => {
             item.index = index;
         });
-        this.computedItems = [...this.computedItems];
+        this.computedItems = [...computedItems];
         this.resetItemsAnimations();
         this.updateAssistiveText();
 
@@ -2009,38 +2005,31 @@ export default class List extends LightningElement {
             }
 
             if (event.ctrlKey || event.metaKey) {
-                // Selecting multiple items;
-                if (event.currentTarget.classList.contains(SELECTED_CLASS)) {
+                // Selecting multiple items
+                if (item.selected) {
+                    item.selected = false;
+
                     // Remove from selection
                     const itemIndex = this._draggedElements.indexOf(
                         event.currentTarget
                     );
                     if (itemIndex > -1) {
-                        this._draggedElements[itemIndex].classList.remove(
-                            'avonni-list__item-sortable_selected'
-                        );
                         this._draggedElements.splice(itemIndex, 1);
                     }
                 } else {
                     // Add to selection
-                    event.currentTarget.classList.add(
-                        'avonni-list__item-sortable_selected'
-                    );
+                    item.selected = true;
                     this._draggedElements.push(event.currentTarget);
                 }
-            } else if (
-                !event.currentTarget.classList.contains(SELECTED_CLASS)
-            ) {
+                this.computedItems = [...this.computedItems];
+            } else if (!item.selected) {
                 // Single item selected
-                this._draggedElements.forEach((element) => {
-                    element.classList.remove(
-                        'avonni-list__item-sortable_selected'
-                    );
+                this.computedItems.forEach((computedItem) => {
+                    computedItem.selected = false;
                 });
-                event.currentTarget.classList.add(
-                    'avonni-list__item-sortable_selected'
-                );
+                item.selected = true;
                 this._draggedElements = [event.currentTarget];
+                this.computedItems = [...this.computedItems];
             }
 
             /**
@@ -2210,8 +2199,8 @@ export default class List extends LightningElement {
         }
 
         if (this._dragging || this._keyboardDragged) {
-            this._draggedElements.forEach((element) => {
-                element.classList.remove('avonni-list__item-sortable_selected');
+            this.computedItems.forEach((computedItem) => {
+                computedItem.selected = false;
             });
             this._draggedElements = [];
         }
@@ -2406,17 +2395,18 @@ export default class List extends LightningElement {
                 this.dragEnd();
                 this._keyboardDragged = false;
             } else {
-                this._draggedElements.forEach((element) => {
-                    element.classList.remove(
-                        'avonni-list__item-sortable_selected'
-                    );
+                this.computedItems.forEach((computedItem) => {
+                    computedItem.selected = false;
                 });
-                event.currentTarget.classList.add(
-                    'avonni-list__item-sortable_selected'
-                );
-                this._draggedElements = [event.currentTarget];
-                this.dragStart(event);
-                this._keyboardDragged = true;
+
+                const index = Number(event.currentTarget.dataset.index);
+                const item = this.computedItems[index];
+                if (item) {
+                    item.selected = true;
+                    this._draggedElements = [event.currentTarget];
+                    this.dragStart(event);
+                    this._keyboardDragged = true;
+                }
             }
         } else if (this.sortable && this._draggedElement) {
             if (event.key === 'Escape' || event.key === 'Esc') {

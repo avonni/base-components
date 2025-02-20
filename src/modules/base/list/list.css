@@ -145,7 +145,7 @@
     );
 }
 
-.avonni-list__item-sortable.avonni-list__item-sortable_selected {
+.avonni-list__item-sortable[data-selected='true'] {
     --avonni-card-color-background: var(
         --avonni-list-item-color-background-sortable-hover,
         var(
