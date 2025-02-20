@@ -1994,7 +1994,11 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
-        if (event.type === 'mousedown' && event.button !== 0) {
+        if (
+            event.type === 'mousedown' &&
+            event.button !== 0 &&
+            this.isNotSingleLine
+        ) {
             return;
         }
         if (event.button === 0) {
