@@ -54,6 +54,9 @@
                                 onmouseup={handleUnlockPin}
                                 onmousemove={handleThumbHovered}
                                 onmouseleave={handleThumbExit}
+                                ontouchstart={handleLockPin}
+                                ontouchend={handleUnlockPin}
+                                ontouchmove={handleThumbHovered}
                             />
                             <div
                                 data-group-name="hitbox"
