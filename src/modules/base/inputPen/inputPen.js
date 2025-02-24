@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
@@ -7,9 +7,9 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { StraightToolManager } from './straightToolManager';
+import { LightningElement, api } from 'lwc';
 import { SmoothToolManager } from './smoothToolManager';
-import { AvonniResizeObserver } from 'c/resizeObserver';
+import { StraightToolManager } from './straightToolManager';
 
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
@@ -469,7 +469,7 @@ export default class InputPen extends LightningElement {
         return this._value;
     }
     set value(value) {
-        if (value) {
+        if (value && this.value !== value) {
             this._value = value;
             this._foregroundValue = value;
             if (this._rendered) {

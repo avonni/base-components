@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import InputPen from 'c/inputPen';
+import { createElement } from 'lwc';
 
 let element;
 const DATA_URL = 'data:image/png;base64,validValue';
@@ -995,6 +995,25 @@ describe('Input pen', () => {
         element.value = 'invalidValue';
         return Promise.resolve().then(() => {
             expect(clearSpy).toHaveBeenCalled();
+        });
+    });
+
+    it('setting value should dispatch change', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        mockValueAssessment();
+        element.value = DATA_URL;
+        jest.advanceTimersToNextTimer();
+        return Promise.resolve().then(() => {
+            expect(handler).toHaveBeenCalledTimes(1);
+            const details = handler.mock.calls[0][0].detail;
+            expect(details).toEqual({ dataURL: DATA_URL });
+            handler.mockClear();
+
+            // Same value should not trigger change event.
+            element.value = DATA_URL;
+            jest.advanceTimersToNextTimer();
+            expect(handler).not.toHaveBeenCalled();
         });
     });
 
