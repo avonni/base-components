@@ -1,4 +1,3 @@
-import { LightningElement, api, track } from 'lwc';
 import {
     classSet,
     deepCopy,
@@ -6,6 +5,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api, track } from 'lwc';
 import { ICON_TYPES } from './icons/salesforceIcons';
 
 const VARIANTS = {
@@ -108,9 +108,9 @@ export default class IconPicker extends LightningElement {
     hideTabs = false;
     newValue;
     showError = false;
+    _allowBlur = false;
     _menuIsFocused = false;
 
-    iconTypes = ICON_TYPES;
     @track tabContent;
     currentTab = TABS.default;
 
@@ -713,6 +713,7 @@ export default class IconPicker extends LightningElement {
         }
 
         this.isInvalidInput = !!event.target.value;
+        this._allowBlur = true;
     }
 
     /**
@@ -721,7 +722,8 @@ export default class IconPicker extends LightningElement {
      */
     handleInputIconBlur(event) {
         this.reportValidity();
-        if (!this.showError) {
+        if (!this.showError && this._allowBlur) {
+            this._allowBlur = false;
             this.dispatchChange(event.currentTarget.value || null);
         }
     }
