@@ -689,31 +689,8 @@ export default class IconPicker extends LightningElement {
      */
     handleInputIcon(event) {
         this._value = event.target.value;
-        let iconInput = event.target.value.split(':');
-
-        if (iconInput.length === 2) {
-            for (const iconType of this.iconTypes) {
-                if (iconInput[0].toLowerCase() === iconType.value) {
-                    for (const icon of iconType.icons) {
-                        if (iconInput[1].toLowerCase() === icon.title) {
-                            this.isInvalidInput = false;
-                            return;
-                        }
-                    }
-                    if (iconType.iconsExtended) {
-                        for (const icon of iconType.iconsExtended) {
-                            if (iconInput[1].toLowerCase() === icon.title) {
-                                this.isInvalidInput = false;
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        this.isInvalidInput = !!event.target.value;
         this._allowBlur = true;
+        this.isInvalidInput = !this.validateInputIconValue(this._value);
     }
 
     /**
@@ -1126,5 +1103,12 @@ export default class IconPicker extends LightningElement {
 
     stopPropagation(event) {
         event.stopPropagation();
+    }
+
+    validateInputIconValue(inputIconValue) {
+        return ICON_TYPES.flatMap((group) => [
+            ...group.icons,
+            ...(group.iconsExtended || [])
+        ]).find(({ value }) => inputIconValue.trim() === value);
     }
 }
