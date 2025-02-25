@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
 import { classSet, normalizeArray, normalizeString } from 'c/utils';
+import { keyCodes } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const VARIANTS = {
     valid: ['base', 'list'],
@@ -234,5 +234,14 @@ export default class PrimitivePill extends LightningElement {
      */
     handleDraggableMouseDown(event) {
         event.preventDefault();
+    }
+
+    /**
+     * Stops the propagation of the event.
+     * Used for mouseup, mousedown on the action icon to avoid double dispatch of itemclick.
+     * @param {Event} event
+     */
+    handleStopPropagation(event) {
+        event.stopPropagation();
     }
 }

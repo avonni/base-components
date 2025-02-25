@@ -41,6 +41,8 @@
             variant="bare"
             data-element-id="lightning-button-icon"
             onclick={handleActionClick}
+            onmousedown={handleStopPropagation}
+            onmouseup={handleStopPropagation}
         ></lightning-button-icon>
     </div>
 </template>
