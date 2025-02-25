@@ -380,19 +380,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Classes to remove right padding on end date input.
-     *
-     * @type {string}
-     */
-    get computedEndInputClasses() {
-        return classSet(
-            'slds-form-element slds-scrollable_none slds-m-bottom_xxx-small'
-        )
-            .add({ 'slds-p-right_none': !this.showTime })
-            .toString();
-    }
-
-    /**
      * Start time input.
      *
      * @type {element}
