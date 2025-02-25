@@ -100,11 +100,11 @@ export default class Slider extends LightningElement {
     computedMax;
     computedMin = DEFAULT_MIN;
     customLabels = [];
+    helpMessage;
 
     _changeTimeout;
     _computedValues = [DEFAULT_VALUE];
     _focusedInputIndex;
-    _helpMessage;
     _initMax;
     _moveEventWait = false;
     _pinLocked = false;
@@ -1032,7 +1032,7 @@ export default class Slider extends LightningElement {
         if (this._computedValues.length === 1) {
             helpMessage = helpMessage.split(': ')[1];
         }
-        this._helpMessage = isValid ? undefined : helpMessage.trim();
+        this.helpMessage = isValid ? undefined : helpMessage.trim();
         return isValid;
     }
 
@@ -1818,9 +1818,9 @@ export default class Slider extends LightningElement {
                 this._track.style.width = '';
             } else if (this._computedValues.length > 0) {
                 const start = left;
-                const end = PERCENT_SCALING_FACTOR - right;
+                const end = right;
                 this._track.style.width = '100%';
-                this._track.style.clipPath = `rect(0% ${end}% auto ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
+                this._track.style.clipPath = `inset(0% ${end}% 0 ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
             }
         }
 
