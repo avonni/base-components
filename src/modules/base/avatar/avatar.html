@@ -1,6 +1,7 @@
 <template>
     <c-primitive-avatar
         if:true={displayAvatarNoDetails}
+        class={computedAvatarClass}
         actions={actions}
         action-position={actionPosition}
         action-menu-icon={actionMenuIcon}
@@ -35,6 +36,7 @@
         <template if:true={showAvatar}>
             <c-primitive-avatar
                 if:false={displayAvatarRight}
+                class={computedAvatarClass}
                 slot="figure"
                 actions={actions}
                 action-menu-icon={actionMenuIcon}
@@ -63,6 +65,7 @@
             ></c-primitive-avatar>
             <c-primitive-avatar
                 if:true={displayAvatarRight}
+                class={computedAvatarClass}
                 slot="figure-inverse"
                 actions={actions}
                 action-menu-icon={actionMenuIcon}
@@ -131,7 +134,7 @@
         >
             {tertiaryText}
         </p>
-        <div if:true={showChipContainer} class="avonni-avatar__tags">
+        <div if:true={showTags} class={computedTagsClass}>
             <c-chip-container
                 is-collapsible
                 items={tags}

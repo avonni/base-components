@@ -1,3 +1,7 @@
+.avonni-avatar__primitive_avatar {
+    display: block;
+}
+
 .avonni-avatar__primary-text {
     color: var(--avonni-avatar-primary-text-color, #000000);
     font-size: var(--avonni-avatar-primary-text-font-size, 0.875rem);

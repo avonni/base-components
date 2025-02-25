@@ -495,6 +495,20 @@ export default class Avatar extends LightningElement {
      */
 
     /**
+     * Computed CSS classes for the primitive avatar.
+     *
+     * @type {string}
+     */
+    get computedAvatarClass() {
+        return classSet('avonni-avatar__primitive_avatar').add({
+            'slds-p-left_xx-small': this.hasLeftIcon,
+            'slds-p-right_xx-small': this.hasRightIcon,
+            'slds-p-top_xx-small': this.hasTopIcon,
+            'slds-p-bottom_xx-small': this.hasBottomIcon
+        });
+    }
+
+    /**
      * Media object class based on text position.
      *
      * @type {string}
@@ -516,6 +530,17 @@ export default class Avatar extends LightningElement {
     }
 
     /**
+     * Computed CSS classes for the tags.
+     *
+     * @type {string}
+     */
+    get computedTagsClass() {
+        return classSet('avonni-avatar__tags').add({
+            'slds-p-left_xxx-small': this.textPosition === 'center'
+        });
+    }
+
+    /**
      * If true, the avatar is not displayed in the media object.
      *
      * @type {boolean}
@@ -534,6 +559,80 @@ export default class Avatar extends LightningElement {
     }
 
     /**
+     * Check if the avatar has actions.
+     *
+     * @type {boolean}
+     */
+    get hasAction() {
+        return this.actions.length > 0;
+    }
+
+    /**
+     * Check if the avatar has bottom icons.
+     *
+     * @type {boolean}
+     */
+    get hasBottomIcon() {
+        return (
+            (this.hasAction && this.actionPosition.includes('bottom')) ||
+            (this.hasEntity && this.entityPosition.includes('bottom')) ||
+            (this.presence && this.presencePosition.includes('bottom')) ||
+            (this.status && this.statusPosition.includes('bottom'))
+        );
+    }
+
+    /**
+     * Check if an entity exists.
+     *
+     * @type {boolean}
+     */
+    get hasEntity() {
+        return this.entitySrc || this.entityInitials || this.entityIconName;
+    }
+
+    /**
+     * Check if the avatar has left icons.
+     *
+     * @type {boolean}
+     */
+    get hasLeftIcon() {
+        return (
+            (this.hasAction && this.actionPosition.includes('left')) ||
+            (this.hasEntity && this.entityPosition.includes('left')) ||
+            (this.presence && this.presencePosition.includes('left')) ||
+            (this.status && this.statusPosition.includes('left'))
+        );
+    }
+
+    /**
+     * Check if the avatar has right icons.
+     *
+     * @type {boolean}
+     */
+    get hasRightIcon() {
+        return (
+            (this.hasAction && this.actionPosition.includes('right')) ||
+            (this.hasEntity && this.entityPosition.includes('right')) ||
+            (this.presence && this.presencePosition.includes('right')) ||
+            (this.status && this.statusPosition.includes('right'))
+        );
+    }
+
+    /**
+     * Check if the avatar has top icons.
+     *
+     * @type {boolean}
+     */
+    get hasTopIcon() {
+        return (
+            (this.hasAction && this.actionPosition.includes('top')) ||
+            (this.hasEntity && this.entityPosition.includes('top')) ||
+            (this.presence && this.presencePosition.includes('top')) ||
+            (this.status && this.statusPosition.includes('top'))
+        );
+    }
+
+    /**
      * Check if Avatar exists.
      *
      * @type {boolean}
@@ -543,12 +642,12 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * If true, the chip container is displayed.
+     * If true, the tags are displayed.
      *
      * @type {boolean}
      */
-    get showChipContainer() {
-        return this.tags.length;
+    get showTags() {
+        return this.tags.length > 0 && !this.hideAvatarDetails;
     }
 
     /**
