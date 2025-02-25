@@ -1,13 +1,13 @@
-import { LightningElement, api } from 'lwc';
-import { getFormattedDate, DateTime } from 'c/dateTimeUtils';
-import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { DateTime, getFormattedDate } from 'c/dateTimeUtils';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     Direction,
     startPositioning,
     stopPositioning
 } from 'c/positionLibrary';
-import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const DATE_TYPES = {
     valid: ['date', 'datetime'],
@@ -377,17 +377,6 @@ export default class InputDateRange extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="input-end-date"]'
         );
-    }
-
-    /**
-     * Classes to remove right padding on end date input.
-     *
-     * @type {string}
-     */
-    get computedEndInputClasses() {
-        return classSet('slds-form-element slds-scrollable_none')
-            .add({ 'slds-p-right_none': !this.showTime })
-            .toString();
     }
 
     /**

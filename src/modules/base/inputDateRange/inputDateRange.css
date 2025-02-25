@@ -1,10 +1,7 @@
-.avonni-date-range__container {
-    display: flex;
-    align-items: flex-end;
-}
-
-.avonni-date-range__container .slds-form-element {
-    padding-right: 0.5rem;
+.slds-form-element {
+    padding-right: var(--lwc-spacingXSmall, 0.5rem);
+    padding-bottom: var(--lwc-spacingXxSmall, 0.25rem);
+    min-width: 150px;
 }
 
 .avonni-date-range__label-container {
@@ -29,7 +26,7 @@
 }
 
 .avonni-date-range__input_error {
-    box-shadow: var(--slds-g-color-error-base-40, #ba0517) 0 0 0 1px inset;
+    box-shadow: #ba0517 0 0 0 1px inset;
 }
 
 .avonni-input-date-range__labels {
