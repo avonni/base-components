@@ -711,14 +711,16 @@ export default class Metric extends LightningElement {
             validValues: AVATAR_POSITIONS.valid
         });
 
-        return classSet({
-            'slds-m-right_x-small': position === 'left',
-            'avonni-metric__avatar_after-text slds-m-left_x-small':
-                position === 'right',
-            'slds-m-bottom_x-small slds-size_1-of-1': position === 'top',
-            'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1':
-                position === 'bottom'
-        }).toString();
+        return classSet('avonni-metric__avatar')
+            .add({
+                'slds-m-right_x-small': position === 'left',
+                'avonni-metric__avatar_after-text slds-m-left_x-small':
+                    position === 'right',
+                'slds-m-bottom_x-small slds-size_1-of-1': position === 'top',
+                'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1':
+                    position === 'bottom'
+            })
+            .toString();
     }
 
     get metricsClass() {
@@ -810,6 +812,25 @@ export default class Metric extends LightningElement {
      */
     get showSecondaryMetric() {
         return isFinite(this.secondaryValue);
+    }
+
+    /**
+     * Computed CSS classes for the wrapper.
+     *
+     * @type {string}
+     */
+    get wrapperClass() {
+        const position = normalizeString(this.avatar.position, {
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
+        });
+
+        return classSet('slds-grid slds-wrap avonni-metric__wrapper').add({
+            'avonni-metric__wrapper_vertical':
+                position === 'top' || position === 'bottom',
+            'avonni-metric__wrapper_horizontal':
+                position === 'left' || position === 'right'
+        });
     }
 
     /*

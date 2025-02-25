@@ -92,7 +92,9 @@ describe('Metric', () => {
             expect(avatarElement.size).toBe(avatar.size);
             expect(avatarElement.src).toBe(avatar.src);
             expect(avatarElement.variant).toBe(avatar.variant);
-            expect(avatarElement.className).toBe('slds-m-right_x-small');
+            expect(avatarElement.className).toContain(
+                'avonni-metric__avatar slds-m-right_x-small'
+            );
         });
     });
 
@@ -105,7 +107,7 @@ describe('Metric', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'slds-m-bottom_x-small slds-size_1-of-1'
+                'avonni-metric__avatar slds-m-bottom_x-small slds-size_1-of-1'
             );
         });
     });
@@ -119,7 +121,7 @@ describe('Metric', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1'
+                'avonni-metric__avatar slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1'
             );
         });
     });
@@ -133,7 +135,7 @@ describe('Metric', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'avonni-metric__avatar_after-text slds-m-left_x-small'
+                'avonni-metric__avatar avonni-metric__avatar_after-text slds-m-left_x-small'
             );
         });
     });
