@@ -3,7 +3,18 @@
 }
 
 .avonni-metric__wrapper {
+    display: flex;
     text-align: var(--avonni-metric-alignment, left);
+}
+
+.avonni-metric__wrapper_vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.avonni-metric__wrapper_horizontal {
+    display: flex;
+    flex-direction: row;
 }
 
 .avonni-metric__primary-and-secondary-wrapper {
@@ -12,6 +23,10 @@
 
 .avonni-metric__secondary-wrapper {
     text-align: var(--avonni-metric-secondary-alignment);
+}
+
+.avonni-metric__avatar {
+    align-self: var(--avonni-metric-avatar-vertical-alignment, flex-start);
 }
 
 .avonni-metric__avatar_after-text {
