@@ -88,6 +88,25 @@
                 </div>
             </template>
             <div
+                if:true={showPin}
+                class={computedPinClass}
+                data-element-id="pin"
+            >
+                <p>
+                    <lightning-formatted-number
+                        format-style={computedUnit}
+                        currency-code={unitAttributes.currencyCode}
+                        currency-display-as={unitAttributes.currencyDisplayAs}
+                        maximum-fraction-digits={unitAttributes.maximumFractionDigits}
+                        maximum-significant-digits={unitAttributes.maximumSignificantDigits}
+                        minimum-fraction-digits={unitAttributes.minimumFractionDigits}
+                        minimum-integer-digits={unitAttributes.minimumIntegerDigits}
+                        minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+                        data-element-id="lightning-formatted-number-pin"
+                    ></lightning-formatted-number>
+                </p>
+            </div>
+            <div
                 class={computedTrackContainerClass}
                 data-element-id="track-container"
             >
