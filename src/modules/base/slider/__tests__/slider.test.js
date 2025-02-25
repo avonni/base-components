@@ -322,9 +322,7 @@ describe('Slider', () => {
         return Promise.resolve().then(() => {
             expect(element.showPin).toEqual(false);
             expect(
-                element.shadowRoot.querySelector(
-                    '[data-group-name="pin"][data-index="0"]'
-                )
+                element.shadowRoot.querySelector('[data-element-id="pin"]')
             ).toBeFalsy();
         });
     });
@@ -335,9 +333,7 @@ describe('Slider', () => {
         return Promise.resolve().then(() => {
             expect(element.showPin).toEqual(true);
             expect(
-                element.shadowRoot.querySelector(
-                    '[data-group-name="pin"][data-index="0"]'
-                )
+                element.shadowRoot.querySelector('[data-element-id="pin"]')
             ).toBeTruthy();
         });
     });
