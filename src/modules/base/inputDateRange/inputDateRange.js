@@ -1,13 +1,13 @@
-import { LightningElement, api } from 'lwc';
-import { getFormattedDate, DateTime } from 'c/dateTimeUtils';
-import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { DateTime, getFormattedDate } from 'c/dateTimeUtils';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     Direction,
     startPositioning,
     stopPositioning
 } from 'c/positionLibrary';
-import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const DATE_TYPES = {
     valid: ['date', 'datetime'],
@@ -385,7 +385,9 @@ export default class InputDateRange extends LightningElement {
      * @type {string}
      */
     get computedEndInputClasses() {
-        return classSet('slds-form-element slds-scrollable_none')
+        return classSet(
+            'slds-form-element slds-scrollable_none slds-m-bottom_xxx-small'
+        )
             .add({ 'slds-p-right_none': !this.showTime })
             .toString();
     }
