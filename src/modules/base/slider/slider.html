@@ -54,6 +54,9 @@
                                 onmouseup={handleUnlockPin}
                                 onmousemove={handleThumbHovered}
                                 onmouseleave={handleThumbExit}
+                                ontouchstart={handleLockPin}
+                                ontouchend={handleUnlockPin}
+                                ontouchmove={handleThumbHovered}
                             />
                             <div
                                 data-group-name="hitbox"
@@ -185,14 +188,14 @@
         </div>
     </div>
 
-    <template if:true={_helpMessage}>
+    <template if:true={helpMessage}>
         <div
             id="message-id"
             class="slds-form-element__help"
             aria-live="assertive"
             data-element-id="help-message"
         >
-            {_helpMessage}
+            {helpMessage}
         </div>
     </template>
 </template>

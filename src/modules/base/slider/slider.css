@@ -185,7 +185,9 @@
 }
 
 .avonni-slider__slider {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     outline: none;
     background: transparent;
     cursor: pointer;
@@ -193,6 +195,7 @@
         0px - calc(var(--avonni-slider-track-sizing-height, 4px))
     );
     height: var(--avonni-slider-track-sizing-height, 4px);
+    width: 100%;
     z-index: 4;
 }
 
@@ -444,6 +447,10 @@
 }
 
 .avonni-slider__form-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     /* Avoid Salesforce Experience site styles affecting the slider */
     margin-bottom: 0;
 }
