@@ -322,9 +322,7 @@ describe('Slider', () => {
         return Promise.resolve().then(() => {
             expect(element.showPin).toEqual(false);
             expect(
-                element.shadowRoot.querySelector(
-                    '[data-group-name="pin"][data-index="0"]'
-                )
+                element.shadowRoot.querySelector('[data-element-id="pin"]')
             ).toBeFalsy();
         });
     });
@@ -335,9 +333,7 @@ describe('Slider', () => {
         return Promise.resolve().then(() => {
             expect(element.showPin).toEqual(true);
             expect(
-                element.shadowRoot.querySelector(
-                    '[data-group-name="pin"][data-index="0"]'
-                )
+                element.shadowRoot.querySelector('[data-element-id="pin"]')
             ).toBeTruthy();
         });
     });
@@ -581,7 +577,7 @@ describe('Slider', () => {
                 '[data-element-id="horizontal-unit-container"]'
             );
             const pins = element.shadowRoot.querySelectorAll(
-                '[data-group-name="pin"]'
+                '[data-element-id="pin"]'
             );
 
             expect(wrapper).toBeFalsy();
@@ -610,7 +606,7 @@ describe('Slider', () => {
                 '[data-element-id="horizontal-unit-container"]'
             );
             const pins = element.shadowRoot.querySelectorAll(
-                '[data-group-name="pin"]'
+                '[data-element-id="pin"]'
             );
 
             expect(wrapper).toBeTruthy();
@@ -1222,7 +1218,7 @@ describe('Slider', () => {
                     '[data-group-name="input"][data-index="0"]'
                 );
                 pin = element.shadowRoot.querySelector(
-                    '[data-group-name="pin"]'
+                    '[data-element-id="pin"]'
                 );
                 input.dispatchEvent(new MouseEvent('mousedown'));
             })
@@ -1241,7 +1237,7 @@ describe('Slider', () => {
 
     /* ----- SCENARIOS ----- */
 
-    it('input change with showPin = true)', () => {
+    it('input change with showPin = true', () => {
         element.min = 0;
         element.max = 10;
         element.step = 0.5;
@@ -1258,7 +1254,7 @@ describe('Slider', () => {
                     '[data-group-name="input"][data-index="0"]'
                 );
                 pin = element.shadowRoot.querySelector(
-                    '[data-group-name="pin"]'
+                    '[data-element-id="pin"]'
                 );
                 pinPositionBefore = pin.style.left;
                 input.value = 8;
