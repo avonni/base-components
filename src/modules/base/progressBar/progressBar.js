@@ -511,12 +511,12 @@ export default class ProgressBar extends LightningElement {
      * @type {string}
      */
     get computedProgressBarStyle() {
-        let path = 'clip-path: rect(';
+        let path = 'clip-path: inset(';
         path += this.isHorizontal
-            ? `0% ${this.value}% auto 0`
-            : `${100 - this.value}% 100% auto 0`;
+            ? `0 ${100 - this.value}% 0 0`
+            : `${100 - this.value}% 0 0 0`;
         if (this.variant === 'circular') {
-            path += ` round ${BORDER_RADIUS_REM}rem ${BORDER_RADIUS_REM}rem`;
+            path += ` round ${BORDER_RADIUS_REM}rem`;
         }
         path += ')';
         return path;
