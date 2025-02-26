@@ -84,8 +84,11 @@
 .avonni-dual-listbox__search-container {
     position: relative;
     top: 3px;
-    background: #ffffff;
     border-radius: 0.25rem 0.25rem 0 0;
+    background-color: var(
+        --avonni-dual-listbox-boxes-color-background,
+        #ffffff
+    );
     border: 1px solid #747474;
     padding: var(--lwc-spacingXSmall, 0.5rem) !important;
 }
