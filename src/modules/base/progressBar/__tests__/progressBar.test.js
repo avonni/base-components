@@ -131,7 +131,7 @@ describe('ProgressBar', () => {
                         'slds-progress-bar_vertical'
                     );
                     expect(innerWrapper.style.clipPath).toBe(
-                        `rect(0% 0% auto 0)`
+                        `inset(0 100% 0 0)`
                     );
 
                     primitives.forEach((primitive) => {
@@ -158,7 +158,7 @@ describe('ProgressBar', () => {
                         'slds-progress-bar_vertical'
                     );
                     expect(innerWrapper.style.clipPath).toBe(
-                        `rect(100% 100% auto 0)`
+                        `inset(100% 0 0 0)`
                     );
 
                     primitives.forEach((primitive) => {
@@ -1026,7 +1026,7 @@ describe('ProgressBar', () => {
                     expect(value.textContent.trim()).toBe('56%');
                     expect(assistiveText.textContent).toBe('Progress: 56%');
                     expect(innerWrapper.style.clipPath).toBe(
-                        'rect(0% 56% auto 0)'
+                        'inset(0 44% 0 0)'
                     );
                 });
             });
@@ -1048,9 +1048,7 @@ describe('ProgressBar', () => {
 
                     expect(value.textContent.trim()).toBe('100%');
                     expect(assistiveText.textContent).toBe('Progress: 100%');
-                    expect(innerWrapper.style.clipPath).toBe(
-                        'rect(0% 100% auto 0)'
-                    );
+                    expect(innerWrapper.style.clipPath).toBe('inset(0 0% 0 0)');
                 });
             });
 
@@ -1072,7 +1070,7 @@ describe('ProgressBar', () => {
                     expect(value.textContent.trim()).toBe('0%');
                     expect(assistiveText.textContent).toBe('Progress: 0%');
                     expect(innerWrapper.style.clipPath).toBe(
-                        'rect(0% 0% auto 0)'
+                        'inset(0 100% 0 0)'
                     );
                 });
             });
