@@ -1,5 +1,10 @@
 import { LightningElement, api } from 'lwc';
-import { classSet, normalizeArray, normalizeString } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
@@ -34,7 +39,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _defaultActions = [];
     _expanded = true;
     _hasSelectedChildren;
-    _isConnected = false;
+    _isLoading = false;
     _items = [];
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
@@ -119,6 +124,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    @api
     get variant() {
         return this._variant;
     }
@@ -129,15 +142,18 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         });
     }
 
+    get showEmptyMessage() {
+        return (
+            !this.isLoading &&
+            (!Array.isArray(this.items) || this.items.length === 0)
+        );
+    }
+
     get title() {
         if (this.hideItemsCount) return this.label;
 
         const count = this.items ? this.items.length : 0;
         return `${this.label} (${count})`;
-    }
-
-    get isEmpty() {
-        return !this.items;
     }
 
     get hasAvatar() {
@@ -154,7 +170,11 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         }
         const selectedItem =
             this.items && this.items.find((item) => item.selected);
-        return selectedItem && selectedItem.groups && true;
+        return (
+            selectedItem &&
+            Array.isArray(selectedItem.groups) &&
+            selectedItem.groups.length > 0
+        );
     }
     set hasSelectedChildren(value) {
         this._hasSelectedChildren = value;
@@ -238,12 +258,19 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
                 this.dispatchEvent(new CustomEvent('heightchange'));
             }
         });
+        const closed = event.detail.closed;
+        this.dispatchEvent(
+            new CustomEvent('toggle', {
+                detail: {
+                    name: this.name,
+                    closed,
+                    isActiveGroup: !!this.selectedItemComponent
+                }
+            })
+        );
 
         if (!this.selectedItemComponent) return;
-
-        const closed = event.detail.closed;
         if (closed) {
-            this.dispatchEvent(new CustomEvent('closeactivegroup'));
             this._hasSelectedChildren = false;
         } else {
             // When reopening the group, make sure the items are unselected

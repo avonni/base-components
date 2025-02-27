@@ -27,3 +27,17 @@
     width: var(--lwc-sizeMedium, 20rem);
     position: relative;
 }
+
+.avonni-relationship-graph__header-vertical-no-actions {
+    margin-bottom: 1.5rem;
+}
+
+.avonni-relationship-graph__header-vertical-no-actions::after {
+    content: '';
+    width: 2px;
+    background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
+    height: calc(1.5rem + 2px);
+    position: absolute;
+    left: 9.95rem;
+    bottom: calc(-1.5rem - 2px);
+}

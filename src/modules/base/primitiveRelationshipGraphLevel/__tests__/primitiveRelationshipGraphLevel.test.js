@@ -689,8 +689,8 @@ describe('PrimitiveRelationshipGraphLevel', () => {
         });
     });
 
-    // closeactivegroup
-    it('Primitive relationship graph level: Handle closeactivegroup event', () => {
+    // toggle
+    it('Primitive relationship graph level: Handle toggle event', () => {
         const element = createElement(
             'data-primitive-relationship-graph-level',
             {
@@ -703,13 +703,58 @@ describe('PrimitiveRelationshipGraphLevel', () => {
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
+        const toggleHandler = jest.fn();
+        element.addEventListener('toggle', toggleHandler);
+
         return Promise.resolve().then(() => {
             const groups = element.shadowRoot.querySelectorAll(
                 'c-primitive-relationship-graph-group'
             );
 
-            groups[1].dispatchEvent(new CustomEvent('closeactivegroup'));
+            groups[1].dispatchEvent(
+                new CustomEvent('toggle', {
+                    detail: {
+                        name: GROUPS[1].name,
+                        closed: true,
+                        isActiveGroup: false
+                    }
+                })
+            );
+            expect(toggleHandler).toHaveBeenCalled();
+        });
+    });
 
+    it('Primitive relationship graph level: Handle toggle event on active group', () => {
+        const element = createElement(
+            'data-primitive-relationship-graph-level',
+            {
+                is: PrimitiveRelationshipGraphLevel
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.groups = GROUPS;
+        element.selectedGroups = SELECTED_GROUPS;
+
+        const toggleHandler = jest.fn();
+        element.addEventListener('toggle', toggleHandler);
+
+        return Promise.resolve().then(() => {
+            const groups = element.shadowRoot.querySelectorAll(
+                'c-primitive-relationship-graph-group'
+            );
+
+            groups[1].dispatchEvent(
+                new CustomEvent('toggle', {
+                    detail: {
+                        name: GROUPS[1].name,
+                        closed: true,
+                        isActiveGroup: true
+                    }
+                })
+            );
+            expect(toggleHandler).toHaveBeenCalled();
             expect(element.selectedGroups).toBeUndefined();
         });
     });

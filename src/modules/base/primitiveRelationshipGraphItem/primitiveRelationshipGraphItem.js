@@ -102,7 +102,9 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     get hasChildren() {
         if (this.groups.length === 0) return false;
 
-        return this.groups.some((group) => group.items);
+        return this.groups.some(
+            (group) => Array.isArray(group.items) && group.items.length > 0
+        );
     }
 
     get generateKey() {

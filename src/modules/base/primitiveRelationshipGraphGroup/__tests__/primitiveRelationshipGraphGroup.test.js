@@ -813,6 +813,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
         document.body.appendChild(element);
 
+        element.name = 'group';
         element.variant = 'horizontal';
         element.items = [
             {
@@ -825,8 +826,8 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         const heightChangeHandler = jest.fn();
         element.addEventListener('heightchange', heightChangeHandler);
 
-        const closeHandler = jest.fn();
-        element.addEventListener('closeactivegroup', closeHandler);
+        const toggleHandler = jest.fn();
+        element.addEventListener('toggle', toggleHandler);
 
         return Promise.resolve()
             .then(() => {
@@ -844,7 +845,16 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             })
             .then(() => {
                 expect(heightChangeHandler).toHaveBeenCalled();
-                expect(closeHandler).toHaveBeenCalled();
+                expect(toggleHandler).toHaveBeenCalled();
+                expect(toggleHandler.mock.calls[0][0].detail.name).toBe(
+                    'group'
+                );
+                expect(
+                    toggleHandler.mock.calls[0][0].detail.closed
+                ).toBeTruthy();
+                expect(
+                    toggleHandler.mock.calls[0][0].detail.isActiveGroup
+                ).toBeTruthy();
             });
     });
 
@@ -858,6 +868,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
         document.body.appendChild(element);
 
+        element.name = 'group';
         element.variant = 'horizontal';
         element.items = [
             {
@@ -870,8 +881,8 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         const heightChangeHandler = jest.fn();
         element.addEventListener('heightchange', heightChangeHandler);
 
-        const closeHandler = jest.fn();
-        element.addEventListener('closeactivegroup', closeHandler);
+        const toggleHandler = jest.fn();
+        element.addEventListener('toggle', toggleHandler);
 
         return Promise.resolve()
             .then(() => {
@@ -889,7 +900,16 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             })
             .then(() => {
                 expect(heightChangeHandler).toHaveBeenCalled();
-                expect(closeHandler).not.toHaveBeenCalled();
+                expect(toggleHandler).toHaveBeenCalled();
+                expect(toggleHandler.mock.calls[0][0].detail.name).toBe(
+                    'group'
+                );
+                expect(
+                    toggleHandler.mock.calls[0][0].detail.closed
+                ).toBeFalsy();
+                expect(
+                    toggleHandler.mock.calls[0][0].detail.isActiveGroup
+                ).toBeTruthy();
             });
     });
 
@@ -903,13 +923,14 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
         document.body.appendChild(element);
 
+        element.name = 'group';
         element.variant = 'vertical';
 
         const heightChangeHandler = jest.fn();
         element.addEventListener('heightchange', heightChangeHandler);
 
-        const closeHandler = jest.fn();
-        element.addEventListener('closeactivegroup', closeHandler);
+        const toggleHandler = jest.fn();
+        element.addEventListener('toggle', toggleHandler);
 
         return Promise.resolve()
             .then(() => {
@@ -927,7 +948,16 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             })
             .then(() => {
                 expect(heightChangeHandler).not.toHaveBeenCalled();
-                expect(closeHandler).not.toHaveBeenCalled();
+                expect(toggleHandler).toHaveBeenCalled();
+                expect(toggleHandler.mock.calls[0][0].detail.name).toBe(
+                    'group'
+                );
+                expect(
+                    toggleHandler.mock.calls[0][0].detail.closed
+                ).toBeTruthy();
+                expect(
+                    toggleHandler.mock.calls[0][0].detail.isActiveGroup
+                ).toBeFalsy();
             });
     });
 
