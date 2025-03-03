@@ -60,6 +60,13 @@ export default class SchedulerCell {
         });
     }
 
+    get isPast() {
+        const now = dateTimeObjectFrom(Date.now(), {
+            zone: this.timezone
+        });
+        return this._startDate < now;
+    }
+
     /**
      * True if the start date is today.
      *

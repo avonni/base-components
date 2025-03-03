@@ -208,6 +208,7 @@
                                                 labels={event.labels}
                                                 occurrence={occurrence}
                                                 occurrence-key={occurrence.key}
+                                                prevent-past-event-creation={preventPastEventCreation}
                                                 read-only={multiDayEventReadOnly}
                                                 resource-key={occurrence.resourceName}
                                                 resources={computedResources}
@@ -350,6 +351,7 @@
                                                                     labels={placeholder.labels}
                                                                     occurrence={placeholder}
                                                                     occurrence-key={placeholder.key}
+                                                                    prevent-past-event-creation={preventPastEventCreation}
                                                                     read-only={readOnly}
                                                                     resource-key={placeholder.resourceName}
                                                                     resources={computedResources}
@@ -432,6 +434,7 @@
                                                     labels={event.labels}
                                                     occurrence={occurrence}
                                                     occurrence-key={occurrence.key}
+                                                    prevent-past-event-creation={preventPastEventCreation}
                                                     read-only={readOnly}
                                                     reference-line={event.referenceLine}
                                                     resource-key={occurrence.resourceName}
@@ -657,6 +660,7 @@
                             labels={occurrence.event.labels}
                             occurrence={occurrence}
                             occurrence-key={occurrence.key}
+                            prevent-past-event-creation={preventPastEventCreation}
                             read-only={readOnly}
                             reference-line={occurrence.event.referenceLine}
                             resource-key={occurrence.resourceName}

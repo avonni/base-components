@@ -57,6 +57,7 @@ export class ScheduleBase extends LightningElement {
     _eventsTheme = EVENTS_THEMES.default;
     _hiddenActions = [];
     _newEventTitle = DEFAULT_NEW_EVENT_TITLE;
+    _preventPastEventCreation = false;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
     _resizeColumnDisabled = false;
@@ -316,6 +317,21 @@ export class ScheduleBase extends LightningElement {
         if (this._eventData) {
             this._eventData.newEventTitle = this._newEventTitle;
         }
+    }
+
+    /**
+     * If present, the users cannot create new events, or move existing events in the past.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get preventPastEventCreation() {
+        return this._preventPastEventCreation;
+    }
+    set preventPastEventCreation(value) {
+        this._preventPastEventCreation = normalizeBoolean(value);
     }
 
     /**
@@ -762,6 +778,7 @@ export class ScheduleBase extends LightningElement {
             eventsLabels: this.eventsLabels,
             eventsTheme: this.eventsTheme,
             newEventTitle: this.newEventTitle,
+            preventPastEventCreation: this.preventPastEventCreation,
             recurrentEditModes: this.recurrentEditModes,
             selectedResources: this.selectedResources,
             visibleInterval: this.visibleInterval
@@ -996,8 +1013,10 @@ export class ScheduleBase extends LightningElement {
         }
         const x = event.clientX;
         const y = event.clientY;
-        this.newEvent({ x, y, saveEvent: true });
-        this.dispatchOpenEditDialog(this._eventData.selection);
+        const selection = this.newEvent({ x, y, saveEvent: true });
+        if (selection) {
+            this.dispatchOpenEditDialog(selection);
+        }
     }
 
     /**
