@@ -28,6 +28,7 @@ describe('Metric', () => {
         expect(element.description).toBeUndefined();
         expect(element.formatStyle).toBe('decimal');
         expect(element.label).toBeUndefined();
+        expect(element.labelPosition).toBe('top');
         expect(element.maximumFractionDigits).toBeUndefined();
         expect(element.maximumSignificantDigits).toBeUndefined();
         expect(element.minimumFractionDigits).toBeUndefined();
@@ -91,7 +92,9 @@ describe('Metric', () => {
             expect(avatarElement.size).toBe(avatar.size);
             expect(avatarElement.src).toBe(avatar.src);
             expect(avatarElement.variant).toBe(avatar.variant);
-            expect(avatarElement.className).toBe('slds-m-right_x-small');
+            expect(avatarElement.className).toContain(
+                'avonni-metric__avatar slds-m-right_x-small'
+            );
         });
     });
 
@@ -104,7 +107,7 @@ describe('Metric', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'slds-m-bottom_x-small slds-size_1-of-1'
+                'avonni-metric__avatar slds-m-bottom_x-small slds-size_1-of-1'
             );
         });
     });
@@ -118,7 +121,7 @@ describe('Metric', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1'
+                'avonni-metric__avatar slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1'
             );
         });
     });
@@ -132,7 +135,7 @@ describe('Metric', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'avonni-metric__avatar_after-text slds-m-left_x-small'
+                'avonni-metric__avatar avonni-metric__avatar_after-text slds-m-left_x-small'
             );
         });
     });
@@ -194,6 +197,33 @@ describe('Metric', () => {
                 '[data-element-id="div-label"]'
             );
             expect(label.textContent).toBe('some label');
+        });
+    });
+
+    // label position
+    it('Metric: label position = top', () => {
+        element.labelPosition = 'top';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="div-label"]'
+            );
+            expect(label.classList).toContain('avonni-metric__label-top');
+            expect(label.classList).not.toContain(
+                'avonni-metric__label-bottom'
+            );
+        });
+    });
+
+    it('Metric: label position = bottom', () => {
+        element.labelPosition = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="div-label"]'
+            );
+            expect(label.classList).not.toContain('avonni-metric__label-top');
+            expect(label.classList).toContain('avonni-metric__label-bottom');
         });
     });
 

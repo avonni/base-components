@@ -84,14 +84,23 @@
 .avonni-dual-listbox__search-container {
     position: relative;
     top: 3px;
-    background: #ffffff;
-    border-radius: 0.25rem 0.25rem 0 0;
+    background-color: var(
+        --avonni-dual-listbox-boxes-color-background,
+        #ffffff
+    );
+    border-radius: var(--avonni-dual-listbox-boxes-radius-border, 0.25rem)
+        var(--avonni-dual-listbox-boxes-radius-border, 0.25rem) 0 0;
     border: 1px solid #747474;
     padding: var(--lwc-spacingXSmall, 0.5rem) !important;
 }
 
 .avonni-dual-listbox__selected-list-with-search {
     margin-top: 3px;
+}
+
+.avonni-dual-listbox__search-container + .avonni-dual-listbox__boxes {
+    border-radius: 0 0 var(--avonni-dual-listbox-boxes-radius-border, 0.25rem)
+        var(--avonni-dual-listbox-boxes-radius-border, 0.25rem);
 }
 
 .avonni-dual-listbox__boxes {

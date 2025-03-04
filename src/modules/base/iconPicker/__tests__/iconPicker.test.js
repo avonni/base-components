@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import IconPicker from 'c/iconPicker';
+import { createElement } from 'lwc';
 
 let element;
 describe('IconPicker', () => {
@@ -806,8 +806,6 @@ describe('IconPicker', () => {
     });
 
     it('Change to invalid icon using input', () => {
-        element.value = 'standard:account';
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -816,28 +814,25 @@ describe('IconPicker', () => {
                 const input = element.shadowRoot.querySelector(
                     '[data-element-id="input"]'
                 );
-                input.dispatchEvent(
-                    new CustomEvent('input', {
-                        target: { value: 'standard:account' }
-                    })
-                );
+                input.value = 'utility:invalid_icon';
+                input.dispatchEvent(new CustomEvent('input'));
                 input.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
-                element.value = '';
-            })
-            .then(() => {
+                expect(handler).not.toHaveBeenCalled();
+
                 const input = element.shadowRoot.querySelector(
                     '[data-element-id="input"]'
                 );
+                input.value = 'utility:delete';
+                input.dispatchEvent(new CustomEvent('input'));
                 input.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
-                expect(handler).toHaveBeenCalledTimes(2);
+                expect(handler).toHaveBeenCalledTimes(1);
                 expect(handler.mock.calls[0][0].detail.value).toBe(
-                    'standard:account'
+                    'utility:delete'
                 );
-                expect(handler.mock.calls[1][0].detail.value).toBeNull();
             });
     });
 
@@ -975,8 +970,6 @@ describe('IconPicker', () => {
     });
 
     it('Change icon using input', () => {
-        element.value = 'standard:user';
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -985,11 +978,8 @@ describe('IconPicker', () => {
                 const input = element.shadowRoot.querySelector(
                     '[data-element-id="input"]'
                 );
-                input.dispatchEvent(
-                    new CustomEvent('input', {
-                        target: { value: 'standard:user' }
-                    })
-                );
+                input.value = 'standard:user';
+                input.dispatchEvent(new CustomEvent('input'));
                 input.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {

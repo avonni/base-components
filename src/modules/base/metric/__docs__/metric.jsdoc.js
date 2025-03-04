@@ -22,6 +22,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-avatar-vertical-alignment
+ * @default flex-start
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-cursor
  * @default text
  * @type string

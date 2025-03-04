@@ -439,8 +439,9 @@ export default {
         selectedOptionsDirection: {
             name: 'selected-options-direction',
             control: {
-                type: 'text'
+                type: 'select'
             },
+            options: ['horizontal', 'vertical'],
             description:
                 'Direction of the selected options. Horizontally, the selected options will be displayed as pills. Vertically, the selected options will be displayed as a list.',
             table: {
@@ -567,6 +568,14 @@ ReadOnlyMultiSelect.args = {
     isMultiSelect: true,
     readOnly: true,
     value: ['no-avatar-edge', 'no-avatar-oil-sla']
+};
+
+export const Required = Template.bind({});
+Required.args = {
+    label: 'Required combobox',
+    options: options,
+    required: true,
+    value: 'no-avatar-united-oil'
 };
 
 export const VerticalSelectedOptions = Template.bind({});

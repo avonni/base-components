@@ -1,6 +1,6 @@
-import { LightningElement, api, track } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet, deepCopy, normalizeArray, normalizeBoolean } from 'c/utils';
+import { LightningElement, api, track } from 'lwc';
 
 const AUTO_SCROLL_INCREMENT = 5;
 const AUTO_SCROLL_THRESHOLD = 50;

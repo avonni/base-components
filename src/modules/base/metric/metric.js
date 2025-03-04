@@ -24,6 +24,11 @@ const FORMAT_STYLES = {
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
 
+const LABEL_POSITIONS = {
+    valid: ['top', 'bottom'],
+    default: 'top'
+};
+
 const POSITIONS = {
     valid: ['right', 'left', 'top', 'bottom'],
     default: 'right'
@@ -113,6 +118,7 @@ export default class Metric extends LightningElement {
     _avatar;
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
     _formatStyle = FORMAT_STYLES.default;
+    _labelPosition = LABEL_POSITIONS.default;
     _maximumFractionDigits;
     _maximumSignificantDigits;
     _minimumFractionDigits;
@@ -200,6 +206,24 @@ export default class Metric extends LightningElement {
         this._formatStyle = normalizeString(value, {
             fallbackValue: FORMAT_STYLES.default,
             validValues: FORMAT_STYLES.valid
+        });
+    }
+
+    /**
+     * Position of the label.
+     *
+     * @type {string}
+     * @default top
+     * @public
+     */
+    @api
+    get labelPosition() {
+        return this._labelPosition;
+    }
+    set labelPosition(value) {
+        this._labelPosition = normalizeString(value, {
+            fallbackValue: LABEL_POSITIONS.default,
+            validValues: LABEL_POSITIONS.valid
         });
     }
 
@@ -687,14 +711,16 @@ export default class Metric extends LightningElement {
             validValues: AVATAR_POSITIONS.valid
         });
 
-        return classSet({
-            'slds-m-right_x-small': position === 'left',
-            'avonni-metric__avatar_after-text slds-m-left_x-small':
-                position === 'right',
-            'slds-m-bottom_x-small slds-size_1-of-1': position === 'top',
-            'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1':
-                position === 'bottom'
-        }).toString();
+        return classSet('avonni-metric__avatar')
+            .add({
+                'slds-m-right_x-small': position === 'left',
+                'avonni-metric__avatar_after-text slds-m-left_x-small':
+                    position === 'right',
+                'slds-m-bottom_x-small slds-size_1-of-1': position === 'top',
+                'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1':
+                    position === 'bottom'
+            })
+            .toString();
     }
 
     get metricsClass() {
@@ -771,12 +797,40 @@ export default class Metric extends LightningElement {
     }
 
     /**
+     * True if the label should be shown at the top.
+     *
+     * @type {boolean}
+     */
+    get showTopLabel() {
+        return this.labelPosition === 'top';
+    }
+
+    /**
      * True if the secondary metric should be visible.
      *
      * @type {boolean}
      */
     get showSecondaryMetric() {
         return isFinite(this.secondaryValue);
+    }
+
+    /**
+     * Computed CSS classes for the wrapper.
+     *
+     * @type {string}
+     */
+    get wrapperClass() {
+        const position = normalizeString(this.avatar.position, {
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
+        });
+
+        return classSet('slds-grid slds-wrap avonni-metric__wrapper').add({
+            'avonni-metric__wrapper_vertical':
+                position === 'top' || position === 'bottom',
+            'avonni-metric__wrapper_horizontal':
+                position === 'left' || position === 'right'
+        });
     }
 
     /*

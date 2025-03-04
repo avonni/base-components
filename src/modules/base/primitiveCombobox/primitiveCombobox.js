@@ -2192,7 +2192,11 @@ export default class PrimitiveCombobox extends LightningElement {
         if (!this.isMultiSelect && !selectedOption.selected) {
             this._unselectOption();
         }
-        selectedOption.selected = !selectedOption.selected;
+        if (!this.isMultiSelect && this.required && selectedOption.selected) {
+            selectedOption.selected = true;
+        } else {
+            selectedOption.selected = !selectedOption.selected;
+        }
 
         this._computeSelection();
 

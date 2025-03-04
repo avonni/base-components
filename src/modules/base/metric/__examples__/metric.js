@@ -10,6 +10,7 @@ export const Metric = ({
     description,
     formatStyle,
     label,
+    labelPosition,
     maximumFractionDigits,
     maximumSignificantDigits,
     minimumFractionDigits,
@@ -50,6 +51,7 @@ export const Metric = ({
     element.description = description;
     element.formatStyle = formatStyle;
     element.label = label;
+    element.labelPosition = labelPosition;
     element.maximumFractionDigits = maximumFractionDigits;
     element.maximumSignificantDigits = maximumSignificantDigits;
     element.minimumFractionDigits = minimumFractionDigits;

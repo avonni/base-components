@@ -308,13 +308,6 @@ describe('Avatar Group', () => {
                 avatars.forEach((avatar, index) => {
                     const correspondingField = item[index];
                     expect(correspondingField).toBeTruthy();
-                    expect(Tooltip).toHaveBeenCalled();
-                    expect(Tooltip.mock.calls[0][0]).toBe(
-                        correspondingField.alternativeText
-                    );
-                    const instance = Tooltip.mock.instances[0];
-                    expect(instance.initialize).toHaveBeenCalled();
-
                     expect(avatar.fallbackIconName).toBe(
                         correspondingField.fallbackIconName
                     );
@@ -1234,6 +1227,22 @@ describe('Avatar Group', () => {
                 expect(firstAvatarFocus).toHaveBeenCalledTimes(3);
                 expect(secondAvatarFocus).toHaveBeenCalledTimes(2);
                 expect(thirdAvatarFocus).toHaveBeenCalledTimes(2);
+            });
+        });
+
+        it('Show tooltip by hovering the avatar', () => {
+            element.items = items;
+
+            return Promise.resolve().then(() => {
+                const avatar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar).toBeTruthy();
+                avatar.dispatchEvent(new CustomEvent('mouseenter'));
+                expect(Tooltip).toHaveBeenCalled();
+                expect(Tooltip.mock.calls[0][0]).toBe(items[0].alternativeText);
+                const instance = Tooltip.mock.instances[0];
+                expect(instance.initialize).toHaveBeenCalled();
             });
         });
     });

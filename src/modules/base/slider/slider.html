@@ -54,36 +54,38 @@
                                 onmouseup={handleUnlockPin}
                                 onmousemove={handleThumbHovered}
                                 onmouseleave={handleThumbExit}
+                                ontouchstart={handleLockPin}
+                                ontouchend={handleUnlockPin}
+                                ontouchmove={handleThumbHovered}
                             />
                             <div
                                 data-group-name="hitbox"
                                 data-index={index}
                                 class="avonni-slider__thumb-hitbox"
                             ></div>
-                            <div
-                                if:true={showPin}
-                                class={computedPinClass}
-                                data-group-name="pin"
-                                data-index={index}
-                            >
-                                <p>
-                                    <lightning-formatted-number
-                                        format-style={computedUnit}
-                                        currency-code={unitAttributes.currencyCode}
-                                        currency-display-as={unitAttributes.currencyDisplayAs}
-                                        maximum-fraction-digits={unitAttributes.maximumFractionDigits}
-                                        maximum-significant-digits={unitAttributes.maximumSignificantDigits}
-                                        minimum-fraction-digits={unitAttributes.minimumFractionDigits}
-                                        minimum-integer-digits={unitAttributes.minimumIntegerDigits}
-                                        minimum-significant-digits={unitAttributes.minimumSignificantDigits}
-                                        data-element-id="lightning-formatted-number-pin"
-                                    ></lightning-formatted-number>
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>
             </template>
+            <div
+                if:true={showPin}
+                class={computedPinClass}
+                data-element-id="pin"
+            >
+                <p>
+                    <lightning-formatted-number
+                        format-style={computedUnit}
+                        currency-code={unitAttributes.currencyCode}
+                        currency-display-as={unitAttributes.currencyDisplayAs}
+                        maximum-fraction-digits={unitAttributes.maximumFractionDigits}
+                        maximum-significant-digits={unitAttributes.maximumSignificantDigits}
+                        minimum-fraction-digits={unitAttributes.minimumFractionDigits}
+                        minimum-integer-digits={unitAttributes.minimumIntegerDigits}
+                        minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+                        data-element-id="lightning-formatted-number-pin"
+                    ></lightning-formatted-number>
+                </p>
+            </div>
             <div
                 class={computedTrackContainerClass}
                 data-element-id="track-container"
@@ -185,14 +187,14 @@
         </div>
     </div>
 
-    <template if:true={_helpMessage}>
+    <template if:true={helpMessage}>
         <div
             id="message-id"
             class="slds-form-element__help"
             aria-live="assertive"
             data-element-id="help-message"
         >
-            {_helpMessage}
+            {helpMessage}
         </div>
     </template>
 </template>

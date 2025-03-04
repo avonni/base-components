@@ -100,11 +100,11 @@ export default class Slider extends LightningElement {
     computedMax;
     computedMin = DEFAULT_MIN;
     customLabels = [];
+    helpMessage;
 
     _changeTimeout;
     _computedValues = [DEFAULT_VALUE];
     _focusedInputIndex;
-    _helpMessage;
     _initMax;
     _moveEventWait = false;
     _pinLocked = false;
@@ -683,7 +683,9 @@ export default class Slider extends LightningElement {
      *
      */
     get computedSliderWrapperClass() {
-        return classSet('avonni-slider__wrapper slds-p-vertical_x-small').add({
+        return classSet(
+            'avonni-slider__wrapper slds-p-vertical_x-small slds-is-relative'
+        ).add({
             'avonni-slider__wrapper_height_full':
                 this.isVertical && !this.showLabel,
             'avonni-slider__wrapper_height_label':
@@ -1032,7 +1034,7 @@ export default class Slider extends LightningElement {
         if (this._computedValues.length === 1) {
             helpMessage = helpMessage.split(': ')[1];
         }
-        this._helpMessage = isValid ? undefined : helpMessage.trim();
+        this.helpMessage = isValid ? undefined : helpMessage.trim();
         return isValid;
     }
 
@@ -1663,7 +1665,7 @@ export default class Slider extends LightningElement {
             if (this._pin) {
                 this.setPinPosition(event);
                 this.template
-                    .querySelector(`[data-group-name="pin"][data-index="0"]`)
+                    .querySelector('[data-element-id="pin"]')
                     .classList.add('avonni-slider__pin_visible');
             }
         } else {
@@ -1678,7 +1680,7 @@ export default class Slider extends LightningElement {
         if (!this.thumbIsHovered(event) && !this._pinLocked) {
             if (this._pin) {
                 this.template
-                    .querySelector(`[data-group-name="pin"][data-index="0"]`)
+                    .querySelector('[data-element-id="pin"]')
                     .classList.remove('avonni-slider__pin_visible');
             }
         }
@@ -1704,9 +1706,7 @@ export default class Slider extends LightningElement {
      * Calculate Pins position.
      */
     setPinPosition(event) {
-        const pin = this.template.querySelector(
-            `[data-group-name="pin"][data-index="0"]`
-        );
+        const pin = this.template.querySelector('[data-element-id="pin"]');
         const pinIndex = parseInt(event.target.dataset.index, 10);
         const pinProgress = this.getPercentOfValue(
             this._computedValues[pinIndex]
@@ -1818,9 +1818,9 @@ export default class Slider extends LightningElement {
                 this._track.style.width = '';
             } else if (this._computedValues.length > 0) {
                 const start = left;
-                const end = PERCENT_SCALING_FACTOR - right;
+                const end = right;
                 this._track.style.width = '100%';
-                this._track.style.clipPath = `rect(0% ${end}% auto ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
+                this._track.style.clipPath = `inset(0% ${end}% 0 ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
             }
         }
 
