@@ -95,6 +95,7 @@ describe('Scheduler', () => {
             'No events for the selected date.'
         );
         expect(element.loadingStateAlternativeText).toBe('Loading');
+        expect(element.preventPastEventCreation).toBeFalsy();
         expect(element.readOnly).toBeFalsy();
         expect(element.recurrentEditModes).toEqual(['all', 'one']);
         expect(element.referenceLines).toEqual([]);
@@ -1731,6 +1732,29 @@ describe('Scheduler', () => {
                 'Some alternative text'
             );
         });
+    });
+
+    it('Scheduler: preventPastEventCreation', () => {
+        element.preventPastEventCreation = true;
+        element.selectedDisplay = 'timeline';
+        element.resources = RESOURCES;
+        element.selectedResources = ['resource-1'];
+
+        return Promise.resolve()
+            .then(() => {
+                const timeline = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                );
+                expect(timeline.preventPastEventCreation).toBeTruthy();
+
+                element.selectedDisplay = 'calendar';
+            })
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                );
+                expect(calendar.preventPastEventCreation).toBeTruthy();
+            });
     });
 
     // read-only
