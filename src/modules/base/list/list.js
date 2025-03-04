@@ -1330,6 +1330,7 @@ export default class List extends LightningElement {
             const itemIndex = Number(item.dataset.index);
             return itemIndex > startIndex && itemIndex < groupDraggedIndex;
         });
+
         const undraggedItems = itemsBetween.filter(
             (el) =>
                 this._draggedElements.findIndex(
@@ -1428,31 +1429,54 @@ export default class List extends LightningElement {
      * @param {number} currentY
      */
     animateItems(currentY) {
-        if (currentY && this._draggedElement) {
-            const droppedIndex = this.getDroppedIndex(currentY);
-            const hoveredItem = this.getHoveredItem(currentY);
+        if (!currentY || !this._draggedElement) return;
 
-            // Update hovered index
-            if (hoveredItem) {
-                const previousHoveredIndex = this._hoveredIndex;
-                if (hoveredItem.dataset.elementTempIndex != null) {
-                    const tempIndex = parseInt(
-                        hoveredItem.dataset.elementTempIndex,
-                        10
-                    );
-                    const hoveredUp = tempIndex < previousHoveredIndex;
-                    this._hoveredIndex = hoveredUp
-                        ? tempIndex + this._draggedElements.length - 1
-                        : tempIndex;
-                } else {
-                    this._hoveredIndex = Number(hoveredItem.dataset.index);
-                }
+        const droppedIndex = this.getDroppedIndex(currentY);
+        const hoveredItem = this.getHoveredItem(currentY);
+
+        // Update hovered index
+        if (hoveredItem) {
+            const previousHoveredIndex = this._hoveredIndex;
+            if (hoveredItem.dataset.elementTempIndex != null) {
+                const tempIndex = parseInt(
+                    hoveredItem.dataset.elementTempIndex,
+                    10
+                );
+                const hoveredUp = tempIndex < previousHoveredIndex;
+                this._hoveredIndex = hoveredUp
+                    ? tempIndex + this._draggedElements.length - 1
+                    : tempIndex;
+            } else {
+                this._hoveredIndex = Number(hoveredItem.dataset.index);
             }
-
-            // Animate items
-            this.animateDraggedItems(currentY);
-            this.animateHoveredItem(hoveredItem, droppedIndex);
         }
+
+        // Animate items
+        this.animateHoveredItem(hoveredItem, droppedIndex);
+
+        // Adjust hovered index
+        const movedItems = this._itemElements.filter((item) => {
+            return item.dataset.moved === 'moved';
+        });
+        let hoveredIndexes = movedItems.map((item) => {
+            return Number(item.dataset.index);
+        });
+        const undraggedItemTempIndexes = movedItems
+            .filter(
+                (el) =>
+                    this._draggedElements.findIndex(
+                        (i) => i.dataset.name === el.dataset.name
+                    ) === -1
+            )
+            .map((item) => Number(item.dataset.elementTempIndex));
+
+        hoveredIndexes = hoveredIndexes.filter(
+            (index) => !undraggedItemTempIndexes.includes(index)
+        );
+        this._hoveredIndex = Math.max(...hoveredIndexes);
+
+        // Animate dragged items
+        this.animateDraggedItems(currentY);
     }
 
     /**
