@@ -15,6 +15,7 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
     @api hideSidePanel;
     @api loadingStateAlternativeText;
     @api newEventTitle;
+    @api preventPastEventCreation;
     @api readOnly;
     @api recurrentEditModes;
     @api resizeColumnDisabled;
