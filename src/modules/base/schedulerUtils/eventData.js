@@ -246,7 +246,10 @@ export default class SchedulerEventData {
         }
         const eventsInTimeFrame = events.filter((event) => {
             const from = this.createDate(event.from);
-            const to = this.createDate(event.to);
+            let to = this.createDate(event.to);
+            if (event.allDay && !to) {
+                to = from.endOf('day');
+            }
             return (
                 this.belongsToSelectedResources(event) &&
                 (interval.contains(from) ||
