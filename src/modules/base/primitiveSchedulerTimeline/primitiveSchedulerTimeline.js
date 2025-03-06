@@ -234,6 +234,25 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
     }
 
+    /**
+     * If present, horizontal scrolling will be prevented in the timeline view.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get zoomToFit() {
+        return super.zoomToFit;
+    }
+    set zoomToFit(value) {
+        super.zoomToFit = value;
+
+        if (this._connected) {
+            this.updateCellWidth();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
