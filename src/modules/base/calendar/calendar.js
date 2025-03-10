@@ -1,19 +1,19 @@
-import { LightningElement, api } from 'lwc';
 import {
     DateTime,
     getFormattedDate,
     getStartOfWeek,
     setDate
 } from 'c/dateTimeUtils';
-import { equal, keyCodes } from 'c/utilsPrivate';
 import {
-    generateUUID,
     classSet,
     deepCopy,
+    generateUUID,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { equal, keyCodes } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 import CalendarDate from './date';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

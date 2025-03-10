@@ -119,7 +119,10 @@
                     <tbody>
                         <template for:each={calendarData} for:item="week">
                             <tr
-                                class="avonni-calendar__table-row"
+                                class="
+                                    avonni-calendar__table-row
+                                    slds-has-multi-selection
+                                "
                                 key={generateKey}
                             >
                                 <template for:each={week} for:item="day">
