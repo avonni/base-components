@@ -73,3 +73,7 @@
     outline: 1px auto Highlight;
     outline: 1px auto -webkit-focus-ring-color;
 }
+
+.avonni-relationship-graph__loading-spinner {
+    height: 48px;
+}
