@@ -1423,8 +1423,8 @@ describe('List', () => {
                     expect(handler).toHaveBeenCalledTimes(1);
                     const call = handler.mock.calls[0][0];
                     expect(call.detail.items).toMatchObject(newOrder);
-                    expect(call.detail.previousIndex).toBe(1);
-                    expect(call.detail.newIndex).toBe(2);
+                    expect(call.detail.previousIndexes).toEqual([1]);
+                    expect(call.detail.newIndexes).toEqual([2]);
                     expect(call.bubbles).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
                     expect(call.composed).toBeFalsy();

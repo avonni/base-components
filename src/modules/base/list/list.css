@@ -145,6 +145,16 @@
     );
 }
 
+.avonni-list__item-sortable[data-selected='true'] {
+    --avonni-card-color-background: var(
+        --avonni-list-item-color-background-sortable-hover,
+        var(
+            --avonni-list-item-color-background-hover,
+            rgba(207, 207, 207, 0.25)
+        )
+    );
+}
+
 .avonni-list__image_container {
     height: 100%;
     width: 100%;
