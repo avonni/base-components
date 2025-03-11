@@ -1,7 +1,7 @@
 :host {
     /* internal styling hooks - not documented */
-    --avonni-calendar-cell-sizing-width: 40px;
-    --avonni-calendar-cell-sizing-height: 40px;
+    --avonni-calendar-cell-sizing-width: 42px;
+    --avonni-calendar-cell-sizing-height: 42px;
     --avonni-calendar-cell-labeled-sizing-width: 70px;
     --avonni-calendar-cell-labeled-sizing-height: 60px;
 }
