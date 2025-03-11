@@ -622,6 +622,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             : getElementOnXAxis(resourceElement, x, CELL_SELECTOR);
         const resourceNames = [resourceElement.dataset.name];
         const from = Number(cell.dataset.start);
+        if (this.preventPastEventCreation && from < new Date()) {
+            return null;
+        }
         const to = Number(cell.dataset.end) + 1;
         this._eventData.newEvent(
             { resourceNames, from, to, x, y },
@@ -1034,9 +1037,20 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * * @param {Event} mouseEvent `privatemousedown` event fired by a primitive event occurrence.
      */
     handleEventMouseDown(mouseEvent) {
-        this._mouseIsDown = true;
         const { x, y } = mouseEvent.detail;
         const resourceElement = this.getResourceElementFromPosition(x, y);
+
+        if (this.preventPastEventCreation) {
+            const cell = this.isVertical
+                ? getElementOnYAxis(resourceElement, y, CELL_SELECTOR)
+                : getElementOnXAxis(resourceElement, x, CELL_SELECTOR);
+            const to = Number(cell.dataset.end);
+            const now = this.createDate(new Date());
+            if (to < now.ts) {
+                return;
+            }
+        }
+        this._mouseIsDown = true;
         this._eventData.handleExistingEventMouseDown(
             mouseEvent,
             resourceElement
@@ -1099,9 +1113,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             return;
         }
 
-        this._mouseIsDown = true;
-        this.dispatchHidePopovers();
-
         const x = event.clientX || event.detail.x;
         const y = event.clientY || event.detail.y;
         const resourceElement = this.getResourceElementFromPosition(x, y);
@@ -1112,6 +1123,15 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end) + 1;
 
+        if (this.preventPastEventCreation) {
+            const now = this.createDate(new Date());
+            if (from < now.ts) {
+                return;
+            }
+        }
+
+        this._mouseIsDown = true;
+        this.dispatchHidePopovers();
         this._eventData.handleNewEventMouseDown({
             event,
             cellGroupElement: resourceElement,
@@ -1177,6 +1197,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
         if (updateCellGroups) {
             this.updateVisibleResources();
+
+            if (!eventToDispatch && this.preventPastEventCreation) {
+                // Make sure the event position is reset if the drag was cancelled
+                // because the event was moved before the current time
+                this.computedEvents = [...this.computedEvents];
+            }
         }
     };
 

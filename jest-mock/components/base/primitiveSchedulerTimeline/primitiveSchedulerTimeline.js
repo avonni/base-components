@@ -17,6 +17,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     @api loadingStateAlternativeText;
     @api newEventTitle;
     @api orientation;
+    @api preventPastEventCreation;
     @api readOnly;
     @api recurrentEditModes;
     @api resizeColumnDisabled;

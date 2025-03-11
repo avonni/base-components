@@ -16,6 +16,7 @@ export default class SchedulerEventDrag {
     _boundaries;
     _initialState = {};
     _isNewEvent = false;
+    _preventPastEventCreation = false;
     cellGroupElement;
     isVertical = false;
 
@@ -24,10 +25,12 @@ export default class SchedulerEventDrag {
         isVertical,
         cellGroupElement,
         isNewEvent,
-        boundaries
+        boundaries,
+        preventPastEventCreation
     }) {
         this._boundaries = boundaries;
         this._isNewEvent = isNewEvent;
+        this._preventPastEventCreation = preventPastEventCreation;
         this.cellGroupElement = cellGroupElement;
         this.isVertical = isVertical;
         const mouseX = event.clientX || event.detail.x;
@@ -177,15 +180,7 @@ export default class SchedulerEventDrag {
         return { right, left, top, bottom };
     }
 
-    /**
-     * Make sure the currently resized event occurrence doesn't overlap another event.
-     *
-     * @param {number} position New position of the occurrence.
-     * @param {SchedulerEventOccurrence} occurrence Occurrence of the resized event.
-     * @param {SchedulerCellGroup} cellGroup The cell group of the resized event.
-     * @returns {HTMLElement|null} Cell element containing the hovered event, or null if no event is hovered.
-     */
-    getHoveredEventCell(position, occurrence, cellGroup) {
+    getHoveredCell(position) {
         const labelWidth =
             this.resizeSide === 'start'
                 ? this.draggedEvent.leftLabelWidth * -1
@@ -193,28 +188,9 @@ export default class SchedulerEventDrag {
         const computedPosition = position + labelWidth;
 
         // Get the events present in the cell crossed
-        const hoveredCell = this.isVertical
+        return this.isVertical
             ? getElementOnYAxis(this.cellGroupElement, computedPosition)
             : getElementOnXAxis(this.cellGroupElement, computedPosition);
-
-        const computedCell = cellGroup.getCellFromStart(
-            Number(hoveredCell.dataset.start)
-        );
-        const cellEvents = computedCell.events;
-
-        // Check if any event in the cell has the same offset
-        const eventIsHovered = cellEvents.some((cellEvent) => {
-            const isDifferent = cellEvent.key !== occurrence.key;
-            const overlaps = this.areOverlapping(occurrence, cellEvent);
-            return isDifferent && overlaps;
-        });
-
-        // If one of them do, the dragged event is overlapping it.
-        // We have to rerender the scheduler so the resource height enlarges.
-        if (eventIsHovered) {
-            return hoveredCell;
-        }
-        return null;
     }
 
     /**
@@ -237,6 +213,25 @@ export default class SchedulerEventDrag {
             : position.x + (eventEndPosition - mouseX);
 
         return this.resizeSide === 'end' ? endPosition : startPosition;
+    }
+
+    /**
+     * Return true if the currently resized event occurrence overlaps another event.
+     *
+     * @param {HTMLElement} cell Cell element currently hovered.
+     * @param {SchedulerEventOccurrence} occurrence Occurrence of the resized event.
+     * @param {SchedulerCellGroup} cellGroup The cell group of the resized event.
+     * @returns {boolean} True if the occurrence is overlapping another event.
+     */
+    hasOverlappingEvents(cell, occurrence) {
+        const cellEvents = cell.events;
+
+        // Check if any event in the cell has the same offset
+        return cellEvents.some((cellEvent) => {
+            const isDifferent = cellEvent.key !== occurrence.key;
+            const overlaps = this.areOverlapping(occurrence, cellEvent);
+            return isDifferent && overlaps;
+        });
     }
 
     /**
@@ -292,13 +287,21 @@ export default class SchedulerEventDrag {
         if (this._isNewEvent) {
             this.resizeSide = distanceMoved >= 0 ? 'end' : 'start';
         }
-        const hoveredEventCell = this.getHoveredEventCell(
-            position,
-            occurrence,
-            cellGroup
+        const hoveredCell = this.getHoveredCell(position);
+        const computedCell = cellGroup.getCellFromStart(
+            Number(hoveredCell.dataset.start)
         );
-        if (hoveredEventCell) {
-            return hoveredEventCell;
+        const isOverlapping = this.hasOverlappingEvents(
+            computedCell,
+            occurrence
+        );
+        if (isOverlapping) {
+            return hoveredCell;
+        }
+
+        if (this._preventPastEventCreation && computedCell.isPast) {
+            // Do not resize the event before the current time
+            return false;
         }
 
         // If we are not passing above another event,

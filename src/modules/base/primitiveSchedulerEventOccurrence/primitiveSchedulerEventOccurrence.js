@@ -90,6 +90,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _headerCells = [];
     _hiddenActions = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
+    _preventPastEventCreation = false;
     _eventData = {};
     _scrollOffset = 0;
     _disabled = false;
@@ -341,6 +342,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set occurrence(value) {
         this._occurrence = typeof value === 'object' ? value : {};
+    }
+
+    /**
+     * If present, the users cannot create new events, or move existing events in the past.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get preventPastEventCreation() {
+        return this._preventPastEventCreation;
+    }
+    set preventPastEventCreation(value) {
+        this._preventPastEventCreation = normalizeBoolean(value);
     }
 
     /**
@@ -879,6 +895,19 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * True if the start resize icon should be hidden.
+     *
+     * @type {boolean}
+     */
+    get hideEndResizeIcon() {
+        return (
+            this.hideResizeIcon ||
+            (this.preventPastEventCreation &&
+                this.to <= this.createDate(new Date()))
+        );
+    }
+
+    /**
      * True if the resize icons should be hidden.
      *
      * @type {boolean}
@@ -888,6 +917,19 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             this.readOnly ||
             this.isStandalone ||
             this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
+        );
+    }
+
+    /**
+     * True if the start resize icon should be hidden.
+     *
+     * @type {boolean}
+     */
+    get hideStartResizeIcon() {
+        return (
+            this.hideResizeIcon ||
+            (this.preventPastEventCreation &&
+                this.from <= this.createDate(new Date()))
         );
     }
 
