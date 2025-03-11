@@ -45,6 +45,15 @@
     max-height: inherit;
 }
 
+.avonni-primitive-scheduler-calendar__month-show-more-button {
+    background: linear-gradient(
+        0deg,
+        var(--lwc-colorBackgroundAlt, #fff),
+        transparent
+    );
+    z-index: 2;
+}
+
 .avonni-scheduler__calendar-header {
     --avonni-primitive-scheduler-header-group-cell-color-background: #fff;
     --avonni-primitive-scheduler-header-group-cell-height: 2.5rem;

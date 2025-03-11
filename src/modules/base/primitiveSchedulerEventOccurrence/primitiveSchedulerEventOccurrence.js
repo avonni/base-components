@@ -1546,7 +1546,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     setLength(length) {
         const style = this.hostElement.style;
         if (this.isVertical) {
-            style.height = `${length}px`;
+            style.height = length ? `${length}px` : null;
             if (this.cellWidth && this.numberOfEventsInThisTimeFrame) {
                 const width =
                     this.cellWidth / this.numberOfEventsInThisTimeFrame;
