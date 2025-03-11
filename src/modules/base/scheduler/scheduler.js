@@ -2119,6 +2119,7 @@ export default class Scheduler extends LightningElement {
      * @param {Event} event
      */
     handleEventContextMenu(event) {
+        event.stopPropagation();
         if (!this.computedContextMenuEvent.length) {
             return;
         }

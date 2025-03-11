@@ -503,6 +503,10 @@
             "path": "src/modules/base/primitiveSchedulerCalendar/primitiveSchedulerCalendar.js"
         },
         {
+            "name": "c/primitiveSchedulerCalendarPopover",
+            "path": "src/modules/base/primitiveSchedulerCalendarPopover/primitiveSchedulerCalendarPopover.js"
+        },
+        {
             "name": "c/primitiveSchedulerEventOccurrence",
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },

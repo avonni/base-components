@@ -595,87 +595,20 @@
         </div>
 
         <!-- Show more popover -->
-        <div
-            if:true={showMorePopover}
+        <c-primitive-scheduler-calendar-popover
             class="
-                slds-is-absolute slds-dropdown
+                slds-hide slds-show slds-is-absolute slds-dropdown
                 avonni-scheduler__calendar-show-more-popover
             "
-            role="tooltip"
-            aria-live="polite"
+            date-format={dateFormat}
+            hidden-actions={hiddenActions}
+            read-only={readOnly}
+            resources={computedResources}
+            timezone={timezone}
             data-element-id="div-popover"
-            onmouseenter={handleShowMorePopoverMouseEnter}
-            onmouseleave={handleShowMorePopoverMouseLeave}
-        >
-            <c-focus-trap
-                onfocusin={handleShowMorePopoverFocusin}
-                onfocusout={handleShowMorePopoverFocusout}
-            >
-                <div class="slds-popover__body">
-                    <lightning-button-icon
-                        class="
-                            slds-is-absolute
-                            slds-p-horizontal_x-small
-                            avonni-scheduler__calendar-show-more-popover-close-button
-                        "
-                        icon-name="utility:close"
-                        variant="bare"
-                        data-element-id="lightning-button-icon-show-more-close"
-                        data-is-focusable
-                        onclick={handleShowMorePopoverClose}
-                    ></lightning-button-icon>
-                    <div
-                        class="
-                            slds-m-horizontal_x-small
-                            slds-p-bottom_xx-small
-                            slds-text-title_caps
-                        "
-                    >
-                        {showMorePopover.label}
-                    </div>
-                    <div
-                        if:false={showMorePopover.events.length}
-                        class="slds-m-horizontal_x-small"
-                    >
-                        There are no events scheduled on this day.
-                    </div>
-                    <template
-                        for:each={showMorePopover.events}
-                        for:item="occurrence"
-                    >
-                        <c-primitive-scheduler-event-occurrence
-                            key={occurrence.key}
-                            class="slds-m-bottom_xx-small"
-                            color={occurrence.event.color}
-                            date-format={dateFormat}
-                            disabled={occurrence.event.disabled}
-                            event-data={occurrence.event.data}
-                            event-name={occurrence.event.name}
-                            from={occurrence.from}
-                            hidden-actions={hiddenActions}
-                            icon-name={occurrence.event.iconName}
-                            labels={occurrence.event.labels}
-                            occurrence={occurrence}
-                            occurrence-key={occurrence.key}
-                            read-only={readOnly}
-                            reference-line={occurrence.event.referenceLine}
-                            resource-key={occurrence.resourceName}
-                            resources={computedResources}
-                            timezone={timezone}
-                            title={occurrence.title}
-                            theme={occurrence.event.theme}
-                            to={occurrence.to}
-                            variant="calendar-month"
-                            data-element-id="avonni-primitive-scheduler-event-occurrence-show-more-popover"
-                            data-is-focusable
-                            data-key={occurrence.key}
-                            onprivatecontextmenu={handleShowMorePopoverEventContextMenu}
-                            onprivatedblclick={handleEventDoubleClick}
-                            onprivatemousedown={handleHiddenEventMouseDown}
-                        ></c-primitive-scheduler-event-occurrence>
-                    </template>
-                </div>
-            </c-focus-trap>
-        </div>
+            onclose={handleClosePopover}
+            oneventdblclick={handleEventDoubleClick}
+            oneventmousedown={handleHiddenEventMouseDown}
+        ></c-primitive-scheduler-calendar-popover>
     </div>
 </template>
