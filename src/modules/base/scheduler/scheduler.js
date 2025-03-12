@@ -462,7 +462,16 @@ export default class Scheduler extends LightningElement {
     set events(value) {
         this._events = normalizeArray(value);
 
-        if (this._connected) {
+        if (this._connected && this.events.length) {
+            // Display a loading spinner while the events are rendering
+            this._eventsAreRendering = true;
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    this._eventsAreRendering = false;
+                    this.initEvents();
+                });
+            });
+        } else if (this._connected) {
             this.initEvents();
         }
     }
@@ -1386,6 +1395,15 @@ export default class Scheduler extends LightningElement {
      */
     get showEmptyTimelineMessage() {
         return this.isTimeline && !this.showTimeline;
+    }
+
+    /**
+     * True if the loading spinner should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showLoading() {
+        return this.isLoading || this._eventsAreRendering;
     }
 
     /**
