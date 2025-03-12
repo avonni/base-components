@@ -7,7 +7,7 @@
         onmouseleave={handleMouseLeave}
     >
         <c-focus-trap onfocusin={handleFocusIn} onfocusout={handleFocusOut}>
-            <div class="slds-popover__body">
+            <div class="slds-popover__header">
                 <lightning-button-icon
                     class="
                         slds-is-absolute
@@ -29,16 +29,25 @@
                 >
                     {label}
                 </div>
+            </div>
+            <div
+                class="
+                    slds-popover__body
+                    slds-scrollable_y
+                    avonni-primitive-scheduler-calendar-popover__body
+                "
+                onscroll={handleScroll}
+            >
                 <div
                     if:false={events.length}
                     class="slds-var-m-horizontal_x-small"
                 >
                     There are no events scheduled on this day.
                 </div>
-                <template for:each={events} for:item="occurrence">
+                <template for:each={loadedEvents} for:item="occurrence">
                     <c-primitive-scheduler-event-occurrence
                         key={occurrence.key}
-                        class="slds-var-m-bottom_xx-small"
+                        class="slds-var-p-bottom_xx-small slds-show"
                         color={occurrence.event.color}
                         date-format={dateFormat}
                         disabled={occurrence.event.disabled}
@@ -60,6 +69,7 @@
                         to={occurrence.to}
                         variant="calendar-month"
                         data-is-focusable
+                        data-element-id="avonni-primitive-scheduler-event-occurrence"
                         data-key={occurrence.key}
                         onprivatecontextmenu={handleEventContextMenu}
                         onprivatedblclick={handleEventDoubleClick}

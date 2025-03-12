@@ -1,6 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeArray } from 'c/utils';
 
+const MAX_LOADED_EVENTS = 25;
+const LOADING_OFFSET = 10;
+const LOADING_THRESHOLD = 60;
+
 export default class PrimitiveSchedulerCalendarPopover extends LightningElement {
     @api dateFormat;
     @api hiddenActions;
@@ -11,9 +15,16 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
     _contextMenuIsOpen = false;
     _isFocused = false;
     _mouseIn = false;
+    _startIndex = 0;
     label;
     events = [];
     show = false;
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         if (this.show) {
@@ -23,10 +34,43 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
 
     /*
      * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Array of visible events. To avoid performance issues, the events are loaded slice by slice.
+     *
+     * @type {object[]}
+     */
+    get loadedEvents() {
+        let endIndex = this._startIndex + MAX_LOADED_EVENTS;
+        const lastIndex = this.events.length;
+        if (endIndex + LOADING_OFFSET >= lastIndex) {
+            // If only 10 events are left, load them all
+            endIndex = lastIndex;
+        }
+
+        const items = this.events.slice(this._startIndex, endIndex);
+        return items.map((it, index) => {
+            return {
+                ...it,
+                index: index + this._startIndex
+            };
+        });
+    }
+
+    /*
+     * -------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Set the focus on the close button.
+     *
+     * @public
+     */
     @api
     focus() {
         const closeButton = this.template.querySelector(
@@ -39,6 +83,12 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
         this._contextMenuIsOpen = false;
     }
 
+    /**
+     * Open the popover.
+     *
+     * @param {object} props Object with two keys: events and label.
+     * @public
+     */
     @api
     open({ events, label }) {
         this.events = normalizeArray(events);
@@ -52,6 +102,9 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      * -------------------------------------------------------------
      */
 
+    /**
+     * Close the popover.
+     */
     _close() {
         this.events = [];
         this.label = null;
@@ -59,7 +112,39 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
         this._mouseIn = false;
         this._isFocused = false;
         this._contextMenuIsOpen = false;
+        this._startIndex = 0;
         this._dispatchClose();
+    }
+
+    /**
+     * Get information on the event at the given popover position.
+     *
+     * @param {number} y Y position of the event we are looking for.
+     * @returns {object} Object containing the key and the offset of the event.
+     */
+    _getEventFromPosition(y) {
+        const elements = this.template.querySelectorAll(
+            '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+        );
+        for (let i = 0; i < elements.length; i++) {
+            const el = elements[i];
+            const position = el.getBoundingClientRect();
+            const isBeforeFirst = i === 0 && y < position.top;
+            const isAfterLast =
+                i === elements.length - 1 && y > position.bottom;
+
+            if (
+                (y + 1 >= position.top && y - 1 <= position.bottom) ||
+                isBeforeFirst ||
+                isAfterLast
+            ) {
+                return {
+                    key: el.dataset.key,
+                    offset: y - position.top
+                };
+            }
+        }
+        return null;
     }
 
     /*
@@ -68,14 +153,27 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle a click on the close button.
+     */
     handleClose() {
         this._close();
     }
 
+    /**
+     * Handle a double click on an event occurrence.
+     *
+     * @param {Event} event privatedblclick event fired by a primitive event occurrence.
+     */
     handleEventDoubleClick(event) {
         this._dispatchEventDoubleClick(event.detail);
     }
 
+    /**
+     * Handle a mouse down on an event occurrence.
+     *
+     * @param {Event} event privatemousedown event fired by a primitive event occurrence.
+     */
     handleEventMouseDown(event) {
         this._close();
         this._dispatchEventMouseDown(event.detail);
@@ -107,14 +205,14 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
     }
 
     /**
-     * Handle a focus inside the month view "Show more" popover.
+     * Handle a focus inside the popover.
      */
     handleFocusIn() {
         this._isFocused = true;
     }
 
     /**
-     * Handle a focus out of the month view "Show more" popover. Wait for the next animation frame, and close the popover if the focus was meant to be lost, or refocus it if it wasn't meant to be lost.
+     * Handle a focus out of the popover. Wait for the next animation frame, and close the popover if the focus was meant to be lost, or refocus it if it wasn't meant to be lost.
      */
     handleFocusOut() {
         this._isFocused = false;
@@ -141,17 +239,59 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
     }
 
     /**
-     * Handle the mouse entering the month view "Show more" popover.
+     * Handle the mouse entering popover.
      */
     handleMouseEnter() {
         this._mouseIn = true;
     }
 
     /**
-     * Handle the mouse leaving the month view "Show more" popover.
+     * Handle the mouse leaving popover.
      */
     handleMouseLeave() {
         this._mouseIn = false;
+    }
+
+    /**
+     * Handle scrolling in the popover body. Load previous or next events if needed.
+     *
+     * @param {Event} event Scroll event.
+     */
+    handleScroll(event) {
+        const popover = event.currentTarget;
+        const popoverTop = popover.getBoundingClientRect().top;
+        const height = popover.scrollHeight;
+        const scrolledDistance = popover.scrollTop;
+        const bottomLimit = height - popover.clientHeight - LOADING_THRESHOLD;
+        const loadDown = scrolledDistance >= bottomLimit;
+        const loadUp = scrolledDistance <= LOADING_THRESHOLD;
+
+        let newIndex;
+        if (loadUp) {
+            newIndex = this._startIndex - LOADING_OFFSET;
+        } else if (loadDown) {
+            const nextIndex = this._startIndex + LOADING_OFFSET;
+            const maxIndex =
+                this.events.length - MAX_LOADED_EVENTS - LOADING_OFFSET;
+            newIndex = Math.min(nextIndex, maxIndex);
+        }
+        newIndex = Math.max(newIndex, 0);
+
+        if (!isNaN(newIndex) && this._startIndex !== newIndex) {
+            const topItem = this._getEventFromPosition(popoverTop);
+            this._startIndex = newIndex;
+
+            requestAnimationFrame(() => {
+                // Move the scroll bar back to the previous top item
+                const previousTopItem = this.template.querySelector(
+                    `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${topItem.key}"]`
+                );
+                if (previousTopItem) {
+                    popover.scrollTop =
+                        previousTopItem.offsetTop + topItem.offset;
+                }
+            });
+        }
     }
 
     /*
@@ -160,14 +300,23 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      * -------------------------------------------------------------
      */
 
+    /**
+     * Dispatch the `close` event.
+     */
     _dispatchClose() {
         this.dispatchEvent(new CustomEvent('close'));
     }
 
+    /**
+     * Dispatch the `eventdblclick` event.
+     */
     _dispatchEventDoubleClick(detail) {
         this.dispatchEvent(new CustomEvent('eventdblclick', { detail }));
     }
 
+    /**
+     * Dispatch the `eventmousedown` event.
+     */
     _dispatchEventMouseDown(detail) {
         this.dispatchEvent(new CustomEvent('eventmousedown', { detail }));
     }

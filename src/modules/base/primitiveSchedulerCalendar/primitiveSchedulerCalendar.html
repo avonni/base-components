@@ -415,6 +415,7 @@
                                                 key={event.key}
                                             >
                                                 <c-primitive-scheduler-event-occurrence
+                                                    if:false={occurrence.overflowsCell}
                                                     key={occurrence.key}
                                                     class="slds-is-absolute"
                                                     color={event.color}
