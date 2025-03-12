@@ -5,6 +5,8 @@ import {
     headers,
     events,
     eventsWithExtraKeys,
+    lotsOfRows,
+    lotsOfEvents,
     eventsThemed,
     eventsWithLabels,
     disabledDatesTimes,
@@ -846,6 +848,46 @@ ThemesAndColors.args = {
         {
             label: 'Action 2',
             name: 'actionTwo'
+        }
+    ]
+};
+
+const manyResources = lotsOfRows();
+const manySelectedResources = manyResources.map((res) => res.name);
+export const BigData = Template.bind({});
+BigData.args = {
+    resources: manyResources,
+    start,
+    events: lotsOfEvents(),
+    selectedDisplay: 'calendar',
+    selectedResources: manySelectedResources,
+    selectedTimeSpan: 'Standard.Scheduler.MonthTimeSpan',
+    disabledDatesTimes,
+    referenceLines,
+    eventsDisplayFields: [
+        {
+            label: 'Start',
+            value: 'from',
+            type: 'date'
+        },
+        {
+            label: 'End',
+            value: 'to',
+            type: 'date'
+        },
+        {
+            label: 'Office',
+            value: 'office'
+        },
+        {
+            label: 'Cost',
+            value: 'cost',
+            type: 'currency',
+            typeAttributes: {
+                currencyCode: 'CAD',
+                currencyDisplayAs: 'name',
+                minimumFractionDigits: 2
+            }
         }
     ]
 };
