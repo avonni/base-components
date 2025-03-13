@@ -1,20 +1,20 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
-    columns,
-    resources,
-    headers,
-    events,
-    eventsWithExtraKeys,
-    lotsOfRows,
-    lotsOfEvents,
-    eventsThemed,
-    eventsWithLabels,
-    disabledDatesTimes,
-    referenceLines,
-    start,
     basicEvents,
+    columns,
+    disabledDatesTimes,
+    events,
+    eventsThemed,
+    eventsWithExtraKeys,
+    eventsWithLabels,
+    headers,
+    longEvents,
+    lotsOfEvents,
+    lotsOfRows,
     oneColumn,
-    longEvents
+    referenceLines,
+    resources,
+    start
 } from './data';
 
 export default {
@@ -861,33 +861,5 @@ BigData.args = {
     events: lotsOfEvents(),
     selectedDisplay: 'calendar',
     selectedResources: manySelectedResources,
-    selectedTimeSpan: 'Standard.Scheduler.MonthTimeSpan',
-    disabledDatesTimes,
-    referenceLines,
-    eventsDisplayFields: [
-        {
-            label: 'Start',
-            value: 'from',
-            type: 'date'
-        },
-        {
-            label: 'End',
-            value: 'to',
-            type: 'date'
-        },
-        {
-            label: 'Office',
-            value: 'office'
-        },
-        {
-            label: 'Cost',
-            value: 'cost',
-            type: 'currency',
-            typeAttributes: {
-                currencyCode: 'CAD',
-                currencyDisplayAs: 'name',
-                minimumFractionDigits: 2
-            }
-        }
-    ]
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan'
 };

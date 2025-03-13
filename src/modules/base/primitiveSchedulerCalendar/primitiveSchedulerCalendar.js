@@ -1,26 +1,17 @@
-import { api } from 'lwc';
-import { equal } from 'c/utilsPrivate';
 import {
     addToDate,
     getWeekNumber,
     intervalFrom,
     numberOfUnitsBetweenDates
 } from 'c/luxonDateTimeUtils';
-import {
-    classSet,
-    deepCopy,
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString
-} from 'c/utils';
-import Column from './column';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     DEFAULT_ACTION_NAMES,
     getElementOnXAxis,
     getElementOnYAxis,
     isAllowedTime,
-    nextAllowedMonth,
     nextAllowedDay,
+    nextAllowedMonth,
     positionPopover,
     ScheduleBase,
     SchedulerEventOccurrence,
@@ -28,7 +19,16 @@ import {
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
+import {
+    classSet,
+    deepCopy,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
+import { equal } from 'c/utilsPrivate';
+import { api } from 'lwc';
+import Column from './column';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
@@ -69,11 +69,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     _centerDraggedEvent = false;
     _dayHeadersLoading = true;
+    _eventsAreRendering = false;
     _eventData;
     _hourHeadersLoading = true;
     _mouseIsDown = false;
     _popoverDate;
     _popoverPosition;
+    _renderAnimationFrames = [];
     _resizeObserver;
     _showPlaceholderOccurrence = false;
     _updateOccurrencesLength = false;
@@ -87,7 +89,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     hourCellDuration = 0;
     multiDayCellHeight = 0;
     multiDayEvents = [];
-    multiDayEventsCellGroup = {};
+    multiDayEventsCellGroup = new Column({});
     singleDayEvents = [];
     start = DEFAULT_SELECTED_DATE;
     visibleInterval;
@@ -129,7 +131,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         this.positionPopover();
 
-        if (this.headersAreLoading) {
+        if (this.showLoading) {
             this.setLoaderHeight();
         }
     }
@@ -445,17 +447,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * True if the primitive headers are loading.
-     *
-     * @type {boolean}
-     */
-    get headersAreLoading() {
-        return this.isMonth
-            ? this._dayHeadersLoading
-            : this._dayHeadersLoading || this._hourHeadersLoading;
-    }
-
-    /**
      * Computed CSS class for the horizontal header wrapper.
      *
      * @type {string}
@@ -657,6 +648,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * True if the loading spinner should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLoading() {
+        const headersAreLoading = this.isMonth
+            ? this._dayHeadersLoading
+            : this._dayHeadersLoading || this._hourHeadersLoading;
+        return headersAreLoading || this._eventsAreRendering;
+    }
+
+    /**
      * True if the right side panel should be visible.
      *
      * @type {boolean}
@@ -797,32 +800,48 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * Initialize the event data.
      */
     initEvents() {
-        super.initEvents();
-        this._eventData.isCalendar = true;
-        this._eventData.isVertical = true;
-        this._eventData.smallestHeader = this.hourHeaders[0];
-        this._eventData.initEvents();
+        const computeEvents = () => {
+            super.initEvents();
+            this._eventData.isCalendar = true;
+            this._eventData.isVertical = true;
+            this._eventData.smallestHeader = this.hourHeaders[0];
+            this._eventData.initEvents();
 
-        if (!this.hideSidePanel) {
-            this.initLeftPanelCalendarMarkedDates();
-        }
+            if (!this.hideSidePanel) {
+                this.initLeftPanelCalendarMarkedDates();
+            }
 
-        if (this.isDay || this.isWeek) {
-            // Create a cell group for the multi day events row
-            const referenceCells = this.columns.map((col) => {
-                return {
-                    start: col.start.ts,
-                    end: col.end.ts - 1
-                };
+            if (this.isDay || this.isWeek) {
+                // Create a cell group for the multi day events row
+                const referenceCells = this.columns.map((col) => {
+                    return {
+                        start: col.start.ts,
+                        end: col.end.ts - 1
+                    };
+                });
+                this.multiDayEventsCellGroup = new Column({
+                    referenceCells,
+                    timezone: this.timezone
+                });
+                this._eventData.multiDayEventsCellGroup =
+                    this.multiDayEventsCellGroup;
+            }
+            this.updateColumnEvents();
+        };
+
+        if (this.events.length > 20) {
+            this._eventsAreRendering = true;
+            this._renderAnimationFrames.forEach(cancelAnimationFrame);
+            this._renderAnimationFrames[0] = requestAnimationFrame(() => {
+                this._renderAnimationFrames[1] = requestAnimationFrame(() => {
+                    this._eventsAreRendering = false;
+                    computeEvents();
+                });
             });
-            this.multiDayEventsCellGroup = new Column({
-                referenceCells,
-                timezone: this.timezone
-            });
-            this._eventData.multiDayEventsCellGroup =
-                this.multiDayEventsCellGroup;
+        } else {
+            this._eventsAreRendering = false;
+            computeEvents();
         }
-        this.updateColumnEvents();
     }
 
     /**

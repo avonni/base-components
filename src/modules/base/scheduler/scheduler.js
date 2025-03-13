@@ -1,8 +1,6 @@
-import { LightningElement, api, track } from 'lwc';
-import { equal } from 'c/utilsPrivate';
 import {
-    dateTimeObjectFrom,
     addToDate,
+    dateTimeObjectFrom,
     parseTimeFrame,
     removeFromDate
 } from 'c/luxonDateTimeUtils';
@@ -21,25 +19,28 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { equal } from 'c/utilsPrivate';
+import { LightningElement, api, track } from 'lwc';
 import {
-    EDIT_MODES,
-    EVENTS_THEMES,
-    EVENTS_PALETTES,
+    BIG_NUMBER_OF_EVENTS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_COLUMNS,
-    DEFAULT_DATE_FORMAT,
-    DEFAULT_DIALOG_LABELS,
-    DEFAULT_EVENTS_LABELS,
-    DEFAULT_EVENTS_DISPLAY_FIELDS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
+    DEFAULT_DATE_FORMAT,
+    DEFAULT_DIALOG_LABELS,
+    DEFAULT_EVENTS_DISPLAY_FIELDS,
+    DEFAULT_EVENTS_LABELS,
     DEFAULT_LABEL_NO_EVENTS_FOUND,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
-    DEFAULT_START_DATE,
     DEFAULT_SELECTED_TIME_SPAN,
+    DEFAULT_START_DATE,
     DISPLAYS,
+    EDIT_MODES,
+    EVENTS_PALETTES,
+    EVENTS_THEMES,
     PALETTES,
     SIDE_PANEL_POSITIONS,
     TIME_SPANS,
@@ -95,10 +96,12 @@ export default class Scheduler extends LightningElement {
 
     _closeDetailPopoverTimeout;
     _connected = false;
+    _eventsAreRendering = false;
     _focusCalendarPopover;
     _noEmptySpotActions = false;
     _noEventActions = false;
     _openDetailPopoverTimeout;
+    _renderAnimationFrames = [];
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
@@ -462,16 +465,7 @@ export default class Scheduler extends LightningElement {
     set events(value) {
         this._events = normalizeArray(value);
 
-        if (this._connected && this.events.length) {
-            // Display a loading spinner while the events are rendering
-            this._eventsAreRendering = true;
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    this._eventsAreRendering = false;
-                    this.initEvents();
-                });
-            });
-        } else if (this._connected) {
+        if (this._connected) {
             this.initEvents();
         }
     }
@@ -1722,22 +1716,39 @@ export default class Scheduler extends LightningElement {
      * Create the computed events.
      */
     initEvents() {
-        // The disabled dates/times and reference lines are special events
-        const events = this.events
-            .concat(this.computedDisabledDatesTimes)
-            .concat(this.computedReferenceLines);
+        const computeEvents = () => {
+            // The disabled dates/times and reference lines are special events
+            const events = this.events
+                .concat(this.computedDisabledDatesTimes)
+                .concat(this.computedReferenceLines);
 
-        if (!events.length) {
-            this.computedEvents = [];
-            return;
+            if (!events.length) {
+                this.computedEvents = [];
+                return;
+            }
+
+            events.sort((first, second) => {
+                return this.createDate(first.from) <
+                    this.createDate(second.from)
+                    ? -1
+                    : 1;
+            });
+            this.computedEvents = events;
+        };
+
+        if (this.events.length > BIG_NUMBER_OF_EVENTS) {
+            // Display a loading spinner while the events are rendering
+            this._eventsAreRendering = true;
+            this._renderAnimationFrames.forEach(cancelAnimationFrame);
+            this._renderAnimationFrames[0] = requestAnimationFrame(() => {
+                this._renderAnimationFrames[1] = requestAnimationFrame(() => {
+                    this._eventsAreRendering = false;
+                    computeEvents();
+                });
+            });
+        } else {
+            computeEvents();
         }
-
-        events.sort((first, second) => {
-            return this.createDate(first.from) < this.createDate(second.from)
-                ? -1
-                : 1;
-        });
-        this.computedEvents = events;
     }
 
     /**
