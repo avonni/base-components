@@ -1,4 +1,4 @@
-const start = new Date(2021, 11, 3, 8);
+const start = new Date(2021, 11, 13, 8);
 
 const columns = [
     {
@@ -716,19 +716,19 @@ const referenceLines = [
 ];
 
 export {
+    basicEvents,
     columns,
     disabledDatesTimes,
-    resources,
-    headers,
-    basicEvents,
     events,
     eventsThemed,
     eventsWithExtraKeys,
     eventsWithLabels,
+    headers,
     longEvents,
     lotsOfEvents,
     lotsOfRows,
     oneColumn,
     referenceLines,
+    resources,
     start
 };
