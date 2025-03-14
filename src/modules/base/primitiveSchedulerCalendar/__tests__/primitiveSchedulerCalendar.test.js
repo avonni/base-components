@@ -1,7 +1,7 @@
-import { createElement } from 'lwc';
-import PrimitiveSchedulerCalendar from '../primitiveSchedulerCalendar';
 import { DateTime } from 'c/luxon';
 import { SchedulerEventOccurrence } from 'c/schedulerUtils';
+import { createElement } from 'lwc';
+import PrimitiveSchedulerCalendar from '../primitiveSchedulerCalendar';
 
 /*
 --------------------------------------------------------------
@@ -903,9 +903,9 @@ describe('Primitive Scheduler Calendar', () => {
             })
             .then(() => {
                 const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="div-popover"]'
+                    '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
                 );
-                expect(popover).toBeFalsy();
+                const openSpy = jest.spyOn(popover, 'open');
                 const cellStart = new Date(2022, 8, 19).getTime();
                 const showMoreButton = element.shadowRoot.querySelector(
                     `[data-element-id="lightning-button-month-show-more"][data-start="${cellStart}"]`
@@ -914,65 +914,9 @@ describe('Primitive Scheduler Calendar', () => {
                     `+${SELECTED_DATE_EVENTS.length} more`
                 );
                 showMoreButton.click();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="div-popover"]'
-                );
-                expect(popover).toBeTruthy();
-                const popoverEvents = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-show-more-popover"]'
-                );
-                expect(popoverEvents).toHaveLength(SELECTED_DATE_EVENTS.length);
-
-                popoverEvents.forEach((ev) => {
-                    const original = SELECTED_DATE_EVENTS.find((event) => {
-                        return event.name === ev.eventName;
-                    });
-                    const fromDateTime = DateTime.fromJSDate(original.from);
-                    const from = original.allDay
-                        ? fromDateTime.startOf('day')
-                        : fromDateTime;
-                    let to = original.to
-                        ? DateTime.fromJSDate(original.to)
-                        : fromDateTime;
-                    to = original.allDay ? to.endOf('day') : to;
-                    const resourceName = original.resourceNames
-                        ? original.resourceNames[0]
-                        : undefined;
-                    expect(ev.color).toBe(original.color);
-                    expect(ev.dateFormat).toBe('ff');
-                    expect(ev.disabled).toBe(original.disabled || false);
-                    expect(ev.eventData).toMatchObject(original);
-                    expect(ev.eventName).toBe(original.name);
-                    expect(ev.from.ts).toBe(from.ts);
-                    expect(ev.iconName).toBe(original.iconName);
-                    const centerLabel = original.labels
-                        ? original.labels.center
-                        : { fieldName: 'title' };
-                    expect(ev.labels.center).toEqual(centerLabel);
-                    expect(ev.readOnly).toBeFalsy();
-                    expect(ev.referenceLine).toBe(
-                        original.referenceLine || false
-                    );
-                    expect(ev.resourceKey).toBe(resourceName);
-                    expect(ev.resources).toMatchObject(RESOURCES);
-                    expect(ev.title).toBe(original.title);
-                    expect(ev.theme).toBe(original.theme || 'default');
-                    expect(ev.to.ts).toBe(to.ts);
-                    expect(ev.variant).toBe('calendar-month');
-                });
-
-                const closeButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon-show-more-close"]'
-                );
-                closeButton.click();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="div-popover"]'
-                );
-                expect(popover).toBeFalsy();
+                expect(openSpy).toHaveBeenCalled();
+                const call = openSpy.mock.calls[0][0];
+                expect(call.events).toHaveLength(SELECTED_DATE_EVENTS.length);
             });
     });
 
@@ -1110,38 +1054,35 @@ describe('Primitive Scheduler Calendar', () => {
         element.events = EVENTS;
         element.timeSpan = { unit: 'year', span: 1 };
 
-        return Promise.resolve()
-            .then(() => {
-                const calendars = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-calendar-year-month"]'
-                );
-                expect(calendars[8].markedDates).toHaveLength(18);
-                calendars[8].dispatchEvent(
-                    new CustomEvent('change', {
-                        detail: {
-                            bounds: { x: 2, y: 4, width: 20, height: 30 },
-                            clickedDate: new Date(2022, 8, 19)
-                        }
-                    })
-                );
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="div-popover"]'
-                );
-                expect(popover).toBeTruthy();
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
+            );
+            const openSpy = jest.spyOn(popover, 'open');
+            const calendars = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-calendar-year-month"]'
+            );
+            expect(calendars[8].markedDates).toHaveLength(18);
+            calendars[8].dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        bounds: { x: 2, y: 4, width: 20, height: 30 },
+                        clickedDate: new Date(2022, 8, 19)
+                    }
+                })
+            );
 
-                const events = popover.querySelectorAll(
-                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-show-more-popover"]'
-                );
-                expect(events).toHaveLength(2);
-                expect(events[0].eventName).toBe('event-2');
-                expect(events[1].eventName).toBe('disabled-event');
-                expect(events[1].occurrence.startsInPreviousCell).toBeTruthy();
-                expect(events[1].occurrence.endsInLaterCell).toBeTruthy();
-                expect(events[0].occurrence.startsInPreviousCell).toBeFalsy();
-                expect(events[0].occurrence.endsInLaterCell).toBeFalsy();
-            });
+            expect(openSpy).toHaveBeenCalled();
+            const call = openSpy.mock.calls[0][0];
+            expect(call.events).toHaveLength(2);
+
+            expect(call.events[0].event.name).toBe('event-2');
+            expect(call.events[1].event.name).toBe('disabled-event');
+            expect(call.events[1].startsInPreviousCell).toBeTruthy();
+            expect(call.events[1].endsInLaterCell).toBeTruthy();
+            expect(call.events[0].startsInPreviousCell).toBeFalsy();
+            expect(call.events[0].endsInLaterCell).toBeFalsy();
+        });
     });
 
     it('Primitive Scheduler Agenda: events are displayed in the side panel calendar', () => {
@@ -1687,7 +1628,7 @@ describe('Primitive Scheduler Calendar', () => {
                     '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
                 );
                 expect(dayHeaders.className).toBe(
-                    'avonni-scheduler__calendar-header'
+                    'avonni-scheduler__calendar-header avonni-scheduler__calendar-header_horizontal'
                 );
                 expect(dayHeaders.headers).toEqual([
                     {
@@ -1757,7 +1698,7 @@ describe('Primitive Scheduler Calendar', () => {
                     '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
                 );
                 expect(dayHeaders.className).toBe(
-                    'avonni-scheduler__calendar-header'
+                    'avonni-scheduler__calendar-header avonni-scheduler__calendar-header_horizontal'
                 );
                 expect(dayHeaders.headers).toEqual([
                     {
@@ -1818,7 +1759,7 @@ describe('Primitive Scheduler Calendar', () => {
                     '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
                 );
                 expect(dayHeaders.className).toBe(
-                    'avonni-scheduler__calendar-header'
+                    'avonni-scheduler__calendar-header avonni-scheduler__calendar-header_horizontal'
                 );
                 expect(dayHeaders.headers).toEqual([
                     {
@@ -1890,7 +1831,7 @@ describe('Primitive Scheduler Calendar', () => {
                     '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
                 );
                 expect(dayHeaders.className).toBe(
-                    'avonni-scheduler__calendar-header'
+                    'avonni-scheduler__calendar-header avonni-scheduler__calendar-header_horizontal'
                 );
                 expect(dayHeaders.headers).toEqual([
                     {
@@ -3232,79 +3173,6 @@ describe('Primitive Scheduler Calendar', () => {
                 expect(call.bubbles).toBeFalsy();
                 expect(call.cancelable).toBeFalsy();
                 expect(call.composed).toBeFalsy();
-            });
-    });
-
-    it('Primitive Scheduler Calendar: eventcontextmenu event coming from show more popover', () => {
-        element.resources = RESOURCES;
-        element.selectedResources = ALL_RESOURCES;
-        element.selectedDate = SELECTED_DATE;
-        element.events = EVENTS;
-        element.timeSpan = { unit: 'year', span: 1 };
-
-        jest.useFakeTimers();
-        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-            setTimeout(() => cb(), 0);
-        });
-
-        const handler = jest.fn();
-        element.addEventListener('eventcontextmenu', handler);
-
-        return Promise.resolve()
-            .then(() => {
-                const calendar = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-calendar-year-month"]'
-                );
-                calendar.dispatchEvent(
-                    new CustomEvent('change', {
-                        detail: {
-                            clickedDate: new Date(2022, 0, 20),
-                            bounds: {
-                                x: 10,
-                                y: 10,
-                                width: 10,
-                                height: 10
-                            }
-                        }
-                    })
-                );
-            })
-            .then(() => {
-                const event = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-show-more-popover"]'
-                );
-                event.dispatchEvent(
-                    new CustomEvent('privatecontextmenu', {
-                        detail: {
-                            eventName: event.eventName,
-                            key: event.occurrenceKey,
-                            x: 0,
-                            y: 10
-                        }
-                    })
-                );
-
-                expect(handler).toHaveBeenCalled();
-                const detail = handler.mock.calls[0][0].detail;
-                expect(detail.eventName).toBe(event.eventName);
-                expect(detail.key).toBe(event.occurrenceKey);
-                expect(detail.x).toBe(0);
-                expect(detail.y).toBe(10);
-                expect(detail.focusPopover).toBeInstanceOf(Function);
-
-                // Close popover
-                const calendar = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-calendar-year-month"]'
-                );
-                const focusDate = jest.spyOn(calendar, 'focusDate');
-                const closeButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon-show-more-close"]'
-                );
-                closeButton.click();
-                jest.runAllTimers();
-                expect(focusDate).toHaveBeenCalledWith(
-                    new Date(2022, 0, 20).getTime()
-                );
             });
     });
 
