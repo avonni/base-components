@@ -14,8 +14,16 @@
     flex: 1 1 0;
 }
 
+.avonni-scheduler-calendar__visible-scrollbar {
+    scrollbar-gutter: stable;
+}
+
 .avonni-scheduler__calendar-column {
     flex: 1 0 0;
+}
+
+.avonni-scheduler__calendar-horizontal-header {
+    max-height: 300px;
 }
 
 .avonni-scheduler__calendar-cell {
@@ -49,6 +57,12 @@
     --avonni-primitive-scheduler-header-group-cell-color-background: #fff;
     --avonni-primitive-scheduler-header-group-cell-height: 2.5rem;
     --avonni-primitive-scheduler-header-group-cell-border-right-width: 0;
+}
+
+.avonni-scheduler__calendar-header_horizontal {
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .avonni-scheduler__calendar-day-header-wrapper {

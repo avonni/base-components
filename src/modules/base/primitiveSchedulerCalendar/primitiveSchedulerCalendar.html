@@ -127,10 +127,16 @@
                                     >
                                 </div>
                             </div>
-                            <div class="avonni-scheduler__flex-col">
+                            <div
+                                class={dayHeaderWrapperClass}
+                                data-element-id="div-day-header-wrapper"
+                            >
                                 <!-- Day(s) header -->
                                 <c-primitive-scheduler-header-group
-                                    class="avonni-scheduler__calendar-header"
+                                    class="
+                                        avonni-scheduler__calendar-header
+                                        avonni-scheduler__calendar-header_horizontal
+                                    "
                                     available-days-of-the-week={availableDaysOfTheWeek}
                                     headers={dayHeaders}
                                     start={start}
@@ -243,10 +249,7 @@
                             <!-- Hours -->
                             <c-primitive-scheduler-header-group
                                 if:true={showHourHeaders}
-                                class="
-                                    avonni-scheduler__calendar-header
-                                    avonni-scheduler__border_right
-                                "
+                                class="avonni-scheduler__calendar-header"
                                 available-time-frames={availableTimeFrames}
                                 headers={hourHeaders}
                                 start={hourHeadersStart}
@@ -263,6 +266,7 @@
                                     class="
                                         slds-is-relative slds-grid
                                         slds-theme_default
+                                        avonni-scheduler__border_left
                                     "
                                     data-element-id="div-schedule-body"
                                 >

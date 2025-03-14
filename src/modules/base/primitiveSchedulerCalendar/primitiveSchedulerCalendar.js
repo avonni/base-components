@@ -331,7 +331,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
             // If the hour headers appear or disappear, the visible width changes
             requestAnimationFrame(() => {
-                this.updateVisibleWidth();
+                requestAnimationFrame(() => {
+                    this.updateVisibleWidth();
+                });
             });
         }
     }
@@ -367,9 +369,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
 
     get cellsGridClass() {
-        return classSet('slds-grid avonni-scheduler__flex-col')
+        return classSet('slds-grid avonni-scheduler__flex-col slds-scrollable')
             .add({
-                'slds-border_top': !this.isMonth,
+                'slds-border_top slds-p-top_small avonni-scheduler-calendar__visible-scrollbar':
+                    !this.isMonth,
                 'avonni-scheduler__calendar-month-grid': this.isMonth
             })
             .toString();
@@ -404,6 +407,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 markedDates,
                 value
             };
+        });
+    }
+
+    get dayHeaderWrapperClass() {
+        return classSet(
+            'avonni-scheduler__flex-col slds-scrollable_y avonni-scheduler__calendar-horizontal-header'
+        ).add({
+            'avonni-scheduler-calendar__visible-scrollbar': !this.isMonth
         });
     }
 
@@ -457,8 +468,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         )
             .add({
                 'avonni-scheduler__calendar-day-header-wrapper_month':
-                    this.isMonth,
-                'slds-m-bottom_medium': !this.isMonth
+                    this.isMonth
             })
             .toString();
     }
@@ -1589,9 +1599,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const hourHeader = this.template.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
             );
+            const multiDayWrapper = this.template.querySelector(
+                '[data-element-id="div-day-header-wrapper"]'
+            );
             const sidePanelWidth =
                 this.hideSidePanel || !sidePanel ? 0 : sidePanel.offsetWidth;
-            const scrollBarWidth = schedule.offsetWidth - schedule.clientWidth;
+            const containerScrollBarWidth =
+                schedule.offsetWidth - schedule.clientWidth;
+            const headerScrollBarWidth =
+                multiDayWrapper.offsetWidth - multiDayWrapper.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
                 (this.collapseDisabled && this.resizeColumnDisabled) ||
@@ -1604,7 +1620,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 sidePanelWidth -
                 splitterBarWidth -
                 verticalHeaderWidth -
-                scrollBarWidth -
+                containerScrollBarWidth -
+                headerScrollBarWidth -
                 1;
         }
     }
