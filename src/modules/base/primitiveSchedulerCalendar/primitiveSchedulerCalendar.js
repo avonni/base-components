@@ -849,6 +849,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     initHeaders() {
         if (this.isYear) {
+            this.initEvents();
             this._dayHeadersLoading = false;
             this._hourHeadersLoading = false;
             return;
