@@ -620,7 +620,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     get popoverElement() {
-        return this.template.querySelector('[data-element-id="div-popover"]');
+        return this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
+        );
     }
 
     /**
@@ -1604,10 +1606,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             );
             const sidePanelWidth =
                 this.hideSidePanel || !sidePanel ? 0 : sidePanel.offsetWidth;
-            const containerScrollBarWidth =
-                schedule.offsetWidth - schedule.clientWidth;
-            const headerScrollBarWidth =
-                multiDayWrapper.offsetWidth - multiDayWrapper.clientWidth;
+            let scrollBarWidth =
+                schedule.offsetWidth - schedule.clientWidth || 0;
+            if (multiDayWrapper) {
+                scrollBarWidth +=
+                    multiDayWrapper.offsetWidth - multiDayWrapper.clientWidth;
+            }
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
                 (this.collapseDisabled && this.resizeColumnDisabled) ||
@@ -1620,8 +1624,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 sidePanelWidth -
                 splitterBarWidth -
                 verticalHeaderWidth -
-                containerScrollBarWidth -
-                headerScrollBarWidth -
+                scrollBarWidth -
                 1;
         }
     }
@@ -1656,8 +1659,20 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.dispatchScheduleClick({ from: start, to: end });
     }
 
-    handleClosePopover() {
+    handleClosePopover(event) {
         if (this.isYear && this._popoverDate) {
+            const activeElement = this.template.activeElement;
+            const activeCalendar =
+                this.isYear &&
+                activeElement &&
+                activeElement.dataset.elementId ===
+                    'avonni-calendar-year-month';
+
+            if (activeCalendar) {
+                event.preventDefault();
+                return;
+            }
+
             requestAnimationFrame(() => {
                 const calendar = this.template.querySelector(
                     `[data-element-id="avonni-calendar-year-month"][data-month="${
@@ -2082,8 +2097,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.initLeftPanelCalendarMarkedDates();
         const { x, y, width, height } = event.detail.bounds;
 
-        const events = this._eventData.events.map((ev) => {
-            const occurrences = [];
+        const events = [];
+        this._eventData.events.forEach((ev) => {
             ev.occurrences.forEach((occ) => {
                 // If the event is a reference line,
                 // use the start date as an end date too
@@ -2094,7 +2109,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     date.endOf('day')
                 );
                 if (interval.overlaps(day)) {
-                    occurrences.push({
+                    events.push({
                         ...occ,
                         event: ev,
                         startsInPreviousCell:
@@ -2103,7 +2118,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     });
                 }
             });
-            return occurrences;
         });
 
         this._popoverPosition = {

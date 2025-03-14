@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { normalizeArray } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const MAX_LOADED_EVENTS = 25;
 const LOADING_OFFSET = 10;
@@ -106,6 +106,10 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      * Close the popover.
      */
     _close() {
+        const cancel = this._dispatchClose();
+        if (cancel) {
+            return;
+        }
         this.events = [];
         this.label = null;
         this.show = false;
@@ -113,7 +117,6 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
         this._isFocused = false;
         this._contextMenuIsOpen = false;
         this._startIndex = 0;
-        this._dispatchClose();
     }
 
     /**
@@ -218,20 +221,12 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
         this._isFocused = false;
 
         requestAnimationFrame(() => {
-            const activeElement = this.template.activeElement;
-            const activeCalendar =
-                this.isYear &&
-                activeElement &&
-                activeElement.dataset.elementId ===
-                    'avonni-calendar-year-month';
-
             if (!this._isFocused && this._mouseIn && !this._contextMenuIsOpen) {
                 this.focus();
             } else if (
                 !this._isFocused &&
                 !this._mouseIn &&
-                !this._contextMenuIsOpen &&
-                !activeCalendar
+                !this._contextMenuIsOpen
             ) {
                 this._close();
             }
@@ -304,7 +299,11 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      * Dispatch the `close` event.
      */
     _dispatchClose() {
-        this.dispatchEvent(new CustomEvent('close'));
+        const event = new CustomEvent('close', {
+            cancelable: true
+        });
+        this.dispatchEvent(event);
+        return event.defaultPrevented;
     }
 
     /**
