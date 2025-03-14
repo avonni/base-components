@@ -31,11 +31,11 @@
     left: 1.25rem;
 }
 
-:host(.avonni-input-counter__flex-container)>label {
+:host(.avonni-input-counter__flex-container) > label {
     padding-top: 9px;
 }
 
-:host(.avonni-input-counter__flex-container)>lightning-helptext {
+:host(.avonni-input-counter__flex-container) > lightning-helptext {
     padding-top: 5px;
 }
 
@@ -70,7 +70,10 @@
 }
 
 .avonni-input-counter__label {
-    color: var(--avonni-input-counter-header-text-color, #3e3e3c);
+    color: var(
+        --avonni-input-counter-header-text-color,
+        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
+    );
     font-size: var(--avonni-input-counter-header-font-size, 0.75rem);
     font-style: var(--avonni-input-counter-header-font-style, normal);
     font-weight: var(--avonni-input-counter-header-font-weight, 400);
