@@ -1,18 +1,18 @@
 <template>
     <div class="slds-dropdown__item slds-has-submenu" role="presentation">
         <a
-            href="javascript:void(0)"
-            role="menuitem"
-            tabindex={tabIndex}
             accesskey={accessKey}
             aria-disabled={disabled}
             aria-expanded={isOpen}
             aria-haspop="true"
+            href="javascript:void(0)"
+            role="menuitem"
+            tabindex={tabIndex}
             data-element-id="a"
-            onmouseenter={handleMouseEnter}
-            onfocus={handleFocus}
             onblur={handleBlur}
             onclick={handlePreventDefault}
+            onfocus={handleFocus}
+            onmouseenter={handleMouseEnter}
         >
             <span
                 class="slds-truncate"
@@ -27,30 +27,28 @@
                 >
                     *
                 </abbr>
-                <template if:true={prefixIconName}>
-                    <lightning-icon
-                        icon-name={prefixIconName}
-                        size="x-small"
-                        class="slds-m-right_x-small slds-icon-text-default"
-                        data-element-id="lightning-icon-prefix"
-                    ></lightning-icon>
-                </template>
+                <lightning-icon
+                    if:true={prefixIconName}
+                    class="slds-m-right_x-small slds-icon-text-default"
+                    icon-name={prefixIconName}
+                    size="x-small"
+                    data-element-id="lightning-icon-prefix"
+                ></lightning-icon>
                 {label}
             </span>
-            <template if:true={iconName}>
-                <lightning-icon
-                    icon-name={iconName}
-                    size="x-small"
-                    class="
-                        slds-icon-text-default
-                        slds-m-left_small
-                        slds-shrink-none
-                    "
-                    data-element-id="lightning-icon"
-                ></lightning-icon>
-            </template>
+            <lightning-icon
+                if:true={iconName}
+                class="
+                    slds-icon-text-default
+                    slds-m-left_small
+                    slds-shrink-none
+                "
+                icon-name={iconName}
+                size="x-small"
+                data-element-id="lightning-icon"
+            ></lightning-icon>
         </a>
-        <div class={dropdownClass}>
+        <div class={computedDropdownClass}>
             <div class="avonni-submenu_dropdown-gap-cover"></div>
             <div class="slds-dropdown__list" role="menu" aria-label={label}>
                 <slot></slot>
