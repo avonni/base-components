@@ -8,6 +8,7 @@ const LOADING_THRESHOLD = 60;
 export default class PrimitiveSchedulerCalendarPopover extends LightningElement {
     @api dateFormat;
     @api hiddenActions;
+    @api preventPastEventCreation;
     @api readOnly;
     @api resources;
     @api timezone;

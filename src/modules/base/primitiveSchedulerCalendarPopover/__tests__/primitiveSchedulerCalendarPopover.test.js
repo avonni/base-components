@@ -106,6 +106,7 @@ describe('Primitive Scheduler Calendar Popover', () => {
         it('Default attributes', () => {
             expect(element.dateFormat).toBeUndefined();
             expect(element.hiddenActions).toBeUndefined();
+            expect(element.preventPastEventCreation).toBeUndefined();
             expect(element.readOnly).toBeUndefined();
             expect(element.resources).toBeUndefined();
             expect(element.timezone).toBeUndefined();
@@ -143,6 +144,21 @@ describe('Primitive Scheduler Calendar Popover', () => {
                         'Standard.Scheduler.AddEvent',
                         'Standard.Scheduler.EditEvent'
                     ]);
+                });
+            });
+        });
+
+        it('Prevent past event creation', () => {
+            element.preventPastEventCreation = true;
+            element.open({ events: EVENTS });
+
+            return Promise.resolve().then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+
+                events.forEach((event) => {
+                    expect(event.preventPastEventCreation).toBeTruthy();
                 });
             });
         });
