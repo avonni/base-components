@@ -1,26 +1,17 @@
-import { api } from 'lwc';
-import { equal } from 'c/utilsPrivate';
 import {
     addToDate,
     getWeekNumber,
     intervalFrom,
     numberOfUnitsBetweenDates
 } from 'c/luxonDateTimeUtils';
-import {
-    classSet,
-    deepCopy,
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString
-} from 'c/utils';
-import Column from './column';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     DEFAULT_ACTION_NAMES,
     getElementOnXAxis,
     getElementOnYAxis,
     isAllowedTime,
-    nextAllowedMonth,
     nextAllowedDay,
+    nextAllowedMonth,
     positionPopover,
     ScheduleBase,
     SchedulerEventOccurrence,
@@ -28,7 +19,16 @@ import {
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
+import {
+    classSet,
+    deepCopy,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
+import { equal } from 'c/utilsPrivate';
+import { api } from 'lwc';
+import Column from './column';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
@@ -69,13 +69,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     _centerDraggedEvent = false;
     _dayHeadersLoading = true;
+    _eventsAreRendering = false;
     _eventData;
     _hourHeadersLoading = true;
-    _mouseInShowMorePopover = false;
     _mouseIsDown = false;
+    _popoverDate;
+    _popoverPosition;
+    _renderAnimationFrames = [];
     _resizeObserver;
-    _showMorePopoverContextMenuIsOpened = false;
-    _showMorePopoverIsFocused = false;
     _showPlaceholderOccurrence = false;
     _updateOccurrencesLength = false;
     cellHeight = 0;
@@ -88,8 +89,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     hourCellDuration = 0;
     multiDayCellHeight = 0;
     multiDayEvents = [];
-    multiDayEventsCellGroup = {};
-    showMorePopover;
+    multiDayEventsCellGroup = new Column({});
     singleDayEvents = [];
     start = DEFAULT_SELECTED_DATE;
     visibleInterval;
@@ -129,23 +129,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this._eventData.setDraggedEvent();
         }
 
-        if (this.showMorePopover) {
-            const popover = this.template.querySelector(
-                '[data-element-id="div-popover"]'
-            );
-            const wrapper = this.template.querySelector(
-                '[data-element-id="div-wrapper"]'
-            );
-            positionPopover(
-                wrapper.getBoundingClientRect(),
-                popover,
-                this.showMorePopover.position,
-                true
-            );
-            this.focusPopoverClose();
-        }
+        this.positionPopover();
 
-        if (this.headersAreLoading) {
+        if (this.showLoading) {
             this.setLoaderHeight();
         }
     }
@@ -345,7 +331,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
             // If the hour headers appear or disappear, the visible width changes
             requestAnimationFrame(() => {
-                this.updateVisibleWidth();
+                requestAnimationFrame(() => {
+                    this.updateVisibleWidth();
+                });
             });
         }
     }
@@ -381,9 +369,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
 
     get cellsGridClass() {
-        return classSet('slds-grid avonni-scheduler__flex-col')
+        return classSet('slds-grid avonni-scheduler__flex-col slds-scrollable')
             .add({
-                'slds-border_top': !this.isMonth,
+                'slds-border_top slds-p-top_small avonni-scheduler-calendar__visible-scrollbar':
+                    !this.isMonth,
                 'avonni-scheduler__calendar-month-grid': this.isMonth
             })
             .toString();
@@ -418,6 +407,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 markedDates,
                 value
             };
+        });
+    }
+
+    get dayHeaderWrapperClass() {
+        return classSet(
+            'avonni-scheduler__flex-col slds-scrollable_y avonni-scheduler__calendar-horizontal-header'
+        ).add({
+            'avonni-scheduler-calendar__visible-scrollbar': !this.isMonth
         });
     }
 
@@ -461,17 +458,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * True if the primitive headers are loading.
-     *
-     * @type {boolean}
-     */
-    get headersAreLoading() {
-        return this.isMonth
-            ? this._dayHeadersLoading
-            : this._dayHeadersLoading || this._hourHeadersLoading;
-    }
-
-    /**
      * Computed CSS class for the horizontal header wrapper.
      *
      * @type {string}
@@ -482,8 +468,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         )
             .add({
                 'avonni-scheduler__calendar-day-header-wrapper_month':
-                    this.isMonth,
-                'slds-m-bottom_medium': !this.isMonth
+                    this.isMonth
             })
             .toString();
     }
@@ -634,6 +619,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             .toString();
     }
 
+    get popoverElement() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
+        );
+    }
+
     /**
      * Computed CSS classes for the schedule wrapper.
      *
@@ -666,6 +657,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get showLeftPanel() {
         return !this.hideSidePanel && this.sidePanelPosition === 'left';
+    }
+
+    /**
+     * True if the loading spinner should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLoading() {
+        const headersAreLoading = this.isMonth
+            ? this._dayHeadersLoading
+            : this._dayHeadersLoading || this._hourHeadersLoading;
+        return headersAreLoading || this._eventsAreRendering;
     }
 
     /**
@@ -812,32 +815,48 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * Initialize the event data.
      */
     initEvents() {
-        super.initEvents();
-        this._eventData.isCalendar = true;
-        this._eventData.isVertical = true;
-        this._eventData.smallestHeader = this.hourHeaders[0];
-        this._eventData.initEvents();
+        const computeEvents = () => {
+            super.initEvents();
+            this._eventData.isCalendar = true;
+            this._eventData.isVertical = true;
+            this._eventData.smallestHeader = this.hourHeaders[0];
+            this._eventData.initEvents();
 
-        if (!this.hideSidePanel) {
-            this.initLeftPanelCalendarMarkedDates();
-        }
+            if (!this.hideSidePanel) {
+                this.initLeftPanelCalendarMarkedDates();
+            }
 
-        if (this.isDay || this.isWeek) {
-            // Create a cell group for the multi day events row
-            const referenceCells = this.columns.map((col) => {
-                return {
-                    start: col.start.ts,
-                    end: col.end.ts - 1
-                };
+            if (this.isDay || this.isWeek) {
+                // Create a cell group for the multi day events row
+                const referenceCells = this.columns.map((col) => {
+                    return {
+                        start: col.start.ts,
+                        end: col.end.ts - 1
+                    };
+                });
+                this.multiDayEventsCellGroup = new Column({
+                    referenceCells,
+                    timezone: this.timezone
+                });
+                this._eventData.multiDayEventsCellGroup =
+                    this.multiDayEventsCellGroup;
+            }
+            this.updateColumnEvents();
+        };
+
+        if (this.events.length > 20) {
+            this._eventsAreRendering = true;
+            this._renderAnimationFrames.forEach(cancelAnimationFrame);
+            this._renderAnimationFrames[0] = requestAnimationFrame(() => {
+                this._renderAnimationFrames[1] = requestAnimationFrame(() => {
+                    this._eventsAreRendering = false;
+                    computeEvents();
+                });
             });
-            this.multiDayEventsCellGroup = new Column({
-                referenceCells,
-                timezone: this.timezone
-            });
-            this._eventData.multiDayEventsCellGroup =
-                this.multiDayEventsCellGroup;
+        } else {
+            this._eventsAreRendering = false;
+            computeEvents();
         }
-        this.updateColumnEvents();
     }
 
     /**
@@ -845,6 +864,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     initHeaders() {
         if (this.isYear) {
+            this.initEvents();
             this._dayHeadersLoading = false;
             this._hourHeadersLoading = false;
             return;
@@ -1076,20 +1096,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Focus the close button of the show more popover.
-     */
-    focusPopoverClose = () => {
-        const closeButton = this.template.querySelector(
-            '[data-element-id="lightning-button-icon-show-more-close"]'
-        );
-        if (closeButton) {
-            closeButton.focus();
-            this._showMorePopoverIsFocused = true;
-        }
-        this._showMorePopoverContextMenuIsOpened = false;
-    };
-
-    /**
      * Get the available hours in one day.
      *
      * @returns {number[]} Available hours.
@@ -1286,6 +1292,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             }
         }
         return false;
+    }
+
+    positionPopover() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (!this._popoverPosition || !this.popoverElement || !wrapper) {
+            return;
+        }
+        positionPopover(
+            wrapper.getBoundingClientRect(),
+            this.popoverElement,
+            this._popoverPosition,
+            true
+        );
     }
 
     /**
@@ -1583,9 +1604,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const hourHeader = this.template.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
             );
+            const multiDayWrapper = this.template.querySelector(
+                '[data-element-id="div-day-header-wrapper"]'
+            );
             const sidePanelWidth =
                 this.hideSidePanel || !sidePanel ? 0 : sidePanel.offsetWidth;
-            const scrollBarWidth = schedule.offsetWidth - schedule.clientWidth;
+            let scrollBarWidth =
+                schedule.offsetWidth - schedule.clientWidth || 0;
+            if (multiDayWrapper) {
+                scrollBarWidth +=
+                    multiDayWrapper.offsetWidth - multiDayWrapper.clientWidth;
+            }
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
                 (this.collapseDisabled && this.resizeColumnDisabled) ||
@@ -1631,6 +1660,36 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleClick(event) {
         const { start, end } = event.target.dataset;
         this.dispatchScheduleClick({ from: start, to: end });
+    }
+
+    handleClosePopover(event) {
+        if (this.isYear && this._popoverDate) {
+            const activeElement = this.template.activeElement;
+            const activeCalendar =
+                this.isYear &&
+                activeElement &&
+                activeElement.dataset.elementId ===
+                    'avonni-calendar-year-month';
+
+            if (activeCalendar) {
+                event.preventDefault();
+                return;
+            }
+
+            requestAnimationFrame(() => {
+                const calendar = this.template.querySelector(
+                    `[data-element-id="avonni-calendar-year-month"][data-month="${
+                        this._popoverDate.month - 1
+                    }"]`
+                );
+                if (calendar) {
+                    calendar.focusDate(this._popoverDate.ts);
+                }
+                this._popoverDate = null;
+            });
+        }
+        this.popoverElement.classList.add('slds-hide');
+        this._popoverPosition = null;
     }
 
     /**
@@ -1774,17 +1833,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         const { x, width } = event.currentTarget.getBoundingClientRect();
         const buttonCenter = x + width / 2;
-        const position = {
-            x: buttonCenter,
-            y: event.clientY
-        };
 
         const date = this.createDate(start);
-        this.showMorePopover = {
-            events,
-            position,
-            label: date.toFormat('cccc d')
-        };
+        this._popoverPosition = { x: buttonCenter, y: event.clientY };
+        this.popoverElement.open({ events, label: date.toFormat('cccc d') });
+        this.popoverElement.classList.remove('slds-hide');
+
+        requestAnimationFrame(() => {
+            this.positionPopover();
+        });
     }
 
     /**
@@ -1996,52 +2053,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle the closing of a "Show more" popover, in the month or year view.
-     */
-    handleShowMorePopoverClose() {
-        const date = this.showMorePopover && this.showMorePopover.date;
-        if (this.isYear && date) {
-            requestAnimationFrame(() => {
-                const calendar = this.template.querySelector(
-                    `[data-element-id="avonni-calendar-year-month"][data-month="${
-                        date.month - 1
-                    }"]`
-                );
-                if (calendar) {
-                    calendar.focusDate(date.ts);
-                }
-            });
-        }
-        this.showMorePopover = null;
-        this._mouseInShowMorePopover = false;
-        this._showMorePopoverIsFocused = false;
-        this._showMorePopoverContextMenuIsOpened = false;
-    }
-
-    /**
-     * Handle a context menu click on an occurrence. Select the event and open its context menu.
-     *
-     * @param {Event} event `privatecontextmenu` event fired by a primitive event occurrence.
-     */
-    handleShowMorePopoverEventContextMenu(event) {
-        const target = event.currentTarget;
-        if (target.disabled || target.referenceLine) {
-            return;
-        }
-
-        this.dispatchEvent(
-            new CustomEvent('eventcontextmenu', {
-                detail: {
-                    ...event.detail,
-                    focusPopover: this.focusPopoverClose
-                }
-            })
-        );
-
-        this._showMorePopoverContextMenuIsOpened = true;
-    }
-
-    /**
      * Handle a mouse down on a hidden event: in the month view "Show more" popover, or as a placeholder.
      *
      * @param {Event} mouseEvent
@@ -2051,7 +2062,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             return;
         }
         this._mouseIsDown = true;
-        const key = mouseEvent.currentTarget.dataset.key;
+        const key =
+            mouseEvent.currentTarget.dataset.key || mouseEvent.detail.key;
         const draggedEvent = this.template.querySelector(
             `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-key="${key}"]`
         );
@@ -2060,7 +2072,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             detail: mouseEvent.detail
         };
         this._eventData.handleExistingEventMouseDown(eventInfo);
-        this.handleShowMorePopoverClose();
         this.dispatchHidePopovers();
         this._centerDraggedEvent = true;
         this._showPlaceholderOccurrence = true;
@@ -2071,58 +2082,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             // we need to update the dragged element after render
             this._eventData.setDraggedEvent();
         });
-    }
-
-    /**
-     * Handle a focus inside the month view "Show more" popover.
-     */
-    handleShowMorePopoverFocusin() {
-        this._showMorePopoverIsFocused = true;
-    }
-
-    /**
-     * Handle a focus out of the month view "Show more" popover. Wait for the next animation frame, and close the popover if the focus was meant to be lost, or refocus it if it wasn't meant to be lost.
-     */
-    handleShowMorePopoverFocusout() {
-        this._showMorePopoverIsFocused = false;
-
-        requestAnimationFrame(() => {
-            const activeElement = this.template.activeElement;
-            const activeCalendar =
-                this.isYear &&
-                activeElement &&
-                activeElement.dataset.elementId ===
-                    'avonni-calendar-year-month';
-
-            if (
-                !this._showMorePopoverIsFocused &&
-                this._mouseInShowMorePopover &&
-                !this._showMorePopoverContextMenuIsOpened
-            ) {
-                this.focusPopoverClose();
-            } else if (
-                !this._showMorePopoverIsFocused &&
-                !this._mouseInShowMorePopover &&
-                !this._showMorePopoverContextMenuIsOpened &&
-                !activeCalendar
-            ) {
-                this.handleShowMorePopoverClose();
-            }
-        });
-    }
-
-    /**
-     * Handle the mouse entering the month view "Show more" popover.
-     */
-    handleShowMorePopoverMouseEnter() {
-        this._mouseInShowMorePopover = true;
-    }
-
-    /**
-     * Handle the mouse leaving the month view "Show more" popover.
-     */
-    handleShowMorePopoverMouseLeave() {
-        this._mouseInShowMorePopover = false;
     }
 
     /**
@@ -2170,13 +2129,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._selectedDate = date.ts;
         this.initLeftPanelCalendarMarkedDates();
         const { x, y, width, height } = event.detail.bounds;
-        const position = {
-            x: x + width / 2,
-            y: y + height / 2
-        };
 
-        const events = this._eventData.events.map((ev) => {
-            const occurrences = [];
+        const events = [];
+        this._eventData.events.forEach((ev) => {
             ev.occurrences.forEach((occ) => {
                 // If the event is a reference line,
                 // use the start date as an end date too
@@ -2187,7 +2142,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     date.endOf('day')
                 );
                 if (interval.overlaps(day)) {
-                    occurrences.push({
+                    events.push({
                         ...occ,
                         event: ev,
                         startsInPreviousCell:
@@ -2196,14 +2151,20 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     });
                 }
             });
-            return occurrences;
         });
 
-        this.showMorePopover = {
-            position,
-            label: date.toFormat('LLLL d'),
-            events: events.flat(),
-            date
+        this._popoverPosition = {
+            x: x + width / 2,
+            y: y + height / 2
         };
+        this._popoverDate = date;
+        this.popoverElement.open({
+            events,
+            label: date.toFormat('LLLL d')
+        });
+        this.popoverElement.classList.remove('slds-hide');
+        requestAnimationFrame(() => {
+            this.positionPopover();
+        });
     }
 }

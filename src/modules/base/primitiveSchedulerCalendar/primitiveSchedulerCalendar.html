@@ -127,10 +127,16 @@
                                     >
                                 </div>
                             </div>
-                            <div class="avonni-scheduler__flex-col">
+                            <div
+                                class={dayHeaderWrapperClass}
+                                data-element-id="div-day-header-wrapper"
+                            >
                                 <!-- Day(s) header -->
                                 <c-primitive-scheduler-header-group
-                                    class="avonni-scheduler__calendar-header"
+                                    class="
+                                        avonni-scheduler__calendar-header
+                                        avonni-scheduler__calendar-header_horizontal
+                                    "
                                     available-days-of-the-week={availableDaysOfTheWeek}
                                     headers={dayHeaders}
                                     start={start}
@@ -244,10 +250,7 @@
                             <!-- Hours -->
                             <c-primitive-scheduler-header-group
                                 if:true={showHourHeaders}
-                                class="
-                                    avonni-scheduler__calendar-header
-                                    avonni-scheduler__border_right
-                                "
+                                class="avonni-scheduler__calendar-header"
                                 available-time-frames={availableTimeFrames}
                                 headers={hourHeaders}
                                 start={hourHeadersStart}
@@ -264,6 +267,7 @@
                                     class="
                                         slds-is-relative slds-grid
                                         slds-theme_default
+                                        avonni-scheduler__border_left
                                     "
                                     data-element-id="div-schedule-body"
                                 >
@@ -418,6 +422,7 @@
                                                 key={event.key}
                                             >
                                                 <c-primitive-scheduler-event-occurrence
+                                                    if:false={occurrence.overflowsCell}
                                                     key={occurrence.key}
                                                     class="slds-is-absolute"
                                                     color={event.color}
@@ -472,7 +477,7 @@
 
                         <!-- Loading spinner -->
                         <div
-                            if:true={headersAreLoading}
+                            if:true={showLoading}
                             class="slds-theme_shade"
                             data-element-id="div-loading-spinner"
                         >
@@ -599,88 +604,21 @@
         </div>
 
         <!-- Show more popover -->
-        <div
-            if:true={showMorePopover}
+        <c-primitive-scheduler-calendar-popover
             class="
-                slds-is-absolute slds-dropdown
+                slds-hide slds-show slds-is-absolute slds-dropdown
                 avonni-scheduler__calendar-show-more-popover
             "
-            role="tooltip"
-            aria-live="polite"
-            data-element-id="div-popover"
-            onmouseenter={handleShowMorePopoverMouseEnter}
-            onmouseleave={handleShowMorePopoverMouseLeave}
-        >
-            <c-focus-trap
-                onfocusin={handleShowMorePopoverFocusin}
-                onfocusout={handleShowMorePopoverFocusout}
-            >
-                <div class="slds-popover__body">
-                    <lightning-button-icon
-                        class="
-                            slds-is-absolute
-                            slds-p-horizontal_x-small
-                            avonni-scheduler__calendar-show-more-popover-close-button
-                        "
-                        icon-name="utility:close"
-                        variant="bare"
-                        data-element-id="lightning-button-icon-show-more-close"
-                        data-is-focusable
-                        onclick={handleShowMorePopoverClose}
-                    ></lightning-button-icon>
-                    <div
-                        class="
-                            slds-m-horizontal_x-small
-                            slds-p-bottom_xx-small
-                            slds-text-title_caps
-                        "
-                    >
-                        {showMorePopover.label}
-                    </div>
-                    <div
-                        if:false={showMorePopover.events.length}
-                        class="slds-m-horizontal_x-small"
-                    >
-                        There are no events scheduled on this day.
-                    </div>
-                    <template
-                        for:each={showMorePopover.events}
-                        for:item="occurrence"
-                    >
-                        <c-primitive-scheduler-event-occurrence
-                            key={occurrence.key}
-                            class="slds-m-bottom_xx-small"
-                            color={occurrence.event.color}
-                            date-format={dateFormat}
-                            disabled={occurrence.event.disabled}
-                            event-data={occurrence.event.data}
-                            event-name={occurrence.event.name}
-                            from={occurrence.from}
-                            hidden-actions={hiddenActions}
-                            icon-name={occurrence.event.iconName}
-                            labels={occurrence.event.labels}
-                            occurrence={occurrence}
-                            occurrence-key={occurrence.key}
-                            prevent-past-event-creation={preventPastEventCreation}
-                            read-only={readOnly}
-                            reference-line={occurrence.event.referenceLine}
-                            resource-key={occurrence.resourceName}
-                            resources={computedResources}
-                            timezone={timezone}
-                            title={occurrence.title}
-                            theme={occurrence.event.theme}
-                            to={occurrence.to}
-                            variant="calendar-month"
-                            data-element-id="avonni-primitive-scheduler-event-occurrence-show-more-popover"
-                            data-is-focusable
-                            data-key={occurrence.key}
-                            onprivatecontextmenu={handleShowMorePopoverEventContextMenu}
-                            onprivatedblclick={handleEventDoubleClick}
-                            onprivatemousedown={handleHiddenEventMouseDown}
-                        ></c-primitive-scheduler-event-occurrence>
-                    </template>
-                </div>
-            </c-focus-trap>
-        </div>
+            date-format={dateFormat}
+            hidden-actions={hiddenActions}
+            prevent-past-event-creation={preventPastEventCreation}
+            read-only={readOnly}
+            resources={computedResources}
+            timezone={timezone}
+            data-element-id="avonni-primitive-scheduler-calendar-popover"
+            onclose={handleClosePopover}
+            oneventdblclick={handleEventDoubleClick}
+            oneventmousedown={handleHiddenEventMouseDown}
+        ></c-primitive-scheduler-calendar-popover>
     </div>
 </template>

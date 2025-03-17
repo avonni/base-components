@@ -155,6 +155,8 @@ const EVENTS_PALETTES = {
     default: 'aurora'
 };
 
+const BIG_NUMBER_OF_EVENTS = 20;
+
 const PALETTES = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
     bluegrass: [
@@ -235,6 +237,7 @@ const VARIANTS = {
 };
 
 export {
+    BIG_NUMBER_OF_EVENTS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS,

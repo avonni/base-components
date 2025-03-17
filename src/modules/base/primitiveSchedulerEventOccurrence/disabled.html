@@ -63,7 +63,9 @@
                     "
                     >{startTime}</span
                 >
-                {computedLabels.center.value}
+                <span if:true={computedLabels.center}
+                    >{computedLabels.center.value}</span
+                >
             </span>
         </div>
     </div>

@@ -107,16 +107,17 @@ const headers = [
 ];
 
 const lotsOfEvents = () => {
+    const oneMonth = new Date(0, 1, 0).getTime() - new Date(0, 0, 0).getTime();
     const computedEvents = [];
     const resourceNames = [];
     for (let i = 1; i <= 20; i++) {
-        resourceNames.push(i.toString());
+        resourceNames.push(`Employee #${i}`);
     }
 
     let startTime = start.getTime();
     let endTime = startTime + 7200000;
 
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 3000; i++) {
         // The event will be on one to three rows
         const resourceNamesNumber = Math.floor(Math.random() * 3) + 1;
         const eventResourceNames = [];
@@ -136,6 +137,10 @@ const lotsOfEvents = () => {
             from: startTime,
             to: endTime
         });
+
+        if (startTime > start.getTime() + oneMonth) {
+            startTime = start.getTime();
+        }
 
         startTime += 3600000;
         endTime = startTime + 7200000;
@@ -711,19 +716,19 @@ const referenceLines = [
 ];
 
 export {
+    basicEvents,
     columns,
     disabledDatesTimes,
-    resources,
-    headers,
-    basicEvents,
     events,
     eventsThemed,
     eventsWithExtraKeys,
     eventsWithLabels,
+    headers,
     longEvents,
     lotsOfEvents,
     lotsOfRows,
     oneColumn,
     referenceLines,
+    resources,
     start
 };

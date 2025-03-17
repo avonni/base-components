@@ -1,18 +1,20 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
-    columns,
-    resources,
-    headers,
-    events,
-    eventsWithExtraKeys,
-    eventsThemed,
-    eventsWithLabels,
-    disabledDatesTimes,
-    referenceLines,
-    start,
     basicEvents,
+    columns,
+    disabledDatesTimes,
+    events,
+    eventsThemed,
+    eventsWithExtraKeys,
+    eventsWithLabels,
+    headers,
+    longEvents,
+    lotsOfEvents,
+    lotsOfRows,
     oneColumn,
-    longEvents
+    referenceLines,
+    resources,
+    start
 } from './data';
 
 export default {
@@ -848,4 +850,16 @@ ThemesAndColors.args = {
             name: 'actionTwo'
         }
     ]
+};
+
+const manyResources = lotsOfRows();
+const manySelectedResources = manyResources.map((res) => res.name);
+export const BigData = Template.bind({});
+BigData.args = {
+    resources: manyResources,
+    start,
+    events: lotsOfEvents(),
+    selectedDisplay: 'calendar',
+    selectedResources: manySelectedResources,
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan'
 };
