@@ -78,6 +78,7 @@ export default class Scheduler extends LightningElement {
     _isLoading = false;
     _labelNoEventsFound = DEFAULT_LABEL_NO_EVENTS_FOUND;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    _preventPastEventCreation = false;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
     _referenceLines = [];
@@ -716,6 +717,21 @@ export default class Scheduler extends LightningElement {
             typeof value === 'string'
                 ? value
                 : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    }
+
+    /**
+     * If present, the users cannot create new events or move existing events in the past.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get preventPastEventCreation() {
+        return this._preventPastEventCreation;
+    }
+    set preventPastEventCreation(value) {
+        this._preventPastEventCreation = normalizeBoolean(value);
     }
 
     /**

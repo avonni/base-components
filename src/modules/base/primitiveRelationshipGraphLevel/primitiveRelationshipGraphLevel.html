@@ -7,7 +7,7 @@
                 <template iterator:group={groups}>
                     <c-primitive-relationship-graph-group
                         onselect={handleSelect}
-                        oncloseactivegroup={handleCloseActiveGroup}
+                        ontoggle={handleToggle}
                         onactionclick={dispatchActionClickEvent}
                         onheightchange={handleGroupHeightChange}
                         key={group.value.name}
@@ -16,6 +16,7 @@
                         avatar-src={group.value.avatarSrc}
                         avatar-fallback-icon-name={group.value.avatarFallbackIconName}
                         href={group.value.href}
+                        is-loading={group.value.isLoading}
                         items={group.value.items}
                         expanded={group.value.expanded}
                         hide-default-actions={group.value.hideDefaultActions}
@@ -37,11 +38,12 @@
             </div>
         </div>
         <!-- Vertical line -->
-        <div class={lineClass} if:true={selectedGroups}></div>
+        <div class={lineClass} if:true={hasSelectedGroups}></div>
         <!-- Selected level -->
-        <div class="slds-grid" if:true={selectedGroups}>
+        <div class="slds-grid" if:true={hasSelectedGroups}>
             <c-primitive-relationship-graph-level
                 onselect={dispatchSelectEvent}
+                ontoggle={dispatchToggleEvent}
                 onactionclick={dispatchActionClickEvent}
                 onheightchange={handleGroupHeightChange}
                 groups={selectedGroups}

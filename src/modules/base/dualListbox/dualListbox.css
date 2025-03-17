@@ -166,10 +166,13 @@
 }
 
 .avonni-dual-listbox__header {
-    color: var(--avonni-dual-listbox-header-text-color, #3e3e3c);
+    color: var(
+        --avonni-dual-listbox-header-text-color,
+        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
+    );
     font-size: var(--avonni-dual-listbox-header-font-size, 0.75rem);
     font-style: var(--avonni-dual-listbox-header-font-style, normal);
-    font-weight: var(--avonni-dual-listbox-header-font-weight, 700);
+    font-weight: var(--avonni-dual-listbox-header-font-weight, 400);
 }
 
 .avonni-dual-listbox__boxes-label {

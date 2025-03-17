@@ -16,6 +16,7 @@ export default class PrimitiveSchedulerAgenda extends LightningElement {
     @api labelNoEventsFound;
     @api loadingStateAlternativeText;
     @api newEventTitle;
+    @api preventPastEventCreation;
     @api readOnly;
     @api recurrentEditModes;
     @api resizeColumnDisabled;

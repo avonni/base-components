@@ -194,6 +194,12 @@ export default class SchedulerEventData {
                 millisecond: occurrence.from.millisecond
             });
         }
+        if (this.preventPastEventCreation) {
+            const now = this.createDate(new Date()).startOf('hour');
+            if (start < now.ts) {
+                return false;
+            }
+        }
         draftValues.from = start.toUTC().toISO();
         draftValues.to = addToDate(start, 'millisecond', duration)
             .toUTC()
@@ -216,6 +222,7 @@ export default class SchedulerEventData {
                 }
             }
         }
+        return true;
     }
 
     /**
@@ -246,7 +253,10 @@ export default class SchedulerEventData {
         }
         const eventsInTimeFrame = events.filter((event) => {
             const from = this.createDate(event.from);
-            const to = this.createDate(event.to);
+            let to = this.createDate(event.to);
+            if (event.allDay && !to) {
+                to = from.endOf('day');
+            }
             return (
                 this.belongsToSelectedResources(event) &&
                 (interval.contains(from) ||
@@ -659,7 +669,8 @@ export default class SchedulerEventData {
             event: mouseEvent,
             isVertical,
             cellGroupElement,
-            boundaries: this.getDraggingBoundaries(isVertical)
+            boundaries: this.getDraggingBoundaries(isVertical),
+            preventPastEventCreation: this.preventPastEventCreation
         });
         this.selectEvent(mouseEvent.detail);
     }
@@ -738,27 +749,40 @@ export default class SchedulerEventData {
             this.getGridElementsAtPosition(normalizedX, y);
 
         // Update the draft values
-        const to = this.createDate(Number(cellElement.dataset.end) + 1);
-        const from = this.createDate(Number(cellElement.dataset.start));
-
         switch (side) {
-            case 'end':
+            case 'end': {
+                const to = this.createDate(Number(cellElement.dataset.end) + 1);
                 draftValues.allDay = isCalendarMultiDayEvent;
                 draftValues.to = to.toUTC().toISO();
                 if (newEvent) {
                     occurrence.to = to;
                 }
                 break;
-            case 'start':
+            }
+            case 'start': {
+                let from = this.createDate(Number(cellElement.dataset.start));
+
+                if (this.preventPastEventCreation) {
+                    const now = this.createDate(new Date());
+                    if (from < now.ts) {
+                        from = now;
+                    }
+                }
                 draftValues.allDay = isCalendarMultiDayEvent;
                 draftValues.from = from.toUTC().toISO();
                 if (newEvent) {
                     occurrence.from = from;
                 }
                 break;
-            default:
-                this.dragEventTo(cellGroupElement, cellElement);
+            }
+            default: {
+                const isValid = this.dragEventTo(cellGroupElement, cellElement);
+                if (!isValid) {
+                    this.cleanSelection(true);
+                    return { updateCellGroups: true };
+                }
                 break;
+            }
         }
 
         if (newEvent) {
@@ -800,7 +824,8 @@ export default class SchedulerEventData {
             isVertical,
             cellGroupElement,
             isNewEvent: true,
-            boundaries: this.getDraggingBoundaries(isVertical)
+            boundaries: this.getDraggingBoundaries(isVertical),
+            preventPastEventCreation: this.preventPastEventCreation
         });
 
         this.newEvent({ resourceNames, from, to, x, y }, false);

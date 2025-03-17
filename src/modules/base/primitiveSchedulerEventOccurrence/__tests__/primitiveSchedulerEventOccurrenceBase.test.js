@@ -47,6 +47,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         expect(element.startPosition).toBe(0);
         expect(element.occurrence).toMatchObject({});
         expect(element.occurrenceKey).toBeUndefined();
+        expect(element.preventPastEventCreation).toBeFalsy();
         expect(element.readOnly).toBeFalsy();
         expect(element.referenceLine).toBeFalsy();
         expect(element.rightPosition).toBe(0);
@@ -347,6 +348,58 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
                 '[data-element-id="lightning-icon-center-label"]'
             );
             expect(centerIcon.iconName).toBe('standard:account');
+        });
+    });
+
+    // prevent-past-event-creation
+    it('Scheduler event occurence: prevent-past-event-creation = false', () => {
+        element.preventPastEventCreation = false;
+        element.from = new Date().getTime() - 60000;
+        element.to = new Date().getTime() - 30000;
+
+        return Promise.resolve().then(() => {
+            const startResize = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-resize-start"]'
+            );
+            const endResize = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-resize-end"]'
+            );
+            expect(startResize).toBeTruthy();
+            expect(endResize).toBeTruthy();
+        });
+    });
+
+    it('Scheduler event occurence: prevent-past-event-creation = true, start resize is disabled', () => {
+        element.preventPastEventCreation = true;
+        element.from = new Date().getTime() - 60000;
+        element.to = new Date().getTime() + 60000;
+
+        return Promise.resolve().then(() => {
+            const startResize = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-resize-start"]'
+            );
+            const endResize = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-resize-end"]'
+            );
+            expect(startResize).toBeFalsy();
+            expect(endResize).toBeTruthy();
+        });
+    });
+
+    it('Scheduler event occurence: prevent-past-event-creation = true, resize is disabled', () => {
+        element.preventPastEventCreation = true;
+        element.from = new Date().getTime() - 60000;
+        element.to = new Date().getTime() - 30000;
+
+        return Promise.resolve().then(() => {
+            const startResize = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-resize-start"]'
+            );
+            const endResize = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-resize-end"]'
+            );
+            expect(startResize).toBeFalsy();
+            expect(endResize).toBeFalsy();
         });
     });
 

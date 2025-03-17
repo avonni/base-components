@@ -46,7 +46,10 @@
     padding-right: var(--lwc-spacingXSmall, 0.5rem);
     padding-top: var(--lwc-spacingXxSmall, 0.25rem);
     margin-bottom: var(--lwc-spacingXxxSmall, 0.125rem);
-    color: var(--avonni-input-pen-header-text-color, #3e3e3c);
+    color: var(
+        --avonni-input-pen-header-text-color,
+        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
+    );
     font-size: var(--avonni-input-pen-header-font-size, 0.75rem);
     font-weight: var(--avonni-input-pen-header-font-weight, 400);
     font-style: var(--avonni-input-pen-header-font-style, normal);

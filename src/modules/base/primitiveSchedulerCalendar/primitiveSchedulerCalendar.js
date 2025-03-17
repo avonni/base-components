@@ -781,6 +781,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
         const cell = getElementOnYAxis(column, normalizedY, CELL_SELECTOR);
         const from = Number(cell.dataset.start);
+        if (this.preventPastEventCreation && from < new Date()) {
+            return null;
+        }
         const to = Number(cell.dataset.end);
         const resourceNames = [this.firstSelectedResource.name];
         this._eventData.newEvent(
@@ -1722,9 +1725,19 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} mouseEvent `privatemousedown` event fired by a primitive event occurrence.
      */
     handleEventMouseDown(mouseEvent) {
-        this._mouseIsDown = true;
         const x = mouseEvent.detail.x;
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
+
+        if (this.preventPastEventCreation) {
+            const y = mouseEvent.detail.y;
+            const cell = getElementOnYAxis(column, y, CELL_SELECTOR);
+            const to = Number(cell.dataset.end);
+            const now = this.createDate(new Date());
+            if (to < now.ts) {
+                return;
+            }
+        }
+        this._mouseIsDown = true;
         this._eventData.handleExistingEventMouseDown(mouseEvent, column);
         this.dispatchHidePopovers();
     }
@@ -1847,9 +1860,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             return;
         }
 
-        this._mouseIsDown = true;
-        this.dispatchHidePopovers();
-
         const x = event.clientX || event.detail.x;
         const y = event.clientY || event.detail.y;
         const columnElement = getElementOnXAxis(
@@ -1861,6 +1871,16 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const cell = getElementOnYAxis(columnElement, y, CELL_SELECTOR);
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end) + 1;
+
+        if (this.preventPastEventCreation) {
+            const now = this.createDate(new Date());
+            if (from < now.ts) {
+                return;
+            }
+        }
+
+        this._mouseIsDown = true;
+        this.dispatchHidePopovers();
         this._eventData.handleNewEventMouseDown({
             event,
             cellGroupElement: columnElement,
@@ -1954,6 +1974,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         if (updateCellGroups) {
             this.updateColumnEvents();
+
+            if (!eventToDispatch && this.preventPastEventCreation) {
+                // Make sure the event position is reset if the drag was cancelled
+                // because the event was moved before the current time
+                this.singleDayEvents = [...this.singleDayEvents];
+            }
         }
     };
 
@@ -1972,15 +1998,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             return;
         }
 
-        this._mouseIsDown = true;
-        this.dispatchHidePopovers();
-
         const x = event.clientX || event.detail.x;
         const y = event.clientY || event.detail.y;
         const row = this.multiDayWrapper;
         const cell = getElementOnXAxis(row, x, CELL_SELECTOR);
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end) + 1;
+
+        if (this.preventPastEventCreation) {
+            const now = this.createDate(new Date());
+            if (from < now.ts) {
+                return;
+            }
+        }
+
+        this._mouseIsDown = true;
+        this.dispatchHidePopovers();
         this._eventData.handleNewEventMouseDown({
             event,
             cellGroupElement: row,

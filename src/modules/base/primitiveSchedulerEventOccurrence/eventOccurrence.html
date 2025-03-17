@@ -79,7 +79,7 @@
             >
                 <!-- Start resize icon -->
                 <lightning-icon
-                    if:false={hideResizeIcon}
+                    if:false={hideStartResizeIcon}
                     class="
                         avonni-scheduler__event-resize-icon
                         avonni-scheduler__event-resize-icon_start
@@ -139,7 +139,7 @@
 
                 <!-- End resize icon -->
                 <lightning-icon
-                    if:false={hideResizeIcon}
+                    if:false={hideEndResizeIcon}
                     class="
                         avonni-scheduler__event-resize-icon
                         avonni-scheduler__event-resize-icon_end
@@ -147,6 +147,7 @@
                     "
                     icon-name="utility:drag_and_drop"
                     size="xx-small"
+                    data-element-id="lightning-icon-resize-end"
                     data-resize="end"
                 ></lightning-icon>
             </div>
