@@ -193,17 +193,7 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
             return;
         }
 
-        this.dispatchEvent(
-            new CustomEvent('eventcontextmenu', {
-                detail: {
-                    ...event.detail,
-                    focusPopover: this.focus.bind(this)
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-
+        this._dispatchContextMenu(event.detail);
         this._contextMenuIsOpen = true;
     }
 
@@ -307,7 +297,27 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
     }
 
     /**
+     * Dispatch the `eventcontextmenu` event.
+     *
+     * @param {object} detail Detail of the event.
+     */
+    _dispatchContextMenu(detail = {}) {
+        this.dispatchEvent(
+            new CustomEvent('eventcontextmenu', {
+                detail: {
+                    ...detail,
+                    focusPopover: this.focus.bind(this)
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    /**
      * Dispatch the `eventdblclick` event.
+     *
+     * @param {object} detail Detail of the event.
      */
     _dispatchEventDoubleClick(detail) {
         this.dispatchEvent(new CustomEvent('eventdblclick', { detail }));
@@ -315,6 +325,8 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
 
     /**
      * Dispatch the `eventmousedown` event.
+     *
+     * @param {object} detail Detail of the event.
      */
     _dispatchEventMouseDown(detail) {
         this.dispatchEvent(new CustomEvent('eventmousedown', { detail }));
