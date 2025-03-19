@@ -66,24 +66,23 @@
         data-element-id="dropdown"
     >
         <div class="avonni-button-menu__dropdown-gap-cover"></div>
-        <template if:true={isLoading}>
-            <lightning-spinner
-                size="small"
-                alternative-text={computedLoadingStateAlternativeText}
-                data-element-id="lightning-spinner"
-            ></lightning-spinner>
-        </template>
-        <template if:false={isLoading}>
-            <div
-                class="slds-dropdown__list"
-                role="menu"
-                onkeydown={handleMenuItemKeyDown}
-                onprivateselect={handleMenuItemSelect}
-                onmouseover={handleMenuItemMouseOver}
-                data-element-id="dropdown-list"
-            >
-                <slot></slot>
-            </div>
-        </template>
+        <lightning-spinner
+            if:true={isLoading}
+            alternative-text={computedLoadingStateAlternativeText}
+            size="small"
+            data-element-id="lightning-spinner"
+        ></lightning-spinner>
+        <div
+            if:false={isLoading}
+            class="slds-dropdown__list"
+            role="menu"
+            data-element-id="dropdown-list"
+            onprivatehover={handleMenuItemHover}
+            onkeydown={handleMenuItemKeyDown}
+            onprivateselect={handleMenuItemSelect}
+            onmouseover={handleMenuItemMouseOver}
+        >
+            <slot></slot>
+        </div>
     </div>
 </template>
