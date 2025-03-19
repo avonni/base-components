@@ -178,6 +178,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _cancelBlur = false;
     _computedOptions = [];
     _endIndex = MAX_LOADED_OPTIONS;
+    _hasScrolled = false;
     _highlightedOptionIndex = 0;
     _isSearching = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
@@ -224,7 +225,11 @@ export default class PrimitiveCombobox extends LightningElement {
                 if (this._topVisibleOption) {
                     this._scrollToTopVisibleOption();
                 }
-                if (this.list && this.list.scrollTop === 0) {
+                if (
+                    this.list &&
+                    this.list.scrollTop === 0 &&
+                    !this._hasScrolled
+                ) {
                     this.handleScroll();
                 }
             } else {
@@ -2262,6 +2267,7 @@ export default class PrimitiveCombobox extends LightningElement {
             return;
         }
 
+        this._hasScrolled = true;
         const { startIndex, endIndex, loadDown, loadMore } = computeScroll({
             list: this.list,
             loadMoreOffset: this.loadMoreOffset,
