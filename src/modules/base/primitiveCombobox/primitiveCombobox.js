@@ -1115,6 +1115,7 @@ export default class PrimitiveCombobox extends LightningElement {
             !this.dropdownVisible &&
             (hasItems || this.isLoading || this.enableInfiniteLoading)
         ) {
+            this._hasScrolled = false;
             this.dropdownVisible = true;
             requestAnimationFrame(() => {
                 this._startDropdownAutoPositioning();
@@ -1564,6 +1565,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _resetVisibleOptions() {
         this._startIndex = 0;
         this._endIndex = MAX_LOADED_OPTIONS;
+        this._hasScrolled = false;
     }
 
     _scrollToTopVisibleOption() {
@@ -1591,6 +1593,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     _setOptions(value) {
         const options = normalizeArray(value);
+        this._hasScrolled = false;
         if (equal(this._originalOptions, options)) {
             return;
         }
