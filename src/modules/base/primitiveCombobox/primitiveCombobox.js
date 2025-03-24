@@ -1693,10 +1693,7 @@ export default class PrimitiveCombobox extends LightningElement {
             },
             autoFlip: true,
             alignWidth: true,
-            autoShrinkHeight: true,
-            minHeight:
-                // Same configuration as lightning-combobox
-                this._visibleOptions.length < 3 ? '2.25rem' : '6.75rem'
+            autoShrinkHeight: true
         });
     }
 
