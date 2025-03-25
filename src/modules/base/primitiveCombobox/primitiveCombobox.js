@@ -1161,12 +1161,12 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     resetLevel() {
-        this._resetVisibleOptions();
-        this._initComputedOptions();
         this.parentOptionsValues = [];
         this.backLink = undefined;
         this.showEndLoader = this.isLoading;
         this.showStartLoader = false;
+        this._resetVisibleOptions();
+        this._initComputedOptions();
     }
 
     /**
