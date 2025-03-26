@@ -1,12 +1,12 @@
 import { createElement } from 'lwc';
-import ActivityTimeline from '../activityTimeline';
-import { HorizontalActivityTimeline } from '../horizontalActivityTimeline';
 import {
     actions,
+    displayedItemsHorizontalTest,
     horizontalItemsTest,
-    testItems,
-    displayedItemsHorizontalTest
+    testItems
 } from '../__docs__/data';
+import ActivityTimeline from '../activityTimeline';
+import { HorizontalActivityTimeline } from '../horizontalActivityTimeline';
 
 let element;
 describe('Activity Timeline', () => {
@@ -222,6 +222,33 @@ describe('Activity Timeline', () => {
             expect(expandableSection[0].title).toBe(firstSection);
             expect(expandableSection[1].title).toBe(secondSection);
             expect(expandableSection[2].title).toBe(thirdSection);
+        });
+    });
+
+    it('Activity Timeline: group by day, day-only items that are today are considered upcoming', () => {
+        element.items = [
+            {
+                name: 'item1',
+                datetimeValue: new Date().toISOString().replace(/T.+/, '')
+            },
+            {
+                name: 'item2',
+                datetimeValue: new Date(
+                    new Date().getTime() - 3600
+                ).toISOString()
+            }
+        ];
+        element.groupBy = 'day';
+
+        return Promise.resolve().then(() => {
+            const expandableSections = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-expandable-section"]'
+            );
+            expect(expandableSections).toHaveLength(2);
+            const upcoming = Array.from(expandableSections).find(
+                (s) => s.title === 'Upcoming'
+            );
+            expect(upcoming).toBeTruthy();
         });
     });
 
@@ -533,6 +560,33 @@ describe('Activity Timeline', () => {
                     ITEM[index].buttonVariant || 'neutral'
                 );
             });
+        });
+    });
+
+    it('Activity Timeline: day-only items dates are normalized', () => {
+        element.items = [
+            {
+                name: 'item1',
+                datetimeValue: '2025-01-28'
+            },
+            {
+                name: 'item2',
+                title: 'Re: Mobile conversation on Monday with the new global team',
+                description: 'You emailed Lea Chan',
+                datetimeValue: '2025-01-28T10:30:00.00Z'
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            const timelineItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            expect(timelineItems[0].datetimeValue).toBe(
+                '2025-01-28T10:30:00.00Z'
+            );
+            expect(new Date(timelineItems[1].datetimeValue)).toEqual(
+                new Date(2025, 0, 28)
+            );
         });
     });
 

@@ -1,17 +1,18 @@
-import { LightningElement, api, track } from 'lwc';
+import { DateTime } from 'c/dateTimeUtils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
-import horizontalTimeline from './horizontalActivityTimeline.html';
-import verticalTimeline from './verticalActivityTimeline.html';
 import {
     classSet,
-    generateUUID,
     deepCopy,
+    generateUUID,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api, track } from 'lwc';
+import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
+import horizontalTimeline from './horizontalActivityTimeline.html';
+import verticalTimeline from './verticalActivityTimeline.html';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
@@ -46,6 +47,8 @@ const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOCALE = 'en-GB';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
+
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}/;
 
 const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
@@ -178,6 +181,7 @@ export default class ActivityTimeline extends LightningElement {
     _pastDates = [];
     _upcomingDates = [];
 
+    computedItems = [];
     @track orderedDates = [];
 
     connectedCallback() {
@@ -615,6 +619,8 @@ export default class ActivityTimeline extends LightningElement {
             setTimeout(() => {
                 this.renderedCallback();
             }, 0);
+        } else {
+            this.initActivityTimeline();
         }
     }
 
@@ -823,16 +829,15 @@ export default class ActivityTimeline extends LightningElement {
      * Compute sortedItems and ungrouped array.
      */
     get sortedItems() {
-        const items =
-            this._sortedDirection === 'desc'
-                ? [...this.items].sort(
-                      (a, b) =>
-                          new Date(b.datetimeValue) - new Date(a.datetimeValue)
-                  )
-                : [...this.items].sort(
-                      (a, b) =>
-                          new Date(a.datetimeValue) - new Date(b.datetimeValue)
-                  );
+        const items = deepCopy(this.items);
+        items.sort((a, b) => {
+            const aDate = new Date(a.datetimeValue);
+            const bDate = new Date(b.datetimeValue);
+            return this.sortedDirection === 'desc'
+                ? bDate - aDate
+                : aDate - bDate;
+        });
+
         return this._hasHiddenItems &&
             !this.isShowButtonHidden &&
             this.maxVisibleItems &&
@@ -883,8 +888,16 @@ export default class ActivityTimeline extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    getGroupLabel(date) {
-        if (this._groupBy && date > new Date()) {
+    getGroupLabel(isoDate, isDateOnly) {
+        let today = new Date();
+        if (isDateOnly) {
+            const todayDateTime = new DateTime(today, this.timezone);
+            const { y, mo, d } = todayDateTime.dateParts;
+            today = new Date(y, mo - 1, d, 0, 0, -1);
+        }
+
+        const date = new Date(isoDate);
+        if (this._groupBy && date > today) {
             return 'Upcoming';
         }
         switch (this._groupBy) {
@@ -927,21 +940,34 @@ export default class ActivityTimeline extends LightningElement {
      */
     initActivityTimeline() {
         this.orderedDates = [];
+        this.computedItems = [];
         this.sortedItems.forEach((item) => {
-            this.supportDeprecatedAttributes(item);
+            const computedItem = deepCopy(item);
+            this.supportDeprecatedAttributes(computedItem);
 
-            const date = new Date(item.datetimeValue);
-            const label = this.getGroupLabel(date);
+            let date = computedItem.datetimeValue;
+            const isDateOnly =
+                typeof date === 'string' &&
+                date.match(ISO_DATE_PATTERN) &&
+                !date.includes('T');
+            if (isDateOnly) {
+                const dateTime = new DateTime(date, this.timezone);
+                date = `${date}T00:00:00${dateTime.tzOffset}`;
+                computedItem.datetimeValue = date;
+            }
+
+            const label = this.getGroupLabel(date, isDateOnly);
             const lastGroup = this.orderedDates[this.orderedDates.length - 1];
 
             if (!lastGroup || lastGroup.label !== label) {
                 this.orderedDates.push({
                     label,
-                    items: [item]
+                    items: [computedItem]
                 });
             } else {
-                lastGroup.items.push(item);
+                lastGroup.items.push(computedItem);
             }
+            this.computedItems.push(computedItem);
         });
     }
 

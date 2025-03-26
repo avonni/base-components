@@ -42,7 +42,7 @@
                 oncheck={handleCheck}
                 onitemclick={handleItemClick}
             >
-                <template for:each={sortedItems} for:item="item">
+                <template for:each={computedItems} for:item="item">
                     <li key={item.name}>
                         <c-primitive-activity-timeline-item
                             title={item.title}
