@@ -373,13 +373,11 @@ export default class RelationshipGraph extends LightningElement {
      * Update selection from graph.
      */
     updateSelection() {
-        if (!this.groups.length > 0) return;
-
         // Reset the selection and go through the tree with the new selection
         this._selectedItem = undefined;
         this.processedGroups = JSON.parse(JSON.stringify(this.groups));
 
-        if (this.selectedItemName)
+        if (this.processedGroups.length > 0 && this.selectedItemName)
             this.selectItem(this.selectedItemName, this.processedGroups);
     }
 
