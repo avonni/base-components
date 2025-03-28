@@ -45,12 +45,14 @@
                     avatar={item.avatar}
                     child-items={item.children}
                     collapse-disabled={collapseDisabled}
+                    color={item.color}
                     independent-multi-select={independentMultiSelect}
                     disabled={item.disabled}
                     editable-fields={editableFields}
                     expanded={item.expanded}
                     fields={item.fields}
                     href={item.href}
+                    icon-name={item.iconName}
                     is-loading={item.isLoading}
                     is-leaf={item.isLeaf}
                     label={item.label}
@@ -72,11 +74,7 @@
 
     <button
         if:true={addAction}
-        class="
-            slds-button slds-button_neutral slds-button_stretch
-            slds-m-top_xx-small
-            slds-m-left_none
-        "
+        class="slds-button slds-button_neutral slds-button_stretch slds-m-top_xx-small slds-m-left_none"
         type="button"
         data-element-id="button-add-action"
         onclick={handleActionClick}

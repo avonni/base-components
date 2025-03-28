@@ -54,6 +54,7 @@ export const ITEMS = [
         items: [
             {
                 label: 'Go to Record 1.1',
+                iconName: 'utility:record_alt',
                 href: '#record1',
                 name: 'node1-1',
                 items: [

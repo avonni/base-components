@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
     generateUUID,
@@ -6,6 +5,7 @@ import {
     normalizeBoolean
 } from 'c/utils';
 import { keyCodes } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const i18n = {
     collapseBranch: 'Collapse Branch',
@@ -28,6 +28,9 @@ const DEFAULT_EDIT_FIELDS = [
  * @descriptor avonni-primitive-tree-item
  */
 export default class PrimitiveTreeItem extends LightningElement {
+    @api color;
+    @api iconName;
+
     /**
      * The alternative text used to describe the reason for the wait and need for a spinner.
      *
@@ -466,6 +469,16 @@ export default class PrimitiveTreeItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get checkboxStyle() {
+        if (this.color) {
+            return `
+                --slds-c-checkbox-color-border: ${this.color};
+                --slds-c-checkbox-color-border-checked: ${this.color};
+            `;
+        }
+        return null;
+    }
+
     /**
      * Array of computed edit field objects.
      *
@@ -553,7 +566,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @type {string}
      */
     get labelClass() {
-        return classSet('slds-truncate')
+        return classSet('slds-truncate slds-col')
             .add({
                 'slds-p-vertical_xx-small': !this.buttonActions.length
             })
@@ -1073,6 +1086,8 @@ export default class PrimitiveTreeItem extends LightningElement {
             if (this.showCheckbox && target === 'anchor') {
                 this._selected = !this.selected;
                 this._checkboxIsIndeterminate = false;
+            } else if (target === 'chevron') {
+                this._expanded = !this.expanded;
             }
 
             this.dispatchClick(target, event);

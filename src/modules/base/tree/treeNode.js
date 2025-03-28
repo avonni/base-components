@@ -28,6 +28,7 @@ export function getTreeNode({ childNum, disabled, level, node, parentKey }) {
     return {
         avatar: node.avatar,
         children: [],
+        color: node.color,
         disabled: node.disabled || disabled || false,
         get expanded() {
             return this.isLeaf && !this.isLoading
@@ -36,6 +37,7 @@ export function getTreeNode({ childNum, disabled, level, node, parentKey }) {
         },
         fields: node.fields,
         href: node.href,
+        iconName: node.iconName,
         isLeaf:
             !node.isLoading &&
             (!node.items ||
