@@ -1,11 +1,10 @@
-import { LightningElement, api, track } from 'lwc';
-import {
-    equal,
-    observePosition,
-    animationFrame,
-    timeout
-} from 'c/utilsPrivate';
 import { numberFormat } from 'c/numberFormat';
+import {
+    Direction,
+    startPositioning,
+    stopPositioning
+} from 'c/positionLibrary';
+import { Tooltip } from 'c/tooltipLibrary';
 import {
     classSet,
     deepCopy,
@@ -14,14 +13,15 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { Tooltip } from 'c/tooltipLibrary';
 import {
-    Direction,
-    startPositioning,
-    stopPositioning
-} from 'c/positionLibrary';
-import filterMenuVertical from './filterMenuVertical.html';
+    animationFrame,
+    equal,
+    observePosition,
+    timeout
+} from 'c/utilsPrivate';
+import { LightningElement, api, track } from 'lwc';
 import filterMenu from './filterMenu.html';
+import filterMenuVertical from './filterMenuVertical.html';
 import Item from './item';
 
 const ICON_SIZES = {
@@ -82,6 +82,7 @@ const TYPE_ATTRIBUTES = {
         'dropdownLength',
         'dropdownWidth',
         'enableInfiniteLoading',
+        'hasNestedItems',
         'isMultiSelect',
         'items',
         'searchInputPlaceholder'
@@ -192,6 +193,7 @@ export default class FilterMenu extends LightningElement {
     dropdownVisible = false;
     fieldLevelHelp;
     searchTerm;
+    visibleItems = [];
 
     connectedCallback() {
         // button-group necessities
@@ -742,7 +744,7 @@ export default class FilterMenu extends LightningElement {
                 this.isVertical &&
                 this.infiniteLoad &&
                 !this.isLoading &&
-                !this.visibleListItems.length
+                !this.visibleItems.length
             ) {
                 // Fire the loadmore event without waiting for the user
                 // to click on the load more button
@@ -798,7 +800,7 @@ export default class FilterMenu extends LightningElement {
             this.isVertical &&
             this.infiniteLoad &&
             !this.isLoading &&
-            !this.visibleListItems.length
+            !this.visibleItems.length
         ) {
             // Fire the loadmore event without waiting for the user
             // to click on the load more button
@@ -811,15 +813,6 @@ export default class FilterMenu extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Computed checkbox Items.
-     *
-     * @type {object}
-     */
-    get checkboxComputedItems() {
-        return this.computedItems.filter((item) => !item.hidden);
-    }
 
     /**
      * Computed Aria Expanded from dropdown menu.
@@ -1198,15 +1191,6 @@ export default class FilterMenu extends LightningElement {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
     }
 
-    /**
-     * Array of currently visible list items.
-     *
-     * @type {object[]}
-     */
-    get visibleListItems() {
-        return this.computedItems.filter((it) => !it.hidden);
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -1325,6 +1309,7 @@ export default class FilterMenu extends LightningElement {
             'object'
         );
 
+        this.visibleItems = [];
         this.computedItems = items.map((item) => {
             const checked = this.currentValue.includes(item.value);
             const hidden = this.isOutOfSearchScope(item.label);
@@ -1334,12 +1319,16 @@ export default class FilterMenu extends LightningElement {
                 firstFocusableItem = true;
                 tabindex = '0';
             }
-            return new Item({
+            const computedItem = new Item({
                 ...item,
                 checked,
                 hidden,
                 tabindex
             });
+            if (!hidden) {
+                this.visibleItems.push(computedItem);
+            }
+            return computedItem;
         });
 
         if (this.dropdownVisible) {
@@ -1436,7 +1425,7 @@ export default class FilterMenu extends LightningElement {
      */
     focusDropdown() {
         const isFocusableList =
-            (this.isList && this.visibleListItems.length) ||
+            (this.isList && this.visibleItems.length) ||
             this.computedTypeAttributes.allowSearch;
         const isFocusable =
             isFocusableList || (!this.isList && !this.isLoading);
@@ -1502,6 +1491,20 @@ export default class FilterMenu extends LightningElement {
             timeStyle: time,
             timeZone
         }).format(date);
+    }
+
+    getItemByLevelPath(levelPath) {
+        let item;
+        let items = this.visibleItems;
+
+        for (let i = 0; i < levelPath.length; i += 1) {
+            item = items[i];
+            if (!item || !Array.isArray(item.items)) {
+                return null;
+            }
+            items = item.items;
+        }
+        return item;
     }
 
     /**
@@ -1932,8 +1935,12 @@ export default class FilterMenu extends LightningElement {
 
         clearTimeout(this._searchTimeOut);
         this._searchTimeOut = setTimeout(() => {
+            this.visibleItems = [];
             this.computedItems.forEach((item) => {
                 item.hidden = this.isOutOfSearchScope(item.label);
+                if (!item.hidden) {
+                    this.visibleItems.push(item);
+                }
             });
             this.computedItems = [...this.computedItems];
 
@@ -1990,6 +1997,18 @@ export default class FilterMenu extends LightningElement {
         this.dispatchApply();
     }
 
+    handleTreeLoadMore(event) {
+        const item = this.getItemByLevelPath(event.detail.levelPath);
+        if (item) {
+            this.dispatchLoadMore(item);
+        }
+    }
+
+    handleTreeSelect(event) {
+        this.currentValue = deepCopy(event.detail.selectedItems);
+        this.dispatchSelect();
+    }
+
     /**
      * Dispatch the apply event.
      */
@@ -2028,7 +2047,7 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
     }
 
-    dispatchLoadMore() {
+    dispatchLoadMore(item) {
         /**
          * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user.
          *
@@ -2037,7 +2056,12 @@ export default class FilterMenu extends LightningElement {
          * @public
          * @bubbles
          */
-        this.dispatchEvent(new CustomEvent('loadmore', { bubbles: true }));
+        this.dispatchEvent(
+            new CustomEvent('loadmore', {
+                bubbles: true,
+                detail: { item: deepCopy(item) }
+            })
+        );
     }
 
     /**

@@ -10,11 +10,7 @@
     <button
         if:true={collapsible}
         data-element-id="lightning-icon-toggle"
-        class="
-            slds-button
-            slds-section__title-action
-            avonni-filter-menu__title-button_base
-        "
+        class="slds-button slds-section__title-action avonni-filter-menu__title-button_base"
         onclick={toggleSection}
     >
         <lightning-icon
@@ -29,10 +25,7 @@
             class="slds-m-right_x-small"
         ></lightning-icon>
         <div
-            class="
-                avonni-filter-menu__form-element-legend
-                slds-form-element__legend
-            "
+            class="avonni-filter-menu__form-element-legend slds-form-element__legend"
         >
             <span class="avonni-filter-menu__label">{label}</span>
             <lightning-helptext
@@ -46,11 +39,7 @@
     </button>
     <template if:false={collapsible}>
         <div
-            class="
-                slds-form-element__legend
-                slds-float_none
-                slds-truncate slds-is-relative
-            "
+            class="slds-form-element__legend slds-float_none slds-truncate slds-is-relative"
             title={title}
         >
             <lightning-icon
@@ -95,14 +84,25 @@
         >
             <!-- List -->
             <template if:true={isList}>
+                <c-tree
+                    if:true={computedTypeAttributes.hasNestedItems}
+                    class="slds-p-vertical_xx-small"
+                    disabled={disabled}
+                    is-multi-select={computedTypeAttributes.isMultiSelect}
+                    items={visibleItems}
+                    selected-items={currentValue}
+                    onloadmore={handleTreeLoadMore}
+                    onselect={handleTreeSelect}
+                ></c-tree>
                 <c-input-choice-set
+                    if:false={computedTypeAttributes.hasNestedItems}
                     class="slds-p-vertical_xx-small"
                     accesskey={accessKey}
                     disabled={disabled}
                     is-multi-select={computedTypeAttributes.isMultiSelect}
                     label={label}
                     variant="label-hidden"
-                    options={checkboxComputedItems}
+                    options={visibleItems}
                     value={currentValue}
                     name={name}
                     data-element-id="avonni-input-choice-set"
@@ -121,11 +121,7 @@
             <!-- Loading spinner -->
             <template if:true={isLoading}>
                 <div
-                    class="
-                        slds-is-relative
-                        slds-m-around_large
-                        slds-show_inline-block
-                    "
+                    class="slds-is-relative slds-m-around_large slds-show_inline-block"
                 >
                     <lightning-spinner
                         size="small"
@@ -186,11 +182,7 @@
     ></lightning-menu-divider>
     <div
         if:false={hideApplyResetButtons}
-        class="
-            slds-p-horizontal_small
-            slds-p-bottom_x-small
-            slds-text-align_right
-        "
+        class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
     >
         <lightning-button
             class="slds-m-right_x-small"

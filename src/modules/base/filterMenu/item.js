@@ -1,8 +1,9 @@
-import { classSet } from 'c/utils';
+import { classSet, normalizeArray } from 'c/utils';
 
 export default class FilterMenuItem {
     constructor(props) {
         Object.assign(this, props);
+        this.initTreeProperties();
     }
 
     get colorStyle() {
@@ -15,5 +16,18 @@ export default class FilterMenuItem {
                 'slds-is-selected': this.checked
             })
             .toString();
+    }
+
+    initTreeProperties() {
+        if (this.prefixIconName) {
+            this.avatar = {
+                fallbackIconName: this.prefixIconName,
+                size: 'x-small'
+            };
+        }
+        this.items = normalizeArray(this.items).map((i) => {
+            return new FilterMenuItem(i);
+        });
+        this.name = this.value;
     }
 }
