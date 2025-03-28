@@ -1,12 +1,12 @@
-import { LightningElement, api, track } from 'lwc';
-import { TreeData } from './treeData';
 import {
-    generateUUID,
     deepCopy,
+    generateUUID,
     normalizeArray,
     normalizeBoolean
 } from 'c/utils';
 import { keyCodes } from 'c/utilsPrivate';
+import { LightningElement, api, track } from 'lwc';
+import { TreeData } from './treeData';
 
 const DEFAULT_ACTION_NAMES = [
     'Standard.Tree.Add',
@@ -47,6 +47,7 @@ export default class Tree extends LightningElement {
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
     _collapseDisabled = false;
+    _disabled = false;
     _editableFields = DEFAULT_EDITABLE_FIELDS;
     _independentMultiSelect = false;
     _isLoading = false;
@@ -160,6 +161,26 @@ export default class Tree extends LightningElement {
 
     set collapseDisabled(value) {
         this._collapseDisabled = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the component is disabled and items cannot be selected or edited.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.initItems();
+        }
     }
 
     /**
@@ -383,7 +404,7 @@ export default class Tree extends LightningElement {
     initItems() {
         // Reset the state
         this.setFocusToItem({});
-        this.treedata = new TreeData();
+        this.treedata = new TreeData(this.disabled);
         if (!this.items.length) {
             this.children = [];
             return;

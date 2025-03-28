@@ -24,11 +24,11 @@ function computeKey(parentKey, childNum) {
  * @param {number} childNum Number of the item in its parent.
  * @returns {object} Tree node object.
  */
-export function getTreeNode(node, level, parentKey, childNum) {
+export function getTreeNode({ childNum, disabled, level, node, parentKey }) {
     return {
         avatar: node.avatar,
         children: [],
-        disabled: node.disabled || false,
+        disabled: node.disabled || disabled || false,
         get expanded() {
             return this.isLeaf && !this.isLoading
                 ? true
