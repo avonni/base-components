@@ -1000,21 +1000,9 @@ export default class ButtonMenu extends PrimitiveButton {
      * @param {Event} event
      */
     handleMenuItemSelect(event) {
-        if (event.detail.type === 'submenu') {
-            event.target.parentElement
-                .querySelectorAll('.avonni-submenu')
-                .forEach((submenu) => {
-                    submenu.close();
-                });
-            if (!this._dropdownVisible) {
-                this.toggleMenuVisibility();
-                event.target.focus();
-            }
-        } else {
-            if (this._dropdownVisible) {
-                this.toggleMenuVisibility();
-                this.button.focus();
-            }
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+            this.button.focus();
         }
 
         event.stopPropagation();

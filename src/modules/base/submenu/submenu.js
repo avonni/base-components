@@ -81,7 +81,6 @@ export default class Submenu extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -98,7 +97,6 @@ export default class Submenu extends LightningElement {
     get isDraft() {
         return this._isDraft;
     }
-
     set isDraft(value) {
         this._isDraft = normalizeBoolean(value);
     }
@@ -133,12 +131,17 @@ export default class Submenu extends LightningElement {
     get tabIndex() {
         return this._tabIndex;
     }
-
     set tabIndex(newValue) {
         this._tabIndex = newValue;
     }
 
-    get dropdownClass() {
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get computedDropdownClass() {
         return classSet('slds-dropdown slds-dropdown_submenu')
             .add({
                 'slds-dropdown_submenu-right': this.menuAlignment === 'right',
@@ -246,8 +249,6 @@ export default class Submenu extends LightningElement {
                 this.querySelectorAll('.avonni-submenu').forEach((submenu) => {
                     submenu.close();
                 });
-            } else {
-                this.dispatchSelect();
             }
 
             this.isOpen = true;
@@ -264,29 +265,5 @@ export default class Submenu extends LightningElement {
      */
     handlePreventDefault(event) {
         event.preventDefault();
-    }
-
-    /**
-     * Select event dispatcher.
-     */
-    dispatchSelect() {
-        /**
-         * Private select menu item event.
-         *
-         * @event
-         * @name privateselect
-         * @param {string} type 'submenu'
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('privateselect', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    type: 'submenu'
-                }
-            })
-        );
     }
 }
