@@ -136,3 +136,7 @@
     height: 3rem;
     z-index: 0;
 }
+.avonni-primitive-tree-item__load-more-button {
+    padding: 0.25rem 0 0.25rem
+        calc(var(--avonni-tree-item-spacing-inline-left, 1rem) + 2.375rem);
+}

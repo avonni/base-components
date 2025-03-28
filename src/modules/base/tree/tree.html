@@ -10,6 +10,7 @@
         onprivatemousedown={handleMouseDown}
         onprivateitemclick={handleClick}
         onprivateitemkeydown={handleKeydown}
+        onprivateitemloadmore={handleLoadMore}
         onprivateregisteritem={handleRegistration}
     >
         <h4
@@ -49,6 +50,7 @@
                     independent-multi-select={independentMultiSelect}
                     disabled={item.disabled}
                     editable-fields={editableFields}
+                    enable-infinite-loading={item.enableInfiniteLoading}
                     expanded={item.expanded}
                     fields={item.fields}
                     href={item.href}

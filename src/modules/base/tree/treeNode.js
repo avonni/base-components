@@ -30,6 +30,7 @@ export function getTreeNode({ childNum, disabled, level, node, parentKey }) {
         children: [],
         color: node.color,
         disabled: node.disabled || disabled || false,
+        enableInfiniteLoading: node.enableInfiniteLoading || false,
         get expanded() {
             return this.isLeaf && !this.isLoading
                 ? true

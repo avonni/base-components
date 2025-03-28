@@ -56,9 +56,10 @@ export default class PrimitiveTreeItem extends LightningElement {
     _collapseDisabled = false;
     _disabled = false;
     _editableFields = DEFAULT_EDIT_FIELDS;
+    _enableInfiniteLoading = false;
+    _expanded = false;
     _fields = [];
     _href;
-    _expanded = false;
     _independentMultiSelect = false;
     _isLeaf = false;
     _isLoading = false;
@@ -325,6 +326,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, a button is shown at the end of the child items. On click, the `loadmore` event is fired.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
     }
 
     /**
@@ -598,6 +614,10 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get showLink() {
         return !this.disabled && !this.allowInlineEdit && this.href;
+    }
+
+    get showLoadMoreButton() {
+        return this.enableInfiniteLoading && !this.isLoading;
     }
 
     /**
@@ -1233,6 +1253,10 @@ export default class PrimitiveTreeItem extends LightningElement {
         event.preventDefault();
     }
 
+    handleLoadMore() {
+        this.dispatchLoadMore();
+    }
+
     /**
      * Handle the saving of the inline edition of the label.
      */
@@ -1371,6 +1395,27 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (customEvent.defaultPrevented && event.target.tagName !== 'INPUT') {
             event.preventDefault();
         }
+    }
+
+    dispatchLoadMore() {
+        /**
+         * The event fired when a "Load more" button is clicked.
+         *
+         * @event
+         * @name loadmore
+         * @param {string} key Unique key of the item.
+         * @param {string} name Unique name of the item.
+         * @public
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privateitemloadmore', {
+                detail: { key: this.nodeKey },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     /**

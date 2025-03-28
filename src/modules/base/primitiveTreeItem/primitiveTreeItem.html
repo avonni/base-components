@@ -293,6 +293,7 @@
                     child-items={item.children}
                     collapse-disabled={collapseDisabled}
                     color={item.color}
+                    enable-infinite-loading={item.enableInfiniteLoading}
                     independent-multi-select={independentMultiSelect}
                     disabled={item.disabled}
                     editable-fields={editableFields}
@@ -327,6 +328,14 @@
                     data-element-id="lightning-spinner-loading"
                 ></lightning-spinner>
             </div>
+
+            <lightning-button
+                if:true={showLoadMoreButton}
+                class="avonni-primitive-tree-item__load-more-button"
+                label="Load more"
+                variant="base"
+                onclick={handleLoadMore}
+            ></lightning-button>
         </div>
     </div>
 </template>

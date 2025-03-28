@@ -1151,6 +1151,13 @@ export default class Tree extends LightningElement {
         }
     }
 
+    handleLoadMore(event) {
+        const levelPath = this.treedata.getLevelPath(
+            (event.detail.key || this.items.length - 1).toString()
+        );
+        this.dispatchLoadMore(levelPath);
+    }
+
     /**
      * Handle a mouse button down on an item. If the tree is sortable, initialize the dragging state.
      *
@@ -1385,6 +1392,12 @@ export default class Tree extends LightningElement {
                     previousName
                 }
             })
+        );
+    }
+
+    dispatchLoadMore(levelPath) {
+        this.dispatchEvent(
+            new CustomEvent('loadmore', { detail: { levelPath } })
         );
     }
 
