@@ -1312,7 +1312,7 @@ export default class FilterMenu extends LightningElement {
         this.visibleItems = [];
         this.computedItems = items.map((item) => {
             const checked = this.currentValue.includes(item.value);
-            const hidden = this.isOutOfSearchScope(item.label);
+            const hidden = this.isOutOfSearchScope(item);
 
             let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
@@ -1516,16 +1516,25 @@ export default class FilterMenu extends LightningElement {
     /**
      * Check if the given list item label is out of the search scope.
      *
-     * @param {string} label Label of the list item to check.
+     * @param {object} item List item to check.
      * @returns {boolean} True if the search term is not included in the label, false otherwise.
      */
-    isOutOfSearchScope(label) {
+    isOutOfSearchScope(item) {
         if (!this.searchTerm || typeof this.searchTerm !== 'string') {
             return false;
         }
-        const normalizedLabel = label.toLowerCase();
+        const normalizedLabel = item.label.toLowerCase();
         const searchTerm = this.searchTerm.toLowerCase();
-        return !normalizedLabel.includes(searchTerm);
+        const matchesSearch = normalizedLabel.includes(searchTerm);
+        if (matchesSearch) {
+            return false;
+        } else if (Array.isArray(item.items)) {
+            const hasMatchingChild = item.items.some((i) => {
+                return !this.isOutOfSearchScope(i);
+            });
+            return !hasMatchingChild;
+        }
+        return true;
     }
 
     /**
@@ -1943,7 +1952,7 @@ export default class FilterMenu extends LightningElement {
         this._searchTimeOut = setTimeout(() => {
             this.visibleItems = [];
             this.computedItems.forEach((item) => {
-                item.hidden = this.isOutOfSearchScope(item.label);
+                item.hidden = this.isOutOfSearchScope(item);
                 if (!item.hidden) {
                     this.visibleItems.push(item);
                 }
