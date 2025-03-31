@@ -1493,7 +1493,13 @@ export default class FilterMenu extends LightningElement {
         }).format(date);
     }
 
-    getItemByLevelPath(levelPath) {
+    /**
+     * Get a nested list item using its path in the items tree.
+     *
+     * @param {number[]} levelPath Array of the levels of depth of the item that is loading. The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: [1, 2].
+     * @returns {object} List item.
+     */
+    getTreeItemByLevelPath(levelPath) {
         let item;
         let items = this.visibleItems;
 
@@ -1997,13 +2003,23 @@ export default class FilterMenu extends LightningElement {
         this.dispatchApply();
     }
 
+    /**
+     * Handle a `loadmore` event coming from a list that has nested items.
+     *
+     * @param {Event} event `loadmore` event coming from the tree.
+     */
     handleTreeLoadMore(event) {
-        const item = this.getItemByLevelPath(event.detail.levelPath);
+        const item = this.getTreeItemByLevelPath(event.detail.levelPath);
         if (item) {
             this.dispatchLoadMore(item);
         }
     }
 
+    /**
+     * Handle the selection of a list item when the list has nested items.
+     *
+     * @param {Event} event `select` event coming from the tree.
+     */
     handleTreeSelect(event) {
         this.currentValue = deepCopy(event.detail.selectedItems);
         this.dispatchSelect();
@@ -2047,9 +2063,14 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
     }
 
+    /**
+     * Dispatch the `loadmore` event.
+     *
+     * @param {object} item Parent item that triggered the `loadmore` event, if the items are nested.
+     */
     dispatchLoadMore(item) {
         /**
-         * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user.
+         * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user or by a nested item opening.
          *
          * @event
          * @name loadmore
