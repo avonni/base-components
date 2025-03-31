@@ -616,6 +616,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         return !this.disabled && !this.allowInlineEdit && this.href;
     }
 
+    /**
+     * True if the "Load More" button should be displayed at the end of the child items.
+     *
+     * @type {boolean}
+     */
     get showLoadMoreButton() {
         return this.enableInfiniteLoading && !this.isLoading;
     }
@@ -1253,6 +1258,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         event.preventDefault();
     }
 
+    /**
+     * Handle a click on the "Load More" button.
+     */
     handleLoadMore() {
         this.dispatchLoadMore();
     }
@@ -1397,14 +1405,16 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Dispatch the `privateitemloadmore` event.
+     */
     dispatchLoadMore() {
         /**
-         * The event fired when a "Load more" button is clicked.
+         * The event fired when the "Load more" button is clicked.
          *
          * @event
          * @name loadmore
          * @param {string} key Unique key of the item.
-         * @param {string} name Unique name of the item.
          * @public
          * @bubbles
          * @composed

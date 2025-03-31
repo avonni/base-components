@@ -297,6 +297,5 @@ CollapseDisabled.args = {
 export const InfiniteLoading = Template.bind({});
 InfiniteLoading.args = {
     header: 'Infinite Loading Tree',
-    enableInfiniteLoading: true,
-    isMultiSelect: true
+    enableInfiniteLoading: true
 };

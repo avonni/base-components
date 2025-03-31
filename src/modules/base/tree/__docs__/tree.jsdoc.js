@@ -24,6 +24,7 @@
  * @typedef {object} TreeItem
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
+ * @property {boolean} enableInfiniteLoading
  * @property {string} label Required. Label of the item.
  * @property {string} metatext Text to provide users with supplemental information and aid with identifiation or diambiguation.
  * @property {object[]} items Nested item objects.

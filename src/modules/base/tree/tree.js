@@ -41,6 +41,13 @@ export default class Tree extends LightningElement {
      * @public
      */
     @api header;
+
+    /**
+     * New branch default label.
+     *
+     * @type {string}
+     * @public
+     */
     @api placeholder;
 
     _actions = [];
@@ -373,6 +380,11 @@ export default class Tree extends LightningElement {
             : this.selectedItems.slice(0, 1);
     }
 
+    /**
+     * True if the laoding spinner should be displayed.
+     *
+     * @type {boolean}
+     */
     get showLoadMore() {
         return this.enableInfiniteLoading && !this.isLoading;
     }
@@ -383,6 +395,11 @@ export default class Tree extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Remove keyboard focus from the tree.
+     *
+     * @public
+     */
     @api
     blur(itemException) {
         const currentFocused = this.treedata.getItemAtIndex(
@@ -398,6 +415,11 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Set keyboard focus on the tree.
+     *
+     * @public
+     */
     @api
     focus() {
         if (this.items.length) {
@@ -1175,6 +1197,11 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Handle a click on a load more button.
+     *
+     * @param {Event} event `click` or `privateitemloadmore` event.
+     */
     handleLoadMore(event) {
         this.dispatchLoadMore(event.detail.key);
     }
@@ -1416,11 +1443,25 @@ export default class Tree extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `loadmore` event.
+     *
+     * @param {string} key Key of the parent item that triggered the event.
+     */
     dispatchLoadMore(key) {
         let levelPath = [];
         if (key) {
             levelPath = this.treedata.getLevelPath(key.toString());
         }
+
+        /**
+         * The event fired when a "Load more" button is clicked.
+         *
+         * @event
+         * @name loadmore
+         * @param {number[]} levelPath Array of the levels of depth of the item that is loading. Empty if the root level is loading.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('loadmore', { detail: { levelPath } })
         );
