@@ -81,7 +81,6 @@ export const ITEMS = [
                 label: 'Go to Record 1.2',
                 href: '#record1',
                 name: 'node1-2',
-                enableInfiniteLoading: true,
                 items: [
                     {
                         label: 'Go to Record 1.2.1',

@@ -40,6 +40,7 @@ export function getTreeNode({ childNum, disabled, level, node, parentKey }) {
         href: node.href,
         iconName: node.iconName,
         isLeaf:
+            !node.enableInfiniteLoading &&
             !node.isLoading &&
             (!node.items ||
                 (Array.isArray(node.items) && node.items.length === 0)),

@@ -49,6 +49,7 @@ export default class Tree extends LightningElement {
     _collapseDisabled = false;
     _disabled = false;
     _editableFields = DEFAULT_EDITABLE_FIELDS;
+    _enableInfiniteLoading = false;
     _independentMultiSelect = false;
     _isLoading = false;
     _isMultiSelect = false;
@@ -197,6 +198,21 @@ export default class Tree extends LightningElement {
 
     set editableFields(value) {
         this._editableFields = normalizeArray(value);
+    }
+
+    /**
+     * If present, a "Load more" button is displayed at the end of the root items. On click, it will fire the `loadmore` event.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
     }
 
     /**
@@ -355,6 +371,10 @@ export default class Tree extends LightningElement {
         return this.isMultiSelect
             ? this.selectedItems
             : this.selectedItems.slice(0, 1);
+    }
+
+    get showLoadMore() {
+        return this.enableInfiniteLoading && !this.isLoading;
     }
 
     /*
@@ -1061,17 +1081,21 @@ export default class Tree extends LightningElement {
         const key = event.detail.key;
         const target = event.detail.target;
         const item = this.treedata.getItem(key);
+        const node = item.treeNode;
 
         if (item) {
             if (target === 'chevron') {
-                if (item.treeNode.nodeRef.expanded) {
-                    this.collapseBranch(item.treeNode);
+                if (node.nodeRef.expanded) {
+                    this.collapseBranch(node);
                 } else {
-                    this.expandBranch(item.treeNode);
+                    this.expandBranch(node);
+
+                    if (node.enableInfiniteLoading && !node.children.length) {
+                        this.dispatchLoadMore(key);
+                    }
                 }
             } else if (target === 'anchor') {
                 if (this.isMultiSelect) {
-                    const node = item.treeNode;
                     const cascadeSelection = !this.independentMultiSelect;
                     if (!node.selected) {
                         this.treedata.selectNode(
@@ -1094,7 +1118,7 @@ export default class Tree extends LightningElement {
                     this.dispatchSelect(event);
                 } else {
                     this.setFocusToItem(item);
-                    this.singleSelect(item.treeNode.name, event);
+                    this.singleSelect(node.name, event);
                 }
             }
         }
@@ -1152,10 +1176,7 @@ export default class Tree extends LightningElement {
     }
 
     handleLoadMore(event) {
-        const levelPath = this.treedata.getLevelPath(
-            (event.detail.key || this.items.length - 1).toString()
-        );
-        this.dispatchLoadMore(levelPath);
+        this.dispatchLoadMore(event.detail.key);
     }
 
     /**
@@ -1395,7 +1416,11 @@ export default class Tree extends LightningElement {
         );
     }
 
-    dispatchLoadMore(levelPath) {
+    dispatchLoadMore(key) {
+        let levelPath = [];
+        if (key) {
+            levelPath = this.treedata.getLevelPath(key.toString());
+        }
         this.dispatchEvent(
             new CustomEvent('loadmore', { detail: { levelPath } })
         );

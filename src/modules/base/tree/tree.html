@@ -21,6 +21,45 @@
             {header}
         </h4>
 
+        <template for:each={children} for:item="item" for:index="index">
+            <c-primitive-tree-item
+                key={item.key}
+                actions={actions}
+                actions-when-disabled={actionsWhenDisabled}
+                allow-inline-edit={allowInlineEdit}
+                aria-disabled={item.disabled}
+                aria-expanded={item.expanded}
+                aria-label={item.label}
+                aria-level={item.level}
+                avatar={item.avatar}
+                child-items={item.children}
+                collapse-disabled={collapseDisabled}
+                color={item.color}
+                independent-multi-select={independentMultiSelect}
+                disabled={item.disabled}
+                editable-fields={editableFields}
+                enable-infinite-loading={item.enableInfiniteLoading}
+                expanded={item.expanded}
+                fields={item.fields}
+                href={item.href}
+                icon-name={item.iconName}
+                is-loading={item.isLoading}
+                is-leaf={item.isLeaf}
+                label={item.label}
+                level={item.level}
+                loading-state-alternative-text={loadingStateAlternativeText}
+                metatext={item.metatext}
+                name={item.name}
+                node-key={item.key}
+                role="treeitem"
+                selected={item.selected}
+                show-checkbox={isMultiSelect}
+                sortable={sortable}
+                data-key={item.key}
+                data-element-id="avonni-primitive-tree-item"
+            ></c-primitive-tree-item>
+        </template>
+
         <div
             if:true={isLoading}
             class="avonni-tree__loading-spinner slds-is-relative"
@@ -31,47 +70,6 @@
                 data-element-id="lightning-spinner"
             ></lightning-spinner>
         </div>
-
-        <template if:false={isLoading}>
-            <template for:each={children} for:item="item" for:index="index">
-                <c-primitive-tree-item
-                    key={item.key}
-                    actions={actions}
-                    actions-when-disabled={actionsWhenDisabled}
-                    allow-inline-edit={allowInlineEdit}
-                    aria-disabled={item.disabled}
-                    aria-expanded={item.expanded}
-                    aria-label={item.label}
-                    aria-level={item.level}
-                    avatar={item.avatar}
-                    child-items={item.children}
-                    collapse-disabled={collapseDisabled}
-                    color={item.color}
-                    independent-multi-select={independentMultiSelect}
-                    disabled={item.disabled}
-                    editable-fields={editableFields}
-                    enable-infinite-loading={item.enableInfiniteLoading}
-                    expanded={item.expanded}
-                    fields={item.fields}
-                    href={item.href}
-                    icon-name={item.iconName}
-                    is-loading={item.isLoading}
-                    is-leaf={item.isLeaf}
-                    label={item.label}
-                    level={item.level}
-                    loading-state-alternative-text={loadingStateAlternativeText}
-                    metatext={item.metatext}
-                    name={item.name}
-                    node-key={item.key}
-                    role="treeitem"
-                    selected={item.selected}
-                    show-checkbox={isMultiSelect}
-                    sortable={sortable}
-                    data-key={item.key}
-                    data-element-id="avonni-primitive-tree-item"
-                ></c-primitive-tree-item>
-            </template>
-        </template>
     </div>
 
     <button
@@ -91,4 +89,12 @@
         ></lightning-icon>
         Add item
     </button>
+
+    <lightning-button
+        if:true={showLoadMore}
+        class="slds-m-top_xx-small slds-m-left_none"
+        label="Load More"
+        stretch
+        onclick={handleLoadMore}
+    ></lightning-button>
 </template>
