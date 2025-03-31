@@ -69,13 +69,14 @@ export default class Tree extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    _addItems(level) {
+    _addItems(level, parent) {
         const start = level.length;
         for (let i = 0; i < LOADING_OFFSET; i++) {
             const number = i + start;
+            const name = parent ? `${parent.name}-${number}` : `item-${number}`;
             level.push({
                 label: `Item ${number}`,
-                name: `item-${number}`,
+                name,
                 items: [],
                 enableInfiniteLoading: Math.random() < 0.5
             });
@@ -110,7 +111,7 @@ export default class Tree extends LightningElement {
         }
 
         setTimeout(() => {
-            this._addItems(level);
+            this._addItems(level, parent);
             const allLoaded = level.length >= MAX_LOADED_ITEMS;
             if (parent) {
                 parent.isLoading = false;
