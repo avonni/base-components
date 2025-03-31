@@ -28,7 +28,20 @@ const DEFAULT_EDIT_FIELDS = [
  * @descriptor avonni-primitive-tree-item
  */
 export default class PrimitiveTreeItem extends LightningElement {
+    /**
+     * Color of the item checkbox, if the tree is in multi-select mode.
+     *
+     * @type {string}
+     * @public
+     */
     @api color;
+
+    /**
+     * The Lightning Design System name of the icon displayed after the label. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
+     * @type string
+     * @public
+     */
     @api iconName;
 
     /**
@@ -329,7 +342,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * If present, a button is shown at the end of the child items. On click, the `loadmore` event is fired.
+     * If true, the item is expandable even if it has no children. The `loadmore` event will be fired when the item is opened if it has no child, or when the user clicks on the “Load More” button.
      *
      * @type {boolean}
      * @public

@@ -24,9 +24,11 @@
  * @typedef {object} TreeItem
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
- * @property {boolean} enableInfiniteLoading
+ * @property {string} color Color of the item checkbox, if the tree is in multi-select mode.
+ * @property {boolean} enableInfiniteLoading If true, the item is expandable even if it has no children. The loadmore event will be fired when the item is opened if it has no child, or when the user clicks on the “Load More” button.
  * @property {string} label Required. Label of the item.
  * @property {string} metatext Text to provide users with supplemental information and aid with identifiation or diambiguation.
+ * @property {string} iconName The Lightning Design System name of the icon displayed after the label. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
  * @property {object[]} items Nested item objects.
  * @property {string} name Required. The unique name of the item. It will be returned by the `onselect` event handler.
  * @property {string} href If the item label should be a link, URL of the link.
