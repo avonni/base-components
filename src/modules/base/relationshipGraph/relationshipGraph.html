@@ -1,6 +1,6 @@
 <template>
     <!-- Root avatar / title -->
-    <div class={headerClass}>
+    <div if:true={hasHeader} class={headerClass}>
         <avonni-media-object vertical-align="center" inline={inlineHeader}>
             <avonni-avatar
                 if:true={hasAvatar}

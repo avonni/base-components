@@ -252,10 +252,19 @@ export default class RelationshipGraph extends LightningElement {
     /**
      * Verify if actions object is populated.
      *
-     * @type {object[]}
+     * @type {boolean}
      */
     get hasActions() {
         return this.actions.length > 0;
+    }
+
+    /**
+     * Verify if header is displayed.
+     *
+     * @type {boolean|string}
+     */
+    get hasHeader() {
+        return this.hasAvatar || this.label;
     }
 
     /**
@@ -360,12 +369,22 @@ export default class RelationshipGraph extends LightningElement {
             if (this.processedGroups.length === 1) {
                 line.setAttribute('style', `width: 0`);
             } else {
-                const width = currentLevel.offsetWidth;
+                const width = currentLevel.currentLevelWidth;
                 line.setAttribute('style', `width: calc(${width}px - 21rem)`);
             }
         } else {
             const height = currentLevel.currentLevelHeight;
-            line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
+            if (this.hasHeader || this.hasActions) {
+                line.setAttribute(
+                    'style',
+                    `height: calc(${height}px + 1.5rem);`
+                );
+            } else {
+                line.setAttribute(
+                    'style',
+                    `height: calc(${height}px); margin-top: 1.5rem;`
+                );
+            }
         }
     }
 
