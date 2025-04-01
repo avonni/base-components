@@ -17,7 +17,6 @@
                 variant="bare"
                 data-element-id="lightning-button-icon-expand"
                 onfocus={handleExpandButtonFocus}
-                onmousedown={stopPropagation}
             >
             </lightning-button-icon>
 
@@ -126,7 +125,6 @@
                         if:true={visibleActions.length}
                         class="avonni-primitive-tree-item__branch-buttons slds-grid slds-grid_vertical-align-center"
                         data-element-id="div-branch-buttons"
-                        onmousedown={stopPropagation}
                     >
                         <!-- Action icons -->
                         <template for:each={buttonActions} for:item="action">
@@ -215,7 +213,6 @@
             aria-label="Edit item"
             role="dialog"
             data-element-id="div-popover"
-            onmousedown={stopPropagation}
         >
             <!-- Close button -->
             <div class="slds-text-align_right">

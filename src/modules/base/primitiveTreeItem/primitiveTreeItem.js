@@ -22,6 +22,11 @@ const DEFAULT_EDIT_FIELDS = [
     'disabled',
     'isLoading'
 ];
+const UNSORTABLE_ITEMS_PARTS = [
+    'div-branch-buttons',
+    'div-popover',
+    'lightning-button-icon-expand'
+];
 
 /**
  * @class
@@ -1299,7 +1304,10 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @param {Event} event
      */
     handleMouseDown = (event) => {
-        if (!this.sortable) return;
+        const targetId = event.target.dataset.elementId;
+        if (!this.sortable || UNSORTABLE_ITEMS_PARTS.includes(targetId)) {
+            return;
+        }
         event.stopPropagation();
 
         this.dispatchEvent(
