@@ -2030,6 +2030,7 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event `select` event coming from the tree.
      */
     handleTreeSelect(event) {
+        event.stopPropagation();
         this.currentValue = deepCopy(event.detail.selectedItems);
         this.dispatchSelect();
     }
