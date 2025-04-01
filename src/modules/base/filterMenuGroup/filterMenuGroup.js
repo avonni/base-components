@@ -424,7 +424,9 @@ export default class FilterMenuGroup extends LightningElement {
          * @public
          */
         this.dispatchEvent(
-            new CustomEvent('loadmore', { detail: { name: menuName } })
+            new CustomEvent('loadmore', {
+                detail: { item: event.detail.item, name: menuName }
+            })
         );
     }
 
