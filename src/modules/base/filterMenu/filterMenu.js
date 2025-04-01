@@ -1233,7 +1233,14 @@ export default class FilterMenu extends LightningElement {
      */
     @api
     focus() {
-        if (this.isVertical) {
+        if (this.isVertical && this.computedTypeAttributes.hasNestedItems) {
+            const tree = this.template.querySelector(
+                '[data-element-id="avonni-tree"]'
+            );
+            if (tree) {
+                tree.focus();
+            }
+        } else if (this.isVertical) {
             const choiceSet = this.template.querySelector(
                 '[data-element-id="avonni-input-choice-set"]'
             );
@@ -2084,6 +2091,7 @@ export default class FilterMenu extends LightningElement {
          *
          * @event
          * @name loadmore
+         * @param {object} item If the event was triggered by a nested item, definition of this item.
          * @public
          * @bubbles
          */
