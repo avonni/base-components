@@ -725,19 +725,35 @@ describe('RelationshipGraph', () => {
     });
 
     // href
-    it('Relationship graph: href', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
+    describe('Relationship graph: href', () => {
+        it('With label', () => {
+            const element = createElement('data-relationship-graph', {
+                is: RelationshipGraph
+            });
+
+            document.body.appendChild(element);
+            element.label = 'A string label';
+            element.href = 'https://www.avonni.app/';
+
+            return Promise.resolve().then(() => {
+                const link = element.shadowRoot.querySelector('h1 a');
+                expect(link).toBeTruthy();
+                expect(link.href).toBe('https://www.avonni.app/');
+            });
         });
 
-        document.body.appendChild(element);
+        it('Without label', () => {
+            const element = createElement('data-relationship-graph', {
+                is: RelationshipGraph
+            });
 
-        element.href = 'https://www.avonni.app/';
+            document.body.appendChild(element);
+            element.href = 'https://www.avonni.app/';
 
-        return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('h1 a');
-            expect(link).toBeTruthy();
-            expect(link.href).toBe('https://www.avonni.app/');
+            return Promise.resolve().then(() => {
+                const link = element.shadowRoot.querySelector('h1 a');
+                expect(link).toBeFalsy();
+            });
         });
     });
 
@@ -822,6 +838,7 @@ describe('RelationshipGraph', () => {
 
         document.body.appendChild(element);
 
+        element.label = 'A string label';
         element.variant = 'horizontal';
         element.actions = actions;
 
@@ -866,6 +883,7 @@ describe('RelationshipGraph', () => {
 
         document.body.appendChild(element);
 
+        element.label = 'A string label';
         element.variant = 'vertical';
         element.actions = actions;
 

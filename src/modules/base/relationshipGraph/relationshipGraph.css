@@ -9,12 +9,20 @@
     margin-left: 10rem;
 }
 
+.avonni-relationship-graph__header + .actions::before {
+    content: '';
+    border-right: 2px solid var(--avonni-relationship-graph-line-color, #c9c9c9);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
 .actions::before {
     content: '';
     border-right: 2px solid var(--avonni-relationship-graph-line-color, #c9c9c9);
     position: absolute;
     left: var(--lwc-spacingMedium, 1rem);
-    top: 0;
+    top: 1.5rem;
     bottom: 0;
 }
 
@@ -23,7 +31,7 @@
 }
 
 .group,
-.group + .actions {
+.actions {
     width: var(--lwc-sizeMedium, 20rem);
     position: relative;
 }
