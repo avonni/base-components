@@ -1506,12 +1506,13 @@ export default class FilterMenu extends LightningElement {
      * @param {number[]} levelPath Array of the levels of depth of the item that is loading. The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: [1, 2].
      * @returns {object} List item.
      */
-    getTreeItemByLevelPath(levelPath) {
+    getTreeItemByLevelPath(levelPath = []) {
         let item;
         let items = this.visibleItems;
 
         for (let i = 0; i < levelPath.length; i += 1) {
-            item = items[i];
+            const index = levelPath[i];
+            item = items[index];
             if (!item || !Array.isArray(item.items)) {
                 return null;
             }
@@ -1896,6 +1897,13 @@ export default class FilterMenu extends LightningElement {
             default:
                 break;
         }
+    }
+
+    /**
+     * Handle a click on the load more button.
+     */
+    handleLoadMore() {
+        this.dispatchLoadMore();
     }
 
     /**
