@@ -7,8 +7,8 @@
                 slot="figure"
                 alternative-text={label}
                 fallback-icon-name={avatarFallbackIconName}
-                src={avatarSrc}
                 hide-avatar-details="true"
+                src={avatarSrc}
             ></avonni-avatar>
             <h1 class="slds-text-heading_small">
                 <a if:true={href} href={href} onclick={handleAnchorTagClick}>
@@ -23,17 +23,17 @@
         <template for:each={actions} for:item="action">
             <div key={action.name}>
                 <button
-                    name={action.name}
                     class={actionButtonClass}
                     disabled={action.disabled}
+                    name={action.name}
                     type="button"
-                    onclick={handleActionClick}
                     value={action.name}
+                    onclick={handleActionClick}
                 >
                     <lightning-icon
                         if:true={action.iconName}
-                        icon-name={action.iconName}
                         class="slds-current-color slds-m-right_x-small"
+                        icon-name={action.iconName}
                         size="xx-small"
                     ></lightning-icon>
                     {action.label}
@@ -43,23 +43,29 @@
     </div>
 
     <div class={wrapperClass}>
-        <div class={lineClass} data-element-id="div-line"></div>
+        <div
+            if:true={hasHeader}
+            class={lineClass}
+            data-element-id="div-line"
+        ></div>
 
         <!-- Levels -->
         <c-primitive-relationship-graph-level
-            onselect={dispatchSelectEvent}
-            ontoggle={dispatchToggleEvent}
-            onactionclick={dispatchActionClickEvent}
-            onheightchange={handleLevelHeightChange}
-            groups={processedGroups}
-            variant={variant}
-            shrink-icon-name={shrinkIconName}
             expand-icon-name={expandIconName}
             group-actions={groupActions}
             group-actions-position={groupActionsPosition}
-            item-actions={itemActions}
+            groups={processedGroups}
+            has-root-header={hasHeader}
             hide-items-count={hideItemsCount}
+            is-first-level="true"
+            item-actions={itemActions}
+            shrink-icon-name={shrinkIconName}
+            variant={variant}
             data-element-id="avonni-primitive-relationship-graph-level"
+            onactionclick={dispatchActionClickEvent}
+            onheightchange={handleLevelHeightChange}
+            onselect={dispatchSelectEvent}
+            ontoggle={dispatchToggleEvent}
         ></c-primitive-relationship-graph-level>
     </div>
 </template>

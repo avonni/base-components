@@ -1,603 +1,20 @@
 import { createElement } from 'lwc';
 import RelationshipGraph from 'c/relationshipGraph';
+import { ACTIONS, GROUPS, SELECTED_GROUPS } from './data';
 
 // Not tested due to impossibility of targetting child component (mediaObject) slot content:
 // avatarFallbackIconName
 // avatarSrc
 
-const actions = [
-    {
-        label: 'Add relationship',
-        name: 'add-relationship',
-        iconName: 'utility:add'
-    },
-    {
-        label: 'Remove relationship',
-        name: 'remove-relationship',
-        disabled: true
-    }
-];
+let element;
+describe('Relationship Graph', () => {
+    beforeEach(() => {
+        element = createElement('base-relationship-graph', {
+            is: RelationshipGraph
+        });
+        document.body.appendChild(element);
+    });
 
-const groups = [
-    {
-        // Group
-        label: 'Group Relationships with a very long label',
-        name: 'group-relationships',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-        avatarFallbackIconName: 'standard:account',
-        href: 'https://www.avonni.app/',
-        // Items
-        items: [
-            {
-                label: 'Symonds Household',
-                name: 'symonds-household',
-                avatarSrc:
-                    'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-                avatarFallbackIconName: 'standard:user',
-                href: 'https://www.avonni.app/',
-                data: [
-                    {
-                        label: 'Account Name',
-                        value: 'Symonds Household'
-                    },
-                    {
-                        label: 'Total Financial Accounts',
-                        value: '$324,700.00'
-                    }
-                ],
-                groups: [
-                    {
-                        label: 'Group Relationships',
-                        name: 'symonds-household-group-relationships',
-                        items: [
-                            {
-                                label: 'Amine Benachraf',
-                                name: 'amine-benachraf',
-                                hideDefaultActions: true
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Related Accounts',
-                        name: 'symonds-household-related-accounts'
-                    },
-                    {
-                        label: 'Members',
-                        name: 'symonds-household-members',
-                        items: [
-                            {
-                                label: 'Neil Symonds',
-                                name: 'neil-symonds',
-                                avatarFallbackIconName: 'standard:user',
-                                href: 'https://www.avonni.app/',
-                                data: [
-                                    {
-                                        label: 'Account name',
-                                        value: 'Neil Symonds'
-                                    },
-                                    {
-                                        label: 'Account phone number',
-                                        value: '(628) 391-9393'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    // Group
-    {
-        label: 'Related Accounts',
-        name: 'related-accounts',
-        avatarFallbackIconName: 'standard:account',
-        href: 'https://www.avonni.app/',
-        expanded: false,
-        // Items
-        items: [
-            {
-                label: 'Cumulus Restaurants',
-                name: 'cumulus-restaurants',
-                avatarFallbackIconName: 'custom:custom51',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Cumulus Restaurants'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    }
-                ],
-                hideDefaultActions: true,
-                groups: [
-                    {
-                        label: 'Group relationships',
-                        name: 'related-accounts-cumulus-restaurants-group-relationships'
-                    },
-                    {
-                        label: 'Related contacts',
-                        name: 'related-accounts-cumulus-restaurants-related-contacts'
-                    }
-                ]
-            }
-        ],
-        hideDefaultActions: true
-    },
-    // Group
-    {
-        label: 'Member Relationships',
-        name: 'member-relationships2',
-        items: [
-            {
-                label: 'Community Recreation',
-                name: 'community-recreation',
-                avatarFallbackIconName: 'standard:campaign',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Community Recreation'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    },
-                    {
-                        label: 'Total Financial Accounts',
-                        value: '$1,330'
-                    }
-                ]
-            },
-            {
-                label: 'Northern Trails Outfitter',
-                name: 'northern-trail-outfitter',
-                avatarFallbackIconName: 'standard:case',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Northern Trails Outfitter'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    }
-                ],
-                hideDefaultActions: true,
-                // Groups
-                groups: [
-                    {
-                        label: 'Group Relationships',
-                        name: 'northern-trails-outfitter-group-relationships',
-                        avatarSrc:
-                            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-                        avatarFallbackIconName: 'standard:account'
-                    },
-                    {
-                        label: 'Related Contacts',
-                        name: 'northern-trails-outfitter-related-contacts',
-                        href: 'https://www.avonni.app/',
-                        items: [
-                            {
-                                label: 'Ines Akwan',
-                                name: 'ines-akwan',
-                                groups: [
-                                    {
-                                        label: 'Related Accounts',
-                                        name: 'related-accounts-adams-household',
-                                        items: [
-                                            {
-                                                label: 'Lin Akwan',
-                                                name: 'lin-akwan'
-                                            },
-                                            {
-                                                label: 'Northern Trails Outfitter',
-                                                name: 'related-accounts-adams-household-northern-trails-outfitter',
-                                                groups: [
-                                                    {
-                                                        label: 'Group Relationships',
-                                                        name: 'northern-trails-outfitter-group-relationships2',
-                                                        items: [
-                                                            {
-                                                                label: 'Neil Symonds',
-                                                                name: 'northern-trails-outfitter-neil-symonds',
-                                                                avatarFallbackIconName:
-                                                                    'standard:user',
-                                                                href: 'https://www.avonni.app/',
-                                                                data: [
-                                                                    {
-                                                                        label: 'Account name',
-                                                                        value: 'Neil Symonds'
-                                                                    },
-                                                                    {
-                                                                        label: 'Account phone number',
-                                                                        value: '(628) 391-9393'
-                                                                    }
-                                                                ],
-                                                                groups: [
-                                                                    {
-                                                                        label: 'Related Accounts',
-                                                                        name: 'northern-trails-outfitter-neil-symonds-related-accounts',
-                                                                        items: [
-                                                                            {
-                                                                                label: 'Mary James',
-                                                                                name: 'mary-james'
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        label: 'Related Accounts',
-                                                        name: 'northern-trails-outfitter-related-accounts2'
-                                                    },
-                                                    {
-                                                        label: 'Members',
-                                                        name: 'northern-trails-outfitter-members'
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Related Accounts',
-                        name: 'northern-trails-outfitter-related-accounts',
-                        avatarFallbackIconName: 'standard:account',
-                        href: 'https://www.avonni.app/',
-                        // Items
-                        items: [
-                            {
-                                label: 'Alpine Group',
-                                name: 'alpine-group',
-                                avatarSrc:
-                                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-                                avatarFallbackIconName: 'standard:user',
-                                data: [
-                                    {
-                                        label: 'Account name',
-                                        value: 'Alpine Group'
-                                    },
-                                    {
-                                        label: 'Total Financial Accounts',
-                                        value: '$0'
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Member Relationships',
-                                name: 'member-relationships',
-                                avatarFallbackIconName: 'standard:account'
-                            },
-                            {
-                                label: 'Action Plans',
-                                name: 'action-plans',
-                                avatarFallbackIconName: 'standard:account'
-                            },
-                            {
-                                label: 'Adams Household',
-                                name: 'adams-household',
-                                avatarSrc:
-                                    'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-                                avatarFallbackIconName: 'standard:user',
-                                data: [
-                                    {
-                                        label: 'Account name',
-                                        value: 'Adams Household'
-                                    },
-                                    {
-                                        label: 'Total Financial Accounts',
-                                        value: '$1,778,911.21'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-];
-
-const groupsWithNeilSymondsSelection = [
-    {
-        // Group
-        label: 'Group Relationships with a very long label',
-        name: 'group-relationships',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-        avatarFallbackIconName: 'standard:account',
-        href: 'https://www.avonni.app/',
-        selected: true,
-        // Items
-        items: [
-            {
-                label: 'Symonds Household',
-                name: 'symonds-household',
-                avatarSrc:
-                    'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-                avatarFallbackIconName: 'standard:user',
-                href: 'https://www.avonni.app/',
-                data: [
-                    {
-                        label: 'Account Name',
-                        value: 'Symonds Household'
-                    },
-                    {
-                        label: 'Total Financial Accounts',
-                        value: '$324,700.00'
-                    }
-                ],
-                selected: true,
-                groups: [
-                    {
-                        label: 'Group Relationships',
-                        name: 'symonds-household-group-relationships',
-                        items: [
-                            {
-                                label: 'Amine Benachraf',
-                                name: 'amine-benachraf',
-                                hideDefaultActions: true
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Related Accounts',
-                        name: 'symonds-household-related-accounts'
-                    },
-                    {
-                        label: 'Members',
-                        name: 'symonds-household-members',
-                        selected: true,
-                        items: [
-                            {
-                                label: 'Neil Symonds',
-                                name: 'neil-symonds',
-                                avatarFallbackIconName: 'standard:user',
-                                href: 'https://www.avonni.app/',
-                                data: [
-                                    {
-                                        label: 'Account name',
-                                        value: 'Neil Symonds'
-                                    },
-                                    {
-                                        label: 'Account phone number',
-                                        value: '(628) 391-9393'
-                                    }
-                                ],
-                                activeSelection: true,
-                                selected: true
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    // Group
-    {
-        label: 'Related Accounts',
-        name: 'related-accounts',
-        avatarFallbackIconName: 'standard:account',
-        href: 'https://www.avonni.app/',
-        expanded: false,
-        // Items
-        items: [
-            {
-                label: 'Cumulus Restaurants',
-                name: 'cumulus-restaurants',
-                avatarFallbackIconName: 'custom:custom51',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Cumulus Restaurants'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    }
-                ],
-                hideDefaultActions: true,
-                groups: [
-                    {
-                        label: 'Group relationships',
-                        name: 'related-accounts-cumulus-restaurants-group-relationships'
-                    },
-                    {
-                        label: 'Related contacts',
-                        name: 'related-accounts-cumulus-restaurants-related-contacts'
-                    }
-                ]
-            }
-        ],
-        hideDefaultActions: true
-    },
-    // Group
-    {
-        label: 'Member Relationships',
-        name: 'member-relationships2',
-        items: [
-            {
-                label: 'Community Recreation',
-                name: 'community-recreation',
-                avatarFallbackIconName: 'standard:campaign',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Community Recreation'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    },
-                    {
-                        label: 'Total Financial Accounts',
-                        value: '$1,330'
-                    }
-                ]
-            },
-            {
-                label: 'Northern Trails Outfitter',
-                name: 'northern-trail-outfitter',
-                avatarFallbackIconName: 'standard:case',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Northern Trails Outfitter'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    }
-                ],
-                hideDefaultActions: true,
-                // Groups
-                groups: [
-                    {
-                        label: 'Group Relationships',
-                        name: 'northern-trails-outfitter-group-relationships',
-                        avatarSrc:
-                            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-                        avatarFallbackIconName: 'standard:account'
-                    },
-                    {
-                        label: 'Related Contacts',
-                        name: 'northern-trails-outfitter-related-contacts',
-                        href: 'https://www.avonni.app/',
-                        items: [
-                            {
-                                label: 'Ines Akwan',
-                                name: 'ines-akwan',
-                                groups: [
-                                    {
-                                        label: 'Related Accounts',
-                                        name: 'related-accounts-adams-household',
-                                        items: [
-                                            {
-                                                label: 'Lin Akwan',
-                                                name: 'lin-akwan'
-                                            },
-                                            {
-                                                label: 'Northern Trails Outfitter',
-                                                name: 'related-accounts-adams-household-northern-trails-outfitter',
-                                                groups: [
-                                                    {
-                                                        label: 'Group Relationships',
-                                                        name: 'northern-trails-outfitter-group-relationships2',
-                                                        items: [
-                                                            {
-                                                                label: 'Neil Symonds',
-                                                                name: 'northern-trails-outfitter-neil-symonds',
-                                                                avatarFallbackIconName:
-                                                                    'standard:user',
-                                                                href: 'https://www.avonni.app/',
-                                                                data: [
-                                                                    {
-                                                                        label: 'Account name',
-                                                                        value: 'Neil Symonds'
-                                                                    },
-                                                                    {
-                                                                        label: 'Account phone number',
-                                                                        value: '(628) 391-9393'
-                                                                    }
-                                                                ],
-                                                                groups: [
-                                                                    {
-                                                                        label: 'Related Accounts',
-                                                                        name: 'northern-trails-outfitter-neil-symonds-related-accounts',
-                                                                        items: [
-                                                                            {
-                                                                                label: 'Mary James',
-                                                                                name: 'mary-james'
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        label: 'Related Accounts',
-                                                        name: 'northern-trails-outfitter-related-accounts2'
-                                                    },
-                                                    {
-                                                        label: 'Members',
-                                                        name: 'northern-trails-outfitter-members'
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Related Accounts',
-                        name: 'northern-trails-outfitter-related-accounts',
-                        avatarFallbackIconName: 'standard:account',
-                        href: 'https://www.avonni.app/',
-                        // Items
-                        items: [
-                            {
-                                label: 'Alpine Group',
-                                name: 'alpine-group',
-                                avatarSrc:
-                                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-                                avatarFallbackIconName: 'standard:user',
-                                data: [
-                                    {
-                                        label: 'Account name',
-                                        value: 'Alpine Group'
-                                    },
-                                    {
-                                        label: 'Total Financial Accounts',
-                                        value: '$0'
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Member Relationships',
-                                name: 'member-relationships',
-                                avatarFallbackIconName: 'standard:account'
-                            },
-                            {
-                                label: 'Action Plans',
-                                name: 'action-plans',
-                                avatarFallbackIconName: 'standard:account'
-                            },
-                            {
-                                label: 'Adams Household',
-                                name: 'adams-household',
-                                avatarSrc:
-                                    'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-                                avatarFallbackIconName: 'standard:user',
-                                data: [
-                                    {
-                                        label: 'Account name',
-                                        value: 'Adams Household'
-                                    },
-                                    {
-                                        label: 'Total Financial Accounts',
-                                        value: '$1,778,911.21'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-];
-
-describe('RelationshipGraph', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -605,15 +22,12 @@ describe('RelationshipGraph', () => {
     });
 
     it('Relationship graph: Default attributes', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
         expect(element.actions).toMatchObject([]);
         expect(element.avatarFallbackIconName).toBeUndefined();
         expect(element.avatarSrc).toBeUndefined();
         expect(element.expandIconName).toBe('utility:chevronright');
         expect(element.groupActions).toMatchObject([]);
+        expect(element.groupActionsPosition).toBe('top');
         expect(element.groups).toMatchObject([]);
         expect(element.hideItemsCount).toBeFalsy();
         expect(element.href).toBeUndefined();
@@ -628,25 +42,19 @@ describe('RelationshipGraph', () => {
 
     // actions
     it('Relationship graph: actions', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
-        element.actions = actions;
+        element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll('button');
             buttons.forEach((button, index) => {
-                expect(button.name).toBe(actions[index].name);
-                expect(button.disabled).toBe(actions[index].disabled || false);
-                expect(button.value).toBe(actions[index].name);
+                expect(button.name).toBe(ACTIONS[index].name);
+                expect(button.disabled).toBe(ACTIONS[index].disabled || false);
+                expect(button.value).toBe(ACTIONS[index].name);
 
-                if (actions[index].iconName) {
+                if (ACTIONS[index].iconName) {
                     const icon = button.querySelector('lightning-icon');
                     // eslint-disable-next-line jest/no-conditional-expect
-                    expect(icon.iconName).toBe(actions[index].iconName);
+                    expect(icon.iconName).toBe(ACTIONS[index].iconName);
                 }
             });
         });
@@ -654,12 +62,6 @@ describe('RelationshipGraph', () => {
 
     // expand-icon-name
     it('Relationship graph: expandIconName', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         element.expandIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
@@ -672,48 +74,42 @@ describe('RelationshipGraph', () => {
 
     // group-actions
     it('Relationship graph: groupActions', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
-        element.groupActions = actions;
+        element.groupActions = ACTIONS;
 
         return Promise.resolve().then(() => {
             const level = element.shadowRoot.querySelector(
                 'c-primitive-relationship-graph-level'
             );
-            expect(level.groupActions).toMatchObject(actions);
+            expect(level.groupActions).toMatchObject(ACTIONS);
+        });
+    });
+
+    // group-actions-position
+    it('Relationship graph: groupActionsPosition', () => {
+        element.groupActionsPosition = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const level = element.shadowRoot.querySelector(
+                'c-primitive-relationship-graph-level'
+            );
+            expect(level.groupActionsPosition).toBe('bottom');
         });
     });
 
     // groups
     it('Relationship graph: groups', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
-        element.groups = groups;
+        element.groups = GROUPS;
 
         return Promise.resolve().then(() => {
             const level = element.shadowRoot.querySelector(
                 'c-primitive-relationship-graph-level'
             );
-            expect(level.groups).toMatchObject(groups);
+            expect(level.groups).toMatchObject(GROUPS);
         });
     });
 
     // hide-items-count
     it('Relationship graph: hideItemsCount', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         element.hideItemsCount = true;
 
         return Promise.resolve().then(() => {
@@ -725,64 +121,41 @@ describe('RelationshipGraph', () => {
     });
 
     // href
-    describe('Relationship graph: href', () => {
-        it('With label', () => {
-            const element = createElement('data-relationship-graph', {
-                is: RelationshipGraph
-            });
+    // Depends on label
+    it('Relationship graph: href with label', () => {
+        element.label = 'A string label';
+        element.href = 'https://www.avonni.app/';
 
-            document.body.appendChild(element);
-            element.label = 'A string label';
-            element.href = 'https://www.avonni.app/';
-
-            return Promise.resolve().then(() => {
-                const link = element.shadowRoot.querySelector('h1 a');
-                expect(link).toBeTruthy();
-                expect(link.href).toBe('https://www.avonni.app/');
-            });
+        return Promise.resolve().then(() => {
+            const link = element.shadowRoot.querySelector('h1 a');
+            expect(link).toBeTruthy();
+            expect(link.href).toBe('https://www.avonni.app/');
         });
+    });
 
-        it('Without label', () => {
-            const element = createElement('data-relationship-graph', {
-                is: RelationshipGraph
-            });
+    it('Relationship graph: href without label', () => {
+        element.href = 'https://www.avonni.app/';
 
-            document.body.appendChild(element);
-            element.href = 'https://www.avonni.app/';
-
-            return Promise.resolve().then(() => {
-                const link = element.shadowRoot.querySelector('h1 a');
-                expect(link).toBeFalsy();
-            });
+        return Promise.resolve().then(() => {
+            const link = element.shadowRoot.querySelector('h1 a');
+            expect(link).toBeFalsy();
         });
     });
 
     // item-actions
     it('Relationship graph: itemActions', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
-        element.itemActions = actions;
+        element.itemActions = ACTIONS;
 
         return Promise.resolve().then(() => {
             const level = element.shadowRoot.querySelector(
                 'c-primitive-relationship-graph-level'
             );
-            expect(level.itemActions).toMatchObject(actions);
+            expect(level.itemActions).toMatchObject(ACTIONS);
         });
     });
 
     // label
     it('Relationship graph: label', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -794,31 +167,19 @@ describe('RelationshipGraph', () => {
     // selected-item-name
     // Depends on groups
     it('Relationship graph: selectedItemName', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
-        element.groups = groups;
+        element.groups = GROUPS;
         element.selectedItemName = 'neil-symonds';
 
         return Promise.resolve().then(() => {
             const level = element.shadowRoot.querySelector(
                 'c-primitive-relationship-graph-level'
             );
-            expect(level.groups).toMatchObject(groupsWithNeilSymondsSelection);
+            expect(level.groups).toMatchObject(SELECTED_GROUPS);
         });
     });
 
     // shrink-icon-name
     it('Relationship graph: shrinkIconName', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         element.shrinkIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -832,15 +193,9 @@ describe('RelationshipGraph', () => {
     // variant
     // Depends on actions
     it('Relationship graph: variant = horizontal', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
         element.variant = 'horizontal';
-        element.actions = actions;
+        element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
             const level = element.shadowRoot.querySelector(
@@ -877,15 +232,9 @@ describe('RelationshipGraph', () => {
     });
 
     it('Relationship graph: variant = vertical', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
         element.variant = 'vertical';
-        element.actions = actions;
+        element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
             const level = element.shadowRoot.querySelector(
@@ -927,12 +276,6 @@ describe('RelationshipGraph', () => {
 
     // select
     it('Relationship graph: select event', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('select', handler);
 
@@ -957,12 +300,6 @@ describe('RelationshipGraph', () => {
 
     // actionclick
     it('Relationship graph: actionclick event', () => {
-        const element = createElement('data-relationship-graph', {
-            is: RelationshipGraph
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
 

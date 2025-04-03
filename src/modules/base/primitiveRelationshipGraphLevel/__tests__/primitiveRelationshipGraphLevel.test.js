@@ -1,71 +1,16 @@
 import { createElement } from 'lwc';
 import PrimitiveRelationshipGraphLevel from 'c/primitiveRelationshipGraphLevel';
+import { ACTIONS, GROUPS, SELECTED_GROUPS } from './data';
 
-const GROUPS = [
-    {
-        label: 'Group 2',
-        name: 'group-2'
-    },
-    {
-        label: 'Group 1',
-        name: 'group-1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'utility:user',
-        href: 'https://www.avonni.app/',
-        items: [
-            {
-                label: 'Item',
-                name: 'item'
-            }
-        ],
-        expanded: true,
-        hideDefaultActions: true,
-        actions: [
-            {
-                label: 'Action',
-                name: 'action'
-            }
-        ],
-        selected: true
-    },
-    {
-        label: 'Group 3',
-        name: 'group-3'
-    }
-];
+let element;
+describe('Primitive Relationship Graph Level', () => {
+    beforeEach(() => {
+        element = createElement('data-primitive-relationship-graph-level', {
+            is: PrimitiveRelationshipGraphLevel
+        });
+        document.body.appendChild(element);
+    });
 
-const SELECTED_GROUPS = [
-    {
-        label: 'Child group 1',
-        name: 'child-group-1'
-    },
-    {
-        label: 'Child group 2',
-        name: 'child-group-2'
-    },
-    {
-        label: 'Child group 3',
-        name: 'child-group-3'
-    }
-];
-
-const ACTIONS = [
-    {
-        label: 'Action 1',
-        name: 'action-1'
-    },
-    {
-        label: 'Action 2',
-        name: 'action-2'
-    },
-    {
-        label: 'Action 3',
-        name: 'action-3'
-    }
-];
-
-describe('PrimitiveRelationshipGraphLevel', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -73,13 +18,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     });
 
     it('Primitive relationship graph level: Default attributes', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
         expect(element.activeGroups).toBeUndefined();
         expect(element.currentLevelHeight).toBe(0);
         expect(element.currentLevelWidth).toBe(0);
@@ -87,7 +25,9 @@ describe('PrimitiveRelationshipGraphLevel', () => {
         expect(element.groupActions).toBeUndefined();
         expect(element.groupActionsPosition).toBeUndefined();
         expect(element.groups).toMatchObject([]);
-        expect(element.hideItemsCount).toBeUndefined();
+        expect(element.hasRootHeader).toBeFalsy();
+        expect(element.hideItemsCount).toBeFalsy();
+        expect(element.isFirstLevel).toBeFalsy();
         expect(element.itemActions).toBeUndefined();
         expect(element.selectedGroups).toBeUndefined();
         expect(element.shrinkIconName).toBeUndefined();
@@ -99,15 +39,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // active-groups
     // Depends on groups
     it('Primitive relationship graph level: activeGroups', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.activeGroups = true;
 
@@ -125,14 +56,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // current-level-height
     // Depends on groups
     it('Primitive relationship graph level: currentLevelHeight', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
         element.groups = GROUPS;
 
         return Promise.resolve().then(() => {
@@ -142,15 +65,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
 
     // current-level-width
     it('Primitive relationship graph level: currentLevelWidth', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         return Promise.resolve().then(() => {
             expect(element.currentLevelWidth).toBe(0);
         });
@@ -159,15 +73,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // expand-icon-name
     // Depends on groups and selectedGroups
     it('Primitive relationship graph level: expandIconName', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
         element.expandIconName = 'utility:apps';
@@ -191,15 +96,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // group-actions
     // Depends on groups
     it('Primitive relationship graph level: groupActions', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.groupActions = ACTIONS;
 
@@ -217,15 +113,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // group-actions-positions
     // Depends on groups
     it('Primitive relationship graph level: groupActionsPosition', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groupActionsPosition = 'bottom';
         element.groups = GROUPS;
 
@@ -242,15 +129,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
 
     // groups
     it('Primitive relationship graph level: groups', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
 
         return Promise.resolve().then(() => {
@@ -281,18 +159,26 @@ describe('PrimitiveRelationshipGraphLevel', () => {
         });
     });
 
+    // has-root-header
+    // Depends on groups
+    it('Primitive relationship graph level: hasRootHeader', () => {
+        element.hasRootHeader = true;
+        element.groups = GROUPS;
+
+        return Promise.resolve().then(() => {
+            const groups = element.shadowRoot.querySelectorAll(
+                'c-primitive-relationship-graph-group'
+            );
+
+            groups.forEach((group) => {
+                expect(group.hasRootHeader).toBeTruthy();
+            });
+        });
+    });
+
     // hide-items-count
     // Depends on groups
     it('Primitive relationship graph level: hideItemsCount', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.hideItemsCount = true;
         element.groups = GROUPS;
 
@@ -307,18 +193,26 @@ describe('PrimitiveRelationshipGraphLevel', () => {
         });
     });
 
+    // is-first-level
+    // Depends on groups
+    it('Primitive relationship graph level: isFirstLevel', () => {
+        element.isFirstLevel = true;
+        element.groups = GROUPS;
+
+        return Promise.resolve().then(() => {
+            const groups = element.shadowRoot.querySelectorAll(
+                'c-primitive-relationship-graph-group'
+            );
+
+            groups.forEach((group) => {
+                expect(group.isFirstLevel).toBeTruthy();
+            });
+        });
+    });
+
     // item-actions
     // Depends on groups
     it('Primitive relationship graph level: itemActions', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.itemActions = ACTIONS;
         element.groups = GROUPS;
 
@@ -335,15 +229,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
 
     // selected-groups
     it('Primitive relationship graph level: selectedGroups', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.selectedGroups = GROUPS;
 
         return Promise.resolve().then(() => {
@@ -360,15 +245,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // shrink-icon-name
     // Depends on groups
     it('Primitive relationship graph level: shrinkIconName', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.shrinkIconName = 'utility:apps';
 
@@ -386,15 +262,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // variant
     // Depends on groups, selectedGroups
     it('Primitive relationship graph level: variant = horizontal', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
         element.variant = 'horizontal';
@@ -428,15 +295,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // variant
     // Depends on groups, selectedGroups
     it('Primitive relationship graph level: variant = vertical', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -473,15 +331,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     // select
     // Depends on groups, selectedGroups
     it('Primitive relationship graph level: select event received from a child group', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -508,15 +357,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     });
 
     it('Primitive relationship graph level: select event received from the child level', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -543,15 +383,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
 
     // actionclick
     it('Primitive relationship graph level: actionclick event received from a child group', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -589,15 +420,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     });
 
     it('Primitive relationship graph level: actionclick event received from the child level', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -636,15 +458,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
 
     // heightchange
     it('Primitive relationship graph level: heightchange event received from a child group', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -663,15 +476,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     });
 
     it('Primitive relationship graph level: heightchange event received from the child level', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -691,15 +495,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
 
     // toggle
     it('Primitive relationship graph level: Handle toggle event', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 
@@ -725,15 +520,6 @@ describe('PrimitiveRelationshipGraphLevel', () => {
     });
 
     it('Primitive relationship graph level: Handle toggle event on active group', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-level',
-            {
-                is: PrimitiveRelationshipGraphLevel
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = GROUPS;
         element.selectedGroups = SELECTED_GROUPS;
 

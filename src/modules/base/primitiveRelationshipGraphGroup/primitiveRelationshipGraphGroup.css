@@ -23,7 +23,7 @@
 }
 
 /* Lines */
-.group_horizontal::before {
+.avonni-relationship-graph-group__parent-line.group_horizontal::before {
     content: '';
     height: 2px;
     background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
@@ -33,7 +33,7 @@
     top: calc(1.5rem - 2px);
 }
 
-.group_vertical::before {
+.avonni-relationship-graph-group__parent-line.group_vertical::before {
     content: '';
     width: 2px;
     background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
@@ -54,7 +54,7 @@
     background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
 }
 
-.group_active-child::before,
+.avonni-relationship-graph-group__parent-line.group_active-child::before,
 .group_vertical.group_selected.group_active-parent::after {
     background-color: var(
         --avonni-relationship-graph-selected-line-color,

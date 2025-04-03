@@ -87,6 +87,12 @@ export default class RelationshipGraph extends LightningElement {
     selectedItemPosition;
     inlineHeader;
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.updateSelection();
 
@@ -286,7 +292,8 @@ export default class RelationshipGraph extends LightningElement {
     get wrapperClass() {
         return classSet('').add({
             'slds-grid': this.variant === 'horizontal',
-            'slds-m-left_medium': this.variant === 'horizontal'
+            'slds-m-left_medium':
+                this.variant === 'horizontal' && this.hasHeader
         });
     }
 
@@ -363,8 +370,10 @@ export default class RelationshipGraph extends LightningElement {
         const line = this.template.querySelector(
             '[data-element-id="div-line"]'
         );
+        if (!line) {
+            return;
+        }
         const currentLevel = this.childLevel;
-
         if (this.variant === 'vertical') {
             if (this.processedGroups.length === 1) {
                 line.setAttribute('style', `width: 0`);
@@ -374,17 +383,7 @@ export default class RelationshipGraph extends LightningElement {
             }
         } else {
             const height = currentLevel.currentLevelHeight;
-            if (this.hasHeader || this.hasActions) {
-                line.setAttribute(
-                    'style',
-                    `height: calc(${height}px + 1.5rem);`
-                );
-            } else {
-                line.setAttribute(
-                    'style',
-                    `height: calc(${height}px); margin-top: 1.5rem;`
-                );
-            }
+            line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
         }
     }
 
@@ -445,6 +444,35 @@ export default class RelationshipGraph extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Action click event dispatcher.
+     *
+     * @param {Event} event
+     */
+    dispatchActionClickEvent(event) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName Name of the group or item the action is related to. If the action is a root action, the value of <code>targetName</code> will be ‘root’.
+         * @param {object} itemData For an item action, data of the item.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: event.detail
+            })
+        );
+    }
+
     /**
      * Select event dispatch.
      *
@@ -490,29 +518,6 @@ export default class RelationshipGraph extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('toggle', {
-                detail: event.detail
-            })
-        );
-    }
-
-    /**
-     * Action click event dispatcher.
-     *
-     * @param {Event} event
-     */
-    dispatchActionClickEvent(event) {
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {string} targetName Name of the group or item the action is related to. If the action is a root action, the value of <code>targetName</code> will be ‘root’.
-         * @param {object} itemData For an item action, data of the item.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
                 detail: event.detail
             })
         );
