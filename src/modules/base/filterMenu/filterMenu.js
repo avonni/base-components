@@ -185,6 +185,7 @@ export default class FilterMenu extends LightningElement {
     _previousScroll;
     _preventDropdownToggle = false;
     _searchTimeOut;
+    _valueBeforeSearch = [];
 
     @track computedItems = [];
     @track selectedItems = [];
@@ -1035,6 +1036,10 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    get hasNestedItems() {
+        return this.computedTypeAttributes.hasNestedItems;
+    }
+
     /**
      * True if inifinite loading is enabled.
      *
@@ -1233,7 +1238,7 @@ export default class FilterMenu extends LightningElement {
      */
     @api
     focus() {
-        if (this.isVertical && this.computedTypeAttributes.hasNestedItems) {
+        if (this.isVertical && this.hasNestedItems) {
             const tree = this.template.querySelector(
                 '[data-element-id="avonni-tree"]'
             );
@@ -1311,15 +1316,12 @@ export default class FilterMenu extends LightningElement {
             return;
         }
         let firstFocusableItem;
-        const items = normalizeArray(
-            this.computedTypeAttributes.items,
-            'object'
+        const items = deepCopy(
+            normalizeArray(this.computedTypeAttributes.items, 'object')
         );
 
-        this.visibleItems = [];
         this.computedItems = items.map((item) => {
             const checked = this.currentValue.includes(item.value);
-            const hidden = this.isOutOfSearchScope(item);
 
             let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
@@ -1329,14 +1331,11 @@ export default class FilterMenu extends LightningElement {
             const computedItem = new Item({
                 ...item,
                 checked,
-                hidden,
                 tabindex
             });
-            if (!hidden) {
-                this.visibleItems.push(computedItem);
-            }
             return computedItem;
         });
+        this.visibleItems = this.getVisibleItems();
 
         if (this.dropdownVisible) {
             // If the items are set while the popover is open, prevent losing focus
@@ -1522,27 +1521,33 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Check if the given list item label is out of the search scope.
-     *
-     * @param {object} item List item to check.
-     * @returns {boolean} True if the search term is not included in the label, false otherwise.
+     * Get only the item that are in the search scope or have children that are in the search scope.
      */
-    isOutOfSearchScope(item) {
+    getVisibleItems(items = this.computedItems) {
         if (!this.searchTerm || typeof this.searchTerm !== 'string') {
-            return false;
+            return items;
         }
-        const normalizedLabel = item.label.toLowerCase();
-        const searchTerm = this.searchTerm.toLowerCase();
-        const matchesSearch = normalizedLabel.includes(searchTerm);
-        if (matchesSearch) {
-            return false;
-        } else if (Array.isArray(item.items)) {
-            const hasMatchingChild = item.items.some((i) => {
-                return !this.isOutOfSearchScope(i);
-            });
-            return !hasMatchingChild;
+
+        const visibleItems = [];
+        for (let i = 0; i < items.length; i += 1) {
+            const visibleItem = new Item({ ...items[i] });
+            if (Array.isArray(visibleItem.items)) {
+                visibleItem.items = this.getVisibleItems(visibleItem.items);
+                if (visibleItem.items.length) {
+                    visibleItem.expanded = true;
+                    visibleItems.push(visibleItem);
+                    continue;
+                }
+            }
+
+            const normalizedLabel = items[i].label.toLowerCase();
+            const searchTerm = this.searchTerm.toLowerCase();
+            const matchesSearch = normalizedLabel.includes(searchTerm);
+            if (matchesSearch) {
+                visibleItems.push(visibleItem);
+            }
         }
-        return true;
+        return visibleItems;
     }
 
     /**
@@ -1965,14 +1970,8 @@ export default class FilterMenu extends LightningElement {
 
         clearTimeout(this._searchTimeOut);
         this._searchTimeOut = setTimeout(() => {
-            this.visibleItems = [];
-            this.computedItems.forEach((item) => {
-                item.hidden = this.isOutOfSearchScope(item);
-                if (!item.hidden) {
-                    this.visibleItems.push(item);
-                }
-            });
-            this.computedItems = [...this.computedItems];
+            this.visibleItems = this.getVisibleItems();
+            this._valueBeforeSearch = [...this.currentValue];
 
             /**
              * The event fired when the search input value is changed.
@@ -2000,6 +1999,12 @@ export default class FilterMenu extends LightningElement {
             ) {
                 this.dispatchLoadMore();
             }
+
+            requestAnimationFrame(() => {
+                // Make sure the value is not updated
+                // when some items disappear because of the search
+                this._valueBeforeSearch = [];
+            });
         }, 300);
     }
 
@@ -2046,6 +2051,10 @@ export default class FilterMenu extends LightningElement {
      */
     handleTreeSelect(event) {
         event.stopPropagation();
+        if (this._valueBeforeSearch.length) {
+            event.preventDefault();
+            return;
+        }
         this.currentValue = deepCopy(event.detail.selectedItems);
         this.dispatchSelect();
     }

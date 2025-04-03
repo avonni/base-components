@@ -85,7 +85,7 @@
             <!-- List -->
             <template if:true={isList}>
                 <c-tree
-                    if:true={computedTypeAttributes.hasNestedItems}
+                    if:true={hasNestedItems}
                     class="slds-p-vertical_xx-small"
                     disabled={disabled}
                     is-multi-select={computedTypeAttributes.isMultiSelect}
@@ -96,7 +96,7 @@
                     onselect={handleTreeSelect}
                 ></c-tree>
                 <c-input-choice-set
-                    if:false={computedTypeAttributes.hasNestedItems}
+                    if:false={hasNestedItems}
                     class="slds-p-vertical_xx-small"
                     accesskey={accessKey}
                     disabled={disabled}
