@@ -12,13 +12,13 @@ const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
 };
 
 export default class PrimitiveRelationshipGraphItem extends LightningElement {
-    @api label;
-    @api name;
     @api avatarSrc;
     @api avatarFallbackIconName;
-    @api href;
     @api contentData;
     @api hideDefaultActions = false;
+    @api href;
+    @api label;
+    @api name;
 
     _activeSelection = false;
     _customActions = [];
@@ -26,9 +26,31 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     _groups = [];
     _selected = false;
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
+
     wrapperClass;
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
+        this.updateClasses();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    @api
+    get activeSelection() {
+        return this._activeSelection;
+    }
+    set activeSelection(value) {
+        this._activeSelection = value;
         this.updateClasses();
     }
 
@@ -46,15 +68,6 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
     set defaultActions(value) {
         this._defaultActions = normalizeArray(value);
-    }
-
-    @api
-    get activeSelection() {
-        return this._activeSelection;
-    }
-    set activeSelection(value) {
-        this._activeSelection = value;
-        this.updateClasses();
     }
 
     @api
@@ -87,33 +100,11 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         this.updateClasses();
     }
 
-    updateClasses() {
-        this.wrapperClass = classSet(
-            'slds-box slds-box_small slds-m-bottom_small slds-is-relative item'
-        ).add({
-            'item_has-groups': this.groups.length > 0,
-            'item_has-children': this.hasChildren,
-            'item_is-selected': this.selected,
-            'item_is-active': this.activeSelection,
-            item_horizontal: this.variant === 'horizontal'
-        });
-    }
-
-    get hasChildren() {
-        if (this.groups.length === 0) return false;
-
-        return this.groups.some(
-            (group) => Array.isArray(group.items) && group.items.length > 0
-        );
-    }
-
-    get generateKey() {
-        return generateUUID();
-    }
-
-    get hasAvatar() {
-        return this.avatarFallbackIconName || this.avatarSrc;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get actions() {
         const allActions = this.defaultActions.concat(this.customActions);
@@ -134,6 +125,60 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
             return true;
         }
         return undefined;
+    }
+
+    get generateKey() {
+        return generateUUID();
+    }
+
+    get hasAvatar() {
+        return this.avatarFallbackIconName || this.avatarSrc;
+    }
+
+    get hasChildren() {
+        if (this.groups.length === 0) return false;
+
+        return this.groups.some(
+            (group) => Array.isArray(group.items) && group.items.length > 0
+        );
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    updateClasses() {
+        this.wrapperClass = classSet(
+            'slds-box slds-box_small slds-m-bottom_small slds-is-relative item'
+        ).add({
+            'item_has-groups': this.groups.length > 0,
+            'item_has-children': this.hasChildren,
+            'item_is-selected': this.selected,
+            'item_is-active': this.activeSelection,
+            item_horizontal: this.variant === 'horizontal'
+        });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    handleActionClick(event) {
+        const name = event.currentTarget.value;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    targetName: this.name,
+                    itemData: this.contentData
+                }
+            })
+        );
     }
 
     /**
@@ -174,20 +219,6 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
             new CustomEvent('select', {
                 detail: {
                     name: this.name
-                }
-            })
-        );
-    }
-
-    handleActionClick(event) {
-        const name = event.currentTarget.value;
-
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: name,
-                    targetName: this.name,
-                    itemData: this.contentData
                 }
             })
         );
