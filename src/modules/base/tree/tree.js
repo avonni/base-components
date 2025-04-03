@@ -74,6 +74,7 @@ export default class Tree extends LightningElement {
     _connected = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
+    _previousSelectedItems = [];
     _selectTimeout;
     _setFocus = false;
 
@@ -331,6 +332,7 @@ export default class Tree extends LightningElement {
             typeof value === 'string'
                 ? [value]
                 : deepCopy(normalizeArray(value));
+        this._previousSelectedItems = [];
         if (this._connected) this.resetSelection();
     }
 
@@ -566,6 +568,7 @@ export default class Tree extends LightningElement {
             );
         }
         if (selectedItems.length !== this.selectedItems.length) {
+            this._previousSelectedItems = [...this.selectedItems];
             this._selectedItems = selectedItems;
             this.dispatchSelect();
         }
@@ -849,6 +852,7 @@ export default class Tree extends LightningElement {
             (this.selectedItems.length === 1 && this.selectedItems[0] === name)
         )
             return;
+        this._previousSelectedItems = [...this.selectedItems];
         this._selectedItems = [name];
         this.dispatchSelect(event);
     }
@@ -1118,6 +1122,7 @@ export default class Tree extends LightningElement {
                 }
             } else if (target === 'anchor') {
                 if (this.isMultiSelect) {
+                    this._previousSelectedItems = [...this.selectedItems];
                     const cascadeSelection = !this.independentMultiSelect;
                     if (!node.selected) {
                         this.treedata.selectNode(
@@ -1512,9 +1517,13 @@ export default class Tree extends LightningElement {
         } else {
             this.dispatchEvent(customEvent);
 
-            if (event && customEvent.defaultPrevented) {
-                event.preventDefault();
+            if (customEvent.defaultPrevented) {
+                if (event) {
+                    event.preventDefault();
+                }
+                this._selectedItems = this._previousSelectedItems;
             }
         }
+        this._previousSelectedItems = [];
     }
 }
