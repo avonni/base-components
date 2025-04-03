@@ -6,35 +6,35 @@
             <div class={currentLevelClass}>
                 <template iterator:group={groups}>
                     <c-primitive-relationship-graph-group
-                        onselect={handleSelect}
-                        ontoggle={handleToggle}
-                        onactionclick={dispatchActionClickEvent}
-                        onheightchange={handleGroupHeightChange}
                         key={group.value.name}
-                        label={group.value.label}
-                        name={group.value.name}
-                        avatar-src={group.value.avatarSrc}
-                        avatar-fallback-icon-name={group.value.avatarFallbackIconName}
-                        href={group.value.href}
-                        is-loading={group.value.isLoading}
-                        items={group.value.items}
-                        expanded={group.value.expanded}
-                        hide-default-actions={group.value.hideDefaultActions}
-                        custom-actions={group.value.actions}
-                        selected={group.value.selected}
-                        shrink-icon-name={shrinkIconName}
-                        expand-icon-name={expandIconName}
-                        active-child={activeGroups}
-                        variant={variant}
-                        default-actions={groupActions}
+                        class="slds-is-relative"
                         actions-position={groupActionsPosition}
-                        item-actions={itemActions}
+                        active-child={activeGroups}
+                        avatar-fallback-icon-name={group.value.avatarFallbackIconName}
+                        avatar-src={group.value.avatarSrc}
+                        custom-actions={group.value.actions}
+                        default-actions={groupActions}
+                        expanded={group.value.expanded}
+                        expand-icon-name={expandIconName}
+                        has-root-header={hasRootHeader}
+                        hide-default-actions={group.value.hideDefaultActions}
                         hide-items-count={hideItemsCount}
+                        href={group.value.href}
                         is-first-child={group.first}
                         is-first-level={isFirstLevel}
-                        has-root-header={hasRootHeader}
-                        class="slds-is-relative"
+                        is-loading={group.value.isLoading}
+                        item-actions={itemActions}
+                        items={group.value.items}
+                        label={group.value.label}
+                        name={group.value.name}
+                        selected={group.value.selected}
+                        shrink-icon-name={shrinkIconName}
+                        variant={variant}
                         data-element-id="avonni-primitive-relationship-graph-group"
+                        onactionclick={dispatchActionClickEvent}
+                        onheightchange={handleGroupHeightChange}
+                        onselect={handleSelect}
+                        ontoggle={handleToggle}
                     ></c-primitive-relationship-graph-group>
                 </template>
             </div>
@@ -44,20 +44,20 @@
         <!-- Selected level -->
         <div class="slds-grid" if:true={hasSelectedGroups}>
             <c-primitive-relationship-graph-level
-                onselect={dispatchSelectEvent}
-                ontoggle={dispatchToggleEvent}
-                onactionclick={dispatchActionClickEvent}
-                onheightchange={handleGroupHeightChange}
-                groups={selectedGroups}
-                variant={variant}
-                shrink-icon-name={shrinkIconName}
-                expand-icon-name={expandIconName}
                 active-groups={containsActiveItem}
+                expand-icon-name={expandIconName}
                 group-actions={groupActions}
                 group-actions-position={groupActionsPosition}
-                item-actions={itemActions}
+                groups={selectedGroups}
                 hide-items-count={hideItemsCount}
+                item-actions={itemActions}
+                shrink-icon-name={shrinkIconName}
+                variant={variant}
                 data-element-id="avonni-primitive-relationship-graph-level"
+                onactionclick={dispatchActionClickEvent}
+                onheightchange={handleGroupHeightChange}
+                onselect={dispatchSelectEvent}
+                ontoggle={dispatchToggleEvent}
             ></c-primitive-relationship-graph-level>
         </div>
     </div>

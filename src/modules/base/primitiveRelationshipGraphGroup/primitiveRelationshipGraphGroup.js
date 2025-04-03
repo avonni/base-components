@@ -19,24 +19,24 @@ const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 
 export default class PrimitiveRelationshipGraphGroup extends LightningElement {
-    @api label;
-    @api name;
-    @api avatarSrc;
-    @api avatarFallbackIconName;
-    @api href;
-    @api hideDefaultActions;
-    @api selected;
-    @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
-    @api expandIconName = DEFAULT_EXPAND_ICON_NAME;
     @api activeChild = false;
-    @api itemActions;
+    @api avatarFallbackIconName;
+    @api avatarSrc;
+    @api expandIconName = DEFAULT_EXPAND_ICON_NAME;
+    @api hasRootHeader = false;
+    @api hideDefaultActions = false;
     @api hideItemsCount = false;
+    @api href;
     @api isFirstChild = false;
     @api isFirstLevel = false;
-    @api hasRootHeader = false;
+    @api itemActions;
+    @api label;
+    @api name;
+    @api selected = false;
+    @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
 
     _actionsPosition = ACTIONS_POSITIONS.default;
-    _closed;
+    _closed = false;
     _customActions = [];
     _defaultActions = [];
     _expanded = true;
@@ -44,6 +44,12 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _isLoading = false;
     _items = [];
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this._closed = this.expanded === false;
@@ -58,6 +64,12 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
     get actionsPosition() {
         return this._actionsPosition;
@@ -67,33 +79,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             validValues: ACTIONS_POSITIONS.valid,
             fallbackValue: ACTIONS_POSITIONS.default
         });
-    }
-
-    @api
-    get items() {
-        return this._items;
-    }
-    set items(value) {
-        this._items = normalizeArray(value);
-    }
-
-    @api
-    get selectedItemComponent() {
-        const items = this.template.querySelectorAll(
-            '[data-element-id="avonni-primitive-relationship-graph-item"]'
-        );
-
-        let selectedItem;
-        items.forEach((item) => {
-            if (item.selected) selectedItem = item;
-        });
-        return selectedItem;
-    }
-
-    @api
-    get height() {
-        const group = this.template.querySelector('.group');
-        return group ? group.offsetHeight : 0;
     }
 
     @api
@@ -126,11 +111,38 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     @api
+    get height() {
+        const group = this.template.querySelector('.group');
+        return group ? group.offsetHeight : 0;
+    }
+
+    @api
     get isLoading() {
         return this._isLoading;
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    @api
+    get items() {
+        return this._items;
+    }
+    set items(value) {
+        this._items = normalizeArray(value);
+    }
+
+    @api
+    get selectedItemComponent() {
+        const items = this.template.querySelectorAll(
+            '[data-element-id="avonni-primitive-relationship-graph-item"]'
+        );
+
+        let selectedItem;
+        items.forEach((item) => {
+            if (item.selected) selectedItem = item;
+        });
+        return selectedItem;
     }
 
     @api
@@ -144,26 +156,42 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         });
     }
 
-    get showEmptyMessage() {
-        return (
-            !this.isLoading &&
-            (!Array.isArray(this.items) || this.items.length === 0)
-        );
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get actionButtonClass() {
+        return classSet('slds-button slds-button_neutral').add({
+            'slds-button_stretch': this.actionsPosition === 'bottom'
+        });
     }
 
-    get title() {
-        if (this.hideItemsCount) return this.label;
+    get actions() {
+        if (this.hideDefaultActions) return this.customActions;
 
-        const count = this.items ? this.items.length : 0;
-        return `${this.label} (${count})`;
+        return this.defaultActions.concat(this.customActions);
+    }
+
+    get activeParent() {
+        return this.items && this.items.find((item) => item.activeSelection);
+    }
+
+    get closed() {
+        return this._closed;
+    }
+    set closed(value) {
+        // The value needs to be undefined for the summary detail to be open
+        this._closed = value === true ? true : undefined;
     }
 
     get hasAvatar() {
         return this.avatarSrc || this.avatarFallbackIconName;
     }
 
-    get activeParent() {
-        return this.items && this.items.find((item) => item.activeSelection);
+    get hasMoreThanOneAction() {
+        return this.actions.length > 1;
     }
 
     get hasSelectedChildren() {
@@ -180,6 +208,24 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
     set hasSelectedChildren(value) {
         this._hasSelectedChildren = value;
+    }
+
+    get title() {
+        if (this.hideItemsCount) return this.label;
+
+        const count = this.items ? this.items.length : 0;
+        return `${this.label} (${count})`;
+    }
+
+    get topActions() {
+        return this.actions && this.actionsPosition === 'top';
+    }
+
+    get showEmptyMessage() {
+        return (
+            !this.isLoading &&
+            (!Array.isArray(this.items) || this.items.length === 0)
+        );
     }
 
     get showParentLine() {
@@ -200,37 +246,34 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         });
     }
 
-    get actionButtonClass() {
-        return classSet('slds-button slds-button_neutral').add({
-            'slds-button_stretch': this.actionsPosition === 'bottom'
-        });
-    }
-
-    get actions() {
-        if (this.hideDefaultActions) return this.customActions;
-
-        return this.defaultActions.concat(this.customActions);
-    }
-
-    get hasMoreThanOneAction() {
-        return this.actions.length > 1;
-    }
-
-    get topActions() {
-        return this.actions && this.actionsPosition === 'top';
-    }
-
-    get closed() {
-        return this._closed;
-    }
-    set closed(value) {
-        // The value needs to be undefined for the summary detail to be open
-        this._closed = value === true ? true : undefined;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     asyncSetClosed = async (value) => {
         this.closed = value;
     };
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    handleActionClick(event) {
+        const name = event.currentTarget.value;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    targetName: this.name
+                }
+            })
+        );
+    }
 
     /**
      * Prevent anchor tag from navigating when href leads to nothing.
@@ -284,19 +327,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             this.selectedItemComponent.activeSelection = false;
             this.selectedItemComponent.selected = false;
         }
-    }
-
-    handleActionClick(event) {
-        const name = event.currentTarget.value;
-
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: name,
-                    targetName: this.name
-                }
-            })
-        );
     }
 
     dispatchActionClickEvent(event) {

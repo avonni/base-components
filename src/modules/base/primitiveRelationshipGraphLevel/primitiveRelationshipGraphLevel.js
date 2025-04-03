@@ -2,21 +2,27 @@ import { LightningElement, api } from 'lwc';
 import { classSet, normalizeArray } from 'c/utils';
 
 export default class PrimitiveRelationshipGraphLevel extends LightningElement {
-    @api variant;
+    @api activeGroups;
+    @api expandIconName;
     @api groupActions;
     @api groupActionsPosition;
+    @api hasRootHeader = false;
+    @api hideItemsCount = false;
+    @api isFirstLevel = false;
     @api itemActions;
     @api shrinkIconName;
-    @api expandIconName;
-    @api activeGroups;
-    @api hideItemsCount;
-    @api hasRootHeader = false;
-    @api isFirstLevel = false;
+    @api variant;
 
     _groups = [];
     _selectedGroups;
     _selectedItemName;
     _selectedItem;
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.updateSelection();
@@ -26,22 +32,11 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         this.updateLine();
     }
 
-    @api
-    get groups() {
-        return this._groups;
-    }
-    set groups(proxy) {
-        this._groups = normalizeArray(proxy);
-        this.updateSelection();
-    }
-
-    @api
-    get selectedGroups() {
-        return this._selectedGroups;
-    }
-    set selectedGroups(value) {
-        this._selectedGroups = value;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     @api
     get currentLevelHeight() {
@@ -65,9 +60,28 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return this.currentLevel.getBoundingClientRect().width;
     }
 
-    get currentLevel() {
-        return this.template.querySelector('.current-level');
+    @api
+    get groups() {
+        return this._groups;
     }
+    set groups(proxy) {
+        this._groups = normalizeArray(proxy);
+        this.updateSelection();
+    }
+
+    @api
+    get selectedGroups() {
+        return this._selectedGroups;
+    }
+    set selectedGroups(value) {
+        this._selectedGroups = value;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get childLevel() {
         return this.template.querySelector(
@@ -75,11 +89,16 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         );
     }
 
-    get wrapperClass() {
-        return classSet('').add({
-            'slds-grid': this.variant === 'horizontal',
-            'slds-show_inline-block': this.variant === 'vertical'
+    get containsActiveItem() {
+        return Array.from(this.groups).some((group) => {
+            if (!group.items) return false;
+
+            return group.items.some((item) => item.activeSelection);
         });
+    }
+
+    get currentLevel() {
+        return this.template.querySelector('.current-level');
     }
 
     get currentLevelClass() {
@@ -112,12 +131,17 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         });
     }
 
-    get containsActiveItem() {
-        return Array.from(this.groups).some((group) => {
-            if (!group.items) return false;
+    get selectedGroupComponent() {
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-primitive-relationship-graph-group"]'
+        );
 
-            return group.items.some((item) => item.activeSelection);
+        let selectedGroup;
+        groups.forEach((group) => {
+            const selection = group.selected;
+            if (selection) selectedGroup = group;
         });
+        return selectedGroup;
     }
 
     get selectedItemComponent() {
@@ -133,17 +157,22 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return selectedItem;
     }
 
-    get selectedGroupComponent() {
-        const groups = this.template.querySelectorAll(
-            '[data-element-id="avonni-primitive-relationship-graph-group"]'
-        );
-
-        let selectedGroup;
-        groups.forEach((group) => {
-            const selection = group.selected;
-            if (selection) selectedGroup = group;
+    get wrapperClass() {
+        return classSet('').add({
+            'slds-grid': this.variant === 'horizontal',
+            'slds-show_inline-block': this.variant === 'vertical'
         });
-        return selectedGroup;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    cleanSelection() {
+        this._selectedGroups = undefined;
+        if (this.childLevel) this.childLevel.selectedGroups = undefined;
     }
 
     updateLine() {
@@ -215,9 +244,18 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         }
     }
 
-    cleanSelection() {
-        this._selectedGroups = undefined;
-        if (this.childLevel) this.childLevel.selectedGroups = undefined;
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    dispatchActionClickEvent(event) {
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: event.detail
+            })
+        );
     }
 
     dispatchSelectEvent(event) {
@@ -241,12 +279,13 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         );
     }
 
-    dispatchActionClickEvent(event) {
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: event.detail
-            })
-        );
+    handleCloseActiveGroup() {
+        this.cleanSelection();
+    }
+
+    handleGroupHeightChange() {
+        this.updateLine();
+        this.dispatchEvent(new CustomEvent('heightchange'));
     }
 
     handleSelect(event) {
@@ -259,15 +298,5 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         if (event.detail.closed && event.detail.isActiveGroup) {
             this.cleanSelection();
         }
-    }
-
-    handleCloseActiveGroup() {
-        this.cleanSelection();
-    }
-
-    handleGroupHeightChange() {
-        this.updateLine();
-
-        this.dispatchEvent(new CustomEvent('heightchange'));
     }
 }

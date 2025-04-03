@@ -87,6 +87,12 @@ export default class RelationshipGraph extends LightningElement {
     selectedItemPosition;
     inlineHeader;
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.updateSelection();
 
@@ -438,6 +444,35 @@ export default class RelationshipGraph extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Action click event dispatcher.
+     *
+     * @param {Event} event
+     */
+    dispatchActionClickEvent(event) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName Name of the group or item the action is related to. If the action is a root action, the value of <code>targetName</code> will be ‘root’.
+         * @param {object} itemData For an item action, data of the item.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: event.detail
+            })
+        );
+    }
+
     /**
      * Select event dispatch.
      *
@@ -483,29 +518,6 @@ export default class RelationshipGraph extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('toggle', {
-                detail: event.detail
-            })
-        );
-    }
-
-    /**
-     * Action click event dispatcher.
-     *
-     * @param {Event} event
-     */
-    dispatchActionClickEvent(event) {
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {string} targetName Name of the group or item the action is related to. If the action is a root action, the value of <code>targetName</code> will be ‘root’.
-         * @param {object} itemData For an item action, data of the item.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
                 detail: event.detail
             })
         );

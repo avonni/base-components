@@ -1,12 +1,12 @@
 <template>
     <div class={wrapperClass} tabindex="-1">
         <avonni-summary-detail
+            closed={closed}
+            expand-icon-name={expandIconName}
             full-width="true"
             remove-body-indentation="true"
             shrink-icon-name={shrinkIconName}
-            expand-icon-name={expandIconName}
             ontoggle={handleToggle}
-            closed={closed}
         >
             <div
                 if:true={isLoading}
@@ -28,9 +28,9 @@
                         slot="figure"
                         alternative-text={label}
                         fallback-icon-name={avatarFallbackIconName}
-                        src={avatarSrc}
                         hide-avatar-details="true"
                         size="small"
+                        src={avatarSrc}
                     ></avonni-avatar>
                 </template>
                 <h2 class="slds-truncate group-title">
@@ -98,23 +98,23 @@
             <template if:true={items}>
                 <template for:each={items} for:item="item">
                     <c-primitive-relationship-graph-item
-                        onselect={handleSelect}
-                        onactionclick={dispatchActionClickEvent}
                         key={item.name}
-                        label={item.label}
-                        name={item.name}
-                        avatar-src={item.avatarSrc}
+                        active-selection={item.activeSelection}
                         avatar-fallback-icon-name={item.avatarFallbackIconName}
-                        href={item.href}
+                        avatar-src={item.avatarSrc}
                         content-data={item.data}
+                        custom-actions={item.actions}
+                        default-actions={itemActions}
                         groups={item.groups}
                         hide-default-actions={item.hideDefaultActions}
-                        custom-actions={item.actions}
+                        href={item.href}
+                        label={item.label}
+                        name={item.name}
                         selected={item.selected}
-                        active-selection={item.activeSelection}
-                        default-actions={itemActions}
                         variant={variant}
                         data-element-id="avonni-primitive-relationship-graph-item"
+                        onactionclick={dispatchActionClickEvent}
+                        onselect={handleSelect}
                     ></c-primitive-relationship-graph-item>
                 </template>
             </template>
@@ -129,21 +129,21 @@
                             data-bottom-actions
                         >
                             <button
-                                name={action.name}
                                 class={actionButtonClass}
                                 disabled={action.disabled}
+                                name={action.name}
                                 type="button"
-                                onclick={handleActionClick}
                                 value={action.name}
                                 variant="neutral"
+                                onclick={handleActionClick}
                             >
                                 <lightning-icon
                                     if:true={action.iconName}
-                                    icon-name={action.iconName}
                                     class="
                                         slds-current-color
                                         slds-m-right_x-small
                                     "
+                                    icon-name={action.iconName}
                                     size="xx-small"
                                 ></lightning-icon>
                                 {action.label}
