@@ -27,6 +27,7 @@ describe('Relationship Graph', () => {
         expect(element.avatarSrc).toBeUndefined();
         expect(element.expandIconName).toBe('utility:chevronright');
         expect(element.groupActions).toMatchObject([]);
+        expect(element.groupActionsPosition).toBe('top');
         expect(element.groups).toMatchObject([]);
         expect(element.hideItemsCount).toBeFalsy();
         expect(element.href).toBeUndefined();
@@ -80,6 +81,18 @@ describe('Relationship Graph', () => {
                 'c-primitive-relationship-graph-level'
             );
             expect(level.groupActions).toMatchObject(ACTIONS);
+        });
+    });
+
+    // group-actions-position
+    it('Relationship graph: groupActionsPosition', () => {
+        element.groupActionsPosition = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const level = element.shadowRoot.querySelector(
+                'c-primitive-relationship-graph-level'
+            );
+            expect(level.groupActionsPosition).toBe('bottom');
         });
     });
 
