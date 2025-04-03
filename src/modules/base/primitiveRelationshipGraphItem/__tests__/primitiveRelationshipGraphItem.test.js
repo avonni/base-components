@@ -9,7 +9,15 @@ import PrimitiveRelationshipGraphItem from 'c/primitiveRelationshipGraphItem';
 // hideDefaultActions
 // actionclick event
 
-describe('PrimitiveRelationshipGraphItem', () => {
+let element;
+describe('Primitive Relationship Graph Item', () => {
+    beforeEach(() => {
+        element = createElement('data-primitive-relationship-graph-item', {
+            is: PrimitiveRelationshipGraphItem
+        });
+        document.body.appendChild(element);
+    });
+
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -17,13 +25,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
     });
 
     it('Primitive relationship graph item: Default attributes', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
         expect(element.activeSelection).toBeFalsy();
         expect(element.avatarFallbackIconName).toBeUndefined();
         expect(element.avatarSrc).toBeUndefined();
@@ -43,15 +44,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
 
     // active-selection
     it('Primitive relationship graph item: actionSelection = false', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.activeSelection = false;
 
         return Promise.resolve().then(() => {
@@ -61,15 +53,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
     });
 
     it('Primitive relationship graph item: actionSelection = true', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.activeSelection = true;
 
         return Promise.resolve().then(() => {
@@ -80,15 +63,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
 
     // contenData
     it('Primitive relationship graph item: contenData', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         const data = [
             {
                 label: 'Label 1',
@@ -115,15 +89,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
 
     // groups
     it('Primitive relationship graph item: groups', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.groups = [
             {
                 label: 'Label 1',
@@ -150,15 +115,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
 
     // href
     it('Primitive relationship graph item: href', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.href = 'https://www.avonni.app/';
 
         return Promise.resolve().then(() => {
@@ -171,15 +127,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
 
     // label
     it('Primitive relationship graph item: label', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -192,15 +139,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
 
     // selected
     it('Primitive relationship graph item: selected = false', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.selected = false;
 
         return Promise.resolve().then(() => {
@@ -210,15 +148,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
     });
 
     it('Primitive relationship graph item: selected = true', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.selected = true;
 
         return Promise.resolve().then(() => {
@@ -229,15 +158,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
 
     // variant
     it('Primitive relationship graph item: variant = horizontal', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
@@ -247,15 +167,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
     });
 
     it('Primitive relationship graph item: variant = vertical', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.variant = 'vertical';
 
         return Promise.resolve().then(() => {
@@ -269,15 +180,6 @@ describe('PrimitiveRelationshipGraphItem', () => {
     // select
     // Depends on name
     it('Primitive relationship graph item: select event', () => {
-        const element = createElement(
-            'data-primitive-relationship-graph-item',
-            {
-                is: PrimitiveRelationshipGraphItem
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.name = 'a-string-name';
 
         const handler = jest.fn();
