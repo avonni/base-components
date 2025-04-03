@@ -274,6 +274,15 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
+     * Verify if root header is displayed.
+     *
+     * @type {boolean|string}
+     */
+    get hasRootHeader() {
+        return this.hasHeader || this.hasActions;
+    }
+
+    /**
      * Get the DOM child element level
      *
      * @type {Element}
@@ -293,7 +302,7 @@ export default class RelationshipGraph extends LightningElement {
         return classSet('').add({
             'slds-grid': this.variant === 'horizontal',
             'slds-m-left_medium':
-                this.variant === 'horizontal' && this.hasHeader
+                this.variant === 'horizontal' && this.hasRootHeader
         });
     }
 

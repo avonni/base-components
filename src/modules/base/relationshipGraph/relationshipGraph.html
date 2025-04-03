@@ -44,7 +44,7 @@
 
     <div class={wrapperClass}>
         <div
-            if:true={hasHeader}
+            if:true={hasRootHeader}
             class={lineClass}
             data-element-id="div-line"
         ></div>
@@ -55,7 +55,7 @@
             group-actions={groupActions}
             group-actions-position={groupActionsPosition}
             groups={processedGroups}
-            has-root-header={hasHeader}
+            has-root-header={hasRootHeader}
             hide-items-count={hideItemsCount}
             is-first-level="true"
             item-actions={itemActions}
