@@ -31,7 +31,9 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api activeChild = false;
     @api itemActions;
     @api hideItemsCount = false;
-    @api isFirstChild;
+    @api isFirstChild = false;
+    @api isFirstLevel = false;
+    @api hasRootHeader = false;
 
     _actionsPosition = ACTIONS_POSITIONS.default;
     _closed;
@@ -180,6 +182,10 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         this._hasSelectedChildren = value;
     }
 
+    get showParentLine() {
+        return (this.hasRootHeader && this.isFirstLevel) || !this.isFirstLevel;
+    }
+
     get wrapperClass() {
         return classSet(
             'slds-p-around_medium slds-m-bottom_medium group slds-box slds-theme_default'
@@ -189,7 +195,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             group_selected: this.selected && this.hasSelectedChildren,
             'group_horizontal slds-is-relative': this.variant === 'horizontal',
             group_vertical: this.variant === 'vertical',
-            'slds-m-right_medium': this.variant === 'vertical'
+            'slds-m-right_medium': this.variant === 'vertical',
+            'avonni-relationship-graph-group__parent-line': this.showParentLine
         });
     }
 

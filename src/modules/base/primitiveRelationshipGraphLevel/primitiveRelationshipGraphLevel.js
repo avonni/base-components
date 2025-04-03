@@ -10,6 +10,8 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api expandIconName;
     @api activeGroups;
     @api hideItemsCount;
+    @api hasRootHeader = false;
+    @api isFirstLevel = false;
 
     _groups = [];
     _selectedGroups;
@@ -83,7 +85,10 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     get currentLevelClass() {
         return classSet('current-level').add({
             'slds-grid': this.variant === 'vertical',
-            'slds-m-left_x-large': this.variant === 'horizontal'
+            'slds-m-left_x-large':
+                this.variant === 'horizontal' &&
+                (!this.isFirstLevel ||
+                    (this.hasRootHeader && this.isFirstLevel))
         });
     }
 

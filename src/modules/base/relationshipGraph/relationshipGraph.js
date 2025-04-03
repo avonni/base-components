@@ -286,7 +286,8 @@ export default class RelationshipGraph extends LightningElement {
     get wrapperClass() {
         return classSet('').add({
             'slds-grid': this.variant === 'horizontal',
-            'slds-m-left_medium': this.variant === 'horizontal'
+            'slds-m-left_medium':
+                this.variant === 'horizontal' && this.hasHeader
         });
     }
 
@@ -363,8 +364,10 @@ export default class RelationshipGraph extends LightningElement {
         const line = this.template.querySelector(
             '[data-element-id="div-line"]'
         );
+        if (!line) {
+            return;
+        }
         const currentLevel = this.childLevel;
-
         if (this.variant === 'vertical') {
             if (this.processedGroups.length === 1) {
                 line.setAttribute('style', `width: 0`);
@@ -374,17 +377,7 @@ export default class RelationshipGraph extends LightningElement {
             }
         } else {
             const height = currentLevel.currentLevelHeight;
-            if (this.hasHeader || this.hasActions) {
-                line.setAttribute(
-                    'style',
-                    `height: calc(${height}px + 1.5rem);`
-                );
-            } else {
-                line.setAttribute(
-                    'style',
-                    `height: calc(${height}px); margin-top: 1.5rem;`
-                );
-            }
+            line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
         }
     }
 

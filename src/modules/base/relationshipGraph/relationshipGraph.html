@@ -43,7 +43,11 @@
     </div>
 
     <div class={wrapperClass}>
-        <div class={lineClass} data-element-id="div-line"></div>
+        <div
+            if:true={hasHeader}
+            class={lineClass}
+            data-element-id="div-line"
+        ></div>
 
         <!-- Levels -->
         <c-primitive-relationship-graph-level
@@ -58,6 +62,8 @@
             group-actions={groupActions}
             group-actions-position={groupActionsPosition}
             item-actions={itemActions}
+            is-first-level="true"
+            has-root-header={hasHeader}
             hide-items-count={hideItemsCount}
             data-element-id="avonni-primitive-relationship-graph-level"
         ></c-primitive-relationship-graph-level>
