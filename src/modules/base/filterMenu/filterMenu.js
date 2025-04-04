@@ -1291,10 +1291,7 @@ export default class FilterMenu extends LightningElement {
     reset() {
         this.currentValue = [];
         if (this.isList) {
-            this.computedItems = this.computedItems.map((item) => {
-                item.checked = false;
-                return item;
-            });
+            this.computeListItems();
         }
     }
 
