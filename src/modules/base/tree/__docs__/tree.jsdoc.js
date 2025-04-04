@@ -29,6 +29,7 @@
  * @property {string} label Required. Label of the item.
  * @property {string} metatext Text to provide users with supplemental information and aid with identifiation or diambiguation.
  * @property {string} iconName The Lightning Design System name of the icon displayed after the label. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {boolean} indeterminate If true, the multi-select checkbox is displayed in an indeterminate state, independently of the selected state of the item or its children.
  * @property {object[]} items Nested item objects.
  * @property {string} name Required. The unique name of the item. It will be returned by the `onselect` event handler.
  * @property {string} href If the item label should be a link, URL of the link.

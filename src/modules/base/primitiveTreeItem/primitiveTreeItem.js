@@ -363,7 +363,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * If present, the checkbox is displayed in an indeterminate state, independently of the selected state of the item or its children.
+     * If present, the multi-select checkbox is displayed in an indeterminate state, independently of the selected state of the item or its children.
      *
      * @type {boolean}
      * @public

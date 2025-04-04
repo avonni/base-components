@@ -323,6 +323,18 @@ Base.args = {
     typeAttributes: { items: ITEMS }
 };
 
+export const NestedItems = Template.bind({});
+NestedItems.args = {
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        hasNestedItems: true,
+        items: NESTED_ITEMS
+    },
+    label: 'Nested Items',
+    value: ['oceania', 'burundi', 'burkina-faso']
+};
+
 export const MultiSelectList = Template.bind({});
 MultiSelectList.args = {
     typeAttributes: {
