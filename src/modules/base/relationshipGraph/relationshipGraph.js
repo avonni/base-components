@@ -247,30 +247,28 @@ export default class RelationshipGraph extends LightningElement {
      */
 
     /**
-     * Verify if avatar is displayed.
+     * Get action button class styling based on vertical or horizontal alignment.
      *
      * @type {string}
      */
-    get hasAvatar() {
-        return this.avatarSrc || this.avatarFallbackIconName;
+    get actionButtonClass() {
+        return classSet('slds-button slds-button_neutral').add({
+            'slds-button_stretch': this.variant === 'vertical',
+            'slds-m-bottom_xx-small': this.variant === 'horizontal'
+        });
     }
 
     /**
-     * Verify if actions object is populated.
+     * Compute actions class styling based on vertical or horizontal alignment.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get hasActions() {
-        return this.actions.length > 0;
-    }
-
-    /**
-     * Verify if header is displayed.
-     *
-     * @type {boolean|string}
-     */
-    get hasHeader() {
-        return this.hasAvatar || this.label;
+    get actionsClass() {
+        return classSet('slds-is-relative actions').add({
+            actions_vertical: this.variant === 'vertical',
+            'slds-p-vertical_small': this.variant === 'horizontal',
+            'slds-p-vertical_large': this.variant === 'vertical'
+        });
     }
 
     /**
@@ -285,16 +283,39 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
-     * Compute wrapper class when horizontal.
+     * Verify if actions object is populated.
+     *
+     * @type {boolean}
+     */
+    get hasActions() {
+        return this.actions.length > 0;
+    }
+
+    /**
+     * Verify if avatar is displayed.
      *
      * @type {string}
      */
-    get wrapperClass() {
-        return classSet('').add({
-            'slds-grid': this.variant === 'horizontal',
-            'slds-m-left_medium':
-                this.variant === 'horizontal' && this.hasHeader
-        });
+    get hasAvatar() {
+        return this.avatarSrc || this.avatarFallbackIconName;
+    }
+
+    /**
+     * Verify if header is displayed.
+     *
+     * @type {boolean|string}
+     */
+    get hasHeader() {
+        return this.hasAvatar || this.label;
+    }
+
+    /**
+     * Verify if root header is displayed.
+     *
+     * @type {boolean|string}
+     */
+    get hasRootHeader() {
+        return this.hasHeader || this.hasActions;
     }
 
     /**
@@ -319,31 +340,6 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
-     * Compute actions class styling based on vertical or horizontal alignment.
-     *
-     * @type {string}
-     */
-    get actionsClass() {
-        return classSet('slds-is-relative actions').add({
-            actions_vertical: this.variant === 'vertical',
-            'slds-p-vertical_small': this.variant === 'horizontal',
-            'slds-p-vertical_large': this.variant === 'vertical'
-        });
-    }
-
-    /**
-     * Get action button class styling based on vertical or horizontal alignment.
-     *
-     * @type {string}
-     */
-    get actionButtonClass() {
-        return classSet('slds-button slds-button_neutral').add({
-            'slds-button_stretch': this.variant === 'vertical',
-            'slds-m-bottom_xx-small': this.variant === 'horizontal'
-        });
-    }
-
-    /**
      * Get line class styling based on vertical or horizontal alignment.
      *
      * @type {string}
@@ -355,49 +351,24 @@ export default class RelationshipGraph extends LightningElement {
         });
     }
 
+    /**
+     * Compute wrapper class when horizontal.
+     *
+     * @type {string}
+     */
+    get wrapperClass() {
+        return classSet('').add({
+            'slds-grid': this.variant === 'horizontal',
+            'slds-m-left_medium':
+                this.variant === 'horizontal' && this.hasRootHeader
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Update line width and height based child element level.
-     *
-     * @type {string}
-     */
-    updateLine() {
-        const line = this.template.querySelector(
-            '[data-element-id="div-line"]'
-        );
-        if (!line) {
-            return;
-        }
-        const currentLevel = this.childLevel;
-        if (this.variant === 'vertical') {
-            if (this.processedGroups.length === 1) {
-                line.setAttribute('style', `width: 0`);
-            } else {
-                const width = currentLevel.currentLevelWidth;
-                line.setAttribute('style', `width: calc(${width}px - 21rem)`);
-            }
-        } else {
-            const height = currentLevel.currentLevelHeight;
-            line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
-        }
-    }
-
-    /**
-     * Update selection from graph.
-     */
-    updateSelection() {
-        // Reset the selection and go through the tree with the new selection
-        this._selectedItem = undefined;
-        this.processedGroups = JSON.parse(JSON.stringify(this.groups));
-
-        if (this.processedGroups.length > 0 && this.selectedItemName)
-            this.selectItem(this.selectedItemName, this.processedGroups);
-    }
 
     /**
      * Select item from relationship graph.
@@ -442,6 +413,44 @@ export default class RelationshipGraph extends LightningElement {
             if (this._selectedItem) groups[i].selected = true;
             i += 1;
         }
+    }
+
+    /**
+     * Update line width and height based child element level.
+     *
+     * @type {string}
+     */
+    updateLine() {
+        const line = this.template.querySelector(
+            '[data-element-id="div-line"]'
+        );
+        if (!line) {
+            return;
+        }
+        const currentLevel = this.childLevel;
+        if (this.variant === 'vertical') {
+            if (this.processedGroups.length === 1) {
+                line.setAttribute('style', `width: 0`);
+            } else {
+                const width = currentLevel.currentLevelWidth;
+                line.setAttribute('style', `width: calc(${width}px - 21rem)`);
+            }
+        } else {
+            const height = currentLevel.currentLevelHeight;
+            line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
+        }
+    }
+
+    /**
+     * Update selection from graph.
+     */
+    updateSelection() {
+        // Reset the selection and go through the tree with the new selection
+        this._selectedItem = undefined;
+        this.processedGroups = JSON.parse(JSON.stringify(this.groups));
+
+        if (this.processedGroups.length > 0 && this.selectedItemName)
+            this.selectItem(this.selectedItemName, this.processedGroups);
     }
 
     /*
