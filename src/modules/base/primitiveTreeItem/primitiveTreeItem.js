@@ -79,6 +79,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _fields = [];
     _href;
     _independentMultiSelect = false;
+    _indeterminate = false;
     _isLeaf = false;
     _isLoading = false;
     _label;
@@ -316,37 +317,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * If present, the item selection will not extend to its children.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get independentMultiSelect() {
-        return this._independentMultiSelect;
-    }
-    set independentMultiSelect(value) {
-        this._independentMultiSelect = normalizeBoolean(value);
-        if (this._connected) this.computeSelection();
-    }
-
-    /**
-     * If present, a loading spinner is visible when the item is expanded.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get isLoading() {
-        return this._isLoading;
-    }
-    set isLoading(value) {
-        this._isLoading = normalizeBoolean(value);
-    }
-
-    /**
      * If true, the item is expandable even if it has no children. The `loadmore` event will be fired when the item is opened if it has no child, or when the user clicks on the “Load More” button.
      *
      * @type {boolean}
@@ -374,6 +344,56 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set expanded(value) {
         this._expanded = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the item selection will not extend to its children.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get independentMultiSelect() {
+        return this._independentMultiSelect;
+    }
+    set independentMultiSelect(value) {
+        this._independentMultiSelect = normalizeBoolean(value);
+        if (this._connected) this.computeSelection();
+    }
+
+    /**
+     * If present, the checkbox is displayed in an indeterminate state, independently of the selected state of the item or its children.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get indeterminate() {
+        return this._indeterminate;
+    }
+    set indeterminate(value) {
+        this._indeterminate = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.updateCheckboxStatus();
+        }
+    }
+
+    /**
+     * If present, a loading spinner is visible when the item is expanded.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     /**
@@ -988,7 +1008,8 @@ export default class PrimitiveTreeItem extends LightningElement {
             '[data-element-id="input-checkbox"]'
         );
         if (checkbox) {
-            checkbox.indeterminate = this._checkboxIsIndeterminate;
+            checkbox.indeterminate =
+                this.indeterminate || this._checkboxIsIndeterminate;
         }
     }
 

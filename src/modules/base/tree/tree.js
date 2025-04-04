@@ -239,6 +239,10 @@ export default class Tree extends LightningElement {
 
     set independentMultiSelect(value) {
         this._independentMultiSelect = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.resetSelection();
+        }
     }
 
     /**

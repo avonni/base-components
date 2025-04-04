@@ -23,6 +23,12 @@ import { LightningElement, api, track } from 'lwc';
 import filterMenu from './filterMenu.html';
 import filterMenuVertical from './filterMenuVertical.html';
 import Item from './item';
+import {
+    getTreeItemByLevelPath,
+    getTreeItemByName,
+    toggleTreeItemValue,
+    updateTreeItemParentsStatus
+} from './nestedItemsUtils';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -185,7 +191,6 @@ export default class FilterMenu extends LightningElement {
     _previousScroll;
     _preventDropdownToggle = false;
     _searchTimeOut;
-    _valueBeforeSearch = [];
 
     @track computedItems = [];
     @track selectedItems = [];
@@ -1321,8 +1326,6 @@ export default class FilterMenu extends LightningElement {
         );
 
         this.computedItems = items.map((item) => {
-            const checked = this.currentValue.includes(item.value);
-
             let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
                 firstFocusableItem = true;
@@ -1330,7 +1333,7 @@ export default class FilterMenu extends LightningElement {
             }
             const computedItem = new Item({
                 ...item,
-                checked,
+                filterValue: this.currentValue,
                 tabindex
             });
             return computedItem;
@@ -1358,16 +1361,15 @@ export default class FilterMenu extends LightningElement {
      * Use the value to compute the selected list items that will be displayed as pills.
      */
     computeSelectedListItems() {
-        const selectedItems = this.computedItems.filter((item) => {
-            return this.value.includes(item.value);
+        const selectedItems = [];
+        this.value.forEach((v) => {
+            const item = getTreeItemByName(v, this.computedItems);
+            if (item) {
+                selectedItems.push({ label: item.label, name: item.name });
+            }
         });
 
-        this.selectedItems = selectedItems.map((item) => {
-            return {
-                label: item.label,
-                name: item.value
-            };
-        });
+        this.selectedItems = selectedItems;
     }
 
     /**
@@ -1497,27 +1499,6 @@ export default class FilterMenu extends LightningElement {
             timeStyle: time,
             timeZone
         }).format(date);
-    }
-
-    /**
-     * Get a nested list item using its path in the items tree.
-     *
-     * @param {number[]} levelPath Array of the levels of depth of the item that is loading. The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: [1, 2].
-     * @returns {object} List item.
-     */
-    getTreeItemByLevelPath(levelPath = []) {
-        let item;
-        let items = this.visibleItems;
-
-        for (let i = 0; i < levelPath.length; i += 1) {
-            const index = levelPath[i];
-            item = items[index];
-            if (!item || !Array.isArray(item.items)) {
-                return null;
-            }
-            items = item.items;
-        }
-        return item;
     }
 
     /**
@@ -1971,7 +1952,6 @@ export default class FilterMenu extends LightningElement {
         clearTimeout(this._searchTimeOut);
         this._searchTimeOut = setTimeout(() => {
             this.visibleItems = this.getVisibleItems();
-            this._valueBeforeSearch = [...this.currentValue];
 
             /**
              * The event fired when the search input value is changed.
@@ -1999,12 +1979,6 @@ export default class FilterMenu extends LightningElement {
             ) {
                 this.dispatchLoadMore();
             }
-
-            requestAnimationFrame(() => {
-                // Make sure the value is not updated
-                // when some items disappear because of the search
-                this._valueBeforeSearch = [];
-            });
         }, 300);
     }
 
@@ -2038,7 +2012,8 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event `loadmore` event coming from the tree.
      */
     handleTreeLoadMore(event) {
-        const item = this.getTreeItemByLevelPath(event.detail.levelPath);
+        const levelPath = event.detail.levelPath;
+        const item = getTreeItemByLevelPath(levelPath, this.visibleItems);
         if (item) {
             this.dispatchLoadMore(item);
         }
@@ -2051,11 +2026,31 @@ export default class FilterMenu extends LightningElement {
      */
     handleTreeSelect(event) {
         event.stopPropagation();
-        if (this._valueBeforeSearch.length) {
-            event.preventDefault();
-            return;
+
+        const value = deepCopy(event.detail.selectedItems);
+        if (this.hasNestedItems) {
+            const levelPath = event.detail.levelPath;
+            const visibleItem = getTreeItemByLevelPath(
+                levelPath,
+                this.visibleItems
+            );
+            const item = getTreeItemByName(
+                visibleItem.name,
+                this.computedItems
+            );
+            this.currentValue = toggleTreeItemValue(item, this.currentValue);
+            const isSelected = this.currentValue.includes(item.name);
+            visibleItem.indeterminate = false;
+            updateTreeItemParentsStatus(
+                levelPath,
+                this.visibleItems,
+                isSelected
+            );
+            this.visibleItems = [...this.visibleItems];
+        } else {
+            this.currentValue = value;
         }
-        this.currentValue = deepCopy(event.detail.selectedItems);
+
         this.dispatchSelect();
     }
 
