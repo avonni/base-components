@@ -2025,8 +2025,8 @@ export default class FilterMenu extends LightningElement {
         event.stopPropagation();
 
         const value = deepCopy(event.detail.selectedItems);
-        if (this.hasNestedItems) {
-            const levelPath = event.detail.levelPath;
+        const levelPath = event.detail.levelPath;
+        if (this.hasNestedItems && levelPath) {
             const visibleItem = getTreeItemByLevelPath(
                 levelPath,
                 this.visibleItems
