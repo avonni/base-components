@@ -23,6 +23,7 @@
 /**
  * @typedef {object} TreeItem
  * @name items
+ * @property {object[]} actions Array of action objects that should be added to the tree actions for this item.
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
  * @property {string} color Color of the item checkbox, if the tree is in multi-select mode.
  * @property {boolean} enableInfiniteLoading If true, the item is expandable even if it has no children. The loadmore event will be fired when the item is opened if it has no child, or when the user clicks on the “Load More” button.

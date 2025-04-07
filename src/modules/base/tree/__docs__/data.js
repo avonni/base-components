@@ -132,7 +132,8 @@ export const ITEMS = [
     {
         label: 'Go to Record 5',
         href: '#record5',
-        name: 'node5'
+        name: 'node5',
+        actions: [{ name: 'record5Action', label: 'Record 5 action' }]
     },
     {
         label: 'Go to Record 6',
