@@ -19,15 +19,16 @@ import {
     observePosition,
     timeout
 } from 'c/utilsPrivate';
-import { LightningElement, api, track } from 'lwc';
+import { api, LightningElement, track } from 'lwc';
 import filterMenu from './filterMenu.html';
 import filterMenuVertical from './filterMenuVertical.html';
 import Item from './item';
 import {
     getTreeItemByLevelPath,
     getTreeItemByName,
+    SELECT_ALL_ACTION,
     toggleTreeItemValue,
-    updateTreeItemParentsStatus
+    UNSELECT_ALL_ACTION
 } from './nestedItemsUtils';
 
 const ICON_SIZES = {
@@ -1331,6 +1332,7 @@ export default class FilterMenu extends LightningElement {
             const computedItem = new Item({
                 ...item,
                 filterValue: this.currentValue,
+                hasNestedItems: this.hasNestedItems,
                 tabindex
             });
             return computedItem;
@@ -1712,6 +1714,23 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    toggleTreeItem(levelPath = [], cascade = false) {
+        const visibleItem = getTreeItemByLevelPath(
+            levelPath,
+            this.visibleItems
+        );
+        visibleItem.checked = !visibleItem.checked;
+        const item = getTreeItemByName(visibleItem.name, this.computedItems);
+        this.currentValue = toggleTreeItemValue({
+            cascade,
+            item,
+            value: this.currentValue
+        });
+        visibleItem.updateActions();
+        item.updateActions();
+        this.visibleItems = [...this.visibleItems];
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -2003,6 +2022,17 @@ export default class FilterMenu extends LightningElement {
         this.dispatchApply();
     }
 
+    handleTreeActionClick(event) {
+        const { name, levelPath } = event.detail;
+        if (
+            name !== SELECT_ALL_ACTION.name &&
+            name !== UNSELECT_ALL_ACTION.name
+        ) {
+            return;
+        }
+        this.toggleTreeItem(levelPath, true);
+    }
+
     /**
      * Handle a `loadmore` event coming from a list that has nested items.
      *
@@ -2024,27 +2054,11 @@ export default class FilterMenu extends LightningElement {
     handleTreeSelect(event) {
         event.stopPropagation();
 
-        const value = deepCopy(event.detail.selectedItems);
         const levelPath = event.detail.levelPath;
-        if (this.hasNestedItems && levelPath) {
-            const visibleItem = getTreeItemByLevelPath(
-                levelPath,
-                this.visibleItems
-            );
-            const item = getTreeItemByName(
-                visibleItem.name,
-                this.computedItems
-            );
-            this.currentValue = toggleTreeItemValue(item, this.currentValue);
-            const isSelected = this.currentValue.includes(item.name);
-            visibleItem.indeterminate = false;
-            updateTreeItemParentsStatus(
-                levelPath,
-                this.visibleItems,
-                isSelected
-            );
-            this.visibleItems = [...this.visibleItems];
+        if (levelPath) {
+            this.toggleTreeItem(levelPath);
         } else {
+            const value = deepCopy(event.detail.selectedItems);
             this.currentValue = value;
         }
 

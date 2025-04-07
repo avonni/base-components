@@ -82,6 +82,7 @@
                                 items={visibleItems}
                                 selected-items={currentValue}
                                 data-element-id="avonni-tree"
+                                onactionclick={handleTreeActionClick}
                                 onloadmore={handleTreeLoadMore}
                                 onselect={handleTreeSelect}
                             ></c-tree>
@@ -120,7 +121,10 @@
                                                 ></c-primitive-icon>
                                                 <c-primitive-icon
                                                     if:true={item.color}
-                                                    class="slds-current-color slds-m-right_x-small"
+                                                    class="
+                                                        slds-current-color
+                                                        slds-m-right_x-small
+                                                    "
                                                     icon-name="utility:record"
                                                     size="x-small"
                                                     style={item.colorStyle}
@@ -214,7 +218,11 @@
                     ></lightning-menu-divider>
                     <div
                         if:true={showApplyResetButtons}
-                        class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
+                        class="
+                            slds-p-horizontal_small
+                            slds-p-bottom_x-small
+                            slds-text-align_right
+                        "
                     >
                         <lightning-button
                             class="slds-m-right_x-small"

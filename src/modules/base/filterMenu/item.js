@@ -1,20 +1,18 @@
 import { classSet, normalizeArray } from 'c/utils';
+import { SELECT_ALL_ACTION, UNSELECT_ALL_ACTION } from './nestedItemsUtils';
 
 export default class FilterMenuItem {
     constructor(props) {
         Object.assign(this, props);
         this.checked = this.filterValue.includes(this.value);
-        this.initTreeProperties();
+
+        if (this.hasNestedItems) {
+            this.initTreeProperties();
+        }
     }
 
     get colorStyle() {
         return this.color ? `color: ${this.color}` : null;
-    }
-
-    get hasSelectedChildren() {
-        return this.items.some((i) => {
-            return i.checked || i.indeterminate;
-        });
     }
 
     get wrapperClass() {
@@ -34,8 +32,21 @@ export default class FilterMenuItem {
         }
         this.name = this.value;
         this.items = normalizeArray(this.items).map((i) => {
-            return new FilterMenuItem({ ...i, filterValue: this.filterValue });
+            return new FilterMenuItem({
+                ...i,
+                filterValue: this.filterValue,
+                hasNestedItems: this.hasNestedItems
+            });
         });
-        this.indeterminate = !this.checked && this.hasSelectedChildren;
+        this.updateActions();
+    }
+
+    updateActions() {
+        this.actions = [];
+        if (this.items.length) {
+            this.actions = this.checked
+                ? [UNSELECT_ALL_ACTION]
+                : [SELECT_ALL_ACTION];
+        }
     }
 }

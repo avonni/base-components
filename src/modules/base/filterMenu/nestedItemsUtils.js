@@ -1,3 +1,13 @@
+const SELECT_ALL_ACTION = {
+    label: 'Select All',
+    name: 'select-all'
+};
+
+const UNSELECT_ALL_ACTION = {
+    label: 'Unselect All',
+    name: 'unselect-all'
+};
+
 function _getChildrenNames(item) {
     const children = [];
     if (Array.isArray(item.items)) {
@@ -46,7 +56,7 @@ function getTreeItemByName(name, items = []) {
     return null;
 }
 
-function toggleTreeItemValue(item, value) {
+function toggleTreeItemValue({ cascade = false, item, value }) {
     const childrenNames = _getChildrenNames(item);
     const index = value.indexOf(item.name);
     const selectedItems = new Set(value);
@@ -54,36 +64,29 @@ function toggleTreeItemValue(item, value) {
     if (isSelected) {
         item.checked = true;
         selectedItems.add(item.name);
-        childrenNames.forEach((child) => {
-            selectedItems.add(child);
-        });
+
+        if (cascade) {
+            childrenNames.forEach((child) => {
+                selectedItems.add(child);
+            });
+        }
     } else {
         item.checked = false;
         selectedItems.delete(item.name);
-        childrenNames.forEach((child) => {
-            selectedItems.delete(child);
-        });
+
+        if (cascade) {
+            childrenNames.forEach((child) => {
+                selectedItems.delete(child);
+            });
+        }
     }
     return Array.from(selectedItems);
-}
-
-function updateTreeItemParentsStatus(levelPath, items = [], isSelected) {
-    let level = items;
-
-    for (let i = 0; i < levelPath.length - 1; i += 1) {
-        const index = levelPath[i];
-        const item = level[index];
-        if (!item) {
-            return;
-        }
-        item.indeterminate = isSelected;
-        level = item.items || [];
-    }
 }
 
 export {
     getTreeItemByLevelPath,
     getTreeItemByName,
+    SELECT_ALL_ACTION,
     toggleTreeItemValue,
-    updateTreeItemParentsStatus
+    UNSELECT_ALL_ACTION
 };
