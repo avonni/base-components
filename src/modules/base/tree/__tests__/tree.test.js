@@ -26,6 +26,8 @@ describe('Tree', () => {
             expect(element.actionsWhenDisabled).toEqual([]);
             expect(element.allowInlineEdit).toBeFalsy();
             expect(element.collapseDisabled).toBeFalsy();
+            expect(element.disabled).toBeFalsy();
+            expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.editableFields).toEqual([
                 'label',
                 'metatext',
@@ -69,6 +71,35 @@ describe('Tree', () => {
                     '[data-element-id="lightning-icon-add-action"]'
                 );
                 expect(icon.iconName).toBe('utility:add');
+            });
+        });
+
+        it('Actions, merged with items actions', () => {
+            const addButton = element.shadowRoot.querySelector(
+                '[data-element-id="button-add-action"]'
+            );
+            expect(addButton).toBeFalsy();
+
+            const customAction = {
+                name: 'second-action',
+                label: 'Second action'
+            };
+            element.actions = ACTIONS;
+            element.items = [
+                ITEMS[0],
+                {
+                    label: 'second item',
+                    name: 'second',
+                    actions: [customAction]
+                }
+            ];
+
+            return Promise.resolve().then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-tree-item"]'
+                );
+                expect(items[0].actions).toEqual(ACTIONS);
+                expect(items[1].actions).toEqual([...ACTIONS, customAction]);
             });
         });
 
@@ -119,6 +150,18 @@ describe('Tree', () => {
             });
         });
 
+        it('Disabled', () => {
+            element.disabled = true;
+            element.items = ITEMS;
+
+            return Promise.resolve().then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-tree-item"]'
+                );
+                items.forEach((item) => expect(item.disabled).toBeTruthy());
+            });
+        });
+
         it('Editable Fields', () => {
             const editableFields = ['metatext', 'href'];
             element.editableFields = editableFields;
@@ -132,6 +175,27 @@ describe('Tree', () => {
                     expect(item.editableFields).toEqual(editableFields)
                 );
             });
+        });
+
+        it('Enable infinite loading', () => {
+            element.enableInfiniteLoading = true;
+
+            return Promise.resolve()
+                .then(() => {
+                    const loadMore = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-load-more"]'
+                    );
+                    expect(loadMore).toBeTruthy();
+
+                    element.isLoading = true;
+                })
+                .then(() => {
+                    // Button is hidden if is loading
+                    const loadMore = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-load-more"]'
+                    );
+                    expect(loadMore).toBeFalsy();
+                });
         });
 
         it('Header', () => {
@@ -156,11 +220,6 @@ describe('Tree', () => {
                 );
                 expect(spinner).toBeTruthy();
                 expect(spinner.alternativeText).toBe('Some loading text');
-
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                expect(items).toHaveLength(0);
             });
         });
 
@@ -284,11 +343,13 @@ describe('Tree', () => {
                 expect(items).toHaveLength(ITEMS.length);
                 items.forEach((item, index) => {
                     const originalItem = ITEMS[index];
+                    const infiniteLoading = originalItem.enableInfiniteLoading;
                     expect(item.ariaDisabled).toBe(
                         originalItem.disabled ? 'true' : 'false'
                     );
                     expect(item.ariaExpanded).toBe(
-                        originalItem.expanded || !originalItem.items
+                        originalItem.expanded ||
+                            (!originalItem.items && !infiniteLoading)
                             ? 'true'
                             : 'false'
                     );
@@ -297,7 +358,9 @@ describe('Tree', () => {
                     expect(item.avatar).toEqual(originalItem.avatar);
                     expect(item.disabled).toBe(originalItem.disabled || false);
                     expect(item.expanded).toBe(
-                        originalItem.expanded || !originalItem.items || false
+                        originalItem.expanded ||
+                            (!originalItem.items && !infiniteLoading) ||
+                            false
                     );
                     expect(item.fields).toEqual(originalItem.fields);
                     expect(item.href).toBe(originalItem.href);
@@ -704,27 +767,18 @@ describe('Tree', () => {
                     button.click();
 
                     expect(handler).toHaveBeenCalledTimes(1);
-                    expect(handler.mock.calls[0][0].detail.action).toBe(
-                        'Standard.Tree.Add'
-                    );
-                    expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.action).toBe('Standard.Tree.Add');
+                    expect(call.detail.levelPath).toEqual([ITEMS.length - 1]);
+                    expect(call.detail.previousLevelPath).toEqual([
                         ITEMS.length - 1
                     ]);
-                    expect(
-                        handler.mock.calls[0][0].detail.previousLevelPath
-                    ).toEqual([ITEMS.length - 1]);
-                    expect(handler.mock.calls[0][0].detail.name).toBeNull();
-                    expect(handler.mock.calls[0][0].detail.items).toHaveLength(
-                        5
-                    );
-                    expect(
-                        handler.mock.calls[0][0].detail.items[4]
-                    ).toMatchObject({
+                    expect(call.detail.name).toBeNull();
+                    expect(call.detail.items).toHaveLength(ITEMS.length + 1);
+                    expect(call.detail.items[ITEMS.length]).toMatchObject({
                         label: 'New branch'
                     });
-                    expect(
-                        handler.mock.calls[0][0].detail.previousName
-                    ).toBeUndefined();
+                    expect(call.detail.previousName).toBeUndefined();
                 });
             });
 
@@ -748,22 +802,13 @@ describe('Tree', () => {
                     items[3].dispatchEvent(event);
 
                     expect(handler).toHaveBeenCalledTimes(1);
-                    expect(handler.mock.calls[0][0].detail.action).toBe(
-                        'Standard.Tree.Delete'
-                    );
-                    expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
-                        3
-                    ]);
-                    expect(
-                        handler.mock.calls[0][0].detail.previousLevelPath
-                    ).toEqual([3]);
-                    expect(handler.mock.calls[0][0].detail.name).toBe('simple');
-                    expect(handler.mock.calls[0][0].detail.items).toHaveLength(
-                        3
-                    );
-                    expect(
-                        handler.mock.calls[0][0].detail.previousName
-                    ).toBeUndefined();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.action).toBe('Standard.Tree.Delete');
+                    expect(call.detail.levelPath).toEqual([3]);
+                    expect(call.detail.previousLevelPath).toEqual([3]);
+                    expect(call.detail.name).toBe('simple');
+                    expect(call.detail.items).toHaveLength(ITEMS.length - 1);
+                    expect(call.detail.previousName).toBeUndefined();
                 });
             });
 
@@ -787,30 +832,15 @@ describe('Tree', () => {
                     items[3].dispatchEvent(event);
 
                     expect(handler).toHaveBeenCalledTimes(1);
-                    expect(handler.mock.calls[0][0].detail.action).toBe(
-                        'Standard.Tree.Duplicate'
-                    );
-                    expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
-                        3
-                    ]);
-                    expect(
-                        handler.mock.calls[0][0].detail.previousLevelPath
-                    ).toEqual([3]);
-                    expect(handler.mock.calls[0][0].detail.name).not.toBe(
-                        ITEMS[3].name
-                    );
-                    expect(typeof handler.mock.calls[0][0].detail.name).toBe(
-                        'string'
-                    );
-                    expect(handler.mock.calls[0][0].detail.items).toHaveLength(
-                        5
-                    );
-                    expect(handler.mock.calls[0][0].detail.items[4].label).toBe(
-                        ITEMS[3].label
-                    );
-                    expect(handler.mock.calls[0][0].detail.previousName).toBe(
-                        ITEMS[3].name
-                    );
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.action).toBe('Standard.Tree.Duplicate');
+                    expect(call.detail.levelPath).toEqual([3]);
+                    expect(call.detail.previousLevelPath).toEqual([3]);
+                    expect(call.detail.name).not.toBe(ITEMS[3].name);
+                    expect(typeof call.detail.name).toBe('string');
+                    expect(call.detail.items).toHaveLength(ITEMS.length + 1);
+                    expect(call.detail.items[4].label).toBe(ITEMS[3].label);
+                    expect(call.detail.previousName).toBe(ITEMS[3].name);
                 });
             });
 
@@ -1136,30 +1166,19 @@ describe('Tree', () => {
                         })
                     );
                     expect(handler).toHaveBeenCalledTimes(3);
-                    expect(handler.mock.calls[2][0].detail.action).toBe(
-                        'Standard.Tree.Move'
+                    const lastCall = handler.mock.calls[2][0];
+                    expect(lastCall.detail.action).toBe('Standard.Tree.Move');
+                    expect(lastCall.detail.previousLevelPath).toEqual([1]);
+                    expect(lastCall.detail.levelPath).toEqual([1, 0]);
+                    expect(lastCall.detail.name).toBe(ITEMS[1].name);
+                    expect(lastCall.detail.previousName).toBeUndefined();
+                    expect(lastCall.detail.items).toHaveLength(
+                        ITEMS.length - 1
                     );
-                    expect(
-                        handler.mock.calls[2][0].detail.previousLevelPath
-                    ).toEqual([1]);
-                    expect(handler.mock.calls[2][0].detail.levelPath).toEqual([
-                        1, 0
-                    ]);
-                    expect(handler.mock.calls[2][0].detail.name).toBe(
+                    expect(lastCall.detail.items[1].items).toHaveLength(2);
+                    expect(lastCall.detail.items[1].items[0].name).toBe(
                         ITEMS[1].name
                     );
-                    expect(
-                        handler.mock.calls[2][0].detail.previousName
-                    ).toBeUndefined();
-                    expect(handler.mock.calls[2][0].detail.items).toHaveLength(
-                        3
-                    );
-                    expect(
-                        handler.mock.calls[2][0].detail.items[1].items
-                    ).toHaveLength(2);
-                    expect(
-                        handler.mock.calls[2][0].detail.items[1].items[0].name
-                    ).toBe(ITEMS[1].name);
                 });
             });
 
@@ -1253,7 +1272,7 @@ describe('Tree', () => {
                     expect(detail.previousLevelPath).toEqual([3]);
                     expect(detail.name).toBe(ITEMS[3].name);
                     expect(detail.previousName).toBeUndefined();
-                    expect(detail.items).toHaveLength(3);
+                    expect(detail.items).toHaveLength(ITEMS.length - 1);
                     expect(detail.items[2].items[0].items[3]).toMatchObject(
                         ITEMS[3]
                     );
@@ -1424,8 +1443,80 @@ describe('Tree', () => {
                         bubbles: true
                     });
                     items[0].dispatchEvent(event);
-                    expect(items[3].tabIndex).toBe(0);
-                    expect(items[3].ariaSelected).toBe('true');
+                    expect(items[ITEMS.length - 1].tabIndex).toBe(0);
+                    expect(items[ITEMS.length - 1].ariaSelected).toBe('true');
+                });
+            });
+        });
+
+        describe('loadmore', () => {
+            it('From the root', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.enableInfiniteLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-load-more"]'
+                    );
+                    button.click();
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.levelPath).toEqual([]);
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                });
+            });
+
+            it('From a nested item', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.items = ITEMS;
+                element.enableInfiniteLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    item.dispatchEvent(
+                        new CustomEvent('privateitemloadmore', {
+                            detail: { key: '3.1.2' },
+                            bubbles: true,
+                            composed: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.levelPath).toEqual([2, 0, 1]);
+                });
+            });
+
+            it('When opening a nested item', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.items = ITEMS;
+                element.enableInfiniteLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    item.dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: { key: '5', target: 'chevron' },
+                            bubbles: true,
+                            composed: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.levelPath).toEqual([4]);
                 });
             });
         });
@@ -1449,24 +1540,55 @@ describe('Tree', () => {
                                 target: 'anchor',
                                 key: '2'
                             },
-                            bubbles: true
+                            bubbles: true,
+                            cancelable: true
                         })
                     );
 
                     expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-                    expect(handler.mock.calls[0][0].composed).toBeTruthy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
-                    expect(handler.mock.calls[0][0].detail.bounds).toEqual({
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeTruthy();
+                    expect(call.composed).toBeTruthy();
+                    expect(call.cancelable).toBeTruthy();
+                    expect(call.detail.bounds).toEqual({
                         x: 5,
                         y: 12
                     });
-                    expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
-                        1
-                    ]);
-                    expect(
-                        handler.mock.calls[0][0].detail.selectedItems
-                    ).toEqual(['loading']);
+                    expect(call.detail.levelPath).toEqual([1]);
+                    expect(call.detail.selectedItems).toEqual(['loading']);
+                    expect(element.selectedItems).toEqual(['loading']);
+                });
+            });
+
+            it('select is cancelled', () => {
+                element.items = ITEMS;
+                element.selectedItems = ['thirdLevel'];
+
+                const handler = jest.fn((event) => {
+                    event.preventDefault();
+                });
+                element.addEventListener('select', handler);
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items[1].dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: {
+                                bounds: { x: 5, y: 12 },
+                                target: 'anchor',
+                                key: '2'
+                            },
+                            bubbles: true,
+                            cancelable: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.selectedItems).toEqual(['loading']);
+                    expect(element.selectedItems).toEqual(['thirdLevel']);
                 });
             });
 

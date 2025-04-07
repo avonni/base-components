@@ -57,6 +57,7 @@ export default class TreeActions extends LightningElement {
             items: [
                 {
                     label: 'Go to Record 1.1',
+                    iconName: 'utility:record_alt',
                     href: '#record1',
                     name: 'node1-1',
                     items: [
@@ -110,6 +111,7 @@ export default class TreeActions extends LightningElement {
             label: 'Loading Record',
             href: '#record2',
             isLoading: true,
+            enableInfiniteLoading: true,
             name: 'node2',
             items: [
                 {
@@ -133,7 +135,8 @@ export default class TreeActions extends LightningElement {
         {
             label: 'Go to Record 5',
             href: '#record5',
-            name: 'node5'
+            name: 'node5',
+            actions: [{ name: 'record5Action', label: 'Record 5 action' }]
         },
         {
             label: 'Go to Record 6',

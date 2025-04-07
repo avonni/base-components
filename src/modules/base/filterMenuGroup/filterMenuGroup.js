@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
     deepCopy,
@@ -7,6 +6,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 import Menu from './menu';
 
 const MENU_VARIANTS = {
@@ -416,15 +416,18 @@ export default class FilterMenuGroup extends LightningElement {
         const menuName = event.target.dataset.name;
 
         /**
-         * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present on the menu. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user.
+         * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present on the menu. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user or by a nested item opening.
          *
          * @event
          * @name loadmore
+         * @param {object} item If the event was triggered by a nested item, definition of this item.
          * @param {string} name Name of the menu that triggered the event.
          * @public
          */
         this.dispatchEvent(
-            new CustomEvent('loadmore', { detail: { name: menuName } })
+            new CustomEvent('loadmore', {
+                detail: { item: event.detail.item, name: menuName }
+            })
         );
     }
 

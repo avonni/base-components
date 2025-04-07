@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import FilterMenuGroup from 'c/filterMenuGroup';
+import { createElement } from 'lwc';
 import { MENUS, VALUE } from './data';
 
 let element;
@@ -665,12 +665,15 @@ describe('FilterMenuGroup', () => {
             );
             menu.dispatchEvent(
                 new CustomEvent('loadmore', {
+                    detail: { item: MENUS[0].typeAttributes.items[0] },
                     bubbles: true
                 })
             );
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
+            expect(call.detail.item).toEqual(MENUS[0].typeAttributes.items[0]);
+            expect(call.detail.name).toBe('contact');
             expect(call.bubbles).toBeFalsy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();

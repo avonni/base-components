@@ -1,5 +1,6 @@
 import { FilterMenu } from '../__examples__/filterMenu';
 import { FilterMenuInfiniteLoading } from '../__examples__/infiniteLoading';
+import { COLOR_ITEMS, ITEMS, NESTED_ITEMS } from './data';
 
 export default {
     title: 'Example/Filter Menu',
@@ -314,57 +315,24 @@ export default {
     }
 };
 
-const items = [
-    {
-        label: 'Call',
-        value: 'call',
-        prefixIconName: 'custom:custom1',
-        iconName: 'utility:voicemail_drop'
-    },
-    {
-        label: 'Email',
-        value: 'email',
-        prefixIconName: 'standard:email'
-    },
-    {
-        label: 'Meeting',
-        value: 'meeting',
-        prefixIconName: 'standard:service_appointment',
-        disabled: true
-    },
-    {
-        label: 'Other',
-        value: 'other',
-        prefixIconName: 'standard:all'
-    },
-    {
-        label: 'Menu item 5',
-        value: 'item-5'
-    },
-    {
-        label: 'Menu item 6',
-        value: 'item-6'
-    },
-    {
-        label: 'Menu item 7',
-        value: 'item-7'
-    }
-];
-
-const colorItems = [
-    { label: 'Pacific Cyan', value: 'pacificCyan', color: '#06AED5' },
-    { label: 'Cerulean', value: 'cerulean', color: '#086788' },
-    { label: 'School Bus Yellow', value: 'schoolBusYellow', color: '#F8D525' },
-    { label: 'Harvest Gold', value: 'harvestGold', color: '#F5AB00' },
-    { label: 'Rojo', value: 'rojo', color: '#DD1C1A' }
-];
-
 const Template = (args) => FilterMenu(args);
 const InfiniteLoadingTemplate = (args) => FilterMenuInfiniteLoading(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    typeAttributes: { items }
+    typeAttributes: { items: ITEMS }
+};
+
+export const NestedItems = Template.bind({});
+NestedItems.args = {
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        hasNestedItems: true,
+        items: NESTED_ITEMS
+    },
+    label: 'Nested Items',
+    value: ['oceania', 'burundi', 'burkina-faso']
 };
 
 export const MultiSelectList = Template.bind({});
@@ -372,7 +340,7 @@ MultiSelectList.args = {
     typeAttributes: {
         allowSearch: true,
         isMultiSelect: true,
-        items
+        items: ITEMS
     },
     value: ['item-5', 'meeting', 'wrong-value']
 };
@@ -382,7 +350,7 @@ CustomMenu.args = {
     typeAttributes: {
         dropdownLength: '5-items',
         dropdownWidth: 'xx-small',
-        items: colorItems
+        items: COLOR_ITEMS
     },
     iconSize: 'x-small',
     iconName: 'utility:apps',
@@ -427,12 +395,25 @@ Vertical.args = {
     typeAttributes: {
         allowSearch: true,
         isMultiSelect: true,
-        items
+        items: ITEMS
     },
     variant: 'vertical',
     label: 'Contact',
     iconName: 'custom:custom22',
     iconSize: 'small'
+};
+
+export const VerticalWithNestedItems = Template.bind({});
+VerticalWithNestedItems.args = {
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        hasNestedItems: true,
+        items: NESTED_ITEMS
+    },
+    variant: 'vertical',
+    label: 'Vertical With Nested Items',
+    value: ['oceania', 'burundi', 'burkina-faso']
 };
 
 export const InfiniteLoading = InfiniteLoadingTemplate.bind({});

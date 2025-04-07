@@ -95,14 +95,28 @@
         >
             <!-- List -->
             <template if:true={isList}>
+                <c-tree
+                    if:true={hasNestedItems}
+                    class="slds-p-vertical_xx-small"
+                    disabled={disabled}
+                    independent-multi-select
+                    is-multi-select={computedTypeAttributes.isMultiSelect}
+                    items={visibleItems}
+                    selected-items={currentValue}
+                    data-element-id="avonni-tree"
+                    onactionclick={handleTreeActionClick}
+                    onloadmore={handleTreeLoadMore}
+                    onselect={handleTreeSelect}
+                ></c-tree>
                 <c-input-choice-set
+                    if:false={hasNestedItems}
                     class="slds-p-vertical_xx-small"
                     accesskey={accessKey}
                     disabled={disabled}
                     is-multi-select={computedTypeAttributes.isMultiSelect}
                     label={label}
                     variant="label-hidden"
-                    options={checkboxComputedItems}
+                    options={visibleItems}
                     value={currentValue}
                     name={name}
                     data-element-id="avonni-input-choice-set"
@@ -114,7 +128,7 @@
                     label="Load more"
                     variant="base"
                     data-element-id="lightning-button-load-more"
-                    onclick={dispatchLoadMore}
+                    onclick={handleLoadMore}
                 ></lightning-button>
             </template>
 

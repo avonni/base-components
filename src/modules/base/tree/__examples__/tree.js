@@ -8,6 +8,7 @@ export const Tree = ({
     allowInlineEdit,
     collapseDisabled,
     editableFields,
+    enableInfiniteLoading,
     header,
     independentMultiSelect,
     isLoading,
@@ -24,6 +25,7 @@ export const Tree = ({
     element.allowInlineEdit = allowInlineEdit;
     element.collapseDisabled = collapseDisabled;
     element.editableFields = editableFields;
+    element.enableInfiniteLoading = enableInfiniteLoading;
     element.header = header;
     element.independentMultiSelect = independentMultiSelect;
     element.isLoading = isLoading;

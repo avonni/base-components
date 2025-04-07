@@ -17,7 +17,6 @@
                 variant="bare"
                 data-element-id="lightning-button-icon-expand"
                 onfocus={handleExpandButtonFocus}
-                onmousedown={stopPropagation}
             >
             </lightning-button-icon>
 
@@ -37,6 +36,8 @@
                     <span
                         if:true={showCheckbox}
                         class="slds-checkbox slds-m-right_xx-small"
+                        data-element-id="span-checkbox"
+                        style={checkboxStyle}
                     >
                         <input
                             id="checkbox"
@@ -78,35 +79,45 @@
                     ></c-primitive-avatar>
 
                     <!-- Label -->
-                    <div if:false={labelIsEdited} class={labelClass}>
-                        <a
-                            if:true={showLink}
-                            class="avonni-primitive-item__link"
-                            href={href}
-                            data-element-id="a-label-link"
-                            data-group-name="link"
-                            onmousedown={handleLinkMouseDown}
-                            onclick={handleAnchorTagClick}
-                        >
-                            {label}
-                        </a>
-                        <span
-                            if:false={showLink}
-                            data-element-id="span-label"
-                            ondblclick={handleLabelDoubleClick}
-                            >{label}</span
-                        >
-                    </div>
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <div if:false={labelIsEdited} class={labelClass}>
+                            <a
+                                if:true={showLink}
+                                class="avonni-primitive-item__link"
+                                href={href}
+                                data-element-id="a-label-link"
+                                data-group-name="link"
+                                onmousedown={handleLinkMouseDown}
+                                onclick={handleAnchorTagClick}
+                            >
+                                {label}
+                            </a>
+                            <span
+                                if:false={showLink}
+                                data-element-id="span-label"
+                                ondblclick={handleLabelDoubleClick}
+                                >{label}</span
+                            >
+                        </div>
+                        <lightning-input
+                            if:true={labelIsEdited}
+                            label="Edit Label"
+                            variant="label-hidden"
+                            value={label}
+                            data-element-id="lightning-input-inline-label"
+                            onchange={stopPropagation}
+                            onkeyup={handleLabelInlineKeyUp}
+                        ></lightning-input>
 
-                    <lightning-input
-                        if:true={labelIsEdited}
-                        label="Edit Label"
-                        variant="label-hidden"
-                        value={label}
-                        data-element-id="lightning-input-inline-label"
-                        onchange={stopPropagation}
-                        onkeyup={handleLabelInlineKeyUp}
-                    ></lightning-input>
+                        <lightning-icon
+                            if:true={iconName}
+                            class="slds-m-left_x-small"
+                            aria-hidden="true"
+                            icon-name={iconName}
+                            data-element-id="lightning-icon-label"
+                            size="x-small"
+                        ></lightning-icon>
+                    </div>
 
                     <lightning-button-icon
                         if:true={labelIsEdited}
@@ -125,7 +136,6 @@
                             slds-grid slds-grid_vertical-align-center
                         "
                         data-element-id="div-branch-buttons"
-                        onmousedown={stopPropagation}
                     >
                         <!-- Action icons -->
                         <template for:each={buttonActions} for:item="action">
@@ -224,7 +234,6 @@
             aria-label="Edit item"
             role="dialog"
             data-element-id="div-popover"
-            onmousedown={stopPropagation}
         >
             <!-- Close button -->
             <div class="slds-text-align_right">
@@ -296,7 +305,7 @@
                 <c-primitive-tree-item
                     class="slds-is-relative"
                     key={item.key}
-                    actions={actions}
+                    actions={item.actions}
                     actions-when-disabled={actionsWhenDisabled}
                     allow-inline-edit={allowInlineEdit}
                     aria-disabled={item.disabled}
@@ -306,12 +315,16 @@
                     avatar={item.avatar}
                     child-items={item.children}
                     collapse-disabled={collapseDisabled}
+                    color={item.color}
+                    enable-infinite-loading={item.enableInfiniteLoading}
                     independent-multi-select={independentMultiSelect}
                     disabled={item.disabled}
                     editable-fields={editableFields}
                     expanded={item.expanded}
                     fields={item.fields}
                     href={item.href}
+                    icon-name={item.iconName}
+                    indeterminate={item.indeterminate}
                     is-leaf={item.isLeaf}
                     is-loading={item.isLoading}
                     label={item.label}
@@ -342,6 +355,15 @@
                     data-element-id="lightning-spinner-loading"
                 ></lightning-spinner>
             </div>
+
+            <lightning-button
+                if:true={showLoadMoreButton}
+                class="avonni-primitive-tree-item__load-more-button"
+                label="Load more"
+                variant="base"
+                data-element-id="lightning-button-load-more"
+                onclick={handleLoadMore}
+            ></lightning-button>
         </div>
     </div>
 </template>

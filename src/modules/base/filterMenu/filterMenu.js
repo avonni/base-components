@@ -1,11 +1,10 @@
-import { LightningElement, api, track } from 'lwc';
-import {
-    equal,
-    observePosition,
-    animationFrame,
-    timeout
-} from 'c/utilsPrivate';
 import { numberFormat } from 'c/numberFormat';
+import {
+    Direction,
+    startPositioning,
+    stopPositioning
+} from 'c/positionLibrary';
+import { Tooltip } from 'c/tooltipLibrary';
 import {
     classSet,
     deepCopy,
@@ -14,15 +13,23 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { Tooltip } from 'c/tooltipLibrary';
 import {
-    Direction,
-    startPositioning,
-    stopPositioning
-} from 'c/positionLibrary';
-import filterMenuVertical from './filterMenuVertical.html';
+    animationFrame,
+    equal,
+    observePosition,
+    timeout
+} from 'c/utilsPrivate';
+import { api, LightningElement, track } from 'lwc';
 import filterMenu from './filterMenu.html';
+import filterMenuVertical from './filterMenuVertical.html';
 import Item from './item';
+import {
+    getItemByName,
+    getTreeItemByLevelPath,
+    SELECT_ALL_ACTION,
+    toggleTreeItemValue,
+    UNSELECT_ALL_ACTION
+} from './nestedItemsUtils';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -82,6 +89,7 @@ const TYPE_ATTRIBUTES = {
         'dropdownLength',
         'dropdownWidth',
         'enableInfiniteLoading',
+        'hasNestedItems',
         'isMultiSelect',
         'items',
         'searchInputPlaceholder'
@@ -192,6 +200,7 @@ export default class FilterMenu extends LightningElement {
     dropdownVisible = false;
     fieldLevelHelp;
     searchTerm;
+    visibleItems = [];
 
     connectedCallback() {
         // button-group necessities
@@ -742,7 +751,7 @@ export default class FilterMenu extends LightningElement {
                 this.isVertical &&
                 this.infiniteLoad &&
                 !this.isLoading &&
-                !this.visibleListItems.length
+                !this.visibleItems.length
             ) {
                 // Fire the loadmore event without waiting for the user
                 // to click on the load more button
@@ -798,7 +807,7 @@ export default class FilterMenu extends LightningElement {
             this.isVertical &&
             this.infiniteLoad &&
             !this.isLoading &&
-            !this.visibleListItems.length
+            !this.visibleItems.length
         ) {
             // Fire the loadmore event without waiting for the user
             // to click on the load more button
@@ -811,15 +820,6 @@ export default class FilterMenu extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Computed checkbox Items.
-     *
-     * @type {object}
-     */
-    get checkboxComputedItems() {
-        return this.computedItems.filter((item) => !item.hidden);
-    }
 
     /**
      * Computed Aria Expanded from dropdown menu.
@@ -1042,6 +1042,10 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    get hasNestedItems() {
+        return this.computedTypeAttributes.hasNestedItems;
+    }
+
     /**
      * True if inifinite loading is enabled.
      *
@@ -1198,15 +1202,6 @@ export default class FilterMenu extends LightningElement {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
     }
 
-    /**
-     * Array of currently visible list items.
-     *
-     * @type {object[]}
-     */
-    get visibleListItems() {
-        return this.computedItems.filter((it) => !it.hidden);
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -1249,7 +1244,14 @@ export default class FilterMenu extends LightningElement {
      */
     @api
     focus() {
-        if (this.isVertical) {
+        if (this.isVertical && this.hasNestedItems) {
+            const tree = this.template.querySelector(
+                '[data-element-id="avonni-tree"]'
+            );
+            if (tree) {
+                tree.focus();
+            }
+        } else if (this.isVertical) {
             const choiceSet = this.template.querySelector(
                 '[data-element-id="avonni-input-choice-set"]'
             );
@@ -1290,10 +1292,7 @@ export default class FilterMenu extends LightningElement {
     reset() {
         this.currentValue = [];
         if (this.isList) {
-            this.computedItems = this.computedItems.map((item) => {
-                item.checked = false;
-                return item;
-            });
+            this.computeListItems();
         }
     }
 
@@ -1320,27 +1319,25 @@ export default class FilterMenu extends LightningElement {
             return;
         }
         let firstFocusableItem;
-        const items = normalizeArray(
-            this.computedTypeAttributes.items,
-            'object'
+        const items = deepCopy(
+            normalizeArray(this.computedTypeAttributes.items, 'object')
         );
 
         this.computedItems = items.map((item) => {
-            const checked = this.currentValue.includes(item.value);
-            const hidden = this.isOutOfSearchScope(item.label);
-
             let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
                 firstFocusableItem = true;
                 tabindex = '0';
             }
-            return new Item({
+            const computedItem = new Item({
                 ...item,
-                checked,
-                hidden,
+                filterValue: this.currentValue,
+                hasNestedItems: this.hasNestedItems,
                 tabindex
             });
+            return computedItem;
         });
+        this.visibleItems = this.getVisibleItems();
 
         if (this.dropdownVisible) {
             // If the items are set while the popover is open, prevent losing focus
@@ -1363,16 +1360,15 @@ export default class FilterMenu extends LightningElement {
      * Use the value to compute the selected list items that will be displayed as pills.
      */
     computeSelectedListItems() {
-        const selectedItems = this.computedItems.filter((item) => {
-            return this.value.includes(item.value);
+        const selectedItems = [];
+        this.value.forEach((v) => {
+            const item = getItemByName(v, this.computedItems);
+            if (item) {
+                selectedItems.push({ label: item.label, name: item.value });
+            }
         });
 
-        this.selectedItems = selectedItems.map((item) => {
-            return {
-                label: item.label,
-                name: item.value
-            };
-        });
+        this.selectedItems = selectedItems;
     }
 
     /**
@@ -1436,7 +1432,7 @@ export default class FilterMenu extends LightningElement {
      */
     focusDropdown() {
         const isFocusableList =
-            (this.isList && this.visibleListItems.length) ||
+            (this.isList && this.visibleItems.length) ||
             this.computedTypeAttributes.allowSearch;
         const isFocusable =
             isFocusableList || (!this.isList && !this.isLoading);
@@ -1505,18 +1501,36 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Check if the given list item label is out of the search scope.
-     *
-     * @param {string} label Label of the list item to check.
-     * @returns {boolean} True if the search term is not included in the label, false otherwise.
+     * Get only the item that are in the search scope or have children that are in the search scope.
      */
-    isOutOfSearchScope(label) {
+    getVisibleItems(items = this.computedItems) {
         if (!this.searchTerm || typeof this.searchTerm !== 'string') {
-            return false;
+            return items;
         }
-        const normalizedLabel = label.toLowerCase();
-        const searchTerm = this.searchTerm.toLowerCase();
-        return !normalizedLabel.includes(searchTerm);
+
+        const visibleItems = [];
+        for (let i = 0; i < items.length; i += 1) {
+            const visibleItem = new Item({
+                ...items[i],
+                filterValue: this.currentValue
+            });
+            if (Array.isArray(visibleItem.items)) {
+                visibleItem.items = this.getVisibleItems(visibleItem.items);
+                if (visibleItem.items.length) {
+                    visibleItem.expanded = true;
+                    visibleItems.push(visibleItem);
+                    continue;
+                }
+            }
+
+            const normalizedLabel = items[i].label.toLowerCase();
+            const searchTerm = this.searchTerm.toLowerCase();
+            const matchesSearch = normalizedLabel.includes(searchTerm);
+            if (matchesSearch) {
+                visibleItems.push(visibleItem);
+            }
+        }
+        return visibleItems;
     }
 
     /**
@@ -1703,6 +1717,23 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    toggleTreeItem(levelPath = [], cascade = false) {
+        const visibleItem = getTreeItemByLevelPath(
+            levelPath,
+            this.visibleItems
+        );
+        visibleItem.checked = !visibleItem.checked;
+        const item = getItemByName(visibleItem.name, this.computedItems);
+        this.currentValue = toggleTreeItemValue({
+            cascade,
+            item,
+            value: this.currentValue
+        });
+        visibleItem.updateActions();
+        item.updateActions();
+        this.visibleItems = [...this.visibleItems];
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -1874,6 +1905,13 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Handle a click on the load more button.
+     */
+    handleLoadMore() {
+        this.dispatchLoadMore();
+    }
+
+    /**
      * Handle a change of the slider value, when the type is range.
      *
      * @param {Event} event change event.
@@ -1932,10 +1970,7 @@ export default class FilterMenu extends LightningElement {
 
         clearTimeout(this._searchTimeOut);
         this._searchTimeOut = setTimeout(() => {
-            this.computedItems.forEach((item) => {
-                item.hidden = this.isOutOfSearchScope(item.label);
-            });
-            this.computedItems = [...this.computedItems];
+            this.visibleItems = this.getVisibleItems();
 
             /**
              * The event fired when the search input value is changed.
@@ -1990,6 +2025,50 @@ export default class FilterMenu extends LightningElement {
         this.dispatchApply();
     }
 
+    handleTreeActionClick(event) {
+        const { name, levelPath } = event.detail;
+        if (
+            name !== SELECT_ALL_ACTION.name &&
+            name !== UNSELECT_ALL_ACTION.name
+        ) {
+            return;
+        }
+        this.toggleTreeItem(levelPath, true);
+        this.dispatchSelect();
+    }
+
+    /**
+     * Handle a `loadmore` event coming from a list that has nested items.
+     *
+     * @param {Event} event `loadmore` event coming from the tree.
+     */
+    handleTreeLoadMore(event) {
+        const levelPath = event.detail.levelPath;
+        const item = getTreeItemByLevelPath(levelPath, this.visibleItems);
+        if (item) {
+            this.dispatchLoadMore(item);
+        }
+    }
+
+    /**
+     * Handle the selection of a list item when the list has nested items.
+     *
+     * @param {Event} event `select` event coming from the tree.
+     */
+    handleTreeSelect(event) {
+        event.stopPropagation();
+
+        const levelPath = event.detail.levelPath;
+        if (levelPath) {
+            this.toggleTreeItem(levelPath);
+        } else {
+            const value = deepCopy(event.detail.selectedItems);
+            this.currentValue = value;
+        }
+
+        this.dispatchSelect();
+    }
+
     /**
      * Dispatch the apply event.
      */
@@ -2028,16 +2107,27 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
     }
 
-    dispatchLoadMore() {
+    /**
+     * Dispatch the `loadmore` event.
+     *
+     * @param {object} item Parent item that triggered the `loadmore` event, if the items are nested.
+     */
+    dispatchLoadMore(item) {
         /**
-         * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user.
+         * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user or by a nested item opening.
          *
          * @event
          * @name loadmore
+         * @param {object} item If the event was triggered by a nested item, definition of this item.
          * @public
          * @bubbles
          */
-        this.dispatchEvent(new CustomEvent('loadmore', { bubbles: true }));
+        this.dispatchEvent(
+            new CustomEvent('loadmore', {
+                bubbles: true,
+                detail: { item: deepCopy(item) }
+            })
+        );
     }
 
     /**

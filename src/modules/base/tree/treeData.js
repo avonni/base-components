@@ -10,7 +10,10 @@ import { getTreeNode } from './treeNode';
  * @param {object} nameKeyMapping Map of item names and their key.
  */
 export class TreeData {
-    constructor() {
+    constructor(disabled, actions) {
+        this.disabled = disabled;
+        this.actions = actions;
+
         this._currentFocusedItemIndex = 0;
         this._treeItemsInTraversalOrder = [];
         this._visibleTreeItems = null;
@@ -311,12 +314,14 @@ export class TreeData {
         let _selectedItem = null;
         function buildTree(currentNode, parent, level, childNum) {
             if (isNodeValid(currentNode, level)) {
-                const node = getTreeNode(
-                    currentNode,
+                const node = getTreeNode({
+                    actions: this.actions,
+                    childNum: childNum + 1,
+                    disabled: this.disabled,
                     level,
-                    parent ? parent.key : null,
-                    childNum + 1
-                );
+                    node: currentNode,
+                    parentKey: parent ? parent.key : null
+                });
                 if (
                     parent &&
                     parent.visible &&

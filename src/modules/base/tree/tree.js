@@ -1,12 +1,12 @@
-import { LightningElement, api, track } from 'lwc';
-import { TreeData } from './treeData';
 import {
-    generateUUID,
     deepCopy,
+    generateUUID,
     normalizeArray,
     normalizeBoolean
 } from 'c/utils';
 import { keyCodes } from 'c/utilsPrivate';
+import { LightningElement, api, track } from 'lwc';
+import { TreeData } from './treeData';
 
 const DEFAULT_ACTION_NAMES = [
     'Standard.Tree.Add',
@@ -41,13 +41,22 @@ export default class Tree extends LightningElement {
      * @public
      */
     @api header;
+
+    /**
+     * New branch default label.
+     *
+     * @type {string}
+     * @public
+     */
     @api placeholder;
 
     _actions = [];
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
     _collapseDisabled = false;
+    _disabled = false;
     _editableFields = DEFAULT_EDITABLE_FIELDS;
+    _enableInfiniteLoading = false;
     _independentMultiSelect = false;
     _isLoading = false;
     _isMultiSelect = false;
@@ -65,6 +74,7 @@ export default class Tree extends LightningElement {
     _connected = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
+    _previousSelectedItems = [];
     _selectTimeout;
     _setFocus = false;
 
@@ -113,6 +123,10 @@ export default class Tree extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
+
+        if (this._connected) {
+            this.initItems();
+        }
     }
 
     /**
@@ -163,6 +177,26 @@ export default class Tree extends LightningElement {
     }
 
     /**
+     * If present, the component is disabled and items cannot be selected or edited.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.initItems();
+        }
+    }
+
+    /**
      * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard `Standard.Tree.Edit` action.
      *
      * @type {string[]}
@@ -176,6 +210,21 @@ export default class Tree extends LightningElement {
 
     set editableFields(value) {
         this._editableFields = normalizeArray(value);
+    }
+
+    /**
+     * If present, a "Load more" button is displayed at the end of the root items. On click, it will fire the `loadmore` event.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
     }
 
     /**
@@ -194,6 +243,10 @@ export default class Tree extends LightningElement {
 
     set independentMultiSelect(value) {
         this._independentMultiSelect = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.resetSelection();
+        }
     }
 
     /**
@@ -287,6 +340,7 @@ export default class Tree extends LightningElement {
             typeof value === 'string'
                 ? [value]
                 : deepCopy(normalizeArray(value));
+        this._previousSelectedItems = [];
         if (this._connected) this.resetSelection();
     }
 
@@ -336,12 +390,26 @@ export default class Tree extends LightningElement {
             : this.selectedItems.slice(0, 1);
     }
 
+    /**
+     * True if the laoding spinner should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showLoadMore() {
+        return this.enableInfiniteLoading && !this.isLoading;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Remove keyboard focus from the tree.
+     *
+     * @public
+     */
     @api
     blur(itemException) {
         const currentFocused = this.treedata.getItemAtIndex(
@@ -357,6 +425,11 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Set keyboard focus on the tree.
+     *
+     * @public
+     */
     @api
     focus() {
         if (this.items.length) {
@@ -383,7 +456,7 @@ export default class Tree extends LightningElement {
     initItems() {
         // Reset the state
         this.setFocusToItem({});
-        this.treedata = new TreeData();
+        this.treedata = new TreeData(this.disabled, this.actions);
         if (!this.items.length) {
             this.children = [];
             return;
@@ -503,6 +576,7 @@ export default class Tree extends LightningElement {
             );
         }
         if (selectedItems.length !== this.selectedItems.length) {
+            this._previousSelectedItems = [...this.selectedItems];
             this._selectedItems = selectedItems;
             this.dispatchSelect();
         }
@@ -786,6 +860,7 @@ export default class Tree extends LightningElement {
             (this.selectedItems.length === 1 && this.selectedItems[0] === name)
         )
             return;
+        this._previousSelectedItems = [...this.selectedItems];
         this._selectedItems = [name];
         this.dispatchSelect(event);
     }
@@ -1040,17 +1115,22 @@ export default class Tree extends LightningElement {
         const key = event.detail.key;
         const target = event.detail.target;
         const item = this.treedata.getItem(key);
+        const node = item.treeNode;
 
         if (item) {
             if (target === 'chevron') {
-                if (item.treeNode.nodeRef.expanded) {
-                    this.collapseBranch(item.treeNode);
+                if (node.nodeRef.expanded) {
+                    this.collapseBranch(node);
                 } else {
-                    this.expandBranch(item.treeNode);
+                    this.expandBranch(node);
+
+                    if (node.enableInfiniteLoading && !node.children.length) {
+                        this.dispatchLoadMore(key);
+                    }
                 }
             } else if (target === 'anchor') {
                 if (this.isMultiSelect) {
-                    const node = item.treeNode;
+                    this._previousSelectedItems = [...this.selectedItems];
                     const cascadeSelection = !this.independentMultiSelect;
                     if (!node.selected) {
                         this.treedata.selectNode(
@@ -1073,7 +1153,7 @@ export default class Tree extends LightningElement {
                     this.dispatchSelect(event);
                 } else {
                     this.setFocusToItem(item);
-                    this.singleSelect(item.treeNode.name, event);
+                    this.singleSelect(node.name, event);
                 }
             }
         }
@@ -1128,6 +1208,15 @@ export default class Tree extends LightningElement {
             default:
                 break;
         }
+    }
+
+    /**
+     * Handle a click on a load more button.
+     *
+     * @param {Event} event `click` or `privateitemloadmore` event.
+     */
+    handleLoadMore(event) {
+        this.dispatchLoadMore(event.detail.key);
     }
 
     /**
@@ -1368,6 +1457,30 @@ export default class Tree extends LightningElement {
     }
 
     /**
+     * Dispatch the `loadmore` event.
+     *
+     * @param {string} key Key of the parent item that triggered the event.
+     */
+    dispatchLoadMore(key) {
+        let levelPath = [];
+        if (key) {
+            levelPath = this.treedata.getLevelPath(key.toString());
+        }
+
+        /**
+         * The event fired when a "Load more" button is clicked.
+         *
+         * @event
+         * @name loadmore
+         * @param {number[]} levelPath Array of the levels of depth of the item that is loading. Empty if the root level is loading.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadmore', { detail: { levelPath } })
+        );
+    }
+
+    /**
      * Dispatch the select event.
      *
      * @param {Event} event The event that triggered the selection.
@@ -1412,9 +1525,13 @@ export default class Tree extends LightningElement {
         } else {
             this.dispatchEvent(customEvent);
 
-            if (event && customEvent.defaultPrevented) {
-                event.preventDefault();
+            if (customEvent.defaultPrevented) {
+                if (event) {
+                    event.preventDefault();
+                }
+                this._selectedItems = this._previousSelectedItems;
             }
         }
+        this._previousSelectedItems = [];
     }
 }

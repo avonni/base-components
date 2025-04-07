@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
     generateUUID,
@@ -6,6 +5,7 @@ import {
     normalizeBoolean
 } from 'c/utils';
 import { keyCodes } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const i18n = {
     collapseBranch: 'Collapse Branch',
@@ -22,12 +22,33 @@ const DEFAULT_EDIT_FIELDS = [
     'disabled',
     'isLoading'
 ];
+const UNSORTABLE_ITEMS_PARTS = [
+    'div-branch-buttons',
+    'div-popover',
+    'lightning-button-icon-expand'
+];
 
 /**
  * @class
  * @descriptor avonni-primitive-tree-item
  */
 export default class PrimitiveTreeItem extends LightningElement {
+    /**
+     * Color of the item checkbox, if the tree is in multi-select mode.
+     *
+     * @type {string}
+     * @public
+     */
+    @api color;
+
+    /**
+     * The Lightning Design System name of the icon displayed after the label. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
+     * @type string
+     * @public
+     */
+    @api iconName;
+
     /**
      * The alternative text used to describe the reason for the wait and need for a spinner.
      *
@@ -53,10 +74,12 @@ export default class PrimitiveTreeItem extends LightningElement {
     _collapseDisabled = false;
     _disabled = false;
     _editableFields = DEFAULT_EDIT_FIELDS;
+    _enableInfiniteLoading = false;
+    _expanded = false;
     _fields = [];
     _href;
-    _expanded = false;
     _independentMultiSelect = false;
+    _indeterminate = false;
     _isLeaf = false;
     _isLoading = false;
     _label;
@@ -294,6 +317,36 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * If true, the item is expandable even if it has no children. The `loadmore` event will be fired when the item is opened if it has no child, or when the user clicks on the “Load More” button.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the item branch is expanded. An expanded branch displays its nested items visually.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get expanded() {
+        return this._expanded;
+    }
+    set expanded(value) {
+        this._expanded = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the item selection will not extend to its children.
      *
      * @type {boolean}
@@ -310,6 +363,25 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * If present, the multi-select checkbox is displayed in an indeterminate state, independently of the selected state of the item or its children.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get indeterminate() {
+        return this._indeterminate;
+    }
+    set indeterminate(value) {
+        this._indeterminate = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.updateCheckboxStatus();
+        }
+    }
+
+    /**
      * If present, a loading spinner is visible when the item is expanded.
      *
      * @type {boolean}
@@ -322,21 +394,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the item branch is expanded. An expanded branch displays its nested items visually.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get expanded() {
-        return this._expanded;
-    }
-    set expanded(value) {
-        this._expanded = normalizeBoolean(value);
     }
 
     /**
@@ -466,6 +523,16 @@ export default class PrimitiveTreeItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get checkboxStyle() {
+        if (this.color) {
+            return `
+                --slds-c-checkbox-color-border: ${this.color};
+                --slds-c-checkbox-color-border-checked: ${this.color};
+            `;
+        }
+        return null;
+    }
+
     /**
      * Array of computed edit field objects.
      *
@@ -553,7 +620,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @type {string}
      */
     get labelClass() {
-        return classSet('slds-truncate')
+        return classSet('slds-truncate slds-col')
             .add({
                 'slds-p-vertical_xx-small': !this.buttonActions.length
             })
@@ -585,6 +652,15 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get showLink() {
         return !this.disabled && !this.allowInlineEdit && this.href;
+    }
+
+    /**
+     * True if the "Load More" button should be displayed at the end of the child items.
+     *
+     * @type {boolean}
+     */
+    get showLoadMoreButton() {
+        return this.enableInfiniteLoading && !this.isLoading;
     }
 
     /**
@@ -932,7 +1008,8 @@ export default class PrimitiveTreeItem extends LightningElement {
             '[data-element-id="input-checkbox"]'
         );
         if (checkbox) {
-            checkbox.indeterminate = this._checkboxIsIndeterminate;
+            checkbox.indeterminate =
+                this.indeterminate || this._checkboxIsIndeterminate;
         }
     }
 
@@ -1073,6 +1150,8 @@ export default class PrimitiveTreeItem extends LightningElement {
             if (this.showCheckbox && target === 'anchor') {
                 this._selected = !this.selected;
                 this._checkboxIsIndeterminate = false;
+            } else if (target === 'chevron') {
+                this._expanded = !this.expanded;
             }
 
             this.dispatchClick(target, event);
@@ -1219,6 +1298,13 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * Handle a click on the "Load More" button.
+     */
+    handleLoadMore() {
+        this.dispatchLoadMore();
+    }
+
+    /**
      * Handle the saving of the inline edition of the label.
      */
     handleSaveLabelInlineEdit() {
@@ -1239,7 +1325,10 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @param {Event} event
      */
     handleMouseDown = (event) => {
-        if (!this.sortable) return;
+        const targetId = event.target.dataset.elementId;
+        if (!this.sortable || UNSORTABLE_ITEMS_PARTS.includes(targetId)) {
+            return;
+        }
         event.stopPropagation();
 
         this.dispatchEvent(
@@ -1356,6 +1445,29 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (customEvent.defaultPrevented && event.target.tagName !== 'INPUT') {
             event.preventDefault();
         }
+    }
+
+    /**
+     * Dispatch the `privateitemloadmore` event.
+     */
+    dispatchLoadMore() {
+        /**
+         * The event fired when the "Load more" button is clicked.
+         *
+         * @event
+         * @name loadmore
+         * @param {string} key Unique key of the item.
+         * @public
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privateitemloadmore', {
+                detail: { key: this.nodeKey },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     /**

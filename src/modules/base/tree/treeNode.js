@@ -1,3 +1,5 @@
+import { normalizeArray } from 'c/utils';
+
 /**
  * Compute an item key value.
  *
@@ -24,11 +26,25 @@ function computeKey(parentKey, childNum) {
  * @param {number} childNum Number of the item in its parent.
  * @returns {object} Tree node object.
  */
-export function getTreeNode(node, level, parentKey, childNum) {
+export function getTreeNode({
+    actions,
+    childNum,
+    disabled,
+    level,
+    node,
+    parentKey
+}) {
+    const computedActions = [
+        ...normalizeArray(actions),
+        ...normalizeArray(node.actions)
+    ];
     return {
+        actions: computedActions,
         avatar: node.avatar,
         children: [],
-        disabled: node.disabled || false,
+        color: node.color,
+        disabled: node.disabled || disabled || false,
+        enableInfiniteLoading: node.enableInfiniteLoading || false,
         get expanded() {
             return this.isLeaf && !this.isLoading
                 ? true
@@ -36,7 +52,10 @@ export function getTreeNode(node, level, parentKey, childNum) {
         },
         fields: node.fields,
         href: node.href,
+        iconName: node.iconName,
+        indeterminate: node.indeterminate || false,
         isLeaf:
+            !node.enableInfiniteLoading &&
             !node.isLoading &&
             (!node.items ||
                 (Array.isArray(node.items) && node.items.length === 0)),

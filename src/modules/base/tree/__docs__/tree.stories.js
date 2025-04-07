@@ -65,6 +65,18 @@ export default {
                 type: { summary: 'string[]' }
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a "Load more" button is displayed at the end of the root items. On click, it will fire the `loadmore` event.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         header: {
             control: {
                 type: 'text'
@@ -280,4 +292,10 @@ CollapseDisabled.args = {
     items: ITEMS,
     header: 'Collapse Disabled',
     collapseDisabled: true
+};
+
+export const InfiniteLoading = Template.bind({});
+InfiniteLoading.args = {
+    header: 'Infinite Loading Tree',
+    enableInfiniteLoading: true
 };
