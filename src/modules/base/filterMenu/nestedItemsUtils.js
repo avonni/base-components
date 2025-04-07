@@ -8,6 +8,12 @@ const UNSELECT_ALL_ACTION = {
     name: 'unselect-all'
 };
 
+/*
+ * -------------------------------------------------------------
+ *  PRIVATE FUNCTIONS
+ * -------------------------------------------------------------
+ */
+
 function _getChildrenNames(item) {
     const children = [];
     if (Array.isArray(item.items)) {
@@ -24,6 +30,29 @@ function _getChildrenNames(item) {
     return children;
 }
 
+/*
+ * -------------------------------------------------------------
+ *  PUBLIC FUNCTIONS
+ * -------------------------------------------------------------
+ */
+
+function getItemByName(name, items = []) {
+    for (let i = 0; i < items.length; i += 1) {
+        const item = items[i];
+        if (item.name === name || item.value === name) {
+            return item;
+        }
+
+        if (Array.isArray(item.items)) {
+            const childItem = getItemByName(name, item.items);
+            if (childItem) {
+                return childItem;
+            }
+        }
+    }
+    return null;
+}
+
 function getTreeItemByLevelPath(levelPath = [], items = []) {
     let item;
     let level = items;
@@ -31,29 +60,12 @@ function getTreeItemByLevelPath(levelPath = [], items = []) {
     for (let i = 0; i < levelPath.length; i += 1) {
         const index = levelPath[i];
         item = level[index];
-        if (!item || !Array.isArray(item.items)) {
-            return null;
+        if (!item) {
+            break;
         }
-        level = item.items;
+        level = item.items || [];
     }
     return item;
-}
-
-function getTreeItemByName(name, items = []) {
-    for (let i = 0; i < items.length; i += 1) {
-        const item = items[i];
-        if (item.name === name) {
-            return item;
-        }
-
-        if (Array.isArray(item.items)) {
-            const childItem = getTreeItemByName(name, item.items);
-            if (childItem) {
-                return childItem;
-            }
-        }
-    }
-    return null;
 }
 
 function toggleTreeItemValue({ cascade = false, item, value }) {
@@ -84,8 +96,8 @@ function toggleTreeItemValue({ cascade = false, item, value }) {
 }
 
 export {
+    getItemByName,
     getTreeItemByLevelPath,
-    getTreeItemByName,
     SELECT_ALL_ACTION,
     toggleTreeItemValue,
     UNSELECT_ALL_ACTION

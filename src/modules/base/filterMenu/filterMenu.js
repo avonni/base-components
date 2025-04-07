@@ -24,8 +24,8 @@ import filterMenu from './filterMenu.html';
 import filterMenuVertical from './filterMenuVertical.html';
 import Item from './item';
 import {
+    getItemByName,
     getTreeItemByLevelPath,
-    getTreeItemByName,
     SELECT_ALL_ACTION,
     toggleTreeItemValue,
     UNSELECT_ALL_ACTION
@@ -1362,9 +1362,9 @@ export default class FilterMenu extends LightningElement {
     computeSelectedListItems() {
         const selectedItems = [];
         this.value.forEach((v) => {
-            const item = getTreeItemByName(v, this.computedItems);
+            const item = getItemByName(v, this.computedItems);
             if (item) {
-                selectedItems.push({ label: item.label, name: item.name });
+                selectedItems.push({ label: item.label, name: item.value });
             }
         });
 
@@ -1720,7 +1720,7 @@ export default class FilterMenu extends LightningElement {
             this.visibleItems
         );
         visibleItem.checked = !visibleItem.checked;
-        const item = getTreeItemByName(visibleItem.name, this.computedItems);
+        const item = getItemByName(visibleItem.name, this.computedItems);
         this.currentValue = toggleTreeItemValue({
             cascade,
             item,
