@@ -75,7 +75,11 @@
 
     <button
         if:true={addAction}
-        class="slds-button slds-button_neutral slds-button_stretch slds-m-top_xx-small slds-m-left_none"
+        class="
+            slds-button slds-button_neutral slds-button_stretch
+            slds-m-top_xx-small
+            slds-m-left_none
+        "
         type="button"
         data-element-id="button-add-action"
         onclick={handleActionClick}
@@ -96,6 +100,7 @@
         class="slds-m-top_xx-small slds-m-left_none"
         label="Load More"
         stretch
+        data-element-id="lightning-button-load-more"
         onclick={handleLoadMore}
     ></lightning-button>
 </template>

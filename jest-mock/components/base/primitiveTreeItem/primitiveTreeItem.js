@@ -1,6 +1,9 @@
 import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveTreeItem extends LightningElement {
+    @api color;
+    @api enableInfiniteLoading;
+    @api iconName;
     @api loadingStateAlternativeText;
     @api nodeKey;
     @api actions;
@@ -11,10 +14,11 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api collapseDisabled;
     @api disabled;
     @api editableFields;
+    @api expanded;
     @api fields;
     @api href;
     @api independentMultiSelect;
-    @api expanded;
+    @api indeterminate;
     @api isLeaf;
     @api isLoading;
     @api label;

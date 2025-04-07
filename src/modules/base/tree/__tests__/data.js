@@ -96,6 +96,11 @@ export const ITEMS = [
     {
         label: 'Simple',
         name: 'simple'
+    },
+    {
+        label: 'Infinite loading',
+        name: 'infiniteLoading',
+        enableInfiniteLoading: true
     }
 ];
 
