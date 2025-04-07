@@ -10,8 +10,9 @@ import { getTreeNode } from './treeNode';
  * @param {object} nameKeyMapping Map of item names and their key.
  */
 export class TreeData {
-    constructor(disabled) {
+    constructor(disabled, actions) {
         this.disabled = disabled;
+        this.actions = actions;
 
         this._currentFocusedItemIndex = 0;
         this._treeItemsInTraversalOrder = [];
@@ -314,6 +315,7 @@ export class TreeData {
         function buildTree(currentNode, parent, level, childNum) {
             if (isNodeValid(currentNode, level)) {
                 const node = getTreeNode({
+                    actions: this.actions,
                     childNum: childNum + 1,
                     disabled: this.disabled,
                     level,

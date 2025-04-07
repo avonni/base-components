@@ -22,7 +22,10 @@
 
             <div class="slds-has-flexi-truncate">
                 <div
-                    class="slds-grid slds-grid_vertical-align-center avonni-primitive-tree-item__header"
+                    class="
+                        slds-grid slds-grid_vertical-align-center
+                        avonni-primitive-tree-item__header
+                    "
                     data-element-id="div-header"
                     onfocusin={showBranchButtons}
                     onfocusout={hideBranchButtons}
@@ -50,7 +53,10 @@
                         >
                             <span class="slds-checkbox_faux"></span>
                             <span
-                                class="slds-form-element__label slds-assistive-text"
+                                class="
+                                    slds-form-element__label
+                                    slds-assistive-text
+                                "
                                 >Select</span
                             >
                         </label>
@@ -123,14 +129,20 @@
 
                     <div
                         if:true={visibleActions.length}
-                        class="avonni-primitive-tree-item__branch-buttons slds-grid slds-grid_vertical-align-center"
+                        class="
+                            avonni-primitive-tree-item__branch-buttons
+                            slds-grid slds-grid_vertical-align-center
+                        "
                         data-element-id="div-branch-buttons"
                     >
                         <!-- Action icons -->
                         <template for:each={buttonActions} for:item="action">
                             <lightning-button-icon
                                 key={action.name}
-                                class="slds-m-left_x-small slds-m-vertical_xx-small"
+                                class="
+                                    slds-m-left_x-small
+                                    slds-m-vertical_xx-small
+                                "
                                 alternative-text={action.label}
                                 icon-name={action.iconName}
                                 name={action.name}
@@ -193,7 +205,11 @@
                     <template for:each={fields} for:item="field">
                         <c-output-data
                             key={uniqueKey}
-                            class="avonni-primitive-tree-item__field slds-show slds-m-bottom_xx-small"
+                            class="
+                                avonni-primitive-tree-item__field
+                                slds-show
+                                slds-m-bottom_xx-small
+                            "
                             label={field.label}
                             type={field.type}
                             type-attributes={field.typeAttributes}
@@ -209,7 +225,10 @@
         <!-- Popover -->
         <div
             if:true={popoverVisible}
-            class="slds-is-absolute slds-popover avonni-primitive-tree-item__popover"
+            class="
+                slds-is-absolute slds-popover
+                avonni-primitive-tree-item__popover
+            "
             aria-label="Edit item"
             role="dialog"
             data-element-id="div-popover"
@@ -254,7 +273,12 @@
             </div>
 
             <div
-                class="slds-popover__footer slds-grid slds-grid_align-spread slds-grid_vertical-align-center"
+                class="
+                    slds-popover__footer
+                    slds-grid
+                    slds-grid_align-spread
+                    slds-grid_vertical-align-center
+                "
             >
                 <lightning-button
                     class="slds-m-right_xx-small"
@@ -279,7 +303,7 @@
                 <c-primitive-tree-item
                     class="slds-is-relative"
                     key={item.key}
-                    actions={actions}
+                    actions={item.actions}
                     actions-when-disabled={actionsWhenDisabled}
                     allow-inline-edit={allowInlineEdit}
                     aria-disabled={item.disabled}
@@ -318,7 +342,10 @@
 
             <div
                 if:true={isLoading}
-                class="avonni-primitive-tree-item__loading-spinner slds-is-relative"
+                class="
+                    avonni-primitive-tree-item__loading-spinner
+                    slds-is-relative
+                "
             >
                 <lightning-spinner
                     alternative-text={loadingStateAlternativeText}

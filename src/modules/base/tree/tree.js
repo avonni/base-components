@@ -123,6 +123,10 @@ export default class Tree extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
+
+        if (this._connected) {
+            this.initItems();
+        }
     }
 
     /**
@@ -452,7 +456,7 @@ export default class Tree extends LightningElement {
     initItems() {
         // Reset the state
         this.setFocusToItem({});
-        this.treedata = new TreeData(this.disabled);
+        this.treedata = new TreeData(this.disabled, this.actions);
         if (!this.items.length) {
             this.children = [];
             return;

@@ -1,3 +1,5 @@
+import { normalizeArray } from 'c/utils';
+
 /**
  * Compute an item key value.
  *
@@ -24,8 +26,20 @@ function computeKey(parentKey, childNum) {
  * @param {number} childNum Number of the item in its parent.
  * @returns {object} Tree node object.
  */
-export function getTreeNode({ childNum, disabled, level, node, parentKey }) {
+export function getTreeNode({
+    actions,
+    childNum,
+    disabled,
+    level,
+    node,
+    parentKey
+}) {
+    const computedActions = [
+        ...normalizeArray(actions),
+        ...normalizeArray(node.actions)
+    ];
     return {
+        actions: computedActions,
         avatar: node.avatar,
         children: [],
         color: node.color,

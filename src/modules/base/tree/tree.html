@@ -24,7 +24,7 @@
         <template for:each={children} for:item="item" for:index="index">
             <c-primitive-tree-item
                 key={item.key}
-                actions={actions}
+                actions={item.actions}
                 actions-when-disabled={actionsWhenDisabled}
                 allow-inline-edit={allowInlineEdit}
                 aria-disabled={item.disabled}
