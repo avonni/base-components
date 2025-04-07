@@ -24,7 +24,21 @@ const ITEMS = [
     },
     {
         label: 'Item 4',
-        value: 'item-4'
+        value: 'item-4',
+        enableInfiniteLoading: true,
+        items: [
+            {
+                value: 'item-4-1',
+                label: 'Item 4.1',
+                items: [
+                    {
+                        value: 'item-4-1-1',
+                        label: 'Item 4.1.1',
+                        enableInfiniteLoading: true
+                    }
+                ]
+            }
+        ]
     },
     {
         label: 'Item 5',
@@ -884,11 +898,6 @@ describe('Filter Menu', () => {
                 element.typeAttributes = { items: ITEMS };
                 element.value = VALUE;
 
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                button.click();
-
                 return Promise.resolve().then(() => {
                     const pills = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-pill-container"]'
@@ -1334,7 +1343,33 @@ describe('Filter Menu', () => {
                     const items = element.shadowRoot.querySelectorAll(
                         '[data-element-id="a-list-item"]'
                     );
+                    const tree = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-tree"]'
+                    );
+                    expect(tree).toBeFalsy();
                     expect(items).toHaveLength(ITEMS.length);
+                });
+            });
+
+            it('type = list, nested items', () => {
+                element.type = 'list';
+                element.typeAttributes = { items: ITEMS, hasNestedItems: true };
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+                    const tree = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-tree"]'
+                    );
+                    expect(items).toHaveLength(0);
+                    expect(tree).toBeTruthy();
+                    expect(tree.items).toHaveLength(ITEMS.length);
                 });
             });
 
@@ -1344,11 +1379,33 @@ describe('Filter Menu', () => {
                 element.typeAttributes = { items: ITEMS };
 
                 return Promise.resolve().then(() => {
+                    const tree = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-tree"]'
+                    );
                     const choiceSet = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-choice-set"]'
                     );
+                    expect(tree).toBeFalsy();
                     expect(choiceSet).toBeTruthy();
                     expect(choiceSet.options).toHaveLength(ITEMS.length);
+                });
+            });
+
+            it('type = list, nested items and vertical variant', () => {
+                element.type = 'list';
+                element.variant = 'vertical';
+                element.typeAttributes = { items: ITEMS, hasNestedItems: true };
+
+                return Promise.resolve().then(() => {
+                    const tree = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-tree"]'
+                    );
+                    const choiceSet = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-choice-set"]'
+                    );
+                    expect(choiceSet).toBeFalsy();
+                    expect(tree).toBeTruthy();
+                    expect(tree.items).toHaveLength(ITEMS.length);
                 });
             });
 
@@ -2053,6 +2110,21 @@ describe('Filter Menu', () => {
                     expect(spy).toHaveBeenCalled();
                 });
             });
+
+            it('Nested items', () => {
+                element.variant = 'vertical';
+                element.typeAttributes = { hasNestedItems: true };
+
+                return Promise.resolve().then(() => {
+                    const tree = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-tree"]'
+                    );
+                    const spy = jest.spyOn(tree, 'focus');
+
+                    element.focus();
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
         });
 
         describe('Focus search input', () => {
@@ -2193,11 +2265,39 @@ describe('Filter Menu', () => {
                         expect(button).toBeFalsy();
                     });
             });
+
+            it('loadmore event, nested items', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                element.variant = 'vertical';
+                element.typeAttributes = {
+                    hasNestedItems: true,
+                    items: ITEMS,
+                    enableInfiniteLoading: true
+                };
+
+                return Promise.resolve().then(() => {
+                    const tree = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-tree"]'
+                    );
+                    tree.dispatchEvent(
+                        new CustomEvent('loadmore', {
+                            detail: {
+                                levelPath: [3]
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.item).toMatchObject(ITEMS[3]);
+                });
+            });
         });
 
         describe('Select', () => {
             // Depends on items and variant
-            it('select event, with horizontal variant', () => {
+            it('Horizontal variant', () => {
                 const handler = jest.fn();
                 element.addEventListener('select', handler);
 
@@ -2243,7 +2343,7 @@ describe('Filter Menu', () => {
                     });
             });
 
-            it('select event, with vertical variant', () => {
+            it('Vertical variant', () => {
                 const handler = jest.fn();
                 element.addEventListener('select', handler);
                 element.variant = 'vertical';
@@ -2269,7 +2369,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('select event, date-range type', () => {
+            it('Date-range type', () => {
                 const handler = jest.fn();
                 element.addEventListener('select', handler);
 
@@ -2302,7 +2402,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('select event, range type', () => {
+            it('Range type', () => {
                 const handler = jest.fn();
                 element.addEventListener('select', handler);
 
@@ -2328,6 +2428,98 @@ describe('Filter Menu', () => {
                     expect(handler.mock.calls[0][0].detail.value).toEqual([
                         20, 80
                     ]);
+                });
+            });
+
+            describe('Nested items', () => {
+                it('Select root item', () => {
+                    const handler = jest.fn();
+                    element.addEventListener('select', handler);
+                    element.variant = 'vertical';
+                    element.typeAttributes = {
+                        items: ITEMS,
+                        hasNestedItems: true
+                    };
+
+                    return Promise.resolve().then(() => {
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-tree"]'
+                        );
+
+                        tree.dispatchEvent(
+                            new CustomEvent('select', {
+                                detail: {
+                                    selectedItems: [ITEMS[1].value]
+                                }
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.value).toEqual([ITEMS[1].value]);
+                    });
+                });
+
+                it('Select nested item', () => {
+                    const handler = jest.fn();
+                    element.addEventListener('select', handler);
+                    element.variant = 'vertical';
+                    element.typeAttributes = {
+                        items: ITEMS,
+                        hasNestedItems: true
+                    };
+
+                    return Promise.resolve().then(() => {
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-tree"]'
+                        );
+
+                        tree.dispatchEvent(
+                            new CustomEvent('select', {
+                                detail: {
+                                    levelPath: [3, 0, 0],
+                                    selectedItems: ['item-4-1-1']
+                                }
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.value).toEqual(['item-4-1-1']);
+                    });
+                });
+
+                it('Select all child items', () => {
+                    const handler = jest.fn();
+                    element.addEventListener('select', handler);
+                    element.variant = 'vertical';
+                    element.typeAttributes = {
+                        items: ITEMS,
+                        hasNestedItems: true
+                    };
+
+                    return Promise.resolve().then(() => {
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-tree"]'
+                        );
+
+                        tree.dispatchEvent(
+                            new CustomEvent('actionclick', {
+                                detail: {
+                                    levelPath: [3],
+                                    name: 'select-all'
+                                }
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.value).toEqual([
+                            'item-4',
+                            'item-4-1',
+                            'item-4-1-1'
+                        ]);
+                    });
                 });
             });
         });
@@ -2722,7 +2914,67 @@ describe('Filter Menu', () => {
                         expect(items[0].dataset.value).toBe('item-3');
                     });
             });
+
+            it('Search expands nested items', () => {
+                const handler = jest.fn();
+                element.addEventListener('search', handler);
+                jest.useFakeTimers();
+
+                element.typeAttributes = {
+                    items: ITEMS,
+                    allowSearch: true,
+                    hasNestedItems: true
+                };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input"]'
+                        );
+                        input.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: '1'
+                                }
+                            })
+                        );
+
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-tree"]'
+                        );
+                        expect(tree.items).toHaveLength(2);
+                        expect(tree.items[0]).toMatchObject(ITEMS[0]);
+                        expect(tree.items[1]).toMatchObject({
+                            label: 'Item 4',
+                            value: 'item-4',
+                            enableInfiniteLoading: true,
+                            expanded: true,
+                            items: [
+                                {
+                                    label: 'Item 4.1',
+                                    value: 'item-4-1',
+                                    expanded: true,
+                                    items: [
+                                        {
+                                            value: 'item-4-1-1',
+                                            label: 'Item 4.1.1',
+                                            enableInfiniteLoading: true
+                                        }
+                                    ]
+                                }
+                            ]
+                        });
+                    });
+            });
         });
+
         describe('Blur', () => {
             // blur
             it('blur event (button blur)', () => {

@@ -1510,7 +1510,10 @@ export default class FilterMenu extends LightningElement {
 
         const visibleItems = [];
         for (let i = 0; i < items.length; i += 1) {
-            const visibleItem = new Item({ ...items[i] });
+            const visibleItem = new Item({
+                ...items[i],
+                filterValue: this.currentValue
+            });
             if (Array.isArray(visibleItem.items)) {
                 visibleItem.items = this.getVisibleItems(visibleItem.items);
                 if (visibleItem.items.length) {
@@ -2031,6 +2034,7 @@ export default class FilterMenu extends LightningElement {
             return;
         }
         this.toggleTreeItem(levelPath, true);
+        this.dispatchSelect();
     }
 
     /**
