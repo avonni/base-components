@@ -36,6 +36,7 @@
                     <span
                         if:true={showCheckbox}
                         class="slds-checkbox slds-m-right_xx-small"
+                        data-element-id="span-checkbox"
                         style={checkboxStyle}
                     >
                         <input
@@ -113,6 +114,7 @@
                             class="slds-m-left_x-small"
                             aria-hidden="true"
                             icon-name={iconName}
+                            data-element-id="lightning-icon-label"
                             size="x-small"
                         ></lightning-icon>
                     </div>
@@ -359,6 +361,7 @@
                 class="avonni-primitive-tree-item__load-more-button"
                 label="Load more"
                 variant="base"
+                data-element-id="lightning-button-load-more"
                 onclick={handleLoadMore}
             ></lightning-button>
         </div>
