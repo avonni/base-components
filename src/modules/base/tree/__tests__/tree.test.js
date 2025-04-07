@@ -74,6 +74,35 @@ describe('Tree', () => {
             });
         });
 
+        it('Actions, merged with items actions', () => {
+            const addButton = element.shadowRoot.querySelector(
+                '[data-element-id="button-add-action"]'
+            );
+            expect(addButton).toBeFalsy();
+
+            const customAction = {
+                name: 'second-action',
+                label: 'Second action'
+            };
+            element.actions = ACTIONS;
+            element.items = [
+                ITEMS[0],
+                {
+                    label: 'second item',
+                    name: 'second',
+                    actions: [customAction]
+                }
+            ];
+
+            return Promise.resolve().then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-tree-item"]'
+                );
+                expect(items[0].actions).toEqual(ACTIONS);
+                expect(items[1].actions).toEqual([...ACTIONS, customAction]);
+            });
+        });
+
         it('Actions When Disabled', () => {
             element.actionsWhenDisabled = ACTIONS;
             element.items = ITEMS;
