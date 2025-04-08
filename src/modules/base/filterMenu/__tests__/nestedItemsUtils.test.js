@@ -80,7 +80,14 @@ describe('Filter Menu: Nested Items Utils', () => {
                 name: 'parent',
                 checked: false,
                 items: [
-                    { name: 'child1', checked: false },
+                    {
+                        name: 'child1',
+                        checked: false,
+                        items: [
+                            { name: 'child1-1', checked: false },
+                            { name: 'child1-2', checked: false }
+                        ]
+                    },
                     { name: 'child2', checked: false }
                 ]
             };
@@ -102,9 +109,31 @@ describe('Filter Menu: Nested Items Utils', () => {
             expect(item.checked).toBe(false);
         });
 
-        it('Cascade select', () => {
+        it('Select all the descendants', () => {
             const value = ['someOtherValue'];
-            const result = toggleTreeItemValue({ cascade: true, item, value });
+            const result = toggleTreeItemValue({
+                action: 'select-all',
+                item,
+                value
+            });
+            expect(result).toEqual([
+                'someOtherValue',
+                'parent',
+                'child1',
+                'child1-1',
+                'child1-2',
+                'child2'
+            ]);
+            expect(item.checked).toBe(true);
+        });
+
+        it('Select the immediate descendants', () => {
+            const value = ['someOtherValue'];
+            const result = toggleTreeItemValue({
+                action: 'select-immediate',
+                item,
+                value
+            });
             expect(result).toEqual([
                 'someOtherValue',
                 'parent',
@@ -114,10 +143,20 @@ describe('Filter Menu: Nested Items Utils', () => {
             expect(item.checked).toBe(true);
         });
 
-        it('Cascade unselect', () => {
+        it('Unselect all descendants', () => {
             item.checked = true;
-            const value = ['someOtherValue', 'parent', 'child1', 'child2'];
-            const result = toggleTreeItemValue({ cascade: true, item, value });
+            const value = [
+                'someOtherValue',
+                'parent',
+                'child1',
+                'child2',
+                'child1-1'
+            ];
+            const result = toggleTreeItemValue({
+                action: 'unselect-all',
+                item,
+                value
+            });
 
             expect(result).toEqual(['someOtherValue']);
             expect(item.checked).toBe(false);

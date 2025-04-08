@@ -1,10 +1,15 @@
 const SELECT_ALL_ACTION = {
-    label: 'Select All',
+    label: 'Select All Descendants',
     name: 'select-all'
 };
 
+const SELECT_IMMEDIATE_CHILDREN_ACTION = {
+    label: 'Select Immediate Descendants',
+    name: 'select-immediate'
+};
+
 const UNSELECT_ALL_ACTION = {
-    label: 'Unselect All',
+    label: 'Unselect All Descendants',
     name: 'unselect-all'
 };
 
@@ -28,6 +33,35 @@ function _getChildrenNames(item) {
         });
     }
     return children;
+}
+
+function _selectChildren({ action, item, selectedItems }) {
+    if (!action || !Array.isArray(item.items)) {
+        return;
+    }
+    const selectAll = action === SELECT_ALL_ACTION.name;
+    const selectImmediate = action === SELECT_IMMEDIATE_CHILDREN_ACTION.name;
+
+    if (selectAll) {
+        const childrenNames = _getChildrenNames(item);
+        childrenNames.forEach((child) => {
+            selectedItems.add(child);
+        });
+    } else if (selectImmediate) {
+        item.items.forEach((child) => {
+            selectedItems.add(child.name);
+        });
+    }
+}
+
+function _unselectChildren({ action, item, selectedItems }) {
+    if (action !== UNSELECT_ALL_ACTION.name || !Array.isArray(item.items)) {
+        return;
+    }
+    const childrenNames = _getChildrenNames(item);
+    childrenNames.forEach((child) => {
+        selectedItems.delete(child);
+    });
 }
 
 /*
@@ -68,29 +102,19 @@ function getTreeItemByLevelPath(levelPath = [], items = []) {
     return item;
 }
 
-function toggleTreeItemValue({ cascade = false, item, value }) {
-    const childrenNames = _getChildrenNames(item);
+function toggleTreeItemValue({ action, item, value }) {
     const index = value.indexOf(item.name);
     const selectedItems = new Set(value);
     const isSelected = index < 0;
+
     if (isSelected) {
         item.checked = true;
         selectedItems.add(item.name);
-
-        if (cascade) {
-            childrenNames.forEach((child) => {
-                selectedItems.add(child);
-            });
-        }
+        _selectChildren({ action, item, selectedItems });
     } else {
         item.checked = false;
         selectedItems.delete(item.name);
-
-        if (cascade) {
-            childrenNames.forEach((child) => {
-                selectedItems.delete(child);
-            });
-        }
+        _unselectChildren({ action, item, selectedItems });
     }
     return Array.from(selectedItems);
 }
@@ -99,6 +123,7 @@ export {
     getItemByName,
     getTreeItemByLevelPath,
     SELECT_ALL_ACTION,
+    SELECT_IMMEDIATE_CHILDREN_ACTION,
     toggleTreeItemValue,
     UNSELECT_ALL_ACTION
 };
