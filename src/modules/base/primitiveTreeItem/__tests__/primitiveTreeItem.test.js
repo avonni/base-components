@@ -209,7 +209,7 @@ describe('Primitive Tree Item', () => {
 
             // Open menu
             const menu = header.querySelector(
-                '[data-element-id="lightning-button-menu"]'
+                '[data-element-id="avonni-button-menu"]'
             );
             menu.dispatchEvent(new CustomEvent('open'));
             const spy = jest.spyOn(menu, 'click');
@@ -987,7 +987,7 @@ describe('Primitive Tree Item', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-menu"]'
+                '[data-element-id="avonni-button-menu"]'
             );
             const spy = jest.spyOn(menu, 'focus');
             element.focusContent();
