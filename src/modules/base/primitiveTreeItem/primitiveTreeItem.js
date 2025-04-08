@@ -869,7 +869,9 @@ export default class PrimitiveTreeItem extends LightningElement {
                 const menu = this.template.querySelector(
                     '[data-element-id="avonni-button-menu"]'
                 );
-                if (menu) menu.click();
+                if (menu) {
+                    menu.close();
+                }
             }
         }
     }

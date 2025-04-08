@@ -674,6 +674,18 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
+     * Close the menu.
+     *
+     * @api
+     */
+    @api
+    close() {
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
      * Set focus on the button.
      *
      * @public
@@ -690,15 +702,6 @@ export default class ButtonMenu extends PrimitiveButton {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Close menu.
-     */
-    close() {
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
 
     /**
      * Find menu item's index.
