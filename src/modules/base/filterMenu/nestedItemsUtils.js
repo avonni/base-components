@@ -19,48 +19,30 @@ const UNSELECT_ALL_ACTION = {
  * -------------------------------------------------------------
  */
 
-function _getChildrenNames(item) {
-    const children = [];
-    if (Array.isArray(item.items)) {
-        item.items.forEach((childItem) => {
-            if (childItem.name) {
-                children.push(childItem.name);
-                const grandChildren = _getChildrenNames(childItem);
-                if (grandChildren.length) {
-                    children.push(...grandChildren);
-                }
-            }
-        });
-    }
-    return children;
-}
-
-function _selectChildren({ action, item, selectedItems }) {
-    if (!action || !Array.isArray(item.items)) {
+function _selectChildren({ item, cascade, selectedItems }) {
+    if (!Array.isArray(item.items)) {
         return;
     }
-    const selectAll = action === SELECT_ALL_ACTION.name;
-    const selectImmediate = action === SELECT_IMMEDIATE_CHILDREN_ACTION.name;
+    item.items.forEach((child) => {
+        selectedItems.add(child.name);
+        child.checked = true;
+        child.updateActions();
 
-    if (selectAll) {
-        const childrenNames = _getChildrenNames(item);
-        childrenNames.forEach((child) => {
-            selectedItems.add(child);
-        });
-    } else if (selectImmediate) {
-        item.items.forEach((child) => {
-            selectedItems.add(child.name);
-        });
-    }
+        if (cascade) {
+            _selectChildren({ item: child, selectedItems });
+        }
+    });
 }
 
-function _unselectChildren({ action, item, selectedItems }) {
-    if (action !== UNSELECT_ALL_ACTION.name || !Array.isArray(item.items)) {
+function _unselectChildren({ item, selectedItems }) {
+    if (!Array.isArray(item.items)) {
         return;
     }
-    const childrenNames = _getChildrenNames(item);
-    childrenNames.forEach((child) => {
-        selectedItems.delete(child);
+    item.items.forEach((child) => {
+        selectedItems.delete(child.name);
+        child.checked = false;
+        child.updateActions();
+        _unselectChildren({ item: child, selectedItems });
     });
 }
 
@@ -109,12 +91,23 @@ function toggleTreeItemValue({ action, item, value }) {
 
     if (isSelected) {
         item.checked = true;
+        item.updateActions();
         selectedItems.add(item.name);
-        _selectChildren({ action, item, selectedItems });
+        const selectAll = action === SELECT_ALL_ACTION.name;
+        const selectImmediate =
+            action === SELECT_IMMEDIATE_CHILDREN_ACTION.name;
+        if (selectAll || selectImmediate) {
+            _selectChildren({ item, selectedItems, cascade: selectAll });
+        }
     } else {
         item.checked = false;
+        item.updateActions();
         selectedItems.delete(item.name);
-        _unselectChildren({ action, item, selectedItems });
+
+        const unselectAll = action === UNSELECT_ALL_ACTION.name;
+        if (unselectAll) {
+            _unselectChildren({ item, selectedItems });
+        }
     }
     return Array.from(selectedItems);
 }

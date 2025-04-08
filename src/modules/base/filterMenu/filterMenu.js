@@ -1731,7 +1731,6 @@ export default class FilterMenu extends LightningElement {
             value: this.currentValue
         });
         visibleItem.updateActions();
-        item.updateActions();
         this.visibleItems = [...this.visibleItems];
     }
 
