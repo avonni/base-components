@@ -846,7 +846,9 @@ export default class ButtonMenu extends PrimitiveButton {
         if (this.isTriggerFocus && !isMenuItemFocused) {
             this.toggleMenuVisibility();
         }
-        this.dispatchEvent(new CustomEvent('blur'));
+        if (!isMenuItemFocused) {
+            this.dispatchEvent(new CustomEvent('blur'));
+        }
     }
 
     /**

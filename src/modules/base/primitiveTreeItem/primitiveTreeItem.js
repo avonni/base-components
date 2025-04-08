@@ -735,7 +735,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         } else if (this.menuActions.length) {
             // Set focus on the action menu
             const buttonMenu = this.template.querySelector(
-                '[data-element-id="lightning-button-menu"]'
+                '[data-element-id="avonni-button-menu"]'
             );
             if (buttonMenu) buttonMenu.focus();
         }
@@ -867,7 +867,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             // Close button menu
             if (this._menuIsOpen) {
                 const menu = this.template.querySelector(
-                    '[data-element-id="lightning-button-menu"]'
+                    '[data-element-id="avonni-button-menu"]'
                 );
                 if (menu) menu.click();
             }
