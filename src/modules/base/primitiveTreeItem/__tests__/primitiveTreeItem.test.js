@@ -212,7 +212,7 @@ describe('Primitive Tree Item', () => {
                 '[data-element-id="avonni-button-menu"]'
             );
             menu.dispatchEvent(new CustomEvent('open'));
-            const spy = jest.spyOn(menu, 'click');
+            const spy = jest.spyOn(menu, 'close');
 
             // Hide buttons and close menu on header leave
             header.dispatchEvent(new CustomEvent('mouseleave'));
