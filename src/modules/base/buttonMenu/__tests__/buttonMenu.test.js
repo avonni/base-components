@@ -4,9 +4,10 @@ import ButtonMenu from '../buttonMenu';
 
 jest.mock('c/tooltipLibrary');
 
-// not tested
+// Not tested:
 // selected event
 // Keyboard navigation (focus)
+// auto menu alignment
 
 let element;
 describe('Button Menu', () => {
@@ -1251,6 +1252,28 @@ describe('Button Menu', () => {
                 expect(clickEvent).toBeTruthy();
                 expect(element.classList).toContain('slds-is-open');
             });
+        });
+
+        it('close', () => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+
+            return Promise.resolve()
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeTruthy();
+                    element.close();
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeFalsy();
+                });
         });
 
         it('focus', () => {
