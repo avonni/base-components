@@ -29,7 +29,7 @@ function _selectChildren({ item, cascade, selectedItems }) {
         child.updateActions();
 
         if (cascade) {
-            _selectChildren({ item: child, selectedItems });
+            _selectChildren({ item: child, cascade, selectedItems });
         }
     });
 }
