@@ -125,6 +125,7 @@ describe('Carousel', () => {
                 nextPanel: 'Next Panel',
                 previousPanel: 'Previous Panel'
             });
+            expect(element.cropFit).toBe('cover');
             expect(element.currentPanel).toBeUndefined();
             expect(element.disableAutoRefresh).toBeFalsy();
             expect(element.disableAutoScroll).toBeFalsy();
@@ -169,6 +170,20 @@ describe('Carousel', () => {
                         'c-primitive-carousel-item'
                     );
                     expect(action.actionsPosition).toBe('top-left');
+                });
+            });
+        });
+
+        describe('Image crop fit', () => {
+            it('Image crop fit contain', () => {
+                element.items = items;
+                element.cropFit = 'contain';
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(item.cropFit).toBe('contain');
                 });
             });
         });

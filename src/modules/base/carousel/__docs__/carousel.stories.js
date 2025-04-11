@@ -283,6 +283,20 @@ export default {
                 defaultValue: { summary: 'top' },
                 category: 'Layout'
             }
+        },
+        cropFit: {
+            name: 'crop-fit',
+            control: {
+                type: 'select'
+            },
+            description:
+                'Crop fit of the image. Valid values include cover, contain and none.',
+            options: ['cover', 'contain', 'fill', 'none'],
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'cover' },
+                category: 'Layout'
+            }
         }
     },
 
@@ -303,7 +317,8 @@ export default {
         isInfinite: false,
         itemsPerPanel: 1,
         scrollDuration: 5,
-        imagePosition: 'top'
+        imagePosition: 'top',
+        cropFit: 'cover'
     }
 };
 
