@@ -1,4 +1,4 @@
-.avonni-notify_alert {
+.avonni-alert__wrapper {
     position: relative;
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
@@ -11,7 +11,7 @@
     justify-content: center;
     width: 100%;
     padding-top: var(--avonni-alert-spacing-block-start, 0.5rem);
-    padding-right: var(--avonni-alert-spacing-inline-end, 2rem);
+    padding-right: var(--avonni-alert-spacing-inline-end, 0.5rem);
     padding-bottom: var(--avonni-alert-spacing-block-end, 0.5rem);
     padding-left: var(--avonni-alert-spacing-inline-start, 0.5rem);
     font-weight: var(--avonni-alert-font-weight, 400);
@@ -38,6 +38,10 @@
     border-radius: var(--avonni-alert-radius-border, 0);
 }
 
+.avonni-alert__wrapper_dismissible {
+    padding-right: var(--avonni-alert-spacing-inline-end, 2rem);
+}
+
 .avonni-alert__content-container {
     display: flex;
     align-items: center;
@@ -48,7 +52,7 @@
     height: 100%;
 }
 
-.avonni-notify_alert .avonni-alert__primitive-icon_color {
+.avonni-alert__wrapper .avonni-alert__primitive-icon_color {
     border-radius: var(--avonni-alert-icon-radius-border, 0.25rem);
 }
 
