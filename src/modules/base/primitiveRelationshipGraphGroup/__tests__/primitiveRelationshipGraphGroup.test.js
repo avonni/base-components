@@ -122,9 +122,11 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.actionsPosition = 'bottom';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-relationship-graph-group-action-button"]'
+            );
             const icons = element.shadowRoot.querySelectorAll(
-                'button lightning-icon'
+                '[data-element-id="avonni-primitive-relationship-graph-group-action-button-icon"]'
             );
 
             expect(buttons).toHaveLength(2);
@@ -160,9 +162,11 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.actionsPosition = 'bottom';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-relationship-graph-group-action-button"]'
+            );
             const icons = element.shadowRoot.querySelectorAll(
-                'button lightning-icon'
+                '[data-element-id="avonni-primitive-relationship-graph-group-action-button-icon"]'
             );
 
             expect(buttons).toHaveLength(2);
@@ -185,33 +189,34 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.expanded = false;
 
         return Promise.resolve().then(() => {
-            const summaryDetail = element.shadowRoot.querySelector(
-                'avonni-summary-detail'
+            const section = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-relationship-graph-group"]'
             );
-            expect(summaryDetail.closed).toBeTruthy();
+            expect(section.classList).not.toContain('slds-is-open');
         });
     });
 
     it('Primitive relationship graph group: expanded = true', () => {
         element.expanded = true;
-        const summaryDetail = element.shadowRoot.querySelector(
-            'avonni-summary-detail'
-        );
 
         return Promise.resolve().then(() => {
-            expect(summaryDetail.closed).toBeFalsy();
+            const section = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-relationship-graph-group"]'
+            );
+            expect(section.classList).toContain('slds-is-open');
         });
     });
 
     // expand-icon-name
     it('Primitive relationship graph group: expandIconName', () => {
+        element.expanded = false;
         element.expandIconName = 'utility:apps';
-        const summaryDetail = element.shadowRoot.querySelector(
-            'avonni-summary-detail'
-        );
 
         return Promise.resolve().then(() => {
-            expect(summaryDetail.expandIconName).toBe('utility:apps');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-closed"]'
+            );
+            expect(icon.iconName).toBe('utility:apps');
         });
     });
 
@@ -253,7 +258,9 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.actionsPosition = 'bottom';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-relationship-graph-group-action-button"]'
+            );
             expect(buttons).toHaveLength(5);
         });
     });
@@ -294,7 +301,9 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.actionsPosition = 'bottom';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-relationship-graph-group-action-button"]'
+            );
             expect(buttons).toHaveLength(3);
         });
     });
@@ -306,7 +315,9 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h2');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="title"]'
+            );
             expect(title.textContent).toContain('(0)');
         });
     });
@@ -316,7 +327,9 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h2');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="title"]'
+            );
             expect(title.textContent).not.toContain('(0)');
         });
     });
@@ -326,14 +339,18 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.href = 'https://www.avonni.app/';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('h2 a');
-            expect(link).toBeTruthy();
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="title"]'
+            );
+            expect(link.href).toBe('https://www.avonni.app/');
         });
     });
 
     it('Primitive relationship graph group: href is undefined', () => {
-        const link = element.shadowRoot.querySelector('h2 a');
-        expect(link).toBeFalsy();
+        const link = element.shadowRoot.querySelector(
+            '[data-element-id="title"]'
+        );
+        expect(link.href).toBeUndefined();
     });
 
     // is-first-child
@@ -446,7 +463,9 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h2');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="title"]'
+            );
             expect(title.textContent).toContain('A string label');
         });
     });
@@ -530,10 +549,10 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.shrinkIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const summaryDetail = element.shadowRoot.querySelector(
-                'avonni-summary-detail'
-            );
-            expect(summaryDetail.shrinkIconName).toBe('utility:apps');
+            const icon = element.shadowRoot.querySelector([
+                '[data-element-id="lightning-icon-opened"]'
+            ]);
+            expect(icon.iconName).toBe('utility:apps');
         });
     });
 
@@ -595,7 +614,8 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // toggle
     // Depends on variant and items (need to have a selected item)
-    it('Primitive relationship graph group: toggle event, with horizontal variant, selected item, and close = true', () => {
+    it('Primitive relationship graph group: toggle event, with horizontal variant, selected item, and expanded = true', () => {
+        element.expanded = true;
         element.name = 'group';
         element.variant = 'horizontal';
         element.items = [
@@ -614,17 +634,11 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
         return Promise.resolve()
             .then(() => {
-                const summaryDetail = element.shadowRoot.querySelector(
-                    'avonni-summary-detail'
+                const section = element.shadowRoot.querySelector(
+                    '[data-element-id="section-title-button"]'
                 );
 
-                summaryDetail.dispatchEvent(
-                    new CustomEvent('toggle', {
-                        detail: {
-                            closed: true
-                        }
-                    })
-                );
+                section.dispatchEvent(new CustomEvent('click'));
             })
             .then(() => {
                 expect(heightChangeHandler).toHaveBeenCalled();
@@ -641,7 +655,8 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             });
     });
 
-    it('Primitive relationship graph group: toggle event, with horizontal variant, selected item, and close = false', () => {
+    it('Primitive relationship graph group: toggle event, with horizontal variant, selected item, and expanded = false', () => {
+        element.expanded = false;
         element.name = 'group';
         element.variant = 'horizontal';
         element.items = [
@@ -660,17 +675,11 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
         return Promise.resolve()
             .then(() => {
-                const summaryDetail = element.shadowRoot.querySelector(
-                    'avonni-summary-detail'
+                const section = element.shadowRoot.querySelector(
+                    '[data-element-id="section-title-button"]'
                 );
 
-                summaryDetail.dispatchEvent(
-                    new CustomEvent('toggle', {
-                        detail: {
-                            closed: false
-                        }
-                    })
-                );
+                section.dispatchEvent(new CustomEvent('click'));
             })
             .then(() => {
                 expect(heightChangeHandler).toHaveBeenCalled();
@@ -699,17 +708,11 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
         return Promise.resolve()
             .then(() => {
-                const summaryDetail = element.shadowRoot.querySelector(
-                    'avonni-summary-detail'
+                const section = element.shadowRoot.querySelector(
+                    '[data-element-id="section-title-button"]'
                 );
 
-                summaryDetail.dispatchEvent(
-                    new CustomEvent('toggle', {
-                        detail: {
-                            closed: true
-                        }
-                    })
-                );
+                section.dispatchEvent(new CustomEvent('click'));
             })
             .then(() => {
                 expect(heightChangeHandler).not.toHaveBeenCalled();
@@ -742,7 +745,9 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-relationship-graph-group-action-button"]'
+            );
             button.click();
 
             expect(handler).toHaveBeenCalled();

@@ -36,7 +36,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
 
     _actionsPosition = ACTIONS_POSITIONS.default;
-    _closed = false;
     _customActions = [];
     _defaultActions = [];
     _expanded = true;
@@ -45,6 +44,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _items = [];
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
+    closed = false;
+
     /*
      * -------------------------------------------------------------
      *  LIFECYCLE HOOKS
@@ -52,7 +53,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
      */
 
     connectedCallback() {
-        this._closed = this.expanded === false;
+        this.closed = this.expanded === false;
         this._isConnected = true;
     }
 
@@ -106,7 +107,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         this._expanded = value === false ? false : true;
 
         if (this._isConnected) {
-            this._closed = this.expanded === false;
+            this.closed = this.expanded === false;
         }
     }
 
@@ -178,16 +179,22 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.items && this.items.find((item) => item.activeSelection);
     }
 
-    get closed() {
-        return this._closed;
-    }
-    set closed(value) {
-        // The value needs to be undefined for the summary detail to be open
-        this._closed = value === true ? true : undefined;
+    get groupTitleClass() {
+        return classSet(
+            'avonni-relationship-graph-group__header-title slds-section__title'
+        )
+            .add({
+                'slds-m-right_xx-small': this.topActions
+            })
+            .toString();
     }
 
     get hasAvatar() {
         return this.avatarSrc || this.avatarFallbackIconName;
+    }
+
+    get hasCollapsibleIcon() {
+        return this.shrinkIconName || this.expandIconName;
     }
 
     get hasMoreThanOneAction() {
@@ -214,7 +221,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         if (this.hideItemsCount) return this.label;
 
         const count = this.items ? this.items.length : 0;
-        return `${this.label} (${count})`;
+        return `${this.label || ''} (${count})`;
     }
 
     get topActions() {
@@ -234,7 +241,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
 
     get wrapperClass() {
         return classSet(
-            'slds-p-around_medium slds-m-bottom_medium group slds-box slds-theme_default'
+            'avonni-relationship-graph-group slds-p-around_medium slds-m-bottom_medium group slds-box slds-theme_default slds-section'
         ).add({
             'group_active-child': this.activeChild,
             'group_active-parent': !this.closed && this.activeParent,
@@ -242,7 +249,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             'group_horizontal slds-is-relative': this.variant === 'horizontal',
             group_vertical: this.variant === 'vertical',
             'slds-m-right_medium': this.variant === 'vertical',
-            'avonni-relationship-graph-group__parent-line': this.showParentLine
+            'avonni-relationship-graph-group__parent-line': this.showParentLine,
+            'slds-is-open': !this.closed
         });
     }
 
@@ -301,14 +309,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         );
     }
 
-    handleToggle(event) {
-        this.asyncSetClosed(!this.closed).then(() => {
+    handleToggle() {
+        const closed = !this.closed;
+        this.asyncSetClosed(closed).then(() => {
             // Wait for the group to rerender to send the height change
             if (this.variant === 'horizontal') {
                 this.dispatchEvent(new CustomEvent('heightchange'));
             }
         });
-        const closed = event.detail.closed;
         this.dispatchEvent(
             new CustomEvent('toggle', {
                 detail: {
