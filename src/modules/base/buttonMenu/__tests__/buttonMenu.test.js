@@ -41,6 +41,7 @@ describe('Button Menu', () => {
             expect(element.loadingStateAlternativeText).toBe('Loading');
             expect(element.menuAlignment).toBe('left');
             expect(element.nubbin).toBeFalsy();
+            expect(element.prefixIconName).toBeFalsy();
             expect(element.stretch).toBeFalsy();
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
@@ -759,6 +760,20 @@ describe('Button Menu', () => {
                             'slds-nubbin_bottom-right'
                         );
                     });
+            });
+        });
+
+        describe('Prefix Icon Name', () => {
+            it('Display an icon if present', () => {
+                element.prefixIconName = 'standard:account';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-icon-prefix"]'
+                    );
+                    expect(icon).toBeTruthy();
+                    expect(icon.iconName).toBe('standard:account');
+                });
             });
         });
 

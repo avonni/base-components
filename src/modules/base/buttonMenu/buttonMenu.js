@@ -126,6 +126,13 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     @api loadingStateAlternativeText = i18n.loading;
     /**
+     * The Lightning Design System name of the icon positionned before the label.
+     *
+     * @type {string}
+     * @public
+     */
+    @api prefixIconName;
+    /**
      * Displays title text when the mouse moves over the button menu.
      *
      * @name title
