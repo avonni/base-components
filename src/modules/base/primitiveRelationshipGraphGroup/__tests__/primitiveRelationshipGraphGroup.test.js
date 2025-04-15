@@ -34,6 +34,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         expect(element.href).toBeUndefined();
         expect(element.isFirstChild).toBeFalsy();
         expect(element.isFirstLevel).toBeFalsy();
+        expect(element.isLoading).toBeFalsy();
         expect(element.items).toMatchObject([]);
         expect(element.itemActions).toBeUndefined();
         expect(element.label).toBeUndefined();
@@ -377,6 +378,19 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             expect(wrapper.classList).toContain(
                 'avonni-relationship-graph-group__parent-line'
             );
+        });
+    });
+
+    // is-loading
+    it('Primitive relationship graph group: isLoading', () => {
+        element.isLoading = true;
+
+        return Promise.resolve().then(() => {
+            const spinner = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-spinner"]'
+            );
+
+            expect(spinner).toBeTruthy();
         });
     });
 
