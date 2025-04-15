@@ -36,6 +36,14 @@
             src={iconSrc}
             data-element-id="image"
         />
+        <c-primitive-icon
+            if:true={prefixIconName}
+            aria-hidden="true"
+            icon-name={prefixIconName}
+            svg-class="slds-button__icon slds-button__icon_left"
+            variant="bare"
+            data-element-id="avonni-primitive-icon-prefix"
+        ></c-primitive-icon>
         {label}
         <c-primitive-icon
             if:true={showIcon}
