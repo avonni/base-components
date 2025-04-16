@@ -1,9 +1,46 @@
+.avonni-relationship-graph-group {
+    margin-top: 0;
+}
+
+.avonni-relationship-graph-group__content {
+    display: none;
+}
+
+.slds-is-open .avonni-relationship-graph-group__content {
+    display: block;
+}
+
 .group {
     width: var(--lwc-sizeMedium, 20rem);
 }
 
+/* Title --- */
+.avonni-relationship-graph-group__header {
+    align-items: center;
+}
+
+.avonni-relationship-graph-group__header-title {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.avonni-relationship-graph-group__header-title-button {
+    padding-left: 0;
+    padding-right: 0;
+    background-color: white;
+}
+
+.avonni-relationship-graph-group__header-actions {
+    width: fit-content;
+    flex-shrink: 0;
+}
+
 .group-title {
     font-size: 0.875rem;
+}
+
+.avonni-relationship-graph-group__collapse-icon {
+    height: 100%;
 }
 
 /* Themes --- */
@@ -74,6 +111,6 @@
     outline: 1px auto -webkit-focus-ring-color;
 }
 
-.avonni-relationship-graph__loading-spinner {
+.avonni-relationship-graph-group__loading-spinner {
     height: 48px;
 }

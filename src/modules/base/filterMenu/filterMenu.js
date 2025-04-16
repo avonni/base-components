@@ -27,6 +27,7 @@ import {
     getItemByName,
     getTreeItemByLevelPath,
     SELECT_ALL_ACTION,
+    SELECT_IMMEDIATE_CHILDREN_ACTION,
     toggleTreeItemValue,
     UNSELECT_ALL_ACTION
 } from './nestedItemsUtils';
@@ -1717,7 +1718,7 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
-    toggleTreeItem(levelPath = [], cascade = false) {
+    toggleTreeItem(levelPath = [], action) {
         const visibleItem = getTreeItemByLevelPath(
             levelPath,
             this.visibleItems
@@ -1725,12 +1726,11 @@ export default class FilterMenu extends LightningElement {
         visibleItem.checked = !visibleItem.checked;
         const item = getItemByName(visibleItem.name, this.computedItems);
         this.currentValue = toggleTreeItemValue({
-            cascade,
+            action,
             item,
             value: this.currentValue
         });
         visibleItem.updateActions();
-        item.updateActions();
         this.visibleItems = [...this.visibleItems];
     }
 
@@ -2029,11 +2029,12 @@ export default class FilterMenu extends LightningElement {
         const { name, levelPath } = event.detail;
         if (
             name !== SELECT_ALL_ACTION.name &&
-            name !== UNSELECT_ALL_ACTION.name
+            name !== UNSELECT_ALL_ACTION.name &&
+            name !== SELECT_IMMEDIATE_CHILDREN_ACTION.name
         ) {
             return;
         }
-        this.toggleTreeItem(levelPath, true);
+        this.toggleTreeItem(levelPath, name);
         this.dispatchSelect();
     }
 

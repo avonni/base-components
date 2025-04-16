@@ -66,6 +66,7 @@ describe('Primitive Carousel Item', () => {
             expect(element.actions).toMatchObject([]);
             expect(element.actionsPosition).toBe('bottom-center');
             expect(element.actionsVariant).toBe('border');
+            expect(element.cropFit).toBe('cover');
             expect(element.description).toBeUndefined();
             expect(element.href).toBeUndefined();
             expect(element.imageAssistiveText).toBeUndefined();
@@ -363,6 +364,60 @@ describe('Primitive Carousel Item', () => {
                         '.slds-carousel__content'
                     );
                     expect(carouselContent).toBeNull();
+                });
+            });
+        });
+
+        describe('Crop Fit', () => {
+            it('Contain', () => {
+                element.cropFit = 'contain';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_contain'
+                    );
+                });
+            });
+
+            it('Cover', () => {
+                element.cropFit = 'cover';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_cover'
+                    );
+                });
+            });
+
+            it('None', () => {
+                element.cropFit = 'none';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_none'
+                    );
+                });
+            });
+
+            it('Fill', () => {
+                element.cropFit = 'fill';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_fill'
+                    );
                 });
             });
         });

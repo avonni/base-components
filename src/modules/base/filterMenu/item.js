@@ -1,5 +1,9 @@
 import { classSet, normalizeArray } from 'c/utils';
-import { SELECT_ALL_ACTION, UNSELECT_ALL_ACTION } from './nestedItemsUtils';
+import {
+    SELECT_ALL_ACTION,
+    SELECT_IMMEDIATE_CHILDREN_ACTION,
+    UNSELECT_ALL_ACTION
+} from './nestedItemsUtils';
 
 export default class FilterMenuItem {
     constructor(props) {
@@ -46,7 +50,7 @@ export default class FilterMenuItem {
         if (this.items.length) {
             this.actions = this.checked
                 ? [UNSELECT_ALL_ACTION]
-                : [SELECT_ALL_ACTION];
+                : [SELECT_ALL_ACTION, SELECT_IMMEDIATE_CHILDREN_ACTION];
         }
     }
 }

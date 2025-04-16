@@ -187,6 +187,18 @@ export default {
                 defaultValue: { summary: false }
             }
         },
+        prefixIconName: {
+            name: 'prefix-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The Lightning Design System name of the icon positionned before the label.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
+            }
+        },
         title: {
             control: {
                 type: 'text'
@@ -288,6 +300,13 @@ Bare.args = {
 export const BareWithLabel = Template.bind({});
 BareWithLabel.args = {
     label: 'Menu',
+    variant: 'bare'
+};
+
+export const BareWithPrefixIcon = Template.bind({});
+BareWithPrefixIcon.args = {
+    label: 'Menu',
+    prefixIconName: 'utility:settings',
     variant: 'bare'
 };
 

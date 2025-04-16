@@ -20,14 +20,19 @@
                 ></avonni-avatar>
             </template>
             <div class="slds-text-heading_small slds-truncate">
-                <a if:true={href} href={href} onclick={handleAnchorTagClick}>
+                <a
+                    if:true={displayAsLink}
+                    href={href}
+                    onclick={handleAnchorTagClick}
+                >
                     {label}
                 </a>
-                <span if:false={href}>{label}</span>
+                <span if:false={displayAsLink}>{label}</span>
             </div>
             <div slot="figure-inverse" if:true={actions}>
                 <lightning-button-menu
                     alternative-text="Show menu"
+                    disabled={disabled}
                     icon-size="small"
                     menu-alignment="right"
                     variant="border"

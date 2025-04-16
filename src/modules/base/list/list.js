@@ -1,5 +1,3 @@
-import { LightningElement, api } from 'lwc';
-import { equal } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
@@ -7,9 +5,11 @@ import {
     generateUUID,
     normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    normalizeObject
+    normalizeObject,
+    normalizeString
 } from 'c/utils';
+import { equal } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 import Item from './item';
 
 const ICON_POSITIONS = {
@@ -172,10 +172,11 @@ export default class List extends LightningElement {
     _name = generateUUID();
     _previousDisplayWidth = 0;
     _previousScrollTop;
-    _savedComputedItems;
     _keyboardMoveIndex;
+    _preventItemClick = false;
     _resizeObserver;
     _restrictMotion = false;
+    _savedComputedItems;
     _scrollingInterval;
     _scrollTop = 0;
     _setItemsSizeCallbacks = new Map();
@@ -2212,6 +2213,7 @@ export default class List extends LightningElement {
                 this.computedItems.forEach((item) => {
                     cleanItems.push(this.cleanUpItem(item));
                 });
+                this._preventItemClick = true;
 
                 /**
                  * The event fired when a user reordered the items.
@@ -2232,6 +2234,10 @@ export default class List extends LightningElement {
                         }
                     })
                 );
+
+                requestAnimationFrame(() => {
+                    this._preventItemClick = false;
+                });
             }
         }
 
@@ -2531,7 +2537,7 @@ export default class List extends LightningElement {
         const itemIndex = Number(event.currentTarget.dataset.index);
         const item = this.computedItems[itemIndex];
 
-        if (!item || event.ctrlKey || event.metaKey) {
+        if (!item || event.ctrlKey || event.metaKey || this._preventItemClick) {
             return;
         }
 

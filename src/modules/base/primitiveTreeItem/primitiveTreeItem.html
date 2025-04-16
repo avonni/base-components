@@ -155,13 +155,16 @@
                         </template>
 
                         <!-- Action menu -->
-                        <lightning-button-menu
+                        <c-button-menu
                             if:true={menuActions.length}
-                            class="slds-p-horizontal_x-small"
+                            class="
+                                slds-p-horizontal_x-small
+                                avonni-primitive-tree-item__auto-positionned-form-element
+                            "
                             alternative-text="Show menu"
-                            menu-alignment="right"
+                            menu-alignment="auto"
                             variant="bare"
-                            data-element-id="lightning-button-menu"
+                            data-element-id="avonni-button-menu"
                             onblur={hideBranchButtons}
                             onclick={stopPropagation}
                             onclose={handleActionMenuClose}
@@ -179,7 +182,7 @@
                                     data-element-id="lightning-menu-item-action"
                                 ></lightning-menu-item>
                             </template>
-                        </lightning-button-menu>
+                        </c-button-menu>
                     </div>
                 </div>
 

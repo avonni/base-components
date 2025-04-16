@@ -6,6 +6,7 @@ export const Carousel = ({
     actionsPosition,
     actionsVariant,
     assistiveText,
+    cropFit,
     currentPanel,
     disableAutoRefresh,
     disableAutoScroll,
@@ -27,6 +28,7 @@ export const Carousel = ({
     element.actionsPosition = actionsPosition;
     element.actionsVariant = actionsVariant;
     element.assistiveText = assistiveText;
+    element.cropFit = cropFit;
     element.currentPanel = currentPanel;
     element.disableAutoRefresh = disableAutoRefresh;
     element.disableAutoScroll = disableAutoScroll;

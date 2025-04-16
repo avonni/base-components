@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const ALERT_VARIANTS = {
     valid: ['base', 'error', 'offline', 'warning'],
@@ -107,8 +107,11 @@ export default class Alert extends LightningElement {
      * @type {string}
      */
     get variantClass() {
-        return classSet('avonni-notify_alert')
+        return classSet('avonni-alert__wrapper')
             .add(`avonni-alert_${this._variant}`)
+            .add({
+                'avonni-alert__wrapper_dismissible': this.isDismissible
+            })
             .toString();
     }
 

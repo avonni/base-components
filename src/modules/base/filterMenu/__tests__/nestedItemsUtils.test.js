@@ -79,9 +79,26 @@ describe('Filter Menu: Nested Items Utils', () => {
             item = {
                 name: 'parent',
                 checked: false,
+                updateActions: jest.fn(),
                 items: [
-                    { name: 'child1', checked: false },
-                    { name: 'child2', checked: false }
+                    {
+                        name: 'child1',
+                        checked: false,
+                        items: [
+                            {
+                                name: 'child1-1',
+                                checked: false,
+                                updateActions: jest.fn()
+                            },
+                            {
+                                name: 'child1-2',
+                                checked: false,
+                                updateActions: jest.fn()
+                            }
+                        ],
+                        updateActions: jest.fn()
+                    },
+                    { name: 'child2', checked: false, updateActions: jest.fn() }
                 ]
             };
         });
@@ -92,6 +109,7 @@ describe('Filter Menu: Nested Items Utils', () => {
 
             expect(result).toEqual(['parent']);
             expect(item.checked).toBe(true);
+            expect(item.updateActions).toHaveBeenCalled();
         });
 
         it('Unselect the item', () => {
@@ -100,11 +118,42 @@ describe('Filter Menu: Nested Items Utils', () => {
 
             expect(result).toEqual([]);
             expect(item.checked).toBe(false);
+            expect(item.updateActions).toHaveBeenCalled();
         });
 
-        it('Cascade select', () => {
+        it('Select all the descendants', () => {
             const value = ['someOtherValue'];
-            const result = toggleTreeItemValue({ cascade: true, item, value });
+            const result = toggleTreeItemValue({
+                action: 'select-all',
+                item,
+                value
+            });
+            expect(result).toEqual([
+                'someOtherValue',
+                'parent',
+                'child1',
+                'child1-1',
+                'child1-2',
+                'child2'
+            ]);
+            expect(item.checked).toBe(true);
+            expect(item.items[0].updateActions).toHaveBeenCalled();
+            expect(item.items[0].checked).toBe(true);
+            expect(item.items[1].updateActions).toHaveBeenCalled();
+            expect(item.items[1].checked).toBe(true);
+            expect(item.items[0].items[0].checked).toBe(true);
+            expect(item.items[0].items[0].updateActions).toHaveBeenCalled();
+            expect(item.items[0].items[1].checked).toBe(true);
+            expect(item.items[0].items[1].updateActions).toHaveBeenCalled();
+        });
+
+        it('Select the immediate descendants', () => {
+            const value = ['someOtherValue'];
+            const result = toggleTreeItemValue({
+                action: 'select-immediate',
+                item,
+                value
+            });
             expect(result).toEqual([
                 'someOtherValue',
                 'parent',
@@ -112,28 +161,59 @@ describe('Filter Menu: Nested Items Utils', () => {
                 'child2'
             ]);
             expect(item.checked).toBe(true);
+            expect(item.items[0].updateActions).toHaveBeenCalled();
+            expect(item.items[0].checked).toBe(true);
+            expect(item.items[1].updateActions).toHaveBeenCalled();
+            expect(item.items[1].checked).toBe(true);
+            expect(item.items[0].items[0].checked).toBe(false);
+            expect(item.items[0].items[0].updateActions).not.toHaveBeenCalled();
+            expect(item.items[0].items[1].checked).toBe(false);
+            expect(item.items[0].items[1].updateActions).not.toHaveBeenCalled();
         });
 
-        it('Cascade unselect', () => {
+        it('Unselect all descendants', () => {
             item.checked = true;
-            const value = ['someOtherValue', 'parent', 'child1', 'child2'];
-            const result = toggleTreeItemValue({ cascade: true, item, value });
+            const value = [
+                'someOtherValue',
+                'parent',
+                'child1',
+                'child2',
+                'child1-1'
+            ];
+            const result = toggleTreeItemValue({
+                action: 'unselect-all',
+                item,
+                value
+            });
 
             expect(result).toEqual(['someOtherValue']);
             expect(item.checked).toBe(false);
+            expect(item.items[0].updateActions).toHaveBeenCalled();
+            expect(item.items[0].checked).toBe(false);
+            expect(item.items[1].updateActions).toHaveBeenCalled();
+            expect(item.items[1].checked).toBe(false);
+            expect(item.items[0].items[0].checked).toBe(false);
+            expect(item.items[0].items[0].updateActions).toHaveBeenCalled();
+            expect(item.items[0].items[1].checked).toBe(false);
+            expect(item.items[0].items[1].updateActions).toHaveBeenCalled();
         });
 
-        it('Ignore cascade if item has no children', () => {
-            const singleItem = { name: 'single', checked: false };
+        it('Ignore action if item has no children', () => {
+            const singleItem = {
+                name: 'single',
+                checked: false,
+                updateActions: jest.fn()
+            };
             const value = [];
             const result = toggleTreeItemValue({
-                cascade: true,
+                action: 'select-all',
                 item: singleItem,
                 value
             });
 
-            expect(result).toContain('single');
+            expect(result).toEqual(['single']);
             expect(singleItem.checked).toBe(true);
+            expect(singleItem.updateActions).toHaveBeenCalled();
         });
     });
 });

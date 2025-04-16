@@ -1,12 +1,9 @@
 import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
+import { AutoPosition, Direction } from 'c/positionLibrary';
 import PrimitiveButton from 'c/primitiveButton';
 import { Tooltip } from 'c/tooltipLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import {
-    buttonGroupOrderClass,
-    keyCodes,
-    observePosition
-} from 'c/utilsPrivate';
+import { buttonGroupOrderClass, keyCodes } from 'c/utilsPrivate';
 import { api } from 'lwc';
 
 const BUTTON_VARIANTS = {
@@ -36,6 +33,7 @@ const i18n = {
 
 const MENU_ALIGNMENTS = {
     valid: [
+        'auto',
         'left',
         'center',
         'right',
@@ -128,6 +126,13 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     @api loadingStateAlternativeText = i18n.loading;
     /**
+     * The Lightning Design System name of the icon positionned before the label.
+     *
+     * @type {string}
+     * @public
+     */
+    @api prefixIconName;
+    /**
      * Displays title text when the mouse moves over the button menu.
      *
      * @name title
@@ -162,6 +167,7 @@ export default class ButtonMenu extends PrimitiveButton {
     _triggers = MENU_TRIGGERS.default;
     _variant = BUTTON_VARIANTS.default;
 
+    _autoPosition;
     _boundingRect = {};
     _dropdownIsFocused = false;
     _dropdownVisible = false;
@@ -282,9 +288,6 @@ export default class ButtonMenu extends PrimitiveButton {
     }
     set isLoading(value) {
         const normalizedValue = normalizeBoolean(value);
-        if (this.isAutoAlignment) {
-            this.stopPositioning();
-        }
         this._isLoading = normalizedValue;
     }
 
@@ -493,7 +496,9 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     get computedDropdownClass() {
-        return classSet('slds-dropdown avonni-button-menu__dropdown')
+        return classSet(
+            'slds-dropdown avonni-button-menu__dropdown slds-dropdown_fluid'
+        )
             .add({
                 'slds-dropdown_left':
                     this.menuAlignment === 'left' || this.isAutoAlignment,
@@ -669,6 +674,18 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
+     * Close the menu.
+     *
+     * @api
+     */
+    @api
+    close() {
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
      * Set focus on the button.
      *
      * @public
@@ -685,15 +702,6 @@ export default class ButtonMenu extends PrimitiveButton {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Close menu.
-     */
-    close() {
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
 
     /**
      * Find menu item's index.
@@ -771,24 +779,6 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
-     * Poll bounding rect position for button menu.
-     */
-    pollBoundingRect() {
-        if (this.isAutoAlignment && this._dropdownVisible) {
-            // eslint-disable-next-line @lwc/lwc/no-async-operation
-            setTimeout(() => {
-                if (this._connected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        this.close();
-                    });
-
-                    this.pollBoundingRect();
-                }
-            }, 250);
-        }
-    }
-
-    /**
      * To prevent default action and stop propagation of event
      *
      * @param {Event} event
@@ -796,6 +786,40 @@ export default class ButtonMenu extends PrimitiveButton {
     preventDefaultAndStopPropagation(event) {
         event.preventDefault();
         event.stopPropagation();
+    }
+
+    startAutoPositionning() {
+        if (!this.isAutoAlignment || !this._dropdownVisible) {
+            return;
+        }
+        if (!this._autoPosition) {
+            this._autoPosition = new AutoPosition(this);
+        }
+
+        const dropdown = this.template.querySelector(
+            '[data-element-id="dropdown"]'
+        );
+        this._autoPosition.start({
+            target: () => this.button,
+            element: () => dropdown,
+            align: {
+                horizontal: Direction.Left,
+                vertical: Direction.Top
+            },
+            targetAlign: {
+                horizontal: Direction.Left,
+                vertical: Direction.Bottom
+            },
+            autoFlip: true,
+            alignWidth: true,
+            autoShrinkHeight: true
+        });
+    }
+
+    stopAutoPositioning() {
+        if (this._autoPosition) {
+            this._autoPosition.stop();
+        }
     }
 
     /**
@@ -813,9 +837,12 @@ export default class ButtonMenu extends PrimitiveButton {
 
             if (this._dropdownVisible) {
                 this._boundingRect = this.getBoundingClientRect();
-                this.pollBoundingRect();
                 this.dispatchOpen();
+                requestAnimationFrame(() => {
+                    this.startAutoPositionning();
+                });
             } else {
+                this.stopAutoPositioning();
                 this.dispatchClose();
             }
 
@@ -839,7 +866,9 @@ export default class ButtonMenu extends PrimitiveButton {
         if (this.isTriggerFocus && !isMenuItemFocused) {
             this.toggleMenuVisibility();
         }
-        this.dispatchEvent(new CustomEvent('blur'));
+        if (!isMenuItemFocused) {
+            this.dispatchEvent(new CustomEvent('blur'));
+        }
     }
 
     /**
@@ -910,7 +939,7 @@ export default class ButtonMenu extends PrimitiveButton {
         const isButtonReceivingFocus = this.button === event.relatedTarget;
         if (!isButtonReceivingFocus && !this.isTriggerHover) {
             requestAnimationFrame(() => {
-                if (!this._dropdownIsFocused) {
+                if (!this._dropdownIsFocused && this._dropdownVisible) {
                     this.toggleMenuVisibility();
                 }
             });

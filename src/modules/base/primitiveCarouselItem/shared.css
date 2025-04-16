@@ -17,6 +17,19 @@
     flex: 1 1 40%;
 }
 
+.avonni-carousel__image-object-fit_contain {
+    object-fit: contain;
+}
+.avonni-carousel__image-object-fit_cover {
+    object-fit: cover;
+}
+.avonni-carousel__image-object-fit_fill {
+    object-fit: fill;
+}
+.avonni-carousel__image-object-fit_none {
+    object-fit: none;
+}
+
 .avonni-carousel__image-left .avonni-carousel__image,
 .avonni-carousel__image-right .avonni-carousel__image {
     align-self: center;
@@ -25,7 +38,6 @@
 .avonni-carousel__image {
     height: var(--avonni-carousel-item-image-sizing-height, 100%);
     background: var(--avonni-carousel-item-image-color-background, #ffffff);
-    object-fit: var(--avonni-carousel-item-image-positioning-object-fit, cover);
     object-position: var(
         --avonni-carousel-item-image-positioning-object-position
     );

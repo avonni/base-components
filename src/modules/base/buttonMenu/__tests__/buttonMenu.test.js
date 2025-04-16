@@ -4,9 +4,10 @@ import ButtonMenu from '../buttonMenu';
 
 jest.mock('c/tooltipLibrary');
 
-// not tested
+// Not tested:
 // selected event
 // Keyboard navigation (focus)
+// auto menu alignment
 
 let element;
 describe('Button Menu', () => {
@@ -40,6 +41,7 @@ describe('Button Menu', () => {
             expect(element.loadingStateAlternativeText).toBe('Loading');
             expect(element.menuAlignment).toBe('left');
             expect(element.nubbin).toBeFalsy();
+            expect(element.prefixIconName).toBeFalsy();
             expect(element.stretch).toBeFalsy();
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
@@ -761,6 +763,20 @@ describe('Button Menu', () => {
             });
         });
 
+        describe('Prefix Icon Name', () => {
+            it('Display an icon if present', () => {
+                element.prefixIconName = 'standard:account';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-icon-prefix"]'
+                    );
+                    expect(icon).toBeTruthy();
+                    expect(icon.iconName).toBe('standard:account');
+                });
+            });
+        });
+
         describe('Stretch', () => {
             it('Passed to the component', () => {
                 element.stretch = true;
@@ -1251,6 +1267,28 @@ describe('Button Menu', () => {
                 expect(clickEvent).toBeTruthy();
                 expect(element.classList).toContain('slds-is-open');
             });
+        });
+
+        it('close', () => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+
+            return Promise.resolve()
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeTruthy();
+                    element.close();
+                })
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    expect(dropdown).toBeFalsy();
+                });
         });
 
         it('focus', () => {

@@ -19,4 +19,8 @@ export default class ButtonMenu extends LightningElement {
     @api title;
     @api tooltip;
     @api variant;
+
+    @api click() {}
+    @api close() {}
+    @api focus() {}
 }

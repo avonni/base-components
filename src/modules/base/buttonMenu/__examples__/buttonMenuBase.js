@@ -21,6 +21,7 @@ export const ButtonMenuBase = ({
     loadingStateAlternativeText,
     menuAlignment,
     nubbin,
+    prefixIconName,
     title,
     tooltip,
     triggers,
@@ -43,6 +44,7 @@ export const ButtonMenuBase = ({
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.menuAlignment = menuAlignment;
     element.nubbin = nubbin;
+    element.prefixIconName = prefixIconName;
     element.title = title;
     element.tooltip = tooltip;
     element.triggers = triggers;

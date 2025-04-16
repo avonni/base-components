@@ -26,6 +26,11 @@ const IMAGE_POSITIONS = {
     default: 'top'
 };
 
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
+};
+
 export default class PrimitiveCarouselItem extends LightningElement {
     @api title;
     @api description;
@@ -42,6 +47,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actions = [];
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
+    _cropFit = IMAGE_CROP_FIT.default;
     _imagePosition = IMAGE_POSITIONS.default;
 
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
@@ -107,6 +113,24 @@ export default class PrimitiveCarouselItem extends LightningElement {
             validValues: ACTIONS_VARIANTS.valid
         });
         this._initializeCarouselHeight();
+    }
+
+    /**
+     * Valid values include cover, contain, fill and none.
+     *
+     * @type {string}
+     * @public
+     * @default cover
+     */
+    @api
+    get cropFit() {
+        return this._cropFit;
+    }
+    set cropFit(cropFit) {
+        this._cropFit = normalizeString(cropFit, {
+            fallbackValue: IMAGE_CROP_FIT.default,
+            validValues: IMAGE_CROP_FIT.valid
+        });
     }
 
     /**
@@ -253,6 +277,17 @@ export default class PrimitiveCarouselItem extends LightningElement {
         ).add({
             'slds-is-relative': this.isTopPosition
         });
+    }
+
+    /**
+     * Computed image media class based on object fit.
+     *
+     * @type {string}
+     */
+    get computedImageMediaClass() {
+        return classSet('avonni-carousel__image')
+            .add(`avonni-carousel__image-object-fit_${this.cropFit}`)
+            .toString();
     }
 
     /**

@@ -43,6 +43,10 @@ const IMAGE_POSITIONS = {
     valid: ['top', 'left', 'right', 'bottom'],
     default: 'top'
 };
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
+};
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
@@ -109,6 +113,7 @@ export default class Carousel extends LightningElement {
         autoplayButton: i18n.autoplayButton
     };
     _carouselItems = [];
+    _cropFit = IMAGE_CROP_FIT.default;
     _currentPanel;
     _enableInfiniteLoading = false;
     _hideIndicator = false;
@@ -243,6 +248,24 @@ export default class Carousel extends LightningElement {
             previousPanel:
                 text.previousPanel || DEFAULT_ASSISTIVE_TEXT_PREVIOUS_PANEL
         };
+    }
+
+    /**
+     * Image fit behaviour inside its container. Valid values include cover, contain, fill and none.
+     *
+     * @type {string}
+     * @public
+     * @default cover
+     */
+    @api
+    get cropFit() {
+        return this._cropFit;
+    }
+    set cropFit(cropFit) {
+        this._cropFit = normalizeString(cropFit, {
+            fallbackValue: IMAGE_CROP_FIT.default,
+            validValues: IMAGE_CROP_FIT.valid
+        });
     }
 
     /**
