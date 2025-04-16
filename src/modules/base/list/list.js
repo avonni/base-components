@@ -591,7 +591,6 @@ export default class List extends LightningElement {
     get loadMoreOffset() {
         return this._loadMoreOffset;
     }
-
     set loadMoreOffset(value) {
         this._loadMoreOffset = Number.isNaN(parseInt(value, 10))
             ? DEFAULT_LOAD_MORE_OFFSET
@@ -774,6 +773,9 @@ export default class List extends LightningElement {
             : 'bare';
     }
 
+    /**
+     * Returns the column size.
+     */
     get colSize() {
         return 12 / this.cols;
     }
@@ -844,6 +846,11 @@ export default class List extends LightningElement {
         return `${heightStyle} ${widthStyle} ${imageObjectPosition} ${objectFit}`;
     }
 
+    /**
+     * Computed item header class styling based on user specified attributes.
+     *
+     * @type {string}
+     */
     get computedItemHeaderClass() {
         return classSet(
             'slds-truncate avonni-list__item-header_font slds-grid slds-grid_vertical-align-center slds-margin-bottom_xx-small'
@@ -856,7 +863,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Computed item class styling based on user specified attributes.
+     * Computed item wrapper class styling based on user specified attributes.
      *
      * @type {string}
      */
@@ -1000,18 +1007,30 @@ export default class List extends LightningElement {
         return this.computedMediaActions.length > 1;
     }
 
+    /**
+     * Returns true if the variant is a check-list.
+     */
     get isCheckList() {
         return this.variant === 'check-list';
     }
 
+    /**
+     * Returns false if the variant is a single-line.
+     */
     get isNotSingleLine() {
         return !this.isSingleLine;
     }
 
+    /**
+     * Returns true if the variant is a single-line.
+     */
     get isSingleLine() {
         return this.variant === 'single-line';
     }
 
+    /**
+     * Returns the label to display.
+     */
     get labelToDisplay() {
         if (!this.isCheckList || !this.showCheckCounter) {
             return this.label;
@@ -1019,12 +1038,19 @@ export default class List extends LightningElement {
         return `${this.label} (${this.nbCheckedItems}/${this.computedItems.length})`;
     }
 
+    /**
+     * Returns the size of a large container.
+     */
     get largeContainerColSize() {
         return this.largeContainerCols
             ? 12 / this.largeContainerCols
             : undefined;
     }
 
+    /**
+     * Returns the layout direction of the list based on the variant.
+     * If the variant is single-line, the layout direction is horizontal.
+     */
     get layoutDirection() {
         return this.isSingleLine ? 'horizontal' : 'vertical';
     }
@@ -1038,22 +1064,37 @@ export default class List extends LightningElement {
         );
     }
 
+    /**
+     * Returns the size of a loading column.
+     */
     get loadingColSize() {
         return !this.displayedItems.length ? 12 : this.colSize;
     }
 
+    /**
+     * Returns the size of a large container loading column.
+     */
     get loadingLargeContainerColSize() {
         return !this.displayedItems.length ? 12 : this.largeContainerColSize;
     }
 
+    /**
+     * Returns the size of a medium container loading column.
+     */
     get loadingMediumContainerColSize() {
         return !this.displayedItems.length ? 12 : this.mediumContainerColSize;
     }
 
+    /**
+     * Returns the size of a small container loading column.
+     */
     get loadingSmallContainerColSize() {
         return !this.displayedItems.length ? 12 : this.smallContainerColSize;
     }
 
+    /**
+     * Returns the size of a medium container.
+     */
     get mediumContainerColSize() {
         return this.mediumContainerCols
             ? 12 / this.mediumContainerCols
@@ -1083,6 +1124,9 @@ export default class List extends LightningElement {
         );
     }
 
+    /**
+     * Returns the number of items that are checked.
+     */
     get nbCheckedItems() {
         return this.computedItems.filter((item) => item.checked).length;
     }
@@ -1096,6 +1140,9 @@ export default class List extends LightningElement {
         return this._singleLinePageFirstIndex === 0;
     }
 
+    /**
+     * If the list is a single-line variant and is loading, the loading column is shown
+     */
     get showLoadingColumn() {
         return this.isLoading && !this.isSingleLine;
     }
@@ -1148,6 +1195,9 @@ export default class List extends LightningElement {
         );
     }
 
+    /**
+     * Returns the size of a small container.
+     */
     get smallContainerColSize() {
         return this.smallContainerCols
             ? 12 / this.smallContainerCols

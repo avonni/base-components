@@ -425,41 +425,40 @@
                                             data-element-id="avonni-avatar"
                                             onmousedown={handleAvatarDragStart}
                                         ></c-primitive-avatar>
-                                    </div>
-
-                                    <!-- Sort icon -->
-                                    <lightning-icon
-                                        if:true={showSortIconRight}
-                                        class="
-                                            slds-m-right_x-small
-                                            avonni-list__item-sortable-icon-cursor
-                                        "
-                                        icon-name={sortableIconName}
-                                        size="x-small"
-                                        data-element-id="lightning-icon-sort-right"
-                                        onclick={stopPropagation}
-                                    ></lightning-icon>
-
-                                    <!-- Actions -->
-                                    <div
-                                        if:true={hasActions}
-                                        class="
-                                            avonni-list__item-actions-container
-                                        "
-                                        onkeydown={handleStopKeyDown}
-                                    >
-                                        <c-primitive-actions
-                                            actions={computedActions}
-                                            button-icon-size={actionButtonIconSize}
-                                            button-icon-variant={actionButtonIconVariant}
-                                            visible-actions={computedVisibleActions}
-                                            data-element-id="primitive-actions"
-                                            data-item-index={item.index}
+                                        <!-- Sort icon -->
+                                        <lightning-icon
+                                            if:true={showSortIconRight}
+                                            class="
+                                                slds-m-right_x-small
+                                                avonni-list__item-sortable-icon-cursor
+                                            "
+                                            icon-name={sortableIconName}
+                                            size="x-small"
+                                            data-element-id="lightning-icon-sort-right"
                                             onclick={stopPropagation}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                            onactionclick={handleActionClick}
-                                        ></c-primitive-actions>
+                                        ></lightning-icon>
+
+                                        <!-- Actions -->
+                                        <div
+                                            if:true={hasActions}
+                                            class="
+                                                avonni-list__item-actions-container
+                                            "
+                                            onkeydown={handleStopKeyDown}
+                                        >
+                                            <c-primitive-actions
+                                                actions={computedActions}
+                                                button-icon-size={actionButtonIconSize}
+                                                button-icon-variant={actionButtonIconVariant}
+                                                visible-actions={computedVisibleActions}
+                                                data-element-id="primitive-actions"
+                                                data-item-index={item.index}
+                                                onclick={stopPropagation}
+                                                onmousedown={stopPropagation}
+                                                ontouchstart={stopPropagation}
+                                                onactionclick={handleActionClick}
+                                            ></c-primitive-actions>
+                                        </div>
                                     </div>
                                 </div>
                             </c-card>
