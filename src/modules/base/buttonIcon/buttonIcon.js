@@ -259,6 +259,7 @@ export default class ButtonIcon extends PrimitiveButton {
             .add(`avonni-button-icon_${this.computedVariant}`)
             .add({
                 'slds-button_icon': !isAddedVariant,
+                'slds-button_brand': this.computedVariant === 'brand',
                 'slds-button_outline-brand':
                     this.computedVariant === 'brand-outline',
                 'slds-button_destructive':
@@ -268,7 +269,6 @@ export default class ButtonIcon extends PrimitiveButton {
                 'slds-button_inverse': this.computedVariant === 'inverse',
                 'slds-button_neutral': this.computedVariant === 'neutral',
                 'slds-button_success': this.computedVariant === 'success',
-                'slds-button_icon-bare': this.isBare,
                 [`slds-button_icon-${this.size}`]: !this.isBare,
                 'slds-button_icon-border': this.computedVariant === 'border',
                 'slds-button_icon-border-filled':
@@ -279,7 +279,6 @@ export default class ButtonIcon extends PrimitiveButton {
                     this.computedVariant === 'container',
                 'slds-button_icon-inverse':
                     this.computedVariant === 'bare-inverse',
-                'slds-button_icon-brand': this.computedVariant === 'brand',
                 'avonni-button-icon_large':
                     !this.isBare && this.size === 'large',
                 'avonni-button-icon_medium':
