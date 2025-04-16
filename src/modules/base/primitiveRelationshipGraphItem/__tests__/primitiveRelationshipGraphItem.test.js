@@ -31,6 +31,7 @@ describe('Primitive Relationship Graph Item', () => {
         expect(element.contentData).toBeUndefined();
         expect(element.customActions).toMatchObject([]);
         expect(element.defaultActions).toMatchObject([]);
+        expect(element.disabled).toBeFalsy();
         expect(element.groups).toMatchObject([]);
         expect(element.hideDefaultActions).toBeFalsy();
         expect(element.href).toBeUndefined();
@@ -84,6 +85,16 @@ describe('Primitive Relationship Graph Item', () => {
                 expect(labels[index].textContent).toBe(item.label);
                 expect(values[index].textContent).toBe(item.value);
             });
+        });
+    });
+
+    // disabled
+    it('Primitive relationship graph item: disabled', () => {
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector('.item');
+            expect(wrapper.classList).toContain('item_is-disabled');
         });
     });
 

@@ -40,6 +40,19 @@
     border-color: var(--avonni-relationship-graph-selected-line-color, #0070d2);
 }
 
+.item_is-disabled {
+    cursor: default;
+    color: var(--avonni-relationship-graph-text-color-disabled, #444444);
+    background-color: var(
+        --avonni-relationship-graph-color-background-disabled,
+        #f3f3f3
+    );
+    border-color: var(
+        --avonni-relationship-graph-color-border-background-disabled,
+        #c9c7c5
+    );
+}
+
 .item_horizontal.item_has-groups.item_is-active::before {
     background-color: var(
         --avonni-relationship-graph-selected-line-color,
