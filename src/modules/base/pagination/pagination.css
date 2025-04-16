@@ -37,7 +37,6 @@
     );
 }
 
-.slds-button_icon.avonni-pagination__button_neutral:active,
 .slds-button.avonni-pagination__button_neutral:active {
     background-color: var(
         --avonni-pagination-button-color-background-active,

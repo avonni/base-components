@@ -1,6 +1,9 @@
 .avonni-button-icon {
     line-height: var(--avonni-button-icon-line-height, 0);
-    border-radius: var(--avonni-button-icon-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-button-icon-radius-border,
+        var(--slds-s-button-radius-border, 0.25rem)
+    );
     border-width: var(--avonni-button-icon-sizing-border, 1px);
     border-style: var(--avonni-button-icon-styling-border, solid);
     vertical-align: middle;
@@ -20,7 +23,10 @@
 }
 
 .avonni-button-icon__image {
-    border-radius: var(--avonni-button-icon-image-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-button-icon-image-radius-border,
+        var(--slds-s-button-radius-border, 0.25rem)
+    );
     border-style: var(--avonni-button-icon-image-styling-border);
     border-width: var(--avonni-button-icon-image-sizing-border);
     border-color: var(--avonni-button-icon-image-color-border);
@@ -65,7 +71,10 @@
 .avonni-button-icon__spinner {
     /* The spinner does not need a big z-index in that case */
     z-index: 1;
-    border-radius: var(--avonni-button-icon-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-button-icon-radius-border,
+        var(--slds-s-button-radius-border, 0.25rem)
+    );
 }
 
 .avonni-button-icon_bare:disabled,
@@ -107,21 +116,44 @@
     --slds-c-button-color-border: var(--avonni-button-icon-bare-color-border);
     color: var(
         --avonni-button-icon-bare-text-color,
-        var(--slds-g-color-neutral-base-50, #747474)
+        var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_bare:active {
     --slds-c-button-color-background-active: var(
         --avonni-button-icon-bare-color-background-active
     );
-    border-color: var(--avonni-button-icon-bare-color-border-active);
+    --slds-c-button-color-border-active: var(
+        --avonni-button-icon-bare-color-border-active
+    );
     color: var(
         --avonni-button-icon-bare-text-color-active,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
     );
 }
 
+/* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
+.slds-button.avonni-button-icon_bare:focus-visible,
+.slds-button.avonni-button-icon_bare:hover {
+    --avonni-button-icon-bare-text-color: var(
+        --avonni-button-icon-bare-text-color-hover,
+        var(
+            --slds-s-button-color-hover,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
+    );
+}
+
+.avonni-button-icon_bare:focus {
+    --avonni-button-icon-bare-text-color: var(
+        --avonni-button-icon-bare-text-color-hover,
+        var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
+    );
+}
+
+.slds-button.avonni-button-icon_bare:focus-visible,
 .avonni-button-icon_bare:hover,
 .avonni-button-icon_bare:focus {
     --slds-c-button-color-background: var(
@@ -129,10 +161,6 @@
     );
     --slds-c-button-color-border: var(
         --avonni-button-icon-bare-color-border-hover
-    );
-    --avonni-button-icon-bare-text-color: var(
-        --avonni-button-icon-bare-text-color-hover,
-        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -151,6 +179,7 @@
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_bare-inverse:active {
     background-color: var(
         --avonni-button-icon-bare-inverse-color-background-active,
@@ -158,14 +187,15 @@
     );
     border-color: var(
         --avonni-button-icon-bare-inverse-color-border-active,
-        rgba(255, 255, 255, 0.75)
+        var(--slds-s-container-color-border, rgba(255, 255, 255, 0.5))
     );
     color: var(
         --avonni-button-icon-bare-inverse-text-color-active,
-        rgba(255, 255, 255, 0.75)
+        rgba(255, 255, 255, 0.5)
     );
 }
 
+.avonni-button-icon_bare-inverse:focus-visible,
 .avonni-button-icon_bare-inverse:hover,
 .avonni-button-icon_bare-inverse:focus {
     background-color: var(
@@ -187,33 +217,44 @@
         --avonni-button-icon-base-color-background
     );
     --slds-c-button-color-border: var(--avonni-button-icon-base-color-border);
-    color: var(
-        --avonni-button-icon-base-text-color,
-        var(--lwc-brandAccessible, #0176d3)
-    );
+    --slds-c-button-text-color: var(--avonni-button-icon-base-text-color);
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_base:active {
-    background-color: var(--avonni-button-icon-base-color-background-active);
-    border-color: var(
-        --avonni-button-icon-base-color-border-active,
-        var(--lwc-brandAccessibleActive, #014486)
+    --slds-c-button-color-background-active: var(
+        --avonni-button-icon-base-color-background-active
     );
-    color: var(
-        --avonni-button-icon-base-text-color-active,
-        var(--lwc-brandAccessibleActive, #014486)
+    --slds-c-button-color-border-active: var(
+        --avonni-button-icon-base-color-border-active
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-button-icon-base-text-color-active
     );
 }
 
+.avonni-button-icon_base:focus-visible,
+.avonni-button-icon_base:hover {
+    --slds-c-button-color-background: var(
+        --avonni-button-icon-base-color-background-hover,
+        var(--slds-s-button-color-background-hover)
+    );
+}
+
+.avonni-button-icon_base:focus {
+    --slds-c-button-color-background: var(
+        --avonni-button-icon-base-color-background-hover
+    );
+}
+
+.avonni-button-icon_base:focus-visible,
 .avonni-button-icon_base:hover,
 .avonni-button-icon_base:focus {
-    background-color: var(--avonni-button-icon-base-color-background-hover);
-    --avonni-button-icon-base-color-border: var(
+    --slds-c-button-color-border: var(
         --avonni-button-icon-base-color-border-hover
     );
-    --avonni-button-icon-base-text-color: var(
-        --avonni-button-icon-base-text-color-hover,
-        var(--lwc-brandAccessibleActive, #014486)
+    --slds-c-button-text-color-hover: var(
+        --avonni-button-icon-base-text-color-hover
     );
 }
 
@@ -224,35 +265,52 @@
     );
     border-color: var(
         --avonni-button-icon-border-color-border,
-        var(--slds-g-color-border-base-4, #747474)
+        var(--slds-g-color-border-2, var(--slds-g-color-border-base-4, #747474))
     );
     color: var(
         --avonni-button-icon-border-text-color,
-        var(--slds-g-color-neutral-base-50, #747474)
+        var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_border:active {
     background-color: var(--avonni-button-icon-border-color-background-active);
     border-color: var(
         --avonni-button-icon-border-color-border-active,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-border-2, var(--lwc-brandAccessibleActive, #014486))
     );
     color: var(
         --avonni-button-icon-border-text-color-active,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
     );
 }
 
+/* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
+.slds-button.avonni-button-icon_border:focus-visible,
+.slds-button.avonni-button-icon_border:hover {
+    --avonni-button-icon-border-text-color: var(
+        --avonni-button-icon-border-text-color-hover,
+        var(
+            --slds-s-button-color-hover,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
+    );
+}
+
+.avonni-button-icon_border:focus {
+    --avonni-button-icon-border-text-color: var(
+        --avonni-button-icon-border-text-color-hover,
+        var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
+    );
+}
+
+.avonni-button-icon_border:focus-visible,
 .avonni-button-icon_border:hover,
 .avonni-button-icon_border:focus {
     background-color: var(--avonni-button-icon-border-color-background-hover);
     --avonni-button-icon-border-color-border: var(
         --avonni-button-icon-border-color-border-hover
-    );
-    --avonni-button-icon-border-text-color: var(
-        --avonni-button-icon-border-text-color-hover,
-        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -263,14 +321,15 @@
     );
     border-color: var(
         --avonni-button-icon-border-filled-color-border,
-        var(--slds-g-color-border-base-4, #747474)
+        var(--slds-g-color-border-2, var(--slds-g-color-border-base-4, #747474))
     );
     color: var(
         --avonni-button-icon-border-filled-text-color,
-        var(--slds-g-color-neutral-base-50, #747474)
+        var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_border-filled:active {
     background-color: var(
         --avonni-button-icon-border-filled-color-background-active,
@@ -278,26 +337,45 @@
     );
     border-color: var(
         --avonni-button-icon-border-filled-color-border-active,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-border-2, var(--lwc-brandAccessibleActive, #014486))
     );
     color: var(
         --avonni-button-icon-border-filled-text-color-active,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
     );
 }
 
+/* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
+.slds-button.avonni-button-icon_border-filled:focus-visible,
+.slds-button.avonni-button-icon_border-filled:hover {
+    --avonni-button-icon-border-filled-text-color: var(
+        --avonni-button-icon-border-filled-text-color-hover,
+        var(
+            --slds-s-button-color-hover,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
+    );
+}
+
+.avonni-button-icon_border-filled:focus {
+    --avonni-button-icon-border-filled-text-color: var(
+        --avonni-button-icon-border-filled-text-color-hover,
+        var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
+    );
+}
+
+.avonni-button-icon_border-filled:focus-visible,
 .avonni-button-icon_border-filled:hover,
 .avonni-button-icon_border-filled:focus {
     background-color: var(
         --avonni-button-icon-border-filled-color-background-hover,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(
+            --slds-g-color-surface-container-2,
+            var(--slds-g-color-neutral-base-100, #fff)
+        )
     );
     --avonni-button-icon-border-filled-color-border: var(
         --avonni-button-icon-border-filled-color-border-hover
-    );
-    --avonni-button-icon-border-filled-text-color: var(
-        --avonni-button-icon-border-filled-text-color-hover,
-        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -316,6 +394,7 @@
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_border-inverse:active {
     background-color: var(
         --avonni-button-icon-border-inverse-color-background-active,
@@ -323,11 +402,11 @@
     );
     border-color: var(
         --avonni-button-icon-border-inverse-color-border-active,
-        var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5))
+        rgba(255, 255, 255, 0.75)
     );
     color: var(
         --avonni-button-icon-border-inverse-text-color-active,
-        var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5))
+        rgba(255, 255, 255, 0.5)
     );
 }
 
@@ -343,53 +422,57 @@
     );
     color: var(
         --avonni-button-icon-border-inverse-text-color-hover,
-        var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5))
+        rgba(255, 255, 255, 0.75)
     );
 }
 
 .avonni-button-icon_brand {
-    background-color: var(
-        --avonni-button-icon-brand-color-background,
-        var(--lwc-brandAccessible, #0176d3)
+    --slds-c-button-brand-spacing-inline-start: 0rem;
+    --slds-c-button-brand-spacing-inline-end: 0rem;
+    --slds-c-button-brand-color-background: var(
+        --avonni-button-icon-brand-color-background
     );
-    border-color: var(
-        --avonni-button-icon-brand-color-border,
-        var(--lwc-brandAccessible, #0176d3)
+    --slds-c-button-brand-color-border: var(
+        --avonni-button-icon-brand-color-border
     );
     color: var(
         --avonni-button-icon-brand-text-color,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(--slds-g-color-neutral-base-100, white)
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_brand:active {
-    background-color: var(
-        --avonni-button-icon-brand-color-background-active,
-        var(--lwc-brandAccessibleActive, #014486)
+    --slds-c-button-brand-color-background-hover: var(
+        --avonni-button-icon-brand-color-background-active
     );
+    /* Exception "[kx-scope='button-brand']:active" class overwrites border-color to transparent. */
     border-color: var(
         --avonni-button-icon-brand-color-border-active,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(
+            --slds-g-color-brand-base-30,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
     );
     color: var(
         --avonni-button-icon-brand-text-color-active,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(--slds-g-color-neutral-base-100, white)
     );
 }
 
 .avonni-button-icon_brand:hover,
 .avonni-button-icon_brand:focus {
-    background-color: var(
-        --avonni-button-icon-brand-color-background-hover,
-        var(--lwc-brandAccessibleActive, #014486)
+    --slds-c-button-brand-color-background-hover: var(
+        --avonni-button-icon-brand-color-background-hover
     );
-    --avonni-button-icon-brand-color-border: var(
+    /* Exception "[kx-scope='button-brand']:focus, [kx-scope='button-brand']:hover" class overwrites border-color to transparent */
+    border-color: var(
         --avonni-button-icon-brand-color-border-hover,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-accent-container-2)
     );
-    --avonni-button-icon-brand-text-color: var(
+    color: var(
         --avonni-button-icon-brand-text-color-hover,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(--slds-g-color-neutral-base-100, white)
     );
 }
 
@@ -407,15 +490,15 @@
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_brand-outline:active {
-    --slds-c-button-color-background-active: var(
-        --avonni-button-icon-outline-brand-color-background-active,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    --slds-c-button-outline-brand-color-background-active: var(
+        --avonni-button-icon-outline-brand-color-background-active
     );
-    --sds-c-button-outline-brand-color-border-active: var(
-        --avonni-button-icon-outline-brand-color-border-active,
-        var(--sds-c-button-outline-brand-color-border-hover, #0176d3)
+    --slds-c-button-outline-brand-color-border-active: var(
+        --avonni-button-icon-outline-brand-color-border-active
     );
+    /* Exception ".slds-button_outline-brand:active" class does not redefine the "--slds-c-button-text-color-active" like it should. So we have to redefine it ourselves. */
     --slds-c-button-text-color-active: var(
         --avonni-button-icon-outline-brand-text-color-active
     );
@@ -423,14 +506,13 @@
 
 .avonni-button-icon_brand-outline:hover,
 .avonni-button-icon_brand-outline:focus {
-    --slds-c-button-color-background-hover: var(
-        --avonni-button-icon-outline-brand-color-background-hover,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    --slds-c-button-outline-brand-color-background-hover: var(
+        --avonni-button-icon-outline-brand-color-background-hover
     );
     --slds-c-button-outline-brand-color-border-hover: var(
-        --avonni-button-icon-outline-brand-color-border-hover,
-        var(--sds-c-button-outline-brand-color-border-hover, #0176d3)
+        --avonni-button-icon-outline-brand-color-border-hover
     );
+    /* Exception ".slds-button_outline-brand:hover, .slds-button_outline-brand:focus" class does not redefine the "--slds-c-button-text-color-hover" like it should. So we have to redefine it ourselves. */
     --slds-c-button-text-color-hover: var(
         --avonni-button-icon-outline-brand-text-color-hover
     );
@@ -447,24 +529,48 @@
     );
     color: var(
         --avonni-button-icon-container-text-color,
-        var(--lwc-colorTextIconDefault, #747474)
+        var(--slds-s-button-color, var(--lwc-colorTextIconDefault, #747474))
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_container:active {
     background-color: var(
         --avonni-button-icon-container-color-background-active
     );
     border-color: var(
         --avonni-button-icon-container-color-border-active,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(
+            --slds-s-container-color-border,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
     );
     color: var(
         --avonni-button-icon-container-text-color-active,
+        var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
+    );
+}
+
+/* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
+.slds-button.avonni-button-icon_container:focus-visible,
+.slds-button.avonni-button-icon_container:hover {
+    --avonni-button-icon-container-text-color: var(
+        --avonni-button-icon-container-text-color-hover,
+        var(
+            --slds-s-button-color-hover,
+            var(--lwc-brandAccessibleActive, #014486)
+        )
+    );
+}
+
+.avonni-button-icon_container:focus {
+    --avonni-button-icon-container-text-color: var(
+        --avonni-button-icon-container-text-color-hover,
         var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
+.avonni-button-icon_container:focus-visible,
 .avonni-button-icon_container:hover,
 .avonni-button-icon_container:focus {
     background-color: var(
@@ -472,10 +578,6 @@
     );
     --avonni-button-icon-container-color-border: var(
         --avonni-button-icon-container-color-border-hover
-    );
-    --avonni-button-icon-container-text-color: var(
-        --avonni-button-icon-container-text-color-hover,
-        var(--lwc-brandAccessibleActive, #014486)
     );
 }
 
@@ -493,6 +595,7 @@
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_destructive:active {
     --slds-c-button-destructive-color-background-active: var(
         --avonni-button-icon-destructive-color-background-active
@@ -510,10 +613,10 @@
     --slds-c-button-destructive-color-background-hover: var(
         --avonni-button-icon-destructive-color-background-hover
     );
-    --slds-c-button-color-border-hover: var(
+    --slds-c-button-destructive-color-border-hover: var(
         --avonni-button-icon-destructive-color-border-hover
     );
-    --sds-c-button-destructive-text-color-hover: var(
+    --slds-c-button-destructive-text-color-hover: var(
         --avonni-button-icon-destructive-text-color-hover
     );
 }
@@ -532,14 +635,13 @@
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_destructive-text:active {
-    --slds-c-button-color-background-active: var(
-        --avonni-button-icon-text-destructive-color-background-active,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    --slds-c-button-text-destructive-color-background-active: var(
+        --avonni-button-icon-text-destructive-color-background-active
     );
-    --sds-c-button-text-destructive-color-border-active: var(
-        --avonni-button-icon-text-destructive-color-border-active,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+    --slds-c-button-text-destructive-color-border-active: var(
+        --avonni-button-icon-text-destructive-color-border-active
     );
     --slds-c-button-text-destructive-text-color-active: var(
         --avonni-button-icon-text-destructive-text-color-active
@@ -548,13 +650,11 @@
 
 .avonni-button-icon_destructive-text:hover,
 .avonni-button-icon_destructive-text:focus {
-    --slds-c-button-color-background-hover: var(
-        --avonni-button-icon-text-destructive-color-background-hover,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    --slds-c-button-text-destructive-color-background-hover: var(
+        --avonni-button-icon-text-destructive-color-background-hover
     );
     --slds-c-button-text-destructive-color-border-hover: var(
-        --avonni-button-icon-text-destructive-color-border-hover,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        --avonni-button-icon-text-destructive-color-border-hover
     );
     --sds-c-button-text-destructive-text-color-hover: var(
         --avonni-button-icon-text-destructive-text-color-hover
@@ -575,8 +675,9 @@
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_inverse:active {
-    --slds-c-button-color-background-active: var(
+    --slds-c-button-inverse-color-background-active: var(
         --avonni-button-icon-inverse-color-background-active
     );
     --slds-c-button-inverse-color-border-active: var(
@@ -589,15 +690,14 @@
 
 .avonni-button-icon_inverse:hover,
 .avonni-button-icon_inverse:focus {
-    --slds-c-button-color-background-hover: var(
+    --slds-c-button-inverse-color-background-hover: var(
         --avonni-button-icon-inverse-color-background-hover
     );
     --slds-c-button-inverse-color-border-hover: var(
         --avonni-button-icon-inverse-color-border-hover
     );
     --slds-c-button-inverse-text-color-hover: var(
-        --avonni-button-icon-inverse-text-color-hover,
-        var(--sds-c-button-text-color-hover, #014486)
+        --avonni-button-icon-inverse-text-color-hover
     );
 }
 
@@ -618,15 +718,15 @@
     --slds-c-button-text-color: var(--avonni-button-icon-neutral-text-color);
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_neutral:active {
-    --slds-c-button-color-background-active: var(
-        --avonni-button-icon-neutral-color-background-active,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    --slds-c-button-neutral-color-background-active: var(
+        --avonni-button-icon-neutral-color-background-active
     );
-    --slds-c-button-color-border-active: var(
-        --avonni-button-icon-neutral-color-border-active,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+    --slds-c-button-neutral-color-border-active: var(
+        --avonni-button-icon-neutral-color-border-active
     );
+    /* Exception ".slds-button_neutral:active" class does not redefine the "--slds-c-button-text-color-active" like it should. So we have to redefine it ourselves. */
     --slds-c-button-text-color-active: var(
         --avonni-button-icon-neutral-text-color-active
     );
@@ -634,14 +734,13 @@
 
 .avonni-button-icon_neutral:hover,
 .avonni-button-icon_neutral:focus {
-    --slds-c-button-color-background-hover: var(
-        --avonni-button-icon-neutral-color-background-hover,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    --slds-c-button-neutral-color-background-hover: var(
+        --avonni-button-icon-neutral-color-background-hover
     );
     --slds-c-button-neutral-color-border-hover: var(
-        --avonni-button-icon-neutral-color-border-hover,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        --avonni-button-icon-neutral-color-border-hover
     );
+    /* Exception ".slds-button_neutral:hover, .slds-button_neutral:focus" class does not redefine the "--slds-c-button-text-color-hover" like it should. So we have to redefine it ourselves. */
     --slds-c-button-text-color-hover: var(
         --avonni-button-icon-neutral-text-color-hover
     );
@@ -656,11 +755,12 @@
     --slds-c-button-success-color-border: var(
         --avonni-button-icon-success-color-border
     );
-    --sds-c-button-success-text-color: var(
+    --slds-c-button-success-text-color: var(
         --avonni-button-icon-success-text-color
     );
 }
 
+/* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon_success:active {
     --slds-c-button-success-color-background-active: var(
         --avonni-button-icon-success-color-background-active
@@ -668,7 +768,7 @@
     --slds-c-button-success-color-border-active: var(
         --avonni-button-icon-success-color-border-active
     );
-    --sds-c-button-success-text-color-active: var(
+    --slds-c-button-success-text-color-active: var(
         --avonni-button-icon-success-text-color-active
     );
 }
@@ -681,7 +781,7 @@
     --slds-c-button-success-color-border-hover: var(
         --avonni-button-icon-success-color-border-hover
     );
-    --sds-c-button-success-text-color: var(
+    --slds-c-button-success-text-color-hover: var(
         --avonni-button-icon-success-text-color-hover
     );
 }

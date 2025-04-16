@@ -1,0 +1,215 @@
+.test-styling-hooks-colors {
+    /* Success */
+    --avonni-button-success-color-background: rosybrown;
+    --avonni-button-success-color-border: brown;
+    --avonni-button-success-text-color: brown;
+    --avonni-button-success-color-background-active: darkblue;
+    --avonni-button-success-color-border-active: cyan;
+    --avonni-button-success-text-color-active: cyan;
+    --avonni-button-success-color-background-hover: darkgreen;
+    --avonni-button-success-color-border-hover: lightgreen;
+    --avonni-button-success-text-color-hover: lightgreen;
+    /* Destructive */
+    --avonni-button-destructive-color-background: rosybrown;
+    --avonni-button-destructive-color-border: brown;
+    --avonni-button-destructive-text-color: brown;
+    --avonni-button-destructive-color-background-active: darkblue;
+    --avonni-button-destructive-color-border-active: cyan;
+    --avonni-button-destructive-text-color-active: cyan;
+    --avonni-button-destructive-color-background-hover: darkgreen;
+    --avonni-button-destructive-color-border-hover: lightgreen;
+    --avonni-button-destructive-text-color-hover: lightgreen;
+    /* Destructive Text */
+    --avonni-button-text-destructive-color-background: rosybrown;
+    --avonni-button-text-destructive-color-border: brown;
+    --avonni-button-text-destructive-text-color: brown;
+    --avonni-button-text-destructive-color-background-active: darkblue;
+    --avonni-button-text-destructive-color-border-active: cyan;
+    --avonni-button-text-destructive-text-color-active: cyan;
+    --avonni-button-text-destructive-color-background-hover: darkgreen;
+    --avonni-button-text-destructive-color-border-hover: lightgreen;
+    --avonni-button-text-destructive-text-color-hover: lightgreen;
+    /* Brand */
+    --avonni-button-brand-color-background: rosybrown;
+    --avonni-button-brand-color-border: brown;
+    --avonni-button-brand-text-color: brown;
+    --avonni-button-brand-color-background-active: darkblue;
+    --avonni-button-brand-color-border-active: cyan;
+    --avonni-button-brand-text-color-active: cyan;
+    --avonni-button-brand-color-background-hover: darkgreen;
+    --avonni-button-brand-color-border-hover: lightgreen;
+    --avonni-button-brand-text-color-hover: lightgreen;
+    /* Bare */
+    --avonni-button-bare-color-background: rosybrown;
+    --avonni-button-bare-color-border: brown;
+    --avonni-button-bare-text-color: brown;
+    --avonni-button-bare-color-background-active: darkblue;
+    --avonni-button-bare-color-border-active: cyan;
+    --avonni-button-bare-text-color-active: cyan;
+    --avonni-button-bare-color-background-hover: darkgreen;
+    --avonni-button-bare-color-border-hover: lightgreen;
+    --avonni-button-bare-text-color-hover: lightgreen;
+    /* Base */
+    --avonni-button-base-color-background: rosybrown;
+    --avonni-button-base-color-border: brown;
+    --avonni-button-base-text-color: brown;
+    --avonni-button-base-color-background-active: darkblue;
+    --avonni-button-base-color-border-active: cyan;
+    --avonni-button-base-text-color-active: cyan;
+    --avonni-button-base-color-background-hover: darkgreen;
+    --avonni-button-base-color-border-hover: lightgreen;
+    --avonni-button-base-text-color-hover: lightgreen;
+    /* Container */
+    --avonni-button-container-color-background: rosybrown;
+    --avonni-button-container-color-border: brown;
+    --avonni-button-container-text-color: brown;
+    --avonni-button-container-color-background-active: darkblue;
+    --avonni-button-container-color-border-active: cyan;
+    --avonni-button-container-text-color-active: cyan;
+    --avonni-button-container-color-background-hover: darkgreen;
+    --avonni-button-container-color-border-hover: lightgreen;
+    --avonni-button-container-text-color-hover: lightgreen;
+    /* Border */
+    --avonni-button-border-color-background: rosybrown;
+    --avonni-button-border-color-border: brown;
+    --avonni-button-border-text-color: brown;
+    --avonni-button-border-color-background-active: darkblue;
+    --avonni-button-border-color-border-active: cyan;
+    --avonni-button-border-text-color-active: cyan;
+    --avonni-button-border-color-background-hover: darkgreen;
+    --avonni-button-border-color-border-hover: lightgreen;
+    --avonni-button-border-text-color-hover: lightgreen;
+    /* Border Filled */
+    --avonni-button-border-filled-color-background: rosybrown;
+    --avonni-button-border-filled-color-border: brown;
+    --avonni-button-border-filled-text-color: brown;
+    --avonni-button-border-filled-color-background-active: darkblue;
+    --avonni-button-border-filled-color-border-active: cyan;
+    --avonni-button-border-filled-text-color-active: cyan;
+    --avonni-button-border-filled-color-background-hover: darkgreen;
+    --avonni-button-border-filled-color-border-hover: lightgreen;
+    --avonni-button-border-filled-text-color-hover: lightgreen;
+    /* Bare Inverse */
+    --avonni-button-bare-inverse-color-background: rosybrown;
+    --avonni-button-bare-inverse-color-border: brown;
+    --avonni-button-bare-inverse-text-color: brown;
+    --avonni-button-bare-inverse-color-background-active: darkblue;
+    --avonni-button-bare-inverse-color-border-active: cyan;
+    --avonni-button-bare-inverse-text-color-active: cyan;
+    --avonni-button-bare-inverse-color-background-hover: darkgreen;
+    --avonni-button-bare-inverse-color-border-hover: lightgreen;
+    --avonni-button-bare-inverse-text-color-hover: lightgreen;
+    /* Border Inverse */
+    --avonni-button-border-inverse-color-background: rosybrown;
+    --avonni-button-border-inverse-color-border: brown;
+    --avonni-button-border-inverse-text-color: brown;
+    --avonni-button-border-inverse-color-background-active: darkblue;
+    --avonni-button-border-inverse-color-border-active: cyan;
+    --avonni-button-border-inverse-text-color-active: cyan;
+    --avonni-button-border-inverse-color-background-hover: darkgreen;
+    --avonni-button-border-inverse-color-border-hover: lightgreen;
+    --avonni-button-border-inverse-text-color-hover: lightgreen;
+    /* Inverse */
+    --avonni-button-inverse-color-background: rosybrown;
+    --avonni-button-inverse-color-border: brown;
+    --avonni-button-inverse-text-color: brown;
+    --avonni-button-inverse-color-background-active: darkblue;
+    --avonni-button-inverse-color-border-active: cyan;
+    --avonni-button-inverse-text-color-active: cyan;
+    --avonni-button-inverse-color-background-hover: darkgreen;
+    --avonni-button-inverse-color-border-hover: lightgreen;
+    --avonni-button-inverse-text-color-hover: lightgreen;
+    /* Neutral */
+    --avonni-button-neutral-color-background: rosybrown;
+    --avonni-button-neutral-color-border: brown;
+    --avonni-button-neutral-text-color: brown;
+    --avonni-button-neutral-color-background-active: darkblue;
+    --avonni-button-neutral-color-border-active: cyan;
+    --avonni-button-neutral-text-color-active: cyan;
+    --avonni-button-neutral-color-background-hover: darkgreen;
+    --avonni-button-neutral-color-border-hover: lightgreen;
+    --avonni-button-neutral-text-color-hover: lightgreen;
+    /* Outline Brand */
+    --avonni-button-outline-brand-color-background: rosybrown;
+    --avonni-button-outline-brand-color-border: brown;
+    --avonni-button-outline-brand-text-color: brown;
+    --avonni-button-outline-brand-color-background-active: darkblue;
+    --avonni-button-outline-brand-color-border-active: cyan;
+    --avonni-button-outline-brand-text-color-active: cyan;
+    --avonni-button-outline-brand-color-background-hover: darkgreen;
+    --avonni-button-outline-brand-color-border-hover: lightgreen;
+    --avonni-button-outline-brand-text-color-hover: lightgreen;
+}
+
+.test-styling-hooks-spacing {
+    /* Success */
+    --avonni-button-success-spacing-block-start: 2rem;
+    --avonni-button-success-spacing-block-end: 2rem;
+    --avonni-button-success-spacing-inline-end: 2rem;
+    --avonni-button-success-spacing-inline-start: 2rem;
+    /* Destructive */
+    --avonni-button-destructive-spacing-block-start: 2rem;
+    --avonni-button-destructive-spacing-block-end: 2rem;
+    --avonni-button-destructive-spacing-inline-end: 2rem;
+    --avonni-button-destructive-spacing-inline-start: 2rem;
+    /* Destructive Text */
+    --avonni-button-text-destructive-spacing-block-start: 2rem;
+    --avonni-button-text-destructive-spacing-block-end: 2rem;
+    --avonni-button-text-destructive-spacing-inline-end: 2rem;
+    --avonni-button-text-destructive-spacing-inline-start: 2rem;
+    /* Brand */
+    --avonni-button-brand-spacing-block-start: 2rem;
+    --avonni-button-brand-spacing-block-end: 2rem;
+    --avonni-button-brand-spacing-inline-end: 2rem;
+    --avonni-button-brand-spacing-inline-start: 2rem;
+    /* Bare */
+    --avonni-button-bare-spacing-block-start: 2rem;
+    --avonni-button-bare-spacing-block-end: 2rem;
+    --avonni-button-bare-spacing-inline-end: 2rem;
+    --avonni-button-bare-spacing-inline-start: 2rem;
+    /* Base */
+    --avonni-button-base-spacing-block-start: 2rem;
+    --avonni-button-base-spacing-block-end: 2rem;
+    --avonni-button-base-spacing-inline-end: 2rem;
+    --avonni-button-base-spacing-inline-start: 2rem;
+    /* Container */
+    --avonni-button-container-spacing-block-start: 2rem;
+    --avonni-button-container-spacing-block-end: 2rem;
+    --avonni-button-container-spacing-inline-end: 2rem;
+    --avonni-button-container-spacing-inline-start: 2rem;
+    /* Border */
+    --avonni-button-border-spacing-block-start: 2rem;
+    --avonni-button-border-spacing-block-end: 2rem;
+    --avonni-button-border-spacing-inline-end: 2rem;
+    --avonni-button-border-spacing-inline-start: 2rem;
+    /* Border Filled */
+    --avonni-button-border-filled-spacing-block-start: 2rem;
+    --avonni-button-border-filled-spacing-block-end: 2rem;
+    --avonni-button-border-filled-spacing-inline-end: 2rem;
+    --avonni-button-border-filled-spacing-inline-start: 2rem;
+    /* Bare Inverse */
+    --avonni-button-bare-inverse-spacing-block-start: 2rem;
+    --avonni-button-bare-inverse-spacing-block-end: 2rem;
+    --avonni-button-bare-inverse-spacing-inline-end: 2rem;
+    --avonni-button-bare-inverse-spacing-inline-start: 2rem;
+    /* Border Inverse */
+    --avonni-button-border-inverse-spacing-block-start: 2rem;
+    --avonni-button-border-inverse-spacing-block-end: 2rem;
+    --avonni-button-border-inverse-spacing-inline-end: 2rem;
+    --avonni-button-border-inverse-spacing-inline-start: 2rem;
+    /* Inverse */
+    --avonni-button-inverse-spacing-block-start: 2rem;
+    --avonni-button-inverse-spacing-block-end: 2rem;
+    --avonni-button-inverse-spacing-inline-end: 2rem;
+    --avonni-button-inverse-spacing-inline-start: 2rem;
+    /* Neutral */
+    --avonni-button-neutral-spacing-block-start: 2rem;
+    --avonni-button-neutral-spacing-block-end: 2rem;
+    --avonni-button-neutral-spacing-inline-end: 2rem;
+    --avonni-button-neutral-spacing-inline-start: 2rem;
+    /* Outline Brand */
+    --avonni-button-outline-brand-spacing-block-start: 2rem;
+    --avonni-button-outline-brand-spacing-block-end: 2rem;
+    --avonni-button-outline-brand-spacing-inline-end: 2rem;
+    --avonni-button-outline-brand-spacing-inline-start: 2rem;
+}

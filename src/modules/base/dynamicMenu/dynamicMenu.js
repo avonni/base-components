@@ -1,11 +1,11 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { observePosition, getListHeight } from 'c/utilsPrivate';
+import { getListHeight, observePosition } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const BUTTON_SIZES = {
     valid: ['auto', 'stretch'],
@@ -520,7 +520,7 @@ export default class DynamicMenu extends LightningElement {
      */
     get computedDropdownClass() {
         return classSet(
-            'slds-dropdown slds-popover slds-dynamic-menu avonni-dynamic-menu__dropdown_color-background'
+            'slds-is-absolute slds-dropdown slds-popover slds-dynamic-menu avonni-dynamic-menu__dropdown_color-background'
         )
             .add({
                 'slds-dropdown_left':
@@ -671,7 +671,7 @@ export default class DynamicMenu extends LightningElement {
      * @type {string}
      */
     calculateListHeight() {
-        let height = 0;
+        let height = 10;
         let length = 7;
         if (this.menuLength === '5-items') {
             length = 5;

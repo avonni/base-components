@@ -1,10 +1,10 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
+    generateUUID,
     normalizeBoolean,
-    normalizeString,
-    generateUUID
+    normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const PAGINATION_ALIGNS = {
     valid: ['left', 'center', 'right', 'fill'],
@@ -288,11 +288,7 @@ export default class Pagination extends LightningElement {
     get computedFirstButtonClass() {
         return classSet(
             'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        )
-            .add({
-                'slds-button_icon': this.firstButtonIcon
-            })
-            .toString();
+        );
     }
 
     /**
@@ -314,11 +310,7 @@ export default class Pagination extends LightningElement {
     get computedNextButtonClass() {
         return classSet(
             'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        )
-            .add({
-                'slds-button_icon': !this.nextButtonLabel
-            })
-            .toString();
+        );
     }
 
     /**
@@ -340,11 +332,7 @@ export default class Pagination extends LightningElement {
     get computedLastButtonClass() {
         return classSet(
             'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        )
-            .add({
-                'slds-button_icon': this.lastButtonIcon
-            })
-            .toString();
+        );
     }
 
     /**
@@ -366,11 +354,7 @@ export default class Pagination extends LightningElement {
     get computedPreviousButtonClass() {
         return classSet(
             'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        )
-            .add({
-                'slds-button_icon': !this.previousButtonLabel
-            })
-            .toString();
+        );
     }
 
     /**

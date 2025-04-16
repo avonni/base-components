@@ -1,6 +1,7 @@
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import ButtonMenuSizesComponent from '../__examples__/sizes/sizes';
+import ButtonMenuVariantsComponent from '../__examples__/variants/variants';
 
 export default {
     title: 'Example/Button Menu',
@@ -473,3 +474,16 @@ const ButtonMenuSizes = ({ isButtonLoading, variant }) => {
 };
 const TemplateSizes = (args) => ButtonMenuSizes(args);
 export const Sizes = TemplateSizes.bind({});
+
+/**
+ * Example with the different variants and there lightning counterpart.
+ * Allows to quickly scan if there is any problems.
+ */
+customElements.define(
+    'ac-base-button-menu-variants',
+    ButtonMenuVariantsComponent.CustomElementConstructor
+);
+const ButtonMenuVariants = () =>
+    document.createElement('ac-base-button-menu-variants');
+const TemplateVariants = (args) => ButtonMenuVariants(args);
+export const Variants = TemplateVariants.bind({});

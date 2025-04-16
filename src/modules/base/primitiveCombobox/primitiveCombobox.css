@@ -9,7 +9,10 @@
 input.avonni-primitive-combobox__input {
     border-color: var(--avonni-combobox-input-color-border, #747474);
     border-style: var(--avonni-combobox-input-styling-border, solid);
-    border-radius: var(--avonni-combobox-input-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-combobox-input-radius-border,
+        var(--slds-s-input-radius-border, 0.25rem)
+    );
     border-width: var(--avonni-combobox-input-sizing-border, 1px);
 }
 
