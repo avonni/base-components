@@ -23,6 +23,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     _activeSelection = false;
     _customActions = [];
     _defaultActions = [];
+    _disabled = false;
     _groups = [];
     _selected = false;
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
@@ -68,6 +69,15 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
     set defaultActions(value) {
         this._defaultActions = normalizeArray(value);
+    }
+
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(value) {
+        this._disabled = value;
+        this.updateClasses();
     }
 
     @api
@@ -127,6 +137,10 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         return undefined;
     }
 
+    get displayAsLink() {
+        return this.href && !this.disabled;
+    }
+
     get generateKey() {
         return generateUUID();
     }
@@ -157,6 +171,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
             'item_has-children': this.hasChildren,
             'item_is-selected': this.selected,
             'item_is-active': this.activeSelection,
+            'item_is-disabled': this.disabled,
             item_horizontal: this.variant === 'horizontal'
         });
     }
@@ -197,17 +212,14 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
 
     handleClick(event) {
-        // Stop event if click was on action menu button
+        // Stop event if click was on action menu button or if pressed key is not Enter of Space bar
         const target = event.target.tagName;
         if (
+            this.disabled ||
             target === 'LIGHTNING-BUTTON-MENU' ||
-            target === 'LIGHTNING-MENU-ITEM'
-        )
-            return;
-        // Stop event if pressed key is not Enter of Space bar
-        if (
-            event.type === 'keyup' &&
-            !['Enter', ' ', 'Spacebar'].includes(event.key)
+            target === 'LIGHTNING-MENU-ITEM' ||
+            (event.type === 'keyup' &&
+                !['Enter', ' ', 'Spacebar'].includes(event.key))
         )
             return;
 
