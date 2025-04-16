@@ -1662,6 +1662,12 @@ export default class PrimitiveCombobox extends LightningElement {
         const defaultGroupIndex = groups.findIndex(
             (group) => group.name === DEFAULT_GROUP_NAME
         );
+        const groupOrder = this._groups.map((group) => group.name);
+        groups.sort((a, b) => {
+            const aIndex = groupOrder.indexOf(a.name);
+            const bIndex = groupOrder.indexOf(b.name);
+            return aIndex - bIndex;
+        });
         if (defaultGroupIndex > -1) {
             const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
             groups.unshift(defaultGroup);
