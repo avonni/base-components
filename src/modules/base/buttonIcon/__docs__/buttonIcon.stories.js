@@ -1,5 +1,6 @@
 import { ButtonIcon } from '../__examples__/buttonIcon';
 import ButtonIconSizesComponent from '../__examples__/sizes/sizes';
+import ButtonIconVariantsComponent from '../__examples__/variants/variants';
 
 export default {
     title: 'Example/Button Icon',
@@ -283,3 +284,16 @@ const ButtonIconSizes = ({ isButtonLoading, variant }) => {
 };
 const TemplateSizes = (args) => ButtonIconSizes(args);
 export const Sizes = TemplateSizes.bind({});
+
+/**
+ * Example with the different variants and there lightning counterpart.
+ * Allows to quickly scan if there is any problems.
+ */
+customElements.define(
+    'ac-base-button-icon-variants',
+    ButtonIconVariantsComponent.CustomElementConstructor
+);
+const ButtonIconVariants = () =>
+    document.createElement('ac-base-button-icon-variants');
+const TemplateVariants = (args) => ButtonIconVariants(args);
+export const Variants = TemplateVariants.bind({});
