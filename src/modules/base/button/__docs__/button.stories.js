@@ -1,5 +1,6 @@
 import { Button } from '../__examples__/button';
 import ButtonSizesComponent from '../__examples__/sizes/sizes';
+import ButtonVariantsComponent from '../__examples__/variants/variants';
 
 export default {
     title: 'Example/Button',
@@ -324,3 +325,15 @@ const ButtonSizes = ({ isButtonLoading, variant }) => {
 };
 const TemplateSizes = (args) => ButtonSizes(args);
 export const Sizes = TemplateSizes.bind({});
+
+/**
+ * Example with the different variants and there lightning counterpart.
+ * Allows to quickly scan if there is any problems.
+ */
+customElements.define(
+    'ac-base-button-variants',
+    ButtonVariantsComponent.CustomElementConstructor
+);
+const ButtonVariants = () => document.createElement('ac-base-button-variants');
+const TemplateVariants = (args) => ButtonVariants(args);
+export const Variants = TemplateVariants.bind({});

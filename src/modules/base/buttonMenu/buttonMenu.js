@@ -422,9 +422,8 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     get computedButtonClass() {
         const isBare =
-            this.variant === 'bare' ||
-            this.variant === 'bare-inverse' ||
-            this.variant === 'base';
+            this.variant === 'bare' || this.variant === 'bare-inverse';
+        const isBareContainer = isBare || this.variant === 'base';
         const isAddedVariant =
             this.variant === 'base' ||
             this.variant === 'brand' ||
@@ -434,10 +433,6 @@ export default class ButtonMenu extends PrimitiveButton {
             this.variant === 'inverse' ||
             this.variant === 'neutral' ||
             this.variant === 'success';
-        const useMoreContainer =
-            this.variant === 'container' ||
-            this.variant === 'bare-inverse' ||
-            this.variant === 'border-inverse';
 
         const classes = classSet('slds-button avonni-button-menu');
 
@@ -468,9 +463,7 @@ export default class ButtonMenu extends PrimitiveButton {
                     !this.computedHideDownIcon && !isAddedVariant,
                 'slds-button_icon-bare': isBare,
                 'avonni-button-menu__button-icon-more':
-                    !useMoreContainer && !this.computedHideDownIcon,
-                'avonni-button-menu__button-icon-container-more':
-                    useMoreContainer && !this.computedHideDownIcon,
+                    !this.computedHideDownIcon,
                 'slds-button_icon-border':
                     this.variant === 'border' && this.computedHideDownIcon,
                 'slds-button_icon-border-filled':
@@ -481,10 +474,10 @@ export default class ButtonMenu extends PrimitiveButton {
                     this.variant === 'container' && this.computedHideDownIcon,
                 'slds-button_icon-inverse': this.variant === 'bare-inverse',
                 'avonni-button-menu__button-icon': isAddedVariant,
-                [`slds-button_icon-${this.iconSize}`]: !isBare
+                [`slds-button_icon-${this.iconSize}`]: !isBareContainer
             });
             if (
-                !isBare &&
+                !isBareContainer &&
                 (this.iconSrc ||
                     (this.iconName && !this.iconSrc && !this.label))
             ) {

@@ -7,10 +7,7 @@
 }
 
 .avonni-input-choice-set__label {
-    color: var(
-        --avonni-input-choice-set-header-text-color,
-        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
-    );
+    color: var(--avonni-input-choice-set-header-text-color, #3e3e3c);
     font-size: var(--avonni-input-choice-set-header-font-size, 0.75rem);
     font-style: var(--avonni-input-choice-set-header-font-style, normal);
     font-weight: var(--avonni-input-choice-set-header-font-weight, 400);
@@ -130,9 +127,25 @@
         --avonni-input-choice-set-option-button-sizing-border,
         1px
     );
-    border-radius: var(
-        --avonni-input-choice-set-option-button-radius-border,
-        0.25rem
+}
+
+.avonni-input-choice-set__horizontal.slds-checkbox_button-group {
+    /* Add 1px so there is no gap */
+    border-radius: calc(
+        var(
+                --avonni-input-choice-set-option-button-radius-border,
+                var(--slds-s-button-radius-border, 0.25rem)
+            ) + 1px
+    );
+}
+
+.avonni-input-choice-set__vertical.slds-checkbox_button-group {
+    /* Add 1px so there is no gap */
+    border-radius: calc(
+        var(
+                --avonni-input-choice-set-option-button-radius-border,
+                var(--slds-s-input-radius-border, 0.25rem)
+            ) + 1px
     );
 }
 
@@ -248,7 +261,7 @@
     );
     border-radius: var(
         --avonni-input-choice-set-option-button-radius-border,
-        0.25rem
+        var(--slds-s-button-radius-border, 0.25rem)
     );
 }
 
@@ -273,7 +286,7 @@
     );
     border-radius: var(
         --avonni-input-choice-set-option-button-radius-border,
-        0.25rem
+        var(--slds-s-button-radius-border, 0.25rem)
     );
 }
 
@@ -313,32 +326,40 @@
 }
 
 .avonni-input-choice-set__vertical
+    .slds-checkbox_button:last-child:not(:only-child),
+.avonni-input-choice-set__vertical
     .slds-checkbox_button:last-child:not(:only-child)
     > .slds-checkbox_button__label {
-    border-radius: 0 0 0.25rem 0.25rem;
+    border-radius: 0 0 var(--slds-s-input-radius-border, 0.25rem)
+        var(--slds-s-input-radius-border, 0.25rem);
 }
 
 .avonni-input-choice-set__vertical
+    .slds-checkbox_button:first-child:not(:only-child),
+.avonni-input-choice-set__vertical
     .slds-checkbox_button:first-child:not(:only-child)
     > .slds-checkbox_button__label {
-    border-radius: 0.25rem 0.25rem 0 0;
+    border-radius: var(--slds-s-input-radius-border, 0.25rem)
+        var(--slds-s-input-radius-border, 0.25rem) 0 0;
 }
 
+.avonni-input-choice-set__vertical .slds-checkbox_button:only-child,
 .avonni-input-choice-set__vertical
     .slds-checkbox_button:only-child
     > .slds-checkbox_button__label {
     border-radius: var(
         --avonni-input-choice-set-option-button-radius-border,
-        0.25rem
+        var(--slds-s-input-radius-border, 0.25rem)
     );
 }
 
+.avonni-input-choice-set__horizontal .slds-checkbox_button:only-child,
 .avonni-input-choice-set__horizontal
     .slds-checkbox_button:only-child
     > .slds-checkbox_button__label {
     border-radius: var(
         --avonni-input-choice-set-option-button-radius-border,
-        0.25rem
+        var(--slds-s-button-radius-border, 0.25rem)
     );
 }
 
