@@ -39,6 +39,10 @@
     font-size: 0.875rem;
 }
 
+.avonni-relationship-graph-group__collapse-icon {
+    height: 100%;
+}
+
 /* Themes --- */
 .avonni-theme_inverse {
     color: #fff;
