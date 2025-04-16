@@ -10,6 +10,7 @@
 }
 
 .avonni-expandable-section__title-button_base:active {
+    box-shadow: none;
     --slds-c-button-color-border-active: var(
         --avonni-expandable-section-base-header-color-border-active
     );
@@ -26,6 +27,7 @@
 }
 
 .avonni-expandable-section__title-button_shaded:active {
+    box-shadow: none;
     --slds-c-button-color-border-active: var(
         --avonni-expandable-section-base-header-color-border-active
     );
@@ -54,7 +56,7 @@
 .avonni-expandable-section__title-button_base:hover {
     color: var(
         --avonni-expandable-section-base-header-text-color-hover,
-        #080707
+        var(--slds-g-color-accent-container-3, #080707)
     );
 }
 
@@ -72,7 +74,7 @@
 .avonni-expandable-section__title-button_shaded:hover {
     color: var(
         --avonni-expandable-section-shaded-header-text-color-hover,
-        #080707
+        var(--slds-g-color-accent-container-3, #080707)
     );
 }
 
@@ -153,6 +155,10 @@
     --sds-c-icon-color-foreground-default: var(
         --avonni-expandable-section-shaded-header-icon-color-foreground-default-hover
     );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-expandable-section-shaded-header-icon-color-foreground-default-hover,
+        var(--slds-g-color-accent-container-3)
+    );
 }
 
 .avonni-expandable-section__title-button_shaded:focus
@@ -177,7 +183,12 @@
 .avonni-expandable-section__header_base:hover
     .avonni-expandable-section__opened-icon {
     --sds-c-icon-color-foreground-default: var(
-        --avonni-expandable-section-base-header-icon-color-foreground-default-hover
+        --avonni-expandable-section-base-header-icon-color-foreground-default-hover,
+        var(--slds-g-color-accent-container-3)
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-expandable-section-base-header-icon-color-foreground-default-hover,
+        var(--slds-g-color-accent-container-3)
     );
 }
 
@@ -190,12 +201,9 @@
     );
 }
 
-.avonni-expandable-section__opened-icon {
-    margin-top: -2px;
-}
-
+.avonni-expandable-section__opened-icon,
 .avonni-expandable-section__closed-icon {
-    margin-top: -3px;
+    margin-top: -5px;
 }
 
 .avonni-expandable-section__title-block {
