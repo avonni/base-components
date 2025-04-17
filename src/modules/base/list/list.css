@@ -324,6 +324,7 @@ a.avonni-list__item-info-link:active {
         --avonni-list-item-color-border,
         var(--slds-g-color-border-base-1, #c9c9c9)
     );
+    --avonni-card-color-border: var(--avonni-list-item-color-border, #747474);
 }
 
 .avonni-list__item-divider_none,
