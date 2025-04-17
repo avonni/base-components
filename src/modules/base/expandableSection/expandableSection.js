@@ -145,7 +145,9 @@ export default class ExpandableSection extends LightningElement {
      * @default slds-button slds-section__title-action
      */
     get titleButtonClass() {
-        return classSet('slds-button slds-section__title-action slds-grid')
+        return classSet(
+            'avonni-expandable-section__title-button slds-button slds-section__title-action slds-grid'
+        )
             .add({
                 'avonni-expandable-section__title-button_base':
                     this.variant === 'base',

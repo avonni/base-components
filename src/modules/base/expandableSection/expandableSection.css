@@ -221,6 +221,17 @@
     border: none !important;
 }
 
+/* A focus ring will be shown around the group only if: */
+/* - the user is navigating through the keyboard */
+/* - the browser supports focus-visible */
+.avonni-expandable-section__title-button:focus:not(:focus-visible),
+.avonni-expandable-section__title-button:active:not(:focus-visible) {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+    border-color: transparent;
+}
+
 .avonni-expandable-section__content {
     display: none;
     margin-top: var(--avonni-expandable-section-content-spacing-block-start);
