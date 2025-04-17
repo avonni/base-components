@@ -361,9 +361,11 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         element.activeChild = true;
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('.group');
+            const group = element.shadowRoot.querySelector(
+                '.avonni-relationship-graph-group__header-title-button'
+            );
 
-            expect(element.shadowRoot.activeElement === wrapper).toBeTruthy();
+            expect(element.shadowRoot.activeElement === group).toBeTruthy();
         });
     });
 
