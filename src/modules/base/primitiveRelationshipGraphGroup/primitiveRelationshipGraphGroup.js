@@ -60,8 +60,10 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     renderedCallback() {
         // Accessibility: sets focus on the first group child of the active item
         if (this.activeChild && this.isFirstChild) {
-            const wrapper = this.template.querySelector('.group');
-            if (wrapper) wrapper.focus();
+            const group = this.template.querySelector(
+                '.avonni-relationship-graph-group__header-title-button'
+            );
+            if (group) group.focus();
         }
     }
 

@@ -102,13 +102,12 @@
 /* A focus ring will be shown around the group only if: */
 /* - the user is navigating through the keyboard */
 /* - the browser supports focus-visible */
-.group:focus {
+.avonni-relationship-graph-group__header-title-button:focus:not(:focus-visible),
+.avonni-relationship-graph-group__header-title-button:active:not(:focus-visible) {
+    -webkit-box-shadow: none;
+    box-shadow: none;
     outline: none;
-}
-
-.group:focus-visible {
-    outline: 1px auto Highlight;
-    outline: 1px auto -webkit-focus-ring-color;
+    border-color: transparent;
 }
 
 .avonni-relationship-graph-group__loading-spinner {
