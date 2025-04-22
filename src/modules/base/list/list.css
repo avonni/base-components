@@ -224,8 +224,7 @@
 }
 
 .avonni-list__item-actions-container {
-    margin: var(--lwc-spacingXSmall, 0.5rem) var(--lwc-spacingXSmall, 0.5rem)
-        var(--lwc-spacingXSmall, 0.5rem) 0;
+    margin-left: var(--lwc-spacingXSmall, 0.5rem);
     align-self: var(
         --avonni-list-item-actions-vertical-alignment,
         var(--avonni-list-item-body-vertical-alignment, center)
