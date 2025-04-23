@@ -515,6 +515,14 @@ describe('Button Menu', () => {
         });
 
         describe('Menu Alignment & Nubbin', () => {
+            it('Auto', () => {
+                element.menuAlignment = 'auto';
+
+                return Promise.resolve().then(() => {
+                    expect(element.className).toContain('slds-form-element');
+                });
+            });
+
             it('Left', () => {
                 return Promise.resolve()
                     .then(() => {
