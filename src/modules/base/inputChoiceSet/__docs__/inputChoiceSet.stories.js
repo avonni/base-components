@@ -428,6 +428,18 @@ ButtonsWithRightIcons.args = {
     value: alignmentValue
 };
 
+export const ButtonsWithIconsOnly = Template.bind({});
+ButtonsWithIconsOnly.args = {
+    label: 'Please select a value',
+    type: 'button',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithIcon.map((opt) => ({
+        ...opt,
+        label: undefined
+    })),
+    value: alignmentValue
+};
+
 export const Toggle = Template.bind({});
 Toggle.args = {
     label: 'Please select a value',
