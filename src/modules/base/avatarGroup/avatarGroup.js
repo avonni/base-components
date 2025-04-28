@@ -819,8 +819,8 @@ export default class AvatarGroup extends LightningElement {
         return (
             this.computedMaxCount < this.items.length ||
             (this.enableInfiniteLoading &&
-                (this.computedMaxCount === this.items.length ||
-                    (this.layout === 'list' && this.isLoading)))
+                this.layout === 'list' &&
+                this.isLoading)
         );
     }
 

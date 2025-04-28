@@ -1548,7 +1548,7 @@ describe('Avatar Group', () => {
                 );
                 jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(100);
                 element.enableInfiniteLoading = true;
-                element.items = longItems.slice(0, 4);
+                element.items = longItems.slice(0, 6);
 
                 const handler = jest.fn();
                 element.addEventListener('loadmore', handler);
@@ -1566,7 +1566,7 @@ describe('Avatar Group', () => {
                             '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
                         );
                         button.click();
-                        expect(handler).toHaveBeenCalledTimes(1);
+                        expect(handler).not.toHaveBeenCalled();
                     });
             });
 

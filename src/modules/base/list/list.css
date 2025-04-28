@@ -224,8 +224,7 @@
 }
 
 .avonni-list__item-actions-container {
-    margin: var(--lwc-spacingXSmall, 0.5rem) var(--lwc-spacingXSmall, 0.5rem)
-        var(--lwc-spacingXSmall, 0.5rem) 0;
+    margin-left: var(--lwc-spacingXSmall, 0.5rem);
     align-self: var(
         --avonni-list-item-actions-vertical-alignment,
         var(--avonni-list-item-body-vertical-alignment, center)
@@ -324,6 +323,7 @@ a.avonni-list__item-info-link:active {
         --avonni-list-item-color-border,
         var(--slds-g-color-border-base-1, #c9c9c9)
     );
+    --avonni-card-color-border: var(--avonni-list-item-color-border, #c9c9c9);
 }
 
 .avonni-list__item-divider_none,
