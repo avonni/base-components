@@ -88,7 +88,7 @@ div:focus {
 .avonni-calendar__table-row > .avonni-calendar__date-cell:hover > .slds-day {
     background-color: var(
         --avonni-calendar-date-color-background-hover,
-        #f3f2f2
+        var(--slds-s-button-color-background-hover, #f3f2f2)
     );
 }
 
@@ -99,7 +99,7 @@ div:focus {
         --avonni-calendar-selected-date-color-background-hover,
         var(
             --avonni-calendar-selected-date-color-background,
-            var(--lwc-brandAccessible, #0176d3)
+            var(--slds-g-color-accent-container-1, #0176d3)
         )
     );
     color: var(--avonni-calendar-selected-date-text-color-hover, #ffffff);
@@ -134,7 +134,7 @@ div:focus {
 .slds-is-selected .slds-day {
     background-color: var(
         --avonni-calendar-selected-date-color-background,
-        var(--lwc-brandAccessible, #0176d3)
+        var(--slds-g-color-accent-container-1, #0176d3)
     );
     color: var(--avonni-calendar-selected-date-text-color, #ffffff);
 }
@@ -142,7 +142,7 @@ div:focus {
 .slds-is-selected:focus > .slds-day {
     background-color: var(
         --avonni-calendar-selected-date-color-background-focus,
-        var(--lwc-brandAccessibleActive, #355d96)
+        var(--slds-g-color-accent-container-1Active, #355d96)
     );
     color: var(--avonni-calendar-selected-date-text-color-focus, #ffffff);
 }
@@ -156,7 +156,7 @@ div:focus {
 .slds-is-selected .avonni-calendar__disabled-cell.slds-day {
     background: var(
         --avonni-calendar-selected-date-color-background,
-        var(--lwc-brandAccessible, #0176d3)
+        var(--slds-g-color-accent-container-1, #0176d3)
     );
     color: var(
         --avonni-calendar-selected-date-text-color,
@@ -177,8 +177,9 @@ div:focus {
     z-index: -1;
     background: var(
         --avonni-calendar-selected-date-color-background,
-        var(--lwc-brandAccessible, #0176d3)
+        var(--slds-g-color-accent-container-1, #0176d3)
     );
+    box-shadow: none;
 }
 
 .slds-datepicker__month.avonni-calendar__date-with-labels

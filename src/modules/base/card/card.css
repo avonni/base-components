@@ -16,7 +16,10 @@ article.avonni-card {
     border-width: var(--avonni-card-sizing-border, 1px);
     border-style: var(--avonni-card-styling-border, solid);
     border-color: var(--avonni-card-color-border, #c9c9c9);
-    border-radius: var(--avonni-card-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-card-radius-border,
+        var(--slds-s-container-radius-border, 0.25rem)
+    );
 
     box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
 }
@@ -89,29 +92,37 @@ article.avonni-card {
     The overflow: hidden lets the image pass over the border in certain conditions.  */
 .avonni-card__media-top-left-radius {
     border-top-left-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) -
-            var(--avonni-card-sizing-border, 1px)
+        var(
+                --avonni-card-radius-border,
+                var(--slds-s-container-radius-border, 0.25rem)
+            ) - var(--avonni-card-sizing-border, 1px)
     );
 }
 
 .avonni-card__media-top-right-radius {
     border-top-right-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) -
-            var(--avonni-card-sizing-border, 1px)
+        var(
+                --avonni-card-radius-border,
+                var(--slds-s-container-radius-border, 0.25rem)
+            ) - var(--avonni-card-sizing-border, 1px)
     );
 }
 
 .avonni-card__media-bottom-right-radius {
     border-bottom-right-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) -
-            var(--avonni-card-sizing-border, 1px)
+        var(
+                --avonni-card-radius-border,
+                var(--slds-s-container-radius-border, 0.25rem)
+            ) - var(--avonni-card-sizing-border, 1px)
     );
 }
 
 .avonni-card__media-bottom-left-radius {
     border-bottom-left-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) -
-            var(--avonni-card-sizing-border, 1px)
+        var(
+                --avonni-card-radius-border,
+                var(--slds-s-container-radius-border, 0.25rem)
+            ) - var(--avonni-card-sizing-border, 1px)
     );
 }
 
@@ -184,8 +195,14 @@ article.avonni-card {
     border-bottom-width: var(--avonni-card-header-sizing-border-bottom, 0px);
     border-bottom-style: var(--avonni-card-header-styling-border-bottom, solid);
     border-bottom-color: var(--avonni-card-header-color-border-bottom, #c9c9c9);
-    border-top-left-radius: var(--avonni-card-radius-border, 0.25rem);
-    border-top-right-radius: var(--avonni-card-radius-border, 0.25rem);
+    border-top-left-radius: var(
+        --avonni-card-radius-border,
+        var(--slds-s-container-radius-border, 0.25rem)
+    );
+    border-top-right-radius: var(
+        --avonni-card-radius-border,
+        var(--slds-s-container-radius-border, 0.25rem)
+    );
     padding-top: var(--avonni-card-header-spacing-block-start, 0.75rem);
     padding-bottom: var(--avonni-card-header-spacing-block-end, 0.75rem);
     padding-left: var(--avonni-card-header-spacing-inline-start, 1rem);

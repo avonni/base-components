@@ -5,7 +5,7 @@
 .avonni-vertical-visual-picker__figure {
     border-radius: var(
         --avonni-vertical-visual-picker-figure-radius-border,
-        0.25rem
+        var(--slds-s-input-radius-border, 0.25rem)
     );
     border-width: var(
         --avonni-vertical-visual-picker-figure-sizing-border,

@@ -22,6 +22,10 @@
 }
 
 /* Button */
+.avonni-input-choice-set__option-button-icon-min-height {
+    min-height: 30px;
+}
+
 .avonni-input-choice-set__option-button-label {
     font-size: var(
         --avonni-input-choice-set-option-button-label-font-size,
@@ -35,6 +39,10 @@
         --avonni-input-choice-set-option-button-label-font-weight,
         400
     );
+}
+
+.slds-checkbox_button {
+    box-shadow: none;
 }
 
 .slds-checkbox_button.avonni-input-choice-set__horizontal {
