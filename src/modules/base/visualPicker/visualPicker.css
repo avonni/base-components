@@ -5,7 +5,10 @@
 
 /*-- Figure and items --*/
 .avonni-visual-picker__figure {
-    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-visual-picker-radius-border,
+        var(--slds-s-input-radius-border, 0.25rem)
+    );
     border-width: var(--avonni-visual-picker-sizing-border, 1px);
     border-style: var(--avonni-visual-picker-styling-border, solid);
     border-color: var(--avonni-visual-picker-color-border, #c9c9c9);
@@ -206,7 +209,10 @@
     .slds-visual-picker__figure {
     cursor: pointer;
     outline: 0;
-    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-visual-picker-radius-border,
+        var(--slds-s-input-radius-border, 0.25rem)
+    );
     border-width: var(--avonni-visual-picker-sizing-border, 1px);
     border-style: var(--avonni-visual-picker-styling-border, solid);
     border-color: var(
@@ -223,7 +229,10 @@
         --avonni-visual-picker-color-border-selected,
         var(--lwc-brandPrimary, #1b96ff)
     );
-    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-visual-picker-radius-border,
+        var(--slds-s-input-radius-border, 0.25rem)
+    );
     border-style: var(--avonni-visual-picker-styling-border, solid);
     border-width: var(--avonni-visual-picker-sizing-border, 1px);
     -webkit-box-shadow: 0 0 0 1px
@@ -283,7 +292,10 @@
         --avonni-visual-picker-color-border-selected,
         var(--lwc-brandPrimary, #1b96ff)
     );
-    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border-radius: var(
+        --avonni-visual-picker-radius-border,
+        var(--slds-s-input-radius-border, 0.25rem)
+    );
     border-width: var(--avonni-visual-picker-sizing-border, 1px);
     border-style: var(--avonni-visual-picker-styling-border, solid);
 }

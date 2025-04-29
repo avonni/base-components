@@ -29,7 +29,7 @@
 .avonni-dual-listbox__option:hover {
     background-color: var(
         --avonni-dual-listbox-option-color-background-hover,
-        #f3f2f2
+        var(--slds-s-menu-item-color-background-active, #f3f2f2)
     );
     color: var(
         --avonni-dual-listbox-option-text-color-hover,
@@ -112,13 +112,16 @@
     border-width: var(--avonni-dual-listbox-boxes-sizing-border, 1px);
     border-style: var(--avonni-dual-listbox-boxes-styling-border, solid);
     border-color: var(--avonni-dual-listbox-boxes-color-border, #747474);
-    border-radius: var(--avonni-dual-listbox-boxes-radius-border);
+    border-radius: var(
+        --avonni-dual-listbox-boxes-radius-border,
+        var(--slds-s-input-radius-border)
+    );
 }
 
 .avonni-dual-listbox__boxes.slds-dueling-list__options [aria-selected='true'] {
     background: var(
         --avonni-dual-listbox-option-color-background-selected,
-        #edeceb
+        var(--slds-s-menu-item-color-background-active, #edeceb)
     );
     color: var(
         --avonni-dual-listbox-option-text-color-selected,

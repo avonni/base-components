@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const CHIP_VARIANTS = {
     valid: [
@@ -100,8 +100,8 @@ export default class Chip extends LightningElement {
     get chipClass() {
         return classSet('avonni-chip')
             .add({
-                'avonni-chip_outline': this._outline,
-                [`avonni-chip_theme-${this._variant}`]: this._variant
+                'avonni-chip_outline': this.outline,
+                [`avonni-chip_theme-${this.variant}`]: this.variant
             })
             .toString();
     }

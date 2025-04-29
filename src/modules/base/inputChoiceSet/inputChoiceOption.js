@@ -76,11 +76,12 @@ export default class InputChoiceOption {
      * @type {string}
      */
     get computedIconButtonClass() {
-        return classSet('')
+        return classSet('slds-align_absolute-center')
             .add({
-                'slds-align_absolute-center slds-m-top_x-small':
-                    this.iconPosition === POSITION_ICON.TOP,
-                'slds-align_absolute-center slds-m-bottom_x-small':
+                'avonni-input-choice-set__option-button-icon-min-height':
+                    !this.displayLabel,
+                'slds-m-top_x-small': this.iconPosition === POSITION_ICON.TOP,
+                'slds-m-bottom_x-small':
                     this.iconPosition === POSITION_ICON.BOTTOM,
                 'slds-m-left_x-small':
                     this.label && this.iconPosition === POSITION_ICON.RIGHT,
@@ -95,8 +96,8 @@ export default class InputChoiceOption {
     get computedIconClass() {
         return classSet('slds-p-right_x-small')
             .add({
-                'slds-order_0': this.isIconTopLeft,
-                'slds-order_2': this.isIconBottomRight
+                'slds-order_0': this.isIconTopOrLeft,
+                'slds-order_2': this.isIconBottomOrRight
             })
             .toString();
     }
@@ -110,12 +111,19 @@ export default class InputChoiceOption {
         return classSet(
             'slds-checkbox_faux slds-truncate avonni-input-choice-set__option-button-label'
         )
-            .add({
-                'slds-align_absolute-center':
-                    this.iconPosition === POSITION_ICON.TOP ||
-                    this.iconPosition === POSITION_ICON.BOTTOM
-            })
+            .add({ 'slds-align_absolute-center': this.isIconTopOrBottom })
             .toString();
+    }
+
+    /**
+     * Class of options's label container.
+     *
+     * @type {string}
+     */
+    get computedLabelContainerClass() {
+        return classSet('slds-p-horizontal_small slds-order_1').add({
+            'slds-grid': !this.isIconTopOrBottom
+        });
     }
 
     /**
@@ -132,7 +140,7 @@ export default class InputChoiceOption {
      *
      * @type {boolean}
      */
-    get isIconBottomRight() {
+    get isIconBottomOrRight() {
         return (
             this.iconPosition === POSITION_ICON.BOTTOM ||
             this.iconPosition === POSITION_ICON.RIGHT
@@ -144,12 +152,24 @@ export default class InputChoiceOption {
      *
      * @type {boolean}
      */
-    get isIconTopLeft() {
+    get isIconTopOrLeft() {
         return (
             this.iconPosition === POSITION_ICON.TOP ||
             this.iconPosition === POSITION_ICON.LEFT ||
             !this.iconPosition ||
             !this.iconName
+        );
+    }
+
+    /**
+     * True if options's icon position is top or bottom.
+     *
+     * @type {boolean}
+     */
+    get isIconTopOrBottom() {
+        return (
+            this.iconPosition === POSITION_ICON.TOP ||
+            this.iconPosition === POSITION_ICON.BOTTOM
         );
     }
 }

@@ -13,7 +13,8 @@
                         class="slds-required"
                         title={i18n.required}
                         data-element-id="abbr"
-                        >*
+                    >
+                        *
                     </abbr>
                     {label}
                 </legend>
@@ -163,15 +164,13 @@
                                             class="slds-grid"
                                         >
                                             <div
-                                                class="
-                                                    slds-p-horizontal_small
-                                                    slds-order_1
-                                                "
+                                                class={option.computedLabelContainerClass}
                                             >
                                                 <span
-                                                    if:true={option.isIconBottomRight}
+                                                    if:true={option.isIconBottomOrRight}
                                                     class={option.computedLabelButtonClass}
-                                                    >{option.label}
+                                                >
+                                                    {option.label}
                                                 </span>
                                                 <lightning-icon
                                                     if:true={option.iconName}
@@ -182,9 +181,10 @@
                                                     data-element-id="lightning-icon-button"
                                                 ></lightning-icon>
                                                 <span
-                                                    if:true={option.isIconTopLeft}
+                                                    if:true={option.isIconTopOrLeft}
                                                     class={option.computedLabelButtonClass}
-                                                    >{option.label}
+                                                >
+                                                    {option.label}
                                                 </span>
                                             </div>
                                             <template
@@ -245,15 +245,13 @@
                             >
                                 <div class="slds-grid">
                                     <div
-                                        class="
-                                            slds-p-horizontal_small
-                                            slds-order_1
-                                        "
+                                        class={option.computedLabelContainerClass}
                                     >
                                         <span
-                                            if:true={option.isIconBottomRight}
+                                            if:true={option.isIconBottomOrRight}
                                             class={option.computedLabelButtonClass}
-                                            >{option.label}
+                                        >
+                                            {option.label}
                                         </span>
                                         <lightning-icon
                                             if:true={option.iconName}
@@ -264,9 +262,10 @@
                                             data-element-id="lightning-icon-button"
                                         ></lightning-icon>
                                         <span
-                                            if:true={option.isIconTopLeft}
+                                            if:true={option.isIconTopOrLeft}
                                             class={option.computedLabelButtonClass}
-                                            >{option.label}
+                                        >
+                                            {option.label}
                                         </span>
                                     </div>
                                     <lightning-icon

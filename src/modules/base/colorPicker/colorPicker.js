@@ -1,16 +1,16 @@
-import { LightningElement, api } from 'lwc';
 import { colorType, generateColors } from 'c/colorUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { AutoPosition, Direction } from 'c/positionLibrary';
 import {
     classSet,
+    generateUUID,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { generateUUID } from 'c/utils';
-import { AutoPosition, Direction } from 'c/positionLibrary';
-import standard from './standard.html';
+import { LightningElement, api } from 'lwc';
 import inline from './inline.html';
+import standard from './standard.html';
 
 const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
@@ -692,7 +692,10 @@ export default class ColorPicker extends LightningElement {
 
         const classes = classSet(
             'slds-button avonni-color-picker__main-button'
-        );
+        ).add({
+            // Over-writes button border-radius to an input border-radius.
+            'slds-color-picker__summary-button': !this.hideColorInput
+        });
 
         const useMoreContainer =
             this.menuVariant === 'container' ||

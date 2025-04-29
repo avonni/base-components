@@ -14,7 +14,10 @@
     padding-right: var(--avonni-alert-spacing-inline-end, 0.5rem);
     padding-bottom: var(--avonni-alert-spacing-block-end, 0.5rem);
     padding-left: var(--avonni-alert-spacing-inline-start, 0.5rem);
-    font-weight: var(--avonni-alert-font-weight, 400);
+    font-weight: var(
+        --avonni-alert-font-weight,
+        var(--slds-s-alert-font-weight, 400)
+    );
     font-size: var(--avonni-alert-font-size, 1em);
     font-style: var(--avonni-alert-font-style, normal);
     text-align: center;
@@ -57,17 +60,23 @@
 }
 
 .avonni-alert_base {
-    background-color: var(--avonni-alert-base-color-background, #747474);
-    color: var(--avonni-alert-base-text-color, #ffffff);
+    background-color: var(
+        --avonni-alert-base-color-background,
+        var(--slds-g-color-info-container-1, #747474)
+    );
+    color: var(
+        --avonni-alert-base-text-color,
+        var(--slds-g-color-on-info-1, #ffffff)
+    );
 }
 
 .avonni-alert_base .avonni-alert__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
         --avonni-alert-base-icon-color-foreground
     );
-    --sds-c-icon-color-foreground-default: var(
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-base-icon-color-foreground-default,
-        #ffffff
+        var(--slds-g-color-on-info-1, #ffffff)
     );
     --sds-c-icon-color-background: var(
         --avonni-alert-base-icon-color-background
@@ -78,22 +87,28 @@
 .avonni-alert_base .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
         --avonni-alert-base-close-icon-color-foreground-default,
-        #ffffff
+        var(--slds-g-color-on-info-1, #ffffff)
     );
 }
 
 .avonni-alert_warning {
-    background-color: var(--avonni-alert-warning-color-background, #dd7a01);
-    color: var(--avonni-alert-warning-text-color, #080707);
+    background-color: var(
+        --avonni-alert-warning-color-background,
+        var(--slds-g-color-warning-container-1, #dd7a01)
+    );
+    color: var(
+        --avonni-alert-warning-text-color,
+        var(--slds-g-color-on-warning-1, #080707)
+    );
 }
 
 .avonni-alert_warning .avonni-alert__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
         --avonni-alert-warning-icon-color-foreground
     );
-    --sds-c-icon-color-foreground-default: var(
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-warning-icon-color-foreground-default,
-        #514f4d
+        var(--slds-g-color-on-warning-1, #514f4d)
     );
     --sds-c-icon-color-background: var(
         --avonni-alert-warning-icon-color-background
@@ -104,22 +119,28 @@
 .avonni-alert_warning .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
         --avonni-alert-warning-close-icon-color-foreground-default,
-        #514f4d
+        var(--slds-g-color-on-warning-1, #514f4d)
     );
 }
 
 .avonni-alert_error {
-    background-color: var(--avonni-alert-error-color-background, #ba0517);
-    color: var(--avonni-alert-error-text-color, #ffffff);
+    background-color: var(
+        --avonni-alert-error-color-background,
+        var(--slds-g-color-error-container-1, #ba0517)
+    );
+    color: var(
+        --avonni-alert-error-text-color,
+        var(--slds-g-color-on-error-1, #ffffff)
+    );
 }
 
 .avonni-alert_error .avonni-alert__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
         --avonni-alert-error-icon-color-foreground
     );
-    --sds-c-icon-color-foreground-default: var(
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-error-icon-color-foreground-default,
-        #ffffff
+        var(--slds-g-color-on-error-1, #ffffff)
     );
     --sds-c-icon-color-background: var(
         --avonni-alert-error-icon-color-background
@@ -130,22 +151,28 @@
 .avonni-alert_error .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
         --avonni-alert-error-close-icon-color-foreground-default,
-        #ffffff
+        var(--slds-g-color-on-error-1, #ffffff)
     );
 }
 
 .avonni-alert_offline {
-    background-color: var(--avonni-alert-offline-color-background, #444);
-    color: var(--avonni-alert-offline-text-color, #ffffff);
+    background-color: var(
+        --avonni-alert-offline-color-background,
+        var(--slds-g-color-neutral-base-30, #444)
+    );
+    color: var(
+        --avonni-alert-offline-text-color,
+        var(--slds-g-color-neutral-base-100, #ffffff)
+    );
 }
 
 .avonni-alert_offline .avonni-alert__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
         --avonni-alert-offline-icon-color-foreground
     );
-    --sds-c-icon-color-foreground-default: var(
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-offline-icon-color-foreground-default,
-        #ffffff
+        var(--slds-g-color-neutral-base-100, #ffffff)
     );
     --sds-c-icon-color-background: var(
         --avonni-alert-offline-icon-color-background
@@ -156,6 +183,6 @@
 .avonni-alert_offline .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
         --avonni-alert-offline-close-icon-color-foreground-default,
-        #ffffff
+        var(--slds-g-color-neutral-base-100, #ffffff)
     );
 }

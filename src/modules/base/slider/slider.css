@@ -191,6 +191,7 @@
     outline: none;
     background: transparent;
     cursor: pointer;
+    margin-top: 0;
     margin-bottom: calc(
         0px - calc(var(--avonni-slider-track-sizing-height, 4px))
     );
