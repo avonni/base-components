@@ -691,8 +691,11 @@ export default class ColorPicker extends LightningElement {
             this.menuVariant === 'bare' || this.menuVariant === 'bare-inverse';
 
         const classes = classSet(
-            'slds-button slds-color-picker__summary-button avonni-color-picker__main-button'
-        );
+            'slds-button avonni-color-picker__main-button'
+        ).add({
+            // Over-writes button border-radius to an input border-radius.
+            'slds-color-picker__summary-button': !this.hideColorInput
+        });
 
         const useMoreContainer =
             this.menuVariant === 'container' ||

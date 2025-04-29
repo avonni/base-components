@@ -498,9 +498,9 @@ export default class IconPicker extends LightningElement {
             case MENU_ICON_SIZES.valid[2]:
                 return '16px';
             case MENU_ICON_SIZES.valid[3]:
-                return '24px';
+                return '20px';
             case MENU_ICON_SIZES.valid[4]:
-                return '24px';
+                return '26px';
             default:
                 return null;
         }
@@ -530,7 +530,10 @@ export default class IconPicker extends LightningElement {
         const isBare =
             this.menuVariant === 'bare' || this.menuVariant === 'bare-inverse';
 
-        const classes = classSet('slds-button');
+        const classes = classSet('slds-button').add({
+            // Over-writes button border-radius to an input border-radius.
+            'slds-color-picker__summary-button': !this.hideInputText
+        });
 
         const useMoreContainer =
             this.menuVariant === 'container' ||
