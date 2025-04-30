@@ -21,7 +21,7 @@ export default class InputChoiceOption {
     constructor(option, value, type, width) {
         this.color = option.color;
         this.iconName = option.iconName;
-        this.iconPosition = option.iconPosition;
+        this.iconPosition = option.iconPosition || POSITION_ICON.LEFT;
         this.hideLabel = option.hideLabel;
         this.label = option.label;
         this.tooltip = option.tooltip;
@@ -76,9 +76,9 @@ export default class InputChoiceOption {
      * @type {string}
      */
     get computedIconButtonClass() {
-        return classSet('slds-align_absolute-center')
+        return classSet('slds-text-align_center')
             .add({
-                'avonni-input-choice-set__option-button-icon-min-height':
+                'avonni-input-choice-set__option-button-icon-min-height slds-grid slds-grid_vertical-align-center':
                     !this.displayLabel,
                 'slds-m-top_x-small': this.iconPosition === POSITION_ICON.TOP,
                 'slds-m-bottom_x-small':
@@ -86,9 +86,7 @@ export default class InputChoiceOption {
                 'slds-m-left_x-small':
                     this.label && this.iconPosition === POSITION_ICON.RIGHT,
                 'slds-m-right_x-small':
-                    this.label &&
-                    (this.iconPosition === POSITION_ICON.LEFT ||
-                        !this.iconPosition)
+                    this.label && this.iconPosition === POSITION_ICON.LEFT
             })
             .toString();
     }
@@ -121,8 +119,10 @@ export default class InputChoiceOption {
      * @type {string}
      */
     get computedLabelContainerClass() {
-        return classSet('slds-p-horizontal_small slds-order_1').add({
-            'slds-grid': !this.isIconTopOrBottom
+        return classSet(
+            'slds-p-horizontal_small slds-order_1 slds-grid slds-grid_vertical-align-center slds-grid_align-center'
+        ).add({
+            'slds-grid_vertical': this.isIconTopOrBottom
         });
     }
 
@@ -156,7 +156,6 @@ export default class InputChoiceOption {
         return (
             this.iconPosition === POSITION_ICON.TOP ||
             this.iconPosition === POSITION_ICON.LEFT ||
-            !this.iconPosition ||
             !this.iconName
         );
     }
