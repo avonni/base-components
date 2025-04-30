@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import ColorPicker from 'c/colorPicker';
+import { createElement } from 'lwc';
 
 // not tested
 // Positioning of the dropdown menu.
@@ -714,7 +714,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
                     );
                 });
             });
@@ -727,7 +727,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
                     );
                 });
             });
@@ -740,7 +740,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon slds-button_icon-container-more'
                     );
                 });
             });
@@ -753,7 +753,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon slds-button_icon-more'
                     );
                 });
             });
@@ -766,7 +766,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
                     );
                 });
             });
@@ -779,7 +779,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
                     );
                 });
             });
@@ -793,7 +793,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon-bare'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon-bare'
                     );
                 });
             });
@@ -807,7 +807,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon-container'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon-container'
                     );
                 });
             });
@@ -821,7 +821,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon-border'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon-border'
                     );
                 });
             });
@@ -835,7 +835,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon-border-filled'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon-border-filled'
                     );
                 });
             });
@@ -849,7 +849,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon-bare slds-button_icon-inverse'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon-bare slds-button_icon-inverse'
                     );
                 });
             });
@@ -863,7 +863,7 @@ describe('Color Picker', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-button_icon-border-inverse'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-button_icon-border-inverse'
                     );
                 });
             });
@@ -1028,7 +1028,7 @@ describe('Color Picker', () => {
                     expect(readOnly).toBeTruthy();
                     expect(input).toBeFalsy();
                     expect(button.className).toBe(
-                        'slds-button avonni-color-picker__main-button slds-swatch-read-only'
+                        'slds-button avonni-color-picker__main-button slds-color-picker__summary-button slds-swatch-read-only'
                     );
                 });
             });
