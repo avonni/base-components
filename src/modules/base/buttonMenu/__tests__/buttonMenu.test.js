@@ -1233,7 +1233,7 @@ describe('Button Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toContain(
-                        'avonni-button-menu__button-icon-container-more'
+                        'avonni-button-menu_border-inverse'
                     );
                 });
             });
