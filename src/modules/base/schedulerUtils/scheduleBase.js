@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import {
     addToDate,
     dateTimeObjectFrom,
@@ -13,6 +12,12 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
+import {
+    getDisabledWeekdaysLabels,
+    getFirstAvailableWeek,
+    isAllowedDay
+} from './dateComputations';
 import {
     DEFAULT_ACTION_NAMES,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
@@ -26,11 +31,6 @@ import {
     EVENTS_THEMES
 } from './defaults';
 import EventData from './eventData';
-import {
-    getDisabledWeekdaysLabels,
-    getFirstAvailableWeek,
-    isAllowedDay
-} from './dateComputations';
 
 /**
  * Base parent, extended by the primitive scheduler calendar, timeline and agenda.
@@ -76,6 +76,7 @@ export class ScheduleBase extends LightningElement {
     navCalendarMarkedDates = [];
 
     connectedCallback() {
+        this.initEvents();
         this.initResources();
         this.initLeftPanelCalendarDisabledDates();
         this._connected = true;
