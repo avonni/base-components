@@ -200,6 +200,7 @@
                                                 checked={item.checked}
                                                 id={item.name}
                                                 onkeydown={handleCheckboxKeyDown}
+                                                onmousedown={stopPropagation}
                                                 onclick={handleItemCheck}
                                             />
                                             <label for={item.name}>
