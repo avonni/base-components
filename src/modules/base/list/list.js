@@ -2549,7 +2549,7 @@ export default class List extends LightningElement {
         const itemIndex = Number(event.currentTarget.dataset.index);
         const item = this.computedItems[itemIndex];
 
-        if (!item || !this.isCheckList) {
+        if (!item || !this.isCheckList || item.uncheckable) {
             return;
         }
         const checked = !item.checked;

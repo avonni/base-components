@@ -30,6 +30,7 @@ export default class Item {
             }
         );
         this.checked = value.checked;
+        this.uncheckable = value.uncheckable;
         this.description = value.description;
         this.fallbackIconName = value.fallbackIconName;
         this.fields = normalizeArray(value.fields).map((f) => {

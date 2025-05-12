@@ -202,6 +202,7 @@
                                                 onkeydown={handleCheckboxKeyDown}
                                                 onmousedown={stopPropagation}
                                                 onclick={handleItemCheck}
+                                                disabled={item.uncheckable}
                                             />
                                             <label for={item.name}>
                                                 <span
