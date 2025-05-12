@@ -718,7 +718,9 @@ export default class ProgressBar extends LightningElement {
         if (this.isHorizontal && width > 0) {
             this.divPin.style.left = `calc(${this.value}% + ${-width / 2}px)`;
         } else if (this.isVertical && height > 0 && width > 0) {
-            this.divPin.style.top = `calc(${this.value}% + ${-height / 2}px)`;
+            this.divPin.style.bottom = `calc(${this.value}% + ${
+                -height / 2
+            }px)`;
         }
     }
 }
