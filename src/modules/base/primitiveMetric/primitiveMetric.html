@@ -1,93 +1,112 @@
 <template>
     <div
-        if:true={isLoading}
-        class="slds-is-relative avonni-metric__loading-spinner"
-        data-element-id="div-loading-spinner"
-    >
-        <lightning-spinner
-            alternative-text="Loading..."
-            size="x-small"
-        ></lightning-spinner>
-    </div>
-    <div
-        if:true={hasValue}
-        class="slds-grid slds-grid_vertical-align-end avonni-metric__wrapper"
+        class="
+            slds-is-relative slds-grid slds-grid_vertical-align-end
+            avonni-metric__wrapper
+        "
         data-element-id="div-wrapper"
     >
-        <!-- Trend icon -->
-        <lightning-dynamic-icon
-            if:true={showDynamicIcon}
-            class={dynamicIconClass}
-            alternative-text={trendDirection}
-            option={trendDirection}
-            type="trend"
-            data-element-id="lightning-dynamic-icon-sign"
-        ></lightning-dynamic-icon>
-
-        <template if:true={showIcon}>
-            <c-primitive-icon
-                class="
-                    avonni-metric__icon
-                    slds-current-color slds-align-middle
-                    slds-m-right_xx-small
-                "
-                icon-name={iconName}
-                data-element-id="avonni-primitive-icon-sign"
-            ></c-primitive-icon>
-            <span
-                class="slds-assistive-text"
-                data-element-id="span-icon-assistive-text"
-                >Trend direction: {trendDirection}</span
-            >
-        </template>
-
-        <!-- Prefix -->
-        <span
-            if:true={prefix}
-            class="
-                avonni-metric__prefix avonni-metric__primary-text
-                slds-truncate
-            "
-            data-element-id="span-prefix"
-            >{prefix}&nbsp;</span
+        <div
+            if:true={isLoading}
+            class="avonni-metric__loading-spinner"
+            data-element-id="div-loading-spinner"
         >
-
-        <!-- Value -->
+            <lightning-spinner
+                alternative-text="Loading..."
+                size="x-small"
+            ></lightning-spinner>
+        </div>
+        <!-- Show Empty value even when loading to give the proper height. -->
         <span
-            if:true={mathSign}
+            if:true={isEmpty}
             class="
                 slds-align-middle
                 avonni-metric__value avonni-metric__primary-text
             "
-            data-element-id="span-math-sign"
-            >{mathSign}&nbsp;</span
+            data-element-id="empty-value"
         >
-        <lightning-formatted-number
-            class="
-                avonni-metric__value avonni-metric__primary-text
-                slds-truncate
-            "
-            currency-code={currencyCode}
-            currency-display-as={currencyDisplayAs}
-            format-style={formatStyle}
-            maximum-fraction-digits={maximumFractionDigits}
-            maximum-significant-digits={maximumSignificantDigits}
-            minimum-fraction-digits={minimumFractionDigits}
-            minimum-integer-digits={minimumIntegerDigits}
-            minimum-significant-digits={minimumSignificantDigits}
-            value={positiveValue}
-            data-element-id="lightning-formatted-number"
-        ></lightning-formatted-number>
+            &nbsp;
+        </span>
+        <template if:true={hasValue}>
+            <!-- Trend icon -->
+            <lightning-dynamic-icon
+                if:true={showDynamicIcon}
+                class={dynamicIconClass}
+                alternative-text={trendDirection}
+                option={trendDirection}
+                type="trend"
+                data-element-id="lightning-dynamic-icon-sign"
+            ></lightning-dynamic-icon>
 
-        <!-- Suffix -->
-        <span
-            if:true={suffix}
-            class="
-                avonni-metric__suffix avonni-metric__primary-text
-                slds-truncate
-            "
-            data-element-id="span-suffix"
-            >&nbsp;{suffix}</span
-        >
+            <template if:true={showIcon}>
+                <c-primitive-icon
+                    class="
+                        avonni-metric__icon
+                        slds-current-color slds-align-middle
+                        slds-m-right_xx-small
+                    "
+                    icon-name={iconName}
+                    data-element-id="avonni-primitive-icon-sign"
+                ></c-primitive-icon>
+                <span
+                    class="slds-assistive-text"
+                    data-element-id="span-icon-assistive-text"
+                >
+                    Trend direction: {trendDirection}
+                </span>
+            </template>
+
+            <!-- Prefix -->
+            <span
+                if:true={prefix}
+                class="
+                    avonni-metric__prefix avonni-metric__primary-text
+                    slds-truncate
+                "
+                data-element-id="span-prefix"
+            >
+                {prefix}&nbsp;
+            </span>
+
+            <!-- Value -->
+            <span
+                if:true={mathSign}
+                class="
+                    slds-align-middle
+                    avonni-metric__value avonni-metric__primary-text
+                "
+                data-element-id="span-math-sign"
+            >
+                {mathSign}&nbsp;
+            </span>
+            <lightning-formatted-number
+                class="
+                    avonni-metric__value avonni-metric__primary-text
+                    slds-truncate
+                "
+                currency-code={currencyCode}
+                currency-display-as={currencyDisplayAs}
+                format-style={formatStyle}
+                maximum-fraction-digits={maximumFractionDigits}
+                maximum-significant-digits={maximumSignificantDigits}
+                minimum-fraction-digits={minimumFractionDigits}
+                minimum-integer-digits={minimumIntegerDigits}
+                minimum-significant-digits={minimumSignificantDigits}
+                value={positiveValue}
+                data-element-id="lightning-formatted-number"
+            ></lightning-formatted-number>
+
+            <!-- Suffix -->
+            <span
+                if:true={suffix}
+                class="
+                    avonni-metric__suffix avonni-metric__primary-text
+                    slds-truncate
+                "
+                data-element-id="span-suffix"
+            >
+                &nbsp;{suffix}
+            </span>
+        </template>
     </div>
 </template>

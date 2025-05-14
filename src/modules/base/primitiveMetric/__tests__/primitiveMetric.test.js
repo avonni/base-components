@@ -101,12 +101,36 @@ describe('Primitive Metric', () => {
         element.value = 40;
 
         return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
             const spinner = element.shadowRoot.querySelector(
                 '[data-element-id="div-loading-spinner"]'
             );
+            expect(emptyValue).toBeFalsy();
+            expect(spinner).toBeTruthy();
+            expect(number).toBeFalsy();
+        });
+    });
+
+    it('Primitive Metric: isLoading = true, no value', () => {
+        element.isLoading = true;
+        element.value = null;
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const spinner = element.shadowRoot.querySelector(
+                '[data-element-id="div-loading-spinner"]'
+            );
+            expect(emptyValue).toBeTruthy();
             expect(spinner).toBeTruthy();
             expect(number).toBeFalsy();
         });
@@ -378,14 +402,22 @@ describe('Primitive Metric', () => {
         });
     });
 
-    it('Primitive Metric: no value will hide the primitive', () => {
+    it('Primitive Metric: No value', () => {
         element.value = null;
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper).toBeFalsy();
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            expect(wrapper).toBeTruthy();
+            expect(emptyValue).toBeTruthy();
+            expect(number).toBeFalsy();
         });
     });
 

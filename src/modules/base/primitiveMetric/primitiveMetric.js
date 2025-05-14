@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const CURRENCY_DISPLAYS = {
     default: 'symbol',
@@ -301,6 +301,15 @@ export default class PrimitiveMetric extends LightningElement {
                 'slds-m-right_xx-small': this.value <= this.trendBreakpointValue
             })
             .toString();
+    }
+
+    /**
+     * True if the value is a not a valid number.
+     *
+     * @type {boolean}
+     */
+    get isEmpty() {
+        return !isFinite(this.value);
     }
 
     /**
