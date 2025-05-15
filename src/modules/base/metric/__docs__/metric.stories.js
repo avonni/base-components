@@ -46,6 +46,15 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        errorMessage: {
+            control: {
+                type: 'text'
+            },
+            description: 'Error message to display next to the label.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         formatStyle: {
             name: 'format-style',
             control: {
@@ -450,6 +459,12 @@ const Template = (args) => Metric(args);
 export const Base = Template.bind({});
 Base.args = {
     value: 7552.8
+};
+
+export const BaseEmptyWithError = Template.bind({});
+BaseEmptyWithError.args = {
+    label: 'Total Subscribers',
+    errorMessage: 'This is an error message'
 };
 
 export const LabelAndDescription = Template.bind({});

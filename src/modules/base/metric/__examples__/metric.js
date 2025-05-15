@@ -8,6 +8,7 @@ export const Metric = ({
     currencyCode,
     currencyDisplayAs,
     description,
+    errorMessage,
     formatStyle,
     label,
     labelPosition,
@@ -49,6 +50,7 @@ export const Metric = ({
     element.currencyCode = currencyCode;
     element.currencyDisplayAs = currencyDisplayAs;
     element.description = description;
+    element.errorMessage = errorMessage;
     element.formatStyle = formatStyle;
     element.label = label;
     element.labelPosition = labelPosition;
