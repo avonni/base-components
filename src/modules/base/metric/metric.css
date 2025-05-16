@@ -36,8 +36,6 @@
 /* Texts and value */
 .avonni-metric__description,
 .avonni-metric__label {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
@@ -287,4 +285,9 @@
     );
     --avonni-primitive-metric-spacing-block: 0.25rem;
     --avonni-primitive-metric-spacing-inline: 0.25rem;
+}
+
+.avonni-metric__label-error {
+    margin-top: -0.25rem;
+    --slds-c-icon-color-foreground: #ba0517;
 }

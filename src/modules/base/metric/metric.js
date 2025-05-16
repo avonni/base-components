@@ -1,11 +1,11 @@
-import { LightningElement, api } from 'lwc';
+import { Tooltip } from 'c/tooltipLibrary';
 import {
     classSet,
     normalizeBoolean,
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { Tooltip } from 'c/tooltipLibrary';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_POSITIONS = {
     default: 'left',
@@ -66,6 +66,14 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api description;
+
+    /**
+     * Error message text to display next to the label.
+     *
+     * @type {string}
+     * @public
+     */
+    @api errorMessage;
 
     /**
      * Label of the metric. If present, it will be displayed on top of the data.

@@ -1,6 +1,6 @@
+import { Tooltip } from 'c/tooltipLibrary';
 import { createElement } from 'lwc';
 import Metric from '../metric';
-import { Tooltip } from 'c/tooltipLibrary';
 
 jest.mock('c/tooltipLibrary');
 
@@ -173,6 +173,18 @@ describe('Metric', () => {
                 '[data-element-id="div-description"]'
             );
             expect(description.textContent).toBe('some description');
+        });
+    });
+
+    // error-message
+    it('Metric: errorMessage', () => {
+        element.errorMessage = 'some error message';
+        return Promise.resolve().then(() => {
+            const errorMessage = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-helptext-error"]'
+            );
+            expect(errorMessage.content).toBe('some error message');
+            expect(errorMessage.iconName).toBe('utility:warning');
         });
     });
 
