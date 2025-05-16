@@ -50,6 +50,7 @@ const IMAGE_CROP_FIT = {
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
+const CAROUSEL_PANEL_TOUCH_DRAG_OFFSET = 25;
 const DEFAULT_ITEMS_PER_PANEL = 1;
 const DEFAULT_LOAD_MORE_OFFSET = 1;
 const DEFAULT_SCROLL_DURATION = 5;
@@ -752,6 +753,23 @@ export default class Carousel extends LightningElement {
      */
 
     /**
+     * Animates the drag movement.
+     */
+    _animatePanelDrag(dragDirection) {
+        const carouselPanel = this.template.querySelector(
+            `.avonni-carousel__panel:nth-child(${this.activePanelIndex + 1})`
+        );
+        carouselPanel.classList.add(
+            `avonni-carousel__panel-drag-${dragDirection}`
+        );
+        setTimeout(() => {
+            carouselPanel.classList.remove(
+                `avonni-carousel__panel-drag-${dragDirection}`
+            );
+        }, 201);
+    }
+
+    /**
      * Verifies if the carousel should load more items.
      */
     _checkIfShouldLoadMore() {
@@ -1042,6 +1060,40 @@ export default class Carousel extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Panel dragged by touch event handler.
+     *
+     * @param {Event} start touchdown event
+     */
+    handleDragStart(start) {
+        start.preventDefault();
+
+        const startPosition = start.changedTouches[0].clientX;
+
+        const handleDragEnd = (end) => {
+            window.removeEventListener('touchend', handleDragEnd);
+
+            const endPosition = end.changedTouches[0].clientX;
+            const offset = startPosition - endPosition;
+            const isDragLeft = offset > CAROUSEL_PANEL_TOUCH_DRAG_OFFSET;
+            const isDragRight = offset < -CAROUSEL_PANEL_TOUCH_DRAG_OFFSET;
+
+            let dragDirection = '';
+
+            if (isDragLeft && !this.nextPanelNavigationDisabled) {
+                this.next();
+                dragDirection = 'left';
+            } else if (isDragRight && !this.previousPanelNavigationDisabled) {
+                this.previous();
+                dragDirection = 'right';
+            }
+
+            this._animatePanelDrag(dragDirection);
+        };
+
+        window.addEventListener('touchend', handleDragEnd);
     }
 
     /**

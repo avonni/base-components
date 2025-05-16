@@ -41,6 +41,16 @@
     }
 }
 
+@keyframes toleftdrag {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
 @keyframes tolefthidden {
     from {
         left: 0;
@@ -96,6 +106,16 @@
     to {
         left: 1.5rem;
         transform: scale(1);
+    }
+}
+
+@keyframes torightdrag {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
     }
 }
 
@@ -204,4 +224,14 @@
 
 .avonni-carousel__progress-indicator__small:not(.avonni-carousel__progress-indicator_to-right) {
     transform: scale(0.5);
+}
+
+.avonni-carousel__panel-drag-left {
+    animation-name: toleftdrag;
+    animation-duration: 0.2s;
+}
+
+.avonni-carousel__panel-drag-right {
+    animation-name: torightdrag;
+    animation-duration: 0.2s;
 }
