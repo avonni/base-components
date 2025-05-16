@@ -14,7 +14,8 @@ const AVATAR_SIZES = {
         'medium',
         'large',
         'x-large',
-        'xx-large'
+        'xx-large',
+        'xxx-large'
     ],
     default: 'medium'
 };
@@ -120,7 +121,7 @@ export default class Avatar extends LightningElement {
      */
     @api secondaryText;
     /**
-     * Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.
+     * Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large, xx-large and xxx-large.
      *
      * @public
      * @type {string}
@@ -335,7 +336,7 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * The size of the avatar. Valid values are x-small, small, medium, large, x-large and xx-large.
+     * The size of the avatar. Valid values are x-small, small, medium, large, x-large , xx-large and xxx-large.
      *
      * @public
      * @type {string}
@@ -558,7 +559,9 @@ export default class Avatar extends LightningElement {
      */
     get showTertiaryText() {
         return (
-            (this.size === 'x-large' || this.size === 'xx-large') &&
+            (this.size === 'x-large' ||
+                this.size === 'xx-large' ||
+                this.size === 'xxx-large') &&
             this.tertiaryText
         );
     }

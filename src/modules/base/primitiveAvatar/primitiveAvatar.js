@@ -10,7 +10,8 @@ const AVATAR_SIZES = {
         'medium',
         'large',
         'x-large',
-        'xx-large'
+        'xx-large',
+        'xxx-large'
     ],
     default: 'medium'
 };

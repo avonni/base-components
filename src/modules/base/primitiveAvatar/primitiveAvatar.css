@@ -78,6 +78,12 @@
     height: 72px;
 }
 
+.avonni-avatar_xxx-large .avonni-avatar {
+    font-size: 1.9rem;
+    width: 104px;
+    height: 104px;
+}
+
 [class*='slds-icon-action-'] {
     /* Remove padding from action type icons */
     padding: 0;
@@ -119,6 +125,10 @@
     scale: 2.2;
 }
 
+.avonni-avatar_xxx-large .avonni-avatar__icon {
+    scale: 3.2;
+}
+
 /* Fix icon sizes for action icons */
 .avonni-avatar_xx-small .avonni-avatar__action-icon {
     scale: 0.6;
@@ -146,6 +156,10 @@
 
 .avonni-avatar_xx-large .avonni-avatar__action-icon {
     scale: 1.4;
+}
+
+.avonni-avatar_xxx-large .avonni-avatar__action-icon {
+    scale: 1.8;
 }
 
 /**
@@ -279,6 +293,13 @@
     height: 24px;
     border-width: 2px;
     padding: 3px;
+}
+
+.avonni-avatar_xxx-large .avonni-avatar__status {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+    padding: 4px;
 }
 
 /** 
