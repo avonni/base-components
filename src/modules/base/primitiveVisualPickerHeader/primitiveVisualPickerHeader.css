@@ -70,3 +70,7 @@
     overflow: hidden;
     -webkit-line-clamp: var(--avonni-visual-picker-description-line-clamp, 2);
 }
+
+.avonni-visual-picker__figure-description.avonni-visual-picker__item-selected {
+    color: var(--avonni-visual-picker-description-text-color-selected, #090909);
+}

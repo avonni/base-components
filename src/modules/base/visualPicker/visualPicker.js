@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     classSet,
     generateUUID,
@@ -8,7 +8,7 @@ import {
     normalizeString
 } from 'c/utils';
 import { equal } from 'c/utilsPrivate';
-import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
+import { LightningElement, api, track } from 'lwc';
 
 const VISUAL_PICKER_VARIANTS = {
     valid: ['coverable', 'non-coverable'],

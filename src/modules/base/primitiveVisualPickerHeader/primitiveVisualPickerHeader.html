@@ -36,18 +36,13 @@
                     alternative-text={alternativeText}
                     avatar={avatar}
                     avatar-position={avatarPositionToDisplay}
+                    checked={checked}
                     display-avatar={displayTitleAvatar}
                     size={size}
                     title={title}
                 >
                 </c-primitive-visual-picker-title>
-                <p
-                    if:false={hideDescription}
-                    class="
-                        avonni-visual-picker__figure-description
-                        slds-line-clamp
-                    "
-                >
+                <p if:false={hideDescription} class={computedDescriptionClass}>
                     {description}
                 </p>
                 <c-primitive-avatar

@@ -135,4 +135,15 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
             .add(`avonni-visual-picker__figure-content_${this._size}`)
             .toString();
     }
+
+    /**
+     * Computed title class.
+     *
+     * @type {string}
+     */
+    get computedTitleClass() {
+        return classSet('avonni-visual-picker__figure-title slds-line-clamp')
+            .add({ 'avonni-visual-picker__item-selected': this.checked })
+            .toString();
+    }
 }
