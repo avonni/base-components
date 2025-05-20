@@ -12,14 +12,6 @@
             src={avatar.imgSrc}
             variant={avatar.variant}
         ></c-primitive-avatar>
-        <p
-            class="
-                avonni-visual-picker__figure-title
-                slds-line-clamp
-                slds-order_1
-            "
-        >
-            {title}
-        </p>
+        <p class={computedTitleClass}>{title}</p>
     </div>
 </template>

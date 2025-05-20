@@ -225,6 +225,10 @@
 
 /*-- Checked --*/
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text {
+    background-color: var(
+        --avonni-visual-picker-color-background-selected,
+        #ffffff
+    );
     border-color: var(
         --avonni-visual-picker-color-border-selected,
         var(--lwc-brandPrimary, #1b96ff)

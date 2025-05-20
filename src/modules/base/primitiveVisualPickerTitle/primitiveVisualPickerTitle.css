@@ -10,6 +10,10 @@
     line-height: var(--lwc-lineHeightHeading, 1.25);
 }
 
+.avonni-visual-picker__figure-title.avonni-visual-picker__item-selected {
+    color: var(--avonni-visual-picker-item-title-text-color-selected, #090909);
+}
+
 .avonni-primitive-visual-picker-title__avatar {
     --avonni-avatar-fallback-icon-color-foreground: var(
         --avonni-visual-picker-title-avatar-fallback-icon-foreground

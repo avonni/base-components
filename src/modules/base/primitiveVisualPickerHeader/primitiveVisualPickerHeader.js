@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeObject, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_POSITIONS = {
     valid: [
@@ -21,6 +21,7 @@ const VISUAL_PICKER_SIZES = {
 
 export default class PrimitiveVisualPickerHeader extends LightningElement {
     @api alternativeText;
+    @api checked = false;
     @api description;
     @api descriptionClass;
     @api hideAvatarTopBottom = false;
@@ -167,6 +168,17 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
                     this.avatarIsHorizontal &&
                     this.avatarPositionToDisplay === 'right-of-content'
             })
+            .toString();
+    }
+
+    /**
+     * Computed description class styling.
+     *
+     * @type {string}
+     */
+    get computedDescriptionClass() {
+        return classSet('avonni-visual-picker__figure-description')
+            .add({ 'avonni-visual-picker__item-selected': this.checked })
             .toString();
     }
 
