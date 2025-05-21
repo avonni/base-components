@@ -1,48 +1,43 @@
 <template>
     <div class="avonni-activity-timeline__container">
-        <template if:true={hasHeader}>
-            <div
-                class="
-                    slds-card__header
-                    slds-m-bottom_x-small
-                    slds-p-around_none
-                "
-                data-element-id="avonni-activity-horizontal-timeline-header"
-            >
-                <div class="slds-media slds-media_center">
-                    <div class="slds-media__figure" if:true={iconName}>
-                        <lightning-icon
-                            data-element-id="avonni-activity-timeline-icon"
-                            class="avonni-activity-timeline__icon"
-                            icon-name={iconName}
-                            size={iconSize}
-                        ></lightning-icon>
-                    </div>
-                    <div class="slds-media__body" if:true={title}>
-                        <h2
-                            class="
-                                slds-section__title
-                                avonni-activity-timeline__title
-                            "
-                        >
-                            {title}
-                        </h2>
-                    </div>
-                    <div
+        <div
+            if:true={hasHeader}
+            class="slds-card__header slds-m-bottom_x-small slds-p-around_none"
+            data-element-id="avonni-activity-horizontal-timeline-header"
+        >
+            <div class="slds-media slds-media_center">
+                <div if:true={iconName} class="slds-media__figure">
+                    <lightning-icon
+                        class="avonni-activity-timeline__icon"
+                        icon-name={iconName}
+                        size={iconSize}
+                        data-element-id="avonni-activity-timeline-icon"
+                    ></lightning-icon>
+                </div>
+                <div if:true={title} class="slds-media__body">
+                    <h2
                         class="
-                            slds-media__body
-                            slds-text-align_right
-                            slds-text-body_small
+                            slds-section__title
+                            avonni-activity-timeline__title
                         "
-                        data-element-id="avonni-activity-horizontal-timeline-title"
                     >
-                        Showing : {intervalMinDate} - {intervalMaxDate}
-                        <span>&#8226;</span> {intervalDaysLength} day(s)
-                        <span>&#8226;</span> {displayedItemsLength} item(s)
-                    </div>
+                        {title}
+                    </h2>
+                </div>
+                <div
+                    class="
+                        slds-media__body
+                        slds-text-align_right
+                        slds-text-body_small
+                    "
+                    data-element-id="avonni-activity-horizontal-timeline-title"
+                >
+                    Showing : {intervalMinDate} - {intervalMaxDate}
+                    <span>&#8226;</span> {intervalDaysLength} day(s)
+                    <span>&#8226;</span> {displayedItemsLength} item(s)
                 </div>
             </div>
-        </template>
+        </div>
 
         <!-- Horizontal timeline with D3 -->
         <div
@@ -61,18 +56,18 @@
                 data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"
             >
                 <div
+                    lwc:dom="manual"
                     class="avonni-activity-timeline__horizontal-timeline-items"
                     data-element-id="avonni-activity-timeline__horizontal-timeline-items"
-                    lwc:dom="manual"
                 ></div>
             </div>
             <div
-                data-element-id="avonni-activity-timeline__horizontal-timeline-axis"
                 lwc:dom="manual"
+                data-element-id="avonni-activity-timeline__horizontal-timeline-axis"
             ></div>
             <div
-                data-element-id="avonni-activity-timeline__horizontal-timeline-scroll-axis"
                 lwc:dom="manual"
+                data-element-id="avonni-activity-timeline__horizontal-timeline-scroll-axis"
             ></div>
         </div>
 
@@ -141,6 +136,7 @@
                 </div>
                 <!--Actions -->
                 <div
+                    if:true={actions.length}
                     class="
                         slds-timeline__actions
                         slds-p-right_x-small
@@ -148,14 +144,13 @@
                         slds-p-top_none
                         slds-align-top
                     "
-                    if:true={actions.length}
                     slot="figure-inverse"
                 >
                     <lightning-button-menu
                         alternative-text="Show menu"
-                        variant="border-filled"
                         icon-size="x-small"
                         menu-alignment="right"
+                        variant="border-filled"
                         data-element-id="lightning-button-menu-actions"
                         onselect={handleActionClick}
                     >
@@ -174,10 +169,6 @@
                 </div>
                 <!-- Close button -->
                 <lightning-button-icon
-                    icon-name="utility:close"
-                    size="medium"
-                    variant="bare"
-                    onclick={handleTooltipClose}
                     class="
                         slds-popover__close
                         slds-float_right
@@ -185,16 +176,20 @@
                         slds-p-around_none
                         slds-m-around_none
                     "
+                    icon-name="utility:close"
+                    size="medium"
+                    variant="bare"
+                    onclick={handleTooltipClose}
                 ></lightning-button-icon>
             </header>
             <div
+                if:true={selectedItem.description}
                 class="
                     slds-has-flexi-truncate
                     slds-p-right_x-small
                     slds-p-vertical_x-small
                     slds-p-left_medium
                 "
-                if:true={selectedItem.description}
             >
                 <p class="slds-line-clamp_x-small">
                     {selectedItem.description}
@@ -203,8 +198,8 @@
 
             <!-- Fields -->
             <footer
-                class="slds-grid slds-wrap slds-media__body"
                 if:true={selectedItem.fields}
+                class="slds-grid slds-wrap slds-media__body"
             >
                 <div
                     class="
@@ -225,9 +220,9 @@
                             >
                                 <c-output-data
                                     label={field.label}
-                                    value={field.value}
                                     type={field.type}
                                     type-attributes={field.typeAttributes}
+                                    value={field.value}
                                     variant={horizontalFieldsVariant}
                                     data-element-id="avonni-output-data"
                                 ></c-output-data>

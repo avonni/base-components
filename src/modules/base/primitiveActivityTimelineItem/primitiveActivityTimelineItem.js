@@ -43,7 +43,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api buttonIconName;
     /**
-     * The name for the button element. This value is optional and can be used to identify the button in a callback.
+     * Label of the button displayed below the details.
      *
      * @public
      * @type {string}
@@ -57,7 +57,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api description;
     /**
-     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     * Object that defines the layout of the fields. The object contains the following properties:
+     * - cols: Number of columns on default screen size
+     * - smallContainerCols: Number of columns on small container screens
+     * - mediumContainerCols: Number of columns on medium container screens
+     * - largeContainerCols: Number of columns on large container screens
+     * - variant: Display variant of the fields. Valid values include standard and label-hidden
      *
      * @public
      * @type {object}
@@ -100,13 +105,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     @api title;
-    /**
-     * If true, this item gets a blue bullet incase it has no icon.
-     *
-     * @public
-     * @type {boolean}
-     */
-    @api isActive;
 
     _actions = [];
     _avatar;
@@ -115,6 +113,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _checked = false;
     _closed = false;
+    _color;
     _dateFormat;
     _datetimeValue;
     _fields = [];
@@ -122,12 +121,18 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasError = false;
     _iconName;
     _iconSize = ICON_SIZES.default;
+    _isActive = false;
     _isLoading = false;
-    _color;
     _timezone;
 
     formattedDate = '';
     _connected = false;
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.formatDate();
@@ -175,7 +180,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * If true, the button is disabled.
+     * If presents, the button is disabled and cannot be used.
      *
      * @public
      * @type {boolean}
@@ -185,7 +190,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get buttonDisabled() {
         return this._buttonDisabled;
     }
-
     set buttonDisabled(value) {
         this._buttonDisabled = normalizeBoolean(value);
     }
@@ -201,7 +205,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get buttonIconPosition() {
         return this._buttonIconPosition;
     }
-
     set buttonIconPosition(value) {
         this._buttonIconPosition = normalizeString(value, {
             fallbackValue: BUTTON_ICON_POSITIONS.default,
@@ -220,7 +223,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get buttonVariant() {
         return this._buttonVariant;
     }
-
     set buttonVariant(value) {
         this._buttonVariant = normalizeString(value, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -244,7 +246,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * If true, close the section.
+     * If present, the item is closed by default.
      *
      * @public
      * @type {boolean}
@@ -254,7 +256,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get closed() {
         return this._closed;
     }
-
     set closed(value) {
         this._closed = normalizeBoolean(value);
     }
@@ -272,7 +273,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get dateFormat() {
         return this._dateFormat;
     }
-
     set dateFormat(value) {
         this._dateFormat = typeof value === 'string' ? value : null;
 
@@ -309,13 +309,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get fields() {
         return this._fields;
     }
-
     set fields(value) {
         this._fields = normalizeArray(value);
     }
 
     /**
-     * If true, a checkbox is present before the label.
+     * If present, a checkbox is present before the label.
      *
      * @public
      * @type {boolean}
@@ -325,13 +324,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get hasCheckbox() {
         return this._hasCheckbox;
     }
-
     set hasCheckbox(value) {
         this._hasCheckbox = normalizeBoolean(value);
     }
 
     /**
-     * if true, display an error message in the details section.
+     * If present, display an error message in the details section.
      *
      * @public
      * @type {boolean}
@@ -341,7 +339,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get hasError() {
         return this._hasError;
     }
-
     set hasError(value) {
         this._hasError = normalizeBoolean(value);
     }
@@ -372,7 +369,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * The size of the item's icon. Valid values are x-small, small, medium and large.
+     * The size of the item's icon. Valid values are xx-small, x-small, small, medium and large.
      *
      * @public
      * @type {string}
@@ -382,12 +379,25 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(value) {
         this._iconSize = normalizeString(value, {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
+    }
+
+    /**
+     * If present, this item gets a blue bullet incase it has no icon.
+     *
+     * @public
+     * @type {boolean}
+     */
+    @api
+    get isActive() {
+        return this._isActive;
+    }
+    set isActive(value) {
+        this._isActive = normalizeBoolean(value);
     }
 
     /**
@@ -401,7 +411,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -431,28 +440,26 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     /**
-     * Toggle for item expansion.
+     * Toggles for item expansion.
      *
      * @type {string}
      */
     get activityTimelineItemOuterClass() {
         return classSet('slds-timeline__item_expandable')
             .add({
-                'slds-is-open': !this.closed,
-                'avonni-primitive-activity-timeline-item__icon_xx-small':
-                    this.iconSize === 'xx-small',
-                'avonni-primitive-activity-timeline-item__icon_x-small':
-                    this.iconSize === 'x-small',
-                'avonni-primitive-activity-timeline-item__icon_small':
-                    this.iconSize === 'small',
-                'avonni-primitive-activity-timeline-item__icon_medium':
-                    this.iconSize === 'medium',
-                'avonni-primitive-activity-timeline-item__icon_large':
-                    this.iconSize === 'large'
+                'slds-is-open': !this.closed
             })
+            .add(
+                `avonni-primitive-activity-timeline-item__icon_${this.iconSize}`
+            )
             .toString();
     }
 
+    /**
+     * Return the avatar to display.
+     *
+     * @type {string}
+     */
     get avatarToDisplay() {
         return (
             this.avatar?.src ||
@@ -462,7 +469,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Return styling for item background color.
+     * Returns styling for item background color.
      *
      * @type {string}
      */
@@ -471,11 +478,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * Returns the chevron icon name.
+     *
+     * @type {string}
+     */
+    get computedChevronIconName() {
+        return this.closed ? 'utility:chevronright' : 'utility:chevrondown';
+    }
+
+    /**
      * Computed styling class for item without fields.
      *
      * @type {string}
      */
-    get computedSldsMedia() {
+    get computedSldsMediaClass() {
         return classSet('slds-media')
             .add({
                 'avonni-primitive-activity-timeline-item__no-fields_margin':
@@ -504,12 +520,21 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * Returns the open state of the item.
+     *
+     * @type {boolean}
+     */
+    get isOpen() {
+        return !this.closed;
+    }
+
+    /**
      * Classes for items bullet point.
      *
      * @type {string}
      * @public
      */
-    get timelineItemBullet() {
+    get timelineItemBulletClass() {
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
                 'avonni-timeline-item__active-bullet': this.isActive,
@@ -562,7 +587,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     /**
-     * Set the formatted date.
+     * Sets the formatted date.
      */
     formatDate() {
         const date = new Date(this.datetimeValue);
@@ -616,14 +641,14 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     /**
-     * Toggle for closed/open section.
+     * Toggles the closed/open section.
      */
     handleSectionStatus() {
         this._closed = !this._closed;
     }
 
     /**
-     * Actionclick handler.
+     * Handles the action click event.
      *
      * @param {Event} event
      */
@@ -650,7 +675,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Prevent anchor tag from navigating when href leads to nothing.
+     * Prevents the anchor tag from navigating when the href leads to nothing.
      *
      * @param {Event} event
      */
@@ -665,7 +690,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Buttonclick event handler.
+     * Handles the button click event.
      */
     handleButtonClick() {
         /**
@@ -683,7 +708,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Check event handler.
+     * Handles the check event.
      *
      * @param {Event} event
      */
@@ -713,7 +738,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Handle a click on the title. Dispatch the `itemclick` event.
+     * Handles a click on the title. Dispatches the `itemclick` event.
      */
     handleTitleClick() {
         this.dispatchEvent(
