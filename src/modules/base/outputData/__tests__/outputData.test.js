@@ -111,6 +111,9 @@ describe('OutputData', () => {
         element.type = 'boolean';
 
         return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
@@ -136,6 +139,7 @@ describe('OutputData', () => {
                 '[data-element-id="lightning-formatted-url"]'
             );
 
+            expect(emptyValue).toBeTruthy();
             expect(
                 text ||
                     boolean ||
@@ -218,6 +222,53 @@ describe('OutputData', () => {
         });
     });
 
+    it('Output data: type = currency, with no value', () => {
+        element.value = null;
+        element.type = 'currency';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
+            ).toBeFalsy();
+        });
+    });
+
     // Date
     it('Output data: type = date', () => {
         const typeAttributes = {
@@ -285,6 +336,53 @@ describe('OutputData', () => {
         });
     });
 
+    it('Output data: type = date, with no value', () => {
+        element.value = null;
+        element.type = 'date';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
+            ).toBeFalsy();
+        });
+    });
+
     // Email
     it('Output data: type = email', () => {
         element.type = 'email';
@@ -325,6 +423,53 @@ describe('OutputData', () => {
 
             expect(
                 text || boolean || number || date || location || phone || url
+            ).toBeFalsy();
+        });
+    });
+
+    it('Output data: type = email, with no value', () => {
+        element.value = null;
+        element.type = 'email';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
             ).toBeFalsy();
         });
     });
@@ -370,6 +515,53 @@ describe('OutputData', () => {
 
             expect(
                 text || boolean || number || date || email || phone || url
+            ).toBeFalsy();
+        });
+    });
+
+    it('Output data: type = location, with no value', () => {
+        element.value = 'Not Important For Location';
+        element.type = 'location';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
             ).toBeFalsy();
         });
     });
@@ -433,6 +625,53 @@ describe('OutputData', () => {
 
             expect(
                 text || boolean || date || email || location || phone || url
+            ).toBeFalsy();
+        });
+    });
+
+    it('Output data: type = number, with no value', () => {
+        element.value = null;
+        element.type = 'number';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
             ).toBeFalsy();
         });
     });
@@ -501,6 +740,53 @@ describe('OutputData', () => {
         });
     });
 
+    it('Output data: type = percent, with no value', () => {
+        element.value = null;
+        element.type = 'percent';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
+            ).toBeFalsy();
+        });
+    });
+
     // Phone
     it('Output data: type = phone', () => {
         element.type = 'phone';
@@ -537,6 +823,53 @@ describe('OutputData', () => {
 
             expect(
                 text || boolean || number || date || email || location || url
+            ).toBeFalsy();
+        });
+    });
+
+    it('Output data: type = phone, with no value', () => {
+        element.value = null;
+        element.type = 'phone';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
             ).toBeFalsy();
         });
     });
@@ -580,6 +913,53 @@ describe('OutputData', () => {
             expect(text.linkify).toBeTruthy();
             expect(
                 boolean || number || date || email || location || phone || url
+            ).toBeFalsy();
+        });
+    });
+
+    it('Output data: type = text, with no value', () => {
+        element.value = null;
+        element.type = 'text';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
             ).toBeFalsy();
         });
     });
@@ -629,6 +1009,54 @@ describe('OutputData', () => {
 
             expect(
                 text || boolean || number || date || email || location || phone
+            ).toBeFalsy();
+        });
+    });
+
+    it('Output data: type = url, with no value', () => {
+        element.value = null;
+        console.log('element.value', element.value);
+        element.type = 'url';
+
+        return Promise.resolve().then(() => {
+            const emptyValue = element.shadowRoot.querySelector(
+                '[data-element-id="empty-value"]'
+            );
+            const text = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-text"]'
+            );
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+            const date = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-date-time"]'
+            );
+            const email = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-email"]'
+            );
+            const location = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-location"]'
+            );
+            const phone = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-phone"]'
+            );
+            const url = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-url"]'
+            );
+
+            expect(emptyValue).toBeTruthy();
+            expect(
+                text ||
+                    boolean ||
+                    number ||
+                    date ||
+                    email ||
+                    location ||
+                    phone ||
+                    url
             ).toBeFalsy();
         });
     });

@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 import {
     SUPPORTED_TYPE_ATTRIBUTES,
     TYPES,
@@ -261,6 +261,20 @@ export default class OutputData extends LightningElement {
      */
     get showBoolean() {
         return this.isBoolean && this.value;
+    }
+
+    /**
+     * True if the value is empty. Explicitely set to null or undefined.
+     *
+     * @type {boolean}
+     */
+    get showEmptyValue() {
+        if (this.isLocation) {
+            return (
+                !this.typeAttributes.latitude && !this.typeAttributes.longitude
+            );
+        }
+        return this._value === null || this._value === undefined;
     }
 
     /*
