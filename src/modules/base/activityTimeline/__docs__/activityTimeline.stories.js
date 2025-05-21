@@ -129,7 +129,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If true, close the section. This attribute is only supported for the vertical orientation.',
+                'If present, close the section. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -140,7 +140,19 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If true, the section is collapsible, the left icon is present. This attribute is only supported for the vertical orientation with grouped items.',
+                'If present, the section is collapsible, the left icon is present. This attribute is only supported for the vertical orientation with grouped items.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        disableUpcomingGroup: {
+            name: 'disable-upcoming-group',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, future events are not grouped as "upcoming" event. This attribute is only supported for the vertical orientation with grouped items.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -177,6 +189,28 @@ export default {
                 'Values include week, month, year. This attribute is only supported for the vertical orientation.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        hideItemDate: {
+            name: 'hide-item-date',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the date of each item is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        hideVerticalBar: {
+            name: 'hide-vertical-bar',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the vertical bar is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         iconName: {
@@ -259,17 +293,6 @@ export default {
                 defaultValue: { summary: '15' }
             }
         },
-        locale: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'Locale of the current user. The locale is used to format the axis dates in the horizontal orientation.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'en-GB' }
-            }
-        },
         loadMoreOffset: {
             name: 'load-more-offset',
             control: {
@@ -282,15 +305,15 @@ export default {
                 defaultValue: { summary: '20' }
             }
         },
-        hideItemDate: {
-            name: 'hide-item-date',
+        locale: {
             control: {
-                type: 'boolean'
+                type: 'text'
             },
-            description: 'If true, the date of each item is hidden.',
+            description:
+                'Locale of the current user. The locale is used to format the axis dates in the horizontal orientation.',
             table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'en-GB' }
             }
         },
         maxVisibleItems: {
@@ -362,7 +385,9 @@ export default {
         buttonShowMoreLabel: 'Show more',
         buttonShowMoreIconName: 'utility:down',
         buttonVariant: 'neutral',
+        disableUpcomingGroup: false,
         enableInfiniteLoading: false,
+        hideVerticalBar: false,
         iconSize: 'medium',
         isLoading: false,
         itemIconSize: 'small',
@@ -382,6 +407,9 @@ const InfiniteLoadingUsingShowMoreTemplate = (args) =>
 
 export const Base = Template.bind({});
 Base.args = { items };
+
+export const HideVerticalBar = Template.bind({});
+HideVerticalBar.args = { items, hideVerticalBar: true };
 
 export const Ascending = Template.bind({});
 Ascending.args = {

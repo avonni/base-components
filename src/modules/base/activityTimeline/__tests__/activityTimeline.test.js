@@ -47,6 +47,7 @@ describe('Activity Timeline', () => {
             expect(element.buttonVariant).toBe('neutral');
             expect(element.closed).toBeFalsy();
             expect(element.collapsible).toBeFalsy();
+            expect(element.disableUpcomingGroup).toBeFalsy();
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.fieldAttributes).toEqual({
                 cols: 12,
@@ -57,6 +58,7 @@ describe('Activity Timeline', () => {
             });
             expect(element.groupBy).toBeUndefined();
             expect(element.hideItemDate).toBeFalsy();
+            expect(element.hideVerticalBar).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.intervalDaysLength).toBe(15);
             expect(element.isLoading).toBeFalsy();
@@ -204,6 +206,22 @@ describe('Activity Timeline', () => {
                         'c-expandable-section'
                     );
                     expect(expandableSection.collapsible).toBeTruthy();
+                });
+            });
+        });
+
+        describe('disableUpcomingGroup', () => {
+            it('Passed to the component', () => {
+                element.disableUpcomingGroup = true;
+                element.items = testItems;
+                element.groupBy = 'day';
+                const firstSection = 'Upcoming';
+
+                return Promise.resolve().then(() => {
+                    const expandableSection = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-expandable-section"]'
+                    );
+                    expect(expandableSection.title).not.toBe(firstSection);
                 });
             });
         });

@@ -116,16 +116,19 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _color;
     _dateFormat;
     _datetimeValue;
+    _endDateValue;
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _hideVerticalBar = false;
     _iconName;
     _iconSize = ICON_SIZES.default;
     _isActive = false;
     _isLoading = false;
     _timezone;
 
-    formattedDate = '';
+    formattedStartDate = '';
+    formattedEndDate = '';
     _connected = false;
 
     /*
@@ -300,6 +303,24 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * The value to be formatted, which can be a Date object, timestamp, or an ISO8601 formatted string. Use lightning-formatted-date-time.
+     *
+     * @public
+     * @type {datetime}
+     */
+    @api
+    get endDateValue() {
+        return this._endDateValue;
+    }
+    set endDateValue(value) {
+        this._endDateValue = value;
+
+        if (this._connected) {
+            this.formatDate();
+        }
+    }
+
+    /**
      * Array of output data objects (see Output Data for valid keys). It is displayed in the details section.
      *
      * @public
@@ -341,6 +362,21 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
     set hasError(value) {
         this._hasError = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the vertical bar is not displayed to the left of the item.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideVerticalBar() {
+        return this._hideVerticalBar;
+    }
+    set hideVerticalBar(value) {
+        this._hideVerticalBar = normalizeBoolean(value);
     }
 
     /**
@@ -456,15 +492,16 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Return the avatar to display.
+     * Returns the avatar to display.
      *
      * @type {string}
      */
     get avatarToDisplay() {
         return (
-            this.avatar?.src ||
-            this.avatar?.initials ||
-            this.avatar?.fallbackIconName
+            (this.avatar?.src ||
+                this.avatar?.initials ||
+                this.avatar?.fallbackIconName) &&
+            !this.hideVerticalBar
         );
     }
 
@@ -475,6 +512,29 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     get backgroundColor() {
         return this._color ? `--line-color: ${this._color}` : '';
+    }
+
+    /**
+     * Computed styling class for item without vertical bar.
+     *
+     * @type {string}
+     */
+    get computedbodyClass() {
+        return classSet('slds-media__body')
+            .add({
+                'avonni-primitive-activity-timeline-item___no-vertical-bar-margin':
+                    this.hideVerticalBar
+            })
+            .toString();
+    }
+
+    /**
+     * Styling class for item with fields without vertical bar.
+     *
+     * @type {string}
+     */
+    get computedChevronIconClass() {
+        return this.hideVerticalBar ? 'slds-m-top_x-small' : '';
     }
 
     /**
@@ -498,6 +558,18 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                     !this.hasFields
             })
             .toString();
+    }
+
+    /**
+     * Return the formatted date.
+     *
+     * @type {string}
+     */
+    get formattedDate() {
+        if (this.formattedStartDate && this.formattedEndDate) {
+            return `${this.formattedStartDate} - ${this.formattedEndDate}`;
+        }
+        return this.formattedStartDate || this.formattedEndDate || '';
     }
 
     /**
@@ -535,18 +607,16 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @public
      */
     get timelineItemBulletClass() {
+        if (this.hideVerticalBar) {
+            return '';
+        }
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
-                'avonni-timeline-item__active-bullet': this.isActive,
-                'avonni-primitive-activity-timeline-item__bullet-xx-small':
-                    this.iconSize === 'xx-small',
-                'avonni-primitive-activity-timeline-item__bullet-x-small':
-                    this.iconSize === 'x-small',
-                'avonni-primitive-activity-timeline-item__bullet-medium':
-                    this.iconSize === 'medium',
-                'avonni-primitive-activity-timeline-item__bullet-large':
-                    this.iconSize === 'large'
+                'avonni-timeline-item__active-bullet': this.isActive
             })
+            .add(
+                `avonni-primitive-activity-timeline-item__bullet-${this.iconSize}`
+            )
             .toString();
     }
 
@@ -590,16 +660,18 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * Sets the formatted date.
      */
     formatDate() {
-        const date = new Date(this.datetimeValue);
-        if (!date || isNaN(date) || !this.dateFormat) {
-            this.formattedDate = '';
-            return;
-        }
-        this.formattedDate = getFormattedDate({
-            date: this.datetimeValue,
-            timeZone: this.timezone,
-            format: this.dateFormat
-        });
+        const format = (value) => {
+            const date = new Date(value);
+            return !value || isNaN(date) || !this.dateFormat
+                ? ''
+                : getFormattedDate({
+                      date: value,
+                      timeZone: this.timezone,
+                      format: this.dateFormat
+                  });
+        };
+        this.formattedStartDate = format(this.datetimeValue);
+        this.formattedEndDate = format(this.endDateValue);
     }
 
     /**

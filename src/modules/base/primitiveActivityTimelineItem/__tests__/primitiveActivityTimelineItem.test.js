@@ -72,10 +72,12 @@ describe('Primitive Activity Timeline Item', () => {
             expect(element.dateFormat).toBeUndefined();
             expect(element.datetimeValue).toBeUndefined();
             expect(element.description).toBeUndefined();
+            expect(element.endDateValue).toBeUndefined();
             expect(element.fieldAttributes).toMatchObject({});
             expect(element.fields).toMatchObject([]);
             expect(element.hasCheckbox).toBeFalsy();
             expect(element.hasError).toBeFalsy();
+            expect(element.hideVerticalBar).toBeFalsy();
             expect(element.href).toBeUndefined();
             expect(element.icons).toBeUndefined();
             expect(element.iconName).toBeUndefined();
@@ -468,6 +470,19 @@ describe('Primitive Activity Timeline Item', () => {
                     );
                     expect(errorIcon).toBeTruthy();
                     expect(errorIcon.iconName).toBe('utility:error');
+                });
+            });
+        });
+
+        describe('hideVerticalBar', () => {
+            it('Passed to the component', () => {
+                element.hideVerticalBar = true;
+
+                return Promise.resolve().then(() => {
+                    const verticalBar = element.shadowRoot.querySelector(
+                        '.slds-timeline__icon'
+                    );
+                    expect(verticalBar).toBeFalsy();
                 });
             });
         });

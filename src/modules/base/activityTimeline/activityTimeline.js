@@ -136,6 +136,7 @@ export default class ActivityTimeline extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _collapsible = false;
+    _disableUpcomingGroup = false;
     _enableInfiniteLoading = false;
     _fieldAttributes = {
         cols: DEFAULT_FIELD_COLUMNS.default,
@@ -146,6 +147,7 @@ export default class ActivityTimeline extends LightningElement {
     };
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
+    _hideVerticalBar = false;
     _iconSize = ICON_SIZES.default;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _isLoading = false;
@@ -177,6 +179,12 @@ export default class ActivityTimeline extends LightningElement {
 
     computedItems = [];
     @track orderedDates = [];
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this._isConnected = true;
@@ -334,6 +342,21 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * If present, future events are not grouped as 'upcoming' event. This attribute is only supported for the vertical orientation with grouped items.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get disableUpcomingGroup() {
+        return this._disableUpcomingGroup;
+    }
+    set disableUpcomingGroup(value) {
+        this._disableUpcomingGroup = normalizeBoolean(value);
+    }
+
+    /**
      * If present, you can load a subset of items and then display more when users scroll to the end of the timeline. Use with the `loadmore` event to retrieve more items.
      *
      * @type {boolean}
@@ -412,7 +435,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If true, the date of each item is hidden.
+     * If present, the date of each item is hidden.
      *
      * @public
      * @type {boolean}
@@ -424,6 +447,21 @@ export default class ActivityTimeline extends LightningElement {
     }
     set hideItemDate(value) {
         this._hideItemDate = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the vertical timeline bar is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideVerticalBar() {
+        return this._hideVerticalBar;
+    }
+    set hideVerticalBar(value) {
+        this._hideVerticalBar = normalizeBoolean(value);
     }
 
     /**
@@ -876,6 +914,10 @@ export default class ActivityTimeline extends LightningElement {
      * @returns {string}
      */
     getGroupLabel(isoDate, isDateOnly) {
+        if (!isoDate) {
+            return 'Others';
+        }
+
         let today = new Date();
         if (isDateOnly) {
             const todayDateTime = new DateTime(today, this.timezone);
@@ -884,7 +926,7 @@ export default class ActivityTimeline extends LightningElement {
         }
 
         const date = new Date(isoDate);
-        if (this._groupBy && date > today) {
+        if (this._groupBy && date > today && !this.disableUpcomingGroup) {
             return 'Upcoming';
         }
         switch (this._groupBy) {
@@ -928,6 +970,13 @@ export default class ActivityTimeline extends LightningElement {
     initActivityTimeline() {
         this.orderedDates = [];
         this.computedItems = [];
+
+        const othersGroup = {
+            label: 'Others',
+            items: []
+        };
+        const groupMap = new Map();
+
         this.sortedItems.forEach((item) => {
             const computedItem = deepCopy(item);
             this.supportDeprecatedAttributes(computedItem);
@@ -944,18 +993,26 @@ export default class ActivityTimeline extends LightningElement {
             }
 
             const label = this.getGroupLabel(date, isDateOnly);
-            const lastGroup = this.orderedDates[this.orderedDates.length - 1];
-
-            if (!lastGroup || lastGroup.label !== label) {
-                this.orderedDates.push({
-                    label,
-                    items: [computedItem]
-                });
+            if (label === 'Others') {
+                othersGroup.items.push(computedItem);
             } else {
-                lastGroup.items.push(computedItem);
+                if (!groupMap.has(label)) {
+                    const newGroup = {
+                        label,
+                        items: [computedItem]
+                    };
+                    groupMap.set(label, newGroup);
+                    this.orderedDates.push(newGroup);
+                } else {
+                    groupMap.get(label).items.push(computedItem);
+                }
             }
             this.computedItems.push(computedItem);
         });
+
+        if (othersGroup.items.length > 0) {
+            this.orderedDates.push(othersGroup);
+        }
     }
 
     /**

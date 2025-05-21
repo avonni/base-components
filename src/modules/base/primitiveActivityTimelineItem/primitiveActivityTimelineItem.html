@@ -8,6 +8,7 @@
             <div class="slds-media__figure">
                 <template if:true={hasFields}>
                     <lightning-button-icon
+                        icon-class={computedChevronIconClass}
                         icon-name={computedChevronIconName}
                         size="medium"
                         variant="bare"
@@ -32,7 +33,7 @@
                     data-element-id="item-marker"
                 ></div>
             </div>
-            <div class="slds-media__body">
+            <div class={computedbodyClass}>
                 <div
                     class="
                         slds-grid slds-grid_align-spread
