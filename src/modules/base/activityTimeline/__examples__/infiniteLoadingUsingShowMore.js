@@ -7,21 +7,26 @@ customElements.define(
 
 export const InfiniteLoadingUsingShowMoreActivityTimeline = ({
     actions,
-    buttonShowMoreLabel,
-    buttonVariant,
+    buttonShowLessIconName,
+    buttonShowLessIconPosition,
+    buttonShowLessLabel,
     buttonShowMoreIconName,
     buttonShowMoreIconPosition,
-    buttonShowLessIconPosition,
-    buttonShowLessIconName,
-    buttonShowLessLabel,
+    buttonShowMoreLabel,
+    buttonVariant,
     closed,
     collapsible,
+    disableUpcomingGroup,
+    enableInfiniteLoading,
+    fieldAttributes,
     groupBy,
     hideItemDate,
-    itemDateFormat,
+    hideVerticalBar,
     iconName,
     iconSize,
+    intervalDaysLength,
     isLoading,
+    itemDateFormat,
     itemIconSize,
     items,
     loadMoreOffset,
@@ -45,18 +50,23 @@ export const InfiniteLoadingUsingShowMoreActivityTimeline = ({
     element.buttonShowLessLabel = buttonShowLessLabel;
     element.closed = closed;
     element.collapsible = collapsible;
-    element.itemDateFormat = itemDateFormat;
-    element.locale = locale;
+    element.disableUpcomingGroup = disableUpcomingGroup;
+    element.enableInfiniteLoading = enableInfiniteLoading;
+    element.fieldAttributes = fieldAttributes;
     element.groupBy = groupBy;
+    element.hideItemDate = hideItemDate;
+    element.hideVerticalBar = hideVerticalBar;
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.isLoading = isLoading;
+    element.itemDateFormat = itemDateFormat;
     element.itemIconSize = itemIconSize;
     element.items = items;
+    element.intervalDaysLength = intervalDaysLength;
     element.loadMoreOffset = loadMoreOffset;
-    element.orientation = orientation;
-    element.hideItemDate = hideItemDate;
+    element.locale = locale;
     element.maxVisibleItems = maxVisibleItems;
+    element.orientation = orientation;
     element.sortedDirection = sortedDirection;
     element.timezone = timezone;
     element.title = title;

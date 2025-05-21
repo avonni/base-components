@@ -1,30 +1,21 @@
 <template>
     <div
         class={activityTimelineItemOuterClass}
-        data-element-id="avonni-timeline-item"
         style={backgroundColor}
+        data-element-id="avonni-timeline-item"
     >
-        <div class={computedSldsMedia}>
+        <div class={computedSldsMediaClass}>
             <div class="slds-media__figure">
                 <template if:true={hasFields}>
-                    <template if:false={closed}>
-                        <lightning-button-icon
-                            icon-name="utility:chevrondown"
-                            size="medium"
-                            variant="bare"
-                            onclick={handleSectionStatus}
-                            aria-expanded="true"
-                        ></lightning-button-icon>
-                    </template>
-                    <template if:true={closed}>
-                        <lightning-button-icon
-                            icon-name="utility:chevronright"
-                            size="medium"
-                            variant="bare"
-                            onclick={handleSectionStatus}
-                            aria-expanded="false"
-                        ></lightning-button-icon>
-                    </template>
+                    <lightning-button-icon
+                        icon-class={computedChevronIconClass}
+                        icon-name={computedChevronIconName}
+                        size="medium"
+                        variant="bare"
+                        onclick={handleSectionStatus}
+                        aria-expanded={isOpen}
+                        data-element-id="avonni-timeline-item-chevron"
+                    ></lightning-button-icon>
                 </template>
                 <c-primitive-avatar
                     if:true={avatarToDisplay}
@@ -38,11 +29,11 @@
                 ></c-primitive-avatar>
                 <div
                     if:false={avatarToDisplay}
-                    class={timelineItemBullet}
+                    class={timelineItemBulletClass}
                     data-element-id="item-marker"
                 ></div>
             </div>
-            <div class="slds-media__body">
+            <div class={computedbodyClass}>
                 <div
                     class="
                         slds-grid slds-grid_align-spread
@@ -58,11 +49,11 @@
                     >
                         <lightning-input
                             if:true={hasCheckbox}
-                            checked={checked}
-                            type="checkbox"
-                            label="checkbox"
-                            variant="label-hidden"
                             class="slds-no-flex"
+                            checked={checked}
+                            label="checkbox"
+                            type="checkbox"
+                            variant="label-hidden"
                             data-element-id="lightning-input-checkbox"
                             onchange={handleCheck}
                         >
@@ -89,9 +80,10 @@
                             <template for:each={icons} for:item="icon">
                                 <lightning-icon
                                     key={icon}
+                                    class="slds-p-left_x-small"
                                     icon-name={icon}
                                     size="xx-small"
-                                    class="slds-p-left_x-small"
+                                    data-element-id="avonni-timeline-item-icon"
                                 ></lightning-icon>
                             </template>
                         </div>
@@ -135,8 +127,8 @@
                     </div>
                 </div>
                 <p
-                    class="slds-m-horizontal_xx-small slds-truncate"
                     if:true={description}
+                    class="slds-m-horizontal_xx-small slds-truncate"
                 >
                     <lightning-formatted-rich-text
                         value={description}
@@ -155,11 +147,11 @@
                             id="task-item-error"
                         >
                             <lightning-icon
-                                icon-name="utility:error"
+                                class="slds-m-right_x-small"
                                 alternative-text="Error!"
+                                icon-name="utility:error"
                                 variant="error"
                                 size="x-small"
-                                class="slds-m-right_x-small"
                             ></lightning-icon>
                             <p class="slds-truncate">
                                 There was an error loading the details
@@ -169,15 +161,15 @@
                     <template if:false={hasError}>
                         <template if:true={hasFields}>
                             <div
-                                aria-hidden="false"
                                 class="
                                     avonni-primitive-activity-timeline-item__fields-container
                                     slds-m-horizontal_xx-small
                                 "
+                                aria-hidden="false"
                             >
                                 <c-layout
-                                    data-element-id="fields-container"
                                     multiple-rows
+                                    data-element-id="fields-container"
                                 >
                                     <template
                                         for:each={fields}
@@ -187,56 +179,51 @@
                                         <c-layout-item
                                             key={field.value}
                                             class="slds-truncate"
-                                            size={fieldAttributes.cols}
                                             large-container-size={fieldAttributes.largeContainerCols}
                                             medium-container-size={fieldAttributes.mediumContainerCols}
+                                            size={fieldAttributes.cols}
                                             small-container-size={fieldAttributes.smallContainerCols}
                                         >
                                             <c-output-data
                                                 label={field.label}
-                                                value={field.value}
                                                 type={field.type}
                                                 type-attributes={field.typeAttributes}
+                                                value={field.value}
                                                 variant={fieldAttributes.variant}
                                                 data-element-id="avonni-output-data"
                                             ></c-output-data>
                                         </c-layout-item>
                                     </template>
                                 </c-layout>
-                                <template if:true={buttonLabel}>
-                                    <lightning-button
-                                        label={buttonLabel}
-                                        variant={buttonVariant}
-                                        icon-name={buttonIconName}
-                                        icon-position={buttonIconPosition}
-                                        disabled={buttonDisabled}
-                                        onclick={handleButtonClick}
-                                    ></lightning-button>
-                                </template>
+                                <lightning-button
+                                    if:true={buttonLabel}
+                                    disabled={buttonDisabled}
+                                    label={buttonLabel}
+                                    icon-name={buttonIconName}
+                                    icon-position={buttonIconPosition}
+                                    variant={buttonVariant}
+                                    onclick={handleButtonClick}
+                                ></lightning-button>
                             </div>
                         </template>
                         <template if:false={hasFields}>
-                            <template if:true={isLoading}>
-                                <div class="slds-is-relative">
-                                    <lightning-spinner
-                                        size="small"
-                                        class="slds-spinner_container"
-                                        alternative-text={loadingStateAlternativeText}
-                                    ></lightning-spinner>
-                                </div>
-                            </template>
-                            <template if:true={buttonLabel}>
-                                <div class="slds-m-top_small">
-                                    <lightning-button
-                                        label={buttonLabel}
-                                        variant={buttonVariant}
-                                        icon-name={buttonIconName}
-                                        icon-position={buttonIconPosition}
-                                        disabled={buttonDisabled}
-                                        onclick={handleButtonClick}
-                                    ></lightning-button>
-                                </div>
-                            </template>
+                            <div if:true={isLoading} class="slds-is-relative">
+                                <lightning-spinner
+                                    class="slds-spinner_container"
+                                    alternative-text={loadingStateAlternativeText}
+                                    size="small"
+                                ></lightning-spinner>
+                            </div>
+                            <div if:true={buttonLabel} class="slds-m-top_small">
+                                <lightning-button
+                                    disabled={buttonDisabled}
+                                    icon-name={buttonIconName}
+                                    icon-position={buttonIconPosition}
+                                    label={buttonLabel}
+                                    variant={buttonVariant}
+                                    onclick={handleButtonClick}
+                                ></lightning-button>
+                            </div>
                         </template>
                     </template>
                 </template>

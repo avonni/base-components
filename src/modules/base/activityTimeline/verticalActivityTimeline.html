@@ -5,7 +5,7 @@
         <!-- Header -->
         <div if:true={hasHeader} class="slds-card__header">
             <div class="slds-media slds-media_center">
-                <div class="slds-media__figure" if:true={iconName}>
+                <div if:true={iconName} class="slds-media__figure">
                     <lightning-icon
                         data-element-id="avonni-activity-timeline-icon"
                         class="avonni-activity-timeline__icon"
@@ -13,7 +13,7 @@
                         size={iconSize}
                     ></lightning-icon>
                 </div>
-                <div class="slds-media__body" if:true={title}>
+                <div if:true={title} class="slds-media__body">
                     <h2
                         class="
                             slds-truncate
@@ -45,31 +45,33 @@
                 <template for:each={computedItems} for:item="item">
                     <li key={item.name}>
                         <c-primitive-activity-timeline-item
-                            title={item.title}
+                            actions={actions}
+                            avatar={item.avatar}
+                            button-disabled={item.buttonDisabled}
+                            button-icon-name={item.buttonIconName}
+                            button-icon-position={item.buttonIconPosition}
+                            button-label={item.buttonLabel}
+                            button-variant={item.buttonVariant}
                             checked={item.checked}
+                            closed={item.closed}
                             description={item.description}
                             datetime-value={item.datetimeValue}
                             date-format={computedItemDateFormat}
+                            end-date-value={item.endDate}
                             href={item.href}
-                            avatar={item.avatar}
                             icon-size={itemIconSize}
                             icons={item.icons}
                             field-attributes={fieldAttributes}
                             fields={item.fields}
                             has-checkbox={item.hasCheckbox}
                             has-error={item.hasError}
-                            closed={item.closed}
-                            button-label={item.buttonLabel}
-                            button-icon-name={item.buttonIconName}
-                            button-variant={item.buttonVariant}
-                            button-icon-position={item.buttonIconPosition}
-                            button-disabled={item.buttonDisabled}
-                            is-loading={item.isLoading}
+                            hide-vertical-bar={hideVerticalBar}
                             is-active={item.isActive}
+                            is-loading={item.isLoading}
                             loading-state-alternative-text={item.loadingStateAlternativeText}
-                            actions={actions}
                             name={item.name}
                             timezone={timezone}
+                            title={item.title}
                             data-element-id="avonni-primitive-activity-timeline-item"
                             data-name={item.name}
                         ></c-primitive-activity-timeline-item>
@@ -85,9 +87,9 @@
             >
                 <c-expandable-section
                     key={date.label}
-                    title={date.label}
                     collapsible={collapsible}
                     closed={closed}
+                    title={date.label}
                     data-element-id="avonni-expandable-section"
                 >
                     <ul
@@ -100,31 +102,33 @@
                         <template for:each={date.items} for:item="item">
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
-                                    title={item.title}
+                                    actions={actions}
+                                    avatar={item.avatar}
+                                    button-disabled={item.buttonDisabled}
+                                    button-icon-name={item.buttonIconName}
+                                    button-icon-position={item.buttonIconPosition}
+                                    button-label={item.buttonLabel}
+                                    button-variant={item.buttonVariant}
                                     checked={item.checked}
+                                    closed={item.closed}
                                     description={item.description}
                                     datetime-value={item.datetimeValue}
                                     date-format={computedItemDateFormat}
+                                    end-date-value={item.endDate}
                                     href={item.href}
-                                    avatar={item.avatar}
                                     icon-size={itemIconSize}
                                     icons={item.icons}
                                     field-attributes={fieldAttributes}
                                     fields={item.fields}
                                     has-checkbox={item.hasCheckbox}
                                     has-error={item.hasError}
-                                    closed={item.closed}
-                                    button-label={item.buttonLabel}
-                                    button-icon-name={item.buttonIconName}
-                                    button-variant={item.buttonVariant}
-                                    button-icon-position={item.buttonIconPosition}
-                                    button-disabled={item.buttonDisabled}
-                                    is-loading={item.isLoading}
+                                    hide-vertical-bar={hideVerticalBar}
                                     is-active={item.isActive}
+                                    is-loading={item.isLoading}
                                     loading-state-alternative-text={item.loadingStateAlternativeText}
-                                    actions={actions}
                                     name={item.name}
                                     timezone={timezone}
+                                    title={item.title}
                                     data-element-id="avonni-primitive-activity-timeline-item"
                                     data-name={item.name}
                                 ></c-primitive-activity-timeline-item>
@@ -147,10 +151,10 @@
                 <lightning-button
                     if:false={isShowButtonHidden}
                     class="avonni-activity-timeline__show-more-button"
-                    variant={buttonVariant}
-                    label={currentShowButtonLabel}
                     icon-name={currentShowButtonIcon}
                     icon-position={currentShowButtonPosition}
+                    label={currentShowButtonLabel}
+                    variant={buttonVariant}
                     data-element-id="lightning-button"
                     onclick={handleToggleShowMoreButton}
                 ></lightning-button>
