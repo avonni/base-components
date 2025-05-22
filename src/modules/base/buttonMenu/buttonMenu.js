@@ -185,7 +185,8 @@ export default class ButtonMenu extends PrimitiveButton {
 
         this.classList.add(
             'slds-dropdown-trigger',
-            'slds-dropdown-trigger_click'
+            'slds-dropdown-trigger_click',
+            'slds-form-element'
         );
 
         this.addEventListener('mouseenter', this.handleMouseEnter);
