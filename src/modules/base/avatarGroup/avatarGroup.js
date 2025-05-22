@@ -544,7 +544,7 @@ export default class AvatarGroup extends LightningElement {
                 'avonni-avatar-group__avatar-container_stack':
                     this.layout === 'stack',
                 'avonni-avatar-group_circle': this.variant === 'circle',
-                'slds-p-right_x-small': this.layout === 'grid'
+                'slds-m-right_x-small': this.layout === 'grid'
             })
             .toString();
     }

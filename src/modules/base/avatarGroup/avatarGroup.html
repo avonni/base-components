@@ -107,7 +107,6 @@
                 >
                     <c-avatar
                         class={item.class}
-                        role="button"
                         actions={item.actions}
                         action-menu-icon={item.actionMenuIcon}
                         action-position={item.actionPosition}
@@ -165,6 +164,9 @@
                     <div if:true={isNotList} class={avatarWrapperClass}>
                         <c-primitive-avatar
                             class={showMoreAvatarClass}
+                            aria-controls="hidden-items-popover"
+                            aria-expanded={showHiddenItemsPopover}
+                            aria-haspopup="dialog"
                             alternative-text="Show more"
                             fallback-icon-name="standard:macros"
                             initials={showMoreInitials}
@@ -216,6 +218,7 @@
                 <div
                     if:true={showHiddenItemsPopover}
                     class={hiddenListClass}
+                    id="hidden-items-popover"
                     role="dialog"
                     aria-labelledby="show-more-label"
                     data-element-id="div-hidden-items-popover"
