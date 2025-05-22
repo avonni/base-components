@@ -31,6 +31,8 @@
             "
             onclick={handleAvatarClick}
             role="button"
+            onblur={handleItemLeave}
+            onfocus={handleItemFocus}
             onkeyup={handleAvatarClick}
             onmouseenter={handleItemEnter}
             onmouseleave={handleItemLeave}
@@ -63,9 +65,11 @@
             "
             onclick={handleAvatarClick}
             role="button"
+            onblur={handleItemLeave}
             onkeyup={handleAvatarClick}
             onmouseenter={handleItemEnter}
             onmouseleave={handleItemLeave}
+            onfocus={handleItemFocus}
             tabindex="0"
         ></c-primitive-avatar>
     </div>
@@ -95,6 +99,7 @@
                     tabindex="-1"
                     data-element-id="li-visible"
                     data-index={index}
+                    onblur={handleItemLeave}
                     onclick={handleAvatarClick}
                     onfocus={handleItemFocus}
                     onmouseenter={handleItemEnter}

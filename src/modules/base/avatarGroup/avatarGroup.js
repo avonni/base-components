@@ -1042,35 +1042,42 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Update the focused index.
-     *
-     * @param {number} index Index of the new focused item.
+     * Diplay the item popover.
      */
-    switchFocus(index) {
-        const list = this.template.querySelector('[data-element-id="ul"]');
-        if (list) {
-            list.tabIndex = '-1';
-        }
+    showPopover(itemIndex, target) {
+        const item = this.isClassic
+            ? itemIndex === 0
+                ? this.primaryItem
+                : this.secondaryItem
+            : this.items[itemIndex];
+        const tooltipValue =
+            item?.alternativeText || item?.['alternative-text'];
+        if (tooltipValue) {
+            const tooltip = new Tooltip(tooltipValue, {
+                type: TooltipType.Toggle,
+                root: this,
+                target: () => target,
+                align: {
+                    horizontal: Direction.Left,
+                    vertical: Direction.Top
+                },
+                targetAlign: {
+                    horizontal: Direction.Left,
+                    vertical: Direction.Bottom
+                }
+            });
+            this._tooltip = tooltip;
+            this._tooltip.initialize();
+            this._tooltip.show();
 
-        const normalizedIndex = this.normalizeFocusedIndex(index);
-
-        // remove focus from current item
-        const previousItem = this.template.querySelector(
-            `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
-        );
-        if (previousItem) {
-            previousItem.tabIndex = '-1';
-        }
-
-        // move to next
-        this._focusedIndex = normalizedIndex;
-
-        // set focus
-        const item = this.template.querySelector(
-            `[data-element-id^="li"][data-index="${normalizedIndex}"]`
-        );
-        if (item) {
-            item.tabIndex = '0';
+            if (this._tooltipTimeout) {
+                clearTimeout(this._tooltipTimeout);
+            }
+            this._tooltipTimeout = setTimeout(() => {
+                if (this._tooltip) {
+                    this._tooltip.startPositioning();
+                }
+            }, 50);
         }
     }
 
@@ -1130,6 +1137,39 @@ export default class AvatarGroup extends LightningElement {
             this._autoPosition = null;
         }
         this._positioning = false;
+    }
+
+    /**
+     * Update the focused index.
+     *
+     * @param {number} index Index of the new focused item.
+     */
+    switchFocus(index) {
+        const list = this.template.querySelector('[data-element-id="ul"]');
+        if (list) {
+            list.tabIndex = '-1';
+        }
+
+        const normalizedIndex = this.normalizeFocusedIndex(index);
+
+        // remove focus from current item
+        const previousItem = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
+        );
+        if (previousItem) {
+            previousItem.tabIndex = '-1';
+        }
+
+        // move to next
+        this._focusedIndex = normalizedIndex;
+
+        // set focus
+        const item = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${normalizedIndex}"]`
+        );
+        if (item) {
+            item.tabIndex = '0';
+        }
     }
 
     /**
@@ -1411,41 +1451,7 @@ export default class AvatarGroup extends LightningElement {
         if (this.isClassic || this.isNotList) {
             const target = event.currentTarget;
             const index = Number(event.currentTarget.dataset.index);
-            const item = this.isClassic
-                ? index === 0
-                    ? this.primaryItem
-                    : this.secondaryItem
-                : this.items[index];
-
-            const tooltipValue =
-                item?.alternativeText || item?.['alternative-text'];
-            if (tooltipValue) {
-                const tooltip = new Tooltip(tooltipValue, {
-                    type: TooltipType.Toggle,
-                    root: this,
-                    target: () => target,
-                    align: {
-                        horizontal: Direction.Left,
-                        vertical: Direction.Top
-                    },
-                    targetAlign: {
-                        horizontal: Direction.Left,
-                        vertical: Direction.Bottom
-                    }
-                });
-                this._tooltip = tooltip;
-                this._tooltip.initialize();
-                this._tooltip.show();
-
-                if (this._tooltipTimeout) {
-                    clearTimeout(this._tooltipTimeout);
-                }
-                this._tooltipTimeout = setTimeout(() => {
-                    if (this._tooltip) {
-                        this._tooltip.startPositioning();
-                    }
-                }, 50);
-            }
+            this.showPopover(index, target);
         }
     }
 
@@ -1458,6 +1464,10 @@ export default class AvatarGroup extends LightningElement {
         const index = Number(event.currentTarget.dataset.index);
         if (index !== this._focusedIndex) {
             this.switchFocus(index);
+        }
+        if (this.isClassic || this.isNotList) {
+            const target = event.currentTarget;
+            this.showPopover(index, target);
         }
     }
 
