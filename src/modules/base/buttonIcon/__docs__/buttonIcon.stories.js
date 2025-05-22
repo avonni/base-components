@@ -157,6 +157,7 @@ export default {
         }
     },
     args: {
+        alternativeText: 'Button Icon',
         disabled: false,
         size: 'medium',
         type: 'button',
