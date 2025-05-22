@@ -1015,7 +1015,6 @@ describe('OutputData', () => {
 
     it('Output data: type = url, with no value', () => {
         element.value = null;
-        console.log('element.value', element.value);
         element.type = 'url';
 
         return Promise.resolve().then(() => {
