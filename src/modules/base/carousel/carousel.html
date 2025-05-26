@@ -50,7 +50,9 @@
                             <div
                                 class="avonni-carousel__panel"
                                 key={panel.key}
+                                id={panel.key}
                                 aria-hidden={panel.ariaHidden}
+                                aria-labelledby={panel.ariaLabelledby}
                                 role="tabpanel"
                                 tabindex={panel.tabIndex}
                                 data-element-id="div-panel"
@@ -121,6 +123,7 @@
                             >
                                 <a
                                     class={paginationItem.className}
+                                    aria-controls={paginationItem.ariaControls}
                                     aria-selected={paginationItem.ariaSelected}
                                     href="javascript:void(0);"
                                     id={paginationItem.elementId}

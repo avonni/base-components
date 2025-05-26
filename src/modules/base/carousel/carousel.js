@@ -925,7 +925,10 @@ export default class Carousel extends LightningElement {
                     i + this.currentItemsPerPanel
                 ),
                 ariaHidden:
-                    this.currentPanel === item.name ? FALSE_STRING : TRUE_STRING
+                    this.currentPanel === item.name
+                        ? FALSE_STRING
+                        : TRUE_STRING,
+                ariaLabelledby: `pagination-item-${panelIndex}`
             });
             panelIndex += 1;
         }
