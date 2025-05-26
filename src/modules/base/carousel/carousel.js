@@ -916,7 +916,6 @@ export default class Carousel extends LightningElement {
             i < this._carouselItems.length;
             i += this.currentItemsPerPanel
         ) {
-            const item = this._carouselItems[i];
             panelItems.push({
                 index: panelIndex,
                 key: `panel-${panelIndex}`,
@@ -925,7 +924,7 @@ export default class Carousel extends LightningElement {
                     i + this.currentItemsPerPanel
                 ),
                 ariaHidden:
-                    this.currentPanel === item.name
+                    this.activePanelIndex === panelIndex
                         ? FALSE_STRING
                         : TRUE_STRING,
                 ariaLabelledby: `pagination-item-${panelIndex}`
