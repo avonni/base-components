@@ -518,9 +518,20 @@ describe('Button Menu', () => {
             it('Auto', () => {
                 element.menuAlignment = 'auto';
 
-                return Promise.resolve().then(() => {
-                    expect(element.className).toContain('slds-form-element');
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'avonni-button-menu__dropdown-form-element'
+                        );
+                    });
             });
 
             it('Left', () => {

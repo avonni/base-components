@@ -185,8 +185,7 @@ export default class ButtonMenu extends PrimitiveButton {
 
         this.classList.add(
             'slds-dropdown-trigger',
-            'slds-dropdown-trigger_click',
-            'slds-form-element'
+            'slds-dropdown-trigger_click'
         );
 
         this.addEventListener('mouseenter', this.handleMouseEnter);
@@ -501,6 +500,8 @@ export default class ButtonMenu extends PrimitiveButton {
             'slds-dropdown avonni-button-menu__dropdown slds-dropdown_fluid'
         )
             .add({
+                'avonni-button-menu__dropdown-form-element':
+                    this.isAutoAlignment,
                 'slds-dropdown_left':
                     this.menuAlignment === 'left' || this.isAutoAlignment,
                 'slds-dropdown_center': this.menuAlignment === 'center',
