@@ -54,7 +54,6 @@
                                 aria-hidden={panel.ariaHidden}
                                 aria-labelledby={panel.ariaLabelledby}
                                 role="tabpanel"
-                                tabindex={panel.tabIndex}
                                 data-element-id="div-panel"
                                 ontouchstart={handleDragStart}
                             >
@@ -87,6 +86,7 @@
                                             panel-items={panelItems}
                                             src={item.src}
                                             title={item.title}
+                                            tabindex={panel.tabIndex}
                                             onactionclick={handleActionClick}
                                             onitemclick={handleItemClick}
                                         >

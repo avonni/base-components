@@ -916,6 +916,10 @@ export default class Carousel extends LightningElement {
             i < this._carouselItems.length;
             i += this.currentItemsPerPanel
         ) {
+            const isHidden =
+                this.activePanelIndex === panelIndex
+                    ? FALSE_STRING
+                    : TRUE_STRING;
             panelItems.push({
                 index: panelIndex,
                 key: `panel-${panelIndex}`,
@@ -923,10 +927,8 @@ export default class Carousel extends LightningElement {
                     i,
                     i + this.currentItemsPerPanel
                 ),
-                ariaHidden:
-                    this.activePanelIndex === panelIndex
-                        ? FALSE_STRING
-                        : TRUE_STRING,
+                tabIndex: isHidden === TRUE_STRING ? -1 : 0,
+                ariaHidden: isHidden,
                 ariaLabelledby: `pagination-item-${panelIndex}`
             });
             panelIndex += 1;
@@ -981,6 +983,7 @@ export default class Carousel extends LightningElement {
         }
 
         activePanelItem.ariaHidden = FALSE_STRING;
+        activePanelItem.tabIndex = 0;
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
         const goToPrevious = panelIndex < this.activePanelIndex;
         const jumpedPanels = Math.abs(this.activePanelIndex - panelIndex);
@@ -1030,6 +1033,7 @@ export default class Carousel extends LightningElement {
 
         if (!activePaginationItem || !activePanelItem) return;
         activePanelItem.ariaHidden = TRUE_STRING;
+        activePanelItem.tabIndex = -1;
     }
 
     /*
