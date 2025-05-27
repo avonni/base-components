@@ -97,6 +97,7 @@
                     key={item.name}
                     class={avatarWrapperClass}
                     tabindex="-1"
+                    aria-label={item.computedAriaLabel}
                     data-element-id="li-visible"
                     data-index={index}
                     onblur={handleItemLeave}
@@ -167,6 +168,7 @@
                             aria-controls="hidden-items-popover"
                             aria-expanded={showHiddenItemsPopover}
                             aria-haspopup="dialog"
+                            aria-label="Show more"
                             alternative-text="Show more"
                             fallback-icon-name="standard:macros"
                             initials={showMoreInitials}
@@ -241,6 +243,7 @@
                             >
                                 <c-avatar
                                     class={item.class}
+                                    aria-label={item.computedAriaLabel}
                                     role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}

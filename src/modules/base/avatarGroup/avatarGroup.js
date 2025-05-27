@@ -553,7 +553,8 @@ export default class AvatarGroup extends LightningElement {
         return this.items.map((item) => {
             return {
                 ...item,
-                class: this.getAvatarClass(item, false)
+                class: this.getAvatarClass(item, false),
+                computedAriaLabel: this.computeAriaLabel(item)
             };
         });
     }
@@ -671,7 +672,8 @@ export default class AvatarGroup extends LightningElement {
             return {
                 ...item,
                 index: index + this._hiddenItemsStartIndex,
-                class: this.getAvatarClass(item, true)
+                class: this.getAvatarClass(item, true),
+                computedAriaLabel: this.computeAriaLabel(item)
             };
         });
     }
@@ -907,6 +909,23 @@ export default class AvatarGroup extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Aria label computed for screen readers.
+     *
+     * @type {string}
+     */
+    computeAriaLabel(item) {
+        const primaryText = item.primaryText || item.alternativeText;
+        const initials = item.initials;
+        const secondaryText = item.secondaryText;
+        const presence = item.presence ? item.presenceTitle : null;
+        const status = item.status ? item.statusTitle : null;
+        const entity = item.entity ? item.entityTitle : null;
+        return [primaryText, initials, secondaryText, presence, status, entity]
+            .filter(Boolean)
+            .join(', ');
+    }
 
     /**
      * Clear all tooltips and remove all event listeners.
