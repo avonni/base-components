@@ -40,6 +40,19 @@
                 flexibility="auto"
             >
                 <div class="slds-carousel__stage">
+                    <!-- Autoplay button -->
+                    <lightning-button-icon
+                        if:false={disableAutoScroll}
+                        alternative-text={assistiveText.autoplayButton}
+                        class={computedAutoScrollAutoplayButton}
+                        icon-name={autoScrollIcon}
+                        size="x-small"
+                        title={assistiveText.autoplayButton}
+                        variant="border-filled"
+                        data-element-id="lightning-button-icon"
+                        onclick={toggleAutoScroll}
+                    ></lightning-button-icon>
+
                     <!-- Carousel panels -->
                     <div class="slds-carousel__panels" style={panelStyle}>
                         <template
@@ -96,6 +109,7 @@
                             </div>
                         </template>
                     </div>
+                    <!-- Carousel indicators -->
                     <ul
                         if:false={hideIndicator}
                         class="
@@ -148,19 +162,6 @@
                             size="x-small"
                         ></lightning-spinner>
                     </ul>
-
-                    <!-- Autoplay button -->
-                    <lightning-button-icon
-                        if:false={disableAutoScroll}
-                        alternative-text={assistiveText.autoplayButton}
-                        class={computedAutoScrollAutoplayButton}
-                        icon-name={autoScrollIcon}
-                        size="x-small"
-                        title={assistiveText.autoplayButton}
-                        variant="border-filled"
-                        data-element-id="lightning-button-icon"
-                        onclick={toggleAutoScroll}
-                    ></lightning-button-icon>
                 </div>
             </lightning-layout-item>
 
