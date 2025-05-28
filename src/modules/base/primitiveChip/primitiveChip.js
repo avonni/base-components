@@ -1,7 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import {
     classSet,
-    deepCopy,
     normalizeBoolean,
     normalizeObject,
     normalizeString
@@ -22,11 +21,6 @@ const CHIP_VARIANTS = {
     default: 'base'
 };
 
-const MEDIA_POSITION = {
-    valid: ['left', 'right'],
-    default: 'left'
-};
-
 export default class PrimitiveChip extends LightningElement {
     /**
      * Label displayed in the chip.
@@ -44,16 +38,16 @@ export default class PrimitiveChip extends LightningElement {
      */
     @api name;
 
-    _outline = false;
-    _variant = CHIP_VARIANTS.default;
     _avatar = {};
-    _position = MEDIA_POSITION.default;
+    _hidden = false;
+    _outline = false;
     _prefixIconName = undefined;
     _suffixIconName = undefined;
-    _hidden = false;
+    _variant = CHIP_VARIANTS.default;
 
     /**
      *  The avatar to display. Set to null by default
+     *
      *  @public
      *  @type {Object}
      *  @default null
@@ -63,14 +57,16 @@ export default class PrimitiveChip extends LightningElement {
         return this._avatar;
     }
     set avatar(value) {
-        if (value) {
-            const tempAvatar = deepCopy(normalizeObject(value));
-            this._avatar = tempAvatar;
-        } else {
-            this._avatar = null;
-        }
+        this._avatar = value ? normalizeObject(value) : null;
     }
 
+    /**
+     * If present, the chip is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get hidden() {
         return this._hidden;
@@ -80,7 +76,7 @@ export default class PrimitiveChip extends LightningElement {
     }
 
     /**
-     * If true, display an outline style button.
+     * If present, display an outline style chip.
      *
      * @public
      * @type {boolean}
@@ -90,11 +86,13 @@ export default class PrimitiveChip extends LightningElement {
     get outline() {
         return this._outline;
     }
-    set outline(hasOutline) {
-        this._outline = normalizeBoolean(hasOutline);
+    set outline(outline) {
+        this._outline = normalizeBoolean(outline);
     }
 
-    /** The prefix name of the icon to display.
+    /**
+     * The prefix name of the icon to display.
+     *
      *  @public
      *  @type {string}
      *  @default x-small
@@ -107,7 +105,9 @@ export default class PrimitiveChip extends LightningElement {
         this._prefixIconName = value;
     }
 
-    /** The suffix name of the icon to display.
+    /**
+     * The suffix name of the icon to display.
+     *
      *  @public
      *  @type {string}
      *  @default x-small
@@ -131,7 +131,6 @@ export default class PrimitiveChip extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: CHIP_VARIANTS.default,
@@ -154,6 +153,9 @@ export default class PrimitiveChip extends LightningElement {
         });
     }
 
+    /**
+     * If present, the avatar is to be shown.
+     */
     get showAvatar() {
         return this._avatar;
     }

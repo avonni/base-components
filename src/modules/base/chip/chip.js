@@ -62,7 +62,6 @@ export default class Chip extends LightningElement {
     get outline() {
         return this._outline;
     }
-
     set outline(value) {
         this._outline = normalizeBoolean(value);
     }
@@ -78,7 +77,6 @@ export default class Chip extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: CHIP_VARIANTS.default,

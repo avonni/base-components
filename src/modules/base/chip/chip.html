@@ -2,7 +2,11 @@
     <span class={chipClass} data-element-id="span-wrapper">
         <span class="slds-truncate slds-grid">
             <slot
-                class="slds-badge__icon slds-badge__icon_left slds-hide"
+                class="
+                    slds-badge__icon slds-badge__icon_left
+                    slds-hide
+                    avonni-chip__icon
+                "
                 name="left"
                 data-element-id="slot-left"
                 onslotchange={handleSlotChange}
@@ -16,7 +20,11 @@
                 {label}
             </span>
             <slot
-                class="slds-badge__icon slds-badge__icon_right slds-hide"
+                class="
+                    slds-badge__icon slds-badge__icon_right
+                    slds-hide
+                    avonni-chip__icon
+                "
                 name="right"
                 data-element-id="slot-right"
                 onslotchange={handleSlotChange}

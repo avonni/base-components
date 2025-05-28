@@ -1,5 +1,6 @@
 import { Chip } from '../__examples__/chip';
 import ChipVariantsComponent from './variants/variants';
+import ChipVariantsWithIconComponent from './variantsWithIcon/variantsWithIcon';
 
 export default {
     title: 'Example/Chip',
@@ -60,6 +61,10 @@ customElements.define(
     'ac-base-chip-variants',
     ChipVariantsComponent.CustomElementConstructor
 );
+customElements.define(
+    'ac-base-chip-variants-with-icon',
+    ChipVariantsWithIconComponent.CustomElementConstructor
+);
 const ChipVariants = ({ outline }) => {
     const element = document.createElement('ac-base-chip-variants');
     element.outline = outline;
@@ -70,6 +75,18 @@ const TemplateVariants = (args) => ChipVariants(args);
 export const Variants = TemplateVariants.bind({});
 export const OutlineVariants = TemplateVariants.bind({});
 OutlineVariants.args = {
+    outline: true
+};
+
+const TemplateVariantsWithIcon = ({ outline }) => {
+    const element = document.createElement('ac-base-chip-variants-with-icon');
+    element.outline = outline;
+
+    return element;
+};
+export const VariantsWithIcon = TemplateVariantsWithIcon.bind({});
+export const OutlineVariantsWithIcon = TemplateVariantsWithIcon.bind({});
+OutlineVariantsWithIcon.args = {
     outline: true
 };
 
