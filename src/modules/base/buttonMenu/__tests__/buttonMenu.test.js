@@ -515,6 +515,25 @@ describe('Button Menu', () => {
         });
 
         describe('Menu Alignment & Nubbin', () => {
+            it('Auto', () => {
+                element.menuAlignment = 'auto';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const dropdown =
+                            element.shadowRoot.querySelector('.slds-dropdown');
+                        expect(dropdown.className).toContain(
+                            'avonni-button-menu__dropdown-form-element'
+                        );
+                    });
+            });
+
             it('Left', () => {
                 return Promise.resolve()
                     .then(() => {
