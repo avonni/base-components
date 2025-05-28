@@ -251,7 +251,7 @@
                                                 avonni-date-time-picker__inline-date-picker-button
                                                 slds-p-vertical_small
                                             "
-                                            aria-selected={day.isSelected}
+                                            aria-pressed={day.isSelected}
                                             type="button"
                                             data-date={day.date.ts}
                                             data-element-id="button-inline-date-picker"
@@ -346,7 +346,6 @@
                                             avonni-date-time-picker__day-label
                                             slds-p-around_medium
                                         "
-                                        aria-selected={day.selected}
                                         grow="1"
                                         data-today={day.isToday}
                                         data-element-id="div-day-label"
@@ -396,7 +395,7 @@
                                                                 style={computedTimeSlotStyle}
                                                             >
                                                                 <button
-                                                                    aria-selected={timelineTime.selected}
+                                                                    aria-pressed={timelineTime.selected}
                                                                     class="
                                                                         avonni-date-time-picker__time-button
                                                                         slds-p-around_medium
@@ -404,7 +403,6 @@
                                                                     disabled={timelineTime.disabled}
                                                                     type="button"
                                                                     onclick={handleTimeSlotClick}
-                                                                    aria-readonly={readOnly}
                                                                     onblur={handleValueBlur}
                                                                     onfocus={handleValueFocus}
                                                                 >
@@ -453,7 +451,7 @@
                                                 style={computedTimeSlotStyle}
                                             >
                                                 <button
-                                                    aria-selected={time.selected}
+                                                    aria-pressed={time.selected}
                                                     class="
                                                         avonni-date-time-picker__time-button
                                                         slds-p-around_small
@@ -461,7 +459,6 @@
                                                     "
                                                     disabled={time.disabled}
                                                     type="button"
-                                                    aria-readonly={readOnly}
                                                     data-element-id="button-default"
                                                     data-time={time.startTimeISO}
                                                     onclick={handleTimeSlotClick}
