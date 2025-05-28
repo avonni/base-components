@@ -1,6 +1,7 @@
 import { Chip } from '../__examples__/chip';
 import ChipVariantsComponent from './variants/variants';
 import ChipVariantsWithIconComponent from './variantsWithIcon/variantsWithIcon';
+import ChipVariantsCircleComponent from './variantsCircle/variantsCircle';
 
 export default {
     title: 'Example/Chip',
@@ -18,7 +19,19 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If true, display an outline style button.',
+            description: 'If present, display an outline style button.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        hideText: {
+            name: 'hide-text',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the text is hidden and the chip is displayed as a colored circle.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -45,9 +58,32 @@ export default {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }
             }
+        },
+        backgroundColor: {
+            name: 'background-color',
+            control: {
+                type: 'color'
+            },
+            description:
+                'If present, it replaces the default variant background color of the chip.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        textColor: {
+            name: 'text-color',
+            control: {
+                type: 'color'
+            },
+            description:
+                'If present, it replaces the default variant text color. If outline is set to true, this attribute is ignored.',
+            table: {
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
+        hideText: false,
         outline: false,
         variant: 'base'
     }
@@ -65,10 +101,14 @@ customElements.define(
     'ac-base-chip-variants-with-icon',
     ChipVariantsWithIconComponent.CustomElementConstructor
 );
+customElements.define(
+    'ac-base-chip-variants-circle',
+    ChipVariantsCircleComponent.CustomElementConstructor
+);
+
 const ChipVariants = ({ outline }) => {
     const element = document.createElement('ac-base-chip-variants');
     element.outline = outline;
-
     return element;
 };
 const TemplateVariants = (args) => ChipVariants(args);
@@ -81,12 +121,22 @@ OutlineVariants.args = {
 const TemplateVariantsWithIcon = ({ outline }) => {
     const element = document.createElement('ac-base-chip-variants-with-icon');
     element.outline = outline;
-
     return element;
 };
 export const VariantsWithIcon = TemplateVariantsWithIcon.bind({});
 export const OutlineVariantsWithIcon = TemplateVariantsWithIcon.bind({});
 OutlineVariantsWithIcon.args = {
+    outline: true
+};
+
+const TemplateVariantsCircle = ({ outline }) => {
+    const element = document.createElement('ac-base-chip-variants-circle');
+    element.outline = outline;
+    return element;
+};
+export const VariantsCircle = TemplateVariantsCircle.bind({});
+export const OutlineVariantsCircle = TemplateVariantsCircle.bind({});
+OutlineVariantsCircle.args = {
     outline: true
 };
 

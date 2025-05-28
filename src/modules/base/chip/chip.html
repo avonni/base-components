@@ -1,5 +1,15 @@
 <template>
-    <span class={chipClass} data-element-id="span-wrapper">
+    <span
+        if:true={hideText}
+        class={computedChipCircleClass}
+        style={computedChipStyle}
+    ></span>
+    <span
+        if:false={hideText}
+        class={computedChipClass}
+        style={computedChipStyle}
+        data-element-id="span-wrapper"
+    >
         <span class="slds-truncate slds-grid">
             <slot
                 class="

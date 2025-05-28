@@ -23,13 +23,27 @@ const CHIP_VARIANTS = {
 
 export default class PrimitiveChip extends LightningElement {
     /**
+     * The background color of the chip.
+     *
+     * @public
+     * @type {string}
+     */
+    @api backgroundColor;
+    /**
+     * If present, the text is hidden and the chip is displayed as a colored circle.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api hideText = false;
+    /**
      * Label displayed in the chip.
      *
      * @public
      * @type {string}
      */
     @api label;
-
     /**
      * Name to identify the chip.
      *
@@ -37,6 +51,13 @@ export default class PrimitiveChip extends LightningElement {
      * @type {string}
      */
     @api name;
+    /**
+     * The text color of the chip.
+     *
+     * @public
+     * @type {string}
+     */
+    @api textColor;
 
     _avatar = {};
     _hidden = false;
