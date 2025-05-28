@@ -24,6 +24,21 @@ const CHIP_VARIANTS = {
  */
 export default class Chip extends LightningElement {
     /**
+     * The background color of the chip.
+     *
+     * @public
+     * @type {string}
+     */
+    @api backgroundColor;
+    /**
+     * If present, the text is hidden and the chip is displayed as a colored circle.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api hideText = false;
+    /**
      * Label displayed in the chip.
      *
      * @public
@@ -37,9 +52,22 @@ export default class Chip extends LightningElement {
      * @public
      */
     @api name;
+    /**
+     * The text color of the chip.
+     *
+     * @public
+     * @type {string}
+     */
+    @api textColor;
 
     _outline = false;
     _variant = CHIP_VARIANTS.default;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         this.updateSlotsVisibility();
@@ -52,6 +80,20 @@ export default class Chip extends LightningElement {
      */
 
     /**
+     * Compute chip circle class style.
+     *
+     * @type {string}
+     */
+    get computedChipCircleClass() {
+        return classSet('avonni-chip__circle')
+            .add({
+                'avonni-chip_outline': this.outline,
+                [`avonni-chip__circle_theme-${this.variant}`]: this.variant
+            })
+            .toString();
+    }
+
+    /**
      * If true, display an outline style button.
      *
      * @public
@@ -62,7 +104,6 @@ export default class Chip extends LightningElement {
     get outline() {
         return this._outline;
     }
-
     set outline(value) {
         this._outline = normalizeBoolean(value);
     }
@@ -78,7 +119,6 @@ export default class Chip extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: CHIP_VARIANTS.default,
@@ -97,7 +137,7 @@ export default class Chip extends LightningElement {
      *
      * @type {string}
      */
-    get chipClass() {
+    get computedChipClass() {
         return classSet('avonni-chip')
             .add({
                 'avonni-chip_outline': this.outline,
@@ -106,12 +146,47 @@ export default class Chip extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute chip color style.
+     *
+     * @type {string}
+     */
+    get computedChipStyle() {
+        if (!this.backgroundColor && !this.textColor) {
+            return '';
+        }
+
+        const styles = [];
+
+        if (this.backgroundColor) {
+            const property = this.outline
+                ? 'outline-color'
+                : 'color-background';
+            styles.push(
+                `--avonni-chip-${this.variant}-${property}: ${this.backgroundColor};`
+            );
+        }
+
+        if (this.textColor && !this.outline) {
+            styles.push(
+                `--avonni-chip-${this.variant}-text-color: ${this.textColor};`
+            );
+        }
+
+        return styles.join(' ');
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Update the visibility of the left and right slots.
+     *
+     * @private
+     */
     updateSlotsVisibility() {
         const leftSlot = this.template.querySelector(
             '[data-element-id="slot-left"]'
