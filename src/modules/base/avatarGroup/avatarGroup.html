@@ -300,9 +300,9 @@
                 data-element-id="action-button"
             >
                 <button
+                    class={actionButtonClass}
                     type="button"
                     onclick={handleActionClick}
-                    class={actionButtonClass}
                 >
                     <lightning-icon
                         icon-name={actionIconName}
@@ -314,6 +314,13 @@
                         "
                         data-element-id="lightning-icon"
                     ></lightning-icon>
+                    <span
+                        if:true={actionAlternativeText}
+                        class="slds-assistive-text"
+                        data-element-id="alternative-text"
+                    >
+                        {actionAlternativeText}
+                    </span>
                 </button>
             </li>
         </ul>

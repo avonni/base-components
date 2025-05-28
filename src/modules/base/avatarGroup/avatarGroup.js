@@ -57,6 +57,13 @@ const DEFAULT_LOAD_MORE_OFFSET = 20;
  */
 export default class AvatarGroup extends LightningElement {
     /**
+     * The alternative text used to describe the action.
+     * @type {string}
+     * @name action-alternative-text
+     * @public
+     */
+    @api actionAlternativeText;
+    /**
      * The Lightning Design System name of the action icon.
      * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      * @type {string}
