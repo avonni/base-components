@@ -21,6 +21,7 @@
  * @property {string} name Required. The name of the action, which identifies the selected action.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
  * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
+ * @property {string} alternativeText The alternative text used to describe the action icon.
  */
 /**
  * @typedef {Object} ListAvatar
