@@ -80,6 +80,20 @@ export default class Chip extends LightningElement {
      */
 
     /**
+     * Compute chip circle class style.
+     *
+     * @type {string}
+     */
+    get computedChipCircleClass() {
+        return classSet('avonni-chip__circle')
+            .add({
+                'avonni-chip_outline': this.outline,
+                [`avonni-chip__circle_theme-${this.variant}`]: this.variant
+            })
+            .toString();
+    }
+
+    /**
      * If true, display an outline style button.
      *
      * @public
@@ -160,20 +174,6 @@ export default class Chip extends LightningElement {
         }
 
         return styles.join(' ');
-    }
-
-    /**
-     * Compute chip circle class style.
-     *
-     * @type {string}
-     */
-    get computedChipCircleClass() {
-        return classSet('avonni-chip__circle')
-            .add({
-                'avonni-chip_outline': this.outline,
-                [`avonni-chip__circle_theme-${this.variant}`]: this.variant
-            })
-            .toString();
     }
 
     /*
