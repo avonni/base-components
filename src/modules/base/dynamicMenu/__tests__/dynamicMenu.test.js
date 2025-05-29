@@ -10,11 +10,17 @@ describe('Dynamic Menu', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('base-dynamic-menu', {
             is: DynamicMenu
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -835,14 +841,24 @@ describe('Dynamic Menu', () => {
                 element.items = baseItems;
                 element.label = 'label';
 
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    button.click();
-                    button.dispatchEvent(new CustomEvent('blur'));
-                    expect(element.classList).not.toContain('slds-is-open');
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                        jest.runAllTimers();
+                        expect(element.classList).toContain('slds-is-open');
+                    })
+                    .then(() => {
+                        // Focus is now on the dropdown
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        dropdown.dispatchEvent(new CustomEvent('focusout'));
+                        jest.runAllTimers();
+                        expect(element.classList).not.toContain('slds-is-open');
+                    });
             });
         });
 

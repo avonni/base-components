@@ -36,7 +36,7 @@ const items = [
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -46,7 +46,7 @@ const items = [
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -55,7 +55,7 @@ const items = [
         title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -64,7 +64,7 @@ const items = [
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -73,7 +73,7 @@ const items = [
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -82,7 +82,7 @@ const items = [
         title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -91,7 +91,7 @@ const items = [
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     }
@@ -103,7 +103,7 @@ const menuItems = [
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         actions: menuActions
     },
     {
@@ -112,7 +112,7 @@ const menuItems = [
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         actions: menuActions
     },
     {
@@ -120,7 +120,7 @@ const menuItems = [
         title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         actions: menuActions
     },
     {
@@ -128,7 +128,7 @@ const menuItems = [
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         actions: menuActions
     },
     {
@@ -136,7 +136,7 @@ const menuItems = [
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         actions: menuActions
     },
     {
@@ -144,7 +144,7 @@ const menuItems = [
         title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         actions: menuActions
     },
     {
@@ -152,7 +152,7 @@ const menuItems = [
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         actions: menuActions
     }
 ];
@@ -161,43 +161,43 @@ const imageItems = [
     {
         name: '1',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com'
     },
     {
         name: '2',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com'
     },
     {
         name: '3',
         imageAssistiveText: 'Salesforce Apps',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com'
     },
     {
         name: '4',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com'
     },
     {
         name: '5',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com'
     },
     {
         name: '6',
         imageAssistiveText: 'Salesforce Apps',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com'
     },
     {
         name: '7',
         imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com'
     }
 ];

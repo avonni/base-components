@@ -155,6 +155,7 @@ export default class DynamicMenu extends LightningElement {
     showFooter = true;
 
     _cancelBlur = false;
+    _dropdownIsFocused = false;
     _dropdownVisible = false;
     _order;
     _boundingRect = {};
@@ -491,6 +492,15 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Computed Aria Label from dropdown menu.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        return this.label || this.title;
+    }
+
+    /**
      * Computed Button class styling.
      *
      * @type {string}
@@ -719,6 +729,25 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Set the focus on the dropdown menu.
+     */
+    focusDropdown() {
+        if (this.isLoading) {
+            return;
+        }
+        this.cancelBlur();
+        requestAnimationFrame(() => {
+            const focusTrap = this.template.querySelector(
+                '[data-element-id="avonni-focus-trap"]'
+            );
+            if (focusTrap) {
+                this._dropdownIsFocused = true;
+                focusTrap.focus();
+            }
+        });
+    }
+
+    /**
      * Get bounding rect coordinates for dropdown menu.
      */
     pollBoundingRect() {
@@ -763,6 +792,7 @@ export default class DynamicMenu extends LightningElement {
                 this.dispatchEvent(new CustomEvent('open'));
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
+                this.focusDropdown();
             } else {
                 /**
                  * The event fired when you close the dropdown menu.
@@ -816,6 +846,43 @@ export default class DynamicMenu extends LightningElement {
         const mainButton = 0;
         if (event.button === mainButton) {
             this.cancelBlur();
+        }
+    }
+
+    /**
+     * Handle a focus set inside the dropdown menu.
+     */
+    handleDropdownFocusIn() {
+        this._dropdownIsFocused = true;
+    }
+
+    /**
+     * Handle a focus lost inside the dropdown menu.
+     */
+    handleDropdownFocusOut() {
+        this._dropdownIsFocused = false;
+
+        requestAnimationFrame(() => {
+            if (!this._dropdownIsFocused) {
+                this.close();
+            }
+        });
+    }
+
+    /**
+     * Handle a key up in the dropdown menu.
+     *
+     * @param {Event} event keyup event.
+     */
+    handleDropdownKeyUp(event) {
+        const key = event.key;
+        if (key === 'Escape') {
+            this.close();
+
+            requestAnimationFrame(() => {
+                // Set the focus on the button after render
+                this.focus();
+            });
         }
     }
 

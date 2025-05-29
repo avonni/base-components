@@ -21,6 +21,7 @@ export const AvatarGroup = ({
     listButtonShowLessIconName,
     listButtonShowLessLabel,
     loadMoreOffset,
+    actionAlternativeText,
     actionIconName,
     name
 }) => {
@@ -40,6 +41,7 @@ export const AvatarGroup = ({
     element.listButtonShowLessIconName = listButtonShowLessIconName;
     element.listButtonShowLessLabel = listButtonShowLessLabel;
     element.loadMoreOffset = loadMoreOffset;
+    element.actionAlternativeText = actionAlternativeText;
     element.actionIconName = actionIconName;
     element.name = name;
     return element;

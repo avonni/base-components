@@ -16,6 +16,10 @@ export default class CarouselPaginationItem {
         return this.isActive ? 'true' : 'false';
     }
 
+    get ariaControls() {
+        return `panel-${this.index}`;
+    }
+
     get className() {
         const lastPanelIsActive = this.activePanelIndex === this.nbOfPanels - 1;
         const firstPanelIsActive = this.activePanelIndex === 0;
