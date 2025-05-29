@@ -1,6 +1,12 @@
 import { LightningElement, api, track } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
-import { classSet, deepCopy, normalizeArray, normalizeBoolean, generateUUID } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    generateUUID
+} from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
@@ -43,6 +49,12 @@ export default class ChipContainer extends LightningElement {
 
     showPopover = false;
     _connected = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -219,16 +231,6 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * Label of the "show more" button.
-     *
-     * @type {string}
-     */
-    get buttonLabel() {
-        const hiddenCount = this.items.length - this._visibleItemsCount;
-        return `+${hiddenCount} more`;
-    }
-
-    /**
      * CSS classes of the chip elements.
      *
      * @type {string}
@@ -365,6 +367,16 @@ export default class ChipContainer extends LightningElement {
      */
     get listElement() {
         return this.template.querySelector('[data-element-id="ul"]');
+    }
+
+    /**
+     * Label of the "show more" button.
+     *
+     * @type {string}
+     */
+    get showMoreButtonLabel() {
+        const hiddenCount = this.items.length - this._visibleItemsCount;
+        return `+${hiddenCount} more`;
     }
 
     /**
@@ -543,26 +555,6 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * Move the reordered chip before another chip.
-     *
-     * @param {number} index Index of the chip the reordered chip is moving before.
-     */
-    moveBefore(index) {
-        if (index < 0) return;
-
-        this.clearDragBorder();
-        this._dragState.lastHoveredIndex = index;
-        const item = this.template.querySelector(
-            `[data-element-id^="li-item"][data-index="${index}"]`
-        );
-        item.classList.add('avonni-chip-container__chip_before-border');
-        this._dragState.position = 'before';
-        const position =
-            index > this._dragState.initialIndex ? index : index + 1;
-        this.updateAssistiveText(position);
-    }
-
-    /**
      * Move the reordered chip after another chip.
      *
      * @param {number} index Index of the chip the reordered chip is moving after.
@@ -598,6 +590,26 @@ export default class ChipContainer extends LightningElement {
         this._dragState.position = 'after';
         const position =
             index >= this._dragState.initialIndex ? index + 1 : index + 2;
+        this.updateAssistiveText(position);
+    }
+
+    /**
+     * Move the reordered chip before another chip.
+     *
+     * @param {number} index Index of the chip the reordered chip is moving before.
+     */
+    moveBefore(index) {
+        if (index < 0) return;
+
+        this.clearDragBorder();
+        this._dragState.lastHoveredIndex = index;
+        const item = this.template.querySelector(
+            `[data-element-id^="li-item"][data-index="${index}"]`
+        );
+        item.classList.add('avonni-chip-container__chip_before-border');
+        this._dragState.position = 'before';
+        const position =
+            index > this._dragState.initialIndex ? index : index + 1;
         this.updateAssistiveText(position);
     }
 
@@ -829,6 +841,106 @@ export default class ChipContainer extends LightningElement {
      */
 
     /**
+     * Handle a focus blur on a chip.
+     *
+     * @param {Event} event
+     */
+    handleChipBlur(event) {
+        if (
+            !event.relatedTarget ||
+            !this.template.contains(event.relatedTarget)
+        ) {
+            this._hasFocus = false;
+            /**
+             * The event fired when the chip container loses focus.
+             *
+             * @event
+             * @name blur
+             * @public
+             */
+            this.dispatchEvent(new CustomEvent('blur'));
+        }
+    }
+
+    /**
+     * Handle a click on a chip.
+     *
+     * @param {Event} event
+     */
+    handleChipClick(event) {
+        const index = Number(event.currentTarget.dataset.index);
+
+        if (index >= 0 && this._focusedIndex !== index) {
+            this.switchFocus(index);
+        } else {
+            this.focus();
+        }
+
+        event.stopPropagation();
+    }
+
+    /**
+     * Handle a focus set on a chip.
+     */
+    handleChipFocus() {
+        if (!this._hasFocus) {
+            this._hasFocus = true;
+            /**
+             * The event fired when the chip container gains focus.
+             *
+             * @event
+             * @name focus
+             * @public
+             */
+            this.dispatchEvent(new CustomEvent('focus'));
+        }
+    }
+
+    /**
+     * Handle a mouse button pressed on a chip.
+     *
+     * @param {Event} event
+     */
+    handleChipMouseDown(event) {
+        if (!this.sortable) return;
+
+        const index = Number(event.currentTarget.dataset.index);
+        this._dragTimeOut = setTimeout(() => {
+            this.initDragState(index);
+        }, 200);
+    }
+
+    /**
+     * Handle a movement of the mouse on a chip.
+     *
+     * @param {Event} event
+     */
+    handleChipMouseMove(event) {
+        if (!this._dragState) return;
+
+        const chip = event.currentTarget;
+        const index = Number(chip.dataset.index);
+        const coordinates = chip.getBoundingClientRect();
+        const isHidden = chip.dataset.elementId === 'li-item-hidden';
+        const onLeft = event.clientX < coordinates.left + coordinates.width / 2;
+        const onTop = event.clientY < coordinates.top + coordinates.height / 2;
+
+        if ((!isHidden && onLeft) || (isHidden && onTop)) {
+            // The cursor is on the left side of a visible chip
+            // or on the top side of a hidden chip
+            this.moveBefore(index);
+        } else {
+            // The cursor is on the right side of a visible chip
+            // or on the bottom side of a hidden chip
+            this.moveAfter(index);
+        }
+
+        if (isHidden) {
+            this.autoScrollPopover(event.clientY, index);
+        }
+    }
+
+    /**
      * Handle the expansion of a collapsed chip container.
      */
     handleExpand() {
@@ -999,106 +1111,6 @@ export default class ChipContainer extends LightningElement {
             this.scrollToFocusedItem();
         }
     };
-
-    /**
-     * Handle a focus blur on a chip.
-     *
-     * @param {Event} event
-     */
-    handleChipBlur(event) {
-        if (
-            !event.relatedTarget ||
-            !this.template.contains(event.relatedTarget)
-        ) {
-            this._hasFocus = false;
-            /**
-             * The event fired when the chip container loses focus.
-             *
-             * @event
-             * @name blur
-             * @public
-             */
-            this.dispatchEvent(new CustomEvent('blur'));
-        }
-    }
-
-    /**
-     * Handle a click on a chip.
-     *
-     * @param {Event} event
-     */
-    handleChipClick(event) {
-        const index = Number(event.currentTarget.dataset.index);
-
-        if (index >= 0 && this._focusedIndex !== index) {
-            this.switchFocus(index);
-        } else {
-            this.focus();
-        }
-
-        event.stopPropagation();
-    }
-
-    /**
-     * Handle a focus set on a chip.
-     */
-    handleChipFocus() {
-        if (!this._hasFocus) {
-            this._hasFocus = true;
-            /**
-             * The event fired when the chip container gains focus.
-             *
-             * @event
-             * @name focus
-             * @public
-             */
-            this.dispatchEvent(new CustomEvent('focus'));
-        }
-    }
-
-    /**
-     * Handle a mouse button pressed on a chip.
-     *
-     * @param {Event} event
-     */
-    handleChipMouseDown(event) {
-        if (!this.sortable) return;
-
-        const index = Number(event.currentTarget.dataset.index);
-        this._dragTimeOut = setTimeout(() => {
-            this.initDragState(index);
-        }, 200);
-    }
-
-    /**
-     * Handle a movement of the mouse on a chip.
-     *
-     * @param {Event} event
-     */
-    handleChipMouseMove(event) {
-        if (!this._dragState) return;
-
-        const chip = event.currentTarget;
-        const index = Number(chip.dataset.index);
-        const coordinates = chip.getBoundingClientRect();
-        const isHidden = chip.dataset.elementId === 'li-item-hidden';
-        const onLeft = event.clientX < coordinates.left + coordinates.width / 2;
-        const onTop = event.clientY < coordinates.top + coordinates.height / 2;
-
-        if ((!isHidden && onLeft) || (isHidden && onTop)) {
-            // The cursor is on the left side of a visible chip
-            // or on the top side of a hidden chip
-            this.moveBefore(index);
-        } else {
-            // The cursor is on the right side of a visible chip
-            // or on the bottom side of a hidden chip
-            this.moveAfter(index);
-        }
-
-        if (isHidden) {
-            this.autoScrollPopover(event.clientY, index);
-        }
-    }
 
     /**
      * Handle a focus set inside the single-line collapsed popover.

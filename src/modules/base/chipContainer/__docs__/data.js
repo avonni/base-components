@@ -99,4 +99,43 @@ const ITEMS_NO_MEDIA = [
     }
 ];
 
-export { ITEMS, ITEMS_NO_MEDIA };
+const ITEMS_NO_MEDIA_CIRCLE = [
+    {
+        label: 'First chip',
+        name: 'first',
+        variant: 'base',
+        hideText: true
+    },
+    {
+        label: 'Second chip',
+        name: 'second',
+        variant: 'offline',
+        hideText: true
+    },
+    {
+        label: 'Third chip',
+        name: 'third',
+        variant: 'error',
+        hideText: true
+    },
+    {
+        label: 'Fourth chip',
+        name: 'fourth',
+        variant: 'warning',
+        hideText: true
+    },
+    {
+        label: 'Fifth chip',
+        name: 'fifth',
+        variant: 'success',
+        hideText: true
+    },
+    {
+        label: 'Sixth chip',
+        name: 'sixth',
+        variant: 'brand',
+        hideText: true
+    }
+];
+
+export { ITEMS, ITEMS_NO_MEDIA, ITEMS_NO_MEDIA_CIRCLE };
