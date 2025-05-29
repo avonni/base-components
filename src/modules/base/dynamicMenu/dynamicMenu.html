@@ -47,6 +47,7 @@
         class={computedDropdownClass}
         tabindex="0"
         role="dialog"
+        aria-label={computedAriaLabel}
         data-element-id="dropdown"
         onfocus={focusDropdown}
         onfocusin={handleDropdownFocusIn}
@@ -63,7 +64,7 @@
                 size="small"
                 data-element-id="lightning-spinner"
             ></lightning-spinner>
-            <div if:false={isLoading} class="slds-dropdown__list" role="menu">
+            <div if:false={isLoading} class="slds-dropdown__list">
                 <div if:true={allowSearch} onkeyup={handleKeyUp}>
                     <lightning-input
                         class="slds-m-around_small"
@@ -80,24 +81,34 @@
 
                 <div class="slds-popover__body slds-p-around_none">
                     <slot></slot>
-                    <div
+                    <ul
                         if:true={showItems}
                         class="slds-listbox slds-listbox_vertical"
+                        role="menu"
+                        aria-orientation="vertical"
                         style={listHeight}
                     >
-                        <template for:each={computedListItems} for:item="item">
-                            <div
+                        <template
+                            for:each={computedListItems}
+                            for:item="item"
+                            for:index="index"
+                        >
+                            <li
                                 class="
-                                    slds-listbox__option
                                     avonni-dynamic-menu__item_min-height
+                                    avonni-dynamic-menu__item_color-background
                                 "
-                                aria-selected={item.selected}
                                 key={item.key}
+                                role="menuitemradio"
+                                aria-checked={item.selected}
+                                tabindex="-1"
                                 data-element-id="item"
+                                data-index={index}
                                 data-value={item.value}
                                 onclick={handleItemClick}
-                                onmouseenter={handleOptionMouseEnter}
-                                onmouseleave={handleOptionMouseLeave}
+                                onkeydown={handleItemKeyDown}
+                                onmouseenter={handleItemMouseEnter}
+                                onmouseleave={handleItemMouseLeave}
                             >
                                 <div class={item.computedItemClass}>
                                     <div
@@ -197,9 +208,9 @@
                                         </div>
                                     </template>
                                 </div>
-                            </div>
+                            </li>
                         </template>
-                    </div>
+                    </ul>
                 </div>
                 <div if:true={showFooter} class="slds-popover__footer">
                     <slot name="footer"></slot>

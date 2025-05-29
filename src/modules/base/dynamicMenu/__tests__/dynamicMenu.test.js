@@ -792,7 +792,7 @@ describe('Dynamic Menu', () => {
                         const items = element.shadowRoot.querySelectorAll(
                             '[data-element-id="item"]'
                         );
-                        expect(items[0].ariaSelected).toBeTruthy();
+                        expect(items[0].ariaChecked).toBeTruthy();
                     });
             });
         });
