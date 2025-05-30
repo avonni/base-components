@@ -466,10 +466,8 @@ export default class ButtonMenu extends PrimitiveButton {
                     !this.iconName &&
                     !isAddedVariant,
                 'slds-button_icon-bare': isBare,
-                'avonni-button-menu__button-icon-more': !(
-                    (!this.label && !this.iconSrc && !this.iconName) ||
-                    this.isDownIcon
-                ),
+                'avonni-button-menu__button-icon-more':
+                    !this.computedHideDownIcon,
                 'slds-button_icon-border':
                     this.variant === 'border' && this.computedHideDownIcon,
                 'slds-button_icon-border-filled':
