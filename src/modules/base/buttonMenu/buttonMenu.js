@@ -459,11 +459,17 @@ export default class ButtonMenu extends PrimitiveButton {
             });
         } else {
             classes.add({
+                'avonni-button-menu__button-icon': isAddedVariant,
                 'slds-button_icon':
-                    !this.computedHideDownIcon && !isAddedVariant,
+                    !this.label &&
+                    !this.iconSrc &&
+                    !this.iconName &&
+                    !isAddedVariant,
                 'slds-button_icon-bare': isBare,
-                'avonni-button-menu__button-icon-more':
-                    !this.computedHideDownIcon,
+                'avonni-button-menu__button-icon-more': !(
+                    (!this.label && !this.iconSrc && !this.iconName) ||
+                    this.isDownIcon
+                ),
                 'slds-button_icon-border':
                     this.variant === 'border' && this.computedHideDownIcon,
                 'slds-button_icon-border-filled':
@@ -473,13 +479,16 @@ export default class ButtonMenu extends PrimitiveButton {
                 'slds-button_icon-container':
                     this.variant === 'container' && this.computedHideDownIcon,
                 'slds-button_icon-inverse': this.variant === 'bare-inverse',
-                'avonni-button-menu__button-icon': isAddedVariant,
                 [`slds-button_icon-${this.iconSize}`]: !isBareContainer
             });
             if (
-                !isBareContainer &&
-                (this.iconSrc ||
-                    (this.iconName && !this.iconSrc && !this.label))
+                (!isBareContainer &&
+                    (this.iconSrc ||
+                        (this.iconName && !this.iconSrc && !this.label))) ||
+                (!this.iconSrc &&
+                    !this.iconName &&
+                    !this.label &&
+                    !this.hideDownArrow)
             ) {
                 classes.add(`avonni-button-menu__icon_${this.iconSize}`).add({
                     'avonni-button-menu__button-icon':
@@ -488,6 +497,17 @@ export default class ButtonMenu extends PrimitiveButton {
             }
         }
         return classes;
+    }
+
+    /**
+     * Computed down icon svg class.
+     *
+     * @type {string}
+     */
+    get computedDownIconSvgClass() {
+        return classSet('slds-button__icon').add({
+            'slds-m-left_xx-small': this.label
+        });
     }
 
     /**
