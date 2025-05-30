@@ -166,37 +166,70 @@ describe('Expandable Section', () => {
 
     // toggle
     // Depends on collapsible
-    it('Expandable Section: toggle event', () => {
-        element.collapsible = true;
-        element.title = 'Some title';
+    describe('Expandable Section: toggle event', () => {
+        it('Collapsible', () => {
+            element.collapsible = true;
+            element.title = 'Some title';
 
-        const handler = jest.fn();
-        element.addEventListener('toggle', handler);
+            const handler = jest.fn();
+            element.addEventListener('toggle', handler);
 
-        const section = element.shadowRoot.querySelector('.slds-section');
-        expect(section.classList).toContain('slds-is-open');
+            const section = element.shadowRoot.querySelector('.slds-section');
+            expect(section.classList).toContain('slds-is-open');
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '.slds-section__title-action'
-                );
-                button.click();
-            })
-            .then(() => {
-                expect(handler).toHaveBeenCalledTimes(1);
-                expect(handler.mock.calls[0][0].detail.closed).toBeTruthy();
+            return Promise.resolve()
+                .then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '.slds-section__title-action'
+                    );
+                    button.click();
+                })
+                .then(() => {
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.closed).toBeTruthy();
 
-                const button = element.shadowRoot.querySelector(
-                    '.slds-section__title-action'
-                );
-                expect(section.classList).not.toContain('slds-is-open');
-                button.click();
-            })
-            .then(() => {
-                expect(section.classList).toContain('slds-is-open');
-                expect(handler).toHaveBeenCalledTimes(2);
-                expect(handler.mock.calls[1][0].detail.closed).toBeFalsy();
-            });
+                    const button = element.shadowRoot.querySelector(
+                        '.slds-section__title-action'
+                    );
+                    expect(section.classList).not.toContain('slds-is-open');
+                    button.click();
+                })
+                .then(() => {
+                    expect(section.classList).toContain('slds-is-open');
+                    expect(handler).toHaveBeenCalledTimes(2);
+                    expect(handler.mock.calls[1][0].detail.closed).toBeFalsy();
+                });
+        });
+
+        it('Not Collapsible', () => {
+            element.collapsible = false;
+            element.title = 'Some title';
+
+            const handler = jest.fn();
+            element.addEventListener('toggle', handler);
+
+            const section = element.shadowRoot.querySelector('.slds-section');
+            expect(section.classList).toContain('slds-is-open');
+
+            return Promise.resolve()
+                .then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '.slds-section__title-action'
+                    );
+                    button.click();
+                })
+                .then(() => {
+                    expect(handler).not.toHaveBeenCalled();
+                    const button = element.shadowRoot.querySelector(
+                        '.slds-section__title-action'
+                    );
+                    expect(section.classList).toContain('slds-is-open');
+                    button.click();
+                })
+                .then(() => {
+                    expect(section.classList).toContain('slds-is-open');
+                    expect(handler).not.toHaveBeenCalled();
+                });
+        });
     });
 });
