@@ -144,12 +144,14 @@
                                             slds-p-bottom_none
                                         "
                                     >
-                                        <div
+                                        <ul
                                             class="
                                                 avonni-builder-icon-picker-icon-container
                                                 slds-scrollable_y
                                                 slds-p-left_xx-small
                                             "
+                                            role="listbox"
+                                            aria-label="Choose an icon"
                                         >
                                             <template
                                                 for:each={tabContent}
@@ -262,7 +264,7 @@
                                                     class="slds-p-bottom_small"
                                                 ></div>
                                             </template>
-                                        </div>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
