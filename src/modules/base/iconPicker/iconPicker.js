@@ -364,6 +364,24 @@ export default class IconPicker extends LightningElement {
         return [...orderedTabs];
     }
 
+    /**
+     * Return a true string if the dropdown is visible and a false string if not.
+     *
+     * @type {string}
+     */
+    get computedAriaExpanded() {
+        return String(this.iconMenuOpened);
+    }
+
+    /**
+     * Computed Aria Label for button.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        return this.menuLabel || 'Choose an icon';
+    }
+
     get computedValue() {
         return typeof this.value === 'string' ? this.value : '';
     }
