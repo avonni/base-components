@@ -1,54 +1,55 @@
 <template>
-    <div data-element-id="div-wrapper" class={computedWrapperClass}>
+    <div class={computedWrapperClass} data-element-id="div-wrapper">
         <span
-            data-element-id="span-instructions"
-            id="instructions"
-            class="slds-assistive-text"
-            aria-live="assertive"
             lwc:dom="manual"
+            class="slds-assistive-text"
+            id="instructions"
+            aria-live="assertive"
+            data-element-id="span-instructions"
         ></span>
 
         <span
             if:true={alternativeText}
-            data-element-id="span-alternative-text"
             class="slds-assistive-text"
             id="label"
-            >{alternativeText}</span
-        >
+            data-element-id="span-alternative-text"
+            >{alternativeText}
+        </span>
 
         <ul
-            data-element-id="ul"
             class={computedListboxClass}
             aria-describedby="instructions"
             aria-labelledby="label"
-            role="list"
             tabindex={listboxTabIndex}
+            data-element-id="ul"
             onfocusin={handleChipFocus}
             onfocusout={handleChipBlur}
             onkeydown={handleKeyDown}
         >
             <template for:each={visibleItems} for:item="chip" for:index="index">
                 <li
-                    data-element-id="li-item"
-                    data-index={index}
                     class={computedListItemClass}
                     key={chip.name}
-                    role="listitem"
+                    data-element-id="li-item"
+                    data-index={index}
                     onmousemove={handleChipMouseMove}
                     onmousedown={handleChipMouseDown}
                 >
                     <c-primitive-chip
-                        data-element-id="avonni-primitive-chip"
-                        data-index={index}
                         class={computedChipClass}
                         avatar={chip.avatar}
+                        background-color={chip.backgroundColor}
+                        hide-text={chip.hideText}
                         label={chip.label}
                         name={chip.name}
+                        text-color={chip.textColor}
                         outline={chip.outline}
                         prefix-icon-name={chip.prefixIconName}
                         suffix-icon-name={chip.suffixIconName}
                         variant={chip.variant}
                         tabindex="-1"
+                        data-element-id="avonni-primitive-chip"
+                        data-index={index}
                         onclick={handleChipClick}
                     ></c-primitive-chip>
                 </li>
@@ -62,18 +63,18 @@
             <!-- Show more -->
             <lightning-button
                 if:true={isCollapsed}
-                data-element-id="lightning-button-show-more"
                 class="slds-p-horizontal_xx-small"
-                label={buttonLabel}
+                label={showMoreButtonLabel}
                 variant="base"
+                data-element-id="lightning-button-show-more"
                 onclick={handleExpand}
                 onmouseenter={handleMoreButtonMouseEnter}
                 onmouseleave={handleMoreButtonMouseLeave}
             ></lightning-button>
             <div
                 if:true={showPopover}
-                data-element-id="div-popover"
                 class={computedPopoverClass}
+                data-element-id="div-popover"
                 onfocusin={handlePopoverFocusIn}
                 onfocusout={handlePopoverFocusOut}
                 onscroll={handlePopoverScroll}
@@ -86,18 +87,16 @@
                 >
                     <template for:each={hiddenItems} for:item="chip">
                         <li
-                            data-element-id="li-item-hidden"
-                            data-index={chip.index}
-                            data-name={chip.name}
                             key={chip.name}
                             class={computedHiddenListItemClass}
                             role="presentation"
+                            data-element-id="li-item-hidden"
+                            data-index={chip.index}
+                            data-name={chip.name}
                             onmousemove={handleChipMouseMove}
                             onmousedown={handleChipMouseDown}
                         >
                             <c-primitive-chip
-                                data-element-id="avonni-primitive-chip-hidden"
-                                data-index={chip.index}
                                 class={computedChipClass}
                                 avatar={chip.avatar}
                                 label={chip.label}
@@ -108,6 +107,8 @@
                                 variant={chip.variant}
                                 role="option"
                                 tabindex="-1"
+                                data-element-id="avonni-primitive-chip-hidden"
+                                data-index={chip.index}
                                 onclick={handleChipClick}
                             ></c-primitive-chip>
                         </li>

@@ -1045,6 +1045,14 @@
         --avonni-button-menu-button-neutral-spacing-block-end,
         0
     );
+    padding-left: var(
+        --avonni-button-menu-button-neutral-spacing-inline-start,
+        0rem
+    );
+    padding-right: var(
+        --avonni-button-menu-button-neutral-spacing-inline-end,
+        0rem
+    );
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */

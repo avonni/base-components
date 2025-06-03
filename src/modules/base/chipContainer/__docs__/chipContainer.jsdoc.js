@@ -1,13 +1,16 @@
 /**
  * @typedef {object} ChipContainerItem
  * @name items
+ * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
+ * @property {string} backgroundColor If present, it replaces the default variant background color of the chip.
+ * @property {boolean} hideText If present, the text is hidden and the chip is displayed as a colored circle.
  * @property {string} label Label display in the chip.
  * @property {string} name Name to identify the chip.
- * @property {string} variant The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
  * @property {boolean} outline If true, display an outline style button.
- * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
  * @property {string} prefixIconName Prefix Icon name. If present, the icon is displayed to the left of the label.
  * @property {string} suffixIconName Suffix Icon name. If present, the icon is displayed to the right of the label.
+ * @property {string} textColor If present, it replaces the default variant text color. If outline is set to true, this attribute is ignored.
+ * @property {string} variant The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
  *
  */
 

@@ -1,6 +1,6 @@
 import { ChipContainer } from '../__examples__/chipContainer';
 import { MaxWidthChipContainer } from '../__examples__/maxWidthChipContainer';
-import { ITEMS, ITEMS_NO_MEDIA } from './data.js';
+import { ITEMS, ITEMS_NO_MEDIA, ITEMS_NO_MEDIA_CIRCLE } from './data.js';
 
 export default {
     title: 'Example/Chip Container',
@@ -91,6 +91,11 @@ Base.args = {
 export const NoMedia = Template.bind({});
 NoMedia.args = {
     items: ITEMS_NO_MEDIA
+};
+
+export const NoMediaCircle = Template.bind({});
+NoMediaCircle.args = {
+    items: ITEMS_NO_MEDIA_CIRCLE
 };
 
 export const SingleLineSortable = Template.bind({});

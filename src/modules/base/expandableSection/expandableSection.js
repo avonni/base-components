@@ -188,6 +188,9 @@ export default class ExpandableSection extends LightningElement {
      * Section change status toggle.
      */
     toggleSection() {
+        if (!this.collapsible) {
+            return;
+        }
         this._closed = !this._closed;
 
         /**
