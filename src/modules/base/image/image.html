@@ -3,14 +3,14 @@
         <div data-element-id="container" class={computedImageClass}>
             <div class="slds-is-relative">
                 <img
-                    alt={alternativeText}
                     class="avonni-image_img_border-radius"
-                    data-element-id="img"
+                    alt={alternativeText}
+                    loading={lazyLoading}
+                    sizes={sizes}
                     src={src}
                     srcset={srcset}
-                    sizes={sizes}
                     style={computedStyle}
-                    loading={lazyLoading}
+                    data-element-id="img"
                     onload={handleLoadImage}
                     onmousemove={handleMagnifierMove}
                     ontouchstart={handleMagnifierMove}
@@ -43,13 +43,13 @@
                     "
                 >
                     <img
-                        src={src}
-                        alt=""
                         class="
                             avonni-image_fit-content
                             avonni-image_pointer-events-none
                         "
+                        alt=""
                         sizes={sizes}
+                        src={src}
                         style={computedMagnifiedImgStyle}
                         data-element-id="magnified-img"
                     />
@@ -73,11 +73,12 @@
                         style={computedCompareImgContainerStyle}
                     >
                         <img
-                            data-element-id="compare-img"
-                            src={compareSrc}
                             class="avonni-image__compare-img"
-                            style={computedCompareImgStyle}
+                            alt={compareAlternativeText}
                             loading={lazyLoading}
+                            src={compareSrc}
+                            style={computedCompareImgStyle}
+                            data-element-id="compare-img"
                         />
                         <div
                             if:true={compareAttributes.originalLabel}
