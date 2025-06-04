@@ -6,7 +6,7 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         name: 'item-1',
         checked: true
     },
@@ -40,7 +40,7 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         name: 'item-5'
     }
 ];
