@@ -82,6 +82,7 @@ export default {
         }
     },
     args: {
+        alternativeText: 'Loading progress',
         direction: 'fill',
         hideIcon: false,
         size: 'medium',
