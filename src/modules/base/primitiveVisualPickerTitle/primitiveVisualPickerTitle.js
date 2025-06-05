@@ -34,6 +34,7 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
 
     _avatar = {};
     _avatarPosition = AVATAR_POSITIONS.default;
+    _checked = false;
     _displayAvatar = DEFAULT_DISPLAY_AVATAR;
     _size = VISUAL_PICKER_SIZES.default;
 
@@ -70,6 +71,21 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
             fallbackValue: AVATAR_POSITIONS.default,
             validValues: AVATAR_POSITIONS.valid
         });
+    }
+
+    /**
+     * If present, the selected style is applied to the title.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get checked() {
+        return this._checked;
+    }
+    set checked(value) {
+        this._checked = normalizeBoolean(value);
     }
 
     /**
