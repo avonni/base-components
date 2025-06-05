@@ -20,6 +20,7 @@ describe('ProgressCircle', () => {
     });
 
     it('Progress Circle: Default attributes', () => {
+        expect(element.alternativeText).toBeUndefined();
         expect(element.direction).toBe('fill');
         expect(element.label).toBeUndefined();
         expect(element.size).toBe('medium');
@@ -32,6 +33,17 @@ describe('ProgressCircle', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    it('Progress Circle: alternative text', () => {
+        element.alternativeText = 'Loading progress';
+
+        return Promise.resolve().then(() => {
+            const progressCircle = element.shadowRoot.querySelector(
+                '.slds-progress-ring__progress'
+            );
+            expect(progressCircle.ariaLabel).toBe('Loading progress');
+        });
+    });
 
     // direction and value
     it('Progress Circle: direction = fill and value = 65', () => {

@@ -33,6 +33,13 @@ const DEFAULT_VALUE = 0;
  */
 export default class ProgressCircle extends LightningElement {
     /**
+     * The assistive text for the progress circle.
+     *
+     * @type {string}
+     * @public
+     */
+    @api alternativeText;
+    /**
      * The label is displayed after the value in the progress circle.
      *
      * @type {string}
@@ -238,6 +245,15 @@ export default class ProgressCircle extends LightningElement {
         let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
 
         return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    /**
+     * Computed Aria Label for the progress bar.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        return this.title || this.alternativeText;
     }
 
     /**
