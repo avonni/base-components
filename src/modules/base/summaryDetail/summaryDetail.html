@@ -2,11 +2,12 @@
     <div class={sectionClass}>
         <template if:false={hideIcon}>
             <lightning-button-icon
+                class="slds-button__icon slds-m-right_x-small"
+                aria-expanded={sectionIsOpen}
+                aria-pressed={sectionIsOpen}
                 alternative-text="Open details"
                 icon-name={iconName}
                 variant="bare"
-                class="slds-button__icon slds-m-right_x-small"
-                aria-pressed={sectionIsOpen}
                 data-element-id="lightning-button-icon"
                 onclick={changeSectionStatus}
             ></lightning-button-icon>
@@ -34,7 +35,7 @@
                     <slot name="actions"></slot>
                 </div>
             </div>
-            <div aria-hidden="true" class={contentClass}>
+            <div aria-hidden={closed} class={contentClass}>
                 <slot></slot>
             </div>
         </div>
