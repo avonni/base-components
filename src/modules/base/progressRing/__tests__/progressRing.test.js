@@ -17,6 +17,7 @@ describe('ProgressRing', () => {
     });
 
     it('Progress ring: Default attributes', () => {
+        expect(element.alternativeText).toBeUndefined();
         expect(element.direction).toBe('fill');
         expect(element.hideIcon).toBeFalsy();
         expect(element.size).toBe('medium');
@@ -25,6 +26,18 @@ describe('ProgressRing', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // alternative text
+    it('Progress ring: alternative Text', () => {
+        element.alternativeText = 'Loading progress';
+
+        return Promise.resolve().then(() => {
+            const progressRing = element.shadowRoot.querySelector(
+                '.slds-progress-ring__progress'
+            );
+            expect(progressRing.ariaLabel).toBe('Loading progress');
+        });
+    });
 
     // direction and value
     it('Progress ring: direction = fill, value = 34', () => {

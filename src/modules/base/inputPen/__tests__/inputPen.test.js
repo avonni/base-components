@@ -610,15 +610,34 @@ describe('Input pen', () => {
         });
     });
 
-    it('reset button', () => {
-        const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+    describe('reset button', () => {
+        it('mouseclick', () => {
+            const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
 
-        return Promise.resolve().then(() => {
-            const clearButton = element.shadowRoot.querySelector(
-                '[data-element-id="clear-button"]'
-            );
-            clearButton.dispatchEvent(new CustomEvent('mousedown'));
-            expect(clearSpy).toHaveBeenCalled();
+            return Promise.resolve().then(() => {
+                const clearButton = element.shadowRoot.querySelector(
+                    '[data-element-id="clear-button"]'
+                );
+                clearButton.dispatchEvent(new CustomEvent('mousedown'));
+                expect(clearSpy).toHaveBeenCalled();
+            });
+        });
+
+        it('keydown', () => {
+            const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+
+            return Promise.resolve().then(() => {
+                const clearButton = element.shadowRoot.querySelector(
+                    '[data-element-id="clear-button"]'
+                );
+                clearButton.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        key: 'Enter',
+                        bubbles: true
+                    })
+                );
+                expect(clearSpy).toHaveBeenCalled();
+            });
         });
     });
 

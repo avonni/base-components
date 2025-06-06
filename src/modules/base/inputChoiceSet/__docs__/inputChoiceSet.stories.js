@@ -207,19 +207,22 @@ const optionsWithIcon = [
         label: 'Left',
         value: 'left',
         iconName: 'utility:left_align_text',
-        iconPosition: 'right'
+        iconPosition: 'right',
+        alternativeText: 'Left'
     },
     {
         label: 'Center',
         value: 'center',
         iconName: 'utility:center_align_text',
-        iconPosition: 'right'
+        iconPosition: 'right',
+        alternativeText: 'Center'
     },
     {
         label: 'Right',
         value: 'right',
         iconName: 'utility:right_align_text',
-        iconPosition: 'right'
+        iconPosition: 'right',
+        alternativeText: 'Right'
     }
 ];
 const optionsWithoutIcon = [

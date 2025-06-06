@@ -20,11 +20,13 @@ export default class HeroBanner extends LightningElement {
     @api imageLayout = DEFAULT_IMAGE_LAYOUT;
     @api imagePosition = DEFAULT_IMAGE_POSITION;
     @api maxWidth = DEFAULT_MAX_WIDTH;
+    @api primaryButtonAlternativeText;
     @api primaryButtonIconName;
     @api primaryButtonIconPosition = DEFAULT_ICON_POSITION;
     @api primaryButtonIconSize = DEFAULT_ICON_SIZE;
     @api primaryButtonLabel;
     @api primaryButtonVariant = DEFAULT_BUTTON_VARIANT;
+    @api secondaryButtonAlternativeText;
     @api secondaryButtonIconName;
     @api secondaryButtonIconPosition = DEFAULT_ICON_POSITION;
     @api secondaryButtonIconSize = DEFAULT_ICON_SIZE;

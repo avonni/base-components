@@ -136,6 +136,7 @@ export const itemsWithImages = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
             'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        imageAlternativeText: 'Image for Item 1',
         name: 'name-item-1'
     },
     {
@@ -145,6 +146,7 @@ export const itemsWithImages = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
             'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85',
+        imageAlternativeText: 'Image for Item 2',
         name: 'name-item-2'
     },
     {
@@ -153,6 +155,7 @@ export const itemsWithImages = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+        imageAlternativeText: 'Image for Item 3',
         name: 'name-item-3'
     },
     {
@@ -162,7 +165,8 @@ export const itemsWithImages = [
         infos: [{ label: 'info 1' }, { label: 'info 2', href: '#' }],
         icons: ['utility:share', 'utility:refresh'],
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        imageAlternativeText: 'Image for Item 4',
         name: 'name-item-4'
     },
     {
@@ -174,6 +178,7 @@ export const itemsWithImages = [
             { label: 'info 2', href: 'https://www.avonni.app/' }
         ],
         icons: ['utility:share', 'utility:refresh'],
+        imageAlternativeText: 'Image for Item 5',
         name: 'name-item-5'
     }
 ];
@@ -189,7 +194,8 @@ export const itemsWithImagesAndAvatars = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        imageAlternativeText: 'Image for Item 1',
         name: 'name-item-1'
     },
     {
@@ -204,6 +210,7 @@ export const itemsWithImagesAndAvatars = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
             'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85',
+        imageAlternativeText: 'Image for Item 2',
         name: 'name-item-2'
     },
     {
@@ -217,6 +224,7 @@ export const itemsWithImagesAndAvatars = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+        imageAlternativeText: 'Image for Item 3',
         name: 'name-item-3',
         fields: [
             {
@@ -257,7 +265,8 @@ export const itemsWithImagesAndAvatars = [
         ],
         icons: ['utility:share', 'utility:refresh'],
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        imageAlternativeText: 'Image for Item 4',
         name: 'name-item-4'
     },
     {
@@ -271,6 +280,7 @@ export const itemsWithImagesAndAvatars = [
         infos: [{ label: 'info 1', href: 'https://www.avonni.app/' }],
         icons: ['utility:share'],
         imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
+        imageAlternativeText: 'Image for Item 5',
         name: 'name-item-5'
     }
 ];

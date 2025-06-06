@@ -76,6 +76,13 @@ export default class HeroBanner extends LightningElement {
      */
     @api caption;
     /**
+     * The alternative text used to describe the primary button icon.
+     *
+     * @type {string}
+     * @public
+     */
+    @api primaryButtonAlternativeText;
+    /**
      * The name of the icon to be used in the format 'utility:down'.
      *
      * @type {string}
@@ -89,6 +96,13 @@ export default class HeroBanner extends LightningElement {
      * @public
      */
     @api primaryButtonLabel;
+    /**
+     * The alternative text used to describe the secondary button icon.
+     *
+     * @type {string}
+     * @public
+     */
+    @api secondaryButtonAlternativeText;
     /**
      * The name of the icon to be used in the format 'utility:down'.
      *

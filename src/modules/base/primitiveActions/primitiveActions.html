@@ -18,10 +18,11 @@
                         if:false={action.label}
                         data-name={action.name}
                         class="slds-m-right_none"
-                        value={action.name}
+                        alternative-text={action.alternativeText}
                         disabled={action.disabled}
                         icon-name={action.iconName}
                         size="medium"
+                        value={action.name}
                         variant="border-filled"
                         onclick={handleActionButtonClick}
                     ></lightning-button-icon>
@@ -78,10 +79,11 @@
                 if:false={singleAction.label}
                 data-name={singleAction.name}
                 class="slds-m-right_none"
-                value={singleAction.name}
+                alternative-text={singleAction.alternativeText}
                 disabled={singleAction.disabled}
                 icon-name={singleAction.iconName}
                 size={buttonIconSize}
+                value={singleAction.name}
                 variant={buttonIconVariant}
                 onclick={handleActionButtonClick}
             ></lightning-button-icon>

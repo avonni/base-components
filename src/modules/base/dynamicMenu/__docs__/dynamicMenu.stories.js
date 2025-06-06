@@ -280,6 +280,7 @@ export default {
     },
     args: {
         allowSearch: false,
+        alternativeText: 'My Favorites',
         buttonSize: 'auto',
         disabled: false,
         hideCheckMark: false,
@@ -373,6 +374,7 @@ Container.args = {
 
 export const ListViewStory = TemplateListView.bind({});
 ListViewStory.args = {
+    alternativeText: 'List Views',
     iconName: 'utility:down',
     iconPosition: 'right',
     items: listViewItems,
@@ -383,6 +385,7 @@ ListViewStory.args = {
 
 export const ListViewStoryBorder = TemplateListView.bind({});
 ListViewStoryBorder.args = {
+    alternativeText: 'List Views',
     iconName: 'utility:down',
     iconPosition: 'right',
     items: listViewItems,
@@ -393,6 +396,7 @@ ListViewStoryBorder.args = {
 
 export const ListViewStoryBare = TemplateListView.bind({});
 ListViewStoryBare.args = {
+    alternativeText: 'List Views',
     iconName: 'utility:down',
     iconPosition: 'right',
     items: listViewItems,

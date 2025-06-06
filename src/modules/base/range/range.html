@@ -33,12 +33,13 @@
             <div class="slds-form-element__control">
                 <div class="slds-slider">
                     <input
+                        class="slds-slider__range avonni-range__slider-left"
+                        aria-label="Minimum"
                         type="range"
                         min={min}
                         max={max}
                         step={step}
                         value={valueLower}
-                        class="slds-slider__range avonni-range__slider-left"
                         disabled={disabled}
                         data-element-id="input-left"
                         data-group-name="input"
@@ -72,16 +73,17 @@
             <div class="slds-form-element__control">
                 <div class="slds-slider">
                     <input
+                        class="slds-slider__range avonni-range__slider-right"
+                        aria-label="Maximum"
                         type="range"
                         min={min}
                         max={max}
                         step={step}
                         value={valueUpper}
-                        class="slds-slider__range avonni-range__slider-right"
                         disabled={disabled}
+                        tabindex={index}
                         data-element-id="input-right"
                         data-group-name="input"
-                        tabindex={index}
                         oninput={handleChange}
                         onmousedown={showRightBubble}
                         onmouseup={hideRightBubble}

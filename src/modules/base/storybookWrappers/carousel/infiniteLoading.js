@@ -1,9 +1,9 @@
 import { LightningElement, api } from 'lwc';
 
 const IMAGES = [
-    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg'
+    'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+    'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg'
 ];
 
 export default class InfiniteLoadingCarousel extends LightningElement {

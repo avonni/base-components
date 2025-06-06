@@ -31,6 +31,8 @@
             "
             onclick={handleAvatarClick}
             role="button"
+            onblur={handleItemLeave}
+            onfocus={handleItemFocus}
             onkeyup={handleAvatarClick}
             onmouseenter={handleItemEnter}
             onmouseleave={handleItemLeave}
@@ -63,9 +65,11 @@
             "
             onclick={handleAvatarClick}
             role="button"
+            onblur={handleItemLeave}
             onkeyup={handleAvatarClick}
             onmouseenter={handleItemEnter}
             onmouseleave={handleItemLeave}
+            onfocus={handleItemFocus}
             tabindex="0"
         ></c-primitive-avatar>
     </div>
@@ -93,8 +97,10 @@
                     key={item.name}
                     class={avatarWrapperClass}
                     tabindex="-1"
+                    aria-label={item.computedAriaLabel}
                     data-element-id="li-visible"
                     data-index={index}
+                    onblur={handleItemLeave}
                     onclick={handleAvatarClick}
                     onfocus={handleItemFocus}
                     onmouseenter={handleItemEnter}
@@ -102,7 +108,6 @@
                 >
                     <c-avatar
                         class={item.class}
-                        role="button"
                         actions={item.actions}
                         action-menu-icon={item.actionMenuIcon}
                         action-position={item.actionPosition}
@@ -160,6 +165,10 @@
                     <div if:true={isNotList} class={avatarWrapperClass}>
                         <c-primitive-avatar
                             class={showMoreAvatarClass}
+                            aria-controls="hidden-items-popover"
+                            aria-expanded={showHiddenItemsPopover}
+                            aria-haspopup="dialog"
+                            aria-label="Show more"
                             alternative-text="Show more"
                             fallback-icon-name="standard:macros"
                             initials={showMoreInitials}
@@ -211,6 +220,7 @@
                 <div
                     if:true={showHiddenItemsPopover}
                     class={hiddenListClass}
+                    id="hidden-items-popover"
                     role="dialog"
                     aria-labelledby="show-more-label"
                     data-element-id="div-hidden-items-popover"
@@ -233,6 +243,7 @@
                             >
                                 <c-avatar
                                     class={item.class}
+                                    aria-label={item.computedAriaLabel}
                                     role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}
@@ -289,9 +300,9 @@
                 data-element-id="action-button"
             >
                 <button
+                    class={actionButtonClass}
                     type="button"
                     onclick={handleActionClick}
-                    class={actionButtonClass}
                 >
                     <lightning-icon
                         icon-name={actionIconName}
@@ -303,6 +314,13 @@
                         "
                         data-element-id="lightning-icon"
                     ></lightning-icon>
+                    <span
+                        if:true={actionAlternativeText}
+                        class="slds-assistive-text"
+                        data-element-id="alternative-text"
+                    >
+                        {actionAlternativeText}
+                    </span>
                 </button>
             </li>
         </ul>

@@ -17,6 +17,10 @@
                 onfocusin={handleFocus}
                 onfocusout={handleBlur}
             >
+                <span id="keyboard-interaction" class="slds-assistive-text">
+                    Press Ctrl (Cmd on Mac) + Left Arrow or Ctrl (Cmd on Mac) +
+                    Right Arrow to move items between lists.
+                </span>
                 <div class={computedListboxColumnsClass}>
                     <span
                         class="
@@ -53,7 +57,7 @@
                                 source-list
                             "
                             id="source-list"
-                            aria-describedby="keyboard-interacton"
+                            aria-describedby="keyboard-interaction"
                             aria-disabled={ariaDisabled}
                             aria-labelledby="source-list-label"
                             aria-multiselectable="true"
@@ -198,7 +202,7 @@
                     >
                         <ul
                             class="slds-listbox slds-listbox_vertical"
-                            aria-describedby="keyboard-interacton"
+                            aria-describedby="keyboard-interaction"
                             aria-disabled={ariaDisabled}
                             aria-labelledby="selected-list-label"
                             aria-multiselectable="true"

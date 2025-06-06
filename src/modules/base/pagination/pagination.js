@@ -281,6 +281,27 @@ export default class Pagination extends LightningElement {
     }
 
     /**
+     * Computed Aria Label for ellipsis button.
+     *
+     * @type {string}
+     */
+    get computedEllipsisButtonAriaLabel() {
+        if (!this.ellipsisText || this.ellipsisText === '...') {
+            return 'More';
+        }
+        return this.ellipsisText;
+    }
+
+    /**
+     * Computed Aria Label for first button.
+     *
+     * @type {string}
+     */
+    get computedFirstButtonAriaLabel() {
+        return this.firstButtonLabel || 'First';
+    }
+
+    /**
      * Computed first button class styling.
      *
      * @type {string}
@@ -300,6 +321,15 @@ export default class Pagination extends LightningElement {
         return classSet('slds-button__icon').add({
             'slds-button__icon_left': this.firstButtonLabel
         });
+    }
+
+    /**
+     * Computed Aria Label for next button.
+     *
+     * @type {string}
+     */
+    get computedNextButtonAriaLabel() {
+        return this.nextButtonLabel || 'Next';
     }
 
     /**
@@ -325,6 +355,15 @@ export default class Pagination extends LightningElement {
     }
 
     /**
+     * Computed Aria Label for last button.
+     *
+     * @type {string}
+     */
+    get computedLastButtonAriaLabel() {
+        return this.lastButtonLabel || 'Last';
+    }
+
+    /**
      * Computed last button class styling.
      *
      * @type {string}
@@ -344,6 +383,15 @@ export default class Pagination extends LightningElement {
         return classSet('slds-button__icon').add({
             'slds-button__icon_left': this.lastButtonLabel
         });
+    }
+
+    /**
+     * Computed Aria Label for previous button.
+     *
+     * @type {string}
+     */
+    get computedPreviousButtonAriaLabel() {
+        return this.previousButtonLabel || 'Previous';
     }
 
     /**
