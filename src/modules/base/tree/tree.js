@@ -1319,53 +1319,60 @@ export default class Tree extends LightningElement {
         const currentItem = currentLevelItem || item;
 
         if (currentItem.key !== key) {
-            // Get the item, and its initial position in the tree
-            const initialPosition = this.getPositionInBranch(key);
-            const initialBranch = initialPosition.items;
-            const initialIndex = initialPosition.index;
-            const initialItem = this.treedata.cloneItems(
-                initialBranch[initialIndex]
-            );
-            const temporaryName = generateUUID();
-            initialBranch[initialIndex].name = temporaryName;
-
             // Get the new position of the item in the tree
             const { items, index } = this.getPositionInBranch(currentItem.key);
+            if (
+                !items[index].noSlots ||
+                position === 'top' ||
+                position === 'bottom'
+            ) {
+                // Get the item, and its initial position in the tree
+                const initialPosition = this.getPositionInBranch(key);
+                const initialBranch = initialPosition.items;
+                const initialIndex = initialPosition.index;
+                const initialItem = this.treedata.cloneItems(
+                    initialBranch[initialIndex]
+                );
+                const temporaryName = generateUUID();
+                initialBranch[initialIndex].name = temporaryName;
 
-            // Copy the item in the new position
-            switch (position) {
-                case 'top':
-                    items.splice(index, 0, initialItem);
-                    break;
-                case 'bottom':
-                    if (
-                        item.treeNode.expanded &&
-                        item.treeNode.children.length
-                    ) {
+                // Copy the item in the new position
+                switch (position) {
+                    case 'top':
+                        items.splice(index, 0, initialItem);
+                        break;
+                    case 'bottom':
+                        if (
+                            item.treeNode.expanded &&
+                            item.treeNode.children.length
+                        ) {
+                            items[index].items.unshift(initialItem);
+                        } else {
+                            items.splice(index + 1, 0, initialItem);
+                        }
+                        break;
+                    default:
                         items[index].items.unshift(initialItem);
-                    } else {
-                        items.splice(index + 1, 0, initialItem);
-                    }
-                    break;
-                default:
-                    items[index].items.unshift(initialItem);
-                    break;
-            }
-
-            // Remove the item from its original position
-            const initialItemNewIndex = initialPosition.items.findIndex(
-                (it) => {
-                    return it.name === temporaryName;
+                        break;
                 }
-            );
-            initialPosition.items.splice(initialItemNewIndex, 1);
-            this.singleSelect(initialItem.name);
-            this.initItems();
-            this.dispatchChange({
-                name: initialItem.name,
-                action: 'Standard.Tree.Move',
-                key
-            });
+
+                // Remove the item from its original position
+                const initialItemNewIndex = initialPosition.items.findIndex(
+                    (it) => {
+                        return it.name === temporaryName;
+                    }
+                );
+                initialPosition.items.splice(initialItemNewIndex, 1);
+                if (!initialItem.unselectable) {
+                    this.singleSelect(initialItem);
+                }
+                this.initItems();
+                this.dispatchChange({
+                    name: initialItem.name,
+                    action: 'Standard.Tree.Move',
+                    key
+                });
+            }
         }
 
         this._dragState = null;

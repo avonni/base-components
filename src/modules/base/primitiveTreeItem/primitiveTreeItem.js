@@ -86,6 +86,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _level;
     _metatext;
     _name;
+    _noSlots = false;
     _selected = false;
     _showCheckbox = false;
     _sortable = false;
@@ -167,7 +168,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
 
     /**
-     * Array of action objects to display to the riht of the item header.
+     * Array of action objects to display to the right of the item header.
      *
      * @type {object[]}
      * @public
@@ -468,6 +469,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set name(value) {
         this._name = value;
+    }
+
+    /**
+     * If present, the item does not have any slots. This means the item cannot accept items has a child when sorting.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get noSlots() {
+        return this._noSlots;
+    }
+    set noSlots(value) {
+        this._noSlots = normalizeBoolean(value);
     }
 
     /**
@@ -931,9 +947,11 @@ export default class PrimitiveTreeItem extends LightningElement {
                 }
                 break;
             default:
-                this.itemElement.classList.add(
-                    'avonni-primitive-tree-item__item_border'
-                );
+                if (!this.noSlots) {
+                    this.itemElement.classList.add(
+                        'avonni-primitive-tree-item__item_border'
+                    );
+                }
                 break;
         }
     };

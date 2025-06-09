@@ -66,6 +66,7 @@ export function getTreeNode({
         metatext: node.metatext,
         name: node.name,
         nodeRef: node,
+        noSlots: node.noSlots || false,
         visible: level === 1,
         visibleItems: []
     };
