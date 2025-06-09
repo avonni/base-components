@@ -502,7 +502,7 @@ export default class Tree extends LightningElement {
             this.items.push(newItem);
         }
 
-        this.singleSelect(name);
+        this.singleSelect(newItem);
     }
 
     /**
@@ -636,7 +636,7 @@ export default class Tree extends LightningElement {
         const duplicated = this.treedata.cloneItems(items[index]);
         duplicated.name = name;
         items.splice(index + 1, 0, duplicated);
-        this.singleSelect(name);
+        this.singleSelect(duplicated);
         return duplicated;
     }
 
@@ -668,7 +668,7 @@ export default class Tree extends LightningElement {
             case 'Standard.Tree.Delete': {
                 const prevItem = this.treedata.findPrevNodeToFocus(item.index);
                 if (prevItem && !this.isMultiSelect) {
-                    this.singleSelect(prevItem.treeNode.name);
+                    this.singleSelect(prevItem.treeNode);
                 }
                 const { index, items } = this.getPositionInBranch(key);
                 items.splice(index, 1);
@@ -715,7 +715,9 @@ export default class Tree extends LightningElement {
         );
         if (children.length === this.children.length) {
             children.forEach((child, index) => {
-                child.selected = this.children[index].selected;
+                child.selected =
+                    this.children[index].selected &&
+                    !this.children[index].unselectable;
             });
         }
     }
@@ -854,14 +856,18 @@ export default class Tree extends LightningElement {
      * @param {string} name Name of the item to select.
      * @param {Event} event Event that triggered the selection.
      */
-    singleSelect(name, event) {
+    singleSelect(node, event) {
+        if (node.unselectable) {
+            return;
+        }
         if (
             this.isMultiSelect ||
-            (this.selectedItems.length === 1 && this.selectedItems[0] === name)
+            (this.selectedItems.length === 1 &&
+                this.selectedItems[0] === node.name)
         )
             return;
         this._previousSelectedItems = [...this.selectedItems];
-        this._selectedItems = [name];
+        this._selectedItems = [node.name];
         this.dispatchSelect(event);
     }
 
@@ -1000,7 +1006,9 @@ export default class Tree extends LightningElement {
         if (parent) {
             const children = parent.treeNode.children;
             const selectedChildren = children.filter((child) => child.selected);
-            const isSelected = selectedChildren.length === children.length;
+            const isSelected =
+                selectedChildren.length === children.length &&
+                !parent.treeNode.unselectable;
 
             if (isSelected !== parent.treeNode.selected) {
                 parent.treeNode.selected = isSelected;
@@ -1015,6 +1023,8 @@ export default class Tree extends LightningElement {
                     this.selectedItems.splice(selectedItemIndex, 1);
                 }
 
+                this.updateParentsSelection(parent);
+            } else if (parent.treeNode.unselectable) {
                 this.updateParentsSelection(parent);
             }
         }
@@ -1095,7 +1105,7 @@ export default class Tree extends LightningElement {
             item[property] = value;
         });
 
-        this.singleSelect(item.name);
+        this.singleSelect(item);
         this.initItems();
         this.dispatchChange({
             name: item.name,
@@ -1129,9 +1139,13 @@ export default class Tree extends LightningElement {
                     }
                 }
             } else if (target === 'anchor') {
+                if (node.unselectable) {
+                    return;
+                }
                 if (this.isMultiSelect) {
                     this._previousSelectedItems = [...this.selectedItems];
                     const cascadeSelection = !this.independentMultiSelect;
+
                     if (!node.selected) {
                         this.treedata.selectNode(
                             node,
@@ -1153,7 +1167,7 @@ export default class Tree extends LightningElement {
                     this.dispatchSelect(event);
                 } else {
                     this.setFocusToItem(item);
-                    this.singleSelect(node.name, event);
+                    this.singleSelect(node, event);
                 }
             }
         }

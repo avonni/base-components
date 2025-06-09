@@ -91,6 +91,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _selected = false;
     _showCheckbox = false;
     _sortable = false;
+    _unselectable = false;
 
     buttonActions = [];
     labelIsEdited = false;
@@ -514,7 +515,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         return this._selected;
     }
     set selected(value) {
-        this._selected = normalizeBoolean(value);
+        if (!this.unselectable) {
+            this._selected = normalizeBoolean(value);
+        } else {
+            this._selected = false;
+        }
         if (this._connected) this.computeSelection();
     }
 
@@ -549,11 +554,30 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._sortable = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the item is not selectable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get unselectable() {
+        return this._unselectable;
+    }
+    set unselectable(value) {
+        this._unselectable = normalizeBoolean(value);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    get checkboxDisabled() {
+        return this.disabled || this.unselectable;
+    }
 
     get checkboxStyle() {
         if (this.color) {
@@ -660,6 +684,19 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * CSS class of the primitive tree item.
+     *
+     * @type {string}
+     */
+    get primitiveTreeItemClass() {
+        return classSet(
+            'avonni-primitive-tree-item__item slds-is-relative slds-grid'
+        ).add({
+            'avonni-primitive-tree-item__item_selectable': !this.unselectable
+        });
+    }
+
+    /**
      * True if the child items should be visible.
      *
      * @type {boolean}
@@ -722,7 +759,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         return classSet('slds-is-relative')
             .add({
                 'avonni-primitive-tree-item__single-selection':
-                    !this.showCheckbox
+                    !this.showCheckbox && !this.unselectable
             })
             .toString();
     }
@@ -780,6 +817,24 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
 
     /**
+     * Check if all selectable children of a node are selected.
+     *
+     * @param {object} node Node to check.
+     * @returns {boolean} True if all selectable children are selected, false otherwise.
+     */
+    areSelectableChildrenSelected(node) {
+        if (!node.children || !node.children.length) {
+            return node.selected;
+        }
+        return node.children.every((child) => {
+            if (child.unselectable) {
+                return this.areSelectableChildrenSelected(child);
+            }
+            return child.selected;
+        });
+    }
+
+    /**
      * Transform a camel case string to a start case string.
      *
      * @param {string} string String to transform.
@@ -804,10 +859,11 @@ export default class PrimitiveTreeItem extends LightningElement {
             !this.selected &&
             this.showCheckbox &&
             this.childItems.length &&
-            !this.independentMultiSelect
+            !this.independentMultiSelect &&
+            !this.unselectable
         ) {
-            const selectedChildren = this.childItems.filter(
-                (child) => child.selected
+            const selectedChildren = this.childItems.filter((child) =>
+                this.areSelectableChildrenSelected(child)
             );
 
             if (selectedChildren.length === this.childItems.length) {
@@ -824,7 +880,8 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
 
         if (this.showCheckbox) {
-            this.ariaSelected = this.selected ? 'true' : 'false';
+            this.ariaSelected =
+                this.selected && !this.unselectable ? 'true' : 'false';
 
             // Force the children update
             const items = this.template.querySelectorAll(
@@ -832,7 +889,9 @@ export default class PrimitiveTreeItem extends LightningElement {
             );
             if (this.childItems.length === items.length) {
                 items.forEach((item, index) => {
-                    item.selected = this.childItems[index].selected;
+                    item.selected =
+                        this.childItems[index].selected &&
+                        !this.childItems[index].unselectable;
                 });
             }
         }
@@ -978,7 +1037,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @param {boolean} value New value of the selected property.
      */
     setSelected = (value) => {
-        this._selected = value;
+        this._selected = value && !this.unselectable;
         this.computeSelection();
     };
 
@@ -1188,7 +1247,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             }
 
             if (this.showCheckbox && target === 'anchor') {
-                this._selected = !this.selected;
+                this._selected = !this.selected && !this.unselectable;
                 this._checkboxIsIndeterminate = false;
             } else if (target === 'chevron') {
                 this._expanded = !this.expanded;

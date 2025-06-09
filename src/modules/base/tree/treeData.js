@@ -60,8 +60,10 @@ export class TreeData {
         node.children.forEach((child) => {
             const name = child.name;
             if (!selectedItems.includes(name)) {
-                selectedItems.push(name);
-                child.selected = true;
+                if (!child.unselectable) {
+                    selectedItems.push(name);
+                    child.selected = true;
+                }
                 this.cascadeSelectionDown(child, selectedItems);
             }
         });
@@ -81,8 +83,10 @@ export class TreeData {
                 return child.selected;
             });
             if (allChildrenAreSelected) {
-                node.selected = true;
-                selectedItems.push(name);
+                if (!node.unselectable) {
+                    node.selected = true;
+                    selectedItems.push(name);
+                }
                 const parent = this.getItem(item.parent);
                 if (parent) {
                     this.cascadeSelectionUp(parent, selectedItems);
@@ -102,7 +106,9 @@ export class TreeData {
         const item = this.getItemFromName(name);
         if (!item) return;
 
-        item.treeNode.selected = true;
+        if (!item.treeNode.unselectable) {
+            item.treeNode.selected = true;
+        }
         if (cascadeSelection) {
             this.cascadeSelectionDown(item.treeNode, selectedItems);
             const parent = this.getItem(item.parent);
@@ -438,9 +444,11 @@ export class TreeData {
      * @param {boolean} cascadeSelection If true, select all children of the item.
      */
     selectNode(node, selectedItems, cascadeSelection) {
-        node.selected = true;
-        if (!selectedItems.includes(node.name)) {
-            selectedItems.push(node.name);
+        if (!node.unselectable) {
+            node.selected = true;
+            if (!selectedItems.includes(node.name)) {
+                selectedItems.push(node.name);
+            }
         }
 
         if (cascadeSelection && node.children) {

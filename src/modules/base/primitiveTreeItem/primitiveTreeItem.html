@@ -1,7 +1,7 @@
 <template>
     <div class={wrapperClass} data-element-id="div-wrapper">
         <div
-            class="avonni-primitive-tree-item__item slds-is-relative slds-grid"
+            class={primitiveTreeItemClass}
             data-element-id="div-item"
             onclick={handleClick}
         >
@@ -42,7 +42,7 @@
                         <input
                             id="checkbox"
                             checked={selected}
-                            disabled={disabled}
+                            disabled={checkboxDisabled}
                             type="checkbox"
                             data-element-id="input-checkbox"
                             onchange={stopPropagation}
@@ -344,6 +344,7 @@
                     selected={item.selected}
                     show-checkbox={showCheckbox}
                     sortable={sortable}
+                    unselectable={item.unselectable}
                     data-element-id="avonni-primitive-tree-item"
                     data-key={item.key}
                 ></c-primitive-tree-item>

@@ -100,6 +100,10 @@
 .avonni-primitive-tree-item__item.slds-is-hovered,
 .avonni-primitive-tree-item__item:hover {
     background: var(--avonni-tree-item-color-background-hover, #f3f2f2);
+}
+
+.avonni-primitive-tree-item__item_selectable.slds-is-hovered,
+.avonni-primitive-tree-item__item_selectable:hover {
     cursor: pointer;
 }
 
