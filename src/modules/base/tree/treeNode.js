@@ -51,6 +51,7 @@ export function getTreeNode({
                 : node.expanded || false;
         },
         fields: node.fields,
+        hiddenActions: node.hiddenActions || false,
         href: node.href,
         iconName: node.iconName,
         indeterminate: node.indeterminate || false,

@@ -23,7 +23,7 @@ const DEFAULT_EDIT_FIELDS = [
     'isLoading'
 ];
 const UNSORTABLE_ITEMS_PARTS = [
-    'div-branch-buttons',
+    'div-actions',
     'div-popover',
     'lightning-button-icon-expand'
 ];
@@ -77,6 +77,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _enableInfiniteLoading = false;
     _expanded = false;
     _fields = [];
+    _hiddenActions = false;
     _href;
     _independentMultiSelect = false;
     _indeterminate = false;
@@ -284,6 +285,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set fields(value) {
         this._fields = normalizeArray(value);
+    }
+
+    /**
+     * If present, the item does not display any actions.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hiddenActions() {
+        return this._hiddenActions;
+    }
+    set hiddenActions(value) {
+        this._hiddenActions = normalizeBoolean(value);
     }
 
     /**
@@ -874,10 +890,10 @@ export default class PrimitiveTreeItem extends LightningElement {
     /**
      * Hide the action buttons.
      */
-    hideBranchButtons() {
+    hideActions() {
         if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
-                '[data-element-id="div-branch-buttons"]'
+                '[data-element-id="div-actions"]'
             ).style.opacity = 0;
 
             // Close button menu
@@ -969,10 +985,14 @@ export default class PrimitiveTreeItem extends LightningElement {
     /**
      * Display the action buttons.
      */
-    showBranchButtons() {
-        if (!this.popoverVisible && this.visibleActions.length) {
+    showActions() {
+        if (
+            !this.popoverVisible &&
+            this.visibleActions.length &&
+            !this.hiddenActions
+        ) {
             this.template.querySelector(
-                '[data-element-id="div-branch-buttons"]'
+                '[data-element-id="div-actions"]'
             ).style.opacity = 1;
         }
     }
@@ -1009,7 +1029,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
 
         this.popoverVisible = !this.popoverVisible;
-        this.hideBranchButtons();
+        this.hideActions();
     };
 
     /**

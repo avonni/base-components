@@ -108,9 +108,10 @@
     box-shadow: inset 0 0 0 1px #c9c9c9;
 }
 
-.avonni-primitive-tree-item__branch-buttons {
+.avonni-primitive-tree-item__actions {
     opacity: 0;
     transition: 0.17s;
+    margin-left: var(--avonni-tree-item-actions-spacing-inline-left);
 }
 
 .avonni-primitive-tree-item__popover {
