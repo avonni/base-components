@@ -106,9 +106,8 @@ export class TreeData {
         const item = this.getItemFromName(name);
         if (!item) return;
 
-        if (!item.treeNode.unselectable) {
-            item.treeNode.selected = true;
-        }
+        item.treeNode.selected = !item.treeNode.unselectable;
+
         if (cascadeSelection) {
             this.cascadeSelectionDown(item.treeNode, selectedItems);
             const parent = this.getItem(item.parent);
