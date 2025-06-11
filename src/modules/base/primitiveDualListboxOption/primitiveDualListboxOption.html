@@ -3,6 +3,7 @@
         <div
             class={computedOptionClass}
             role="option"
+            aria-labelledby="option-label"
             aria-selected={selected}
             tabindex={computedTabIndex}
             draggable={draggable}
@@ -10,6 +11,7 @@
         >
             <div if:true={showAvatar} class="slds-media__figure">
                 <c-avatar
+                    aria-hidden="true"
                     fallback-icon-name={avatar.fallbackIconName}
                     initials={avatar.initials}
                     presence={avatar.presence}
@@ -22,9 +24,9 @@
                 ></c-avatar>
             </div>
             <div if:false={avatar.primaryText} class="slds-media__body">
-                <span class="slds-truncate">{label}</span>
+                <span class="slds-truncate" aria-hidden="true">{label}</span>
             </div>
-            <span
+            <div
                 if:true={isLocked}
                 class="slds-media__figure slds-media__figure_reverse"
             >
@@ -33,7 +35,10 @@
                     size="x-small"
                     alternative-text={lockAlternativeText}
                 ></lightning-icon>
-            </span>
+            </div>
+            <span id="option-label" class="slds-assistive-text"
+                >{computedAriaLabel}</span
+            >
         </div>
     </div>
 </template>

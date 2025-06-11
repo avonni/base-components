@@ -97,6 +97,7 @@
                                             description={option.description}
                                             disabled={disabled}
                                             draggable={draggable}
+                                            group-label={group.label}
                                             hide-bottom-divider={hideBottomDivider}
                                             is-focused={option.isFocusable}
                                             is-locked={option.isLocked}
@@ -178,8 +179,7 @@
                         variant={buttonVariant}
                         data-element-id="lightning-button-icon-add"
                         onclick={handleRightButtonClick}
-                    >
-                    </lightning-button-icon>
+                    ></lightning-button-icon>
                     <lightning-button-icon
                         class="avonni-dual-listbox__button"
                         alternative-text={removeButtonLabel}
@@ -190,8 +190,7 @@
                         variant={buttonVariant}
                         data-element-id="lightning-button-icon-remove"
                         onclick={handleLeftButtonClick}
-                    >
-                    </lightning-button-icon>
+                    ></lightning-button-icon>
                 </div>
                 <div class={computedListboxColumnsClass}>
                     <span
@@ -200,7 +199,8 @@
                             avonni-dual-listbox__boxes-label
                         "
                         id="selected-list-label"
-                        >{selectedLabel}
+                    >
+                        {selectedLabel}
                     </span>
                     <div
                         class={computedListboxSelectedContainerClass}
@@ -259,6 +259,7 @@
                                             description={option.description}
                                             disabled={disabled}
                                             draggable={draggable}
+                                            group-label={group.label}
                                             hide-bottom-divider={hideBottomDivider}
                                             is-focused={option.isFocusable}
                                             is-locked={option.isLocked}
@@ -345,8 +346,7 @@
                             variant={buttonVariant}
                             data-element-id="lightning-button-icon-up"
                             onclick={handleUpButtonClick}
-                        >
-                        </lightning-button-icon>
+                        ></lightning-button-icon>
                         <lightning-button-icon
                             class="avonni-dual-listbox__button"
                             alternative-text={downButtonLabel}
@@ -357,8 +357,7 @@
                             variant={buttonVariant}
                             data-element-id="lightning-button-icon-down"
                             onclick={handleDownButtonClick}
-                        >
-                        </lightning-button-icon>
+                        ></lightning-button-icon>
                     </div>
                 </template>
             </div>

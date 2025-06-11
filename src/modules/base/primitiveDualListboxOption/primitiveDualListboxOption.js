@@ -3,6 +3,7 @@ import { classSet, normalizeBoolean, normalizeObject } from 'c/utils';
 
 export default class PrimitiveDualListboxOption extends LightningElement {
     @api description;
+    @api groupLabel;
     @api label;
     @api lockAlternativeText;
     @api value;
@@ -167,6 +168,22 @@ export default class PrimitiveDualListboxOption extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Computed Aria label.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        let ariaLabel = this.label;
+        if (this.groupLabel) {
+            ariaLabel += ` (${this.groupLabel})`;
+        }
+        if (this.description) {
+            ariaLabel += ` "${this.description}"`;
+        }
+        return ariaLabel;
+    }
 
     /**
      * Computed List Item Class styling.
