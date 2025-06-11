@@ -192,11 +192,11 @@ export default class PrimitiveDualListboxOption extends LightningElement {
      */
     get computedOptionClass() {
         return classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline avonni-dual-listbox__list-item_min-height avonni-dual-listbox__option'
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline avonni-primitive-dual-listbox__option_min-height avonni-primitive-dual-listbox__option'
         )
             .add({ 'slds-media_small': !this.description })
             .add({
-                'avonni-dual-listbox__list-item-selected slds-is-selected':
+                'avonni-primitive-dual-listbox__option-selected slds-is-selected':
                     this.selected
             })
             .toString();
@@ -219,7 +219,7 @@ export default class PrimitiveDualListboxOption extends LightningElement {
     get computedWrapperClass() {
         return classSet('slds-listbox__item')
             .add({
-                'avonni-dual-listbox__option_border-bottom':
+                'avonni-primitive-dual-listbox__option_border-bottom':
                     !this.hideBottomDivider
             })
             .toString();

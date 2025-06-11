@@ -114,7 +114,7 @@ describe('Primitive Dual Listbox Option', () => {
                         '[data-element-id="div-wrapper"]'
                     );
                     expect(wrapper.classList).not.toContain(
-                        'avonni-dual-listbox__option_border-bottom'
+                        'avonni-primitive-dual-listbox__option_border-bottom'
                     );
                 });
             });
@@ -127,7 +127,7 @@ describe('Primitive Dual Listbox Option', () => {
                         '[data-element-id="div-wrapper"]'
                     );
                     expect(wrapper.classList).toContain(
-                        'avonni-dual-listbox__option_border-bottom'
+                        'avonni-primitive-dual-listbox__option_border-bottom'
                     );
                 });
             });
@@ -203,7 +203,7 @@ describe('Primitive Dual Listbox Option', () => {
                 );
                 expect(option.ariaSelected).toBeTruthy();
                 expect(option.classList).toContain(
-                    'avonni-dual-listbox__list-item-selected',
+                    'avonni-primitive-dual-listbox__option-selected',
                     'slds-is-selected'
                 );
             });

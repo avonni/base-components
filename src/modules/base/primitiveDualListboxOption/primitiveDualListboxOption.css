@@ -1,4 +1,4 @@
-.avonni-dual-listbox__option {
+.avonni-primitive-dual-listbox__option {
     background-color: var(
         --avonni-dual-listbox-option-color-background,
         #ffffff
@@ -9,7 +9,7 @@
     );
 }
 
-.avonni-dual-listbox__option:hover {
+.avonni-primitive-dual-listbox__option:hover {
     background-color: var(
         --avonni-dual-listbox-option-color-background-hover,
         var(--slds-s-menu-item-color-background-active, #f3f2f2)
@@ -20,11 +20,11 @@
     );
 }
 
-.avonni-dual-listbox__list-item_min-height {
+.avonni-primitive-dual-listbox__option_min-height {
     min-height: 41px;
 }
 
-.avonni-dual-listbox__option_border-bottom {
+.avonni-primitive-dual-listbox__option_border-bottom {
     border-bottom-width: var(--avonni-dual-listbox-option-sizing-border, 1px);
     border-bottom-style: var(
         --avonni-dual-listbox-option-styling-border,
@@ -36,19 +36,8 @@
     );
 }
 
-.avonni-dual-listbox__list-item-selected {
-    background: var(
-        --avonni-dual-listbox-option-color-background-selected,
-        var(--slds-s-menu-item-color-background-active, #edeceb)
-    );
-    color: var(
-        --avonni-dual-listbox-option-text-color-selected,
-        var(--lwc-colorTextDefault, #181818)
-    );
-}
-
-.avonni-dual-listbox__list-item-selected:focus {
-    box-shadow: var(--slds-g-shadow-inset-inverse-focus-1);
+.avonni-primitive-dual-listbox__option-selected,
+.avonni-primitive-dual-listbox__option-selected:focus {
     background: var(
         --avonni-dual-listbox-option-color-background-selected,
         var(--slds-s-menu-item-color-background-active, #edeceb)
