@@ -1,5 +1,9 @@
 <template>
-    <div class={computedWrapperClass} role="presentation">
+    <div
+        class={computedWrapperClass}
+        role="presentation"
+        data-element-id="div-wrapper"
+    >
         <div
             class={computedOptionClass}
             role="option"
@@ -21,6 +25,7 @@
                     size={avatar.size}
                     src={avatar.src}
                     variant={avatar.variant}
+                    data-element-id="avonni-avatar"
                 ></c-avatar>
             </div>
             <div if:false={avatar.primaryText} class="slds-media__body">
@@ -34,9 +39,13 @@
                     icon-name="utility:lock"
                     size="x-small"
                     alternative-text={lockAlternativeText}
+                    data-element-id="lightning-lock-icon"
                 ></lightning-icon>
             </div>
-            <span id="option-label" class="slds-assistive-text"
+            <span
+                id="option-label"
+                class="slds-assistive-text"
+                data-element-id="div-assistive-text"
                 >{computedAriaLabel}</span
             >
         </div>
