@@ -122,6 +122,7 @@ describe('Primitive Tree Item', () => {
         ]);
         expect(element.expanded).toBeFalsy();
         expect(element.fields).toEqual([]);
+        expect(element.hiddenActions).toBeFalsy();
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.independentMultiSelect).toBeFalsy();
@@ -134,9 +135,11 @@ describe('Primitive Tree Item', () => {
         expect(element.metatext).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.nodeKey).toBeUndefined();
+        expect(element.noSlots).toBeFalsy();
         expect(element.selected).toBeFalsy();
         expect(element.showCheckbox).toBeFalsy();
         expect(element.sortable).toBeFalsy();
+        expect(element.unselectable).toBeFalsy();
     });
 
     /*
@@ -197,10 +200,10 @@ describe('Primitive Tree Item', () => {
                 '[data-element-id="div-header"]'
             );
             const buttons = header.querySelector(
-                '[data-element-id="div-branch-buttons"]'
+                '[data-element-id="div-actions"]'
             );
             expect(buttons.classList).toContain(
-                'avonni-primitive-tree-item__branch-buttons'
+                'avonni-primitive-tree-item__actions'
             );
 
             // Show buttons on header hover
@@ -222,6 +225,47 @@ describe('Primitive Tree Item', () => {
             // Show buttons on header focus
             header.dispatchEvent(new CustomEvent('focusin'));
             expect(buttons.style.opacity).toBe('1');
+
+            // Hide buttons on action menu blur
+            menu.dispatchEvent(new CustomEvent('blur'));
+            expect(buttons.style.opacity).toBe('0');
+        });
+    });
+
+    it('Hide and show action buttons and menu when hiddenActions is enabled', () => {
+        element.actions = ACTIONS;
+        element.hiddenActions = true;
+
+        return Promise.resolve().then(() => {
+            const header = element.shadowRoot.querySelector(
+                '[data-element-id="div-header"]'
+            );
+            const buttons = header.querySelector(
+                '[data-element-id="div-actions"]'
+            );
+            expect(buttons.classList).toContain(
+                'avonni-primitive-tree-item__actions'
+            );
+
+            // Don't show buttons on header hover
+            header.dispatchEvent(new CustomEvent('mouseenter'));
+            expect(buttons.style.opacity).toBe('');
+
+            // Open menu
+            const menu = header.querySelector(
+                '[data-element-id="avonni-button-menu"]'
+            );
+            menu.dispatchEvent(new CustomEvent('open'));
+            const spy = jest.spyOn(menu, 'close');
+
+            // Hide buttons and close menu on header leave
+            header.dispatchEvent(new CustomEvent('mouseleave'));
+            expect(buttons.style.opacity).toBe('0');
+            expect(spy).toHaveBeenCalled();
+
+            // Show buttons on header focus
+            header.dispatchEvent(new CustomEvent('focusin'));
+            expect(buttons.style.opacity).toBe('0');
 
             // Hide buttons on action menu blur
             menu.dispatchEvent(new CustomEvent('blur'));
@@ -755,7 +799,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    // selected, independent-multi-select and show-checkbox
+    // selected, independent-multi-select, show-checkbox and unselectable
     // Depends on childItems
     it('selected = false, with showCheckbox and some selected childItems', () => {
         element.independentMultiSelect = false;
@@ -867,6 +911,144 @@ describe('Primitive Tree Item', () => {
         });
     });
 
+    it('selected = false, with showCheckbox, some selected childItems and unselectable', () => {
+        element.unselectable = true;
+        element.independentMultiSelect = false;
+        element.selected = false;
+        element.showCheckbox = true;
+        element.childItems = [
+            {
+                label: 'not selected',
+                name: 'notSelected'
+            },
+            {
+                label: 'selected',
+                name: 'selected',
+                selected: true
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            expect(element.selected).toBeFalsy();
+            expect(element.ariaSelected).toBe('false');
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            expect(checkbox.indeterminate).toBeFalsy();
+            expect(checkbox.checked).toBeFalsy();
+        });
+    });
+
+    it('selected = false, with showCheckbox, all selected childItems and unselectable', () => {
+        element.unselectable = true;
+        element.independentMultiSelect = false;
+        element.selected = false;
+        element.showCheckbox = true;
+        element.childItems = [
+            {
+                label: 'selected too',
+                name: 'selectedToo',
+                selected: true
+            },
+            {
+                label: 'selected',
+                name: 'selected',
+                selected: true
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            expect(element.selected).toBeFalsy();
+            expect(element.ariaSelected).toBe('false');
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            expect(checkbox.indeterminate).toBeFalsy();
+            expect(checkbox.checked).toBeFalsy();
+        });
+    });
+
+    it('selected = true, with showCheckbox, all selected childItems and unselectable direct child', () => {
+        element.independentMultiSelect = false;
+        element.selected = false;
+        element.showCheckbox = true;
+        element.childItems = [
+            {
+                label: 'selected too',
+                name: 'selectedToo',
+                unselectable: true,
+                children: [
+                    {
+                        label: 'Child 1.1',
+                        href: '#child1-1',
+                        name: 'child1-1',
+                        selected: true
+                    }
+                ]
+            },
+            {
+                label: 'selected',
+                name: 'selected',
+                selected: true
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            expect(element.selected).toBeTruthy();
+            expect(element.ariaSelected).toBe('true');
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            expect(checkbox.indeterminate).toBeFalsy();
+            expect(checkbox.checked).toBeTruthy();
+        });
+    });
+
+    it('selected = true, with showCheckbox, some selected childItems and unselectable direct child', () => {
+        element.independentMultiSelect = false;
+        element.selected = false;
+        element.showCheckbox = true;
+        element.childItems = [
+            {
+                label: 'selected too',
+                name: 'selectedToo',
+                unselectable: true,
+                children: [
+                    {
+                        label: 'Child 1.1',
+                        href: '#child1-1',
+                        name: 'child1-1',
+                        unselectable: true,
+                        children: [
+                            {
+                                label: 'Child 1.1.1',
+                                href: '#child1-1-1',
+                                name: 'child1-1-1',
+                                selected: false
+                            }
+                        ],
+                        selected: true
+                    }
+                ]
+            },
+            {
+                label: 'selected',
+                name: 'selected',
+                selected: true
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            expect(element.selected).toBeFalsy();
+            expect(element.ariaSelected).toBe('false');
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            expect(checkbox.indeterminate).toBeTruthy();
+            expect(checkbox.checked).toBeFalsy();
+        });
+    });
+
     // sortable and privatemousedown
     // Depends on nodeKey and name
     it('sortable = false should not allow privatemousedown event', () => {
@@ -906,6 +1088,19 @@ describe('Primitive Tree Item', () => {
             const spy = jest.spyOn(event, 'preventDefault');
             link.dispatchEvent(event);
             expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    // unselectable
+    it('unselectable checkbox', () => {
+        element.unselectable = true;
+        element.showCheckbox = true;
+
+        return Promise.resolve().then(() => {
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            expect(checkbox.disabled).toBeTruthy();
         });
     });
 
@@ -1380,6 +1575,39 @@ describe('Primitive Tree Item', () => {
             });
     });
 
+    it('privateitemclick event on label, unselectable', () => {
+        element.unselectable = true;
+        element.showCheckbox = true;
+        element.childItems = ITEMS;
+        element.label = 'boubou';
+        const handler = jest.fn();
+        element.addEventListener('privateitemclick', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const checkbox = element.shadowRoot.querySelector(
+                    '[data-element-id="input-checkbox"]'
+                );
+                expect(checkbox.indeterminate).toBeFalsy();
+
+                const label = element.shadowRoot.querySelector(
+                    '[data-element-id="span-label"]'
+                );
+                label.click();
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.target).toBe('anchor');
+                expect(element.selected).toBeFalsy();
+            })
+            .then(() => {
+                const checkbox = element.shadowRoot.querySelector(
+                    '[data-element-id="input-checkbox"]'
+                );
+                expect(checkbox.indeterminate).toBeFalsy();
+                expect(checkbox.checked).toBeFalsy();
+            });
+    });
+
     it('privateitemclick event dispatched by keyboard', () => {
         element.href = '#link';
         const handler = jest.fn();
@@ -1556,6 +1784,12 @@ describe('Primitive Tree Item', () => {
         expect(item.classList).not.toContain(
             'avonni-primitive-tree-item__item_border'
         );
+
+        otherElement.noSlots = true;
+        callbacks.setBorder();
+        expect(item.classList).not.toContain(
+            'avonni-primitive-tree-item__item_border'
+        );
     });
 
     it('privateregisteritem event, setSelected callback', () => {
@@ -1569,5 +1803,19 @@ describe('Primitive Tree Item', () => {
         const callbacks = handler.mock.calls[0][0].detail;
         callbacks.setSelected(true);
         expect(otherElement.selected).toBeTruthy();
+    });
+
+    it('privateregisteritem event, setSelected callback, unselectable', () => {
+        const otherElement = createElement('base-primitive-tree-item', {
+            is: PrimitiveTreeItem
+        });
+        otherElement.unselectable = true;
+        const handler = jest.fn();
+        otherElement.addEventListener('privateregisteritem', handler);
+        document.body.appendChild(otherElement);
+
+        const callbacks = handler.mock.calls[0][0].detail;
+        callbacks.setSelected(true);
+        expect(otherElement.selected).toBeFalsy();
     });
 });

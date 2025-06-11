@@ -16,6 +16,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api editableFields;
     @api expanded;
     @api fields;
+    @api hiddenActions;
     @api href;
     @api independentMultiSelect;
     @api indeterminate;
@@ -25,7 +26,9 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api level;
     @api metatext;
     @api name;
+    @api noSlots;
     @api selected;
     @api showCheckbox;
     @api sortable;
+    @api unselectable;
 }
