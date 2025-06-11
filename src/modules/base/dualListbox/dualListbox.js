@@ -780,20 +780,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Computed List Item Class styling.
-     *
-     * @type {string}
-     */
-    get computedListItemClass() {
-        return classSet('slds-listbox__item')
-            .add({
-                'avonni-dual-listbox__option_border-bottom':
-                    !this.hideBottomDivider
-            })
-            .toString();
-    }
-
-    /**
      * Computed Lock Assistive Text.
      *
      * @type {string}

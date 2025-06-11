@@ -38,7 +38,7 @@ function selectNextOptionFromShift(option, moveUp, isMultiple, intf) {
     const options = intf.getElementsOfList(option.dataset.type);
     const nextOption = options[next];
     if (nextOption) {
-        intf.updateSelectedOptions(nextOption, shiftAdd, true);
+        intf.updateSelectedOptions(nextOption, shiftAdd, isMultiple);
         intf.setLastShift(moveUp);
     }
 }
