@@ -6,9 +6,9 @@ function preventDefaultAndStopPropagation(event) {
 }
 
 function setFocusOnNextOption(option, moveUp, intf) {
-    const index = parseInt(option.getAttribute('data-index'), 10);
+    const index = parseInt(option.dataset.index, 10);
     const i = index + (moveUp ? -1 : 1);
-    const options = intf.getElementsOfList(option.getAttribute('data-type'));
+    const options = intf.getElementsOfList(option.dataset.type);
     const next = options[i];
     if (next) {
         next.focus();
@@ -16,10 +16,10 @@ function setFocusOnNextOption(option, moveUp, intf) {
 }
 
 function selectNextOption(option, moveUp, intf) {
-    const selected = option.getAttribute('aria-selected') === 'true';
-    const index = parseInt(option.getAttribute('data-index'), 10);
+    const selected = option.dataset.selected === 'true';
+    const index = parseInt(option.dataset.index, 10);
     const i = index + (selected ? (moveUp ? -1 : 1) : 0);
-    const options = intf.getElementsOfList(option.getAttribute('data-type'));
+    const options = intf.getElementsOfList(option.dataset.type);
     const next = options[i];
     if (next) {
         intf.updateSelectedOptions(next, true, false);
@@ -27,7 +27,7 @@ function selectNextOption(option, moveUp, intf) {
 }
 
 function selectNextOptionFromShift(option, moveUp, isMultiple, intf) {
-    const curr = parseInt(option.getAttribute('data-index'), 10);
+    const curr = parseInt(option.dataset.index, 10);
     if (intf.getShiftIndex() < 0) {
         intf.setShiftIndex(curr);
         intf.setLastShift(moveUp);
@@ -35,7 +35,7 @@ function selectNextOptionFromShift(option, moveUp, isMultiple, intf) {
     const next = curr + (intf.getLastShift() !== moveUp ? 0 : moveUp ? -1 : 1);
     const pos = next < intf.getShiftIndex();
     const shiftAdd = pos === moveUp || intf.getShiftIndex() === next;
-    const options = intf.getElementsOfList(option.getAttribute('data-type'));
+    const options = intf.getElementsOfList(option.dataset.type);
     const nextOption = options[next];
     if (nextOption) {
         intf.updateSelectedOptions(nextOption, shiftAdd, true);
@@ -47,7 +47,7 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
     if (event.metaKey || event.ctrlKey) {
         keyboardInterface.setShiftIndex(-1);
         const keyCodesA = 'A'.charCodeAt(0);
-        const selected = event.target.getAttribute('aria-selected') === 'true';
+        const selected = event.target.dataset.selected === 'true';
         switch (event.keyCode) {
             case keyCodes.up:
                 preventDefaultAndStopPropagation(event);

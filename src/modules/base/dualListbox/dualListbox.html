@@ -24,7 +24,8 @@
                             avonni-dual-listbox__boxes-label
                         "
                         id="source-list-label"
-                        >{sourceLabel}
+                    >
+                        {sourceLabel}
                     </span>
                     <div
                         if:true={allowSearch}
@@ -47,11 +48,8 @@
                         ondragleave={handleDragLeaveSource}
                         onscroll={handleScroll}
                     >
-                        <ul
-                            class="
-                                slds-listbox slds-listbox_vertical
-                                source-list
-                            "
+                        <div
+                            class="slds-listbox slds-listbox_vertical"
                             id="source-list"
                             aria-describedby="keyboard-interacton"
                             aria-disabled={ariaDisabled}
@@ -66,81 +64,95 @@
                             >
                                 <div
                                     if:true={group.label}
-                                    key={generateKey}
-                                    class="
-                                        slds-listbox__item
-                                        avonni-dual-listbox__group
-                                        avonni-dual-listbox__option_border-bottom
-                                    "
-                                    role="presentation"
+                                    key={group.name}
+                                    aria-label={group.label}
+                                    role="group"
                                 >
                                     <div
                                         class="
-                                            slds-media slds-media_small
-                                            slds-p-around_x-small
+                                            slds-listbox__item
+                                            avonni-dual-listbox__group
+                                            avonni-dual-listbox__option_border-bottom
                                         "
-                                        data-element-id="group-label"
-                                    >
-                                        {group.label}
-                                    </div>
-                                </div>
-                                <template
-                                    for:each={group.options}
-                                    for:item="option"
-                                    for:index="index"
-                                >
-                                    <li
-                                        key={option.value}
-                                        class={computedListItemClass}
                                         role="presentation"
-                                        data-element-id="li-source"
                                     >
                                         <div
-                                            class={option.classList}
-                                            aria-selected={option.selected}
-                                            group-index={index}
-                                            role="option"
-                                            tabindex={option.tabIndex}
+                                            class="
+                                                slds-media slds-media_small
+                                                slds-p-around_x-small
+                                            "
+                                            data-element-id="group-label"
+                                        >
+                                            {group.label}
+                                        </div>
+                                    </div>
+                                    <template
+                                        for:each={group.options}
+                                        for:item="option"
+                                    >
+                                        <c-primitive-dual-listbox-option
+                                            key={option.value}
+                                            role="presentation"
+                                            avatar={option.avatar}
+                                            description={option.description}
+                                            disabled={disabled}
+                                            draggable={draggable}
+                                            hide-bottom-divider={hideBottomDivider}
+                                            is-focused={option.isFocusable}
+                                            is-locked={option.isLocked}
+                                            label={option.label}
+                                            lock-alternative-text={computedLockAssistiveText}
+                                            selected={option.selected}
+                                            show-avatar={option.showAvatar}
+                                            value={option.value}
                                             data-element-id="div-source"
                                             data-role="option"
-                                            data-value={option.value}
+                                            data-selected={option.selected}
                                             data-type="ul-source-list"
+                                            data-value={option.value}
                                             onclick={handleOptionClick}
+                                            ondragend={handleDragEndSource}
+                                            ondragstart={handleDragStart}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
-                                            draggable={draggable}
-                                            ondragstart={handleDragStart}
-                                            ondragend={handleDragEndSource}
-                                        >
-                                            <div class="slds-media__figure">
-                                                <c-avatar
-                                                    if:true={option.showAvatar}
-                                                    fallback-icon-name={option.avatar.fallbackIconName}
-                                                    initials={option.avatar.initials}
-                                                    presence={option.avatar.presence}
-                                                    presence-position={option.avatar.presencePosition}
-                                                    primary-text={option.avatar.primaryText}
-                                                    secondary-text={option.avatar.secondaryText}
-                                                    size={option.avatar.size}
-                                                    src={option.avatar.src}
-                                                    variant={option.avatar.variant}
-                                                ></c-avatar>
-                                            </div>
-                                            <span
-                                                if:false={option.avatar.primaryText}
-                                                class="slds-media__body"
-                                            >
-                                                <span
-                                                    class="slds-truncate"
-                                                    title={option.label}
-                                                    >{option.label}
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </li>
+                                        ></c-primitive-dual-listbox-option>
+                                    </template>
+                                </div>
+                                <template
+                                    if:false={group.label}
+                                    for:each={group.options}
+                                    for:item="option"
+                                >
+                                    <c-primitive-dual-listbox-option
+                                        key={option.value}
+                                        role="presentation"
+                                        avatar={option.avatar}
+                                        description={option.description}
+                                        disabled={disabled}
+                                        draggable={draggable}
+                                        hide-bottom-divider={hideBottomDivider}
+                                        is-focused={option.isFocusable}
+                                        is-locked={option.isLocked}
+                                        label={option.label}
+                                        lock-alternative-text={computedLockAssistiveText}
+                                        selected={option.selected}
+                                        show-avatar={option.showAvatar}
+                                        value={option.value}
+                                        data-element-id="div-source"
+                                        data-group-index={groupIndex}
+                                        data-role="option"
+                                        data-selected={option.selected}
+                                        data-type="ul-source-list"
+                                        data-value={option.value}
+                                        onclick={handleOptionClick}
+                                        ondragend={handleDragEndSource}
+                                        ondragstart={handleDragStart}
+                                        onkeydown={handleOptionKeyDown}
+                                        onmouseup={dispatchOptionClick}
+                                    ></c-primitive-dual-listbox-option>
                                 </template>
                             </template>
-                        </ul>
+                        </div>
                         <div if:true={isLoading} class={loadingSpinnerClass}>
                             <lightning-spinner
                                 alternative-text={i18n.loadingText}
@@ -196,7 +208,7 @@
                         ondragover={handleDragOverSelected}
                         ondragleave={handleDragLeaveSelected}
                     >
-                        <ul
+                        <div
                             class="slds-listbox slds-listbox_vertical"
                             aria-describedby="keyboard-interacton"
                             aria-disabled={ariaDisabled}
@@ -213,96 +225,102 @@
                             >
                                 <div
                                     if:true={group.label}
-                                    key={generateKey}
-                                    class="
-                                        slds-listbox__item
-                                        avonni-dual-listbox__group
-                                        avonni-dual-listbox__option_border-bottom
-                                    "
-                                    role="presentation"
+                                    key={group.name}
+                                    aria-label={group.label}
+                                    role="group"
                                 >
                                     <div
                                         class="
-                                            slds-media slds-media_small
-                                            slds-p-around_x-small
+                                            slds-listbox__item
+                                            avonni-dual-listbox__group
+                                            avonni-dual-listbox__option_border-bottom
                                         "
-                                        data-element-id="group-label"
-                                    >
-                                        {group.label}
-                                    </div>
-                                </div>
-                                <template
-                                    for:each={group.options}
-                                    for:item="option"
-                                    for:index="insideGroupIndex"
-                                >
-                                    <li
-                                        key={option.value}
-                                        class={computedListItemClass}
                                         role="presentation"
-                                        data-element-id="li-selected"
                                     >
                                         <div
-                                            class={option.classList}
-                                            aria-selected={option.selected}
-                                            role="option"
-                                            tabindex={option.tabIndex}
+                                            class="
+                                                slds-media slds-media_small
+                                                slds-p-around_x-small
+                                            "
+                                            data-element-id="group-label"
+                                        >
+                                            {group.label}
+                                        </div>
+                                    </div>
+                                    <template
+                                        for:each={group.options}
+                                        for:item="option"
+                                        for:index="insideGroupIndex"
+                                    >
+                                        <c-primitive-dual-listbox-option
+                                            key={option.value}
+                                            role="presentation"
+                                            avatar={option.avatar}
+                                            description={option.description}
+                                            disabled={disabled}
+                                            draggable={draggable}
+                                            hide-bottom-divider={hideBottomDivider}
+                                            is-focused={option.isFocusable}
+                                            is-locked={option.isLocked}
+                                            label={option.label}
+                                            lock-alternative-text={computedLockAssistiveText}
+                                            selected={option.selected}
+                                            show-avatar={option.showAvatar}
+                                            value={option.value}
                                             data-element-id="div-selected"
                                             data-group-index={groupIndex}
                                             data-inside-group-index={insideGroupIndex}
                                             data-role="option"
-                                            data-value={option.value}
+                                            data-selected={option.selected}
                                             data-type="ul-selected-list"
+                                            data-value={option.value}
                                             onclick={handleOptionClick}
-                                            onkeydown={handleOptionKeyDown}
-                                            onmouseup={dispatchOptionClick}
-                                            draggable={draggable}
                                             ondragstart={handleDragStart}
                                             ondragend={handleDragEndSelected}
                                             ondragover={handleDragOver}
-                                        >
-                                            <div class="slds-media__figure">
-                                                <c-avatar
-                                                    if:true={option.showAvatar}
-                                                    fallback-icon-name={option.avatar.fallbackIconName}
-                                                    initials={option.avatar.initials}
-                                                    presence={option.avatar.presence}
-                                                    presence-position={option.avatar.presencePosition}
-                                                    primary-text={option.avatar.primaryText}
-                                                    secondary-text={option.avatar.secondaryText}
-                                                    size={option.avatar.size}
-                                                    src={option.avatar.src}
-                                                    variant={option.avatar.variant}
-                                                ></c-avatar>
-                                            </div>
-                                            <span
-                                                if:false={option.avatar.primaryText}
-                                                class="slds-media__body"
-                                            >
-                                                <span
-                                                    class="slds-truncate"
-                                                    title={option.label}
-                                                    >{option.label}</span
-                                                >
-                                            </span>
-                                            <span
-                                                if:true={option.isLocked}
-                                                class="
-                                                    slds-media__figure
-                                                    slds-media__figure_reverse
-                                                "
-                                            >
-                                                <lightning-icon
-                                                    icon-name="utility:lock"
-                                                    size="x-small"
-                                                    alternative-text={computedLockAssistiveText}
-                                                ></lightning-icon>
-                                            </span>
-                                        </div>
-                                    </li>
+                                            onkeydown={handleOptionKeyDown}
+                                            onmouseup={dispatchOptionClick}
+                                        ></c-primitive-dual-listbox-option>
+                                    </template>
+                                </div>
+                                <template
+                                    if:false={group.label}
+                                    for:each={group.options}
+                                    for:item="option"
+                                    for:index="insideGroupIndex"
+                                >
+                                    <c-primitive-dual-listbox-option
+                                        key={option.value}
+                                        role="presentation"
+                                        avatar={option.avatar}
+                                        description={option.description}
+                                        disabled={disabled}
+                                        draggable={draggable}
+                                        hide-bottom-divider={hideBottomDivider}
+                                        is-focused={option.isFocusable}
+                                        is-locked={option.isLocked}
+                                        label={option.label}
+                                        lock-alternative-text={computedLockAssistiveText}
+                                        selected={option.selected}
+                                        show-avatar={option.showAvatar}
+                                        value={option.value}
+                                        data-element-id="div-selected"
+                                        data-group-index={groupIndex}
+                                        data-inside-group-index={insideGroupIndex}
+                                        data-role="option"
+                                        data-selected={option.selected}
+                                        data-type="ul-selected-list"
+                                        data-value={option.value}
+                                        onclick={handleOptionClick}
+                                        ondragstart={handleDragStart}
+                                        ondragend={handleDragEndSelected}
+                                        ondragover={handleDragOver}
+                                        onkeydown={handleOptionKeyDown}
+                                        onmouseup={dispatchOptionClick}
+                                    ></c-primitive-dual-listbox-option>
                                 </template>
                             </template>
-                        </ul>
+                        </div>
                         <span
                             if:true={isSelectedBoxEmpty}
                             data-element-id="span-selected-placeholder"

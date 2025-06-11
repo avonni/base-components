@@ -63,6 +63,10 @@
             "path": "src/modules/base/primitiveActivityTimelineItem/primitiveActivityTimelineItem.js"
         },
         {
+            "name": "c/primitiveDualListboxOption",
+            "path": "src/modules/base/primitiveDualListboxOption/primitiveDualListboxOption.js"
+        },
+        {
             "name": "c/alert",
             "path": "src/modules/base/alert/alert.js"
         },

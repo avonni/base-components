@@ -1,0 +1,39 @@
+<template>
+    <div class={computedWrapperClass} role="presentation">
+        <div
+            class={computedOptionClass}
+            role="option"
+            aria-selected={selected}
+            tabindex={computedTabIndex}
+            draggable={draggable}
+            data-element-id="dual-listbox-option"
+        >
+            <div if:true={showAvatar} class="slds-media__figure">
+                <c-avatar
+                    fallback-icon-name={avatar.fallbackIconName}
+                    initials={avatar.initials}
+                    presence={avatar.presence}
+                    presence-position={avatar.presencePosition}
+                    primary-text={avatar.primaryText}
+                    secondary-text={avatar.secondaryText}
+                    size={avatar.size}
+                    src={avatar.src}
+                    variant={avatar.variant}
+                ></c-avatar>
+            </div>
+            <div if:false={avatar.primaryText} class="slds-media__body">
+                <span class="slds-truncate">{label}</span>
+            </div>
+            <span
+                if:true={isLocked}
+                class="slds-media__figure slds-media__figure_reverse"
+            >
+                <lightning-icon
+                    icon-name="utility:lock"
+                    size="x-small"
+                    alternative-text={lockAlternativeText}
+                ></lightning-icon>
+            </span>
+        </div>
+    </div>
+</template>
