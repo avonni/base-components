@@ -44,10 +44,10 @@ function selectNextOptionFromShift(option, moveUp, isMultiple, intf) {
 }
 
 export function handleKeyDownOnOption(event, keyboardInterface) {
+    const selected = event.target.dataset.selected === 'true';
     if (event.metaKey || event.ctrlKey) {
         keyboardInterface.setShiftIndex(-1);
         const keyCodesA = 'A'.charCodeAt(0);
-        const selected = event.target.dataset.selected === 'true';
         switch (event.keyCode) {
             case keyCodes.up:
                 preventDefaultAndStopPropagation(event);
@@ -65,6 +65,7 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.moveOptionsBetweenLists(false);
                 break;
+            case keyCodes.enter:
             case keyCodes.space:
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.updateSelectedOptions(
@@ -114,8 +115,14 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
                 preventDefaultAndStopPropagation(event);
                 selectNextOption(event.target, false, keyboardInterface);
                 break;
+            case keyCodes.enter:
             case keyCodes.space:
                 preventDefaultAndStopPropagation(event);
+                keyboardInterface.updateSelectedOptions(
+                    event.target,
+                    !selected,
+                    false
+                );
                 keyboardInterface.dispatchOptionClick(event);
                 break;
             default:
