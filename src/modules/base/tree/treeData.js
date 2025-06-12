@@ -51,6 +51,24 @@ export class TreeData {
     }
 
     /**
+     * Check if all selectable children of a node are selected.
+     *
+     * @param {object} node Node to check.
+     * @returns {boolean} True if all selectable children are selected, false otherwise.
+     */
+    areSelectableChildrenSelected(node) {
+        if (!node.children || !node.children.length) {
+            return node.selected || node.unselectable;
+        }
+        return node.children.every((child) => {
+            if (child.unselectable) {
+                return this.areSelectableChildrenSelected(child);
+            }
+            return child.selected;
+        });
+    }
+
+    /**
      * Select all children descendants of a node.
      *
      * @param {object} node Node to select all descendants of.
@@ -79,9 +97,8 @@ export class TreeData {
         const node = item.treeNode;
         const name = node.name;
         if (!selectedItems.includes(name)) {
-            const allChildrenAreSelected = node.children.every((child) => {
-                return child.selected;
-            });
+            const allChildrenAreSelected =
+                this.areSelectableChildrenSelected(node);
             if (allChildrenAreSelected) {
                 if (!node.unselectable) {
                     node.selected = true;

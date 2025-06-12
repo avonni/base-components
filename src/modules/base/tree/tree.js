@@ -1004,10 +1004,8 @@ export default class Tree extends LightningElement {
     updateParentsSelection(node) {
         const parent = this.treedata.getItem(node.parent);
         if (parent) {
-            const children = parent.treeNode.children;
-            const selectedChildren = children.filter((child) => child.selected);
             const isSelected =
-                selectedChildren.length === children.length &&
+                this.treedata.areSelectableChildrenSelected(parent.treeNode) &&
                 !parent.treeNode.unselectable;
 
             if (isSelected !== parent.treeNode.selected) {
