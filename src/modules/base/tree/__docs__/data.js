@@ -57,6 +57,7 @@ export const ITEMS = [
                 iconName: 'utility:record_alt',
                 href: '#record1',
                 name: 'node1-1',
+                unselectable: true,
                 items: [
                     {
                         label: 'Go to Record 1.1.1',
@@ -66,12 +67,14 @@ export const ITEMS = [
                             {
                                 label: 'Go to Record 1.1.1.1',
                                 href: '#record1',
-                                name: 'node1-1-1-1'
+                                name: 'node1-1-1-1',
+                                noSlots: true
                             },
                             {
                                 label: 'Go to Record 1.1.1.2',
                                 href: '#record1',
-                                name: 'node1-1-1-2'
+                                name: 'node1-1-1-2',
+                                noSlots: true
                             }
                         ]
                     }
@@ -143,7 +146,9 @@ export const ITEMS = [
     {
         label: 'Go to Record 7',
         href: '#record7',
-        name: 'node7'
+        name: 'node7',
+        actions: [{ name: 'record7Action', label: 'Record 7 action' }],
+        hiddenActions: true
     }
 ];
 
