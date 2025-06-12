@@ -1665,6 +1665,34 @@ describe('Tree', () => {
                 });
             });
 
+            it('select unselectable', () => {
+                element.items = ITEMS;
+                element.selectedItems = ['thirdLevel'];
+
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items[1].dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: {
+                                bounds: { x: 5, y: 185 },
+                                target: 'anchor',
+                                key: '8'
+                            },
+                            bubbles: true,
+                            cancelable: true
+                        })
+                    );
+
+                    expect(handler).not.toHaveBeenCalled();
+                    expect(element.selectedItems).toEqual(['thirdLevel']);
+                });
+            });
+
             it('select is cancelled', () => {
                 element.items = ITEMS;
                 element.selectedItems = ['thirdLevel'];

@@ -142,8 +142,8 @@ export const ITEMS = [
     },
     {
         label: 'Simple unselectable',
-        name: 'simpleUnselectable'
-        //unselectable: true
+        name: 'simpleUnselectable',
+        unselectable: true
     }
 ];
 
