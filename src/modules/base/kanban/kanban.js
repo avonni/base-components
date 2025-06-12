@@ -424,7 +424,7 @@ export default class Kanban extends LightningElement {
      */
     get computedTileClass() {
         return classSet(
-            'avonni-kanban__tile slds-item slds-is-relative slds-m-around_x-small'
+            'avonni-kanban__tile slds-has-dividers_around-space slds-m-around_x-small'
         ).add({
             'avonni-kanban__tile_disabled_drag': this.disableItemDragAndDrop
         });
@@ -476,6 +476,15 @@ export default class Kanban extends LightningElement {
      */
     get subGroupsLabels() {
         return this._computedGroups[0].subGroups;
+    }
+
+    /**
+     * Check if the tiles are draggable.
+     *
+     * @type {boolean}
+     */
+    get tileDraggable() {
+        return !this.disableItemDragAndDrop;
     }
 
     /**
@@ -1413,6 +1422,40 @@ export default class Kanban extends LightningElement {
         if (this._draggedTile) {
             this.animateTiles(groups);
         }
+    }
+
+    handleTileActionClick(event) {
+        const targetName = event.detail.targetName;
+        const recordAction = this._records.find((record) => {
+            return record[this.keyField] === targetName;
+        });
+
+        const actionName = event.detail.name;
+        const group =
+            event.currentTarget.dataset.group ||
+            recordAction[this.groupFieldName];
+
+        /**
+         * The event fired when a user clicks on an tile action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} targetKeyField Unique data keyField value.
+         * @param {string} groupValue Group value the action belongs to.
+         * @param {string} name Unique name of the action.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    targetKeyField: targetName,
+                    groupValue: group
+                },
+                bubbles: true
+            })
+        );
     }
 
     /**

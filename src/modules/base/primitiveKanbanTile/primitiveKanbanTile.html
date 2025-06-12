@@ -1,0 +1,113 @@
+<template>
+    <lightning-tile class={computedTileClass} tabindex="0">
+        <!--
+            The wrapping <div> is needed for the tests to pass.
+            Otherwise, not all the elements appear in the default slot.
+        -->
+        <div>
+            <div
+                if:true={coverImage}
+                class="avonni-kanban__tile_image slds-m-bottom_small"
+                style={computedCoverImageStyle}
+                data-element-id="avonni-kanban__tile_image"
+            ></div>
+            <div
+                if:true={hasHeader}
+                class="avonni-kanban__tile_header"
+                data-element-id="avonni-kanban__tile_header"
+            >
+                <div
+                    if:true={title}
+                    class="avonni-kanban__tile_title"
+                    data-element-id="avonni-kanban__tile_title"
+                >
+                    {title}
+                </div>
+                <div
+                    if:true={description}
+                    class="avonni-kanban__tile_description"
+                    data-element-id="avonni-kanban__tile_description"
+                >
+                    {description}
+                </div>
+            </div>
+            <ul data-element-id="fields" class="avonni-kanban__tile_fields">
+                <li for:each={fields} for:item="field" key={field.label}>
+                    <p>
+                        <c-output-data
+                            label={field.label}
+                            type={field.type}
+                            type-attributes={field.typeAttributes}
+                            value={field.value}
+                            variant={fieldAttributes.variant}
+                        ></c-output-data>
+                    </p>
+                </li>
+                <li>
+                    <div class={computedTileBottomClass}>
+                        <div
+                            if:true={hasDates}
+                            class={computedDatesClass}
+                            data-element-id="avonni-kanban__tile_dates"
+                        >
+                            <lightning-icon
+                                class="
+                                    avonni-kanban__tile_dates-icon
+                                    slds-m-right_x-small
+                                "
+                                icon-name="utility:clock"
+                                size="x-small"
+                            ></lightning-icon>
+                            <lightning-formatted-date-time
+                                day="2-digit"
+                                month="short"
+                                value={startDate}
+                                year="numeric"
+                            ></lightning-formatted-date-time>
+                            <template if:true={dueDate}>
+                                &nbsp;-&nbsp;
+                                <lightning-formatted-date-time
+                                    day="2-digit"
+                                    month="short"
+                                    value={dueDate}
+                                    year="numeric"
+                                ></lightning-formatted-date-time>
+                            </template>
+                        </div>
+                        <lightning-icon
+                            if:true={warningIcon}
+                            class={computedWarningIconClass}
+                            icon-name={warningIcon}
+                            size="x-small"
+                            variant="warning"
+                        ></lightning-icon>
+                    </div>
+                </li>
+            </ul>
+            <div class="avonni-kanban__tile_actions" if:true={hasActions}>
+                <c-button-menu
+                    class="slds-is-relative"
+                    alternative-text="Show menu"
+                    icon-size="x-small"
+                    menu-alignment="right"
+                    variant="border-filled"
+                    onselect={handleActionClick}
+                    onmousedown={stopPropagation}
+                >
+                    <template for:each={actions} for:item="action">
+                        <lightning-menu-item
+                            key={action.name}
+                            class="slds-text-color_default"
+                            disabled={action.disabled}
+                            label={action.label}
+                            prefix-icon-name={action.iconName}
+                            value={action.name}
+                            data-element-id="avonni-kanban__action"
+                            onmousedown={stopPropagation}
+                        ></lightning-menu-item>
+                    </template>
+                </c-button-menu>
+            </div>
+        </div>
+    </lightning-tile>
+</template>
