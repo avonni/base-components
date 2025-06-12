@@ -472,6 +472,10 @@ export default class ColorPalette extends LightningElement {
                                     colors: []
                                 };
                             }
+                            computedColor.setGroup({
+                                name: groupName,
+                                label: groupDefinition.label
+                            });
                             groups[groupName].colors.push(computedColor);
                             hasBeenAddedToAGroup = true;
                         }

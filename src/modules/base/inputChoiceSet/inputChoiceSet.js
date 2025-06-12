@@ -609,6 +609,22 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Computed Input Class styling.
+     *
+     * @type {string}
+     */
+    get computedInputClass() {
+        return classSet('avonni-input-choice-set__option')
+            .add({
+                'avonni-input-choice-set__option-button': this.buttonVariant,
+                'avonni-input-choice-set__option-toggle': this.checkboxVariant,
+                'avonni-input-choice-set__option-default':
+                    !this.buttonVariant && !this.checkboxVariant
+            })
+            .toString();
+    }
+
+    /**
      * Computed Input Container Class styling.
      *
      * @type {string}
@@ -1068,6 +1084,34 @@ export default class InputChoiceSet extends LightningElement {
         this.computedWidth = `width: ${maxWidth + 4}px;`;
     }
 
+    _showTooltip(tooltipValue, target) {
+        if (!tooltipValue) {
+            return;
+        }
+        const tooltip = new Tooltip(tooltipValue, {
+            type: TooltipType.Toggle,
+            root: this,
+            target: () => target,
+            align: {
+                horizontal: Direction.Left,
+                vertical: Direction.Top
+            },
+            targetAlign: {
+                horizontal: Direction.Left,
+                vertical: Direction.Bottom
+            }
+        });
+        this._tooltip = tooltip;
+        this._tooltip.initialize();
+        this._tooltip.show();
+
+        this._tooltipTimeout = setTimeout(() => {
+            if (this._tooltip) {
+                this._tooltip.startPositioning();
+            }
+        }, 50);
+    }
+
     /**
      * Make sure the deprecated attributes are still supported through the type attributes.
      */
@@ -1169,6 +1213,9 @@ export default class InputChoiceSet extends LightningElement {
      */
     handleBlur() {
         this.interactingState.leave();
+        if (this.buttonVariant) {
+            this._destroyTooltip();
+        }
 
         /**
          * The event fired when the focus is removed from the input.
@@ -1222,45 +1269,30 @@ export default class InputChoiceSet extends LightningElement {
      * @param {Event} event
      */
     handleEnter(event) {
-        if (this.buttonVariant && !this._tooltip) {
+        if (this.buttonVariant && !this._tooltip && !this.disabled) {
             const target = event.currentTarget;
             const buttonValue = event.currentTarget.dataset.value;
             const option = this.options.find(
                 (opt) => opt.value === buttonValue
             );
-
-            if (option && option.tooltip) {
-                const tooltip = new Tooltip(option.tooltip, {
-                    type: TooltipType.Toggle,
-                    root: this,
-                    target: () => target,
-                    align: {
-                        horizontal: Direction.Left,
-                        vertical: Direction.Top
-                    },
-                    targetAlign: {
-                        horizontal: Direction.Left,
-                        vertical: Direction.Bottom
-                    }
-                });
-                this._tooltip = tooltip;
-                this._tooltip.initialize();
-                this._tooltip.show();
-
-                this._tooltipTimeout = setTimeout(() => {
-                    if (this._tooltip) {
-                        this._tooltip.startPositioning();
-                    }
-                }, 50);
-            }
+            this._showTooltip(option?.tooltip, target);
         }
     }
 
     /**
      * Handles and Dispatches the focus event.
      */
-    handleFocus() {
+    handleFocus(event) {
         this.interactingState.enter();
+
+        if (this.buttonVariant && !this._tooltip && !this.disabled) {
+            const target = event.currentTarget;
+            const buttonValue = event.currentTarget.value;
+            const option = this.options.find(
+                (opt) => opt.value === buttonValue
+            );
+            this._showTooltip(option?.tooltip, target);
+        }
 
         /**
          * The event fired when you focus the input.

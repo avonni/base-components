@@ -181,6 +181,10 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.items && this.items.find((item) => item.activeSelection);
     }
 
+    get computedAriaExpanded() {
+        return String(!this.closed);
+    }
+
     get groupTitleClass() {
         return classSet(
             'avonni-relationship-graph-group__header-title slds-section__title'

@@ -85,7 +85,7 @@ export default class KanbanDisabledColumnDrag extends LightningElement {
             percent: 0.28,
             available: true,
             coverImage:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
@@ -154,7 +154,7 @@ export default class KanbanDisabledColumnDrag extends LightningElement {
             percent: 0.92,
             available: true,
             coverImage:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+                'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         }

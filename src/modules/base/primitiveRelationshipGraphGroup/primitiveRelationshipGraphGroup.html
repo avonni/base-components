@@ -12,6 +12,8 @@
                         slds-section__title-action
                         slds-grid
                     "
+                    aria-controls="section-content"
+                    aria-expanded={computedAriaExpanded}
                     type="button"
                     data-element-id="section-title-button"
                     onclick={handleToggle}
@@ -130,6 +132,8 @@
                 avonni-relationship-graph-group__content
                 slds-section__content
             "
+            id="section-content"
+            aria-hidden={closed}
             data-element-id="avonni-primitive-relation-graph-group-content"
         >
             <div

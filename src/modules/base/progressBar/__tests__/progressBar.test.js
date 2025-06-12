@@ -38,22 +38,33 @@ describe('ProgressBar', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.alternativeText).toBeUndefined();
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
-            expect(element.showPin).toBeFalsy();
-            expect(element.showValue).toBeFalsy();
             expect(element.orientation).toBe('horizontal');
             expect(element.pinAttributes).toMatchObject({});
             expect(element.referenceLines).toMatchObject([]);
+            expect(element.showPin).toBeFalsy();
+            expect(element.showValue).toBeFalsy();
             expect(element.size).toBe('full');
             expect(element.textured).toBeFalsy();
             expect(element.theme).toBe('base');
             expect(element.thickness).toBe('medium');
             expect(element.value).toBe(0);
+            expect(element.valuePosition).toBe('top-right');
             expect(element.valuePrefix).toBeUndefined();
             expect(element.valueSuffix).toBeUndefined();
-            expect(element.valuePosition).toBe('top-right');
             expect(element.variant).toBe('base');
+        });
+
+        it('Alternative Text', () => {
+            element.alternativeText = 'Loading progress';
+
+            return Promise.resolve().then(() => {
+                const outerWrapper =
+                    element.shadowRoot.querySelector('.slds-progress-bar');
+                expect(outerWrapper.ariaLabel).toBe('Loading progress');
+            });
         });
 
         describe('Is Loading', () => {

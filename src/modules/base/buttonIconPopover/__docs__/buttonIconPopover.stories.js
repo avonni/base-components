@@ -231,6 +231,7 @@ export default {
         }
     },
     args: {
+        alternativeText: 'Button Icon Popover',
         disabled: false,
         hideCloseButton: false,
         isLoading: false,

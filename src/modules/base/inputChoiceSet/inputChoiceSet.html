@@ -71,6 +71,7 @@
                                     onmouseleave={handleLeave}
                                 >
                                     <input
+                                        class={computedInputClass}
                                         disabled={disabled}
                                         id={option.value}
                                         name={name}
@@ -175,6 +176,7 @@
                                                 <lightning-icon
                                                     if:true={option.iconName}
                                                     class={option.computedIconButtonClass}
+                                                    alternative-text={option.alternativeText}
                                                     icon-name={option.iconName}
                                                     size="x-small"
                                                     variant={option.computedVariantButton}
@@ -220,6 +222,7 @@
                             onmouseleave={handleLeave}
                         >
                             <input
+                                class={computedInputClass}
                                 disabled={disabled}
                                 id={option.value}
                                 name={name}
@@ -256,6 +259,7 @@
                                         <lightning-icon
                                             if:true={option.iconName}
                                             class={option.computedIconButtonClass}
+                                            alternative-text={option.alternativeText}
                                             icon-name={option.iconName}
                                             size="x-small"
                                             variant={option.computedVariantButton}

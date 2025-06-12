@@ -57,6 +57,13 @@ const DEFAULT_LOAD_MORE_OFFSET = 20;
  */
 export default class AvatarGroup extends LightningElement {
     /**
+     * The alternative text used to describe the action.
+     * @type {string}
+     * @name action-alternative-text
+     * @public
+     */
+    @api actionAlternativeText;
+    /**
      * The Lightning Design System name of the action icon.
      * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      * @type {string}
@@ -544,7 +551,7 @@ export default class AvatarGroup extends LightningElement {
                 'avonni-avatar-group__avatar-container_stack':
                     this.layout === 'stack',
                 'avonni-avatar-group_circle': this.variant === 'circle',
-                'slds-p-right_x-small': this.layout === 'grid'
+                'slds-m-right_x-small': this.layout === 'grid'
             })
             .toString();
     }
@@ -553,7 +560,8 @@ export default class AvatarGroup extends LightningElement {
         return this.items.map((item) => {
             return {
                 ...item,
-                class: this.getAvatarClass(item, false)
+                class: this.getAvatarClass(item, false),
+                computedAriaLabel: this.computeAriaLabel(item)
             };
         });
     }
@@ -671,7 +679,8 @@ export default class AvatarGroup extends LightningElement {
             return {
                 ...item,
                 index: index + this._hiddenItemsStartIndex,
-                class: this.getAvatarClass(item, true)
+                class: this.getAvatarClass(item, true),
+                computedAriaLabel: this.computeAriaLabel(item)
             };
         });
     }
@@ -909,6 +918,23 @@ export default class AvatarGroup extends LightningElement {
      */
 
     /**
+     * Aria label computed for screen readers.
+     *
+     * @type {string}
+     */
+    computeAriaLabel(item) {
+        const primaryText = item.primaryText || item.alternativeText;
+        const initials = item.initials;
+        const secondaryText = item.secondaryText;
+        const presence = item.presence ? item.presenceTitle : null;
+        const status = item.status ? item.statusTitle : null;
+        const entity = item.entity ? item.entityTitle : null;
+        return [primaryText, initials, secondaryText, presence, status, entity]
+            .filter(Boolean)
+            .join(', ');
+    }
+
+    /**
      * Clear all tooltips and remove all event listeners.
      */
     _destroyTooltip() {
@@ -1042,35 +1068,42 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Update the focused index.
-     *
-     * @param {number} index Index of the new focused item.
+     * Diplay the item popover.
      */
-    switchFocus(index) {
-        const list = this.template.querySelector('[data-element-id="ul"]');
-        if (list) {
-            list.tabIndex = '-1';
-        }
+    showPopover(itemIndex, target) {
+        const item = this.isClassic
+            ? itemIndex === 0
+                ? this.primaryItem
+                : this.secondaryItem
+            : this.items[itemIndex];
+        const tooltipValue =
+            item?.alternativeText || item?.['alternative-text'];
+        if (tooltipValue) {
+            const tooltip = new Tooltip(tooltipValue, {
+                type: TooltipType.Toggle,
+                root: this,
+                target: () => target,
+                align: {
+                    horizontal: Direction.Left,
+                    vertical: Direction.Top
+                },
+                targetAlign: {
+                    horizontal: Direction.Left,
+                    vertical: Direction.Bottom
+                }
+            });
+            this._tooltip = tooltip;
+            this._tooltip.initialize();
+            this._tooltip.show();
 
-        const normalizedIndex = this.normalizeFocusedIndex(index);
-
-        // remove focus from current item
-        const previousItem = this.template.querySelector(
-            `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
-        );
-        if (previousItem) {
-            previousItem.tabIndex = '-1';
-        }
-
-        // move to next
-        this._focusedIndex = normalizedIndex;
-
-        // set focus
-        const item = this.template.querySelector(
-            `[data-element-id^="li"][data-index="${normalizedIndex}"]`
-        );
-        if (item) {
-            item.tabIndex = '0';
+            if (this._tooltipTimeout) {
+                clearTimeout(this._tooltipTimeout);
+            }
+            this._tooltipTimeout = setTimeout(() => {
+                if (this._tooltip) {
+                    this._tooltip.startPositioning();
+                }
+            }, 50);
         }
     }
 
@@ -1130,6 +1163,39 @@ export default class AvatarGroup extends LightningElement {
             this._autoPosition = null;
         }
         this._positioning = false;
+    }
+
+    /**
+     * Update the focused index.
+     *
+     * @param {number} index Index of the new focused item.
+     */
+    switchFocus(index) {
+        const list = this.template.querySelector('[data-element-id="ul"]');
+        if (list) {
+            list.tabIndex = '-1';
+        }
+
+        const normalizedIndex = this.normalizeFocusedIndex(index);
+
+        // remove focus from current item
+        const previousItem = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
+        );
+        if (previousItem) {
+            previousItem.tabIndex = '-1';
+        }
+
+        // move to next
+        this._focusedIndex = normalizedIndex;
+
+        // set focus
+        const item = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${normalizedIndex}"]`
+        );
+        if (item) {
+            item.tabIndex = '0';
+        }
     }
 
     /**
@@ -1411,41 +1477,7 @@ export default class AvatarGroup extends LightningElement {
         if (this.isClassic || this.isNotList) {
             const target = event.currentTarget;
             const index = Number(event.currentTarget.dataset.index);
-            const item = this.isClassic
-                ? index === 0
-                    ? this.primaryItem
-                    : this.secondaryItem
-                : this.items[index];
-
-            const tooltipValue =
-                item?.alternativeText || item?.['alternative-text'];
-            if (tooltipValue) {
-                const tooltip = new Tooltip(tooltipValue, {
-                    type: TooltipType.Toggle,
-                    root: this,
-                    target: () => target,
-                    align: {
-                        horizontal: Direction.Left,
-                        vertical: Direction.Top
-                    },
-                    targetAlign: {
-                        horizontal: Direction.Left,
-                        vertical: Direction.Bottom
-                    }
-                });
-                this._tooltip = tooltip;
-                this._tooltip.initialize();
-                this._tooltip.show();
-
-                if (this._tooltipTimeout) {
-                    clearTimeout(this._tooltipTimeout);
-                }
-                this._tooltipTimeout = setTimeout(() => {
-                    if (this._tooltip) {
-                        this._tooltip.startPositioning();
-                    }
-                }, 50);
-            }
+            this.showPopover(index, target);
         }
     }
 
@@ -1458,6 +1490,10 @@ export default class AvatarGroup extends LightningElement {
         const index = Number(event.currentTarget.dataset.index);
         if (index !== this._focusedIndex) {
             this.switchFocus(index);
+        }
+        if (this.isClassic || this.isNotList) {
+            const target = event.currentTarget;
+            this.showPopover(index, target);
         }
     }
 

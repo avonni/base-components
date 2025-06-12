@@ -32,6 +32,7 @@ describe('Qrcode', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.alternativeText).toBeUndefined();
             expect(element.background).toBeUndefined();
             expect(element.borderColor).toBeUndefined();
             expect(element.borderWidth).toBe(0);
@@ -42,6 +43,19 @@ describe('Qrcode', () => {
             expect(element.renderAs).toBe('svg');
             expect(element.size).toBe(200);
             expect(element.value).toBeUndefined();
+        });
+
+        describe('alternative text', () => {
+            it('Passed to the component', () => {
+                element.alternativeText = 'Test';
+
+                return Promise.resolve().then(() => {
+                    const assistiveText = element.shadowRoot.querySelector(
+                        '[data-element-id="qrcode-assistive-text"]'
+                    );
+                    expect(assistiveText.textContent).toBe('Test');
+                });
+            });
         });
 
         describe('background', () => {

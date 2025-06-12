@@ -40,6 +40,7 @@ describe('Image', () => {
         expect(element.staticImages).toBeFalsy();
         expect(element.thumbnail).toBeFalsy();
         expect(element.width).toBeUndefined();
+        expect(element.compareAlternativeText).toBeUndefined();
         expect(element.compareSrc).toBeUndefined();
         expect(element.compare).toBeFalsy();
         expect(element.compareAttributes.orientation).toBe('horizontal');
@@ -469,6 +470,29 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.style.height).toBe('50%');
+        });
+    });
+
+    it('Image Compare: src', () => {
+        element.compareSrc = src;
+
+        return Promise.resolve().then(() => {
+            const compareImg = element.shadowRoot.querySelector(
+                '[data-element-id="compare-img"]'
+            );
+            expect(compareImg.src).toBe(src);
+        });
+    });
+
+    it('Image Compare: alternative text', () => {
+        element.compareSrc = src;
+        element.compareAlternativeText = 'This is an Alternative text';
+
+        return Promise.resolve().then(() => {
+            const compareImg = element.shadowRoot.querySelector(
+                '[data-element-id="compare-img"]'
+            );
+            expect(compareImg.alt).toBe('This is an Alternative text');
         });
     });
 

@@ -18,6 +18,7 @@ export default class Image extends LightningElement {
     @api width;
     @api magnifierType;
     @api magnifierAttributes;
+    @api compareAlternativeText;
     @api compareSrc;
     @api compareAttributes;
 
@@ -43,6 +44,7 @@ export default class Image extends LightningElement {
                 cropPositionY: this.cropPositionY,
                 magnifierType: this.magnifierType,
                 magnifierAttributes: this.magnifierAttributes,
+                compareAlternativeText: this.compareAlternativeText,
                 compareSrc: this.compareSrc,
                 compareAttributes: this.compareAttributes
             };

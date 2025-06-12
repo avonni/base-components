@@ -36,6 +36,7 @@
                 <template for:each={items} for:item="item">
                     <button
                         class={item.buttonClass}
+                        aria-pressed={item.selected}
                         disabled={isDisabled}
                         key={item.value}
                         title={item.value}

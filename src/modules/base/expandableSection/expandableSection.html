@@ -4,6 +4,8 @@
             <button
                 class={titleButtonClass}
                 type="button"
+                aria-controls="section-content"
+                aria-expanded={computedAriaExpanded}
                 onclick={toggleSection}
             >
                 <template if:true={collapsible}>
@@ -15,6 +17,7 @@
                                 slds-button__icon slds-button__icon_left
                                 avonni-expandable-section__opened-icon
                             "
+                            aria-hidden="true"
                             data-element-id="lightning-icon-opened"
                         ></lightning-icon>
                     </template>
@@ -26,6 +29,7 @@
                                 slds-button__icon slds-button__icon_left
                                 avonni-expandable-section__closed-icon
                             "
+                            aria-hidden="true"
                             data-element-id="lightning-icon-closed"
                         ></lightning-icon>
                     </template>
@@ -47,7 +51,11 @@
                 </template>
             </button>
         </h3>
-        <div class="avonni-expandable-section__content slds-section__content">
+        <div
+            class="avonni-expandable-section__content slds-section__content"
+            id="section-content"
+            aria-hidden={closed}
+        >
             <slot></slot>
         </div>
     </div>
