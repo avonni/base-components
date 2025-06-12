@@ -16,11 +16,11 @@
             <!-- Top Label -->
             <div
                 if:true={showTopLabel}
-                class="slds-grid avonni-metric__label avonni-metric__label-top"
+                class="avonni-metric__label avonni-metric__label-top"
                 data-element-id="div-label"
             >
                 <span class="slds-truncate">{label}</span>
-                <div
+                <span
                     if:true={errorMessage}
                     class="avonni-metric__label-error slds-m-left_xx-small"
                 >
@@ -29,7 +29,7 @@
                         content={errorMessage}
                         data-element-id="lightning-helptext-error"
                     ></lightning-helptext>
-                </div>
+                </span>
             </div>
             <div class={metricsClass} data-element-id="div-metrics">
                 <!-- Primary -->
@@ -92,14 +92,11 @@
             <!-- Bottom Label -->
             <div
                 if:false={showTopLabel}
-                class="
-                    slds-grid
-                    avonni-metric__label avonni-metric__label-bottom
-                "
+                class="avonni-metric__label avonni-metric__label-bottom"
                 data-element-id="div-label"
             >
                 <span class="slds-truncate">{label}</span>
-                <div
+                <span
                     if:true={errorMessage}
                     class="avonni-metric__label-error slds-m-left_xx-small"
                 >
@@ -108,7 +105,7 @@
                         content={errorMessage}
                         data-element-id="lightning-helptext-error"
                     ></lightning-helptext>
-                </div>
+                </span>
             </div>
         </div>
     </div>

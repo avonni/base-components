@@ -288,6 +288,5 @@
 }
 
 .avonni-metric__label-error {
-    margin-top: -0.25rem;
     --slds-c-icon-color-foreground: #ba0517;
 }
