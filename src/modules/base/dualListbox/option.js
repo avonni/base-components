@@ -1,4 +1,4 @@
-import { classSet, normalizeBoolean, normalizeObject } from 'c/utils';
+import { normalizeBoolean, normalizeObject } from 'c/utils';
 
 export default class DualListboxOption {
     constructor(props) {
@@ -13,15 +13,6 @@ export default class DualListboxOption {
         this.showAvatar = false;
 
         this.initAvatar();
-    }
-
-    get classList() {
-        return classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline avonni-dual-listbox__list-item_min-height avonni-dual-listbox__option'
-        )
-            .add({ 'slds-media_small': !this.description })
-            .add({ 'slds-is-selected': this.selected })
-            .toString();
     }
 
     get tabIndex() {

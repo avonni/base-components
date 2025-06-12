@@ -423,12 +423,12 @@ export default {
         },
         value: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description:
                 'A list of default options that are included in the selected options listbox. This list is populated with values from the options attribute.',
             table: {
-                type: { summary: 'string []' }
+                type: { summary: 'string[]' }
             }
         },
         variant: {
@@ -445,6 +445,7 @@ export default {
         }
     },
     args: {
+        addButtonLabel: 'Add',
         addButtonIconName: 'utility:right',
         allowSearch: false,
         buttonSize: 'medium',
@@ -452,6 +453,7 @@ export default {
         disableReordering: false,
         disabled: false,
         downButtonIconName: 'utility:down',
+        downButtonLabel: 'Down',
         draggable: false,
         enableInfiniteLoading: false,
         hideBottomDivider: false,
@@ -459,10 +461,12 @@ export default {
         loadMoreOffset: 20,
         maxVisibleOptions: 5,
         min: 0,
+        removeButtonLabel: 'Remove',
         removeButtonIconName: 'utility:left',
         required: false,
         size: 'responsive',
         upButtonIconName: 'utility:up',
+        upButtonLabel: 'Up',
         variant: 'standard'
     }
 };

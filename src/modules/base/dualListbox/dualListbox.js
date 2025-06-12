@@ -780,20 +780,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Computed List Item Class styling.
-     *
-     * @type {string}
-     */
-    get computedListItemClass() {
-        return classSet('slds-listbox__item')
-            .add({
-                'avonni-dual-listbox__option_border-bottom':
-                    !this.hideBottomDivider
-            })
-            .toString();
-    }
-
-    /**
      * Computed Lock Assistive Text.
      *
      * @type {string}
@@ -835,13 +821,6 @@ export default class DualListbox extends LightningElement {
             });
         }
         return this.constraintApi;
-    }
-
-    /**
-     * Generated unique ID key.
-     */
-    get generateKey() {
-        return generateUUID();
     }
 
     /**
@@ -904,7 +883,7 @@ export default class DualListbox extends LightningElement {
      */
     get selectedBoxHeight() {
         const selectedOptions = this.template.querySelectorAll(
-            '[data-element-id="li-selected"]'
+            '[data-element-id="div-selected"]'
         );
 
         let selectedHeight = getListHeight(
@@ -945,7 +924,7 @@ export default class DualListbox extends LightningElement {
      */
     get sourceBoxHeight() {
         const sourceOptions = this.template.querySelectorAll(
-            '[data-element-id="li-source"]'
+            '[data-element-id="div-source"]'
         );
 
         let sourceHeight = 0;
@@ -1003,7 +982,7 @@ export default class DualListbox extends LightningElement {
      */
     @api
     focus() {
-        const firstOption = this.template.querySelector(`div[data-index='0']`);
+        const firstOption = this.template.querySelector(`[data-index='0']`);
         if (firstOption) {
             firstOption.focus();
             this.updateSelectedOptions(firstOption, true, false);
@@ -1235,7 +1214,7 @@ export default class DualListbox extends LightningElement {
         if (this.optionToFocus && !searchIsFocused) {
             // value could have an apostrophe, which is why we need to escape it otherwise the queryselector will not work
             const option = this.template.querySelector(
-                `div[data-value='${this.optionToFocus}']`
+                `[data-value='${this.optionToFocus}']`
             );
             if (option) {
                 this.isFocusOnList = true;
@@ -1252,7 +1231,7 @@ export default class DualListbox extends LightningElement {
      */
     getElementsOfList(listId) {
         const elements = this.template.querySelectorAll(
-            `div[data-type='${listId}']`
+            `[data-type='${listId}']`
         );
         return elements ? elements : [];
     }
@@ -1274,9 +1253,10 @@ export default class DualListbox extends LightningElement {
      * @return {object[]} array containing the two indexes
      */
     _getOptionGroupIndexes(value) {
-        const option = this.template.querySelector(
-            `div[data-value="${value}"]`
-        );
+        const option = this.template.querySelector(`[data-value="${value}"]`);
+        if (!option) {
+            return [];
+        }
         return [option.dataset.groupIndex, option.dataset.insideGroupIndex];
     }
 
@@ -1301,12 +1281,15 @@ export default class DualListbox extends LightningElement {
         return this._sortGroups(
             Object.values(
                 array.reduce((obj, current) => {
-                    if (!obj[current[groupName]])
-                        obj[current[groupName]] = {
-                            label: current[groupName],
-                            options: []
+                    const groupLabel = current[groupName];
+                    if (!obj[groupLabel]) {
+                        obj[groupLabel] = {
+                            label: groupLabel,
+                            options: [],
+                            name: groupLabel || generateUUID()
                         };
-                    obj[current[groupName]].options.push(current);
+                    }
+                    obj[groupLabel].options.push(current);
                     return obj;
                 }, {})
             )
@@ -1452,11 +1435,11 @@ export default class DualListbox extends LightningElement {
      */
     _oldIndexValue(option) {
         const optionElement = this.template.querySelector(
-            `div[data-value='${option}']`
+            `[data-value='${option}']`
         );
         if (!optionElement) return;
 
-        const index = parseInt(optionElement.getAttribute('data-index'), 10);
+        const index = parseInt(optionElement.dataset.index, 10);
         this._oldIndex = isNaN(index) || index <= 0 ? 0 : index - 1;
     }
 
@@ -1478,7 +1461,7 @@ export default class DualListbox extends LightningElement {
      * @param {boolean} all
      */
     selectAllFromLastSelectedToOption(option, all) {
-        const listId = option.getAttribute('data-type');
+        const listId = option.dataset.type;
         this._updateCurrentSelectedList(listId, true);
         const options = this.getElementsOfList(listId);
         const end = all ? 0 : this._getOptionIndex(option);
@@ -1489,7 +1472,7 @@ export default class DualListbox extends LightningElement {
         for (let i = 0; i < options.length; i++) {
             select = (i - start) * (i - end) <= 0;
             if (select) {
-                val = options[i].getAttribute('data-value');
+                val = options[i].dataset.value;
                 this.highlightedOptions.push(val);
             }
         }
@@ -1638,7 +1621,7 @@ export default class DualListbox extends LightningElement {
      * @param {boolean} isMultiple
      */
     updateSelectedOptions(option, select, isMultiple) {
-        const value = option.getAttribute('data-value');
+        const value = option.dataset.value;
         const listId = this._getListId(option);
         const optionIndex = this._getOptionIndex(option);
         this._updateCurrentSelectedList(listId, isMultiple);
@@ -1702,7 +1685,7 @@ export default class DualListbox extends LightningElement {
         if (this._dropItSource) {
             if (
                 this.highlightedOptions.includes(
-                    event.currentTarget.getAttribute('data-value')
+                    event.currentTarget.dataset.value
                 )
             ) {
                 this.handleDragLeft();
@@ -1712,9 +1695,7 @@ export default class DualListbox extends LightningElement {
                 const values = this._computedSelectedList.map(
                     (option) => option.value
                 );
-                const swappingIndex = Number(
-                    event.target.getAttribute('data-index')
-                );
+                const swappingIndex = Number(event.target.dataset.value);
                 this._swapOptions(swappingIndex, this._newIndex, values);
                 this.computedValue = values;
                 this._initSelectedGroups();
@@ -1737,7 +1718,7 @@ export default class DualListbox extends LightningElement {
         if (this._dropItSelected) {
             if (
                 this.highlightedOptions.includes(
-                    event.currentTarget.getAttribute('data-value')
+                    event.currentTarget.dataset.value
                 )
             ) {
                 this.handleDragRight();
@@ -1779,7 +1760,7 @@ export default class DualListbox extends LightningElement {
      */
     handleDragOver(event) {
         event.preventDefault();
-        this._newIndex = Number(event.target.getAttribute('data-index'));
+        this._newIndex = Number(event.target.dataset.index);
     }
 
     /**
@@ -1867,8 +1848,7 @@ export default class DualListbox extends LightningElement {
             this.selectAllFromLastSelectedToOption(option, false);
             return;
         }
-        const selected =
-            selectMultiple && option.getAttribute('aria-selected') === 'true';
+        const selected = selectMultiple && option.dataset.selected;
         this.updateSelectedOptions(option, !selected, selectMultiple);
         this.shiftIndex = -1;
     }

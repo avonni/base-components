@@ -273,27 +273,26 @@ describe('DualListbox', () => {
                 element.removeButtonLabel = 'remove';
                 element.upButtonLabel = 'up';
 
-                return Promise.resolve()
-                    .then(() => {
-                        const columns = element.shadowRoot.querySelectorAll(
-                            '.slds-dueling-list__options'
-                        );
-
-                        columns.forEach((column) => {
-                            expect(column.classList).toContain(
-                                'slds-is-disabled'
-                            );
-                        });
-                    })
-                    .then(() => {
-                        const buttons = element.shadowRoot.querySelectorAll(
-                            '[data-element-id^="lightning-button-icon"]'
-                        );
-
-                        buttons.forEach((button) => {
-                            expect(button.disabled).toBeTruthy();
-                        });
+                return Promise.resolve().then(() => {
+                    const columns = element.shadowRoot.querySelectorAll(
+                        '.slds-dueling-list__options'
+                    );
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button-icon"]'
+                    );
+                    const options = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-source"]'
+                    );
+                    columns.forEach((column) => {
+                        expect(column.classList).toContain('slds-is-disabled');
                     });
+                    buttons.forEach((button) => {
+                        expect(button.disabled).toBeTruthy();
+                    });
+                    options.forEach((button) => {
+                        expect(button.disabled).toBeTruthy();
+                    });
+                });
             });
         });
 
@@ -320,8 +319,9 @@ describe('DualListbox', () => {
                 return Promise.resolve().then(() => {
                     const optionsDraggable =
                         element.shadowRoot.querySelectorAll(
-                            '.slds-listbox__option'
+                            '[data-element-id="div-source"]'
                         );
+                    expect(optionsDraggable).toHaveLength(Options.length);
                     optionsDraggable.forEach((option) => {
                         expect(option.draggable).toBeTruthy();
                     });
@@ -335,10 +335,13 @@ describe('DualListbox', () => {
                 return Promise.resolve().then(() => {
                     const optionsDraggable =
                         element.shadowRoot.querySelectorAll(
-                            '.slds-listbox__option'
+                            '[data-element-id="div-source"]'
                         );
+
+                    expect(optionsDraggable).toHaveLength(Options.length);
                     optionsDraggable.forEach((option) => {
                         expect(option.draggable).toBeFalsy();
+                        expect(option.disabled).toBeTruthy();
                     });
                 });
             });
@@ -362,13 +365,12 @@ describe('DualListbox', () => {
                 element.hideBottomDivider = true;
 
                 return Promise.resolve().then(() => {
-                    const li = element.shadowRoot.querySelectorAll(
-                        '.slds-listbox__item'
+                    const options = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-source"]'
                     );
-                    li.forEach((item) => {
-                        expect(item.className).not.toContain(
-                            'avonni-dual-listbox__option_border-bottom'
-                        );
+                    expect(options).toHaveLength(Options.length);
+                    options.forEach((option) => {
+                        expect(option.hideBottomDivider).toBeTruthy();
                     });
                 });
             });
@@ -474,9 +476,10 @@ describe('DualListbox', () => {
 
                 return Promise.resolve()
                     .then(() => {
-                        const opt = element.shadowRoot.querySelector(
-                            "div[data-value='1']"
-                        );
+                        const opt =
+                            element.shadowRoot.querySelector(
+                                "[data-value='1']"
+                            );
                         opt.click();
                         const lightningButtonIcon =
                             element.shadowRoot.querySelector(
@@ -504,9 +507,10 @@ describe('DualListbox', () => {
 
                 return Promise.resolve()
                     .then(() => {
-                        const opt = element.shadowRoot.querySelector(
-                            "div[data-value='1']"
-                        );
+                        const opt =
+                            element.shadowRoot.querySelector(
+                                "[data-value='1']"
+                            );
                         opt.click();
                         const lightningButtonIcon =
                             element.shadowRoot.querySelector(
@@ -531,29 +535,17 @@ describe('DualListbox', () => {
                     {
                         value: '1',
                         label: 'Option 1'
-                    },
-                    {
-                        value: '2',
-                        label: 'Option 2'
                     }
                 ];
 
                 element.options = options;
 
-                return Promise.resolve()
-                    .then(() => {
-                        const optionValue = element.shadowRoot.querySelector(
-                            "div[data-value='1']"
-                        );
-                        expect(optionValue).toBeTruthy();
-                    })
-                    .then(() => {
-                        const label =
-                            element.shadowRoot.querySelector(
-                                '.slds-media__body'
-                            );
-                        expect(label.textContent).toBe('Option 1');
-                    });
+                return Promise.resolve().then(() => {
+                    const option =
+                        element.shadowRoot.querySelector("[data-value='1']");
+                    expect(option).toBeTruthy();
+                    expect(option.label).toBe('Option 1');
+                });
             });
 
             it('Options have avatars', () => {
@@ -561,30 +553,25 @@ describe('DualListbox', () => {
                     {
                         value: '1',
                         label: 'Option 1',
-                        iconName: 'standard:address'
+                        avatar: { fallbackIconName: 'standard:address' }
                     }
                 ];
 
                 element.options = options;
 
-                return Promise.resolve()
-                    .then(() => {
-                        const optionValue = element.shadowRoot.querySelector(
-                            "div[data-value='1']"
-                        );
-                        expect(optionValue).toBeTruthy();
-                    })
-                    .then(() => {
-                        const label =
-                            element.shadowRoot.querySelector(
-                                '.slds-media__body'
-                            );
-                        expect(label.textContent).toBe('Option 1');
-                    });
+                return Promise.resolve().then(() => {
+                    const option =
+                        element.shadowRoot.querySelector("[data-value='1']");
+                    expect(option).toBeTruthy();
+                    expect(option.label).toBe('Option 1');
+                    expect(option.avatar.fallbackIconName).toBe(
+                        'standard:address'
+                    );
+                });
             });
 
             it('Options are part of groups', () => {
-                const options = [
+                const optionsWithGroups = [
                     {
                         value: '1',
                         label: 'Option 1',
@@ -597,14 +584,19 @@ describe('DualListbox', () => {
                     }
                 ];
 
-                element.options = options;
+                element.options = optionsWithGroups;
 
                 return Promise.resolve().then(() => {
-                    const optionValue = element.shadowRoot.querySelectorAll(
+                    const groups = element.shadowRoot.querySelectorAll(
                         '[data-element-id="group-label"]'
                     );
-                    expect(optionValue[0].textContent).toBe('Odd');
-                    expect(optionValue[1].textContent).toBe('Even');
+                    const options = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-source"]'
+                    );
+                    expect(groups[0].textContent).toBe('Odd');
+                    expect(groups[1].textContent).toBe('Even');
+                    expect(options[0].groupLabel).toBe('Odd');
+                    expect(options[1].groupLabel).toBe('Even');
                 });
             });
         });
@@ -639,16 +631,18 @@ describe('DualListbox', () => {
 
         describe('Required options', () => {
             it('Required options are always selected', () => {
-                return Promise.resolve()
-                    .then(() => {
-                        element.requiredOptions = ['1'];
-                    })
-                    .then(() => {
-                        const selected = element.shadowRoot.querySelector(
-                            '[data-element-id="ul-selected-list"]'
-                        );
-                        expect(selected.querySelectorAll('li')).toHaveLength(1);
-                    });
+                element.requiredOptions = ['1'];
+
+                return Promise.resolve().then(() => {
+                    const selected = element.shadowRoot.querySelector(
+                        '[data-element-id="ul-selected-list"]'
+                    );
+                    expect(
+                        selected.querySelectorAll(
+                            '[data-element-id="div-selected"]'
+                        )
+                    ).toHaveLength(1);
+                });
             });
         });
 
@@ -763,6 +757,7 @@ describe('DualListbox', () => {
                     expect(selectedListColumn.className).toBe(
                         'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_small'
                     );
+                    expect(boxes).toHaveLength(2);
                     boxes.forEach((box) => {
                         expect(box.className).toContain(
                             'avonni-dual-listbox__box_size-small'
@@ -799,6 +794,7 @@ describe('DualListbox', () => {
                     expect(selectedListColumn.className).toBe(
                         'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_medium'
                     );
+                    expect(boxes).toHaveLength(2);
                     boxes.forEach((box) => {
                         expect(box.className).not.toContain(
                             'avonni-dual-listbox__box_size-small'
@@ -835,6 +831,7 @@ describe('DualListbox', () => {
                     expect(selectedListColumn.className).toBe(
                         'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_large'
                     );
+                    expect(boxes).toHaveLength(2);
                     boxes.forEach((box) => {
                         expect(box.className).not.toContain(
                             'avonni-dual-listbox__box_size-small'
@@ -859,7 +856,7 @@ describe('DualListbox', () => {
                     const boxes = element.shadowRoot.querySelectorAll(
                         '.slds-dueling-list__options'
                     );
-
+                    expect(boxes).toHaveLength(2);
                     boxes.forEach((box) => {
                         expect(box.className).not.toContain(
                             'avonni-dual-listbox__box_size-small'
@@ -906,11 +903,13 @@ describe('DualListbox', () => {
                         '[data-element-id="ul-selected-list"]'
                     );
                     expect(
-                        source.querySelectorAll('[data-element-id="li-source"]')
+                        source.querySelectorAll(
+                            '[data-element-id="div-source"]'
+                        )
                     ).toHaveLength(7);
                     expect(
                         selected.querySelectorAll(
-                            '[data-element-id="li-selected"]'
+                            '[data-element-id="div-selected"]'
                         )
                     ).toHaveLength(3);
                 });
@@ -927,11 +926,13 @@ describe('DualListbox', () => {
                         '[data-element-id="ul-selected-list"]'
                     );
                     expect(
-                        source.querySelectorAll('[data-element-id="li-source"]')
+                        source.querySelectorAll(
+                            '[data-element-id="div-source"]'
+                        )
                     ).toHaveLength(9);
                     expect(
                         selected.querySelectorAll(
-                            '[data-element-id="li-selected"]'
+                            '[data-element-id="div-selected"]'
                         )
                     ).toHaveLength(1);
                 });
@@ -977,10 +978,10 @@ describe('DualListbox', () => {
                     '[data-element-id="div-source"]'
                 );
                 const firstOption = options[0];
-                firstOption.click();
+                firstOption.dispatchEvent(new CustomEvent('click'));
                 const secondOption = options[1];
-                expect(firstOption.tabIndex).toBe(0);
-                expect(secondOption.tabIndex).toBe(-1);
+                expect(firstOption.isFocused).toBeTruthy();
+                expect(secondOption.isFocused).toBeFalsy();
             });
         });
 
@@ -991,12 +992,12 @@ describe('DualListbox', () => {
                 const sourceBox = element.shadowRoot.querySelector(
                     '[data-element-id="ul-source-list"]'
                 );
-                const option = sourceBox.querySelectorAll(
-                    '.slds-listbox__option'
+                const options = sourceBox.querySelectorAll(
+                    '[data-element-id="div-source"]'
                 );
-                const firstOption = option[0];
+                const firstOption = options[0];
                 expect(firstOption.getAttribute('data-index')).toBe('0');
-                const secondOption = option[1];
+                const secondOption = options[1];
                 expect(secondOption.getAttribute('data-index')).toBe('1');
             });
         });
@@ -1009,12 +1010,12 @@ describe('DualListbox', () => {
                 const selectedBox = element.shadowRoot.querySelector(
                     '[data-element-id="ul-selected-list"]'
                 );
-                const option = selectedBox.querySelectorAll(
-                    '.slds-listbox__option'
+                const options = selectedBox.querySelectorAll(
+                    '[data-element-id="div-selected"]'
                 );
-                const firstOption = option[0];
+                const firstOption = options[0];
                 expect(firstOption.getAttribute('data-index')).toBe('0');
-                const secondOption = option[1];
+                const secondOption = options[1];
                 expect(secondOption.getAttribute('data-index')).toBe('1');
             });
         });
@@ -1040,7 +1041,7 @@ describe('DualListbox', () => {
                         '[data-element-id="ul-selected-list"]'
                     );
                     const options = selectedBox.querySelectorAll(
-                        '.slds-listbox__option'
+                        '[data-element-id="div-selected"]'
                     );
                     const lightningButtonIcon =
                         element.shadowRoot.querySelector(
@@ -1070,7 +1071,7 @@ describe('DualListbox', () => {
                         '[data-element-id="ul-selected-list"]'
                     );
                     const options = selectedBox.querySelectorAll(
-                        '.slds-listbox__option'
+                        '[data-element-id="div-selected"]'
                     );
                     const lightningButtonIcon =
                         element.shadowRoot.querySelector(
@@ -1100,7 +1101,7 @@ describe('DualListbox', () => {
                         '[data-element-id="ul-selected-list"]'
                     );
                     const options = selectedBox.querySelectorAll(
-                        '.slds-listbox__option'
+                        '[data-element-id="div-selected"]'
                     );
                     const lightningButtonIcon =
                         element.shadowRoot.querySelector(
@@ -1127,9 +1128,9 @@ describe('DualListbox', () => {
 
                 return Promise.resolve().then(() => {
                     const option = element.shadowRoot.querySelector(
-                        '.slds-listbox__option'
+                        '[data-element-id="div-source"]'
                     );
-                    option.click();
+                    option.dispatchEvent(new CustomEvent('click'));
                     const lightningButtonIcon =
                         element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-icon-add"]'
