@@ -297,6 +297,40 @@ describe('Tree', () => {
                     });
                 });
 
+                it('Selected Unselectable Items', () => {
+                    element.isMultiSelect = true;
+                    const handler = jest.fn();
+                    element.addEventListener('select', handler);
+                    element.items = ITEMS;
+                    element.selectedItems = [
+                        'secondLevelSelectable',
+                        'secondLevel3Selectable'
+                    ];
+
+                    return Promise.resolve().then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        items.forEach((item) =>
+                            expect(item.showCheckbox).toBeTruthy()
+                        );
+
+                        const unselectableChild = Array.from(items).find(
+                            (item) => item.name === 'unselectableChild'
+                        );
+                        expect(unselectableChild.expanded).toBeFalsy();
+                        expect(unselectableChild.selected).toBeTruthy();
+
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.selectedItems).toEqual([
+                            'secondLevelSelectable',
+                            'secondLevel3Selectable',
+                            'unselectableChild',
+                            'thirdLevelSelectable'
+                        ]);
+                    });
+                });
+
                 it('Selected Items and Independent Multi Select', () => {
                     element.isMultiSelect = true;
                     element.independentMultiSelect = true;
@@ -719,13 +753,13 @@ describe('Tree', () => {
                     const event = new CustomEvent('privateactionclick', {
                         detail: {
                             name: 'Standard.Tree.Add',
-                            key: '4'
+                            key: '8'
                         },
                         bubbles: true
                     });
-                    items[3].dispatchEvent(event);
+                    items[7].dispatchEvent(event);
 
-                    const item = { ...ITEMS[3] };
+                    const item = { ...ITEMS[7] };
                     item.items = [
                         {
                             label: 'New branch'
@@ -737,19 +771,21 @@ describe('Tree', () => {
                         'Standard.Tree.Add'
                     );
                     expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
-                        3
+                        7
                     ]);
                     expect(
                         handler.mock.calls[0][0].detail.previousLevelPath
-                    ).toEqual([3]);
-                    expect(handler.mock.calls[0][0].detail.name).toBe('simple');
+                    ).toEqual([7]);
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        'simpleUnselectable'
+                    );
                     expect(
-                        handler.mock.calls[0][0].detail.items[3]
+                        handler.mock.calls[0][0].detail.items[7]
                     ).toMatchObject(item);
                     expect(
                         handler.mock.calls[0][0].detail.previousName
                     ).toBeUndefined();
-                    expect(element.items[3]).toMatchObject(item);
+                    expect(element.items[7]).toMatchObject(item);
                 });
             });
 
@@ -1179,6 +1215,75 @@ describe('Tree', () => {
                     expect(lastCall.detail.items[1].items[0].name).toBe(
                         ITEMS[1].name
                     );
+                });
+            });
+
+            it('Move an item inside another with noSlots', () => {
+                const fakeRegisters = generateFakeRegisters();
+                element.items = ITEMS;
+                element.sortable = true;
+
+                jest.useFakeTimers();
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    // Register the items, including the nested ones
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    Object.values(fakeRegisters).forEach((register) => {
+                        items[0].dispatchEvent(
+                            new CustomEvent('privateregisteritem', {
+                                bubbles: true,
+                                detail: register
+                            })
+                        );
+                    });
+
+                    // Mouse down
+                    items[1].dispatchEvent(
+                        new CustomEvent('privatemousedown', {
+                            detail: {
+                                name: ITEMS[1].name,
+                                key: '2'
+                            },
+                            bubbles: true
+                        })
+                    );
+                    jest.runAllTimers();
+
+                    // Move to the bottom item
+                    const mouseMove = new CustomEvent('mousemove', {
+                        bubbles: true,
+                        composed: true
+                    });
+                    mouseMove.clientY = 56;
+                    const tree = element.shadowRoot.querySelector(
+                        '[data-element-id="div-tree-wrapper"]'
+                    );
+                    tree.dispatchEvent(mouseMove);
+
+                    // Mouse on the center of the item
+                    mouseMove.clientY = 45;
+                    const setBorderCallback =
+                        fakeRegisters.firstLevel.setBorder;
+                    tree.dispatchEvent(mouseMove);
+                    expect(setBorderCallback).not.toHaveBeenCalled();
+                    // The item is expanded
+                    jest.runAllTimers();
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ITEMS[1].name
+                    );
+
+                    tree.dispatchEvent(
+                        new CustomEvent('mouseup', {
+                            bubbles: true,
+                            composed: true
+                        })
+                    );
+                    expect(handler).toHaveBeenCalledTimes(1);
                 });
             });
 
@@ -1649,6 +1754,76 @@ describe('Tree', () => {
                         'secondLevel2',
                         'firstLevel',
                         'regular'
+                    ]);
+                });
+            });
+
+            it('For multi-select tree with unselectable items', () => {
+                const fakeRegisters = generateFakeRegisters();
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                element.items = ITEMS;
+                element.selectedItems = ['secondLevel3Selectable'];
+                element.isMultiSelect = true;
+                expect(handler).toHaveBeenCalledTimes(1);
+                expect(handler.mock.calls[0][0].detail.selectedItems).toEqual([
+                    'secondLevel3Selectable',
+                    'thirdLevelSelectable'
+                ]);
+
+                return Promise.resolve().then(() => {
+                    // Register the items, including the nested ones
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    Object.values(fakeRegisters).forEach((register) => {
+                        items[0].dispatchEvent(
+                            new CustomEvent('privateregisteritem', {
+                                bubbles: true,
+                                detail: register
+                            })
+                        );
+                    });
+
+                    items[5].dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: {
+                                target: 'anchor',
+                                key: '6.1.2',
+                                bounds: { x: 5, y: 12 }
+                            },
+                            bubbles: true
+                        })
+                    );
+                    expect(handler).toHaveBeenCalledTimes(1);
+
+                    items[5].dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: {
+                                target: 'anchor',
+                                key: '6.1.1',
+                                bounds: { x: 5, y: 12 }
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalledTimes(2);
+                    expect(handler.mock.calls[1][0].detail.bounds).toEqual({
+                        x: 5,
+                        y: 12
+                    });
+                    expect(handler.mock.calls[1][0].detail.levelPath).toEqual([
+                        5, 0, 0
+                    ]);
+                    expect(
+                        handler.mock.calls[1][0].detail.selectedItems
+                    ).toEqual([
+                        'secondLevel3Selectable',
+                        'thirdLevelSelectable',
+                        'secondLevelSelectable',
+                        'unselectableChild'
                     ]);
                 });
             });
