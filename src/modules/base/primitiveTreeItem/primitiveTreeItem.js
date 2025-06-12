@@ -259,6 +259,22 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * If present, the item is disabled. A disabled item is grayed out and can't be focused.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+        if (this._connected) this.splitActions();
+    }
+
+    /**
      * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.
      *
      * @type {string[]}
@@ -272,6 +288,36 @@ export default class PrimitiveTreeItem extends LightningElement {
     set editableFields(value) {
         this._editableFields = normalizeArray(value);
         if (this.popoverVisible) this.togglePopoverVisibility();
+    }
+
+    /**
+     * If true, the item is expandable even if it has no children. The `loadmore` event will be fired when the item is opened if it has no child, or when the user clicks on the “Load More” button.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the item branch is expanded. An expanded branch displays its nested items visually.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get expanded() {
+        return this._expanded;
+    }
+    set expanded(value) {
+        this._expanded = normalizeBoolean(value);
     }
 
     /**
@@ -316,52 +362,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set href(value) {
         this._href = value;
-    }
-
-    /**
-     * If present, the item is disabled. A disabled item is grayed out and can't be focused.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get disabled() {
-        return this._disabled;
-    }
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
-        if (this._connected) this.splitActions();
-    }
-
-    /**
-     * If true, the item is expandable even if it has no children. The `loadmore` event will be fired when the item is opened if it has no child, or when the user clicks on the “Load More” button.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get enableInfiniteLoading() {
-        return this._enableInfiniteLoading;
-    }
-    set enableInfiniteLoading(value) {
-        this._enableInfiniteLoading = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the item branch is expanded. An expanded branch displays its nested items visually.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get expanded() {
-        return this._expanded;
-    }
-    set expanded(value) {
-        this._expanded = normalizeBoolean(value);
     }
 
     /**
