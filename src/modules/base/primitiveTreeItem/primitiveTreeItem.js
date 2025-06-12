@@ -575,6 +575,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * True if the item is disabled or unselectable.
+     *
+     * @type {boolean}
+     */
     get checkboxDisabled() {
         return this.disabled || this.unselectable;
     }
