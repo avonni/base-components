@@ -646,6 +646,15 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * True if the item has actions and should not hide them.
+     *
+     * @type {boolean}
+     */
+    get displayActions() {
+        return !this.hiddenActions && this.visibleActions.length;
+    }
+
+    /**
      * Name of the expand button icon.
      *
      * @type {string}
@@ -725,7 +734,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get primitiveTreeItemClass() {
         return classSet(
-            'avonni-primitive-tree-item__item slds-is-relative slds-grid'
+            'avonni-primitive-tree-item__item slds-is-relative slds-grid slds-grid_vertical-align-center'
         ).add({
             'avonni-primitive-tree-item__item_selectable': !this.unselectable
         });
@@ -985,7 +994,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Hide the action buttons.
      */
     hideActions() {
-        if (!this.popoverVisible && this.visibleActions.length) {
+        if (!this.popoverVisible && this.displayActions) {
             this.template.querySelector(
                 '[data-element-id="div-actions"]'
             ).style.opacity = 0;
