@@ -90,7 +90,9 @@ export default class PrimitiveTreeItem extends LightningElement {
     _noSlots = false;
     _selected = false;
     _showCheckbox = false;
+    _slottableTypes = [];
     _sortable = false;
+    _type;
     _unselectable = false;
 
     buttonActions = [];
@@ -540,6 +542,20 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * The types of items that are allowed to be slotted into this item when sorting.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get slottableTypes() {
+        return this._slottableTypes;
+    }
+    set slottableTypes(value) {
+        this._slottableTypes = normalizeArray(value);
+    }
+
+    /**
      * If present, the item is sortable in its parent.
      *
      * @type {boolean}
@@ -552,6 +568,20 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set sortable(value) {
         this._sortable = normalizeBoolean(value);
+    }
+
+    /**
+     * The type of the item. It will be used to determine if the item can be slotted into another item when sorting.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get type() {
+        return this._type;
+    }
+    set type(value) {
+        this._type = value;
     }
 
     /**
@@ -991,13 +1021,16 @@ export default class PrimitiveTreeItem extends LightningElement {
     removeBorder = () => {
         if (!this.itemElement) return;
         this.itemElement.classList.remove(
-            'avonni-primitive-tree-item__item_border-top'
+            'avonni-primitive-tree-item__item_border-top',
+            'avonni-primitive-tree-item__item_border-top_invalid'
         );
         this.itemElement.classList.remove(
-            'avonni-primitive-tree-item__item_border-bottom'
+            'avonni-primitive-tree-item__item_border-bottom',
+            'avonni-primitive-tree-item__item_border-bottom_invalid'
         );
         this.itemElement.classList.remove(
-            'avonni-primitive-tree-item__item_border'
+            'avonni-primitive-tree-item__item_border',
+            'avonni-primitive-tree-item__item_border_invalid'
         );
         this.itemElement.style = '';
     };
@@ -1007,31 +1040,36 @@ export default class PrimitiveTreeItem extends LightningElement {
      *
      * @param {string} position Position of the border.
      * @param {number} level Level of the tree the border should extend to.
+     * @param {boolean} isValid True if the border is valid, false otherwise.
      */
-    setBorder = (position, level) => {
+    setBorder = (position, level, isValid) => {
         if (!this.itemElement) return;
 
         this.removeBorder();
         switch (position) {
             case 'top':
                 this.itemElement.classList.add(
-                    'avonni-primitive-tree-item__item_border-top'
+                    isValid
+                        ? 'avonni-primitive-tree-item__item_border-top'
+                        : 'avonni-primitive-tree-item__item_border-top_invalid'
                 );
                 break;
             case 'bottom':
                 this.itemElement.classList.add(
-                    'avonni-primitive-tree-item__item_border-bottom'
+                    isValid
+                        ? 'avonni-primitive-tree-item__item_border-bottom'
+                        : 'avonni-primitive-tree-item__item_border-bottom_invalid'
                 );
                 if (level) {
                     this.itemElement.style = `--avonni-tree-item-spacing-inline-start-border: ${level}rem;`;
                 }
                 break;
             default:
-                if (!this.noSlots) {
-                    this.itemElement.classList.add(
-                        'avonni-primitive-tree-item__item_border'
-                    );
-                }
+                this.itemElement.classList.add(
+                    isValid && !this.noSlots
+                        ? 'avonni-primitive-tree-item__item_border'
+                        : 'avonni-primitive-tree-item__item_border_invalid'
+                );
                 break;
         }
     };

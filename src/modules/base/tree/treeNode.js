@@ -68,6 +68,8 @@ export function getTreeNode({
         name: node.name,
         nodeRef: node,
         noSlots: node.noSlots || false,
+        type: node.type,
+        slottableTypes: node.slottableTypes || [],
         unselectable: node.unselectable || false,
         visible: level === 1,
         visibleItems: []

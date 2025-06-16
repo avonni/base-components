@@ -522,8 +522,9 @@ export default class Tree extends LightningElement {
 
         this._dragState.position = 'center';
         const { key, treeNode, index } = this._dragState.item;
+        const isValidSorting = this.isSortingValid();
         this.callbackMap[key].removeBorder();
-        this.callbackMap[key].setBorder();
+        this.callbackMap[key].setBorder('', undefined, isValidSorting);
         this._dragState.currentLevelItem = null;
 
         if (treeNode.children.length && !treeNode.nodeRef.expanded) {
@@ -760,6 +761,59 @@ export default class Tree extends LightningElement {
     }
 
     /**
+     * Verify if the item can be sorted into the given position.
+     *
+     * @param {string} position Position of the item being sorted. Can be 'top' or 'bottom'.
+     */
+    isSortingValid(position) {
+        const { currentLevelItem, item, key } = this._dragState;
+        const itemSortingInto = item || currentLevelItem;
+
+        const positionItemToSort = this.getPositionInBranch(key);
+        const itemToSortBranch = positionItemToSort.items;
+        const itemToSortIndex = positionItemToSort.index;
+        const itemToSort = itemToSortBranch[itemToSortIndex];
+        const parent = this.treedata.getItem(itemSortingInto.parent);
+
+        const itemHasSlots = !itemSortingInto.treeNode.noSlots;
+        const itemSupportsType =
+            itemSortingInto.treeNode.slottableTypes.includes(itemToSort?.type);
+        const isTop = position === 'top';
+        const isBottom = position === 'bottom';
+        const isMiddle = !isTop && !isBottom;
+        const itemExpanded =
+            itemSortingInto.treeNode.expanded &&
+            itemSortingInto.treeNode.children.length > 0;
+        const parentExists = !!parent;
+        const parentHasSlots = parentExists && !parent.noSlots;
+        const parentSupportsType =
+            parentExists &&
+            parent.treeNode.slottableTypes.includes(itemToSort?.type);
+
+        const canInsertInCurrent = itemHasSlots && itemSupportsType && isMiddle;
+
+        const canInsertAtBottomOfBranchParent =
+            itemHasSlots && itemSupportsType && isBottom && itemExpanded;
+
+        const canInsertAtTopInParent =
+            isTop && parentHasSlots && parentSupportsType;
+
+        const canInsertAtBottomInParent =
+            isBottom && parentHasSlots && parentSupportsType && !itemExpanded;
+
+        const canInsertAtRoot =
+            (isTop || (isBottom && !itemExpanded)) && !parentExists;
+
+        return (
+            canInsertInCurrent ||
+            canInsertAtBottomOfBranchParent ||
+            canInsertAtTopInParent ||
+            canInsertAtBottomInParent ||
+            canInsertAtRoot
+        );
+    }
+
+    /**
      * Set the focus on the first item.
      */
     setFocusToFirstItem() {
@@ -883,6 +937,7 @@ export default class Tree extends LightningElement {
         const hasMovedLeft = x < initialX - 10;
         const hasMovedRight = x > initialX + 10;
         const { children, expanded } = item.treeNode;
+        const isValidSorting = this.isSortingValid('bottom');
 
         if (isNaN(initialX)) {
             // Show the bottom border
@@ -891,7 +946,11 @@ export default class Tree extends LightningElement {
             this.callbackMap[item.key].removeBorder();
             const level =
                 expanded && children.length ? item.level + 1 : item.level;
-            this.callbackMap[item.key].setBorder('bottom', level);
+            this.callbackMap[item.key].setBorder(
+                'bottom',
+                level,
+                isValidSorting
+            );
         } else if (hasMovedLeft) {
             this._dragState.initialX = x;
             // If the hovered item is not expanded...
@@ -911,7 +970,11 @@ export default class Tree extends LightningElement {
             // ...move the border left, outward from the most nested item
             this._dragState.currentLevelItem = parentItem;
             const level = parentItem ? parentItem.level : 1;
-            this.callbackMap[item.key].setBorder('bottom', level);
+            this.callbackMap[item.key].setBorder(
+                'bottom',
+                level,
+                isValidSorting
+            );
         } else if (hasMovedRight) {
             // Move right, towards the most nested item
             this._dragState.initialX = x;
@@ -925,7 +988,8 @@ export default class Tree extends LightningElement {
                 this._dragState.currentLevelItem = lastChildItem;
                 this.callbackMap[item.key].setBorder(
                     'bottom',
-                    lastChildItem.level
+                    lastChildItem.level,
+                    isValidSorting
                 );
             }
         }
@@ -941,13 +1005,18 @@ export default class Tree extends LightningElement {
 
         const { initialX, item } = this._dragState;
         const hasMovedRight = x > initialX + 10;
+        const isValidSorting = this.isSortingValid('top');
 
         if (isNaN(initialX)) {
             // Show the top border
             this._dragState.position = 'top';
             this._dragState.initialX = x;
             this.callbackMap[item.key].removeBorder();
-            this.callbackMap[item.key].setBorder('top');
+            this.callbackMap[item.key].setBorder(
+                'top',
+                undefined,
+                isValidSorting
+            );
         } else if (hasMovedRight) {
             this._dragState.initialX = x;
             const prevItemInSameBranch = this.treedata.findPrevNodeInSameBranch(
@@ -1333,18 +1402,14 @@ export default class Tree extends LightningElement {
         if (currentItem.key !== key) {
             // Get the new position of the item in the tree
             const { items, index } = this.getPositionInBranch(currentItem.key);
-            if (
-                !items[index].noSlots ||
-                position === 'top' ||
-                position === 'bottom'
-            ) {
-                // Get the item, and its initial position in the tree
-                const initialPosition = this.getPositionInBranch(key);
-                const initialBranch = initialPosition.items;
-                const initialIndex = initialPosition.index;
-                const initialItem = this.treedata.cloneItems(
-                    initialBranch[initialIndex]
-                );
+            const initialPosition = this.getPositionInBranch(key);
+            const initialBranch = initialPosition.items;
+            const initialIndex = initialPosition.index;
+            const initialItem = this.treedata.cloneItems(
+                initialBranch[initialIndex]
+            );
+
+            if (this.isSortingValid(position)) {
                 const temporaryName = generateUUID();
                 initialBranch[initialIndex].name = temporaryName;
 
