@@ -11,18 +11,42 @@ const FIELD_VARIANTS = {
     default: 'label-hidden',
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
+};
+const IMAGE_CROP_POSITION_DEFAULT = 50;
+const IMAGE_HEIGHT_DEFAULT = 250;
+const IMAGE_POSITION = {
+    valid: ['top', 'bottom'],
+    default: 'top'
+};
 
 export default class PrimitiveKanbanTile extends LightningElement {
     @api coverImage;
     @api description;
     @api name;
     @api title;
+    @api titleUrl;
     @api warningIcon;
 
     _actions = [];
+    _avatar = {};
     _dueDate;
     _fields = [];
-    _fieldAttributes = {};
+    _fieldAttributes = {
+        variant: FIELD_VARIANTS.default
+    };
+    _icons = [];
+    _infos = [];
+    _imageAttributes = {
+        fallbackSrc: null,
+        position: IMAGE_POSITION.default,
+        height: IMAGE_HEIGHT_DEFAULT,
+        cropPositionX: IMAGE_CROP_POSITION_DEFAULT,
+        cropPositionY: IMAGE_CROP_POSITION_DEFAULT,
+        cropFit: IMAGE_CROP_FIT.default
+    };
     _isDraggable = false;
     _startDate;
 
@@ -44,6 +68,20 @@ export default class PrimitiveKanbanTile extends LightningElement {
     }
     set actions(values) {
         this._actions = normalizeArray(values);
+    }
+
+    /**
+     * Avatar object. The avatar will be displayed in the header.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get avatar() {
+        return this._avatar;
+    }
+    set avatar(value) {
+        this._avatar = normalizeObject(value);
     }
 
     /**
@@ -94,6 +132,80 @@ export default class PrimitiveKanbanTile extends LightningElement {
     }
 
     /**
+     * Array of icon objects.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get icons() {
+        return this._icons;
+    }
+    set icons(values) {
+        this._icons = normalizeArray(values);
+    }
+
+    /**
+     * Array of info objects.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get infos() {
+        return this._infos;
+    }
+    set infos(values) {
+        this._infos = normalizeArray(values);
+    }
+
+    /**
+     * Image attributes: fallbackSrc, cropFit, position, height and cropPosition.
+     *
+     * @type {object}
+     */
+    @api
+    get imageAttributes() {
+        return this._imageAttributes;
+    }
+    set imageAttributes(value) {
+        const normalizedImgAttributes = normalizeObject(value);
+
+        this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
+
+        this._imageAttributes.height = !isNaN(normalizedImgAttributes.height)
+            ? normalizedImgAttributes.height
+            : IMAGE_HEIGHT_DEFAULT;
+
+        this._imageAttributes.cropPositionX = !isNaN(
+            normalizedImgAttributes.cropPositionX
+        )
+            ? normalizedImgAttributes.cropPositionX
+            : IMAGE_CROP_POSITION_DEFAULT;
+        this._imageAttributes.cropPositionY = !isNaN(
+            normalizedImgAttributes.cropPositionY
+        )
+            ? normalizedImgAttributes.cropPositionY
+            : IMAGE_CROP_POSITION_DEFAULT;
+
+        this._imageAttributes.cropFit = normalizeString(
+            normalizedImgAttributes.cropFit,
+            {
+                fallbackValue: IMAGE_CROP_FIT.default,
+                validValues: IMAGE_CROP_FIT.valid
+            }
+        );
+
+        this._imageAttributes.position = normalizeString(
+            normalizedImgAttributes.position,
+            {
+                fallbackValue: IMAGE_POSITION.default,
+                validValues: IMAGE_POSITION.valid
+            }
+        );
+    }
+
+    /**
      * If present, the tile can be dragged by users.
      *
      * @type {boolean}
@@ -128,14 +240,24 @@ export default class PrimitiveKanbanTile extends LightningElement {
      */
 
     /**
-     * Display cover image as background image.
+     * Computed cover image styling class.
      *
      * @type {string}
      */
-    get computedCoverImageStyle() {
-        return `background-image: url(${this.coverImage}); height: 250px;`;
+    get computedCoverImageClass() {
+        const cropX = this._imageAttributes.cropPositionX;
+        const cropY = this._imageAttributes.cropPositionY;
+        const imageObjectPosition = `object-position:${cropX}%${cropY}%;`;
+        const objectFit = `object-fit:${this._imageAttributes.cropFit};`;
+        const heightStyle = `height:${this._imageAttributes.height}px;`;
+        return `${heightStyle}${imageObjectPosition}${objectFit}`;
     }
 
+    /**
+     * Computed the dates styling class.
+     *
+     * @type {string}
+     */
     get computedDatesClass() {
         return classSet(
             'avonni-kanban__tile_dates slds-grid slds-grid_vertical-align-center slds-p-around_xx-small'
@@ -159,7 +281,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
     }
 
     /**
-     * Gets the class of the tile depending on disableItemDragAndDrop
+     * Gets the class of the tile depending if it is draggable.
      *
      * @type {string}
      */
@@ -170,7 +292,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
     }
 
     /**
-     * Computed Warning icon styling class.
+     * Computed warning icon styling class.
      *
      * @type {string}
      */
@@ -205,6 +327,42 @@ export default class PrimitiveKanbanTile extends LightningElement {
      */
     get hasHeader() {
         return this.title || this.description;
+    }
+
+    /**
+     * Returns true if the avatar is displayed on the left.
+     *
+     * @type {boolean}
+     */
+    get isAvatarLeft() {
+        return this._avatar && this.avatarPosition === 'left-of-title';
+    }
+
+    /**
+     * Returns true if the avatar is displayed on the right.
+     *
+     * @type {boolean}
+     */
+    get isAvatarRight() {
+        return this._avatar && this.avatarPosition === 'right-of-title';
+    }
+
+    /**
+     * Returns true if the cover image is displayed at the top.
+     *
+     * @type {boolean}
+     */
+    get isCoverImageTop() {
+        return this.coverImage && this._imageAttributes.position === 'top';
+    }
+
+    /**
+     * Returns true if the cover image is displayed at the bottom.
+     *
+     * @type {boolean}
+     */
+    get isCoverImageBottom() {
+        return this.coverImage && this._imageAttributes.position === 'bottom';
     }
 
     /**
@@ -249,8 +407,6 @@ export default class PrimitiveKanbanTile extends LightningElement {
          * @param {string} name Unique name of the action.
          * @param {string} targetName Unique name of the tile.
          *
-         * @public
-         * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
@@ -268,7 +424,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
      *
      * @param {Event} event
      */
-    stopPropagation(event) {
+    handleStopPropagation(event) {
         event.stopPropagation();
     }
 }

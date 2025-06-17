@@ -1,5 +1,10 @@
 .avonni-kanban__tile {
-    background-color: #ffffff;
+    background-color: var(--avonni-kanban-tile-color-background, #ffffff);
+    border: 1px solid
+        var(
+            --avonni-kanban-tile-color-border,
+            var(--slds-g-color-border-base-1, #e5e5e5)
+        );
     user-select: none;
     z-index: 1;
     padding: 0;
@@ -12,12 +17,23 @@
 }
 
 .avonni-kanban__tile_image {
-    max-height: 200px;
     width: 100%;
-    background-size: cover;
-    background-position: 50%;
+    /* Avoid drag on images */
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.avonni-kanban__tile_image-top {
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
+}
+
+.avonni-kanban__tile_image-bottom {
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
 }
 
 .avonni-kanban__tile_header {
@@ -25,14 +41,31 @@
 }
 
 .avonni-kanban__tile_title {
-    font-size: var(--avonni-kanban-title-font-size, 1rem);
+    font-size: var(--avonni-kanban-title-font-size, 0.875rem);
     font-weight: var(--avonni-kanban-title-font-weight, 400);
     font-style: var(--avonni-kanban-title-font-style, normal);
-    color: var(--avonni-kanban-title-text-color, #000000);
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    color: var(--avonni-kanban-title-text-color, #181818);
+}
+
+.avonni-kanban__tile_title_link {
+    --lwc-brandTextLink: var(
+        --avonni-kanban-title-link-text-color,
+        rgb(1, 118, 211)
+    );
+    --lwc-brandTextLinkActive: var(
+        --avonni-kanban-title-link-text-color-hover,
+        rgb(1, 68, 134)
+    );
+}
+
+.avonni-kanban__tile_title_link,
+.avonni-kanban__tile_title_text {
     -webkit-line-clamp: var(--avonni-kanban-title-line-clamp, 1);
+}
+
+.avonni-kanban__tile:not(:has(.avonni-kanban__tile_image)):has(.avonni-kanban__tile_actions)
+    .avonni-kanban__tile_title {
+    margin-right: 1.5rem;
 }
 
 .avonni-kanban__tile_description {
@@ -44,6 +77,24 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     -webkit-line-clamp: var(--avonni-kanban-description-line-clamp, 2);
+}
+
+.avonni-kanban__tile_info {
+    font-size: var(--avonni-kanban-info-font-size, 0.8125rem);
+    font-weight: var(--avonni-kanban-info-font-weight, 400);
+    font-style: var(--avonni-kanban-info-font-style, normal);
+    color: var(--avonni-kanban-info-text-color, #444444);
+}
+
+.avonni-kanban__tile_info-link {
+    --lwc-brandTextLink: var(
+        --avonni-kanban-info-link-text-color,
+        rgb(1, 118, 211)
+    );
+    --lwc-brandTextLinkActive: var(
+        --avonni-kanban-info-link-text-color-hover,
+        rgb(1, 68, 134)
+    );
 }
 
 .avonni-kanban__tile_fields {

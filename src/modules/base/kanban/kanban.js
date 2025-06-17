@@ -12,6 +12,17 @@ import {
 } from 'c/utils';
 import KanbanGroupsBuilder from './groupBuilder';
 
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
+};
+const IMAGE_CROP_POSITION_DEFAULT = 50;
+const IMAGE_HEIGHT_DEFAULT = 250;
+const IMAGE_POSITION = {
+    valid: ['top', 'bottom'],
+    default: 'top'
+};
+
 const KANBAN_VARIANTS = {
     valid: ['base', 'path'],
     default: 'base'
@@ -37,10 +48,19 @@ export default class Kanban extends LightningElement {
     _disableItemDragAndDrop = false;
     _groupValues = [];
     _hideHeader = false;
+    _imageAttributes = {
+        fallbackSrc: null,
+        position: IMAGE_POSITION.default,
+        height: IMAGE_HEIGHT_DEFAULT,
+        cropPositionX: IMAGE_CROP_POSITION_DEFAULT,
+        cropPositionY: IMAGE_CROP_POSITION_DEFAULT,
+        cropFit: IMAGE_CROP_FIT.default
+    };
     _isLoading = false;
     _records = [];
     _subGroupFieldName;
     _summarizeAttributes = {};
+    _variant = KANBAN_VARIANTS.default;
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -84,7 +104,6 @@ export default class Kanban extends LightningElement {
     _summarizeValues = [];
     _summaryTimeoutsId = [];
 
-    _variant = KANBAN_VARIANTS.default;
     kanbanGroup;
 
     connectedCallback() {
@@ -264,6 +283,56 @@ export default class Kanban extends LightningElement {
     }
     set hideHeader(value) {
         this._hideHeader = normalizeBoolean(value);
+    }
+
+    /**
+     * Image attributes: fallbackSrc, cropFit, position, height and cropPosition.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get imageAttributes() {
+        return this._imageAttributes;
+    }
+    set imageAttributes(value) {
+        const normalizedImgAttributes = normalizeObject(value);
+
+        this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
+
+        this._imageAttributes.height = !isNaN(normalizedImgAttributes.height)
+            ? normalizedImgAttributes.height
+            : IMAGE_HEIGHT_DEFAULT;
+
+        this._imageAttributes.cropPositionX = !isNaN(
+            normalizedImgAttributes.cropPositionX
+        )
+            ? normalizedImgAttributes.cropPositionX
+            : IMAGE_CROP_POSITION_DEFAULT;
+        this._imageAttributes.cropPositionY = !isNaN(
+            normalizedImgAttributes.cropPositionY
+        )
+            ? normalizedImgAttributes.cropPositionY
+            : IMAGE_CROP_POSITION_DEFAULT;
+
+        this._imageAttributes.cropFit = normalizeString(
+            normalizedImgAttributes.cropFit,
+            {
+                fallbackValue: IMAGE_CROP_FIT.default,
+                validValues: IMAGE_CROP_FIT.valid
+            }
+        );
+
+        this._imageAttributes.position = normalizeString(
+            normalizedImgAttributes.position,
+            {
+                fallbackValue: IMAGE_POSITION.default,
+                validValues: IMAGE_POSITION.valid
+            }
+        );
+        if (this._connected) {
+            this.updateTiles();
+        }
     }
 
     /**
@@ -1436,7 +1505,7 @@ export default class Kanban extends LightningElement {
             recordAction[this.groupFieldName];
 
         /**
-         * The event fired when a user clicks on an tile action.
+         * The event fired when a user clicks on an action.
          *
          * @event
          * @name actionclick
@@ -1656,12 +1725,14 @@ export default class Kanban extends LightningElement {
         }
         const kanbanGroupsBuilder = new KanbanGroupsBuilder({
             groupValues: this._groupValues,
-            records: this._records,
+            items: this._records,
             groupFieldName: this.groupFieldName,
             summarizeAttributes: this.summarizeAttributes,
             subGroupFieldName: this.subGroupFieldName,
             keyField: this.keyField,
-            cardAttributes: this.cardAttributes
+            cardAttributes: this.cardAttributes,
+            imageAttributes: this.imageAttributes,
+            avatarAttributes: this.avatarAttributes
         });
         if (this._computedGroups.length === 0) {
             this._groupValues.forEach((_, i) => {
