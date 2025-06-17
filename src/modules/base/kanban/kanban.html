@@ -104,12 +104,16 @@
                 ></div>
                 <div
                     class={computedFieldClass}
-                    data-element-id="avonni-kanban__field"
                     for:each={computedGroups}
                     for:item="group"
                     for:index="groupIndex"
                     key={group.index}
+                    tabindex={groupTabIndex}
+                    data-element-id="avonni-kanban__field"
+                    data-group-index={group.index}
                     style={group.backgroundStyle}
+                    onblur={handleGroupBlur}
+                    onkeydown={handleGroupKeyDown}
                     onmouseenter={clearScrollInterval}
                 >
                     <div

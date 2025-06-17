@@ -16,6 +16,25 @@ export const keyCodes = {
     shift: 16
 };
 
+export const keyValues = {
+    tab: 'Tab',
+    backspace: 'Backspace',
+    enter: 'Enter',
+    escape: 'Escape',
+    space: ' ',
+    spacebar: 'Spacebar',
+    pageup: 'PageUp',
+    pagedown: 'PageDown',
+    end: 'End',
+    home: 'Home',
+    left: 'ArrowLeft',
+    up: 'ArrowUp',
+    right: 'ArrowRight',
+    down: 'ArrowDown',
+    delete: 'Delete',
+    shift: 'Shift'
+};
+
 export function normalizeKeyValue(value) {
     switch (value) {
         case 'Spacebar':

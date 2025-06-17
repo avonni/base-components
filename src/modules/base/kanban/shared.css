@@ -177,6 +177,10 @@
     pointer-events: none;
 }
 
+.avonni-kanban__tile_moved_keyboard {
+    transition: transform 0.3s ease;
+}
+
 .avonni-kanban__variant_base
     .avonni-kanban__field.avonni-kanban__dragged_group {
     position: relative;
@@ -184,12 +188,33 @@
     z-index: 99;
 }
 
+.avonni-kanban__variant_base
+    .avonni-kanban__field.avonni-kanban__tile_moved_keyboard.avonni-kanban__dragged_group {
+    transform: rotate(3deg);
+    position: relative;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
 .avonni-kanban__translate_left {
     transform: translateX(calc(-100% - 10px));
 }
 
+.avonni-kanban__tile_moved_keyboard.avonni-kanban__translate_left {
+    transform: translateX(calc(-100% - 10px)) rotate(3deg);
+    position: relative;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+}
+
 .avonni-kanban__translate_right {
     transform: translateX(calc(100% + 10px));
+}
+
+.avonni-kanban__tile_moved_keyboard.avonni-kanban__translate_right {
+    transform: translateX(calc(100% + 10px)) rotate(3deg);
+    position: relative;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+    z-index: 99;
 }
 
 .avonni-kanban__variant_base

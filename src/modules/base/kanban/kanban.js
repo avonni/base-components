@@ -11,6 +11,7 @@ import {
     normalizeString
 } from 'c/utils';
 import KanbanGroupsBuilder from './groupBuilder';
+import { handleKeyDownOnGroup } from './keyboard';
 
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
@@ -62,6 +63,8 @@ export default class Kanban extends LightningElement {
     _summarizeAttributes = {};
     _variant = KANBAN_VARIANTS.default;
 
+    _animationTimeout;
+    _cancelBlur = false;
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
     _computedGroups = [];
@@ -93,6 +96,8 @@ export default class Kanban extends LightningElement {
         x: 0,
         y: 0
     };
+    _keyboardDragged = false;
+
     _oldSummarizeValues = [];
     _releasedGroupIndex = 0;
     _releasedTileIndex = 0;
@@ -105,10 +110,13 @@ export default class Kanban extends LightningElement {
     _summaryTimeoutsId = [];
 
     kanbanGroup;
+    keyboardInterface;
 
     connectedCallback() {
         this.updateTiles();
         this._connected = true;
+        this.keyboardInterface = this._selectKeyboardInterface();
+        window.addEventListener('mousedown', this.handleGroupKeyboardDragEnd);
     }
 
     renderedCallback() {
@@ -131,6 +139,10 @@ export default class Kanban extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
+        window.removeEventListener(
+            'mousedown',
+            this.handleGroupKeyboardDragEnd
+        );
     }
 
     /**
@@ -511,6 +523,12 @@ export default class Kanban extends LightningElement {
         return {};
     }
 
+    get groupTabIndex() {
+        return this.variant === 'base' && !this.disableColumnDragAndDrop
+            ? 0
+            : -1;
+    }
+
     /**
      * Check if actions exist.
      *
@@ -527,6 +545,10 @@ export default class Kanban extends LightningElement {
      */
     get hasTileHeader() {
         return this.cardAttributes.title || this.cardAttributes.description;
+    }
+
+    get isDragging() {
+        return this._draggedGroup || this._draggedTile;
     }
 
     /**
@@ -624,6 +646,13 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Sets the variable cancelBlur to false.
+     */
+    allowBlur() {
+        this._cancelBlur = false;
+    }
+
+    /**
      *
      * Updates the summary value gradually
      * @param {object} group Group containing the summary value to animate
@@ -696,6 +725,13 @@ export default class Kanban extends LightningElement {
         }
 
         this.resetAnimations(groups);
+    }
+
+    /**
+     * Sets the variable cancelBlur to false.
+     */
+    cancelBlur() {
+        this._cancelBlur = true;
     }
 
     /**
@@ -1156,6 +1192,25 @@ export default class Kanban extends LightningElement {
         );
     }
 
+    _selectKeyboardInterface() {
+        const that = this;
+        return {
+            endDrag() {
+                that.handleGroupKeyboardDragEnd();
+            },
+            moveColumns(from, to) {
+                that.handleGroupKeyboardDragMove(from, to);
+            },
+            selectColumn(column, index) {
+                if (that.isDragging) {
+                    that.handleGroupKeyboardDragEnd();
+                } else {
+                    that.handleGroupKeyboardDragStart(column, index);
+                }
+            }
+        };
+    }
+
     /**
      * Actionclick handler.
      *
@@ -1285,6 +1340,94 @@ export default class Kanban extends LightningElement {
         this.capFieldHeight();
     }
 
+    handleGroupBlur() {
+        if (this._keyboardDragged && !this._cancelBlur) {
+            this.handleGroupKeyboardDragEnd();
+            this.allowBlur();
+        }
+    }
+
+    /**
+     *
+     *  Starts the drag of a list using keyboard
+     *
+     * @param {Event} event
+     */
+    handleGroupKeyDown(event) {
+        if (this._variant !== 'base' || this.disableColumnDragAndDrop) {
+            return;
+        }
+        handleKeyDownOnGroup(event, this.keyboardInterface);
+    }
+
+    handleGroupKeyboardDragEnd = () => {
+        if (!this._keyboardDragged) {
+            return;
+        }
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__field"]'
+        );
+        groups.forEach((group) => {
+            group.classList.remove('avonni-kanban__tile_moved_keyboard');
+        });
+        if (this._draggedGroup) {
+            this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
+        }
+        this.allowBlur();
+        this._draggedGroup = null;
+        this._keyboardDragged = false;
+    };
+
+    handleGroupKeyboardDragMove = (from, to) => {
+        const groups = Array.from(
+            this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field"]'
+            )
+        );
+        const droppedGroup = groups[to];
+        if (!this._keyboardDragged || !this._draggedGroup || !droppedGroup) {
+            return;
+        }
+        this.cancelBlur();
+        this._clickedGroupIndex = from;
+        this._releasedGroupIndex = to;
+
+        requestAnimationFrame(() => {
+            const translatePosition = from < to ? 'right' : 'left';
+            const draggedClass = `avonni-kanban__translate_${translatePosition}`;
+            this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
+            this._draggedGroup.classList.add(draggedClass);
+
+            if (this._animationTimeout) {
+                clearTimeout(this._animationTimeout);
+            }
+            this._animationTimeout = setTimeout(() => {
+                const previousDraggedGroup = this._draggedGroup;
+                this.swapGroups();
+                previousDraggedGroup.classList.remove(draggedClass);
+                this._draggedGroup = droppedGroup;
+                this._draggedGroup.focus();
+                this._draggedGroup.classList.add(
+                    'avonni-kanban__dragged_group'
+                );
+            }, 50);
+        });
+    };
+
+    handleGroupKeyboardDragStart = (column, index) => {
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__field"]'
+        );
+        groups.forEach((group) => {
+            group.classList.add('avonni-kanban__tile_moved_keyboard');
+        });
+        this._keyboardDragged = true;
+        this._clickedGroupIndex = index;
+        this._releasedGroupIndex = index;
+        this._draggedGroup = column;
+        this._draggedGroup.classList.add('avonni-kanban__dragged_group');
+    };
+
     /**
      *
      *  Starts the drag of a list
@@ -1295,7 +1438,8 @@ export default class Kanban extends LightningElement {
         if (
             this._variant !== 'base' ||
             this._disableColumnDragAndDrop ||
-            event.button !== 0
+            event.button !== 0 ||
+            this._keyboardDragged
         ) {
             return;
         }
@@ -1358,7 +1502,7 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleGroupMouseMove(event) {
-        if (!this._draggedGroup) {
+        if (!this._draggedGroup || this._keyboardDragged) {
             return;
         }
 
@@ -1419,7 +1563,7 @@ export default class Kanban extends LightningElement {
      *
      */
     handleGroupMouseUp() {
-        if (!this._draggedGroup) {
+        if (!this._draggedGroup || this._keyboardDragged) {
             return;
         }
         this.swapGroups();
@@ -1668,7 +1812,10 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseMove(event) {
-        if (!this._draggedTile && !this._draggedGroup) {
+        if (
+            (!this._draggedTile && !this._draggedGroup) ||
+            this._keyboardDragged
+        ) {
             return;
         }
 
