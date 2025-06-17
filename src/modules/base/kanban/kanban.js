@@ -548,7 +548,7 @@ export default class Kanban extends LightningElement {
     }
 
     get isDragging() {
-        return this._draggedGroup || this._draggedTile;
+        return !!(this._draggedGroup || this._draggedTile);
     }
 
     /**
@@ -1192,13 +1192,37 @@ export default class Kanban extends LightningElement {
         );
     }
 
+    /**
+     * Normalize the focused index.
+     *
+     * @param {number} index Index to normalize.
+     */
+    normalizeFocusedIndex(items, index) {
+        let position = 'INDEX';
+
+        if (index < 0) {
+            position = 'FIRST_ITEM';
+        } else if (index > items.length - 1) {
+            position = 'LAST_ITEM';
+        }
+
+        switch (position) {
+            case 'FIRST_ITEM':
+                return 0;
+            case 'LAST_ITEM':
+                return items.length - 1;
+            default:
+                return index;
+        }
+    }
+
     _selectKeyboardInterface() {
         const that = this;
         return {
             endDrag() {
                 that.handleGroupKeyboardDragEnd();
             },
-            moveColumns(from, to) {
+            moveColumn(from, to) {
                 that.handleGroupKeyboardDragMove(from, to);
             },
             selectColumn(column, index) {
@@ -1207,8 +1231,21 @@ export default class Kanban extends LightningElement {
                 } else {
                     that.handleGroupKeyboardDragStart(column, index);
                 }
+            },
+            setFocusOnNextColumn(index) {
+                that.switchFocus(that.computedGroups, index);
             }
         };
+    }
+
+    switchFocus(items, index) {
+        const normalizedIndex = this.normalizeFocusedIndex(items, index);
+        const item = this.template.querySelector(
+            `[data-element-id="avonni-kanban__field"][data-group-index="${normalizedIndex}"]`
+        );
+        if (item) {
+            item.focus();
+        }
     }
 
     /**
