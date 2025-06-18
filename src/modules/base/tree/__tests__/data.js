@@ -147,6 +147,40 @@ export const ITEMS = [
     }
 ];
 
+export const ITEMS_WITH_INVALID_SORTING = [
+    {
+        label: 'No slots',
+        name: 'noSlots',
+        noSlots: true,
+        type: 'valid',
+        slottableTypes: ['invalidSorting']
+    },
+    {
+        label: 'Item to move',
+        name: 'itemToMove',
+        type: 'invalidSorting'
+    },
+    {
+        label: 'Invalid sorting',
+        name: 'invalidSorting',
+        items: [
+            {
+                label: 'First level invalid sorting',
+                name: 'firstLevelInvalidSorting',
+                type: 'invalidSorting'
+            },
+            {
+                label: 'First level invalid sorting2',
+                name: 'firstLevelInvalidSorting2',
+                type: 'invalidSorting'
+            }
+        ],
+        type: 'valid',
+        slottableTypes: ['valid'],
+        expanded: true
+    }
+];
+
 const makeRegister = (item, key, fakeRegisters, y) => {
     fakeRegisters[item.name] = {
         bounds: jest.fn().mockReturnValue({

@@ -232,7 +232,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('Hide and show action buttons and menu when hiddenActions is enabled', () => {
+    it('Action buttons element is null when hiddenActions is enabled', () => {
         element.actions = ACTIONS;
         element.hiddenActions = true;
 
@@ -240,36 +240,15 @@ describe('Primitive Tree Item', () => {
             const header = element.shadowRoot.querySelector(
                 '[data-element-id="div-header"]'
             );
-            const buttons = header.querySelector(
+            let buttons = header.querySelector(
                 '[data-element-id="div-actions"]'
             );
-            expect(buttons.classList).toContain(
-                'avonni-primitive-tree-item__actions'
-            );
+            expect(buttons).toBeNull();
 
             // Don't show buttons on header hover
             header.dispatchEvent(new CustomEvent('mouseenter'));
-            expect(buttons.style.opacity).toBe('');
-
-            // Open menu
-            const menu = header.querySelector(
-                '[data-element-id="avonni-button-menu"]'
-            );
-            menu.dispatchEvent(new CustomEvent('open'));
-            const spy = jest.spyOn(menu, 'close');
-
-            // Hide buttons and close menu on header leave
-            header.dispatchEvent(new CustomEvent('mouseleave'));
-            expect(buttons.style.opacity).toBe('0');
-            expect(spy).toHaveBeenCalled();
-
-            // Show buttons on header focus
-            header.dispatchEvent(new CustomEvent('focusin'));
-            expect(buttons.style.opacity).toBe('0');
-
-            // Hide buttons on action menu blur
-            menu.dispatchEvent(new CustomEvent('blur'));
-            expect(buttons.style.opacity).toBe('0');
+            buttons = header.querySelector('[data-element-id="div-actions"]');
+            expect(buttons).toBeNull();
         });
     });
 
@@ -1765,18 +1744,19 @@ describe('Primitive Tree Item', () => {
         );
         const callbacks = handler.mock.calls[0][0].detail;
 
-        callbacks.setBorder('top');
+        // Valid sorting
+        callbacks.setBorder('top', undefined, true);
         expect(item.classList).toContain(
             'avonni-primitive-tree-item__item_border-top'
         );
-        callbacks.setBorder('bottom', 3);
+        callbacks.setBorder('bottom', 3, true);
         expect(item.classList).toContain(
             'avonni-primitive-tree-item__item_border-bottom'
         );
         expect(item.style.cssText).toBe(
             '--avonni-tree-item-spacing-inline-start-border: 3rem;'
         );
-        callbacks.setBorder();
+        callbacks.setBorder('', undefined, true);
         expect(item.classList).toContain(
             'avonni-primitive-tree-item__item_border'
         );
@@ -1785,10 +1765,26 @@ describe('Primitive Tree Item', () => {
             'avonni-primitive-tree-item__item_border'
         );
 
-        otherElement.noSlots = true;
+        // Invalid sorting
+        callbacks.setBorder('top', undefined, false);
+        expect(item.classList).toContain(
+            'avonni-primitive-tree-item__item_border-top_invalid'
+        );
+        callbacks.setBorder('bottom', 3, false);
+        expect(item.classList).toContain(
+            'avonni-primitive-tree-item__item_border-bottom_invalid'
+        );
+        expect(item.style.cssText).toBe(
+            '--avonni-tree-item-spacing-inline-start-border: 3rem;'
+        );
         callbacks.setBorder();
-        expect(item.classList).not.toContain(
-            'avonni-primitive-tree-item__item_border'
+        expect(item.classList).toContain(
+            'avonni-primitive-tree-item__item_border_invalid'
+        );
+        otherElement.noSlots = true;
+        callbacks.setBorder('', undefined, true);
+        expect(item.classList).toContain(
+            'avonni-primitive-tree-item__item_border_invalid'
         );
     });
 

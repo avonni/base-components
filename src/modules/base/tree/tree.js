@@ -539,7 +539,7 @@ export default class Tree extends LightningElement {
         const { key, treeNode, index } = this._dragState.item;
         const isValidSorting = this.isSortingValid();
         this.callbackMap[key].removeBorder();
-        this.callbackMap[key].setBorder('', undefined, isValidSorting);
+        this.callbackMap[key].setBorder(undefined, undefined, isValidSorting);
         this._dragState.currentLevelItem = null;
 
         if (treeNode.children.length && !treeNode.nodeRef.expanded) {
