@@ -491,7 +491,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * If present, the item does not have any slots. This means the item cannot accept items has a child when sorting.
+     * If present, the item cannot accept items has a child when sorting.
      *
      * @type {boolean}
      * @public
@@ -542,7 +542,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * The types of items that are allowed to be slotted into this item when sorting.
+     * Array of types of items that can be slotted into this item when sorting. If the array isn’t provided, any type of item can be slotted in this item.
      *
      * @type {string[]}
      * @public
@@ -571,7 +571,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * The type of the item. It will be used to determine if the item can be slotted into another item when sorting.
+     * Type of the item. It will be used to determine if the item can be slotted into another item when sorting.
      *
      * @type {string}
      * @public
