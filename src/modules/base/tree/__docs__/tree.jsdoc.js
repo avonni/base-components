@@ -36,6 +36,8 @@
  * @property {string} href If the item label should be a link, URL of the link.
  * @property {boolean} hiddenActions If true, the item does not display any actions.
  * @property {boolean} noSlots If true, the item does not have any slots. This means the item cannot accept items has a child when sorting.
+ * @property {string[]} slottableTypes Array of slottable types. If this array isn't provided, any type of item can be slotted in this item. This array contains the types of items that can be slotted in the item when sorting. The types are defined by the `type` attribute of the slotted items.
+ * @property {string} type Type of the item. The type is used to determine in which items it can be slotted into when sorting.
  * @property {boolean} unselectable If true, the item is not selectable.
  * Links are incompatible with inline edition and multi-select trees.
  * @property {boolean} expanded If true, the item branch is expanded. An expanded branch displays its nested items visually. Defaults to false.
