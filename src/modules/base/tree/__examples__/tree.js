@@ -16,6 +16,7 @@ export const Tree = ({
     items,
     loadingStateAlternativeText,
     placeholder,
+    rootSlottableTypes,
     selectedItems,
     sortable
 }) => {
@@ -33,6 +34,7 @@ export const Tree = ({
     element.items = items;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.placeholder = placeholder;
+    element.rootSlottableTypes = rootSlottableTypes;
     element.selectedItems = selectedItems;
     element.sortable = sortable;
     return element;
