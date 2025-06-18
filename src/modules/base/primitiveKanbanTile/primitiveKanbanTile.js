@@ -235,6 +235,26 @@ export default class PrimitiveKanbanTile extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set focus on the tile.
+     *
+     */
+    @api
+    focus() {
+        const tile = this.template.querySelector(
+            '[data-element-id="lightning-tile"]'
+        );
+        if (tile) {
+            tile.focus();
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */

@@ -227,7 +227,11 @@
                         data-element-id="avonni-kanban__group"
                         class="avonni-kanban__tiles_container slds-scrollable_y"
                     >
-                        <template for:each={group.tiles} for:item="record">
+                        <template
+                            for:each={group.tiles}
+                            for:item="record"
+                            for:index="index"
+                        >
                             <c-primitive-kanban-tile
                                 key={record.index}
                                 class={computedTileClass}
@@ -249,8 +253,12 @@
                                 data-element-id="avonni-kanban__tile"
                                 data-group={group.value}
                                 data-group-index={groupIndex}
+                                data-is-dragging={isDragging}
                                 data-record-index={record.index}
+                                data-index={index}
                                 onactionclick={handleTileActionClick}
+                                onblur={handleTileBlur}
+                                onkeydown={handleTileKeyDown}
                                 onmousedown={handleTileMouseDown}
                                 onmousemove={handleDropZone}
                                 onmouseup={handleTileMouseUp}

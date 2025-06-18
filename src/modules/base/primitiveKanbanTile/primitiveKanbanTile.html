@@ -1,5 +1,9 @@
 <template>
-    <lightning-tile class={computedTileClass} tabindex="0">
+    <lightning-tile
+        class={computedTileClass}
+        tabindex="0"
+        data-element-id="lightning-tile"
+    >
         <!--
             The wrapping <div> is needed for the tests to pass.
             Otherwise, not all the elements appear in the default slot.

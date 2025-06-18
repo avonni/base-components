@@ -11,7 +11,7 @@ import {
     normalizeString
 } from 'c/utils';
 import KanbanGroupsBuilder from './groupBuilder';
-import { handleKeyDownOnGroup } from './keyboard';
+import { handleKeyDownOnGroup, handleKeyDownOnItem } from './keyboard';
 
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
@@ -115,8 +115,8 @@ export default class Kanban extends LightningElement {
     connectedCallback() {
         this.updateTiles();
         this._connected = true;
-        this.keyboardInterface = this._selectKeyboardInterface();
-        window.addEventListener('mousedown', this.handleGroupKeyboardDragEnd);
+        this.keyboardInterface = this.selectKeyboardInterface();
+        window.addEventListener('mousedown', this.handleKeyboardDragEnd);
     }
 
     renderedCallback() {
@@ -139,10 +139,7 @@ export default class Kanban extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
-        window.removeEventListener(
-            'mousedown',
-            this.handleGroupKeyboardDragEnd
-        );
+        window.removeEventListener('mousedown', this.handleKeyboardDragEnd);
     }
 
     /**
@@ -1150,8 +1147,7 @@ export default class Kanban extends LightningElement {
         this._currentSubGroup = '';
         this._scrollOffset = 0;
 
-        window.clearInterval(this._scrollingInterval);
-        this._scrollingInterval = null;
+        this.clearScrollInterval();
 
         // removes the translation on all tiles
         const groupElements = this.template.querySelectorAll(
@@ -1216,32 +1212,65 @@ export default class Kanban extends LightningElement {
         }
     }
 
-    _selectKeyboardInterface() {
+    selectKeyboardInterface() {
         const that = this;
         return {
             endDrag() {
-                that.handleGroupKeyboardDragEnd();
+                that.handleKeyboardDragEnd();
             },
             moveColumn(from, to) {
                 that.handleGroupKeyboardDragMove(from, to);
             },
-            selectColumn(column, index) {
+            moveItem(groupFrom, from, to) {
+                that.handleItemKeyboardDragMove(groupFrom, from, to);
+            },
+            selectColumn(element, index) {
                 if (that.isDragging) {
                     that.handleGroupKeyboardDragEnd();
                 } else {
-                    that.handleGroupKeyboardDragStart(column, index);
+                    that.handleGroupKeyboardDragStart(element, index);
+                }
+            },
+            selectItem(element, groupIndex, index) {
+                if (that.isDragging) {
+                    that.handleItemKeyboardDragEnd();
+                } else {
+                    that.handleItemKeyboardDragStart(
+                        element,
+                        groupIndex,
+                        index
+                    );
                 }
             },
             setFocusOnNextColumn(index) {
-                that.switchFocus(that.computedGroups, index);
+                that.switchColumnFocus(index);
+            },
+            setFocusOnNextItem(groupIndex, index) {
+                that.switchItemFocus(groupIndex, index);
             }
         };
     }
 
-    switchFocus(items, index) {
-        const normalizedIndex = this.normalizeFocusedIndex(items, index);
+    switchColumnFocus(index) {
+        const normalizedIndex = this.normalizeFocusedIndex(
+            this.computedGroups,
+            index
+        );
         const item = this.template.querySelector(
             `[data-element-id="avonni-kanban__field"][data-group-index="${normalizedIndex}"]`
+        );
+        if (item) {
+            item.focus();
+        }
+    }
+
+    switchItemFocus(groupIndex, index) {
+        const normalizedIndex = this.normalizeFocusedIndex(
+            this.computedGroups[groupIndex].tiles,
+            index
+        );
+        const item = this.template.querySelector(
+            `[data-element-id="avonni-kanban__tile"][data-group-index="${groupIndex}"][data-index="${normalizedIndex}"]`
         );
         if (item) {
             item.focus();
@@ -1334,7 +1363,10 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleDropZone(event) {
-        if (event.currentTarget !== this._draggedTile) {
+        if (
+            event.currentTarget !== this._draggedTile ||
+            this._keyboardDragged
+        ) {
             return;
         }
 
@@ -1377,6 +1409,11 @@ export default class Kanban extends LightningElement {
         this.capFieldHeight();
     }
 
+    /**
+     *
+     *  Handles the blur on a group
+     *
+     */
     handleGroupBlur() {
         if (this._keyboardDragged && !this._cancelBlur) {
             this.handleGroupKeyboardDragEnd();
@@ -1397,10 +1434,12 @@ export default class Kanban extends LightningElement {
         handleKeyDownOnGroup(event, this.keyboardInterface);
     }
 
+    /**
+     *
+     *  Handles the keyboard drag end of a list
+     *
+     */
     handleGroupKeyboardDragEnd = () => {
-        if (!this._keyboardDragged) {
-            return;
-        }
         const groups = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__field"]'
         );
@@ -1415,6 +1454,13 @@ export default class Kanban extends LightningElement {
         this._keyboardDragged = false;
     };
 
+    /**
+     *
+     *  Handles the keyboard drag move of a list
+     *
+     * @param {number} from The initial index
+     * @param {number} to The dropped index
+     */
     handleGroupKeyboardDragMove = (from, to) => {
         const groups = Array.from(
             this.template.querySelectorAll(
@@ -1439,9 +1485,9 @@ export default class Kanban extends LightningElement {
                 clearTimeout(this._animationTimeout);
             }
             this._animationTimeout = setTimeout(() => {
-                const previousDraggedGroup = this._draggedGroup;
+                const previousDraggedElement = this._draggedGroup;
                 this.swapGroups();
-                previousDraggedGroup.classList.remove(draggedClass);
+                previousDraggedElement.classList.remove(draggedClass);
                 this._draggedGroup = droppedGroup;
                 this._draggedGroup.focus();
                 this._draggedGroup.classList.add(
@@ -1451,7 +1497,14 @@ export default class Kanban extends LightningElement {
         });
     };
 
-    handleGroupKeyboardDragStart = (column, index) => {
+    /**
+     *
+     *  Handles the keyboard drag start of a list
+     *
+     * @param {object} element The dragged HTML element
+     * @param {number} index The index of the dragged group
+     */
+    handleGroupKeyboardDragStart = (element, index) => {
         const groups = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__field"]'
         );
@@ -1461,7 +1514,7 @@ export default class Kanban extends LightningElement {
         this._keyboardDragged = true;
         this._clickedGroupIndex = index;
         this._releasedGroupIndex = index;
-        this._draggedGroup = column;
+        this._draggedGroup = element;
         this._draggedGroup.classList.add('avonni-kanban__dragged_group');
     };
 
@@ -1639,6 +1692,19 @@ export default class Kanban extends LightningElement {
 
     /**
      *
+     *  Handles the end of keyboard drag
+     *
+     */
+    handleKeyboardDragEnd = () => {
+        if (!this._keyboardDragged) {
+            return;
+        }
+        this.handleGroupKeyboardDragEnd();
+        this.handleItemKeyboardDragEnd();
+    };
+
+    /**
+     *
      * Prevents dragging from a dropdown menu
      * @param {Event} event
      *
@@ -1674,6 +1740,12 @@ export default class Kanban extends LightningElement {
         }
     }
 
+    /**
+     *
+     *  Handles a click on an action.
+     *
+     * @param {Event} event
+     */
     handleTileActionClick(event) {
         const targetName = event.detail.targetName;
         const recordAction = this._records.find((record) => {
@@ -1710,6 +1782,18 @@ export default class Kanban extends LightningElement {
 
     /**
      *
+     *  Handles the blur on an item
+     *
+     */
+    handleItemBlur() {
+        if (this._keyboardDragged && !this._cancelBlur) {
+            this.handleItemKeyboardDragEnd();
+            this.allowBlur();
+        }
+    }
+
+    /**
+     *
      * Finds the index of initial and final position of the dragged tile
      *
      */
@@ -1721,16 +1805,146 @@ export default class Kanban extends LightningElement {
 
         const currentTile = this.tileRecordFinder(
             this._initialTileIndex,
-            this._clickedGroupIndex,
-            true
+            this._clickedGroupIndex
         );
 
-        const currentIndex = this._records.indexOf(currentTile);
-        const beforeIndex = this._records.indexOf(beforeTile) + 1;
+        const currentIndex = this._records.findIndex(
+            (record) => record.id === currentTile?.id
+        );
+        const beforeIndex = this._records.findIndex(
+            (record) => record.id === beforeTile?.id
+        );
 
         this._records = this.swapRecords(currentIndex, beforeIndex);
         this.updateTiles();
     }
+
+    /**
+     *
+     *  Starts the drag of an item using keyboard
+     *
+     * @param {Event} event
+     */
+    handleTileKeyDown(event) {
+        event.stopPropagation();
+        if (this.disableItemDragAndDrop) {
+            return;
+        }
+        handleKeyDownOnItem(event, this.keyboardInterface);
+    }
+
+    /**
+     *
+     *  Handles the keyboard drag end of an item
+     *
+     */
+    handleItemKeyboardDragEnd = () => {
+        const items = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__tile"]'
+        );
+        items.forEach((item) => {
+            item.classList.remove('avonni-kanban__tile_moved_keyboard');
+        });
+        if (this._draggedTile) {
+            this._draggedTile.classList.remove('avonni-kanban__dragged');
+        }
+        this.allowBlur();
+        this._draggedTile = null;
+        this._keyboardDragged = false;
+        this._currentSubGroup = '';
+    };
+
+    /**
+     *
+     *  Handles the keyboard drag move of an item
+     *
+     * @param {number} from The initial index
+     * @param {number} to The dropped index
+     */
+    handleItemKeyboardDragMove = (groupFrom, tileFrom, tileTo) => {
+        if (!this._keyboardDragged || !this._draggedTile) {
+            return;
+        }
+        const draggedTileValue = this._draggedTile.dataset.recordIndex;
+        let groups = Array.from(
+            this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field"]'
+            )
+        );
+        let tiles = Array.from(
+            groups[groupFrom].querySelectorAll(
+                '[data-element-id="avonni-kanban__tile"]'
+            )
+        );
+
+        this.cancelBlur();
+        this._clickedGroupIndex = groupFrom;
+        this._initialTileIndex = tileFrom;
+
+        const normalizedIndex = this.normalizeFocusedIndex(tiles, tileTo);
+        this._releasedTileIndex = normalizedIndex;
+
+        requestAnimationFrame(() => {
+            const translatePosition =
+                tileFrom < normalizedIndex ? 'down' : 'up';
+            const draggedClass = `avonni-kanban__translate_${translatePosition}`;
+            this._draggedTile.classList.remove('avonni-kanban__dragged');
+            this._draggedTile.classList.add(draggedClass);
+
+            if (this._animationTimeout) {
+                clearTimeout(this._animationTimeout);
+            }
+            this._animationTimeout = setTimeout(() => {
+                this._draggedTile.classList.remove(draggedClass);
+                this.handleTileDrop();
+
+                requestAnimationFrame(() => {
+                    groups = Array.from(
+                        this.template.querySelectorAll(
+                            '[data-element-id="avonni-kanban__field"]'
+                        )
+                    );
+                    tiles = Array.from(
+                        groups[groupFrom].querySelectorAll(
+                            '[data-element-id="avonni-kanban__tile"]'
+                        )
+                    );
+                    const draggedTile = tiles.find(
+                        (tile) => tile.dataset.recordIndex === draggedTileValue
+                    );
+
+                    this._draggedTile = draggedTile;
+                    this._draggedTile.focus();
+                    this._draggedTile.classList.add('avonni-kanban__dragged');
+                    this.clearScrollInterval();
+                });
+            }, 50);
+        });
+    };
+
+    /**
+     *
+     *  Handles the keyboard drag start of an item
+     *
+     * @param {object} element The dragged HTML element
+     * @param {number} groupIndex The index of the dragged group
+     * @param {number} index The index of the dragged item
+     */
+    handleItemKeyboardDragStart = (element, groupIndex, index) => {
+        const items = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__tile"]'
+        );
+        items.forEach((item) => {
+            item.classList.add('avonni-kanban__tile_moved_keyboard');
+        });
+        this._keyboardDragged = true;
+        this._clickedGroupIndex = groupIndex;
+        this._releasedGroupIndex = groupIndex;
+        this._initialTileIndex = index;
+        this._draggedTile = element;
+        this._draggedTile.classList.add('avonni-kanban__dragged');
+        this._currentSubGroup = this._draggedTile.dataset.subgroup;
+    };
 
     /**
      *
@@ -1741,6 +1955,9 @@ export default class Kanban extends LightningElement {
      */
     handleTileMouseDown(event) {
         event.preventDefault();
+        if (this._keyboardDragged) {
+            return;
+        }
         // this handles when the user dragged a tile out of the kanban, and released his click.
         // a second click on the dragged tile (impossible otherwise) behaves has a click release
         if (event.currentTarget === this._draggedTile) {
@@ -1878,7 +2095,8 @@ export default class Kanban extends LightningElement {
     handleTileMouseUp(event) {
         if (
             this.disableItemDragAndDrop ||
-            event.currentTarget !== this._draggedTile
+            event.currentTarget !== this._draggedTile ||
+            this._keyboardDragged
         ) {
             return;
         }
@@ -2154,25 +2372,15 @@ export default class Kanban extends LightningElement {
      * Finds a tile in the record array depending of it's index and it's group
      * @param {number} tileIndex Index of the tile
      * @param {number} groupIndex Index of the group
-     * @param {boolean} isCurrent Indicates if group is the current group. Defaults to false.
      */
-    tileRecordFinder(tileIndex, groupIndex, isCurrent = false) {
-        let tileCount = isCurrent ? -1 : 0;
-        return this._records.find((record) => {
-            if (
+    tileRecordFinder(tileIndex, groupIndex) {
+        const records = this._records.filter(
+            (record) =>
                 record[this.groupFieldName] ===
                     this._groupValues[groupIndex].value &&
                 record[this.subGroupFieldName] === this._currentSubGroup
-            ) {
-                tileCount++;
-            }
-            return (
-                tileCount === tileIndex &&
-                record[this.groupFieldName] ===
-                    this._groupValues[groupIndex].value &&
-                record[this.subGroupFieldName] === this._currentSubGroup
-            );
-        });
+        );
+        return records[tileIndex];
     }
 
     /**

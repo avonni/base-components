@@ -6,17 +6,17 @@ function preventDefaultAndStopPropagation(event) {
 }
 
 export function handleKeyDownOnGroup(event, keyboardInterface) {
-    const currentIndex = Number(event.target.dataset.groupIndex);
-    if (isNaN(currentIndex)) {
+    const index = Number(event.target.dataset.groupIndex);
+    if (isNaN(index)) {
         return;
     }
     const isDragging = event.target.dataset.isDragging === 'true';
     switch (event.key) {
         case keyValues.right: {
             preventDefaultAndStopPropagation(event);
-            const nextIndex = currentIndex + 1;
+            const nextIndex = index + 1;
             if (isDragging) {
-                keyboardInterface.moveColumn(currentIndex, nextIndex);
+                keyboardInterface.moveColumn(index, nextIndex);
             } else {
                 keyboardInterface.setFocusOnNextColumn(nextIndex);
             }
@@ -24,9 +24,9 @@ export function handleKeyDownOnGroup(event, keyboardInterface) {
         }
         case keyValues.left: {
             preventDefaultAndStopPropagation(event);
-            const prevIndex = currentIndex - 1;
+            const prevIndex = index - 1;
             if (isDragging) {
-                keyboardInterface.moveColumn(currentIndex, prevIndex);
+                keyboardInterface.moveColumn(index, prevIndex);
             } else {
                 keyboardInterface.setFocusOnNextColumn(prevIndex);
             }
@@ -36,7 +36,47 @@ export function handleKeyDownOnGroup(event, keyboardInterface) {
         case keyValues.space:
         case keyValues.spacebar:
             preventDefaultAndStopPropagation(event);
-            keyboardInterface.selectColumn(event.target, currentIndex);
+            keyboardInterface.selectColumn(event.target, index);
+            break;
+        default:
+            keyboardInterface.endDrag();
+        // do nothing
+    }
+}
+
+export function handleKeyDownOnItem(event, keyboardInterface) {
+    const groupIndex = Number(event.target.dataset.groupIndex);
+    const itemIndex = Number(event.target.dataset.index);
+    if (isNaN(groupIndex) || isNaN(itemIndex)) {
+        return;
+    }
+    const isDragging = event.target.dataset.isDragging === 'true';
+    switch (event.key) {
+        case keyValues.up: {
+            preventDefaultAndStopPropagation(event);
+            const prevIndex = itemIndex - 1;
+            if (isDragging) {
+                keyboardInterface.moveItem(groupIndex, itemIndex, prevIndex);
+            } else {
+                keyboardInterface.setFocusOnNextItem(groupIndex, prevIndex);
+            }
+            break;
+        }
+        case keyValues.down: {
+            preventDefaultAndStopPropagation(event);
+            const nextIndex = itemIndex + 1;
+            if (isDragging) {
+                keyboardInterface.moveItem(groupIndex, itemIndex, nextIndex);
+            } else {
+                keyboardInterface.setFocusOnNextItem(groupIndex, nextIndex);
+            }
+            break;
+        }
+        case keyValues.enter:
+        case keyValues.space:
+        case keyValues.spacebar:
+            preventDefaultAndStopPropagation(event);
+            keyboardInterface.selectItem(event.target, groupIndex, itemIndex);
             break;
         default:
             keyboardInterface.endDrag();
