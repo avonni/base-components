@@ -62,6 +62,7 @@ export default class Tree extends LightningElement {
     _isMultiSelect = false;
     @track _items = [];
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    _rootSlottableTypes = [];
     _selectedItems = [];
     _sortable = false;
 
@@ -319,6 +320,20 @@ export default class Tree extends LightningElement {
             typeof value === 'string'
                 ? value
                 : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    }
+
+    /**
+     * Array of types that can be slotted in the root of the tree.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get rootSlottableTypes() {
+        return this._rootSlottableTypes;
+    }
+    set rootSlottableTypes(value) {
+        this._rootSlottableTypes = normalizeArray(value);
     }
 
     /**
@@ -767,48 +782,60 @@ export default class Tree extends LightningElement {
      */
     isSortingValid(position) {
         const { currentLevelItem, item, key } = this._dragState;
-        const itemSortingInto = item || currentLevelItem;
+        const targetItem = item || currentLevelItem;
 
-        const positionItemToSort = this.getPositionInBranch(key);
-        const itemToSortBranch = positionItemToSort.items;
-        const itemToSortIndex = positionItemToSort.index;
-        const itemToSort = itemToSortBranch[itemToSortIndex];
-        const parent = this.treedata.getItem(itemSortingInto.parent);
+        const { index, items } = this.getPositionInBranch(key);
+        const itemToSort = items[index];
+        const parent = this.treedata.getItem(targetItem.parent);
 
-        const itemHasSlots = !itemSortingInto.treeNode.noSlots;
-        const itemSupportsType =
-            itemSortingInto.treeNode.slottableTypes.includes(itemToSort?.type);
+        const { treeNode } = targetItem;
+        const { slottableTypes, noSlots, expanded, children } = treeNode;
+
+        const itemType = itemToSort?.type;
+
+        // Position
         const isTop = position === 'top';
         const isBottom = position === 'bottom';
         const isMiddle = !isTop && !isBottom;
-        const itemExpanded =
-            itemSortingInto.treeNode.expanded &&
-            itemSortingInto.treeNode.children.length > 0;
+
+        // Target item
+        const hasSlots = !noSlots;
+        const supportsType =
+            slottableTypes.length === 0 || slottableTypes.includes(itemType);
+        const isExpanded = expanded && children.length > 0;
+
+        const canInsertInCurrent = hasSlots && supportsType && isMiddle;
+        const canInsertAtBottomOfCurrent =
+            hasSlots && supportsType && isBottom && isExpanded;
+
+        // Parent
         const parentExists = !!parent;
         const parentHasSlots = parentExists && !parent.noSlots;
         const parentSupportsType =
             parentExists &&
-            parent.treeNode.slottableTypes.includes(itemToSort?.type);
+            (parent.treeNode.slottableTypes.length === 0 ||
+                parent.treeNode.slottableTypes.includes(itemType));
 
-        const canInsertInCurrent = itemHasSlots && itemSupportsType && isMiddle;
-
-        const canInsertAtBottomOfBranchParent =
-            itemHasSlots && itemSupportsType && isBottom && itemExpanded;
-
-        const canInsertAtTopInParent =
+        const canInsertAtTopOfParent =
             isTop && parentHasSlots && parentSupportsType;
+        const canInsertAtBottomOfParent =
+            isBottom && parentHasSlots && parentSupportsType && !isExpanded;
 
-        const canInsertAtBottomInParent =
-            isBottom && parentHasSlots && parentSupportsType && !itemExpanded;
+        // Root
+        const isSlottableInRoot =
+            this.rootSlottableTypes.length === 0 ||
+            this.rootSlottableTypes.includes(itemType);
 
         const canInsertAtRoot =
-            (isTop || (isBottom && !itemExpanded)) && !parentExists;
+            (isTop || (isBottom && !isExpanded)) &&
+            !parentExists &&
+            isSlottableInRoot;
 
         return (
             canInsertInCurrent ||
-            canInsertAtBottomOfBranchParent ||
-            canInsertAtTopInParent ||
-            canInsertAtBottomInParent ||
+            canInsertAtBottomOfCurrent ||
+            canInsertAtTopOfParent ||
+            canInsertAtBottomOfParent ||
             canInsertAtRoot
         );
     }
