@@ -56,7 +56,11 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             preventDefaultAndStopPropagation(event);
             const prevIndex = itemIndex - 1;
             if (isDragging) {
-                keyboardInterface.moveItem(groupIndex, itemIndex, prevIndex);
+                keyboardInterface.moveItemInsideGroup(
+                    groupIndex,
+                    itemIndex,
+                    prevIndex
+                );
             } else {
                 keyboardInterface.setFocusOnNextItem(groupIndex, prevIndex);
             }
@@ -66,9 +70,35 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             preventDefaultAndStopPropagation(event);
             const nextIndex = itemIndex + 1;
             if (isDragging) {
-                keyboardInterface.moveItem(groupIndex, itemIndex, nextIndex);
+                keyboardInterface.moveItemInsideGroup(
+                    groupIndex,
+                    itemIndex,
+                    nextIndex
+                );
             } else {
                 keyboardInterface.setFocusOnNextItem(groupIndex, nextIndex);
+            }
+            break;
+        }
+        case keyValues.right: {
+            preventDefaultAndStopPropagation(event);
+            if (isDragging) {
+                keyboardInterface.moveItemToGroup(
+                    itemIndex,
+                    groupIndex,
+                    groupIndex + 1
+                );
+            }
+            break;
+        }
+        case keyValues.left: {
+            preventDefaultAndStopPropagation(event);
+            if (isDragging) {
+                keyboardInterface.moveItemToGroup(
+                    itemIndex,
+                    groupIndex,
+                    groupIndex - 1
+                );
             }
             break;
         }

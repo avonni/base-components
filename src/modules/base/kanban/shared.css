@@ -178,7 +178,7 @@
 }
 
 .avonni-kanban__tile_moved_keyboard {
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .avonni-kanban__variant_base
