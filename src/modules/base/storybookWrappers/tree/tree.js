@@ -14,6 +14,7 @@ export default class Tree extends LightningElement {
     @api isMultiSelect;
     @api loadingStateAlternativeText;
     @api placeholder;
+    @api rootSlottableTypes;
     @api selectedItems;
     @api sortable;
 

@@ -323,7 +323,7 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Array of types that can be slotted in the root of the tree.
+     * Array of types of items that can be slotted in the root of the tree.
      *
      * @type {object[]}
      * @public
