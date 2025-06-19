@@ -13,6 +13,9 @@ import {
 import KanbanGroupsBuilder from './groupBuilder';
 import { handleKeyDownOnGroup, handleKeyDownOnItem } from './keyboard';
 
+const DRAGGED_CLASS = 'avonni-kanban__dragged';
+const GROUP_DRAGGED_CLASS = 'avonni-kanban__dragged';
+
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
@@ -1140,7 +1143,7 @@ export default class Kanban extends LightningElement {
 
         this._draggedTile.style.transform = '';
         this._draggedTile.style.width = 'calc(100% - 1rem)';
-        this._draggedTile.classList.remove('avonni-kanban__dragged');
+        this._draggedTile.classList.remove(DRAGGED_CLASS);
         this._draggedTile = null;
         this._currentSubGroup = '';
         this._scrollOffset = 0;
@@ -1236,6 +1239,9 @@ export default class Kanban extends LightningElement {
             endDrag() {
                 that.handleKeyboardDragEnd();
             },
+            isDragging() {
+                return that.isDragging;
+            },
             moveColumn(from, to) {
                 that.handleGroupKeyboardDragMove(from, to);
             },
@@ -1285,8 +1291,11 @@ export default class Kanban extends LightningElement {
             this.computedGroups,
             index
         );
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
         const item = this.template.querySelector(
-            `[data-element-id="avonni-kanban__field"][data-group-index="${normalizedIndex}"]`
+            `[data-element-id="${groupSelector}"][data-group-index="${normalizedIndex}"]`
         );
         if (item) {
             item.focus();
@@ -1467,15 +1476,16 @@ export default class Kanban extends LightningElement {
      *
      */
     handleGroupKeyboardDragEnd = () => {
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
         const groups = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__field"]'
+            `[data-element-id="${groupSelector}"]`
         );
         groups.forEach((group) => {
             group.classList.remove('avonni-kanban__tile_moved_keyboard');
+            group.classList.remove(GROUP_DRAGGED_CLASS);
         });
-        if (this._draggedGroup) {
-            this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
-        }
         this.allowBlur();
         this._draggedGroup = null;
         this._keyboardDragged = false;
@@ -1489,44 +1499,51 @@ export default class Kanban extends LightningElement {
      * @param {number} to The dropped index
      */
     handleGroupKeyboardDragMove = (from, to) => {
-        const groups = Array.from(
-            this.template.querySelectorAll(
-                '[data-element-id="avonni-kanban__field"]'
-            )
-        );
-        const droppedGroup = groups[to];
         if (
             this._disableColumnDragAndDrop ||
             !this._keyboardDragged ||
-            !this._draggedGroup ||
-            !droppedGroup
+            !this._draggedGroup
         ) {
             return;
         }
         this.cancelBlur();
         this._clickedGroupIndex = from;
-        this._releasedGroupIndex = to;
 
-        requestAnimationFrame(() => {
-            const translatePosition = from < to ? 'right' : 'left';
-            const draggedClass = `avonni-kanban__translate_${translatePosition}`;
-            this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
-            this._draggedGroup.classList.add(draggedClass);
+        const previousDraggedElement = this._draggedGroup;
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
+        let groups = this.template.querySelectorAll(
+            `[data-element-id="${groupSelector}"]`
+        );
+        const normalizedIndex = this.normalizedIndex(groups, to);
+        this._releasedGroupIndex = normalizedIndex;
 
-            if (this._animationTimeout) {
-                clearTimeout(this._animationTimeout);
-            }
-            this._animationTimeout = setTimeout(() => {
-                const previousDraggedElement = this._draggedGroup;
-                this.swapGroups();
-                previousDraggedElement.classList.remove(draggedClass);
-                this._draggedGroup = droppedGroup;
-                this._draggedGroup.focus();
-                this._draggedGroup.classList.add(
-                    'avonni-kanban__dragged_group'
+        const translatePosition = from < to ? 'right' : 'left';
+        const draggedClass = `avonni-kanban__translate_${translatePosition}`;
+        this._draggedGroup.classList.remove(GROUP_DRAGGED_CLASS);
+        this._draggedGroup.classList.add(draggedClass);
+
+        if (this._animationTimeout) {
+            clearTimeout(this._animationTimeout);
+        }
+        this._animationTimeout = setTimeout(() => {
+            this.swapGroups();
+            previousDraggedElement.classList.remove(draggedClass);
+
+            requestAnimationFrame(() => {
+                groups = Array.from(
+                    this.template.querySelectorAll(
+                        `[data-element-id="${groupSelector}"]`
+                    )
                 );
-            }, 50);
-        });
+                if (!this._hasSubGroups) {
+                    this._draggedGroup = groups[normalizedIndex];
+                }
+                this._draggedGroup.focus();
+                this._draggedGroup.classList.add(GROUP_DRAGGED_CLASS);
+            });
+        }, 50);
     };
 
     /**
@@ -1540,8 +1557,11 @@ export default class Kanban extends LightningElement {
         if (this._disableColumnDragAndDrop) {
             return;
         }
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
         const groups = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__field"]'
+            `[data-element-id="${groupSelector}"]`
         );
         groups.forEach((group) => {
             group.classList.add('avonni-kanban__tile_moved_keyboard');
@@ -1550,7 +1570,7 @@ export default class Kanban extends LightningElement {
         this._clickedGroupIndex = index;
         this._releasedGroupIndex = index;
         this._draggedGroup = element;
-        this._draggedGroup.classList.add('avonni-kanban__dragged_group');
+        this._draggedGroup.classList.add(GROUP_DRAGGED_CLASS);
     };
 
     /**
@@ -1617,7 +1637,7 @@ export default class Kanban extends LightningElement {
 
         this._releasedGroupIndex = this._clickedGroupIndex;
         this._draggedGroup = event.currentTarget.parentElement;
-        this._draggedGroup.classList.add('avonni-kanban__dragged_group');
+        this._draggedGroup.classList.add(GROUP_DRAGGED_CLASS);
     }
 
     /**
@@ -1707,7 +1727,7 @@ export default class Kanban extends LightningElement {
         });
 
         this._draggedGroup.style.transform = '';
-        this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
+        this._draggedGroup.classList.remove(GROUP_DRAGGED_CLASS);
         this._draggedGroup = null;
         this.template
             .querySelectorAll(`[data-element-id="${groupSelector}"]`)
@@ -1877,10 +1897,8 @@ export default class Kanban extends LightningElement {
         );
         items.forEach((item) => {
             item.classList.remove('avonni-kanban__tile_moved_keyboard');
+            item.classList.remove(DRAGGED_CLASS);
         });
-        if (this._draggedTile) {
-            this._draggedTile.classList.remove('avonni-kanban__dragged');
-        }
         this.allowBlur();
         this._draggedTile = null;
         this._keyboardDragged = false;
@@ -1918,39 +1936,35 @@ export default class Kanban extends LightningElement {
         this._releasedTileIndex = tileTo;
 
         const draggedTileValue = this._draggedTile.dataset.recordIndex;
+        const translatePosition = tileFrom < tileTo ? 'down' : 'up';
+        const draggedClass = `avonni-kanban__translate_${translatePosition}`;
+        this._draggedTile.classList.remove(DRAGGED_CLASS);
+        this._draggedTile.classList.add(draggedClass);
 
-        requestAnimationFrame(() => {
-            const translatePosition = tileFrom < tileTo ? 'down' : 'up';
-            const draggedClass = `avonni-kanban__translate_${translatePosition}`;
-            this._draggedTile.classList.remove('avonni-kanban__dragged');
-            this._draggedTile.classList.add(draggedClass);
+        if (this._animationTimeout) {
+            clearTimeout(this._animationTimeout);
+        }
+        this._animationTimeout = setTimeout(() => {
+            this._draggedTile.classList.remove(draggedClass);
+            this.handleTileDrop();
 
-            if (this._animationTimeout) {
-                clearTimeout(this._animationTimeout);
-            }
-            this._animationTimeout = setTimeout(() => {
-                this._draggedTile.classList.remove(draggedClass);
-                this.handleTileDrop();
+            requestAnimationFrame(() => {
+                const tiles = this.getGroupTileElements(groupIndex);
+                const draggedTile = tiles.find(
+                    (tile) => tile.dataset.recordIndex === draggedTileValue
+                );
 
-                requestAnimationFrame(() => {
-                    const tiles = this.getGroupTileElements(groupIndex);
-                    const draggedTile = tiles.find(
-                        (tile) => tile.dataset.recordIndex === draggedTileValue
-                    );
+                this._draggedTile = draggedTile;
+                this._draggedTile.focus();
+                this._draggedTile.classList.add(DRAGGED_CLASS);
 
-                    this._draggedTile = draggedTile;
-                    this._draggedTile.focus();
-                    this._draggedTile.classList.add('avonni-kanban__dragged');
-
-                    requestAnimationFrame(() => {
-                        this._draggedTile.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    });
+                const alignPosition = tileFrom > tileTo ? 'start' : 'end';
+                this._draggedTile.scrollIntoView({
+                    behavior: 'smooth',
+                    block: alignPosition
                 });
-            }, 50);
-        });
+            });
+        }, 50);
     };
 
     /**
@@ -1974,34 +1988,28 @@ export default class Kanban extends LightningElement {
             return;
         }
         this.cancelBlur();
+        const draggedTileValue = this._draggedTile.dataset.recordIndex;
         this._clickedGroupIndex = groupFrom;
         this._initialTileIndex = tileIndex;
         this._releasedGroupIndex = groupTo;
 
-        const draggedTileValue = this._draggedTile.dataset.recordIndex;
-
         let tiles = this.getGroupTileElements(groupTo);
         this._releasedTileIndex = tiles.length;
 
-        requestAnimationFrame(() => {
-            this._draggedTile.classList.remove('avonni-kanban__dragged');
-            this.handleTileDrop();
-            this.handleItemKeyboardDragEnd();
+        this._draggedTile.classList.remove(DRAGGED_CLASS);
+        this.handleTileDrop();
+        this.handleItemKeyboardDragEnd();
 
-            if (this._animationTimeout) {
-                clearTimeout(this._animationTimeout);
-            }
-            this._animationTimeout = setTimeout(() => {
-                tiles = this.getGroupTileElements(groupTo);
-                const draggedTile = tiles.find(
-                    (tile) => tile.dataset.recordIndex === draggedTileValue
-                );
-                draggedTile.focus();
-                draggedTile.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }, 50);
+        requestAnimationFrame(() => {
+            tiles = this.getGroupTileElements(groupTo);
+            const draggedTile = tiles.find(
+                (tile) => tile.dataset.recordIndex === draggedTileValue
+            );
+            draggedTile.focus();
+            draggedTile.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end'
+            });
         });
     };
 
@@ -2028,7 +2036,7 @@ export default class Kanban extends LightningElement {
         this._releasedGroupIndex = groupIndex;
         this._initialTileIndex = index;
         this._draggedTile = element;
-        this._draggedTile.classList.add('avonni-kanban__dragged');
+        this._draggedTile.classList.add(DRAGGED_CLASS);
         this._currentSubGroup = this._draggedTile.dataset.subgroup;
     };
 
@@ -2086,7 +2094,7 @@ export default class Kanban extends LightningElement {
         const initialGroupScroll = clickedGroup.scrollTop;
 
         this._draggedTile = event.currentTarget;
-        this._draggedTile.classList.add('avonni-kanban__dragged');
+        this._draggedTile.classList.add(DRAGGED_CLASS);
         this._draggedTile.style.width = `calc(${parseInt(
             this._groupWidth,
             10

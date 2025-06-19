@@ -10,7 +10,7 @@ export function handleKeyDownOnGroup(event, keyboardInterface) {
     if (isNaN(index)) {
         return;
     }
-    const isDragging = event.target.dataset.isDragging === 'true';
+    const isDragging = keyboardInterface.isDragging();
     switch (event.key) {
         case keyValues.right: {
             preventDefaultAndStopPropagation(event);
@@ -50,7 +50,7 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
     if (isNaN(groupIndex) || isNaN(itemIndex)) {
         return;
     }
-    const isDragging = event.target.dataset.isDragging === 'true';
+    const isDragging = keyboardInterface.isDragging();
     switch (event.key) {
         case keyValues.up: {
             preventDefaultAndStopPropagation(event);

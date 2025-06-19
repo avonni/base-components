@@ -106,9 +106,15 @@
                     class={computedFieldClassHeader}
                     for:each={computedGroups}
                     for:item="group"
+                    for:index="groupIndex"
                     key={group.value}
                     style={group.backgroundStyle}
+                    tabindex={groupTabIndex}
                     data-element-id="avonni-kanban__group_header_wrapper"
+                    data-group-index={group.index}
+                    onblur={handleGroupBlur}
+                    onkeydown={handleGroupKeyDown}
+                    onmouseenter={clearScrollInterval}
                 >
                     <div
                         class="avonni-kanban__group_header"
@@ -263,7 +269,6 @@
                                 <template
                                     for:each={group.subGroups.tiles}
                                     for:item="record"
-                                    for:index="index"
                                 >
                                     <c-primitive-kanban-tile
                                         key={record.index}
@@ -286,13 +291,9 @@
                                         data-element-id="avonni-kanban__tile"
                                         data-group={group.value}
                                         data-group-index={groupIndex}
-                                        data-is-dragging={isDragging}
-                                        data-index={index}
                                         data-subgroup={section.label}
                                         data-record-index={record.index}
                                         onactionclick={handleTileActionClick}
-                                        onblur={handleTileBlur}
-                                        onkeydown={handleTileKeyDown}
                                         onmousedown={handleTileMouseDown}
                                         onmousemove={handleDropZone}
                                         onmouseup={handleTileMouseUp}

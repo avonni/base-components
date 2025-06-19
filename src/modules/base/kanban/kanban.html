@@ -108,11 +108,10 @@
                     for:item="group"
                     for:index="groupIndex"
                     key={group.index}
+                    style={group.backgroundStyle}
                     tabindex={groupTabIndex}
                     data-element-id="avonni-kanban__field"
                     data-group-index={group.index}
-                    data-is-dragging={isDragging}
-                    style={group.backgroundStyle}
                     onblur={handleGroupBlur}
                     onkeydown={handleGroupKeyDown}
                     onmouseenter={clearScrollInterval}
@@ -254,7 +253,6 @@
                                 data-group={group.value}
                                 data-group-index={groupIndex}
                                 data-index={index}
-                                data-is-dragging={isDragging}
                                 data-record-index={record.index}
                                 onactionclick={handleTileActionClick}
                                 onblur={handleTileBlur}
