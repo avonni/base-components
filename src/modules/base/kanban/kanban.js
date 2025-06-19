@@ -11,7 +11,7 @@ import {
     normalizeString
 } from 'c/utils';
 import KanbanGroupsBuilder from './groupBuilder';
-import { handleKeyDownOnGroup, handleKeyDownOnItem } from './keyboard';
+import { handleKeyDownOnGroup, handleKeyDownOnTile } from './keyboard';
 
 const DRAGGED_CLASS = 'avonni-kanban__dragged';
 const GROUP_DRAGGED_CLASS = 'avonni-kanban__dragged';
@@ -1360,10 +1360,10 @@ export default class Kanban extends LightningElement {
                     to
                 );
             },
-            moveTileToGroup(subgroupIndex, itemIndex, groupFrom, groupTo) {
+            moveTileToGroup(subgroupIndex, tileIndex, groupFrom, groupTo) {
                 that.handleTileKeyboardDragMoveToGroup(
                     subgroupIndex,
-                    itemIndex,
+                    tileIndex,
                     groupFrom,
                     groupTo
                 );
@@ -1451,15 +1451,13 @@ export default class Kanban extends LightningElement {
      * @param {number} index Index of the new focused item.
      */
     setFocusOnTile(subgroupIndex, groupIndex, index) {
-        const tiles = this._getTileElements(subgroupIndex, groupIndex);
-        const normalizedIndex = this._normalizedIndex(tiles, index);
-        const item = this._getTileElement(
-            subgroupIndex,
-            groupIndex,
-            normalizedIndex
-        );
+        const item = this._getTileElement(subgroupIndex, groupIndex, index);
         if (item) {
             item.focus();
+            item.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end'
+            });
         }
     }
 
@@ -2318,19 +2316,19 @@ export default class Kanban extends LightningElement {
      */
     handleTileKeyDown(event) {
         event.stopPropagation();
-        handleKeyDownOnItem(event, this.keyboardInterface);
+        handleKeyDownOnTile(event, this.keyboardInterface);
     }
 
     /**
      * Handles the end of keyboad drag of a tile.
      */
     handleTileKeyboardDragEnd = () => {
-        const items = this.template.querySelectorAll(
+        const tiles = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__tile"]'
         );
-        items.forEach((item) => {
-            item.classList.remove('avonni-kanban__tile_moved_keyboard');
-            item.classList.remove(DRAGGED_CLASS);
+        tiles.forEach((tile) => {
+            tile.classList.remove('avonni-kanban__tile_moved_keyboard');
+            tile.classList.remove(DRAGGED_CLASS);
         });
         this.allowBlur();
         this._draggedTile = null;
@@ -2465,11 +2463,11 @@ export default class Kanban extends LightningElement {
         if (this._disableItemDragAndDrop) {
             return;
         }
-        const items = this.template.querySelectorAll(
+        const tiles = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__tile"]'
         );
-        items.forEach((item) => {
-            item.classList.add('avonni-kanban__tile_moved_keyboard');
+        tiles.forEach((tile) => {
+            tile.classList.add('avonni-kanban__tile_moved_keyboard');
         });
         this._keyboardDragged = true;
         this._clickedGroupIndex = groupIndex;

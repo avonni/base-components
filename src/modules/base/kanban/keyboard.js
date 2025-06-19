@@ -44,10 +44,10 @@ export function handleKeyDownOnGroup(event, keyboardInterface) {
     }
 }
 
-export function handleKeyDownOnItem(event, keyboardInterface) {
+export function handleKeyDownOnTile(event, keyboardInterface) {
     const groupIndex = Number(event.target.dataset.groupIndex);
-    const itemIndex = Number(event.target.dataset.index);
-    if (isNaN(groupIndex) || isNaN(itemIndex)) {
+    const tileIndex = Number(event.target.dataset.index);
+    if (isNaN(groupIndex) || isNaN(tileIndex)) {
         return;
     }
     const isDragging = keyboardInterface.isDragging();
@@ -56,12 +56,12 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
     switch (event.key) {
         case keyValues.up: {
             preventDefaultAndStopPropagation(event);
-            const prevIndex = itemIndex - 1;
+            const prevIndex = tileIndex - 1;
             if (isDragging) {
                 keyboardInterface.moveTile(
                     subgroupIndex,
                     groupIndex,
-                    itemIndex,
+                    tileIndex,
                     prevIndex
                 );
             } else {
@@ -75,12 +75,12 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
         }
         case keyValues.down: {
             preventDefaultAndStopPropagation(event);
-            const nextIndex = itemIndex + 1;
+            const nextIndex = tileIndex + 1;
             if (isDragging) {
                 keyboardInterface.moveTile(
                     subgroupIndex,
                     groupIndex,
-                    itemIndex,
+                    tileIndex,
                     nextIndex
                 );
             } else {
@@ -97,9 +97,15 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             if (isDragging) {
                 keyboardInterface.moveTileToGroup(
                     subgroupIndex,
-                    itemIndex,
+                    tileIndex,
                     groupIndex,
                     groupIndex + 1
+                );
+            } else {
+                keyboardInterface.setFocusOnTile(
+                    subgroupIndex,
+                    groupIndex + 1,
+                    0
                 );
             }
             break;
@@ -109,9 +115,15 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             if (isDragging) {
                 keyboardInterface.moveTileToGroup(
                     subgroupIndex,
-                    itemIndex,
+                    tileIndex,
                     groupIndex,
                     groupIndex - 1
+                );
+            } else {
+                keyboardInterface.setFocusOnTile(
+                    subgroupIndex,
+                    groupIndex - 1,
+                    0
                 );
             }
             break;
@@ -120,7 +132,7 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
         case keyValues.space:
         case keyValues.spacebar:
             preventDefaultAndStopPropagation(event);
-            keyboardInterface.selectTile(event.target, groupIndex, itemIndex);
+            keyboardInterface.selectTile(event.target, groupIndex, tileIndex);
             break;
         default:
             keyboardInterface.endDrag();
