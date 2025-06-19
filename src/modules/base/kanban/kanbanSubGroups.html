@@ -269,6 +269,7 @@
                                 <template
                                     for:each={group.subGroups.tiles}
                                     for:item="record"
+                                    for:index="index"
                                 >
                                     <c-primitive-kanban-tile
                                         key={record.index}
@@ -291,9 +292,12 @@
                                         data-element-id="avonni-kanban__tile"
                                         data-group={group.value}
                                         data-group-index={groupIndex}
+                                        data-index={index}
                                         data-subgroup={section.label}
                                         data-record-index={record.index}
                                         onactionclick={handleTileActionClick}
+                                        onblur={handleTileBlur}
+                                        onkeydown={handleTileKeyDown}
                                         onmousedown={handleTileMouseDown}
                                         onmousemove={handleDropZone}
                                         onmouseup={handleTileMouseUp}
