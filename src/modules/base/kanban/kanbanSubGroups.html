@@ -210,6 +210,7 @@
                 <div
                     for:each={subGroupsLabels}
                     for:item="section"
+                    for:index="sectionIndex"
                     key={section.label}
                     data-element-id="avonni-kanban__expandable_section"
                     class="avonni-kanban__expandable_section"
@@ -294,6 +295,7 @@
                                         data-group-index={groupIndex}
                                         data-index={index}
                                         data-subgroup={section.label}
+                                        data-subgroup-index={sectionIndex}
                                         data-record-index={record.index}
                                         onactionclick={handleTileActionClick}
                                         onblur={handleTileBlur}

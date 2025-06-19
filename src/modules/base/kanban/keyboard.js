@@ -11,6 +11,7 @@ export function handleKeyDownOnGroup(event, keyboardInterface) {
         return;
     }
     const isDragging = keyboardInterface.isDragging();
+
     switch (event.key) {
         case keyValues.right: {
             preventDefaultAndStopPropagation(event);
@@ -40,7 +41,6 @@ export function handleKeyDownOnGroup(event, keyboardInterface) {
             break;
         default:
             keyboardInterface.endDrag();
-        // do nothing
     }
 }
 
@@ -51,14 +51,25 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
         return;
     }
     const isDragging = keyboardInterface.isDragging();
+    const subgroupIndex = Number(event.target.dataset.subgroupIndex);
+
     switch (event.key) {
         case keyValues.up: {
             preventDefaultAndStopPropagation(event);
             const prevIndex = itemIndex - 1;
             if (isDragging) {
-                keyboardInterface.moveTile(groupIndex, itemIndex, prevIndex);
+                keyboardInterface.moveTile(
+                    subgroupIndex,
+                    groupIndex,
+                    itemIndex,
+                    prevIndex
+                );
             } else {
-                keyboardInterface.setFocusOnTile(groupIndex, prevIndex);
+                keyboardInterface.setFocusOnTile(
+                    subgroupIndex,
+                    groupIndex,
+                    prevIndex
+                );
             }
             break;
         }
@@ -66,9 +77,18 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             preventDefaultAndStopPropagation(event);
             const nextIndex = itemIndex + 1;
             if (isDragging) {
-                keyboardInterface.moveTile(groupIndex, itemIndex, nextIndex);
+                keyboardInterface.moveTile(
+                    subgroupIndex,
+                    groupIndex,
+                    itemIndex,
+                    nextIndex
+                );
             } else {
-                keyboardInterface.setFocusOnTile(groupIndex, nextIndex);
+                keyboardInterface.setFocusOnTile(
+                    subgroupIndex,
+                    groupIndex,
+                    nextIndex
+                );
             }
             break;
         }
@@ -76,6 +96,7 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             preventDefaultAndStopPropagation(event);
             if (isDragging) {
                 keyboardInterface.moveTileToGroup(
+                    subgroupIndex,
                     itemIndex,
                     groupIndex,
                     groupIndex + 1
@@ -87,6 +108,7 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             preventDefaultAndStopPropagation(event);
             if (isDragging) {
                 keyboardInterface.moveTileToGroup(
+                    subgroupIndex,
                     itemIndex,
                     groupIndex,
                     groupIndex - 1
@@ -102,6 +124,5 @@ export function handleKeyDownOnItem(event, keyboardInterface) {
             break;
         default:
             keyboardInterface.endDrag();
-        // do nothing
     }
 }

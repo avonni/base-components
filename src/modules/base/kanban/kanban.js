@@ -1190,12 +1190,22 @@ export default class Kanban extends LightningElement {
     /**
      * Get all tile elements for a specific group in the DOM.
      *
-     * @param {number} groupIndex - Index of the group to retrieve tiles from.
+     * @param {number} subgroupIndex Index of the subgroup to retrieve tiles from.
+     * @param {number} groupIndex Index of the group to retrieve tiles from.
      * @returns {object[]} An array of tile elements. Returns an empty array if not found.
      */
-    _getTileElements(groupIndex) {
-        const groups = Array.from(
+    _getTileElements(subgroupIndex, groupIndex) {
+        const subgroups = Array.from(
             this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field_container"]'
+            )
+        );
+        const subgroup =
+            !isNaN(subgroupIndex) && subgroupIndex >= 0
+                ? subgroups[subgroupIndex]
+                : subgroups[0];
+        const groups = Array.from(
+            subgroup.querySelectorAll(
                 '[data-element-id="avonni-kanban__field"]'
             )
         );
@@ -1205,6 +1215,22 @@ export default class Kanban extends LightningElement {
             )
         );
         return tiles;
+    }
+
+    /**
+     * Get the tile element for a specific group in the DOM.
+     *
+     * @param {number} subgroupIndex Index of the subgroup to retrieve tiles from.
+     * @param {number} groupIndex Index of the group to retrieve tiles from.
+     * @param {number} index Index of the tile.
+     * @returns {object} The tile elements. Returns an null if not found.
+     */
+    _getTileElement(subgroupIndex, groupIndex, index) {
+        let groupSelector = `[data-element-id="avonni-kanban__tile"][data-group-index="${groupIndex}"][data-index="${index}"]`;
+        if (subgroupIndex >= 0) {
+            groupSelector += `[data-subgroup-index="${subgroupIndex}"]`;
+        }
+        return this.template.querySelector(groupSelector);
     }
 
     /**
@@ -1326,11 +1352,17 @@ export default class Kanban extends LightningElement {
             moveGroup(from, to) {
                 that.handleGroupKeyboardDragMove(from, to);
             },
-            moveTile(groupIndex, from, to) {
-                that.handleTileKeyboardDragMove(groupIndex, from, to);
+            moveTile(subgroupIndex, groupIndex, from, to) {
+                that.handleTileKeyboardDragMove(
+                    subgroupIndex,
+                    groupIndex,
+                    from,
+                    to
+                );
             },
-            moveTileToGroup(itemIndex, groupFrom, groupTo) {
+            moveTileToGroup(subgroupIndex, itemIndex, groupFrom, groupTo) {
                 that.handleTileKeyboardDragMoveToGroup(
+                    subgroupIndex,
                     itemIndex,
                     groupFrom,
                     groupTo
@@ -1357,8 +1389,8 @@ export default class Kanban extends LightningElement {
             setFocusOnGroup(index) {
                 that.setFocusOnGroup(index);
             },
-            setFocusOnTile(groupIndex, index) {
-                that.setFocusOnTile(groupIndex, index);
+            setFocusOnTile(subgroupIndex, groupIndex, index) {
+                that.setFocusOnTile(subgroupIndex, groupIndex, index);
             }
         };
     }
@@ -1392,6 +1424,7 @@ export default class Kanban extends LightningElement {
     /**
      * Update the focused group index.
      *
+     * @param {number} subgroupIndex Index of subgroup.
      * @param {number} index Index of the new focused group.
      */
     setFocusOnGroup(index) {
@@ -1413,14 +1446,17 @@ export default class Kanban extends LightningElement {
     /**
      * Update the focused item index.
      *
+     * @param {number} subgroupIndex Index of subgroup containing the tile.
      * @param {number} groupIndex Index of group containing the tile.
      * @param {number} index Index of the new focused item.
      */
-    setFocusOnTile(groupIndex, index) {
-        const tiles = this.computedGroups[groupIndex]?.tiles || [];
+    setFocusOnTile(subgroupIndex, groupIndex, index) {
+        const tiles = this._getTileElements(subgroupIndex, groupIndex);
         const normalizedIndex = this._normalizedIndex(tiles, index);
-        const item = this.template.querySelector(
-            `[data-element-id="avonni-kanban__tile"][data-group-index="${groupIndex}"][data-index="${normalizedIndex}"]`
+        const item = this._getTileElement(
+            subgroupIndex,
+            groupIndex,
+            normalizedIndex
         );
         if (item) {
             item.focus();
@@ -2257,12 +2293,8 @@ export default class Kanban extends LightningElement {
      * Finds the index of initial and final position of the dragged tile.
      */
     handleTileDrop() {
-        const normalizedReleaseIndex = this._normalizedIndex(
-            this._getTileElements(this._releasedGroupIndex),
-            this._releasedTileIndex
-        );
         const droppedTile = this._tileRecordFinder(
-            normalizedReleaseIndex,
+            this._releasedTileIndex,
             this._releasedGroupIndex
         );
 
@@ -2313,7 +2345,12 @@ export default class Kanban extends LightningElement {
      * @param {number} tileFrom The initial index of the dragged tile.
      * @param {number} tileTo The target index where the tile is dropped.
      */
-    handleTileKeyboardDragMove = (groupIndex, tileFrom, tileTo) => {
+    handleTileKeyboardDragMove = (
+        subgroupIndex,
+        groupIndex,
+        tileFrom,
+        tileTo
+    ) => {
         if (
             this._disableItemDragAndDrop ||
             !this._keyboardDragged ||
@@ -2323,9 +2360,9 @@ export default class Kanban extends LightningElement {
         }
         this.cancelBlur();
 
-        const tilesLength = this._getTileElements(groupIndex).length;
+        let tiles = this._getTileElements(subgroupIndex, groupIndex);
         const isLastIndex =
-            tileFrom === tilesLength - 1 && tileTo === tilesLength;
+            tileFrom === tiles.length - 1 && tileTo === tiles.length;
         if (tileTo === -1 || isLastIndex) {
             return;
         }
@@ -2333,7 +2370,9 @@ export default class Kanban extends LightningElement {
         this._clickedGroupIndex = groupIndex;
         this._initialTileIndex = tileFrom;
         this._releasedGroupIndex = groupIndex;
-        this._releasedTileIndex = tileTo;
+
+        const normalizedReleaseIndex = this._normalizedIndex(tiles, tileTo);
+        this._releasedTileIndex = normalizedReleaseIndex;
 
         const draggedTileValue = this._draggedTile.dataset.recordIndex;
         const translatePosition = tileFrom < tileTo ? 'down' : 'up';
@@ -2349,7 +2388,7 @@ export default class Kanban extends LightningElement {
             this.handleTileDrop();
 
             requestAnimationFrame(() => {
-                const tiles = this._getTileElements(groupIndex);
+                tiles = this._getTileElements(subgroupIndex, groupIndex);
                 const draggedTile = tiles.find(
                     (tile) => tile.dataset.recordIndex === draggedTileValue
                 );
@@ -2373,8 +2412,14 @@ export default class Kanban extends LightningElement {
      * @param {number} tileIndex The index of the tile.
      * @param {number} groupFrom The initial index of the dragged group.
      * @param {number} groupTo The target index where the group is dropped.
+     * @param {number} subgroupIndex The index of the subgroup.
      */
-    handleTileKeyboardDragMoveToGroup = (tileIndex, groupFrom, groupTo) => {
+    handleTileKeyboardDragMoveToGroup = (
+        subgroupIndex,
+        tileIndex,
+        groupFrom,
+        groupTo
+    ) => {
         if (
             this._disableItemDragAndDrop ||
             !this._keyboardDragged ||
@@ -2388,15 +2433,16 @@ export default class Kanban extends LightningElement {
         this._initialTileIndex = tileIndex;
         this._releasedGroupIndex = groupTo;
 
-        let tiles = this._getTileElements(groupTo);
-        this._releasedTileIndex = tiles.length;
+        let tiles = this._getTileElements(subgroupIndex, groupTo);
+        const normalizedReleaseIndex = this._normalizedIndex(tiles, groupTo);
+        this._releasedTileIndex = normalizedReleaseIndex;
 
         this._draggedTile.classList.remove(DRAGGED_CLASS);
         this.handleTileDrop();
         this.handleTileKeyboardDragEnd();
 
         requestAnimationFrame(() => {
-            tiles = this._getTileElements(groupTo);
+            tiles = this._getTileElements(subgroupIndex, groupTo);
             const draggedTile = tiles.find(
                 (tile) => tile.dataset.recordIndex === draggedTileValue
             );
@@ -2431,7 +2477,7 @@ export default class Kanban extends LightningElement {
         this._initialTileIndex = index;
         this._draggedTile = element;
         this._draggedTile.classList.add(DRAGGED_CLASS);
-        this._currentSubGroup = this._draggedTile.dataset.subgroup;
+        this._currentSubGroup = element.dataset.subgroup;
     };
 
     /**
