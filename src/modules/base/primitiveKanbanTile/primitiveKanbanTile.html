@@ -152,6 +152,7 @@
                             variant={fieldAttributes.variant}
                             data-element-id="field-output-data"
                             data-link={field.linkify}
+                            onkeydown={handleStopPropagation}
                         ></c-output-data>
                     </p>
                 </li>
@@ -234,8 +235,9 @@
                     icon-size="x-small"
                     menu-alignment="right"
                     variant="border-filled"
-                    onselect={handleActionClick}
+                    onkeydown={handleStopPropagation}
                     onmousedown={handleStopPropagation}
+                    onselect={handleActionClick}
                 >
                     <template for:each={actions} for:item="action">
                         <lightning-menu-item
