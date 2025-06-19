@@ -21,7 +21,7 @@ export default class KanbanTile {
         this._summarizeValue = props.summarizeValue;
         this._linkify = props.linkify;
         this._imageAttributes = props.imageAttributes;
-        this._avatarAttributes = props.avatarAttributes;
+        this._avatarAttributes = props.avatarAttributes || {};
     }
 
     get avatar() {

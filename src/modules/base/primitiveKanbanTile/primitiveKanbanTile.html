@@ -18,8 +18,8 @@
                 "
                 draggable="false"
                 src={coverImage}
-                style={computedCoverImageClass}
-                data-element-id="avonni-kanban__tile_image"
+                style={computedCoverImageStyle}
+                data-element-id="avonni-kanban__tile_image_top"
             />
 
             <!-- Tile header -->
@@ -49,7 +49,7 @@
                         size={avatar.size}
                         src={avatar.src}
                         variant={avatar.variant}
-                        data-element-id="avonni-kanban__tile_avatar"
+                        data-element-id="avonni-kanban__tile_avatar_left"
                     ></c-primitive-avatar>
                     <div class="slds-has-flexi-truncate">
                         <lightning-formatted-url
@@ -73,6 +73,7 @@
                                 slds-line-clamp
                             "
                             title={title}
+                            data-element-id="avonni-kanban__tile_title"
                         >
                             {title}
                         </span>
@@ -87,7 +88,7 @@
                         size={avatar.size}
                         src={avatar.src}
                         variant={avatar.variant}
-                        data-element-id="avonni-kanban__tile_avatar"
+                        data-element-id="avonni-kanban__tile_avatar_right"
                     ></c-primitive-avatar>
                 </div>
                 <div
@@ -106,7 +107,7 @@
 
             <!-- Infos -->
             <ul
-                if:true={infos}
+                if:true={hasInfos}
                 class="
                     slds-list_horizontal
                     slds-has-dividers_left
@@ -122,10 +123,10 @@
                     >
                         <lightning-formatted-url
                             if:true={info.href}
-                            data-element-id="avonni-kanban__tile_info"
                             class="avonni-kanban__tile_info-link"
                             label={info.label}
                             value={info.href}
+                            data-element-id="avonni-kanban__tile_info_url"
                             onmousedown={handleStopPropagation}
                             onmouseup={handleStopPropagation}
                             onmousemove={handleStopPropagation}
@@ -176,6 +177,7 @@
                                 month="short"
                                 value={startDate}
                                 year="numeric"
+                                data-element-id="avonni-kanban__tile-start-date"
                             ></lightning-formatted-date-time>
                             <template if:true={dueDate}>
                                 &nbsp;-&nbsp;
@@ -184,6 +186,7 @@
                                     month="short"
                                     value={dueDate}
                                     year="numeric"
+                                    data-element-id="avonni-kanban__tile-due-date"
                                 ></lightning-formatted-date-time>
                             </template>
                         </div>
@@ -193,6 +196,7 @@
                             icon-name={warningIcon}
                             size="x-small"
                             variant="warning"
+                            data-element-id="lightning-icon-warning"
                         ></lightning-icon>
                     </div>
                 </li>
@@ -200,7 +204,7 @@
 
             <!-- Annotation Icons -->
             <div
-                if:true={icons}
+                if:true={hasIcons}
                 class="slds-p-horizontal_xx-small slds-m-bottom_small"
             >
                 <template for:each={icons} for:item="icon">
@@ -221,10 +225,10 @@
                 class="
                     avonni-kanban__tile_image avonni-kanban__tile_image-bottom
                 "
-                data-element-id="avonni-kanban__tile_image"
                 draggable="false"
                 src={coverImage}
-                style={computedCoverImageClass}
+                style={computedCoverImageStyle}
+                data-element-id="avonni-kanban__tile_image_bottom"
             />
 
             <!-- Actions - Position Absolute -->
@@ -235,6 +239,7 @@
                     icon-size="x-small"
                     menu-alignment="right"
                     variant="border-filled"
+                    data-element-id="avonni-kanban__action-menu"
                     onkeydown={handleStopPropagation}
                     onmousedown={handleStopPropagation}
                     onselect={handleActionClick}

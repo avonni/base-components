@@ -7,6 +7,11 @@ import {
     normalizeString
 } from 'c/utils';
 
+const AVATAR_POSITION = {
+    valid: ['left-of-title', 'right-of-title'],
+    default: 'left-of-title'
+};
+
 const FIELD_VARIANTS = {
     default: 'label-hidden',
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
@@ -32,13 +37,13 @@ export default class PrimitiveKanbanTile extends LightningElement {
 
     _actions = [];
     _avatar = {};
+    _avatarPosition = AVATAR_POSITION.default;
     _dueDate;
     _fields = [];
     _fieldAttributes = {
         variant: FIELD_VARIANTS.default
     };
     _icons = [];
-    _infos = [];
     _imageAttributes = {
         fallbackSrc: null,
         position: IMAGE_POSITION.default,
@@ -47,6 +52,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
         cropPositionY: IMAGE_CROP_POSITION_DEFAULT,
         cropFit: IMAGE_CROP_FIT.default
     };
+    _infos = [];
     _isDraggable = false;
     _startDate;
 
@@ -60,7 +66,6 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
      *
      * @type {object[]}
-     * @public
      */
     @api
     get actions() {
@@ -74,7 +79,6 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * Avatar object. The avatar will be displayed in the header.
      *
      * @type {object}
-     * @public
      */
     @api
     get avatar() {
@@ -84,6 +88,21 @@ export default class PrimitiveKanbanTile extends LightningElement {
         this._avatar = normalizeObject(value);
     }
 
+    /**
+     * Position of the avatar.
+     *
+     * @type {string}
+     */
+    @api
+    get avatarPosition() {
+        return this._avatarPosition;
+    }
+    set avatarPosition(value) {
+        this._avatarPosition = normalizeString(value, {
+            validValues: AVATAR_POSITION.valid,
+            fallbackValue: AVATAR_POSITION.default
+        });
+    }
     /**
      * Specifies the value of the end date, which can be a Date object, timestamp, or an ISO8601 formatted string.
      *
@@ -135,7 +154,6 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * Array of icon objects.
      *
      * @type {object[]}
-     * @public
      */
     @api
     get icons() {
@@ -149,7 +167,6 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * Array of info objects.
      *
      * @type {object[]}
-     * @public
      */
     @api
     get infos() {
@@ -260,11 +277,11 @@ export default class PrimitiveKanbanTile extends LightningElement {
      */
 
     /**
-     * Computed cover image styling class.
+     * Computed cover image style.
      *
      * @type {string}
      */
-    get computedCoverImageClass() {
+    get computedCoverImageStyle() {
         const cropX = this._imageAttributes.cropPositionX;
         const cropY = this._imageAttributes.cropPositionY;
         const imageObjectPosition = `object-position:${cropX}%${cropY}%;`;
@@ -332,6 +349,20 @@ export default class PrimitiveKanbanTile extends LightningElement {
     }
 
     /**
+     * Returns true if the tile has an avatar.
+     *
+     * @type {boolean}
+     */
+    get hasAvatar() {
+        return (
+            this._avatar &&
+            (this._avatar.src ||
+                this._avatar.fallbackIconName ||
+                this._avatar.initials)
+        );
+    }
+
+    /**
      * Returns true if they are dates on the tile.
      *
      * @type {boolean}
@@ -350,12 +381,30 @@ export default class PrimitiveKanbanTile extends LightningElement {
     }
 
     /**
+     * Returns true if the tile has icons.
+     *
+     * @type {boolean}
+     */
+    get hasIcons() {
+        return this.icons && this.icons.length > 0;
+    }
+
+    /**
+     * Returns true if the tile has infos.
+     *
+     * @type {boolean}
+     */
+    get hasInfos() {
+        return this.infos && this.infos.length > 0;
+    }
+
+    /**
      * Returns true if the avatar is displayed on the left.
      *
      * @type {boolean}
      */
     get isAvatarLeft() {
-        return this._avatar && this.avatarPosition === 'left-of-title';
+        return this.hasAvatar && this.avatarPosition === 'left-of-title';
     }
 
     /**
@@ -364,7 +413,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * @type {boolean}
      */
     get isAvatarRight() {
-        return this._avatar && this.avatarPosition === 'right-of-title';
+        return this.hasAvatar && this.avatarPosition === 'right-of-title';
     }
 
     /**
