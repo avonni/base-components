@@ -1,9 +1,10 @@
 import { Kanban } from '../__examples__/kanban';
 import {
-    GROUP_VALUES,
-    RECORDS,
     ACTIONS,
     CARD_ATTRIBUTES,
+    GROUP_VALUES,
+    IMAGE_ATTRIBUTES,
+    RECORDS,
     SUMMARIZE_ATTRIBUTES
 } from './data';
 
@@ -27,7 +28,8 @@ export default {
             description:
                 ' Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Group'
             }
         },
         cardAttributes: {
@@ -37,7 +39,8 @@ export default {
             },
             description: 'Object of attributes for the card.',
             table: {
-                type: { summary: 'object' }
+                type: { summary: 'object' },
+                category: 'Item'
             }
         },
         groupValues: {
@@ -48,7 +51,8 @@ export default {
             description:
                 ' Array of group objects. Each group represents one step of the path.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Group'
             }
         },
         groupFieldName: {
@@ -59,7 +63,8 @@ export default {
             description:
                 ' Name of the data field containing the group label the data belongs to. ',
             table: {
-                type: { summary: 'String' }
+                type: { summary: 'String' },
+                category: 'Group'
             }
         },
         isLoading: {
@@ -82,7 +87,8 @@ export default {
             description: ' If present, the columns cannot be dragged by users.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Group'
             }
         },
         disableItemDragAndDrop: {
@@ -93,7 +99,8 @@ export default {
             description: ' If present, the tiles cannot be dragged by users.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Item'
             }
         },
         hideHeader: {
@@ -104,7 +111,8 @@ export default {
             description: ' If present, the group headers are hidden.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Group'
             }
         },
         records: {
@@ -125,7 +133,8 @@ export default {
             description:
                 ' The field containing the number to add to the group summarization, at the top of each column.',
             table: {
-                type: { summary: 'object' }
+                type: { summary: 'object' },
+                category: 'Group'
             }
         },
         subGroupFieldName: {
@@ -136,7 +145,8 @@ export default {
             description:
                 ' Name of the data field containing the sub-group label the data belongs to. ',
             table: {
-                type: { summary: 'String' }
+                type: { summary: 'String' },
+                category: 'Group'
             }
         },
         variant: {
@@ -151,6 +161,17 @@ export default {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'String' }
             }
+        },
+        imageAttributes: {
+            name: 'image-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item images.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Item'
+            }
         }
     },
     args: {
@@ -161,6 +182,7 @@ export default {
         groupFieldName: 'status',
         groupValues: GROUP_VALUES,
         hideHeader: false,
+        imageAttributes: IMAGE_ATTRIBUTES,
         isLoading: false,
         keyField: 'id',
         records: RECORDS,

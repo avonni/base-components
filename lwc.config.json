@@ -467,6 +467,10 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitiveKanbanTile",
+            "path": "src/modules/base/primitiveKanbanTile/primitiveKanbanTile.js"
+        },
+        {
             "name": "c/primitiveMetric",
             "path": "src/modules/base/primitiveMetric/primitiveMetric.js"
         },

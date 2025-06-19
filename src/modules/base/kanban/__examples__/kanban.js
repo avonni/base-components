@@ -10,6 +10,7 @@ export const Kanban = ({
     groupFieldName,
     groupValues,
     hideHeader,
+    imageAttributes,
     isLoading,
     keyField,
     records,
@@ -25,6 +26,7 @@ export const Kanban = ({
     element.groupFieldName = groupFieldName;
     element.groupValues = groupValues;
     element.hideHeader = hideHeader;
+    element.imageAttributes = imageAttributes;
     element.isLoading = isLoading;
     element.keyField = keyField;
     element.records = records;

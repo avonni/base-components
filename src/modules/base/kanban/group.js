@@ -58,11 +58,15 @@ export default class KanbanGroup {
     }
 
     get backgroundStyle() {
-        return `background-color: ${this._backgroundColor};`;
+        return this._backgroundColor
+            ? `background-color: ${this._backgroundColor};`
+            : '';
     }
 
     get pathStyle() {
-        return `background-color: ${this._pathColor} !important;`;
+        return this._pathColor
+            ? `background-color: ${this._pathColor} !important;`
+            : '';
     }
 
     updateSummarize() {
