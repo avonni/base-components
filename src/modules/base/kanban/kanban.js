@@ -1175,26 +1175,6 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Finds the tile elements in the DOM corresponding to the group index
-     *
-     * @param {number} groupIndex
-     * @returns {HTMLElement[]}
-     */
-    getGroupTileElements(groupIndex) {
-        const groups = Array.from(
-            this.template.querySelectorAll(
-                '[data-element-id="avonni-kanban__field"]'
-            )
-        );
-        const tiles = Array.from(
-            groups[groupIndex].querySelectorAll(
-                '[data-element-id="avonni-kanban__tile"]'
-            )
-        );
-        return tiles;
-    }
-
-    /**
      * Finds the tile element in the DOM corresponding to the record
      * @param {object} tile
      * @returns {HTMLElement}
@@ -1207,6 +1187,26 @@ export default class Kanban extends LightningElement {
         return tiles.find(
             (tileElement) => tileElement.dataset.recordIndex === tile.index
         );
+    }
+
+    /**
+     * Get all tile elements for a specific group in the DOM.
+     *
+     * @param {number} groupIndex - Index of the group to retrieve tiles from.
+     * @returns {object[]} An array of tile elements. Returns an empty array if not found.
+     */
+    getTileElements(groupIndex) {
+        const groups = Array.from(
+            this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field"]'
+            )
+        );
+        const tiles = Array.from(
+            groups[groupIndex].querySelectorAll(
+                '[data-element-id="avonni-kanban__tile"]'
+            )
+        );
+        return tiles;
     }
 
     /**
@@ -1233,6 +1233,11 @@ export default class Kanban extends LightningElement {
         }
     }
 
+    /**
+     * Keyboard use for selecting groups and tiles.
+     *
+     * @return keyboard interface
+     */
     selectKeyboardInterface() {
         const that = this;
         return {
@@ -1242,51 +1247,56 @@ export default class Kanban extends LightningElement {
             isDragging() {
                 return that.isDragging;
             },
-            moveColumn(from, to) {
+            moveGroup(from, to) {
                 that.handleGroupKeyboardDragMove(from, to);
             },
-            moveItemInsideGroup(groupIndex, from, to) {
-                that.handleItemKeyboardDragMoveInsideGroup(
+            moveTile(groupIndex, from, to) {
+                that.handleTileKeyboardDragMoveInsideGroup(
                     groupIndex,
                     from,
                     to
                 );
             },
-            moveItemToGroup(itemIndex, groupFrom, groupTo) {
-                that.handleItemKeyboardDragMoveOutsideGroup(
+            moveTileToGroup(itemIndex, groupFrom, groupTo) {
+                that.handleTileKeyboardDragMoveOutsideGroup(
                     itemIndex,
                     groupFrom,
                     groupTo
                 );
             },
-            selectColumn(element, index) {
+            selectGroup(element, index) {
                 if (that.isDragging) {
                     that.handleGroupKeyboardDragEnd();
                 } else {
                     that.handleGroupKeyboardDragStart(element, index);
                 }
             },
-            selectItem(element, groupIndex, index) {
+            selectTile(element, groupIndex, index) {
                 if (that.isDragging) {
-                    that.handleItemKeyboardDragEnd();
+                    that.handleTileKeyboardDragEnd();
                 } else {
-                    that.handleItemKeyboardDragStart(
+                    that.handleTileKeyboardDragStart(
                         element,
                         groupIndex,
                         index
                     );
                 }
             },
-            setFocusOnNextColumn(index) {
-                that.switchColumnFocus(index);
+            setFocusOnGroup(index) {
+                that.setFocusOnGroup(index);
             },
-            setFocusOnNextItem(groupIndex, index) {
-                that.switchItemFocus(groupIndex, index);
+            setFocusOnTile(groupIndex, index) {
+                that.setFocusOnTile(groupIndex, index);
             }
         };
     }
 
-    switchColumnFocus(index) {
+    /**
+     * Update the focused group index.
+     *
+     * @param {number} index Index of the new focused group.
+     */
+    setFocusOnGroup(index) {
         const normalizedIndex = this.normalizedIndex(
             this.computedGroups,
             index
@@ -1302,7 +1312,14 @@ export default class Kanban extends LightningElement {
         }
     }
 
-    switchItemFocus(groupIndex, index) {
+    /**
+     * Update the focused item index.
+     *
+     * @param {number} groupIndex Index of group containing the tile.
+     * @param {number} index Index of the new focused item.
+     *
+     */
+    setFocusOnTile(groupIndex, index) {
         const tiles = this.computedGroups[groupIndex]?.tiles || [];
         const normalizedIndex = this.normalizedIndex(tiles, index);
         const item = this.template.querySelector(
@@ -1755,7 +1772,7 @@ export default class Kanban extends LightningElement {
             return;
         }
         this.handleGroupKeyboardDragEnd();
-        this.handleItemKeyboardDragEnd();
+        this.handleTileKeyboardDragEnd();
     };
 
     /**
@@ -1842,7 +1859,7 @@ export default class Kanban extends LightningElement {
      */
     handleTileBlur() {
         if (this._keyboardDragged && !this._cancelBlur) {
-            this.handleItemKeyboardDragEnd();
+            this.handleTileKeyboardDragEnd();
             this.allowBlur();
         }
     }
@@ -1854,7 +1871,7 @@ export default class Kanban extends LightningElement {
      */
     handleTileDrop() {
         const normalizedReleaseIndex = this.normalizedIndex(
-            this.getGroupTileElements(this._releasedGroupIndex),
+            this.getTileElements(this._releasedGroupIndex),
             this._releasedTileIndex
         );
         const droppedTile = this.tileRecordFinder(
@@ -1891,7 +1908,7 @@ export default class Kanban extends LightningElement {
      *  Handles the keyboard drag end of an item
      *
      */
-    handleItemKeyboardDragEnd = () => {
+    handleTileKeyboardDragEnd = () => {
         const items = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__tile"]'
         );
@@ -1913,7 +1930,7 @@ export default class Kanban extends LightningElement {
      * @param {number} tileFrom The initial index of the tile
      * @param {number} tileTo The dropped index of the tile
      */
-    handleItemKeyboardDragMoveInsideGroup = (groupIndex, tileFrom, tileTo) => {
+    handleTileKeyboardDragMoveInsideGroup = (groupIndex, tileFrom, tileTo) => {
         if (
             this._disableItemDragAndDrop ||
             !this._keyboardDragged ||
@@ -1923,7 +1940,7 @@ export default class Kanban extends LightningElement {
         }
         this.cancelBlur();
 
-        const tilesLength = this.getGroupTileElements(groupIndex).length;
+        const tilesLength = this.getTileElements(groupIndex).length;
         const isLastIndex =
             tileFrom === tilesLength - 1 && tileTo === tilesLength;
         if (tileTo === -1 || isLastIndex) {
@@ -1949,7 +1966,7 @@ export default class Kanban extends LightningElement {
             this.handleTileDrop();
 
             requestAnimationFrame(() => {
-                const tiles = this.getGroupTileElements(groupIndex);
+                const tiles = this.getTileElements(groupIndex);
                 const draggedTile = tiles.find(
                     (tile) => tile.dataset.recordIndex === draggedTileValue
                 );
@@ -1975,7 +1992,7 @@ export default class Kanban extends LightningElement {
      * @param {number} groupFrom The initial index of the group
      * @param {number} groupTo The dropped index of the group
      */
-    handleItemKeyboardDragMoveOutsideGroup = (
+    handleTileKeyboardDragMoveOutsideGroup = (
         tileIndex,
         groupFrom,
         groupTo
@@ -1993,15 +2010,15 @@ export default class Kanban extends LightningElement {
         this._initialTileIndex = tileIndex;
         this._releasedGroupIndex = groupTo;
 
-        let tiles = this.getGroupTileElements(groupTo);
+        let tiles = this.getTileElements(groupTo);
         this._releasedTileIndex = tiles.length;
 
         this._draggedTile.classList.remove(DRAGGED_CLASS);
         this.handleTileDrop();
-        this.handleItemKeyboardDragEnd();
+        this.handleTileKeyboardDragEnd();
 
         requestAnimationFrame(() => {
-            tiles = this.getGroupTileElements(groupTo);
+            tiles = this.getTileElements(groupTo);
             const draggedTile = tiles.find(
                 (tile) => tile.dataset.recordIndex === draggedTileValue
             );
@@ -2021,7 +2038,7 @@ export default class Kanban extends LightningElement {
      * @param {number} groupIndex The index of the dragged group
      * @param {number} index The index of the dragged item
      */
-    handleItemKeyboardDragStart = (element, groupIndex, index) => {
+    handleTileKeyboardDragStart = (element, groupIndex, index) => {
         if (this._disableItemDragAndDrop) {
             return;
         }
