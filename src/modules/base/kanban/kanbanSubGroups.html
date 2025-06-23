@@ -222,6 +222,7 @@
                             slds-m-vertical_xx-small
                         "
                         data-element-id="avonni-kanban__expandable_section_header"
+                        aria-expanded="true"
                         onclick={handleExpandableSectionClick}
                     >
                         <lightning-icon
@@ -237,6 +238,7 @@
                     </button>
                     <div
                         class="slds-grid avonni-kanban__field_container"
+                        aria-hidden="false"
                         data-element-id="avonni-kanban__field_container"
                         data-subgroup-container={section.label}
                     >

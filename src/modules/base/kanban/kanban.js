@@ -1896,9 +1896,17 @@ export default class Kanban extends LightningElement {
             return;
         }
 
+        const expanded = event.target.getAttribute('aria-expanded') === 'true';
         expandableSection.classList.toggle(
             'avonni-kanban__expandable_section_collapsed'
         );
+        const content = expandableSection.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+        if (content) {
+            content.setAttribute('aria-hidden', expanded);
+        }
+        event.target.setAttribute('aria-expanded', !expanded);
 
         this._capFieldHeight();
     }
