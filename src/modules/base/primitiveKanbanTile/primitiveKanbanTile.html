@@ -1,5 +1,5 @@
 <template>
-    <lightning-tile
+    <div
         class={computedTileClass}
         tabindex="0"
         data-element-id="lightning-tile"
@@ -16,6 +16,7 @@
                     avonni-kanban__tile_image avonni-kanban__tile_image-top
                     slds-m-bottom_small
                 "
+                alt=""
                 draggable="false"
                 src={coverImage}
                 style={computedCoverImageStyle}
@@ -225,6 +226,7 @@
                 class="
                     avonni-kanban__tile_image avonni-kanban__tile_image-bottom
                 "
+                alt=""
                 draggable="false"
                 src={coverImage}
                 style={computedCoverImageStyle}
@@ -259,5 +261,5 @@
                 </c-button-menu>
             </div>
         </div>
-    </lightning-tile>
+    </div>
 </template>
