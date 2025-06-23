@@ -14,7 +14,7 @@ import KanbanGroupsBuilder from './groupBuilder';
 import { handleKeyDownOnGroup, handleKeyDownOnTile } from './keyboard';
 
 const DRAGGED_CLASS = 'avonni-kanban__dragged';
-const GROUP_DRAGGED_CLASS = 'avonni-kanban__dragged';
+const GROUP_DRAGGED_CLASS = 'avonni-kanban__dragged_group';
 
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
