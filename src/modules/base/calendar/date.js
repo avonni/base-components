@@ -12,7 +12,9 @@ export default class CalendarDate {
         this.adjacentMonth = props.adjacentMonth;
         this.date = props.date;
         this.disabled = normalizeBoolean(props.disabled);
+        this.isEndDate = normalizeBoolean(props.isEndDate);
         this.isPartOfInterval = normalizeBoolean(props.isPartOfInterval);
+        this.isStartDate = normalizeBoolean(props.isStartDate);
         this.isToday = normalizeBoolean(props.isToday);
         this.isWeekNumber = normalizeBoolean(props.isWeekNumber);
         this.chip = new Label(normalizeObject(props.chip));
@@ -30,6 +32,31 @@ export default class CalendarDate {
 
     get ariaCurrent() {
         return this.isToday ? 'date' : null;
+    }
+
+    get computedAriaLabel() {
+        if (this.isWeekNumber) {
+            return `Week ${this._dateTime.isoWeek}`;
+        }
+        const dateLabel = this.date?.toLocaleString('en-EN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        let startEndDate = '';
+        if (this.isPartOfInterval) {
+            if (this.isStartDate) {
+                startEndDate = ', start date';
+            } else if (this.isEndDate) {
+                startEndDate = ', end date';
+            }
+        }
+        const isSelected = this.appearsSelected ? ', selected' : '';
+        return `${dateLabel}${startEndDate}${isSelected}`;
+    }
+
+    get computedAriaSelected() {
+        return String(this.appearsSelected);
     }
 
     get hasChip() {
