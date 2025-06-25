@@ -32,6 +32,22 @@ export default class CalendarDate {
         return this.isToday ? 'date' : null;
     }
 
+    get computedAriaLabel() {
+        if (this.isWeekNumber) {
+            return `Week ${this._dateTime.isoWeek}`;
+        }
+        const dateLabel = this.date?.toLocaleString('en-EN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        return dateLabel;
+    }
+
+    get computedAriaSelected() {
+        return String(this.appearsSelected);
+    }
+
     get hasChip() {
         return this.chip.iconName || this.chip.label;
     }
