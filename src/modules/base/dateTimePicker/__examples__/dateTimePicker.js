@@ -7,74 +7,80 @@ customElements.define(
 
 export const DateTimePicker = ({
     avatar,
+    dateFormatDay,
+    dateFormatMonth,
+    dateFormatWeekday,
+    dateFormatYear,
     datePickerVariant,
     disabled,
+    disabledDateTimes,
+    endTime,
     fieldLevelHelp,
-    label,
     hideDateLabel,
+    hideDatePicker,
     hideLabel,
-    variant,
+    hideNavigation,
+    label,
+    max,
     messageWhenValueMissing,
+    min,
     name,
     readOnly,
     required,
-    value,
+    showDisabledDates,
+    showEndTime,
+    showTimeZone,
     startTime,
-    endTime,
-    timeSlotDuration,
     timeFormatHour,
     timeFormatHour12,
     timeFormatMinute,
     timeFormatSecond,
-    dateFormatDay,
-    dateFormatWeekday,
-    dateFormatMonth,
-    dateFormatYear,
-    showEndTime,
-    showDisabledDates,
-    disabledDateTimes,
-    max,
-    min,
+    timeSlotDuration,
+    timezone,
+    timezoneLabel,
+    timezonePlaceholder,
+    todayButtonLabel,
     type,
-    showTimeZone,
-    hideNavigation,
-    hideDatePicker,
-    timezone
+    value,
+    variant
 }) => {
     const element = document.createElement('ac-base-date-time-picker');
     element.avatar = avatar;
+    element.dateFormatDay = dateFormatDay;
+    element.dateFormatMonth = dateFormatMonth;
+    element.dateFormatWeekday = dateFormatWeekday;
+    element.dateFormatYear = dateFormatYear;
     element.datePickerVariant = datePickerVariant;
     element.disabled = disabled;
+    element.disabledDateTimes = disabledDateTimes;
+    element.endTime = endTime;
     element.fieldLevelHelp = fieldLevelHelp;
-    element.label = label;
     element.hideDateLabel = hideDateLabel;
+    element.hideDatePicker = hideDatePicker;
     element.hideLabel = hideLabel;
-    element.variant = variant;
+    element.hideNavigation = hideNavigation;
+    element.label = label;
+    element.max = max;
     element.messageWhenValueMissing = messageWhenValueMissing;
+    element.min = min;
     element.name = name;
     element.readOnly = readOnly;
     element.required = required;
-    element.value = value;
+    element.showDisabledDates = showDisabledDates;
+    element.showEndTime = showEndTime;
+    element.showTimeZone = showTimeZone;
     element.startTime = startTime;
-    element.endTime = endTime;
-    element.timeSlotDuration = timeSlotDuration;
     element.timeFormatHour = timeFormatHour;
     element.timeFormatHour12 = timeFormatHour12;
     element.timeFormatMinute = timeFormatMinute;
     element.timeFormatSecond = timeFormatSecond;
-    element.dateFormatDay = dateFormatDay;
-    element.dateFormatWeekday = dateFormatWeekday;
-    element.dateFormatMonth = dateFormatMonth;
-    element.dateFormatYear = dateFormatYear;
-    element.showEndTime = showEndTime;
-    element.showDisabledDates = showDisabledDates;
-    element.disabledDateTimes = disabledDateTimes;
-    element.max = max;
-    element.min = min;
-    element.type = type;
-    element.showTimeZone = showTimeZone;
-    element.hideNavigation = hideNavigation;
-    element.hideDatePicker = hideDatePicker;
+    element.timeSlotDuration = timeSlotDuration;
     element.timezone = timezone;
+    element.timezoneLabel = timezoneLabel;
+    element.timezonePlaceholder = timezonePlaceholder;
+    element.todayButtonLabel = todayButtonLabel;
+    element.type = type;
+    element.value = value;
+    element.variant = variant;
     return element;
 };

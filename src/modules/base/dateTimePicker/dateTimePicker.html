@@ -81,14 +81,14 @@
                                         class="slds-p-bottom_x-small"
                                     >
                                         <lightning-combobox
-                                            name="timezone"
-                                            label="Time Zone:"
-                                            value={timezone}
-                                            placeholder="Select time zone"
-                                            options={timezones}
                                             class="
                                                 avonni-date-time-picker__time-zone
                                             "
+                                            label={timezoneLabel}
+                                            name={name}
+                                            options={timezones}
+                                            placeholder={timezonePlaceholder}
+                                            value={timezone}
                                             data-element-id="lightning-combobox"
                                             onchange={handleTimeZoneChange}
                                         ></lightning-combobox>
@@ -121,7 +121,7 @@
                                         data-element-id="lightning-button-icon-previous"
                                     ></lightning-button-icon>
                                     <lightning-button
-                                        label="Today"
+                                        label={todayButtonLabel}
                                         data-element-id="lightning-button-today"
                                         onclick={handleTodayClick}
                                     ></lightning-button>

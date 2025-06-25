@@ -400,6 +400,41 @@ export default {
                 type: { summary: 'string' },
                 category: 'Time'
             }
+        },
+        timezoneLabel: {
+            name: 'timezone-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the time zone.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Time',
+                defaultValue: { summary: 'Time Zone:' }
+            }
+        },
+        timezonePlaceholder: {
+            name: 'timezone-placeholder',
+            control: {
+                type: 'text'
+            },
+            description: 'The placeholder for the time zone combobox.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Time',
+                defaultValue: { summary: 'Select time zone' }
+            }
+        },
+        todayButtonLabel: {
+            name: 'today-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the today button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Today' }
+            }
         }
     },
     args: {
@@ -425,6 +460,9 @@ export default {
         timeFormatHour12: false,
         timeFormatMinute: '2-digit',
         timeSlotDuration: '00:30',
+        timezoneLabel: 'Time Zone:',
+        timezonePlaceholder: 'Select time zone',
+        todayButtonLabel: 'Today',
         type: 'radio',
         variant: 'daily'
     }

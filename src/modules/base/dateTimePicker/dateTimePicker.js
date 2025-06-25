@@ -57,6 +57,7 @@ const DEFAULT_TIME_SLOT_DURATION = 1800000;
 const DEFAULT_MAX = '2099-12-31';
 const DEFAULT_MIN = '1900-01-01';
 const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
 
 /**
  * @class
@@ -72,7 +73,6 @@ export default class DateTimePicker extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
-
     /**
      * Text label for the input.
      *
@@ -81,7 +81,6 @@ export default class DateTimePicker extends LightningElement {
      * @public
      */
     @api label;
-
     /**
      * Error message to be displayed when the value is missing.
      * The valueMissing error can be returned when you specify the required attribute for any input type.
@@ -90,7 +89,6 @@ export default class DateTimePicker extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
-
     /**
      * Specifies the name of an input element.
      *
@@ -98,6 +96,30 @@ export default class DateTimePicker extends LightningElement {
      * @public
      */
     @api name;
+    /**
+     * The label for the time zone.
+     *
+     * @type {string}
+     * @public
+     * @default Time Zone:
+     */
+    @api timezoneLabel;
+    /**
+     * The placeholder for the time zone combobox.
+     *
+     * @type {string}
+     * @public
+     * @default Select time zone
+     */
+    @api timezonePlaceholder;
+    /**
+     * The label for the today button.
+     *
+     * @type {string}
+     * @public
+     * @default Today
+     */
+    @api todayButtonLabel = DEFAULT_TODAY_BUTTON_LABEL;
 
     _avatar = {};
     _dateFormatDay = DATE_TIME_FORMATS.dayDefault;
