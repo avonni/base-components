@@ -20,6 +20,8 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
+const CANCEL_BUTTON_LABEL = 'Cancel';
+const SAVE_BUTTON_LABEL = 'Save';
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const ICON_SIZES = {
@@ -51,6 +53,14 @@ export default class ButtonDialog extends LightningElement {
      */
     @api alternativeText;
     /**
+     * The label for the cancel button.
+     *
+     * @public
+     * @type {string}
+     * @default Cancel
+     */
+    @api cancelButtonLabel = CANCEL_BUTTON_LABEL;
+    /**
      * The name of the icon to be used in the format 'utility:down'.
      *
      * @public
@@ -71,6 +81,14 @@ export default class ButtonDialog extends LightningElement {
      * @type {string}
      */
     @api label;
+    /**
+     * The label for the save button.
+     *
+     * @public
+     * @type {string}
+     * @default Save
+     */
+    @api saveButtonLabel = SAVE_BUTTON_LABEL;
 
     _disabled = false;
     _iconPosition = ICON_POSITIONS.default;

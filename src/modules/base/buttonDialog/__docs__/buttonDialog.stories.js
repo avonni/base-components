@@ -23,6 +23,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        cancelButtonLabel: {
+            name: 'cancel-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the cancel button.',
+            table: {
+                type: { summary: 'string' },
+                category: 'button',
+                defaultValue: { summary: 'Cancel' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -93,6 +105,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        saveButtonLabel: {
+            name: 'save-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the save button.',
+            table: {
+                type: { summary: 'string' },
+                category: 'button',
+                defaultValue: { summary: 'Save' }
+            }
+        },
         stretch: {
             control: {
                 type: 'boolean'
@@ -132,9 +156,11 @@ export default {
         }
     },
     args: {
+        cancelButtonLabel: 'Cancel',
         disabled: false,
         iconPosition: 'left',
         iconSize: 'x-small',
+        saveButtonLabel: 'Save',
         stretch: false,
         variant: 'neutral'
     }
