@@ -3,7 +3,12 @@
         if:true={isLoading}
         alternative-text="Loading..."
     ></lightning-spinner>
-
+    <div
+        lwc:dom="manual"
+        class="slds-assistive-text"
+        aria-live="polite"
+        data-element-id="span-instructions"
+    ></div>
     <div if:false={isLoading} class={variantClass}>
         <div
             class="
@@ -111,6 +116,7 @@
                     style={group.backgroundStyle}
                     tabindex={groupTabIndex}
                     data-element-id="avonni-kanban__group_header_wrapper"
+                    data-group={group.value}
                     data-group-index={group.index}
                     onblur={handleGroupBlur}
                     onkeydown={handleGroupKeyDown}

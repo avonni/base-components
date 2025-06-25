@@ -3,7 +3,12 @@
         if:true={isLoading}
         alternative-text="Loading..."
     ></lightning-spinner>
-
+    <div
+        lwc:dom="manual"
+        class="slds-assistive-text"
+        aria-live="polite"
+        data-element-id="span-instructions"
+    ></div>
     <div if:false={isLoading} class={variantClass}>
         <div
             class="
@@ -111,6 +116,7 @@
                     style={group.backgroundStyle}
                     tabindex={groupTabIndex}
                     data-element-id="avonni-kanban__field"
+                    data-group={group.value}
                     data-group-index={group.index}
                     onblur={handleGroupBlur}
                     onkeydown={handleGroupKeyDown}
@@ -127,11 +133,11 @@
                         onmouseup={handleGroupMouseUp}
                     ></div>
                     <div
+                        if:false={hideHeader}
                         class="avonni-kanban__group_header"
                         onmousedown={handleGroupMouseDown}
                         onmouseup={handleGroupMouseUp}
                         data-element-id="avonni-kanban__group_header"
-                        if:false={hideHeader}
                     >
                         <div if:true={group.headerActions.length}>
                             <c-button-menu

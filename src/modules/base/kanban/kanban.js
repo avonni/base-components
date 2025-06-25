@@ -556,6 +556,17 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Returns the instructions div element.
+     *
+     * @type {Element}
+     */
+    get instructionsElement() {
+        return this.template.querySelector(
+            '[data-element-id="span-instructions"]'
+        );
+    }
+
+    /**
      * Indicates whether a group or tile is currently being dragged.
      *
      * @type {boolean}
@@ -1922,6 +1933,21 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Handles the drop of a group.
+     */
+    handleGroupDrop() {
+        const groupValue = this._draggedGroup.dataset.group;
+        this._swapGroups();
+
+        requestAnimationFrame(() => {
+            const groupLabel = this._computedGroups.find(
+                (group) => group.value === groupValue
+            )?.label;
+            this.instructionsElement.textContent = `Group "${groupLabel}" moved to position ${this._releasedGroupIndex} of ${this.computedGroups.length}`;
+        });
+    }
+
+    /**
      * Handles the keyboard drag and drop of a group.
      *
      * @param {Event} event
@@ -1988,7 +2014,7 @@ export default class Kanban extends LightningElement {
             clearTimeout(this._animationTimeout);
         }
         this._animationTimeout = setTimeout(() => {
-            this._swapGroups();
+            this.handleGroupDrop();
             previousDraggedElement.classList.remove(draggedClass);
 
             requestAnimationFrame(() => {
@@ -2166,7 +2192,7 @@ export default class Kanban extends LightningElement {
         if (!this._draggedGroup || this._keyboardDragged) {
             return;
         }
-        this._swapGroups();
+        this.handleGroupDrop();
         this.handleClearScrollInterval();
 
         const groupSelector = this._hasSubGroups
@@ -2299,6 +2325,7 @@ export default class Kanban extends LightningElement {
      * Finds the index of initial and final position of the dragged tile.
      */
     handleTileDrop() {
+        const draggedTileLabel = this._draggedTile.title;
         const droppedTile = this._tileRecordFinder(
             this._releasedTileIndex,
             this._releasedGroupIndex
@@ -2313,8 +2340,17 @@ export default class Kanban extends LightningElement {
         const droppedIndex = droppedTile
             ? this._records.indexOf(droppedTile)
             : 0;
+
         this._records = this._swapRecords(currentIndex, droppedIndex);
         this._updateTiles();
+
+        requestAnimationFrame(() => {
+            const groupValue = this._records[droppedIndex][this.groupFieldName];
+            const groupLabel = this.groupValues.find(
+                (group) => group.value === groupValue
+            )?.label;
+            this.instructionsElement.textContent = `"${draggedTileLabel}" moved to group "${groupLabel}"`;
+        });
     }
 
     /**
