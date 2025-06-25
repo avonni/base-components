@@ -1,5 +1,3 @@
-
-
 const GROUP_VALUES = [
     {
         label: 'Open',
@@ -57,7 +55,7 @@ const RECORDS = [
         available: true,
         assignee: 'John Doe',
         coverImage:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
@@ -127,7 +125,7 @@ const RECORDS = [
         amount: 17500,
         assignee: 'John Doe',
         coverImage:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
@@ -256,6 +254,14 @@ const CARD_ATTRIBUTES = {
     }
 };
 
+const IMAGE_ATTRIBUTES = {
+    position: 'top',
+    height: 250,
+    cropPositionX: 50,
+    cropPositionY: 50,
+    cropFit: 'cover'
+};
+
 const SUMMARIZE_ATTRIBUTES = {
     label: 'Amount',
     fieldName: 'amount',
@@ -264,9 +270,10 @@ const SUMMARIZE_ATTRIBUTES = {
 };
 
 export {
-    GROUP_VALUES,
-    CARD_ATTRIBUTES,
-    RECORDS,
     ACTIONS,
+    CARD_ATTRIBUTES,
+    GROUP_VALUES,
+    IMAGE_ATTRIBUTES,
+    RECORDS,
     SUMMARIZE_ATTRIBUTES
 };

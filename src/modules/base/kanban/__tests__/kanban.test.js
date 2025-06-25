@@ -136,7 +136,25 @@ describe('Kanban', () => {
     it('Kanban : fields', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
-        element.records = RECORDS;
+        element.records = [
+            {
+                id: '001',
+                status: 'open',
+                opportunityName: 'Opportunity 1',
+                amount: 25000,
+                warningIcon: 'utility:warning',
+                phone: '+375292567896',
+                createdDate: '1594133308000',
+                startDate: '2020/07/07',
+                dueDate: '1600354108000',
+                percent: 0.28,
+                available: true,
+                coverImage:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                description:
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            }
+        ];
         element.groupFieldName = 'status';
         element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
@@ -147,11 +165,11 @@ describe('Kanban', () => {
         element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
-            const fields = element.shadowRoot.querySelector(
-                '[data-element-id="fields"]'
+            const tile = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__tile"]'
             );
-            expect(fields.children.length).toBe(
-                CARD_ATTRIBUTES.customFields.length + 1
+            expect(tile.fields).toHaveLength(
+                CARD_ATTRIBUTES.customFields.length
             );
         });
     });
@@ -281,9 +299,20 @@ describe('Kanban', () => {
     // cover image
     it('Kanban : tile cover image', () => {
         jest.useFakeTimers();
+        const coverImage =
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
-        element.records = RECORDS;
+        element.records = [
+            {
+                id: '001',
+                status: 'open',
+                opportunityName: 'Opportunity 1',
+                coverImage,
+                description:
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            }
+        ];
         element.groupFieldName = 'status';
         element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
@@ -299,10 +328,11 @@ describe('Kanban', () => {
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
-            const coverImage = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-kanban__tile_image"]'
+            const tiles = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-kanban__tile"]'
             );
-            expect(coverImage).not.toBeNull();
+            expect(tiles).toHaveLength(1);
+            expect(tiles[0].coverImage).toBe(coverImage);
         });
     });
 
@@ -311,7 +341,14 @@ describe('Kanban', () => {
         jest.useFakeTimers();
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
-        element.records = RECORDS;
+        element.records = [
+            {
+                id: '001',
+                status: 'open',
+                opportunityName: 'Opportunity 1',
+                description: 'some text'
+            }
+        ];
         element.groupFieldName = 'status';
         element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
@@ -332,10 +369,11 @@ describe('Kanban', () => {
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
-            const tileHeader = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-kanban__tile_header"]'
+            const tile = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__tile"]'
             );
-            expect(tileHeader.children.length).toBe(2);
+            expect(tile.title).toBe('Opportunity 1');
+            expect(tile.description).toBe('some text');
         });
     });
 
@@ -344,7 +382,16 @@ describe('Kanban', () => {
         jest.useFakeTimers();
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
-        element.records = RECORDS;
+        element.records = [
+            {
+                id: '001',
+                status: 'open',
+                opportunityName: 'Opportunity 1',
+                createdDate: '1594133308000',
+                startDate: '2020/07/07',
+                dueDate: '1600354108000'
+            }
+        ];
         element.groupFieldName = 'status';
         element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
@@ -365,46 +412,11 @@ describe('Kanban', () => {
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
-            const dates = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-kanban__tile_dates"]'
+            const tile = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__tile"]'
             );
-            expect(dates[4].classList).not.toContain(
-                'avonni-kanban__tile_dates_overdue'
-            );
-        });
-    });
-
-    it('Kanban : tile start and due dates overdue', () => {
-        jest.useFakeTimers();
-        element.keyField = 'id';
-        element.groupValues = GROUP_VALUES;
-        element.records = RECORDS;
-        element.groupFieldName = 'status';
-        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
-        element.actions = ACTIONS;
-
-        const cardAttributes = {
-            startDate: {
-                fieldName: 'startDate',
-                label: 'Start Date',
-                type: 'date'
-            },
-            dueDate: {
-                fieldName: 'dueDate',
-                label: 'Due Date',
-                type: 'date'
-            }
-        };
-        element.cardAttributes = cardAttributes;
-
-        return Promise.resolve().then(() => {
-            jest.runAllTimers();
-            const dates = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-kanban__tile_dates"]'
-            );
-            expect(dates[0].classList).toContain(
-                'avonni-kanban__tile_dates_overdue'
-            );
+            expect(tile.startDate.toLocaleString()).toContain('7/7/2020');
+            expect(tile.dueDate.toLocaleString()).toContain('9/17/2020');
         });
     });
 

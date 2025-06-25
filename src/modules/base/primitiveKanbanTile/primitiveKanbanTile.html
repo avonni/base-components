@@ -1,0 +1,265 @@
+<template>
+    <div
+        class={computedTileClass}
+        tabindex="0"
+        data-element-id="lightning-tile"
+    >
+        <!--
+            The wrapping <div> is needed for the tests to pass.
+            Otherwise, not all the elements appear in the default slot.
+        -->
+        <div>
+            <!-- Cover image - Top -->
+            <img
+                if:true={isCoverImageTop}
+                class="
+                    avonni-kanban__tile_image avonni-kanban__tile_image-top
+                    slds-m-bottom_small
+                "
+                alt=""
+                draggable="false"
+                src={coverImage}
+                style={computedCoverImageStyle}
+                data-element-id="avonni-kanban__tile_image_top"
+            />
+
+            <!-- Tile header -->
+            <div
+                if:true={hasHeader}
+                class="avonni-kanban__tile_header"
+                data-element-id="avonni-kanban__tile_header"
+            >
+                <div
+                    if:true={title}
+                    class="
+                        avonni-kanban__tile_title
+                        slds-grid
+                        slds-grid_align-center
+                        slds-grid_vertical-align-center
+                        slds-m-bottom_xx-small
+                    "
+                    data-element-id="avonni-kanban__tile_title"
+                >
+                    <c-primitive-avatar
+                        if:true={isAvatarLeft}
+                        class="slds-m-right_x-small"
+                        fallback-icon-name={avatar.fallbackIconName}
+                        initials={avatar.initials}
+                        presence={avatar.presence}
+                        presence-position={avatar.presencePosition}
+                        size={avatar.size}
+                        src={avatar.src}
+                        variant={avatar.variant}
+                        data-element-id="avonni-kanban__tile_avatar_left"
+                    ></c-primitive-avatar>
+                    <div class="slds-has-flexi-truncate">
+                        <lightning-formatted-url
+                            if:true={titleUrl}
+                            class="
+                                avonni-kanban__tile_title_link
+                                slds-line-clamp
+                            "
+                            label={title}
+                            title={title}
+                            value={titleUrl}
+                            data-element-id="lightning-formatted-url-title"
+                            onmousedown={handleStopPropagation}
+                            onmouseup={handleStopPropagation}
+                            onmousemove={handleStopPropagation}
+                        ></lightning-formatted-url>
+                        <span
+                            if:false={titleUrl}
+                            class="
+                                avonni-kanban__tile_title_text
+                                slds-line-clamp
+                            "
+                            title={title}
+                            data-element-id="avonni-kanban__tile_title"
+                        >
+                            {title}
+                        </span>
+                    </div>
+                    <c-primitive-avatar
+                        if:true={isAvatarRight}
+                        class="slds-m-left_x-small"
+                        fallback-icon-name={avatar.fallbackIconName}
+                        initials={avatar.initials}
+                        presence={avatar.presence}
+                        presence-position={avatar.presencePosition}
+                        size={avatar.size}
+                        src={avatar.src}
+                        variant={avatar.variant}
+                        data-element-id="avonni-kanban__tile_avatar_right"
+                    ></c-primitive-avatar>
+                </div>
+                <div
+                    if:true={description}
+                    class="avonni-kanban__tile_description"
+                    data-element-id="avonni-kanban__tile_description"
+                >
+                    <lightning-formatted-rich-text
+                        disable-linkify
+                        title={description}
+                        value={description}
+                        data-element-id="lightning-formatted-rich-text-description"
+                    ></lightning-formatted-rich-text>
+                </div>
+            </div>
+
+            <!-- Infos -->
+            <ul
+                if:true={hasInfos}
+                class="
+                    slds-list_horizontal
+                    slds-has-dividers_left
+                    slds-has-block-links
+                    slds-m-horizontal_small
+                    slds-wrap
+                "
+            >
+                <template for:each={infos} for:item="info">
+                    <li
+                        key={info.key}
+                        class="avonni-kanban__tile_info slds-item"
+                    >
+                        <lightning-formatted-url
+                            if:true={info.href}
+                            class="avonni-kanban__tile_info-link"
+                            label={info.label}
+                            value={info.href}
+                            data-element-id="avonni-kanban__tile_info_url"
+                            onmousedown={handleStopPropagation}
+                            onmouseup={handleStopPropagation}
+                            onmousemove={handleStopPropagation}
+                        ></lightning-formatted-url>
+                        <span
+                            if:false={info.href}
+                            data-element-id="avonni-kanban__tile_info"
+                        >
+                            {info.label}
+                        </span>
+                    </li>
+                </template>
+            </ul>
+
+            <!-- Fields -->
+            <ul data-element-id="fields" class="avonni-kanban__tile_fields">
+                <li for:each={fields} for:item="field" key={field.label}>
+                    <p>
+                        <c-output-data
+                            label={field.label}
+                            type={field.type}
+                            type-attributes={field.typeAttributes}
+                            value={field.value}
+                            variant={fieldAttributes.variant}
+                            data-element-id="field-output-data"
+                            data-link={field.linkify}
+                            onkeydown={handleStopPropagation}
+                        ></c-output-data>
+                    </p>
+                </li>
+                <li>
+                    <div class={computedTileBottomClass}>
+                        <div
+                            if:true={hasDates}
+                            class={computedDatesClass}
+                            data-element-id="avonni-kanban__tile_dates"
+                        >
+                            <lightning-icon
+                                class="
+                                    avonni-kanban__tile_dates-icon
+                                    slds-m-right_x-small
+                                "
+                                icon-name="utility:clock"
+                                size="x-small"
+                            ></lightning-icon>
+                            <lightning-formatted-date-time
+                                day="2-digit"
+                                month="short"
+                                value={startDate}
+                                year="numeric"
+                                data-element-id="avonni-kanban__tile-start-date"
+                            ></lightning-formatted-date-time>
+                            <template if:true={dueDate}>
+                                &nbsp;-&nbsp;
+                                <lightning-formatted-date-time
+                                    day="2-digit"
+                                    month="short"
+                                    value={dueDate}
+                                    year="numeric"
+                                    data-element-id="avonni-kanban__tile-due-date"
+                                ></lightning-formatted-date-time>
+                            </template>
+                        </div>
+                        <lightning-icon
+                            if:true={warningIcon}
+                            class={computedWarningIconClass}
+                            icon-name={warningIcon}
+                            size="x-small"
+                            variant="warning"
+                            data-element-id="lightning-icon-warning"
+                        ></lightning-icon>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Annotation Icons -->
+            <div
+                if:true={hasIcons}
+                class="slds-p-horizontal_xx-small slds-m-bottom_small"
+            >
+                <template for:each={icons} for:item="icon">
+                    <span key={icon.key} class="slds-p-left_x-small">
+                        <lightning-icon
+                            class="slds-p-around_xxx-small"
+                            icon-name={icon.name}
+                            size="xx-small"
+                            data-element-id="avonni-kanban__tile_icon"
+                        ></lightning-icon>
+                    </span>
+                </template>
+            </div>
+
+            <!-- Cover image - Bottom -->
+            <img
+                if:true={isCoverImageBottom}
+                class="
+                    avonni-kanban__tile_image avonni-kanban__tile_image-bottom
+                "
+                alt=""
+                draggable="false"
+                src={coverImage}
+                style={computedCoverImageStyle}
+                data-element-id="avonni-kanban__tile_image_bottom"
+            />
+
+            <!-- Actions - Position Absolute -->
+            <div class="avonni-kanban__tile_actions" if:true={hasActions}>
+                <c-button-menu
+                    class="slds-is-relative"
+                    alternative-text="Show menu"
+                    icon-size="x-small"
+                    menu-alignment="right"
+                    variant="border-filled"
+                    data-element-id="avonni-kanban__action-menu"
+                    onkeydown={handleStopPropagation}
+                    onmousedown={handleStopPropagation}
+                    onselect={handleActionClick}
+                >
+                    <template for:each={actions} for:item="action">
+                        <lightning-menu-item
+                            key={action.name}
+                            class="slds-text-color_default"
+                            disabled={action.disabled}
+                            label={action.label}
+                            prefix-icon-name={action.iconName}
+                            value={action.name}
+                            data-element-id="avonni-kanban__action"
+                            onmousedown={handleStopPropagation}
+                        ></lightning-menu-item>
+                    </template>
+                </c-button-menu>
+            </div>
+        </div>
+    </div>
+</template>
