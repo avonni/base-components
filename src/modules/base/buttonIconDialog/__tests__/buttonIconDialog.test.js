@@ -20,10 +20,12 @@ describe('Button Icon Dialog', () => {
         it('Default attributes', () => {
             expect(element.accessKey).toBeUndefined();
             expect(element.alternativeText).toBeUndefined();
+            expect(element.cancelButtonLabel).toBe('Cancel');
             expect(element.disabled).toBeFalsy();
             expect(element.iconClass).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSrc).toBeUndefined();
+            expect(element.saveButtonLabel).toBe('Save');
             expect(element.size).toBe('medium');
             expect(element.tooltip).toBeUndefined();
             expect(element.variant).toBe('border');

@@ -27,6 +27,9 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
+const CANCEL_BUTTON_LABEL = 'Cancel';
+const SAVE_BUTTON_LABEL = 'Save';
+
 /**
  * @class
  * @name ButtonIconDialog
@@ -50,6 +53,14 @@ export default class ButtonIconDialog extends LightningElement {
      * @type {string}
      */
     @api alternativeText;
+    /**
+     * The label for the cancel button.
+     *
+     * @public
+     * @type {string}
+     * @default Cancel
+     */
+    @api cancelButtonLabel = CANCEL_BUTTON_LABEL;
     /**
      * The class to be applied to the contained icon element ( e.g. "slds-icon-text-success").
      *
@@ -78,6 +89,14 @@ export default class ButtonIconDialog extends LightningElement {
      * @type {string}
      */
     @api tooltip;
+    /**
+     * The label for the save button.
+     *
+     * @public
+     * @type {string}
+     * @default Save
+     */
+    @api saveButtonLabel = SAVE_BUTTON_LABEL;
 
     _disabled = false;
     _size = BUTTON_SIZES.default;
