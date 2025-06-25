@@ -33,6 +33,30 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        customTabLabel: {
+            name: 'custom-tab-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the custom tab.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Custom' },
+                category: 'Tabs'
+            }
+        },
+        defaultTabLabel: {
+            name: 'default-tab-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the default tab.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Default' },
+                category: 'Tabs'
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -326,6 +350,28 @@ export default {
                 category: 'Validation'
             }
         },
+        tokens: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of token objects. If present, a token tab will be added in the menu.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        tokensTabLabel: {
+            name: 'tokens-tab-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the tokens tab.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Tokens' },
+                category: 'Tabs'
+            }
+        },
         type: {
             control: {
                 type: 'select'
@@ -363,19 +409,11 @@ export default {
                 defaultValue: { summary: 'standard' },
                 type: { summary: 'string' }
             }
-        },
-        tokens: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of token objects. If present, a token tab will be added in the menu.',
-            table: {
-                type: { summary: 'object[]' }
-            }
         }
     },
     args: {
+        customTabLabel: 'Custom',
+        defaultTabLabel: 'Default',
         disabled: false,
         readOnly: false,
         hideClearIcon: false,
@@ -390,6 +428,7 @@ export default {
         paletteHideOutline: false,
         paletteShowCheckmark: false,
         required: false,
+        tokensTabLabel: 'Tokens',
         type: 'base',
         variant: 'standard'
     }

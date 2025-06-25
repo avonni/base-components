@@ -38,7 +38,7 @@
                                 avonni-color-picker-tabs_default__item
                                 slds-is-active
                             "
-                            title="Default"
+                            title={defaultTabLabel}
                             role="presentation"
                         >
                             <a
@@ -52,13 +52,13 @@
                                 data-element-id="default"
                                 data-tab-name="default"
                                 onclick={handleTabClick}
-                                >Default</a
+                                >{defaultTabLabel}</a
                             >
                         </li>
                         <li
                             if:true={tokens.length}
                             class="avonni-color-picker-tabs_default__item"
-                            title="Tokens"
+                            title={tokensTabLabel}
                             role="presentation"
                             data-element-id="li-tokens-tab"
                         >
@@ -73,12 +73,12 @@
                                 data-group-name="tabs"
                                 data-tab-name="tokens"
                                 onclick={handleTabClick}
-                                >Tokens</a
+                                >{tokensTabLabel}</a
                             >
                         </li>
                         <li
                             class="avonni-color-picker-tabs_default__item"
-                            title="Custom"
+                            title={customTabLabel}
                             role="presentation"
                         >
                             <a
@@ -92,7 +92,7 @@
                                 data-element-id="custom"
                                 data-tab-name="custom"
                                 onclick={handleTabClick}
-                                >Custom</a
+                                >{customTabLabel}</a
                             >
                         </li>
                     </ul>

@@ -86,6 +86,9 @@ const DEFAULT_COLORS = [
 
 const DEFAULT_COLUMNS = 7;
 const DEFAULT_TAB = 'default';
+const DEFAULT_TAB_LABEL = 'Default';
+const TOKENS_TAB_LABEL = 'Tokens';
+const CUSTOM_TAB_LABEL = 'Custom';
 const MINIMUM_TILE_SIZE = 5;
 const DEFAULT_TILE_WIDTH = 20;
 const DEFAULT_TILE_HEIGHT = 20;
@@ -104,6 +107,22 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     @api accessKey;
+    /**
+     * The label for the custom tab.
+     *
+     * @public
+     * @type {string}
+     * @default Custom
+     */
+    @api customTabLabel = CUSTOM_TAB_LABEL;
+    /**
+     * The label for the default tab.
+     *
+     * @public
+     * @type {string}
+     * @default Default
+     */
+    @api defaultTabLabel = DEFAULT_TAB_LABEL;
     /**
      * Help text detailing the purpose and function of the input.
      *
@@ -147,6 +166,14 @@ export default class ColorPicker extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
+    /**
+     * The label for the tokens tab.
+     *
+     * @public
+     * @type {string}
+     * @default Tokens
+     */
+    @api tokensTabLabel = TOKENS_TAB_LABEL;
 
     _colors = DEFAULT_COLORS;
     _columns = DEFAULT_COLUMNS;

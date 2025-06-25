@@ -84,6 +84,8 @@ describe('Color Picker', () => {
                 expect(element.accessKey).toBeUndefined();
                 expect(element.colors).toMatchObject(defaultColors);
                 expect(element.columns).toBe(7);
+                expect(element.customTabLabel).toBe('Custom');
+                expect(element.defaultTabLabel).toBe('Default');
                 expect(element.disabled).toBeFalsy();
                 expect(element.fieldLevelHelp).toBeUndefined();
                 expect(element.groups).toMatchObject([]);
@@ -112,6 +114,7 @@ describe('Color Picker', () => {
                 expect(element.value).toBeUndefined();
                 expect(element.variant).toBe('standard');
                 expect(element.tokens).toMatchObject([]);
+                expect(element.tokensTabLabel).toBe('Tokens');
                 expect(element.type).toBe('base');
             });
         });
@@ -163,6 +166,31 @@ describe('Color Picker', () => {
                         '[data-element-id="avonni-color-palette"]'
                     );
                     expect(palette.columns).toBe(5);
+                });
+            });
+        });
+
+        describe('Tabs Labels', () => {
+            it('Passed to the component', () => {
+                element.inline = true;
+                element.tokens = tokens;
+                element.customTabLabel = 'Customs';
+                element.defaultTabLabel = 'Defaults';
+                element.tokensTabLabel = 'Tokenss';
+
+                return Promise.resolve().then(() => {
+                    const customTab = element.shadowRoot.querySelector(
+                        '[data-element-id="custom"]'
+                    );
+                    expect(customTab.textContent).toBe('Customs');
+                    const defaultTab = element.shadowRoot.querySelector(
+                        '[data-element-id="default"]'
+                    );
+                    expect(defaultTab.textContent).toBe('Defaults');
+                    const tokensTab = element.shadowRoot.querySelector(
+                        '[data-element-id="a-tokens-tab"]'
+                    );
+                    expect(tokensTab.textContent).toBe('Tokenss');
                 });
             });
         });
