@@ -12,7 +12,9 @@ export default class CalendarDate {
         this.adjacentMonth = props.adjacentMonth;
         this.date = props.date;
         this.disabled = normalizeBoolean(props.disabled);
+        this.isEndDate = normalizeBoolean(props.isEndDate);
         this.isPartOfInterval = normalizeBoolean(props.isPartOfInterval);
+        this.isStartDate = normalizeBoolean(props.isStartDate);
         this.isToday = normalizeBoolean(props.isToday);
         this.isWeekNumber = normalizeBoolean(props.isWeekNumber);
         this.chip = new Label(normalizeObject(props.chip));
@@ -41,7 +43,16 @@ export default class CalendarDate {
             month: 'long',
             day: 'numeric'
         });
-        return dateLabel;
+        let startEndDate = '';
+        if (this.isPartOfInterval) {
+            if (this.isStartDate) {
+                startEndDate = ', start date';
+            } else if (this.isEndDate) {
+                startEndDate = ', end date';
+            }
+        }
+        const isSelected = this.appearsSelected ? ', selected' : '';
+        return `${dateLabel}${startEndDate}${isSelected}`;
     }
 
     get computedAriaSelected() {

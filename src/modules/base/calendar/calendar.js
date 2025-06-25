@@ -789,6 +789,12 @@ export default class Calendar extends LightningElement {
                             this.disabled || disabledDate || outsideOfMinMax,
                         isPartOfInterval,
                         isToday: today.getTime() === time,
+                        ...(isPartOfInterval
+                            ? {
+                                  isStartDate: firstValue.getTime() === time,
+                                  isEndDate: lastValue.getTime() === time
+                              }
+                            : {}),
                         chip: label,
                         markers,
                         selected
