@@ -8,9 +8,14 @@ import {
 import { LightningElement, api, track } from 'lwc';
 import { ICON_TYPES } from './icons/salesforceIcons';
 
-const VARIANTS = {
-    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
-    default: 'standard'
+const DEFAULT_BAD_INPUT_MESSAGE = 'Please ensure the value is correct.';
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_DONE_BUTTON_LABEL = 'Done';
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Type icon name to search';
+
+const MENU_ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
 };
 
 const MENU_VARIANTS = {
@@ -25,16 +30,14 @@ const MENU_VARIANTS = {
     default: 'border'
 };
 
-const MENU_ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'medium'
-};
-
-const DEFAULT_BAD_INPUT_MESSAGE = 'Please ensure the value is correct.';
-
 const TABS = {
     valid: ['Standard', 'Custom', 'Utility', 'Doctype', 'Action'],
     default: 'Standard'
+};
+
+const VARIANTS = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
 };
 
 const NB_VISIBLE_TABS = 2;
@@ -54,6 +57,22 @@ export default class IconPicker extends LightningElement {
      * @public
      */
     @api accessKey;
+    /**
+     * Text label for the cancel button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Cancel'
+     */
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
+    /**
+     * Text label for the done button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Done'
+     */
+    @api doneButtonLabel = DEFAULT_DONE_BUTTON_LABEL;
     /**
      * Help text detailing the purpose and function of the input.
      *
@@ -89,6 +108,13 @@ export default class IconPicker extends LightningElement {
      * @public
      */
     @api placeholder;
+    /**
+     * Text that is displayed in the search input when the input is empty.
+     *
+     * @type {string}
+     * @public
+     */
+    @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
 
     _disabled = false;
     _hiddenCategories = [];
@@ -135,7 +161,6 @@ export default class IconPicker extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -150,7 +175,6 @@ export default class IconPicker extends LightningElement {
     get hiddenCategories() {
         return this._hiddenCategories;
     }
-
     set hiddenCategories(value) {
         this._hiddenCategories = [];
         const categories = deepCopy(normalizeArray(value));
@@ -178,7 +202,6 @@ export default class IconPicker extends LightningElement {
     get hideClearIcon() {
         return this._hideClearIcon;
     }
-
     set hideClearIcon(value) {
         this._hideClearIcon = normalizeBoolean(value);
     }
@@ -194,7 +217,6 @@ export default class IconPicker extends LightningElement {
     get hideFooter() {
         return this._hideFooter;
     }
-
     set hideFooter(value) {
         this._hideFooter = normalizeBoolean(value);
     }
@@ -210,7 +232,6 @@ export default class IconPicker extends LightningElement {
     get hideInputText() {
         return this._hideInputText;
     }
-
     set hideInputText(value) {
         this._hideInputText = normalizeBoolean(value);
     }
@@ -227,7 +248,6 @@ export default class IconPicker extends LightningElement {
     get menuIconSize() {
         return this._menuIconSize;
     }
-
     set menuIconSize(size) {
         this._menuIconSize = normalizeString(size, {
             fallbackValue: MENU_ICON_SIZES.default,
@@ -248,7 +268,6 @@ export default class IconPicker extends LightningElement {
     get menuVariant() {
         return this._menuVariant;
     }
-
     set menuVariant(variant) {
         this._menuVariant = normalizeString(variant, {
             fallbackValue: MENU_VARIANTS.default,
@@ -266,7 +285,6 @@ export default class IconPicker extends LightningElement {
     get messageWhenBadInput() {
         return this._messageWhenBadInput;
     }
-
     set messageWhenBadInput(value) {
         this._messageWhenBadInput =
             typeof value === 'string' ? value : DEFAULT_BAD_INPUT_MESSAGE;
@@ -283,7 +301,6 @@ export default class IconPicker extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
@@ -299,7 +316,6 @@ export default class IconPicker extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
     }
@@ -314,7 +330,6 @@ export default class IconPicker extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
@@ -334,7 +349,6 @@ export default class IconPicker extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: VARIANTS.default,
@@ -347,6 +361,15 @@ export default class IconPicker extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Whether the clear button in the input is visible.
+     *
+     * @type {boolean}
+     */
+    get allowClearInput() {
+        return this.value && !this.disabled && !this.hideClearIcon;
+    }
 
     /**
      * The tabs of the icon picker.
@@ -364,65 +387,6 @@ export default class IconPicker extends LightningElement {
         return [...orderedTabs];
     }
 
-    get computedValue() {
-        return typeof this.value === 'string' ? this.value : '';
-    }
-
-    /**
-     * The tab displayed when opening the menu.
-     * If an icon is already selected, the default tab will be the category of this icon.
-     * Otherwise, the default tab will be the first visible tab.
-     *
-     * @type {string}
-     */
-    get defaultTab() {
-        if (!this.value) return this.allTabs[0];
-
-        const rawTab = this.value.split(':')[0];
-        const tab = rawTab.charAt(0).toUpperCase() + rawTab.slice(1);
-        return TABS.valid.includes(tab) ? tab : this.allTabs[0];
-    }
-
-    /**
-     * The number of hidden tabs
-     *
-     * @type {number}
-     */
-    get nHiddenCategories() {
-        return Math.max(
-            0,
-            TABS.valid.length - NB_VISIBLE_TABS - this.hiddenCategories.length
-        );
-    }
-
-    /**
-     * Whether the empty icon is visible.
-     * The empty icon appears when no icon is selected.
-     *
-     * @type {boolean}
-     */
-    get showEmptyIcon() {
-        return this.isInvalidInput || !this.value;
-    }
-
-    /**
-     * Whether the icon input is visible.
-     *
-     * @type {boolean}
-     */
-    get showInputText() {
-        return !this.hideInputText && !this.readOnly;
-    }
-
-    /**
-     * Whether the icon input is read only.
-     *
-     * @type {boolean}
-     */
-    get readOnlyInput() {
-        return this.readOnly && !this.hideInputText;
-    }
-
     /**
      * Computed CSS class for the layout.
      *
@@ -435,88 +399,6 @@ export default class IconPicker extends LightningElement {
                 'slds-p-left_none': this.variant === 'label-stacked',
                 'avonni-builder-icon-picker-label-inline':
                     this.variant === 'label-inline'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed CSS class for the input wrapper.
-     *
-     * @type {string}
-     */
-    get computedInputClass() {
-        return classSet('slds-form-element__control')
-            .add({
-                'slds-input-has-icon slds-input-has-icon_right':
-                    !this.hideClearIcon && !this.disabled
-            })
-            .toString();
-    }
-
-    /**
-     * Whether the clear button in the input is visible.
-     *
-     * @type {boolean}
-     */
-    get allowClearInput() {
-        return this.value && !this.disabled && !this.hideClearIcon;
-    }
-
-    /**
-     * The size of the selected icon in the menu button.
-     *
-     * @type {string}
-     */
-    get iconSize() {
-        switch (this.menuIconSize) {
-            case MENU_ICON_SIZES.valid[0]:
-                return MENU_ICON_SIZES.valid[0];
-            case MENU_ICON_SIZES.valid[1]:
-                return MENU_ICON_SIZES.valid[0];
-            case MENU_ICON_SIZES.valid[2]:
-                return MENU_ICON_SIZES.valid[1];
-            case MENU_ICON_SIZES.valid[3]:
-                return MENU_ICON_SIZES.valid[2];
-            case MENU_ICON_SIZES.valid[4]:
-                return MENU_ICON_SIZES.valid[2];
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * The size of the empty icon in the menu button.
-     *
-     * @type {string}
-     */
-    get emptyIconSize() {
-        switch (this.menuIconSize) {
-            case MENU_ICON_SIZES.valid[0]:
-                return '14px';
-            case MENU_ICON_SIZES.valid[1]:
-                return '14px';
-            case MENU_ICON_SIZES.valid[2]:
-                return '16px';
-            case MENU_ICON_SIZES.valid[3]:
-                return '20px';
-            case MENU_ICON_SIZES.valid[4]:
-                return '26px';
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * Computed CSS classes for the label.
-     *
-     * @type {string}
-     */
-    get computedLegendClass() {
-        return classSet(
-            'slds-form-element__label avonni-icon-picker__label slds-no-flex'
-        )
-            .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
             })
             .toString();
     }
@@ -621,11 +503,159 @@ export default class IconPicker extends LightningElement {
         return classes.toString();
     }
 
+    /**
+     * Computed CSS class for the input wrapper.
+     *
+     * @type {string}
+     */
+    get computedInputClass() {
+        return classSet('slds-form-element__control')
+            .add({
+                'slds-input-has-icon slds-input-has-icon_right':
+                    !this.hideClearIcon && !this.disabled
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the label.
+     *
+     * @type {string}
+     */
+    get computedLegendClass() {
+        return classSet(
+            'slds-form-element__label avonni-icon-picker__label slds-no-flex'
+        )
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden'
+            })
+            .toString();
+    }
+
+    /**
+     * The value of the input field.
+     *
+     * @type {string}
+     */
+    get computedValue() {
+        return typeof this.value === 'string' ? this.value : '';
+    }
+
+    /**
+     * The tab displayed when opening the menu.
+     * If an icon is already selected, the default tab will be the category of this icon.
+     * Otherwise, the default tab will be the first visible tab.
+     *
+     * @type {string}
+     */
+    get defaultTab() {
+        if (!this.value) return this.allTabs[0];
+
+        const rawTab = this.value.split(':')[0];
+        const tab = rawTab.charAt(0).toUpperCase() + rawTab.slice(1);
+        return TABS.valid.includes(tab) ? tab : this.allTabs[0];
+    }
+
+    /**
+     * The size of the empty icon in the menu button.
+     *
+     * @type {string}
+     */
+    get emptyIconSize() {
+        switch (this.menuIconSize) {
+            case MENU_ICON_SIZES.valid[0]:
+                return '14px';
+            case MENU_ICON_SIZES.valid[1]:
+                return '14px';
+            case MENU_ICON_SIZES.valid[2]:
+                return '16px';
+            case MENU_ICON_SIZES.valid[3]:
+                return '20px';
+            case MENU_ICON_SIZES.valid[4]:
+                return '26px';
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * The size of the selected icon in the menu button.
+     *
+     * @type {string}
+     */
+    get iconSize() {
+        switch (this.menuIconSize) {
+            case MENU_ICON_SIZES.valid[0]:
+                return MENU_ICON_SIZES.valid[0];
+            case MENU_ICON_SIZES.valid[1]:
+                return MENU_ICON_SIZES.valid[0];
+            case MENU_ICON_SIZES.valid[2]:
+                return MENU_ICON_SIZES.valid[1];
+            case MENU_ICON_SIZES.valid[3]:
+                return MENU_ICON_SIZES.valid[2];
+            case MENU_ICON_SIZES.valid[4]:
+                return MENU_ICON_SIZES.valid[2];
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * The number of hidden tabs
+     *
+     * @type {number}
+     */
+    get nbHiddenCategories() {
+        return Math.max(
+            0,
+            TABS.valid.length - NB_VISIBLE_TABS - this.hiddenCategories.length
+        );
+    }
+
+    /**
+     * Whether the icon input is read only.
+     *
+     * @type {boolean}
+     */
+    get readOnlyInput() {
+        return this.readOnly && !this.hideInputText;
+    }
+
+    /**
+     * Whether the empty icon is visible.
+     * The empty icon appears when no icon is selected.
+     *
+     * @type {boolean}
+     */
+    get showEmptyIcon() {
+        return this.isInvalidInput || !this.value;
+    }
+
+    /**
+     * Whether the icon input is visible.
+     *
+     * @type {boolean}
+     */
+    get showInputText() {
+        return !this.hideInputText && !this.readOnly;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Remove focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        const activeElement = this.template.activeElement;
+        if (activeElement) activeElement.blur();
+    }
 
     /**
      * Sets focus on the input element.
@@ -654,17 +684,6 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
-     * Remove focus from the input element.
-     *
-     * @public
-     */
-    @api
-    blur() {
-        const activeElement = this.template.activeElement;
-        if (activeElement) activeElement.blur();
-    }
-
-    /**
      * Display the error messages and return false if the input is invalid.
      * If the input is valid, reportValidity() clears displayed error messages and returns true.
      *
@@ -684,279 +703,31 @@ export default class IconPicker extends LightningElement {
      */
 
     /**
-     * Handles a change in input of the selected icon.
-     * It will ensure that the name of the icon exists.
-     * Otherwise, an error message will be displayed.
-     *
-     * @param {Event} event
+     * Changes the visible icons according to the current tab.
      */
-    handleInputIcon(event) {
-        this._value = event.target.value;
-        this._allowBlur = true;
-        this.isInvalidInput = !this.validateInputIconValue(this._value);
-    }
+    changeTabContentTo(tabName) {
+        this.tabContent.forEach((tab) => {
+            tab.showIcons = tab.title === tabName;
 
-    /**
-     * Handles a blur of the icon input.
-     * If the value is invalid or empty, an event is dispatched.
-     */
-    handleInputIconBlur(event) {
-        this.reportValidity();
-        if (!this.showError && this._allowBlur) {
-            this._allowBlur = false;
-            this.dispatchChange(event.currentTarget.value || null);
-        }
-    }
-
-    /**
-     * Dispatches the new icon.
-     *
-     * @param {string} icon The name of the icon.
-     */
-    dispatchChange(icon) {
-        /**
-         * The event fired when the icon changes.
-         *
-         * @event
-         * @name change
-         * @param {string} value Value of the selected icon.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: icon
-                }
-            })
-        );
-    }
-
-    /**
-     * Handles a click on the menu button.
-     * It toggles the visibility of the menu.
-     *
-     * @param {Event} event
-     */
-    handleButtonClick() {
-        if (!this.readOnly) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Handles a change in the search input.
-     * All Salesforce icons containing the input will be visible.
-     *
-     * @param {Event} event
-     */
-    handleSearchInput(event) {
-        event.stopPropagation();
-        const input = event.detail.value;
-        this.hideTabs = input;
-
-        if (input) {
-            this.hideExtendedIcons();
-            this.tabContent.forEach((tab) => {
-                tab.icons = [];
-            });
-
-            let i;
-            for (i = 0; i < ICON_TYPES.length; i++) {
-                for (const icon of ICON_TYPES[i].icons) {
-                    if (
-                        icon.title.toLowerCase().includes(input.toLowerCase())
-                    ) {
-                        this.tabContent[i].icons.push(icon);
-                    }
-                }
-                if (i === 0 || i === 2) {
-                    for (const icon of ICON_TYPES[i].iconsExtended) {
-                        if (
-                            icon.title
-                                .toLowerCase()
-                                .includes(input.toLowerCase())
-                        ) {
-                            this.tabContent[i].icons.push(icon);
-                        }
-                    }
-                }
-            }
-
-            this.tabContent.forEach((tab) => {
-                tab.showIcons = tab.icons.length !== 0;
-                tab.showLabel = tab.icons.length !== 0;
-            });
-        } else {
-            this.tabContent.forEach((tab) => {
-                tab.showLabel = false;
-            });
-            this.resetIcons();
-            this.restoreTabContent();
-            this.showExtendedIcons();
-        }
-
-        this.scrollTopIconList();
-    }
-
-    /**
-     * Handles a change of the icon category.
-     *
-     * @param {Event} event
-     */
-    handleTabSelect(event) {
-        this.currentTab = event.detail.value;
-        this.changeTabContentTo(event.detail.value);
-        this.scrollTopIconList();
-
-        requestAnimationFrame(() => {
-            // Set the focus back on the tab bar after render
-            const tabBar = this.template.querySelector(
-                '[data-element-id="avonni-builder-tab-bar"]'
-            );
-            tabBar.focus();
-        });
-    }
-
-    /**
-     * Scrolls the icon menu back to the top.
-     */
-    scrollTopIconList() {
-        this.template.querySelector(
-            '.avonni-builder-icon-picker-icon-container'
-        ).scrollTop = 0;
-    }
-
-    /**
-     * Toggles the visibility of the icon menu.
-     */
-    toggleMenuVisibility() {
-        if (!this.disabled) {
-            this.iconMenuOpened = !this.iconMenuOpened;
-            this.template
-                .querySelector('.slds-dropdown-trigger')
-                .classList.toggle('slds-is-open');
-            if (this.iconMenuOpened) {
-                this.restoreTabContent();
-                this.showExtendedIcons();
+            // Load the extended icons only after render
+            if (tab.title === tabName) {
+                requestAnimationFrame(() => {
+                    tab.showIconsExtended = true;
+                });
             } else {
-                this.resetMenuState();
-            }
-
-            requestAnimationFrame(() => {
-                this.focus();
-            });
-        }
-        this.reportValidity();
-    }
-
-    /**
-     * Handle a click inside the drop down menu. Focus the search input.
-     */
-    handleMenuClick() {
-        const searchInput = this.template.querySelector(
-            '[data-element-id="lightning-input"]'
-        );
-        if (searchInput) {
-            this._menuIsFocused = true;
-            searchInput.focus();
-        }
-    }
-
-    /**
-     * Handle a focus inside the drop down menu. Make sure the drop down won't close.
-     */
-    handleMenuFocusIn() {
-        this._menuIsFocused = true;
-    }
-
-    /**
-     * Handles a focus outside of the drop down menu. Close the menu if the focus is completely lost.
-     */
-    handleMenuFocusOut() {
-        this._menuIsFocused = false;
-
-        requestAnimationFrame(() => {
-            // Wait to see if another element is focused inside the menu
-            if (!this._menuIsFocused && this.iconMenuOpened) {
-                this.toggleMenuVisibility();
+                tab.showIconsExtended = false;
             }
         });
     }
 
     /**
-     * Handles a click on an icon from the icon menu.
-     *
-     * @param {Event} event
+     * Clears the current icon input.
      */
-    handleSelectIcon(event) {
-        this.newValue = event.currentTarget.dataset.icon;
-        if (this.hideFooter) this.handleDone(event);
-    }
-
-    /**
-     * Handles the selection of an icon from the icon menu using the Enter key.
-     *
-     * @param {Event} event
-     */
-    handleSelectIconFromKeyboard(event) {
-        if (event.keyCode === 13) {
-            this.newValue = event.currentTarget.dataset.icon;
-            this.handleDone(event);
-        }
-    }
-
-    /**
-     * Handles a click on an 'Cancel' button from the icon menu.
-     *
-     * @param {Event} event
-     */
-    handleCancel(event) {
-        event.stopPropagation();
-        this.newValue = null;
-        this.toggleMenuVisibility();
-    }
-
-    /**
-     * Handles a click on an 'Done' button from the icon menu.
-     *
-     * @param {Event} event
-     */
-    handleDone(event) {
-        event.stopPropagation();
-        if (this.newValue) {
-            this._value = this.newValue;
-            this.dispatchChange(this.newValue);
-            this.newValue = null;
-            this.isInvalidInput = false;
-        }
-
-        this.toggleMenuVisibility();
-    }
-
-    /**
-     * Resets the icon menu to its default configuration.
-     */
-    resetMenuState() {
-        this.newValue = null;
-        this.hideTabs = false;
-
-        this.resetIcons();
-        this.hideExtendedIcons();
-    }
-
-    /**
-     * Makes the extended icons visible after the template has rendered.
-     * A category has icons marked as extended when it has a lot of icons.
-     * Icons that are only visible when scrolling will be rendered after the ones that are visible when opening the menu.
-     * Therefore, there will be no delay when opening the menu in order to render all the Salesforce icons.
-     */
-    showExtendedIcons() {
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
-        setTimeout(() => {
-            this.tabContent.forEach((tab) => {
-                tab.showIconsExtended = tab.showIcons;
-            });
-        }, 300);
+    clearIconInput() {
+        this.template.querySelector('[data-element-id="input"]').value = null;
+        this._value = null;
+        this.dispatchChange(null);
+        this.reportValidity();
     }
 
     /**
@@ -980,19 +751,9 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
-     * Clears the current icon input.
-     */
-    clearIconInput() {
-        this.template.querySelector('[data-element-id="input"]').value = null;
-        this._value = null;
-        this.dispatchChange(null);
-        this.reportValidity();
-    }
-
-    /**
      * Initializes each category of icons.
      */
-    initializeTabContent() {
+    initTabContent() {
         this.tabContent = [
             {
                 title: 'Standard',
@@ -1055,12 +816,23 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
+     * Resets the icon menu to its default configuration.
+     */
+    resetMenuState() {
+        this.newValue = null;
+        this.hideTabs = false;
+
+        this.resetIcons();
+        this.hideExtendedIcons();
+    }
+
+    /**
      * Sets the current tab to the category corresponding to the selected icon.
      * If no icon is selected or the category is invalid, the current tab will go back to default.
      */
     restoreTabContent() {
         if (!this.tabContent) {
-            this.initializeTabContent();
+            this.initTabContent();
         }
 
         this.currentTab = this.defaultTab;
@@ -1071,19 +843,198 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
-     * Changes the visible icons according to the current tab.
+     * Scrolls the icon menu back to the top.
      */
-    changeTabContentTo(tabName) {
-        this.tabContent.forEach((tab) => {
-            tab.showIcons = tab.title === tabName;
+    scrollTopIconList() {
+        this.template.querySelector(
+            '[data-element-id="avonni-builder-icon-picker-icon-container"]'
+        ).scrollTop = 0;
+    }
 
-            // Load the extended icons only after render
-            if (tab.title === tabName) {
-                requestAnimationFrame(() => {
-                    tab.showIconsExtended = true;
-                });
+    /**
+     * Makes the extended icons visible after the template has rendered.
+     * A category has icons marked as extended when it has a lot of icons.
+     * Icons that are only visible when scrolling will be rendered after the ones that are visible when opening the menu.
+     * Therefore, there will be no delay when opening the menu in order to render all the Salesforce icons.
+     */
+    showExtendedIcons() {
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => {
+            this.tabContent.forEach((tab) => {
+                tab.showIconsExtended = tab.showIcons;
+            });
+        }, 300);
+    }
+
+    /**
+     * Stops the propagation of an event.
+     *
+     * @param {Event} event
+     */
+    stopPropagation(event) {
+        event.stopPropagation();
+    }
+
+    /**
+     * Toggles the visibility of the icon menu.
+     */
+    toggleMenuVisibility() {
+        if (!this.disabled) {
+            this.iconMenuOpened = !this.iconMenuOpened;
+            this.template
+                .querySelector('.slds-dropdown-trigger')
+                .classList.toggle('slds-is-open');
+            if (this.iconMenuOpened) {
+                this.restoreTabContent();
+                this.showExtendedIcons();
             } else {
-                tab.showIconsExtended = false;
+                this.resetMenuState();
+            }
+
+            requestAnimationFrame(() => {
+                this.focus();
+            });
+        }
+        this.reportValidity();
+    }
+
+    /**
+     * Validates the input icon value.
+     *
+     * @param {string} inputIconValue
+     * @returns {object}
+     */
+    validateInputIconValue(inputIconValue) {
+        return ICON_TYPES.flatMap((group) => [
+            ...group.icons,
+            ...(group.iconsExtended || [])
+        ]).find(({ value }) => inputIconValue.trim() === value);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Dispatches the new icon.
+     *
+     * @param {string} icon The name of the icon.
+     */
+    dispatchChange(icon) {
+        /**
+         * The event fired when the icon changes.
+         *
+         * @event
+         * @name change
+         * @param {string} value Value of the selected icon.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: icon
+                }
+            })
+        );
+    }
+
+    /**
+     * Handles a click on the menu button.
+     * It toggles the visibility of the menu.
+     *
+     * @param {Event} event
+     */
+    handleButtonClick() {
+        if (!this.readOnly) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Handles a click on an 'Cancel' button from the icon menu.
+     *
+     * @param {Event} event
+     */
+    handleCancel(event) {
+        event.stopPropagation();
+        this.newValue = null;
+        this.toggleMenuVisibility();
+    }
+
+    /**
+     * Handles a click on an 'Done' button from the icon menu.
+     *
+     * @param {Event} event
+     */
+    handleDone(event) {
+        event.stopPropagation();
+        if (this.newValue) {
+            this._value = this.newValue;
+            this.dispatchChange(this.newValue);
+            this.newValue = null;
+            this.isInvalidInput = false;
+        }
+
+        this.toggleMenuVisibility();
+    }
+
+    /**
+     * Handles a change in input of the selected icon.
+     * It will ensure that the name of the icon exists.
+     * Otherwise, an error message will be displayed.
+     *
+     * @param {Event} event
+     */
+    handleInputIcon(event) {
+        this._value = event.target.value;
+        this._allowBlur = true;
+        this.isInvalidInput = !this.validateInputIconValue(this._value);
+    }
+
+    /**
+     * Handles a blur of the icon input.
+     * If the value is invalid or empty, an event is dispatched.
+     */
+    handleInputIconBlur(event) {
+        this.reportValidity();
+        if (!this.showError && this._allowBlur) {
+            this._allowBlur = false;
+            this.dispatchChange(event.currentTarget.value || null);
+        }
+    }
+
+    /**
+     * Handle a click inside the drop down menu. Focus the search input.
+     */
+    handleMenuClick() {
+        const searchInput = this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+        if (searchInput) {
+            this._menuIsFocused = true;
+            searchInput.focus();
+        }
+    }
+
+    /**
+     * Handle a focus inside the drop down menu. Make sure the drop down won't close.
+     */
+    handleMenuFocusIn() {
+        this._menuIsFocused = true;
+    }
+
+    /**
+     * Handles a focus outside of the drop down menu. Close the menu if the focus is completely lost.
+     */
+    handleMenuFocusOut() {
+        this._menuIsFocused = false;
+
+        requestAnimationFrame(() => {
+            // Wait to see if another element is focused inside the menu
+            if (!this._menuIsFocused && this.iconMenuOpened) {
+                this.toggleMenuVisibility();
             }
         });
     }
@@ -1099,19 +1050,109 @@ export default class IconPicker extends LightningElement {
         }
     }
 
+    /**
+     * Prevents the default behavior and stops the propagation of an event.
+     *
+     * @param {Event} event
+     */
     handlePreventDefaultStopPropagation(event) {
         event.stopPropagation();
         event.preventDefault();
     }
 
-    stopPropagation(event) {
+    /**
+     * Handles a change in the search input.
+     * All Salesforce icons containing the input will be visible.
+     *
+     * @param {Event} event
+     */
+    handleSearchInput(event) {
         event.stopPropagation();
+        const input = event.detail.value;
+        this.hideTabs = input;
+
+        if (input) {
+            this.hideExtendedIcons();
+            this.tabContent.forEach((tab) => {
+                tab.icons = [];
+            });
+
+            let i;
+            for (i = 0; i < ICON_TYPES.length; i++) {
+                for (const icon of ICON_TYPES[i].icons) {
+                    if (
+                        icon.title.toLowerCase().includes(input.toLowerCase())
+                    ) {
+                        this.tabContent[i].icons.push(icon);
+                    }
+                }
+                if (i === 0 || i === 2) {
+                    for (const icon of ICON_TYPES[i].iconsExtended) {
+                        if (
+                            icon.title
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                        ) {
+                            this.tabContent[i].icons.push(icon);
+                        }
+                    }
+                }
+            }
+
+            this.tabContent.forEach((tab) => {
+                tab.showIcons = tab.icons.length !== 0;
+                tab.showLabel = tab.icons.length !== 0;
+            });
+        } else {
+            this.tabContent.forEach((tab) => {
+                tab.showLabel = false;
+            });
+            this.resetIcons();
+            this.restoreTabContent();
+            this.showExtendedIcons();
+        }
+
+        this.scrollTopIconList();
     }
 
-    validateInputIconValue(inputIconValue) {
-        return ICON_TYPES.flatMap((group) => [
-            ...group.icons,
-            ...(group.iconsExtended || [])
-        ]).find(({ value }) => inputIconValue.trim() === value);
+    /**
+     * Handles a click on an icon from the icon menu.
+     *
+     * @param {Event} event
+     */
+    handleSelectIcon(event) {
+        this.newValue = event.currentTarget.dataset.icon;
+        if (this.hideFooter) this.handleDone(event);
+    }
+
+    /**
+     * Handles the selection of an icon from the icon menu using the Enter key.
+     *
+     * @param {Event} event
+     */
+    handleSelectIconFromKeyboard(event) {
+        if (event.keyCode === 13) {
+            this.newValue = event.currentTarget.dataset.icon;
+            this.handleDone(event);
+        }
+    }
+
+    /**
+     * Handles a change of the icon category.
+     *
+     * @param {Event} event
+     */
+    handleTabSelect(event) {
+        this.currentTab = event.detail.value;
+        this.changeTabContentTo(event.detail.value);
+        this.scrollTopIconList();
+
+        requestAnimationFrame(() => {
+            // Set the focus back on the tab bar after render
+            const tabBar = this.template.querySelector(
+                '[data-element-id="avonni-builder-tab-bar"]'
+            );
+            tabBar.focus();
+        });
     }
 }

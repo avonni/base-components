@@ -3,24 +3,6 @@ import { IconPicker } from '../__examples__/iconPicker';
 export default {
     title: 'Example/Icon Picker',
     argTypes: {
-        label: {
-            control: {
-                type: 'text'
-            },
-            description: 'Text label for the input.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        name: {
-            control: {
-                type: 'text'
-            },
-            description: 'Specifies the name of an input element.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         accessKey: {
             name: 'access-key',
             control: {
@@ -30,6 +12,39 @@ export default {
                 'Specifies a shortcut key to activate or focus an element.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        cancelButtonLabel: {
+            name: 'cancel-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Text label for the cancel button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Cancel' }
+            }
+        },
+        doneButtonLabel: {
+            name: 'done-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Text label for the done button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Done' }
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         fieldLevelHelp: {
@@ -43,53 +58,85 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        value: {
+        hiddenCategories: {
+            name: 'hidden-categories',
+            control: {
+                type: 'object'
+            },
+            description:
+                'The Salesforce icon categories that will be hidden by default.',
+            table: {
+                type: { summary: 'string[]' }
+            }
+        },
+        hideClearIcon: {
+            name: 'hide-clear-icon',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, it is not possible to clear a selected option using the input clear icon.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        hideFooter: {
+            name: 'hide-footer',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the popover footer is hidden. The icons are selected on click.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        hideInputText: {
+            name: 'hide-input-text',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input text next to the icon button is hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        label: {
             control: {
                 type: 'text'
             },
-            description:
-                "The Lightning Design System name of the icon. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.",
+            description: 'Text label for the input.',
             table: {
                 type: { summary: 'string' }
             }
         },
-        messageWhenBadInput: {
-            name: 'message-when-bad-input',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when a bad input is detected.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Please ensure the value is correct.' }
-            }
-        },
-        placeholder: {
-            name: 'placeholder',
-            control: {
-                type: 'text'
-            },
-            description: 'Message to be displayed when input field is empty.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        variant: {
+        menuIconSize: {
+            name: 'menu-icon-size',
             control: {
                 type: 'select'
             },
-            options: [
-                'standard',
-                'label-inline',
-                'label-hidden',
-                'label-stacked'
-            ],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
+                'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
             table: {
-                defaultValue: { summary: 'standard' },
-                type: { summary: 'string' }
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' },
+                category: 'menu'
+            }
+        },
+        menuLabel: {
+            name: 'menu-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
+            table: {
+                type: { summary: 'string' },
+                category: 'menu'
             }
         },
         menuVariant: {
@@ -113,63 +160,35 @@ export default {
                 category: 'menu'
             }
         },
-        menuLabel: {
-            name: 'menu-label',
+        messageWhenBadInput: {
+            name: 'message-when-bad-input',
             control: {
                 type: 'text'
             },
-            description: 'Optional text to be shown on the button.',
+            description:
+                'Error message to be displayed when a bad input is detected.',
             table: {
                 type: { summary: 'string' },
-                category: 'menu'
+                defaultValue: { summary: 'Please ensure the value is correct.' }
             }
         },
-        menuIconSize: {
-            name: 'menu-icon-size',
+        name: {
             control: {
-                type: 'select'
+                type: 'text'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            description:
-                'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
+            description: 'Specifies the name of an input element.',
             table: {
-                defaultValue: { summary: 'medium' },
-                type: { summary: 'string' },
-                category: 'menu'
+                type: { summary: 'string' }
             }
         },
-        hiddenCategories: {
-            name: 'hidden-categories',
+        placeholder: {
+            name: 'placeholder',
             control: {
-                type: 'object'
+                type: 'text'
             },
-            description:
-                'The Salesforce icon categories that will be hidden by default.',
+            description: 'Message to be displayed when input field is empty.',
             table: {
-                type: { summary: 'string[]' }
-            }
-        },
-        hideFooter: {
-            name: 'hide-footer',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the popover footer is hidden. The icons are selected on click.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the input field is disabled and users cannot interact with it.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'string' }
             }
         },
         readOnly: {
@@ -196,32 +215,49 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        hideInputText: {
-            name: 'hide-input-text',
+        searchInputPlaceholder: {
+            name: 'search-input-placeholder',
             control: {
-                type: 'boolean'
+                type: 'text'
             },
             description:
-                'If present, the input text next to the icon button is hidden.',
+                'Text that is displayed in the search input when the input is empty.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Type icon name to search' }
             }
         },
-        hideClearIcon: {
-            name: 'hide-clear-icon',
+        value: {
             control: {
-                type: 'boolean'
+                type: 'text'
             },
             description:
-                'If present, it is not possible to clear a selected option using the input clear icon.',
+                "The Lightning Design System name of the icon. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.",
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'string' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'standard',
+                'label-inline',
+                'label-hidden',
+                'label-stacked'
+            ],
+            description:
+                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
+            table: {
+                defaultValue: { summary: 'standard' },
+                type: { summary: 'string' }
             }
         }
     },
     args: {
+        cancelButtonLabel: 'Cancel',
+        doneButtonLabel: 'Done',
         disabled: false,
         hideClearIcon: false,
         hideFooter: false,
@@ -231,6 +267,7 @@ export default {
         messageWhenBadInput: 'Please ensure the value is correct.',
         readOnly: false,
         required: false,
+        searchInputPlaceholder: 'Type icon name to search',
         variant: 'standard'
     }
 };
