@@ -58,6 +58,8 @@ const DEFAULT_MAX = '2099-12-31';
 const DEFAULT_MIN = '1900-01-01';
 const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
+const DEFAULT_TIME_ZONE_LABEL = 'Time Zone:';
+const DEFAULT_TIME_ZONE_PLACEHOLDER = 'Select time zone';
 
 /**
  * @class
@@ -103,7 +105,7 @@ export default class DateTimePicker extends LightningElement {
      * @public
      * @default Time Zone:
      */
-    @api timezoneLabel;
+    @api timezoneLabel = DEFAULT_TIME_ZONE_LABEL;
     /**
      * The placeholder for the time zone combobox.
      *
@@ -111,7 +113,7 @@ export default class DateTimePicker extends LightningElement {
      * @public
      * @default Select time zone
      */
-    @api timezonePlaceholder;
+    @api timezonePlaceholder = DEFAULT_TIME_ZONE_PLACEHOLDER;
     /**
      * The label for the today button.
      *
@@ -294,7 +296,6 @@ export default class DateTimePicker extends LightningElement {
     get dateFormatDay() {
         return this._dateFormatDay;
     }
-
     set dateFormatDay(value) {
         this._dateFormatDay = normalizeString(value, {
             fallbackValue: DATE_TIME_FORMATS.dayDefault,
@@ -321,7 +322,6 @@ export default class DateTimePicker extends LightningElement {
     get dateFormatMonth() {
         return this._dateFormatMonth;
     }
-
     set dateFormatMonth(value) {
         this._dateFormatMonth = normalizeString(value, {
             fallbackValue: MONTH_FORMATS.default,
@@ -340,7 +340,6 @@ export default class DateTimePicker extends LightningElement {
     get dateFormatWeekday() {
         return this._dateFormatWeekday;
     }
-
     set dateFormatWeekday(value) {
         this._dateFormatWeekday = normalizeString(value, {
             fallbackValue: WEEKDAY_FORMATS.default,
@@ -362,7 +361,6 @@ export default class DateTimePicker extends LightningElement {
     get dateFormatYear() {
         return this._dateFormatYear;
     }
-
     set dateFormatYear(value) {
         this._dateFormatYear = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
@@ -380,7 +378,6 @@ export default class DateTimePicker extends LightningElement {
     get datePickerVariant() {
         return this._datePickerVariant;
     }
-
     set datePickerVariant(value) {
         this._datePickerVariant = normalizeString(value, {
             fallbackValue: DATE_PICKER_VARIANTS.default,
@@ -404,7 +401,6 @@ export default class DateTimePicker extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
         if (this._connected) {
@@ -423,7 +419,6 @@ export default class DateTimePicker extends LightningElement {
     get disabledDateTimes() {
         return this._disabledDateTimes;
     }
-
     set disabledDateTimes(value) {
         this._disabledDateTimes = normalizeArray(value);
 
@@ -447,7 +442,6 @@ export default class DateTimePicker extends LightningElement {
     get endTime() {
         return this._endTime;
     }
-
     set endTime(value) {
         const isValid = value && this._processDate(`1970-01-01T${value}`);
         this._endTime = isValid ? value : DEFAULT_END_TIME;
@@ -476,7 +470,6 @@ export default class DateTimePicker extends LightningElement {
     get hideDateLabel() {
         return this._hideDateLabel;
     }
-
     set hideDateLabel(value) {
         this._hideDateLabel = normalizeBoolean(value);
     }
@@ -492,7 +485,6 @@ export default class DateTimePicker extends LightningElement {
     get hideDatePicker() {
         return this._hideDatePicker;
     }
-
     set hideDatePicker(value) {
         this._hideDatePicker = normalizeBoolean(value);
     }
@@ -508,7 +500,6 @@ export default class DateTimePicker extends LightningElement {
     get hideLabel() {
         return this._hideLabel;
     }
-
     set hideLabel(boolean) {
         this._hideLabel = normalizeBoolean(boolean);
     }
@@ -524,7 +515,6 @@ export default class DateTimePicker extends LightningElement {
     get hideNavigation() {
         return this._hideNavigation;
     }
-
     set hideNavigation(value) {
         this._hideNavigation = normalizeBoolean(value);
     }
@@ -540,7 +530,6 @@ export default class DateTimePicker extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         this._max = this._processDate(value) ? value : DEFAULT_MAX;
 
@@ -561,7 +550,6 @@ export default class DateTimePicker extends LightningElement {
     get min() {
         return this._min;
     }
-
     set min(value) {
         this._min = this._processDate(value) ? value : DEFAULT_MIN;
 
@@ -585,7 +573,6 @@ export default class DateTimePicker extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(boolean) {
         this._readOnly = normalizeBoolean(boolean);
     }
@@ -601,7 +588,6 @@ export default class DateTimePicker extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(boolean) {
         this._required = normalizeBoolean(boolean);
     }
@@ -617,7 +603,6 @@ export default class DateTimePicker extends LightningElement {
     get showDisabledDates() {
         return this._showDisabledDates;
     }
-
     set showDisabledDates(boolean) {
         this._showDisabledDates = normalizeBoolean(boolean);
 
@@ -641,7 +626,6 @@ export default class DateTimePicker extends LightningElement {
     get showEndTime() {
         return this._showEndTime;
     }
-
     set showEndTime(boolean) {
         this._showEndTime = normalizeBoolean(boolean);
 
@@ -663,7 +647,6 @@ export default class DateTimePicker extends LightningElement {
     get showTimeZone() {
         return this._showTimeZone;
     }
-
     set showTimeZone(value) {
         this._showTimeZone = normalizeBoolean(value);
     }
@@ -679,7 +662,6 @@ export default class DateTimePicker extends LightningElement {
     get startTime() {
         return this._startTime;
     }
-
     set startTime(value) {
         const isValid = value && this._processDate(`1970-01-01T${value}`);
         this._startTime = isValid ? value : DEFAULT_START_TIME;
@@ -708,7 +690,6 @@ export default class DateTimePicker extends LightningElement {
     get timeFormatHour() {
         return this._timeFormatHour || undefined;
     }
-
     set timeFormatHour(value) {
         this._timeFormatHour = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
@@ -732,7 +713,6 @@ export default class DateTimePicker extends LightningElement {
     get timeFormatHour12() {
         return this._timeFormatHour12;
     }
-
     set timeFormatHour12(boolean) {
         if (boolean !== undefined) {
             this._timeFormatHour12 = normalizeBoolean(boolean);
@@ -756,7 +736,6 @@ export default class DateTimePicker extends LightningElement {
     get timeFormatMinute() {
         return this._timeFormatMinute || undefined;
     }
-
     set timeFormatMinute(value) {
         this._timeFormatMinute = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
@@ -779,7 +758,6 @@ export default class DateTimePicker extends LightningElement {
     get timeFormatSecond() {
         return this._timeFormatSecond || undefined;
     }
-
     set timeFormatSecond(value) {
         this._timeFormatSecond = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
@@ -803,7 +781,6 @@ export default class DateTimePicker extends LightningElement {
     get timeSlotDuration() {
         return this._timeSlotDuration;
     }
-
     set timeSlotDuration(value) {
         const duration =
             typeof value === 'string' &&
@@ -873,7 +850,6 @@ export default class DateTimePicker extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(value) {
         this._type = normalizeString(value, {
             fallbackValue: DATE_TIME_TYPES.default,
@@ -906,7 +882,6 @@ export default class DateTimePicker extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         const normalizedCurrentValue =
             this.value && !Array.isArray(this.value)
@@ -937,7 +912,6 @@ export default class DateTimePicker extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: DATE_TIME_VARIANTS.default,
@@ -966,57 +940,6 @@ export default class DateTimePicker extends LightningElement {
      */
     get actionSlot() {
         return this.template.querySelector('slot[name=actions]');
-    }
-
-    /**
-     * Retrieve constraint API for validation.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled &&
-                    this.required &&
-                    !this._computedValue.length
-            });
-        }
-        return this._constraintApi;
-    }
-
-    /**
-     * Returns an array of all the disabled weekdays.
-     *
-     * @type {array}
-     */
-    get _disabledWeekDays() {
-        let dates = [];
-
-        this.disabledDateTimes.forEach((date) => {
-            if (typeof date === 'string') {
-                dates.push(DAYS.indexOf(date));
-            }
-        });
-
-        return dates;
-    }
-
-    /**
-     * Returns an array of all the disabled monthdays.
-     *
-     * @type {array}
-     */
-    get _disabledMonthDays() {
-        let dates = [];
-
-        this.disabledDateTimes.forEach((date) => {
-            if (typeof date === 'number') {
-                dates.push(date);
-            }
-        });
-
-        return dates;
     }
 
     /**
@@ -1067,6 +990,23 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Retrieve constraint API for validation.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled &&
+                    this.required &&
+                    !this._computedValue.length
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /**
      * Returns a string with the date range depending on if variant is weekly or not.
      *
      * @type {string}
@@ -1100,57 +1040,37 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Returns first weekday in an ISO8601 string format.
+     * Returns an array of all the disabled weekdays.
      *
-     * @type {string}
+     * @type {array}
      */
-    get firstWeekDayToString() {
-        return this.firstWeekDay.toISO();
+    get _disabledWeekDays() {
+        let dates = [];
+
+        this.disabledDateTimes.forEach((date) => {
+            if (typeof date === 'string') {
+                dates.push(DAYS.indexOf(date));
+            }
+        });
+
+        return dates;
     }
 
     /**
-     * True if the variant is inline.
+     * Returns an array of all the disabled monthdays.
      *
-     * @type {boolean}
+     * @type {array}
      */
-    get isInline() {
-        return this.variant === 'inline';
-    }
+    get _disabledMonthDays() {
+        let dates = [];
 
-    /**
-     * Returns min in an ISO8601 string format.
-     *
-     * @type {string}
-     */
-    get minToString() {
-        return this.computedMin.toISO();
-    }
+        this.disabledDateTimes.forEach((date) => {
+            if (typeof date === 'number') {
+                dates.push(date);
+            }
+        });
 
-    /**
-     * Returns max in an ISO8601 string format.
-     *
-     * @type {string}
-     */
-    get maxToString() {
-        return this.computedMax.toISO();
-    }
-
-    /**
-     * Returns true if the first weekday is smaller than min. It disables the prev button.
-     *
-     * @type {boolean}
-     */
-    get prevButtonIsDisabled() {
-        return this.firstWeekDay <= this.computedMin;
-    }
-
-    /**
-     * Returns true if the last weekday is bigger than min. It disables the next button.
-     *
-     * @type {boolean}
-     */
-    get nextButtonIsDisabled() {
-        return this.lastWeekDay >= this.computedMax;
+        return dates;
     }
 
     /**
@@ -1163,6 +1083,15 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Returns first weekday in an ISO8601 string format.
+     *
+     * @type {string}
+     */
+    get firstWeekDayToString() {
+        return this.firstWeekDay.toISO();
+    }
+
+    /**
      * Returns true if variant is daily.
      *
      * @type {boolean}
@@ -1172,12 +1101,12 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Returns true if variant is timeline.
+     * Returns true if the variant is inline.
      *
      * @type {boolean}
      */
-    get isTimeline() {
-        return this.variant === 'timeline';
+    get isInline() {
+        return this.variant === 'inline';
     }
 
     /**
@@ -1190,12 +1119,57 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Returns true if variant is timeline.
+     *
+     * @type {boolean}
+     */
+    get isTimeline() {
+        return this.variant === 'timeline';
+    }
+
+    /**
      * Returns true if variant is weekly.
      *
      * @type {boolean}
      */
     get isWeekly() {
         return this.variant === 'weekly';
+    }
+
+    /**
+     * Returns max in an ISO8601 string format.
+     *
+     * @type {string}
+     */
+    get maxToString() {
+        return this.computedMax.toISO();
+    }
+
+    /**
+     * Returns min in an ISO8601 string format.
+     *
+     * @type {string}
+     */
+    get minToString() {
+        return this.computedMin.toISO();
+    }
+
+    /**
+     * Returns true if the last weekday is bigger than min. It disables the next button.
+     *
+     * @type {boolean}
+     */
+    get nextButtonIsDisabled() {
+        return this.lastWeekDay >= this.computedMax;
+    }
+
+    /**
+     * Returns true if the first weekday is smaller than min. It disables the prev button.
+     *
+     * @type {boolean}
+     */
+    get prevButtonIsDisabled() {
+        return this.firstWeekDay <= this.computedMin;
     }
 
     /**
