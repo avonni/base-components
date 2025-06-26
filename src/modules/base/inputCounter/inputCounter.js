@@ -8,6 +8,10 @@ import {
     increaseNumberByStep
 } from './numberFormat';
 
+const DEFAULT_DECREMENT_BUTTON_TITLE = 'Decrement counter';
+const DEFAULT_INCREMENT_BUTTON_TITLE = 'Increment counter';
+const DEFAULT_STEP = 1;
+
 const INPUT_COUNTER_VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
@@ -16,8 +20,6 @@ const INPUT_COUNTER_TYPES = {
     valid: ['number', 'currency', 'percent'],
     default: 'number'
 };
-
-const DEFAULT_STEP = 1;
 
 /**
  * @class
@@ -63,12 +65,28 @@ export default class InputCounter extends LightningElement {
      */
     @api ariaLabelledBy;
     /**
+     * Title for the decrement button.
+     *
+     * @type {string}
+     * @public
+     * @default Decrement counter
+     */
+    @api decrementButtonTitle = DEFAULT_DECREMENT_BUTTON_TITLE;
+    /**
      * Help text detailing the purpose and function of the input.
      *
      * @type {string}
      * @public
      */
     @api fieldLevelHelp;
+    /**
+     * Title for the increment button.
+     *
+     * @type {string}
+     * @public
+     * @default Increment counter
+     */
+    @api incrementButtonTitle = DEFAULT_INCREMENT_BUTTON_TITLE;
     /**
      * Text label for the input.
      *
@@ -130,18 +148,23 @@ export default class InputCounter extends LightningElement {
     _fractionDigits;
     _max;
     _min;
-    _step = DEFAULT_STEP;
-    _type = INPUT_COUNTER_TYPES.default;
     _readOnly = false;
     _required = false;
+    _step = DEFAULT_STEP;
+    _type = INPUT_COUNTER_TYPES.default;
     _value = null;
     _variant = INPUT_COUNTER_VARIANTS.default;
 
     _connected = false;
     _constraintApi;
     _constraintApiProxyInputUpdater;
-    _previousValue;
     helpMessage;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this._connected = true;
@@ -370,29 +393,6 @@ export default class InputCounter extends LightningElement {
      */
 
     /**
-     * Compute constraintApi with fieldConstraintApiWithProxyInput.
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApiWithProxyInput(
-                () => this
-            );
-
-            this._constraintApiProxyInputUpdater =
-                this._constraintApi.setInputAttributes({
-                    type: () => 'number',
-                    value: () => this.validationValue,
-                    max: () => this.max,
-                    min: () => this.min,
-                    step: () => this.step,
-                    formatter: () => this.type,
-                    disabled: () => this.disabled
-                });
-        }
-        return this._constraintApi;
-    }
-
-    /**
      * Get Aria Controls.
      *
      * @type {object}
@@ -448,6 +448,29 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
+     * Compute constraintApi with fieldConstraintApiWithProxyInput.
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this
+            );
+
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
+                    type: () => 'number',
+                    value: () => this.validationValue,
+                    max: () => this.max,
+                    min: () => this.min,
+                    step: () => this.step,
+                    formatter: () => this.type,
+                    disabled: () => this.disabled
+                });
+        }
+        return this._constraintApi;
+    }
+
+    /**
      * Value normalized to be passed in the validation constraint. If the type is percent, the value is multiplied by 100 to reflect its
      * end result (0.1 will be transformed into 10%).
      *
@@ -465,19 +488,6 @@ export default class InputCounter extends LightningElement {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Sets focus on the input element.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        const input = this.template.querySelector('[data-element-id="input"]');
-        if (input) {
-            input.focus();
-        }
-    }
 
     /**
      * Removes keyboard focus from the input element.
@@ -501,6 +511,19 @@ export default class InputCounter extends LightningElement {
     @api
     checkValidity() {
         return this._constraint.checkValidity();
+    }
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) {
+            input.focus();
+        }
     }
 
     /**

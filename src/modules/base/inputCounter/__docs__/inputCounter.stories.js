@@ -15,6 +15,28 @@ export default {
                 category: 'Validation'
             }
         },
+        decrementButtonTitle: {
+            name: 'decrement-button-title',
+            control: {
+                type: 'text'
+            },
+            description: 'Title for the decrement button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Decrement counter' }
+            }
+        },
+        incrementButtonTitle: {
+            name: 'increment-button-title',
+            control: {
+                type: 'text'
+            },
+            description: 'Title for the increment button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Increment counter' }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
@@ -239,7 +261,9 @@ export default {
     },
     args: {
         disabled: false,
+        decrementButtonTitle: 'Decrement counter',
         hideValue: false,
+        incrementButtonTitle: 'Increment counter',
         readOnly: false,
         required: false,
         step: 1,

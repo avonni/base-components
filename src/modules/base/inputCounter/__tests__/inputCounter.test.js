@@ -24,9 +24,11 @@ describe('Input Counter', () => {
             expect(element.ariaLabel).toBeUndefined();
             expect(element.ariaLabelledBy).toBeUndefined();
             expect(element.ariaDescribedBy).toBeUndefined();
+            expect(element.decrementButtonTitle).toBe('Decrement counter');
             expect(element.disabled).toBeFalsy();
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.fractionDigits).toBeUndefined();
+            expect(element.incrementButtonTitle).toBe('Increment counter');
             expect(element.label).toBeUndefined();
             expect(element.max).toBeUndefined();
             expect(element.messageWhenBadInput).toBeUndefined();
@@ -80,6 +82,32 @@ describe('Input Counter', () => {
                         '[data-element-id="input"]'
                     );
                     expect(input.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Decrement Button Title', () => {
+            it('decrementButtonTitle', () => {
+                element.decrementButtonTitle = 'Decrement';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-decrement"]'
+                    );
+                    expect(button.alternativeText).toBe('Decrement');
+                    expect(button.title).toBe('Decrement');
+                });
+            });
+
+            it('incrementButtonTitle', () => {
+                element.incrementButtonTitle = 'Increment';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-increment"]'
+                    );
+                    expect(button.alternativeText).toBe('Increment');
+                    expect(button.title).toBe('Increment');
                 });
             });
         });
