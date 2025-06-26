@@ -5,7 +5,7 @@
         onfocusout={handleFocusOut}
     >
         <div class={computedLabelClass}>
-            <abbr if:true={required} title="required" class="slds-required">
+            <abbr if:true={required} class="slds-required" title="required">
                 *
             </abbr>
             <p if:true={label} data-element-id="p-label">{label}</p>
@@ -32,14 +32,14 @@
                         "
                         for="start-date"
                         id="start-date-input-label"
-                        >{labelStartDate}</label
-                    >
+                        >{labelStartDate}
+                    </label>
                     <div
+                        if:false={readOnly}
                         class="
                             slds-form-element__control
                             slds-input-has-icon slds-input-has-icon_right
                         "
-                        if:false={readOnly}
                     >
                         <input
                             class="slds-input"
@@ -59,8 +59,8 @@
                             size="medium"
                             variant="bare"
                             data-element-id="lightning-icon-start-date"
-                            onclick={handleClickDateInput}
                             onblur={handleBlurStartButtonIcon}
+                            onclick={handleClickDateInput}
                             onkeydown={handleInputKeyDown}
                         ></lightning-button-icon>
                     </div>
@@ -71,8 +71,8 @@
                     >
                         <c-focus-trap
                             data-element-id="calendar-start-date-dialog"
-                            onfocusout={handleStartCalendarFocusOut}
                             onfocusin={handleStartCalendarFocusIn}
+                            onfocusout={handleStartCalendarFocusOut}
                             onkeydown={handleCalendarDialogKeyDown}
                         >
                             <c-calendar
@@ -81,16 +81,16 @@
                                 timezone={timezone}
                                 value={calendarValue}
                                 data-element-id="calendar-start-date"
-                                onchange={handleChangeStartDate}
                                 data-is-focusable
+                                onchange={handleChangeStartDate}
                             ></c-calendar>
                             <div class="slds-align_absolute-center">
                                 <lightning-button
                                     label="Today"
                                     variant="base"
                                     data-element-id="select-start-today-button"
-                                    onclick={handleSelectStartToday}
                                     data-is-focusable
+                                    onclick={handleSelectStartToday}
                                 ></lightning-button>
                             </div>
                         </c-focus-trap>
@@ -107,16 +107,16 @@
                             avonni-input-date-range__labels
                         "
                         for="start-time"
-                        >{labelStartTime}</label
-                    >
+                        >{labelStartTime}
+                    </label>
                     <lightning-input
                         if:false={readOnly}
                         class="start-time"
                         disabled={disabled}
                         label="Start time"
                         name="start-time"
-                        type="time"
                         time-style={timeStyle}
+                        type="time"
                         value={startTime}
                         variant="label-hidden"
                         data-element-id="lightning-input-start-time"
@@ -142,8 +142,8 @@
                             avonni-input-date-range__labels
                         "
                         for="end-date"
-                        >{labelEndDate}</label
-                    >
+                        >{labelEndDate}
+                    </label>
                     <div
                         if:false={readOnly}
                         class="
@@ -168,8 +168,8 @@
                             size="medium"
                             variant="bare"
                             data-element-id="lightning-icon-end-date"
-                            onclick={handleClickDateInput}
                             onblur={handleBlurEndButtonIcon}
+                            onclick={handleClickDateInput}
                             onkeydown={handleInputKeyDown}
                         ></lightning-button-icon>
                     </div>
@@ -180,8 +180,8 @@
                     >
                         <c-focus-trap
                             data-element-id="calendar-end-date-dialog"
-                            onfocusout={handleEndCalendarFocusOut}
                             onfocusin={handleEndCalendarFocusIn}
+                            onfocusout={handleEndCalendarFocusOut}
                             onkeydown={handleCalendarDialogKeyDown}
                         >
                             <c-calendar
@@ -190,16 +190,16 @@
                                 timezone={timezone}
                                 value={calendarValue}
                                 data-element-id="calendar-end-date"
-                                onchange={handleChangeEndDate}
                                 data-is-focusable
+                                onchange={handleChangeEndDate}
                             ></c-calendar>
                             <div class="slds-align_absolute-center">
                                 <lightning-button
-                                    label="Today"
+                                    label={todayButtonLabel}
                                     variant="base"
                                     data-element-id="select-end-today-button"
-                                    onclick={handleSelectEndToday}
                                     data-is-focusable
+                                    onclick={handleSelectEndToday}
                                 ></lightning-button>
                             </div>
                         </c-focus-trap>
@@ -216,8 +216,8 @@
                             avonni-input-date-range__labels
                         "
                         for="end-time"
-                        >{labelEndTime}</label
-                    >
+                        >{labelEndTime}
+                    </label>
                     <lightning-input
                         if:false={readOnly}
                         label="end time"
