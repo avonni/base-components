@@ -1,22 +1,22 @@
 <template>
     <div class="avonni-image">
-        <div data-element-id="container" class={computedImageClass}>
+        <div class={computedImageClass} data-element-id="container">
             <div class="slds-is-relative">
                 <img
-                    alt={alternativeText}
+                    style={computedStyle}
                     class="avonni-image_img_border-radius"
-                    data-element-id="img"
+                    alt={alternativeText}
+                    loading={lazyLoading}
+                    sizes={sizes}
                     src={src}
                     srcset={srcset}
-                    sizes={sizes}
-                    style={computedStyle}
-                    loading={lazyLoading}
+                    data-element-id="img"
                     onload={handleLoadImage}
                     onmousemove={handleMagnifierMove}
-                    ontouchstart={handleMagnifierMove}
-                    ontouchmove={handleMagnifierMove}
                     onmouseout={handleMagnifierOut}
                     ontouchend={handleMagnifierOut}
+                    ontouchmove={handleMagnifierMove}
+                    ontouchstart={handleMagnifierMove}
                 />
                 <div
                     if:true={compareAttributes.compareLabel}
@@ -26,31 +26,31 @@
                     {compareAttributes.compareLabel}
                 </div>
                 <div
-                    data-element-id="magnifier-lens"
                     class="
                         avonni-image_magnifier-lens
                         slds-is-absolute
                         avonni-image_pointer-events-none
                     "
+                    data-element-id="magnifier-lens"
                 ></div>
                 <div
-                    data-element-id="magnifier"
                     class="
                         avonni-image_magnifier
                         slds-scrollable_none
                         slds-is-absolute
                         avonni-image_pointer-events-none
                     "
+                    data-element-id="magnifier"
                 >
                     <img
-                        src={src}
-                        alt=""
+                        style={computedMagnifiedImgStyle}
                         class="
                             avonni-image_fit-content
                             avonni-image_pointer-events-none
                         "
+                        alt=""
                         sizes={sizes}
-                        style={computedMagnifiedImgStyle}
+                        src={src}
                         data-element-id="magnified-img"
                     />
                 </div>
@@ -58,26 +58,26 @@
                     if:true={compareSrc}
                     class={computedCompareContainerClass}
                     data-element-id="compare-container"
-                    onmousemove={handleCompareMouseMove}
-                    ontouchstart={handleCompareMouseDown}
-                    ontouchmove={handleCompareMouseMove}
                     onmousedown={handleCompareMouseDown}
+                    onmousemove={handleCompareMouseMove}
+                    ontouchmove={handleCompareMouseMove}
+                    ontouchstart={handleCompareMouseDown}
                 >
                     <div
+                        style={computedCompareImgContainerStyle}
                         class="
                             avonni-image__compare-img-container
                             slds-is-absolute
                             slds-scrollable_none
                         "
                         data-element-id="compare-img-container"
-                        style={computedCompareImgContainerStyle}
                     >
                         <img
-                            data-element-id="compare-img"
-                            src={compareSrc}
-                            class="avonni-image__compare-img"
                             style={computedCompareImgStyle}
+                            class="avonni-image__compare-img"
                             loading={lazyLoading}
+                            src={compareSrc}
+                            data-element-id="compare-img"
                         />
                         <div
                             if:true={compareAttributes.originalLabel}
@@ -88,27 +88,27 @@
                         </div>
                     </div>
                     <div
+                        style={computedSliderStyle}
                         class={computedSliderClass}
                         data-element-id="compare-slider"
-                        style={computedSliderStyle}
                     >
                         <div
                             class={computedSliderHandleClass}
-                            data-element-id="compare-slider-handle"
-                            role="button"
                             aria-pressed="false"
+                            role="button"
                             tabindex="0"
+                            data-element-id="compare-slider-handle"
                             onkeydown={handleCompareKeydown}
                         >
                             <lightning-icon
-                                icon-name={compareIconName1}
                                 alternative-text="Press left to show the original image"
+                                icon-name={compareIconName1}
                                 size="x-small"
                             >
                             </lightning-icon>
                             <lightning-icon
-                                icon-name={compareIconName2}
                                 alternative-text="Press right to show the compared image"
+                                icon-name={compareIconName2}
                                 size="x-small"
                             >
                             </lightning-icon>
