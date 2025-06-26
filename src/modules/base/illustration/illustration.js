@@ -68,7 +68,6 @@ export default class Illustration extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: ILLUSTRATION_SIZES.default,
@@ -87,7 +86,6 @@ export default class Illustration extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: ILLUSTRATION_VARIANTS.default,
@@ -106,10 +104,19 @@ export default class Illustration extends LightningElement {
      *
      * @type {string}
      */
-    get illustrationClass() {
+    get computedIllustrationClass() {
         return classSet('slds-illustration')
-            .add(`slds-illustration_${this._size}`)
+            .add(`slds-illustration_${this.size}`)
             .toString();
+    }
+
+    /**
+     * Show Illustration SVG.
+     *
+     * @type {boolean}
+     */
+    get showSvg() {
+        return this.variant !== 'text-only';
     }
 
     /**
@@ -119,14 +126,5 @@ export default class Illustration extends LightningElement {
      */
     get svgURL() {
         return `/assets/canvas-elements/illustrationLibrary/${this.variant}.svg`;
-    }
-
-    /**
-     * Show Illustration SVG.
-     *
-     * @type {boolean}
-     */
-    get showSvg() {
-        return this._variant !== 'text-only';
     }
 }
