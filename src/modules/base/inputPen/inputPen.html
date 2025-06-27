@@ -10,8 +10,8 @@
                 class="slds-required"
                 title="required"
                 data-element-id="required-asterix"
-                >*</abbr
-            >
+                >*
+            </abbr>
             {label}
         </label>
         <lightning-helptext
@@ -118,9 +118,9 @@
                                 options={sizeList}
                                 value={size}
                                 variant="label-hidden"
-                                onchange={handleSizeChange}
                                 data-group-name="button"
                                 data-element-id="size-picker"
+                                onchange={handleSizeChange}
                             >
                             </c-combobox>
                         </li>
@@ -134,8 +134,8 @@
                                 hide-color-input
                                 value={color}
                                 variant="label-hidden"
-                                onchange={handleColorChange}
                                 data-element-id="color-picker"
+                                onchange={handleColorChange}
                             >
                             </c-color-picker>
                         </li>
@@ -222,10 +222,10 @@
                 <div
                     class={computedTextAreaClasses}
                     data-element-id="drawing-area"
-                    onmouseenter={handleMouseEnter}
                     onmousedown={handleMouseDown}
-                    ontouchstart={handleMouseDown}
+                    onmouseenter={handleMouseEnter}
                     onmouseleave={handleMouseLeave}
+                    ontouchstart={handleMouseDown}
                 >
                     <lightning-button-icon
                         if:true={showClear}

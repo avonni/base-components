@@ -11,11 +11,12 @@ import { LightningElement, api } from 'lwc';
 import { SmoothToolManager } from './smoothToolManager';
 import { StraightToolManager } from './straightToolManager';
 
+const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
+
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
     default: 'bottom-toolbar'
 };
-const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
 
 const DEFAULT_BACKGROUND_COLORS = [
     '#e3abec',
@@ -54,9 +55,8 @@ const DEFAULT_BACKGROUND_COLORS = [
     '#3a3a3a',
     '#000000'
 ];
-
-const DEFAULT_COLOR = '#000';
 const DEFAULT_BACKGROUND_COLOR = '#ffffff00';
+const DEFAULT_COLOR = '#000';
 const DEFAULT_SIZE = 3;
 
 /**
@@ -316,23 +316,7 @@ export default class InputPen extends LightningElement {
      */
     @api
     get hideControls() {
-        if (
-            !this.showPen &&
-            !this.showPaint &&
-            !this.showInk &&
-            !this.showErase &&
-            !this.showSize &&
-            !this.showColor &&
-            !this.showBackground &&
-            !this.showDownload &&
-            !this.showUndo &&
-            !this.showRedo &&
-            !this.showClear
-        ) {
-            return true;
-        }
-
-        return this._hideControls;
+        return this.controlsHidden || this._hideControls;
     }
     set hideControls(value) {
         this._hideControls = normalizeBoolean(value);
@@ -561,6 +545,51 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Compute the constraintApi with fieldConstraintApiWithProxyInput.
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this,
+                {
+                    valueMissing: () => {
+                        return !this.value && this.required;
+                    }
+                }
+            );
+
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
+                    type: () => 'url',
+                    value: () => this.value,
+                    disabled: () => this.disabled
+                });
+        }
+        return this._constraintApi;
+    }
+
+    /**
+     * Returns true if all controls are hidden.
+     *
+     * @type {boolean}
+     */
+    get controlsHidden() {
+        return (
+            !this.showPen &&
+            !this.showPaint &&
+            !this.showInk &&
+            !this.showErase &&
+            !this.showSize &&
+            !this.showColor &&
+            !this.showBackground &&
+            !this.showDownload &&
+            !this.showUndo &&
+            !this.showRedo &&
+            !this.showClear
+        );
+    }
+
+    /**
      * Base64 value of the background and foreground.
      */
     get dataURL() {
@@ -625,7 +654,6 @@ export default class InputPen extends LightningElement {
     /**
      * Check if background fill tool is shown.
      * @type {boolean}
-     *
      */
     get showBackground() {
         return !this.disabledButtons.includes('background');
@@ -736,30 +764,6 @@ export default class InputPen extends LightningElement {
      */
     get showUndoRedo() {
         return this.showUndo || this.showRedo;
-    }
-
-    /**
-     * Compute the constraintApi with fieldConstraintApiWithProxyInput.
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApiWithProxyInput(
-                () => this,
-                {
-                    valueMissing: () => {
-                        return !this.value && this.required;
-                    }
-                }
-            );
-
-            this._constraintApiProxyInputUpdater =
-                this._constraintApi.setInputAttributes({
-                    type: () => 'url',
-                    value: () => this.value,
-                    disabled: () => this.disabled
-                });
-        }
-        return this._constraintApi;
     }
 
     /*
