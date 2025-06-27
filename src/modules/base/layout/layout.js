@@ -7,14 +7,14 @@ import {
     normalizeString
 } from 'c/utils';
 
-const HORIZONTAL_ALIGNMENTS = {
-    valid: ['start', 'center', 'end', 'space', 'spread'],
-    default: 'start'
-};
-
 const DIRECTIONS = {
     valid: ['row', 'row-reverse', 'column', 'column-reverse'],
     default: 'row'
+};
+
+const HORIZONTAL_ALIGNMENTS = {
+    valid: ['start', 'center', 'end', 'space', 'spread'],
+    default: 'start'
 };
 
 const VERTICAL_ALIGNMENTS = {
@@ -46,6 +46,12 @@ export default class Layout extends LightningElement {
     _previousWidth;
     _resizeIsHandledByParent = false;
     _resizeObserver;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         /**
@@ -190,29 +196,11 @@ export default class Layout extends LightningElement {
      */
 
     /**
-     * Compute current width value.
-     */
-    get width() {
-        const width = this.wrapper?.getBoundingClientRect().width || 0;
-        if (width >= 1024) return 'large';
-        if (width >= 768) return 'medium';
-        if (width >= 480) return 'small';
-        return WIDTHS.default;
-    }
-
-    /**
-     * Wrapper element
-     */
-    get wrapper() {
-        return this.template.querySelector('[data-element-id="div-wrapper"]');
-    }
-
-    /**
      * Computed CSS classes for the layout wrapper.
      *
      * @type {string}
      */
-    get wrapperClass() {
+    get computedWrapperClass() {
         return classSet('slds-grid avonni-layout-wrapper')
             .add({
                 'slds-grid_vertical': this.direction === 'column',
@@ -232,6 +220,24 @@ export default class Layout extends LightningElement {
                 'slds-grid_vertical-align-end': this.verticalAlign === 'end'
             })
             .toString();
+    }
+
+    /**
+     * Compute current width value.
+     */
+    get width() {
+        const width = this.wrapper?.getBoundingClientRect().width || 0;
+        if (width >= 1024) return 'large';
+        if (width >= 768) return 'medium';
+        if (width >= 480) return 'small';
+        return WIDTHS.default;
+    }
+
+    /**
+     * Wrapper element
+     */
+    get wrapper() {
+        return this.template.querySelector('[data-element-id="div-wrapper"]');
     }
 
     /*

@@ -45,7 +45,6 @@ describe('Layout', () => {
             expect(element.verticalAlign).toBe('stretch');
         });
 
-        // direction
         describe('direction', () => {
             it('row', () => {
                 element.direction = 'row';
@@ -100,7 +99,6 @@ describe('Layout', () => {
             });
         });
 
-        // horizontal-align
         describe('horizontal-align', () => {
             it('start', () => {
                 element.horizontalAlign = 'start';
@@ -168,7 +166,6 @@ describe('Layout', () => {
             });
         });
 
-        // multiple-rows
         describe('multiple-rows', () => {
             it('false', () => {
                 element.multipleRows = false;
@@ -197,7 +194,6 @@ describe('Layout', () => {
             });
         });
 
-        // vertical-align
         describe('vertical-align', () => {
             it('stretch', () => {
                 element.verticalAlign = 'stretch';
@@ -252,12 +248,6 @@ describe('Layout', () => {
             });
         });
     });
-
-    /*
-     * ------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
 
     describe('Events', () => {
         describe('Size handling', () => {
