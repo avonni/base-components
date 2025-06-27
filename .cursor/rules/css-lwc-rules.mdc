@@ -1,0 +1,210 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Avonni CSS Style Guide
+
+## 🔧 General Rules
+
+- **Avoid chaining too many selectors.**
+  - No strict limit, but always ensure clarity and maintainability.
+- **Group related rules together.**
+  - Use logical structure, even if flexible.
+- **Alphabetize declarations** within each rule for consistency.
+
+---
+
+## 🏷 Class Naming (BEM)
+
+Use the BEM convention:
+
+```
+
+avonni-name-of-the-component\_\_element\_modifier
+
+```
+
+- For component-wide modifiers:
+```
+
+avonni-name-of-the-component\_modifier
+
+````
+Example: `avonni-list_border-success`
+
+- For variants, prefer **variant names** over values:
+- ✅ `avonni-relationship-graph__group_shade`
+- ❌ `avonni-relationship-graph__group_background-grey`
+
+---
+
+## 🎨 SLDS First
+
+- **Use SLDS classes whenever possible.**
+- Only use custom classes when the design is not achievable through SLDS.
+
+**❌ Incorrect:**
+
+```html
+<div class="avonni-expandable-section_background-inverse"></div>
+````
+
+```css
+.expandable-section_background-inverse {
+  background-color: var(--lwc-colorBackground, #f3f2f2);
+}
+```
+
+**✅ Correct:**
+
+```html
+<div class="slds-theme_shade"></div>
+```
+
+---
+
+## 💠 Design Tokens
+
+Use Salesforce Design Tokens instead of hardcoded values.
+
+### ✅ Correct usage:
+
+```css
+.avonni-expandable-section_background-brand {
+  background-color: var(--lwc-colorBrand, #1b96ff);
+}
+
+.avonni-expandable-section_background-green {
+  background-color: #2e844a; /* Matches design token paletteGreen50 */
+}
+```
+
+### ❌ Avoid:
+
+```css
+.avonni-expandable-section_background-brand {
+  background-color: #0176d3;
+}
+
+.avonni-expandable-section_background-green {
+  background-color: #006E21;
+}
+```
+
+> Always use the `--lwc-` token name with a fallback value.
+
+---
+
+## 🧬 Avoid Inline Styles
+
+Prefer CSS classes over inline `style` attributes unless:
+
+* The value **must** be computed in JavaScript.
+
+  * Example: element-relative height or user-defined background-image.
+
+---
+
+## 🧩 Styling Hooks
+
+Use SLDS naming conventions for custom hooks:
+
+* SLDS: `--slds-c-button-color`
+* Avonni: `--avonni-c-button-color`
+
+---
+
+## 🧱 Prefer `:host` Over Wrappers
+
+Avoid unnecessary wrapper `<div>`s. Style the host directly.
+
+**❌ Incorrect:**
+
+```html
+<template>
+  <div class="slds-box slds-theme_shade avonni-alert_box-shadow"></div>
+</template>
+
+<style>
+.avonni-alert_box-shadow {
+  box-shadow: 0px 10px 13px -7px #000000;
+}
+</style>
+```
+
+**✅ Correct:**
+
+```js
+export default class ExampleComponent extends LightningElement {
+  connectedCallback() {
+    this.classList.add('slds-box', 'slds-theme_shade');
+  }
+}
+```
+
+```css
+:host {
+  box-shadow: 0px 10px 13px -7px #000000;
+}
+```
+
+---
+
+## 👓 Readability Guidelines
+
+### ✅ Use shorthand properties
+
+```css
+padding: 2.1rem 1.6rem 0 1rem;
+```
+
+### ❌ Avoid verbose individual properties
+
+```css
+padding-left: 1rem;
+padding-right: 1.6rem;
+padding-top: 2.1rem;
+```
+
+---
+
+### ✅ Omit units for zero values
+
+```css
+top: 0;
+left: 0;
+```
+
+### ❌ Avoid unnecessary units
+
+```css
+top: 0px;
+left: 0%;
+```
+
+---
+
+### ✅ Separate selectors and declarations
+
+```css
+.avonni-path__icon-container,
+.avonni-path__title {
+  border: 1px solid #2e844a;
+  position: absolute;
+  top: 10px;
+}
+```
+
+### ❌ Avoid cramming
+
+```css
+.avonni-path__icon-container, .path__title {
+  border: 1px solid #2e844a; position: absolute; top: 10px;
+}
+```
+
+---
+
+> Keep code modular, maintainable, and consistent with SLDS standards.
+

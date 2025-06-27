@@ -1,0 +1,157 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+🚦 Avonni LWC Project Rules
+
+✨ General Style
+
+Do not use this.isConnected – it does not work reliably on Salesforce.
+
+Use single quotes 'like this' for all strings.
+
+Prefer template interpolation `Hello, ${name}` over string concatenation 'Hello ' + name.
+
+Use descriptive variable and method names.
+
+Stay consistent within each file (e.g., use item consistently instead of mixing with field).
+
+Avoid long lines of code – split into readable, human-friendly chunks.
+
+Declare all fields at the top of the class or via getter/setter.
+
+Insert a line break between @api and get()/set().
+
+When both get and set exist, place setter immediately after getter.
+
+Avoid one-liner conditionals and ternaries:
+
+❌ if (this.isVisible) return this.items;
+
+✅
+
+if (this.isVisible) {
+  return this.items;
+}
+
+🧐 Variable Naming
+
+Global constants: UPPER_CASE_WITH_UNDERSCORES
+
+Scoped variables/properties: camelCase
+
+Private fields not used in template or @api: prefix with _
+
+Booleans: Use isVisible, showIcon, etc. (state-based naming)
+
+🛡️ Getter/Setter Rules
+
+When using default values
+
+Avoid direct assignment on public fields:
+
+❌ @api loadingStateAlternativeText = DEFAULT;
+
+✅ Use private backing field with get/set
+
+With validity constraints
+
+Use helper functions:
+
+normalizeString, normalizeBoolean, normalizeArray, etc.
+
+Do not change field type or structure.
+
+To trigger side effects on value change
+
+Run logic inside set.
+
+To avoid no-api-reassignments errors
+
+Update backing field internally.
+
+🔗 Default Values
+
+Declare constants outside class:
+
+const DEFAULT_ICON_NAME = 'utility:chevrondown';
+const ICON_SIZES = {
+  valid: ['small', 'medium', 'large'],
+  default: 'medium'
+};
+
+Booleans: Default to false. No constant needed.
+
+🧠 Object/Array Handling
+
+Never assign a primitive to an array/object field.
+
+Use computed field (e.g., computedItems) when transforming structure.
+
+🎨 CSS Class Handling
+
+Use classSet() for conditional classes:
+
+get computedWrapperClass() {
+  return classSet('slds-theme_default')
+    .add({
+      'slds-box': this.hasBorder,
+      'slds-hidden': this.isHidden
+    })
+    .toString();
+}
+
+🔍 DOM Selectors
+
+Use data attributes only:
+
+data-element-id: for component tags
+
+data-group-name: for multi-element groups
+
+Example:
+
+this.template.querySelector('[data-element-id="label"]');
+
+📢 Events
+
+Do not dispatch proxy (@track) values directly. Always deepCopy.
+
+When an input is cleared, set the value to null, not ''.
+
+♻️ Lifecycle Practices
+
+Use @track only when:
+
+Field is used in template
+
+It's an object/array
+
+You need to react to internal mutation
+
+Avoid modifying fields in renderedCallback() unless dependent on DOM.
+
+Track first render with a boolean flag.
+
+📂 File Structure Order
+
+@api public fields (no getter/setter) – alphabetical
+
+Private fields backing public fields – alphabetical
+
+Other private/computed fields – alphabetical
+
+Lifecycle methods (e.g. connectedCallback)
+
+@api fields with getter/setter – alphabetical
+
+Private computed fields (get only) – alphabetical
+
+@api public methods – alphabetical
+
+Private methods (excluding handlers) – alphabetical
+
+Event handlers (handleXyz) – alphabetical
+
+Event dispatchers (dispatchXyz) – alphabetical
