@@ -24,13 +24,19 @@ export default class OutputData extends LightningElement {
      */
     @api label;
 
-    _typeAttributes = {};
     _type = TYPES.default;
+    _typeAttributes = {};
     _value;
     _variant = VARIANTS.default;
 
     normalizedTypeAttributes = {};
     _isConnected = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.normalizeTypeAttributes();
@@ -42,22 +48,6 @@ export default class OutputData extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Attributes specific to the type (see <strong>Types and Type Attributes</strong>).
-     *
-     * @type {object}
-     * @public
-     */
-    @api
-    get typeAttributes() {
-        return this._typeAttributes;
-    }
-    set typeAttributes(value) {
-        this._typeAttributes = typeof value === 'object' ? value : {};
-
-        if (this._isConnected) this.normalizeTypeAttributes();
-    }
 
     /**
      * Type of the output. Valid types include boolean, currency, date, email, location, number, percent, phone, url and text.
@@ -79,6 +69,22 @@ export default class OutputData extends LightningElement {
     }
 
     /**
+     * Attributes specific to the type (see <strong>Types and Type Attributes</strong>).
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get typeAttributes() {
+        return this._typeAttributes;
+    }
+    set typeAttributes(value) {
+        this._typeAttributes = typeof value === 'object' ? value : {};
+
+        if (this._isConnected) this.normalizeTypeAttributes();
+    }
+
+    /**
      * Value of the output.
      *
      * @type {string}
@@ -89,7 +95,6 @@ export default class OutputData extends LightningElement {
         if (this.isBoolean) {
             return this._value === 'true' || this._value;
         }
-
         if (this.isNumber) {
             return this.truncateNumber(this._value);
         }
