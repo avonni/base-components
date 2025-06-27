@@ -20,6 +20,8 @@ export const InfiniteGrid = ({
     loadMoreOffset,
     mediaActions,
     mediumContainerCols,
+    nextButtonAlternativeText,
+    previousButtonAlternativeText,
     smallContainerCols,
     sortable,
     sortableIconName,
@@ -43,6 +45,8 @@ export const InfiniteGrid = ({
     element.loadMoreOffset = loadMoreOffset;
     element.mediaActions = mediaActions;
     element.mediumContainerCols = mediumContainerCols;
+    element.nextButtonAlternativeText = nextButtonAlternativeText;
+    element.previousButtonAlternativeText = previousButtonAlternativeText;
     element.smallContainerCols = smallContainerCols;
     element.sortable = sortable;
     element.sortableIconName = sortableIconName;

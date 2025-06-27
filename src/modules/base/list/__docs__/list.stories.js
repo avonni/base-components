@@ -22,64 +22,22 @@ export default {
                 category: 'Base'
             }
         },
-        visibleActions: {
-            name: 'visible-actions',
-            control: {
-                type: 'number'
-            },
-            description:
-                'The number of actions that appear as regular buttons.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Base'
-            }
-        },
         alternativeText: {
             name: 'alternative-text',
             control: {
                 type: 'text'
             },
             description:
-                'Alternative text used to describe the list. If the list is sortable, it should describe its behavior, for example: “Sortable menu. Press spacebar to grab or drop an item. Press up and down arrow keys to change position. Press escape to cancel.”',
+                'Alternative text used to describe the list. If the list is sortable, it should describe its behavior, for example: "Sortable menu. Press spacebar to grab or drop an item. Press up and down arrow keys to change position. Press escape to cancel."',
             table: {
                 type: { summary: 'string' },
-                category: 'Base'
+                category: 'Alternative Text'
             }
         },
         cols: {
             control: { type: 'number', min: 1, max: 12 },
             description:
                 'Default number of columns. Valid values include 1, 2, 3, 4, 6 and 12.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Columns'
-            }
-        },
-        smallContainerCols: {
-            name: 'small-container-cols',
-            control: { type: 'number', min: 1, max: 12 },
-            description:
-                'Number of columns for small containers. Valid values include 1, 2, 3, 4, 6 and 12.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Columns'
-            }
-        },
-        mediumContainerCols: {
-            name: 'medium-container-cols',
-            control: { type: 'number', min: 1, max: 12 },
-            description:
-                'Number of columns for medium containers. Valid values include 1, 2, 3, 4, 6 and 12.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Columns'
-            }
-        },
-        largeContainerCols: {
-            name: 'large-container-cols',
-            control: { type: 'number', min: 1, max: 12 },
-            description:
-                'Number of columns for large containers. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -121,6 +79,7 @@ export default {
             }
         },
         imageAttributes: {
+            name: 'image-attributes',
             control: {
                 type: 'object'
             },
@@ -161,6 +120,16 @@ export default {
                 category: 'Base'
             }
         },
+        largeContainerCols: {
+            name: 'large-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for large containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
         loadMoreOffset: {
             name: 'load-more-offset',
             control: {
@@ -173,6 +142,51 @@ export default {
                 category: 'Infinite Loading'
             }
         },
+        mediaActions: {
+            name: 'media-actions',
+            control: {
+                type: 'object'
+            },
+            description: 'Array of actions',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Base'
+            }
+        },
+        mediumContainerCols: {
+            name: 'medium-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for medium containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
+        nextButtonAlternativeText: {
+            name: 'next-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the next button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Next Items' },
+                category: 'Alternative Text'
+            }
+        },
+        previousButtonAlternativeText: {
+            name: 'previous-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the previous button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Previous Items' },
+                category: 'Alternative Text'
+            }
+        },
         showCheckCounter: {
             name: 'show-check-counter',
             control: {
@@ -183,6 +197,16 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 category: 'Check List'
+            }
+        },
+        smallContainerCols: {
+            name: 'small-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for small containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
             }
         },
         sortable: {
@@ -209,39 +233,6 @@ export default {
                 category: 'Sorting'
             }
         },
-        strikeThroughOnCheck: {
-            name: 'strike-through-on-check',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, strike through all checked items.',
-            table: {
-                type: { summary: 'boolean' },
-                category: 'Check List'
-            }
-        },
-        mediaActions: {
-            control: {
-                type: 'object'
-            },
-            description: 'Array of actions',
-            table: {
-                type: { summary: 'object[]' },
-                category: 'Base'
-            }
-        },
-        visibleMediaActions: {
-            name: 'visible-media-actions',
-            control: {
-                type: 'number'
-            },
-            description:
-                'The number of media actions that appear as regular buttons.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Base'
-            }
-        },
         sortableIconPosition: {
             name: 'sortable-icon-position',
             control: {
@@ -256,6 +247,17 @@ export default {
                 category: 'Sorting'
             }
         },
+        strikeThroughOnCheck: {
+            name: 'strike-through-on-check',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, strike through all checked items.',
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Check List'
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -267,10 +269,36 @@ export default {
                 defaultValue: { summary: 'base' },
                 category: 'Base'
             }
+        },
+        visibleActions: {
+            name: 'visible-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Base'
+            }
+        },
+        visibleMediaActions: {
+            name: 'visible-media-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of media actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Base'
+            }
         }
     },
     args: {
         cols: 1,
+        nextButtonAlternativeText: 'Next Items',
+        previousButtonAlternativeText: 'Previous Items',
         sortable: false,
         sortableIconPosition: 'right',
         variant: 'base'

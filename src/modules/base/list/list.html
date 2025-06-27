@@ -14,7 +14,6 @@
                 id="instructions"
                 aria-live="assertive"
             ></span>
-
             <span
                 if:true={alternativeText}
                 class="slds-assistive-text"
@@ -37,7 +36,7 @@
             >
                 <lightning-button-icon
                     class="avonni-list__page-change-button"
-                    alternative-text="Previous Items"
+                    alternative-text={previousButtonAlternativeText}
                     disabled={previousPageDisabled}
                     icon-name="utility:chevronleft"
                     size="large"
@@ -72,19 +71,19 @@
                         small-container-size={smallContainerColSize}
                         size={colSize}
                         tabindex="0"
-                        data-name={item.name}
                         data-element-id="li-item"
-                        data-selected={item.selected}
-                        data-index={item.index}
                         data-element-temp-index={item.index}
+                        data-index={item.index}
+                        data-name={item.name}
+                        data-selected={item.selected}
+                        onclick={handleItemClick}
+                        onkeydown={handleKeyDown}
                         onmousedown={dragStart}
                         onmousemove={drag}
                         onmouseup={handleItemMouseUp}
                         ontouchend={handleItemMouseUp}
-                        ontouchstart={dragStart}
                         ontouchmove={drag}
-                        onkeydown={handleKeyDown}
-                        onclick={handleItemClick}
+                        ontouchstart={dragStart}
                     >
                         <div
                             class={computedItemClass}
@@ -97,10 +96,10 @@
                                 <!-- Media Actions  -->
                                 <div
                                     if:true={hasMediaActions}
-                                    slot="media-actions"
                                     class="
                                         avonni-list__item-media-action-top-right
                                     "
+                                    slot="media-actions"
                                 >
                                     <div
                                         if:true={item.hasImage}
@@ -111,18 +110,18 @@
                                             button-icon-size="small"
                                             button-icon-variant="border-filled"
                                             visible-actions={computedVisibleMediaActions}
-                                            data-item-index={item.index}
                                             data-element-id="primitive-media-actions"
+                                            data-item-index={item.index}
+                                            onactionclick={handleMediaActionClick}
                                             onclick={stopPropagation}
                                             onmousedown={stopPropagation}
                                             ontouchstart={stopPropagation}
-                                            onactionclick={handleMediaActionClick}
                                         ></c-primitive-actions>
                                     </div>
                                 </div>
                                 <div
-                                    slot="media"
                                     class="avonni-list__image_container"
+                                    slot="media"
                                 >
                                     <div
                                         class="
@@ -145,8 +144,8 @@
                                         <div
                                             if:true={item.imageSrc}
                                             style={computedImageStyle}
-                                            data-element-id="list-img"
                                             class="slds-is-relative"
+                                            data-element-id="list-img"
                                         >
                                             <img
                                                 loading="lazy"
@@ -194,15 +193,15 @@
                                             "
                                         >
                                             <input
+                                                checked={item.checked}
+                                                disabled={item.uncheckable}
+                                                id={item.name}
+                                                type="checkbox"
                                                 data-element-id="item-input-checkbox"
                                                 data-index={item.index}
-                                                type="checkbox"
-                                                checked={item.checked}
-                                                id={item.name}
+                                                onclick={handleItemCheck}
                                                 onkeydown={handleCheckboxKeyDown}
                                                 onmousedown={stopPropagation}
-                                                onclick={handleItemCheck}
-                                                disabled={item.uncheckable}
                                             />
                                             <label for={item.name}>
                                                 <span
@@ -258,8 +257,8 @@
                                                             avonni-list__item-header-link
                                                         "
                                                         href={item.href}
-                                                        onmousedown={stopPropagation}
                                                         onclick={handleAnchorTagClick}
+                                                        onmousedown={stopPropagation}
                                                     >
                                                         {item.label}
                                                     </a>
@@ -365,8 +364,8 @@
                                                         <span
                                                             if:false={info.href}
                                                             data-element-id="span-info"
-                                                            >{info.label}</span
-                                                        >
+                                                            >{info.label}
+                                                        </span>
                                                     </li>
                                                 </template>
                                             </ul>
@@ -455,10 +454,10 @@
                                                 visible-actions={computedVisibleActions}
                                                 data-element-id="primitive-actions"
                                                 data-item-index={item.index}
+                                                onactionclick={handleActionClick}
                                                 onclick={stopPropagation}
                                                 onmousedown={stopPropagation}
                                                 ontouchstart={stopPropagation}
-                                                onactionclick={handleActionClick}
                                             ></c-primitive-actions>
                                         </div>
                                     </div>
@@ -473,8 +472,8 @@
                     large-container-size={loadingLargeContainerColSize}
                     medium-container-size={loadingMediumContainerColSize}
                     role="listitem"
-                    small-container-size={loadingSmallContainerColSize}
                     size={loadingColSize}
+                    small-container-size={loadingSmallContainerColSize}
                     data-element-id="loading-spinner-container"
                 >
                     <lightning-spinner
@@ -495,7 +494,7 @@
             >
                 <lightning-button-icon
                     class="avonni-list__page-change-button"
-                    alternative-text="Next Items"
+                    alternative-text={nextButtonAlternativeText}
                     disabled={nextPageDisabled}
                     icon-name="utility:chevronright"
                     size="large"

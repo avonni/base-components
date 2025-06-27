@@ -30,12 +30,6 @@ describe('List', () => {
         jest.clearAllTimers();
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  ATTRIBUTES
-     * -------------------------------------------------------------
-     */
-
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.actions).toMatchObject([]);
@@ -64,6 +58,10 @@ describe('List', () => {
             expect(element.loadMoreOffset).toBe(20);
             expect(element.mediaActions).toMatchObject([]);
             expect(element.mediumContainerCols).toBeUndefined();
+            expect(element.nextButtonAlternativeText).toBe('Next Items');
+            expect(element.previousButtonAlternativeText).toBe(
+                'Previous Items'
+            );
             expect(element.showCheckCounter).toBeFalsy();
             expect(element.smallContainerCols).toBeUndefined();
             expect(element.sortable).toBeFalsy();
@@ -75,66 +73,79 @@ describe('List', () => {
             expect(element.visibleMediaActions).toBeUndefined();
         });
 
-        // actions
-        it('Actions', () => {
-            element.items = ITEMS;
-            element.actions = ACTIONS;
+        describe('Actions', () => {
+            it('Actions', () => {
+                element.items = ITEMS;
+                element.actions = ACTIONS;
 
-            return Promise.resolve().then(() => {
-                const primitiveActions = element.shadowRoot.querySelector(
-                    '[data-element-id="primitive-actions"]'
-                );
-                expect(primitiveActions).not.toBeNull();
+                return Promise.resolve().then(() => {
+                    const primitiveActions = element.shadowRoot.querySelector(
+                        '[data-element-id="primitive-actions"]'
+                    );
+                    expect(primitiveActions).not.toBeNull();
+                });
             });
         });
 
-        // alternative-text
-        it('AlternativeText', () => {
-            element.alternativeText = 'A string alternative text';
+        describe('Alternative Text', () => {
+            it('AlternativeText', () => {
+                element.alternativeText = 'A string alternative text';
 
-            return Promise.resolve().then(() => {
-                const span = element.shadowRoot.querySelector(
-                    '[data-element-id="span-alternative-text"]'
-                );
-                expect(span.textContent).toBe('A string alternative text');
+                return Promise.resolve().then(() => {
+                    const span = element.shadowRoot.querySelector(
+                        '[data-element-id="span-alternative-text"]'
+                    );
+                    expect(span.textContent).toBe('A string alternative text');
+                });
+            });
+
+            it('Next Button Alternative Text', () => {
+                element.nextButtonAlternativeText = 'Next Items';
+                element.variant = 'single-line';
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="next-page-button"]'
+                    );
+                    expect(button.alternativeText).toBe('Next Items');
+                });
+            });
+
+            it('Previous Button Alternative Text', () => {
+                element.previousButtonAlternativeText = 'Previous Items';
+                element.variant = 'single-line';
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="previous-page-button"]'
+                    );
+                    expect(button.alternativeText).toBe('Previous Items');
+                });
             });
         });
 
-        //show-check-count
-        it('ShowCheckCount', () => {
-            element.items = ITEMS;
-            element.label = 'List';
-            element.showCheckCounter = true;
-            element.variant = 'check-list';
+        describe('Cols', () => {
+            it('Cols', () => {
+                element.items = ITEMS;
+                element.cols = 3;
+                element.smallContainerCols = 6;
+                element.mediumContainerCols = 4;
+                element.largeContainerCols = 2;
 
-            return Promise.resolve().then(() => {
-                const label = element.shadowRoot.querySelector(
-                    '[data-element-id="label"]'
-                );
-                expect(label.innerHTML).toBe('List (2/5)');
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        '[data-element-id="li-item"]'
+                    );
+                    expect(item.size).toBe(4);
+                    expect(item.smallContainerSize).toBe(2);
+                    expect(item.mediumContainerSize).toBe(3);
+                    expect(item.largeContainerSize).toBe(6);
+                });
             });
         });
 
-        // cols
-        it('cols', () => {
-            element.items = ITEMS;
-            element.cols = 3;
-            element.smallContainerCols = 6;
-            element.mediumContainerCols = 4;
-            element.largeContainerCols = 2;
-
-            return Promise.resolve().then(() => {
-                const item = element.shadowRoot.querySelector(
-                    '[data-element-id="li-item"]'
-                );
-                expect(item.size).toBe(4);
-                expect(item.smallContainerSize).toBe(2);
-                expect(item.mediumContainerSize).toBe(3);
-                expect(item.largeContainerSize).toBe(6);
-            });
-        });
-
-        // divider
         describe('Divider', () => {
             it('none', () => {
                 element.items = ITEMS;
@@ -214,19 +225,19 @@ describe('List', () => {
             });
         });
 
-        // field-attributes
-        it('Field Attributes, cols', () => {
-            element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
+        describe('Field Attributes', () => {
+            it('Field Attributes, cols', () => {
+                element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
 
-            return Promise.resolve().then(() => {
-                expect(element.fieldAttributes.cols).toBe(1);
-                expect(element.fieldAttributes.largeContainerCols).toBe(3);
-                expect(element.fieldAttributes.mediumContainerCols).toBe(1);
-                expect(element.fieldAttributes.smallContainerCols).toBe(1);
+                return Promise.resolve().then(() => {
+                    expect(element.fieldAttributes.cols).toBe(1);
+                    expect(element.fieldAttributes.largeContainerCols).toBe(3);
+                    expect(element.fieldAttributes.mediumContainerCols).toBe(1);
+                    expect(element.fieldAttributes.smallContainerCols).toBe(1);
+                });
             });
         });
 
-        // images
         describe('Images', () => {
             it('Images are present', () => {
                 element.items = ITEMS;
@@ -320,7 +331,6 @@ describe('List', () => {
             });
         });
 
-        // items
         describe('Items', () => {
             it('Items', () => {
                 element.items = ITEMS;
@@ -546,19 +556,19 @@ describe('List', () => {
             });
         });
 
-        // label
-        it('Label', () => {
-            element.label = 'A string label';
+        describe('Label', () => {
+            it('Label', () => {
+                element.label = 'A string label';
 
-            return Promise.resolve().then(() => {
-                const label = element.shadowRoot.querySelector(
-                    '[data-element-id="label"]'
-                );
-                expect(label.textContent).toBe('A string label');
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '[data-element-id="label"]'
+                    );
+                    expect(label.textContent).toBe('A string label');
+                });
             });
         });
 
-        // media-actions
         describe('Media actions', () => {
             it('Media Actions', () => {
                 element.items = ITEMS;
@@ -586,7 +596,22 @@ describe('List', () => {
             });
         });
 
-        // sortable
+        describe('Show Check Count', () => {
+            it('ShowCheckCount', () => {
+                element.items = ITEMS;
+                element.label = 'List';
+                element.showCheckCounter = true;
+                element.variant = 'check-list';
+
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '[data-element-id="label"]'
+                    );
+                    expect(label.innerHTML).toBe('List (2/5)');
+                });
+            });
+        });
+
         describe('Sortable', () => {
             it('false', () => {
                 element.sortable = false;
@@ -639,7 +664,6 @@ describe('List', () => {
             });
         });
 
-        // sortable-icon-name
         describe('Sortable icon name', () => {
             it('sortable = false', () => {
                 element.sortableIconName = 'utility:apps';
@@ -670,7 +694,6 @@ describe('List', () => {
             });
         });
 
-        // sortable-icon-position
         describe('Sortable icon position', () => {
             it('right', () => {
                 element.sortableIconName = 'utility:drag_and_drop';
@@ -708,7 +731,6 @@ describe('List', () => {
             });
         });
 
-        // variant
         describe('Variant', () => {
             it('base', () => {
                 return Promise.resolve().then(() => {
@@ -775,14 +797,7 @@ describe('List', () => {
         });
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  METHODS
-     * -------------------------------------------------------------
-     */
-
     describe('Methods', () => {
-        // getItemPosition
         // Depends on items
         it('getItemPosition()', () => {
             element.items = ITEMS;
@@ -812,7 +827,6 @@ describe('List', () => {
             });
         });
 
-        // reset
         // Depends on items, sortable and the keyboard reorder
         it('reset()', () => {
             element.items = ITEMS;
@@ -855,84 +869,44 @@ describe('List', () => {
         });
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
-
     describe('Events', () => {
-        // actionclick
-        it('actionclick', () => {
-            const handler = jest.fn();
-            element.addEventListener('actionclick', handler);
-            element.items = ITEMS;
-            element.actions = ACTIONS;
+        describe('Actionclick', () => {
+            it('actionclick', () => {
+                const handler = jest.fn();
+                element.addEventListener('actionclick', handler);
+                element.items = ITEMS;
+                element.actions = ACTIONS;
 
-            return Promise.resolve().then(() => {
-                const primitiveActions = element.shadowRoot.querySelector(
-                    '[data-element-id="primitive-actions"]'
-                );
-                primitiveActions.dispatchEvent(
-                    new CustomEvent('actionclick', {
-                        detail: {
-                            name: ACTIONS[0].name
-                        }
-                    })
-                );
+                return Promise.resolve().then(() => {
+                    const primitiveActions = element.shadowRoot.querySelector(
+                        '[data-element-id="primitive-actions"]'
+                    );
+                    primitiveActions.dispatchEvent(
+                        new CustomEvent('actionclick', {
+                            detail: {
+                                name: ACTIONS[0].name
+                            }
+                        })
+                    );
 
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                    ITEMS[0]
-                );
-                expect(handler.mock.calls[0][0].detail.name).toBe(
-                    ACTIONS[0].name
-                );
-                expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                    ITEMS[0].name
-                );
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                        ITEMS[0]
+                    );
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ACTIONS[0].name
+                    );
+                    expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                        ITEMS[0].name
+                    );
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
             });
         });
 
-        it('mediaactionclick', () => {
-            const handler = jest.fn();
-            element.addEventListener('mediaactionclick', handler);
-            element.items = ITEMS;
-            element.mediaActions = ACTIONS;
-
-            return Promise.resolve().then(() => {
-                const primitiveActions = element.shadowRoot.querySelector(
-                    '[data-element-id="primitive-media-actions"]'
-                );
-                primitiveActions.dispatchEvent(
-                    new CustomEvent('actionclick', {
-                        detail: {
-                            name: ACTIONS[0].name
-                        }
-                    })
-                );
-
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                    ITEMS[0]
-                );
-                expect(handler.mock.calls[0][0].detail.name).toBe(
-                    ACTION[0].name
-                );
-                expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                    ITEMS[0].name
-                );
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            });
-        });
-
-        // itemcheck
-        describe('itemcheck', () => {
+        describe('Itemcheck', () => {
             it('Fired on click', () => {
                 const handler = jest.fn();
                 element.addEventListener('itemcheck', handler);
@@ -1005,8 +979,7 @@ describe('List', () => {
             });
         });
 
-        // itemclick
-        describe('itemclick', () => {
+        describe('Itemclick', () => {
             it('Fired on click', () => {
                 const handler = jest.fn();
                 element.addEventListener('itemclick', handler);
@@ -1091,61 +1064,62 @@ describe('List', () => {
             });
         });
 
-        // itemmousedown
-        it('itemmousedown', () => {
-            const handler = jest.fn();
-            element.addEventListener('itemmousedown', handler);
-            element.items = ITEMS;
+        describe('Itemmousedown', () => {
+            it('itemmousedown', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemmousedown', handler);
+                element.items = ITEMS;
 
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
-                );
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-item"]'
+                    );
 
-                const event = new CustomEvent('mousedown');
-                event.button = 0;
-                items[2].dispatchEvent(event);
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                    ITEMS[2]
-                );
-                expect(handler.mock.calls[0][0].detail.name).toBe(
-                    ITEMS[2].name
-                );
-                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    const event = new CustomEvent('mousedown');
+                    event.button = 0;
+                    items[2].dispatchEvent(event);
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                        ITEMS[2]
+                    );
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ITEMS[2].name
+                    );
+                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
             });
         });
 
-        // itemmouseup
-        it('itemmouseup', () => {
-            const handler = jest.fn();
-            element.addEventListener('itemmouseup', handler);
-            element.items = ITEMS;
+        describe('Itemmouseup', () => {
+            it('itemmouseup', () => {
+                const handler = jest.fn();
+                element.addEventListener('itemmouseup', handler);
+                element.items = ITEMS;
 
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
-                );
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-item"]'
+                    );
 
-                const event = new CustomEvent('mouseup');
-                event.button = 0;
-                items[1].dispatchEvent(event);
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                    ITEMS[1]
-                );
-                expect(handler.mock.calls[0][0].detail.name).toBe(
-                    ITEMS[1].name
-                );
-                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    const event = new CustomEvent('mouseup');
+                    event.button = 0;
+                    items[1].dispatchEvent(event);
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                        ITEMS[1]
+                    );
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ITEMS[1].name
+                    );
+                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
             });
         });
 
-        // loadmore
         describe('loadmore', () => {
             it('Not fired by default', () => {
                 const handler = jest.fn();
@@ -1345,44 +1319,83 @@ describe('List', () => {
             });
         });
 
-        // privatelistconnected and privatelistdisconnected
-        it('privatelistconnected', () => {
-            const disconnectedHandler = jest.fn();
-            element.addEventListener(
-                'privatelistdisconnected',
-                disconnectedHandler
-            );
+        describe('Mediaactionclick', () => {
+            it('mediaactionclick', () => {
+                const handler = jest.fn();
+                element.addEventListener('mediaactionclick', handler);
+                element.items = ITEMS;
+                element.mediaActions = ACTIONS;
 
-            while (document.body.firstChild) {
-                document.body.removeChild(document.body.firstChild);
-            }
-            element = createElement('base-list', {
-                is: List
+                return Promise.resolve().then(() => {
+                    const primitiveActions = element.shadowRoot.querySelector(
+                        '[data-element-id="primitive-media-actions"]'
+                    );
+                    primitiveActions.dispatchEvent(
+                        new CustomEvent('actionclick', {
+                            detail: {
+                                name: ACTIONS[0].name
+                            }
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                        ITEMS[0]
+                    );
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        ACTION[0].name
+                    );
+                    expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                        ITEMS[0].name
+                    );
+                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
             });
-
-            expect(disconnectedHandler).toHaveBeenCalled();
-            const disconnectedCall = disconnectedHandler.mock.calls[0][0];
-            expect(disconnectedCall.bubbles).toBeTruthy();
-            expect(disconnectedCall.composed).toBeTruthy();
-            expect(disconnectedCall.cancelable).toBeFalsy();
-            expect(typeof disconnectedCall.detail.name).toBe('string');
-
-            const connectedHandler = jest.fn();
-            element.addEventListener('privatelistconnected', connectedHandler);
-
-            document.body.appendChild(element);
-            expect(connectedHandler).toHaveBeenCalled();
-            const connectedCall = connectedHandler.mock.calls[0][0];
-            expect(connectedCall.bubbles).toBeTruthy();
-            expect(connectedCall.composed).toBeTruthy();
-            expect(connectedCall.cancelable).toBeFalsy();
-            expect(typeof connectedCall.detail.name).toBe('string');
-            expect(typeof connectedCall.detail.callbacks.setDisplayWidth).toBe(
-                'function'
-            );
         });
 
-        // reorder
+        describe('Privatelistconnected', () => {
+            it('privatelistconnected', () => {
+                const disconnectedHandler = jest.fn();
+                element.addEventListener(
+                    'privatelistdisconnected',
+                    disconnectedHandler
+                );
+
+                while (document.body.firstChild) {
+                    document.body.removeChild(document.body.firstChild);
+                }
+                element = createElement('base-list', {
+                    is: List
+                });
+
+                expect(disconnectedHandler).toHaveBeenCalled();
+                const disconnectedCall = disconnectedHandler.mock.calls[0][0];
+                expect(disconnectedCall.bubbles).toBeTruthy();
+                expect(disconnectedCall.composed).toBeTruthy();
+                expect(disconnectedCall.cancelable).toBeFalsy();
+                expect(typeof disconnectedCall.detail.name).toBe('string');
+
+                const connectedHandler = jest.fn();
+                element.addEventListener(
+                    'privatelistconnected',
+                    connectedHandler
+                );
+
+                document.body.appendChild(element);
+                expect(connectedHandler).toHaveBeenCalled();
+                const connectedCall = connectedHandler.mock.calls[0][0];
+                expect(connectedCall.bubbles).toBeTruthy();
+                expect(connectedCall.composed).toBeTruthy();
+                expect(connectedCall.cancelable).toBeFalsy();
+                expect(typeof connectedCall.detail.name).toBe('string');
+                expect(
+                    typeof connectedCall.detail.callbacks.setDisplayWidth
+                ).toBe('function');
+            });
+        });
+
         describe('reorder', () => {
             it('Fired with keyboard', () => {
                 const newOrder = [
