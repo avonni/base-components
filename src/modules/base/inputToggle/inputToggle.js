@@ -21,13 +21,13 @@ const ARIA_CONTROLS = 'aria-controls';
 const ARIA_DESCRIBEDBY = 'aria-describedby';
 const ARIA_LABELEDBY = 'aria-labelledby';
 
+const DEFAULT_MESSAGE_TOGGLE_ACTIVE = 'Active';
+const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive';
+
 const INPUT_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
-
-const DEFAULT_MESSAGE_TOGGLE_ACTIVE = 'Active';
-const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive';
 
 /**
  * @class
@@ -43,7 +43,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api accessKey;
-
     /**
      * Describes the input to assistive technologies.
      *
@@ -51,7 +50,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api ariaLabel;
-
     /**
      * Help text detailing the purpose and function of the input.
      *
@@ -59,7 +57,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
-
     /**
      * Text label for the input.
      *
@@ -68,7 +65,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api label;
-
     /**
      * Text shown for the active state of a toggle.
      *
@@ -76,7 +72,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api messageToggleActive = DEFAULT_MESSAGE_TOGGLE_ACTIVE;
-
     /**
      * Text shown for the inactive state of a toggle.
      *
@@ -84,7 +79,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api messageToggleInactive = DEFAULT_MESSAGE_TOGGLE_INACTIVE;
-
     /**
      * Error message to be displayed when the value is missing.
      *
@@ -92,7 +86,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
-
     /**
      * Specifies the name of an input element.
      *
@@ -100,7 +93,6 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api name;
-
     /**
      * Specifies the value of an input element.
      *
@@ -114,7 +106,6 @@ export default class InputToggle extends LightningElement {
     _checked;
     _disabled;
     _hideMark = false;
-    _messageWhenValueMissing;
     _readOnly;
     _required;
     _size = INPUT_SIZES.default;
@@ -122,6 +113,12 @@ export default class InputToggle extends LightningElement {
 
     _rendered;
     helpMessage;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -208,8 +205,8 @@ export default class InputToggle extends LightningElement {
     set checked(value) {
         this._checked = normalizeBoolean(value);
 
-        if (this._rendered && this._inputElement) {
-            this._inputElement.checked = this._checked;
+        if (this._rendered && this.inputElement) {
+            this.inputElement.checked = this._checked;
         }
         this._updateProxyInputAttributes('checked');
     }
@@ -294,6 +291,17 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
      * The variant changes the appearance of an input field.
      * Accepted variants include standard, label-inline, label-hidden, and label-stacked.
      * This value defaults to standard, which displays the label above the field.
@@ -311,17 +319,6 @@ export default class InputToggle extends LightningElement {
     }
     set variant(toggleVariant) {
         this._variant = normalizeVariant(toggleVariant);
-    }
-
-    /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get validity() {
-        return this._constraint.validity;
     }
 
     /*
@@ -424,7 +421,7 @@ export default class InputToggle extends LightningElement {
      *
      * @type {element}
      */
-    get _inputElement() {
+    get inputElement() {
         return this.template.querySelector('[data-element-id="input"]');
     }
 
@@ -565,11 +562,11 @@ export default class InputToggle extends LightningElement {
         event.stopPropagation();
 
         if (this.readOnly) {
-            this._inputElement.checked = this.checked;
+            this.inputElement.checked = this.checked;
             return;
         }
 
-        this._checked = this._inputElement.checked;
+        this._checked = this.inputElement.checked;
         this._updateProxyInputAttributes('checked');
 
         /**
