@@ -35,3 +35,6 @@ __screenshots__
 
 # Github pages storybook
 storybook-static/*
+
+# Cursor Rules
+.cursor
