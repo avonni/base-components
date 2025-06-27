@@ -58,12 +58,12 @@
                 <template if:true={isDesktop}>
                     <div class="slds-rich-text-editor__select">
                         <lightning-combobox
-                            value={selectedFontValue}
-                            variant="label-hidden"
-                            label={i18n.font}
-                            options={fontMenus.fontList}
                             disabled={disabled}
                             dropdown-alignment={menuDropdownAlignment}
+                            label={i18n.font}
+                            options={fontMenus.fontList}
+                            value={selectedFontValue}
+                            variant="label-hidden"
                             data-element-id="lightning-combobox-font"
                             onfocus={activateEditor}
                             onchange={selectFont}
@@ -73,12 +73,12 @@
                         class="slds-rich-text-editor__select slds-size_xx-small"
                     >
                         <lightning-combobox
-                            value={selectedSizeValue}
-                            variant="label-hidden"
-                            label={i18n.fontSize}
-                            options={fontMenus.sizeList}
                             disabled={disabled}
                             dropdown-alignment={menuDropdownAlignment}
+                            label={i18n.fontSize}
+                            options={fontMenus.sizeList}
+                            value={selectedSizeValue}
+                            variant="label-hidden"
                             data-element-id="lightning-combobox-size"
                             onfocus={activateEditor}
                             onchange={selectSize}
@@ -90,11 +90,11 @@
                         class="slds-rich-text-editor__select slds-size_x-small"
                     >
                         <c-primitive-select
-                            value={selectedFontValue}
-                            variant="label-hidden"
+                            disabled={disabled}
                             label={i18n.font}
                             options={fontMenus.fontList}
-                            disabled={disabled}
+                            value={selectedFontValue}
+                            variant="label-hidden"
                             onchange={selectFont}
                         ></c-primitive-select>
                     </div>
@@ -102,11 +102,11 @@
                         class="slds-rich-text-editor__select slds-size_xx-small"
                     >
                         <c-primitive-select
-                            value={selectedSizeValue}
-                            variant="label-hidden"
+                            disabled={disabled}
                             label={i18n.fontSize}
                             options={fontMenus.sizeList}
-                            disabled={disabled}
+                            value={selectedSizeValue}
+                            variant="label-hidden"
                             onchange={selectSize}
                         ></c-primitive-select>
                     </div>
@@ -129,11 +129,11 @@
                         <li key={button.key}>
                             <button
                                 class={button.computedClass}
-                                value={button.value}
+                                aria-pressed="false"
+                                data-format={button.format}
                                 title={button.label}
                                 type="button"
-                                data-format={button.format}
-                                aria-pressed="false"
+                                value={button.value}
                             >
                                 <c-primitive-icon
                                     icon-name={button.iconName}
@@ -174,8 +174,8 @@
                     </div>
                     <div if:false={shouldShowPlaceholder}>
                         <lightning-formatted-rich-text
-                            value={value}
                             disable-linkify
+                            value={value}
                             data-element-id="lightning-formatted-rich-text-top-toolbar"
                         ></lightning-formatted-rich-text>
                     </div>
@@ -194,14 +194,14 @@
     <div
         if:true={linkPanelOpen}
         class="slds-popover slds-popover__body"
-        onfocusout={handleLinkPanelFocusOut}
         onfocusin={handleLinkPanelFocusIn}
+        onfocusout={handleLinkPanelFocusOut}
     >
         <lightning-input
             class="link-input"
+            label={i18n.linkInput}
             name="link-input"
             value={showLinkValue}
-            label={i18n.linkInput}
             data-element-id="lightning-input-link"
             onchange={handleLinkValueChange}
             onkeydown={linkKeyboardPress}
