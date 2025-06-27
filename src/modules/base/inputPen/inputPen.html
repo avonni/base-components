@@ -39,7 +39,7 @@
                                 <li if:true={showPen}>
                                     <lightning-button-icon-stateful
                                         class="slds-is-selected"
-                                        alternative-text="Draw"
+                                        alternative-text={drawButtonAlternativeText}
                                         disabled={disabled}
                                         icon-name="utility:edit"
                                         selected={selectedDraw}
@@ -52,7 +52,7 @@
                                 <li if:true={showPaint}>
                                     <lightning-button-icon-stateful
                                         class="slds-is-selected"
-                                        alternative-text="Paint"
+                                        alternative-text={paintButtonAlternativeText}
                                         disabled={disabled}
                                         icon-name="utility:brush"
                                         selected={selectedPaint}
@@ -71,7 +71,7 @@
                                             avonni-input-pen__custom-icon
                                         "
                                         disabled={disabled}
-                                        title="Ink"
+                                        title={inkButtonAlternativeText}
                                         data-element-id="ink-tool"
                                         data-group-name="button"
                                         onclick={setInk}
@@ -91,7 +91,7 @@
                                             avonni-input-pen__custom-icon
                                         "
                                         disabled={disabled}
-                                        title="Erase"
+                                        title={eraseButtonAlternativeText}
                                         data-element-id="erase-tool"
                                         data-group-name="button"
                                         onclick={setErase}
@@ -107,7 +107,8 @@
                         <li
                             if:true={showSize}
                             class="slds-m-left_xx-small"
-                            title="Pen size"
+                            title={sizeButtonAlternativeText}
+                            data-element-id="size-picker-li"
                         >
                             <c-combobox
                                 class="avonni-input-pen__size-picker"
@@ -127,7 +128,8 @@
                         <li
                             if:true={showColor}
                             class="slds-m-left_xx-small"
-                            title="Pen color"
+                            title={colorButtonAlternativeText}
+                            data-element-id="color-picker-li"
                         >
                             <c-color-picker
                                 disabled={disabled}
@@ -142,7 +144,8 @@
                         <li
                             if:true={showBackground}
                             class="slds-m-left_xx-small"
-                            title="Background color"
+                            title={backgroundButtonAlternativeText}
+                            data-element-id="background-color-picker-li"
                         >
                             <c-color-picker
                                 colors={defaultBackgroundColors}
@@ -165,17 +168,13 @@
                         >
                             <slot name="actions"> </slot>
                         </li>
-                        <li
-                            if:true={showDownload}
-                            class="slds-col_bump-left"
-                            title="Download PNG"
-                        >
+                        <li if:true={showDownload} class="slds-col_bump-left">
                             <lightning-button-icon
-                                alternative-text="download PNG"
+                                alternative-text={downloadButtonAlternativeText}
                                 disabled={hasValue}
                                 icon-name="utility:download"
                                 variant="container"
-                                data-element-id="download"
+                                data-element-id="download-button"
                                 data-group-name="button"
                                 onclick={handleDownload}
                             >
@@ -189,27 +188,25 @@
                                     slds-m-left_xx-small
                                 "
                             >
-                                <li if:true={showUndo} title="Undo">
+                                <li if:true={showUndo}>
                                     <lightning-button-icon
-                                        alternative-text="Undo"
+                                        alternative-text={undoButtonAlternativeText}
                                         disabled={disabledUndoButton}
                                         icon-name="utility:undo"
-                                        title="Undo"
                                         variant="base"
-                                        data-element-id="undo"
+                                        data-element-id="undo-button"
                                         data-group-name="button"
                                         onclick={handleUndo}
                                     >
                                     </lightning-button-icon>
                                 </li>
-                                <li if:true={showRedo} title="Redo">
+                                <li if:true={showRedo}>
                                     <lightning-button-icon
-                                        alternative-text="Redo"
+                                        alternative-text={redoButtonAlternativeText}
                                         disabled={disabledRedoButton}
                                         icon-name="utility:redo"
-                                        title="Redo"
                                         variant="base"
-                                        data-element-id="redo"
+                                        data-element-id="redo-button"
                                         data-group-name="button"
                                         onclick={handleRedo}
                                     >
@@ -230,11 +227,10 @@
                     <lightning-button-icon
                         if:true={showClear}
                         class="avonni-input-pen__refresh-button"
-                        alternative-text="Refresh"
+                        alternative-text={clearButtonAlternativeText}
                         disabled={disabled}
                         icon-name="utility:refresh"
                         size="large"
-                        title="Refresh"
                         variant="bare"
                         data-element-id="clear-button"
                         data-group-name="button"

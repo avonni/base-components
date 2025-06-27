@@ -113,27 +113,161 @@ describe('Input pen', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.backgroundColor).toBe('#ffffff00');
+            expect(element.backgroundButtonAlternativeText).toBe(
+                'Background color'
+            );
+            expect(element.clearButtonAlternativeText).toBe('Clear');
+            expect(element.color).toBe('#000');
+            expect(element.colorButtonAlternativeText).toBe('Pen color');
+            expect(element.disabled).toBeFalsy();
             expect(element.disabledButtons).toMatchObject([]);
+            expect(element.downloadButtonAlternativeText).toBe('Download PNG');
+            expect(element.drawButtonAlternativeText).toBe('Draw');
+            expect(element.eraseButtonAlternativeText).toBe('Erase');
             expect(element.fieldLevelHelp).toBeUndefined();
+            expect(element.hideControls).toBeFalsy();
+            expect(element.inkButtonAlternativeText).toBe('Ink');
             expect(element.label).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
-            expect(element.backgroundColor).toBe('#ffffff00');
-            expect(element.color).toBe('#000');
-            expect(element.disabled).toBeFalsy();
-            expect(element.hideControls).toBeFalsy();
             expect(element.mode).toBe('draw');
+            expect(element.paintButtonAlternativeText).toBe('Paint');
             expect(element.readOnly).toBeFalsy();
+            expect(element.redoButtonAlternativeText).toBe('Redo');
             expect(element.required).toBeFalsy();
             expect(element.showSignaturePad).toBeFalsy();
             expect(element.size).toBe(3);
+            expect(element.sizeButtonAlternativeText).toBe('Size');
+            expect(element.undoButtonAlternativeText).toBe('Undo');
             expect(element.validity).toBe(true);
             expect(element.value).toBeUndefined();
             expect(element.variant).toBe('bottom-toolbar');
         });
 
+        describe('Alternative texts', () => {
+            it('Background Alternative Text', () => {
+                element.backgroundButtonAlternativeText = 'Arrière-plan';
+                return Promise.resolve().then(() => {
+                    const background = element.shadowRoot.querySelector(
+                        '[data-element-id="background-color-picker-li"]'
+                    );
+                    expect(background.title).toBe('Arrière-plan');
+                });
+            });
+
+            it('Clear Alternative Text', () => {
+                element.clearButtonAlternativeText = 'Effacer';
+                return Promise.resolve().then(() => {
+                    const clear = element.shadowRoot.querySelector(
+                        '[data-element-id="clear-button"]'
+                    );
+                    expect(clear.alternativeText).toBe('Effacer');
+                });
+            });
+
+            it('Color Alternative Text', () => {
+                element.colorButtonAlternativeText = 'Couleur';
+
+                return Promise.resolve().then(() => {
+                    const color = element.shadowRoot.querySelector(
+                        '[data-element-id="color-picker-li"]'
+                    );
+                    expect(color.title).toBe('Couleur');
+                });
+            });
+
+            it('Download Alternative Text', () => {
+                element.downloadButtonAlternativeText = 'Télécharger';
+
+                return Promise.resolve().then(() => {
+                    const download = element.shadowRoot.querySelector(
+                        '[data-element-id="download-button"]'
+                    );
+                    expect(download.alternativeText).toBe('Télécharger');
+                });
+            });
+
+            it('Draw Alternative Text', () => {
+                element.drawButtonAlternativeText = 'Dessiner';
+
+                return Promise.resolve().then(() => {
+                    const draw = element.shadowRoot.querySelector(
+                        '[data-element-id="draw-tool"]'
+                    );
+                    expect(draw.alternativeText).toBe('Dessiner');
+                });
+            });
+
+            it('Erase Alternative Text', () => {
+                element.eraseButtonAlternativeText = 'Effacer';
+
+                return Promise.resolve().then(() => {
+                    const erase = element.shadowRoot.querySelector(
+                        '[data-element-id="erase-tool"]'
+                    );
+                    expect(erase.title).toBe('Effacer');
+                });
+            });
+
+            it('Ink Alternative Text', () => {
+                element.inkButtonAlternativeText = 'Ink';
+
+                return Promise.resolve().then(() => {
+                    const ink = element.shadowRoot.querySelector(
+                        '[data-element-id="ink-tool"]'
+                    );
+                    expect(ink.title).toBe('Ink');
+                });
+            });
+
+            it('Paint Alternative Text', () => {
+                element.paintButtonAlternativeText = 'Peindre';
+                return Promise.resolve().then(() => {
+                    const paint = element.shadowRoot.querySelector(
+                        '[data-element-id="paint-tool"]'
+                    );
+                    expect(paint.alternativeText).toBe('Peindre');
+                });
+            });
+
+            it('Redo Alternative Text', () => {
+                element.redoButtonAlternativeText = 'Refaire';
+
+                return Promise.resolve().then(() => {
+                    const redo = element.shadowRoot.querySelector(
+                        '[data-element-id="redo-button"]'
+                    );
+                    expect(redo.alternativeText).toBe('Refaire');
+                });
+            });
+
+            it('Size Alternative Text', () => {
+                element.sizeButtonAlternativeText = 'Taille';
+
+                return Promise.resolve().then(() => {
+                    const size = element.shadowRoot.querySelector(
+                        '[data-element-id="size-picker-li"]'
+                    );
+                    expect(size.title).toBe('Taille');
+                });
+            });
+
+            it('Undo Alternative Text', () => {
+                element.undoButtonAlternativeText = 'Annuler';
+
+                return Promise.resolve().then(() => {
+                    const undo = element.shadowRoot.querySelector(
+                        '[data-element-id="undo-button"]'
+                    );
+                    expect(undo.alternativeText).toBe('Annuler');
+                });
+            });
+        });
+
         describe('backgroundColor', () => {
             it('Passed to the component', () => {
                 element.backgroundColor = '#00aa00';
+
                 return Promise.resolve().then(() => {
                     const backgroundCtx = element.shadowRoot
                         .querySelector('[data-element-id="background-canvas"]')
@@ -341,7 +475,7 @@ describe('Input pen', () => {
 
                 return Promise.resolve().then(() => {
                     const download = element.shadowRoot.querySelector(
-                        '[data-element-id="download"]'
+                        '[data-element-id="download-button"]'
                     );
                     expect(download).toBeFalsy();
                 });
@@ -396,7 +530,7 @@ describe('Input pen', () => {
 
                 return Promise.resolve().then(() => {
                     const redo = element.shadowRoot.querySelector(
-                        '[data-element-id="redo"]'
+                        '[data-element-id="redo-button"]'
                     );
                     expect(redo).toBeFalsy();
                 });
@@ -418,7 +552,7 @@ describe('Input pen', () => {
 
                 return Promise.resolve().then(() => {
                     const undo = element.shadowRoot.querySelector(
-                        '[data-element-id="undo"]'
+                        '[data-element-id="undo-button"]'
                     );
                     expect(undo).toBeFalsy();
                 });
@@ -601,7 +735,7 @@ describe('Input pen', () => {
 
             return Promise.resolve().then(() => {
                 const downloadButton = element.shadowRoot.querySelector(
-                    '[data-element-id="download"]'
+                    '[data-element-id="download-button"]'
                 );
                 downloadButton.click();
                 expect(downloaded).toBeTruthy();
@@ -616,7 +750,7 @@ describe('Input pen', () => {
 
             return Promise.resolve().then(() => {
                 const undoButton = element.shadowRoot.querySelector(
-                    '[data-element-id="undo"]'
+                    '[data-element-id="undo-button"]'
                 );
                 undoButton.click();
                 expect(undoSpy).not.toHaveBeenCalled();
@@ -628,7 +762,7 @@ describe('Input pen', () => {
 
             return Promise.resolve().then(() => {
                 const redoButton = element.shadowRoot.querySelector(
-                    '[data-element-id="undo"]'
+                    '[data-element-id="redo-button"]'
                 );
                 redoButton.click();
                 expect(redoSpy).not.toHaveBeenCalled();

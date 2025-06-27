@@ -55,9 +55,20 @@ const DEFAULT_BACKGROUND_COLORS = [
     '#3a3a3a',
     '#000000'
 ];
+const DEFAULT_BACKGROUND_BUTTON_ALTERNATIVE_TEXT = 'Background color';
 const DEFAULT_BACKGROUND_COLOR = '#ffffff00';
+const DEFAULT_CLEAR_BUTTON_ALTERNATIVE_TEXT = 'Clear';
 const DEFAULT_COLOR = '#000';
+const DEFAULT_COLOR_BUTTON_ALTERNATIVE_TEXT = 'Pen color';
+const DEFAULT_DOWNLOAD_BUTTON_ALTERNATIVE_TEXT = 'Download PNG';
+const DEFAULT_DRAW_BUTTON_ALTERNATIVE_TEXT = 'Draw';
+const DEFAULT_ERASE_BUTTON_ALTERNATIVE_TEXT = 'Erase';
+const DEFAULT_INK_BUTTON_ALTERNATIVE_TEXT = 'Ink';
+const DEFAULT_PAINT_BUTTON_ALTERNATIVE_TEXT = 'Paint';
+const DEFAULT_REDO_BUTTON_ALTERNATIVE_TEXT = 'Redo';
 const DEFAULT_SIZE = 3;
+const DEFAULT_SIZE_BUTTON_ALTERNATIVE_TEXT = 'Size';
+const DEFAULT_UNDO_BUTTON_ALTERNATIVE_TEXT = 'Undo';
 
 /**
  * @class
@@ -67,12 +78,70 @@ const DEFAULT_SIZE = 3;
  */
 export default class InputPen extends LightningElement {
     /**
+     * Alternative text for the background button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Background color'
+     */
+    @api backgroundButtonAlternativeText =
+        DEFAULT_BACKGROUND_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the clear button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Clear'
+     */
+    @api clearButtonAlternativeText = DEFAULT_CLEAR_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the color button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Pen color'
+     */
+    @api colorButtonAlternativeText = DEFAULT_COLOR_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the download button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Download PNG'
+     */
+    @api downloadButtonAlternativeText =
+        DEFAULT_DOWNLOAD_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the draw button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Draw'
+     */
+    @api drawButtonAlternativeText = DEFAULT_DRAW_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the erase button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Erase'
+     */
+    @api eraseButtonAlternativeText = DEFAULT_ERASE_BUTTON_ALTERNATIVE_TEXT;
+    /**
      * Help text detailing the purpose and function of the input.
      *
      * @type {string}
      * @public
      */
     @api fieldLevelHelp;
+    /**
+     * Alternative text for the ink button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Ink'
+     */
+    @api inkButtonAlternativeText = DEFAULT_INK_BUTTON_ALTERNATIVE_TEXT;
     /**
      * Text label for the input.
      *
@@ -87,6 +156,38 @@ export default class InputPen extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
+    /**
+     * Alternative text for the paint button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Paint'
+     */
+    @api paintButtonAlternativeText = DEFAULT_PAINT_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the redo button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Redo'
+     */
+    @api redoButtonAlternativeText = DEFAULT_REDO_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the size button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Size'
+     */
+    @api sizeButtonAlternativeText = DEFAULT_SIZE_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the undo button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Undo'
+     */
+    @api undoButtonAlternativeText = DEFAULT_UNDO_BUTTON_ALTERNATIVE_TEXT;
 
     _color = DEFAULT_COLOR;
     _disabled = false;

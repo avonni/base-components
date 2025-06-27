@@ -3,13 +3,123 @@ import { InputPen } from '../__examples__/inputPen';
 export default {
     title: 'Example/Input Pen',
     argTypes: {
-        label: {
+        backgroundColor: {
+            name: 'background-color',
+            control: {
+                type: 'color'
+            },
+            description: 'Defines the color of the background.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff00' },
+                category: 'Pen'
+            }
+        },
+        backgroundButtonAlternativeText: {
+            name: 'background-button-alternative-text',
             control: {
                 type: 'text'
             },
-            description: 'Text label for the input.',
+            description: 'Alternative text for the background button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Background color' },
+                category: 'Alternative Text'
+            }
+        },
+        clearButtonAlternativeText: {
+            name: 'clear-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the clear button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Clear' },
+                category: 'Alternative Text'
+            }
+        },
+        color: {
+            control: {
+                type: 'color'
+            },
+            description: 'Defines the color of the pen.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#000' },
+                category: 'Pen'
+            }
+        },
+        colorButtonAlternativeText: {
+            name: 'color-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the color button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Pen color' },
+                category: 'Alternative Text'
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Validation'
+            }
+        },
+        disabledButtons: {
+            name: 'disabled-buttons',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, size, color, background, download, undo, redo, clear.',
+            table: {
+                type: { summary: 'string[]' },
+                category: 'Toolbar'
+            }
+        },
+        downloadButtonAlternativeText: {
+            name: 'download-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the download button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Download PNG' },
+                category: 'Alternative Text'
+            }
+        },
+        drawButtonAlternativeText: {
+            name: 'draw-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the draw button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Draw' },
+                category: 'Alternative Text'
+            }
+        },
+        eraseButtonAlternativeText: {
+            name: 'erase-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the erase button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Erase' },
+                category: 'Alternative Text'
             }
         },
         fieldLevelHelp: {
@@ -23,25 +133,61 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        value: {
+        hideControls: {
+            name: 'hide-controls',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, hide the control bar.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Toolbar'
+            }
+        },
+        inkButtonAlternativeText: {
+            name: 'ink-button-alternative-text',
             control: {
                 type: 'text'
             },
-            description: "dataUrl like 'data:image/png;base64, …'",
+            description: 'Alternative text for the ink button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Ink' },
+                category: 'Alternative Text'
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Text label for the input.',
             table: {
                 type: { summary: 'string' }
             }
         },
-        disabled: {
+        mode: {
             control: {
-                type: 'boolean'
+                type: 'select'
             },
-            description:
-                'If present, the input field is disabled and users cannot interact with it.',
+            options: ['draw', 'paint', 'ink', 'erase'],
+            description: 'Valid modes include draw and erase.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Validation'
+                type: { summary: 'string' },
+                defaultValue: { summary: 'draw' },
+                category: 'Pen'
+            }
+        },
+        paintButtonAlternativeText: {
+            name: 'paint-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the paint button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Paint' },
+                category: 'Alternative Text'
             }
         },
         readOnly: {
@@ -57,6 +203,18 @@ export default {
                 category: 'Validation'
             }
         },
+        redoButtonAlternativeText: {
+            name: 'redo-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the redo button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Redo' },
+                category: 'Alternative Text'
+            }
+        },
         required: {
             control: {
                 type: 'boolean'
@@ -69,54 +227,8 @@ export default {
                 category: 'Validation'
             }
         },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: ['top-toolbar', 'bottom-toolbar'],
-            description:
-                'The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar and top-toolbar which causes the toolbar to be displayed below the box.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'bottom-toolbar' },
-                category: 'Toolbar'
-            }
-        },
-        mode: {
-            control: {
-                type: 'select'
-            },
-            options: ['draw', 'paint', 'ink', 'erase'],
-            description: 'Valid modes include draw and erase.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'draw' },
-                category: 'Pen'
-            }
-        },
-        backgroundColor: {
-            control: {
-                type: 'color'
-            },
-            description: 'Defines the color of the background.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff00' },
-                category: 'Pen'
-            }
-        },
-        color: {
-            control: {
-                type: 'color'
-            },
-            description: 'Defines the color of the pen.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '#000' },
-                category: 'Pen'
-            }
-        },
         showSignaturePad: {
+            name: 'show-signature-pad',
             control: {
                 type: 'boolean'
             },
@@ -140,40 +252,74 @@ export default {
                 category: 'Pen'
             }
         },
-        hideControls: {
-            name: 'hide-controls',
+        sizeButtonAlternativeText: {
+            name: 'size-button-alternative-text',
             control: {
-                type: 'boolean'
+                type: 'text'
             },
-            description: 'If present, hide the control bar.',
+            description: 'Alternative text for the size button.',
             table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Toolbar'
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Size' },
+                category: 'Alternative Text'
             }
         },
-        disabledButtons: {
-            name: 'disabled-buttons',
+        undoButtonAlternativeText: {
+            name: 'undo-button-alternative-text',
             control: {
-                type: 'object'
+                type: 'text'
             },
-            description:
-                'Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, size, color, background, download, undo, redo, clear.',
+            description: 'Alternative text for the undo button.',
             table: {
-                type: { summary: 'string[]' },
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Undo' },
+                category: 'Alternative Text'
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description: "dataUrl like 'data:image/png;base64, …'",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['top-toolbar', 'bottom-toolbar'],
+            description:
+                'The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar and top-toolbar which causes the toolbar to be displayed below the box.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'bottom-toolbar' },
                 category: 'Toolbar'
             }
         }
     },
     args: {
+        backgroundColor: '#ffffff00',
+        backgroundButtonAlternativeText: 'Background color',
+        clearButtonAlternativeText: 'Clear',
         color: '#000',
+        colorButtonAlternativeText: 'Pen color',
         disabled: false,
+        downloadButtonAlternativeText: 'Download PNG',
+        drawButtonAlternativeText: 'Draw',
+        eraseButtonAlternativeText: 'Erase',
         hideControls: false,
+        inkButtonAlternativeText: 'Ink',
         mode: 'draw',
+        paintButtonAlternativeText: 'Paint',
         readOnly: false,
+        redoButtonAlternativeText: 'Redo',
         required: false,
         showSignaturePad: false,
         size: 3,
+        sizeButtonAlternativeText: 'Size',
+        undoButtonAlternativeText: 'Undo',
         variant: 'bottom-toolbar'
     }
 };
