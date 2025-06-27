@@ -47,6 +47,7 @@ export default {
             }
         },
         errorMessage: {
+            name: 'error-message',
             control: {
                 type: 'text'
             },
