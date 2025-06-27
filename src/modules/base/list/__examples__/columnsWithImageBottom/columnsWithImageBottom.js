@@ -60,7 +60,7 @@ export default class ColumnsWithImageBottom extends LightningElement {
             infos: [{ label: 'info 1' }, { label: 'info 2', href: '#' }],
             icons: ['utility:share', 'utility:refresh'],
             imageSrc:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
             name: 'name-item-4'
         },
         {

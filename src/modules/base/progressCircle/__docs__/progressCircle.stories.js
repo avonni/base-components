@@ -49,6 +49,16 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the progress circle.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         label: {
             control: {
                 type: 'text'

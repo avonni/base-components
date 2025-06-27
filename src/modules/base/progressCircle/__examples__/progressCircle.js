@@ -6,6 +6,7 @@ customElements.define(
 );
 
 export const ProgressCircle = ({
+    alternativeText,
     title,
     titlePosition,
     value,
@@ -17,6 +18,7 @@ export const ProgressCircle = ({
     isLoading
 }) => {
     const element = document.createElement('ac-base-progress-circle');
+    element.alternativeText = alternativeText;
     element.title = title;
     element.titlePosition = titlePosition;
     element.value = value;

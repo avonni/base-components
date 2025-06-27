@@ -21,6 +21,7 @@ export const Image = ({
     width,
     magnifierType,
     magnifierAttributes,
+    compareAlternativeText,
     compareSrc,
     compareAttributes
 }) => {
@@ -43,6 +44,7 @@ export const Image = ({
     element.width = width;
     element.magnifierType = magnifierType;
     element.magnifierAttributes = magnifierAttributes;
+    element.compareAlternativeText = compareAlternativeText;
     element.compareSrc = compareSrc;
     element.compareAttributes = compareAttributes;
     return element;

@@ -45,6 +45,7 @@ const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 const SELECTED_OPTIONS_ACTIONS = [
     {
         name: 'remove',
+        alternativeText: 'Remove option',
         iconName: 'utility:close'
     }
 ];

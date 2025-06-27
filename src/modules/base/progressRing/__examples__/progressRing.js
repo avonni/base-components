@@ -5,8 +5,16 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const ProgressRing = ({ direction, size, value, variant, hideIcon }) => {
+export const ProgressRing = ({
+    alternativeText,
+    direction,
+    size,
+    value,
+    variant,
+    hideIcon
+}) => {
     const element = document.createElement('ac-base-progress-ring');
+    element.alternativeText = alternativeText;
     element.direction = direction;
     element.size = size;
     element.value = value;

@@ -181,6 +181,18 @@ export default {
                 category: 'primary button'
             }
         },
+        primaryButtonAlternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the button icon.',
+            table: {
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
         primaryButtonVariant: {
             name: 'variant',
             control: {
@@ -251,6 +263,18 @@ export default {
             },
             description:
                 'The text to be displayed inside the secondary button.',
+            table: {
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        secondaryButtonAlternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the button icon.',
             table: {
                 type: { summary: 'string' },
                 category: 'secondary button'
@@ -392,8 +416,10 @@ BaseTopCenterWithButtonIcons.args = {
     height: 300,
     contentVerticalAlignment: 'top',
     contentHorizontalAlignment: 'center',
+    primaryButtonAlternativeText: 'Pinned',
     primaryButtonIconName: 'utility:pin',
     primaryButtonVariant: 'brand',
+    secondaryButtonAlternativeText: 'Question',
     secondaryButtonIconName: 'utility:question',
     secondaryButtonVariant: 'brand',
     maxWidth: 2000

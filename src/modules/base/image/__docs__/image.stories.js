@@ -217,6 +217,17 @@ export default {
                 category: 'Magnifier'
             }
         },
+        compareAlternativeText: {
+            name: 'compare-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: "The value to set for the 'alt' attribute.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Compare'
+            }
+        },
         compareSrc: {
             name: 'compare-src',
             control: {
@@ -323,6 +334,7 @@ export const Compare = Template.bind({});
 Compare.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
+    compareAlternativeText: 'Another alternative text',
     compareSrc:
         'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
     compareAttributes: {

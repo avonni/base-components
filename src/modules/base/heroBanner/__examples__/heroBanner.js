@@ -14,11 +14,13 @@ export const HeroBanner = ({
     imageLayout,
     imagePosition,
     maxWidth,
+    primaryButtonAlternativeText,
     primaryButtonIconName,
     primaryButtonIconPosition,
     primaryButtonIconSize,
     primaryButtonLabel,
     primaryButtonVariant,
+    secondaryButtonAlternativeText,
     secondaryButtonIconName,
     secondaryButtonIconPosition,
     secondaryButtonIconSize,
@@ -37,11 +39,13 @@ export const HeroBanner = ({
     element.imageLayout = imageLayout;
     element.imagePosition = imagePosition;
     element.maxWidth = maxWidth;
+    element.primaryButtonAlternativeText = primaryButtonAlternativeText;
     element.primaryButtonIconName = primaryButtonIconName;
     element.primaryButtonIconPosition = primaryButtonIconPosition;
     element.primaryButtonIconSize = primaryButtonIconSize;
     element.primaryButtonLabel = primaryButtonLabel;
     element.primaryButtonVariant = primaryButtonVariant;
+    element.secondaryButtonAlternativeText = secondaryButtonAlternativeText;
     element.secondaryButtonIconName = secondaryButtonIconName;
     element.secondaryButtonIconPosition = secondaryButtonIconPosition;
     element.secondaryButtonIconSize = secondaryButtonIconSize;

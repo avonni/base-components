@@ -71,6 +71,14 @@ export default class Image extends LightningElement {
     @api alternativeText;
 
     /**
+     * The value to set for the 'alt' attribute on the image to compare with.
+     *
+     * @public
+     * @type {string}
+     */
+    @api compareAlternativeText;
+
+    /**
      * The image to compare with.
      *
      * @public
