@@ -5,7 +5,12 @@
     >
         <button
             if:true={showFirstButton}
-            class={computedFirstButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-first"
             onclick={first}
@@ -20,7 +25,12 @@
             {firstButtonLabel}
         </button>
         <button
-            class={computedPreviousButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-previous"
             onclick={previous}
@@ -68,7 +78,12 @@
             {ellipsisText}
         </button>
         <button
-            class={computedNextButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             disabled={disabledRightButtons}
             data-element-id="lightning-button-next"
             onclick={next}
@@ -85,7 +100,12 @@
 
         <button
             if:true={showLastButton}
-            class={computedLastButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             disabled={disabledRightButtons}
             data-element-id="lightning-button-last"
             onclick={last}
