@@ -24,8 +24,8 @@ export default class Pagination extends LightningElement {
     @api title;
 
     _position = PANEL_POSITIONS.default;
-    _size = PANEL_SIZES.default;
     _showPanel = false;
+    _size = PANEL_SIZES.default;
 
     _isRight = true;
     showTitleSlot = true;
@@ -43,21 +43,21 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Get title slot DOM element.
-     *
-     * @type {Element}
-     */
-    get titleSlot() {
-        return this.template.querySelector('slot[name=title]');
-    }
-
-    /**
      * Get Panel body slot DOM element.
      *
      * @type {Element}
      */
     get panelBodySlot() {
         return this.template.querySelector('slot[name=panel-body]');
+    }
+
+    /**
+     * Get title slot DOM element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
     }
 
     /*
@@ -77,7 +77,6 @@ export default class Pagination extends LightningElement {
     get position() {
         return this._position;
     }
-
     set position(position) {
         this._position = normalizeString(position, {
             fallbackValue: PANEL_POSITIONS.default,
@@ -96,7 +95,6 @@ export default class Pagination extends LightningElement {
     get showPanel() {
         return this._showPanel;
     }
-
     set showPanel(value) {
         this._showPanel = normalizeBoolean(value);
     }
@@ -112,7 +110,6 @@ export default class Pagination extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: PANEL_SIZES.default,
@@ -133,11 +130,11 @@ export default class Pagination extends LightningElement {
      */
     get computedOuterClass() {
         return classSet('slds-panel slds-panel_docked')
-            .add(`slds-size_${this._size}`)
-            .add(`slds-panel_docked-${this._position}`)
+            .add(`slds-size_${this.size}`)
+            .add(`slds-panel_docked-${this.position}`)
             .add({
-                'slds-is-open': this._showPanel,
-                'slds-is-hidden': !this._showPanel
+                'slds-is-open': this.showPanel,
+                'slds-is-hidden': !this.showPanel
             })
             .toString();
     }
@@ -168,16 +165,6 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Toggle the panel.
-     *
-     * @public
-     */
-    @api
-    toggle() {
-        this._showPanel = !this._showPanel;
-    }
-
-    /**
      * Open the panel.
      *
      * @public
@@ -185,5 +172,15 @@ export default class Pagination extends LightningElement {
     @api
     open() {
         this._showPanel = true;
+    }
+
+    /**
+     * Toggle the panel.
+     *
+     * @public
+     */
+    @api
+    toggle() {
+        this._showPanel = !this._showPanel;
     }
 }

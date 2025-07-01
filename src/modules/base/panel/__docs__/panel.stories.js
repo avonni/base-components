@@ -19,16 +19,6 @@ export default {
                 defaultValue: { summary: 'right' }
             }
         },
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The title can include text, and is displayed in the panel header. To include additional markup or another component, use the title slot.',
-            table: {
-                type: { summary: 'String' }
-            }
-        },
         size: {
             control: {
                 type: 'select'
@@ -39,6 +29,16 @@ export default {
             table: {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'medium' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the panel header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'String' }
             }
         }
     },
