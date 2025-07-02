@@ -254,6 +254,14 @@ const CARD_ATTRIBUTES = {
     }
 };
 
+const IMAGE_ATTRIBUTES = {
+    position: 'top',
+    height: 250,
+    cropPositionX: 50,
+    cropPositionY: 50,
+    cropFit: 'cover'
+};
+
 const SUMMARIZE_ATTRIBUTES = {
     label: 'Amount',
     fieldName: 'amount',
@@ -262,9 +270,10 @@ const SUMMARIZE_ATTRIBUTES = {
 };
 
 export {
-    GROUP_VALUES,
-    CARD_ATTRIBUTES,
-    RECORDS,
     ACTIONS,
+    CARD_ATTRIBUTES,
+    GROUP_VALUES,
+    IMAGE_ATTRIBUTES,
+    RECORDS,
     SUMMARIZE_ATTRIBUTES
 };
