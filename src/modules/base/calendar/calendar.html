@@ -131,9 +131,9 @@
                                     <td
                                         class={day.wrapperClass}
                                         key={generateKey}
-                                        aria-selected={day.selected}
                                         aria-current={day.ariaCurrent}
                                         aria-disabled={day.disabled}
+                                        aria-selected={day.computedAriaSelected}
                                         role="gridcell"
                                         tabindex={day.tabIndex}
                                         data-date={day.label}
@@ -147,14 +147,22 @@
                                         onfocus={handleDateFocus}
                                     >
                                         <span
+                                            class="slds-assistive-text"
+                                            data-element-id="day-label-assistive-text"
+                                        >
+                                            {day.computedAriaLabel}
+                                        </span>
+                                        <span
                                             class={day.labelClass}
+                                            aria-hidden="true"
                                             data-full-date={day.ts}
                                             data-date={day.label}
                                             data-disabled={day.disabled}
                                             data-element-id="span-day-label"
                                             onclick={handleSelectDate}
-                                            >{day.label}</span
                                         >
+                                            {day.label}
+                                        </span>
                                         <div
                                             if:true={day.markers.length}
                                             class="slds-is-relative"
