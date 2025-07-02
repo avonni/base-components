@@ -6,9 +6,9 @@ const AUTO_SCROLL_INCREMENT = 5;
 const AUTO_SCROLL_THRESHOLD = 50;
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
-const SHOW_MORE_BUTTON_WIDTH = 80;
 const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
+const SHOW_MORE_BUTTON_WIDTH = 80;
 
 /**
  * @class
@@ -25,7 +25,6 @@ export default class PillContainer extends LightningElement {
     _singleLine = false;
     _sortable = false;
 
-    _selectedAction;
     _dragState;
     _expandTimeOut;
     _focusedIndex = 0;
@@ -37,11 +36,18 @@ export default class PillContainer extends LightningElement {
     _preventPopoverClosing = false;
     _resizeObserver;
     _scrollingInterval;
+    _selectedAction;
     _visibleItemsCount = 0;
 
     showActionMenu = false;
     showPopover = false;
     _connected = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -525,26 +531,6 @@ export default class PillContainer extends LightningElement {
     }
 
     /**
-     * Move the reordered pill before another pill.
-     *
-     * @param {number} index Index of the pill the reordered pill is moving before.
-     */
-    moveBefore(index) {
-        if (index < 0) return;
-
-        this.clearDragBorder();
-        this._dragState.lastHoveredIndex = index;
-        const item = this.template.querySelector(
-            `[data-element-id^="li-item"][data-index="${index}"]`
-        );
-        item.classList.add('avonni-pill-container__pill_before-border');
-        this._dragState.position = 'before';
-        const position =
-            index > this._dragState.initialIndex ? index : index + 1;
-        this.updateAssistiveText(position);
-    }
-
-    /**
      * Move the reordered pill after another pill.
      *
      * @param {number} index Index of the pill the reordered pill is moving after.
@@ -580,6 +566,26 @@ export default class PillContainer extends LightningElement {
         this._dragState.position = 'after';
         const position =
             index >= this._dragState.initialIndex ? index + 1 : index + 2;
+        this.updateAssistiveText(position);
+    }
+
+    /**
+     * Move the reordered pill before another pill.
+     *
+     * @param {number} index Index of the pill the reordered pill is moving before.
+     */
+    moveBefore(index) {
+        if (index < 0) return;
+
+        this.clearDragBorder();
+        this._dragState.lastHoveredIndex = index;
+        const item = this.template.querySelector(
+            `[data-element-id^="li-item"][data-index="${index}"]`
+        );
+        item.classList.add('avonni-pill-container__pill_before-border');
+        this._dragState.position = 'before';
+        const position =
+            index > this._dragState.initialIndex ? index : index + 1;
         this.updateAssistiveText(position);
     }
 

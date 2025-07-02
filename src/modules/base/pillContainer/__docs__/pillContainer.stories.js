@@ -84,9 +84,9 @@ export default {
         }
     },
     args: {
+        alternativeText: 'Selected Options:',
         isCollapsible: false,
         isExpanded: false,
-        alternativeText: 'Selected Options:',
         singleLine: false,
         sortable: false
     }
