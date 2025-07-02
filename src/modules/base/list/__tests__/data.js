@@ -6,7 +6,8 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        imageAlternativeText: 'Item 1',
         name: 'item-1',
         checked: true
     },
@@ -18,6 +19,7 @@ export const ITEMS = [
         },
         imageSrc:
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+        imageAlternativeText: 'Item 2',
         name: 'item-2',
         checked: true
     },
@@ -40,7 +42,8 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        imageAlternativeText: 'Item 5',
         name: 'item-5'
     }
 ];

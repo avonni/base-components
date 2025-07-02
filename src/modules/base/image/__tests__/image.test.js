@@ -26,6 +26,14 @@ describe('Image', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.alternativeText).toBeUndefined();
+            expect(element.compare).toBeFalsy();
+            expect(element.compareAlternativeText).toBeUndefined();
+            expect(element.compareAttributes.orientation).toBe('horizontal');
+            expect(element.compareAttributes.moveOn).toBe('click');
+            expect(element.compareAttributes.originalLabel).toBeUndefined();
+            expect(element.compareAttributes.compareLabel).toBeUndefined();
+            expect(element.compareAttributes.showLabelsOnHover).toBeFalsy();
+            expect(element.compareSrc).toBeUndefined();
             expect(element.cropFit).toBe('cover');
             expect(element.cropPositionX).toBe('50');
             expect(element.cropPositionY).toBe('50');
@@ -34,21 +42,6 @@ describe('Image', () => {
             expect(element.fluidGrow).toBeFalsy();
             expect(element.height).toBeUndefined();
             expect(element.lazyLoading).toBe('auto');
-            expect(element.sizes).toBeUndefined();
-            expect(element.position).toBeUndefined();
-            expect(element.src).toBeUndefined();
-            expect(element.srcset).toBeUndefined();
-            expect(element.staticImages).toBeFalsy();
-            expect(element.thumbnail).toBeFalsy();
-            expect(element.width).toBeUndefined();
-            expect(element.compareSrc).toBeUndefined();
-            expect(element.compare).toBeFalsy();
-            expect(element.compareAttributes.orientation).toBe('horizontal');
-            expect(element.compareAttributes.moveOn).toBe('click');
-            expect(element.compareAttributes.originalLabel).toBeUndefined();
-            expect(element.compareAttributes.compareLabel).toBeUndefined();
-            expect(element.compareAttributes.showLabelsOnHover).toBeFalsy();
-            expect(element.magnifierType).toBeUndefined();
             expect(element.magnifierAttributes.position).toBe('auto');
             expect(element.magnifierAttributes.horizontalOffset).toBe(0);
             expect(element.magnifierAttributes.verticalOffset).toBe(0);
@@ -56,6 +49,14 @@ describe('Image', () => {
             expect(element.magnifierAttributes.zoomFactor).toBe(2);
             expect(element.magnifierAttributes.zoomRatioWidth).toBe('100px');
             expect(element.magnifierAttributes.zoomRatioHeight).toBe('100px');
+            expect(element.magnifierType).toBeUndefined();
+            expect(element.position).toBeUndefined();
+            expect(element.sizes).toBeUndefined();
+            expect(element.src).toBeUndefined();
+            expect(element.srcset).toBeUndefined();
+            expect(element.staticImages).toBeFalsy();
+            expect(element.thumbnail).toBeFalsy();
+            expect(element.width).toBeUndefined();
         });
 
         describe('alternativeText', () => {

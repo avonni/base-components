@@ -1681,13 +1681,35 @@ export default class DateTimePicker extends LightningElement {
             );
             const disabled =
                 dayTime.disabled || this._isDisabledTime(day, endTime);
-
+            const startTimeLabel = day.toLocaleString({
+                hour: this.timeFormatHour,
+                minute: this.timeFormatMinute,
+                second: this.timeFormatSecond,
+                hour12: this.timeFormatHour12
+            });
+            let timeLabel = startTimeLabel;
+            if (this.showEndTime) {
+                const endTimeLabel = endTime.toLocaleString({
+                    hour: this.timeFormatHour,
+                    minute: this.timeFormatMinute,
+                    second: this.timeFormatSecond,
+                    hour12: this.timeFormatHour12
+                });
+                timeLabel += ' - ' + endTimeLabel;
+            }
+            const dateLabel = day.toLocaleString({
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
             const time = {
                 startTimeISO: day.toISO(),
                 endTimeISO: endTime.toISO(),
                 disabled,
                 selected,
-                show: !disabled || this.showDisabledDates
+                show: !disabled || this.showDisabledDates,
+                computedAriaLabel: `${timeLabel}, ${dateLabel}`
             };
 
             // If the variant is 'timeline', pushes a two-level deep object into dayTime.times

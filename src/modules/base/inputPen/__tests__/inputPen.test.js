@@ -374,6 +374,37 @@ describe('Input pen', () => {
             });
         });
 
+        describe('reset button', () => {
+            it('mouseclick', () => {
+                const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+
+                return Promise.resolve().then(() => {
+                    const clearButton = element.shadowRoot.querySelector(
+                        '[data-element-id="clear-button"]'
+                    );
+                    clearButton.dispatchEvent(new CustomEvent('mousedown'));
+                    expect(clearSpy).toHaveBeenCalled();
+                });
+            });
+
+            it('keydown', () => {
+                const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+
+                return Promise.resolve().then(() => {
+                    const clearButton = element.shadowRoot.querySelector(
+                        '[data-element-id="clear-button"]'
+                    );
+                    clearButton.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'Enter',
+                            bubbles: true
+                        })
+                    );
+                    expect(clearSpy).toHaveBeenCalled();
+                });
+            });
+        });
+
         describe('variant', () => {
             it('bottom-toolbar', () => {
                 element.variant = 'bottom-toolbar';

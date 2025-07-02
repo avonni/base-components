@@ -33,6 +33,7 @@ describe('Barcode', () => {
     });
 
     it('Barcode: Default attributes', () => {
+        expect(element.alternativeText).toBeUndefined();
         expect(element.background).toBe('#ffffff');
         expect(element.checksum).toBe(false);
         expect(element.color).toBe('#000000');
@@ -46,6 +47,17 @@ describe('Barcode', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    it('Barcode: alternative-text', () => {
+        element.alternativeText = 'Test';
+
+        return Promise.resolve().then(() => {
+            const assistiveText = element.shadowRoot.querySelector(
+                '[data-element-id="barcode-assistive-text"]'
+            );
+            expect(assistiveText.textContent).toBe('Test');
+        });
+    });
 
     // VALUES
     it('Barcode: type', () => {

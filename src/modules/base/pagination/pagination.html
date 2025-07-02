@@ -11,6 +11,7 @@
                 avonni-pagination__navigation-button
                 slds-button_neutral
             "
+            aria-label={computedFirstButtonAriaLabel}
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-first"
             onclick={first}
@@ -31,6 +32,7 @@
                 avonni-pagination__navigation-button
                 slds-button_neutral
             "
+            aria-label={computedPreviousButtonAriaLabel}
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-previous"
             onclick={previous}
@@ -70,6 +72,7 @@
         <button
             if:true={showNextEllipsis}
             class={computedButtonClass}
+            aria-label={computedEllipsisButtonAriaLabel}
             disabled={disabled}
             type="button"
             data-element-id="button-ellipsis"
@@ -84,6 +87,7 @@
                 avonni-pagination__navigation-button
                 slds-button_neutral
             "
+            aria-label={computedNextButtonAriaLabel}
             disabled={disabledRightButtons}
             data-element-id="lightning-button-next"
             onclick={next}
@@ -97,7 +101,6 @@
             ></c-primitive-icon>
             {nextButtonLabel}
         </button>
-
         <button
             if:true={showLastButton}
             class="
@@ -106,6 +109,7 @@
                 avonni-pagination__navigation-button
                 slds-button_neutral
             "
+            aria-label={computedLastButtonAriaLabel}
             disabled={disabledRightButtons}
             data-element-id="lightning-button-last"
             onclick={last}

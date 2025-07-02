@@ -19,6 +19,14 @@ const DEFAULT_BACKGROUND_COLOR = '#ffffff';
  * @public
  */
 export default class Qrcode extends LightningElement {
+    /**
+     * The assistive text for the QR code.
+     *
+     * @type {string}
+     * @public
+     */
+    @api alternativeText;
+
     _background;
     _borderColor;
     _borderWidth = DEFAULT_BORDER_WIDTH;

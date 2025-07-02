@@ -19,6 +19,7 @@
                                 <ul
                                     class="slds-path__nav slds-scrollable_x"
                                     role="listbox"
+                                    aria-labelledby="slds-path__stage-name"
                                     aria-orientation="horizontal"
                                 >
                                     <template for:each={steps} for:item="step">
@@ -70,7 +71,10 @@
                         </div>
                     </div>
                     <div class="slds-grid slds-path__action slds-m-left_small">
-                        <span class="slds-path__stage-name">
+                        <span
+                            id="slds-path__stage-name"
+                            class="slds-path__stage-name"
+                        >
                             Stage: {stageTitle}
                         </span>
                         <lightning-button-group if:false={hideButtons}>

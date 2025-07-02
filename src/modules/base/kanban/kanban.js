@@ -11,6 +11,21 @@ import {
     normalizeString
 } from 'c/utils';
 import KanbanGroupsBuilder from './groupBuilder';
+import { handleKeyDownOnGroup, handleKeyDownOnTile } from './keyboard';
+
+const DRAGGED_CLASS = 'avonni-kanban__dragged';
+const GROUP_DRAGGED_CLASS = 'avonni-kanban__dragged_group';
+
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
+};
+const IMAGE_CROP_POSITION_DEFAULT = 50;
+const IMAGE_HEIGHT_DEFAULT = 250;
+const IMAGE_POSITION = {
+    valid: ['top', 'bottom'],
+    default: 'top'
+};
 
 const KANBAN_VARIANTS = {
     valid: ['base', 'path'],
@@ -31,17 +46,46 @@ const FIELD_VARIANTS = {
  * @public
  */
 export default class Kanban extends LightningElement {
+    /**
+     * Name of the data field containing the group label the data belongs to.
+     *
+     * @type {string}
+     * @public
+     * @required
+     */
+    @api groupFieldName;
+
+    /**
+     *
+     * Name of a key of the records objects. This key needs to be present in all records objects. Its value needs to be unique to a record, as it will be used as the record identifier.
+     * @type {string}
+     * @public
+     * @required
+     */
+    @api keyField;
+
     _actions = [];
     _cardAttributes = {};
     _disableColumnDragAndDrop = false;
     _disableItemDragAndDrop = false;
     _groupValues = [];
     _hideHeader = false;
+    _imageAttributes = {
+        fallbackSrc: null,
+        position: IMAGE_POSITION.default,
+        height: IMAGE_HEIGHT_DEFAULT,
+        cropPositionX: IMAGE_CROP_POSITION_DEFAULT,
+        cropPositionY: IMAGE_CROP_POSITION_DEFAULT,
+        cropFit: IMAGE_CROP_FIT.default
+    };
     _isLoading = false;
     _records = [];
     _subGroupFieldName;
     _summarizeAttributes = {};
+    _variant = KANBAN_VARIANTS.default;
 
+    _animationTimeout;
+    _cancelBlur = false;
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
     _computedGroups = [];
@@ -73,6 +117,8 @@ export default class Kanban extends LightningElement {
         x: 0,
         y: 0
     };
+    _keyboardDragged = false;
+
     _oldSummarizeValues = [];
     _releasedGroupIndex = 0;
     _releasedTileIndex = 0;
@@ -84,25 +130,33 @@ export default class Kanban extends LightningElement {
     _summarizeValues = [];
     _summaryTimeoutsId = [];
 
-    _variant = KANBAN_VARIANTS.default;
     kanbanGroup;
+    keyboardInterface;
+
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
-        this.updateTiles();
+        this._updateTiles();
         this._connected = true;
+        this.keyboardInterface = this._selectKeyboardInterface();
+        window.addEventListener('mousedown', this.handleKeyboardDragEnd);
     }
 
     renderedCallback() {
         if (!this._resizeObserver) {
-            this._resizeObserver = this.initResizeObserver();
+            this._resizeObserver = this._initResizeObserver();
         }
 
-        this.capContainerWidth();
-        this.capFieldWidth();
-        this.setContainerDimensions();
-        this.capFieldHeight();
-        this.cropSubGroupHeaders();
-        this.computeGroupScrollTop();
+        this._capContainerWidth();
+        this._capFieldWidth();
+        this._setContainerDimensions();
+        this._capFieldHeight();
+        this._cropSubGroupHeaders();
+        this._computeGroupScrollTop();
 
         const { x, y } = this.getBoundingClientRect();
         this._kanbanOffset = { x, y };
@@ -112,6 +166,7 @@ export default class Kanban extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
+        window.removeEventListener('mousedown', this.handleKeyboardDragEnd);
     }
 
     /**
@@ -133,8 +188,25 @@ export default class Kanban extends LightningElement {
      */
 
     /**
+     * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(values) {
+        this._actions = normalizeArray(values);
+        if (this._connected) {
+            this._updateTiles();
+        }
+    }
+
+    /**
      * Object of attributes for the card.
-     * Card attributes: coverImage, title, description, startDate, dueDate, customFields and customFieldAttributes
+     * Card attributes: coverImage, title, description, startDate, dueDate, customFields and customFieldAttributes.
      *
      * @type {object}
      * @public
@@ -161,42 +233,7 @@ export default class Kanban extends LightningElement {
             }
         };
         if (this._connected) {
-            this.updateTiles();
-        }
-    }
-
-    /**
-     * Name of the data field containing the group label the data belongs to.
-     *
-     * @type {string}
-     * @public
-     * @required
-     */
-    @api groupFieldName;
-
-    /**
-     *
-     * Name of a key of the records objects. This key needs to be present in all records objects. Its value needs to be unique to a record, as it will be used as the record identifier.
-     * @type {string}
-     * @public
-     * @required
-     */
-    @api keyField;
-
-    /**
-     * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get actions() {
-        return this._actions;
-    }
-    set actions(values) {
-        this._actions = normalizeArray(values);
-        if (this._connected) {
-            this.updateTiles();
+            this._updateTiles();
         }
     }
 
@@ -247,7 +284,7 @@ export default class Kanban extends LightningElement {
     set groupValues(values) {
         this._groupValues = normalizeArray(values);
         if (this._connected) {
-            this.updateTiles();
+            this._updateTiles();
         }
     }
 
@@ -264,6 +301,56 @@ export default class Kanban extends LightningElement {
     }
     set hideHeader(value) {
         this._hideHeader = normalizeBoolean(value);
+    }
+
+    /**
+     * Image attributes: fallbackSrc, cropFit, position, height and cropPosition.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get imageAttributes() {
+        return this._imageAttributes;
+    }
+    set imageAttributes(value) {
+        const normalizedImgAttributes = normalizeObject(value);
+
+        this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
+
+        this._imageAttributes.height = !isNaN(normalizedImgAttributes.height)
+            ? normalizedImgAttributes.height
+            : IMAGE_HEIGHT_DEFAULT;
+
+        this._imageAttributes.cropPositionX = !isNaN(
+            normalizedImgAttributes.cropPositionX
+        )
+            ? normalizedImgAttributes.cropPositionX
+            : IMAGE_CROP_POSITION_DEFAULT;
+        this._imageAttributes.cropPositionY = !isNaN(
+            normalizedImgAttributes.cropPositionY
+        )
+            ? normalizedImgAttributes.cropPositionY
+            : IMAGE_CROP_POSITION_DEFAULT;
+
+        this._imageAttributes.cropFit = normalizeString(
+            normalizedImgAttributes.cropFit,
+            {
+                fallbackValue: IMAGE_CROP_FIT.default,
+                validValues: IMAGE_CROP_FIT.valid
+            }
+        );
+
+        this._imageAttributes.position = normalizeString(
+            normalizedImgAttributes.position,
+            {
+                fallbackValue: IMAGE_POSITION.default,
+                validValues: IMAGE_POSITION.valid
+            }
+        );
+        if (this._connected) {
+            this._updateTiles();
+        }
     }
 
     /**
@@ -297,7 +384,7 @@ export default class Kanban extends LightningElement {
     set records(values) {
         this._records = normalizeArray(values);
         if (this._connected) {
-            this.updateTiles();
+            this._updateTiles();
         }
     }
 
@@ -315,7 +402,7 @@ export default class Kanban extends LightningElement {
     set subGroupFieldName(value) {
         this._subGroupFieldName = value;
         if (this._connected) {
-            this.updateTiles();
+            this._updateTiles();
         }
     }
 
@@ -333,7 +420,7 @@ export default class Kanban extends LightningElement {
     set summarizeAttributes(value) {
         this._summarizeAttributes = normalizeObject(value);
         if (this._connected) {
-            this.updateTiles();
+            this._updateTiles();
         }
     }
 
@@ -347,14 +434,13 @@ export default class Kanban extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: KANBAN_VARIANTS.default,
             validValues: KANBAN_VARIANTS.valid
         });
         if (this._connected) {
-            this.capFieldWidth();
+            this._capFieldWidth();
         }
     }
 
@@ -418,13 +504,13 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Gets the class of the tile depending on disableItemDragAndDrop
+     * Gets the class of the tile depending on disableItemDragAndDrop.
      *
      * @type {string}
      */
     get computedTileClass() {
         return classSet(
-            'avonni-kanban__tile slds-item slds-is-relative slds-m-around_x-small'
+            'avonni-kanban__tile slds-has-dividers_around-space slds-m-around_x-small'
         ).add({
             'avonni-kanban__tile_disabled_drag': this.disableItemDragAndDrop
         });
@@ -440,6 +526,15 @@ export default class Kanban extends LightningElement {
             return this.cardAttributes.customFieldAttributes;
         }
         return {};
+    }
+
+    /**
+     * Compute the tab index for a group element.
+     *
+     * @type {number}
+     */
+    get groupTabIndex() {
+        return this.variant === 'base' ? 0 : -1;
     }
 
     /**
@@ -461,6 +556,26 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Returns the instructions div element.
+     *
+     * @type {Element}
+     */
+    get instructionsElement() {
+        return this.template.querySelector(
+            '[data-element-id="span-instructions"]'
+        );
+    }
+
+    /**
+     * Indicates whether a group or tile is currently being dragged.
+     *
+     * @type {boolean}
+     */
+    get isDragging() {
+        return !!(this._draggedGroup || this._draggedTile);
+    }
+
+    /**
      * Check if the variant is path.
      *
      * @type {boolean}
@@ -479,7 +594,17 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Check if the tiles are draggable.
+     *
+     * @type {boolean}
+     */
+    get tileDraggable() {
+        return !this.disableItemDragAndDrop;
+    }
+
+    /**
      * Wrapper div class, depending on the variant value.
+     *
      * @type {string}
      */
     get variantClass() {
@@ -501,59 +626,21 @@ export default class Kanban extends LightningElement {
      */
 
     /**
-     *
-     * Autoscrolls the tiles / groups when the dragged tile is on the edge of the container
-     * @param {number} currentX Current x position of the dragged tile
-     * @param {number} currentY Current y position of the dragged tile
+     * Sets the variable cancelBlur to false.
      */
-    autoScroll(currentX, currentY) {
-        this._currentXScroll = currentX;
-        const fieldContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__container"]'
-        );
-
-        const groups = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
-
-        const group = groups[this._releasedGroupIndex];
-
-        // auto scroll when the user is dragging the tile out of the list
-        const scrollStep = this.computeScrollStep(currentX, currentY);
-
-        let toScroll = scrollStep.x ? fieldContainer : group;
-
-        toScroll = this._hasSubGroups ? fieldContainer : toScroll;
-        this._currentScrollTarget = toScroll;
-
-        if (
-            !this._scrollingInterval &&
-            (this._draggedGroup || this._draggedTile)
-        ) {
-            this._scrollingInterval = window.setInterval(() => {
-                this.handleAutoScrollInterval(
-                    scrollStep,
-                    fieldContainer,
-                    groups
-                );
-            }, 20);
-        }
-
-        // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
-        if (!scrollStep.x && !scrollStep.y) {
-            this.clearScrollInterval();
-        }
+    allowBlur() {
+        this._cancelBlur = false;
     }
 
     /**
+     * Updates the summary value gradually.
      *
-     * Updates the summary value gradually
-     * @param {object} group Group containing the summary value to animate
+     * @param {object} group Group containing the summary value to animate.
      */
-    animateSummary(group) {
+    _animateSummary(group) {
         if (this.isLoading) return;
         this._groupsLength.push(group.tiles.length);
-        const summarizeUpdate = this.truncateNumber(
+        const summarizeUpdate = this._truncateNumber(
             this._summarizeValues[group.index] -
                 this._oldSummarizeValues[group.index]
         );
@@ -566,7 +653,7 @@ export default class Kanban extends LightningElement {
 
                     // Set the summary value to the old one to animate it gradually
                     if (
-                        this.truncateNumber(summary.value) ===
+                        this._truncateNumber(summary.value) ===
                             this._summarizeValues[group.index] &&
                         j !== SUMMARY_UPDATE_SPEED - 1
                     ) {
@@ -590,13 +677,13 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Translates down the tiles that are being hovered and updates the height of the groups.
      *
-     * Translates down the tiles that are being hovered and updates the height of the groups
-     * @param {HTMLElement[]} groups Groups containing the tiles to translate
+     * @param {HTMLElement[]} groups Groups containing the tiles to translate.
      */
-    animateTiles(groups) {
+    _animateTiles(groups) {
         if (!this._hasSubGroups) {
-            this.capFieldHeight();
+            this._capFieldHeight();
         }
 
         // translates the tiles down when the dragged tile hovers over them
@@ -617,15 +704,65 @@ export default class Kanban extends LightningElement {
             }
         }
 
-        this.resetAnimations(groups);
+        this._resetAnimations(groups);
     }
 
     /**
+     * Autoscrolls the tiles / groups when the dragged tile is on the edge of the container.
      *
-     * Limits the width of the container to prevent overflow / to truncate it to fit content.
-     *
+     * @param {number} currentX Current x position of the dragged tile.
+     * @param {number} currentY Current y position of the dragged tile.
      */
-    capContainerWidth() {
+    _autoScroll(currentX, currentY) {
+        this._currentXScroll = currentX;
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        );
+
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        const group = groups[this._releasedGroupIndex];
+
+        // auto scroll when the user is dragging the tile out of the list
+        const scrollStep = this._computeScrollStep(currentX, currentY);
+
+        let toScroll = scrollStep.x ? fieldContainer : group;
+
+        toScroll = this._hasSubGroups ? fieldContainer : toScroll;
+        this._currentScrollTarget = toScroll;
+
+        if (
+            !this._scrollingInterval &&
+            (this._draggedGroup || this._draggedTile)
+        ) {
+            this._scrollingInterval = window.setInterval(() => {
+                this.handleAutoScrollInterval(
+                    scrollStep,
+                    fieldContainer,
+                    groups
+                );
+            }, 20);
+        }
+
+        // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
+        if (!scrollStep.x && !scrollStep.y) {
+            this.handleClearScrollInterval();
+        }
+    }
+
+    /**
+     * Sets the variable cancelBlur to false.
+     */
+    cancelBlur() {
+        this._cancelBlur = true;
+    }
+
+    /**
+     * Limits the width of the container to prevent overflow / to truncate it to fit content.
+     */
+    _capContainerWidth() {
         if (this.isLoading) return;
 
         const container = this.template.querySelector(
@@ -670,10 +807,9 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     *
-     * Limits the height of the fields to prevent overflow
+     * Limits the height of the fields to prevent overflow.
      */
-    capFieldHeight() {
+    _capFieldHeight() {
         if (this.isLoading) return;
 
         this._scrollWidth = this.template.querySelector(
@@ -717,10 +853,9 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     *
-     * Limits the width of the fields to align columns for Path variant
+     * Limits the width of the fields to align columns for Path variant.
      */
-    capFieldWidth() {
+    _capFieldWidth() {
         if (this.isLoading && this.variant !== 'path') return;
 
         const pathItems = this.template.querySelectorAll(
@@ -762,12 +897,11 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Limits the position of the mouse to the kanban's boundaries.
      *
-     * Limits the position of the mouse to the kanban's boundaries
      * @param {Event} event
-     *
      */
-    capMousePos(event) {
+    _capMousePos(event) {
         const kanbanContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
@@ -776,7 +910,7 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__field_container"]'
         );
 
-        this.computeKanbanBoundaries(
+        this._computeKanbanBoundaries(
             this._hasSubGroups ? kanbanContainer : fieldContainer
         );
 
@@ -819,11 +953,47 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Calculates the boundaries of the kanban to prevent from dragging outside of the container
-     * @param {EventTarget} currentTarget
-     *
+     * Clears the timeouts to avoid summarize inconsistencies.
      */
-    computeKanbanBoundaries(currentTarget) {
+    _clearSummarizeTimeouts() {
+        if (this._summaryTimeoutsId.length > 0) {
+            this._summaryTimeoutsId.forEach((timeout) => {
+                window.clearTimeout(timeout);
+            });
+
+            setTimeout(() => {
+                this.template
+                    .querySelectorAll('[data-element-id="summarize"]')
+                    .forEach((summarize, i) => {
+                        summarize.value = this._truncateNumber(
+                            this._summarizeValues[i]
+                        );
+                    });
+            }, 0);
+
+            this._summaryTimeoutsId = [];
+        }
+    }
+
+    /**
+     * Computes the right scrollTop to the groups after a swap.
+     */
+    _computeGroupScrollTop() {
+        const kanbanGroups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        Array.from(kanbanGroups).forEach((group, i) => {
+            this._groupsScrollTop[i] = group.scrollTop;
+        });
+    }
+
+    /**
+     * Calculates the boundaries of the kanban to prevent from dragging outside of the container.
+     *
+     * @param {EventTarget} currentTarget
+     */
+    _computeKanbanBoundaries(currentTarget) {
         this._kanbanPos.top = currentTarget.getBoundingClientRect().top;
         this._kanbanPos.bottom =
             this._kanbanPos.top + currentTarget.offsetHeight;
@@ -836,46 +1006,13 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Clears the intervals related to autoscroll .
+     * Computes the scroll step depending on the mouse position.
      *
+     * @param {number} currentX Current x position of the dragged tile.
+     * @param {number} currentY Current y position of the dragged tile.
+     * @returns {object} Scroll step.
      */
-    clearScrollInterval() {
-        window.clearInterval(this._scrollingInterval);
-        this._scrollingInterval = null;
-    }
-
-    /**
-     * Clears the timeouts to avoid summarize inconsistencies.
-     *
-     */
-    clearSummarizeTimeouts() {
-        if (this._summaryTimeoutsId.length > 0) {
-            this._summaryTimeoutsId.forEach((timeout) => {
-                window.clearTimeout(timeout);
-            });
-
-            setTimeout(() => {
-                this.template
-                    .querySelectorAll('[data-element-id="summarize"]')
-                    .forEach((summarize, i) => {
-                        summarize.value = this.truncateNumber(
-                            this._summarizeValues[i]
-                        );
-                    });
-            }, 0);
-
-            this._summaryTimeoutsId = [];
-        }
-    }
-
-    /**
-     *
-     * Computes the scroll step depending on the mouse position
-     * @param {number} currentX Current x position of the dragged tile
-     * @param {number} currentY Current y position of the dragged tile
-     * @returns {object} scrollStep
-     */
-    computeScrollStep(currentX, currentY) {
+    _computeScrollStep(currentX, currentY) {
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
@@ -916,10 +1053,9 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Creates space in the group for the dragged tile
-     *
+     * Creates space in the group for the dragged tile.
      */
-    createTileSpace() {
+    _createTileSpace() {
         const currentGroupTiles = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
@@ -936,7 +1072,10 @@ export default class Kanban extends LightningElement {
         });
     }
 
-    cropSubGroupHeaders() {
+    /**
+     * Crop subgroup headers when the main header is hidden.
+     */
+    _cropSubGroupHeaders() {
         if (this._hideHeader && this._hasSubGroups && !this.isLoading) {
             const subGroupHeaders = Array.from(
                 this.template.querySelectorAll(
@@ -950,12 +1089,12 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Displays the dropzone of the tile, or the dropzone of the group.
      *
-     * Displays the dropzone of the tile, or the dropzone of the group
-     * @param {number} offsetHeight Cumulated height of the tiles above the dropzone
-     * @param {number} offsetCount Number of tiles above the dropzone
+     * @param {number} offsetHeight Cumulated height of the tiles above the dropzone.
+     * @param {number} offsetCount Number of tiles above the dropzone.
      */
-    displayDropzone(offsetHeight, offsetCount) {
+    _displayDropzone(offsetHeight, offsetCount) {
         this.template
             .querySelectorAll(
                 '[data-element-id="avonni-kanban__tile_dropzone"]'
@@ -1022,22 +1161,18 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Ends the drag and drop
-     *
+     * Ends the drag and drop.
      */
-    endDrag() {
-        this.handleTileDrop();
+    _endDrag() {
         this._droppedTileHeight = this._draggedTile.offsetHeight;
-
         this._draggedTile.style.transform = '';
         this._draggedTile.style.width = 'calc(100% - 1rem)';
-        this._draggedTile.classList.remove('avonni-kanban__dragged');
+        this._draggedTile.classList.remove(DRAGGED_CLASS);
         this._draggedTile = null;
         this._currentSubGroup = '';
         this._scrollOffset = 0;
 
-        window.clearInterval(this._scrollingInterval);
-        this._scrollingInterval = null;
+        this.handleClearScrollInterval();
 
         // removes the translation on all tiles
         const groupElements = this.template.querySelectorAll(
@@ -1064,19 +1199,582 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Finds the tile element in the DOM corresponding to the record
-     * @param {object} tile
-     * @returns {HTMLElement}
+     * Get all tile elements for a specific group in the DOM.
+     *
+     * @param {number} subgroupIndex Index of the subgroup to retrieve tiles from.
+     * @param {number} groupIndex Index of the group to retrieve tiles from.
+     * @returns {object[]} An array of tile elements. Returns an empty array if not found.
      */
-    findTileElement(tile) {
-        const tiles = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__tile"]'
+    _getTileElements(subgroupIndex, groupIndex) {
+        const subgroups = Array.from(
+            this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field_container"]'
+            )
+        );
+        const subgroup =
+            !isNaN(subgroupIndex) && subgroupIndex >= 0
+                ? subgroups[subgroupIndex]
+                : subgroups[0];
+        const groups = Array.from(
+            subgroup.querySelectorAll(
+                '[data-element-id="avonni-kanban__field"]'
+            )
+        );
+        const tiles = Array.from(
+            groups[groupIndex].querySelectorAll(
+                '[data-element-id="avonni-kanban__tile"]'
+            )
+        );
+        return tiles;
+    }
+
+    /**
+     * Get the tile element for a specific group in the DOM.
+     *
+     * @param {number} subgroupIndex Index of the subgroup to retrieve tiles from.
+     * @param {number} groupIndex Index of the group to retrieve tiles from.
+     * @param {number} index Index of the tile.
+     * @returns {object} The tile elements. Returns an null if not found.
+     */
+    _getTileElement(subgroupIndex, groupIndex, index) {
+        let groupSelector = `[data-element-id="avonni-kanban__tile"][data-group-index="${groupIndex}"][data-index="${index}"]`;
+        if (subgroupIndex >= 0) {
+            groupSelector += `[data-subgroup-index="${subgroupIndex}"]`;
+        }
+        return this.template.querySelector(groupSelector);
+    }
+
+    /**
+     * Returns whether the group has subgroups or not.
+     *
+     * @returns {boolean}
+     */
+    hasSubGroups() {
+        this._records.forEach((record) => {
+            if (record[this.subGroupFieldName]) {
+                this._hasSubGroups = true;
+            }
+        });
+        return this._hasSubGroups;
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    _initResizeObserver() {
+        const container = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        );
+        if (!container) {
+            return null;
+        }
+
+        return new AvonniResizeObserver(container, () => {
+            this._scrollWidth = this.template.querySelector(
+                '[data-element-id="avonni-kanban__container"]'
+            ).scrollWidth;
+
+            this._capFieldHeight();
+            this._capFieldWidth();
+            this._capContainerWidth();
+            this._setContainerDimensions();
+
+            const { x, y } = this.getBoundingClientRect();
+            this._kanbanOffset = { x, y };
+        });
+    }
+
+    /**
+     * Normalize the focused index.
+     *
+     * @param {number} index Index to normalize.
+     */
+    _normalizedIndex(items, index) {
+        let position = 'INDEX';
+
+        if (index < 0) {
+            position = 'FIRST_ITEM';
+        } else if (index > items.length - 1) {
+            position = 'LAST_ITEM';
+        }
+
+        switch (position) {
+            case 'FIRST_ITEM':
+                return 0;
+            case 'LAST_ITEM':
+                return items.length - 1;
+            default:
+                return index;
+        }
+    }
+
+    /**
+     * Resets the translate animations on the tiles and limits the height of the groups.
+     *
+     * @param {object[]} groups Groups containing the tiles.
+     */
+    _resetAnimations(groups) {
+        let offsetHeight = 0;
+        let offsetCount = 0;
+
+        // resets animations
+        Array.from(groups).forEach((group, i) => {
+            // removes the translation on the other tiles
+            Array.from(group.children)
+                .filter((child) => child !== this._draggedTile)
+                .forEach((tile, j) => {
+                    if (
+                        i !== this._releasedGroupIndex ||
+                        j < this._releasedTileIndex
+                    ) {
+                        tile.classList.remove('avonni-kanban__tile_moved');
+                        tile.style.transform = `translateY(0px)`;
+                    }
+
+                    if (
+                        i === this._releasedGroupIndex &&
+                        j < this._releasedTileIndex
+                    ) {
+                        offsetHeight += tile.offsetHeight;
+                        offsetCount++;
+                    }
+                });
+        });
+
+        this._displayDropzone(offsetHeight, offsetCount);
+    }
+
+    /**
+     * Keyboard use for selecting groups and tiles.
+     *
+     * @return {object} Keyboard interface.
+     */
+    _selectKeyboardInterface() {
+        const that = this;
+        return {
+            endDrag() {
+                that.handleKeyboardDragEnd();
+            },
+            isDragging() {
+                return that.isDragging;
+            },
+            moveGroup(from, to) {
+                that.handleGroupKeyboardDragMove(from, to);
+            },
+            moveTile(subgroupIndex, groupIndex, from, to) {
+                that.handleTileKeyboardDragMove(
+                    subgroupIndex,
+                    groupIndex,
+                    from,
+                    to
+                );
+            },
+            moveTileToGroup(subgroupIndex, tileIndex, groupFrom, groupTo) {
+                that.handleTileKeyboardDragMoveToGroup(
+                    subgroupIndex,
+                    tileIndex,
+                    groupFrom,
+                    groupTo
+                );
+            },
+            selectGroup(element, index) {
+                if (that.isDragging) {
+                    that.handleGroupKeyboardDragEnd();
+                } else {
+                    that.handleGroupKeyboardDragStart(element, index);
+                }
+            },
+            selectTile(element, groupIndex, index) {
+                if (that.isDragging) {
+                    that.handleTileKeyboardDragEnd();
+                } else {
+                    that.handleTileKeyboardDragStart(
+                        element,
+                        groupIndex,
+                        index
+                    );
+                }
+            },
+            setFocusOnGroup(index) {
+                that.setFocusOnGroup(index);
+            },
+            setFocusOnTile(subgroupIndex, groupIndex, index) {
+                that.setFocusOnTile(subgroupIndex, groupIndex, index);
+            }
+        };
+    }
+
+    /**
+     * Determines the scroll dimensions of the container for drag and drop translate calculations.
+     */
+    _setContainerDimensions() {
+        if (this.isLoading) return;
+
+        this.template
+            .querySelectorAll(
+                '[data-element-id="avonni-kanban__field_container"]'
+            )
+            .forEach((fieldContainer, i) => {
+                this._subGroupsHeight[i] = fieldContainer.scrollHeight;
+            });
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+        this._initialScrollWidth = fieldContainer
+            ? fieldContainer.scrollWidth
+            : 0;
+        if (this._hasSubGroups) {
+            this._initialScrollHeight = this.template.querySelector(
+                '[data-element-id="avonni-kanban__container"]'
+            ).scrollHeight;
+        }
+    }
+
+    /**
+     * Update the focused group index.
+     *
+     * @param {number} subgroupIndex Index of subgroup.
+     * @param {number} index Index of the new focused group.
+     */
+    setFocusOnGroup(index) {
+        const normalizedIndex = this._normalizedIndex(
+            this.computedGroups,
+            index
+        );
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
+        const item = this.template.querySelector(
+            `[data-element-id="${groupSelector}"][data-group-index="${normalizedIndex}"]`
+        );
+        if (item) {
+            item.focus();
+        }
+    }
+
+    /**
+     * Update the focused item index.
+     *
+     * @param {number} subgroupIndex Index of subgroup containing the tile.
+     * @param {number} groupIndex Index of group containing the tile.
+     * @param {number} index Index of the new focused item.
+     */
+    setFocusOnTile(subgroupIndex, groupIndex, index) {
+        const item = this._getTileElement(subgroupIndex, groupIndex, index);
+        if (item) {
+            item.focus();
+            item.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end'
+            });
+        }
+    }
+
+    /**
+     * Swaps the groups after a drag and drop, in all the group-related arrays.
+     */
+    _swapGroups() {
+        const groups = JSON.parse(JSON.stringify(this._groupValues));
+        const groupValue = groups[this._clickedGroupIndex].value;
+        groups.splice(
+            this._releasedGroupIndex,
+            0,
+            groups.splice(this._clickedGroupIndex, 1)[0]
+        );
+        this._groupValues = groups;
+
+        const groupArrays = [
+            this._oldSummarizeValues,
+            this._summarizeValues,
+            this._groupsHeight,
+            this._groupsLength,
+            this._fieldsDistance,
+            this._computedGroups,
+            this._groupsScrollTop
+        ];
+
+        // Swaps groups in every group-related array
+        groupArrays.forEach((array) => {
+            array.splice(
+                this._releasedGroupIndex,
+                0,
+                array.splice(this._clickedGroupIndex, 1)[0]
+            );
+        });
+
+        /**
+         * The event fired when a column is moved from a position to another.
+         *
+         * @event
+         * @name columnchange
+         * @param {number} index Index of the final position of the column.
+         * @param {string} name Value of the column.
+         * @param {object[]} groupValues New group values of the Kanban.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('columnchange', {
+                detail: {
+                    index: this._releasedGroupIndex,
+                    name: groupValue,
+                    groupValues: this._groupValues
+                }
+            })
         );
 
-        return tiles.find(
-            (tileElement) => tileElement.dataset.recordIndex === tile.index
+        this._updateTiles();
+    }
+
+    /**
+     * Moves the dragged tile at the right index in the record array and updates the group field value.
+     *
+     * @param {number} fromIndex Index of the initial position of the tile.
+     * @param {number} toIndex Index of the final position of the tile.
+     * @returns {object[]} The array with swapped records.
+     */
+    _swapRecords(fromIndex, toIndex) {
+        if (toIndex < 0 || fromIndex < 0) {
+            return this.records;
+        }
+        const arr = JSON.parse(JSON.stringify(this._records));
+        arr[fromIndex][this.groupFieldName] =
+            this._groupValues[this._releasedGroupIndex].value;
+        this._groupsLength[this._clickedGroupIndex]--;
+        this._groupsLength[this._releasedGroupIndex]++;
+
+        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+
+        /**
+         * The event fired when a card is moved from a step to another.
+         *
+         * @event
+         * @name change
+         * @param {string} keyField Value of the record’s key field.
+         * @param {string} groupValue Value of the group the data card has been moved to.
+         * @param {object[]} records New records of the Kanban.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    keyField: this._draggedTile.dataset.recordIndex,
+                    groupValue:
+                        this._groupValues[this._releasedGroupIndex].value,
+                    records: arr
+                }
+            })
+        );
+
+        return arr;
+    }
+
+    /**
+     * Finds a tile in the record array depending of it's index and it's group.
+     *
+     * @param {number} tileIndex Index of the tile.
+     * @param {number} groupIndex Index of the group.
+     */
+    _tileRecordFinder(tileIndex, groupIndex) {
+        const records = this._records.filter(
+            (record) =>
+                record[this.groupFieldName] ===
+                    this._groupValues[groupIndex].value &&
+                record[this.subGroupFieldName] === this._currentSubGroup
+        );
+        return records[tileIndex];
+    }
+
+    /**
+     * Translates the dragged item by the given amount.
+     *
+     * @param {object} delta Amount of pixels to translate the dragged item.
+     */
+    _translateByDelta(delta) {
+        const draggedItem = this._draggedTile
+            ? this._draggedTile
+            : this._draggedGroup;
+        const style = window.getComputedStyle(draggedItem);
+        const matrixValues = style.transform
+            .match(/matrix.*\((.+)\)/)[1]
+            .split(', ');
+        const currentTranslate = {
+            translateX: parseFloat(matrixValues[4]),
+            translateY: parseFloat(matrixValues[5])
+        };
+        draggedItem.style.transform = `translateX(${
+            currentTranslate.translateX + delta.x
+        }px) translateY(${
+            currentTranslate.translateY + (this._hasSubGroups ? delta.y : 0)
+        }px) rotate(3deg)`;
+    }
+
+    /**
+     * Translates the dragged item to a new pos.
+     *
+     * @param {object} delta Amount of pixels to translate the dragged item.
+     */
+    _translateToPos(pos) {
+        if (this._draggedTile) {
+            // Sets the position of the dragged tile
+            this._draggedTile.style.transform = `translate(${
+                pos.x - this._initialPos.x - this._clickOffset.x
+            }px, ${
+                pos.y -
+                this._initialPos.y -
+                this._clickOffset.y +
+                this._scrollOffset
+            }px) rotate(3deg)`;
+        }
+        if (this._draggedGroup) {
+            // Sets the position of the dragged group
+            this._draggedGroup.style.transform = `translate(${
+                pos.x - this._initialPos.x - this._clickOffset.x
+            }px, ${
+                pos.y - this._initialPos.y - this._clickOffset.y
+            }px) rotate(3deg)`;
+        }
+    }
+
+    /**
+     * Truncates a number to handle floatting point errors (4.500000000000000003 for example).
+     *
+     * @param {number} num Number to truncate.
+     */
+    _truncateNumber(num) {
+        return Math.round(num * 1e6) / 1e6;
+    }
+
+    /**
+     * Updates the released group index depending on the scroll position.
+     *
+     * @param {Event} event
+     */
+    _updateReleasedGroupIndex(event) {
+        const remToPx = parseFloat(
+            getComputedStyle(this.template.host).fontSize
+        );
+        const scrolledWidth =
+            this.template.querySelector(
+                '[data-element-id="avonni-kanban__container"]'
+            ).scrollLeft - this._kanbanOffset.x;
+
+        const scrolledGroupsCount = scrolledWidth / this._groupWidth;
+
+        const mouseHoveringGroup =
+            (event.clientX + 0.5 * remToPx) / this._groupWidth;
+
+        this._releasedGroupIndex = Math.min(
+            Math.trunc(mouseHoveringGroup + scrolledGroupsCount),
+            this.groupValues.length - 1
         );
     }
+
+    /**
+     * Updates the released tile index depending on the scroll position and tiles hovered.
+     *
+     * @param {HTMLElement[]} groupElements Groups containing the tiles.
+     */
+    _updateReleasedTileIndex(groupElements) {
+        let offsetHeight = this._kanbanOffset.y;
+
+        const currentGroupTiles = Array.from(
+            groupElements[this._releasedGroupIndex].children
+        );
+        let scrolledHeight = 0;
+
+        let isScrolled = false;
+
+        // calculates the index of the drop, depending on the previous tiles heights
+        for (let [i, tile] of currentGroupTiles.entries()) {
+            // if the group is scrolled, the kanban's offset isn't influencing the index
+            if (!isScrolled && scrolledHeight > 0) {
+                offsetHeight -= this._kanbanOffset.y;
+                isScrolled = true;
+            }
+            const tileIncrementMultiplier =
+                this._releasedGroupIndex === this._clickedGroupIndex ? 1 : -1;
+
+            const rem = parseFloat(
+                getComputedStyle(this.template.host).fontSize
+            );
+            offsetHeight += tile.offsetHeight + rem;
+            this._releasedTileIndex = i;
+            if (
+                groupElements[this._releasedGroupIndex].scrollTop > offsetHeight
+            ) {
+                scrolledHeight += tile.offsetHeight + rem;
+            }
+
+            // Doesn't count the dragged tile in the index
+            if (this._clickedGroupIndex === this._releasedGroupIndex) {
+                this._releasedTileIndex--;
+            }
+            if (
+                this._draggedTile.getBoundingClientRect().y +
+                    scrolledHeight +
+                    tileIncrementMultiplier *
+                        (this._draggedTile.offsetHeight / 2) <
+                offsetHeight - tile.offsetHeight / 2
+            ) {
+                break;
+            } else {
+                this._releasedTileIndex++;
+            }
+        }
+        if (this._releasedTileIndex < 0 || currentGroupTiles.length === 0) {
+            this._releasedTileIndex = 0;
+        }
+    }
+
+    /**
+     * Updates the groups to separate tiles and calculate the summary values.
+     */
+    _updateTiles() {
+        if (!this.hideHeader) {
+            this._clearSummarizeTimeouts();
+        }
+        const kanbanGroupsBuilder = new KanbanGroupsBuilder({
+            groupValues: this._groupValues,
+            items: this._records,
+            groupFieldName: this.groupFieldName,
+            summarizeAttributes: this.summarizeAttributes,
+            subGroupFieldName: this.subGroupFieldName,
+            keyField: this.keyField,
+            cardAttributes: this.cardAttributes,
+            imageAttributes: this.imageAttributes,
+            avatarAttributes: this.avatarAttributes
+        });
+        if (this._computedGroups.length === 0) {
+            this._groupValues.forEach((_, i) => {
+                this._oldSummarizeValues[i] = 0;
+            });
+        } else {
+            this._computedGroups.forEach((group, i) => {
+                this._oldSummarizeValues[i] = group.summarize.value
+                    ? group.summarize.value
+                    : 0;
+            });
+        }
+
+        this._computedGroups = kanbanGroupsBuilder.computeGroups();
+        this._hasSubGroups = kanbanGroupsBuilder.hasSubGroups;
+        this._currentSubGroupIndex = 0;
+
+        this._computedGroups.forEach((group, i) => {
+            this._summarizeValues[i] = group.summarize.value
+                ? this._truncateNumber(group.summarize.value)
+                : 0;
+            if (!this.hideHeader) this._animateSummary(group);
+        });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Actionclick handler.
@@ -1119,11 +1817,11 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Scrolls the right item when autoscroll is needed
-     * @param {object} scrollStep The coordinates to scrollBy
-     * @param {HTMLElement} fieldContainer The field to scroll
-     * @param {HTMLElement[]} groups The groups containing the tiles
+     * Scrolls the right item when autoscroll is needed.
      *
+     * @param {object} scrollStep The coordinates to scrollBy.
+     * @param {HTMLElement} fieldContainer The field to scroll.
+     * @param {HTMLElement[]} groups The groups containing the tiles.
      */
     handleAutoScrollInterval(scrollStep, fieldContainer, groups) {
         // Prevents from scrolling outside of the kanban
@@ -1148,7 +1846,7 @@ export default class Kanban extends LightningElement {
                 this._currentScrollTarget.scrollTop === 0 && scrollStep.y < 0
                     ? 0
                     : scrollStep.y;
-            this.translateByDelta(scrollStep);
+            this._translateByDelta(scrollStep);
             this.handleDropZone({
                 currentTarget: this._draggedTile,
                 clientX: this._currentXScroll
@@ -1158,17 +1856,27 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     *
-     *  Moves the tiles down when the dragged tile is hovering over
+     * Clears the intervals related to autoscroll .
+     */
+    handleClearScrollInterval() {
+        clearInterval(this._scrollingInterval);
+        this._scrollingInterval = null;
+    }
+
+    /**
+     * Moves the tiles down when the dragged tile is hovering over.
      *
      * @param {Event} event
      */
     handleDropZone(event) {
-        if (event.currentTarget !== this._draggedTile) {
+        if (
+            event.currentTarget !== this._draggedTile ||
+            this._keyboardDragged
+        ) {
             return;
         }
 
-        this.updateReleasedGroupIndex(event);
+        this._updateReleasedGroupIndex(event);
 
         const groupSelector = this._hasSubGroups
             ? `[data-subgroup-name="${this._currentSubGroup}"]`
@@ -1180,14 +1888,13 @@ export default class Kanban extends LightningElement {
         }
 
         if (this._draggedTile) {
-            this.updateReleasedTileIndex(groupElements);
-            this.animateTiles(groupElements);
+            this._updateReleasedTileIndex(groupElements);
+            this._animateTiles(groupElements);
         }
     }
 
     /**
-     *
-     *  Toggles the visibility of a subgroup
+     * Toggles the visibility of a subgroup.
      *
      * @param {Event} event
      */
@@ -1200,16 +1907,159 @@ export default class Kanban extends LightningElement {
             return;
         }
 
+        const expanded = event.target.getAttribute('aria-expanded') === 'true';
         expandableSection.classList.toggle(
             'avonni-kanban__expandable_section_collapsed'
         );
+        const content = expandableSection.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+        if (content) {
+            content.setAttribute('aria-hidden', expanded);
+        }
+        event.target.setAttribute('aria-expanded', !expanded);
 
-        this.capFieldHeight();
+        this._capFieldHeight();
     }
 
     /**
+     * Handles the blur on a group.
+     */
+    handleGroupBlur() {
+        if (this._keyboardDragged && !this._cancelBlur) {
+            this.handleGroupKeyboardDragEnd();
+            this.allowBlur();
+        }
+    }
+
+    /**
+     * Handles the drop of a group.
+     */
+    handleGroupDrop() {
+        const groupValue = this._draggedGroup.dataset.group;
+        this._swapGroups();
+
+        requestAnimationFrame(() => {
+            const groupLabel = this._computedGroups.find(
+                (group) => group.value === groupValue
+            )?.label;
+            this.instructionsElement.textContent = `Group "${groupLabel}" moved to position ${this._releasedGroupIndex} of ${this.computedGroups.length}`;
+        });
+    }
+
+    /**
+     * Handles the keyboard drag and drop of a group.
      *
-     *  Starts the drag of a list
+     * @param {Event} event
+     */
+    handleGroupKeyDown(event) {
+        if (this._variant !== 'base') {
+            return;
+        }
+        handleKeyDownOnGroup(event, this.keyboardInterface);
+    }
+
+    /**
+     * Handles the end of keyboad drag of a group.
+     */
+    handleGroupKeyboardDragEnd = () => {
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
+        const groups = this.template.querySelectorAll(
+            `[data-element-id="${groupSelector}"]`
+        );
+        groups.forEach((group) => {
+            group.classList.remove('avonni-kanban__tile_moved_keyboard');
+            group.classList.remove(GROUP_DRAGGED_CLASS);
+        });
+        this.allowBlur();
+        this._draggedGroup = null;
+        this._keyboardDragged = false;
+    };
+
+    /**
+     * Handles the keyboard drag move of a group.
+     *
+     * @param {number} from The initial index of the dragged group.
+     * @param {number} to The target index where the group is dropped.
+     */
+    handleGroupKeyboardDragMove = (from, to) => {
+        if (
+            this._disableColumnDragAndDrop ||
+            !this._keyboardDragged ||
+            !this._draggedGroup
+        ) {
+            return;
+        }
+        this.cancelBlur();
+        this._clickedGroupIndex = from;
+
+        const previousDraggedElement = this._draggedGroup;
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
+        let groups = this.template.querySelectorAll(
+            `[data-element-id="${groupSelector}"]`
+        );
+        const normalizedIndex = this._normalizedIndex(groups, to);
+        this._releasedGroupIndex = normalizedIndex;
+
+        const translatePosition = from < to ? 'right' : 'left';
+        const draggedClass = `avonni-kanban__translate_${translatePosition}`;
+        this._draggedGroup.classList.remove(GROUP_DRAGGED_CLASS);
+        this._draggedGroup.classList.add(draggedClass);
+
+        if (this._animationTimeout) {
+            clearTimeout(this._animationTimeout);
+        }
+        this._animationTimeout = setTimeout(() => {
+            this.handleGroupDrop();
+            previousDraggedElement.classList.remove(draggedClass);
+
+            requestAnimationFrame(() => {
+                groups = Array.from(
+                    this.template.querySelectorAll(
+                        `[data-element-id="${groupSelector}"]`
+                    )
+                );
+                if (!this._hasSubGroups) {
+                    this._draggedGroup = groups[normalizedIndex];
+                }
+                this._draggedGroup.focus();
+                this._draggedGroup.classList.add(GROUP_DRAGGED_CLASS);
+            });
+        }, 50);
+    };
+
+    /**
+     * Handles the keyboard drag start of a group.
+     *
+     * @param {object} element The dragged HTML element.
+     * @param {number} index The index of the dragged group.
+     */
+    handleGroupKeyboardDragStart = (element, index) => {
+        if (this._disableColumnDragAndDrop) {
+            return;
+        }
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header_wrapper'
+            : 'avonni-kanban__field';
+        const groups = this.template.querySelectorAll(
+            `[data-element-id="${groupSelector}"]`
+        );
+        groups.forEach((group) => {
+            group.classList.add('avonni-kanban__tile_moved_keyboard');
+        });
+        this._keyboardDragged = true;
+        this._clickedGroupIndex = index;
+        this._releasedGroupIndex = index;
+        this._draggedGroup = element;
+        this._draggedGroup.classList.add(GROUP_DRAGGED_CLASS);
+    };
+
+    /**
+     * Handles the start of mouse drag of a group.
      *
      * @param {Event} event
      */
@@ -1217,12 +2067,13 @@ export default class Kanban extends LightningElement {
         if (
             this._variant !== 'base' ||
             this._disableColumnDragAndDrop ||
-            event.button !== 0
+            event.button !== 0 ||
+            this._keyboardDragged
         ) {
             return;
         }
 
-        this.computeGroupScrollTop();
+        this._computeGroupScrollTop();
 
         const groupSelector = this._hasSubGroups
             ? 'avonni-kanban__group_header'
@@ -1270,17 +2121,16 @@ export default class Kanban extends LightningElement {
 
         this._releasedGroupIndex = this._clickedGroupIndex;
         this._draggedGroup = event.currentTarget.parentElement;
-        this._draggedGroup.classList.add('avonni-kanban__dragged_group');
+        this._draggedGroup.classList.add(GROUP_DRAGGED_CLASS);
     }
 
     /**
-     *
-     *  Handles the drag of a list
+     * Handles the mouse drag of a group.
      *
      * @param {Event} event
      */
     handleGroupMouseMove(event) {
-        if (!this._draggedGroup) {
+        if (!this._draggedGroup || this._keyboardDragged) {
             return;
         }
 
@@ -1288,7 +2138,7 @@ export default class Kanban extends LightningElement {
             ? 'avonni-kanban__group_header'
             : 'avonni-kanban__field';
 
-        this.updateReleasedGroupIndex(event);
+        this._updateReleasedGroupIndex(event);
 
         const groups = this.template.querySelectorAll(
             `[data-element-id="${groupSelector}"]`
@@ -1336,16 +2186,14 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     *
-     *  Handles the end of the drag of a list
-     *
+     * Handles the end of the mouse drag of a group.
      */
     handleGroupMouseUp() {
-        if (!this._draggedGroup) {
+        if (!this._draggedGroup || this._keyboardDragged) {
             return;
         }
-        this.swapGroups();
-        this.clearScrollInterval();
+        this.handleGroupDrop();
+        this.handleClearScrollInterval();
 
         const groupSelector = this._hasSubGroups
             ? 'avonni-kanban__group_header'
@@ -1360,7 +2208,7 @@ export default class Kanban extends LightningElement {
         });
 
         this._draggedGroup.style.transform = '';
-        this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
+        this._draggedGroup.classList.remove(GROUP_DRAGGED_CLASS);
         this._draggedGroup = null;
         this.template
             .querySelectorAll(`[data-element-id="${groupSelector}"]`)
@@ -1379,10 +2227,20 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Handles the end of keyboard drag.
+     */
+    handleKeyboardDragEnd = () => {
+        if (!this._keyboardDragged) {
+            return;
+        }
+        this.handleGroupKeyboardDragEnd();
+        this.handleTileKeyboardDragEnd();
+    };
+
+    /**
+     * Prevents dragging from a dropdown menu.
      *
-     * Prevents dragging from a dropdown menu
      * @param {Event} event
-     *
      */
     handleMenuClick(event) {
         event.stopPropagation();
@@ -1398,11 +2256,10 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Animates the tiles when autoscrolling.
      *
-     * Animates the tiles when autoscrolling
-     * @param {HTMLElement[]} groups Groups containing the tiles to translate
-     * @param {number} scrollTop The scrollTop value
-     *
+     * @param {HTMLElement[]} groups Groups containing the tiles to translate.
+     * @param {number} scrollTop The scrollTop value.
      */
     handleScrollTiles(groups, scrollTop) {
         if (this._draggedTile && this._hasSubGroups) {
@@ -1411,43 +2268,271 @@ export default class Kanban extends LightningElement {
             this._scrollOffset = 0;
         }
         if (this._draggedTile) {
-            this.animateTiles(groups);
+            this._animateTiles(groups);
         }
     }
 
     /**
+     * Handles a click on a tile action.
      *
-     * Finds the index of initial and final position of the dragged tile
-     *
+     * @param {Event} event
+     */
+    handleTileActionClick(event) {
+        const targetName = event.detail.targetName;
+        const recordAction = this._records.find((record) => {
+            return record[this.keyField] === targetName;
+        });
+
+        const actionName = event.detail.name;
+        const group =
+            event.currentTarget.dataset.group ||
+            recordAction[this.groupFieldName];
+
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} targetKeyField Unique data keyField value.
+         * @param {string} groupValue Group value the action belongs to.
+         * @param {string} name Unique name of the action.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    targetKeyField: targetName,
+                    groupValue: group
+                },
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handles the blur on a tile.
+     */
+    handleTileBlur() {
+        if (this._keyboardDragged && !this._cancelBlur) {
+            this.handleTileKeyboardDragEnd();
+            this.allowBlur();
+        }
+    }
+
+    /**
+     * Finds the index of initial and final position of the dragged tile.
      */
     handleTileDrop() {
-        const beforeTile = this.tileRecordFinder(
+        const draggedTileLabel = this._draggedTile.title;
+        const droppedTile = this._tileRecordFinder(
             this._releasedTileIndex,
             this._releasedGroupIndex
         );
 
-        const currentTile = this.tileRecordFinder(
+        const currentTile = this._tileRecordFinder(
             this._initialTileIndex,
-            this._clickedGroupIndex,
-            true
+            this._clickedGroupIndex
         );
 
         const currentIndex = this._records.indexOf(currentTile);
-        const beforeIndex = this._records.indexOf(beforeTile) + 1;
+        const droppedIndex = droppedTile
+            ? this._records.indexOf(droppedTile)
+            : 0;
 
-        this._records = this.swapRecords(currentIndex, beforeIndex);
-        this.updateTiles();
+        this._records = this._swapRecords(currentIndex, droppedIndex);
+        this._updateTiles();
+
+        requestAnimationFrame(() => {
+            const groupValue = this._records[droppedIndex][this.groupFieldName];
+            const groupLabel = this.groupValues.find(
+                (group) => group.value === groupValue
+            )?.label;
+            this.instructionsElement.textContent = `"${draggedTileLabel}" moved to group "${groupLabel}"`;
+        });
     }
 
     /**
+     * Handles the keyboard drag and drop of a tile.
      *
-     *  Sets the position and the index of the initial position of the dragged tile.
-     *  Starts drag.
+     * @param {Event} event
+     */
+    handleTileKeyDown(event) {
+        event.stopPropagation();
+        handleKeyDownOnTile(event, this.keyboardInterface);
+    }
+
+    /**
+     * Handles the end of keyboad drag of a tile.
+     */
+    handleTileKeyboardDragEnd = () => {
+        const tiles = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__tile"]'
+        );
+        tiles.forEach((tile) => {
+            tile.classList.remove('avonni-kanban__tile_moved_keyboard');
+            tile.classList.remove(DRAGGED_CLASS);
+        });
+        this.allowBlur();
+        this._draggedTile = null;
+        this._keyboardDragged = false;
+        this._currentSubGroup = '';
+    };
+
+    /**
+     * Handles the keyboard drag move of a tile within a group.
+     *
+     * @param {number} groupIndex The group index of the tile.
+     * @param {number} tileFrom The initial index of the dragged tile.
+     * @param {number} tileTo The target index where the tile is dropped.
+     */
+    handleTileKeyboardDragMove = (
+        subgroupIndex,
+        groupIndex,
+        tileFrom,
+        tileTo
+    ) => {
+        if (
+            this._disableItemDragAndDrop ||
+            !this._keyboardDragged ||
+            !this._draggedTile
+        ) {
+            return;
+        }
+        this.cancelBlur();
+
+        let tiles = this._getTileElements(subgroupIndex, groupIndex);
+        const isLastIndex =
+            tileFrom === tiles.length - 1 && tileTo === tiles.length;
+        if (tileTo === -1 || isLastIndex) {
+            return;
+        }
+
+        this._clickedGroupIndex = groupIndex;
+        this._initialTileIndex = tileFrom;
+        this._releasedGroupIndex = groupIndex;
+
+        const normalizedReleaseIndex = this._normalizedIndex(tiles, tileTo);
+        this._releasedTileIndex = normalizedReleaseIndex;
+
+        const draggedTileValue = this._draggedTile.dataset.recordIndex;
+        const translatePosition = tileFrom < tileTo ? 'down' : 'up';
+        const draggedClass = `avonni-kanban__translate_${translatePosition}`;
+        this._draggedTile.classList.remove(DRAGGED_CLASS);
+        this._draggedTile.classList.add(draggedClass);
+
+        if (this._animationTimeout) {
+            clearTimeout(this._animationTimeout);
+        }
+        this._animationTimeout = setTimeout(() => {
+            this._draggedTile.classList.remove(draggedClass);
+            this.handleTileDrop();
+
+            requestAnimationFrame(() => {
+                tiles = this._getTileElements(subgroupIndex, groupIndex);
+                const draggedTile = tiles.find(
+                    (tile) => tile.dataset.recordIndex === draggedTileValue
+                );
+
+                this._draggedTile = draggedTile;
+                this._draggedTile.focus();
+                this._draggedTile.classList.add(DRAGGED_CLASS);
+
+                const alignPosition = tileFrom > tileTo ? 'start' : 'end';
+                this._draggedTile.scrollIntoView({
+                    behavior: 'smooth',
+                    block: alignPosition
+                });
+            });
+        }, 50);
+    };
+
+    /**
+     * Handles the keyboard drag move of a tile between groups.
+     *
+     * @param {number} tileIndex The index of the tile.
+     * @param {number} groupFrom The initial index of the dragged group.
+     * @param {number} groupTo The target index where the group is dropped.
+     * @param {number} subgroupIndex The index of the subgroup.
+     */
+    handleTileKeyboardDragMoveToGroup = (
+        subgroupIndex,
+        tileIndex,
+        groupFrom,
+        groupTo
+    ) => {
+        if (
+            this._disableItemDragAndDrop ||
+            !this._keyboardDragged ||
+            !this._draggedTile
+        ) {
+            return;
+        }
+        this.cancelBlur();
+        const draggedTileValue = this._draggedTile.dataset.recordIndex;
+        this._clickedGroupIndex = groupFrom;
+        this._initialTileIndex = tileIndex;
+        this._releasedGroupIndex = groupTo;
+
+        let tiles = this._getTileElements(subgroupIndex, groupTo);
+        const normalizedReleaseIndex = this._normalizedIndex(tiles, groupTo);
+        this._releasedTileIndex = normalizedReleaseIndex;
+
+        this._draggedTile.classList.remove(DRAGGED_CLASS);
+        this.handleTileDrop();
+        this.handleTileKeyboardDragEnd();
+
+        requestAnimationFrame(() => {
+            tiles = this._getTileElements(subgroupIndex, groupTo);
+            const draggedTile = tiles.find(
+                (tile) => tile.dataset.recordIndex === draggedTileValue
+            );
+            draggedTile.focus();
+            draggedTile.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end'
+            });
+        });
+    };
+
+    /**
+     * Handles the keyboard drag start of a tile.
+     *
+     * @param {object} element The dragged HTML element of the tile.
+     * @param {number} groupIndex The group index of the tile.
+     * @param {number} index The index of the tile.
+     */
+    handleTileKeyboardDragStart = (element, groupIndex, index) => {
+        if (this._disableItemDragAndDrop) {
+            return;
+        }
+        const tiles = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__tile"]'
+        );
+        tiles.forEach((tile) => {
+            tile.classList.add('avonni-kanban__tile_moved_keyboard');
+        });
+        this._keyboardDragged = true;
+        this._clickedGroupIndex = groupIndex;
+        this._releasedGroupIndex = groupIndex;
+        this._initialTileIndex = index;
+        this._draggedTile = element;
+        this._draggedTile.classList.add(DRAGGED_CLASS);
+        this._currentSubGroup = element.dataset.subgroup;
+    };
+
+    /**
+     * Handles the start of mouse drag of a tile.
+     * Sets the position and the index of the initial position of the dragged tile.
      *
      * @param {Event} event
      */
     handleTileMouseDown(event) {
         event.preventDefault();
+        if (this._keyboardDragged) {
+            return;
+        }
         // this handles when the user dragged a tile out of the kanban, and released his click.
         // a second click on the dragged tile (impossible otherwise) behaves has a click release
         if (event.currentTarget === this._draggedTile) {
@@ -1490,7 +2575,7 @@ export default class Kanban extends LightningElement {
         const initialGroupScroll = clickedGroup.scrollTop;
 
         this._draggedTile = event.currentTarget;
-        this._draggedTile.classList.add('avonni-kanban__dragged');
+        this._draggedTile.classList.add(DRAGGED_CLASS);
         this._draggedTile.style.width = `calc(${parseInt(
             this._groupWidth,
             10
@@ -1542,7 +2627,7 @@ export default class Kanban extends LightningElement {
 
         this.handleTileMouseMove(event);
 
-        this.createTileSpace();
+        this._createTileSpace();
         clickedGroup.scrollTop = initialGroupScroll;
 
         this.handleDropZone(event);
@@ -1550,472 +2635,46 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     *
-     * Drags the tile
+     * Handles the mouse drag of a tile.
      *
      * @param {Event} event
      */
     handleTileMouseMove(event) {
-        if (!this._draggedTile && !this._draggedGroup) {
+        if (
+            (!this._draggedTile && !this._draggedGroup) ||
+            this._keyboardDragged
+        ) {
             return;
         }
 
-        const mousePos = this.capMousePos(event);
+        const mousePos = this._capMousePos(event);
 
         if (this._draggedGroup) {
             this.handleGroupMouseMove(event);
         }
 
-        this.translateToPos(mousePos);
+        this._translateToPos(mousePos);
 
-        this.createTileSpace();
-        this.autoScroll(mousePos.x, mousePos.y);
+        this._createTileSpace();
+        this._autoScroll(mousePos.x, mousePos.y);
     }
 
     /**
-     *
+     * Handles the end of the mouse drag of a tile.
      * Sets the dragged tile in the right position in the records array.
-     * Ends drag.
      *
      * @param {Event} event
      */
     handleTileMouseUp(event) {
         if (
             this.disableItemDragAndDrop ||
-            event.currentTarget !== this._draggedTile
+            event.currentTarget !== this._draggedTile ||
+            this._keyboardDragged
         ) {
             return;
         }
-        this.clearScrollInterval();
-        this.endDrag();
-    }
-
-    /**
-     * Returns whether the group has subgroups or not.
-     *
-     * @type {boolean}
-     */
-    hasSubGroups() {
-        this._records.forEach((record) => {
-            if (record[this.subGroupFieldName]) {
-                this._hasSubGroups = true;
-            }
-        });
-        return this._hasSubGroups;
-    }
-
-    /**
-     * Updates the groups to separate tiles and calculate the summary values.
-     */
-    updateTiles() {
-        if (!this.hideHeader) {
-            this.clearSummarizeTimeouts();
-        }
-        const kanbanGroupsBuilder = new KanbanGroupsBuilder({
-            groupValues: this._groupValues,
-            records: this._records,
-            groupFieldName: this.groupFieldName,
-            summarizeAttributes: this.summarizeAttributes,
-            subGroupFieldName: this.subGroupFieldName,
-            keyField: this.keyField,
-            cardAttributes: this.cardAttributes
-        });
-        if (this._computedGroups.length === 0) {
-            this._groupValues.forEach((_, i) => {
-                this._oldSummarizeValues[i] = 0;
-            });
-        } else {
-            this._computedGroups.forEach((group, i) => {
-                this._oldSummarizeValues[i] = group.summarize.value
-                    ? group.summarize.value
-                    : 0;
-            });
-        }
-
-        this._computedGroups = kanbanGroupsBuilder.computeGroups();
-        this._hasSubGroups = kanbanGroupsBuilder.hasSubGroups;
-        this._currentSubGroupIndex = 0;
-
-        this._computedGroups.forEach((group, i) => {
-            this._summarizeValues[i] = group.summarize.value
-                ? this.truncateNumber(group.summarize.value)
-                : 0;
-            if (!this.hideHeader) this.animateSummary(group);
-        });
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        const container = this.template.querySelector(
-            '[data-element-id="avonni-kanban__container"]'
-        );
-        if (!container) {
-            return null;
-        }
-
-        return new AvonniResizeObserver(container, () => {
-            this._scrollWidth = this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).scrollWidth;
-
-            this.capFieldHeight();
-            this.capFieldWidth();
-            this.capContainerWidth();
-            this.setContainerDimensions();
-
-            const { x, y } = this.getBoundingClientRect();
-            this._kanbanOffset = { x, y };
-        });
-    }
-
-    /**
-     *
-     * Resets the translate animations on the tiles and limits the height of the groups
-     *
-     * @param {object[]} groups Groups containing the tiles
-     */
-    resetAnimations(groups) {
-        let offsetHeight = 0;
-        let offsetCount = 0;
-
-        // resets animations
-        Array.from(groups).forEach((group, i) => {
-            // removes the translation on the other tiles
-            Array.from(group.children)
-                .filter((child) => child !== this._draggedTile)
-                .forEach((tile, j) => {
-                    if (
-                        i !== this._releasedGroupIndex ||
-                        j < this._releasedTileIndex
-                    ) {
-                        tile.classList.remove('avonni-kanban__tile_moved');
-                        tile.style.transform = `translateY(0px)`;
-                    }
-
-                    if (
-                        i === this._releasedGroupIndex &&
-                        j < this._releasedTileIndex
-                    ) {
-                        offsetHeight += tile.offsetHeight;
-                        offsetCount++;
-                    }
-                });
-        });
-
-        this.displayDropzone(offsetHeight, offsetCount);
-    }
-
-    /**
-     *
-     * Determines the scroll dimensions of the container for drag and drop translate calculations.
-     *
-     */
-    setContainerDimensions() {
-        if (this.isLoading) return;
-
-        this.template
-            .querySelectorAll(
-                '[data-element-id="avonni-kanban__field_container"]'
-            )
-            .forEach((fieldContainer, i) => {
-                this._subGroupsHeight[i] = fieldContainer.scrollHeight;
-            });
-        const fieldContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__field_container"]'
-        );
-        this._initialScrollWidth = fieldContainer
-            ? fieldContainer.scrollWidth
-            : 0;
-        if (this._hasSubGroups) {
-            this._initialScrollHeight = this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).scrollHeight;
-        }
-    }
-
-    /**
-     *
-     * computes the right scrollTop to the groups after a swap.
-     *
-     */
-    computeGroupScrollTop() {
-        const kanbanGroups = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
-
-        Array.from(kanbanGroups).forEach((group, i) => {
-            this._groupsScrollTop[i] = group.scrollTop;
-        });
-    }
-
-    /**
-     *
-     * Swaps the groups after a drag and drop, in all the group-related arrays
-     */
-    swapGroups() {
-        const groups = JSON.parse(JSON.stringify(this._groupValues));
-        const groupValue = groups[this._clickedGroupIndex].value;
-        groups.splice(
-            this._releasedGroupIndex,
-            0,
-            groups.splice(this._clickedGroupIndex, 1)[0]
-        );
-        this._groupValues = groups;
-
-        const groupArrays = [
-            this._oldSummarizeValues,
-            this._summarizeValues,
-            this._groupsHeight,
-            this._groupsLength,
-            this._fieldsDistance,
-            this._computedGroups,
-            this._groupsScrollTop
-        ];
-
-        // Swaps groups in every group-related array
-        groupArrays.forEach((array) => {
-            array.splice(
-                this._releasedGroupIndex,
-                0,
-                array.splice(this._clickedGroupIndex, 1)[0]
-            );
-        });
-
-        /**
-         * The event fired when a column is moved from a position to another.
-         *
-         * @event
-         * @name columnchange
-         * @param {number} index Index of the final position of the column.
-         * @param {string} name Value of the column.
-         * @param {object[]} groupValues New group values of the Kanban.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('columnchange', {
-                detail: {
-                    index: this._releasedGroupIndex,
-                    name: groupValue,
-                    groupValues: this._groupValues
-                }
-            })
-        );
-
-        this.updateTiles();
-    }
-
-    /**
-     *
-     * Moves the dragged tile at the right index in the record array and updates the group field value.
-     * @param {number} fromIndex Index of the initial position of the tile
-     * @param {number} toIndex Index of the final position of the tile
-     * @returns {object[]} The array with swapped records
-     */
-    swapRecords(fromIndex, toIndex) {
-        if (toIndex < 0 || fromIndex < 0) {
-            return this.records;
-        }
-        const arr = JSON.parse(JSON.stringify(this._records));
-        arr[fromIndex][this.groupFieldName] =
-            this._groupValues[this._releasedGroupIndex].value;
-        this._groupsLength[this._clickedGroupIndex]--;
-        this._groupsLength[this._releasedGroupIndex]++;
-
-        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
-
-        /**
-         * The event fired when a card is moved from a step to another.
-         *
-         * @event
-         * @name change
-         * @param {string} keyField Value of the record’s key field.
-         * @param {string} groupValue Value of the group the data card has been moved to.
-         * @param {object[]} records New records of the Kanban.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    keyField: this._draggedTile.dataset.recordIndex,
-                    groupValue:
-                        this._groupValues[this._releasedGroupIndex].value,
-                    records: arr
-                }
-            })
-        );
-
-        return arr;
-    }
-
-    /**
-     *
-     * Finds a tile in the record array depending of it's index and it's group
-     * @param {number} tileIndex Index of the tile
-     * @param {number} groupIndex Index of the group
-     * @param {boolean} isCurrent Indicates if group is the current group. Defaults to false.
-     */
-    tileRecordFinder(tileIndex, groupIndex, isCurrent = false) {
-        let tileCount = isCurrent ? -1 : 0;
-        return this._records.find((record) => {
-            if (
-                record[this.groupFieldName] ===
-                    this._groupValues[groupIndex].value &&
-                record[this.subGroupFieldName] === this._currentSubGroup
-            ) {
-                tileCount++;
-            }
-            return (
-                tileCount === tileIndex &&
-                record[this.groupFieldName] ===
-                    this._groupValues[groupIndex].value &&
-                record[this.subGroupFieldName] === this._currentSubGroup
-            );
-        });
-    }
-
-    /**
-     *
-     * Translates the dragged item by the given amount.
-     * @param {object} delta Amount of pixels to translate the dragged item
-     */
-    translateByDelta(delta) {
-        const draggedItem = this._draggedTile
-            ? this._draggedTile
-            : this._draggedGroup;
-        const style = window.getComputedStyle(draggedItem);
-        const matrixValues = style.transform
-            .match(/matrix.*\((.+)\)/)[1]
-            .split(', ');
-        const currentTranslate = {
-            translateX: parseFloat(matrixValues[4]),
-            translateY: parseFloat(matrixValues[5])
-        };
-        draggedItem.style.transform = `translateX(${
-            currentTranslate.translateX + delta.x
-        }px) translateY(${
-            currentTranslate.translateY + (this._hasSubGroups ? delta.y : 0)
-        }px) rotate(3deg)`;
-    }
-
-    /**
-     *
-     * Translates the dragged item to a new pos.
-     * @param {object} delta Amount of pixels to translate the dragged item
-     */
-    translateToPos(pos) {
-        if (this._draggedTile) {
-            // Sets the position of the dragged tile
-            this._draggedTile.style.transform = `translate(${
-                pos.x - this._initialPos.x - this._clickOffset.x
-            }px, ${
-                pos.y -
-                this._initialPos.y -
-                this._clickOffset.y +
-                this._scrollOffset
-            }px) rotate(3deg)`;
-        }
-        if (this._draggedGroup) {
-            // Sets the position of the dragged group
-            this._draggedGroup.style.transform = `translate(${
-                pos.x - this._initialPos.x - this._clickOffset.x
-            }px, ${
-                pos.y - this._initialPos.y - this._clickOffset.y
-            }px) rotate(3deg)`;
-        }
-    }
-
-    /**
-     *
-     * Truncates a number to handle floatting point errors (4.500000000000000003 for example)
-     * @param {number} num Number to truncate
-     */
-    truncateNumber(num) {
-        return Math.round(num * 1e6) / 1e6;
-    }
-
-    /**
-     *
-     *  Updates the released group index depending on the scroll position
-     * @param {Event} event
-     */
-    updateReleasedGroupIndex(event) {
-        const remToPx = parseFloat(
-            getComputedStyle(this.template.host).fontSize
-        );
-        const scrolledWidth =
-            this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).scrollLeft - this._kanbanOffset.x;
-
-        const scrolledGroupsCount = scrolledWidth / this._groupWidth;
-
-        const mouseHoveringGroup =
-            (event.clientX + 0.5 * remToPx) / this._groupWidth;
-
-        this._releasedGroupIndex = Math.min(
-            Math.trunc(mouseHoveringGroup + scrolledGroupsCount),
-            this.groupValues.length - 1
-        );
-    }
-
-    /**
-     *
-     *  Updates the released tile index depending on the scroll position and tiles hovered
-     * @param {HTMLElement[]} groupElements Groups containing the tiles
-     */
-    updateReleasedTileIndex(groupElements) {
-        let offsetHeight = this._kanbanOffset.y;
-
-        const currentGroupTiles = Array.from(
-            groupElements[this._releasedGroupIndex].children
-        );
-        let scrolledHeight = 0;
-
-        let isScrolled = false;
-
-        // calculates the index of the drop, depending on the previous tiles heights
-        for (let [i, tile] of currentGroupTiles.entries()) {
-            // if the group is scrolled, the kanban's offset isn't influencing the index
-            if (!isScrolled && scrolledHeight > 0) {
-                offsetHeight -= this._kanbanOffset.y;
-                isScrolled = true;
-            }
-            const tileIncrementMultiplier =
-                this._releasedGroupIndex === this._clickedGroupIndex ? 1 : -1;
-
-            const rem = parseFloat(
-                getComputedStyle(this.template.host).fontSize
-            );
-            offsetHeight += tile.offsetHeight + rem;
-            this._releasedTileIndex = i;
-            if (
-                groupElements[this._releasedGroupIndex].scrollTop > offsetHeight
-            ) {
-                scrolledHeight += tile.offsetHeight + rem;
-            }
-
-            // Doesn't count the dragged tile in the index
-            if (this._clickedGroupIndex === this._releasedGroupIndex) {
-                this._releasedTileIndex--;
-            }
-            if (
-                this._draggedTile.getBoundingClientRect().y +
-                    scrolledHeight +
-                    tileIncrementMultiplier *
-                        (this._draggedTile.offsetHeight / 2) <
-                offsetHeight - tile.offsetHeight / 2
-            ) {
-                break;
-            } else {
-                this._releasedTileIndex++;
-            }
-        }
-        if (this._releasedTileIndex < 0 || currentGroupTiles.length === 0) {
-            this._releasedTileIndex = 0;
-        }
+        this.handleClearScrollInterval();
+        this.handleTileDrop();
+        this._endDrag();
     }
 }

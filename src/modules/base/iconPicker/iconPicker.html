@@ -21,6 +21,8 @@
                 <!-- Button menu -->
                 <button
                     class={computedButtonClass}
+                    aria-expanded={computedAriaExpanded}
+                    aria-label={computedAriaLabel}
                     accesskey={accessKey}
                     aria-expanded={computedAriaExpanded}
                     aria-haspopup="true"
@@ -144,12 +146,14 @@
                                             slds-p-bottom_none
                                         "
                                     >
-                                        <div
+                                        <ul
                                             class="
                                                 avonni-builder-icon-picker-icon-container
                                                 slds-scrollable_y
                                                 slds-p-left_xx-small
                                             "
+                                            aria-label="Choose an icon"
+                                            role="listbox"
                                             data-element-id="avonni-builder-icon-picker-icon-container"
                                         >
                                             <template
@@ -263,7 +267,7 @@
                                                     class="slds-p-bottom_small"
                                                 ></div>
                                             </template>
-                                        </div>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

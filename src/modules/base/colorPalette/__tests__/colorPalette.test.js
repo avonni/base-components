@@ -296,9 +296,11 @@ describe('Color Palette', () => {
             expect(links).toHaveLength(COLORS.length);
             links.forEach((link, index) => {
                 expect(link.title).toBe(COLORS[index].label || '');
-                expect(link.getAttribute('aria-label')).toBe(
-                    COLORS[index].label || null
-                );
+                const isObject = COLORS[index] instanceof Object;
+                const ariaLabel = isObject
+                    ? COLORS[index].label || COLORS[index].color
+                    : COLORS[index];
+                expect(link.getAttribute('aria-label')).toBe(ariaLabel || null);
             });
         });
     });

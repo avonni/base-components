@@ -522,7 +522,10 @@ describe('Calendar', () => {
             const selected = element.shadowRoot.querySelector(
                 '[data-element-id="td"][data-selected="true"]'
             );
-            expect(selected.textContent).toBe('19');
+            const selectedDayLabel = selected.querySelector(
+                '[data-element-id="span-day-label"]'
+            );
+            expect(selectedDayLabel.textContent).toBe('19');
 
             const day15 = element.shadowRoot.querySelector(
                 '[data-element-id="span-day-label"][data-date="15"]'
@@ -541,8 +544,12 @@ describe('Calendar', () => {
         element.selectionMode = 'single';
         element.value = '04/15/2021';
         return Promise.resolve().then(() => {
-            const day = element.shadowRoot.querySelector('.slds-is-selected');
-            expect(day.textContent).toBe('15');
+            const selected =
+                element.shadowRoot.querySelector('.slds-is-selected');
+            const selectedDayLabel = selected.querySelector(
+                '[data-element-id="span-day-label"]'
+            );
+            expect(selectedDayLabel.textContent).toBe('15');
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             );
@@ -633,8 +640,12 @@ describe('Calendar', () => {
             '09/10/2444'
         ];
         return Promise.resolve().then(() => {
-            const day = element.shadowRoot.querySelector('.slds-is-selected');
-            expect(day.textContent).toBe('6');
+            const selected =
+                element.shadowRoot.querySelector('.slds-is-selected');
+            const selectedDayLabel = selected.querySelector(
+                '[data-element-id="span-day-label"]'
+            );
+            expect(selectedDayLabel.textContent).toBe('6');
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             );
@@ -658,7 +669,10 @@ describe('Calendar', () => {
                 element.shadowRoot.querySelectorAll('.slds-is-selected');
             expect(days.length).toBe(10);
             for (let i = 0; i < days.length; ++i) {
-                expect(days[i].textContent).toBe((i + 1).toString());
+                const dayLabel = days[i].querySelector(
+                    '[data-element-id="span-day-label"]'
+                );
+                expect(dayLabel.textContent).toBe((i + 1).toString());
             }
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
@@ -683,7 +697,10 @@ describe('Calendar', () => {
                 element.shadowRoot.querySelectorAll('.slds-is-selected');
             expect(days.length).toBe(3);
             for (let i = 0; i < days.length; ++i) {
-                expect(days[i].textContent).toBe((i + 29).toString());
+                const dayLabel = days[i].querySelector(
+                    '[data-element-id="span-day-label"]'
+                );
+                expect(dayLabel.textContent).toBe((i + 29).toString());
             }
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
@@ -748,7 +765,10 @@ describe('Calendar', () => {
                 element.shadowRoot.querySelectorAll('.slds-is-selected');
             expect(days.length).toBe(31);
             for (let i = 0; i < days.length; ++i) {
-                expect(days[i].textContent).toBe((i + 1).toString());
+                const dayLabel = days[i].querySelector(
+                    '[data-element-id="span-day-label"]'
+                );
+                expect(dayLabel.textContent).toBe((i + 1).toString());
             }
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
@@ -772,7 +792,10 @@ describe('Calendar', () => {
                 element.shadowRoot.querySelectorAll('.slds-is-selected');
             expect(days.length).toBe(21);
             for (let i = 0; i < days.length; ++i) {
-                expect(days[i].textContent).toBe((i + 2).toString());
+                const dayLabel = days[i].querySelector(
+                    '[data-element-id="span-day-label"]'
+                );
+                expect(dayLabel.textContent).toBe((i + 2).toString());
             }
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
@@ -820,7 +843,10 @@ describe('Calendar', () => {
                 element.shadowRoot.querySelectorAll('.slds-is-selected');
             const dates = [];
             days.forEach((day) => {
-                dates.push(day.textContent);
+                const dayLabel = day.querySelector(
+                    '[data-element-id="span-day-label"]'
+                );
+                dates.push(dayLabel.textContent);
             });
 
             expect(dates.includes('15')).toBeTruthy();
@@ -949,7 +975,10 @@ describe('Calendar', () => {
             expect(weeks).toHaveLength(6);
 
             weeks.forEach((week) => {
-                weekNumbers.push(week.textContent);
+                const dayLabel = week.querySelector(
+                    '[data-element-id="span-day-label"]'
+                );
+                weekNumbers.push(dayLabel.textContent);
             });
             expect(weekNumbers.includes('16')).toBeTruthy();
             expect(weekNumbers.includes('17')).toBeTruthy();

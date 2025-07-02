@@ -98,6 +98,7 @@ describe('Avatar Group', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.actionAlternativeText).toBeUndefined();
             expect(element.actionIconName).toBeUndefined();
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
@@ -117,6 +118,19 @@ describe('Avatar Group', () => {
         });
 
         describe('Action button', () => {
+            it('action-alternative-text button icon', () => {
+                element.actionAlternativeText = 'Check';
+                element.actionIconName = 'utility:check';
+                element.items = longItems;
+
+                return Promise.resolve().then(() => {
+                    const altText = element.shadowRoot.querySelector(
+                        '[data-element-id="alternative-text"]'
+                    );
+                    expect(altText.textContent).toBe('Check');
+                });
+            });
+
             //Action button: absence of action-icon-name
             it('absence of action-icon-name makes action button disappear', () => {
                 element.actionIconName = '';

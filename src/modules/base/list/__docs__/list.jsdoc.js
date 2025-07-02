@@ -7,6 +7,7 @@
  * @property {object[]} fields Array of output data objects. See <a href="/components/output-data">Output Data</a> for valid keys. The fields are displayed in the details section.
  * @property {string} href The URL of the page the link goes to.
  * @property {string[]} icons List of iconName displayed next to the label.
+ * @property {string} imageAlternativeText Alternative text used to describe the list item image.
  * @property {string} imageSrc Image URL for the list item image. If present, the image is displayed to the left of the item.
  * @property {object} infos List of additional information to display. Valid keys:
  * - label: string
@@ -21,6 +22,7 @@
  * @property {string} name Required. The name of the action, which identifies the selected action.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
  * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
+ * @property {string} alternativeText The alternative text used to describe the action icon.
  */
 /**
  * @typedef {Object} ListAvatar

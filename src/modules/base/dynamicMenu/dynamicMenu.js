@@ -4,7 +4,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { getListHeight, observePosition } from 'c/utilsPrivate';
+import { getListHeight, keyCodes, observePosition } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const BUTTON_SIZES = {
@@ -155,7 +155,9 @@ export default class DynamicMenu extends LightningElement {
     showFooter = true;
 
     _cancelBlur = false;
+    _dropdownIsFocused = false;
     _dropdownVisible = false;
+    _focusedIndex = 0;
     _order;
     _boundingRect = {};
 
@@ -491,6 +493,15 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Computed Aria Label from dropdown menu.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        return this.label || this.title || this.alternativeText;
+    }
+
+    /**
      * Computed Button class styling.
      *
      * @type {string}
@@ -562,7 +573,7 @@ export default class DynamicMenu extends LightningElement {
             const selected = this.value === value;
             const displayFigure = avatar || !this.hideCheckMark;
             const computedItemClass = classSet(
-                'slds-listbox__option slds-media slds-media_center slds-listbox__option_plain avonni-dynamic-menu__item_color-background'
+                'slds-listbox__option slds-media slds-media_center slds-listbox__option_plain'
             ).add({
                 'slds-is-selected': selected
             });
@@ -706,15 +717,80 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Set the focus on the item at the saved focused index.
+     */
+    focusItem() {
+        const focusedItem = this.template.querySelector(
+            `[data-element-id="item"][data-index="${this._focusedIndex}"]`
+        );
+        if (focusedItem) {
+            focusedItem.focus();
+        }
+    }
+
+    /**
      * Button focus handler.
      */
     focusOnButton() {
-        if (this.label) {
-            this.template.querySelector('[data-element-id="button"]').focus();
-        } else {
-            this.template
-                .querySelector('[data-element-id="button-icon"]')
-                .focus();
+        const buttonType = this.label ? 'button' : 'button-icon';
+        const button = this.template.querySelector(
+            `[data-element-id=${buttonType}`
+        );
+        if (button) {
+            button.focus();
+        }
+    }
+
+    /**
+     * Set the focus on the dropdown menu.
+     */
+    focusDropdown() {
+        if (this.isLoading) {
+            return;
+        }
+        this.cancelBlur();
+        requestAnimationFrame(() => {
+            const focusTrap = this.template.querySelector(
+                '[data-element-id="avonni-focus-trap"]'
+            );
+            if (focusTrap) {
+                this._dropdownIsFocused = true;
+                focusTrap.focus();
+
+                if (this.computedListItems.length > 0) {
+                    const selectedItemIndex = this.computedListItems.findIndex(
+                        (item) => item.selected
+                    );
+                    this.switchFocus(selectedItemIndex);
+                    if (!this.allowSearch) {
+                        this.focusItem();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Normalize the focused index.
+     *
+     * @param {number} index Index to normalize.
+     */
+    normalizeFocusedIndex(index) {
+        let position = 'INDEX';
+
+        if (index < 0) {
+            position = 'FIRST_ITEM';
+        } else if (index > this.computedListItems.length - 1) {
+            position = 'LAST_ITEM';
+        }
+
+        switch (position) {
+            case 'FIRST_ITEM':
+                return 0;
+            case 'LAST_ITEM':
+                return this.computedListItems.length - 1;
+            default:
+                return index;
         }
     }
 
@@ -745,6 +821,28 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Update the focused index.
+     *
+     * @param {number} index Index of the new focused item.
+     */
+    switchFocus(index) {
+        const normalizedIndex = this.normalizeFocusedIndex(index);
+        const previousItem = this.template.querySelector(
+            `[data-element-id="item"][data-index="${this._focusedIndex}"]`
+        );
+        if (previousItem) {
+            previousItem.tabIndex = '-1';
+        }
+        this._focusedIndex = normalizedIndex;
+        const item = this.template.querySelector(
+            `[data-element-id="item"][data-index="${normalizedIndex}"]`
+        );
+        if (item) {
+            item.tabIndex = '0';
+        }
+    }
+
+    /**
      * Dropdown menu Visibility toggle.
      */
     toggleMenuVisibility() {
@@ -763,6 +861,7 @@ export default class DynamicMenu extends LightningElement {
                 this.dispatchEvent(new CustomEvent('open'));
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
+                this.focusDropdown();
             } else {
                 /**
                  * The event fired when you close the dropdown menu.
@@ -816,6 +915,43 @@ export default class DynamicMenu extends LightningElement {
         const mainButton = 0;
         if (event.button === mainButton) {
             this.cancelBlur();
+        }
+    }
+
+    /**
+     * Handle a focus set inside the dropdown menu.
+     */
+    handleDropdownFocusIn() {
+        this._dropdownIsFocused = true;
+    }
+
+    /**
+     * Handle a focus lost inside the dropdown menu.
+     */
+    handleDropdownFocusOut() {
+        this._dropdownIsFocused = false;
+
+        requestAnimationFrame(() => {
+            if (!this._dropdownIsFocused) {
+                this.close();
+            }
+        });
+    }
+
+    /**
+     * Handle a key up in the dropdown menu.
+     *
+     * @param {Event} event keyup event.
+     */
+    handleDropdownKeyUp(event) {
+        const key = event.key;
+        if (key === 'Escape') {
+            this.close();
+
+            requestAnimationFrame(() => {
+                // Set the focus on the button after render
+                this.focus();
+            });
         }
     }
 
@@ -898,6 +1034,69 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Handle a focus on an item.
+     *
+     * @param {Event} event `focus` event.
+     */
+    handleItemFocus(event) {
+        const index = Number(event.currentTarget.dataset.index);
+        if (index !== this._focusedIndex) {
+            this.switchFocus(index);
+        }
+    }
+
+    handleItemKeyDown(event) {
+        switch (event.keyCode) {
+            case keyCodes.left:
+            case keyCodes.up: {
+                // Prevent the page from scrolling
+                event.preventDefault();
+                this.switchFocus(this._focusedIndex - 1);
+                this.focusItem();
+                break;
+            }
+            case keyCodes.right:
+            case keyCodes.down: {
+                // Prevent the page from scrolling
+                event.preventDefault();
+                this.switchFocus(this._focusedIndex + 1);
+                this.focusItem();
+                break;
+            }
+            case keyCodes.space:
+            case keyCodes.enter:
+                // Prevent the page from scrolling
+                event.preventDefault();
+                this.handleItemClick(event);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Mouse Enter handler. Adds display action class.
+     *
+     * @param {Event} event
+     */
+    handleItemMouseEnter(event) {
+        event.currentTarget.classList.add(
+            'avonni-dynamic-menu__display_action'
+        );
+    }
+
+    /**
+     * Mouse Leave handler. Removes display action class.
+     *
+     * @param {Event} event
+     */
+    handleItemMouseLeave(event) {
+        event.currentTarget.classList.remove(
+            'avonni-dynamic-menu__display_action'
+        );
+    }
+
+    /**
      * Key up event handler.
      *
      * @param {Event} event
@@ -910,28 +1109,6 @@ export default class DynamicMenu extends LightningElement {
                 item.value.toLowerCase().indexOf(filter) > -1
             );
         });
-    }
-
-    /**
-     * Mouse Enter handler. Adds display action class.
-     *
-     * @param {Event} event
-     */
-    handleOptionMouseEnter(event) {
-        event.currentTarget.classList.add(
-            'avonni-dynamic-menu__display_action'
-        );
-    }
-
-    /**
-     * Mouse Enter handler. Removes display action class.
-     *
-     * @param {Event} event
-     */
-    handleOptionMouseLeave(event) {
-        event.currentTarget.classList.remove(
-            'avonni-dynamic-menu__display_action'
-        );
     }
 
     /**

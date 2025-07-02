@@ -143,6 +143,7 @@ export default {
         }
     },
     args: {
+        alternativeText: 'Button Icon Dialog',
         cancelButtonLabel: 'Cancel',
         disabled: false,
         saveButtonLabel: 'Save',

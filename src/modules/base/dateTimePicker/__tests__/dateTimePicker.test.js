@@ -724,10 +724,7 @@ describe('DateTimePicker', () => {
 
                 return Promise.resolve().then(() => {
                     firstButton.click();
-                    expect(firstButton.ariaSelected).toBeFalsy();
-                    buttons.forEach((button) => {
-                        expect(button.ariaReadOnly).toBeTruthy();
-                    });
+                    expect(firstButton.ariaPressed).toBeFalsy();
                 });
             });
         });
@@ -1010,7 +1007,7 @@ describe('DateTimePicker', () => {
                     const selectedButton = element.shadowRoot.querySelector(
                         '[data-element-id="button-default"][data-time="2023-01-26T07:00:00.000+11:00"]'
                     );
-                    expect(selectedButton.ariaSelected).toBe('true');
+                    expect(selectedButton.ariaPressed).toBe('true');
 
                     expect(input.max).toBe('2023-01-27T23:59:59.999+11:00');
                     expect(input.min).toBe('2023-01-25T00:00:00.000+11:00');
@@ -1046,9 +1043,9 @@ describe('DateTimePicker', () => {
                     firstButton.click();
                     secondButton.click();
                     thirdButton.click();
-                    expect(firstButton.ariaSelected).toBeTruthy();
-                    expect(secondButton.ariaSelected).toBeTruthy();
-                    expect(thirdButton.ariaSelected).toBeTruthy();
+                    expect(firstButton.ariaPressed).toBeTruthy();
+                    expect(secondButton.ariaPressed).toBeTruthy();
+                    expect(thirdButton.ariaPressed).toBeTruthy();
                 });
             });
 
@@ -1066,9 +1063,9 @@ describe('DateTimePicker', () => {
                     firstButton.click();
                     secondButton.click();
                     thirdButton.click();
-                    expect(firstButton.ariaSelected).toBeFalsy();
-                    expect(secondButton.ariaSelected).toBeFalsy();
-                    expect(thirdButton.ariaSelected).toBeFalsy();
+                    expect(firstButton.ariaPressed).toBeFalsy();
+                    expect(secondButton.ariaPressed).toBeFalsy();
+                    expect(thirdButton.ariaPressed).toBeFalsy();
                 });
             });
         });

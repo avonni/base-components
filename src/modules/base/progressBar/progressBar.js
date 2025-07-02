@@ -74,6 +74,13 @@ const PROGRESS_BAR_PIN_POSITIONS = {
  */
 export default class ProgressBar extends LightningElement {
     /**
+     * The assistive text for the progress bar.
+     *
+     * @type {string}
+     * @public
+     */
+    @api alternativeText;
+    /**
      * Label for the progress bar.
      *
      * @type {string}
@@ -440,6 +447,15 @@ export default class ProgressBar extends LightningElement {
      */
     get assistiveText() {
         return `Progress: ${this.value}%`;
+    }
+
+    /**
+     * Computed Aria Label for the progress bar.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        return this.label || this.alternativeText;
     }
 
     /**

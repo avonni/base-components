@@ -329,6 +329,19 @@ describe('List', () => {
                     );
                 });
             });
+
+            it('Image alternative text', () => {
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const images = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="list-img-media"]'
+                    );
+                    expect(images[0].alt).toBe('Item 1');
+                    expect(images[1].alt).toBe('Item 2');
+                    expect(images[2].alt).toBe('Item 5');
+                });
+            });
         });
 
         describe('Items', () => {

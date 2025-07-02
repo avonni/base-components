@@ -189,6 +189,7 @@
                                     slds-is-absolute
                                     avonni-date-time-picker__inline-date-picker-previous-button
                                 "
+                                alternative-text="Previous week"
                                 icon-name="utility:chevronleft"
                                 size="large"
                                 variant="bare"
@@ -251,7 +252,7 @@
                                                 avonni-date-time-picker__inline-date-picker-button
                                                 slds-p-vertical_small
                                             "
-                                            aria-selected={day.isSelected}
+                                            aria-pressed={day.isSelected}
                                             type="button"
                                             data-date={day.date.ts}
                                             data-element-id="button-inline-date-picker"
@@ -278,6 +279,7 @@
                                     slds-is-absolute
                                     avonni-date-time-picker__inline-date-picker-next-button
                                 "
+                                alternative-text="Next week"
                                 icon-name="utility:chevronright"
                                 size="large"
                                 variant="bare"
@@ -346,7 +348,6 @@
                                             avonni-date-time-picker__day-label
                                             slds-p-around_medium
                                         "
-                                        aria-selected={day.selected}
                                         grow="1"
                                         data-today={day.isToday}
                                         data-element-id="div-day-label"
@@ -396,7 +397,8 @@
                                                                 style={computedTimeSlotStyle}
                                                             >
                                                                 <button
-                                                                    aria-selected={timelineTime.selected}
+                                                                    aria-label={timelineTime.computedAriaLabel}
+                                                                    aria-pressed={timelineTime.selected}
                                                                     class="
                                                                         avonni-date-time-picker__time-button
                                                                         slds-p-around_medium
@@ -404,7 +406,6 @@
                                                                     disabled={timelineTime.disabled}
                                                                     type="button"
                                                                     onclick={handleTimeSlotClick}
-                                                                    aria-readonly={readOnly}
                                                                     onblur={handleValueBlur}
                                                                     onfocus={handleValueFocus}
                                                                 >
@@ -453,7 +454,8 @@
                                                 style={computedTimeSlotStyle}
                                             >
                                                 <button
-                                                    aria-selected={time.selected}
+                                                    aria-label={time.computedAriaLabel}
+                                                    aria-pressed={time.selected}
                                                     class="
                                                         avonni-date-time-picker__time-button
                                                         slds-p-around_small
@@ -461,7 +463,6 @@
                                                     "
                                                     disabled={time.disabled}
                                                     type="button"
-                                                    aria-readonly={readOnly}
                                                     data-element-id="button-default"
                                                     data-time={time.startTimeISO}
                                                     onclick={handleTimeSlotClick}
