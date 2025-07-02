@@ -147,6 +147,14 @@ const TEXT_Y_ALIGN = {
  * @public
  */
 export default class Barcode extends LightningElement {
+    /**
+     * The assistive text for the barcode.
+     *
+     * @public
+     * @type {string}
+     */
+    @api alternativeText;
+
     _background = DEFAULT_BACKGROUND;
     _color = DEFAULT_COLOR;
     _textColor = DEFAULT_TEXT_COLOR;
