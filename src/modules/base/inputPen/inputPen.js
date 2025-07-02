@@ -1360,6 +1360,22 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Handle a key pressed on the clear button.
+     *
+     * @param {Event} event
+     */
+    handleClearButtonKeyDown(event) {
+        if (
+            event.key === 'Enter' ||
+            event.key === ' ' ||
+            event.key === 'Spacebar'
+        ) {
+            event.preventDefault();
+            this.clear();
+        }
+    }
+
+    /**
      * handle key down event
      *
      * @param {Event} event

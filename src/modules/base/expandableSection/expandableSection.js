@@ -98,6 +98,15 @@ export default class ExpandableSection extends LightningElement {
      */
 
     /**
+     * Return a true string if the section is opened or and a false string if not.
+     *
+     * @type {string}
+     */
+    get computedAriaExpanded() {
+        return String(!this.closed);
+    }
+
+    /**
      * Computed list of the section classes.
      *
      * @type {string}

@@ -152,6 +152,7 @@ export default {
         }
     },
     args: {
+        avatarAlternativeText: 'Avatar',
         avatarPosition: 'top-left',
         avatarMobilePosition: 'top-left',
         avatarVariant: 'circle',

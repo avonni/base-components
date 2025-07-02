@@ -20,7 +20,6 @@
             class={computedListboxClass}
             aria-describedby="instructions"
             aria-labelledby="label"
-            aria-orientation="horizontal"
             tabindex={listboxTabIndex}
             data-element-id="ul"
             onfocusin={handleChipFocus}
@@ -31,7 +30,6 @@
                 <li
                     class={computedListItemClass}
                     key={chip.name}
-                    role="presentation"
                     data-element-id="li-item"
                     data-index={index}
                     onmousemove={handleChipMouseMove}
@@ -49,7 +47,6 @@
                         prefix-icon-name={chip.prefixIconName}
                         suffix-icon-name={chip.suffixIconName}
                         variant={chip.variant}
-                        role="option"
                         tabindex="-1"
                         data-element-id="avonni-primitive-chip"
                         data-index={index}

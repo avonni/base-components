@@ -4,6 +4,7 @@ import Component from 'avonni/qrcode';
 customElements.define('ac-base-qrcode', Component.CustomElementConstructor);
 
 export const Qrcode = ({
+    alternativeText,
     value,
     color,
     background,
@@ -16,6 +17,7 @@ export const Qrcode = ({
     size
 }) => {
     const element = document.createElement('ac-base-qrcode');
+    element.alternativeText = alternativeText;
     element.value = value;
     element.color = generateColors(color).hex;
     element.background = generateColors(background).hex;

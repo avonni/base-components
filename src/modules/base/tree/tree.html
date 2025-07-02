@@ -1,4 +1,11 @@
 <template>
+    <h4
+        class="avonni-tree__group-header"
+        id="treeheading"
+        data-element-id="h4-header"
+    >
+        {header}
+    </h4>
     <div
         class="avonni-tree_container"
         aria-labelledby="treeheading"
@@ -13,14 +20,6 @@
         onprivateitemloadmore={handleLoadMore}
         onprivateregisteritem={handleRegistration}
     >
-        <h4
-            class="avonni-tree__group-header"
-            id="treeheading"
-            data-element-id="h4-header"
-        >
-            {header}
-        </h4>
-
         <template for:each={children} for:item="item" for:index="index">
             <c-primitive-tree-item
                 key={item.key}

@@ -110,9 +110,20 @@
     flex-grow: 1;
 }
 
-.avonni-input-choice-set__button__row [type='checkbox'] {
+.avonni-input-choice-set__option-button {
+    width: 100%;
+    height: 100%;
+}
+
+.avonni-input-choice-set__button__row
+    .avonni-input-choice-set__option-default[type='checkbox'],
+.avonni-input-choice-set__button__row
+    .avonni-input-choice-set__option-toggle[type='checkbox'] {
     width: 1px;
     height: 1px;
+}
+
+.avonni-input-choice-set__button__row [type='checkbox'] {
     border: 0;
     clip: rect(0 0 0 0);
     margin: -1px;

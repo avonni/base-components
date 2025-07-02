@@ -41,6 +41,7 @@ div:focus {
     background-color: var(--avonni-dynamic-menu-item-color-background, #ffffff);
 }
 
+.avonni-dynamic-menu__item_color-background:focus,
 .avonni-dynamic-menu__item_color-background:hover {
     background-color: var(
         --avonni-dynamic-menu-item-color-background-hover,

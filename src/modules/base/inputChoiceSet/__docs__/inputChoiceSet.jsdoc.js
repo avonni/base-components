@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} Option
  * @name options
+ * @property {string} alternativeText Alternative text of the option.
  * @property {string} color CSS color value. If present, the checkbox, radio button or button will take this color.
  * @property {string} label Label of the option.
  * @property {boolean} hideLabel If present, the label of the option is hidden.

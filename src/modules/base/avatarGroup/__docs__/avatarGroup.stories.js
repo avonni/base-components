@@ -5,6 +5,18 @@ import { InfiniteLoadingUsingShowMoreAvatarGroup } from '../__examples__/infinit
 export default {
     title: 'Example/Avatar Group',
     argTypes: {
+        actionAlternativeText: {
+            name: 'action-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text used to describe the action.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Buttons',
+                subcategory: 'Action'
+            }
+        },
         actionIconName: {
             name: 'action-icon-name',
             control: {
@@ -483,6 +495,7 @@ BaseLargeWithMoreThanTwoAvatars.args = {
     size: 'large',
     maxCount: 6,
     variant: 'circle',
+    actionAlternativeText: 'Add',
     actionIconName: 'utility:add',
     name: 'avatar-group'
 };

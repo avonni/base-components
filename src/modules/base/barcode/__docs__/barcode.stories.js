@@ -3,6 +3,16 @@ import { Barcode } from '../__examples__/barcode';
 export default {
     title: 'Example/Barcode',
     argTypes: {
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the barcode.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         background: {
             control: 'color',
             description: 'Defines the background color of the barcode.',

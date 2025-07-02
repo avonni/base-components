@@ -15,6 +15,7 @@ export {
 } from './fontCase';
 export {
     keyCodes,
+    keyValues,
     runActionOnBufferedTypedCharacters,
     normalizeKeyValue,
     isShiftMetaOrControlKey

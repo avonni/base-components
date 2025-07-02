@@ -99,7 +99,7 @@
                     role="grid"
                 >
                     <thead>
-                        <tr id="weekdays">
+                        <tr id="weekdays" role="row">
                             <template
                                 for:each={days}
                                 for:item="day"
@@ -108,6 +108,7 @@
                                 <th
                                     key={day}
                                     id={index}
+                                    role="columnheader"
                                     scope="col"
                                     class="avonni-calendar__weekdays_color"
                                 >
@@ -124,6 +125,7 @@
                                     slds-has-multi-selection
                                 "
                                 key={generateKey}
+                                role="row"
                             >
                                 <template for:each={week} for:item="day">
                                     <td

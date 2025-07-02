@@ -5,5 +5,12 @@
             data-element-id="avonni-barcode-canvas"
         ></canvas>
     </div>
+    <span
+        if:true={alternativeText}
+        class="slds-assistive-text"
+        data-element-id="barcode-assistive-text"
+    >
+        {alternativeText}
+    </span>
     <p if:false={validCode} class="slds-text-color_error">{errorMessage}</p>
 </template>

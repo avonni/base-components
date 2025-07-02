@@ -122,7 +122,7 @@ export default class KanbanSubGroups extends LightningElement {
             available: true,
             assignee: 'John Doe',
             coverImage:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
@@ -192,7 +192,7 @@ export default class KanbanSubGroups extends LightningElement {
             amount: 17500,
             assignee: 'John Doe',
             coverImage:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+                'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
