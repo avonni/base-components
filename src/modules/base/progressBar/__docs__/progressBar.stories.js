@@ -15,6 +15,16 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the progress bar.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         label: {
             control: {
                 type: 'text'

@@ -6,4 +6,11 @@
         data-element-id="span"
     ></span>
     <canvas if:false={renderAsSvg} data-element-id="canvas"></canvas>
+    <span
+        if:true={alternativeText}
+        class="slds-assistive-text"
+        data-element-id="qrcode-assistive-text"
+    >
+        {alternativeText}
+    </span>
 </template>

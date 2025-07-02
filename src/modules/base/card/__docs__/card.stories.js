@@ -100,7 +100,7 @@ MediaCenter.args = {
     iconName: 'custom:custom102',
     mediaPosition: 'center',
     mediaSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+        'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const MediaBottom = CenterBottomTemplate.bind({});
@@ -109,7 +109,7 @@ MediaBottom.args = {
     iconName: 'custom:custom102',
     mediaPosition: 'bottom',
     mediaSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+        'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const MediaBackground = BaseTemplate.bind({});

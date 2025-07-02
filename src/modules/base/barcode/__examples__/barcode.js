@@ -3,6 +3,7 @@ import Component from '../barcode';
 customElements.define('ac-base-barcode', Component.CustomElementConstructor);
 
 export const Barcode = ({
+    alternativeText,
     background,
     checksum,
     color,
@@ -15,6 +16,7 @@ export const Barcode = ({
     width
 }) => {
     const element = document.createElement('ac-base-barcode');
+    element.alternativeText = alternativeText;
     element.background = background;
     element.checksum = checksum;
     element.color = color;

@@ -39,6 +39,7 @@ export default class Item {
         this.href = value.href;
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);
+        this.imageAlternativeText = value.imageAlternativeText;
         this.imageSrc = value.imageSrc;
         this.imagePosition = value.imagePosition;
         this.label = value.label;

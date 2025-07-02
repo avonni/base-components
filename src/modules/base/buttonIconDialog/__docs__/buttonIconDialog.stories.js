@@ -119,6 +119,7 @@ export default {
         }
     },
     args: {
+        alternativeText: 'Button Icon Dialog',
         disabled: false,
         size: 'medium',
         variant: 'border'

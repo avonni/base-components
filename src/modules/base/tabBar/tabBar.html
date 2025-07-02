@@ -30,19 +30,22 @@
                         slds-tabs_default__item
                         slds-tabs_default__overflow-button
                     "
-                    title="More icons"
                     role="presentation"
+                    title="More icons"
                 >
                     <div
                         class="
                             slds-dropdown-trigger slds-dropdown-trigger_click
                             slds-is-open
                         "
+                        role="presentation"
                     >
                         <button
                             class="slds-button"
+                            role="tab"
                             aria-haspopup="true"
                             aria-expanded={showHiddenTabsDropdown}
+                            aria-label="Show more icons"
                             type="button"
                             data-element-id="button-hidden-tabs"
                             onfocus={handleDropDownButtonFocus}

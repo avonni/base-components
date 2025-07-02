@@ -11,6 +11,7 @@ const POSITION_ICON = {
  * Input choice set options
  * @class
  * @param {string} label Label of the option.
+ * @param {string} alternativeText Alternative text of the option.
  * @param {boolean} hideLabel If present, the label of the option is hidden.
  * @param {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
  * @param {string} iconPosition The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
@@ -32,6 +33,7 @@ export default class InputChoiceOption {
         this.isChecked = Array.isArray(value)
             ? value.includes(option.value)
             : value === option.value;
+        this.alternativeText = option.alternativeText;
     }
 
     get computedButtonLabelStyle() {

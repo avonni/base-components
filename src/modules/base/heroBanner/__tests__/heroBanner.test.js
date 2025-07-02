@@ -28,11 +28,13 @@ describe('Hero Banner', () => {
         expect(element.imageLayout).toBe('scale-to-fill');
         expect(element.imagePosition).toBe('center');
         expect(element.maxWidth).toBe(960);
+        expect(element.primaryButtonAlternativeText).toBeUndefined();
         expect(element.primaryButtonIconName).toBeUndefined();
         expect(element.primaryButtonIconPosition).toBe('left');
         expect(element.primaryButtonIconSize).toBe('medium');
         expect(element.primaryButtonLabel).toBeUndefined();
         expect(element.primaryButtonVariant).toBe('neutral');
+        expect(element.secondaryButtonAlternativeText).toBeUndefined();
         expect(element.secondaryButtonIconName).toBeUndefined();
         expect(element.secondaryButtonIconPosition).toBe('left');
         expect(element.secondaryButtonIconSize).toBe('medium');
@@ -407,6 +409,28 @@ describe('Hero Banner', () => {
         });
     });
 
+    // Primary button alternative text
+    it('Hero Banner: primary button alternative text', () => {
+        element.primaryButtonIconName = 'utility:pin';
+        element.primaryButtonAlternativeText = 'Pinned';
+
+        return Promise.resolve().then(() => {
+            const primaryButtonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-hero-banner-primary-button-icon"]'
+            );
+            const primaryIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-primary-button"]'
+            );
+            const primaryIconAssistiveText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-hero-banner-primary-button-icon-assistive-text"]'
+            );
+
+            expect(primaryButtonIcon).toBeTruthy();
+            expect(primaryIcon.iconName).toBe('utility:pin');
+            expect(primaryIconAssistiveText.textContent).toBe('Pinned');
+        });
+    });
+
     // Primary button icon name
     it('Hero Banner: primary button icon name', () => {
         element.primaryButtonIconName = 'utility:down';
@@ -671,6 +695,28 @@ describe('Hero Banner', () => {
     });
 
     // Needs a primary button
+    // Secondary button alternative text
+    it('Hero Banner: secondary button alternative text', () => {
+        element.primaryButtonLabel = 'This is a primary button label';
+        element.secondaryButtonIconName = 'utility:pin';
+        element.secondaryButtonAlternativeText = 'Pinned';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-hero-banner-secondary-button-icon"]'
+            );
+            const secondaryIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-secondary-button"]'
+            );
+            const primaryIconAssistiveText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-hero-banner-secondary-button-icon-assistive-text"]'
+            );
+            expect(secondaryButton).toBeTruthy();
+            expect(secondaryIcon.iconName).toBe('utility:pin');
+            expect(primaryIconAssistiveText.textContent).toBe('Pinned');
+        });
+    });
+
     // secondary button icon name
     it('Hero Banner: secondary button icon name', () => {
         element.primaryButtonLabel = 'This is a primary button label';

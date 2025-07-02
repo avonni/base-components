@@ -8,12 +8,18 @@ export default class ColorPaletteColor {
         this.color = props.color;
         this.disabled = props.disabled;
         this.displayCheckMark = props.displayCheckMark;
+        this.group = props.group;
         this.hideOutline = props.hideOutline;
         this.label = props.label;
         this.selected = props.selected;
         this.tileHeight = props.tileHeight;
         this.tileWidth = props.tileWidth;
         this.value = props.value;
+    }
+
+    get ariaLabel() {
+        const label = this.label || this.color || '';
+        return this.groupLabel ? `${this.groupLabel}, ${label}` : label;
     }
 
     get ariaSelected() {
@@ -46,6 +52,10 @@ export default class ColorPaletteColor {
             .toString();
     }
 
+    get groupLabel() {
+        return this.group?.label;
+    }
+
     get showCheckMark() {
         return this.selected && this.displayCheckMark;
     }
@@ -69,5 +79,9 @@ export default class ColorPaletteColor {
                 'slds-is-selected': this.selected
             })
             .toString();
+    }
+
+    setGroup(group) {
+        this.group = group;
     }
 }

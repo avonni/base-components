@@ -6,6 +6,7 @@
         <button
             if:true={showFirstButton}
             class={computedFirstButtonClass}
+            aria-label={computedFirstButtonAriaLabel}
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-first"
             onclick={first}
@@ -21,6 +22,7 @@
         </button>
         <button
             class={computedPreviousButtonClass}
+            aria-label={computedPreviousButtonAriaLabel}
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-previous"
             onclick={previous}
@@ -60,6 +62,7 @@
         <button
             if:true={showNextEllipsis}
             class={computedButtonClass}
+            aria-label={computedEllipsisButtonAriaLabel}
             disabled={disabled}
             type="button"
             data-element-id="button-ellipsis"
@@ -69,6 +72,7 @@
         </button>
         <button
             class={computedNextButtonClass}
+            aria-label={computedNextButtonAriaLabel}
             disabled={disabledRightButtons}
             data-element-id="lightning-button-next"
             onclick={next}
@@ -86,6 +90,7 @@
         <button
             if:true={showLastButton}
             class={computedLastButtonClass}
+            aria-label={computedLastButtonAriaLabel}
             disabled={disabledRightButtons}
             data-element-id="lightning-button-last"
             onclick={last}

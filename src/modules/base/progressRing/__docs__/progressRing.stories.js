@@ -3,6 +3,16 @@ import { ProgressRing } from '../__examples__/progressRing';
 export default {
     title: 'Example/Progress Ring',
     argTypes: {
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the progress ring.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         value: {
             control: {
                 type: 'number',
@@ -72,6 +82,7 @@ export default {
         }
     },
     args: {
+        alternativeText: 'Loading progress',
         direction: 'fill',
         hideIcon: false,
         size: 'medium',

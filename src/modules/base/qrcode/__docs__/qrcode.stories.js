@@ -3,6 +3,16 @@ import { Qrcode } from '../__examples__/qrcode';
 export default {
     title: 'Example/Qrcode',
     argTypes: {
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the QR code.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         value: {
             control: {
                 type: 'text'
@@ -138,17 +148,23 @@ const Template = (args) => Qrcode(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    alternativeText:
+        'Scan QR code to visit our product page at https://www.avonni.app',
     value: 'https://www.avonni.app'
 };
 
 export const ErrorCorrectionH = Template.bind({});
 ErrorCorrectionH.args = {
+    alternativeText:
+        'Scan QR code to visit our product page at https://www.avonni.app',
     value: 'https://www.avonni.app',
     errorCorrection: 'H'
 };
 
 export const Colors = Template.bind({});
 Colors.args = {
+    alternativeText:
+        'Scan QR code to visit our product page at https://www.avonni.app',
     value: 'https://www.avonni.app',
     color: '#FFDEAA',
     background: '#1B0972',

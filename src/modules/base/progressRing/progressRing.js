@@ -17,6 +17,14 @@ const DEFAULT_VALUE = 0;
  * @public
  */
 export default class ProgressRing extends LightningElement {
+    /**
+     * The assistive text for the progress ring.
+     *
+     * @type {string}
+     * @public
+     */
+    @api alternativeText;
+
     _direction = PROGRESS_RING_DIRECTIONS.default;
     _hideIcon = false;
     _size = PROGRESS_RING_SIZES.default;
