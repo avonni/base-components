@@ -69,6 +69,7 @@ export const ITEMS = [
             {
                 label: 'First level',
                 name: 'firstLevel',
+                noSlots: true,
                 items: [
                     {
                         label: 'Second level',
@@ -101,6 +102,82 @@ export const ITEMS = [
         label: 'Infinite loading',
         name: 'infiniteLoading',
         enableInfiniteLoading: true
+    },
+    {
+        label: 'Unselectable child',
+        name: 'unselectableChild',
+        items: [
+            {
+                label: 'First level unselectable',
+                name: 'firstLevelUnselectable',
+                unselectable: true,
+                items: [
+                    {
+                        label: 'Second level selectable',
+                        name: 'secondLevelSelectable'
+                    },
+                    {
+                        label: 'Second level 2 unselectable',
+                        name: 'secondLevel2Unselectable',
+                        unselectable: true
+                    },
+                    {
+                        label: 'Second level 3 selectable',
+                        name: 'secondLevel3Selectable',
+                        items: [
+                            {
+                                label: 'Third level selectable',
+                                name: 'thirdLevelSelectable'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        label: 'No slots',
+        name: 'noSlots',
+        noSlots: true
+    },
+    {
+        label: 'Simple unselectable',
+        name: 'simpleUnselectable',
+        unselectable: true
+    }
+];
+
+export const ITEMS_WITH_INVALID_SORTING = [
+    {
+        label: 'No slots',
+        name: 'noSlots',
+        noSlots: true,
+        type: 'valid',
+        slottableTypes: ['invalidSorting']
+    },
+    {
+        label: 'Item to move',
+        name: 'itemToMove',
+        type: 'invalidSorting'
+    },
+    {
+        label: 'Invalid sorting',
+        name: 'invalidSorting',
+        items: [
+            {
+                label: 'First level invalid sorting',
+                name: 'firstLevelInvalidSorting',
+                type: 'invalidSorting'
+            },
+            {
+                label: 'First level invalid sorting2',
+                name: 'firstLevelInvalidSorting2',
+                type: 'invalidSorting'
+            }
+        ],
+        type: 'valid',
+        slottableTypes: ['valid'],
+        expanded: true
     }
 ];
 
