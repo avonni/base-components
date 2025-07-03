@@ -31,30 +31,28 @@
             <!-- Trend icon -->
             <lightning-dynamic-icon
                 if:true={showDynamicIcon}
-                class={dynamicIconClass}
+                class={computedDynamicIconClass}
                 alternative-text={trendDirection}
                 option={trendDirection}
                 type="trend"
                 data-element-id="lightning-dynamic-icon-sign"
             ></lightning-dynamic-icon>
-
-            <template if:true={showIcon}>
-                <c-primitive-icon
-                    class="
-                        avonni-metric__icon
-                        slds-current-color slds-align-middle
-                        slds-m-right_xx-small
-                    "
-                    icon-name={iconName}
-                    data-element-id="avonni-primitive-icon-sign"
-                ></c-primitive-icon>
-                <span
-                    class="slds-assistive-text"
-                    data-element-id="span-icon-assistive-text"
-                >
-                    Trend direction: {trendDirection}
-                </span>
-            </template>
+            <c-primitive-icon
+                if:true={showIcon}
+                class="
+                    avonni-metric__icon
+                    slds-current-color slds-align-middle
+                    slds-m-right_xx-small
+                "
+                icon-name={iconName}
+                data-element-id="avonni-primitive-icon-sign"
+            ></c-primitive-icon>
+            <span
+                class="slds-assistive-text"
+                data-element-id="span-icon-assistive-text"
+            >
+                Trend direction: {trendDirection}
+            </span>
 
             <!-- Prefix -->
             <span

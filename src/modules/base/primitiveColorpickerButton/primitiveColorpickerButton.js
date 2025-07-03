@@ -9,7 +9,7 @@ const i18n = {
 export default class PrimitiveColorpickerButton extends LightningElement {
     static delegatesFocus = true;
 
-    _isColorPickerPanelOpen = false;
+    isColorPickerPanelOpen = false;
     _value = '';
     _disabled = false;
 
@@ -58,9 +58,9 @@ export default class PrimitiveColorpickerButton extends LightningElement {
 
     handleColorPickerToggleClick(event) {
         event.preventDefault();
-        this._isColorPickerPanelOpen = !this._isColorPickerPanelOpen;
+        this.isColorPickerPanelOpen = !this.isColorPickerPanelOpen;
 
-        if (this._isColorPickerPanelOpen) {
+        if (this.isColorPickerPanelOpen) {
             this.startColorPickerPositioning();
         } else {
             this.stopColorPickerPositioning();
@@ -102,7 +102,7 @@ export default class PrimitiveColorpickerButton extends LightningElement {
     handleUpdateColorEvent(event) {
         event.stopPropagation();
         const detail = event.detail;
-        this._isColorPickerPanelOpen = false;
+        this.isColorPickerPanelOpen = false;
         this.stopColorPickerPositioning();
         this.dispatchEvent(
             new CustomEvent('change', {

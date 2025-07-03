@@ -7,19 +7,19 @@
         "
         data-element-id="div-popover"
         onmousedown={handleMenuMouseDown}
-        onmouseup={handleMenuMouseUp}
         onmouseleave={handleMenuMouseLeave}
+        onmouseup={handleMenuMouseUp}
         onscroll={handleMenuScroll}
     >
         <div
             class="slds-dropdown__list"
             role="menu"
+            onkeydown={handleKeyDownMenuItem}
+            onmouseout={allowBlur}
+            onmouseover={handleMouseOverOnMenuItem}
             onprivateselect={handleMenuItemPrivateSelect}
             onprivateblur={handleMenuItemPrivateBlur}
             onprivatefocus={handleMenuItemPrivateFocus}
-            onmouseover={handleMouseOverOnMenuItem}
-            onmouseout={allowBlur}
-            onkeydown={handleKeyDownMenuItem}
         >
             <template for:each={items} for:item="item">
                 <lightning-menu-item

@@ -48,7 +48,6 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api accessKey;
-
     /**
      * Indicates the element that represents the current item within a container or set of related elements.
      * For example:
@@ -73,21 +72,18 @@ export default class PrimitiveButton extends LightningElement {
      * @default undefined
      */
     @api ariaKeyShortcuts;
-
     /**
      * Label describing the button to assistive technologies.
      *
      * @type {string}
      */
     @api ariaLabel;
-
     /**
      * Reserved for internal use only.
      * Describes the order of this element (first, middle or last) inside lightning-button-group.
      * @type {string}
      */
     @api groupOrder = '';
-
     /**
      * The Lightning Design System name of the icon.
      * Names are written in the format 'utility:down' where 'utility' is the category,
@@ -96,14 +92,12 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api iconName;
-
     /**
      * The text to be displayed inside the button.
      *
      * @type {string}
      */
     @api label;
-
     /**
      * The name for the button element.
      * This value is optional and can be used to identify the button in a callback.
@@ -111,7 +105,6 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api name;
-
     /**
      * Reserved for internal use only.
      * Should be set to -1 if button should not
@@ -121,14 +114,12 @@ export default class PrimitiveButton extends LightningElement {
      * @type {number}
      */
     @api tabIndex;
-
     /**
      * Displays tooltip text when the mouse cursor moves over the element.
      *
      * @type {string}
      */
     @api title;
-
     /**
      * The value for the button element.
      * This value is optional and can be used when submitting a form.
@@ -136,12 +127,11 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api value;
-
     _ariaAtomic;
     _ariaBusy;
     _ariaControls;
-    _ariaDetails;
     _ariaDescribedBy;
+    _ariaDetails;
     _ariaExpanded;
     _ariaFlowTo;
     _ariaHasPopup;

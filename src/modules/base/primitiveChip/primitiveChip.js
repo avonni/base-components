@@ -66,6 +66,12 @@ export default class PrimitiveChip extends LightningElement {
     _suffixIconName = undefined;
     _variant = CHIP_VARIANTS.default;
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      *  The avatar to display. Set to null by default
      *
@@ -178,13 +184,13 @@ export default class PrimitiveChip extends LightningElement {
      * If present, the avatar is to be shown.
      */
     get showAvatar() {
-        return this._avatar;
+        return this.avatar;
     }
 
     /**
      *  If left icon media is to be shown.
      */
     get showAvatarLeft() {
-        return this.showAvatar && this._avatar.position !== 'right';
+        return this.showAvatar && this.avatar.position !== 'right';
     }
 }
