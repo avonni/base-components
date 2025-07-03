@@ -38,6 +38,12 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     computedGroups = [];
     start;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.setStartToBeginningOfUnit();
         super.connectedCallback();
@@ -248,7 +254,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      *
      * @type {string}
      */
-    get mainSectionClass() {
+    get computedMainSectionClass() {
         return classSet(
             'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section slds-scrollable'
         )
@@ -257,6 +263,26 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                     this.hideSidePanel || this.sidePanelPosition === 'right',
                 'avonni-scheduler__main-border_right':
                     this.hideSidePanel || this.sidePanelPosition === 'left'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the side panel.
+     *
+     * @type {string}
+     */
+    get computedSidePanelClass() {
+        return classSet(
+            'avonni-scheduler__panel slds-scrollable avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
+        )
+            .add({
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'avonni-scheduler__main-border_left':
+                    this.sidePanelPosition === 'left' || !this.showSplitter,
+                'avonni-scheduler__main-border_right':
+                    this.sidePanelPosition === 'right' || !this.showSplitter
             })
             .toString();
     }
@@ -281,26 +307,6 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 value: res.name
             };
         });
-    }
-
-    /**
-     * Computed CSS classes for the side panel.
-     *
-     * @type {string}
-     */
-    get sidePanelClass() {
-        return classSet(
-            'avonni-scheduler__panel slds-scrollable avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
-        )
-            .add({
-                'avonni-scheduler__panel_collapsed': this._isCollapsed,
-                'avonni-scheduler__panel_expanded': this._isExpanded,
-                'avonni-scheduler__main-border_left':
-                    this.sidePanelPosition === 'left' || !this.showSplitter,
-                'avonni-scheduler__main-border_right':
-                    this.sidePanelPosition === 'right' || !this.showSplitter
-            })
-            .toString();
     }
 
     /**

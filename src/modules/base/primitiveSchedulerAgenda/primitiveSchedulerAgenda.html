@@ -2,7 +2,10 @@
     <div class="avonni-scheduler__wrapper slds-grid">
         <!-- Side panel: left position -->
         <template if:true={showLeftPanel}>
-            <div class={sidePanelClass} data-element-id="div-panel-left">
+            <div
+                class={computedSidePanelClass}
+                data-element-id="div-panel-left"
+            >
                 <div
                     class="slds-p-around_medium"
                     data-element-id="div-panel-content"
@@ -26,12 +29,12 @@
                             for:item="resource"
                         >
                             <lightning-input
+                                style={resource.style}
                                 key={resource.value}
-                                label={resource.label}
                                 checked={resource.selected}
+                                label={resource.label}
                                 type="checkbox"
                                 value={resource.value}
-                                style={resource.style}
                                 data-element-id="lightning-input-resource"
                                 onchange={handleResourceToggle}
                             ></lightning-input>
@@ -79,9 +82,11 @@
                 ></lightning-button-icon>
             </div>
         </template>
-
         <!-- Agenda panel -->
-        <div class={mainSectionClass} data-element-id="div-main-section">
+        <div
+            class={computedMainSectionClass}
+            data-element-id="div-main-section"
+        >
             <div
                 class="avonni-primitive-scheduler-calendar__inherit-height"
                 data-element-id="div-schedule-body"
@@ -97,8 +102,8 @@
                 >
                     <c-illustration
                         class="slds-p-around_medium"
-                        variant="no-events"
                         title={labelNoEventsFound}
+                        variant="no-events"
                         data-element-id="avonni-illustration-no-events"
                     ></c-illustration>
                 </div>
@@ -281,7 +286,10 @@
                     onmousedown={stopPropagation}
                 ></lightning-button-icon>
             </div>
-            <div class={sidePanelClass} data-element-id="div-panel-right">
+            <div
+                class={computedSidePanelClass}
+                data-element-id="div-panel-right"
+            >
                 <div
                     class="slds-p-around_medium"
                     data-element-id="div-panel-content"
@@ -304,12 +312,12 @@
                             for:item="resource"
                         >
                             <lightning-input
+                                style={resource.style}
                                 key={resource.value}
-                                label={resource.label}
                                 checked={resource.selected}
+                                label={resource.label}
                                 type="checkbox"
                                 value={resource.value}
-                                style={resource.style}
                                 data-element-id="lightning-input-resource"
                                 onchange={handleResourceToggle}
                             ></lightning-input>
