@@ -96,12 +96,6 @@ describe('Primitive Scheduler Calendar Popover', () => {
         );
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  ATTRIBUTES
-     * -------------------------------------------------------------
-     */
-
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.dateFormat).toBeUndefined();
@@ -215,12 +209,6 @@ describe('Primitive Scheduler Calendar Popover', () => {
         });
     });
 
-    /*
-     * -------------------------------------------------------------
-     *  METHODS
-     * -------------------------------------------------------------
-     */
-
     describe('Methods', () => {
         describe('Focus', () => {
             it('Focus', () => {
@@ -325,12 +313,6 @@ describe('Primitive Scheduler Calendar Popover', () => {
             });
         });
     });
-
-    /*
-     * -------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
 
     describe('Events', () => {
         describe('Close', () => {

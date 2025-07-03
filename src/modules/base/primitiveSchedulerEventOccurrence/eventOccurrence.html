@@ -1,18 +1,18 @@
 <template>
     <div
-        class={eventOccurrenceClass}
+        class={computedEventOccurrenceClass}
         tabindex="0"
         data-element-id="div-event-occurrence"
         data-from={from}
         data-to={to}
-        oncontextmenu={handleContextMenu}
-        onmouseenter={handleMouseEnter}
-        onmouseleave={handleMouseLeave}
-        ondblclick={handleDoubleClick}
-        onmousedown={handleMouseDown}
-        onfocus={handleFocus}
         onblur={handleBlur}
+        oncontextmenu={handleContextMenu}
+        ondblclick={handleDoubleClick}
+        onfocus={handleFocus}
         onkeydown={handleKeyDown}
+        onmouseenter={handleMouseEnter}
+        onmousedown={handleMouseDown}
+        onmouseleave={handleMouseLeave}
     >
         <!-- Left label -->
         <div
@@ -26,9 +26,9 @@
         >
             <lightning-icon
                 if:true={computedLabels.left.iconName}
+                class="slds-m-right_xx-small"
                 icon-name={computedLabels.left.iconName}
                 size="x-small"
-                class="slds-m-right_xx-small"
             ></lightning-icon>
             <span
                 if:true={computedLabels.left.value}
@@ -58,9 +58,9 @@
             >
                 <lightning-icon
                     if:true={computedLabels.top.iconName}
+                    class="slds-m-right_xx-small"
                     icon-name={computedLabels.top.iconName}
                     size="x-small"
-                    class="slds-m-right_xx-small"
                 ></lightning-icon>
                 <span
                     if:true={computedLabels.top.value}
@@ -73,7 +73,7 @@
 
             <!-- Event -->
             <div
-                class={computedClass}
+                class={computedOccurrenceClass}
                 style={style}
                 data-element-id="div-event-content"
             >
@@ -94,7 +94,7 @@
                 <!-- Center label -->
                 <div
                     if:true={computedLabels.center}
-                    class={eventOccurrenceCenterLabelClass}
+                    class={computedEventOccurrenceCenterLabelClass}
                     data-element-id="div-center-label-wrapper"
                 >
                     <!-- Standalone chip -->
@@ -109,9 +109,9 @@
 
                     <lightning-icon
                         if:true={computedLabels.center.iconName}
+                        class="slds-m-right_xx-small"
                         icon-name={computedLabels.center.iconName}
                         size="x-small"
-                        class="slds-m-right_xx-small"
                         data-element-id="lightning-icon-center-label"
                     ></lightning-icon>
                     <span
@@ -165,9 +165,9 @@
             >
                 <lightning-icon
                     if:true={computedLabels.bottom.iconName}
+                    class="slds-m-right_xx-small"
                     icon-name={computedLabels.bottom.iconName}
                     size="x-small"
-                    class="slds-m-right_xx-small"
                 ></lightning-icon>
                 <span
                     if:true={computedLabels.bottom.value}
@@ -191,13 +191,13 @@
         >
             <lightning-icon
                 if:true={computedLabels.right.iconName}
+                class="slds-m-right_xx-small"
                 icon-name={computedLabels.right.iconName}
                 size="x-small"
-                class="slds-m-right_xx-small"
             ></lightning-icon>
             <span if:true={computedLabels.right.value} class="slds-truncate"
-                >{computedLabels.right.value}</span
-            >
+                >{computedLabels.right.value}
+            </span>
         </div>
     </div>
 </template>
