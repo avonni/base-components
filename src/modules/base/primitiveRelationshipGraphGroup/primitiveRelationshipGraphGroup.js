@@ -165,12 +165,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    get actionButtonClass() {
-        return classSet('slds-button slds-button_neutral').add({
-            'slds-button_stretch': this.actionsPosition === 'bottom'
-        });
-    }
-
     get actions() {
         if (this.hideDefaultActions) return this.customActions;
 
@@ -181,11 +175,17 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.items && this.items.find((item) => item.activeSelection);
     }
 
+    get computedActionButtonClass() {
+        return classSet('slds-button slds-button_neutral').add({
+            'slds-button_stretch': this.actionsPosition === 'bottom'
+        });
+    }
+
     get computedAriaExpanded() {
         return String(!this.closed);
     }
 
-    get groupTitleClass() {
+    get computedGroupTitleClass() {
         return classSet(
             'avonni-relationship-graph-group__header-title slds-section__title'
         )
@@ -193,6 +193,21 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
                 'slds-m-right_xx-small': this.topActions
             })
             .toString();
+    }
+
+    get computedWrapperClass() {
+        return classSet(
+            'avonni-relationship-graph-group slds-p-around_medium slds-m-bottom_medium group slds-box slds-theme_default slds-section'
+        ).add({
+            'group_active-child': this.activeChild,
+            'group_active-parent': !this.closed && this.activeParent,
+            group_selected: this.selected && this.hasSelectedChildren,
+            'group_horizontal slds-is-relative': this.variant === 'horizontal',
+            group_vertical: this.variant === 'vertical',
+            'slds-m-right_medium': this.variant === 'vertical',
+            'avonni-relationship-graph-group__parent-line': this.showParentLine,
+            'slds-is-open': !this.closed
+        });
     }
 
     get hasAvatar() {
@@ -243,21 +258,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
 
     get showParentLine() {
         return (this.hasRootHeader && this.isFirstLevel) || !this.isFirstLevel;
-    }
-
-    get wrapperClass() {
-        return classSet(
-            'avonni-relationship-graph-group slds-p-around_medium slds-m-bottom_medium group slds-box slds-theme_default slds-section'
-        ).add({
-            'group_active-child': this.activeChild,
-            'group_active-parent': !this.closed && this.activeParent,
-            group_selected: this.selected && this.hasSelectedChildren,
-            'group_horizontal slds-is-relative': this.variant === 'horizontal',
-            group_vertical: this.variant === 'vertical',
-            'slds-m-right_medium': this.variant === 'vertical',
-            'avonni-relationship-graph-group__parent-line': this.showParentLine,
-            'slds-is-open': !this.closed
-        });
     }
 
     /*
