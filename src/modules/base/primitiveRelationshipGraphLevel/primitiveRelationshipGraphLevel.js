@@ -101,7 +101,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return this.template.querySelector('.current-level');
     }
 
-    get currentLevelClass() {
+    get computedCurrentLevelClass() {
         return classSet('current-level').add({
             'slds-grid': this.variant === 'vertical',
             'slds-m-left_x-large':
@@ -111,24 +111,31 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         });
     }
 
-    get currentLevelWrapperClass() {
+    get computedCurrentLevelWrapperClass() {
         return this.variant === 'vertical'
             ? 'slds-show_inline-block'
             : undefined;
+    }
+
+    get computedLineClass() {
+        return classSet('line').add({
+            line_active: this.containsActiveItem,
+            line_horizontal: this.variant === 'vertical',
+            'slds-m-left_x-large line_vertical': this.variant === 'horizontal'
+        });
+    }
+
+    get computedWrapperClass() {
+        return classSet('').add({
+            'slds-grid': this.variant === 'horizontal',
+            'slds-show_inline-block': this.variant === 'vertical'
+        });
     }
 
     get hasSelectedGroups() {
         return (
             Array.isArray(this.selectedGroups) && this.selectedGroups.length > 0
         );
-    }
-
-    get lineClass() {
-        return classSet('line').add({
-            line_active: this.containsActiveItem,
-            line_horizontal: this.variant === 'vertical',
-            'slds-m-left_x-large line_vertical': this.variant === 'horizontal'
-        });
     }
 
     get selectedGroupComponent() {
@@ -155,13 +162,6 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             if (selection) selectedItem = selection;
         });
         return selectedItem;
-    }
-
-    get wrapperClass() {
-        return classSet('').add({
-            'slds-grid': this.variant === 'horizontal',
-            'slds-show_inline-block': this.variant === 'vertical'
-        });
     }
 
     /*
@@ -250,6 +250,27 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    handleCloseActiveGroup() {
+        this.cleanSelection();
+    }
+
+    handleGroupHeightChange() {
+        this.updateLine();
+        this.dispatchEvent(new CustomEvent('heightchange'));
+    }
+
+    handleSelect(event) {
+        this.cleanSelection();
+        this.dispatchSelectEvent(event);
+    }
+
+    handleToggle(event) {
+        this.dispatchToggleEvent(event);
+        if (event.detail.closed && event.detail.isActiveGroup) {
+            this.cleanSelection();
+        }
+    }
+
     dispatchActionClickEvent(event) {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
@@ -277,26 +298,5 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
                 }
             })
         );
-    }
-
-    handleCloseActiveGroup() {
-        this.cleanSelection();
-    }
-
-    handleGroupHeightChange() {
-        this.updateLine();
-        this.dispatchEvent(new CustomEvent('heightchange'));
-    }
-
-    handleSelect(event) {
-        this.cleanSelection();
-        this.dispatchSelectEvent(event);
-    }
-
-    handleToggle(event) {
-        this.dispatchToggleEvent(event);
-        if (event.detail.closed && event.detail.isActiveGroup) {
-            this.cleanSelection();
-        }
     }
 }

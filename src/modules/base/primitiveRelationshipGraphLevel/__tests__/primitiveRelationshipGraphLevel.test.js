@@ -17,531 +17,557 @@ describe('Primitive Relationship Graph Level', () => {
         }
     });
 
-    it('Primitive relationship graph level: Default attributes', () => {
-        expect(element.activeGroups).toBeUndefined();
-        expect(element.currentLevelHeight).toBe(0);
-        expect(element.currentLevelWidth).toBe(0);
-        expect(element.expandIconName).toBeUndefined();
-        expect(element.groupActions).toBeUndefined();
-        expect(element.groupActionsPosition).toBeUndefined();
-        expect(element.groups).toMatchObject([]);
-        expect(element.hasRootHeader).toBeFalsy();
-        expect(element.hideItemsCount).toBeFalsy();
-        expect(element.isFirstLevel).toBeFalsy();
-        expect(element.itemActions).toBeUndefined();
-        expect(element.selectedGroups).toBeUndefined();
-        expect(element.shrinkIconName).toBeUndefined();
-        expect(element.variant).toBeUndefined();
-    });
-
-    /* ----- ATTRIBUTES ----- */
-
-    // active-groups
-    // Depends on groups
-    it('Primitive relationship graph level: activeGroups', () => {
-        element.groups = GROUPS;
-        element.activeGroups = true;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.activeChild).toBeTruthy();
-            });
-        });
-    });
-
-    // current-level-height
-    // Depends on groups
-    it('Primitive relationship graph level: currentLevelHeight', () => {
-        element.groups = GROUPS;
-
-        return Promise.resolve().then(() => {
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.activeGroups).toBeUndefined();
             expect(element.currentLevelHeight).toBe(0);
-        });
-    });
-
-    // current-level-width
-    it('Primitive relationship graph level: currentLevelWidth', () => {
-        return Promise.resolve().then(() => {
             expect(element.currentLevelWidth).toBe(0);
-        });
-    });
-
-    // expand-icon-name
-    // Depends on groups and selectedGroups
-    it('Primitive relationship graph level: expandIconName', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
-        element.expandIconName = 'utility:apps';
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-            const childLevel = element.shadowRoot.querySelector(
-                'c-primitive-relationship-graph-level'
-            );
-
-            groups.forEach((group) => {
-                expect(group.expandIconName).toBe('utility:apps');
-            });
-
-            expect(childLevel.expandIconName).toBe('utility:apps');
-        });
-    });
-
-    // group-actions
-    // Depends on groups
-    it('Primitive relationship graph level: groupActions', () => {
-        element.groups = GROUPS;
-        element.groupActions = ACTIONS;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.defaultActions).toMatchObject(ACTIONS);
-            });
-        });
-    });
-
-    // group-actions-positions
-    // Depends on groups
-    it('Primitive relationship graph level: groupActionsPosition', () => {
-        element.groupActionsPosition = 'bottom';
-        element.groups = GROUPS;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.actionsPosition).toBe('bottom');
-            });
-        });
-    });
-
-    // groups
-    it('Primitive relationship graph level: groups', () => {
-        element.groups = GROUPS;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            expect(groups[0].isFirstChild).toBeTruthy();
-
-            groups.forEach((group, index) => {
-                expect(group.label).toBe(GROUPS[index].label);
-                expect(group.name).toBe(GROUPS[index].name);
-                expect(group.avatarSrc).toBe(GROUPS[index].avatarSrc);
-                expect(group.avatarFallbackIconName).toBe(
-                    GROUPS[index].avatarFallbackIconName
-                );
-                expect(group.href).toBe(GROUPS[index].href);
-                expect(group.items).toMatchObject(GROUPS[index].items || []);
-                expect(group.expanded).toBe(GROUPS[index].expanded || true);
-                expect(group.hideDefaultActions).toBe(
-                    GROUPS[index].hideDefaultActions
-                );
-                expect(group.customActions).toMatchObject(
-                    GROUPS[index].actions || []
-                );
-                expect(group.selected).toBe(GROUPS[index].selected);
-            });
-        });
-    });
-
-    // has-root-header
-    // Depends on groups
-    it('Primitive relationship graph level: hasRootHeader', () => {
-        element.hasRootHeader = true;
-        element.groups = GROUPS;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.hasRootHeader).toBeTruthy();
-            });
-        });
-    });
-
-    // hide-items-count
-    // Depends on groups
-    it('Primitive relationship graph level: hideItemsCount', () => {
-        element.hideItemsCount = true;
-        element.groups = GROUPS;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.hideItemsCount).toBeTruthy();
-            });
-        });
-    });
-
-    // is-first-level
-    // Depends on groups
-    it('Primitive relationship graph level: isFirstLevel', () => {
-        element.isFirstLevel = true;
-        element.groups = GROUPS;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.isFirstLevel).toBeTruthy();
-            });
-        });
-    });
-
-    // item-actions
-    // Depends on groups
-    it('Primitive relationship graph level: itemActions', () => {
-        element.itemActions = ACTIONS;
-        element.groups = GROUPS;
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.itemActions).toMatchObject(ACTIONS);
-            });
-        });
-    });
-
-    // selected-groups
-    it('Primitive relationship graph level: selectedGroups', () => {
-        element.selectedGroups = GROUPS;
-
-        return Promise.resolve().then(() => {
-            const line = element.shadowRoot.querySelector('.line');
-            const childLevel = element.shadowRoot.querySelector(
-                'c-primitive-relationship-graph-level'
-            );
-
-            expect(line).toBeTruthy();
-            expect(childLevel).toBeTruthy();
-        });
-    });
-
-    // shrink-icon-name
-    // Depends on groups
-    it('Primitive relationship graph level: shrinkIconName', () => {
-        element.groups = GROUPS;
-        element.shrinkIconName = 'utility:apps';
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups.forEach((group) => {
-                expect(group.shrinkIconName).toBe('utility:apps');
-            });
-        });
-    });
-
-    // variant
-    // Depends on groups, selectedGroups
-    it('Primitive relationship graph level: variant = horizontal', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
-        element.variant = 'horizontal';
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-            const childLevel = element.shadowRoot.querySelector(
-                'c-primitive-relationship-graph-level'
-            );
-            const line = element.shadowRoot.querySelector('.line');
-            const currentLevelWrapper = element.shadowRoot.querySelector(
-                '.slds-show_inline-block'
-            );
-            const currentLevel =
-                element.shadowRoot.querySelector('.current-level');
-
-            groups.forEach((group) => {
-                expect(group.variant).toBe('horizontal');
-            });
-            expect(childLevel.variant).toBe('horizontal');
-            expect(line.classList).toContain('line_vertical');
-            expect(line.classList).not.toContain('line_horizontal');
-            expect(currentLevelWrapper).toBeFalsy();
-            expect(currentLevel.classList).toContain('slds-m-left_x-large');
-            expect(currentLevel.classList).not.toContain('slds-grid');
-        });
-    });
-
-    // variant
-    // Depends on groups, selectedGroups
-    it('Primitive relationship graph level: variant = vertical', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
-
-        element.variant = 'vertical';
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-            const childLevel = element.shadowRoot.querySelector(
-                'c-primitive-relationship-graph-level'
-            );
-            const line = element.shadowRoot.querySelector('.line');
-            const currentLevelWrapper = element.shadowRoot.querySelector(
-                '.slds-show_inline-block'
-            );
-            const currentLevel =
-                element.shadowRoot.querySelector('.current-level');
-
-            groups.forEach((group) => {
-                expect(group.variant).toBe('vertical');
-            });
-            expect(childLevel.variant).toBe('vertical');
-            expect(line.classList).toContain('line_horizontal');
-            expect(line.classList).not.toContain('line_vertical');
-            expect(currentLevelWrapper).toBeTruthy();
-            expect(currentLevel.classList).not.toContain('slds-m-left_x-large');
-            expect(currentLevel.classList).toContain('slds-grid');
-        });
-    });
-
-    /* ----- EVENTS ----- */
-
-    // select
-    // Depends on groups, selectedGroups
-    it('Primitive relationship graph level: select event received from a child group', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
-
-        const handler = jest.fn();
-        element.addEventListener('select', handler);
-
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
-
-            groups[1].dispatchEvent(
-                new CustomEvent('select', {
-                    detail: {
-                        name: 'item-selected'
-                    }
-                })
-            );
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('item-selected');
+            expect(element.expandIconName).toBeUndefined();
+            expect(element.groupActions).toBeUndefined();
+            expect(element.groupActionsPosition).toBeUndefined();
+            expect(element.groups).toMatchObject([]);
+            expect(element.hasRootHeader).toBeFalsy();
+            expect(element.hideItemsCount).toBeFalsy();
+            expect(element.isFirstLevel).toBeFalsy();
+            expect(element.itemActions).toBeUndefined();
             expect(element.selectedGroups).toBeUndefined();
+            expect(element.shrinkIconName).toBeUndefined();
+            expect(element.variant).toBeUndefined();
         });
-    });
 
-    it('Primitive relationship graph level: select event received from the child level', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
+        describe('activeGroups', () => {
+            it('Passed to the component', () => {
+                element.groups = GROUPS;
+                element.activeGroups = true;
 
-        const handler = jest.fn();
-        element.addEventListener('select', handler);
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
 
-        return Promise.resolve().then(() => {
-            const childLevel = element.shadowRoot.querySelector(
-                'c-primitive-relationship-graph-level'
-            );
-
-            childLevel.dispatchEvent(
-                new CustomEvent('select', {
-                    detail: {
-                        name: 'item-selected'
-                    }
-                })
-            );
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('item-selected');
+                    groups.forEach((group) => {
+                        expect(group.activeChild).toBeTruthy();
+                    });
+                });
+            });
         });
-    });
 
-    // actionclick
-    it('Primitive relationship graph level: actionclick event received from a child group', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
+        describe('currentLevelHeight', () => {
+            it('Passed to the component', () => {
+                element.groups = GROUPS;
 
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
+                return Promise.resolve().then(() => {
+                    expect(element.currentLevelHeight).toBe(0);
+                });
+            });
+        });
 
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
+        describe('currentLevelWidth', () => {
+            it('Passed to the component', () => {
+                return Promise.resolve().then(() => {
+                    expect(element.currentLevelWidth).toBe(0);
+                });
+            });
+        });
 
-            groups[1].dispatchEvent(
-                new CustomEvent('actionclick', {
-                    detail: {
-                        name: 'action-clicked',
-                        targetName: 'item-of-the-action',
-                        itemData: {
-                            label: 'A string label',
-                            value: 'Some value'
-                        }
-                    }
-                })
-            );
+        describe('expandIconName', () => {
+            it('Passed to the component', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
+                element.expandIconName = 'utility:apps';
 
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('action-clicked');
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                'item-of-the-action'
-            );
-            expect(handler.mock.calls[0][0].detail.itemData).toMatchObject({
-                label: 'A string label',
-                value: 'Some value'
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+                    const childLevel = element.shadowRoot.querySelector(
+                        'c-primitive-relationship-graph-level'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.expandIconName).toBe('utility:apps');
+                    });
+
+                    expect(childLevel.expandIconName).toBe('utility:apps');
+                });
+            });
+        });
+
+        describe('groupActions', () => {
+            it('Passed to the component', () => {
+                element.groups = GROUPS;
+                element.groupActions = ACTIONS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.defaultActions).toMatchObject(ACTIONS);
+                    });
+                });
+            });
+        });
+
+        describe('groupActionsPosition', () => {
+            it('Passed to the component', () => {
+                element.groupActionsPosition = 'bottom';
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.actionsPosition).toBe('bottom');
+                    });
+                });
+            });
+        });
+
+        describe('groups', () => {
+            it('Passed to the component', () => {
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    expect(groups[0].isFirstChild).toBeTruthy();
+
+                    groups.forEach((group, index) => {
+                        expect(group.label).toBe(GROUPS[index].label);
+                        expect(group.name).toBe(GROUPS[index].name);
+                        expect(group.avatarSrc).toBe(GROUPS[index].avatarSrc);
+                        expect(group.avatarFallbackIconName).toBe(
+                            GROUPS[index].avatarFallbackIconName
+                        );
+                        expect(group.href).toBe(GROUPS[index].href);
+                        expect(group.items).toMatchObject(
+                            GROUPS[index].items || []
+                        );
+                        expect(group.expanded).toBe(
+                            GROUPS[index].expanded || true
+                        );
+                        expect(group.hideDefaultActions).toBe(
+                            GROUPS[index].hideDefaultActions
+                        );
+                        expect(group.customActions).toMatchObject(
+                            GROUPS[index].actions || []
+                        );
+                        expect(group.selected).toBe(GROUPS[index].selected);
+                    });
+                });
+            });
+        });
+
+        describe('hasRootHeader', () => {
+            it('Passed to the component', () => {
+                element.hasRootHeader = true;
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.hasRootHeader).toBeTruthy();
+                    });
+                });
+            });
+        });
+
+        describe('hideItemsCount', () => {
+            it('Passed to the component', () => {
+                element.hideItemsCount = true;
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.hideItemsCount).toBeTruthy();
+                    });
+                });
+            });
+        });
+
+        describe('isFirstLevel', () => {
+            it('Passed to the component', () => {
+                element.isFirstLevel = true;
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.isFirstLevel).toBeTruthy();
+                    });
+                });
+            });
+        });
+
+        describe('itemActions', () => {
+            it('Passed to the component', () => {
+                element.itemActions = ACTIONS;
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.itemActions).toMatchObject(ACTIONS);
+                    });
+                });
+            });
+        });
+
+        describe('selectedGroups', () => {
+            it('Passed to the component', () => {
+                element.selectedGroups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const line = element.shadowRoot.querySelector('.line');
+                    const childLevel = element.shadowRoot.querySelector(
+                        'c-primitive-relationship-graph-level'
+                    );
+
+                    expect(line).toBeTruthy();
+                    expect(childLevel).toBeTruthy();
+                });
+            });
+        });
+
+        describe('shrinkIconName', () => {
+            it('Passed to the component', () => {
+                element.groups = GROUPS;
+                element.shrinkIconName = 'utility:apps';
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.shrinkIconName).toBe('utility:apps');
+                    });
+                });
+            });
+        });
+
+        describe('variant', () => {
+            it('horizontal', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
+                element.variant = 'horizontal';
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+                    const childLevel = element.shadowRoot.querySelector(
+                        'c-primitive-relationship-graph-level'
+                    );
+                    const line = element.shadowRoot.querySelector('.line');
+                    const currentLevelWrapper =
+                        element.shadowRoot.querySelector(
+                            '.slds-show_inline-block'
+                        );
+                    const currentLevel =
+                        element.shadowRoot.querySelector('.current-level');
+
+                    groups.forEach((group) => {
+                        expect(group.variant).toBe('horizontal');
+                    });
+                    expect(childLevel.variant).toBe('horizontal');
+                    expect(line.classList).toContain('line_vertical');
+                    expect(line.classList).not.toContain('line_horizontal');
+                    expect(currentLevelWrapper).toBeFalsy();
+                    expect(currentLevel.classList).toContain(
+                        'slds-m-left_x-large'
+                    );
+                    expect(currentLevel.classList).not.toContain('slds-grid');
+                });
+            });
+
+            it('vertical', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
+
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
+                    const childLevel = element.shadowRoot.querySelector(
+                        'c-primitive-relationship-graph-level'
+                    );
+                    const line = element.shadowRoot.querySelector('.line');
+                    const currentLevelWrapper =
+                        element.shadowRoot.querySelector(
+                            '.slds-show_inline-block'
+                        );
+                    const currentLevel =
+                        element.shadowRoot.querySelector('.current-level');
+
+                    groups.forEach((group) => {
+                        expect(group.variant).toBe('vertical');
+                    });
+                    expect(childLevel.variant).toBe('vertical');
+                    expect(line.classList).toContain('line_horizontal');
+                    expect(line.classList).not.toContain('line_vertical');
+                    expect(currentLevelWrapper).toBeTruthy();
+                    expect(currentLevel.classList).not.toContain(
+                        'slds-m-left_x-large'
+                    );
+                    expect(currentLevel.classList).toContain('slds-grid');
+                });
             });
         });
     });
 
-    it('Primitive relationship graph level: actionclick event received from the child level', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
+    describe('Events', () => {
+        describe('actionclick', () => {
+            it('Received from a child group', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
 
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
+                const handler = jest.fn();
+                element.addEventListener('actionclick', handler);
 
-        return Promise.resolve().then(() => {
-            const childLevel = element.shadowRoot.querySelector(
-                'c-primitive-relationship-graph-level'
-            );
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
 
-            childLevel.dispatchEvent(
-                new CustomEvent('actionclick', {
-                    detail: {
-                        name: 'action-clicked',
-                        targetName: 'item-of-the-action',
-                        itemData: {
-                            label: 'A string label',
-                            value: 'Some value'
-                        }
-                    }
-                })
-            );
+                    groups[1].dispatchEvent(
+                        new CustomEvent('actionclick', {
+                            detail: {
+                                name: 'action-clicked',
+                                targetName: 'item-of-the-action',
+                                itemData: {
+                                    label: 'A string label',
+                                    value: 'Some value'
+                                }
+                            }
+                        })
+                    );
 
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('action-clicked');
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                'item-of-the-action'
-            );
-            expect(handler.mock.calls[0][0].detail.itemData).toMatchObject({
-                label: 'A string label',
-                value: 'Some value'
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        'action-clicked'
+                    );
+                    expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                        'item-of-the-action'
+                    );
+                    expect(
+                        handler.mock.calls[0][0].detail.itemData
+                    ).toMatchObject({
+                        label: 'A string label',
+                        value: 'Some value'
+                    });
+                });
+            });
+
+            it('Received from the child level', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
+
+                const handler = jest.fn();
+                element.addEventListener('actionclick', handler);
+
+                return Promise.resolve().then(() => {
+                    const childLevel = element.shadowRoot.querySelector(
+                        'c-primitive-relationship-graph-level'
+                    );
+
+                    childLevel.dispatchEvent(
+                        new CustomEvent('actionclick', {
+                            detail: {
+                                name: 'action-clicked',
+                                targetName: 'item-of-the-action',
+                                itemData: {
+                                    label: 'A string label',
+                                    value: 'Some value'
+                                }
+                            }
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        'action-clicked'
+                    );
+                    expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                        'item-of-the-action'
+                    );
+                    expect(
+                        handler.mock.calls[0][0].detail.itemData
+                    ).toMatchObject({
+                        label: 'A string label',
+                        value: 'Some value'
+                    });
+                });
             });
         });
-    });
 
-    // heightchange
-    it('Primitive relationship graph level: heightchange event received from a child group', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
+        describe('heightchange', () => {
+            it('Received from a child group', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
 
-        const handler = jest.fn();
-        element.addEventListener('heightchange', handler);
+                const handler = jest.fn();
+                element.addEventListener('heightchange', handler);
 
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
 
-            groups[1].dispatchEvent(new CustomEvent('heightchange'));
+                    groups[1].dispatchEvent(new CustomEvent('heightchange'));
 
-            expect(handler).toHaveBeenCalled();
+                    expect(handler).toHaveBeenCalled();
+                });
+            });
+
+            it('Received from the child level', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
+
+                const handler = jest.fn();
+                element.addEventListener('heightchange', handler);
+
+                return Promise.resolve().then(() => {
+                    const childLevel = element.shadowRoot.querySelector(
+                        'c-primitive-relationship-graph-level'
+                    );
+
+                    childLevel.dispatchEvent(new CustomEvent('heightchange'));
+
+                    expect(handler).toHaveBeenCalled();
+                });
+            });
         });
-    });
 
-    it('Primitive relationship graph level: heightchange event received from the child level', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
+        describe('select', () => {
+            it('Received from a child group', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
 
-        const handler = jest.fn();
-        element.addEventListener('heightchange', handler);
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
 
-        return Promise.resolve().then(() => {
-            const childLevel = element.shadowRoot.querySelector(
-                'c-primitive-relationship-graph-level'
-            );
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
 
-            childLevel.dispatchEvent(new CustomEvent('heightchange'));
+                    groups[1].dispatchEvent(
+                        new CustomEvent('select', {
+                            detail: {
+                                name: 'item-selected'
+                            }
+                        })
+                    );
 
-            expect(handler).toHaveBeenCalled();
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        'item-selected'
+                    );
+                    expect(element.selectedGroups).toBeUndefined();
+                });
+            });
+
+            it('Received from the child level', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
+
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve().then(() => {
+                    const childLevel = element.shadowRoot.querySelector(
+                        'c-primitive-relationship-graph-level'
+                    );
+
+                    childLevel.dispatchEvent(
+                        new CustomEvent('select', {
+                            detail: {
+                                name: 'item-selected'
+                            }
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        'item-selected'
+                    );
+                });
+            });
         });
-    });
 
-    // toggle
-    it('Primitive relationship graph level: Handle toggle event', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
+        describe('toggle', () => {
+            it('Received from a child group', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
 
-        const toggleHandler = jest.fn();
-        element.addEventListener('toggle', toggleHandler);
+                const toggleHandler = jest.fn();
+                element.addEventListener('toggle', toggleHandler);
 
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
 
-            groups[1].dispatchEvent(
-                new CustomEvent('toggle', {
-                    detail: {
-                        name: GROUPS[1].name,
-                        closed: true,
-                        isActiveGroup: false
-                    }
-                })
-            );
-            expect(toggleHandler).toHaveBeenCalled();
-        });
-    });
+                    groups[1].dispatchEvent(
+                        new CustomEvent('toggle', {
+                            detail: {
+                                name: GROUPS[1].name,
+                                closed: true,
+                                isActiveGroup: false
+                            }
+                        })
+                    );
+                    expect(toggleHandler).toHaveBeenCalled();
+                });
+            });
 
-    it('Primitive relationship graph level: Handle toggle event on active group', () => {
-        element.groups = GROUPS;
-        element.selectedGroups = SELECTED_GROUPS;
+            it('On active group', () => {
+                element.groups = GROUPS;
+                element.selectedGroups = SELECTED_GROUPS;
 
-        const toggleHandler = jest.fn();
-        element.addEventListener('toggle', toggleHandler);
+                const toggleHandler = jest.fn();
+                element.addEventListener('toggle', toggleHandler);
 
-        return Promise.resolve().then(() => {
-            const groups = element.shadowRoot.querySelectorAll(
-                'c-primitive-relationship-graph-group'
-            );
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        'c-primitive-relationship-graph-group'
+                    );
 
-            groups[1].dispatchEvent(
-                new CustomEvent('toggle', {
-                    detail: {
-                        name: GROUPS[1].name,
-                        closed: true,
-                        isActiveGroup: true
-                    }
-                })
-            );
-            expect(toggleHandler).toHaveBeenCalled();
-            expect(element.selectedGroups).toBeUndefined();
+                    groups[1].dispatchEvent(
+                        new CustomEvent('toggle', {
+                            detail: {
+                                name: GROUPS[1].name,
+                                closed: true,
+                                isActiveGroup: true
+                            }
+                        })
+                    );
+                    expect(toggleHandler).toHaveBeenCalled();
+                    expect(element.selectedGroups).toBeUndefined();
+                });
+            });
         });
     });
 });

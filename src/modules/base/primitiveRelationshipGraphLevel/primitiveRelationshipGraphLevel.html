@@ -1,9 +1,9 @@
 <template>
-    <div class={wrapperClass}>
+    <div class={computedWrapperClass}>
         <!-- Current level -->
-        <div class={currentLevelWrapperClass}>
+        <div class={computedCurrentLevelWrapperClass}>
             <!-- Nested div necessary to calculate the level height/width -->
-            <div class={currentLevelClass}>
+            <div class={computedCurrentLevelClass}>
                 <template iterator:group={groups}>
                     <c-primitive-relationship-graph-group
                         key={group.value.name}
@@ -14,8 +14,8 @@
                         avatar-src={group.value.avatarSrc}
                         custom-actions={group.value.actions}
                         default-actions={groupActions}
-                        expanded={group.value.expanded}
                         expand-icon-name={expandIconName}
+                        expanded={group.value.expanded}
                         has-root-header={hasRootHeader}
                         hide-default-actions={group.value.hideDefaultActions}
                         hide-items-count={hideItemsCount}
@@ -40,9 +40,9 @@
             </div>
         </div>
         <!-- Vertical line -->
-        <div class={lineClass} if:true={hasSelectedGroups}></div>
+        <div if:true={hasSelectedGroups} class={computedLineClass}></div>
         <!-- Selected level -->
-        <div class="slds-grid" if:true={hasSelectedGroups}>
+        <div if:true={hasSelectedGroups} class="slds-grid">
             <c-primitive-relationship-graph-level
                 active-groups={containsActiveItem}
                 expand-icon-name={expandIconName}
