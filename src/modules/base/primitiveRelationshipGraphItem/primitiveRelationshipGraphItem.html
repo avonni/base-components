@@ -1,11 +1,11 @@
 <template>
     <div
-        class={wrapperClass}
+        class={computedWrapperClass}
+        aria-expanded={ariaExpanded}
+        role="button"
+        tabindex="0"
         onclick={handleClick}
         onkeyup={handleClick}
-        tabindex="0"
-        role="button"
-        aria-expanded={ariaExpanded}
     >
         <!-- Avatar / Title / Actions -->
         <avonni-media-object vertical-align="center">
