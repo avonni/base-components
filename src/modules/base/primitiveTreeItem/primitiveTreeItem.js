@@ -7,12 +7,6 @@ import {
 import { keyCodes } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
-const i18n = {
-    collapseBranch: 'Collapse Branch',
-    expandBranch: 'Expand Branch'
-};
-
-const POPOVER_FOOTER_HEIGHT = 55;
 const DEFAULT_EDIT_FIELDS = [
     'label',
     'metatext',
@@ -22,6 +16,11 @@ const DEFAULT_EDIT_FIELDS = [
     'disabled',
     'isLoading'
 ];
+const i18n = {
+    collapseBranch: 'Collapse Branch',
+    expandBranch: 'Expand Branch'
+};
+const POPOVER_FOOTER_HEIGHT = 55;
 const UNSORTABLE_ITEMS_PARTS = [
     'div-branch-buttons',
     'div-popover',
@@ -40,7 +39,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      */
     @api color;
-
     /**
      * The Lightning Design System name of the icon displayed after the label. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
@@ -48,7 +46,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      */
     @api iconName;
-
     /**
      * The alternative text used to describe the reason for the wait and need for a spinner.
      *
@@ -56,7 +53,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      */
     @api loadingStateAlternativeText;
-
     /**
      * Unique key of the item.
      *
@@ -91,15 +87,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     _sortable = false;
 
     buttonActions = [];
-    labelIsEdited = false;
-    menuActions = [];
     draftValues = {};
     hasError = false;
+    labelIsEdited = false;
+    menuActions = [];
     popoverVisible = false;
     _checkboxIsIndeterminate = false;
-    _focusOn = false;
     _connected = false;
+    _focusOn = false;
     _menuIsOpen = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         /**
@@ -523,6 +525,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * CSS style of the checkbox.
+     *
+     * @type {string}
+     */
     get checkboxStyle() {
         if (this.color) {
             return `
@@ -531,6 +538,23 @@ export default class PrimitiveTreeItem extends LightningElement {
             `;
         }
         return null;
+    }
+
+    /**
+     * CSS class of the expand button.
+     *
+     * @type {string}
+     */
+    get computedExpandButtonClass() {
+        return classSet(
+            'slds-m-right_x-small slds-p-vertical_xx-small avonni-primitive-tree-item__chevron'
+        )
+            .add({
+                'slds-hidden': this.isLeaf || this.disabled,
+                'avonni-primitive-tree-item__chevron_expanded': this.expanded,
+                'slds-p-top_xx-small': this.metatext
+            })
+            .toString();
     }
 
     /**
@@ -555,30 +579,28 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * Name of the expand button icon.
+     * CSS class of the label.
      *
      * @type {string}
      */
-    get expandButtonIconName() {
-        return document.dir === 'rtl'
-            ? 'utility:chevronleft'
-            : 'utility:chevronright';
+    get computedLabelClass() {
+        return classSet('slds-truncate slds-col')
+            .add({
+                'slds-p-vertical_xx-small': !this.buttonActions.length
+            })
+            .toString();
     }
 
     /**
-     * CSS class of the expand button.
+     * CSS class of the wrapper div.
      *
      * @type {string}
-     * @public
      */
-    get expandButtonClass() {
-        return classSet(
-            'slds-m-right_x-small slds-p-vertical_xx-small avonni-primitive-tree-item__chevron'
-        )
+    get computedWrapperClass() {
+        return classSet('slds-is-relative')
             .add({
-                'slds-hidden': this.isLeaf || this.disabled,
-                'avonni-primitive-tree-item__chevron_expanded': this.expanded,
-                'slds-p-top_xx-small': this.metatext
+                'avonni-primitive-tree-item__single-selection':
+                    !this.showCheckbox
             })
             .toString();
     }
@@ -597,6 +619,17 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * Name of the expand button icon.
+     *
+     * @type {string}
+     */
+    get expandButtonIconName() {
+        return document.dir === 'rtl'
+            ? 'utility:chevronleft'
+            : 'utility:chevronright';
+    }
+
+    /**
      * Value of the expand button tabindex attribute.
      *
      * @type {string}
@@ -612,19 +645,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get itemElement() {
         return this.template.querySelector('[data-element-id="div-item"]');
-    }
-
-    /**
-     * CSS class of the label.
-     *
-     * @type {string}
-     */
-    get labelClass() {
-        return classSet('slds-truncate slds-col')
-            .add({
-                'slds-p-vertical_xx-small': !this.buttonActions.length
-            })
-            .toString();
     }
 
     /**
@@ -679,20 +699,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get visibleActions() {
         return this.disabled ? this.actionsWhenDisabled : this.actions;
-    }
-
-    /**
-     * CSS class of the wrapper div.
-     *
-     * @type {string}
-     */
-    get wrapperClass() {
-        return classSet('slds-is-relative')
-            .add({
-                'avonni-primitive-tree-item__single-selection':
-                    !this.showCheckbox
-            })
-            .toString();
     }
 
     /*
@@ -758,6 +764,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
 
+    /**
+     * Close the edit popover.
+     */
     closePopover = () => {
         if (this.popoverVisible) {
             this.togglePopoverVisibility();
