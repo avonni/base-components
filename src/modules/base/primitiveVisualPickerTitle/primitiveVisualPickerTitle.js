@@ -10,13 +10,11 @@ const AVATAR_POSITIONS = {
     valid: ['left', 'right', 'top', 'bottom', 'center'],
     default: 'left'
 };
-
+const DEFAULT_DISPLAY_AVATAR = false;
 const VISUAL_PICKER_SIZES = {
     valid: ['small', 'medium', 'large', 'x-large', 'xx-large', 'responsive'],
     default: 'medium'
 };
-
-const DEFAULT_DISPLAY_AVATAR = false;
 
 export default class PrimitiveVisualPickerTitle extends LightningElement {
     /**
@@ -148,7 +146,7 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
         return classSet(
             'avonni-visual-picker__figure-content_alignment slds-media slds-media_center'
         )
-            .add(`avonni-visual-picker__figure-content_${this._size}`)
+            .add(`avonni-visual-picker__figure-content_${this.size}`)
             .toString();
     }
 
