@@ -6,40 +6,39 @@ customElements.define(
 );
 
 export const RelationshipGraph = ({
-    label,
-    avatarSrc,
-    avatarFallbackIconName,
-    href,
-    variant,
     actions,
-    selectedItemName,
-    groups,
+    avatarFallbackIconName,
+    avatarSrc,
+    expandIconName,
     groupActions,
     groupActionsPosition,
     groupTheme,
+    groups,
+    hideItemsCount,
+    href,
     itemActions,
     itemTheme,
+    label,
+    selectedItemName,
     shrinkIconName,
-    expandIconName,
-    hideItemsCount
+    variant
 }) => {
     const element = document.createElement('ac-relationship-graph');
-    element.label = label;
-    element.avatarSrc = avatarSrc;
-    element.avatarFallbackIconName = avatarFallbackIconName;
-    element.href = href;
-    element.variant = variant;
     element.actions = actions;
-    element.selectedItemName = selectedItemName;
-    element.groups = groups;
+    element.avatarFallbackIconName = avatarFallbackIconName;
+    element.avatarSrc = avatarSrc;
+    element.expandIconName = expandIconName;
     element.groupActions = groupActions;
     element.groupActionsPosition = groupActionsPosition;
     element.groupTheme = groupTheme;
+    element.groups = groups;
+    element.hideItemsCount = hideItemsCount;
+    element.href = href;
     element.itemActions = itemActions;
     element.itemTheme = itemTheme;
+    element.label = label;
+    element.selectedItemName = selectedItemName;
     element.shrinkIconName = shrinkIconName;
-    element.expandIconName = expandIconName;
-    element.hideItemsCount = hideItemsCount;
-
+    element.variant = variant;
     return element;
 };

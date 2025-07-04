@@ -6,11 +6,6 @@ import {
     normalizeString
 } from 'c/utils';
 
-const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
-    valid: ['horizontal', 'vertical'],
-    default: 'horizontal'
-};
-
 const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
@@ -18,6 +13,11 @@ const ACTIONS_POSITIONS = {
 
 const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
+
+const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
 
 /**
  * @class
@@ -83,9 +83,9 @@ export default class RelationshipGraph extends LightningElement {
     _selectedItemName;
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
+    inlineHeader;
     processedGroups = [];
     selectedItemPosition;
-    inlineHeader;
 
     /*
      * -------------------------------------------------------------
@@ -251,7 +251,7 @@ export default class RelationshipGraph extends LightningElement {
      *
      * @type {string}
      */
-    get actionButtonClass() {
+    get computedActionButtonClass() {
         return classSet('slds-button slds-button_neutral').add({
             'slds-button_stretch': this.variant === 'vertical',
             'slds-m-bottom_xx-small': this.variant === 'horizontal'
@@ -263,7 +263,7 @@ export default class RelationshipGraph extends LightningElement {
      *
      * @type {string}
      */
-    get actionsClass() {
+    get computedActionsClass() {
         return classSet('slds-is-relative actions').add({
             actions_vertical: this.variant === 'vertical',
             'slds-p-vertical_small': this.variant === 'horizontal',
@@ -323,17 +323,16 @@ export default class RelationshipGraph extends LightningElement {
      *
      * @type {string}
      */
-    get headerClass() {
-        const { variant } = this;
+    get computedHeaderClass() {
         return classSet(
             'avonni-relationship-graph__header slds-show_inline-block'
         ).add({
-            'slds-box': variant === 'vertical',
-            group: variant === 'vertical',
-            'slds-text-align_center': variant === 'vertical',
-            'slds-m-bottom_medium': variant === 'horizontal',
+            'slds-box': this.variant === 'vertical',
+            group: this.variant === 'vertical',
+            'slds-text-align_center': this.variant === 'vertical',
+            'slds-m-bottom_medium': this.variant === 'horizontal',
             'avonni-relationship-graph__header-vertical-no-actions':
-                variant === 'vertical' &&
+                this.variant === 'vertical' &&
                 !this.hasActions &&
                 this.processedGroups.length > 1
         });
@@ -344,7 +343,7 @@ export default class RelationshipGraph extends LightningElement {
      *
      * @type {string}
      */
-    get lineClass() {
+    get computedLineClass() {
         return classSet().add({
             line_vertical: this.variant === 'horizontal',
             'line_horizontal slds-m-bottom_large': this.variant === 'vertical'
@@ -356,7 +355,7 @@ export default class RelationshipGraph extends LightningElement {
      *
      * @type {string}
      */
-    get wrapperClass() {
+    get computedWrapperClass() {
         return classSet('').add({
             'slds-grid': this.variant === 'horizontal',
             'slds-m-left_medium':
@@ -459,6 +458,41 @@ export default class RelationshipGraph extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    handleActionClick(event) {
+        const name = event.currentTarget.value;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    targetName: 'root'
+                }
+            })
+        );
+    }
+
+    /**
+     * Prevent anchor tag from navigating when href leads to nothing.
+     *
+     * @param {Event} event
+     */
+    handleAnchorTagClick(event) {
+        const href = event.currentTarget.href;
+        if (
+            // eslint-disable-next-line no-script-url
+            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
+        ) {
+            event.preventDefault();
+        }
+    }
+
+    /**
+     * Level height change handler.
+     */
+    handleLevelHeightChange() {
+        this.updateLine();
+    }
+
     /**
      * Action click event dispatcher.
      *
@@ -530,40 +564,5 @@ export default class RelationshipGraph extends LightningElement {
                 detail: event.detail
             })
         );
-    }
-
-    handleActionClick(event) {
-        const name = event.currentTarget.value;
-
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: name,
-                    targetName: 'root'
-                }
-            })
-        );
-    }
-
-    /**
-     * Prevent anchor tag from navigating when href leads to nothing.
-     *
-     * @param {Event} event
-     */
-    handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
-    }
-
-    /**
-     * Level height change handler.
-     */
-    handleLevelHeightChange() {
-        this.updateLine();
     }
 }
