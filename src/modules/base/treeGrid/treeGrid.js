@@ -92,7 +92,6 @@ export default class TreeGrid extends LightningElement {
     get columns() {
         return this._rawColumns;
     }
-
     set columns(value) {
         this._rawColumns = value;
         this._columns = normalizeColumns(value);
@@ -109,7 +108,6 @@ export default class TreeGrid extends LightningElement {
     get columnWidthsMode() {
         return this._columnWidthsMode;
     }
-
     set columnWidthsMode(value) {
         this._columnWidthsMode = normalizeString(value, {
             fallbackValue: COLUMN_WIDTHS_MODES.default,
@@ -132,7 +130,6 @@ export default class TreeGrid extends LightningElement {
         // otherwise simply return the current public value
         return this._publicExpandedRows;
     }
-
     set expandedRows(value) {
         this._publicExpandedRows = Object.assign([], value);
         this._expandedRows = Object.assign([], value);
@@ -149,7 +146,6 @@ export default class TreeGrid extends LightningElement {
     get hideCheckboxColumn() {
         return this._hideCheckboxColumn;
     }
-
     set hideCheckboxColumn(value) {
         this._hideCheckboxColumn = normalizeBoolean(value);
     }
@@ -164,7 +160,6 @@ export default class TreeGrid extends LightningElement {
     get hideTableHeader() {
         return this._hideTableHeader;
     }
-
     set hideTableHeader(value) {
         this._hideTableHeader = normalizeBoolean(value);
     }
@@ -180,7 +175,6 @@ export default class TreeGrid extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -194,7 +188,6 @@ export default class TreeGrid extends LightningElement {
     get keyField() {
         return this._keyField;
     }
-
     set keyField(value) {
         this._keyField = value;
         this.flattenData();
@@ -210,7 +203,6 @@ export default class TreeGrid extends LightningElement {
     get maxColumnWidth() {
         return this._maxColumnWidth;
     }
-
     set maxColumnWidth(value) {
         const number = isNaN(parseInt(value, 10)) ? DEFAULT_MAX_WIDTH : value;
         this._maxColumnWidth = number;
@@ -226,7 +218,6 @@ export default class TreeGrid extends LightningElement {
     get maxRowSelection() {
         return this._maxRowSelection;
     }
-
     set maxRowSelection(value) {
         if (value === undefined) return;
         this._maxRowSelection = value;
@@ -242,7 +233,6 @@ export default class TreeGrid extends LightningElement {
     get minColumnWidth() {
         return this._minColumnWidth;
     }
-
     set minColumnWidth(value) {
         const number = isNaN(parseInt(value, 10)) ? DEFAULT_MIN_WIDTH : value;
         this._minColumnWidth = number;
@@ -267,7 +257,6 @@ export default class TreeGrid extends LightningElement {
     get records() {
         return this._rawRecords;
     }
-
     set records(value) {
         this._rawRecords = value;
         this.flattenData();
@@ -283,7 +272,6 @@ export default class TreeGrid extends LightningElement {
     get resizeColumnDisabled() {
         return this._resizeColumnDisabled;
     }
-
     set resizeColumnDisabled(value) {
         this._resizeColumnDisabled = normalizeBoolean(value);
     }
@@ -298,7 +286,6 @@ export default class TreeGrid extends LightningElement {
     get resizeStep() {
         return this._resizeStep;
     }
-
     set resizeStep(value) {
         if (value === undefined) return;
         this._resizeStep = value;
@@ -314,7 +301,6 @@ export default class TreeGrid extends LightningElement {
     get rowNumberOffset() {
         return this._rowNumberOffset;
     }
-
     set rowNumberOffset(value) {
         const number = isNaN(parseInt(value, 10))
             ? DEFAULT_ROW_NUMBER_OFFSET
@@ -341,7 +327,6 @@ export default class TreeGrid extends LightningElement {
     get selectedRows() {
         return this._selectedRows;
     }
-
     set selectedRows(value) {
         this._selectedRows = normalizeArray(value);
     }
@@ -356,7 +341,6 @@ export default class TreeGrid extends LightningElement {
     get showRowNumberColumn() {
         return this._showRowNumberColumn;
     }
-
     set showRowNumberColumn(value) {
         this._showRowNumberColumn = normalizeBoolean(value);
     }
@@ -371,7 +355,6 @@ export default class TreeGrid extends LightningElement {
     get wrapTextMaxLines() {
         return this._wrapTextMaxLines;
     }
-
     set wrapTextMaxLines(value) {
         if (value === undefined) return;
         this._wrapTextMaxLines = value;
@@ -383,16 +366,28 @@ export default class TreeGrid extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * The datatable element.
+     * @type {HTMLElement}
+     */
     get datatable() {
         return this.template.querySelector(
             '[data-element-id="avonni-datatable"]'
         );
     }
 
+    /**
+     * The normalized columns.
+     * @type {object[]}
+     */
     get normalizedColumns() {
         return this._columns;
     }
 
+    /**
+     * The normalized records.
+     * @type {object[]}
+     */
     get normalizedRecords() {
         return this._records;
     }
@@ -404,14 +399,23 @@ export default class TreeGrid extends LightningElement {
      */
 
     /**
-     * Returns data in each selected row.
-     * @returns {array} An array of data in each selected row.
+     * Collapse all rows
      *
      * @public
      */
     @api
-    getSelectedRows() {
-        return this.datatable.getSelectedRows();
+    collapseAll() {
+        this.toggleAllRows(this.records, false);
+    }
+
+    /**
+     * Expand all rows with children content
+     *
+     * @public
+     */
+    @api
+    expandAll() {
+        this.toggleAllRows(this.records, true);
     }
 
     /**
@@ -426,23 +430,14 @@ export default class TreeGrid extends LightningElement {
     }
 
     /**
-     * Expand all rows with children content
+     * Returns data in each selected row.
+     * @returns {array} An array of data in each selected row.
      *
      * @public
      */
     @api
-    expandAll() {
-        this.toggleAllRows(this.records, true);
-    }
-
-    /**
-     * Collapse all rows
-     *
-     * @public
-     */
-    @api
-    collapseAll() {
-        this.toggleAllRows(this.records, false);
+    getSelectedRows() {
+        return this.datatable.getSelectedRows();
     }
 
     /*
@@ -483,9 +478,6 @@ export default class TreeGrid extends LightningElement {
         this.fireRowAction(event.detail);
     }
 
-    // Events
-
-    // fires when a row is toggled and its expanded state changes
     fireRowToggleChange(name, isExpanded, hasChildrenContent, row) {
         /**
          * The event fired when a row is expanded or collapsed.
