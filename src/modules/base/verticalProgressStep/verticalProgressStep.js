@@ -22,6 +22,12 @@ export default class VerticalProgressStep extends LightningElement {
     iconName;
     showLabelSlot = true;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.classList.add('slds-progress__item');
     }
@@ -68,7 +74,6 @@ export default class VerticalProgressStep extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
         this.setAttribute('data-step', value);
@@ -110,9 +115,59 @@ export default class VerticalProgressStep extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Blur event handler.
+     */
+    handleBlur() {
+        /**
+         * The event fired when the focus is removed from the step.
+         *
+         * @event
+         * @name stepblur
+         * @param {string} value The step value.
+         * @public
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('stepblur', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    value: this.value
+                }
+            })
+        );
+    }
+
+    /**
+     * Focus on step event handler.
+     */
+    handleFocus() {
+        /**
+         * The event fired when the step receives focus.
+         *
+         * @event
+         * @name stepfocus
+         * @param {string} value The step value.
+         * @public
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('stepfocus', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    value: this.value
+                }
+            })
+        );
+    }
 
     /**
      * Mouse enter event handler.
@@ -155,56 +210,6 @@ export default class VerticalProgressStep extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('stepmouseleave', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    value: this.value
-                }
-            })
-        );
-    }
-
-    /**
-     * Focus on step event handler.
-     */
-    handleFocus() {
-        /**
-         * The event fired when the step receives focus.
-         *
-         * @event
-         * @name stepfocus
-         * @param {string} value The step value.
-         * @public
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('stepfocus', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    value: this.value
-                }
-            })
-        );
-    }
-
-    /**
-     * Blur event handler.
-     */
-    handleBlur() {
-        /**
-         * The event fired when the focus is removed from the step.
-         *
-         * @event
-         * @name stepblur
-         * @param {string} value The step value.
-         * @public
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('stepblur', {
                 bubbles: true,
                 cancelable: true,
                 detail: {

@@ -2,27 +2,27 @@
     <li class="slds-progress__item">
         <lightning-icon
             if:true={iconName}
-            icon-name={iconName}
-            size="xx-small"
             class="
                 slds-progress__marker
                 slds-progress__marker_icon
                 slds-progress__marker_icon-success
             "
+            icon-name={iconName}
+            size="xx-small"
+            tabindex="0"
+            onblur={handleBlur}
+            onfocus={handleFocus}
             onmouseenter={handleMouseEnter}
             onmouseleave={handleMouseLeave}
-            onfocus={handleFocus}
-            onblur={handleBlur}
-            tabindex="0"
         ></lightning-icon>
         <div
             if:false={iconName}
             class="slds-progress__marker"
+            tabindex="0"
+            onblur={handleBlur}
+            onfocus={handleFocus}
             onmouseenter={handleMouseEnter}
             onmouseleave={handleMouseLeave}
-            onfocus={handleFocus}
-            onblur={handleBlur}
-            tabindex="0"
         >
             <div class="avonni-marker"></div>
         </div>
@@ -37,8 +37,8 @@
             <div if:true={label} class="slds-truncate">{label}</div>
             <template if:true={showLabelSlot}>
                 <slot
-                    name="label"
                     class="slds-truncate"
+                    name="label"
                     data-element-id="slot-label"
                 ></slot>
             </template>
