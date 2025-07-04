@@ -6,21 +6,21 @@ customElements.define(
 );
 
 export const PublisherWithActionsSlot = ({
-    placeholder,
     buttonLabel,
-    submitAction,
-    variant,
     disabled,
-    value
+    placeholder,
+    submitAction,
+    value,
+    variant
 }) => {
     const element = document.createElement(
         'ac-base-publisher-with-actions-slot'
     );
-    element.placeholder = placeholder;
     element.buttonLabel = buttonLabel;
-    element.submitAction = submitAction;
-    element.variant = variant;
     element.disabled = disabled;
+    element.placeholder = placeholder;
+    element.submitAction = submitAction;
     element.value = value;
+    element.variant = variant;
     return element;
 };
