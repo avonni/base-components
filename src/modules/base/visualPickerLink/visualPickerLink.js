@@ -41,6 +41,12 @@ export default class VisualPickerLink extends LightningElement {
 
     showTitle = true;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     render() {
         return this.infoOnly || this.disabled
             ? visualPickerLinkInfoOnly
