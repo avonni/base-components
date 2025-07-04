@@ -43,7 +43,13 @@ export default class WizardStep extends LightningElement {
     _hideNextFinishButton = false;
     _hidePreviousButton = false;
 
-    stepClass;
+    computedStepClass;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         /**
@@ -129,6 +135,6 @@ export default class WizardStep extends LightningElement {
      * @param {string} value
      */
     setClass = (value) => {
-        this.stepClass = value;
+        this.computedStepClass = value;
     };
 }
