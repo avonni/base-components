@@ -7,8 +7,8 @@
     >
         <span class="slds-slider-label">
             <span class={computedLabelClass} data-element-id="span-label"
-                >{label}</span
-            >
+                >{label}
+            </span>
         </span>
     </label>
     <div class={computedSliderWrapperClass} data-element-id="div-wrapper">
@@ -18,17 +18,17 @@
             data-element-id="vertical-max-unit-container"
         >
             <lightning-formatted-number
-                value={max}
-                format-style={computedUnit}
                 currency-code={unitAttributes.currencyCode}
                 currency-display-as={unitAttributes.currencyDisplayAs}
+                format-style={computedUnit}
                 maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                 maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                 minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                 minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                 minimum-significant-digits={unitAttributes.minimumSignificantDigits}
-                data-group-name="min-max-values"
+                value={max}
                 data-element-id="lightning-formatted-number-max-vertical"
+                data-group-name="min-max-values"
             ></lightning-formatted-number>
         </div>
         <div class={computedContainerClass} data-element-id="div-range">
@@ -40,15 +40,15 @@
                     <div class="slds-form-element__control">
                         <div class="slds-slider">
                             <input
-                                type="range"
-                                min={computedMin}
-                                max={computedMax}
-                                step={step}
-                                value={value}
                                 class={computedInputClass}
                                 disabled={disabled}
-                                data-index={index}
+                                max={computedMax}
+                                min={computedMin}
+                                step={step}
+                                type="range"
+                                value={value}
                                 data-group-name="input"
+                                data-index={index}
                                 oninput={handleChange}
                                 onmousedown={handleLockPin}
                                 onmouseup={handleUnlockPin}
@@ -59,9 +59,9 @@
                                 ontouchmove={handleThumbHovered}
                             />
                             <div
+                                class="avonni-slider__thumb-hitbox"
                                 data-group-name="hitbox"
                                 data-index={index}
-                                class="avonni-slider__thumb-hitbox"
                             ></div>
                         </div>
                     </div>
@@ -74,9 +74,9 @@
             >
                 <p>
                     <lightning-formatted-number
-                        format-style={computedUnit}
                         currency-code={unitAttributes.currencyCode}
                         currency-display-as={unitAttributes.currencyDisplayAs}
+                        format-style={computedUnit}
                         maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                         maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                         minimum-fraction-digits={unitAttributes.minimumFractionDigits}
@@ -96,44 +96,43 @@
                     data-element-id="track"
                 ></div>
             </div>
-            <template if:true={showAnyTickMarks}>
-                <svg
-                    lwc:dom="manual"
-                    xmlns="http://www.w3.org/2000/svg"
-                    data-element-id="ruler"
-                    class="avonni-slider__tick-mark-container"
-                ></svg>
-            </template>
+            <svg
+                if:true={showAnyTickMarks}
+                class="avonni-slider__tick-mark-container"
+                lwc:dom="manual"
+                xmlns="http://www.w3.org/2000/svg"
+                data-element-id="ruler"
+            ></svg>
             <div
                 if:true={isNormalHorizontal}
                 class={computedUnitContainerClass}
                 data-element-id="horizontal-unit-container"
             >
                 <lightning-formatted-number
-                    value={min}
-                    format-style={computedUnit}
                     currency-code={unitAttributes.currencyCode}
                     currency-display-as={unitAttributes.currencyDisplayAs}
+                    format-style={computedUnit}
                     maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                     maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                     minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                     minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                     minimum-significant-digits={unitAttributes.minimumSignificantDigits}
-                    data-group-name="min-max-values"
+                    value={min}
                     data-element-id="lightning-formatted-number-min"
+                    data-group-name="min-max-values"
                 ></lightning-formatted-number>
                 <lightning-formatted-number
-                    value={max}
-                    format-style={computedUnit}
                     currency-code={unitAttributes.currencyCode}
                     currency-display-as={unitAttributes.currencyDisplayAs}
+                    format-style={computedUnit}
                     maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                     maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                     minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                     minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                     minimum-significant-digits={unitAttributes.minimumSignificantDigits}
-                    data-group-name="min-max-values"
+                    value={max}
                     data-element-id="lightning-formatted-number-max"
+                    data-group-name="min-max-values"
                 ></lightning-formatted-number>
             </div>
             <div
@@ -148,10 +147,10 @@
                         data-group-name="custom-label-wrapper"
                     >
                         <div
-                            data-value={customLabel.value}
                             class={computedCustomLabelClass}
                             title={customLabel.label}
                             data-group-name="custom-label"
+                            data-value={customLabel.value}
                         >
                             <lightning-formatted-rich-text
                                 value={customLabel.label}
@@ -172,29 +171,27 @@
             data-element-id="vertical-min-unit-container"
         >
             <lightning-formatted-number
-                value={min}
-                format-style={computedUnit}
                 currency-code={unitAttributes.currencyCode}
                 currency-display-as={unitAttributes.currencyDisplayAs}
+                format-style={computedUnit}
                 maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                 maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                 minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                 minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                 minimum-significant-digits={unitAttributes.minimumSignificantDigits}
-                data-group-name="min-max-values"
+                value={min}
                 data-element-id="lightning-formatted-number-min-vertical"
+                data-group-name="min-max-values"
             ></lightning-formatted-number>
         </div>
     </div>
-
-    <template if:true={helpMessage}>
-        <div
-            id="message-id"
-            class="slds-form-element__help"
-            aria-live="assertive"
-            data-element-id="help-message"
-        >
-            {helpMessage}
-        </div>
-    </template>
+    <div
+        if:true={helpMessage}
+        class="slds-form-element__help"
+        aria-live="assertive"
+        id="message-id"
+        data-element-id="help-message"
+    >
+        {helpMessage}
+    </div>
 </template>

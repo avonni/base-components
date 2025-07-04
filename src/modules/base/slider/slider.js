@@ -12,15 +12,18 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
 const BORDER_RADIUS_REM = 0.5;
-const DEFAULT_MIN = 0;
-const DEFAULT_MINIMUM_DISTANCE = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_MAX_PERCENTAGE = 1;
+const DEFAULT_MIN = 0;
+const DEFAULT_MINIMUM_DISTANCE = 0;
 const PERCENT_SCALING_FACTOR = 100;
 const DEFAULT_STEP = 1;
 const DEFAULT_VALUE = 50;
+const LABEL_VARIANTS = {
+    valid: ['standard', 'label-hidden'],
+    default: 'standard'
+};
 const MAX_NUMBER_OF_TICKS = 500;
-
 const SLIDER_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'responsive'],
     default: 'responsive'
@@ -29,19 +32,15 @@ const SLIDER_TYPES = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
-const LABEL_VARIANTS = {
-    valid: ['standard', 'label-hidden'],
-    default: 'standard'
-};
 const SLIDER_UNITS = {
     valid: ['decimal', 'currency', 'percent', 'custom'],
     default: 'decimal'
 };
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 const TICK_MARK_STYLES = {
     valid: ['inner-tick', 'tick', 'dot'],
     default: 'inner-tick'
 };
-const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
 /**
  * @class
@@ -84,9 +83,9 @@ export default class Slider extends LightningElement {
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
     _minimumDistance = DEFAULT_MINIMUM_DISTANCE;
-    _pin = false;
     _hideTrack = false;
     _hideMinMaxValues = false;
+    _pin = false;
     _showTickMarks = false;
     _size = SLIDER_SIZES.default;
     _step = DEFAULT_STEP;
@@ -94,8 +93,8 @@ export default class Slider extends LightningElement {
     _type = SLIDER_TYPES.default;
     _unit = SLIDER_UNITS.default;
     _unitAttributes = {};
-    _variant = LABEL_VARIANTS.default;
     _value = DEFAULT_VALUE;
+    _variant = LABEL_VARIANTS.default;
 
     computedMax;
     computedMin = DEFAULT_MIN;
@@ -104,20 +103,25 @@ export default class Slider extends LightningElement {
 
     _changeTimeout;
     _computedValues = [DEFAULT_VALUE];
+    _connected = false;
+    _constraintApis = [];
+    _constraintApiProxyInputUpdaters = [];
+    _domModified = false;
     _focusedInputIndex;
     _initMax;
     _moveEventWait = false;
     _pinLocked = false;
     _previousScalingFactor = 1;
-    _trackInterval = [DEFAULT_MIN, DEFAULT_VALUE];
+    _rendered = false;
     _resizeObserver;
     _scalingFactor = 1;
-    _constraintApis = [];
-    _constraintApiProxyInputUpdaters = [];
+    _trackInterval = [DEFAULT_MIN, DEFAULT_VALUE];
 
-    _connected = false;
-    _domModified = false;
-    _rendered = false;
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     constructor() {
         super();
@@ -187,7 +191,6 @@ export default class Slider extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
         this._domModified = true;
@@ -219,7 +222,6 @@ export default class Slider extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         const intValue = !isNaN(value) ? parseInt(value, 10) : null;
         this._initMax = intValue;
@@ -349,7 +351,6 @@ export default class Slider extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: SLIDER_SIZES.default,
@@ -369,7 +370,6 @@ export default class Slider extends LightningElement {
     get step() {
         return this._step;
     }
-
     set step(value) {
         if (isNaN(Number(value))) {
             return;
@@ -414,7 +414,6 @@ export default class Slider extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(type) {
         this._type = normalizeString(type, {
             fallbackValue: SLIDER_TYPES.default,
@@ -535,7 +534,6 @@ export default class Slider extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: LABEL_VARIANTS.default,
@@ -550,82 +548,21 @@ export default class Slider extends LightningElement {
      */
 
     /**
-     * Computed label class styling.
-     *
-     * @type {string}
-     */
-    get computedLabelClass() {
-        return classSet('avonni-slider__label slds-slider-label__label').add({
-            'slds-assistive-text': this._variant === 'label-hidden'
-        });
-    }
-
-    /**
      * Computed container class styling ( size, vertical ).
      *
      * @type {string}
      */
     get computedContainerClass() {
-        return classSet(
-            `avonni-slider__container-horizontal-size_${this._size}`
-        )
+        return classSet(`avonni-slider__container-horizontal-size_${this.size}`)
             .add({
                 'avonni-slider__vertical': this.isVertical,
                 'slds-is-absolute': this.isVertical,
                 'slds-is-relative': !this.isVertical,
                 'slds-m-left_xx-small': this.isVertical,
-                [`avonni-slider__container-vertical-origin_${this._size}`]:
+                [`avonni-slider__container-vertical-origin_${this.size}`]:
                     this.isVertical
             })
             .toString();
-    }
-
-    /**
-     * Computed pin class styling.
-     *
-     * @type {string}
-     */
-    get computedPinClass() {
-        return classSet('').add({
-            'avonni-slider__pin-vertical': this.isVertical,
-            'avonni-slider__pin': !this.isVertical
-        });
-    }
-
-    /**
-     * Computed input class styling.
-     *
-     * @type {string}
-     */
-    get computedInputClass() {
-        return classSet('slds-slider__range avonni-slider__slider').add({
-            'avonni-slider__slider_disabled': this.disabled
-        });
-    }
-
-    /**
-     * Computed track class styling.
-     *
-     * @type {string}
-     */
-    get computedTrackClass() {
-        return classSet('avonni-slider__track').add({
-            'avonni-slider__track_disabled': this.disabled,
-            'avonni-slider__track-border_square':
-                this.showAnyTickMarks && this.tickMarkStyle === 'inner-tick'
-        });
-    }
-
-    /**
-     * Computed track class styling.
-     *
-     * @type {string}
-     */
-    get computedTrackContainerClass() {
-        return classSet('avonni-slider__track-container').add({
-            'avonni-slider__track-container-border_square':
-                this.showAnyTickMarks && this.tickMarkStyle === 'inner-tick'
-        });
     }
 
     /**
@@ -651,31 +588,43 @@ export default class Slider extends LightningElement {
             'avonni-slider__custom-label-container_horizontal': !isVertical,
             'avonni-slider__custom-label-container_vertical': isVertical,
             'avonni-slider__custom-label-container_close':
-                this._tickMarkStyle !== 'tick',
-            [`avonni-slider__container-vertical-size_${this._size}`]: isVertical
+                this.tickMarkStyle !== 'tick',
+            [`avonni-slider__container-vertical-size_${this.size}`]: isVertical
         });
     }
 
     /**
-     * Computed custom label container class styling.
+     * Computed input class styling.
      *
      * @type {string}
      */
-    get computedSpacerClass() {
+    get computedInputClass() {
+        return classSet('slds-slider__range avonni-slider__slider').add({
+            'avonni-slider__slider_disabled': this.disabled
+        });
+    }
+
+    /**
+     * Computed label class styling.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        return classSet('avonni-slider__label slds-slider-label__label').add({
+            'slds-assistive-text': this.variant === 'label-hidden'
+        });
+    }
+
+    /**
+     * Computed pin class styling.
+     *
+     * @type {string}
+     */
+    get computedPinClass() {
         return classSet('').add({
-            [`avonni-slider__container-vertical-size_${this._size}`]:
-                !this.isVerticalResponsive,
-            'avonni-slider__spacer-height_responsive': this.isVerticalResponsive
+            'avonni-slider__pin-vertical': this.isVertical,
+            'avonni-slider__pin': !this.isVertical
         });
-    }
-
-    /**
-     * Unit normalized to a valid lightning-formatted-number unit.
-     *
-     * @type {string}
-     */
-    get computedUnit() {
-        return this.unit === 'custom' ? SLIDER_UNITS.default : this.unit;
     }
 
     /**
@@ -691,6 +640,53 @@ export default class Slider extends LightningElement {
             'avonni-slider__wrapper_height_label':
                 this.isVertical && this.showLabel
         });
+    }
+
+    /**
+     * Computed spacer class styling.
+     *
+     * @type {string}
+     */
+    get computedSpacerClass() {
+        return classSet('').add({
+            [`avonni-slider__container-vertical-size_${this.size}`]:
+                !this.isVerticalResponsive,
+            'avonni-slider__spacer-height_responsive': this.isVerticalResponsive
+        });
+    }
+
+    /**
+     * Computed track class styling.
+     *
+     * @type {string}
+     */
+    get computedTrackClass() {
+        return classSet('avonni-slider__track').add({
+            'avonni-slider__track_disabled': this.disabled,
+            'avonni-slider__track-border_square':
+                this.showAnyTickMarks && this.tickMarkStyle === 'inner-tick'
+        });
+    }
+
+    /**
+     * Computed track container class styling.
+     *
+     * @type {string}
+     */
+    get computedTrackContainerClass() {
+        return classSet('avonni-slider__track-container').add({
+            'avonni-slider__track-container-border_square':
+                this.showAnyTickMarks && this.tickMarkStyle === 'inner-tick'
+        });
+    }
+
+    /**
+     * Unit normalized to a valid lightning-formatted-number unit.
+     *
+     * @type {string}
+     */
+    get computedUnit() {
+        return this.unit === 'custom' ? SLIDER_UNITS.default : this.unit;
     }
 
     /**
@@ -715,6 +711,17 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Returns the custom label container html element
+     *
+     * @type {HTMLElement}
+     */
+    get customLabelContainer() {
+        return this.template.querySelector(
+            '[data-element-id="custom-label-container"]'
+        );
+    }
+
+    /**
      * Key for inputs and customLabels
      * @type {string}
      *
@@ -729,7 +736,7 @@ export default class Slider extends LightningElement {
      *
      */
     get hasCustomLabels() {
-        return this.customLabels.length !== 0 && this._unit === 'custom';
+        return this.customLabels.length !== 0 && this.unit === 'custom';
     }
 
     /**
@@ -749,7 +756,7 @@ export default class Slider extends LightningElement {
      *
      */
     get isVertical() {
-        return this._type === 'vertical';
+        return this.type === 'vertical';
     }
 
     /**
@@ -758,7 +765,7 @@ export default class Slider extends LightningElement {
      *
      */
     get isVerticalResponsive() {
-        return this._type === 'vertical' && this.size === 'responsive';
+        return this.isVertical && this.size === 'responsive';
     }
 
     /**
@@ -768,9 +775,7 @@ export default class Slider extends LightningElement {
      */
     get isNormalVertical() {
         return (
-            this._type === 'vertical' &&
-            !this.hasCustomLabels &&
-            !this.hideMinMaxValues
+            this.isVertical && !this.hasCustomLabels && !this.hideMinMaxValues
         );
     }
 
@@ -781,10 +786,17 @@ export default class Slider extends LightningElement {
      */
     get isNormalHorizontal() {
         return (
-            this._type !== 'vertical' &&
-            !this.hasCustomLabels &&
-            !this.hideMinMaxValues
+            !this.isVertical && !this.hasCustomLabels && !this.hideMinMaxValues
         );
+    }
+
+    /**
+     * To show or not the tick marks.
+     * @type {Boolean}
+     *
+     */
+    get showAnyTickMarks() {
+        return this.hasCustomLabels || this.showTickMarks;
     }
 
     /**
@@ -794,10 +806,19 @@ export default class Slider extends LightningElement {
      */
     get showLabel() {
         return !(
-            this._variant === 'label-hidden' ||
+            this.variant === 'label-hidden' ||
             !this.label ||
             (this.label && this.label.length === 0)
         );
+    }
+
+    /**
+     * To show or not the major tick marks.
+     * @type {Boolean}
+     *
+     */
+    get showOnlyMajorTicks() {
+        return this.hasCustomLabels && !this.showTickMarks;
     }
 
     /**
@@ -807,24 +828,6 @@ export default class Slider extends LightningElement {
      */
     get showTrack() {
         return !this.hideTrack && this._computedValues.length < 3;
-    }
-
-    /**
-     * To show or not the tick marks.
-     * @type {Boolean}
-     *
-     */
-    get showAnyTickMarks() {
-        return this.hasCustomLabels || this._showTickMarks;
-    }
-
-    /**
-     * To show or not the major tick marks.
-     * @type {Boolean}
-     *
-     */
-    get showOnlyMajorTicks() {
-        return this.hasCustomLabels && !this._showTickMarks;
     }
 
     /**
@@ -863,17 +866,6 @@ export default class Slider extends LightningElement {
             }
         }
         return this._constraintApis;
-    }
-
-    /**
-     * Returns the custom label container html element
-     * @type {object}
-     *
-     */
-    get _customLabelContainer() {
-        return this.template.querySelector(
-            '[data-element-id="custom-label-container"]'
-        );
     }
 
     /**
@@ -1113,7 +1105,7 @@ export default class Slider extends LightningElement {
         customLabels.forEach((label) => {
             const { left, right, bottom } = label.getBoundingClientRect();
             const containerRect =
-                this._customLabelContainer.getBoundingClientRect();
+                this.customLabelContainer.getBoundingClientRect();
             const rulerRect = this._ruler.getBoundingClientRect();
 
             // Round up so we can compare with old value.
@@ -1154,7 +1146,7 @@ export default class Slider extends LightningElement {
      * Displays and positions the custom labels for the slider
      */
     displayCustomLabels() {
-        let totalWidth = this._customLabelContainer?.clientWidth;
+        let totalWidth = this.customLabelContainer?.clientWidth;
         if (this.isVertical) {
             totalWidth = this._spacerHeight;
         }
