@@ -2,11 +2,11 @@
     <div class={computedOuterClass}>
         <div
             class="slds-progress-ring__progress"
-            role="progressbar"
             aria-label={alternativeText}
             aria-valuemin="0"
             aria-valuemax="100"
             aria-valuenow={value}
+            role="progressbar"
         >
             <svg viewBox="-1 -1 2 2">
                 <path
@@ -21,14 +21,13 @@
             <template if:true={showSlot}>
                 <slot></slot>
             </template>
-            <template if:true={showIcon}>
-                <lightning-icon
-                    icon-name={iconName}
-                    class={computedIconTheme}
-                    alternative-text={computedAltText}
-                    data-element-id="lightning-icon"
-                ></lightning-icon>
-            </template>
+            <lightning-icon
+                if:true={showIcon}
+                class={computedIconTheme}
+                alternative-text={computedAltText}
+                icon-name={iconName}
+                data-element-id="lightning-icon"
+            ></lightning-icon>
         </div>
     </div>
 </template>
