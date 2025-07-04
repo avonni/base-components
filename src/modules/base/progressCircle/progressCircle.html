@@ -1,12 +1,12 @@
 <template>
     <div
         if:true={showPositionTop}
-        class={progressTitleClassTop}
+        class={computedTitleClassTop}
         data-element-id="title"
     >
         {title}
     </div>
-    <div class={progressRingClass}>
+    <div class={computedRingClass}>
         <div
             class="slds-progress-ring__progress"
             role="progressbar"
@@ -23,19 +23,19 @@
                 ></path>
             </svg>
         </div>
-        <div class={progressRingContentClass}>
+        <div class={computedContentClass}>
             <span
                 if:true={showValue}
                 class="avonni-progress-circle__value"
                 data-element-id="span"
-                >{value}%</span
-            >
+                >{value}%
+            </span>
             <span
-                if:true={labelPresent}
-                class={progressLabelClass}
+                if:true={hasLabel}
+                class={computedLabelClass}
                 data-element-id="label"
-                >{label}</span
-            >
+                >{label}
+            </span>
             <span
                 if:true={isLoading}
                 class="avonni-progress-circle__dots"
@@ -44,10 +44,12 @@
                 {loadingDots}
             </span>
         </div>
-        <template if:true={showPositionBottom}>
-            <div class={progressTitleClass} data-element-id="title">
-                {title}
-            </div>
-        </template>
+        <div
+            if:true={showPositionBottom}
+            class={computedTitleClass}
+            data-element-id="title"
+        >
+            {title}
+        </div>
     </div>
 </template>
