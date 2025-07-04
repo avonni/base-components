@@ -14,9 +14,13 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
 const COUNT_TYPES = { valid: ['count-up', 'count-down'], default: 'count-up' };
+const DEFAULT_AUTO_START = false;
+const DEFAULT_DURATION = 10000;
+const DEFAULT_REPEAT = false;
+const DEFAULT_START_TIME = 0;
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+const MAX_TIMER_VALUE = 86400000;
 const TIME_FORMATS = {
     valid: [
         'hh:mm:ss',
@@ -30,12 +34,6 @@ const TIME_FORMATS = {
     ],
     default: 'hh:mm:ss'
 };
-
-const DEFAULT_START_TIME = 0;
-const DEFAULT_DURATION = 10000;
-const DEFAULT_AUTO_START = false;
-const DEFAULT_REPEAT = false;
-const MAX_TIMER_VALUE = 86400000;
 
 /**
  * @class
@@ -53,19 +51,25 @@ export default class Timer extends LightningElement {
     @api iconName;
 
     _autoStart = DEFAULT_AUTO_START;
-    _format = TIME_FORMATS.default;
     _duration = DEFAULT_DURATION;
+    _format = TIME_FORMATS.default;
     _iconPosition = ICON_POSITIONS.default;
     _repeat = DEFAULT_REPEAT;
-    _type = COUNT_TYPES.default;
-    _variant = BUTTON_VARIANTS.default;
     _startTime = DEFAULT_START_TIME;
+    _type = COUNT_TYPES.default;
     _value = DEFAULT_START_TIME;
+    _variant = BUTTON_VARIANTS.default;
 
-    startDate = null;
-    play = false;
     interval = null;
     pauseBuffer = 0;
+    play = false;
+    startDate = null;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     disconnectedCallback() {
         clearInterval(this.interval);
@@ -88,7 +92,6 @@ export default class Timer extends LightningElement {
     get autoStart() {
         return this._autoStart;
     }
-
     set autoStart(value) {
         this._autoStart = normalizeBoolean(value);
 
@@ -112,7 +115,6 @@ export default class Timer extends LightningElement {
     get duration() {
         return this._duration;
     }
-
     set duration(value) {
         if (!isNaN(parseInt(value, 10)) && parseInt(value, 10) >= 0) {
             this._duration = Math.min(parseInt(value, 10), MAX_TIMER_VALUE);
@@ -132,7 +134,6 @@ export default class Timer extends LightningElement {
     get format() {
         return this._format;
     }
-
     set format(value) {
         this._format = normalizeString(value, {
             fallbackValue: TIME_FORMATS.default,
@@ -151,7 +152,6 @@ export default class Timer extends LightningElement {
     get iconPosition() {
         return this._iconPosition;
     }
-
     set iconPosition(value) {
         this._iconPosition = normalizeString(value, {
             fallbackValue: ICON_POSITIONS.default,
@@ -170,7 +170,6 @@ export default class Timer extends LightningElement {
     get repeat() {
         return this._repeat;
     }
-
     set repeat(value) {
         this._repeat = normalizeBoolean(value);
     }
@@ -186,7 +185,6 @@ export default class Timer extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(value) {
         this._type = normalizeString(value, {
             fallbackValue: COUNT_TYPES.default,
@@ -205,7 +203,6 @@ export default class Timer extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         if (isNaN(parseInt(value, 10))) {
             this._startTime = DEFAULT_START_TIME;
@@ -229,7 +226,6 @@ export default class Timer extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -249,17 +245,17 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get hours() {
-        const hours = Math.floor(this._value / 60 / 60 / 1000);
+        const hours = Math.floor(this.value / 60 / 60 / 1000);
         return hours >= 0 ? Math.abs(hours) : Math.abs(hours) - 1;
     }
 
     /**
-     * Boolean, is true if _value is negative.
+     * Boolean, is true if value is negative.
      *
      * @type {number}
      */
     get isNegative() {
-        return this._value < 0;
+        return this.value < 0;
     }
 
     /**
@@ -268,7 +264,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get milliseconds() {
-        const milliseconds = Math.abs(Math.floor(this._value % 1000));
+        const milliseconds = Math.abs(Math.floor(this.value % 1000));
         return milliseconds >= 0 ? milliseconds : Math.abs(milliseconds) - 1;
     }
 
@@ -278,7 +274,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get minutes() {
-        const minutes = Math.floor(this._value / 60 / 1000) % 60;
+        const minutes = Math.floor(this.value / 60 / 1000) % 60;
         return minutes >= 0 ? Math.abs(minutes) : Math.abs(minutes) - 1;
     }
 
@@ -288,7 +284,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get seconds() {
-        const seconds = Math.floor(this._value / 1000) % 60;
+        const seconds = Math.floor(this.value / 1000) % 60;
         return seconds >= 0 ? Math.abs(seconds) : Math.abs(seconds) - 1;
     }
 
