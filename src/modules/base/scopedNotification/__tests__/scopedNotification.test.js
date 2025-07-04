@@ -16,199 +16,201 @@ describe('ScopedNotification', () => {
         document.body.appendChild(element);
     });
 
-    it('Scoped notification: Default attributes', () => {
-        expect(element.iconName).toBeUndefined();
-        expect(element.iconSize).toBe('medium');
-        expect(element.title).toBeUndefined();
-        expect(element.variant).toBe('base');
-    });
-
-    /* ----- ATTRIBUTES ----- */
-
-    // icon-name
-    it('Scoped notification: iconName', () => {
-        element.iconName = 'utility:apps';
-
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
-            expect(icon).toBeTruthy();
-            expect(icon.iconName).toBe('utility:apps');
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.iconName).toBeUndefined();
+            expect(element.iconSize).toBe('medium');
+            expect(element.title).toBeUndefined();
+            expect(element.variant).toBe('base');
         });
-    });
 
-    // icon-size
-    // Depends on iconName
-    it('Scoped notification: iconSize', () => {
-        element.iconName = 'utility:apps';
-        element.iconSize = 'large';
+        describe('iconName', () => {
+            it('Passed to the component', () => {
+                element.iconName = 'utility:apps';
 
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
-            expect(icon.size).toBe('large');
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    expect(icon).toBeTruthy();
+                    expect(icon.iconName).toBe('utility:apps');
+                });
+            });
         });
-    });
 
-    // title
-    it('Scoped notification: title', () => {
-        element.title = 'A string title';
+        describe('iconSize', () => {
+            it('Passed to the component', () => {
+                element.iconName = 'utility:apps';
+                element.iconSize = 'large';
 
-        return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector(
-                '[data-element-id="p-title"]'
-            );
-            expect(title.textContent).toBe('A string title');
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    expect(icon.size).toBe('large');
+                });
+            });
         });
-    });
 
-    // variant
-    // Depends on iconName
-    it('Scoped notification: variant = base', () => {
-        element.variant = 'base';
+        describe('title', () => {
+            it('Passed to the component', () => {
+                element.title = 'A string title';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-scoped-notification'
-            );
-
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_theme-base'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-dark'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-success'
-            );
+                return Promise.resolve().then(() => {
+                    const title = element.shadowRoot.querySelector(
+                        '[data-element-id="p-title"]'
+                    );
+                    expect(title.textContent).toBe('A string title');
+                });
+            });
         });
-    });
 
-    it('Scoped notification: variant = dark', () => {
-        element.variant = 'dark';
-        element.iconName = 'utility:favorite';
+        describe('variant', () => {
+            it('base', () => {
+                element.variant = 'base';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-scoped-notification'
-            );
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.slds-scoped-notification'
+                    );
 
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-base'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_theme-dark'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-success'
-            );
-            expect(icon.variant).toBe('inverse');
-        });
-    });
+                    expect(wrapper.classList).toContain(
+                        'avonni-scoped-notification_theme-base'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-dark'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-warning'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-error'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-success'
+                    );
+                });
+            });
 
-    it('Scoped notification: variant = warning', () => {
-        element.variant = 'warning';
-        element.iconName = 'utility:favorite';
+            it('dark', () => {
+                element.variant = 'dark';
+                element.iconName = 'utility:favorite';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-scoped-notification'
-            );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.slds-scoped-notification'
+                    );
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
 
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-base'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-dark'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_theme-warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-success'
-            );
-        });
-    });
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-base'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'avonni-scoped-notification_theme-dark'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-warning'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-error'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-success'
+                    );
+                    expect(icon.variant).toBe('inverse');
+                });
+            });
 
-    it('Scoped notification: variant = error', () => {
-        element.variant = 'error';
-        element.iconName = 'utility:favorite';
+            it('warning', () => {
+                element.variant = 'warning';
+                element.iconName = 'utility:favorite';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-scoped-notification'
-            );
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.slds-scoped-notification'
+                    );
 
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-base'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-dark'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-warning'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_theme-error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-success'
-            );
-            expect(icon.variant).toBe('inverse');
-        });
-    });
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-base'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-dark'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'avonni-scoped-notification_theme-warning'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-error'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-success'
+                    );
+                });
+            });
 
-    it('Scoped notification: variant = success', () => {
-        element.variant = 'success';
-        element.iconName = 'utility:favorite';
+            it('error', () => {
+                element.variant = 'error';
+                element.iconName = 'utility:favorite';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-scoped-notification'
-            );
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-icon"]'
-            );
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.slds-scoped-notification'
+                    );
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
 
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-base'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-dark'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_theme-error'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_theme-success'
-            );
-            expect(icon.variant).toBe('inverse');
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-base'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-dark'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-warning'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'avonni-scoped-notification_theme-error'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-success'
+                    );
+                    expect(icon.variant).toBe('inverse');
+                });
+            });
+
+            it('success', () => {
+                element.variant = 'success';
+                element.iconName = 'utility:favorite';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '.slds-scoped-notification'
+                    );
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-base'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-dark'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-warning'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-scoped-notification_theme-error'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'avonni-scoped-notification_theme-success'
+                    );
+                    expect(icon.variant).toBe('inverse');
+                });
+            });
         });
     });
 });
