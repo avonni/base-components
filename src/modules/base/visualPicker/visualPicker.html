@@ -37,11 +37,11 @@
                     <template for:each={visibleItems} for:item="item">
                         <c-layout-item
                             if:true={item.visible}
+                            key={item.value}
+                            large-container-size={largeContainerCols}
+                            medium-container-size={mediumContainerCols}
                             size={cols}
                             small-container-size={smallContainerCols}
-                            medium-container-size={mediumContainerCols}
-                            large-container-size={largeContainerCols}
-                            key={item.value}
                             data-element-id="div-item-wrapper"
                             onprivatelayoutitemconnected={handleItemRendered}
                         >
@@ -132,8 +132,8 @@
                                                             checked={item.checked}
                                                             description={item.description}
                                                             hide-avatar-top-bottom={item.avatarTopHidden}
-                                                            hide-title={item.titleTopHidden}
                                                             hide-description={item.descriptionTopHidden}
+                                                            hide-title={item.titleTopHidden}
                                                             size={size}
                                                             title={item.title}
                                                         ></c-primitive-visual-picker-header>
@@ -212,11 +212,11 @@
                                                                     for:item="field"
                                                                 >
                                                                     <c-layout-item
+                                                                        key={field.value}
                                                                         class="
                                                                             avonni-visual-picker__item-fields
                                                                             slds-truncate
                                                                         "
-                                                                        key={field.value}
                                                                         size={fieldAttributes.cols}
                                                                     >
                                                                         <c-output-data
@@ -249,8 +249,8 @@
                                                             checked={item.checked}
                                                             description={item.description}
                                                             hide-avatar-top-bottom={item.avatarBottomHidden}
-                                                            hide-title={item.titleBottomHidden}
                                                             hide-description={item.descriptionBottomHidden}
+                                                            hide-title={item.titleBottomHidden}
                                                             size={size}
                                                             title={item.title}
                                                         ></c-primitive-visual-picker-header>

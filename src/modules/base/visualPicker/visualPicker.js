@@ -10,29 +10,6 @@ import {
 import { equal } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 
-const VISUAL_PICKER_VARIANTS = {
-    valid: ['coverable', 'non-coverable'],
-    default: 'non-coverable'
-};
-const INPUT_TYPES = { valid: ['radio', 'checkbox'], default: 'radio' };
-const VISUAL_PICKER_SIZES = {
-    valid: [
-        'xx-small',
-        'x-small',
-        'small',
-        'medium',
-        'large',
-        'x-large',
-        'xx-large',
-        'responsive'
-    ],
-    default: 'medium'
-};
-const VISUAL_PICKER_RATIOS = {
-    valid: ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'],
-    default: '1-by-1'
-};
-
 const AVATAR_POSITION = {
     valid: [
         'top',
@@ -56,19 +33,18 @@ const DEFAULT_COLUMNS = {
     medium: 6,
     large: 4
 };
-
+const DEFAULT_DISABLED = false;
+const DEFAULT_HIDE_CHECK_MARK = false;
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_MIN = 0;
+const DEFAULT_REQUIRED = false;
 const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
 };
-
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
-};
-const IMAGE_POSITION = {
-    valid: ['top', 'bottom', 'left', 'right', 'background', 'overlay'],
-    default: 'top'
 };
 const IMAGE_MAX_HEIGHT_REM = {
     small: {
@@ -112,16 +88,36 @@ const IMAGE_MAX_WIDTH_PERCENT = {
     medium: 75,
     large: 100
 };
+const IMAGE_POSITION = {
+    valid: ['top', 'bottom', 'left', 'right', 'background', 'overlay'],
+    default: 'top'
+};
 const IMAGE_SIZE = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
 };
-
-const DEFAULT_MIN = 0;
-const DEFAULT_DISABLED = false;
-const DEFAULT_HIDE_CHECK_MARK = false;
-const DEFAULT_LOAD_MORE_OFFSET = 20;
-const DEFAULT_REQUIRED = false;
+const INPUT_TYPES = { valid: ['radio', 'checkbox'], default: 'radio' };
+const VISUAL_PICKER_RATIOS = {
+    valid: ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'],
+    default: '1-by-1'
+};
+const VISUAL_PICKER_SIZES = {
+    valid: [
+        'xx-small',
+        'x-small',
+        'small',
+        'medium',
+        'large',
+        'x-large',
+        'xx-large',
+        'responsive'
+    ],
+    default: 'medium'
+};
+const VISUAL_PICKER_VARIANTS = {
+    valid: ['coverable', 'non-coverable'],
+    default: 'non-coverable'
+};
 
 /**
  * @class
@@ -253,16 +249,16 @@ export default class VisualPicker extends LightningElement {
     }
     set columnAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
-        const small = this._normalizeColumnAttributes(
+        const small = this.normalizeColumnAttributes(
             normalizedFieldAttributes.smallContainerCols
         );
-        const medium = this._normalizeColumnAttributes(
+        const medium = this.normalizeColumnAttributes(
             normalizedFieldAttributes.mediumContainerCols
         );
-        const large = this._normalizeColumnAttributes(
+        const large = this.normalizeColumnAttributes(
             normalizedFieldAttributes.largeContainerCols
         );
-        const defaults = this._normalizeColumnAttributes(
+        const defaults = this.normalizeColumnAttributes(
             normalizedFieldAttributes.cols
         );
 
@@ -325,7 +321,7 @@ export default class VisualPicker extends LightningElement {
     }
     set fieldAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
-        const defaults = this._normalizeColumnAttributes(
+        const defaults = this.normalizeColumnAttributes(
             normalizedFieldAttributes.cols
         );
 
@@ -1041,36 +1037,36 @@ export default class VisualPicker extends LightningElement {
                 hasImg && !layoutIsHorizontal && !imgIsTop && !imgIsBottom;
 
             // Class and styling management
-            const computedBodyLayoutStyle = this._computeLayoutContainerStyle(
+            const computedBodyLayoutStyle = this.computeLayoutContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground,
                 false
             );
-            const computedImgLayoutStyle = this._computeLayoutContainerStyle(
+            const computedImgLayoutStyle = this.computeLayoutContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground,
                 true
             );
-            const computedImgContainerStyle = this._computeImageContainerStyle(
+            const computedImgContainerStyle = this.computeImageContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground
             );
-            const computedImgStyle = this._computeImageStyle(
+            const computedImgStyle = this.computeImageStyle(
                 imgIsHorizontal,
                 imgIsBackground
             );
 
-            const computedNotSelectedClass = this._computeNotSelectedClass(
+            const computedNotSelectedClass = this.computeNotSelectedClass(
                 imgPosition,
                 value
             );
-            const computedBodyClass = this._computeBodyClass(imgIsBackground);
+            const computedBodyClass = this.computeBodyClass(imgIsBackground);
             const computedBodyContentTopClass =
-                this._computeVisualPickerItemsClass(imgIsTop, false);
+                this.computeVisualPickerItemsClass(imgIsTop, false);
             const computedBodyContentCenterClass =
-                this._computeVisualPickerItemsClass(imgIsCenter, hasFields);
+                this.computeVisualPickerItemsClass(imgIsCenter, hasFields);
             const computedBodyContentBottomClass =
-                this._computeVisualPickerItemsClass(imgIsBottom, false);
+                this.computeVisualPickerItemsClass(imgIsBottom, false);
 
             const hasBodyContent =
                 displayTitle ||
@@ -1250,7 +1246,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    _computeBodyClass(imgIsBackground) {
+    computeBodyClass(imgIsBackground) {
         return classSet('avonni-visual-picker__figure-body')
             .add({
                 'avonni-visual-picker__figure-body-image-background':
@@ -1266,7 +1262,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    _computeImageContainerStyle(imgIsHorizontal, imgIsBackground) {
+    computeImageContainerStyle(imgIsHorizontal, imgIsBackground) {
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
 
@@ -1294,7 +1290,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    _computeImageStyle(imgIsHorizontal, imgIsBackground) {
+    computeImageStyle(imgIsHorizontal, imgIsBackground) {
         const objectFit = `object-fit: ${this.imageAttributes.cropFit};`;
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
@@ -1329,7 +1325,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} hasImage
      * @returns {string}
      */
-    _computeLayoutContainerStyle(imgIsHorizontal, imgIsBackground, hasImage) {
+    computeLayoutContainerStyle(imgIsHorizontal, imgIsBackground, hasImage) {
         let heightStyle = '';
         let widthStyle = '';
         if (!imgIsBackground) {
@@ -1359,7 +1355,7 @@ export default class VisualPicker extends LightningElement {
      * @param {string} itemValue
      * @returns {string}
      */
-    _computeNotSelectedClass(imgPosition, itemValue) {
+    computeNotSelectedClass(imgPosition, itemValue) {
         const isSelected = this.value.includes(itemValue);
         return classSet(
             'avonni-visual-picker__figure-container avonni-visual-picker__height'
@@ -1387,7 +1383,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} hasFields
      * @type {string}
      */
-    _computeVisualPickerItemsClass(hasImg, hasFields) {
+    computeVisualPickerItemsClass(hasImg, hasFields) {
         return classSet('slds-has-flexi-truncate')
             .add({
                 'avonni-visual-picker__items':
@@ -1401,27 +1397,27 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Only accept predetermined number of columns.
-     *
-     * @param {number} value
-     * @returns {number}
-     */
-    _normalizeColumns(value) {
-        const numValue = parseInt(value, 10);
-        return COLUMNS.valid.includes(numValue) ? numValue : null;
-    }
-
-    /**
      * Inverse logic of number of columns.
      *
      * @param {number} value
      * @returns {number}
      */
-    _normalizeColumnAttributes(value) {
-        const normalizedCols = this._normalizeColumns(value);
+    normalizeColumnAttributes(value) {
+        const normalizedCols = this.normalizeColumns(value);
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
             : null;
+    }
+
+    /**
+     * Only accept predetermined number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeColumns(value) {
+        const numValue = parseInt(value, 10);
+        return COLUMNS.valid.includes(numValue) ? numValue : null;
     }
 
     /*
