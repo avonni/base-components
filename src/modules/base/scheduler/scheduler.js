@@ -54,16 +54,16 @@ import {
  * @public
  */
 export default class Scheduler extends LightningElement {
-    _dialogLabels = DEFAULT_DIALOG_LABELS;
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
+    _collapseDisabled = false;
     _columns = DEFAULT_COLUMNS;
     _contextMenuEmptySpotActions = [];
     _contextMenuEventActions = [];
     _customEventsPalette = [];
-    _collapseDisabled = false;
     _dateFormat = DEFAULT_DATE_FORMAT;
+    _dialogLabels = DEFAULT_DIALOG_LABELS;
     _disabledDatesTimes = [];
     _events = [];
     _eventsDisplayFields = DEFAULT_EVENTS_DISPLAY_FIELDS;
@@ -106,19 +106,19 @@ export default class Scheduler extends LightningElement {
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
+    @track computedEvents = [];
     computedHeaders = [];
     computedReferenceLines = [];
     computedResources = [];
-    @track computedEvents = [];
     computedSelectedDisplay = {};
     contextMenuActions = [];
     currentTimeSpan = {};
     detailPopoverFields = [];
     selectedDate;
     showContextMenu = false;
-    showEditDialog = false;
     showDeleteConfirmationDialog = false;
     showDetailPopover = false;
+    showEditDialog = false;
     showRecurrenceDialog = false;
     showToolbarCalendar = false;
     toolbarCalendarDisabledDates = [];
@@ -141,6 +141,12 @@ export default class Scheduler extends LightningElement {
         this.classList.add('slds-is-relative');
         this.classList.add('slds-show');
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         // Position the detail popover
@@ -1203,6 +1209,20 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Computed CSS classes for the display menu button.
+     *
+     * @type {string}
+     */
+    get computedDisplayButtonClass() {
+        return classSet('avonni-scheduler__display-menu')
+            .add({
+                'avonni-scheduler__toolbar-button-group_first':
+                    this.toolbarActions.length
+            })
+            .toString();
+    }
+
+    /**
     * Array of action objects, used by the context menu when opened on an event.
     *
     * @type {object[]}
@@ -1239,11 +1259,28 @@ export default class Scheduler extends LightningElement {
         return this.createDate(this.start);
     }
 
-    get displayButtonClass() {
-        return classSet('avonni-scheduler__display-menu')
+    /**
+     * Computed CSS classes for the toolbar action button.
+     *
+     * @type {string}
+     */
+    get computedToolbarActionButtonClass() {
+        return classSet({
+            'avonni-scheduler__toolbar-button-group_last':
+                this.moreThanOneDisplay
+        }).toString();
+    }
+
+    /**
+     * Computed CSS classes for the calendar selector of the toolbar.
+     *
+     * @type {string}
+     */
+    get computedToolbarCalendarWrapperClass() {
+        return classSet('avonni-scheduler__flex-col slds-has-flexi-truncate')
             .add({
-                'avonni-scheduler__toolbar-button-group_first':
-                    this.toolbarActions.length
+                'slds-text-align_center slds-p-horizontal_small':
+                    this.showToolbarTimeSpans
             })
             .toString();
     }
@@ -1267,13 +1304,6 @@ export default class Scheduler extends LightningElement {
      */
     get firstEventActions() {
         return this.computedContextMenuEvent.slice(0, 2);
-    }
-
-    get toolbarActionButtonClass() {
-        return classSet({
-            'avonni-scheduler__toolbar-button-group_last':
-                this.moreThanOneDisplay
-        }).toString();
     }
 
     /**
@@ -1479,20 +1509,6 @@ export default class Scheduler extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-timeline"]'
         );
-    }
-
-    /**
-     * Computed CSS classes for the calendar selector of the toolbar.
-     *
-     * @type {string}
-     */
-    get toolbarCalendarWrapperClass() {
-        return classSet('avonni-scheduler__flex-col slds-has-flexi-truncate')
-            .add({
-                'slds-text-align_center slds-p-horizontal_small':
-                    this.showToolbarTimeSpans
-            })
-            .toString();
     }
 
     /**
@@ -1706,6 +1722,118 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Compute the time interval label displayed in the toolbar.
+     *
+     * @param {DateTime} start Start of the time interval.
+     * @param {DateTime} end End of the time interval.
+     */
+    computeVisibleIntervalLabel(start, end) {
+        const { unit, span } = this.currentTimeSpan;
+        let format;
+        switch (unit) {
+            case 'day':
+            case 'week': {
+                format = 'ccc, LLLL d, kkkk';
+                break;
+            }
+            case 'year': {
+                format = 'yyyy';
+                break;
+            }
+            case 'month': {
+                format = 'LLLL yyyy';
+                break;
+            }
+            case 'minute':
+            case 'hour': {
+                format = 't';
+                break;
+            }
+            default:
+                break;
+        }
+
+        if (
+            this.isCalendar &&
+            (unit === 'month' || unit === 'year') &&
+            span <= 1
+        ) {
+            const formatted = addToDate(start, 'week', 1).toFormat(format);
+            this.visibleIntervalLabel = formatted;
+        } else {
+            const formattedStart = start.toFormat(format);
+            const formattedEnd = end.toFormat(format);
+            this.visibleIntervalLabel =
+                formattedStart === formattedEnd
+                    ? formattedStart
+                    : `${formattedStart} - ${formattedEnd}`;
+        }
+    }
+
+    /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
+    }
+
+    /**
+     * Hide the detail popover, the context menu, the edit dialog, the delete dialog and the recurrence dialog.
+     */
+    hideAllPopovers() {
+        this.hideDetailPopover();
+        this.hideContextMenu();
+        this.hideEditDialog();
+        this.hideDeleteConfirmationDialog();
+        this.hideRecurrenceDialog();
+    }
+
+    /**
+     * Hide the context menu.
+     */
+    hideContextMenu() {
+        this.contextMenuActions.splice(0);
+        this.showContextMenu = false;
+
+        if (this.isCalendar && this._focusCalendarPopover) {
+            this._focusCalendarPopover();
+            this._focusCalendarPopover = null;
+        }
+    }
+
+    /**
+     * Hide the detail popover.
+     */
+    hideDetailPopover() {
+        clearTimeout(this._closeDetailPopoverTimeout);
+        this.showDetailPopover = false;
+    }
+
+    /**
+     * Hide the edit dialog.
+     */
+    hideEditDialog() {
+        this.showEditDialog = false;
+    }
+
+    /**
+     * Hide the delete confirmation dialog.
+     */
+    hideDeleteConfirmationDialog() {
+        this.showDeleteConfirmationDialog = false;
+    }
+
+    /**
+     * Hide the recurring event saving options dialog.
+     */
+    hideRecurrenceDialog() {
+        this.showRecurrenceDialog = false;
+    }
+
+    /**
      * Set the current time span value.
      */
     initCurrentTimeSpan() {
@@ -1822,117 +1950,11 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Compute the time interval label displayed in the toolbar.
+     * Check if a field is hidden from the detail popover.
      *
-     * @param {DateTime} start Start of the time interval.
-     * @param {DateTime} end End of the time interval.
+     * @param {string} fieldName Name of the field to check.
+     * @returns {boolean} True if the field is hidden, false otherwise.
      */
-    computeVisibleIntervalLabel(start, end) {
-        const { unit, span } = this.currentTimeSpan;
-        let format;
-        switch (unit) {
-            case 'day':
-            case 'week': {
-                format = 'ccc, LLLL d, kkkk';
-                break;
-            }
-            case 'year': {
-                format = 'yyyy';
-                break;
-            }
-            case 'month': {
-                format = 'LLLL yyyy';
-                break;
-            }
-            case 'minute':
-            case 'hour': {
-                format = 't';
-                break;
-            }
-            default:
-                break;
-        }
-
-        if (
-            this.isCalendar &&
-            (unit === 'month' || unit === 'year') &&
-            span <= 1
-        ) {
-            const formatted = addToDate(start, 'week', 1).toFormat(format);
-            this.visibleIntervalLabel = formatted;
-        } else {
-            const formattedStart = start.toFormat(format);
-            const formattedEnd = end.toFormat(format);
-            this.visibleIntervalLabel =
-                formattedStart === formattedEnd
-                    ? formattedStart
-                    : `${formattedStart} - ${formattedEnd}`;
-        }
-    }
-
-    /**
-     * Create a Luxon DateTime object from a date, including the timezone.
-     *
-     * @param {string|number|Date} date Date to convert.
-     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
-     */
-    createDate(date) {
-        return dateTimeObjectFrom(date, { zone: this.timezone });
-    }
-
-    /**
-     * Hide the detail popover, the context menu, the edit dialog, the delete dialog and the recurrence dialog.
-     */
-    hideAllPopovers() {
-        this.hideDetailPopover();
-        this.hideContextMenu();
-        this.hideEditDialog();
-        this.hideDeleteConfirmationDialog();
-        this.hideRecurrenceDialog();
-    }
-
-    /**
-     * Hide the context menu.
-     */
-    hideContextMenu() {
-        this.contextMenuActions.splice(0);
-        this.showContextMenu = false;
-
-        if (this.isCalendar && this._focusCalendarPopover) {
-            this._focusCalendarPopover();
-            this._focusCalendarPopover = null;
-        }
-    }
-
-    /**
-     * Hide the detail popover.
-     */
-    hideDetailPopover() {
-        clearTimeout(this._closeDetailPopoverTimeout);
-        this.showDetailPopover = false;
-    }
-
-    /**
-     * Hide the edit dialog.
-     */
-    hideEditDialog() {
-        this.showEditDialog = false;
-    }
-
-    /**
-     * Hide the delete confirmation dialog.
-     */
-    hideDeleteConfirmationDialog() {
-        this.showDeleteConfirmationDialog = false;
-    }
-
-    /**
-     * Hide the recurring event saving options dialog.
-     */
-    hideRecurrenceDialog() {
-        this.showRecurrenceDialog = false;
-    }
-
     isFieldHiddenFromDetailPopover(fieldName) {
         if (fieldName !== 'to') {
             return false;
@@ -2031,20 +2053,29 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle a change of the selected date.
-     *
-     * @param {Event} event
-     */
-    handleSelectedDateChange(event) {
-        this.goToDate(event.detail.value);
-    }
-
-    /**
      * Handle the closing of the delete confirmation dialog.
      */
     handleCloseDeleteConfirmationDialog() {
         this.schedule.cleanSelection();
         this.hideDeleteConfirmationDialog();
+    }
+
+    /**
+     * Handle the closedialog event fired by the edit dialog. Cancel the changes and close the dialog.
+     */
+    handleCloseEditDialog() {
+        this.schedule.cleanSelection(true);
+        this.selection = null;
+        this.hideAllPopovers();
+    }
+
+    /**
+     * Handle the closedialog event fired by the recurring event save dialog. Cancel the changes and close the dialog.
+     */
+    handleCloseRecurrenceDialog() {
+        this.schedule.cleanSelection(true);
+        this.selection = null;
+        this.hideRecurrenceDialog();
     }
 
     /**
@@ -2102,80 +2133,14 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the click event fired by the delete button. Delete the selected event.
+     * Handle the keydown event fired by the save buttons of the edit dialog. Prevent the focus from leaving the dialog.
      */
-    handleEventDelete() {
-        const name = this.selection.event.name;
-        this.deleteEvent(name);
-
-        /**
-         * The event fired when a user deletes an event.
-         *
-         * @event
-         * @name eventdelete
-         * @param {string} name Unique name of the deleted event.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('eventdelete', {
-                detail: {
-                    name
-                },
-                bubbles: true
-            })
-        );
-        this.hideAllPopovers();
-    }
-
-    /**
-     * Handle the selection of an event.
-     *
-     * @param {Event} event
-     */
-    handleEventSelect(event) {
-        event.stopPropagation();
-        if (this._programmaticFocus) {
-            this._programmaticFocus = false;
-            return;
-        }
-
-        /**
-         * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
-         *
-         * @event
-         * @name eventselect
-         * @param {string} name Unique name of the event.
-         * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('eventselect', {
-                detail: event.detail,
-                bubbles: true
-            })
-        );
-    }
-
-    /**
-     * Handle the opening of the context menu on an event.
-     *
-     * @param {Event} event
-     */
-    handleEventContextMenu(event) {
-        event.stopPropagation();
-        if (!this.computedContextMenuEvent.length) {
-            return;
-        }
-        clearTimeout(this._openDetailPopoverTimeout);
-        this.hideDetailPopover();
-        this.contextMenuActions = [...this.computedContextMenuEvent];
-        this.selection = event.currentTarget.selectEvent(event.detail);
-        this.showContextMenu = true;
-
-        if (this.isCalendar) {
-            this._focusCalendarPopover = event.detail.focusPopover;
+    handleEditSaveKeyDown(event) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            this.template
+                .querySelector('[data-element-id^="avonni-dialog"]')
+                .focusOnCloseButton();
         }
     }
 
@@ -2190,75 +2155,6 @@ export default class Scheduler extends LightningElement {
         this.contextMenuActions = [...this.computedContextMenuEmptySpot];
         this.showContextMenu = true;
         this.selection = event.detail;
-    }
-
-    /**
-     * Handle the change event fired by the edit dialog title input. Save the new title to the draft values.
-     */
-    handleEventTitleChange(event) {
-        const title = event.currentTarget.value;
-        this.selection.draftValues.title = title;
-    }
-
-    /**
-     * Handle the change event fired by the edit dialog date input. Save the new dates to the draft values.
-     */
-    handleEventDateChange(event) {
-        const from = event.detail.startDate;
-        const to = event.detail.endDate;
-
-        this.selection.draftValues.from = from;
-        this.selection.draftValues.to = to;
-    }
-
-    /**
-     * Handle the change event fired by the edit dialog key fields combobox. Save the new resource keys to the draft values.
-     */
-    handleEventResourceNamesChange(event) {
-        const resourceNames = event.detail.value;
-        this.selection.draftValues.resourceNames = resourceNames;
-    }
-
-    /**
-     * Handle the closedialog event fired by the edit dialog. Cancel the changes and close the dialog.
-     */
-    handleCloseEditDialog() {
-        this.schedule.cleanSelection(true);
-        this.selection = null;
-        this.hideAllPopovers();
-    }
-
-    /**
-     * Handle the closedialog event fired by the recurring event save dialog. Cancel the changes and close the dialog.
-     */
-    handleCloseRecurrenceDialog() {
-        this.schedule.cleanSelection(true);
-        this.selection = null;
-        this.hideRecurrenceDialog();
-    }
-
-    /**
-     * Handle the click event fired by the save buttons of the edit or recurring event dialogs. Save the changes made to the event and close the dialog.
-     */
-    handleSaveEvent(mouseEvent) {
-        const recurrenceMode =
-            mouseEvent.detail.value || mouseEvent.currentTarget.value;
-
-        this.schedule.saveSelection(recurrenceMode);
-        this.selection = null;
-        this.hideAllPopovers();
-    }
-
-    /**
-     * Handle the keydown event fired by the save buttons of the edit dialog. Prevent the focus from leaving the dialog.
-     */
-    handleEditSaveKeyDown(event) {
-        if (event.key === 'Tab') {
-            event.preventDefault();
-            this.template
-                .querySelector('[data-element-id^="avonni-dialog"]')
-                .focusOnCloseButton();
-        }
     }
 
     /**
@@ -2291,6 +2187,27 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Handle the opening of the context menu on an event.
+     *
+     * @param {Event} event
+     */
+    handleEventContextMenu(event) {
+        event.stopPropagation();
+        if (!this.computedContextMenuEvent.length) {
+            return;
+        }
+        clearTimeout(this._openDetailPopoverTimeout);
+        this.hideDetailPopover();
+        this.contextMenuActions = [...this.computedContextMenuEvent];
+        this.selection = event.currentTarget.selectEvent(event.detail);
+        this.showContextMenu = true;
+
+        if (this.isCalendar) {
+            this._focusCalendarPopover = event.detail.focusPopover;
+        }
+    }
+
+    /**
      * Handle the creation of an event.
      *
      * @param {Event} event
@@ -2313,6 +2230,44 @@ export default class Scheduler extends LightningElement {
                 bubbles: true
             })
         );
+    }
+
+    /**
+     * Handle the change event fired by the edit dialog date input. Save the new dates to the draft values.
+     */
+    handleEventDateChange(event) {
+        const from = event.detail.startDate;
+        const to = event.detail.endDate;
+
+        this.selection.draftValues.from = from;
+        this.selection.draftValues.to = to;
+    }
+
+    /**
+     * Handle the click event fired by the delete button. Delete the selected event.
+     */
+    handleEventDelete() {
+        const name = this.selection.event.name;
+        this.deleteEvent(name);
+
+        /**
+         * The event fired when a user deletes an event.
+         *
+         * @event
+         * @name eventdelete
+         * @param {string} name Unique name of the deleted event.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventdelete', {
+                detail: {
+                    name
+                },
+                bubbles: true
+            })
+        );
+        this.hideAllPopovers();
     }
 
     /**
@@ -2398,28 +2353,49 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle a click on a toolbar action.
-     *
-     * @param {Event} event click or select event.
+     * Handle the change event fired by the edit dialog key fields combobox. Save the new resource keys to the draft values.
      */
-    handleToolbarActionSelect(event) {
-        const name = event.detail.value || event.currentTarget.value;
+    handleEventResourceNamesChange(event) {
+        const resourceNames = event.detail.value;
+        this.selection.draftValues.resourceNames = resourceNames;
+    }
+
+    /**
+     * Handle the selection of an event.
+     *
+     * @param {Event} event
+     */
+    handleEventSelect(event) {
+        event.stopPropagation();
+        if (this._programmaticFocus) {
+            this._programmaticFocus = false;
+            return;
+        }
 
         /**
-         * The event fired when a user clicks on a toolbar action.
+         * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
          *
          * @event
-         * @name toolbaractionclick
-         * @param {string} name Name of the action clicked.
+         * @name eventselect
+         * @param {string} name Unique name of the event.
+         * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
          * @public
          * @bubbles
          */
         this.dispatchEvent(
-            new CustomEvent('toolbaractionclick', {
-                detail: { name },
+            new CustomEvent('eventselect', {
+                detail: event.detail,
                 bubbles: true
             })
         );
+    }
+
+    /**
+     * Handle the change event fired by the edit dialog title input. Save the new title to the draft values.
+     */
+    handleEventTitleChange(event) {
+        const title = event.currentTarget.value;
+        this.selection.draftValues.title = title;
     }
 
     /**
@@ -2499,6 +2475,18 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Handle the click event fired by the save buttons of the edit or recurring event dialogs. Save the changes made to the event and close the dialog.
+     */
+    handleSaveEvent(mouseEvent) {
+        const recurrenceMode =
+            mouseEvent.detail.value || mouseEvent.currentTarget.value;
+
+        this.schedule.saveSelection(recurrenceMode);
+        this.selection = null;
+        this.hideAllPopovers();
+    }
+
+    /**
      * Handle a click on a time slot of the schedule.
      *
      * @param {Event} event `scheduleclick` event coming a primitive.
@@ -2523,21 +2511,37 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the toggling of the toolbar calendar.
+     * Handle a change of the selected date.
      *
      * @param {Event} event
      */
-    handleToggleToolbarCalendar() {
-        this.showToolbarCalendar = !this.showToolbarCalendar;
+    handleSelectedDateChange(event) {
+        this.goToDate(event.detail.value);
+    }
 
-        requestAnimationFrame(() => {
-            const calendar = this.template.querySelector(
-                '[data-element-id="calendar-toolbar"]'
-            );
-            if (calendar) {
-                calendar.focus();
-            }
-        });
+    /**
+     * Handle a click on a toolbar action.
+     *
+     * @param {Event} event click or select event.
+     */
+    handleToolbarActionSelect(event) {
+        const name = event.detail.value || event.currentTarget.value;
+
+        /**
+         * The event fired when a user clicks on a toolbar action.
+         *
+         * @event
+         * @name toolbaractionclick
+         * @param {string} name Name of the action clicked.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('toolbaractionclick', {
+                detail: { name },
+                bubbles: true
+            })
+        );
     }
 
     /**
@@ -2704,6 +2708,24 @@ export default class Scheduler extends LightningElement {
             return;
         }
         this.goToDate(today);
+    }
+
+    /**
+     * Handle the toggling of the toolbar calendar.
+     *
+     * @param {Event} event
+     */
+    handleToggleToolbarCalendar() {
+        this.showToolbarCalendar = !this.showToolbarCalendar;
+
+        requestAnimationFrame(() => {
+            const calendar = this.template.querySelector(
+                '[data-element-id="calendar-toolbar"]'
+            );
+            if (calendar) {
+                calendar.focus();
+            }
+        });
     }
 
     /**
