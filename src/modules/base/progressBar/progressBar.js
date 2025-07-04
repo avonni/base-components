@@ -12,26 +12,22 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const BORDER_RADIUS_REM = 0.5;
 const DEFAULT_VALUE = 0;
-
+const PROGRESS_BAR_ORIENTATIONS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+const PROGRESS_BAR_PIN_POSITIONS = {
+    valid: ['right', 'left'],
+    default: 'right'
+};
+const PROGRESS_BAR_PIN_TYPES = {
+    valid: ['circle', 'rectangle'],
+    default: 'rectangle'
+};
 const PROGRESS_BAR_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'full'],
     default: 'full'
 };
-
-const VALUE_POSITIONS = {
-    valid: [
-        'left',
-        'right',
-        'top-right',
-        'top-left',
-        'bottom-right',
-        'bottom-left'
-    ],
-    default: 'top-right'
-};
-
-const PROGRESS_BAR_VARIANTS = { valid: ['base', 'circular'], default: 'base' };
-
 const PROGRESS_BAR_THEMES = {
     valid: [
         'base',
@@ -45,25 +41,22 @@ const PROGRESS_BAR_THEMES = {
     ],
     default: 'base'
 };
-
 const PROGRESS_BAR_THICKNESSES = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
 
-const PROGRESS_BAR_ORIENTATIONS = {
-    valid: ['horizontal', 'vertical'],
-    default: 'horizontal'
-};
-
-const PROGRESS_BAR_PIN_TYPES = {
-    valid: ['circle', 'rectangle'],
-    default: 'rectangle'
-};
-
-const PROGRESS_BAR_PIN_POSITIONS = {
-    valid: ['right', 'left'],
-    default: 'right'
+const PROGRESS_BAR_VARIANTS = { valid: ['base', 'circular'], default: 'base' };
+const VALUE_POSITIONS = {
+    valid: [
+        'left',
+        'right',
+        'top-right',
+        'top-left',
+        'bottom-right',
+        'bottom-left'
+    ],
+    default: 'top-right'
 };
 
 /**
@@ -494,12 +487,10 @@ export default class ProgressBar extends LightningElement {
                 'slds-progress-bar_circular': this.variant === 'circular',
                 'slds-progress-bar_x-small': this.thickness === 'x-small',
                 'slds-progress-bar_small': this.thickness === 'small',
-                'slds-progress-bar_large': this.thickness === 'large'
+                'slds-progress-bar_large': this.thickness === 'large',
+                'slds-m-bottom_large': this.referenceLines.length
             })
             .add(`avonni-progress-bar__bar-background_theme-${this.theme}`)
-            .add({
-                'slds-m-bottom_large': this._referenceLines.length > 0
-            })
             .toString();
     }
 
@@ -566,7 +557,7 @@ export default class ProgressBar extends LightningElement {
     /**
      * Get the div container of the pin
      *
-     * @type {object}
+     * @type {HTMLElement}
      */
     get divPin() {
         return this.template.querySelector(

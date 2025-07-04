@@ -57,13 +57,15 @@ describe('ProgressBar', () => {
             expect(element.variant).toBe('base');
         });
 
-        it('Alternative Text', () => {
-            element.alternativeText = 'Loading progress';
+        describe('Alternative Text', () => {
+            it('Passed to the component', () => {
+                element.alternativeText = 'Loading progress';
 
-            return Promise.resolve().then(() => {
-                const outerWrapper =
-                    element.shadowRoot.querySelector('.slds-progress-bar');
-                expect(outerWrapper.ariaLabel).toBe('Loading progress');
+                return Promise.resolve().then(() => {
+                    const outerWrapper =
+                        element.shadowRoot.querySelector('.slds-progress-bar');
+                    expect(outerWrapper.ariaLabel).toBe('Loading progress');
+                });
             });
         });
 

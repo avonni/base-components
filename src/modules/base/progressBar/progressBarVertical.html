@@ -16,8 +16,8 @@
                         slds-p-right_xx-small
                         slds-p-left_xx-small
                     "
-                    >{label}</span
-                >
+                    >{label}
+                </span>
                 <span
                     if:true={showPositionTopRight}
                     class="avonni-progress-bar__value"
@@ -66,18 +66,18 @@
             <template for:each={referenceLines} for:item="referenceLine">
                 <c-primitive-reference-line
                     key={referenceLine.label}
+                    border-style={referenceLine.borderStyle}
                     label={referenceLine.label}
+                    orientation={orientation}
                     value={referenceLine.value}
                     variant={referenceLine.variant}
-                    border-style={referenceLine.borderStyle}
                     thickness={thickness}
-                    orientation={orientation}
                 ></c-primitive-reference-line>
             </template>
         </div>
     </div>
     <lightning-layout if:true={showPositionBottom}>
-        <lightning-layout-item size="12" class="slds-text-align_center">
+        <lightning-layout-item class="slds-text-align_center" size="12">
             <span class="avonni-progress-bar__value" aria-hidden="true">
                 {valueToDisplay}
             </span>
