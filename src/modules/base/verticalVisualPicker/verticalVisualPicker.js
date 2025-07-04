@@ -10,23 +10,20 @@ import { equal } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import Item from './item';
 
-const ITEM_SIZES = {
-    valid: ['small', 'medium', 'large', 'responsive'],
-    default: 'medium'
-};
-
-const ITEM_TYPES = { valid: ['radio', 'checkbox'], default: 'radio' };
-
-const ITEM_VARIANTS = {
-    valid: ['coverable', 'non-coverable'],
-    default: 'non-coverable'
-};
-
 const DEFAULT_MIN = 0;
 const DEFAULT_DISABLED = false;
 const DEFAULT_HIDE_CHECK_MARK = false;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_REQUIRED = false;
+const ITEM_SIZES = {
+    valid: ['small', 'medium', 'large', 'responsive'],
+    default: 'medium'
+};
+const ITEM_TYPES = { valid: ['radio', 'checkbox'], default: 'radio' };
+const ITEM_VARIANTS = {
+    valid: ['coverable', 'non-coverable'],
+    default: 'non-coverable'
+};
 
 /**
  * @class
@@ -102,12 +99,12 @@ export default class VerticalVisualPicker extends LightningElement {
     connectedCallback() {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-        this._initItems();
+        this.initItems();
         this._connected = true;
     }
 
     renderedCallback() {
-        this._setCssVariables();
+        this.setCssVariables();
         this.handleScroll();
     }
 
@@ -132,7 +129,7 @@ export default class VerticalVisualPicker extends LightningElement {
         this._disabled = normalizeBoolean(value);
 
         if (this._connected) {
-            this._initItems();
+            this.initItems();
         }
     }
 
@@ -200,7 +197,7 @@ export default class VerticalVisualPicker extends LightningElement {
         this._items = normalizeArray(value);
 
         if (this._connected) {
-            this._initItems();
+            this.initItems();
         }
     }
 
@@ -305,7 +302,7 @@ export default class VerticalVisualPicker extends LightningElement {
         });
 
         if (this._connected) {
-            this._initItems();
+            this.initItems();
         }
     }
 
@@ -357,7 +354,7 @@ export default class VerticalVisualPicker extends LightningElement {
         this._value = normalizedValue;
 
         if (this._connected) {
-            this._initItems();
+            this.initItems();
         }
     }
 
@@ -665,33 +662,9 @@ export default class VerticalVisualPicker extends LightningElement {
      */
 
     /**
-     * Dispatch the 'change' event.
-     */
-    _dispatchChange() {
-        const dispatchString =
-            this.type === 'radio' &&
-            this._items.every((item) => !item.subItems);
-        /**
-         * The event fired when the value changed.
-         *
-         * @event
-         * @name change
-         * @param {string|string[]} value Selected items' value. Returns a string if the type is radio and no items have subItems. Otherwise returns an array of string.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: dispatchString ? this._value[0] || null : this._value
-                }
-            })
-        );
-    }
-
-    /**
      * Initialize the items.
      */
-    _initItems() {
+    initItems() {
         this._computedItems = this.items.map((item) => {
             const maxReached =
                 this.type === 'checkbox' &&
@@ -705,7 +678,7 @@ export default class VerticalVisualPicker extends LightningElement {
                     this.disabled ||
                     item.disabled ||
                     (maxReached && isUnselectedOption),
-                isChecked: this._isItemChecked(item.value, item.subItems),
+                isChecked: this.isItemChecked(item.value, item.subItems),
                 size: this.size
             });
         });
@@ -717,7 +690,7 @@ export default class VerticalVisualPicker extends LightningElement {
      * @param {object[]} subItems item subitems
      * @returns
      */
-    _isItemChecked(value, subItems) {
+    isItemChecked(value, subItems) {
         const isPickerSelected = this._value.includes(value);
         if (!subItems) return isPickerSelected;
         const isSubItemSelected = subItems.some((subItem) =>
@@ -729,7 +702,7 @@ export default class VerticalVisualPicker extends LightningElement {
     /**
      * Goes through every visual picker and sets the "checked" attribute.
      */
-    _refreshCheckedAttributes() {
+    refreshCheckedAttributes() {
         const wrappers = this.template.querySelectorAll(
             '[data-element-id="div-item-wrapper"]'
         );
@@ -751,7 +724,7 @@ export default class VerticalVisualPicker extends LightningElement {
     /**
      * Set the CSS variables used to compute the height of the items wrapper.
      */
-    _setCssVariables() {
+    setCssVariables() {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
         );
@@ -780,7 +753,7 @@ export default class VerticalVisualPicker extends LightningElement {
 
     /*
      * -------------------------------------------------------------
-     *  EVENT HANDLERS
+     *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
 
@@ -842,9 +815,9 @@ export default class VerticalVisualPicker extends LightningElement {
             );
         }
 
-        this._dispatchChange();
-        this._refreshCheckedAttributes();
-        this._initItems();
+        this.dispatchChange();
+        this.refreshCheckedAttributes();
+        this.initItems();
 
         // Wait for the checked attributes to be refreshed.
         requestAnimationFrame(() => {
@@ -963,8 +936,8 @@ export default class VerticalVisualPicker extends LightningElement {
         newValue.push(...subItemsSelected);
 
         this._value = newValue;
-        this._dispatchChange();
-        this._refreshCheckedAttributes();
+        this.dispatchChange();
+        this.refreshCheckedAttributes();
     }
 
     /**
@@ -993,5 +966,29 @@ export default class VerticalVisualPicker extends LightningElement {
         if (!event.defaultPrevented) {
             this._isCollapsed = !this._isCollapsed;
         }
+    }
+
+    /**
+     * Dispatch the 'change' event.
+     */
+    dispatchChange() {
+        const dispatchString =
+            this.type === 'radio' &&
+            this._items.every((item) => !item.subItems);
+        /**
+         * The event fired when the value changed.
+         *
+         * @event
+         * @name change
+         * @param {string|string[]} value Selected items' value. Returns a string if the type is radio and no items have subItems. Otherwise returns an array of string.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: dispatchString ? this._value[0] || null : this._value
+                }
+            })
+        );
     }
 }

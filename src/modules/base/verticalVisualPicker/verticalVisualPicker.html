@@ -23,8 +23,8 @@
                     class="slds-required"
                     title="Required"
                     data-element-id="abbr"
-                    >*</abbr
-                >
+                    >*
+                </abbr>
                 {label}
             </legend>
             <div
@@ -38,8 +38,8 @@
             >
                 <template for:each={visibleItems} for:item="item">
                     <div
-                        class={computedVerticalVisualPickerClass}
                         key={item.value}
+                        class={computedVerticalVisualPickerClass}
                         data-element-id="div-item-wrapper"
                         data-value={item.value}
                     >
@@ -53,9 +53,9 @@
                             value={item.value}
                             data-element-id="input"
                             onblur={handleBlur}
-                            onfocus={handleFocus}
                             onchange={handleChange}
                             onclick={handleClick}
+                            onfocus={handleFocus}
                             onkeyup={handleKeyUp}
                         />
                         <label
@@ -126,10 +126,10 @@
                                             >
                                                 <c-chip
                                                     if:true={tag.label}
+                                                    key={tag.label}
                                                     class="
                                                         avonni-vertical-visual-picker__tag
                                                     "
-                                                    key={tag.label}
                                                     label={tag.label}
                                                     variant={tag.variant}
                                                 ></c-chip>
@@ -231,11 +231,11 @@
         </fieldset>
         <div
             if:true={helpMessage}
-            id="help-message"
             class="slds-form-element__help"
+            id="help-message"
+            role="alert"
             data-element-id="div-help-message"
             data-help-message
-            role="alert"
         >
             {helpMessage}
         </div>
