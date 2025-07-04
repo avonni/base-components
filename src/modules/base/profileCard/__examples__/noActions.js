@@ -6,29 +6,29 @@ customElements.define(
 );
 
 export const NoActionsProfileCard = ({
-    title,
-    subtitle,
-    backgroundSrc,
-    backgroundAlternativeText,
-    avatarSrc,
     avatarAlternativeText,
     avatarFallbackIconName,
-    avatarSize,
-    avatarPosition,
     avatarMobilePosition,
-    avatarVariant
+    avatarPosition,
+    avatarSize,
+    avatarSrc,
+    avatarVariant,
+    backgroundAlternativeText,
+    backgroundSrc,
+    subtitle,
+    title
 }) => {
     const element = document.createElement('ac-avonni-no-actions-profile-card');
-    element.title = title;
-    element.subtitle = subtitle;
-    element.backgroundSrc = backgroundSrc;
-    element.backgroundAlternativeText = backgroundAlternativeText;
-    element.avatarSrc = avatarSrc;
     element.avatarAlternativeText = avatarAlternativeText;
     element.avatarFallbackIconName = avatarFallbackIconName;
-    element.avatarSize = avatarSize;
-    element.avatarPosition = avatarPosition;
     element.avatarMobilePosition = avatarMobilePosition;
+    element.avatarPosition = avatarPosition;
+    element.avatarSize = avatarSize;
+    element.avatarSrc = avatarSrc;
     element.avatarVariant = avatarVariant;
+    element.backgroundAlternativeText = backgroundAlternativeText;
+    element.backgroundSrc = backgroundSrc;
+    element.subtitle = subtitle;
+    element.title = title;
     return element;
 };

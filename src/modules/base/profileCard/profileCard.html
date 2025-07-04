@@ -6,13 +6,13 @@
                     <span
                         if:true={backgroundAlternativeText}
                         class="slds-assistive-text"
-                        >{backgroundAlternativeText}</span
-                    >
+                        >{backgroundAlternativeText}
+                    </span>
                 </header>
                 <div class={computedAvatarClass} data-element-id="avatar">
                     <div
                         if:true={showAvatarFallbackIcon}
-                        class={isCircle}
+                        class={computedCircleClass}
                         data-element-id="icon-wrapper"
                     >
                         <c-primitive-avatar
@@ -25,20 +25,19 @@
                     </div>
                     <img
                         if:true={avatarSrc}
-                        class={isCircle}
+                        class={computedCircleClass}
                         alt={avatarAlternativeText}
                         src={avatarSrc}
                         data-element-id="img"
                         onerror={handleImageError}
                     />
-                    <template if:true={showAvatarActions}>
-                        <div
-                            class="slds-is-absolute"
-                            data-element-id="avatar-action"
-                        >
-                            <slot name="avataractions"></slot>
-                        </div>
-                    </template>
+                    <div
+                        if:true={showAvatarActions}
+                        class="slds-is-absolute"
+                        data-element-id="avatar-action"
+                    >
+                        <slot name="avataractions"></slot>
+                    </div>
                 </div>
 
                 <div
@@ -54,34 +53,31 @@
                                 avonni-profile-card__text
                                 avonni-profile-card__title
                             "
-                            >{title}</span
-                        >
+                            >{title}
+                        </span>
                         <span
                             class="
                                 avonni-profile-card__text
                                 avonni-profile-card__subtitle
                             "
-                            >{subtitle}</span
-                        >
+                            >{subtitle}
+                        </span>
                     </template>
                 </div>
-                <template if:true={showActions}>
-                    <div
-                        class={computedActionsClass}
-                        data-element-id="avonni-actions"
-                    >
-                        <slot name="actions"></slot>
-                    </div>
-                </template>
+                <div
+                    if:true={showActions}
+                    class={computedActionsClass}
+                    data-element-id="avonni-actions"
+                >
+                    <slot name="actions"></slot>
+                </div>
             </div>
             <div class="slds-card__body slds-card__body_inner">
                 <slot></slot>
             </div>
-            <template if:true={showFooter}>
-                <footer class="slds-card__footer">
-                    <slot name="footer"></slot>
-                </footer>
-            </template>
+            <footer if:true={showFooter} class="slds-card__footer">
+                <slot name="footer"></slot>
+            </footer>
         </article>
     </div>
 </template>
