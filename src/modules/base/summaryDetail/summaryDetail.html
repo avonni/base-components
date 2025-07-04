@@ -1,21 +1,20 @@
 <template>
-    <div class={sectionClass}>
-        <template if:false={hideIcon}>
-            <lightning-button-icon
-                class="slds-button__icon slds-m-right_x-small"
-                aria-expanded={sectionIsOpen}
-                aria-pressed={sectionIsOpen}
-                alternative-text="Open details"
-                icon-name={iconName}
-                variant="bare"
-                data-element-id="lightning-button-icon"
-                onclick={changeSectionStatus}
-            ></lightning-button-icon>
-        </template>
-        <div class={bodyClass} data-element-id="div-body">
+    <div class={computedSectionClass}>
+        <lightning-button-icon
+            if:false={hideIcon}
+            class="slds-button__icon slds-m-right_x-small"
+            aria-expanded={sectionIsOpen}
+            aria-pressed={sectionIsOpen}
+            alternative-text="Open details"
+            icon-name={iconName}
+            variant="bare"
+            data-element-id="lightning-button-icon"
+            onclick={changeSectionStatus}
+        ></lightning-button-icon>
+        <div class={computedBodyClass} data-element-id="div-body">
             <div class="slds-summary-detail__title">
                 <div class="slds-grid">
-                    <div class={titleClass} data-element-id="div-title">
+                    <div class={computedTitleClass} data-element-id="div-title">
                         <h3
                             if:true={title}
                             class="
@@ -35,7 +34,7 @@
                     <slot name="actions"></slot>
                 </div>
             </div>
-            <div aria-hidden={closed} class={contentClass}>
+            <div class={computedContentClass} aria-hidden={closed}>
                 <slot></slot>
             </div>
         </div>
