@@ -378,7 +378,7 @@ describe('Scheduler', () => {
                 const menu = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
-                expect(menu.items).toEqual(ACTIONS);
+                expect(menu.items).toEqual([ACTIONS[0], ACTIONS[1]]);
             });
     });
 
@@ -404,7 +404,7 @@ describe('Scheduler', () => {
                 const menu = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
-                expect(menu.items).toEqual(ACTIONS);
+                expect(menu.items).toEqual([ACTIONS[0], ACTIONS[1]]);
             });
     });
 
@@ -490,7 +490,7 @@ describe('Scheduler', () => {
                 const menu = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
-                expect(menu.items).toEqual(ACTIONS);
+                expect(menu.items).toEqual([ACTIONS[0], ACTIONS[1]]);
             });
     });
 
@@ -521,7 +521,7 @@ describe('Scheduler', () => {
                 const menu = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
-                expect(menu.items).toEqual(ACTIONS);
+                expect(menu.items).toEqual([ACTIONS[0], ACTIONS[1]]);
             });
     });
 
