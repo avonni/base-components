@@ -22,6 +22,7 @@ describe('Primitive Metric', () => {
             expect(element.currencyDisplayAs).toBe('symbol');
             expect(element.formatStyle).toBe('decimal');
             expect(element.isLoading).toBeFalsy();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.maximumFractionDigits).toBeUndefined();
             expect(element.maximumSignificantDigits).toBeUndefined();
             expect(element.minimumFractionDigits).toBeUndefined();
@@ -201,6 +202,20 @@ describe('Primitive Metric', () => {
                         '[data-element-id="lightning-formatted-number"]'
                     );
                     expect(number.minimumSignificantDigits).toBe(2);
+                });
+            });
+        });
+
+        describe('loadingStateAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.loadingStateAlternativeText = 'Loading';
+                element.isLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
+                    );
+                    expect(spinner.alternativeText).toBe('Loading');
                 });
             });
         });

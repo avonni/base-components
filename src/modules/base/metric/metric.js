@@ -11,34 +11,28 @@ const AVATAR_POSITIONS = {
     default: 'left',
     valid: ['top', 'bottom', 'left', 'right']
 };
-
 const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
-
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
-
 const FORMAT_STYLES = {
     default: 'decimal',
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
-
 const LABEL_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
-
 const POSITIONS = {
     valid: ['right', 'left', 'top', 'bottom'],
     default: 'right'
 };
-
 const TREND_ICONS = {
     valid: ['dynamic', 'arrow', 'caret'],
     default: undefined
 };
-
 const VALUE_SIGNS = {
     valid: ['negative', 'positive-and-negative', 'none'],
     default: 'negative'
@@ -79,6 +73,13 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Message to display when the metric is in a loading state.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Text to display before the primary value
      *

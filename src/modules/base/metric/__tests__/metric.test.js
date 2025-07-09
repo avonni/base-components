@@ -30,6 +30,7 @@ describe('Metric', () => {
             expect(element.formatStyle).toBe('decimal');
             expect(element.label).toBeUndefined();
             expect(element.labelPosition).toBe('top');
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.maximumFractionDigits).toBeUndefined();
             expect(element.maximumSignificantDigits).toBeUndefined();
             expect(element.minimumFractionDigits).toBeUndefined();
@@ -246,6 +247,18 @@ describe('Metric', () => {
                     expect(label.classList).toContain(
                         'avonni-metric__label-bottom'
                     );
+                });
+            });
+        });
+
+        describe('loadingStateAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.loadingStateAlternativeText = 'Loading';
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.loadingStateAlternativeText).toBe('Loading');
                 });
             });
         });

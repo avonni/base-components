@@ -12,8 +12,9 @@
             data-element-id="div-loading-spinner"
         >
             <lightning-spinner
-                alternative-text="Loading..."
+                alternative-text={loadingStateAlternativeText}
                 size="x-small"
+                data-element-id="lightning-spinner"
             ></lightning-spinner>
         </div>
         <!-- Show Empty value even when loading to give the proper height. -->

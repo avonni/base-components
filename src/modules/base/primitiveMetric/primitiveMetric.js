@@ -5,6 +5,7 @@ const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
 const FORMAT_STYLES = {
     default: 'decimal',
@@ -31,6 +32,13 @@ export default class PrimitiveMetric extends LightningElement {
      * @public
      */
     @api currencyCode;
+    /**
+     * Message to display when the metric is in a loading state.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Text to display before the primary value
      *
