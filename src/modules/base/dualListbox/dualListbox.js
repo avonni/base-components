@@ -13,21 +13,15 @@ import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { handleKeyDownOnOption } from './keyboard';
 import Option from './option';
 
-const DEFAULT_MIN = 0;
-const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
-const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
-const DEFAULT_LOAD_MORE_OFFSET = 20;
-const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
-const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
-const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
 const BASE_OPTION_HEIGHT = 40;
-const SEARCH_BOX_HEIGHT = 48;
-
-const LABEL_VARIANTS = {
-    valid: ['standard', 'label-hidden', 'label-stacked'],
-    default: 'standard'
+const BOXES_SIZES = {
+    valid: ['small', 'medium', 'large', 'responsive'],
+    default: 'responsive'
 };
-
+const BUTTON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
 const BUTTON_VARIANTS = {
     valid: [
         'bare',
@@ -40,23 +34,23 @@ const BUTTON_VARIANTS = {
     ],
     default: 'border'
 };
-
-const BUTTON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'medium'
-};
-
-const BOXES_SIZES = {
-    valid: ['small', 'medium', 'large', 'responsive'],
-    default: 'responsive'
-};
-
+const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
+const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
+const DEFAULT_MIN = 0;
+const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
+const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const i18n = {
     optionLockAssistiveText: 'Option Lock AssistiveText',
     required: 'Required',
     loadingText: 'Loading'
 };
-
+const LABEL_VARIANTS = {
+    valid: ['standard', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
+const SEARCH_BOX_HEIGHT = 48;
 const SELECTED_LIST_ID = 'ul-selected-list';
 const SOURCE_LIST_ID = 'ul-source-list';
 
@@ -74,7 +68,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api addButtonLabel;
-
     /**
      * Label of the down button
      *
@@ -82,7 +75,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api downButtonLabel;
-
     /**
      * Help text detailing the purpose and function of the dual listbox.
      *
@@ -90,7 +82,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
-
     /**
      * Label of the dual listbox.
      *
@@ -98,7 +89,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api label;
-
     /**
      * Error message to be displayed when a range overflow is detected.
      *
@@ -106,7 +96,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api messageWhenRangeOverflow;
-
     /**
      * Error message to be displayed when a range underflow is detected.
      *
@@ -114,7 +103,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api messageWhenRangeUnderflow;
-
     /**
      * Error message to be displayed when the value is missing and input is required.
      *
@@ -122,7 +110,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
-
     /**
      * Specifies the name of an input element.
      *
@@ -130,7 +117,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api name;
-
     /**
      * Label of the remove button.
      *
@@ -138,7 +124,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api removeButtonLabel;
-
     /**
      * Label of the Selected options list.
      *
@@ -146,7 +131,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api selectedLabel;
-
     /**
      * Text displayed when no options are selected.
      *
@@ -154,7 +138,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api selectedPlaceholder;
-
     /**
      * Label of the Source options list.
      *
@@ -162,7 +145,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api sourceLabel;
-
     /**
      * Label of the up button.
      *
