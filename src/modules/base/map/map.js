@@ -55,14 +55,6 @@ const config = {
  */
 export default class Map extends LightningElement {
     /**
-     * If present, the footer element is displayed below the map. The footer shows an 'Open in Google Maps' link that opens an external window to display the selected marker location in Google Maps.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api showFooter = false;
-    /**
      * Displays or hides the list of locations. Valid values are visible, hidden, or auto. This value defaults to auto, which shows the list only when multiple markers are present.
      * Passing in an invalid value hides the list view.
      *
@@ -71,36 +63,56 @@ export default class Map extends LightningElement {
      * @default auto
      */
     @api listView = 'auto';
+    /**
+     * If present, the footer element is displayed below the map. The footer shows an 'Open in Google Maps' link that opens an external window to display the selected marker location in Google Maps.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api showFooter = false;
 
-    _mapHref = mapHref;
-    _coordinates = [];
     _activeCoordinate = null;
+    _coordinates = [];
+    _mapHref = mapHref;
     _markersTitle = i18n.coordinatesTitleString;
 
-    privateZoomLevel = null;
-    privateCenter = null;
-    privateMarkers = null;
-    privateCoordinateItems = [];
     mapDomain = 'https://maps.b.forceusercontent.com:443';
     mapSrc = `${this.mapDomain}/lightningmaps/mapsloader?resource=primitiveMap&version=224`;
+    privateCenter = null;
+    privateCoordinateItems = [];
+    privateMarkers = null;
+    privateZoomLevel = null;
 
-    /**
-     * The zoom levels as defined by Google Maps API. If a zoom level is not specified, a default zoom level is applied to accommodate all markers on the map.
-     *
-     * @type {number}
-     * @public
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
      */
-    @api
-    get zoomLevel() {
-        return this.privateZoomLevel;
-    }
 
-    set zoomLevel(value) {
-        this.privateZoomLevel = value;
-        this.sendMessage({
-            zoomLevel: this.privateZoomLevel
+    connectedCallback() {
+        this._dispatchId = registerMessageHandler((value) => {
+            this.handleMessage(value);
+        });
+        classListMutation(this.classList, {
+            'slds-grid': true,
+            'slds-has-coordinates': this.showCoordinatesSidebar
         });
     }
+
+    renderedCallback() {
+        if (this._initialSelectedMarkerValue) {
+            const selectedMarkerValue = this._initialSelectedMarkerValue;
+            this._initialSelectedMarkerValue = null;
+            this.selectedMarkerValue = selectedMarkerValue;
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * A location to use as the map's center. If center is not specified, the map centers automatically.
@@ -112,7 +124,6 @@ export default class Map extends LightningElement {
     get center() {
         return this.privateCenter;
     }
-
     set center(value) {
         this.privateCenter = value;
         const item = this.primitivifyMarker(deepCopy(this.center));
@@ -120,6 +131,23 @@ export default class Map extends LightningElement {
         this.sendMessage({
             center: item
         });
+    }
+
+    /**
+     * One or more objects with the address or latitude and longitude to be displayed on the map. If latitude and longitude are provided, the address is ignored.
+     *
+     * @type {object[]}
+     * @public
+     * @required
+     */
+    @api
+    get mapMarkers() {
+        return this.privateMarkers;
+    }
+    set mapMarkers(value) {
+        this.privateMarkers = value;
+        this.initMarkers(value);
+        this._activeCoordinate = value[0];
     }
 
     /**
@@ -133,7 +161,6 @@ export default class Map extends LightningElement {
     get markersTitle() {
         return this._markersTitle;
     }
-
     set markersTitle(value) {
         this._markersTitle = normalizeString(value)
             .split(' ')
@@ -159,7 +186,6 @@ export default class Map extends LightningElement {
 
         return this._initialSelectedMarkerValue;
     }
-
     set selectedMarkerValue(value) {
         if (this.isMarkerReady) {
             const coordinates = this._coordinatesMapByValue[value];
@@ -171,22 +197,27 @@ export default class Map extends LightningElement {
     }
 
     /**
-     * One or more objects with the address or latitude and longitude to be displayed on the map. If latitude and longitude are provided, the address is ignored.
+     * The zoom levels as defined by Google Maps API. If a zoom level is not specified, a default zoom level is applied to accommodate all markers on the map.
      *
-     * @type {object[]}
+     * @type {number}
      * @public
-     * @required
      */
     @api
-    get mapMarkers() {
-        return this.privateMarkers;
+    get zoomLevel() {
+        return this.privateZoomLevel;
+    }
+    set zoomLevel(value) {
+        this.privateZoomLevel = value;
+        this.sendMessage({
+            zoomLevel: this.privateZoomLevel
+        });
     }
 
-    set mapMarkers(value) {
-        this.privateMarkers = value;
-        this.initMarkers(value);
-        this._activeCoordinate = value[0];
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Localization.
@@ -247,23 +278,11 @@ export default class Map extends LightningElement {
         }[this.listView];
     }
 
-    connectedCallback() {
-        this._dispatchId = registerMessageHandler((value) => {
-            this.handleMessage(value);
-        });
-        classListMutation(this.classList, {
-            'slds-grid': true,
-            'slds-has-coordinates': this.showCoordinatesSidebar
-        });
-    }
-
-    renderedCallback() {
-        if (this._initialSelectedMarkerValue) {
-            const selectedMarkerValue = this._initialSelectedMarkerValue;
-            this._initialSelectedMarkerValue = null;
-            this.selectedMarkerValue = selectedMarkerValue;
-        }
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Initialize map based on provided markers.
@@ -306,120 +325,6 @@ export default class Map extends LightningElement {
         this.sendMessage({
             markers: item
         });
-    }
-
-    /**
-     * Coordinate register event handler.
-     *
-     * @param {Event} event
-     */
-    handleCoordinateRegister(event) {
-        event.stopPropagation();
-        this.privateCoordinateItems.push(event.srcElement);
-    }
-
-    /**
-     * Coordinate click event handler.
-     *
-     * @param {Event} event
-     */
-    handleCoordinateClick(event) {
-        const key = event.detail.key;
-        this.selectMarker(key);
-        this.sendMessage({
-            activeMarkerId: this._activeMarkerId
-        });
-        this.dispatchSelectedMarkerValue();
-    }
-
-    /**
-     * Coordinate hover event handler.
-     *
-     * @param {Event} event
-     */
-    handleCoordinateHover(event) {
-        this._hoverMarkerId = event.detail.key;
-        this.sendMessage({
-            hoverMarkerId: this._hoverMarkerId
-        });
-    }
-
-    /**
-     * Message handler from item.
-     *
-     * @param {object} item
-     */
-    handleMessage(item) {
-        if (item.event === 'markerselect') {
-            const key = item.arguments.key;
-            this.selectMarker(key);
-            this.dispatchSelectedMarkerValue();
-        }
-    }
-
-    /**
-     * Selected Marker value event dispatcher.
-     */
-    dispatchSelectedMarkerValue() {
-        /**
-         * The event fired when the marker value changes.
-         *
-         * @event
-         * @name change
-         * @param {string} selectedMarkerValue Value of the selected marker.
-         * @public
-         * @bubbles
-         * @composed
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                composed: true,
-                bubbles: true,
-                detail: {
-                    selectedMarkerValue: this.selectedMarkerValue
-                }
-            })
-        );
-    }
-
-    /**
-     * Select marker method.
-     *
-     * @param {string} key
-     */
-    selectMarker(key) {
-        const activeCoordinate = this._coordinatesMapByKey[key];
-
-        this._activeCoordinate = activeCoordinate;
-        this._activeMarkerId = key;
-
-        this.privateCoordinateItems.forEach((item) => {
-            if (item.guid === key) {
-                item.selected = true;
-            } else {
-                item.selected = false;
-            }
-        });
-
-        /**
-         * The event fired when the marker is selected.
-         *
-         * @event
-         * @name markerselect
-         * @param {string} selectedMarkerValue Selected marker.
-         * @public
-         * @bubbles
-         * @composed
-         */
-        const event = new CustomEvent('markerselect', {
-            bubbles: true,
-            composed: true,
-            detail: {
-                selectedMarkerValue: this.selectedMarkerValue
-            }
-        });
-
-        this.dispatchEvent(event);
     }
 
     /**
@@ -466,6 +371,46 @@ export default class Map extends LightningElement {
     }
 
     /**
+     * Select marker method.
+     *
+     * @param {string} key
+     */
+    selectMarker(key) {
+        const activeCoordinate = this._coordinatesMapByKey[key];
+
+        this._activeCoordinate = activeCoordinate;
+        this._activeMarkerId = key;
+
+        this.privateCoordinateItems.forEach((item) => {
+            if (item.guid === key) {
+                item.selected = true;
+            } else {
+                item.selected = false;
+            }
+        });
+
+        /**
+         * The event fired when the marker is selected.
+         *
+         * @event
+         * @name markerselect
+         * @param {string} selectedMarkerValue Selected marker.
+         * @public
+         * @bubbles
+         * @composed
+         */
+        const event = new CustomEvent('markerselect', {
+            bubbles: true,
+            composed: true,
+            detail: {
+                selectedMarkerValue: this.selectedMarkerValue
+            }
+        });
+
+        this.dispatchEvent(event);
+    }
+
+    /**
      * Dispatch message on map load.
      *
      * @param {object} e
@@ -479,6 +424,48 @@ export default class Map extends LightningElement {
             const i = createMessage(this._dispatchId, t, e);
             postMessage(this._handler, i, '*');
         }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS & DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Coordinate click event handler.
+     *
+     * @param {Event} event
+     */
+    handleCoordinateClick(event) {
+        const key = event.detail.key;
+        this.selectMarker(key);
+        this.sendMessage({
+            activeMarkerId: this._activeMarkerId
+        });
+        this.dispatchSelectedMarkerValue();
+    }
+
+    /**
+     * Coordinate hover event handler.
+     *
+     * @param {Event} event
+     */
+    handleCoordinateHover(event) {
+        this._hoverMarkerId = event.detail.key;
+        this.sendMessage({
+            hoverMarkerId: this._hoverMarkerId
+        });
+    }
+
+    /**
+     * Coordinate register event handler.
+     *
+     * @param {Event} event
+     */
+    handleCoordinateRegister(event) {
+        event.stopPropagation();
+        this.privateCoordinateItems.push(event.srcElement);
     }
 
     /**
@@ -504,5 +491,43 @@ export default class Map extends LightningElement {
             markers: markers,
             zoomLevel: zoomLevel
         });
+    }
+
+    /**
+     * Message handler from item.
+     *
+     * @param {object} item
+     */
+    handleMessage(item) {
+        if (item.event === 'markerselect') {
+            const key = item.arguments.key;
+            this.selectMarker(key);
+            this.dispatchSelectedMarkerValue();
+        }
+    }
+
+    /**
+     * Selected Marker value event dispatcher.
+     */
+    dispatchSelectedMarkerValue() {
+        /**
+         * The event fired when the marker value changes.
+         *
+         * @event
+         * @name change
+         * @param {string} selectedMarkerValue Value of the selected marker.
+         * @public
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                composed: true,
+                bubbles: true,
+                detail: {
+                    selectedMarkerValue: this.selectedMarkerValue
+                }
+            })
+        );
     }
 }
