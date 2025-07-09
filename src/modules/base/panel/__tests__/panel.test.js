@@ -18,10 +18,24 @@ describe('Panel', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.closeButtonAlternativeText).toBe('Close panel');
             expect(element.position).toBe('right');
             expect(element.showPanel).toBeFalsy();
             expect(element.size).toBe('medium');
             expect(element.title).toBeUndefined();
+        });
+
+        describe('closeButtonAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.closeButtonAlternativeText = 'Close panel';
+
+                return Promise.resolve().then(() => {
+                    const closeButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-close"]'
+                    );
+                    expect(closeButton.alternativeText).toBe('Close panel');
+                });
+            });
         });
 
         describe('position', () => {

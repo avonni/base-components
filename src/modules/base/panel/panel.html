@@ -7,7 +7,7 @@
                     slds-text-heading_small
                     slds-truncate
                 "
-                title="Panel Header"
+                title={title}
                 data-element-id="h1"
             >
                 <template if:true={hasStringTitle}>{title}</template>
@@ -17,10 +17,11 @@
             </h1>
             <lightning-button-icon
                 class="slds-panel__close"
-                alternative-text="Close panel"
+                alternative-text={closeButtonAlternativeText}
                 icon-name="utility:close"
                 size="medium"
                 variant="bare"
+                data-element-id="lightning-button-icon-close"
                 onclick={close}
             ></lightning-button-icon>
         </div>

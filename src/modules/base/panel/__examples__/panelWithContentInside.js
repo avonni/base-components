@@ -6,12 +6,14 @@ customElements.define(
 );
 
 export const PanelWithContentInside = ({
+    closeButtonAlternativeText,
     position,
     showPanel,
     size,
     title
 }) => {
     const element = document.createElement('ac-with-content-panel');
+    element.closeButtonAlternativeText = closeButtonAlternativeText;
     element.position = position;
     element.showPanel = showPanel;
     element.size = size;

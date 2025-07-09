@@ -1,8 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
+const DEFAULT_CLOSE_BUTTON_ALTERNATIVE_TEXT = 'Close panel';
 const PANEL_POSITIONS = { valid: ['right', 'left'], default: 'right' };
-
 const PANEL_SIZES = {
     valid: ['small', 'medium', 'large', 'x-large', 'full'],
     default: 'medium'
@@ -15,6 +15,14 @@ const PANEL_SIZES = {
  * @public
  */
 export default class Pagination extends LightningElement {
+    /**
+     * The alternative text for the close button.
+     *
+     * @type {string}
+     * @public
+     * @default Close panel
+     */
+    @api closeButtonAlternativeText = DEFAULT_CLOSE_BUTTON_ALTERNATIVE_TEXT;
     /**
      * The title is displayed in the panel header. To include additional markup or another component, use the title slot.
      *
@@ -30,6 +38,12 @@ export default class Pagination extends LightningElement {
     _isRight = true;
     showTitleSlot = true;
     showPanelBodySlot = true;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         if (this.titleSlot) {
@@ -85,7 +99,7 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * If present, the panel is visible by default.
+     * If present, the panel is visible. By default, the panel is hidden.
      *
      * @type {boolean}
      * @public

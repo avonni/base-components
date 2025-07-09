@@ -7,6 +7,17 @@ import { FiltersPanel } from '../__examples__/filtersPanel';
 export default {
     title: 'Example/Panel',
     argTypes: {
+        closeButtonAlternativeText: {
+            name: 'close-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the close button.',
+            table: {
+                type: { summary: 'String' },
+                defaultValue: { summary: 'Close panel' }
+            }
+        },
         position: {
             control: {
                 type: 'select'
@@ -17,6 +28,18 @@ export default {
             table: {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'right' }
+            }
+        },
+        showPanel: {
+            name: 'show-panel',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the panel is visible. By default, the panel is hidden.',
+            table: {
+                type: { summary: 'Boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         size: {
@@ -43,7 +66,9 @@ export default {
         }
     },
     args: {
+        closeButtonAlternativeText: 'Close panel',
         position: 'right',
+        showPanel: false,
         size: 'medium'
     }
 };
