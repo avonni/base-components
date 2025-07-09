@@ -1,6 +1,8 @@
 /**
  * @typedef {Object} SchedulerAction
  * @name actions
+ * @property {string} disabled If present, the action will be disabled and the user will not be able to click on it. Defaults to false.
+ * @property {string} hidden If present, the action will be hidden. Defaults to false.
  * @property {string} iconName Name of the icon to display before the action label.
  * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
  * @property {string} label Label of the action.
