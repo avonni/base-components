@@ -26,6 +26,7 @@ describe('Primitive Relationship Graph Item', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.actionsMenuAlternativeText).toBe('Show menu');
             expect(element.activeSelection).toBeFalsy();
             expect(element.avatarFallbackIconName).toBeUndefined();
             expect(element.avatarSrc).toBeUndefined();
@@ -130,6 +131,7 @@ describe('Primitive Relationship Graph Item', () => {
         describe('href', () => {
             it('Passed to the component', () => {
                 element.href = 'https://www.avonni.app/';
+                element.label = 'A string label';
 
                 return Promise.resolve().then(() => {
                     const link = element.shadowRoot.querySelector(

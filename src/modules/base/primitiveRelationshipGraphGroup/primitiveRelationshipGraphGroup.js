@@ -11,6 +11,8 @@ const ACTIONS_POSITIONS = {
     default: 'top'
 };
 
+const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
+const DEFAULT_NO_RESULTS_MESSAGE = 'No items to display.';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
@@ -20,11 +22,11 @@ const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
 };
 
 export default class PrimitiveRelationshipGraphGroup extends LightningElement {
+    @api actionsMenuAlternativeText = DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT;
     @api activeChild = false;
     @api avatarFallbackIconName;
     @api avatarSrc;
     @api expandIconName = DEFAULT_EXPAND_ICON_NAME;
-    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     @api hasRootHeader = false;
     @api hideDefaultActions = false;
     @api hideItemsCount = false;
@@ -33,6 +35,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api isFirstLevel = false;
     @api itemActions;
     @api label;
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
     @api name;
     @api selected = false;
     @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
@@ -251,7 +255,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.actions && this.actionsPosition === 'top';
     }
 
-    get showEmptyMessage() {
+    get showNoResultsMessage() {
         return (
             !this.isLoading &&
             (!Array.isArray(this.items) || this.items.length === 0)

@@ -22,6 +22,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.actionsMenuAlternativeText).toBe('Show menu');
             expect(element.actionsPosition).toBe('top');
             expect(element.activeChild).toBeFalsy();
             expect(element.avatarFallbackIconName).toBeUndefined();
@@ -41,9 +42,27 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             expect(element.label).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
+            expect(element.noResultsMessage).toBe('No items to display.');
             expect(element.selected).toBeFalsy();
             expect(element.shrinkIconName).toBe('utility:chevrondown');
             expect(element.variant).toBe('horizontal');
+        });
+
+        describe('actionsMenuAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.actionsMenuAlternativeText = 'Show menus';
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-relationship-graph-item"]'
+                    );
+                    items.forEach((item) => {
+                        expect(item.actionsMenuAlternativeText).toBe(
+                            'Show menus'
+                        );
+                    });
+                });
+            });
         });
 
         describe('actionsPosition', () => {
@@ -512,6 +531,22 @@ describe('PrimitiveRelationshipGraphGroup', () => {
                         '[data-element-id="lightning-spinner"]'
                     );
                     expect(spinner.alternativeText).toBe('Loading');
+                });
+            });
+        });
+
+        describe('noResultsMessage', () => {
+            it('Passed to the component', () => {
+                element.noResultsMessage = 'No items to display';
+                element.items = [];
+
+                return Promise.resolve().then(() => {
+                    const emptyMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="no-results-message"]'
+                    );
+                    expect(emptyMessage.textContent).toBe(
+                        'No items to display'
+                    );
                 });
             });
         });

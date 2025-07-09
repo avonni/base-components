@@ -7,6 +7,7 @@ customElements.define(
 
 export const RelationshipGraph = ({
     actions,
+    actionsMenuAlternativeText,
     avatarFallbackIconName,
     avatarSrc,
     expandIconName,
@@ -20,12 +21,14 @@ export const RelationshipGraph = ({
     itemTheme,
     label,
     loadingStateAlternativeText,
+    noResultsMessage,
     selectedItemName,
     shrinkIconName,
     variant
 }) => {
     const element = document.createElement('ac-relationship-graph');
     element.actions = actions;
+    element.actionsMenuAlternativeText = actionsMenuAlternativeText;
     element.avatarFallbackIconName = avatarFallbackIconName;
     element.avatarSrc = avatarSrc;
     element.expandIconName = expandIconName;
@@ -39,6 +42,7 @@ export const RelationshipGraph = ({
     element.itemTheme = itemTheme;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.noResultsMessage = noResultsMessage;
     element.selectedItemName = selectedItemName;
     element.shrinkIconName = shrinkIconName;
     element.variant = variant;

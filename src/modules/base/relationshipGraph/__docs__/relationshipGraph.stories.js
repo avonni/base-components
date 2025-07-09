@@ -65,6 +65,18 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        actionsMenuAlternativeText: {
+            name: 'actions-menu-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text used to describe the actions button menu, which is displayed as hover text on the button menu.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show menu' }
+            }
+        },
         selectedItemName: {
             name: 'selected-item-name',
             control: {
@@ -195,9 +207,23 @@ export default {
                 defaultValue: { summary: 'false' },
                 category: 'Groups'
             }
+        },
+        noResultsMessage: {
+            name: 'no-results-message',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message to display when the relationship graph has no items to display.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'No items to display.' }
+            }
         }
     },
     args: {
+        actionsMenuAlternativeText: 'Show menu',
+        noResultsMessage: 'No items to display.',
         expandIconName: 'utility:chevronright',
         groupActionsPosition: 'top',
         groupTheme: 'default',

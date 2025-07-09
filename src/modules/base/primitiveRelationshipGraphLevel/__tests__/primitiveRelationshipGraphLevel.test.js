@@ -19,6 +19,7 @@ describe('Primitive Relationship Graph Level', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.actionsMenuAlternativeText).toBeUndefined();
             expect(element.activeGroups).toBeUndefined();
             expect(element.currentLevelHeight).toBe(0);
             expect(element.currentLevelWidth).toBe(0);
@@ -31,9 +32,28 @@ describe('Primitive Relationship Graph Level', () => {
             expect(element.isFirstLevel).toBeFalsy();
             expect(element.itemActions).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBeUndefined();
+            expect(element.noResultsMessage).toBeUndefined();
             expect(element.selectedGroups).toBeUndefined();
             expect(element.shrinkIconName).toBeUndefined();
             expect(element.variant).toBeUndefined();
+        });
+
+        describe('actionsMenuAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.actionsMenuAlternativeText = 'Show menus';
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-relationship-graph-group"]'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.actionsMenuAlternativeText).toBe(
+                            'Show menus'
+                        );
+                    });
+                });
+            });
         });
 
         describe('activeGroups', () => {
@@ -246,6 +266,25 @@ describe('Primitive Relationship Graph Level', () => {
                     groups.forEach((group) => {
                         expect(group.loadingStateAlternativeText).toBe(
                             'Loading'
+                        );
+                    });
+                });
+            });
+        });
+
+        describe('noResultsMessage', () => {
+            it('Passed to the component', () => {
+                element.noResultsMessage = 'No items to display';
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const groups = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-relationship-graph-group"]'
+                    );
+
+                    groups.forEach((group) => {
+                        expect(group.noResultsMessage).toBe(
+                            'No items to display'
                         );
                     });
                 });

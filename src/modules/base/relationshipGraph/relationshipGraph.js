@@ -10,6 +10,8 @@ const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
+const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
+const DEFAULT_EMPTY_MESSAGE = 'No items to display.';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
@@ -26,6 +28,13 @@ const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
  */
 export default class RelationshipGraph extends LightningElement {
     /**
+     * Text used to describe the actions button menu, which is displayed as hover text on the button menu.
+     *
+     * @type {string}
+     * @public
+     */
+    @api actionsMenuAlternativeText = DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT;
+    /**
      * The Lightning Design System name of the icon used as a fallback when the root avatar image fails to load.
      * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
@@ -40,6 +49,7 @@ export default class RelationshipGraph extends LightningElement {
      * @public
      */
     @api avatarSrc;
+
     /**
      * Icon used to expand a closed group of items.
      *
@@ -70,6 +80,13 @@ export default class RelationshipGraph extends LightningElement {
      * @public
      */
     @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    /**
+     * Message to display when the relationship graph has no items to display.
+     *
+     * @type {string}
+     * @public
+     */
+    @api noResultsMessage = DEFAULT_EMPTY_MESSAGE;
     /**
      * Icon used to shrink an expanded group of items.
      *

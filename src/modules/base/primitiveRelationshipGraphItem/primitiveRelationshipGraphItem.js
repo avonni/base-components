@@ -6,12 +6,14 @@ import {
     normalizeString
 } from 'c/utils';
 
+const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
 
 export default class PrimitiveRelationshipGraphItem extends LightningElement {
+    @api actionsMenuAlternativeText = DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT;
     @api avatarFallbackIconName;
     @api avatarSrc;
     @api contentData;

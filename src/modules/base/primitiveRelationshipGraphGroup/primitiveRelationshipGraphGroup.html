@@ -19,32 +19,28 @@
                     onclick={handleToggle}
                 >
                     <template if:true={hasCollapsibleIcon}>
-                        <template if:false={closed}>
-                            <lightning-icon
-                                if:true={shrinkIconName}
-                                class="
-                                    avonni-relationship-graph-group__collapse-icon
-                                    slds-button__icon slds-button__icon_left
-                                    slds-m-bottom_xxx-small
-                                "
-                                icon-name={shrinkIconName}
-                                size="x-small"
-                                data-element-id="lightning-icon-opened"
-                            ></lightning-icon>
-                        </template>
-                        <template if:true={closed}>
-                            <lightning-icon
-                                if:true={expandIconName}
-                                class="
-                                    avonni-relationship-graph-group__collapse-icon
-                                    slds-button__icon slds-button__icon_left
-                                    slds-m-bottom_xxx-small
-                                "
-                                icon-name={expandIconName}
-                                size="x-small"
-                                data-element-id="lightning-icon-closed"
-                            ></lightning-icon>
-                        </template>
+                        <lightning-icon
+                            if:false={closed}
+                            class="
+                                avonni-relationship-graph-group__collapse-icon
+                                slds-button__icon slds-button__icon_left
+                                slds-m-bottom_xxx-small
+                            "
+                            icon-name={shrinkIconName}
+                            size="x-small"
+                            data-element-id="lightning-icon-opened"
+                        ></lightning-icon>
+                        <lightning-icon
+                            if:true={closed}
+                            class="
+                                avonni-relationship-graph-group__collapse-icon
+                                slds-button__icon slds-button__icon_left
+                                slds-m-bottom_xxx-small
+                            "
+                            icon-name={expandIconName}
+                            size="x-small"
+                            data-element-id="lightning-icon-closed"
+                        ></lightning-icon>
                     </template>
                     <avonni-avatar
                         if:true={hasAvatar}
@@ -77,12 +73,12 @@
             </h3>
             <!-- Top actions -->
             <div
-                if:true={topActions}
+                if:true={topActions.length}
                 class="avonni-relationship-graph-group__header-actions"
             >
                 <lightning-button-menu
                     if:true={hasMoreThanOneAction}
-                    alternative-text="Show menu"
+                    alternative-text={actionsMenuAlternativeText}
                     icon-size="small"
                     menu-alignment="right"
                     variant="border"
@@ -103,6 +99,7 @@
                         <div key={action.name}>
                             <button
                                 class={computedActionButtonClass}
+                                alternative-text={action.label}
                                 disabled={action.disabled}
                                 type="button"
                                 value={action.name}
@@ -148,12 +145,18 @@
                     data-element-id="lightning-spinner"
                 ></lightning-spinner>
             </div>
-            <div if:true={showEmptyMessage}>No items to display.</div>
+            <div
+                if:true={showNoResultsMessage}
+                data-element-id="no-results-message"
+            >
+                {noResultsMessage}
+            </div>
 
             <!-- Items -->
             <template for:each={items} for:item="item">
                 <c-primitive-relationship-graph-item
                     key={item.name}
+                    actions-menu-alternative-text={actionsMenuAlternativeText}
                     active-selection={item.activeSelection}
                     avatar-fallback-icon-name={item.avatarFallbackIconName}
                     avatar-src={item.avatarSrc}
@@ -183,7 +186,8 @@
                         data-bottom-actions
                     >
                         <button
-                            class={actionButtonClass}
+                            class={computedActionButtonClass}
+                            alternative-text={action.label}
                             disabled={action.disabled}
                             name={action.name}
                             type="button"

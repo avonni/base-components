@@ -24,6 +24,7 @@
             <div key={action.name}>
                 <button
                     class={computedActionButtonClass}
+                    alternative-text={action.label}
                     disabled={action.disabled}
                     name={action.name}
                     type="button"
@@ -51,6 +52,7 @@
 
         <!-- Levels -->
         <c-primitive-relationship-graph-level
+            actions-menu-alternative-text={actionsMenuAlternativeText}
             expand-icon-name={expandIconName}
             group-actions={groupActions}
             group-actions-position={groupActionsPosition}
@@ -60,6 +62,7 @@
             is-first-level="true"
             item-actions={itemActions}
             loading-state-alternative-text={loadingStateAlternativeText}
+            no-results-message={noResultsMessage}
             shrink-icon-name={shrinkIconName}
             variant={variant}
             data-element-id="avonni-primitive-relationship-graph-level"

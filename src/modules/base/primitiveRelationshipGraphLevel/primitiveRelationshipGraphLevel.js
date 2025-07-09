@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { classSet, normalizeArray } from 'c/utils';
 
 export default class PrimitiveRelationshipGraphLevel extends LightningElement {
+    @api actionsMenuAlternativeText;
     @api activeGroups;
     @api expandIconName;
     @api groupActions;
@@ -11,6 +12,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api isFirstLevel = false;
     @api itemActions;
     @api loadingStateAlternativeText;
+    @api noResultsMessage;
     @api shrinkIconName;
     @api variant;
 

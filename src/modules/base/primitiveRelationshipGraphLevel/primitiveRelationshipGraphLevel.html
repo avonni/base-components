@@ -8,6 +8,7 @@
                     <c-primitive-relationship-graph-group
                         key={group.value.name}
                         class="slds-is-relative"
+                        actions-menu-alternative-text={actionsMenuAlternativeText}
                         actions-position={groupActionsPosition}
                         active-child={activeGroups}
                         avatar-fallback-icon-name={group.value.avatarFallbackIconName}
@@ -28,6 +29,7 @@
                         items={group.value.items}
                         label={group.value.label}
                         name={group.value.name}
+                        no-results-message={noResultsMessage}
                         selected={group.value.selected}
                         shrink-icon-name={shrinkIconName}
                         variant={variant}
@@ -45,6 +47,7 @@
         <!-- Selected level -->
         <div if:true={hasSelectedGroups} class="slds-grid">
             <c-primitive-relationship-graph-level
+                actions-menu-alternative-text={actionsMenuAlternativeText}
                 active-groups={containsActiveItem}
                 expand-icon-name={expandIconName}
                 group-actions={groupActions}
@@ -53,6 +56,7 @@
                 hide-items-count={hideItemsCount}
                 item-actions={itemActions}
                 loading-state-alternative-text={loadingStateAlternativeText}
+                no-results-message={noResultsMessage}
                 shrink-icon-name={shrinkIconName}
                 variant={variant}
                 data-element-id="avonni-primitive-relationship-graph-level"

@@ -24,6 +24,7 @@ describe('Relationship Graph', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.actions).toMatchObject([]);
+            expect(element.actionsMenuAlternativeText).toBe('Show menu');
             expect(element.avatarFallbackIconName).toBeUndefined();
             expect(element.avatarSrc).toBeUndefined();
             expect(element.expandIconName).toBe('utility:chevronright');
@@ -35,6 +36,7 @@ describe('Relationship Graph', () => {
             expect(element.itemActions).toMatchObject([]);
             expect(element.label).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
+            expect(element.noResultsMessage).toBe('No items to display.');
             expect(element.selectedItemName).toBeUndefined();
             expect(element.shrinkIconName).toBe('utility:chevrondown');
             expect(element.variant).toBe('horizontal');
@@ -60,6 +62,19 @@ describe('Relationship Graph', () => {
                             expect(icon.iconName).toBe(ACTIONS[index].iconName);
                         }
                     });
+                });
+            });
+        });
+
+        describe('actionsMenuAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.actionsMenuAlternativeText = 'Show menus';
+
+                return Promise.resolve().then(() => {
+                    const level = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-relationship-graph-level"]'
+                    );
+                    expect(level.actionsMenuAlternativeText).toBe('Show menus');
                 });
             });
         });
@@ -185,6 +200,20 @@ describe('Relationship Graph', () => {
                         '[data-element-id="avonni-primitive-relationship-graph-level"]'
                     );
                     expect(level.loadingStateAlternativeText).toBe('Loading');
+                });
+            });
+        });
+
+        describe('noResultsMessage', () => {
+            it('Passed to the component', () => {
+                element.noResultsMessage = 'No items to display';
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const level = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-relationship-graph-level"]'
+                    );
+                    expect(level.noResultsMessage).toBe('No items to display');
                 });
             });
         });
