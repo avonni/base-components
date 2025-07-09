@@ -34,6 +34,7 @@ describe('Relationship Graph', () => {
             expect(element.href).toBeUndefined();
             expect(element.itemActions).toMatchObject([]);
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.selectedItemName).toBeUndefined();
             expect(element.shrinkIconName).toBe('utility:chevrondown');
             expect(element.variant).toBe('horizontal');
@@ -170,6 +171,20 @@ describe('Relationship Graph', () => {
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector('h1');
                     expect(label.textContent).toBe('A string label');
+                });
+            });
+        });
+
+        describe('loadingStateAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.loadingStateAlternativeText = 'Loading';
+                element.groups = GROUPS;
+
+                return Promise.resolve().then(() => {
+                    const level = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-relationship-graph-level"]'
+                    );
+                    expect(level.loadingStateAlternativeText).toBe('Loading');
                 });
             });
         });

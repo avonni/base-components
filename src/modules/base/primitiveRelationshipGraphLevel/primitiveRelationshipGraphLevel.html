@@ -23,6 +23,7 @@
                         is-first-child={group.first}
                         is-first-level={isFirstLevel}
                         is-loading={group.value.isLoading}
+                        loading-state-alternative-text={loadingStateAlternativeText}
                         item-actions={itemActions}
                         items={group.value.items}
                         label={group.value.label}
@@ -51,6 +52,7 @@
                 groups={selectedGroups}
                 hide-items-count={hideItemsCount}
                 item-actions={itemActions}
+                loading-state-alternative-text={loadingStateAlternativeText}
                 shrink-icon-name={shrinkIconName}
                 variant={variant}
                 data-element-id="avonni-primitive-relationship-graph-level"

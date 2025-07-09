@@ -6,23 +6,25 @@ import {
     normalizeString
 } from 'c/utils';
 
-const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
-    valid: ['horizontal', 'vertical'],
-    default: 'horizontal'
-};
 const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
 
-const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
+const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
 
 export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api activeChild = false;
     @api avatarFallbackIconName;
     @api avatarSrc;
     @api expandIconName = DEFAULT_EXPAND_ICON_NAME;
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     @api hasRootHeader = false;
     @api hideDefaultActions = false;
     @api hideItemsCount = false;

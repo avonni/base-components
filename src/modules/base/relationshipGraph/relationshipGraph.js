@@ -10,10 +10,9 @@ const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
-
-const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
-
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -64,6 +63,13 @@ export default class RelationshipGraph extends LightningElement {
      * @required
      */
     @api label;
+    /**
+     * Message to display when the relationship graph is in a loading state.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Icon used to shrink an expanded group of items.
      *

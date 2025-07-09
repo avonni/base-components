@@ -10,6 +10,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api hideItemsCount = false;
     @api isFirstLevel = false;
     @api itemActions;
+    @api loadingStateAlternativeText;
     @api shrinkIconName;
     @api variant;
 
@@ -89,18 +90,6 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         );
     }
 
-    get containsActiveItem() {
-        return Array.from(this.groups).some((group) => {
-            if (!group.items) return false;
-
-            return group.items.some((item) => item.activeSelection);
-        });
-    }
-
-    get currentLevel() {
-        return this.template.querySelector('.current-level');
-    }
-
     get computedCurrentLevelClass() {
         return classSet('current-level').add({
             'slds-grid': this.variant === 'vertical',
@@ -130,6 +119,18 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             'slds-grid': this.variant === 'horizontal',
             'slds-show_inline-block': this.variant === 'vertical'
         });
+    }
+
+    get containsActiveItem() {
+        return Array.from(this.groups).some((group) => {
+            if (!group.items) return false;
+
+            return group.items.some((item) => item.activeSelection);
+        });
+    }
+
+    get currentLevel() {
+        return this.template.querySelector('.current-level');
     }
 
     get hasSelectedGroups() {

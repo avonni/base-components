@@ -39,6 +39,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             expect(element.items).toMatchObject([]);
             expect(element.itemActions).toBeUndefined();
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.selected).toBeFalsy();
             expect(element.shrinkIconName).toBe('utility:chevrondown');
@@ -497,6 +498,20 @@ describe('PrimitiveRelationshipGraphGroup', () => {
                         '[data-element-id="title"]'
                     );
                     expect(title.textContent).toContain('A string label');
+                });
+            });
+        });
+
+        describe('loadingStateAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.loadingStateAlternativeText = 'Loading';
+                element.isLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
+                    );
+                    expect(spinner.alternativeText).toBe('Loading');
                 });
             });
         });

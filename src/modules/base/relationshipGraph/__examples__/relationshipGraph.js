@@ -19,6 +19,7 @@ export const RelationshipGraph = ({
     itemActions,
     itemTheme,
     label,
+    loadingStateAlternativeText,
     selectedItemName,
     shrinkIconName,
     variant
@@ -37,6 +38,7 @@ export const RelationshipGraph = ({
     element.itemActions = itemActions;
     element.itemTheme = itemTheme;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.selectedItemName = selectedItemName;
     element.shrinkIconName = shrinkIconName;
     element.variant = variant;

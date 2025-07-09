@@ -148,6 +148,18 @@ export default {
                 category: 'Items'
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message to display when the relationship graph is in a loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         shrinkIconName: {
             name: 'shrink-icon-name',
             control: {
@@ -191,6 +203,7 @@ export default {
         groupTheme: 'default',
         hideItemsCount: false,
         itemTheme: 'default',
+        loadingStateAlternativeText: 'Loading...',
         shrinkIconName: 'utility:chevrondown',
         variant: 'horizontal'
     }
