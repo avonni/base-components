@@ -25,17 +25,15 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
 };
-
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'x-small'
 };
-
 const TYPES = {
     valid: ['button', 'reset', 'submit'],
     default: 'button'
@@ -98,6 +96,13 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api label;
+    /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * The name for the button element.
      * This value is optional and can be used to identify the button in a callback.

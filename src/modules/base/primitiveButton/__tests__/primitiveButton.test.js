@@ -43,6 +43,7 @@ describe('Primitive Button', () => {
             expect(element.iconSize).toBe('x-small');
             expect(element.iconSrc).toBeUndefined();
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.stretch).toBeFalsy();
             expect(element.tabIndex).toBeUndefined();

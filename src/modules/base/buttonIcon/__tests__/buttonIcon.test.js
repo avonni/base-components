@@ -28,6 +28,7 @@ describe('Button Icon', () => {
             expect(element.iconClass).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSrc).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.size).toBe('medium');
             expect(element.tabIndex).toBeUndefined();
@@ -367,12 +368,14 @@ describe('Button Icon', () => {
             it('Passed to the component', () => {
                 element.iconName = 'utility:delete';
                 element.isButtonLoading = true;
+                element.loadingStateAlternativeText = 'Loading';
 
                 return Promise.resolve().then(() => {
                     const spinner = element.shadowRoot.querySelector(
                         '[data-element-id="spinner"]'
                     );
                     expect(spinner).not.toBeNull();
+                    expect(spinner.alternativeText).toBe('Loading');
                     expect(spinner.size).toBe('x-small');
 
                     const computedStyle = getComputedStyle(element);

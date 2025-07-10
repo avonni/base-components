@@ -13,6 +13,7 @@ export const ButtonIcon = ({
     iconName,
     iconSrc,
     isButtonLoading,
+    loadingStateAlternativeText,
     name,
     size,
     tooltip,
@@ -28,6 +29,7 @@ export const ButtonIcon = ({
     element.iconName = iconName;
     element.iconSrc = iconSrc;
     element.isButtonLoading = isButtonLoading;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
     element.size = size;
     element.tooltip = tooltip;

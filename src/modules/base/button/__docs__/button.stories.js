@@ -107,6 +107,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the button is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         name: {
             control: {
                 type: 'text'
@@ -182,6 +194,7 @@ export default {
         disabled: false,
         iconPosition: 'left',
         iconSize: 'x-small',
+        loadingStateAlternativeText: 'Loading...',
         stretch: false,
         type: 'button',
         variant: 'neutral'

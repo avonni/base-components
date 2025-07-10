@@ -59,6 +59,14 @@ export default class Button extends PrimitiveButton {
      * @type {string}
      */
     /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @name loadingStateAlternativeText
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    /**
      * The name for the button element.
      * This value is optional and can be used to identify the button in a callback.
      *
