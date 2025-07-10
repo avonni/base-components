@@ -92,8 +92,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description:
-                'Setting it to true show a loading spinner over the button.',
+            description: 'If present, shows a loading spinner over the button.',
             table: {
                 type: { summary: 'boolean' }
             }
@@ -194,6 +193,7 @@ export default {
         disabled: false,
         iconPosition: 'left',
         iconSize: 'x-small',
+        isButtonLoading: false,
         loadingStateAlternativeText: 'Loading...',
         stretch: false,
         type: 'button',

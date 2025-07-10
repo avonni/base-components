@@ -87,6 +87,14 @@ export default class ButtonIcon extends PrimitiveButton {
      * @type {string}
      */
     /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @name isButtonLoading
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    /**
      * Message displayed while the button is in the loading state.
      *
      * @name loadingStateAlternativeText

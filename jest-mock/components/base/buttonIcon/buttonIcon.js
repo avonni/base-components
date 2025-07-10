@@ -1,19 +1,23 @@
 import { LightningElement, api } from 'lwc';
 
-export default class Button extends LightningElement {
+export default class ButtonIcon extends LightningElement {
     @api accessKey;
+    @api alternativeText;
     @api disableAnimation;
     @api disabled;
+    @api iconClass;
     @api iconName;
-    @api iconPosition;
-    @api iconSize;
     @api iconSrc;
     @api isButtonLoading;
-    @api label;
     @api loadingStateAlternativeText;
     @api name;
-    @api stretch;
+    @api size;
+    @api tabIndex;
+    @api tooltip;
     @api type;
     @api value;
     @api variant;
+
+    @api click() {}
+    @api focus() {}
 }

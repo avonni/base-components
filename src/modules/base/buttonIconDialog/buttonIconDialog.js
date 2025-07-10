@@ -6,7 +6,6 @@ const BUTTON_SIZES = {
     validNonBare: ['xx-small', 'x-small', 'small', 'medium'],
     default: 'medium'
 };
-
 const BUTTON_VARIANTS = {
     valid: [
         'bare',
@@ -26,9 +25,9 @@ const BUTTON_VARIANTS = {
     ],
     default: 'border'
 };
-
-const CANCEL_BUTTON_LABEL = 'Cancel';
-const SAVE_BUTTON_LABEL = 'Save';
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SAVE_BUTTON_LABEL = 'Save';
 
 /**
  * @class
@@ -60,7 +59,7 @@ export default class ButtonIconDialog extends LightningElement {
      * @type {string}
      * @default Cancel
      */
-    @api cancelButtonLabel = CANCEL_BUTTON_LABEL;
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
     /**
      * The class to be applied to the contained icon element ( e.g. "slds-icon-text-success").
      *
@@ -83,6 +82,14 @@ export default class ButtonIconDialog extends LightningElement {
      */
     @api iconSrc;
     /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    /**
      * Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.
      *
      * @public
@@ -96,9 +103,10 @@ export default class ButtonIconDialog extends LightningElement {
      * @type {string}
      * @default Save
      */
-    @api saveButtonLabel = SAVE_BUTTON_LABEL;
+    @api saveButtonLabel = DEFAULT_SAVE_BUTTON_LABEL;
 
     _disabled = false;
+    _isButtonLoading = false;
     _size = BUTTON_SIZES.default;
     _variant = BUTTON_VARIANTS.default;
 
@@ -135,6 +143,21 @@ export default class ButtonIconDialog extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isButtonLoading() {
+        return this._isButtonLoading;
+    }
+    set isButtonLoading(value) {
+        this._isButtonLoading = normalizeBoolean(value);
     }
 
     /**

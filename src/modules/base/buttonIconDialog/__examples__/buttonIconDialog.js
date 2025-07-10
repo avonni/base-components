@@ -13,6 +13,8 @@ export const ButtonIconDialog = ({
     iconClass,
     iconName,
     iconSrc,
+    isButtonLoading,
+    loadingStateAlternativeText,
     saveButtonLabel,
     size,
     tooltip,
@@ -26,6 +28,8 @@ export const ButtonIconDialog = ({
     element.iconClass = iconClass;
     element.iconName = iconName;
     element.iconSrc = iconSrc;
+    element.isButtonLoading = isButtonLoading;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.saveButtonLabel = saveButtonLabel;
     element.size = size;
     element.tooltip = tooltip;

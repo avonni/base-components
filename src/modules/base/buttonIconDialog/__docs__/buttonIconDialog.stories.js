@@ -80,6 +80,29 @@ export default {
                 category: 'icon'
             }
         },
+        isButtonLoading: {
+            name: 'is-button-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, shows a loading spinner over the button.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the button is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         saveButtonLabel: {
             name: 'save-button-label',
             control: {
@@ -143,9 +166,10 @@ export default {
         }
     },
     args: {
-        alternativeText: 'Button Icon Dialog',
         cancelButtonLabel: 'Cancel',
         disabled: false,
+        isButtonLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         saveButtonLabel: 'Save',
         size: 'medium',
         variant: 'border'

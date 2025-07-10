@@ -90,6 +90,7 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api iconName;
+
     /**
      * The text to be displayed inside the button.
      *
@@ -542,8 +543,7 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
-     * Setting it to true show a loading spinner over the button.
-     * This value defaults to false.
+     * If present, shows a loading spinner over the button.
      *
      * @public
      * @type {boolean}

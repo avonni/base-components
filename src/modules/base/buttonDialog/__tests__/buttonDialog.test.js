@@ -26,7 +26,9 @@ describe('Button Dialog', () => {
             expect(element.iconPosition).toBe('left');
             expect(element.iconSize).toBe('x-small');
             expect(element.iconSrc).toBeUndefined();
+            expect(element.isButtonLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.saveButtonLabel).toBe('Save');
             expect(element.stretch).toBeFalsy();
             expect(element.variant).toBe('neutral');
@@ -144,6 +146,20 @@ describe('Button Dialog', () => {
             });
         });
 
+        describe('Is Button Loading', () => {
+            it('Passed to the component', () => {
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+
+                    expect(button.isButtonLoading).toBeTruthy();
+                });
+            });
+        });
+
         describe('Label', () => {
             it('Passed to the component', () => {
                 element.label = 'Button Label';
@@ -153,6 +169,20 @@ describe('Button Dialog', () => {
 
                 return Promise.resolve().then(() => {
                     expect(button.label).toBe('Button Label');
+                });
+            });
+        });
+
+        describe('Loading State Alternative Text', () => {
+            it('Passed to the component', () => {
+                element.loadingStateAlternativeText = 'Loading';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+
+                    expect(button.loadingStateAlternativeText).toBe('Loading');
                 });
             });
         });

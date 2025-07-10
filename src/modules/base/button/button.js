@@ -45,6 +45,13 @@ export default class Button extends PrimitiveButton {
      * @default left
      */
     /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @name isButtonLoading
+     * @public
+     * @type {boolean}
+     * @default false
+    /**
      * URL to set for the image attribute.
      *
      * @name iconSrc

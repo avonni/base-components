@@ -96,6 +96,17 @@ export default {
                 category: 'icon'
             }
         },
+        isButtonLoading: {
+            name: 'is-button-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, shows a loading spinner over the button.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -103,6 +114,18 @@ export default {
             description: 'Optional text to be shown on the button.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the button is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         saveButtonLabel: {
@@ -160,6 +183,8 @@ export default {
         disabled: false,
         iconPosition: 'left',
         iconSize: 'x-small',
+        isButtonLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         saveButtonLabel: 'Save',
         stretch: false,
         variant: 'neutral'

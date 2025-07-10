@@ -14,7 +14,9 @@ export const ButtonDialog = ({
     iconPosition,
     iconSize,
     iconSrc,
+    isButtonLoading,
     label,
+    loadingStateAlternativeText,
     saveButtonLabel,
     stretch,
     variant
@@ -28,7 +30,9 @@ export const ButtonDialog = ({
     element.iconPosition = iconPosition;
     element.iconSize = iconSize;
     element.iconSrc = iconSrc;
+    element.isButtonLoading = isButtonLoading;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.saveButtonLabel = saveButtonLabel;
     element.stretch = stretch;
     element.variant = variant;
