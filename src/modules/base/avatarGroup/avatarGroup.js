@@ -22,14 +22,11 @@ const AVATAR_GROUP_LAYOUTS = {
     valid: ['stack', 'grid', 'list'],
     default: 'stack'
 };
-
 const AVATAR_GROUP_VARIANTS = {
     valid: ['empty', 'square', 'circle'],
     default: 'square'
 };
-
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
-
 const BUTTON_VARIANTS = {
     valid: [
         'neutral',
@@ -43,10 +40,13 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
+const DEFAULT_KEYBOARD_ASSISTIVE_TEXT =
+    'Move between the items by using arrow keys.';
 const DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL = 'Show less';
 const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT = 'Show more';
 
 /**
  * @class
@@ -58,71 +58,91 @@ const DEFAULT_LOAD_MORE_OFFSET = 20;
 export default class AvatarGroup extends LightningElement {
     /**
      * The alternative text used to describe the action.
+     *
      * @type {string}
-     * @name action-alternative-text
      * @public
      */
     @api actionAlternativeText;
     /**
      * The Lightning Design System name of the action icon.
      * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
      * @type {string}
-     * @name action-icon-name
      * @public
      */
     @api actionIconName;
-
     /**
-     * Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.
+     * The assistive text used to describe the keyboard navigation.
+     *
      * @type {string}
-     * @name list-button-show-more-label
-     * @default Show more
      * @public
+     * @default Move between the items by using arrow keys.
      */
-    @api listButtonShowMoreLabel = DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL;
-
+    @api keyboardAssistiveText = DEFAULT_KEYBOARD_ASSISTIVE_TEXT;
     /**
      * Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.
+     *
      * @type {string}
-     * @name list-button-show-less-label
      * @default Show less
      * @public
      */
     @api listButtonShowLessLabel = DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL;
-
     /**
-     * The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.
+     *
      * @type {string}
-     * @name list-button-show-more-icon-name
+     * @default Show more
      * @public
      */
-    @api listButtonShowMoreIconName;
-
+    @api listButtonShowMoreLabel = DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL;
     /**
      * The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
      * @type {string}
-     * @name list-button-show-less-icon-name
      * @public
      */
     @api listButtonShowLessIconName;
-
+    /**
+     * The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     */
+    @api listButtonShowMoreIconName;
+    /**
+     * Message displayed while the avatar group is in the loading state.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Name of the avatar group. It will be returned by the actionclick event.
+     *
      * @type {string}
      * @public
      */
     @api name;
+    /**
+     * The alternative text used to describe the show more button.
+     *
+     * @type {string}
+     * @public
+     * @default Show more
+     */
+    @api showMoreButtonAlternativeText =
+        DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT;
 
     _enableInfiniteLoading = false;
     _isLoading = false;
     _items = [];
+    _layout = AVATAR_GROUP_LAYOUTS.default;
+    _listButtonShowLessIconPosition = BUTTON_ICON_POSITIONS.default;
+    _listButtonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
+    _listButtonVariant = BUTTON_VARIANTS.default;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _maxCount;
     _size = AVATAR_GROUP_SIZES.default;
-    _layout = AVATAR_GROUP_LAYOUTS.default;
-    _listButtonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
-    _listButtonShowLessIconPosition = BUTTON_ICON_POSITIONS.default;
-    _listButtonVariant = BUTTON_VARIANTS.default;
     _variant = AVATAR_GROUP_VARIANTS.default;
 
     showHiddenItems = false;
@@ -141,6 +161,12 @@ export default class AvatarGroup extends LightningElement {
     _resizeObserver;
     _tooltip;
     _tooltipTimeout;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.template.addEventListener(
@@ -176,7 +202,7 @@ export default class AvatarGroup extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
-        this._destroyTooltip();
+        this.destroyTooltip();
     }
 
     /*
@@ -224,24 +250,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the avatar group.
-     *
-     * @type {number}
-     * @default 20
-     * @public
-     */
-    @api
-    get loadMoreOffset() {
-        return this._loadMoreOffset;
-    }
-    set loadMoreOffset(value) {
-        const number = parseInt(value, 10);
-        this._loadMoreOffset = isNaN(number)
-            ? DEFAULT_LOAD_MORE_OFFSET
-            : number;
-    }
-
-    /**
      * An array of items to be rendered as avatar in a group.
      * @type {object[]}
      * @public
@@ -254,7 +262,7 @@ export default class AvatarGroup extends LightningElement {
         this.keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
 
-        this._destroyTooltip();
+        this.destroyTooltip();
 
         if (
             this.showHiddenItems &&
@@ -340,11 +348,28 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the avatar group.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        const number = parseInt(value, 10);
+        this._loadMoreOffset = isNaN(number)
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : number;
+    }
+
+    /**
      * The maximum number of avatars allowed in the visible list.
      * This attribute is ignored if `enable-infinite-loading` is present.
      *
      * @type {number}
-     * @name max-count
      * @default 5 for stack, 11 for grid and list
      * @public
      */
@@ -406,22 +431,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the action button.
-     *
-     * @type {string}
-     */
-    get actionButtonClass() {
-        return classSet('avonni-avatar-group__action-button')
-            .add(`avonni-avatar-group__action-button_${this.variant}`)
-            .add(`avonni-avatar-group__action-button_${this.size}`)
-            .add({
-                'avonni-avatar-group__avatar-in-line-button':
-                    this.layout === 'stack'
-            })
-            .toString();
-    }
-
-    /**
      * Action button icon size.
      *
      * @type {string}
@@ -440,11 +449,38 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * List of avatar Item HTML element.
+     *
+     * @type {HTMLElement[]}
+     */
+    get avatarItemElements() {
+        return this.template.querySelectorAll(
+            '[data-element-id="avonni-avatar"]'
+        );
+    }
+
+    /**
+     * Class of the action button.
+     *
+     * @type {string}
+     */
+    get computedActionButtonClass() {
+        return classSet('avonni-avatar-group__action-button')
+            .add(`avonni-avatar-group__action-button_${this.variant}`)
+            .add(`avonni-avatar-group__action-button_${this.size}`)
+            .add({
+                'avonni-avatar-group__avatar-in-line-button':
+                    this.layout === 'stack'
+            })
+            .toString();
+    }
+
+    /**
      * Class of action button wrapper.
      *
      * @type {string}
      */
-    get actionButtonWrapperClass() {
+    get computedActionButtonWrapperClass() {
         return classSet(`avonni-action-button-${this.size}`)
             .add({
                 'avonni-avatar-group__action-button-base-layout':
@@ -462,7 +498,7 @@ export default class AvatarGroup extends LightningElement {
      *
      * @type {string}
      */
-    get avatarFlexWrapperClass() {
+    get computedAvatarFlexWrapperClass() {
         return classSet({
             'avonni-avatar-group__list': this.layout === 'list',
             'slds-grid': this.isNotList,
@@ -491,7 +527,7 @@ export default class AvatarGroup extends LightningElement {
      *
      * @type {string}
      */
-    get avatarGroupClass() {
+    get computedAvatarGroupClass() {
         return classSet('slds-avatar-group avonni-avatar-group__avatar')
             .add({
                 'slds-avatar-group_x-small': this.size === 'x-small',
@@ -511,7 +547,7 @@ export default class AvatarGroup extends LightningElement {
      *
      * @type {string}
      */
-    get avatarInlineClass() {
+    get computedAvatarInlineClass() {
         return classSet('avonni-avatar-group__avatar')
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack',
@@ -524,22 +560,11 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * List of avatar Item HTML element.
-     *
-     * @type {HTMLElement[]}
-     */
-    get avatarItemElements() {
-        return this.template.querySelectorAll(
-            '[data-element-id="avonni-avatar"]'
-        );
-    }
-
-    /**
      * Class of the avatar wrapper, when there are more than two avatars.
      *
      * @type {string}
      */
-    get avatarWrapperClass() {
+    get computedAvatarWrapperClass() {
         return classSet(
             'avonni-avatar-group__avatar-container slds-is-relative'
         )
@@ -556,6 +581,42 @@ export default class AvatarGroup extends LightningElement {
             .toString();
     }
 
+    /**
+     * Class of the hidden avatar wrapper, when there are more avatar than the max count.
+     *
+     * @type {string}
+     */
+    get computedHiddenAvatarWrapperClass() {
+        return this.layout === 'list'
+            ? this.avatarWrapperClass
+            : 'avonni-avatar-group__hidden-avatar-container slds-p-vertical_x-small slds-p-horizontal_small';
+    }
+
+    /**
+     * Class of the hidden avatars when displayed in a line.
+     *
+     * @type {string}
+     */
+    get computedHiddenAvatarInlineClass() {
+        return this.layout === 'list' ? this.avatarInlineClass : '';
+    }
+
+    /**
+     * Class of the hidden extra items dropdown.
+     *
+     * @type {string}
+     */
+    get computedHiddenListClass() {
+        return classSet({
+            'slds-dropdown slds-p-around_none': this.isNotList
+        }).toString();
+    }
+
+    /**
+     * Computed items.
+     *
+     * @type {object[]}
+     */
     get computedItems() {
         return this.items.map((item) => {
             return {
@@ -564,6 +625,26 @@ export default class AvatarGroup extends LightningElement {
                 computedAriaLabel: this.computeAriaLabel(item)
             };
         });
+    }
+
+    /**
+     * Class of the loading spinner.
+     *
+     * @type {string}
+     */
+    get computedLoadingSpinnerClass() {
+        return classSet('slds-is-relative')
+            .add({
+                'slds-avatar-group_x-small': this.size === 'x-small',
+                'slds-avatar-group_small': this.size === 'small',
+                'slds-avatar-group_medium': this.size === 'medium',
+                'slds-avatar-group_large': this.size === 'large',
+                'avonni-avatar-group__loading-spinner_x-large':
+                    this.size === 'x-large',
+                'avonni-avatar-group__loading-spinner_xx-large':
+                    this.size === 'xx-large'
+            })
+            .toString();
     }
 
     /**
@@ -594,6 +675,49 @@ export default class AvatarGroup extends LightningElement {
             return Math.min(this._maxVisibleCount, maxLimit);
         }
         return maxLimit;
+    }
+
+    /**
+     * Class of the show more button when the avatars are displayed in a line
+     *
+     * @type {string}
+     */
+    get computedShowMoreAvatarClass() {
+        return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
+            .add({
+                'avonni-avatar-group_in-line ': this.layout === 'stack',
+                'avonni-avatar-group__avatar_radius-border-square':
+                    (this.layout === 'stack' || this.layout === 'grid') &&
+                    this.variant === 'square'
+            })
+            .add(`avonni-avatar-${this.size}`)
+            .toString();
+    }
+
+    /**
+     * Class of the show more button wrapper.
+     *
+     * @type {string}
+     */
+    get computedShowMoreButtonWrapperClass() {
+        return classSet('slds-is-relative slds-show_inline-block')
+            .add({
+                'slds-m-left_small':
+                    this.layout === 'list' && this.enableInfiniteLoading
+            })
+            .toString();
+    }
+
+    /**
+     * Class to reorder show more section
+     * @type {string}
+     */
+    get computedShowMoreSectionClass() {
+        return classSet({
+            'slds-grid slds-grid_vertical-reverse slds-m-top_x-small':
+                this.layout === 'list',
+            'slds-show_inline slds-is-relative': this.isNotList
+        }).toString();
     }
 
     /**
@@ -639,26 +763,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the hidden avatars when displayed in a line.
-     *
-     * @type {string}
-     */
-    get hiddenAvatarInlineClass() {
-        return this.layout === 'list' ? this.avatarInlineClass : '';
-    }
-
-    /**
-     * Class of the hidden avatar wrapper, when there are more avatar than the max count.
-     *
-     * @type {string}
-     */
-    get hiddenAvatarWrapperClass() {
-        return this.layout === 'list'
-            ? this.avatarWrapperClass
-            : 'avonni-avatar-group__hidden-avatar-container slds-p-vertical_x-small slds-p-horizontal_small';
-    }
-
-    /**
      * Array of hidden items.
      *
      * @type {object[]}
@@ -686,17 +790,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the hidden extra items dropdown.
-     *
-     * @type {string}
-     */
-    get hiddenListClass() {
-        return classSet({
-            'slds-dropdown slds-p-around_none': this.isNotList
-        }).toString();
-    }
-
-    /**
      * True if there are only two avatars visible.
      *
      * @type {boolean}
@@ -714,26 +807,6 @@ export default class AvatarGroup extends LightningElement {
      */
     get isNotList() {
         return this.layout !== 'list';
-    }
-
-    /**
-     * Class of the loading spinner.
-     *
-     * @type {string}
-     */
-    get loadingSpinnerClass() {
-        return classSet('slds-is-relative')
-            .add({
-                'slds-avatar-group_x-small': this.size === 'x-small',
-                'slds-avatar-group_small': this.size === 'small',
-                'slds-avatar-group_medium': this.size === 'medium',
-                'slds-avatar-group_large': this.size === 'large',
-                'avonni-avatar-group__loading-spinner_x-large':
-                    this.size === 'x-large',
-                'avonni-avatar-group__loading-spinner_xx-large':
-                    this.size === 'xx-large'
-            })
-            .toString();
     }
 
     /**
@@ -803,23 +876,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the show more button when the avatars are displayed in a line
-     *
-     * @type {string}
-     */
-    get showMoreAvatarClass() {
-        return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
-            .add({
-                'avonni-avatar-group_in-line ': this.layout === 'stack',
-                'avonni-avatar-group__avatar_radius-border-square':
-                    (this.layout === 'stack' || this.layout === 'grid') &&
-                    this.variant === 'square'
-            })
-            .add(`avonni-avatar-${this.size}`)
-            .toString();
-    }
-
-    /**
      * True if the "Show More" button should be displayed.
      *
      * @type {boolean}
@@ -831,15 +887,6 @@ export default class AvatarGroup extends LightningElement {
                 this.layout === 'list' &&
                 this.isLoading)
         );
-    }
-
-    get showMoreButtonWrapperClass() {
-        return classSet('slds-is-relative slds-show_inline-block')
-            .add({
-                'slds-m-left_small':
-                    this.layout === 'list' && this.enableInfiniteLoading
-            })
-            .toString();
     }
 
     /**
@@ -864,18 +911,6 @@ export default class AvatarGroup extends LightningElement {
         }
         const length = this.items.length - this.computedMaxCount;
         return `+${length}`;
-    }
-
-    /**
-     * Class to reorder show more section
-     * @type {string}
-     */
-    get showMoreSectionClass() {
-        return classSet({
-            'slds-grid slds-grid_vertical-reverse slds-m-top_x-small':
-                this.layout === 'list',
-            'slds-show_inline slds-is-relative': this.isNotList
-        }).toString();
     }
 
     /**
@@ -937,7 +972,7 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Clear all tooltips and remove all event listeners.
      */
-    _destroyTooltip() {
+    destroyTooltip() {
         if (this._tooltipTimeout) {
             clearTimeout(this._tooltipTimeout);
         }
@@ -958,6 +993,13 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * Get the class of the avatar.
+     *
+     * @param {object} item Item to get the class for.
+     * @param {boolean} isHidden True if the avatar is hidden.
+     * @returns {string} Class of the avatar.
+     */
     getAvatarClass(item, isHidden) {
         let avatarClass = isHidden
             ? this.hiddenAvatarInlineClass
@@ -1004,7 +1046,7 @@ export default class AvatarGroup extends LightningElement {
         }
         return new AvonniResizeObserver(this.wrapperElement, () => {
             this.updateVisibleMaxCount();
-            this._destroyTooltip();
+            this.destroyTooltip();
         });
     }
 
@@ -1107,6 +1149,9 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * Start the positioning of the popover.
+     */
     startPositioning() {
         const popover = this.template.querySelector(
             '[data-element-id="div-hidden-items-popover"]'
@@ -1157,6 +1202,9 @@ export default class AvatarGroup extends LightningElement {
             });
     }
 
+    /**
+     * Stop the positioning of the popover.
+     */
     stopPositioning() {
         if (this._autoPosition) {
             stopPositioning(this._autoPosition);
@@ -1504,7 +1552,7 @@ export default class AvatarGroup extends LightningElement {
      */
     handleItemLeave() {
         if (this.isClassic || this.isNotList) {
-            this._destroyTooltip();
+            this.destroyTooltip();
         }
     }
 
@@ -1547,6 +1595,9 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * Handle a scroll event on the list.
+     */
     handleListScroll() {
         const wrapper = this.template.querySelector('[data-element-id="ul"]');
         if (

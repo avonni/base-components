@@ -1,76 +1,76 @@
 <template>
     <!-- Stacked with exactly two avatars -->
-    <div if:true={isClassic} class={avatarGroupClass}>
+    <div if:true={isClassic} class={computedAvatarGroupClass}>
         <c-primitive-avatar
-            fallback-icon-name={primaryItem.fallbackIconName}
-            href={primaryItem.href}
-            initials={primaryItem.initials}
-            src={primaryItem.src}
-            variant={variant}
-            size={size}
-            status={primaryItem.status}
-            status-title={primaryItem.statusTitle}
-            status-position={primaryItem.statusPosition}
-            presence={primaryItem.presence}
-            presence-title={primaryItem.presenceTitle}
-            presence-position={primaryItem.presencePosition}
-            entity-icon-name={primaryItem.entityIconName}
-            entity-initials={primaryItem.entityInitials}
-            entity-src={primaryItem.entitySrc}
-            entity-variant={primaryItem.entityVariant}
-            entity-position={primaryItem.entityPosition}
-            actions={primaryItem.actions}
-            action-position={primaryItem.actionPosition}
-            action-menu-icon={primaryItem.actionMenuIcon}
-            data-element-id="avonni-avatar"
-            data-group-name="avatar"
-            data-index="0"
             class="
                 slds-avatar-grouped slds-avatar-grouped__primary
                 avonni-avatar-group__avatar_color-border
             "
-            onclick={handleAvatarClick}
+            action-menu-icon={primaryItem.actionMenuIcon}
+            action-position={primaryItem.actionPosition}
+            actions={primaryItem.actions}
+            entity-icon-name={primaryItem.entityIconName}
+            entity-initials={primaryItem.entityInitials}
+            entity-position={primaryItem.entityPosition}
+            entity-src={primaryItem.entitySrc}
+            entity-variant={primaryItem.entityVariant}
+            fallback-icon-name={primaryItem.fallbackIconName}
+            href={primaryItem.href}
+            initials={primaryItem.initials}
+            presence={primaryItem.presence}
+            presence-position={primaryItem.presencePosition}
+            presence-title={primaryItem.presenceTitle}
             role="button"
+            size={size}
+            src={primaryItem.src}
+            status={primaryItem.status}
+            status-position={primaryItem.statusPosition}
+            status-title={primaryItem.statusTitle}
+            tabindex="0"
+            variant={variant}
+            data-element-id="avonni-avatar"
+            data-group-name="avatar"
+            data-index="0"
             onblur={handleItemLeave}
+            onclick={handleAvatarClick}
             onfocus={handleItemFocus}
             onkeyup={handleAvatarClick}
             onmouseenter={handleItemEnter}
             onmouseleave={handleItemLeave}
-            tabindex="0"
         ></c-primitive-avatar>
         <c-primitive-avatar
-            fallback-icon-name={secondaryItem.fallbackIconName}
-            href={secondaryItem.href}
-            initials={secondaryItem.initials}
-            src={secondaryItem.src}
-            variant={variant}
-            size={size}
-            status={secondaryItem.status}
-            status-title={secondaryItem.statusTitle}
-            status-position={secondaryItem.statusPosition}
-            presence={secondaryItem.presence}
-            presence-title={secondaryItem.presenceTitle}
-            presence-position={secondaryItem.presencePosition}
-            entity-icon-name={secondaryItem.entityIconName}
-            entity-initials={secondaryItem.entityInitials}
-            entity-variant={secondaryItem.entityVariant}
-            entity-src={secondaryItem.entitySrc}
-            entity-position={secondaryItem.entityPosition}
-            data-element-id="avonni-avatar"
-            data-group-name="avatar"
-            data-index="1"
             class="
                 slds-avatar-grouped slds-avatar-grouped__secondary
                 avonni-avatar-group__avatar_color-border
             "
-            onclick={handleAvatarClick}
+            entity-icon-name={secondaryItem.entityIconName}
+            entity-initials={secondaryItem.entityInitials}
+            entity-position={secondaryItem.entityPosition}
+            entity-src={secondaryItem.entitySrc}
+            entity-variant={secondaryItem.entityVariant}
+            fallback-icon-name={secondaryItem.fallbackIconName}
+            href={secondaryItem.href}
+            initials={secondaryItem.initials}
+            presence={secondaryItem.presence}
+            presence-position={secondaryItem.presencePosition}
+            presence-title={secondaryItem.presenceTitle}
             role="button"
+            size={size}
+            src={secondaryItem.src}
+            status={secondaryItem.status}
+            status-position={secondaryItem.statusPosition}
+            status-title={secondaryItem.statusTitle}
+            tabindex="0"
+            variant={variant}
+            data-element-id="avonni-avatar"
+            data-group-name="avatar"
+            data-index="1"
             onblur={handleItemLeave}
+            onclick={handleAvatarClick}
             onkeyup={handleAvatarClick}
             onmouseenter={handleItemEnter}
             onmouseleave={handleItemLeave}
             onfocus={handleItemFocus}
-            tabindex="0"
         ></c-primitive-avatar>
     </div>
 
@@ -79,11 +79,14 @@
         class="slds-template__container"
         data-element-id="avatar-group-wrapper"
     >
-        <span id="list-description" class="slds-assistive-text">
-            Move between the items by using arrow keys.
+        <span
+            class="slds-assistive-text"
+            data-element-id="keyboard-assistive-text"
+        >
+            {keyboardAssistiveText}
         </span>
         <ul
-            class={avatarFlexWrapperClass}
+            class={computedAvatarFlexWrapperClass}
             aria-describedby="list-description"
             tabindex="0"
             data-element-id="ul"
@@ -95,9 +98,9 @@
                 <!-- Avatar item -->
                 <li
                     key={item.name}
-                    class={avatarWrapperClass}
-                    tabindex="-1"
+                    class={computedAvatarWrapperClass}
                     aria-label={item.computedAriaLabel}
+                    tabindex="-1"
                     data-element-id="li-visible"
                     data-index={index}
                     onblur={handleItemLeave}
@@ -108,9 +111,9 @@
                 >
                     <c-avatar
                         class={item.class}
-                        actions={item.actions}
                         action-menu-icon={item.actionMenuIcon}
                         action-position={item.actionPosition}
+                        actions={item.actions}
                         alternative-text={item.alternativeText}
                         entity-icon-name={item.entityIconName}
                         entity-initials={item.entityInitials}
@@ -123,35 +126,41 @@
                         href={item.href}
                         initials={item.initials}
                         presence={item.presence}
-                        presence-title={item.presenceTitle}
                         presence-position={item.presencePosition}
+                        presence-title={item.presenceTitle}
                         primary-text={item.primaryText}
                         secondary-text={item.secondaryText}
                         size={size}
                         src={item.src}
                         status={item.status}
-                        status-title={item.statusTitle}
                         status-position={item.statusPosition}
+                        status-title={item.statusTitle}
                         tags={item.tags}
                         tertiary-text={item.tertiaryText}
                         variant={variant}
-                        data-group-name="avatar"
                         data-element-id="avonni-avatar"
+                        data-group-name="avatar"
                         data-index={index}
                     ></c-avatar>
                 </li>
             </template>
 
             <!-- Loading spinner when not a list and there is room for more items on the line -->
-            <li if:true={showLoadingSpinner} class={loadingSpinnerClass}>
+            <li
+                if:true={showLoadingSpinner}
+                class={computedLoadingSpinnerClass}
+            >
                 <lightning-spinner
-                    alternative-text="Loading..."
+                    alternative-text={loadingStateAlternativeText}
                     size={loadingSpinnerSize}
                     data-element-id="lightning-spinner-line"
                 ></lightning-spinner>
             </li>
 
-            <li class={showMoreSectionClass} data-element-id="show-more-button">
+            <li
+                class={computedShowMoreSectionClass}
+                data-element-id="show-more-button"
+            >
                 <!-- Show more button -->
                 <div
                     if:true={showMoreButton}
@@ -162,14 +171,14 @@
                     data-element-id="div-show-more-button-wrapper"
                     onkeydown={stopPropagation}
                 >
-                    <div if:true={isNotList} class={avatarWrapperClass}>
+                    <div if:true={isNotList} class={computedAvatarWrapperClass}>
                         <c-primitive-avatar
-                            class={showMoreAvatarClass}
+                            class={computedShowMoreAvatarClass}
                             aria-controls="hidden-items-popover"
                             aria-expanded={showHiddenItemsPopover}
                             aria-haspopup="dialog"
-                            aria-label="Show more"
-                            alternative-text="Show more"
+                            aria-label={showMoreButtonAlternativeText}
+                            alternative-text={showMoreButtonAlternativeText}
                             fallback-icon-name="standard:macros"
                             initials={showMoreInitials}
                             role="button"
@@ -185,13 +194,13 @@
                     </div>
                     <div
                         if:false={isNotList}
-                        class={showMoreButtonWrapperClass}
+                        class={computedShowMoreButtonWrapperClass}
                     >
                         <!-- Loading spinner in list -->
                         <lightning-spinner
                             if:true={isLoading}
                             class="slds-m-left_small"
-                            alternative-text="Loading..."
+                            alternative-text={loadingStateAlternativeText}
                             size="small"
                             data-element-id="lightning-spinner-list"
                         ></lightning-spinner>
@@ -208,21 +217,21 @@
                             icon-position={currentListButtonPosition}
                             label={currentlistButtonLabel}
                             tabindex="0"
+                            title={showMoreButtonAlternativeText}
                             variant={listButtonVariant}
-                            data-element-id="lightning-button"
+                            data-element-id="show-more-lightning-button"
                             data-show-more-button
                             onclick={handleToggleShowHiddenItems}
                         ></lightning-button>
                     </div>
                 </div>
-
                 <!-- Hidden items -->
                 <div
                     if:true={showHiddenItemsPopover}
-                    class={hiddenListClass}
+                    class={computedHiddenListClass}
+                    aria-labelledby="show-more-label"
                     id="hidden-items-popover"
                     role="dialog"
-                    aria-labelledby="show-more-label"
                     data-element-id="div-hidden-items-popover"
                     onfocusin={handleHiddenItemsFocusIn}
                     onfocusout={handleHiddenItemsFocusOut}
@@ -235,16 +244,15 @@
                         <template for:each={hiddenItems} for:item="item">
                             <li
                                 key={item.name}
-                                class={hiddenAvatarWrapperClass}
-                                data-index={item.index}
+                                class={computedHiddenAvatarWrapperClass}
                                 tabindex="-1"
+                                data-index={item.index}
                                 data-element-id="li-hidden"
                                 onclick={handleAvatarClick}
                             >
                                 <c-avatar
                                     class={item.class}
                                     aria-label={item.computedAriaLabel}
-                                    role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}
                                     actions={item.actions}
@@ -261,6 +269,7 @@
                                     presence-position={item.presencePosition}
                                     presence-title={item.presenceTitle}
                                     primary-text={item.primaryText}
+                                    role="button"
                                     secondary-text={item.secondaryText}
                                     size={size}
                                     src={item.src}
@@ -283,7 +292,7 @@
                             "
                         >
                             <lightning-spinner
-                                alternative-text="Loading..."
+                                alternative-text={loadingStateAlternativeText}
                                 size="small"
                                 data-element-id="lightning-spinner-popover"
                             ></lightning-spinner>
@@ -295,23 +304,23 @@
             <!-- Action button -->
             <li
                 if:true={actionIconName}
-                class={actionButtonWrapperClass}
-                onkeydown={stopPropagation}
+                class={computedActionButtonWrapperClass}
                 data-element-id="action-button"
+                onkeydown={stopPropagation}
             >
                 <button
-                    class={actionButtonClass}
+                    class={computedActionButtonClass}
                     type="button"
                     onclick={handleActionClick}
                 >
                     <lightning-icon
-                        icon-name={actionIconName}
-                        size={actionButtonIconSize}
                         class="
                             slds-button slds-button_icon
                             slds-current-color
                             avonni-avatar-group__action-button
                         "
+                        icon-name={actionIconName}
+                        size={actionButtonIconSize}
                         data-element-id="lightning-icon"
                     ></lightning-icon>
                     <span
