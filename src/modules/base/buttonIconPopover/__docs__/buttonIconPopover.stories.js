@@ -82,6 +82,17 @@ export default {
                 category: 'icon'
             }
         },
+        isButtonLoading: {
+            name: 'is-button-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, shows a loading spinner over the button.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         isLoading: {
             name: 'is-loading',
             control: {
@@ -101,7 +112,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Message displayed while the popover is in the loading state.',
+                'Message displayed while the popover or the button is in the loading state.',
             table: {
                 type: { summary: 'string' },
                 category: 'Popover'
@@ -234,7 +245,9 @@ export default {
         alternativeText: 'Button Icon Popover',
         disabled: false,
         hideCloseButton: false,
+        isButtonLoading: false,
         isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         placement: 'left',
         popoverSize: 'medium',
         popoverVariant: 'base',

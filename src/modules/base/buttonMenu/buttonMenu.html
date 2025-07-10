@@ -5,10 +5,10 @@
         aria-expanded={computedAriaExpanded}
         aria-haspopup="true"
         disabled={computedDisabled}
-        title={title}
-        value={value}
         tabindex={buttonTabIndex}
+        title={title}
         type="button"
+        value={value}
         data-element-id="button"
         onblur={handleButtonBlur}
         onclick={handleButtonClick}
@@ -67,11 +67,11 @@
     <div
         if:true={dropdownOpened}
         class={computedDropdownClass}
+        data-element-id="dropdown"
         onfocus={handleDropdownFocus}
         onfocusin={handleDropdownFocusIn}
         onfocusout={handleDropdownFocusOut}
         onscroll={handleDropdownScroll}
-        data-element-id="dropdown"
     >
         <div class="avonni-button-menu__dropdown-gap-cover"></div>
         <lightning-spinner
@@ -85,10 +85,10 @@
             class="slds-dropdown__list"
             role="menu"
             data-element-id="dropdown-list"
-            onprivatehover={handleMenuItemHover}
             onkeydown={handleMenuItemKeyDown}
-            onprivateselect={handleMenuItemSelect}
             onmouseover={handleMenuItemMouseOver}
+            onprivatehover={handleMenuItemHover}
+            onprivateselect={handleMenuItemSelect}
         >
             <slot></slot>
         </div>

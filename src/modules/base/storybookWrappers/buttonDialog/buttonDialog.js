@@ -8,7 +8,9 @@ export default class ButtonDialog extends LightningElement {
     @api iconName;
     @api iconPosition;
     @api iconSrc;
+    @api isButtonLoading;
     @api label;
+    @api loadingStateAlternativeText;
     @api saveButtonLabel;
     @api stretch;
     @api variant;

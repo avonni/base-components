@@ -1,19 +1,20 @@
 <template>
     <c-button-popover
         access-key={accessKey}
-        label={label}
-        title={title}
-        icon-name={iconName}
-        loading-state-alternative-text={loadingStateAlternativeText}
         disabled={disabled}
         hide-close-button={hideCloseButton}
-        is-loading={isLoading}
+        icon-name={iconName}
         icon-position={iconPosition}
-        popover-size={popoverSize}
+        is-button-loading={isButtonLoading}
+        is-loading={isLoading}
+        label={label}
+        loading-state-alternative-text={loadingStateAlternativeText}
         placement={placement}
-        variant={variant}
-        triggers={triggers}
+        popover-size={popoverSize}
         popover-variant={popoverVariant}
+        title={title}
+        triggers={triggers}
+        variant={variant}
     >
         <h2 slot="title" class="slds-text-heading_small">Header Title</h2>
         <p>

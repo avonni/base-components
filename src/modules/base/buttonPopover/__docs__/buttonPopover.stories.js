@@ -88,6 +88,17 @@ export default {
                 category: 'icon'
             }
         },
+        isButtonLoading: {
+            name: 'is-button-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, shows a loading spinner over the button.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         isLoading: {
             name: 'is-loading',
             control: {
@@ -231,7 +242,9 @@ export default {
         hideCloseButton: false,
         iconPosition: 'left',
         iconSize: 'x-small',
+        isButtonLoading: false,
         isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         placement: 'left',
         popoverSize: 'medium',
         popoverVariant: 'base',
