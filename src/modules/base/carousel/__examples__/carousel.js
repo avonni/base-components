@@ -19,6 +19,7 @@ export const Carousel = ({
     items,
     itemsPerPanel,
     largeItemsPerPanel,
+    loadMoreOffset,
     maxIndicatorItems,
     mediumItemsPerPanel,
     scrollDuration,
@@ -41,6 +42,7 @@ export const Carousel = ({
     element.items = items;
     element.itemsPerPanel = itemsPerPanel;
     element.largeItemsPerPanel = largeItemsPerPanel;
+    element.loadMoreOffset = loadMoreOffset;
     element.maxIndicatorItems = maxIndicatorItems;
     element.mediumItemsPerPanel = mediumItemsPerPanel;
     element.scrollDuration = scrollDuration;

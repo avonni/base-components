@@ -114,6 +114,7 @@ export default class AvatarGroup extends LightningElement {
      *
      * @type {string}
      * @public
+     * @default Loading...
      */
     @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
