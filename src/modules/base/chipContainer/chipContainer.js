@@ -9,13 +9,14 @@ import {
 } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
-const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const AUTO_SCROLL_INCREMENT = 5;
 const AUTO_SCROLL_THRESHOLD = 50;
+const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
-const SHOW_MORE_BUTTON_WIDTH = 60;
+const DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT = 'Show more';
 const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
+const SHOW_MORE_BUTTON_WIDTH = 60;
 
 /**
  * @class
@@ -26,6 +27,16 @@ const MAX_LOADED_ITEMS = 30;
  * @public
  */
 export default class ChipContainer extends LightningElement {
+    /**
+     * The alternative text used to describe the show more button.
+     *
+     * @type {string}
+     * @public
+     * @default Show more
+     */
+    @api showMoreButtonAlternativeText =
+        DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT;
+
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _isCollapsible = false;
     _isExpanded = false;
@@ -236,11 +247,7 @@ export default class ChipContainer extends LightningElement {
      * @type {string}
      */
     get computedChipClass() {
-        return classSet()
-            .add({
-                'avonni-chip-container__chip-sortable': this.sortable
-            })
-            .toString();
+        return this.sortable ? 'avonni-chip-container__chip-sortable' : '';
     }
 
     /**
