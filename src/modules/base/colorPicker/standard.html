@@ -207,6 +207,22 @@
                                         ></c-color-gradient>
                                     </div>
                                 </div>
+                                <!-- Clear Link -->
+                                <button
+                                    if:true={showClearLink}
+                                    onclick={handleClearLinkClick}
+                                    class="
+                                        avonni-color-picker__button_bare
+                                        avonni-color-picker__clear_link
+                                    "
+                                    type="button"
+                                    title="Clear"
+                                >
+                                    <a>Clear</a>
+                                    <span class="slds-assistive-text"
+                                        >Clear</span
+                                    >
+                                </button>
                                 <!-- Footer -->
                                 <footer
                                     if:true={showColorGradient}
