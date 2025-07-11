@@ -17,6 +17,12 @@ import { LightningElement, api } from 'lwc';
 import CalendarDate from './date';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DEFAULT_MAX = new Date(2099, 11, 31);
+const DEFAULT_MIN = new Date(1900, 0, 1);
+const DEFAULT_NEXT_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Next Month';
+const DEFAULT_PREVIOUS_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Previous Month';
+const DEFAULT_YEAR_SELECT_ASSISTIVE_TEXT = 'Pick a year';
+const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 const MONTHS = [
     'January',
     'February',
@@ -31,15 +37,7 @@ const MONTHS = [
     'November',
     'December'
 ];
-
-const DEFAULT_MAX = new Date(2099, 11, 31);
-
-const DEFAULT_MIN = new Date(1900, 0, 1);
-
-const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
-
 const NULL_DATE = new Date('12/31/1969').setHours(0, 0, 0, 0);
-
 const SELECTION_MODES = {
     valid: ['single', 'multiple', 'interval'],
     default: 'single'
@@ -53,6 +51,30 @@ const SELECTION_MODES = {
  * @public
  */
 export default class Calendar extends LightningElement {
+    /**
+     * The alternative text for the next month button.
+     *
+     * @public
+     * @type {string}
+     */
+    @api nextMonthButtonAlternativeText =
+        DEFAULT_NEXT_MONTH_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The alternative text for the previous month button.
+     *
+     * @public
+     * @type {string}
+     */
+    @api previousMonthButtonAlternativeText =
+        DEFAULT_PREVIOUS_MONTH_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The assistive text for the year select.
+     *
+     * @public
+     * @type {string}
+     */
+    @api yearSelectAssistiveText = DEFAULT_YEAR_SELECT_ASSISTIVE_TEXT;
+
     _dateLabels = [];
     _disabled = false;
     _disabledDates = [];
@@ -65,7 +87,6 @@ export default class Calendar extends LightningElement {
     _value;
     _weekNumber = false;
 
-    _focusDate;
     _computedDateLabels = [];
     _computedDisabledDates = [];
     _computedMarkedDates = [];
@@ -73,12 +94,19 @@ export default class Calendar extends LightningElement {
     _computedMin;
     _computedValue = [];
     _connected = false;
+    _focusDate;
+    calendarData;
+    day;
     displayDate; // The calendar displays this date's month
-    year;
     month;
     months = MONTHS;
-    day;
-    calendarData;
+    year;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.initDates();
@@ -342,6 +370,20 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Computed class for the table.
+     *
+     * @return {string}
+     */
+    get computedTableClasses() {
+        const isLabeled = this._dateLabels.length > 0;
+        return classSet(
+            'slds-datepicker__month slds-is-relative avonni-calendar__table'
+        )
+            .add({ 'avonni-calendar__date-with-labels': isLabeled })
+            .toString();
+    }
+
+    /**
      * Compute days from week.
      */
     get days() {
@@ -402,24 +444,16 @@ export default class Calendar extends LightningElement {
         );
     }
 
+    /**
+     * Check if the calendar is in multi-select mode.
+     *
+     * @return {boolean}
+     */
     get isMultiSelect() {
         return (
             this.selectionMode === 'interval' ||
             this.selectionMode === 'multiple'
         );
-    }
-
-    /**
-     *
-     * @type {string}
-     */
-    get tableClasses() {
-        const isLabeled = this._dateLabels.length > 0;
-        return classSet(
-            'slds-datepicker__month slds-is-relative avonni-calendar__table'
-        )
-            .add({ 'avonni-calendar__date-with-labels': isLabeled })
-            .toString();
     }
 
     /**

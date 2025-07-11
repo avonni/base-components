@@ -10,6 +10,9 @@ export const Calendar = ({
     markedDates,
     min,
     max,
+    nextMonthButtonAlternativeText,
+    previousMonthButtonAlternativeText,
+    yearSelectAssistiveText,
     selectionMode,
     timezone,
     value,
@@ -23,6 +26,10 @@ export const Calendar = ({
     element.markedDates = markedDates;
     element.max = max;
     element.min = min;
+    element.nextMonthButtonAlternativeText = nextMonthButtonAlternativeText;
+    element.previousMonthButtonAlternativeText =
+        previousMonthButtonAlternativeText;
+    element.yearSelectAssistiveText = yearSelectAssistiveText;
     element.selectionMode = selectionMode;
     element.timezone = timezone;
     element.value = value;
