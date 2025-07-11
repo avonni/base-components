@@ -1,8 +1,9 @@
 import { LightningElement, api } from 'lwc';
 
 export default class CardCenterBottom extends LightningElement {
-    @api title;
+    @api iconName;
+    @api mediaAlternativeText;
     @api mediaSrc;
     @api mediaPosition;
-    @api iconName;
+    @api title;
 }
