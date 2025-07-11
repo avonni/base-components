@@ -1,9 +1,12 @@
 <template>
     <div class={computedContainerClass} data-element-id="div-container">
         <label class={computedLabelClass} data-element-id="label">
-            <abbr if:true={required} title="required" class="slds-required"
-                >*</abbr
-            >
+            <abbr
+                if:true={required}
+                class="slds-required"
+                title={requiredAlternativeText}
+                >*
+            </abbr>
             {label}
         </label>
         <lightning-helptext
@@ -19,11 +22,11 @@
                 class="avonni-color-picker__spinner-container"
             >
                 <lightning-spinner
+                    alternative-text={loadingStateAlternativeText}
                     size="small"
                     data-element-id="lightning-spinner"
                 ></lightning-spinner>
             </div>
-
             <template if:false={isLoading}>
                 <div class="avonni-color-picker-tabs_default">
                     <!-- Tabs -->
@@ -48,8 +51,8 @@
                                 "
                                 href="javascript:void(0);"
                                 role="tab"
-                                data-group-name="tabs"
                                 data-element-id="default"
+                                data-group-name="tabs"
                                 data-tab-name="default"
                                 onclick={handleTabClick}
                                 >{defaultTabLabel}</a
@@ -73,8 +76,8 @@
                                 data-group-name="tabs"
                                 data-tab-name="tokens"
                                 onclick={handleTabClick}
-                                >{tokensTabLabel}</a
-                            >
+                                >{tokensTabLabel}
+                            </a>
                         </li>
                         <li
                             class="avonni-color-picker-tabs_default__item"
@@ -88,12 +91,12 @@
                                 "
                                 href="javascript:void(0);"
                                 role="tab"
-                                data-group-name="tabs"
                                 data-element-id="custom"
+                                data-group-name="tabs"
                                 data-tab-name="custom"
                                 onclick={handleTabClick}
-                                >{customTabLabel}</a
-                            >
+                                >{customTabLabel}
+                            </a>
                         </li>
                     </ul>
                     <div
@@ -113,6 +116,7 @@
                             disabled={disabled}
                             hide-outline={paletteHideOutline}
                             is-loading={paletteIsLoading}
+                            loading-state-alternative-text={loadingStateAlternativeText}
                             read-only={readOnly}
                             show-checkmark={paletteShowCheckmark}
                             value={value}
@@ -128,8 +132,8 @@
                             disabled={disabled}
                             message-when-bad-input={messageWhenBadInput}
                             opacity={opacity}
-                            value={computedGradientValue}
                             read-only={readOnly}
+                            value={computedGradientValue}
                             data-element-id="avonni-color-gradient"
                             onchange={handleColorGradientChange}
                         ></c-color-gradient>

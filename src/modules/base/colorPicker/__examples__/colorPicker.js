@@ -6,11 +6,14 @@ customElements.define(
 );
 
 export const ColorPicker = ({
+    accessKey,
+    cancelButtonLabel,
     colors,
     columns,
     customTabLabel,
     defaultTabLabel,
     disabled,
+    doneButtonLabel,
     fieldLevelHelp,
     groups,
     hideClearIcon,
@@ -18,6 +21,7 @@ export const ColorPicker = ({
     inline,
     isLoading,
     label,
+    loadingStateAlternativeText,
     menuAlignment,
     menuIconName,
     menuIconSize,
@@ -34,6 +38,7 @@ export const ColorPicker = ({
     paletteTileWidth,
     readOnly,
     required,
+    requiredAlternativeText,
     tokens,
     tokensTabLabel,
     type,
@@ -41,11 +46,14 @@ export const ColorPicker = ({
     variant
 }) => {
     const element = document.createElement('ac-base-color-picker');
+    element.accessKey = accessKey;
+    element.cancelButtonLabel = cancelButtonLabel;
     element.colors = colors;
     element.columns = columns;
     element.customTabLabel = customTabLabel;
     element.defaultTabLabel = defaultTabLabel;
     element.disabled = disabled;
+    element.doneButtonLabel = doneButtonLabel;
     element.fieldLevelHelp = fieldLevelHelp;
     element.groups = groups;
     element.hideClearIcon = hideClearIcon;
@@ -53,6 +61,7 @@ export const ColorPicker = ({
     element.inline = inline;
     element.isLoading = isLoading;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.menuAlignment = menuAlignment;
     element.menuIconName = menuIconName;
     element.menuIconSize = menuIconSize;
@@ -69,6 +78,7 @@ export const ColorPicker = ({
     element.paletteTileWidth = paletteTileWidth;
     element.readOnly = readOnly;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.tokens = tokens;
     element.tokensTabLabel = tokensTabLabel;
     element.type = type;

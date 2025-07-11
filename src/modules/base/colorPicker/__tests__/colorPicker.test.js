@@ -4,6 +4,7 @@ import { createElement } from 'lwc';
 // not tested
 // Positioning of the dropdown menu.
 
+const colors = ['#fff', '#333', '#555'];
 const defaultColors = [
     '#e3abec',
     '#c2dbf6',
@@ -34,8 +35,6 @@ const defaultColors = [
     '#b67d11',
     '#b85d0d'
 ];
-const colors = ['#fff', '#333', '#555'];
-
 const tokens = [
     {
         label: 'brand-accessible',
@@ -79,44 +78,46 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
     });
     describe('Attributes', () => {
-        describe('Default Attributes', () => {
-            it('Passed to the component', () => {
-                expect(element.accessKey).toBeUndefined();
-                expect(element.colors).toMatchObject(defaultColors);
-                expect(element.columns).toBe(7);
-                expect(element.customTabLabel).toBe('Custom');
-                expect(element.defaultTabLabel).toBe('Default');
-                expect(element.disabled).toBeFalsy();
-                expect(element.fieldLevelHelp).toBeUndefined();
-                expect(element.groups).toMatchObject([]);
-                expect(element.hideClearIcon).toBeFalsy();
-                expect(element.hideColorInput).toBeFalsy();
-                expect(element.inline).toBeFalsy();
-                expect(element.isLoading).toBeFalsy();
-                expect(element.label).toBeUndefined();
-                expect(element.menuAlignment).toBe('left');
-                expect(element.menuIconName).toBeUndefined();
-                expect(element.menuIconSize).toBe('x-small');
-                expect(element.menuLabel).toBeUndefined();
-                expect(element.menuNubbin).toBeFalsy();
-                expect(element.menuVariant).toBe('border');
-                expect(element.messageWhenBadInput).toBeUndefined();
-                expect(element.messageWhenValueMissing).toBeUndefined();
-                expect(element.name).toBeUndefined();
-                expect(element.opacity).toBeFalsy();
-                expect(element.paletteHideOutline).toBeFalsy();
-                expect(element.paletteShowCheckmark).toBeFalsy();
-                expect(element.paletteTileHeight).toBeUndefined();
-                expect(element.paletteTileWidth).toBeUndefined();
-                expect(element.readOnly).toBeFalsy();
-                expect(element.required).toBeFalsy();
-                expect(element.validity).toMatchObject({});
-                expect(element.value).toBeUndefined();
-                expect(element.variant).toBe('standard');
-                expect(element.tokens).toMatchObject([]);
-                expect(element.tokensTabLabel).toBe('Tokens');
-                expect(element.type).toBe('base');
-            });
+        it('Default Attributes', () => {
+            expect(element.accessKey).toBeUndefined();
+            expect(element.cancelButtonLabel).toBe('Cancel');
+            expect(element.colors).toMatchObject(defaultColors);
+            expect(element.columns).toBe(7);
+            expect(element.customTabLabel).toBe('Custom');
+            expect(element.defaultTabLabel).toBe('Default');
+            expect(element.disabled).toBeFalsy();
+            expect(element.doneButtonLabel).toBe('Done');
+            expect(element.fieldLevelHelp).toBeUndefined();
+            expect(element.groups).toMatchObject([]);
+            expect(element.hideClearIcon).toBeFalsy();
+            expect(element.hideColorInput).toBeFalsy();
+            expect(element.inline).toBeFalsy();
+            expect(element.isLoading).toBeFalsy();
+            expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
+            expect(element.menuAlignment).toBe('left');
+            expect(element.menuIconName).toBeUndefined();
+            expect(element.menuIconSize).toBe('x-small');
+            expect(element.menuLabel).toBeUndefined();
+            expect(element.menuNubbin).toBeFalsy();
+            expect(element.menuVariant).toBe('border');
+            expect(element.messageWhenBadInput).toBeUndefined();
+            expect(element.messageWhenValueMissing).toBeUndefined();
+            expect(element.name).toBeUndefined();
+            expect(element.opacity).toBeFalsy();
+            expect(element.paletteHideOutline).toBeFalsy();
+            expect(element.paletteShowCheckmark).toBeFalsy();
+            expect(element.paletteTileHeight).toBeUndefined();
+            expect(element.paletteTileWidth).toBeUndefined();
+            expect(element.readOnly).toBeFalsy();
+            expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('required');
+            expect(element.validity).toMatchObject({});
+            expect(element.value).toBeUndefined();
+            expect(element.variant).toBe('standard');
+            expect(element.tokens).toMatchObject([]);
+            expect(element.tokensTabLabel).toBe('Tokens');
+            expect(element.type).toBe('base');
         });
 
         describe('Access Key', () => {
@@ -129,6 +130,27 @@ describe('Color Picker', () => {
                     );
                     expect(button.accessKey).toBe('K');
                 });
+            });
+        });
+
+        describe('Cancel Button Label', () => {
+            it('Passed to the component', () => {
+                element.type = 'custom';
+                element.cancelButtonLabel = 'Canceled';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const cancelButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-cancel"]'
+                        );
+                        expect(cancelButton.label).toBe('Canceled');
+                    });
             });
         });
 
@@ -170,31 +192,6 @@ describe('Color Picker', () => {
             });
         });
 
-        describe('Tabs Labels', () => {
-            it('Passed to the component', () => {
-                element.inline = true;
-                element.tokens = tokens;
-                element.customTabLabel = 'Customs';
-                element.defaultTabLabel = 'Defaults';
-                element.tokensTabLabel = 'Tokenss';
-
-                return Promise.resolve().then(() => {
-                    const customTab = element.shadowRoot.querySelector(
-                        '[data-element-id="custom"]'
-                    );
-                    expect(customTab.textContent).toBe('Customs');
-                    const defaultTab = element.shadowRoot.querySelector(
-                        '[data-element-id="default"]'
-                    );
-                    expect(defaultTab.textContent).toBe('Defaults');
-                    const tokensTab = element.shadowRoot.querySelector(
-                        '[data-element-id="a-tokens-tab"]'
-                    );
-                    expect(tokensTab.textContent).toBe('Tokenss');
-                });
-            });
-        });
-
         describe('Disabled', () => {
             it('Passed to the component', () => {
                 element.disabled = true;
@@ -205,6 +202,27 @@ describe('Color Picker', () => {
                     );
                     expect(button.disabled).toBeTruthy();
                 });
+            });
+        });
+
+        describe('Done Button Label', () => {
+            it('Passed to the component', () => {
+                element.type = 'custom';
+                element.doneButtonLabel = 'Done Text';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const doneButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-done"]'
+                        );
+                        expect(doneButton.label).toBe('Done Text');
+                    });
             });
         });
 
@@ -329,6 +347,7 @@ describe('Color Picker', () => {
         describe('Is Loading', () => {
             it('Passed to the component', () => {
                 element.isLoading = true;
+                element.loadingStateAlternativeText = 'Loading';
 
                 return Promise.resolve()
                     .then(() => {
@@ -342,6 +361,7 @@ describe('Color Picker', () => {
                             '[data-element-id="lightning-spinner"]'
                         );
                         expect(spinner).toBeTruthy();
+                        expect(spinner.alternativeText).toBe('Loading');
                     });
             });
         });
@@ -1065,12 +1085,39 @@ describe('Color Picker', () => {
         describe('Required', () => {
             it('Passed to the component', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required Text';
 
                 return Promise.resolve().then(() => {
                     const required =
                         element.shadowRoot.querySelector('.slds-required');
                     expect(required).toBeTruthy();
                     expect(required.textContent).toBe('*');
+                    expect(required.title).toBe('Required Text');
+                });
+            });
+        });
+
+        describe('Tabs Labels', () => {
+            it('Passed to the component', () => {
+                element.inline = true;
+                element.tokens = tokens;
+                element.customTabLabel = 'Customs';
+                element.defaultTabLabel = 'Defaults';
+                element.tokensTabLabel = 'Tokenss';
+
+                return Promise.resolve().then(() => {
+                    const customTab = element.shadowRoot.querySelector(
+                        '[data-element-id="custom"]'
+                    );
+                    expect(customTab.textContent).toBe('Customs');
+                    const defaultTab = element.shadowRoot.querySelector(
+                        '[data-element-id="default"]'
+                    );
+                    expect(defaultTab.textContent).toBe('Defaults');
+                    const tokensTab = element.shadowRoot.querySelector(
+                        '[data-element-id="a-tokens-tab"]'
+                    );
+                    expect(tokensTab.textContent).toBe('Tokenss');
                 });
             });
         });
