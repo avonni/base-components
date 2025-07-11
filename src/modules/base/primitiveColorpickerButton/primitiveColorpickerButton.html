@@ -20,13 +20,12 @@
         ></c-primitive-icon>
         <span class="slds-assistive-text a11y-color-value">{value}</span>
     </button>
-    <template if:true={isColorPickerPanelOpen}>
-        <c-color-picker-panel
-            class="color-picker-panel"
-            current-color={value}
-            data-element-id="avonni-color-picker-panel"
-            onupdatecolor={handleUpdateColorEvent}
-        >
-        </c-color-picker-panel>
-    </template>
+    <c-color-picker-panel
+        if:true={isColorPickerPanelOpen}
+        class="color-picker-panel"
+        current-color={value}
+        data-element-id="avonni-color-picker-panel"
+        onupdatecolor={handleUpdateColorEvent}
+    >
+    </c-color-picker-panel>
 </template>

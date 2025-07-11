@@ -112,13 +112,13 @@
                     </div>
                 </template>
             </div>
-            <c-primitive-colorpicker-button
+            <c-primitive-color-picker-button
                 if:true={isColorpickerVisible}
                 disabled={disabled}
                 value={selectedTextColorValue}
                 data-element-id="avonni-primitive-colorpicker-button"
                 onchange={handleColorUpdate}
-            ></c-primitive-colorpicker-button>
+            ></c-primitive-color-picker-button>
             <template for:each={computedCategories} for:item="category">
                 <ul
                     class="slds-button-group-list"

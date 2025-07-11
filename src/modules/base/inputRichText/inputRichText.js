@@ -1729,7 +1729,7 @@ export default class InputRichText extends LightningElement {
     handleColorUpdate(event) {
         const quill = this.quill;
         this.selectedTextColorValue = event.detail.color;
-        quill.format('color', this.selectedTextColorValue);
+        quill?.format('color', this.selectedTextColorValue);
     }
 
     /**

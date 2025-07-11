@@ -5,11 +5,11 @@
             slds-color-picker__selector
             slds-show slds-is-absolute
         "
-        role="dialog"
         aria-label="Choose a color"
         aria-describedby="dialog-body-id"
-        onupdateselectedcolor={handleUpdateSelectedColor}
+        role="dialog"
         onkeydown={handleKeydown}
+        onupdateselectedcolor={handleUpdateSelectedColor}
     >
         <div class="slds-popover__body" id="dialog-body-id">
             <c-color-picker-custom
@@ -20,16 +20,16 @@
         <footer class="slds-popover__footer">
             <div class="slds-color-picker__selector-footer">
                 <button
-                    name="cancel"
                     class="slds-button slds-button_neutral"
+                    name="cancel"
                     type="button"
                     onclick={handleCancelClick}
                 >
                     {i18n.cancelButton}
                 </button>
                 <button
-                    name="done"
                     class="slds-button slds-button_brand"
+                    name="done"
                     type="button"
                     onclick={handleDoneClick}
                 >

@@ -6,21 +6,18 @@ const i18n = {
     a11yTriggerText: 'Choose a color. Current color: '
 };
 
-export default class PrimitiveColorpickerButton extends LightningElement {
-    static delegatesFocus = true;
-
-    isColorPickerPanelOpen = false;
-    _value = '';
+export default class PrimitiveColorPickerButton extends LightningElement {
     _disabled = false;
+    _value = '';
 
-    @api
-    get value() {
-        return this._value;
-    }
+    static delegatesFocus = true;
+    isColorPickerPanelOpen = false;
 
-    set value(value) {
-        this._value = value;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * If present, the input field is disabled and users cannot interact with it.
@@ -31,42 +28,81 @@ export default class PrimitiveColorpickerButton extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * The value of the input field.
+     * @type {string}
+     */
     @api
-    focus() {
-        const button = this.template.querySelector(
-            '[data-element-id="button"]'
-        );
-        return button && button.focus();
+    get value() {
+        return this._value;
+    }
+    set value(value) {
+        this._value = value;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * The style of the input field.
+     * @type {string}
+     */
+    get colorInputStyle() {
+        return `background: ${this.value || '#5679C0'};`;
+    }
+
+    /**
+     * Localization.
+     * @type {object}
+     */
+    get i18n() {
+        return i18n;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Blur the input field.
+     */
     @api
     blur() {
         const button = this.template.querySelector(
             '[data-element-id="button"]'
         );
-        return button && button.blur();
+        button?.blur();
     }
 
-    get colorInputStyle() {
-        return `background: ${this.value || '#5679C0'};`;
+    /**
+     * Focus the input field.
+     */
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="button"]'
+        );
+        button?.focus();
     }
 
-    handleColorPickerToggleClick(event) {
-        event.preventDefault();
-        this.isColorPickerPanelOpen = !this.isColorPickerPanelOpen;
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
-        if (this.isColorPickerPanelOpen) {
-            this.startColorPickerPositioning();
-        } else {
-            this.stopColorPickerPositioning();
-        }
-    }
-
+    /**
+     * Start the color picker positioning.
+     */
     startColorPickerPositioning() {
         if (!this._autoPosition) {
             this._autoPosition = new AutoPosition(this);
@@ -93,12 +129,40 @@ export default class PrimitiveColorpickerButton extends LightningElement {
         });
     }
 
+    /**
+     * Stop the color picker positioning.
+     */
     stopColorPickerPositioning() {
         if (this._autoPosition) {
             this._autoPosition.stop();
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Toggle the color picker panel.
+     * @param {Event} event
+     */
+    handleColorPickerToggleClick(event) {
+        event.preventDefault();
+        this.isColorPickerPanelOpen = !this.isColorPickerPanelOpen;
+
+        if (this.isColorPickerPanelOpen) {
+            this.startColorPickerPositioning();
+        } else {
+            this.stopColorPickerPositioning();
+        }
+    }
+
+    /**
+     * Update the color event.
+     * @param {Event} event
+     */
     handleUpdateColorEvent(event) {
         event.stopPropagation();
         const detail = event.detail;
@@ -109,9 +173,5 @@ export default class PrimitiveColorpickerButton extends LightningElement {
                 detail
             })
         );
-    }
-
-    get i18n() {
-        return i18n;
     }
 }
