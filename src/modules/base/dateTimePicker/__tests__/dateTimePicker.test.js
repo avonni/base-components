@@ -54,8 +54,20 @@ describe('DateTimePicker', () => {
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.min).toBe('1900-01-01');
             expect(element.name).toBeUndefined();
+            expect(element.nextDatesButtonAlternativeText).toBe('Next dates');
+            expect(element.nextWeekButtonAlternativeText).toBe('Next week');
+            expect(element.noResultsMessage).toBe(
+                'No available time slots for this period.'
+            );
+            expect(element.previousDatesButtonAlternativeText).toBe(
+                'Previous dates'
+            );
+            expect(element.previousWeekButtonAlternativeText).toBe(
+                'Previous week'
+            );
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.showDisabledDates).toBeUndefined();
             expect(element.showEndTime).toBeUndefined();
             expect(element.showTimeZone).toBeFalsy();
@@ -84,6 +96,64 @@ describe('DateTimePicker', () => {
                     );
                     expect(avatar).toBeTruthy();
                     expect(avatar.fallbackIconName).toBe('standard:apps');
+                });
+            });
+        });
+
+        describe('Button alternative text', () => {
+            it('Next dates', () => {
+                element.nextDatesButtonAlternativeText =
+                    'Next dates alternative text';
+                element.value = new Date(2024, 0, 2);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-next"]'
+                    );
+                    expect(button.title).toBe('Next dates alternative text');
+                });
+            });
+
+            it('Next week', () => {
+                element.datePickerVariant = 'inline';
+                element.nextWeekButtonAlternativeText =
+                    'Next week alternative text';
+                element.value = new Date(2024, 0, 2);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-next-week"]'
+                    );
+                    expect(button.title).toBe('Next week alternative text');
+                });
+            });
+
+            it('Previous dates', () => {
+                element.previousDatesButtonAlternativeText =
+                    'Previous dates alternative text';
+                element.value = new Date(2024, 0, 2);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-previous"]'
+                    );
+                    expect(button.title).toBe(
+                        'Previous dates alternative text'
+                    );
+                });
+            });
+
+            it('Previous week', () => {
+                element.datePickerVariant = 'inline';
+                element.previousWeekButtonAlternativeText =
+                    'Previous week alternative text';
+                element.value = new Date(2024, 0, 2);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-previous-week"]'
+                    );
+                    expect(button.title).toBe('Previous week alternative text');
                 });
             });
         });
@@ -732,12 +802,15 @@ describe('DateTimePicker', () => {
         describe('Required', () => {
             it('Passed to the component', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required Alternative Text';
 
                 return Promise.resolve().then(() => {
-                    const required =
-                        element.shadowRoot.querySelector('.slds-required');
+                    const required = element.shadowRoot.querySelector(
+                        '[data-element-id="abbr-required"]'
+                    );
                     expect(required).toBeTruthy();
                     expect(required.textContent).toBe('*');
+                    expect(required.title).toBe('Required Alternative Text');
                 });
             });
         });
@@ -826,6 +899,22 @@ describe('DateTimePicker', () => {
         });
 
         describe('Static Labels', () => {
+            it('No results message', () => {
+                element.noResultsMessage =
+                    'No results message alternative text';
+                element.disabled = true;
+                element.variant = 'daily';
+
+                return Promise.resolve().then(() => {
+                    const noResultsMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="p-empty-message"]'
+                    );
+                    expect(noResultsMessage.textContent).toBe(
+                        'No results message alternative text'
+                    );
+                });
+            });
+
             it('Time zone label and placeholder', () => {
                 element.showTimeZone = true;
                 element.timezoneLabel = 'Zone de temps:';

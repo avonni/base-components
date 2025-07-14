@@ -19,20 +19,10 @@ import {
     normalizeString
 } from 'c/utils';
 
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
+const DATE_PICKER_MOUSE_MOVE_OFFSET = 25;
 const DATE_PICKER_VARIANTS = {
     valid: ['input', 'inline'],
     default: 'input'
-};
-const DATE_PICKER_MOUSE_MOVE_OFFSET = 25;
-const DATE_TIME_VARIANTS = {
-    valid: ['daily', 'weekly', 'inline', 'timeline', 'monthly'],
-    default: 'daily'
-};
-const DATE_TIME_TYPES = {
-    valid: ['radio', 'checkbox'],
-    default: 'radio'
 };
 const DATE_TIME_FORMATS = {
     valid: ['numeric', '2-digit'],
@@ -40,26 +30,40 @@ const DATE_TIME_FORMATS = {
     hourDefault: 'numeric',
     minuteDefault: '2-digit'
 };
-const WEEKDAY_FORMATS = {
-    valid: ['narrow', 'short', 'long'],
-    default: 'short'
+const DATE_TIME_TYPES = {
+    valid: ['radio', 'checkbox'],
+    default: 'radio'
 };
+const DATE_TIME_VARIANTS = {
+    valid: ['daily', 'weekly', 'inline', 'timeline', 'monthly'],
+    default: 'daily'
+};
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DEFAULT_END_TIME = '18:00';
+const DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS = 7;
+const DEFAULT_MAX = '2099-12-31';
+const DEFAULT_MIN = '1900-01-01';
+const DEFAULT_NEXT_DATES_BUTTON_ALTERNATIVE_TEXT = 'Next dates';
+const DEFAULT_NEXT_WEEK_BUTTON_ALTERNATIVE_TEXT = 'Next week';
+const DEFAULT_NO_RESULTS_MESSAGE = 'No available time slots for this period.';
+const DEFAULT_PREVIOUS_DATES_BUTTON_ALTERNATIVE_TEXT = 'Previous dates';
+const DEFAULT_PREVIOUS_WEEK_BUTTON_ALTERNATIVE_TEXT = 'Previous week';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
+const DEFAULT_START_TIME = '08:00';
+const DEFAULT_TIME_SLOT_DURATION = 1800000;
+const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const DEFAULT_TIME_ZONE_LABEL = 'Time Zone:';
+const DEFAULT_TIME_ZONE_PLACEHOLDER = 'Select time zone';
+const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
 const MIN_INLINE_DATE_PICKER_DATE_WIDTH = 60;
 const MONTH_FORMATS = {
     valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
     default: 'long'
 };
-
-const DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS = 7;
-const DEFAULT_START_TIME = '08:00';
-const DEFAULT_END_TIME = '18:00';
-const DEFAULT_TIME_SLOT_DURATION = 1800000;
-const DEFAULT_MAX = '2099-12-31';
-const DEFAULT_MIN = '1900-01-01';
-const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
-const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
-const DEFAULT_TIME_ZONE_LABEL = 'Time Zone:';
-const DEFAULT_TIME_ZONE_PLACEHOLDER = 'Select time zone';
+const WEEKDAY_FORMATS = {
+    valid: ['narrow', 'short', 'long'],
+    default: 'short'
+};
 
 /**
  * @class
@@ -99,6 +103,58 @@ export default class DateTimePicker extends LightningElement {
      */
     @api name;
     /**
+     * Alternative text for the next dates button.
+     *
+     * @type {string}
+     * @public
+     * @default Next dates
+     */
+    @api nextDatesButtonAlternativeText =
+        DEFAULT_NEXT_DATES_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the next week button.
+     *
+     * @type {string}
+     * @public
+     * @default Next week
+     */
+    @api nextWeekButtonAlternativeText =
+        DEFAULT_NEXT_WEEK_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Message to be displayed when there are no available time slots for the selected period.
+     *
+     * @type {string}
+     * @public
+     * @default No available time slots for this period.
+     */
+    @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
+    /**
+     * Alternative text for the previous dates button.
+     *
+     * @type {string}
+     * @public
+     * @default Previous dates
+     */
+    @api previousDatesButtonAlternativeText =
+        DEFAULT_PREVIOUS_DATES_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the previous week button.
+     *
+     * @type {string}
+     * @public
+     * @default Previous week
+     */
+    @api previousWeekButtonAlternativeText =
+        DEFAULT_PREVIOUS_WEEK_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
+    /**
      * The label for the time zone.
      *
      * @type {string}
@@ -125,8 +181,8 @@ export default class DateTimePicker extends LightningElement {
 
     _avatar = {};
     _dateFormatDay = DATE_TIME_FORMATS.dayDefault;
-    _dateFormatWeekday = WEEKDAY_FORMATS.default;
     _dateFormatMonth = MONTH_FORMATS.default;
+    _dateFormatWeekday = WEEKDAY_FORMATS.default;
     _dateFormatYear;
     _datePickerVariant = DATE_PICKER_VARIANTS.default;
     _disabledDateTimes = [];
@@ -162,9 +218,9 @@ export default class DateTimePicker extends LightningElement {
     firstWeekDay;
     helpMessage;
     lastWeekDay;
+    showActionsSlot = true;
     table;
     timezones = TIME_ZONES;
-    showActionsSlot = true;
 
     _computedEndTime;
     _computedStartTime;
@@ -182,6 +238,12 @@ export default class DateTimePicker extends LightningElement {
     _timeSlotMinHeight = 0;
     _timeSlotMinWidth = 0;
     _valid = true;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this._initDates();

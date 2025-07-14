@@ -25,8 +25,14 @@ export const DateTimePicker = ({
     messageWhenValueMissing,
     min,
     name,
+    nextDatesButtonAlternativeText,
+    nextWeekButtonAlternativeText,
+    noResultsMessage,
+    previousDatesButtonAlternativeText,
+    previousWeekButtonAlternativeText,
     readOnly,
     required,
+    requiredAlternativeText,
     showDisabledDates,
     showEndTime,
     showTimeZone,
@@ -63,9 +69,17 @@ export const DateTimePicker = ({
     element.max = max;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.min = min;
+    element.nextDatesButtonAlternativeText = nextDatesButtonAlternativeText;
+    element.nextWeekButtonAlternativeText = nextWeekButtonAlternativeText;
+    element.noResultsMessage = noResultsMessage;
+    element.previousDatesButtonAlternativeText =
+        previousDatesButtonAlternativeText;
+    element.previousWeekButtonAlternativeText =
+        previousWeekButtonAlternativeText;
     element.name = name;
     element.readOnly = readOnly;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.showDisabledDates = showDisabledDates;
     element.showEndTime = showEndTime;
     element.showTimeZone = showTimeZone;
