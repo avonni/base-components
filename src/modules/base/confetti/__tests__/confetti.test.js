@@ -8,13 +8,10 @@ describe('Confetti', () => {
         }
     });
 
-    it('Confetti: Default attributes', () => {
+    it('Default attributes', () => {
         const element = createElement('base-confetti', {
             is: Confetti
         });
-
-        expect(element.variant).toBe('base');
-        expect(element.name).toBeUndefined();
         expect(element.colors).toMatchObject([
             '#529EE0',
             '#F0E442',
@@ -24,8 +21,10 @@ describe('Confetti', () => {
             '#006699',
             '#E287B2'
         ]);
+        expect(element.name).toBeUndefined();
         expect(element.originX).toBe(0.5);
         expect(element.originY).toBe(0.5);
+        expect(element.variant).toBe('base');
         expect(element.zIndex).toBe(100);
     });
 });

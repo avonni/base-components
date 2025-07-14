@@ -13,7 +13,6 @@ const CONFETTI_VARIANTS = {
     ],
     default: 'base'
 };
-
 const DEFAULT_COLORS = [
     '#529EE0',
     '#F0E442',
@@ -23,11 +22,8 @@ const DEFAULT_COLORS = [
     '#006699',
     '#E287B2'
 ];
-
 const DEFAULT_ORIGIN_X = 0.5;
-
 const DEFAULT_ORIGIN_Y = 0.5;
-
 const DEFAULT_Z_INDEX = 100;
 
 /**
@@ -46,7 +42,7 @@ export default class Confetti extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE PROPERTIES
+     *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
 
@@ -61,7 +57,6 @@ export default class Confetti extends LightningElement {
     get colors() {
         return this._colors;
     }
-
     set colors(value) {
         const colors = normalizeArray(value);
         const allColorsAreString = colors.every(
@@ -81,7 +76,6 @@ export default class Confetti extends LightningElement {
     get name() {
         return this._name;
     }
-
     set name(value) {
         this._name = value;
         this.setAttribute('name', value);
@@ -98,7 +92,6 @@ export default class Confetti extends LightningElement {
     get originX() {
         return this._originX;
     }
-
     set originX(value) {
         const originX = parseInt(value, 10);
         this._originX = !isNaN(originX) ? originX : DEFAULT_ORIGIN_X;
@@ -115,7 +108,6 @@ export default class Confetti extends LightningElement {
     get originY() {
         return this._originY;
     }
-
     set originY(value) {
         const originY = parseInt(value, 10);
         this._originY = !isNaN(originY) ? originY : DEFAULT_ORIGIN_Y;
@@ -132,7 +124,6 @@ export default class Confetti extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: CONFETTI_VARIANTS.default,
@@ -151,7 +142,6 @@ export default class Confetti extends LightningElement {
     get zIndex() {
         return this._zIndex;
     }
-
     set zIndex(value) {
         const zIndex = parseInt(value, 10);
         this._zIndex = !isNaN(zIndex) ? zIndex : DEFAULT_Z_INDEX;
@@ -218,6 +208,73 @@ export default class Confetti extends LightningElement {
     }
 
     /**
+     * Fireworks variant.
+     */
+    fireworks() {
+        let animationEnd = Date.now() + 6000;
+
+        // eslint-disable-next-line consistent-return
+        this.interval = setInterval(() => {
+            let timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(this.interval);
+            }
+
+            let particleCount = 300;
+
+            // eslint-disable-next-line no-undef
+            confetti({
+                startVelocity: 30,
+                spread: 360,
+                ticks: 60,
+                particleCount,
+                origin: {
+                    x: Math.random(),
+                    y: Math.random() - 0.2
+                },
+                colors: this.colors,
+                zIndex: this.zIndex
+            });
+        }, 250);
+    }
+
+    /**
+     * Pride variant.
+     */
+    pride() {
+        let end = Date.now() + 6000;
+
+        // eslint-disable-next-line consistent-return
+        this.interval = setInterval(() => {
+            if (Date.now() > end) {
+                return clearInterval(this.interval);
+            }
+
+            // eslint-disable-next-line no-undef
+            confetti({
+                angle: 60,
+                spread: 55,
+                origin: {
+                    x: 0
+                },
+                colors: this.colors,
+                zIndex: this.zIndex
+            });
+            // eslint-disable-next-line no-undef
+            confetti({
+                angle: 120,
+                spread: 55,
+                origin: {
+                    x: 1
+                },
+                colors: this.colors,
+                zIndex: this.zIndex
+            });
+        }, 150);
+    }
+
+    /**
      * Random Direction variant.
      */
     randomDirection() {
@@ -233,6 +290,17 @@ export default class Confetti extends LightningElement {
             colors: this.colors,
             zIndex: this.zIndex
         });
+    }
+
+    /**
+     * Random number generator for min max range.
+     *
+     * @param {number} min
+     * @param {number} max
+     * @returns number
+     */
+    randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
     }
 
     /**
@@ -285,38 +353,6 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Fireworks variant.
-     */
-    fireworks() {
-        let animationEnd = Date.now() + 6000;
-
-        // eslint-disable-next-line consistent-return
-        this.interval = setInterval(() => {
-            let timeLeft = animationEnd - Date.now();
-
-            if (timeLeft <= 0) {
-                return clearInterval(this.interval);
-            }
-
-            let particleCount = 300;
-
-            // eslint-disable-next-line no-undef
-            confetti({
-                startVelocity: 30,
-                spread: 360,
-                ticks: 60,
-                particleCount,
-                origin: {
-                    x: Math.random(),
-                    y: Math.random() - 0.2
-                },
-                colors: this.colors,
-                zIndex: this.zIndex
-            });
-        }, 250);
-    }
-
-    /**
      * Snow variant.
      */
     snow() {
@@ -351,51 +387,5 @@ export default class Confetti extends LightningElement {
                 });
             });
         }, 10);
-    }
-
-    /**
-     * Pride variant.
-     */
-    pride() {
-        let end = Date.now() + 6000;
-
-        // eslint-disable-next-line consistent-return
-        this.interval = setInterval(() => {
-            if (Date.now() > end) {
-                return clearInterval(this.interval);
-            }
-
-            // eslint-disable-next-line no-undef
-            confetti({
-                angle: 60,
-                spread: 55,
-                origin: {
-                    x: 0
-                },
-                colors: this.colors,
-                zIndex: this.zIndex
-            });
-            // eslint-disable-next-line no-undef
-            confetti({
-                angle: 120,
-                spread: 55,
-                origin: {
-                    x: 1
-                },
-                colors: this.colors,
-                zIndex: this.zIndex
-            });
-        }, 150);
-    }
-
-    /**
-     * Random number generator for min max range.
-     *
-     * @param {number} min
-     * @param {number} max
-     * @returns number
-     */
-    randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
     }
 }
