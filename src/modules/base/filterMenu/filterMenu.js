@@ -32,46 +32,58 @@ import {
     UNSELECT_ALL_ACTION
 } from './nestedItemsUtils';
 
-const ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'medium'
-};
-
-const MENU_ALIGNMENTS = {
-    valid: [
-        'auto',
-        'left',
-        'center',
-        'right',
-        'bottom-left',
-        'bottom-center',
-        'bottom-right'
-    ],
-    default: 'left'
-};
-
 const BUTTON_VARIANTS = {
+    default: 'border',
     valid: [
         'bare',
-        'container',
+        'bare-inverse',
         'border',
         'border-filled',
-        'bare-inverse',
-        'border-inverse'
-    ],
-    default: 'border'
+        'border-inverse',
+        'container'
+    ]
+};
+
+const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
+const DEFAULT_ICON_NAME = 'utility:down';
+const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
+const DEFAULT_RANGE_VALUE = [0, 100];
+const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
+
+const i18n = {
+    loading: 'Loading...',
+    showMenu: 'Show Menu'
+};
+
+const ICON_SIZES = {
+    default: 'medium',
+    valid: ['large', 'medium', 'small', 'x-small', 'xx-small']
 };
 
 const LOAD_MORE_OFFSET = 20;
 
+const MENU_ALIGNMENTS = {
+    default: 'left',
+    valid: [
+        'auto',
+        'bottom-center',
+        'bottom-left',
+        'bottom-right',
+        'center',
+        'left',
+        'right'
+    ]
+};
+
 const MENU_VARIANTS = {
-    valid: ['horizontal', 'vertical'],
-    default: 'horizontal'
+    default: 'horizontal',
+    valid: ['horizontal', 'vertical']
 };
 
 const MENU_WIDTHS = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'small'
+    default: 'small',
+    valid: ['large', 'medium', 'small', 'x-small', 'xx-small']
 };
 
 const TYPE_ATTRIBUTES = {
@@ -93,6 +105,7 @@ const TYPE_ATTRIBUTES = {
         'hasNestedItems',
         'isMultiSelect',
         'items',
+        'noResultsMessage',
         'searchInputPlaceholder'
     ],
     range: [
@@ -112,17 +125,6 @@ const TYPES = {
     default: 'list',
     valid: ['date-range', 'list', 'range']
 };
-
-const i18n = {
-    loading: 'Loading',
-    showMenu: 'Show Menu'
-};
-
-const DEFAULT_ICON_NAME = 'utility:down';
-const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
-const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
-const DEFAULT_RANGE_VALUE = [0, 100];
-const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 /**
  * @class
@@ -195,13 +197,19 @@ export default class FilterMenu extends LightningElement {
     _searchTimeOut;
 
     @track computedItems = [];
-    @track selectedItems = [];
     computedTypeAttributes = {};
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
     searchTerm;
+    @track selectedItems = [];
     visibleItems = [];
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         // button-group necessities
@@ -891,6 +899,11 @@ export default class FilterMenu extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed collapsible button icon name.
+     *
+     * @type {string}
+     */
     get computedCollapsibleButtonIconName() {
         return this.closed ? 'utility:chevronright' : 'utility:chevrondown';
     }
@@ -950,6 +963,13 @@ export default class FilterMenu extends LightningElement {
                     this.isList && length === '10-items'
             })
             .toString();
+    }
+
+    get computedNoResultsMessage() {
+        return (
+            this.computedTypeAttributes.noResultsMessage ||
+            DEFAULT_NO_RESULTS_MESSAGE
+        );
     }
 
     /**
@@ -1043,6 +1063,11 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    /**
+     * True if the filter menu has nested items.
+     *
+     * @type {boolean}
+     */
     get hasNestedItems() {
         return this.computedTypeAttributes.hasNestedItems;
     }
@@ -1168,7 +1193,7 @@ export default class FilterMenu extends LightningElement {
      * @type {boolean}
      */
     get showApplyResetButtons() {
-        return !this.hideApplyResetButtons && !this.showNoResultMessage;
+        return !this.hideApplyResetButtons && !this.showNoResultsMessage;
     }
 
     /**
@@ -1185,7 +1210,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @type {boolean}
      */
-    get showNoResultMessage() {
+    get showNoResultsMessage() {
         return (
             !this.isLoading &&
             this.noVisibleListItem &&
