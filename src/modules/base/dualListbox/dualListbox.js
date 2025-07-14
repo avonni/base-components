@@ -42,9 +42,12 @@ const DEFAULT_MIN = 0;
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const i18n = {
+    keyboardInteractionAssistiveText:
+        'Press Ctrl (Cmd on Mac) + Left Arrow or Ctrl (Cmd on Mac) + Right Arrow to move items between lists.',
+    loadingStateAlternativeText: 'Loading...',
     optionLockAssistiveText: 'Option Lock AssistiveText',
     required: 'Required',
-    loadingText: 'Loading'
+    searchInputPlaceholder: 'Search…'
 };
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
@@ -83,12 +86,30 @@ export default class DualListbox extends LightningElement {
      */
     @api fieldLevelHelp;
     /**
+     * The assistive text for the keyboard interaction.
+     *
+     * @type {string}
+     * @public
+     * @default Press Ctrl (Cmd on Mac) + Left Arrow or Ctrl (Cmd on Mac) +
+     * Right Arrow to move items between lists.
+     */
+    @api keyboardInteractionAssistiveText =
+        i18n.keyboardInteractionAssistiveText;
+    /**
      * Label of the dual listbox.
      *
      * @type {string}
      * @public
      */
     @api label;
+    /**
+     * Message displayed while the listbox is in the loading state.
+     *
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = i18n.loadingStateAlternativeText;
     /**
      * Error message to be displayed when a range overflow is detected.
      *
@@ -124,6 +145,22 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api removeButtonLabel;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = i18n.required;
+    /**
+     * The placeholder text for the search input.
+     *
+     * @type {string}
+     * @public
+     * @default Search…
+     */
+    @api searchInputPlaceholder = i18n.searchInputPlaceholder;
     /**
      * Label of the Selected options list.
      *
@@ -762,15 +799,24 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
+     * Computed class for the loading spinner wrapper.
+     *
+     * @type {string}
+     */
+    get computedLoadingSpinnerClass() {
+        return classSet({
+            'slds-is-relative avonni-dual-listbox__loading-spinner':
+                this.computedSourceGroups.length
+        }).toString();
+    }
+
+    /**
      * Computed Lock Assistive Text.
      *
      * @type {string}
      */
     get computedLockAssistiveText() {
-        return formatLabel(
-            this.i18n.optionLockAssistiveText,
-            this.selectedLabel
-        );
+        return formatLabel(i18n.optionLockAssistiveText, this.selectedLabel);
     }
 
     /**
@@ -806,15 +852,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Localization.
-     *
-     * @type {i18n}
-     */
-    get i18n() {
-        return i18n;
-    }
-
-    /**
      * Check if Label Hidden.
      *
      * @type {boolean}
@@ -830,18 +867,6 @@ export default class DualListbox extends LightningElement {
      */
     get isSelectedBoxEmpty() {
         return this.computedValue.length === 0;
-    }
-
-    /**
-     * Computed class for the loading spinner wrapper.
-     *
-     * @type {string}
-     */
-    get loadingSpinnerClass() {
-        return classSet({
-            'slds-is-relative avonni-dual-listbox__loading-spinner':
-                this.computedSourceGroups.length
-        }).toString();
     }
 
     /**
