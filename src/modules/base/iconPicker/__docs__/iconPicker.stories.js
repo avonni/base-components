@@ -25,6 +25,17 @@ export default {
                 defaultValue: { summary: 'Cancel' }
             }
         },
+        clearButtonAlternativeText: {
+            name: 'clear-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the clear button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Clear' }
+            }
+        },
         doneButtonLabel: {
             name: 'done-button-label',
             control: {
@@ -215,6 +226,17 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the required attribute.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' }
+            }
+        },
         searchInputPlaceholder: {
             name: 'search-input-placeholder',
             control: {
@@ -257,6 +279,7 @@ export default {
     },
     args: {
         cancelButtonLabel: 'Cancel',
+        clearButtonAlternativeText: 'Clear',
         doneButtonLabel: 'Done',
         disabled: false,
         hideClearIcon: false,
@@ -267,6 +290,7 @@ export default {
         messageWhenBadInput: 'Please ensure the value is correct.',
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         searchInputPlaceholder: 'Type icon name to search',
         variant: 'standard'
     }

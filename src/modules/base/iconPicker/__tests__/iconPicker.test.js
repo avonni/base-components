@@ -25,6 +25,7 @@ describe('IconPicker', () => {
         it('Default attributes', () => {
             expect(element.accessKey).toBeUndefined();
             expect(element.cancelButtonLabel).toBe('Cancel');
+            expect(element.clearButtonAlternativeText).toBe('Clear');
             expect(element.disabled).toBeFalsy();
             expect(element.doneButtonLabel).toBe('Done');
             expect(element.fieldLevelHelp).toBeUndefined();
@@ -41,6 +42,7 @@ describe('IconPicker', () => {
             expect(element.name).toBeUndefined();
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.searchInputPlaceholder).toBe(
                 'Type icon name to search'
             );
@@ -61,6 +63,27 @@ describe('IconPicker', () => {
             });
         });
 
+        describe('Cancel button label', () => {
+            it('Passed to the component', () => {
+                element.cancelButtonLabel = 'Cancel label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.shadowRoot
+                            .querySelector(
+                                '[data-element-id="button-toggle-menu"]'
+                            )
+                            .click();
+                    })
+                    .then(() => {
+                        const cancelButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-cancel"]'
+                        );
+                        expect(cancelButton.label).toBe('Cancel label');
+                    });
+            });
+        });
+
         describe('Disabled', () => {
             it('Passed to the component', () => {
                 element.disabled = true;
@@ -75,6 +98,27 @@ describe('IconPicker', () => {
                     expect(button.disabled).toBeTruthy();
                     expect(input.disabled).toBeTruthy();
                 });
+            });
+        });
+
+        describe('Done button label', () => {
+            it('Passed to the component', () => {
+                element.doneButtonLabel = 'Done label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.shadowRoot
+                            .querySelector(
+                                '[data-element-id="button-toggle-menu"]'
+                            )
+                            .click();
+                    })
+                    .then(() => {
+                        const doneButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-done"]'
+                        );
+                        expect(doneButton.label).toBe('Done label');
+                    });
             });
         });
 
@@ -94,6 +138,7 @@ describe('IconPicker', () => {
         describe('Hide clear icon', () => {
             it('Passed to the component when false', () => {
                 element.hideClearIcon = false;
+                element.clearButtonAlternativeText = 'Cleared';
                 element.value = 'standard:apps';
 
                 return Promise.resolve().then(() => {
@@ -101,6 +146,7 @@ describe('IconPicker', () => {
                         '[data-element-id="button-clear"]'
                     );
                     expect(clearButton).toBeTruthy();
+                    expect(clearButton.title).toBe('Cleared');
                 });
             });
             it('Passed to the component when true', () => {
@@ -405,56 +451,20 @@ describe('IconPicker', () => {
         describe('Required', () => {
             it('Passed to the component', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required text';
 
                 return Promise.resolve().then(() => {
                     const abbr = element.shadowRoot.querySelector(
                         '[data-element-id="abbr"]'
                     );
                     expect(abbr.textContent).toBe('*');
+                    expect(abbr.title).toBe('Required text');
                 });
             });
         });
 
-        describe('Static Labels', () => {
-            it('Cancel button label', () => {
-                element.cancelButtonLabel = 'Cancel label';
-
-                return Promise.resolve()
-                    .then(() => {
-                        element.shadowRoot
-                            .querySelector(
-                                '[data-element-id="button-toggle-menu"]'
-                            )
-                            .click();
-                    })
-                    .then(() => {
-                        const cancelButton = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-cancel"]'
-                        );
-                        expect(cancelButton.label).toBe('Cancel label');
-                    });
-            });
-
-            it('Done button label', () => {
-                element.doneButtonLabel = 'Done label';
-
-                return Promise.resolve()
-                    .then(() => {
-                        element.shadowRoot
-                            .querySelector(
-                                '[data-element-id="button-toggle-menu"]'
-                            )
-                            .click();
-                    })
-                    .then(() => {
-                        const doneButton = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-done"]'
-                        );
-                        expect(doneButton.label).toBe('Done label');
-                    });
-            });
-
-            it('Search input placeholder', () => {
+        describe('Search input placeholder', () => {
+            it('Passed to the component', () => {
                 element.searchInputPlaceholder = 'Search placeholder';
 
                 return Promise.resolve()

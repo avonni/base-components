@@ -8,6 +8,7 @@ customElements.define(
 export const IconPicker = ({
     accessKey,
     cancelButtonLabel,
+    clearButtonAlternativeText,
     doneButtonLabel,
     disabled,
     fieldLevelHelp,
@@ -24,6 +25,7 @@ export const IconPicker = ({
     placeholder,
     readOnly,
     required,
+    requiredAlternativeText,
     searchInputPlaceholder,
     value,
     variant
@@ -31,6 +33,7 @@ export const IconPicker = ({
     const element = document.createElement('avonni-base-icon-picker');
     element.accessKey = accessKey;
     element.cancelButtonLabel = cancelButtonLabel;
+    element.clearButtonAlternativeText = clearButtonAlternativeText;
     element.doneButtonLabel = doneButtonLabel;
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
@@ -47,6 +50,7 @@ export const IconPicker = ({
     element.placeholder = placeholder;
     element.readOnly = readOnly;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.searchInputPlaceholder = searchInputPlaceholder;
     element.value = value;
     element.variant = variant;

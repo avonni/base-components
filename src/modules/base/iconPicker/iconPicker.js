@@ -10,7 +10,9 @@ import { ICON_TYPES } from './icons/salesforceIcons';
 
 const DEFAULT_BAD_INPUT_MESSAGE = 'Please ensure the value is correct.';
 const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_CLEAR_BUTTON_ALTERNATIVE_TEXT = 'Clear';
 const DEFAULT_DONE_BUTTON_LABEL = 'Done';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Type icon name to search';
 
 const MENU_ICON_SIZES = {
@@ -29,6 +31,7 @@ const MENU_VARIANTS = {
     ],
     default: 'border'
 };
+const NB_VISIBLE_TABS = 2;
 
 const TABS = {
     valid: ['Standard', 'Custom', 'Utility', 'Doctype', 'Action'],
@@ -39,8 +42,6 @@ const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
-
-const NB_VISIBLE_TABS = 2;
 
 /**
  * @class
@@ -65,6 +66,14 @@ export default class IconPicker extends LightningElement {
      * @default 'Cancel'
      */
     @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
+    /**
+     * Alternative text for the clear button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Clear'
+     */
+    @api clearButtonAlternativeText = DEFAULT_CLEAR_BUTTON_ALTERNATIVE_TEXT;
     /**
      * Text label for the done button.
      *
@@ -108,6 +117,14 @@ export default class IconPicker extends LightningElement {
      * @public
      */
     @api placeholder;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default 'Required'
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**
      * Text that is displayed in the search input when the input is empty.
      *

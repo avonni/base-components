@@ -4,10 +4,10 @@
             <abbr
                 if:true={required}
                 class="slds-required"
-                title="required"
+                title={requiredAlternativeText}
                 data-element-id="abbr"
-                >*</abbr
-            >
+                >*
+            </abbr>
             {label}
         </label>
         <lightning-helptext
@@ -56,10 +56,10 @@
                         class="slds-icon_container avonni-icon-picker__icon"
                     >
                         <svg
-                            version="1.1"
                             baseProfile="full"
-                            width={emptyIconSize}
                             height={emptyIconSize}
+                            width={emptyIconSize}
+                            version="1.1"
                             xmlns="http://www.w3.org/2000/svg"
                         >
                             <rect
@@ -321,7 +321,7 @@
                             slds-input__icon slds-input__icon_right
                             avonni-builder-icon-picker-clear-icon
                         "
-                        title="Clear"
+                        title={clearButtonAlternativeText}
                         type="button"
                         data-element-id="button-clear"
                         onclick={clearIconInput}
@@ -331,7 +331,9 @@
                             icon-name="utility:clear"
                             size="xx-small"
                         ></lightning-icon>
-                        <span class="slds-assistive-text">Clear</span>
+                        <span class="slds-assistive-text"
+                            >{clearButtonAlternativeText}
+                        </span>
                     </button>
                 </div>
             </div>
