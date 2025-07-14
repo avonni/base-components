@@ -332,6 +332,17 @@ export default {
                 category: 'Data'
             }
         },
+        noResultsMessage: {
+            name: 'no-results-message',
+            control: {
+                type: 'text'
+            },
+            description: 'Message displayed when no search results are found.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Parameters'
+            }
+        },
         options: {
             control: {
                 type: 'object'
@@ -389,6 +400,19 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
+                category: 'Validations'
+            }
+        },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' },
                 category: 'Validations'
             }
         },
@@ -526,9 +550,11 @@ export default {
         loadMoreOffset: 20,
         min: 0,
         multiLevelGroups: false,
+        noResultsMessage: 'No matches found',
         readOnly: false,
         removeSelectedOptions: false,
         required: false,
+        requiredAlternativeText: 'Required',
         selectedOptionsAriaLabel: 'Selected Options',
         selectedOptionsDirection: 'horizontal',
         sortableSelectedOptions: false,

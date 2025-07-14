@@ -26,11 +26,13 @@ export default class Combobox extends LightningElement {
     @api min;
     @api multiLevelGroups;
     @api name;
+    @api noResultsMessage;
     @api options;
     @api placeholder;
     @api readOnly;
     @api removeSelectedOptions;
     @api required;
+    @api requiredAlternativeText;
     @api scopes;
     @api scopesGroups;
     @api search;

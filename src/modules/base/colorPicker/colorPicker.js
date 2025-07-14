@@ -193,6 +193,7 @@ export default class ColorPicker extends LightningElement {
      *
      * @type {string}
      * @public
+     * @default Required
      */
     @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**

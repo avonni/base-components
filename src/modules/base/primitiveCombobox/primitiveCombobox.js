@@ -25,11 +25,12 @@ const DEFAULT_BACK_ACTION = {
 };
 const DEFAULT_GROUP_NAME = 'ungrouped';
 const DEFAULT_LOAD_MORE_OFFSET = 20;
-const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_MIN = 0;
+const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
-const MIN_DROPDOWN_HEIGHT = 60;
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const DROPDOWN_ALIGNMENTS = {
     valid: [
         'auto',
@@ -46,6 +47,7 @@ const DROPDOWN_LENGTHS = {
     valid: ['5-items', '7-items', '10-items'],
     default: '7-items'
 };
+const MIN_DROPDOWN_HEIGHT = 60;
 const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
@@ -128,6 +130,22 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api name;
+    /**
+     * Message displayed when no search results are found.
+     *
+     * @type {string}
+     * @public
+     * @default No matches found
+     */
+    @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**
      * Deprecated. The selected options are in the combobox component's DOM.
      *

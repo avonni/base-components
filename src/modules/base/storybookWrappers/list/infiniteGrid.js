@@ -1,21 +1,22 @@
 import { LightningElement, api } from 'lwc';
 
 export default class InfiniteGrid extends LightningElement {
-    @api label;
-    @api alternativeText;
-    @api sortable;
     @api actions;
+    @api alternativeText;
+    @api cols;
+    @api divider;
+    @api imageAttributes;
+    @api label;
+    @api largeContainerCols;
+    @api loadingStateAlternativeText;
+    @api loadMoreOffset;
     @api mediaActions;
+    @api mediumContainerCols;
+    @api smallContainerCols;
+    @api sortable;
     @api sortableIconName;
     @api sortableIconPosition;
-    @api divider;
     @api variant;
-    @api cols;
-    @api smallContainerCols;
-    @api mediumContainerCols;
-    @api largeContainerCols;
-    @api imageAttributes;
-    @api loadMoreOffset;
 
     _enableInfiniteLoading = true;
     _isLoading = false;

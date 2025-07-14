@@ -130,6 +130,18 @@ export default {
                 category: 'Columns'
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the list is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         loadMoreOffset: {
             name: 'load-more-offset',
             control: {
@@ -297,6 +309,7 @@ export default {
     },
     args: {
         cols: 1,
+        loadingStateAlternativeText: 'Loading...',
         nextButtonAlternativeText: 'Next Items',
         previousButtonAlternativeText: 'Previous Items',
         sortable: false,

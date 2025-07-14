@@ -55,6 +55,7 @@ describe('List', () => {
             });
             expect(element.label).toBeUndefined();
             expect(element.largeContainerCols).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.loadMoreOffset).toBe(20);
             expect(element.mediaActions).toMatchObject([]);
             expect(element.mediumContainerCols).toBeUndefined();

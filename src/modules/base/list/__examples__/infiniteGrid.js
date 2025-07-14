@@ -17,6 +17,7 @@ export const InfiniteGrid = ({
     items,
     label,
     largeContainerCols,
+    loadingStateAlternativeText,
     loadMoreOffset,
     mediaActions,
     mediumContainerCols,
@@ -42,6 +43,7 @@ export const InfiniteGrid = ({
     element.items = items;
     element.label = label;
     element.largeContainerCols = largeContainerCols;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.loadMoreOffset = loadMoreOffset;
     element.mediaActions = mediaActions;
     element.mediumContainerCols = mediumContainerCols;

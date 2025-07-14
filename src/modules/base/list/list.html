@@ -479,7 +479,7 @@
                 >
                     <lightning-spinner
                         class="slds-spinner_container"
-                        alternative-text="Loading..."
+                        alternative-text={loadingStateAlternativeText}
                         size="small"
                         data-element-id="loading-spinner-below"
                     ></lightning-spinner>
@@ -506,7 +506,7 @@
                 <lightning-spinner
                     if:true={isLoading}
                     class="slds-spinner_container"
-                    alternative-text="Loading..."
+                    alternative-text={loadingStateAlternativeText}
                     size="small"
                 ></lightning-spinner>
             </div>

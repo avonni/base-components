@@ -13,6 +13,7 @@ export const List = ({
     isLoading,
     items,
     label,
+    loadingStateAlternativeText,
     largeContainerCols,
     loadMoreOffset,
     mediaActions,
@@ -40,6 +41,7 @@ export const List = ({
     element.isLoading = isLoading;
     element.items = items;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.largeContainerCols = largeContainerCols;
     element.loadMoreOffset = loadMoreOffset;
     element.mediaActions = mediaActions;

@@ -25,11 +25,13 @@ export default class PrimitiveCombobox extends LightningElement {
     @api min;
     @api multiLevelGroups;
     @api name;
+    @api noResultsMessage;
     @api options;
     @api placeholder;
     @api readOnly;
     @api removeSelectedOptions;
     @api required;
+    @api requiredAlternativeText;
     @api search;
     @api hideClearIcon;
     @api value;

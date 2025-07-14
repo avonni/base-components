@@ -1,25 +1,26 @@
 <template>
     <div style="max-height: 500px; height: 500px">
         <c-list
-            label={label}
-            alternative-text={alternativeText}
-            sortable={sortable}
-            items={loadedItems}
             actions={actions}
+            alternative-text={alternativeText}
+            cols={cols}
+            divider={divider}
+            enable-infinite-loading={enableInfiniteLoading}
+            image-attributes={imageAttributes}
+            is-loading={isLoading}
+            items={loadedItems}
+            label={label}
+            large-container-cols={largeContainerCols}
+            load-more-offset={loadMoreOffset}
+            loading-state-alternative-text={loadingStateAlternativeText}
             media-actions={mediaActions}
+            medium-container-cols={mediumContainerCols}
+            onloadmore={loadMoreData}
+            small-container-cols={smallContainerCols}
+            sortable={sortable}
             sortable-icon-name={sortableIconName}
             sortable-icon-position={sortableIconPosition}
-            divider={divider}
             variant={variant}
-            cols={cols}
-            small-container-cols={smallContainerCols}
-            medium-container-cols={mediumContainerCols}
-            large-container-cols={largeContainerCols}
-            image-attributes={imageAttributes}
-            enable-infinite-loading={enableInfiniteLoading}
-            is-loading={isLoading}
-            onloadmore={loadMoreData}
-            load-more-offset={loadMoreOffset}
         >
         </c-list>
     </div>

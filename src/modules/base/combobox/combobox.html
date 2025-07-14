@@ -1,6 +1,12 @@
 <template>
     <span class={computedLabelClass} data-element-id="span-label">
-        <abbr if:true={required} class="slds-required" title="Required">*</abbr>
+        <abbr
+            if:true={required}
+            class="slds-required"
+            title={requiredAlternativeText}
+            data-element-id="abbr-required"
+            >*
+        </abbr>
         {computedLabel}
     </span>
     <lightning-helptext
@@ -59,11 +65,13 @@
                 min={min}
                 multi-level-groups={multiLevelGroups}
                 name={name}
+                no-results-message={noResultsMessage}
                 options={options}
                 placeholder={placeholder}
                 read-only={readOnly}
                 remove-selected-options={removeSelectedOptions}
                 required={required}
+                required-alternative-text={requiredAlternativeText}
                 search={search}
                 value={value}
                 variant="label-hidden"

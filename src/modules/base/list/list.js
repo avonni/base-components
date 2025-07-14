@@ -23,6 +23,7 @@ const DEFAULT_FIELD_COLUMNS = {
     large: 4
 };
 const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_NEXT_BUTTON_ALTERNATIVE_TEXT = 'Next Items';
 const DEFAULT_PREVIOUS_BUTTON_ALTERNATIVE_TEXT = 'Previous Items';
 
@@ -83,6 +84,14 @@ export default class List extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Message displayed while the list is in the loading state.
+     *
+     * @type {string}
+     * @public
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * 	Alternative text for the next button.
      *
