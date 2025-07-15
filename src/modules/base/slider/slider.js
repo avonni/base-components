@@ -376,10 +376,11 @@ export default class Slider extends LightningElement {
         }
         this._step = Number(value);
         this._scalingFactor =
-            0 < this._step && this._step < 1 ? 1 / this.step : DEFAULT_STEP;
+            0 < this._step && this._step < 1 ? 1 / this._step : DEFAULT_STEP;
         if (this._connected) {
             this.scaleValues();
             this.capValues();
+            this.initMaxDefaultValue();
         }
         this._domModified = true;
     }
@@ -466,6 +467,15 @@ export default class Slider extends LightningElement {
             this._domModified = true;
         }
         this._unitAttributes = normalizeObject(value);
+        const normalized = normalizeObject(value);
+        const clean = {};
+        Object.entries(normalized).forEach(([key, val]) => {
+            if (val !== null) {
+                clean[key] = val;
+            }
+        });
+
+        this._unitAttributes = clean;
     }
 
     /**
@@ -583,13 +593,14 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedCustomLabelContainerClass() {
-        const isVertical = this.type === 'vertical';
         return classSet('').add({
-            'avonni-slider__custom-label-container_horizontal': !isVertical,
-            'avonni-slider__custom-label-container_vertical': isVertical,
+            'avonni-slider__custom-label-container_horizontal':
+                !this.isVertical,
+            'avonni-slider__custom-label-container_vertical': this.isVertical,
             'avonni-slider__custom-label-container_close':
                 this.tickMarkStyle !== 'tick',
-            [`avonni-slider__container-vertical-size_${this.size}`]: isVertical
+            [`avonni-slider__container-vertical-size_${this.size}`]:
+                this.isVertical
         });
     }
 
@@ -765,7 +776,7 @@ export default class Slider extends LightningElement {
      * @type {Boolean}
      */
     get hasCustomLabels() {
-        return this.customLabels.length !== 0 && this.unit === 'custom';
+        return this.customLabels.length && this.unit === 'custom';
     }
 
     /**
@@ -844,11 +855,7 @@ export default class Slider extends LightningElement {
      * @type {Boolean}
      */
     get showLabel() {
-        return !(
-            this.variant === 'label-hidden' ||
-            !this.label ||
-            (this.label && this.label.length === 0)
-        );
+        return !(this.variant === 'label-hidden' || !this.label);
     }
 
     /**
@@ -903,7 +910,7 @@ export default class Slider extends LightningElement {
     /**
      * Returns the track bar html element.
      *
-     * @type {object}
+     * @type {HTMLElement}
      */
     get track() {
         return this.template.querySelector('[data-element-id="track"]');
@@ -1320,7 +1327,7 @@ export default class Slider extends LightningElement {
         const stepWidth =
             (totalWidth - this.thumbRadius * 2) / normalizedNumberOfSteps;
 
-        switch (this._tickMarkStyle) {
+        switch (this.tickMarkStyle) {
             case 'tick':
                 this.drawTickRuler(
                     normalizedNumberOfSteps,
