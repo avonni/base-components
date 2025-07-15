@@ -4,6 +4,9 @@ customElements.define('ac-base-image', Component.CustomElementConstructor);
 
 export const Image = ({
     alternativeText,
+    compareAlternativeText,
+    compareAttributes,
+    compareSrc,
     cropFit,
     cropPositionX,
     cropPositionY,
@@ -12,21 +15,23 @@ export const Image = ({
     fluidGrow,
     height,
     lazyLoading,
+    leftCompareIconAlternativeText,
+    magnifierAttributes,
+    magnifierType,
     position,
+    rightCompareIconAlternativeText,
     sizes,
     src,
     srcset,
     staticImages,
     thumbnail,
-    width,
-    magnifierType,
-    magnifierAttributes,
-    compareAlternativeText,
-    compareSrc,
-    compareAttributes
+    width
 }) => {
     const element = document.createElement('ac-base-image');
     element.alternativeText = alternativeText;
+    element.compareAlternativeText = compareAlternativeText;
+    element.compareAttributes = compareAttributes;
+    element.compareSrc = compareSrc;
     element.cropFit = cropFit;
     element.cropPositionX = cropPositionX;
     element.cropPositionY = cropPositionY;
@@ -35,17 +40,16 @@ export const Image = ({
     element.fluidGrow = fluidGrow;
     element.height = height;
     element.lazyLoading = lazyLoading;
+    element.leftCompareIconAlternativeText = leftCompareIconAlternativeText;
+    element.magnifierAttributes = magnifierAttributes;
+    element.magnifierType = magnifierType;
     element.position = position;
+    element.rightCompareIconAlternativeText = rightCompareIconAlternativeText;
     element.sizes = sizes;
     element.src = src;
     element.srcset = srcset;
     element.staticImages = staticImages;
     element.thumbnail = thumbnail;
     element.width = width;
-    element.magnifierType = magnifierType;
-    element.magnifierAttributes = magnifierAttributes;
-    element.compareAlternativeText = compareAlternativeText;
-    element.compareSrc = compareSrc;
-    element.compareAttributes = compareAttributes;
     return element;
 };

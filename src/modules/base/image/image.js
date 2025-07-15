@@ -31,6 +31,11 @@ const CROP_SIZE = {
     default: 'none'
 };
 
+const DEFAULT_LEFT_COMPARE_ICON_ALTERNATIVE_TEXT =
+    'Press left to show the original image';
+const DEFAULT_RIGHT_COMPARE_ICON_ALTERNATIVE_TEXT =
+    'Press right to show the compared image';
+
 const DEFAULT_ZOOM_FACTOR = 2;
 const DEFAULT_ZOOM_RATIO = '100px';
 
@@ -80,7 +85,6 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     @api compareAlternativeText;
-
     /**
      * The image to compare with.
      *
@@ -88,6 +92,24 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     @api compareSrc;
+    /**
+     * Alternative text for the icon on the left of the compare slider.
+     *
+     * @public
+     * @type {string}
+     * @default 'Press left to show the original image'
+     */
+    @api leftCompareIconAlternativeText =
+        DEFAULT_LEFT_COMPARE_ICON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the icon on the right of the compare slider.
+     *
+     * @public
+     * @type {string}
+     * @default 'Press right to show the compared image'
+     */
+    @api rightCompareIconAlternativeText =
+        DEFAULT_RIGHT_COMPARE_ICON_ALTERNATIVE_TEXT;
 
     _aspectRatio;
     _compareAttributes = {

@@ -42,6 +42,9 @@ describe('Image', () => {
             expect(element.fluidGrow).toBeFalsy();
             expect(element.height).toBeUndefined();
             expect(element.lazyLoading).toBe('auto');
+            expect(element.leftCompareIconAlternativeText).toBe(
+                'Press left to show the original image'
+            );
             expect(element.magnifierAttributes.position).toBe('auto');
             expect(element.magnifierAttributes.horizontalOffset).toBe(0);
             expect(element.magnifierAttributes.verticalOffset).toBe(0);
@@ -51,6 +54,9 @@ describe('Image', () => {
             expect(element.magnifierAttributes.zoomRatioHeight).toBe('100px');
             expect(element.magnifierType).toBeUndefined();
             expect(element.position).toBeUndefined();
+            expect(element.rightCompareIconAlternativeText).toBe(
+                'Press right to show the compared image'
+            );
             expect(element.sizes).toBeUndefined();
             expect(element.src).toBeUndefined();
             expect(element.srcset).toBeUndefined();

@@ -18,9 +18,9 @@ describe('Illustration', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.size).toBe('small');
             expect(element.title).toBeUndefined();
             expect(element.variant).toBe('text-only');
-            expect(element.size).toBe('small');
         });
 
         describe('size', () => {

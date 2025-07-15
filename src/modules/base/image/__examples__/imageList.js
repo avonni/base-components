@@ -4,6 +4,9 @@ customElements.define('ac-image-list', Component.CustomElementConstructor);
 
 export const ImageList = ({
     alternativeText,
+    compareAlternativeText,
+    compareAttributes,
+    compareSrc,
     cropFit,
     cropPositionX,
     cropPositionY,
@@ -12,20 +15,22 @@ export const ImageList = ({
     fluidGrow,
     height,
     lazyLoading,
+    leftCompareIconAlternativeText,
+    magnifierAttributes,
+    magnifierType,
     position,
     sizes,
     src,
     srcset,
     staticImages,
     thumbnail,
-    width,
-    magnifierType,
-    magnifierAttributes,
-    compareSrc,
-    compareAttributes
+    width
 }) => {
     const element = document.createElement('ac-image-list');
     element.alternativeText = alternativeText;
+    element.compareAlternativeText = compareAlternativeText;
+    element.compareAttributes = compareAttributes;
+    element.compareSrc = compareSrc;
     element.cropFit = cropFit;
     element.cropPositionX = cropPositionX;
     element.cropPositionY = cropPositionY;
@@ -34,6 +39,9 @@ export const ImageList = ({
     element.fluidGrow = fluidGrow;
     element.height = height;
     element.lazyLoading = lazyLoading;
+    element.magnifierAttributes = magnifierAttributes;
+    element.magnifierType = magnifierType;
+    element.leftCompareIconAlternativeText = leftCompareIconAlternativeText;
     element.position = position;
     element.sizes = sizes;
     element.src = src;
@@ -41,9 +49,5 @@ export const ImageList = ({
     element.staticImages = staticImages;
     element.thumbnail = thumbnail;
     element.width = width;
-    element.magnifierType = magnifierType;
-    element.magnifierAttributes = magnifierAttributes;
-    element.compareSrc = compareSrc;
-    element.compareAttributes = compareAttributes;
     return element;
 };
