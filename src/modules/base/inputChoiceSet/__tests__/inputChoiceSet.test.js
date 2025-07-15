@@ -60,6 +60,7 @@ describe('Input choice set', () => {
             expect(element.isLoading).toBe(false);
             expect(element.isMultiSelect).toBe(false);
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.options).toMatchObject([]);
@@ -67,6 +68,7 @@ describe('Input choice set', () => {
             expect(element.orientationAttributes).toMatchObject({});
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.stretch).toBeFalsy();
             expect(element.type).toBe('default');
             expect(element.typeAttributes).toMatchObject({});
@@ -74,8 +76,6 @@ describe('Input choice set', () => {
             expect(element.value).toMatchObject([]);
             expect(element.variant).toBe('standard');
         });
-
-        /* ----- ATTRIBUTES ----- */
 
         describe('Check Position', () => {
             it('left', () => {
@@ -188,6 +188,7 @@ describe('Input choice set', () => {
             it('isLoading = true', () => {
                 element.options = options;
                 element.isLoading = true;
+                element.loadingStateAlternativeText = 'Loading';
 
                 return Promise.resolve().then(() => {
                     const input = element.shadowRoot.querySelector(
@@ -198,6 +199,7 @@ describe('Input choice set', () => {
                     );
                     expect(input).toBeFalsy();
                     expect(loader).toBeTruthy();
+                    expect(loader.alternativeText).toBe('Loading');
                 });
             });
         });
@@ -504,12 +506,14 @@ describe('Input choice set', () => {
             it('required', () => {
                 element.options = options;
                 element.required = true;
+                element.requiredAlternativeText = 'Required field';
 
                 return Promise.resolve().then(() => {
                     const abbr = element.shadowRoot.querySelector(
                         '[data-element-id="abbr"]'
                     );
                     expect(abbr).toBeTruthy();
+                    expect(abbr.title).toBe('Required field');
                 });
             });
         });

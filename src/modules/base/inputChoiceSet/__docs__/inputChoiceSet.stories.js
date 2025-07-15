@@ -70,6 +70,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the input is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         messageWhenValueMissing: {
             name: 'message-when-value-missing',
             control: {
@@ -135,6 +147,18 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' }
+            }
+        },
         type: {
             control: {
                 type: 'radio'
@@ -192,9 +216,11 @@ export default {
         disabled: false,
         isLoading: false,
         isMultiSelect: false,
+        loadingStateAlternativeText: 'Loading...',
         orientation: 'vertical',
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         type: 'default',
         variant: 'standard'
     }

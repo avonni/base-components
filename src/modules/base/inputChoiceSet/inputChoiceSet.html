@@ -11,7 +11,7 @@
                     <abbr
                         if:true={required}
                         class="slds-required"
-                        title={i18n.required}
+                        title={requiredAlternativeText}
                         data-element-id="abbr"
                     >
                         *
@@ -30,7 +30,7 @@
                     class="slds-is-relative avonni-input-choice-set__loading"
                 >
                     <lightning-spinner
-                        alternative-text="Loading..."
+                        alternative-text={loadingStateAlternativeText}
                         size="small"
                         data-element-id="lightning-spinner-loading"
                     ></lightning-spinner>
@@ -239,8 +239,8 @@
                                 onkeyup={handleKeyUp}
                             />
                             <label
-                                class={computedLabelClass}
                                 for={option.value}
+                                class={computedLabelClass}
                                 style={option.computedButtonLabelStyle}
                                 data-color={option.color}
                                 data-element-id="label"
