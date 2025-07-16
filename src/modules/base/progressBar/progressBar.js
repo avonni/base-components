@@ -11,6 +11,7 @@ import progressBarVertical from './progressBarVertical.html';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const BORDER_RADIUS_REM = 0.5;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_VALUE = 0;
 const PROGRESS_BAR_ORIENTATIONS = {
     valid: ['horizontal', 'vertical'],
@@ -80,6 +81,14 @@ export default class ProgressBar extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Message displayed while the progress bar is in the loading state.
+     *
+     * @type {string}
+     * @public
+     * @default "Loading..."
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Text displayed before the value.
      *

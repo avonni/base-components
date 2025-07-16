@@ -41,6 +41,7 @@ describe('ProgressBar', () => {
             expect(element.alternativeText).toBeUndefined();
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.orientation).toBe('horizontal');
             expect(element.pinAttributes).toMatchObject({});
             expect(element.referenceLines).toMatchObject([]);
@@ -92,6 +93,8 @@ describe('ProgressBar', () => {
 
             it('true', () => {
                 element.isLoading = true;
+                element.loadingStateAlternativeText =
+                    'Loading alternative text';
 
                 return Promise.resolve()
                     .then(() => {
@@ -107,6 +110,9 @@ describe('ProgressBar', () => {
                             '[data-element-id="lightning-spinner"]'
                         );
                         expect(spinner).toBeTruthy();
+                        expect(spinner.alternativeText).toBe(
+                            'Loading alternative text'
+                        );
                     });
             });
         });
