@@ -929,7 +929,8 @@ export default class Carousel extends LightningElement {
                 ),
                 tabIndex: isHidden === TRUE_STRING ? -1 : 0,
                 ariaHidden: isHidden,
-                ariaLabelledby: `pagination-item-${panelIndex}`
+                ariaLabelledby: `pagination-item-${panelIndex}`,
+                isActive: isHidden !== TRUE_STRING
             });
             panelIndex += 1;
         }
@@ -982,6 +983,7 @@ export default class Carousel extends LightningElement {
             return;
         }
 
+        activePanelItem.isActive = true;
         activePanelItem.ariaHidden = FALSE_STRING;
         activePanelItem.tabIndex = 0;
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
@@ -1032,6 +1034,7 @@ export default class Carousel extends LightningElement {
         const activePanelItem = this.panelItems[this.activePanelIndex];
 
         if (!activePaginationItem || !activePanelItem) return;
+        activePanelItem.isActive = false;
         activePanelItem.ariaHidden = TRUE_STRING;
         activePanelItem.tabIndex = -1;
     }
