@@ -1030,6 +1030,19 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * True if the clear link should be visible.
+     *
+     * @type {boolean}
+     */
+    get showClearLink() {
+        return (
+            this.showClearIcon &&
+            this._currentTab !== 'custom' &&
+            this.value !== 'null'
+        );
+    }
+
+    /**
      * True if the clear icon should be visible.
      *
      * @type {boolean}
@@ -1381,6 +1394,14 @@ export default class ColorPicker extends LightningElement {
     handleChangeAndDone(event) {
         this.handleChange(event);
         this.handleDone();
+    }
+
+    /**
+     * Clear link handler.
+     */
+    handleClearLinkClick() {
+        this.clearInput();
+        this.toggleMenuVisibility();
     }
 
     /**

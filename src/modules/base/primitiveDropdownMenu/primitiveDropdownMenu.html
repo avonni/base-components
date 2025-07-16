@@ -24,6 +24,7 @@
             <template for:each={items} for:item="item">
                 <lightning-menu-item
                     key={item.name}
+                    disabled={item.disabled}
                     label={item.label}
                     prefix-icon-name={item.iconName}
                     value={item.name}

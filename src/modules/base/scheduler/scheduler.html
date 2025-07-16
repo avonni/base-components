@@ -404,6 +404,7 @@
                     <template for:each={firstEventActions} for:item="action">
                         <lightning-button
                             key={action.name}
+                            disabled={action.disabled}
                             icon-name={action.iconName}
                             label={action.label}
                             name={action.name}
@@ -422,6 +423,7 @@
                         <template for:each={lastEventActions} for:item="action">
                             <lightning-menu-item
                                 key={action.name}
+                                disabled={action.disabled}
                                 label={action.label}
                                 prefix-icon-name={action.iconName}
                                 value={action.name}

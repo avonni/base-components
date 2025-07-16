@@ -1201,7 +1201,9 @@ export default class Scheduler extends LightningElement {
             this.contextMenuEmptySpotActions.length ||
             this._noEmptySpotActions
         ) {
-            return this.contextMenuEmptySpotActions;
+            return this.contextMenuEmptySpotActions.filter((action) => {
+                return !action.hidden;
+            });
         }
         return DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS.filter((action) => {
             return !this.hiddenActions.includes(action.name);
@@ -1243,7 +1245,9 @@ export default class Scheduler extends LightningElement {
             this.contextMenuEventActions.length ||
             this._noEventActions
         ) {
-            return this.contextMenuEventActions;
+            return this.contextMenuEventActions.filter((action) => {
+                return !action.hidden;
+            });
         }
         return DEFAULT_CONTEXT_MENU_EVENT_ACTIONS.filter((action) => {
             return !this.hiddenActions.includes(action.name);

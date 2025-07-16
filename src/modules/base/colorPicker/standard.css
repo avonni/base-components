@@ -20,6 +20,16 @@
     );
 }
 
+.avonni-color-picker__clear_link {
+    background: transparent;
+    border: none;
+    position: relative;
+    top: auto;
+    margin-bottom: 0.5rem;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
 .avonni-color-picker__dropdown {
     max-width: none;
 }

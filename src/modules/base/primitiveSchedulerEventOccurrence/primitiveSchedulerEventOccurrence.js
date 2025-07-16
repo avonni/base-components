@@ -1064,7 +1064,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {number}
      */
     get numberOfEventsInThisTimeFrame() {
-        return this.occurrence.numberOfEventsInThisTimeFrame || 0;
+        return this.occurrence?.numberOfEventsInThisTimeFrame || 0;
     }
 
     /**
@@ -1074,7 +1074,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @default 0
      */
     get offsetSide() {
-        return this.occurrence.offsetSide || 0;
+        return this.occurrence?.offsetSide || 0;
     }
 
     /**
@@ -1083,7 +1083,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {boolean}
      */
     get overflowsCell() {
-        return this.occurrence.overflowsCell;
+        return this.occurrence?.overflowsCell;
     }
 
     /**
