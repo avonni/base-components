@@ -21,7 +21,6 @@
             class={computedListboxClass}
             aria-describedby="instructions"
             aria-labelledby="label"
-            aria-orientation="horizontal"
             tabindex={listboxTabIndex}
             data-element-id="ul"
             onfocusin={handlePillFocus}
@@ -35,7 +34,6 @@
                     data-index={index}
                     key={pill.name}
                     class={computedListItemClass}
-                    role="presentation"
                     onmousemove={handlePillMouseMove}
                     onmousedown={handlePillMouseDown}
                     onmouseup={handlePillMouseUp}
@@ -49,7 +47,6 @@
                         href={pill.href}
                         label={pill.label}
                         name={pill.name}
-                        role="option"
                         tabindex="-1"
                         onactionclick={handleActionClick}
                         onclick={handlePillClick}
