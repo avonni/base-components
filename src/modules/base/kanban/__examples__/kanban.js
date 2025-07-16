@@ -13,6 +13,7 @@ export const Kanban = ({
     imageAttributes,
     isLoading,
     keyField,
+    loadingStateAlternativeText,
     records,
     subGroupFieldName,
     summarizeAttributes,
@@ -29,6 +30,7 @@ export const Kanban = ({
     element.imageAttributes = imageAttributes;
     element.isLoading = isLoading;
     element.keyField = keyField;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.records = records;
     element.subGroupFieldName = subGroupFieldName;
     element.summarizeAttributes = summarizeAttributes;
