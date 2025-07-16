@@ -259,6 +259,9 @@ export default class Layout extends LightningElement {
         });
     }
 
+    /**
+     * Remove the resize observer.
+     */
     removeResizeObserver() {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
@@ -266,10 +269,18 @@ export default class Layout extends LightningElement {
         }
     }
 
+    /**
+     * Set the resize observer to be handled by the parent.
+     *
+     * @param {boolean} value
+     */
     setIsResizedByParent(value) {
         this._resizeIsHandledByParent = normalizeBoolean(value);
     }
 
+    /**
+     * Set the size of the items.
+     */
     setItemsSize() {
         if (this._disconnected) {
             return;

@@ -69,6 +69,15 @@ export default class Link extends LightningElement {
      */
 
     /**
+     * Computed class for the link.
+     *
+     * @type {string}
+     */
+    get computedClass() {
+        return this.className || '';
+    }
+
+    /**
      * Computed Href from provided uri.
      *
      * @type {string}
@@ -78,15 +87,6 @@ export default class Link extends LightningElement {
             ? '/HelpAndTrainingDoor?version=2&resource=' +
                   encodeURIComponent(this.href)
             : '';
-    }
-
-    /**
-     * Computed class for the link.
-     *
-     * @type {string}
-     */
-    get computedClass() {
-        return this.className || '';
     }
 
     /**
@@ -105,16 +105,6 @@ export default class Link extends LightningElement {
      */
 
     /**
-     * Set focus on the link element.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        this.linkElement.focus();
-    }
-
-    /**
      * Removes focus on the link element.
      *
      * @public
@@ -122,6 +112,16 @@ export default class Link extends LightningElement {
     @api
     blur() {
         this.linkElement.blur();
+    }
+
+    /**
+     * Set focus on the link element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.linkElement.focus();
     }
 
     /*

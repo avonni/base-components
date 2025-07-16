@@ -6,20 +6,6 @@ import { LightningElement, api } from 'lwc';
  */
 export default class LinkToNonSalesforceResource extends LightningElement {
     /**
-     * The link label.
-     *
-     * @type {string}
-     * @public
-     */
-    @api label;
-    /**
-     * The link title.
-     *
-     * @type {string}
-     * @public
-     */
-    @api title;
-    /**
      * The URL/URI for the link.
      *
      * @type {string}
@@ -27,13 +13,12 @@ export default class LinkToNonSalesforceResource extends LightningElement {
      */
     @api href;
     /**
-     * The relationship between the current component and the link document.
+     * The link label.
      *
      * @type {string}
      * @public
      */
-    @api rel;
-
+    @api label;
     /**
      * Parse the link dom element and the salesforce forcehelp-link.
      *
@@ -46,6 +31,20 @@ export default class LinkToNonSalesforceResource extends LightningElement {
         const link = element && element.shadowRoot.querySelector('a');
         return link && link.href;
     }
+    /**
+     * The relationship between the current component and the link document.
+     *
+     * @type {string}
+     * @public
+     */
+    @api rel;
+    /**
+     * The link title.
+     *
+     * @type {string}
+     * @public
+     */
+    @api title;
 }
 
 /**
