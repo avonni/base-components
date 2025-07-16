@@ -41,6 +41,7 @@ describe('Input Counter', () => {
             expect(element.name).toBeUndefined();
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.step).toBe(1);
             expect(element.type).toBe('number');
             expect(element.value).toBeNull();
@@ -48,7 +49,7 @@ describe('Input Counter', () => {
         });
 
         describe('Access Key', () => {
-            it('accessKey', () => {
+            it('Passed to the component', () => {
                 element.accessKey = 'k';
 
                 return Promise.resolve().then(() => {
@@ -61,7 +62,7 @@ describe('Input Counter', () => {
         });
 
         describe('Aria', () => {
-            it('aria-label', () => {
+            it('Passed to the component', () => {
                 element.ariaLabel = 'Aria-label';
 
                 return Promise.resolve().then(() => {
@@ -74,7 +75,7 @@ describe('Input Counter', () => {
         });
 
         describe('Disabled', () => {
-            it('disabled', () => {
+            it('Passed to the component', () => {
                 element.disabled = true;
 
                 return Promise.resolve().then(() => {
@@ -87,7 +88,7 @@ describe('Input Counter', () => {
         });
 
         describe('Decrement Button Title', () => {
-            it('decrementButtonTitle', () => {
+            it('Passed to the component', () => {
                 element.decrementButtonTitle = 'Decrement';
 
                 return Promise.resolve().then(() => {
@@ -98,22 +99,10 @@ describe('Input Counter', () => {
                     expect(button.title).toBe('Decrement');
                 });
             });
-
-            it('incrementButtonTitle', () => {
-                element.incrementButtonTitle = 'Increment';
-
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-icon-increment"]'
-                    );
-                    expect(button.alternativeText).toBe('Increment');
-                    expect(button.title).toBe('Increment');
-                });
-            });
         });
 
         describe('Field Level Help', () => {
-            it('fieldLevelHelp', () => {
+            it('Passed to the component', () => {
                 element.fieldLevelHelp = 'This is a field level help';
                 element.variant = 'label-inline';
 
@@ -128,7 +117,7 @@ describe('Input Counter', () => {
         });
 
         describe('Fraction Digits', () => {
-            it('fractionDigits', () => {
+            it('Passed to the component', () => {
                 element.value = 3;
                 element.fractionDigits = 2;
 
@@ -141,8 +130,22 @@ describe('Input Counter', () => {
             });
         });
 
+        describe('Increment Button Title', () => {
+            it('Passed to the component', () => {
+                element.incrementButtonTitle = 'Increment';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-increment"]'
+                    );
+                    expect(button.alternativeText).toBe('Increment');
+                    expect(button.title).toBe('Increment');
+                });
+            });
+        });
+
         describe('Label', () => {
-            it('label', () => {
+            it('Passed to the component', () => {
                 element.label = 'This is a label text';
 
                 return Promise.resolve().then(() => {
@@ -155,7 +158,7 @@ describe('Input Counter', () => {
         });
 
         describe('Max', () => {
-            it('test Max and value unchanged on increment', () => {
+            it('Max and value unchanged on increment', () => {
                 element.max = 5;
                 element.value = 5;
                 element.step = 6;
@@ -178,7 +181,7 @@ describe('Input Counter', () => {
         });
 
         describe('Min', () => {
-            it('test Min and value unchanged on decrement', () => {
+            it('Min and value unchanged on decrement', () => {
                 element.min = 5;
                 element.value = 5;
                 element.step = 6;
@@ -201,7 +204,7 @@ describe('Input Counter', () => {
         });
 
         describe('Name', () => {
-            it('name', () => {
+            it('Passed to the component', () => {
                 element.name = 'This is a name text';
 
                 return Promise.resolve().then(() => {
@@ -214,7 +217,7 @@ describe('Input Counter', () => {
         });
 
         describe('Step', () => {
-            it('step', () => {
+            it('Passed to the component', () => {
                 element.value = 0;
                 element.step = 2;
                 const input = element.shadowRoot.querySelector(
@@ -261,7 +264,7 @@ describe('Input Counter', () => {
         });
 
         describe('Read Only', () => {
-            it('readOnly', () => {
+            it('Passed to the component', () => {
                 element.readOnly = true;
 
                 return Promise.resolve().then(() => {
@@ -278,8 +281,9 @@ describe('Input Counter', () => {
         });
 
         describe('Required', () => {
-            it('required', () => {
+            it('Passed to the component', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required field';
 
                 return Promise.resolve().then(() => {
                     const required = element.shadowRoot.querySelector(
@@ -287,6 +291,7 @@ describe('Input Counter', () => {
                     );
                     expect(required).toBeTruthy();
                     expect(required.textContent).toBe('*');
+                    expect(required.title).toBe('Required field');
                 });
             });
         });
@@ -330,7 +335,7 @@ describe('Input Counter', () => {
         });
 
         describe('Value', () => {
-            it('value', () => {
+            it('Passed to the component', () => {
                 element.value = 5;
                 const input = element.shadowRoot.querySelector(
                     '[data-element-id="input"]'

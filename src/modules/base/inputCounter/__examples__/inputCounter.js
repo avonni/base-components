@@ -22,6 +22,7 @@ export const InputCounter = ({
     min,
     readOnly,
     required,
+    requiredAlternativeText,
     step,
     type,
     value,
@@ -44,6 +45,7 @@ export const InputCounter = ({
     element.min = min;
     element.readOnly = readOnly;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.step = step;
     element.type = type;
     element.value = value;
