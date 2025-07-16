@@ -227,6 +227,19 @@ export default {
                 category: 'Validation'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' },
+                category: 'Validation'
+            }
+        },
         showSignaturePad: {
             name: 'show-signature-pad',
             control: {
@@ -316,6 +329,7 @@ export default {
         readOnly: false,
         redoButtonAlternativeText: 'Redo',
         required: false,
+        requiredAlternativeText: 'Required',
         showSignaturePad: false,
         size: 3,
         sizeButtonAlternativeText: 'Size',

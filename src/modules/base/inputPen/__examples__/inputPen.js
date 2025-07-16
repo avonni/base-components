@@ -22,6 +22,7 @@ export const InputPen = ({
     readOnly,
     redoButtonAlternativeText,
     required,
+    requiredAlternativeText,
     showSignaturePad,
     size,
     sizeButtonAlternativeText,
@@ -49,6 +50,7 @@ export const InputPen = ({
     element.readOnly = readOnly;
     element.redoButtonAlternativeText = redoButtonAlternativeText;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.showSignaturePad = showSignaturePad;
     element.size = size;
     element.sizeButtonAlternativeText = sizeButtonAlternativeText;

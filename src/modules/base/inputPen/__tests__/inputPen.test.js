@@ -135,6 +135,7 @@ describe('Input pen', () => {
             expect(element.readOnly).toBeFalsy();
             expect(element.redoButtonAlternativeText).toBe('Redo');
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.showSignaturePad).toBeFalsy();
             expect(element.size).toBe(3);
             expect(element.sizeButtonAlternativeText).toBe('Size');
@@ -363,6 +364,7 @@ describe('Input pen', () => {
             it('Passed to the component', () => {
                 element.label = 'label';
                 element.required = true;
+                element.requiredAlternativeText = 'Required field';
 
                 return Promise.resolve().then(() => {
                     const required = element.shadowRoot.querySelector(
@@ -370,6 +372,7 @@ describe('Input pen', () => {
                     );
                     expect(required).toBeTruthy();
                     expect(required.textContent).toBe('*');
+                    expect(required.title).toBe('Required field');
                 });
             });
         });
@@ -1262,7 +1265,7 @@ describe('Input pen', () => {
                 })
                 .then(() => {
                     const undoButton = element.shadowRoot.querySelector(
-                        '[data-element-id="undo"]'
+                        '[data-element-id="undo-button"]'
                     );
                     undoButton.click();
                     expect(strokeSpy).toHaveBeenCalledTimes(5); // 2 more since last time
@@ -1295,21 +1298,21 @@ describe('Input pen', () => {
                 })
                 .then(() => {
                     const undoButton = element.shadowRoot.querySelector(
-                        '[data-element-id="undo"]'
+                        '[data-element-id="undo-button"]'
                     );
                     undoButton.click();
                     expect(strokeSpy).toHaveBeenCalledTimes(3); // 1 more since last time
                 })
                 .then(() => {
                     const redoButton = element.shadowRoot.querySelector(
-                        '[data-element-id="redo"]'
+                        '[data-element-id="redo-button"]'
                     );
                     redoButton.click();
                     expect(strokeSpy).toHaveBeenCalledTimes(4); // 1 more since last time
                 })
                 .then(() => {
                     const redoButton = element.shadowRoot.querySelector(
-                        '[data-element-id="redo"]'
+                        '[data-element-id="redo-button"]'
                     );
                     redoButton.click();
                     expect(strokeSpy).toHaveBeenCalledTimes(4); // nothing more to redo

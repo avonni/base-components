@@ -66,6 +66,7 @@ const DEFAULT_ERASE_BUTTON_ALTERNATIVE_TEXT = 'Erase';
 const DEFAULT_INK_BUTTON_ALTERNATIVE_TEXT = 'Ink';
 const DEFAULT_PAINT_BUTTON_ALTERNATIVE_TEXT = 'Paint';
 const DEFAULT_REDO_BUTTON_ALTERNATIVE_TEXT = 'Redo';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const DEFAULT_SIZE = 3;
 const DEFAULT_SIZE_BUTTON_ALTERNATIVE_TEXT = 'Size';
 const DEFAULT_UNDO_BUTTON_ALTERNATIVE_TEXT = 'Undo';
@@ -172,6 +173,13 @@ export default class InputPen extends LightningElement {
      * @default 'Redo'
      */
     @api redoButtonAlternativeText = DEFAULT_REDO_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**
      * Alternative text for the size button.
      *
