@@ -305,6 +305,18 @@ export default {
                 defaultValue: { summary: '20' }
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text of the loading state. This attribute is only supported for the vertical orientation.',
+            table: {
+                defaultValue: { summary: 'Loading...' },
+                type: { summary: 'string' }
+            }
+        },
         locale: {
             control: {
                 type: 'text'
@@ -392,6 +404,7 @@ export default {
         isLoading: false,
         itemIconSize: 'small',
         loadMoreOffset: 20,
+        loadingStateAlternativeText: 'Loading...',
         locale: 'en-GB',
         orientation: 'vertical',
         itemDateFormat: 'LLLL dd, yyyy, t',
