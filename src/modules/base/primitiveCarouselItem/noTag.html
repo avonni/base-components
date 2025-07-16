@@ -21,6 +21,7 @@
                         >
                             <avonni-button
                                 class={computedActionButtonClass}
+                                tabindex={computedTabIndex}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 label={action.label}
@@ -38,6 +39,7 @@
                         >
                             <avonni-button-icon
                                 class={computedActionButtonClass}
+                                tabindex={computedTabIndex}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 name={action.name}
@@ -51,6 +53,7 @@
                 <avonni-button-menu
                     if:true={isMenuVariant}
                     class={computedActionButtonClass}
+                    tabindex={computedTabIndex}
                     alternative-text="Show menu"
                     icon-size="x-small"
                     variant="border-filled"
@@ -117,6 +120,7 @@
                         >
                             <avonni-button
                                 class={computedActionButtonClass}
+                                tabindex={computedTabIndex}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 label={action.label}
@@ -134,6 +138,7 @@
                         >
                             <avonni-button-icon
                                 class={computedActionButtonClass}
+                                tabindex={computedTabIndex}
                                 disabled={action.disabled}
                                 icon-name={action.iconName}
                                 name={action.name}
@@ -147,6 +152,7 @@
                 <avonni-button-menu
                     if:true={isMenuVariant}
                     class={computedActionButtonClass}
+                    tabindex={computedTabIndex}
                     alternative-text="Show menu"
                     icon-size="x-small"
                     menu-alignment="auto"
