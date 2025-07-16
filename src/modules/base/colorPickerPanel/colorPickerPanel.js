@@ -17,11 +17,23 @@ const DEFAULT_COLOR = '#000000';
  */
 export default class ColorPickerPanel extends LightningElement {
     /**
+     * The label for the cancel button.
+     * @type {string}
+     * @default Cancel
+     */
+    @api cancelButtonLabel = i18n.cancelButton;
+    /**
      * Get currentColor.
      *
      * @public
      */
     @api currentColor;
+    /**
+     * The label for the done button.
+     * @type {string}
+     * @default Done
+     */
+    @api doneButtonLabel = i18n.doneButton;
 
     _isCustomTabActive = false;
     _selectedColor = null;

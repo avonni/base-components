@@ -114,7 +114,9 @@
             </div>
             <c-primitive-color-picker-button
                 if:true={isColorpickerVisible}
+                cancel-button-label={cancelButtonLabel}
                 disabled={disabled}
+                done-button-label={doneButtonLabel}
                 value={selectedTextColorValue}
                 data-element-id="avonni-primitive-colorpicker-button"
                 onchange={handleColorUpdate}
@@ -208,12 +210,12 @@
         <div class="slds-m-top_small">
             <lightning-button
                 variant="brand"
-                label={i18n.linkSave}
+                label={doneButtonLabel}
                 onclick={saveLink}
             ></lightning-button>
             <lightning-button
                 variant="bare"
-                label={i18n.linkCancel}
+                label={cancelButtonLabel}
                 style="margin-left: 0.25rem"
                 onclick={cancelLink}
             ></lightning-button>

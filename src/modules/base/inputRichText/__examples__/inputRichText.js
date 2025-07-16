@@ -6,8 +6,11 @@ customElements.define(
 );
 
 export const InputRichText = ({
+    cancelButtonLabel,
+    customButtons,
     disabled,
     disabledCategories,
+    doneButtonLabel,
     formats,
     isPublisher,
     label,
@@ -20,6 +23,9 @@ export const InputRichText = ({
     variant
 }) => {
     const element = document.createElement('ac-base-input-rich-text');
+    element.cancelButtonLabel = cancelButtonLabel;
+    element.customButtons = customButtons;
+    element.doneButtonLabel = doneButtonLabel;
     element.disabled = disabled;
     element.disabledCategories = disabledCategories || [];
     element.formats = formats;

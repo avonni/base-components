@@ -18,7 +18,9 @@ describe('InputRichText', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.cancelButtonLabel).toBe('Cancel');
             expect(element.customButtons).toBeUndefined();
+            expect(element.doneButtonLabel).toBe('Done');
             expect(element.disabled).toBeFalsy();
             expect(element.disabledCategories).toHaveLength(0);
             expect(element.formats).toHaveLength(0);

@@ -14,84 +14,13 @@ import {
     applyEmitterShadowDOMFix
 } from 'c/quillLib';
 
-const CATEGORIES = {
-    FORMAT_TEXT: 'FORMAT_TEXT',
-    FORMAT_BACKGROUND: 'FORMAT_BACKGROUND',
-    FORMAT_BODY: 'FORMAT_BODY',
-    FORMAT_FONT: 'FORMAT_FONT',
-    ALIGN_TEXT: 'ALIGN_TEXT',
-    INSERT_CONTENT: 'INSERT_CONTENT',
-    REMOVE_FORMATTING: 'REMOVE_FORMATTING'
-};
-
-const IMAGE_FORMATS = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
-const WIDTH = 320;
-const DEFAULT_FONT = 'default';
-const DEFAULT_SIZE = '12px';
-const DEFAULT_COLOR = '#000000';
-const CATEGORY_FORMAT_TEXT = 'FORMAT_TEXT';
-const FORMATS = ['table', 'image', 'link', 'header'];
-const BUTTON_CLASS = 'slds-button slds-button_icon-border-filled';
-const BUTTON_SELECTOR =
-    '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button';
-
-const i18n = {
-    alignText: 'Align text',
-    bold: 'Bold',
-    bullet: 'Bulleted list',
-    centerAlign: 'Center align text',
-    composeText: 'Compose text',
-    font: 'Font',
-    fontSize: 'Font Size',
-    formatBackground: 'Format background and text color',
-    formatBody: 'Format body',
-    formatFont: 'Format font family and size',
-    formatText: 'Format text',
-    indent: 'Indent',
-    insertContent: 'Insert content',
-    italic: 'Italic',
-    leftAlign: 'Left align text',
-    link: 'Link',
-    image: 'Image',
-    linkCancel: 'Cancel',
-    linkInput: 'Link URL',
-    linkSave: 'Save',
-    number: 'Numbered list',
-    outdent: 'Outdent',
-    removeFormatting: 'Remove formatting',
-    rightAlign: 'Right align text',
-    strike: 'Strikethrough',
-    underline: 'Underline',
-    emoji: 'Emoji',
-    adduser: 'Add user'
-};
-
-const SIZE_LIST = [];
-
-const FONT_LIST = inputRichTextLibrary.FONT_LIST;
-
-inputRichTextLibrary.ALLOWED_SIZES.forEach((t) => {
-    SIZE_LIST.push({ label: `${t}`, value: `${t}px` });
-});
-
-const KEY_CODES = {
-    tab: 9,
-    enter: 13,
-    escape: 27,
-    space: 32,
-    end: 35,
-    home: 36,
-    left: 37,
-    up: 38,
-    right: 39,
-    down: 40
-};
-
 const BINDINGS = {
-    tab: {
-        key: 9,
-        shiftKey: false,
-        handler: () => true
+    lightningIndent: {
+        key: 221,
+        shortKey: true,
+        handler() {
+            this.quill.format('indent', '+1');
+        }
     },
     lightningOutdent: {
         key: 219,
@@ -100,14 +29,89 @@ const BINDINGS = {
             this.quill.format('indent', '-1');
         }
     },
-    lightningIndent: {
-        key: 221,
-        shortKey: true,
-        handler() {
-            this.quill.format('indent', '+1');
-        }
+    tab: {
+        key: 9,
+        shiftKey: false,
+        handler: () => true
     }
 };
+
+const BUTTON_CLASS = 'slds-button slds-button_icon-border-filled';
+
+const BUTTON_SELECTOR =
+    '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button';
+
+const CATEGORIES = {
+    ALIGN_TEXT: 'ALIGN_TEXT',
+    FORMAT_BACKGROUND: 'FORMAT_BACKGROUND',
+    FORMAT_BODY: 'FORMAT_BODY',
+    FORMAT_FONT: 'FORMAT_FONT',
+    FORMAT_TEXT: 'FORMAT_TEXT',
+    INSERT_CONTENT: 'INSERT_CONTENT',
+    REMOVE_FORMATTING: 'REMOVE_FORMATTING'
+};
+
+const CATEGORY_FORMAT_TEXT = 'FORMAT_TEXT';
+
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_COLOR = '#000000';
+const DEFAULT_DONE_BUTTON_LABEL = 'Done';
+const DEFAULT_FONT = 'default';
+const DEFAULT_SIZE = '12px';
+
+const FONT_LIST = inputRichTextLibrary.FONT_LIST;
+
+const FORMATS = ['table', 'image', 'link', 'header'];
+
+const i18n = {
+    adduser: 'Add user',
+    alignText: 'Align text',
+    bold: 'Bold',
+    bullet: 'Bulleted list',
+    centerAlign: 'Center align text',
+    composeText: 'Compose text',
+    emoji: 'Emoji',
+    font: 'Font',
+    fontSize: 'Font Size',
+    formatBackground: 'Format background and text color',
+    formatBody: 'Format body',
+    formatFont: 'Format font family and size',
+    formatText: 'Format text',
+    image: 'Image',
+    indent: 'Indent',
+    insertContent: 'Insert content',
+    italic: 'Italic',
+    leftAlign: 'Left align text',
+    link: 'Link',
+    linkCancel: 'Cancel',
+    linkInput: 'Link URL',
+    linkSave: 'Save',
+    number: 'Numbered list',
+    outdent: 'Outdent',
+    removeFormatting: 'Remove formatting',
+    rightAlign: 'Right align text',
+    strike: 'Strikethrough',
+    underline: 'Underline'
+};
+
+const IMAGE_FORMATS = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+
+const KEY_CODES = {
+    down: 40,
+    end: 35,
+    enter: 13,
+    escape: 27,
+    home: 36,
+    left: 37,
+    right: 39,
+    space: 32,
+    tab: 9,
+    up: 38
+};
+
+function PARSE_INT_STYLE(element, value) {
+    return parseInt(element.style[value], 10);
+}
 
 const SIZES = {
     1: '9px',
@@ -119,20 +123,32 @@ const SIZES = {
     7: '48px'
 };
 
-function PARSE_INT_STYLE(element, value) {
-    return parseInt(element.style[value], 10);
-}
+const SIZE_LIST = [];
+
+inputRichTextLibrary.ALLOWED_SIZES.forEach((t) => {
+    SIZE_LIST.push({ label: `${t}`, value: `${t}px` });
+});
 
 const VARIANTS = {
     default: 'top-toolbar',
     valid: ['top-toolbar', 'bottom-toolbar']
 };
 
+const WIDTH = 320;
+
 /**
  * @class
  * @descriptor avonni-input-rich-text
  */
 export default class InputRichText extends LightningElement {
+    /**
+     * The label for the cancel button.
+     *
+     * @type {string}
+     * @public
+     * @default Cancel
+     */
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
     /**
      * Custom buttons to add to the toolbar.
      *
@@ -147,6 +163,14 @@ export default class InputRichText extends LightningElement {
      * @public
      */
     @api disabledCategories = '';
+    /**
+     * The label for the done button.
+     *
+     * @type {string}
+     * @public
+     * @default Done
+     */
+    @api doneButtonLabel = DEFAULT_DONE_BUTTON_LABEL;
     /**
      * Check if editor is in Publisher category.
      *
@@ -200,9 +224,9 @@ export default class InputRichText extends LightningElement {
 
     linkPanelOpen = false;
     queueLinkPanelOpen = false;
+    quillNotReady = true;
     selectedFontValue = DEFAULT_FONT;
     selectedSizeValue = DEFAULT_SIZE;
-    quillNotReady = true;
     selectedTextColorValue = DEFAULT_COLOR;
 
     _pendingFormats = [];
@@ -210,8 +234,8 @@ export default class InputRichText extends LightningElement {
         fontList: FONT_LIST,
         sizeList: SIZE_LIST
     };
-    internalValue;
     initialRender = true;
+    internalValue;
     linkValue = '';
     quill;
 

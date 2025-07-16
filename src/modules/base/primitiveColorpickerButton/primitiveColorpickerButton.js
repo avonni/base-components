@@ -7,6 +7,19 @@ const i18n = {
 };
 
 export default class PrimitiveColorPickerButton extends LightningElement {
+    /**
+     * The label for the cancel button.
+     * @type {string}
+     * @default Cancel
+     */
+    @api cancelButtonLabel;
+    /**
+     * The label for the done button.
+     * @type {string}
+     * @default Done
+     */
+    @api doneButtonLabel;
+
     _disabled = false;
     _value = '';
 
