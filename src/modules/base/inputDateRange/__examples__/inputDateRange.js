@@ -18,6 +18,7 @@ export const InputDateRange = ({
     messageWhenValueMissing,
     readOnly,
     required,
+    requiredAlternativeText,
     startDate,
     timeStyle,
     timezone,
@@ -38,6 +39,7 @@ export const InputDateRange = ({
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.readOnly = readOnly;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.startDate = startDate;
     element.timeStyle = timeStyle;
     element.timezone = timezone;

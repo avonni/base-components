@@ -41,6 +41,7 @@ describe('Input Date Range', () => {
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.startDate).toBeUndefined();
             expect(element.timeStyle).toBe('short');
             expect(element.timezone).toBeUndefined();
@@ -827,12 +828,14 @@ describe('Input Date Range', () => {
         describe('Required', () => {
             it('Passed to the component', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required field';
 
                 return Promise.resolve().then(() => {
                     const required =
                         element.shadowRoot.querySelector('.slds-required');
                     expect(required).toBeTruthy();
                     expect(required.textContent).toBe('*');
+                    expect(required.title).toBe('Required field');
                 });
             });
         });

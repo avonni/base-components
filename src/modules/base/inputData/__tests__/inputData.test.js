@@ -18,16 +18,16 @@ describe('InputData', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.disabled).toBeFalsy();
             expect(element.label).toBeUndefined();
+            expect(element.latitude).toBeUndefined();
+            expect(element.longitude).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.placeholder).toBeUndefined();
-            expect(element.disabled).toBeFalsy();
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
             expect(element.type).toBe('text');
             expect(element.value).toBe('');
-            expect(element.latitude).toBeUndefined();
-            expect(element.longitude).toBeUndefined();
         });
 
         describe('Checked', () => {

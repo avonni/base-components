@@ -5,7 +5,11 @@
         onfocusout={handleFocusOut}
     >
         <div class={computedLabelClass}>
-            <abbr if:true={required} class="slds-required" title="required">
+            <abbr
+                if:true={required}
+                class="slds-required"
+                title={requiredAlternativeText}
+            >
                 *
             </abbr>
             <p if:true={label} data-element-id="p-label">{label}</p>
@@ -86,7 +90,7 @@
                             ></c-calendar>
                             <div class="slds-align_absolute-center">
                                 <lightning-button
-                                    label="Today"
+                                    label={todayButtonLabel}
                                     variant="base"
                                     data-element-id="select-start-today-button"
                                     data-is-focusable

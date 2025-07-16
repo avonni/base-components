@@ -140,6 +140,18 @@ export default {
                 category: 'Validation'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' }
+            }
+        },
         startDate: {
             name: 'start-date',
             control: {
@@ -213,6 +225,7 @@ export default {
         disabled: false,
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         timeStyle: 'short',
         todayButtonLabel: 'Today',
         type: 'date',

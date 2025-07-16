@@ -386,7 +386,6 @@ export default class InputData extends LightningElement {
         } else if (this.isBoolean) {
             return 'checkbox';
         }
-
         return this.type;
     }
 

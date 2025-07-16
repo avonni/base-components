@@ -18,6 +18,7 @@ const DATE_TYPES = {
     valid: ['date', 'datetime'],
     default: 'date'
 };
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
 
 const LABEL_VARIANTS = {
@@ -83,6 +84,13 @@ export default class InputDateRange extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**
      * Text label for the today button on the calendar.
      *
