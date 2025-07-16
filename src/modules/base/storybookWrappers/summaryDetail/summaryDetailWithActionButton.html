@@ -1,19 +1,19 @@
 <template>
     <c-summary-detail
-        title={title}
+        closed={closed}
+        expand-icon-name={expandIconName}
         full-width={fullWidth}
+        hide-icon={hideIcon}
         remove-body-indentation={removeBodyIndentation}
         shrink-icon-name={shrinkIconName}
-        expand-icon-name={expandIconName}
-        closed={closed}
-        hide-icon={hideIcon}
+        title={title}
     >
         <div slot="actions">
             <lightning-button-icon
-                icon-name="utility:settings"
                 alternative-text="Settings"
-                variant="bare"
+                icon-name="utility:settings"
                 tooltip="Button icon in actions slot"
+                variant="bare"
             ></lightning-button-icon>
         </div>
         <h3

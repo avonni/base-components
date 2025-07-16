@@ -29,8 +29,8 @@ export default class OutputData extends LightningElement {
     _value;
     _variant = VARIANTS.default;
 
+    _connected = false;
     normalizedTypeAttributes = {};
-    _isConnected = false;
 
     /*
      * ------------------------------------------------------------
@@ -40,7 +40,7 @@ export default class OutputData extends LightningElement {
 
     connectedCallback() {
         this.normalizeTypeAttributes();
-        this._isConnected = true;
+        this._connected = true;
     }
 
     /*
@@ -65,7 +65,7 @@ export default class OutputData extends LightningElement {
             validValues: TYPES.valid
         });
 
-        if (this._isConnected) this.normalizeTypeAttributes();
+        if (this._connected) this.normalizeTypeAttributes();
     }
 
     /**
@@ -81,7 +81,7 @@ export default class OutputData extends LightningElement {
     set typeAttributes(value) {
         this._typeAttributes = typeof value === 'object' ? value : {};
 
-        if (this._isConnected) this.normalizeTypeAttributes();
+        if (this._connected) this.normalizeTypeAttributes();
     }
 
     /**
@@ -152,12 +152,13 @@ export default class OutputData extends LightningElement {
      * @type {string}
      */
     get computedWrapperClass() {
-        const variant = this.variant;
         return classSet()
             .add({
                 'slds-list_stacked':
-                    variant === 'label-stacked' || variant === 'standard',
-                'slds-list_horizontal slds-wrap': variant === 'label-inline'
+                    this.variant === 'label-stacked' ||
+                    this.variant === 'standard',
+                'slds-list_horizontal slds-wrap':
+                    this.variant === 'label-inline'
             })
             .toString();
     }

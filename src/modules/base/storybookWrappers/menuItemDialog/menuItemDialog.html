@@ -1,15 +1,15 @@
 <template>
     <c-button-menu>
         <c-menu-item-dialog
-            value={value}
             access-key={accessKey}
+            disabled={disabled}
             draft-alternative-text={draftAlternativeText}
             icon-name={iconName}
+            is-draft={isDraft}
             label={label}
             prefix-icon-name={prefixIconName}
             tab-index={tabIndex}
-            disabled={disabled}
-            is-draft={isDraft}
+            value={value}
         ></c-menu-item-dialog>
         <c-menu-item-dialog
             label="Menu Item Dialog Two"

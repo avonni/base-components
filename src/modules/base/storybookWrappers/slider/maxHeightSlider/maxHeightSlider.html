@@ -1,24 +1,24 @@
 <template>
     <div style="height: 100px">
         <c-slider
+            disabled={disabled}
+            disable-swap={disableSwap}
+            hide-min-max-values={hideMinMaxValues}
+            hide-track={hideTrack}
             label={label}
+            max={max}
+            min={min}
+            minimum-distance={minimumDistance}
+            show-pin={showPin}
+            show-tick-marks={showTickMarks}
             size={size}
+            step={step}
+            tick-mark-style={tickMarkStyle}
             type={type}
-            variant={variant}
             unit={unit}
             unit-attributes={unitAttributes}
             value={value}
-            show-pin={showPin}
-            min={min}
-            max={max}
-            step={step}
-            disabled={disabled}
-            tick-mark-style={tickMarkStyle}
-            show-tick-marks={showTickMarks}
-            disable-swap={disableSwap}
-            hide-track={hideTrack}
-            hide-min-max-values={hideMinMaxValues}
-            minimum-distance={minimumDistance}
+            variant={variant}
         >
         </c-slider>
     </div>

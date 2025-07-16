@@ -1,33 +1,33 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Timer extends LightningElement {
-    @api value;
-    @api variant;
-    @api type;
-    @api duration;
     @api autoStart;
-    @api repeat;
+    @api duration;
+    @api format;
     @api iconName;
     @api iconPosition;
-    @api format;
+    @api repeat;
+    @api type;
+    @api value;
+    @api variant;
 
     get timer() {
         return this.template.querySelector('c-timer');
-    }
-
-    start() {
-        this.timer.start();
     }
 
     pause() {
         this.timer.pause();
     }
 
-    stopTimer() {
-        this.timer.stop();
-    }
-
     reset() {
         this.timer.reset();
+    }
+
+    start() {
+        this.timer.start();
+    }
+
+    stopTimer() {
+        this.timer.stop();
     }
 }

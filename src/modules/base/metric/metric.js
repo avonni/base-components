@@ -101,7 +101,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api secondaryPrefix;
-
     /**
      * Text to display after the secondary value.
      *

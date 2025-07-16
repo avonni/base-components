@@ -35,6 +35,7 @@ export default {
             }
         },
         typeAttributes: {
+            name: 'type-attributes',
             control: {
                 type: 'object'
             },

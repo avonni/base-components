@@ -2,6 +2,12 @@
  * @namespace slots
  */
 /**
+ * Placeholder for your content in the media object body.
+ *
+ * @memberof slots
+ * @name default
+ */
+/**
  * Placeholder for your figure content.
  *
  * @memberof slots
@@ -12,10 +18,4 @@
  *
  * @memberof slots
  * @name figure-inverse
- */
-/**
- * Placeholder for your content in the media object body.
- *
- * @memberof slots
- * @name default
  */

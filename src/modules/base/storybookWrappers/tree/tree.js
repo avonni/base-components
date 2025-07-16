@@ -29,7 +29,7 @@ export default class Tree extends LightningElement {
 
     connectedCallback() {
         if (!this.items.length) {
-            this._loadMoreItems();
+            this.loadMoreItems();
         }
     }
 
@@ -69,7 +69,7 @@ export default class Tree extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    _addItems(level, parent) {
+    addItems(level, parent) {
         const start = level.length;
         for (let i = 0; i < LOADING_OFFSET; i++) {
             const number = i + start;
@@ -83,7 +83,7 @@ export default class Tree extends LightningElement {
         }
     }
 
-    _getItem(levelPath = []) {
+    getItem(levelPath = []) {
         let level = this.items;
         let item;
         for (let i = 0; i < levelPath.length; i++) {
@@ -97,8 +97,8 @@ export default class Tree extends LightningElement {
         return item;
     }
 
-    _loadMoreItems(levelPath) {
-        const parent = this._getItem(levelPath);
+    loadMoreItems(levelPath) {
+        const parent = this.getItem(levelPath);
 
         let level;
         if (parent) {
@@ -111,7 +111,7 @@ export default class Tree extends LightningElement {
         }
 
         setTimeout(() => {
-            this._addItems(level, parent);
+            this.addItems(level, parent);
             const allLoaded = level.length >= MAX_LOADED_ITEMS;
             if (parent) {
                 parent.isLoading = false;
@@ -135,7 +135,7 @@ export default class Tree extends LightningElement {
      */
 
     handleLoadMore(event) {
-        this._loadMoreItems(event.detail.levelPath);
+        this.loadMoreItems(event.detail.levelPath);
     }
 
     handleSelect(event) {

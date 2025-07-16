@@ -56,7 +56,6 @@ export default class Submenu extends LightningElement {
     _menuAlignment = MENU_ALIGNMENTS.default;
     _tabIndex = DEFAULT_TAB_INDEX;
 
-    init = false;
     isOpen = false;
 
     /*
@@ -160,7 +159,7 @@ export default class Submenu extends LightningElement {
      */
 
     /**
-     * Close the submenu.
+     * Closes the submenu.
      *
      * @public
      */
@@ -185,6 +184,16 @@ export default class Submenu extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
+     * Opens the submenu.
+     *
+     * @public
+     */
+    @api
+    open() {
+        this.isOpen = true;
     }
 
     /*

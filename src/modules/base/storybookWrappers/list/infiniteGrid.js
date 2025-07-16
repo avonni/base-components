@@ -31,6 +31,14 @@ export default class InfiniteGrid extends LightningElement {
     }
 
     @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = value;
+    }
+
+    @api
     get isLoading() {
         return this._isLoading;
     }
@@ -42,21 +50,12 @@ export default class InfiniteGrid extends LightningElement {
     get items() {
         return this._items;
     }
-
     set items(value) {
         this._items = Array.isArray(value) ? value : [];
 
         if (this._connected) {
             this.generateItems();
         }
-    }
-
-    @api
-    get enableInfiniteLoading() {
-        return this._enableInfiniteLoading;
-    }
-    set enableInfiniteLoading(value) {
-        this._enableInfiniteLoading = value;
     }
 
     generateItems() {

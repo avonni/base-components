@@ -57,6 +57,12 @@ export default class PageHeader extends LightningElement {
     showLabel = true;
     showTitle = true;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Render html template based on variant 'vertical'.
      *
