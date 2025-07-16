@@ -1722,6 +1722,42 @@ export default class InputRichText extends LightningElement {
      */
 
     /**
+     * Activate Editor's intializing parameters.
+     *
+     * @param {Event} event
+     */
+    activateEditor(event) {
+        if (this.readOnly) return;
+
+        if (this.initialRender) {
+            this.setupToolbar();
+            this.setupButtons();
+            this.attachCustomButtonHandlers();
+            this.initializeQuill();
+            this.setEditorValidityState();
+            this.initialRender = false;
+            this.setEditorAndButtonState();
+            this.quillNotReady = false;
+        }
+
+        if (event) {
+            if (
+                event.target.classList.contains('standin') ||
+                event.target.localName === 'lightning-formatted-rich-text'
+            ) {
+                this.quill.setSelection(this.quill.getLength());
+            }
+        }
+
+        if (this.queueLinkPanelOpen) {
+            const link = this.template.querySelector(
+                '[data-element-id="lightning-input-link"]'
+            );
+            if (link) link.focus();
+        }
+    }
+
+    /**
      * Color update to format handler.
      *
      * @param {Event} event

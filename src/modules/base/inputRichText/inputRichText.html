@@ -26,8 +26,8 @@
                     onclick={handleStandInClick}
                 >
                     <lightning-formatted-rich-text
-                        value={value}
                         disable-linkify
+                        value={value}
                         data-element-id="lightning-formatted-rich-text-bottom-toolbar"
                     ></lightning-formatted-rich-text>
                 </div>
@@ -45,15 +45,15 @@
         <!-- Toolbar -->
         <div
             class="slds-rich-text-editor__toolbar slds-shrink-none"
-            role="toolbar"
             aria-label={toolbarAriaLabel}
+            role="toolbar"
             onkeydown={navigateToolbar}
         >
             <div
                 if:true={isFontMenusVisible}
                 class="slds-grid slds-wrap"
-                role="group"
                 aria-label={i18n.formatFont}
+                role="group"
             >
                 <template if:true={isDesktop}>
                     <div class="slds-rich-text-editor__select">
@@ -65,8 +65,8 @@
                             value={selectedFontValue}
                             variant="label-hidden"
                             data-element-id="lightning-combobox-font"
-                            onfocus={activateEditor}
                             onchange={selectFont}
+                            onfocus={activateEditor}
                         ></lightning-combobox>
                     </div>
                     <div
@@ -80,8 +80,8 @@
                             value={selectedSizeValue}
                             variant="label-hidden"
                             data-element-id="lightning-combobox-size"
-                            onfocus={activateEditor}
                             onchange={selectSize}
+                            onfocus={activateEditor}
                         ></lightning-combobox>
                     </div>
                 </template>
@@ -121,9 +121,9 @@
             ></c-primitive-color-picker-button>
             <template for:each={computedCategories} for:item="category">
                 <ul
+                    key={category.label}
                     class="slds-button-group-list"
                     aria-label={category.label}
-                    key={category.label}
                 >
                     <template for:each={category.buttons} for:item="button">
                         <li key={button.key}>
@@ -149,7 +149,6 @@
                 </ul>
             </template>
         </div>
-
         <template if:false={isBottomToolbar}>
             <!-- Bottom editor -->
             <div
