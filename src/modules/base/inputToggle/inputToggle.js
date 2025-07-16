@@ -13,16 +13,13 @@ import {
     VARIANT
 } from 'c/inputUtils';
 
-const i18n = {
-    required: 'required'
-};
-
 const ARIA_CONTROLS = 'aria-controls';
 const ARIA_DESCRIBEDBY = 'aria-describedby';
 const ARIA_LABELEDBY = 'aria-labelledby';
 
 const DEFAULT_MESSAGE_TOGGLE_ACTIVE = 'Active';
 const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 
 const INPUT_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
@@ -93,6 +90,13 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api name;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**
      * Specifies the value of an input element.
      *
@@ -407,13 +411,6 @@ export default class InputToggle extends LightningElement {
                 });
         }
         return this._constraintApi;
-    }
-
-    /**
-     * Localization.
-     */
-    get i18n() {
-        return i18n;
     }
 
     /**

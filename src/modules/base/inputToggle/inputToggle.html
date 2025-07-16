@@ -5,7 +5,8 @@
                 <abbr
                     if:true={required}
                     class="slds-required"
-                    title={i18n.required}
+                    title={requiredAlternativeText}
+                    data-element-id="required-abbr"
                     >*
                 </abbr>
                 {label}
@@ -17,11 +18,11 @@
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
             <input
-                id="avonni-input-toggle"
                 accesskey={accessKey}
                 aria-label={ariaLabel}
                 checked={checked}
                 disabled={disabled}
+                id="avonni-input-toggle"
                 name={name}
                 readonly={readOnly}
                 required={required}

@@ -34,6 +34,7 @@ describe('InputToggle', () => {
             expect(element.name).toBeUndefined();
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.size).toBe('medium');
             expect(element.validity).toEqual({});
             expect(element.value).toBeUndefined();
@@ -243,11 +244,14 @@ describe('InputToggle', () => {
         describe('required', () => {
             it('Passed to the component', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required field';
 
                 return Promise.resolve().then(() => {
-                    const asterisk =
-                        element.shadowRoot.querySelector('.slds-required');
+                    const asterisk = element.shadowRoot.querySelector(
+                        '[data-element-id="required-abbr"]'
+                    );
                     expect(asterisk).toBeTruthy();
+                    expect(asterisk.title).toBe('Required field');
                 });
             });
         });
@@ -324,95 +328,101 @@ describe('InputToggle', () => {
                 });
             });
         });
-    });
 
-    describe('value', () => {
-        it('Passed to the component', () => {
-            element.value = 'A string value';
+        describe('value', () => {
+            it('Passed to the component', () => {
+                element.value = 'A string value';
 
-            return Promise.resolve().then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="input"]'
-                );
-                expect(input.value).toBe('A string value');
-            });
-        });
-    });
-
-    describe('variant', () => {
-        it('standard', () => {
-            element.variant = 'standard';
-            const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
-            );
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-checkbox_toggle'
-            );
-
-            return Promise.resolve().then(() => {
-                expect(label.classList).not.toContain('slds-assistive-text');
-
-                expect(wrapper.classList).not.toContain(
-                    'slds-form-element_stacked'
-                );
-                expect(wrapper.classList).not.toContain('slds-grid');
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input"]'
+                    );
+                    expect(input.value).toBe('A string value');
+                });
             });
         });
 
-        it('label-inline', () => {
-            element.variant = 'label-inline';
-            const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
-            );
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-checkbox_toggle'
-            );
-
-            return Promise.resolve().then(() => {
-                expect(label.classList).not.toContain('slds-assistive-text');
-
-                expect(wrapper.classList).not.toContain(
-                    'slds-form-element_stacked'
+        describe('variant', () => {
+            it('standard', () => {
+                element.variant = 'standard';
+                const label = element.shadowRoot.querySelector(
+                    '.slds-form-element__label'
                 );
-                expect(wrapper.classList).toContain('slds-grid');
+                const wrapper = element.shadowRoot.querySelector(
+                    '.slds-checkbox_toggle'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(label.classList).not.toContain(
+                        'slds-assistive-text'
+                    );
+
+                    expect(wrapper.classList).not.toContain(
+                        'slds-form-element_stacked'
+                    );
+                    expect(wrapper.classList).not.toContain('slds-grid');
+                });
             });
-        });
 
-        it('label-stacked', () => {
-            element.variant = 'label-stacked';
-            const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
-            );
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-checkbox_toggle'
-            );
-
-            return Promise.resolve().then(() => {
-                expect(label.classList).not.toContain('slds-assistive-text');
-
-                expect(wrapper.classList).toContain(
-                    'slds-form-element_stacked'
+            it('label-inline', () => {
+                element.variant = 'label-inline';
+                const label = element.shadowRoot.querySelector(
+                    '.slds-form-element__label'
                 );
-                expect(wrapper.classList).not.toContain('slds-grid');
+                const wrapper = element.shadowRoot.querySelector(
+                    '.slds-checkbox_toggle'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(label.classList).not.toContain(
+                        'slds-assistive-text'
+                    );
+
+                    expect(wrapper.classList).not.toContain(
+                        'slds-form-element_stacked'
+                    );
+                    expect(wrapper.classList).toContain('slds-grid');
+                });
             });
-        });
 
-        it('label-hidden', () => {
-            element.variant = 'label-hidden';
-            const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
-            );
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-checkbox_toggle'
-            );
-
-            return Promise.resolve().then(() => {
-                expect(label.classList).toContain('slds-assistive-text');
-
-                expect(wrapper.classList).not.toContain(
-                    'slds-form-element_stacked'
+            it('label-stacked', () => {
+                element.variant = 'label-stacked';
+                const label = element.shadowRoot.querySelector(
+                    '.slds-form-element__label'
                 );
-                expect(wrapper.classList).not.toContain('slds-grid');
+                const wrapper = element.shadowRoot.querySelector(
+                    '.slds-checkbox_toggle'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(label.classList).not.toContain(
+                        'slds-assistive-text'
+                    );
+
+                    expect(wrapper.classList).toContain(
+                        'slds-form-element_stacked'
+                    );
+                    expect(wrapper.classList).not.toContain('slds-grid');
+                });
+            });
+
+            it('label-hidden', () => {
+                element.variant = 'label-hidden';
+                const label = element.shadowRoot.querySelector(
+                    '.slds-form-element__label'
+                );
+                const wrapper = element.shadowRoot.querySelector(
+                    '.slds-checkbox_toggle'
+                );
+
+                return Promise.resolve().then(() => {
+                    expect(label.classList).toContain('slds-assistive-text');
+
+                    expect(wrapper.classList).not.toContain(
+                        'slds-form-element_stacked'
+                    );
+                    expect(wrapper.classList).not.toContain('slds-grid');
+                });
             });
         });
     });
