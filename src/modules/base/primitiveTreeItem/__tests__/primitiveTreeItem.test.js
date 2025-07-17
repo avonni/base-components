@@ -122,7 +122,7 @@ describe('Primitive Tree Item', () => {
         ]);
         expect(element.expanded).toBeFalsy();
         expect(element.fields).toEqual([]);
-        expect(element.hiddenActions).toBeFalsy();
+        expect(element.hiddenActions).toEqual([]);
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.independentMultiSelect).toBeFalsy();
@@ -232,24 +232,48 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('Action buttons element is null when hiddenActions is enabled', () => {
+    it('Action buttons do not display actions that are in hiddenActions', () => {
+        element.hiddenActions = ['Standard.Tree.Edit', 'Standard.Tree.Delete'];
         element.actions = ACTIONS;
-        element.hiddenActions = true;
+        element.actionsWhenDisabled = ACTIONS;
 
-        return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector(
-                '[data-element-id="div-header"]'
-            );
-            let buttons = header.querySelector(
-                '[data-element-id="div-actions"]'
-            );
-            expect(buttons).toBeNull();
+        return Promise.resolve()
+            .then(() => {
+                const icons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button-icon-action"]'
+                );
+                expect(icons).toHaveLength(1);
+                expect(icons[0].alternativeText).toBe(ACTIONS[3].label);
+                expect(icons[0].iconName).toBe(ACTIONS[3].iconName);
+                expect(icons[0].name).toBe(ACTIONS[3].name);
 
-            // Don't show buttons on header hover
-            header.dispatchEvent(new CustomEvent('mouseenter'));
-            buttons = header.querySelector('[data-element-id="div-actions"]');
-            expect(buttons).toBeNull();
-        });
+                const menuItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-menu-item-action"]'
+                );
+                expect(menuItems).toHaveLength(1);
+                expect(menuItems[0].label).toBe(ACTIONS[1].label);
+                expect(menuItems[0].value).toBe(ACTIONS[1].name);
+                expect(menuItems[0].iconName).toBe(ACTIONS[1].iconName);
+
+                element.disabled = true;
+            })
+            .then(() => {
+                const icons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button-icon-action"]'
+                );
+                expect(icons).toHaveLength(1);
+                expect(icons[0].alternativeText).toBe(ACTIONS[3].label);
+                expect(icons[0].iconName).toBe(ACTIONS[3].iconName);
+                expect(icons[0].name).toBe(ACTIONS[3].name);
+
+                const menuItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-menu-item-action"]'
+                );
+                expect(menuItems).toHaveLength(1);
+                expect(menuItems[0].label).toBe(ACTIONS[1].label);
+                expect(menuItems[0].value).toBe(ACTIONS[1].name);
+                expect(menuItems[0].iconName).toBe(ACTIONS[1].iconName);
+            });
     });
 
     // actions-when-disabled
