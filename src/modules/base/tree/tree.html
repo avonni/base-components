@@ -32,7 +32,12 @@
                 aria-level={item.level}
                 avatar={item.avatar}
                 child-items={item.children}
+                cancel-button-label={cancelButtonLabel}
+                close-button-icon-alternative-text={closeButtonIconAlternativeText}
+                collapse-button-alternative-text={collapseButtonAlternativeText}
                 collapse-disabled={collapseDisabled}
+                done-button-label={doneButtonLabel}
+                expand-button-alternative-text={expandButtonAlternativeText}
                 color={item.color}
                 independent-multi-select={independentMultiSelect}
                 disabled={item.disabled}
@@ -52,6 +57,7 @@
                 name={item.name}
                 node-key={item.key}
                 role="treeitem"
+                save-button-icon-alternative-text={saveButtonIconAlternativeText}
                 selected={item.selected}
                 show-checkbox={isMultiSelect}
                 sortable={sortable}
@@ -89,12 +95,12 @@
             variant="brand"
             data-element-id="lightning-icon-add-action"
         ></lightning-icon>
-        Add item
+        {addButtonLabel}
     </button>
     <lightning-button
         if:true={showLoadMore}
         class="slds-m-top_xx-small slds-m-left_none"
-        label="Load More"
+        label={loadMoreButtonLabel}
         stretch
         data-element-id="lightning-button-load-more"
         onclick={handleLoadMore}

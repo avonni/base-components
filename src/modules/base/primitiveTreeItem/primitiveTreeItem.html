@@ -124,7 +124,7 @@
                     <lightning-button-icon
                         if:true={labelIsEdited}
                         class="slds-m-left_x-small slds-m-vertical_xx-small"
-                        alternative-text="Save Label"
+                        alternative-text={saveButtonIconAlternativeText}
                         icon-name="utility:check"
                         variant="bare"
                         data-element-id="lightning-button-icon-inline-save"
@@ -203,8 +203,8 @@
                         >{metatext}
                     </a>
                     <span if:false={showLink} data-element-id="span-metatext"
-                        >{metatext}</span
-                    >
+                        >{metatext}
+                    </span>
                 </div>
 
                 <!-- Fields -->
@@ -244,7 +244,7 @@
             <div class="slds-text-align_right">
                 <lightning-button-icon
                     class="slds-popover__close"
-                    alternative-text="Close dialog"
+                    alternative-text={closeButtonIconAlternativeText}
                     icon-name="utility:close"
                     size="small"
                     variant="bare"
@@ -289,12 +289,12 @@
             >
                 <lightning-button
                     class="slds-m-right_xx-small"
-                    label="Cancel"
+                    label={cancelButtonLabel}
                     onclick={togglePopoverVisibility}
                 ></lightning-button>
                 <lightning-button
                     disabled={hasError}
-                    label="Done"
+                    label={doneButtonLabel}
                     variant="brand"
                     data-element-id="lightning-button-done"
                     onclick={handleDone}
@@ -319,11 +319,16 @@
                     aria-level={item.level}
                     avatar={item.avatar}
                     child-items={item.children}
+                    cancel-button-label={cancelButtonLabel}
+                    close-button-icon-alternative-text={closeButtonIconAlternativeText}
+                    collapse-button-alternative-text={collapseButtonAlternativeText}
                     collapse-disabled={collapseDisabled}
                     color={item.color}
                     enable-infinite-loading={item.enableInfiniteLoading}
                     disabled={item.disabled}
+                    done-button-label={doneButtonLabel}
                     editable-fields={editableFields}
+                    expand-button-alternative-text={expandButtonAlternativeText}
                     expanded={item.expanded}
                     fields={item.fields}
                     href={item.href}
@@ -335,10 +340,12 @@
                     label={item.label}
                     level={item.level}
                     loading-state-alternative-text={loadingStateAlternativeText}
+                    load-more-button-label={loadMoreButtonLabel}
                     metatext={item.metatext}
                     name={item.name}
                     node-key={item.key}
                     role="treeitem"
+                    save-button-icon-alternative-text={saveButtonIconAlternativeText}
                     selected={item.selected}
                     show-checkbox={showCheckbox}
                     sortable={sortable}
@@ -362,7 +369,7 @@
             <lightning-button
                 if:true={showLoadMoreButton}
                 class="avonni-primitive-tree-item__load-more-button"
-                label="Load more"
+                label={loadMoreButtonLabel}
                 variant="base"
                 data-element-id="lightning-button-load-more"
                 onclick={handleLoadMore}

@@ -8,12 +8,17 @@ import { keyCodes } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 import { TreeData } from './treeData';
 
+const DEFAULT_ADD_BUTTON_LABEL = 'Add Item';
 const DEFAULT_ACTION_NAMES = [
     'Standard.Tree.Add',
     'Standard.Tree.Edit',
     'Standard.Tree.Delete',
     'Standard.Tree.Duplicate'
 ];
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_COLLAPSE_BUTTON_ALTERNATIVE_TEXT = 'Collapse Branch';
+const DEFAULT_CLOSE_BUTTON_ICON_ALTERNATIVE_TEXT = 'Close Dialog';
+const DEFAULT_DONE_BUTTON_LABEL = 'Done';
 const DEFAULT_EDITABLE_FIELDS = [
     'label',
     'metatext',
@@ -23,7 +28,10 @@ const DEFAULT_EDITABLE_FIELDS = [
     'disabled',
     'isLoading'
 ];
+const DEFAULT_EXPAND_BUTTON_ALTERNATIVE_TEXT = 'Expand Branch';
+const DEFAULT_LOAD_MORE_BUTTON_LABEL = 'Load More';
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SAVE_BUTTON_ALTERNATIVE_TEXT = 'Save Label';
 
 /**
  * Tree of nested items. Used to display a visualization of a structural hierarchy.
@@ -35,6 +43,56 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
  */
 export default class Tree extends LightningElement {
     /**
+     * Label for the add button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Add Item'
+     */
+    @api addButtonLabel = DEFAULT_ADD_BUTTON_LABEL;
+    /**
+     * The label for the cancel button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Cancel'
+     */
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
+    /**
+     * The alternative text used to describe the close button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Close Dialog'
+     */
+    @api closeButtonIconAlternativeText =
+        DEFAULT_CLOSE_BUTTON_ICON_ALTERNATIVE_TEXT;
+    /**
+     * The alternative text used to describe the collapse button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Collapse Branch'
+     */
+    @api collapseButtonAlternativeText =
+        DEFAULT_COLLAPSE_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The label for the done button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Done'
+     */
+    @api doneButtonLabel = DEFAULT_DONE_BUTTON_LABEL;
+    /**
+     * The alternative text used to describe the expand button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Expand Branch'
+     */
+    @api expandButtonAlternativeText = DEFAULT_EXPAND_BUTTON_ALTERNATIVE_TEXT;
+    /**
      * Tree heading.
      *
      * @type {string}
@@ -42,12 +100,28 @@ export default class Tree extends LightningElement {
      */
     @api header;
     /**
+     * Label for the load more button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Load More'
+     */
+    @api loadMoreButtonLabel = DEFAULT_LOAD_MORE_BUTTON_LABEL;
+    /**
      * New branch default label.
      *
      * @type {string}
      * @public
      */
     @api placeholder;
+    /**
+     * The alternative text used to describe the save button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Save Label'
+     */
+    @api saveButtonIconAlternativeText = DEFAULT_SAVE_BUTTON_ALTERNATIVE_TEXT;
 
     _actions = [];
     _actionsWhenDisabled = [];

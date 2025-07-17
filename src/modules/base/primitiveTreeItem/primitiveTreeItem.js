@@ -17,8 +17,12 @@ const DEFAULT_EDIT_FIELDS = [
     'isLoading'
 ];
 const i18n = {
+    cancelButton: 'Cancel',
+    closeDialog: 'Close Dialog',
     collapseBranch: 'Collapse Branch',
-    expandBranch: 'Expand Branch'
+    doneButton: 'Done',
+    expandBranch: 'Expand Branch',
+    saveLabel: 'Save Label'
 };
 const POPOVER_FOOTER_HEIGHT = 55;
 const UNSORTABLE_ITEMS_PARTS = [
@@ -33,12 +37,52 @@ const UNSORTABLE_ITEMS_PARTS = [
  */
 export default class PrimitiveTreeItem extends LightningElement {
     /**
+     * The label for the cancel button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Cancel'
+     */
+    @api cancelButtonLabel = i18n.cancelButton;
+    /**
+     * The alternative text used to describe the dialog close button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Close Dialog'
+     */
+    @api closeButtonIconAlternativeText = i18n.closeDialog;
+    /**
      * Color of the item checkbox, if the tree is in multi-select mode.
      *
      * @type {string}
      * @public
      */
     @api color;
+    /**
+     * The alternative text used to describe the collapse button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Collapse Branch'
+     */
+    @api collapseButtonAlternativeText = i18n.collapseBranch;
+    /**
+     * The label for the done button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Done'
+     */
+    @api doneButtonLabel = i18n.doneButton;
+    /**
+     * The alternative text used to describe the expand button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Expand Branch'
+     */
+    @api expandButtonAlternativeText = i18n.expandBranch;
     /**
      * The Lightning Design System name of the icon displayed after the label. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
@@ -54,6 +98,13 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     @api loadingStateAlternativeText;
     /**
+     * Label for the load more button.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadMoreButtonLabel;
+    /**
      * Unique key of the item.
      *
      * @type {string}
@@ -61,6 +112,14 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @required
      */
     @api nodeKey;
+    /**
+     * The alternative text used to describe the save button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Save Label'
+     */
+    @api saveButtonIconAlternativeText = i18n.saveLabel;
 
     _actions = [];
     _actionsWhenDisabled = [];
@@ -613,9 +672,9 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get expandButtonLabel() {
         if (this.expanded) {
-            return i18n.collapseBranch;
+            return this.collapseButtonAlternativeText;
         }
-        return i18n.expandBranch;
+        return this.expandButtonAlternativeText;
     }
 
     /**

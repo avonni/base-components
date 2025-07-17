@@ -108,9 +108,15 @@ describe('Primitive Tree Item', () => {
             expect(element.actionsWhenDisabled).toEqual([]);
             expect(element.allowInlineEdit).toBeFalsy();
             expect(element.avatar).toBeUndefined();
-            expect(element.childItems).toEqual([]);
+            expect(element.cancelButtonLabel).toBe('Cancel');
+            expect(element.closeButtonIconAlternativeText).toBe('Close Dialog');
+            expect(element.collapseButtonAlternativeText).toBe(
+                'Collapse Branch'
+            );
             expect(element.collapseDisabled).toBeFalsy();
             expect(element.color).toBeUndefined();
+            expect(element.doneButtonLabel).toBe('Done');
+            expect(element.expandButtonAlternativeText).toBe('Expand Branch');
             expect(element.disabled).toBeFalsy();
             expect(element.editableFields).toEqual([
                 'label',
@@ -135,16 +141,11 @@ describe('Primitive Tree Item', () => {
             expect(element.metatext).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.nodeKey).toBeUndefined();
+            expect(element.saveButtonIconAlternativeText).toBe('Save Label');
             expect(element.selected).toBeFalsy();
             expect(element.showCheckbox).toBeFalsy();
             expect(element.sortable).toBeFalsy();
         });
-
-        /*
-         * ------------------------------------------------------------
-         *  ATTRIBUTES
-         * -------------------------------------------------------------
-         */
 
         describe('actions', () => {
             it('Passed to the component', () => {
@@ -533,6 +534,7 @@ describe('Primitive Tree Item', () => {
                 element.fields = FIELDS;
                 element.expanded = false;
                 element.childItems = ITEMS;
+                element.expandButtonAlternativeText = 'Expand Branch Test';
 
                 return Promise.resolve().then(() => {
                     const fields = element.shadowRoot.querySelectorAll(
@@ -547,8 +549,10 @@ describe('Primitive Tree Item', () => {
                         'avonni-primitive-tree-item__chevron_expanded'
                     );
                     expect(expandButton.ariaExpanded).toBe('false');
-                    expect(expandButton.alternativeText).toBe('Expand Branch');
-                    expect(expandButton.title).toBe('Expand Branch');
+                    expect(expandButton.alternativeText).toBe(
+                        'Expand Branch Test'
+                    );
+                    expect(expandButton.title).toBe('Expand Branch Test');
 
                     const children = element.shadowRoot.querySelectorAll(
                         '[data-element-id="avonni-primitive-tree-item"]'
@@ -561,6 +565,7 @@ describe('Primitive Tree Item', () => {
                 element.fields = FIELDS;
                 element.expanded = true;
                 element.childItems = ITEMS;
+                element.collapseButtonAlternativeText = 'Collapse Branch Test';
 
                 return Promise.resolve().then(() => {
                     const fields = element.shadowRoot.querySelectorAll(
@@ -576,9 +581,9 @@ describe('Primitive Tree Item', () => {
                     );
                     expect(expandButton.ariaExpanded).toBe('true');
                     expect(expandButton.alternativeText).toBe(
-                        'Collapse Branch'
+                        'Collapse Branch Test'
                     );
-                    expect(expandButton.title).toBe('Collapse Branch');
+                    expect(expandButton.title).toBe('Collapse Branch Test');
 
                     const children = element.shadowRoot.querySelectorAll(
                         '[data-element-id="avonni-primitive-tree-item"]'
@@ -1189,6 +1194,7 @@ describe('Primitive Tree Item', () => {
             it('change event, invalid input prevent inline editing from saving', () => {
                 element.allowInlineEdit = true;
                 element.label = 'Some label';
+                element.saveButtonIconAlternativeText = 'Save Label Test';
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
@@ -1206,6 +1212,9 @@ describe('Primitive Tree Item', () => {
                         );
                         const saveButton = element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-icon-inline-save"]'
+                        );
+                        expect(saveButton.alternativeText).toBe(
+                            'Save Label Test'
                         );
                         input.value = '';
                         saveButton.click();
@@ -1260,6 +1269,7 @@ describe('Primitive Tree Item', () => {
 
             it('Trap focus inside the edit popover', () => {
                 element.actions = ACTIONS;
+                element.closeButtonIconAlternativeText = 'Close Dialog Test';
 
                 return Promise.resolve()
                     .then(() => {
@@ -1271,6 +1281,9 @@ describe('Primitive Tree Item', () => {
                     .then(() => {
                         const closeButton = element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-icon-close"]'
+                        );
+                        expect(closeButton.alternativeText).toBe(
+                            'Close Dialog Test'
                         );
                         const doneButton = element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-done"]'
@@ -1424,6 +1437,7 @@ describe('Primitive Tree Item', () => {
                 element.enableInfiniteLoading = true;
                 element.expanded = true;
                 element.nodeKey = 'someKey';
+                element.loadMoreButtonLabel = 'Load More Test';
 
                 const handler = jest.fn();
                 element.addEventListener('privateitemloadmore', handler);
@@ -1432,6 +1446,7 @@ describe('Primitive Tree Item', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-load-more"]'
                     );
+                    expect(button.label).toBe('Load More Test');
                     button.click();
                     expect(handler).toHaveBeenCalled();
                     const call = handler.mock.calls[0][0];

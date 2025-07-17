@@ -24,8 +24,15 @@ describe('Tree', () => {
         it('Default attributes', () => {
             expect(element.actions).toEqual([]);
             expect(element.actionsWhenDisabled).toEqual([]);
+            expect(element.addButtonLabel).toBe('Add Item');
             expect(element.allowInlineEdit).toBeFalsy();
+            expect(element.cancelButtonLabel).toBe('Cancel');
             expect(element.collapseDisabled).toBeFalsy();
+            expect(element.collapseButtonAlternativeText).toBe(
+                'Collapse Branch'
+            );
+            expect(element.doneButtonLabel).toBe('Done');
+            expect(element.expandButtonAlternativeText).toBe('Expand Branch');
             expect(element.disabled).toBeFalsy();
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.editableFields).toEqual([
@@ -43,7 +50,9 @@ describe('Tree', () => {
             expect(element.isMultiSelect).toBeFalsy();
             expect(element.items).toEqual([]);
             expect(element.loadingStateAlternativeText).toBe('Loading...');
+            expect(element.loadMoreButtonLabel).toBe('Load More');
             expect(element.placeholder).toBeUndefined();
+            expect(element.saveButtonIconAlternativeText).toBe('Save Label');
             expect(element.selectedItems).toEqual([]);
             expect(element.sortable).toBeFalsy();
         });
@@ -57,6 +66,7 @@ describe('Tree', () => {
 
                 element.actions = ACTIONS;
                 element.items = ITEMS;
+                element.addButtonLabel = 'Add Item Test';
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
@@ -74,6 +84,7 @@ describe('Tree', () => {
                         '[data-element-id="lightning-icon-add-action"]'
                     );
                     expect(icon.iconName).toBe('utility:add');
+                    expect(addButtonAction.textContent).toBe('Add Item Test');
                 });
             });
 
@@ -145,6 +156,36 @@ describe('Tree', () => {
             });
         });
 
+        describe('Alternative Texts', () => {
+            it('Passed to the component', () => {
+                element.items = ITEMS;
+                element.collapseButtonAlternativeText = 'Collapse Branch Test';
+                element.closeButtonIconAlternativeText = 'Close Dialog Test';
+                element.expandButtonAlternativeText = 'Expand Branch Test';
+                element.saveButtonIconAlternativeText = 'Save Label Test';
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) => {
+                        expect(item.collapseButtonAlternativeText).toBe(
+                            'Collapse Branch Test'
+                        );
+                        expect(item.closeButtonIconAlternativeText).toBe(
+                            'Close Dialog Test'
+                        );
+                        expect(item.expandButtonAlternativeText).toBe(
+                            'Expand Branch Test'
+                        );
+                        expect(item.saveButtonIconAlternativeText).toBe(
+                            'Save Label Test'
+                        );
+                    });
+                });
+            });
+        });
+
         describe('Collapse Disabled', () => {
             it('true', () => {
                 element.collapseDisabled = true;
@@ -195,6 +236,7 @@ describe('Tree', () => {
         describe('Enable infinite loading', () => {
             it('true', () => {
                 element.enableInfiniteLoading = true;
+                element.loadMoreButtonLabel = 'Load More Test';
 
                 return Promise.resolve()
                     .then(() => {
@@ -202,7 +244,7 @@ describe('Tree', () => {
                             '[data-element-id="lightning-button-load-more"]'
                         );
                         expect(loadMore).toBeTruthy();
-
+                        expect(loadMore.label).toBe('Load More Test');
                         element.isLoading = true;
                     })
                     .then(() => {

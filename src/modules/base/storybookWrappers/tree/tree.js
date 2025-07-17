@@ -6,14 +6,22 @@ const LOADING_OFFSET = 5;
 export default class Tree extends LightningElement {
     @api actions;
     @api actionsWhenDisabled;
+    @api addButtonLabel;
     @api allowInlineEdit;
+    @api cancelButtonLabel;
+    @api collapseButtonAlternativeText;
     @api collapseDisabled;
+    @api doneButtonLabel;
+    @api disabled;
+    @api expandButtonAlternativeText;
     @api editableFields;
     @api header;
     @api independentMultiSelect;
     @api isMultiSelect;
     @api loadingStateAlternativeText;
+    @api loadMoreButtonLabel;
     @api placeholder;
+    @api saveButtonIconAlternativeText;
     @api selectedItems;
     @api sortable;
 
