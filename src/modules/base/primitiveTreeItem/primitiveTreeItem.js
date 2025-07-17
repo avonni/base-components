@@ -77,7 +77,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _enableInfiniteLoading = false;
     _expanded = false;
     _fields = [];
-    _hiddenActions = false;
+    _hiddenActions = [];
     _href;
     _independentMultiSelect = false;
     _indeterminate = false;
@@ -141,7 +141,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
         this.addEventListener('keydown', this.handleKeydown);
         this.addEventListener('mousedown', this.handleMouseDown);
-        this.splitActions();
+        this.initActions();
         this.computeSelection();
         this._connected = true;
     }
@@ -183,7 +183,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actions(value) {
         this._actions = normalizeArray(value);
-        if (this._connected) this.splitActions();
+        if (this._connected) this.initActions();
     }
 
     /**
@@ -198,7 +198,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actionsWhenDisabled(value) {
         this._actionsWhenDisabled = normalizeArray(value);
-        if (this._connected) this.splitActions();
+        if (this._connected) this.initActions();
     }
 
     /**
@@ -337,18 +337,17 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * If present, the item does not display any actions.
+     * Array of action names that should be hidden for this item.
      *
-     * @type {boolean}
+     * @type {string[]}
      * @public
-     * @default false
      */
     @api
     get hiddenActions() {
         return this._hiddenActions;
     }
     set hiddenActions(value) {
-        this._hiddenActions = normalizeBoolean(value);
+        this._hiddenActions = normalizeArray(value);
     }
 
     /**
@@ -646,15 +645,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * True if the item has actions and should not hide them.
-     *
-     * @type {boolean}
-     */
-    get displayActions() {
-        return !this.hiddenActions && this.visibleActions.length;
-    }
-
-    /**
      * Name of the expand button icon.
      *
      * @type {string}
@@ -943,6 +933,23 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * Filter out hidden actions from the actions and actionsWhenDisabled arrays.
+     */
+    filterHiddenActions() {
+        if (this.hiddenActions.length === 0) {
+            return;
+        }
+        this._actions = this._actions.filter((action) => {
+            return !this.hiddenActions.includes(action.name);
+        });
+        this._actionsWhenDisabled = this._actionsWhenDisabled.filter(
+            (action) => {
+                return !this.hiddenActions.includes(action.name);
+            }
+        );
+    }
+
+    /**
      * Set the focus on a child item.
      *
      * @param {string} childKey Key of the child item receiving focus.
@@ -994,7 +1001,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Hide the action buttons.
      */
     hideActions() {
-        if (!this.popoverVisible && this.displayActions) {
+        if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
                 '[data-element-id="div-actions"]'
             ).style.opacity = 0;
@@ -1009,6 +1016,14 @@ export default class PrimitiveTreeItem extends LightningElement {
                 }
             }
         }
+    }
+
+    /**
+     * Initialize the actions by filtering hidden actions and splitting them into button and menu actions.
+     */
+    initActions() {
+        this.filterHiddenActions();
+        this.splitActions();
     }
 
     /**
@@ -1097,11 +1112,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Display the action buttons.
      */
     showActions() {
-        if (
-            !this.popoverVisible &&
-            this.visibleActions.length &&
-            !this.hiddenActions
-        ) {
+        if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
                 '[data-element-id="div-actions"]'
             ).style.opacity = 1;
