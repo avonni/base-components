@@ -60,6 +60,18 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        showMoreButtonLabel: {
+            name: 'show-more-button-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the show more button displayed after the number of hidden items. E.g. "+2 more"',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'more' }
+            }
+        },
         singleLine: {
             name: 'single-line',
             control: {
@@ -87,6 +99,7 @@ export default {
         alternativeText: 'Selected Options:',
         isCollapsible: false,
         isExpanded: false,
+        showMoreButtonLabel: 'more',
         singleLine: false,
         sortable: false
     }

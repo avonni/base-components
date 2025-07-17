@@ -5,6 +5,7 @@ import { LightningElement, api, track } from 'lwc';
 const AUTO_SCROLL_INCREMENT = 5;
 const AUTO_SCROLL_THRESHOLD = 50;
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
+const DEFAULT_SHOW_MORE_BUTTON_LABEL = 'more';
 const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
 const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
@@ -17,6 +18,15 @@ const SHOW_MORE_BUTTON_WIDTH = 80;
  * @public
  */
 export default class PillContainer extends LightningElement {
+    /**
+     * Label of the show more button displayed after the number of hidden items. E.g. "+2 more"
+     *
+     * @type {string}
+     * @public
+     * @default more
+     */
+    @api showMoreButtonLabel = DEFAULT_SHOW_MORE_BUTTON_LABEL;
+
     _actions = [];
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _isCollapsible = false;
@@ -233,16 +243,6 @@ export default class PillContainer extends LightningElement {
     }
 
     /**
-     * Label of the "show more" button.
-     *
-     * @type {string}
-     */
-    get buttonLabel() {
-        const hiddenCount = this.items.length - this._visibleItemsCount;
-        return `+${hiddenCount} more`;
-    }
-
-    /**
      * CSS classes of the items hidden in the single-line collapsed popover.
      *
      * @type {string}
@@ -301,6 +301,16 @@ export default class PillContainer extends LightningElement {
         return classSet('avonni-pill-container__pill').add({
             'avonni-pill-container__pill-sortable': this.sortable
         });
+    }
+
+    /**
+     * Label of the "show more" button.
+     *
+     * @type {string}
+     */
+    get computedShowMoreButtonLabel() {
+        const hiddenCount = this.items.length - this._visibleItemsCount;
+        return `+${hiddenCount} ${this.showMoreButtonLabel}`;
     }
 
     /**

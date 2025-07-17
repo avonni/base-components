@@ -91,6 +91,7 @@ describe('Pill Container', () => {
             expect(element.isCollapsible).toBeFalsy();
             expect(element.isExpanded).toBeFalsy();
             expect(element.items).toEqual([]);
+            expect(element.showMoreButtonLabel).toBe('more');
             expect(element.singleLine).toBeFalsy();
             expect(element.sortable).toBeFalsy();
         });
@@ -145,6 +146,7 @@ describe('Pill Container', () => {
                     () => 150
                 );
                 element.items = ITEMS;
+                element.showMoreButtonLabel = 'mores';
 
                 return Promise.resolve()
                     .then(() => {
@@ -171,6 +173,7 @@ describe('Pill Container', () => {
                             '[data-element-id="lightning-button-show-more"]'
                         );
                         expect(button).toBeTruthy();
+                        expect(button.label).toBe('+2 mores');
 
                         const items = element.shadowRoot.querySelectorAll(
                             '[data-element-id="li-item"]'

@@ -63,7 +63,7 @@
             <lightning-button
                 if:true={isCollapsed}
                 class="slds-p-horizontal_xx-small"
-                label={buttonLabel}
+                label={computedShowMoreButtonLabel}
                 variant="base"
                 data-element-id="lightning-button-show-more"
                 onclick={handleExpand}
@@ -99,8 +99,8 @@
                                 data-element-id="li-item-hidden"
                                 data-index={pill.index}
                                 data-name={pill.name}
-                                onmousemove={handlePillMouseMove}
                                 onmousedown={handlePillMouseDown}
+                                onmousemove={handlePillMouseMove}
                                 onmouseup={handlePillMouseUp}
                             >
                                 <c-primitive-pill
