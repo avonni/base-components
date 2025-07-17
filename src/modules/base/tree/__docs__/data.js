@@ -147,15 +147,15 @@ export const ITEMS = [
         label: 'Go to Record 7',
         href: '#record7',
         name: 'node7',
-        actions: [{ name: 'record7Action', label: 'Record 7 action' }],
-        hiddenActions: true
+        actions: [{ name: 'record7Action', label: 'Record 7 action' }]
     },
     {
         label: 'Go to Record 8',
         href: '#record8',
         name: 'node8',
         slottableTypes: ['type2'],
-        type: 'type1'
+        type: 'type1',
+        hiddenActions: ['Standard.Tree.Edit', 'Standard.Tree.Duplicate']
     },
     {
         label: 'Go to Record 9',

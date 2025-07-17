@@ -34,7 +34,7 @@
  * @property {object[]} items Nested item objects.
  * @property {string} name Required. The unique name of the item. It will be returned by the `onselect` event handler.
  * @property {string} href If the item label should be a link, URL of the link.
- * @property {boolean} hiddenActions If true, the item does not display any actions.
+ * @property {string[]} hiddenActions Array of action names that should be hidden for this item.
  * @property {boolean} noSlots If true, the item cannot accept items has a child when sorting.
  * @property {string[]} slottableTypes Array of types of items that can be slotted into this item when sorting. If the array isn’t provided, any type of item can be slotted in this item.
  * @property {string} type Type of the item. It will be used to determine if the item can be slotted into another item when sorting.
