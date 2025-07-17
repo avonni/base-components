@@ -448,7 +448,10 @@ export default class ProgressBar extends LightningElement {
      * @type {string}
      */
     get assistiveText() {
-        return `Progress: ${this.value}%`;
+        if (this.valuePrefix || this.valueSuffix) {
+            return `${this.valuePrefix} ${this.value}% ${this.valueSuffix}`;
+        }
+        return `${this.value}%`;
     }
 
     /**

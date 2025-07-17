@@ -1043,7 +1043,7 @@ describe('ProgressBar', () => {
                     );
 
                     expect(value.textContent.trim()).toBe('56%');
-                    expect(assistiveText.textContent).toBe('Progress: 56%');
+                    expect(assistiveText.textContent).toBe('56%');
                     expect(innerWrapper.style.clipPath).toBe(
                         'inset(0 44% 0 0)'
                     );
@@ -1066,7 +1066,7 @@ describe('ProgressBar', () => {
                     );
 
                     expect(value.textContent.trim()).toBe('100%');
-                    expect(assistiveText.textContent).toBe('Progress: 100%');
+                    expect(assistiveText.textContent).toBe('100%');
                     expect(innerWrapper.style.clipPath).toBe('inset(0 0% 0 0)');
                 });
             });
@@ -1087,7 +1087,7 @@ describe('ProgressBar', () => {
                     );
 
                     expect(value.textContent.trim()).toBe('0%');
-                    expect(assistiveText.textContent).toBe('Progress: 0%');
+                    expect(assistiveText.textContent).toBe('0%');
                     expect(innerWrapper.style.clipPath).toBe(
                         'inset(0 100% 0 0)'
                     );
@@ -1107,6 +1107,10 @@ describe('ProgressBar', () => {
                         '.avonni-progress-bar__value'
                     );
                     expect(value.textContent.trim()).toBe('Prefix 0% Suffix');
+                    const assistiveText = element.shadowRoot.querySelector(
+                        '.slds-assistive-text'
+                    );
+                    expect(assistiveText.textContent).toBe('Prefix 0% Suffix');
                 });
             });
         });
