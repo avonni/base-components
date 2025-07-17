@@ -4,11 +4,11 @@
             <label class={computedLegendClass} data-element-id="label">
                 <abbr
                     if:true={required}
-                    title="required"
                     class="slds-required"
-                    data-element-id="required-indicator"
-                    >*</abbr
-                >
+                    title={requiredAlternativeText}
+                    data-element-id="required-abbr"
+                    >*
+                </abbr>
                 {label}
             </label>
             <lightning-helptext
