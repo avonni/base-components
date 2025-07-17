@@ -376,10 +376,11 @@ export default class Slider extends LightningElement {
         }
         this._step = Number(value);
         this._scalingFactor =
-            0 < this._step && this._step < 1 ? 1 / this.step : DEFAULT_STEP;
+            0 < this._step && this._step < 1 ? 1 / this._step : DEFAULT_STEP;
         if (this._connected) {
             this.scaleValues();
             this.capValues();
+            this.initMaxDefaultValue();
         }
         this._domModified = true;
     }
@@ -466,6 +467,15 @@ export default class Slider extends LightningElement {
             this._domModified = true;
         }
         this._unitAttributes = normalizeObject(value);
+        const normalized = normalizeObject(value);
+        const clean = {};
+        Object.entries(normalized).forEach(([key, val]) => {
+            if (val !== null) {
+                clean[key] = val;
+            }
+        });
+
+        this._unitAttributes = clean;
     }
 
     /**
@@ -583,13 +593,14 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedCustomLabelContainerClass() {
-        const isVertical = this.type === 'vertical';
         return classSet('').add({
-            'avonni-slider__custom-label-container_horizontal': !isVertical,
-            'avonni-slider__custom-label-container_vertical': isVertical,
+            'avonni-slider__custom-label-container_horizontal':
+                !this.isVertical,
+            'avonni-slider__custom-label-container_vertical': this.isVertical,
             'avonni-slider__custom-label-container_close':
                 this.tickMarkStyle !== 'tick',
-            [`avonni-slider__container-vertical-size_${this.size}`]: isVertical
+            [`avonni-slider__container-vertical-size_${this.size}`]:
+                this.isVertical
         });
     }
 
@@ -711,138 +722,9 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Returns the custom label container html element
-     *
-     * @type {HTMLElement}
-     */
-    get customLabelContainer() {
-        return this.template.querySelector(
-            '[data-element-id="custom-label-container"]'
-        );
-    }
-
-    /**
-     * Key for inputs and customLabels
-     * @type {string}
-     *
-     */
-    get generateKey() {
-        return generateUUID();
-    }
-
-    /**
-     * Verify if the slider has custom labels.
-     * @type {Boolean}
-     *
-     */
-    get hasCustomLabels() {
-        return this.customLabels.length !== 0 && this.unit === 'custom';
-    }
-
-    /**
-     * Returns the color corresponding to highlight (depends on disabled)
-     * @type {string}
-     *
-     */
-    get highlightColor() {
-        return this.disabled
-            ? '#919191'
-            : 'var(--avonni-slider-tick-mark-color, #0176d3)';
-    }
-
-    /**
-     * Verify if slider is vertical.
-     * @type {Boolean}
-     *
-     */
-    get isVertical() {
-        return this.type === 'vertical';
-    }
-
-    /**
-     * Verify if slider is vertical and responsive
-     * @type {Boolean}
-     *
-     */
-    get isVerticalResponsive() {
-        return this.isVertical && this.size === 'responsive';
-    }
-
-    /**
-     * Verify if slider is vertical and does not have custom labels.
-     * @type {Boolean}
-     *
-     */
-    get isNormalVertical() {
-        return (
-            this.isVertical && !this.hasCustomLabels && !this.hideMinMaxValues
-        );
-    }
-
-    /**
-     * Verify if slider is vertical and does not have custom labels.
-     * @type {Boolean}
-     *
-     */
-    get isNormalHorizontal() {
-        return (
-            !this.isVertical && !this.hasCustomLabels && !this.hideMinMaxValues
-        );
-    }
-
-    /**
-     * To show or not the tick marks.
-     * @type {Boolean}
-     *
-     */
-    get showAnyTickMarks() {
-        return this.hasCustomLabels || this.showTickMarks;
-    }
-
-    /**
-     * To show or not the label
-     * @type {Boolean}
-     *
-     */
-    get showLabel() {
-        return !(
-            this.variant === 'label-hidden' ||
-            !this.label ||
-            (this.label && this.label.length === 0)
-        );
-    }
-
-    /**
-     * To show or not the major tick marks.
-     * @type {Boolean}
-     *
-     */
-    get showOnlyMajorTicks() {
-        return this.hasCustomLabels && !this.showTickMarks;
-    }
-
-    /**
-     * To show or not the track.
-     * @type {Boolean}
-     *
-     */
-    get showTrack() {
-        return !this.hideTrack && this._computedValues.length < 3;
-    }
-
-    /**
-     * values for display in DOM
-     * @type {number[]}
-     *
-     */
-    get values() {
-        return this._computedValues;
-    }
-
-    /**
      * Compute constraintApis with fieldConstraintApiWithProxyInputs.
-     * @type {object[]}
      *
+     * @type {object[]}
      */
     get _constraints() {
         if (this._constraintApis.length === 0) {
@@ -869,10 +751,151 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Returns the current variable for styling hook of thumb radius.
+     * Returns the custom label container html element
+     *
+     * @type {HTMLElement}
+     */
+    get customLabelContainer() {
+        return this.template.querySelector(
+            '[data-element-id="custom-label-container"]'
+        );
+    }
+
+    /**
+     * Key for inputs and customLabels
+     *
+     * @type {string}
+     */
+    get generateKey() {
+        return generateUUID();
+    }
+
+    /**
+     * Verify if the slider has custom labels.
+     *
+     * @type {Boolean}
+     */
+    get hasCustomLabels() {
+        return this.customLabels.length && this.unit === 'custom';
+    }
+
+    /**
+     * Returns the color corresponding to highlight (depends on disabled)
+     *
+     * @type {string}
+     */
+    get highlightColor() {
+        return this.disabled
+            ? '#919191'
+            : 'var(--avonni-slider-tick-mark-color, #0176d3)';
+    }
+
+    /**
+     * Verify if slider is vertical and does not have custom labels.
+     *
+     * @type {Boolean}
+     *
+     */
+    get isNormalHorizontal() {
+        return (
+            !this.isVertical && this.unit !== 'custom' && !this.hideMinMaxValues
+        );
+    }
+
+    /**
+     * Verify if slider is vertical and does not have custom labels.
+     *
+     * @type {Boolean}
+     */
+    get isNormalVertical() {
+        return (
+            this.isVertical && this.unit !== 'custom' && !this.hideMinMaxValues
+        );
+    }
+
+    /**
+     * Verify if slider is vertical.
+     *
+     * @type {Boolean}
+     */
+    get isVertical() {
+        return this.type === 'vertical';
+    }
+
+    /**
+     * Verify if slider is vertical and responsive
+     *
+     * @type {Boolean}
+     */
+    get isVerticalResponsive() {
+        return this.isVertical && this.size === 'responsive';
+    }
+
+    /**
+     *  Returns the tick ruler html element.
+     *
+     * @type {HTMLElement}
+     */
+    get ruler() {
+        return this.template.querySelector('[data-element-id="ruler"]');
+    }
+
+    /**
+     * To show or not the tick marks.
+     *
+     * @type {Boolean}
+     */
+    get showAnyTickMarks() {
+        return this.hasCustomLabels || this.showTickMarks;
+    }
+
+    /**
+     * To show or not the label
+     *
+     * @type {Boolean}
+     */
+    get showLabel() {
+        return !(this.variant === 'label-hidden' || !this.label);
+    }
+
+    /**
+     * To show or not the major tick marks.
+     *
+     * @type {Boolean}
+     */
+    get showOnlyMajorTicks() {
+        return this.hasCustomLabels && !this.showTickMarks;
+    }
+
+    /**
+     * To show or not the track.
+     *
+     * @type {Boolean}
+     */
+    get showTrack() {
+        return !this.hideTrack && this._computedValues.length < 3;
+    }
+
+    /**
+     *  Returns the spacer element height for spacing on vertical slider.
+     *
      * @type {number}
      */
-    get _thumbRadius() {
+    get spacerHeight() {
+        return (
+            this.template.querySelector('[data-element-id="spacer"]')
+                .clientHeight -
+            2 * this.thumbRadius -
+            0.5
+        );
+    }
+
+    /**
+     * Returns the current variable for styling hook of thumb radius.
+     *
+     * @type {number}
+     */
+    get thumbRadius() {
         const thumbRadius = parseInt(
             getComputedStyle(
                 this.template.querySelector('.avonni-slider__slider')
@@ -886,18 +909,19 @@ export default class Slider extends LightningElement {
 
     /**
      * Returns the track bar html element.
-     * @type {object}
      *
+     * @type {HTMLElement}
      */
-    get _track() {
+    get track() {
         return this.template.querySelector('[data-element-id="track"]');
     }
 
     /**
      * Returns the current variable for styling hook of track height.
+     *
      * @type {number}
      */
-    get _trackHeight() {
+    get trackHeight() {
         const trackHeight = this.template.querySelector(
             '[data-element-id="track-container"]'
         ).offsetHeight;
@@ -906,9 +930,10 @@ export default class Slider extends LightningElement {
 
     /**
      * Returns the current variable for styling hook of track radius.
+     *
      * @type {string}
      */
-    get _trackRadius() {
+    get trackRadius() {
         const thumbRadius = getComputedStyle(
             this.template.querySelector('[data-element-id="track-container"]')
         ).getPropertyValue('--avonni-slider-track-radius');
@@ -916,34 +941,20 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     *  Returns the tick ruler html element.
-     * @type {object}
+     * values for display in DOM
      *
+     * @type {number[]}
      */
-    get _ruler() {
-        return this.template.querySelector('[data-element-id="ruler"]');
-    }
-
-    /**
-     *  Returns the spacer element height for spacing on vertical slider.
-     * @type {object}
-     *
-     */
-    get _spacerHeight() {
-        return (
-            this.template.querySelector('[data-element-id="spacer"]')
-                .clientHeight -
-            2 * this._thumbRadius -
-            0.5
-        );
+    get values() {
+        return this._computedValues;
     }
 
     /**
      * Returns the div wrapper html element
-     * @type {object}
      *
+     * @type {HTMLElement}
      */
-    get _wrapper() {
+    get wrapper() {
         return this.template.querySelector('[data-element-id="div-wrapper"]');
     }
 
@@ -1061,22 +1072,6 @@ export default class Slider extends LightningElement {
      */
 
     /**
-     * Initialization of the max attribute.
-     */
-    initMaxDefaultValue() {
-        let normalizedMax;
-        if (this._initMax && !isNaN(this._initMax)) {
-            normalizedMax = this._initMax;
-        } else {
-            normalizedMax =
-                this.unit === 'percent' ? DEFAULT_MAX_PERCENTAGE : DEFAULT_MAX;
-        }
-
-        this.computedMax = normalizedMax;
-        this._max = normalizedMax;
-    }
-
-    /**
      * Caps the value if it overflows min or max.
      */
     capValues() {
@@ -1106,7 +1101,7 @@ export default class Slider extends LightningElement {
             const { left, right, bottom } = label.getBoundingClientRect();
             const containerRect =
                 this.customLabelContainer.getBoundingClientRect();
-            const rulerRect = this._ruler.getBoundingClientRect();
+            const rulerRect = this.ruler.getBoundingClientRect();
 
             // Round up so we can compare with old value.
             const differenceLeft = Math.ceil(containerRect.left - left);
@@ -1123,15 +1118,15 @@ export default class Slider extends LightningElement {
             }
         });
 
-        const oldPaddingLeft = this._wrapper.style.paddingLeft;
-        const oldPaddingRight = this._wrapper.style.paddingRight;
-        const oldPaddingBottom = this._wrapper.style.paddingBottom;
+        const oldPaddingLeft = this.wrapper.style.paddingLeft;
+        const oldPaddingRight = this.wrapper.style.paddingRight;
+        const oldPaddingBottom = this.wrapper.style.paddingBottom;
         const newPaddingLeft = `${paddingLeft}px`;
         const newPaddingRight = `${paddingRight}px`;
         const newPaddingBottom = `${paddingBottom}px`;
-        this._wrapper.style.paddingLeft = newPaddingLeft;
-        this._wrapper.style.paddingRight = newPaddingRight;
-        this._wrapper.style.paddingBottom = newPaddingBottom;
+        this.wrapper.style.paddingLeft = newPaddingLeft;
+        this.wrapper.style.paddingRight = newPaddingRight;
+        this.wrapper.style.paddingBottom = newPaddingBottom;
 
         if (
             oldPaddingLeft !== newPaddingLeft ||
@@ -1148,7 +1143,7 @@ export default class Slider extends LightningElement {
     displayCustomLabels() {
         let totalWidth = this.customLabelContainer?.clientWidth;
         if (this.isVertical) {
-            totalWidth = this._spacerHeight;
+            totalWidth = this.spacerHeight;
         }
 
         const customLabelWrappers = this.template.querySelectorAll(
@@ -1161,7 +1156,7 @@ export default class Slider extends LightningElement {
                     totalWidth - this.getPercentOfValue(value) * totalWidth
                 }px`;
             } else {
-                const ruler = this._ruler;
+                const ruler = this.ruler;
                 const wrapper = this.template.querySelector(
                     '[data-element-id="div-range"]'
                 );
@@ -1188,176 +1183,11 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Draws the tick marks as SVG depending on its style.
-     */
-    drawRuler(drawPositions = false) {
-        const ruler = this._ruler;
-        if (drawPositions) {
-            ruler.querySelectorAll('*').forEach((child) => {
-                child.remove();
-            });
-        }
-        const totalWidth = this.getInput(0).clientWidth;
-        const numberOfSteps =
-            (this.computedMax - this.computedMin) /
-            (this.step * this._scalingFactor);
-        const normalizedNumberOfSteps =
-            numberOfSteps > MAX_NUMBER_OF_TICKS
-                ? MAX_NUMBER_OF_TICKS
-                : numberOfSteps;
-        const stepWidth =
-            (totalWidth - this._thumbRadius * 2) / normalizedNumberOfSteps;
-
-        switch (this._tickMarkStyle) {
-            case 'tick':
-                this.drawTickRuler(
-                    normalizedNumberOfSteps,
-                    this._thumbRadius,
-                    stepWidth,
-                    drawPositions
-                );
-                break;
-            case 'dot':
-                this.drawDotRuler(
-                    normalizedNumberOfSteps,
-                    this._thumbRadius,
-                    stepWidth,
-                    drawPositions
-                );
-                break;
-            default:
-                // or when = 'inner-tick'
-                this.drawInnerTickRuler(
-                    normalizedNumberOfSteps,
-                    this._thumbRadius,
-                    stepWidth,
-                    drawPositions
-                );
-                break;
-        }
-    }
-
-    /**
-     * draws the tick marks for inner-tick style
-     */
-    drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth, drawPositions) {
-        const ruler = this._ruler;
-
-        if (drawPositions) {
-            for (let i = 0; i < numberOfSteps + 1; i++) {
-                const valueOfStep =
-                    (i / numberOfSteps) * (this.computedMax - this.computedMin);
-                let isMajorStep = i === 0 || i === numberOfSteps;
-                if (this.hasCustomLabels) {
-                    isMajorStep =
-                        isMajorStep ||
-                        this.customLabels.some(
-                            (customLabel) =>
-                                customLabel.value === i + this.computedMin
-                        );
-                }
-                if (this.showOnlyMajorTicks && !isMajorStep) {
-                    leftPosition += stepWidth;
-                    continue;
-                }
-                const trackMiddle = this._trackHeight / 2 + 10;
-                const line = document.createElementNS(SVG_NAMESPACE, 'line');
-                line.setAttribute('x1', `${leftPosition}`);
-                line.setAttribute('x2', `${leftPosition}`);
-                line.setAttribute(
-                    'y1',
-                    `${
-                        isMajorStep
-                            ? trackMiddle -
-                              this._trackHeight / 2 -
-                              (3 + 0.2 * this._trackHeight)
-                            : trackMiddle -
-                              this._trackHeight / 2 -
-                              (2 + 0.2 * this._trackHeight)
-                    }`
-                );
-                line.setAttribute(
-                    'y2',
-                    `${
-                        isMajorStep
-                            ? trackMiddle +
-                              this._trackHeight / 2 +
-                              (3 + 0.2 * this._trackHeight)
-                            : trackMiddle +
-                              this._trackHeight / 2 +
-                              (2 + 0.2 * this._trackHeight)
-                    }`
-                );
-                ruler.appendChild(line);
-                line.dataset.tickValue = valueOfStep;
-                leftPosition += stepWidth;
-            }
-        }
-
-        this.template.querySelectorAll('line').forEach((line) => {
-            const isColored =
-                this._trackInterval[0] <= line.dataset.tickValue &&
-                line.dataset.tickValue <= this._trackInterval[1];
-            line.setAttribute(
-                'stroke',
-                `${isColored ? this.highlightColor : '#ecebea'}`
-            );
-        });
-    }
-
-    /**
-     * draws the tick marks for tick style
-     */
-    drawTickRuler(numberOfSteps, leftPosition, stepWidth, drawPositions) {
-        if (drawPositions) {
-            const ruler = this._ruler;
-            for (let i = 0; i < numberOfSteps + 1; i++) {
-                let isMajorStep = i === 0 || i === numberOfSteps;
-                if (this.hasCustomLabels) {
-                    isMajorStep =
-                        isMajorStep ||
-                        this.customLabels.some(
-                            (customLabel) =>
-                                customLabel.value === i + this.computedMin
-                        );
-                }
-                if (this.showOnlyMajorTicks && !isMajorStep) {
-                    leftPosition += stepWidth;
-                    continue;
-                }
-                const line = document.createElementNS(SVG_NAMESPACE, 'line');
-                line.setAttribute(
-                    'stroke',
-                    `${isMajorStep ? 'black' : 'gray'}`
-                );
-                line.setAttribute('height', `10`);
-                line.setAttribute('width', `5`);
-                line.setAttribute('x1', `${leftPosition}`);
-                line.setAttribute('x2', `${leftPosition}`);
-                line.setAttribute(
-                    'y1',
-                    `${this._trackHeight + (20 + 0.2 * this._trackHeight)}`
-                );
-                line.setAttribute(
-                    'y2',
-                    `${
-                        isMajorStep
-                            ? this._trackHeight + (27 + 0.2 * this._trackHeight)
-                            : this._trackHeight + (26 + 0.2 * this._trackHeight)
-                    }`
-                );
-                ruler.appendChild(line);
-                leftPosition += stepWidth;
-            }
-        }
-    }
-
-    /**
      * draws the tick marks for dot style
      */
     drawDotRuler(numberOfSteps, leftPosition, stepWidth, drawPositions) {
         if (drawPositions) {
-            const ruler = this._ruler;
+            const ruler = this.ruler;
             for (let i = 0; i < numberOfSteps + 1; i++) {
                 const valueOfStep =
                     (i / numberOfSteps) * (this.computedMax - this.computedMin);
@@ -1383,8 +1213,8 @@ export default class Slider extends LightningElement {
                     'circle'
                 );
                 circle.setAttribute('cx', `${leftPosition}`);
-                circle.setAttribute('cy', `${this._trackHeight / 2 + 10}`);
-                circle.setAttribute('r', `${this._trackHeight / 3}`);
+                circle.setAttribute('cy', `${this.trackHeight / 2 + 10}`);
+                circle.setAttribute('r', `${this.trackHeight / 3}`);
                 ruler.appendChild(circle);
                 circle.dataset.tickValue = valueOfStep;
                 leftPosition += stepWidth;
@@ -1409,39 +1239,174 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
+     * draws the tick marks for inner-tick style
      */
-    initResizeObserver() {
-        if (
-            !this._wrapper ||
-            !(this.showAnyTickMarks || this.isVerticalResponsive)
-        ) {
-            return null;
+    drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth, drawPositions) {
+        const ruler = this.ruler;
+
+        if (drawPositions) {
+            for (let i = 0; i < numberOfSteps + 1; i++) {
+                const valueOfStep =
+                    (i / numberOfSteps) * (this.computedMax - this.computedMin);
+                let isMajorStep = i === 0 || i === numberOfSteps;
+                if (this.hasCustomLabels) {
+                    isMajorStep =
+                        isMajorStep ||
+                        this.customLabels.some(
+                            (customLabel) =>
+                                customLabel.value === i + this.computedMin
+                        );
+                }
+                if (this.showOnlyMajorTicks && !isMajorStep) {
+                    leftPosition += stepWidth;
+                    continue;
+                }
+                const trackMiddle = this.trackHeight / 2 + 10;
+                const line = document.createElementNS(SVG_NAMESPACE, 'line');
+                line.setAttribute('x1', `${leftPosition}`);
+                line.setAttribute('x2', `${leftPosition}`);
+                line.setAttribute(
+                    'y1',
+                    `${
+                        isMajorStep
+                            ? trackMiddle -
+                              this.trackHeight / 2 -
+                              (3 + 0.2 * this.trackHeight)
+                            : trackMiddle -
+                              this.trackHeight / 2 -
+                              (2 + 0.2 * this.trackHeight)
+                    }`
+                );
+                line.setAttribute(
+                    'y2',
+                    `${
+                        isMajorStep
+                            ? trackMiddle +
+                              this.trackHeight / 2 +
+                              (3 + 0.2 * this.trackHeight)
+                            : trackMiddle +
+                              this.trackHeight / 2 +
+                              (2 + 0.2 * this.trackHeight)
+                    }`
+                );
+                ruler.appendChild(line);
+                line.dataset.tickValue = valueOfStep;
+                leftPosition += stepWidth;
+            }
         }
 
-        return new AvonniResizeObserver(
-            this._wrapper,
-            this.recomputeAfterResize
-        );
+        this.template.querySelectorAll('line').forEach((line) => {
+            const isColored =
+                this._trackInterval[0] <= line.dataset.tickValue &&
+                line.dataset.tickValue <= this._trackInterval[1];
+            line.setAttribute(
+                'stroke',
+                `${isColored ? this.highlightColor : '#ecebea'}`
+            );
+        });
     }
 
     /**
-     *  Returns the input html element.
-     *  @returns {object}
-     *
+     * Draws the tick marks as SVG depending on its style.
      */
-    getInput(index) {
-        return this.template.querySelector(
-            `[data-group-name="input"][data-index="${index}"]`
-        );
+    drawRuler(drawPositions = false) {
+        const ruler = this.ruler;
+        if (drawPositions) {
+            ruler.querySelectorAll('*').forEach((child) => {
+                child.remove();
+            });
+        }
+        const totalWidth = this.getInput(0).clientWidth;
+        const numberOfSteps =
+            (this.computedMax - this.computedMin) /
+            (this.step * this._scalingFactor);
+        const normalizedNumberOfSteps =
+            numberOfSteps > MAX_NUMBER_OF_TICKS
+                ? MAX_NUMBER_OF_TICKS
+                : numberOfSteps;
+        const stepWidth =
+            (totalWidth - this.thumbRadius * 2) / normalizedNumberOfSteps;
+
+        switch (this.tickMarkStyle) {
+            case 'tick':
+                this.drawTickRuler(
+                    normalizedNumberOfSteps,
+                    this.thumbRadius,
+                    stepWidth,
+                    drawPositions
+                );
+                break;
+            case 'dot':
+                this.drawDotRuler(
+                    normalizedNumberOfSteps,
+                    this.thumbRadius,
+                    stepWidth,
+                    drawPositions
+                );
+                break;
+            default:
+                // or when = 'inner-tick'
+                this.drawInnerTickRuler(
+                    normalizedNumberOfSteps,
+                    this.thumbRadius,
+                    stepWidth,
+                    drawPositions
+                );
+                break;
+        }
+    }
+
+    /**
+     * draws the tick marks for tick style
+     */
+    drawTickRuler(numberOfSteps, leftPosition, stepWidth, drawPositions) {
+        if (drawPositions) {
+            const ruler = this.ruler;
+            for (let i = 0; i < numberOfSteps + 1; i++) {
+                let isMajorStep = i === 0 || i === numberOfSteps;
+                if (this.hasCustomLabels) {
+                    isMajorStep =
+                        isMajorStep ||
+                        this.customLabels.some(
+                            (customLabel) =>
+                                customLabel.value === i + this.computedMin
+                        );
+                }
+                if (this.showOnlyMajorTicks && !isMajorStep) {
+                    leftPosition += stepWidth;
+                    continue;
+                }
+                const line = document.createElementNS(SVG_NAMESPACE, 'line');
+                line.setAttribute(
+                    'stroke',
+                    `${isMajorStep ? 'black' : 'gray'}`
+                );
+                line.setAttribute('height', `10`);
+                line.setAttribute('width', `5`);
+                line.setAttribute('x1', `${leftPosition}`);
+                line.setAttribute('x2', `${leftPosition}`);
+                line.setAttribute(
+                    'y1',
+                    `${this.trackHeight + (20 + 0.2 * this.trackHeight)}`
+                );
+                line.setAttribute(
+                    'y2',
+                    `${
+                        isMajorStep
+                            ? this.trackHeight + (27 + 0.2 * this.trackHeight)
+                            : this.trackHeight + (26 + 0.2 * this.trackHeight)
+                    }`
+                );
+                ruler.appendChild(line);
+                leftPosition += stepWidth;
+            }
+        }
     }
 
     /**
      *  Returns the hitbox element for certain index.
-     * @returns {object}
      *
+     * @returns {object}
      */
     getHitbox(index) {
         return this.template.querySelector(
@@ -1450,9 +1415,21 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     *  Returns the input html element.
+     *
+     * @returns {object}
+     */
+    getInput(index) {
+        return this.template.querySelector(
+            `[data-group-name="input"][data-index="${index}"]`
+        );
+    }
+
+    /**
      * Get the percentage associated to a value of the slider
-     * @param value
-     * @type {number}
+     *
+     * @param {number} value
+     * @returns {number}
      */
     getPercentOfValue(value) {
         return (
@@ -1461,39 +1438,38 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Handle any slider value change.
-     *
-     * @param {Event} event
+     * Initialization of the max attribute.
      */
-    handleChange(event) {
-        this.updateInputSliders(event);
-        if (this._pin) {
-            this.setPinPosition(event);
+    initMaxDefaultValue() {
+        let normalizedMax;
+        if (this._initMax && !isNaN(this._initMax)) {
+            normalizedMax = this._initMax;
+        } else {
+            normalizedMax =
+                this.unit === 'percent' ? DEFAULT_MAX_PERCENTAGE : DEFAULT_MAX;
         }
-        this.setHitboxPosition(parseInt(event.target.dataset.index, 10));
-        this.updatePublicValue();
-        this._updateProxyInputAttributes('value');
 
-        // Make sure the change event is not fired many times,
-        // when the thumb is dragged
-        clearTimeout(this._changeTimeout);
-        this._changeTimeout = setTimeout(() => {
-            /**
-             * The event fired when the slider value changed.
-             *
-             * @event
-             * @name change
-             * @param {number | number[]} value The value of the slider.
-             * @public
-             */
-            const selectedEvent = new CustomEvent('change', {
-                detail: {
-                    value: this._value
-                }
-            });
+        this.computedMax = normalizedMax;
+        this._max = normalizedMax;
+    }
 
-            this.dispatchEvent(selectedEvent);
-        }, 100);
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (
+            !this.wrapper ||
+            !(this.showAnyTickMarks || this.isVerticalResponsive)
+        ) {
+            return null;
+        }
+
+        return new AvonniResizeObserver(
+            this.wrapper,
+            this.recomputeAfterResize
+        );
     }
 
     /**
@@ -1597,101 +1573,32 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Sets the vertical wrapper and spacer to dimensions of parent height if responsive and vertical.
+     * Set the position of the hitbox.
      *
-     * @param {Event} event
+     * @param {number} index
      */
-    setVerticalResponsiveHeight() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-range"]'
+    setHitboxPosition(index) {
+        const hitbox = this.template.querySelector(
+            `[data-group-name="hitbox"][data-index="${index}"]`
         );
-        if (!this.isVerticalResponsive) {
-            wrapper.style.transformOrigin = '';
-            wrapper.style.width = '';
-            return;
-        }
-        this.template.host.style.height = '100%';
-        this.template.host.style.display = 'block';
-        const spacer = this.template.querySelector(
-            '[data-element-id="spacer"]'
+        const hitboxProgress = this.getPercentOfValue(
+            this._computedValues[parseInt(index, 10)]
         );
-        const parentHeight = Math.max(
-            -this._thumbRadius,
-            spacer.offsetHeight - this._thumbRadius
-        );
-        wrapper.style.transformOrigin = `${
-            (parentHeight + this._thumbRadius) / 2
-        }px ${(parentHeight + this._thumbRadius) / 2}px`;
-        wrapper.style.width = `${parentHeight + this._thumbRadius}px`;
-    }
 
-    /**
-     * Test if thumb is hovered.
-     * @returns {Boolean}
-     */
-    thumbIsHovered(event) {
-        const obj = this.getHitbox(
-            parseInt(event.currentTarget.dataset.index, 10)
-        );
-        const radius = this._thumbRadius;
-        const centerPointX = obj.getBoundingClientRect().x + radius;
-        const centerPointY = obj.getBoundingClientRect().y + radius;
-        if (
-            Math.sqrt(
-                (event.clientX - centerPointX) *
-                    (event.clientX - centerPointX) +
-                    (event.clientY - centerPointY) *
-                        (event.clientY - centerPointY)
-            ) < radius
-        ) {
-            return true;
+        let totalWidth = this.getInput(0).clientWidth;
+        if (this.isVertical) {
+            totalWidth = this.spacerHeight;
         }
-        return false;
-    }
-
-    /**
-     * Display pin and hover color on thumb.
-     */
-    handleThumbHovered(event) {
-        if (this._pinLocked || this.thumbIsHovered(event)) {
-            if (this._pin) {
-                this.setPinPosition(event);
-                this.template
-                    .querySelector('[data-element-id="pin"]')
-                    .classList.add('avonni-slider__pin_visible');
-            }
+        if (this.isVertical) {
+            hitbox.style.left = `${
+                hitboxProgress * totalWidth + this.thumbRadius
+            }px`;
         } else {
-            this.handleThumbExit(event);
+            hitbox.style.left = `${
+                hitboxProgress * totalWidth +
+                this.thumbRadius * (1 - hitboxProgress * 2)
+            }px`;
         }
-    }
-
-    /**
-     * Hide pin and remove hover color on thumb.
-     */
-    handleThumbExit(event) {
-        if (!this.thumbIsHovered(event) && !this._pinLocked) {
-            if (this._pin) {
-                this.template
-                    .querySelector('[data-element-id="pin"]')
-                    .classList.remove('avonni-slider__pin_visible');
-            }
-        }
-    }
-
-    /**
-     * Lock the pin so it is always displayed.
-     */
-    handleLockPin(event) {
-        this._pinLocked = true;
-        this.handleThumbHovered(event);
-    }
-
-    /**
-     * Unlock the pin so it is not always displayed.
-     */
-    handleUnlockPin(event) {
-        this._pinLocked = false;
-        this.handleThumbHovered(event);
     }
 
     /**
@@ -1713,40 +1620,69 @@ export default class Slider extends LightningElement {
 
         let totalWidth = this.getInput(0).clientWidth;
         if (this.isVertical) {
-            totalWidth = this._spacerHeight;
+            totalWidth = this.spacerHeight;
         }
         if (this.isVertical) {
             pin.style.left = `${pinProgress * totalWidth}px`;
         } else {
             pin.style.left = `${
                 pinProgress * totalWidth +
-                this._thumbRadius * (1 - pinProgress * 2)
+                this.thumbRadius * (1 - pinProgress * 2)
             }px`;
         }
     }
 
-    setHitboxPosition(index) {
-        const hitbox = this.template.querySelector(
-            `[data-group-name="hitbox"][data-index="${index}"]`
+    /**
+     * Sets the vertical wrapper and spacer to dimensions of parent height if responsive and vertical.
+     *
+     * @param {Event} event
+     */
+    setVerticalResponsiveHeight() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-range"]'
         );
-        const hitboxProgress = this.getPercentOfValue(
-            this._computedValues[parseInt(index, 10)]
+        if (!this.isVerticalResponsive) {
+            wrapper.style.transformOrigin = '';
+            wrapper.style.width = '';
+            return;
+        }
+        this.template.host.style.height = '100%';
+        this.template.host.style.display = 'block';
+        const spacer = this.template.querySelector(
+            '[data-element-id="spacer"]'
         );
+        const parentHeight = Math.max(
+            -this.thumbRadius,
+            spacer.offsetHeight - this.thumbRadius
+        );
+        wrapper.style.transformOrigin = `${
+            (parentHeight + this.thumbRadius) / 2
+        }px ${(parentHeight + this.thumbRadius) / 2}px`;
+        wrapper.style.width = `${parentHeight + this.thumbRadius}px`;
+    }
 
-        let totalWidth = this.getInput(0).clientWidth;
-        if (this.isVertical) {
-            totalWidth = this._spacerHeight;
+    /**
+     * Test if thumb is hovered.
+     * @returns {Boolean}
+     */
+    thumbIsHovered(event) {
+        const obj = this.getHitbox(
+            parseInt(event.currentTarget.dataset.index, 10)
+        );
+        const radius = this.thumbRadius;
+        const centerPointX = obj.getBoundingClientRect().x + radius;
+        const centerPointY = obj.getBoundingClientRect().y + radius;
+        if (
+            Math.sqrt(
+                (event.clientX - centerPointX) *
+                    (event.clientX - centerPointX) +
+                    (event.clientY - centerPointY) *
+                        (event.clientY - centerPointY)
+            ) < radius
+        ) {
+            return true;
         }
-        if (this.isVertical) {
-            hitbox.style.left = `${
-                hitboxProgress * totalWidth + this._thumbRadius
-            }px`;
-        } else {
-            hitbox.style.left = `${
-                hitboxProgress * totalWidth +
-                this._thumbRadius * (1 - hitboxProgress * 2)
-            }px`;
-        }
+        return false;
     }
 
     /**
@@ -1766,6 +1702,19 @@ export default class Slider extends LightningElement {
             this._computedValues[i] = newValues[i];
         }
         this.updateTrack(newValues);
+    }
+
+    /**
+     * Proxy Input Attributes updater.
+     *
+     * @param {object} attributes
+     */
+    updateProxyInputAttributes(attributes) {
+        if (this._constraintApiProxyInputUpdaters.length !== 0) {
+            this._constraintApiProxyInputUpdaters.forEach((updater) => {
+                updater(attributes);
+            });
+        }
     }
 
     /**
@@ -1805,14 +1754,14 @@ export default class Slider extends LightningElement {
                 PERCENT_SCALING_FACTOR -
                 this.getPercentOfValue(highestValue) * PERCENT_SCALING_FACTOR;
             if (this._computedValues.length > 2) {
-                this._track.style.left = `${left}%`;
-                this._track.style.right = `${right}%`;
-                this._track.style.width = '';
+                this.track.style.left = `${left}%`;
+                this.track.style.right = `${right}%`;
+                this.track.style.width = '';
             } else if (this._computedValues.length > 0) {
                 const start = left;
                 const end = right;
-                this._track.style.width = '100%';
-                this._track.style.clipPath = `inset(0% ${end}% 0 ${start}% round ${this._trackRadius} ${this._trackRadius} ${this._trackRadius} ${this._trackRadius})`;
+                this.track.style.width = '100%';
+                this.track.style.clipPath = `inset(0% ${end}% 0 ${start}% round ${this.trackRadius} ${this.trackRadius} ${this.trackRadius} ${this.trackRadius})`;
             }
         }
 
@@ -1821,16 +1770,90 @@ export default class Slider extends LightningElement {
         }
     }
 
-    /**
-     * Proxy Input Attributes updater.
-     *
-     * @param {object} attributes
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
      */
-    _updateProxyInputAttributes(attributes) {
-        if (this._constraintApiProxyInputUpdaters.length !== 0) {
-            this._constraintApiProxyInputUpdaters.forEach((updater) => {
-                updater(attributes);
-            });
+
+    /**
+     * Handle any slider value change.
+     *
+     * @param {Event} event
+     */
+    handleChange(event) {
+        this.updateInputSliders(event);
+        if (this._pin) {
+            this.setPinPosition(event);
         }
+        this.setHitboxPosition(parseInt(event.target.dataset.index, 10));
+        this.updatePublicValue();
+        this.updateProxyInputAttributes('value');
+
+        // Make sure the change event is not fired many times,
+        // when the thumb is dragged
+        clearTimeout(this._changeTimeout);
+        this._changeTimeout = setTimeout(() => {
+            /**
+             * The event fired when the slider value changed.
+             *
+             * @event
+             * @name change
+             * @param {number | number[]} value The value of the slider.
+             * @public
+             */
+            const selectedEvent = new CustomEvent('change', {
+                detail: {
+                    value: this._value
+                }
+            });
+
+            this.dispatchEvent(selectedEvent);
+        }, 100);
+    }
+
+    /**
+     * Lock the pin so it is always displayed.
+     */
+    handleLockPin(event) {
+        this._pinLocked = true;
+        this.handleThumbHovered(event);
+    }
+
+    /**
+     * Hide pin and remove hover color on thumb.
+     */
+    handleThumbExit(event) {
+        if (!this.thumbIsHovered(event) && !this._pinLocked) {
+            if (this._pin) {
+                this.template
+                    .querySelector('[data-element-id="pin"]')
+                    .classList.remove('avonni-slider__pin_visible');
+            }
+        }
+    }
+
+    /**
+     * Display pin and hover color on thumb.
+     */
+    handleThumbHovered(event) {
+        if (this._pinLocked || this.thumbIsHovered(event)) {
+            if (this._pin) {
+                this.setPinPosition(event);
+                this.template
+                    .querySelector('[data-element-id="pin"]')
+                    .classList.add('avonni-slider__pin_visible');
+            }
+        } else {
+            this.handleThumbExit(event);
+        }
+    }
+
+    /**
+     * Unlock the pin so it is not always displayed.
+     */
+    handleUnlockPin(event) {
+        this._pinLocked = false;
+        this.handleThumbHovered(event);
     }
 }

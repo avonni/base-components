@@ -64,6 +64,7 @@
                                 aria-labelledby={panel.ariaLabelledby}
                                 id={panel.key}
                                 role="tabpanel"
+                                tabindex={panel.tabIndex}
                                 data-element-id="div-panel"
                                 ontouchstart={handleDragStart}
                             >
@@ -90,6 +91,7 @@
                                             href={item.href}
                                             image-assistive-text={item.imageAssistiveText}
                                             image-position={imagePosition}
+                                            is-focusable={panel.isActive}
                                             item-index={itemIndex}
                                             name={item.name}
                                             panel-index={panelIndex}
@@ -99,8 +101,7 @@
                                             tabindex={panel.tabIndex}
                                             onactionclick={handleActionClick}
                                             onitemclick={handleItemClick}
-                                        >
-                                        </c-primitive-carousel-item>
+                                        ></c-primitive-carousel-item>
                                     </div>
                                 </template>
                             </div>

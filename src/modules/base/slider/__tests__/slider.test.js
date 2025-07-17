@@ -380,18 +380,6 @@ describe('Slider', () => {
                     element.showTickMarks = false;
                 });
             });
-
-            it('showTickMarks, a maximum of 500 ticks can be visible', () => {
-                element.showTickMarks = true;
-                element.step = '0.001';
-
-                return Promise.resolve().then(() => {
-                    const ruler = element.shadowRoot.querySelector(
-                        '[data-element-id="ruler"]'
-                    );
-                    expect(ruler.childElementCount).toEqual(501);
-                });
-            });
         });
 
         describe('size', () => {

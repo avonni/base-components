@@ -44,6 +44,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actionsVariant = ACTIONS_VARIANTS.default;
     _cropFit = IMAGE_CROP_FIT.default;
     _imagePosition = IMAGE_POSITIONS.default;
+    _isFocusable = false;
 
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
 
@@ -144,6 +145,24 @@ export default class PrimitiveCarouselItem extends LightningElement {
             fallbackValue: IMAGE_POSITIONS.default,
             validValues: IMAGE_POSITIONS.valid
         });
+    }
+
+    /**
+     * Check if item is focusable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isFocusable() {
+        return this._isFocusable;
+    }
+    set isFocusable(isFocusable) {
+        this._isFocusable =
+            typeof isFocusable === 'string'
+                ? isFocusable === 'true'
+                : normalizeBoolean(isFocusable);
     }
 
     /*
@@ -282,6 +301,15 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return classSet('avonni-carousel__image')
             .add(`avonni-carousel__image-object-fit_${this.cropFit}`)
             .toString();
+    }
+
+    /**
+     * Computed tabindex value for interactive elements.
+     *
+     * @type {string}
+     */
+    get computedTabIndex() {
+        return this.isFocusable ? '0' : '-1';
     }
 
     /**
