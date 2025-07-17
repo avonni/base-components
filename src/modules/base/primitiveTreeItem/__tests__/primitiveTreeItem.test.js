@@ -109,7 +109,7 @@ describe('Primitive Tree Item', () => {
             expect(element.allowInlineEdit).toBeFalsy();
             expect(element.avatar).toBeUndefined();
             expect(element.cancelButtonLabel).toBe('Cancel');
-            expect(element.closeButtonIconAlternativeText).toBe('Close Dialog');
+            expect(element.closeButtonAlternativeText).toBe('Close Dialog');
             expect(element.collapseButtonAlternativeText).toBe(
                 'Collapse Branch'
             );
@@ -1269,7 +1269,7 @@ describe('Primitive Tree Item', () => {
 
             it('Trap focus inside the edit popover', () => {
                 element.actions = ACTIONS;
-                element.closeButtonIconAlternativeText = 'Close Dialog Test';
+                element.closeButtonAlternativeText = 'Close Dialog Test';
 
                 return Promise.resolve()
                     .then(() => {

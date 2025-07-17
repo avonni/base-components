@@ -7,7 +7,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api avatar;
     @api childItems;
     @api cancelButtonLabel;
-    @api closeButtonIconAlternativeText;
+    @api closeButtonAlternativeText;
     @api collapseButtonAlternativeText;
     @api collapseDisabled;
     @api doneButtonLabel;

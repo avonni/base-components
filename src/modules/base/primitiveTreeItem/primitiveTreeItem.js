@@ -51,7 +51,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      * @default 'Close Dialog'
      */
-    @api closeButtonIconAlternativeText = i18n.closeDialog;
+    @api closeButtonAlternativeText = i18n.closeDialog;
     /**
      * Color of the item checkbox, if the tree is in multi-select mode.
      *

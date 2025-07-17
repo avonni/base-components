@@ -8,7 +8,7 @@ export const Tree = ({
     addButtonLabel,
     allowInlineEdit,
     cancelButtonLabel,
-    closeButtonIconAlternativeText,
+    closeButtonAlternativeText,
     collapseDisabled,
     collapseButtonAlternativeText,
     disabled,
@@ -34,7 +34,7 @@ export const Tree = ({
     element.addButtonLabel = addButtonLabel;
     element.allowInlineEdit = allowInlineEdit;
     element.cancelButtonLabel = cancelButtonLabel;
-    element.closeButtonIconAlternativeText = closeButtonIconAlternativeText;
+    element.closeButtonAlternativeText = closeButtonAlternativeText;
     element.collapseButtonAlternativeText = collapseButtonAlternativeText;
     element.collapseDisabled = collapseDisabled;
     element.disabled = disabled;

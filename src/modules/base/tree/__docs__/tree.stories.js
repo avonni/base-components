@@ -243,8 +243,8 @@ export default {
                 defaultValue: { summary: 'Collapse Branch' }
             }
         },
-        closeButtonIconAlternativeText: {
-            name: 'close-button-icon-alternative-text',
+        closeButtonAlternativeText: {
+            name: 'close-button-alternative-text',
             control: {
                 type: 'text'
             },
@@ -284,7 +284,7 @@ export default {
         addButtonLabel: 'Add Item',
         allowInlineEdit: false,
         cancelButtonLabel: 'Cancel',
-        closeButtonIconAlternativeText: 'Close Dialog',
+        closeButtonAlternativeText: 'Close Dialog',
         collapseButtonAlternativeText: 'Collapse Branch',
         collapseDisabled: false,
         disabled: false,

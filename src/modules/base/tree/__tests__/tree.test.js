@@ -160,7 +160,7 @@ describe('Tree', () => {
             it('Passed to the component', () => {
                 element.items = ITEMS;
                 element.collapseButtonAlternativeText = 'Collapse Branch Test';
-                element.closeButtonIconAlternativeText = 'Close Dialog Test';
+                element.closeButtonAlternativeText = 'Close Dialog Test';
                 element.expandButtonAlternativeText = 'Expand Branch Test';
                 element.saveButtonIconAlternativeText = 'Save Label Test';
 
@@ -172,7 +172,7 @@ describe('Tree', () => {
                         expect(item.collapseButtonAlternativeText).toBe(
                             'Collapse Branch Test'
                         );
-                        expect(item.closeButtonIconAlternativeText).toBe(
+                        expect(item.closeButtonAlternativeText).toBe(
                             'Close Dialog Test'
                         );
                         expect(item.expandButtonAlternativeText).toBe(

@@ -65,7 +65,7 @@ export default class Tree extends LightningElement {
      * @public
      * @default 'Close Dialog'
      */
-    @api closeButtonIconAlternativeText =
+    @api closeButtonAlternativeText =
         DEFAULT_CLOSE_BUTTON_ICON_ALTERNATIVE_TEXT;
     /**
      * The alternative text used to describe the collapse button icon.
