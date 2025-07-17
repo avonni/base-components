@@ -3,39 +3,41 @@ import Component from 'avonni/path';
 customElements.define('ac-path', Component.CustomElementConstructor);
 
 export const Path = ({
+    actions,
+    changeCompletionStatusLabel,
     currentStep,
-    keyFieldsLabel,
-    guidanceLabel,
     disabled,
     format,
-    hideCoaching,
+    guidanceLabel,
     hideButtons,
-    nextButtonLabel,
+    hideCoaching,
+    keyFieldsLabel,
     nextButtonIconName,
     nextButtonIconPosition,
-    selectButtonLabel,
+    nextButtonLabel,
     selectButtonIconName,
     selectButtonIconPosition,
-    changeCompletionStatusLabel,
+    selectButtonLabel,
     steps,
-    actions
+    toggleButtonAlternativeText
 }) => {
     const element = document.createElement('ac-path');
+    element.actions = actions;
+    element.changeCompletionStatusLabel = changeCompletionStatusLabel;
     element.currentStep = currentStep;
-    element.keyFieldsLabel = keyFieldsLabel;
-    element.guidanceLabel = guidanceLabel;
     element.disabled = disabled;
     element.format = format;
-    element.hideCoaching = hideCoaching;
+    element.guidanceLabel = guidanceLabel;
     element.hideButtons = hideButtons;
-    element.nextButtonLabel = nextButtonLabel;
+    element.hideCoaching = hideCoaching;
+    element.keyFieldsLabel = keyFieldsLabel;
     element.nextButtonIconName = nextButtonIconName;
     element.nextButtonIconPosition = nextButtonIconPosition;
-    element.selectButtonLabel = selectButtonLabel;
+    element.nextButtonLabel = nextButtonLabel;
     element.selectButtonIconName = selectButtonIconName;
     element.selectButtonIconPosition = selectButtonIconPosition;
-    element.changeCompletionStatusLabel = changeCompletionStatusLabel;
+    element.selectButtonLabel = selectButtonLabel;
     element.steps = steps;
-    element.actions = actions;
+    element.toggleButtonAlternativeText = toggleButtonAlternativeText;
     return element;
 };

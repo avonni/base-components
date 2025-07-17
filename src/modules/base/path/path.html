@@ -2,46 +2,48 @@
     <div class="slds-card">
         <!-- Navigation -->
         <div class="slds-p-around_medium slds-border_bottom">
-            <div class={pathClass}>
+            <div class={computedPathClass} data-element-id="path">
                 <div class="slds-grid slds-path__track">
                     <div class="slds-grid slds-path__scroller-container">
                         <lightning-button-icon
                             if:false={hideCoaching}
                             class="slds-path__trigger"
-                            icon-name={toggleCoachingIcon}
-                            alternative-text="Toggles Coaching"
-                            title="Toggles Coaching"
+                            alternative-text={toggleButtonAlternativeText}
                             aria-expanded={coachingIsVisible}
+                            icon-name={toggleCoachingIcon}
+                            title={toggleButtonAlternativeText}
+                            data-element-id="path-toggle-coaching"
                             onclick={handleToggleCoaching}
                         ></lightning-button-icon>
                         <div class="slds-path__scroller slds-scrollable_x">
                             <div class="slds-path__scroller_inner">
                                 <ul
                                     class="slds-path__nav slds-scrollable_x"
-                                    role="listbox"
                                     aria-labelledby="slds-path__stage-name"
                                     aria-orientation="horizontal"
+                                    role="listbox"
                                 >
                                     <template for:each={steps} for:item="step">
                                         <li
                                             key={step.name}
                                             class={step.class}
                                             role="presentation"
+                                            data-element-id="path-step"
                                         >
                                             <a
-                                                aria-selected={step.isCurrentStep}
                                                 class="slds-path__link"
+                                                aria-selected={step.isCurrentStep}
                                                 href="#"
                                                 role="option"
-                                                onclick={handlePathStepClick}
                                                 data-step-name={step.name}
+                                                onclick={handlePathStepClick}
                                             >
                                                 <span class="slds-path__stage">
                                                     <lightning-icon
-                                                        icon-name={step.iconName}
-                                                        variant="inverse"
-                                                        size="x-small"
                                                         aria-hidden="true"
+                                                        icon-name={step.iconName}
+                                                        size="x-small"
+                                                        variant="inverse"
                                                     ></lightning-icon>
                                                     <span
                                                         if:true={step.isCurrentStep}
@@ -80,20 +82,24 @@
                         <lightning-button-group if:false={hideButtons}>
                             <lightning-button
                                 if:true={showSelectButton}
-                                label={selectButtonLabel}
-                                variant="brand"
+                                disabled={disabled}
                                 icon-name={selectButtonIconName}
                                 icon-position={selectButtonIconPosition}
-                                disabled={disabled}
+                                label={selectButtonLabel}
+                                title={selectButtonLabel}
+                                variant="brand"
+                                data-element-id="lightning-button-select"
                                 onclick={handleSelectButtonClick}
                             ></lightning-button>
                             <lightning-button
                                 if:true={showNextButton}
-                                label={nextButtonLabel}
-                                variant="brand"
+                                disabled={disabled}
                                 icon-name={nextButtonIconName}
                                 icon-position={nextButtonIconPosition}
-                                disabled={disabled}
+                                label={nextButtonLabel}
+                                title={nextButtonLabel}
+                                variant="brand"
+                                data-element-id="lightning-button-next"
                                 onclick={next}
                             ></lightning-button>
                             <lightning-button-menu
@@ -101,6 +107,7 @@
                                 alternative-text={changeCompletionStatusLabel}
                                 disabled={disabled}
                                 menu-alignment="right"
+                                data-element-id="lightning-button-menu"
                             >
                                 <lightning-menu-item
                                     label={changeCompletionStatusLabel}
@@ -110,8 +117,10 @@
                         </lightning-button-group>
 
                         <avonni-dialog
+                            if:true={showDialog}
                             show-dialog={showDialog}
                             title="Mark as Complete"
+                            data-element-id="avonni-dialog"
                             onclosedialog={hideDialog}
                         >
                             <div
@@ -132,12 +141,13 @@
                             <div slot="footer">
                                 <lightning-button
                                     label="Cancel"
+                                    data-element-id="lightning-button-cancel"
                                     onclick={hideDialog}
                                 ></lightning-button>
                                 <lightning-button
-                                    variant="brand"
                                     class="slds-p-left_x-small"
                                     label="Save"
+                                    variant="brand"
                                     onclick={handleSaveDialog}
                                 ></lightning-button>
                             </div>
@@ -146,115 +156,117 @@
                 </div>
 
                 <!-- Current Step -->
-                <div if:true={coachingIsVisible} class="slds-path__content">
-                    <div class="slds-path__coach slds-grid">
-                        <div class="slds-path__keys">
-                            <div class="slds-grid">
-                                <h2
-                                    class="
-                                        avonni-path__flex-col
-                                        slds-path__coach-title
-                                    "
-                                >
-                                    {keyFieldsLabel}
-                                </h2>
-                                <template
-                                    for:each={computedCurrentStep.actions}
-                                    for:item="action"
-                                >
-                                    <lightning-button
-                                        if:true={action.label}
+                <template if:true={computedCurrentStep}>
+                    <div if:true={coachingIsVisible} class="slds-path__content">
+                        <div class="slds-path__coach slds-grid">
+                            <div class="slds-path__keys">
+                                <div class="slds-grid">
+                                    <h2
                                         class="
-                                            slds-m-horizontal_xx-small
-                                            slds-path__coach-edit
+                                            avonni-path__flex-col
+                                            slds-path__coach-title
                                         "
-                                        key={action.name}
-                                        icon-name={action.iconName}
-                                        label={action.label}
-                                        name={action.name}
-                                        disabled={action.disabled}
-                                        data-step-name={computedCurrentStep.name}
-                                        onclick={handleActionClick}
-                                    ></lightning-button>
-                                    <lightning-button-icon
-                                        if:false={action.label}
-                                        class="
-                                            slds-m-horizontal_xx-small
-                                            slds-path__coach-edit
-                                        "
-                                        key={action.name}
-                                        icon-name={action.iconName}
-                                        name={action.name}
-                                        disabled={action.disabled}
-                                        data-step-name={computedCurrentStep.name}
-                                        onclick={handleActionClick}
-                                    ></lightning-button-icon>
-                                </template>
-                            </div>
-                            <div class="slds-form" role="list">
-                                <template
-                                    for:each={computedCurrentStep.keyFields}
-                                    for:item="field"
-                                >
-                                    <div
-                                        class="slds-form__row"
-                                        key={field.label}
+                                    >
+                                        {keyFieldsLabel}
+                                    </h2>
+                                    <template
+                                        for:each={computedCurrentStep.actions}
+                                        for:item="action"
+                                    >
+                                        <lightning-button
+                                            if:true={action.label}
+                                            class="
+                                                slds-m-horizontal_xx-small
+                                                slds-path__coach-edit
+                                            "
+                                            key={action.name}
+                                            icon-name={action.iconName}
+                                            label={action.label}
+                                            name={action.name}
+                                            disabled={action.disabled}
+                                            data-step-name={computedCurrentStep.name}
+                                            onclick={handleActionClick}
+                                        ></lightning-button>
+                                        <lightning-button-icon
+                                            if:false={action.label}
+                                            class="
+                                                slds-m-horizontal_xx-small
+                                                slds-path__coach-edit
+                                            "
+                                            key={action.name}
+                                            icon-name={action.iconName}
+                                            name={action.name}
+                                            disabled={action.disabled}
+                                            data-step-name={computedCurrentStep.name}
+                                            onclick={handleActionClick}
+                                        ></lightning-button-icon>
+                                    </template>
+                                </div>
+                                <div class="slds-form" role="list">
+                                    <template
+                                        for:each={computedCurrentStep.keyFields}
+                                        for:item="field"
                                     >
                                         <div
-                                            class="slds-form__item"
-                                            role="listitem"
+                                            class="slds-form__row"
+                                            key={field.label}
                                         >
                                             <div
-                                                class="
-                                                    slds-form-element
-                                                    slds-form-element_readonly
-                                                    slds-form-element_stacked
-                                                    slds-hint-parent
-                                                "
+                                                class="slds-form__item"
+                                                role="listitem"
                                             >
-                                                <span
-                                                    class="
-                                                        slds-form-element__label
-                                                    "
-                                                >
-                                                    {field.label}
-                                                </span>
                                                 <div
                                                     class="
-                                                        slds-form-element__control
+                                                        slds-form-element
+                                                        slds-form-element_readonly
+                                                        slds-form-element_stacked
+                                                        slds-hint-parent
                                                     "
                                                 >
-                                                    <c-output-data
-                                                        type={field.type}
-                                                        type-attributes={field.typeAttributes}
-                                                        value={field.value}
-                                                        data-element-id="avonni-output-data"
-                                                    ></c-output-data>
+                                                    <span
+                                                        class="
+                                                            slds-form-element__label
+                                                        "
+                                                    >
+                                                        {field.label}
+                                                    </span>
+                                                    <div
+                                                        class="
+                                                            slds-form-element__control
+                                                        "
+                                                    >
+                                                        <c-output-data
+                                                            type={field.type}
+                                                            type-attributes={field.typeAttributes}
+                                                            value={field.value}
+                                                            data-element-id="avonni-output-data"
+                                                        ></c-output-data>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </template>
+                                    </template>
+                                </div>
                             </div>
-                        </div>
-                        <div
-                            class="slds-path__guidance"
-                            if:true={computedCurrentStep.guidance}
-                        >
-                            <h2 class="slds-path__coach-title">
-                                {guidanceLabel}
-                            </h2>
                             <div
-                                class="
-                                    slds-text-longform
-                                    slds-path__guidance-content
-                                "
+                                class="slds-path__guidance"
+                                if:true={computedCurrentStep.guidance}
                             >
-                                {computedCurrentStep.guidance}
+                                <h2 class="slds-path__coach-title">
+                                    {guidanceLabel}
+                                </h2>
+                                <div
+                                    class="
+                                        slds-text-longform
+                                        slds-path__guidance-content
+                                    "
+                                >
+                                    {computedCurrentStep.guidance}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
         <c-confetti class="path__confetti"></c-confetti>
