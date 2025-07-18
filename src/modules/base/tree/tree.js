@@ -296,7 +296,7 @@ export default class Tree extends LightningElement {
     set items(value) {
         const items = normalizeArray(value);
         this._items = items.map((item) => {
-            return this.treedata.cloneItems(item);
+            return this.treedata.cloneItem(item);
         });
 
         if (this._connected) this.initItems();
@@ -633,7 +633,7 @@ export default class Tree extends LightningElement {
     duplicateItem(key) {
         const { index, items } = this.getPositionInBranch(key);
         const name = generateUUID();
-        const duplicated = this.treedata.cloneItems(items[index]);
+        const duplicated = this.treedata.cloneItem(items[index]);
         duplicated.name = name;
         items.splice(index + 1, 0, duplicated);
         this.singleSelect(name);
@@ -1323,7 +1323,7 @@ export default class Tree extends LightningElement {
             const initialPosition = this.getPositionInBranch(key);
             const initialBranch = initialPosition.items;
             const initialIndex = initialPosition.index;
-            const initialItem = this.treedata.cloneItems(
+            const initialItem = this.treedata.cloneItem(
                 initialBranch[initialIndex]
             );
             const temporaryName = generateUUID();
