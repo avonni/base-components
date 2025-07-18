@@ -33,8 +33,10 @@ describe('Vertical Visual Picker', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.collapsedShowMoreButton).toBe('Show more');
             expect(element.disabled).toBeFalsy();
             expect(element.enableInfiniteLoading).toBeFalsy();
+            expect(element.expandedShowMoreButton).toBe('Show less');
             expect(element.hideCheckMark).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.items).toMatchObject([]);
@@ -48,6 +50,7 @@ describe('Vertical Visual Picker', () => {
             expect(element.min).toBe(0);
             expect(element.name).not.toBeUndefined();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.size).toBe('medium');
             expect(element.type).toBe('radio');
             expect(element.validity).toMatchObject({});
@@ -56,7 +59,7 @@ describe('Vertical Visual Picker', () => {
         });
 
         describe('disabled', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.disabled = false;
                 element.items = itemsWithIcons;
 
@@ -72,7 +75,7 @@ describe('Vertical Visual Picker', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.disabled = true;
                 element.items = itemsWithIcons;
 
@@ -88,7 +91,7 @@ describe('Vertical Visual Picker', () => {
         });
 
         describe('hideCheckMark', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.hideCheckMark = false;
                 element.items = itemsWithIcons;
                 element.variant = 'coverable';
@@ -108,7 +111,7 @@ describe('Vertical Visual Picker', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.hideCheckMark = true;
                 element.items = itemsWithIcons;
                 element.variant = 'coverable';
@@ -128,7 +131,7 @@ describe('Vertical Visual Picker', () => {
         });
 
         describe('isLoading', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.isLoading = false;
 
                 return Promise.resolve().then(() => {
@@ -139,14 +142,16 @@ describe('Vertical Visual Picker', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.isLoading = true;
+                element.loadingStateAlternativeText = 'Loading... Text';
 
                 return Promise.resolve().then(() => {
                     const spinner = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-spinner"]'
                     );
                     expect(spinner).toBeTruthy();
+                    expect(spinner.alternativeText).toBe('Loading... Text');
                 });
             });
 
@@ -158,7 +163,7 @@ describe('Vertical Visual Picker', () => {
                 return Promise.resolve()
                     .then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-button"]'
                         );
                         expect(button.disabled).toBeFalsy();
 
@@ -166,7 +171,7 @@ describe('Vertical Visual Picker', () => {
                     })
                     .then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-button"]'
                         );
                         expect(button.disabled).toBeTruthy();
                     });
@@ -174,7 +179,7 @@ describe('Vertical Visual Picker', () => {
         });
 
         describe('items', () => {
-            it('items', () => {
+            it('Passed to the component', () => {
                 element.items = itemsWithIcons;
 
                 return Promise.resolve().then(() => {
@@ -215,7 +220,7 @@ describe('Vertical Visual Picker', () => {
         });
 
         describe('label', () => {
-            it('label', () => {
+            it('Passed to the component', () => {
                 element.label = 'A string label';
 
                 return Promise.resolve().then(() => {
@@ -274,7 +279,7 @@ describe('Vertical Visual Picker', () => {
         });
 
         describe('Name', () => {
-            it('name', () => {
+            it('Passed to the component', () => {
                 element.name = 'a-string-name';
 
                 return Promise.resolve().then(() => {
@@ -289,7 +294,7 @@ describe('Vertical Visual Picker', () => {
         });
 
         describe('required', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.required = false;
 
                 return Promise.resolve().then(() => {
@@ -305,8 +310,9 @@ describe('Vertical Visual Picker', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required Text';
 
                 return Promise.resolve().then(() => {
                     const abbr = element.shadowRoot.querySelector(
@@ -318,6 +324,7 @@ describe('Vertical Visual Picker', () => {
 
                     expect(abbr).toBeTruthy();
                     expect(fieldset.ariaRequired).toBe('true');
+                    expect(abbr.title).toBe('Required Text');
                 });
             });
 
@@ -338,6 +345,30 @@ describe('Vertical Visual Picker', () => {
                         );
                         expect(message).toBeTruthy();
                         expect(message.textContent).toBe('Value Missing!');
+                    });
+            });
+        });
+
+        describe('Show more button', () => {
+            it('Passed to the component', () => {
+                element.collapsedShowMoreButton = 'Show more button';
+                element.expandedShowMoreButton = 'Show less button';
+                element.maxCount = 99;
+                element.items = longItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="show-more-button"]'
+                        );
+                        expect(button.label).toBe('Show more button');
+                        button.click();
+                    })
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="show-more-button"]'
+                        );
+                        expect(button.label).toBe('Show less button');
                     });
             });
         });
@@ -911,7 +942,7 @@ describe('Vertical Visual Picker', () => {
                         );
                         expect(inputs).toHaveLength(3);
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-button"]'
                         );
                         button.click();
                         expect(handler).toHaveBeenCalled();
@@ -945,7 +976,7 @@ describe('Vertical Visual Picker', () => {
                         );
                         expect(inputs).toHaveLength(3);
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-button"]'
                         );
                         button.click();
                         expect(handler).toHaveBeenCalled();

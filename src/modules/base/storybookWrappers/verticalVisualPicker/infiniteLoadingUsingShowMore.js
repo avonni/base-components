@@ -1,13 +1,17 @@
 import { api, LightningElement } from 'lwc';
 
 export default class InfiniteLoadingUsingShowMoreVerticalVisualPicker extends LightningElement {
+    @api collapsedShowMoreButton;
     @api disabled;
+    @api expandedShowMoreButton;
     @api hideCheckMark;
     @api label;
     @api loadMoreOffset;
+    @api loadingStateAlternativeText;
     @api messageWhenValueMissing;
     @api name;
     @api required;
+    @api requiredAlternativeText;
     @api size;
     @api type;
     @api value;
