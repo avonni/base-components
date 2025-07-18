@@ -41,14 +41,10 @@ export default class TreeGrid extends LightningElement {
     _showRowNumberColumn = false;
     _wrapTextMaxLines;
 
-    // raw values passed in
+    _publicExpandedRows = [];
     _rawColumns;
     _rawRecords;
-
-    // toggle all rows
     _toggleAllRecursionCounter = 1;
-
-    _publicExpandedRows = [];
 
     constructor() {
         super();
@@ -446,118 +442,9 @@ export default class TreeGrid extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    handleToggle(event) {
-        event.stopPropagation();
-        const { name, nextState } = event.detail;
-        // toggle row in user provided data
-        this.toggleRow(this.records, name, nextState);
-    }
-
-    handleToggleAll(event) {
-        event.stopPropagation();
-        const { nextState } = event.detail;
-        // toggle all rows in user provided data
-        this.toggleAllRows(this.records, nextState);
-    }
-
-    handleRowSelection(event) {
-        event.stopPropagation();
-        // pass the event through
-        this.fireSelectedRowsChange(event.detail);
-    }
-
-    handleHeaderAction(event) {
-        event.stopPropagation();
-        // pass the event through
-        this.fireHeaderAction(event.detail);
-    }
-
-    handleRowAction(event) {
-        event.stopPropagation();
-        // pass the event through
-        this.fireRowAction(event.detail);
-    }
-
-    fireRowToggleChange(name, isExpanded, hasChildrenContent, row) {
-        /**
-         * The event fired when a row is expanded or collapsed.
-         *
-         * @event
-         * @name toggle
-         * @param {string} name The unique ID for the row that's toggled.
-         * @param {boolean} isExpanded Specifies whether the row is expanded or not.
-         * @param {boolean} hasChildrenContent Specifies whether any data is available for the nested items of this row. When value is false, _children is null, undefined, or an empty array. When value is true, _children has a non-empty array.
-         * @param {object} row The toggled row data.
-         * @public
-         */
-        const event = new CustomEvent('toggle', {
-            detail: { name, isExpanded, hasChildrenContent, row }
-        });
-        this.dispatchEvent(event);
-    }
-
-    // fires when all rows are toggled
-    fireToggleAllChange(isExpanded) {
-        /**
-         * The event fired when all rows are expanded or collapsed.
-         *
-         * @event
-         * @name toggleall
-         * @param {boolean} isExpanded Specifies whether the row is expanded or not.
-         * @public
-         */
-        const event = new CustomEvent('toggleall', {
-            detail: { isExpanded }
-        });
-        this.dispatchEvent(event);
-    }
-
-    fireSelectedRowsChange(eventDetails) {
-        /**
-         * The event fired when a row is selected.
-         *
-         * @event
-         * @name rowselection
-         * @public
-         */
-        const event = new CustomEvent('rowselection', {
-            detail: eventDetails
-        });
-
-        this.dispatchEvent(event);
-    }
-
-    fireHeaderAction(eventDetails) {
-        /**
-         * The event fired when a header-level action is run.
-         *
-         * @event
-         * @name headeraction
-         * @public
-         */
-        const event = new CustomEvent('headeraction', {
-            detail: eventDetails
-        });
-
-        this.dispatchEvent(event);
-    }
-
-    fireRowAction(eventDetails) {
-        /**
-         * The event fired when a row-level action is run.
-         *
-         * @event
-         * @name rowaction
-         * @public
-         */
-        const event = new CustomEvent('rowaction', {
-            detail: eventDetails
-        });
-
-        this.dispatchEvent(event);
-    }
-
-    // Utility methods
+    /**
+     * Flatten the data
+     */
     flattenData() {
         // only flatten data if we have a key field defined
         if (this.keyField) {
@@ -569,20 +456,11 @@ export default class TreeGrid extends LightningElement {
         }
     }
 
-    // update the expandedRows value for a single row
-    updateExpandedRows(name, isExpanded) {
-        // check if the ID isn't already in the array
-        const itemPosition = this._expandedRows.indexOf(name);
-
-        // :: if it is and isExpanded is false, remove it
-        if (itemPosition > -1 && isExpanded === false) {
-            this._expandedRows.splice(itemPosition, 1);
-            // :: if it is not and isExpanded is true, add it
-        } else if (itemPosition === -1 && isExpanded) {
-            this._expandedRows.push(name);
-        }
-    }
-
+    /**
+     * Check if a row has children content
+     * @param {object} row - the row to check
+     * @returns {boolean} true if the row has children content, false otherwise
+     */
     hasChildrenContent(row) {
         let hasChildrenContent = false;
         if (
@@ -598,39 +476,7 @@ export default class TreeGrid extends LightningElement {
     }
 
     /**
-     * Toggle a single row, update flattened data, and fire the `toggle` event
-     * @param {object[]} data - tree-grid data
-     * @param {string} name - the unique ID of the row to toggle
-     * @param {boolean} isExpanded - boolean value specifying whether to expand (true) or collapse (false)
-     */
-    toggleRow(data, name, isExpanded) {
-        // step through the array using recursion until we find the correct row to update
-        data.forEach((row) => {
-            const hasChildrenContent = this.hasChildrenContent(row);
-
-            // if we find the matching row apply the changes and trigger the collapseChange event
-            if (row[this.keyField] === name) {
-                this.updateExpandedRows(name, isExpanded);
-
-                // fire the collapseChange event
-                this.fireRowToggleChange(
-                    name,
-                    isExpanded,
-                    hasChildrenContent,
-                    row
-                );
-                // if we didn't find the matching node and this node has children then continue deeper into the tree
-            } else if (hasChildrenContent) {
-                this.toggleRow(row._children, name, isExpanded);
-            }
-        });
-
-        // update the data
-        this.flattenData();
-    }
-
-    /**
-     * Toggle all rows, update flattened data, and fire the `toggleall` event
+     * Toggle all rows, update flattened data, and dispatch the `toggleall` event
      * @param {object[]} data - tree-grid data
      * @param {boolean} isExpanded - boolean value specifying whether to expand (true) or collapse (false)
      * @param {array} rowsToToggle - array of row unique IDs that will be toggled
@@ -659,11 +505,218 @@ export default class TreeGrid extends LightningElement {
             // update the expandedRows value with all valid values
             this._expandedRows = rowsToToggle;
 
-            // fire the toggleAllChange event
-            this.fireToggleAllChange(isExpanded);
+            // dispatch the toggleAllChange event
+            this.dispatchToggleAllChange(isExpanded);
 
             // update the data
             this.flattenData();
         }
+    }
+
+    /**
+     * Toggle a single row, update flattened data, and dispatch the `toggle` event
+     * @param {object[]} data - tree-grid data
+     * @param {string} name - the unique ID of the row to toggle
+     * @param {boolean} isExpanded - boolean value specifying whether to expand (true) or collapse (false)
+     */
+    toggleRow(data, name, isExpanded) {
+        // step through the array using recursion until we find the correct row to update
+        data.forEach((row) => {
+            const hasChildrenContent = this.hasChildrenContent(row);
+
+            // if we find the matching row apply the changes and trigger the collapseChange event
+            if (row[this.keyField] === name) {
+                this.updateExpandedRows(name, isExpanded);
+
+                // dispatch the collapseChange event
+                this.dispatchRowToggleChange(
+                    name,
+                    isExpanded,
+                    hasChildrenContent,
+                    row
+                );
+                // if we didn't find the matching node and this node has children then continue deeper into the tree
+            } else if (hasChildrenContent) {
+                this.toggleRow(row._children, name, isExpanded);
+            }
+        });
+
+        // update the data
+        this.flattenData();
+    }
+
+    /**
+     * Update the expandedRows value for a single row
+     */
+    updateExpandedRows(name, isExpanded) {
+        // check if the ID isn't already in the array
+        const itemPosition = this._expandedRows.indexOf(name);
+
+        // :: if it is and isExpanded is false, remove it
+        if (itemPosition > -1 && isExpanded === false) {
+            this._expandedRows.splice(itemPosition, 1);
+            // :: if it is not and isExpanded is true, add it
+        } else if (itemPosition === -1 && isExpanded) {
+            this._expandedRows.push(name);
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handle the header action event
+     * @param {Event} event - the event object
+     */
+    handleHeaderAction(event) {
+        event.stopPropagation();
+        // pass the event through
+        this.dispatchHeaderAction(event.detail);
+    }
+
+    /**
+     * Handle the row action event
+     * @param {Event} event - the event object
+     */
+    handleRowAction(event) {
+        event.stopPropagation();
+        // pass the event through
+        this.dispatchRowAction(event.detail);
+    }
+
+    /**
+     * Handle the row selection event
+     * @param {Event} event - the event object
+     */
+    handleRowSelection(event) {
+        event.stopPropagation();
+        // pass the event through
+        this.dispatchSelectedRowsChange(event.detail);
+    }
+
+    /**
+     * Handle the toggle event
+     * @param {Event} event - the event object
+     */
+    handleToggle(event) {
+        event.stopPropagation();
+        const { name, nextState } = event.detail;
+        // toggle row in user provided data
+        this.toggleRow(this.records, name, nextState);
+    }
+
+    /**
+     * Handle the toggle all event
+     * @param {Event} event - the event object
+     */
+    handleToggleAll(event) {
+        event.stopPropagation();
+        const { nextState } = event.detail;
+        // toggle all rows in user provided data
+        this.toggleAllRows(this.records, nextState);
+    }
+
+    /**
+     * Dispatch the row toggle change event
+     * @param {string} name - the name of the row
+     * @param {boolean} isExpanded - whether the row is expanded
+     * @param {boolean} hasChildrenContent - whether the row has children content
+     * @param {object} row - the row data
+     */
+    dispatchRowToggleChange(name, isExpanded, hasChildrenContent, row) {
+        /**
+         * The event dispatched when a row is expanded or collapsed.
+         *
+         * @event
+         * @name toggle
+         * @param {string} name The unique ID for the row that's toggled.
+         * @param {boolean} isExpanded Specifies whether the row is expanded or not.
+         * @param {boolean} hasChildrenContent Specifies whether any data is available for the nested items of this row. When value is false, _children is null, undefined, or an empty array. When value is true, _children has a non-empty array.
+         * @param {object} row The toggled row data.
+         * @public
+         */
+        const event = new CustomEvent('toggle', {
+            detail: { name, isExpanded, hasChildrenContent, row }
+        });
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Dispatch the toggle all change event
+     * @param {boolean} isExpanded - whether the row is expanded
+     */
+    dispatchToggleAllChange(isExpanded) {
+        /**
+         * The event dispatched when all rows are expanded or collapsed.
+         *
+         * @event
+         * @name toggleall
+         * @param {boolean} isExpanded Specifies whether the row is expanded or not.
+         * @public
+         */
+        const event = new CustomEvent('toggleall', {
+            detail: { isExpanded }
+        });
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Dispatch the selected rows change event
+     * @param {object} eventDetails - the event details
+     */
+    dispatchSelectedRowsChange(eventDetails) {
+        /**
+         * The event dispatched when a row is selected.
+         *
+         * @event
+         * @name rowselection
+         * @public
+         */
+        const event = new CustomEvent('rowselection', {
+            detail: eventDetails
+        });
+
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Dispatch the header action event
+     * @param {object} eventDetails - the event details
+     */
+    dispatchHeaderAction(eventDetails) {
+        /**
+         * The event dispatched when a header-level action is run.
+         *
+         * @event
+         * @name headeraction
+         * @public
+         */
+        const event = new CustomEvent('headeraction', {
+            detail: eventDetails
+        });
+
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Dispatch the row action event
+     * @param {object} eventDetails - the event details
+     */
+    dispatchRowAction(eventDetails) {
+        /**
+         * The event dispatched when a row-level action is run.
+         *
+         * @event
+         * @name rowaction
+         * @public
+         */
+        const event = new CustomEvent('rowaction', {
+            detail: eventDetails
+        });
+
+        this.dispatchEvent(event);
     }
 }
