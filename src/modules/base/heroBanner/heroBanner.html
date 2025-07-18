@@ -10,138 +10,136 @@
         >
             <div
                 data-element-id="avonni-hero-banner-content-container"
-                class={computedContentContainer}
+                class={computedContentContainerClass}
             >
                 <div
                     class="slds-grid avonni-hero-banner__justify-content_center"
                 >
                     <div
                         data-element-id="avonni-hero-banner-content-width"
-                        class={computedWidthContainer}
+                        class={computedWidthContainerClass}
                         style={computedMaxWidth}
                     >
                         <div
                             data-element-id="avonni-hero-banner-content"
                             style={computedContentStyling}
                         >
-                            <template if:true={caption}>
-                                <h1
-                                    class="avonni-hero-banner__caption"
-                                    data-element-id="avonni-hero-banner-caption"
-                                >
-                                    {caption}
-                                </h1>
-                            </template>
-                            <template if:true={title}>
-                                <h2
-                                    class="avonni-hero-banner__title"
-                                    data-element-id="avonni-hero-banner-title"
-                                >
-                                    {title}
-                                </h2>
-                            </template>
-                            <template if:true={subtitle}>
-                                <p
-                                    class="avonni-hero-banner__subtitle"
-                                    data-element-id="avonni-hero-banner-subtitle"
-                                >
-                                    {subtitle}
-                                </p>
-                            </template>
-                            <template if:true={hasPrimaryButton}>
-                                <div class={computedButtonAlignmentClass}>
-                                    <div class="slds-grid">
+                            <h1
+                                if:true={caption}
+                                class="avonni-hero-banner__caption"
+                                data-element-id="avonni-hero-banner-caption"
+                            >
+                                {caption}
+                            </h1>
+                            <h2
+                                if:true={title}
+                                class="avonni-hero-banner__title"
+                                data-element-id="avonni-hero-banner-title"
+                            >
+                                {title}
+                            </h2>
+                            <p
+                                if:true={subtitle}
+                                class="avonni-hero-banner__subtitle"
+                                data-element-id="avonni-hero-banner-subtitle"
+                            >
+                                {subtitle}
+                            </p>
+                            <div
+                                if:true={hasPrimaryButton}
+                                class={computedButtonAlignmentClass}
+                            >
+                                <div class="slds-grid">
+                                    <button
+                                        if:true={isPrimaryButtonIcon}
+                                        class={computedPrimaryButtonClass}
+                                        type="button"
+                                        data-element-id="avonni-hero-banner-primary-button-icon"
+                                        onclick={handlePrimaryButtonClick}
+                                    >
+                                        <c-primitive-icon
+                                            icon-name={primaryButtonIconName}
+                                            svg-class="slds-button__icon"
+                                            variant="bare"
+                                            data-element-id="avonni-primitive-icon-primary-button"
+                                        ></c-primitive-icon>
+                                        <span
+                                            class="slds-assistive-text"
+                                            data-element-id="avonni-hero-banner-primary-button-icon-assistive-text"
+                                        >
+                                            {primaryButtonAlternativeText}
+                                        </span>
+                                    </button>
+                                    <button
+                                        if:false={isPrimaryButtonIcon}
+                                        class={computedPrimaryButtonClass}
+                                        type="button"
+                                        data-element-id="avonni-hero-banner-primary-button"
+                                        onclick={handlePrimaryButtonClick}
+                                    >
+                                        <c-primitive-icon
+                                            if:true={primaryButtonIconNameLeft}
+                                            icon-name={primaryButtonIconName}
+                                            svg-class={computedPrimaryPrimitiveIconClass}
+                                            variant="bare"
+                                            data-element-id="avonni-primitive-icon-primary-button-left"
+                                        ></c-primitive-icon>
+                                        {primaryButtonLabel}
+                                        <c-primitive-icon
+                                            if:true={primaryButtonIconNameRight}
+                                            icon-name={primaryButtonIconName}
+                                            svg-class={computedPrimaryPrimitiveIconClass}
+                                            variant="bare"
+                                            data-element-id="avonni-primitive-icon-primary-button-right"
+                                        ></c-primitive-icon>
+                                    </button>
+                                    <span if:true={hasSecondaryButton}>
                                         <button
-                                            if:true={isPrimaryButtonIcon}
-                                            class={computedPrimaryButtonClass}
-                                            data-element-id="avonni-hero-banner-primary-button-icon"
-                                            onclick={handlePrimaryButtonClick}
+                                            if:true={isSecondaryButtonIcon}
+                                            class={computedSecondaryButtonClass}
                                             type="button"
+                                            data-element-id="avonni-hero-banner-secondary-button-icon"
+                                            onclick={handleSecondaryButtonClick}
                                         >
                                             <c-primitive-icon
-                                                icon-name={primaryButtonIconName}
+                                                icon-name={secondaryButtonIconName}
                                                 svg-class="slds-button__icon"
                                                 variant="bare"
-                                                data-element-id="avonni-primitive-icon-primary-button"
+                                                data-element-id="avonni-primitive-icon-secondary-button"
                                             ></c-primitive-icon>
                                             <span
                                                 class="slds-assistive-text"
-                                                data-element-id="avonni-hero-banner-primary-button-icon-assistive-text"
+                                                data-element-id="avonni-hero-banner-secondary-button-icon-assistive-text"
                                             >
-                                                {primaryButtonAlternativeText}
+                                                {secondaryButtonAlternativeText}
                                             </span>
                                         </button>
                                         <button
-                                            if:false={isPrimaryButtonIcon}
-                                            class={computedPrimaryButtonClass}
-                                            onclick={handlePrimaryButtonClick}
+                                            if:false={isSecondaryButtonIcon}
+                                            class={computedSecondaryButtonClass}
                                             type="button"
-                                            data-element-id="avonni-hero-banner-primary-button"
+                                            data-element-id="avonni-hero-banner-secondary-button"
+                                            onclick={handleSecondaryButtonClick}
                                         >
                                             <c-primitive-icon
-                                                if:true={primaryButtonIconNameLeft}
-                                                icon-name={primaryButtonIconName}
-                                                svg-class={computedPrimaryPrimitiveIconClass}
+                                                if:true={secondaryButtonIconNameLeft}
+                                                icon-name={secondaryButtonIconName}
+                                                svg-class={computedSecondaryPrimitiveIconClass}
                                                 variant="bare"
-                                                data-element-id="avonni-primitive-icon-primary-button-left"
+                                                data-element-id="avonni-primitive-icon-secondary-button-left"
                                             ></c-primitive-icon>
-                                            {primaryButtonLabel}
+                                            {secondaryButtonLabel}
                                             <c-primitive-icon
-                                                if:true={primaryButtonIconNameRight}
-                                                icon-name={primaryButtonIconName}
-                                                svg-class={computedPrimaryPrimitiveIconClass}
+                                                if:true={secondaryButtonIconNameRight}
+                                                icon-name={secondaryButtonIconName}
+                                                svg-class={computedSecondaryPrimitiveIconClass}
                                                 variant="bare"
-                                                data-element-id="avonni-primitive-icon-primary-button-right"
+                                                data-element-id="avonni-primitive-icon-secondary-button-right"
                                             ></c-primitive-icon>
                                         </button>
-                                        <span if:true={hasSecondaryButton}>
-                                            <button
-                                                if:true={isSecondaryButtonIcon}
-                                                class={computedSecondaryButtonClass}
-                                                data-element-id="avonni-hero-banner-secondary-button-icon"
-                                                onclick={handleSecondaryButtonClick}
-                                                type="button"
-                                            >
-                                                <c-primitive-icon
-                                                    icon-name={secondaryButtonIconName}
-                                                    svg-class="slds-button__icon"
-                                                    variant="bare"
-                                                    data-element-id="avonni-primitive-icon-secondary-button"
-                                                ></c-primitive-icon>
-                                                <span
-                                                    class="slds-assistive-text"
-                                                    data-element-id="avonni-hero-banner-secondary-button-icon-assistive-text"
-                                                >
-                                                    {secondaryButtonAlternativeText}
-                                                </span>
-                                            </button>
-                                            <button
-                                                if:false={isSecondaryButtonIcon}
-                                                class={computedSecondaryButtonClass}
-                                                onclick={handleSecondaryButtonClick}
-                                                type="button"
-                                                data-element-id="avonni-hero-banner-secondary-button"
-                                            >
-                                                <c-primitive-icon
-                                                    if:true={secondaryButtonIconNameLeft}
-                                                    icon-name={secondaryButtonIconName}
-                                                    svg-class={computedSecondaryPrimitiveIconClass}
-                                                    variant="bare"
-                                                    data-element-id="avonni-primitive-icon-secondary-button-left"
-                                                ></c-primitive-icon>
-                                                {secondaryButtonLabel}
-                                                <c-primitive-icon
-                                                    if:true={secondaryButtonIconNameRight}
-                                                    icon-name={secondaryButtonIconName}
-                                                    svg-class={computedSecondaryPrimitiveIconClass}
-                                                    variant="bare"
-                                                    data-element-id="avonni-primitive-icon-secondary-button-right"
-                                                ></c-primitive-icon>
-                                            </button>
-                                        </span>
-                                    </div>
+                                    </span>
                                 </div>
-                            </template>
+                            </div>
                             <template if:true={showSlot}>
                                 <slot data-element-id="slot-default"></slot>
                             </template>

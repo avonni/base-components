@@ -130,10 +130,10 @@ export default class PrimitivePill extends LightningElement {
             : this.actions[0].iconName;
     }
 
-    get wrapperClass() {
+    get computedWrapperClass() {
         return classSet('slds-pill avonni-primitive-pill')
             .add({
-                'avonni-primitive-pill__action': !!this._href,
+                'avonni-primitive-pill__action': !!this.href,
                 'avonni-primitive-pill_list': this.variant === 'list'
             })
             .toString();

@@ -103,6 +103,9 @@ describe('Avatar Group', () => {
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.items).toEqual([]);
+            expect(element.keyboardAssistiveText).toBe(
+                'Move between the items by using arrow keys.'
+            );
             expect(element.layout).toBe('stack');
             expect(element.listButtonShowLessIconName).toBeUndefined();
             expect(element.listButtonShowLessIconPosition).toBe('left');
@@ -111,8 +114,10 @@ describe('Avatar Group', () => {
             expect(element.listButtonShowMoreIconPosition).toBe('left');
             expect(element.listButtonShowMoreLabel).toBe('Show more');
             expect(element.listButtonVariant).toBe('neutral');
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.maxCount).toBeUndefined();
             expect(element.name).toBeUndefined();
+            expect(element.showMoreButtonAlternativeText).toBe('Show more');
             expect(element.size).toBe('medium');
             expect(element.variant).toBe('square');
         });
@@ -131,7 +136,6 @@ describe('Avatar Group', () => {
                 });
             });
 
-            //Action button: absence of action-icon-name
             it('absence of action-icon-name makes action button disappear', () => {
                 element.actionIconName = '';
                 element.items = longItems;
@@ -239,7 +243,6 @@ describe('Avatar Group', () => {
             });
         });
 
-        // items
         describe('Is loading', () => {
             it('true', () => {
                 element.isLoading = true;
@@ -275,7 +278,7 @@ describe('Avatar Group', () => {
                         '[data-element-id="lightning-spinner-list"]'
                     );
                     const button = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button"]'
+                        '[data-element-id="show-more-lightning-button"]'
                     );
                     expect(spinner).toBeTruthy();
                     expect(button.disabled).toBeTruthy();
@@ -309,66 +312,88 @@ describe('Avatar Group', () => {
             });
         });
 
-        // items
-        it('items', () => {
-            element.variant = 'circle';
-            element.size = 'xx-large';
-            element.items = item;
+        describe('Items', () => {
+            it('Passed to the component', () => {
+                element.variant = 'circle';
+                element.size = 'xx-large';
+                element.items = item;
 
-            return Promise.resolve().then(() => {
-                const avatars = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-avatar"]'
-                );
-                avatars.forEach((avatar, index) => {
-                    const correspondingField = item[index];
-                    expect(correspondingField).toBeTruthy();
-                    expect(avatar.fallbackIconName).toBe(
-                        correspondingField.fallbackIconName
+                return Promise.resolve().then(() => {
+                    const avatars = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-avatar"]'
                     );
-                    expect(avatar.href).toBe(correspondingField.href);
-                    expect(avatar.initials).toBe(correspondingField.initials);
-                    expect(avatar.src).toBe(correspondingField.src);
-                    expect(avatar.status).toBe(correspondingField.status);
-                    expect(avatar.statusTitle).toBe(
-                        correspondingField.statusTitle
+                    avatars.forEach((avatar, index) => {
+                        const correspondingField = item[index];
+                        expect(correspondingField).toBeTruthy();
+                        expect(avatar.fallbackIconName).toBe(
+                            correspondingField.fallbackIconName
+                        );
+                        expect(avatar.href).toBe(correspondingField.href);
+                        expect(avatar.initials).toBe(
+                            correspondingField.initials
+                        );
+                        expect(avatar.src).toBe(correspondingField.src);
+                        expect(avatar.status).toBe(correspondingField.status);
+                        expect(avatar.statusTitle).toBe(
+                            correspondingField.statusTitle
+                        );
+                        expect(avatar.statusPosition).toBe(
+                            correspondingField.statusPosition
+                        );
+                        expect(avatar.presence).toBe(
+                            correspondingField.presence
+                        );
+                        expect(avatar.presenceTitle).toBe(
+                            correspondingField.presenceTitle
+                        );
+                        expect(avatar.presencePosition).toBe(
+                            correspondingField.presencePosition
+                        );
+                        expect(avatar.entityIconName).toBe(
+                            correspondingField.entityIconName
+                        );
+                        expect(avatar.entityInitials).toBe(
+                            correspondingField.entityInitials
+                        );
+                        expect(avatar.entityVariant).toBe(
+                            correspondingField.entityVariant
+                        );
+                        expect(avatar.entitySrc).toBe(
+                            correspondingField.entitySrc
+                        );
+                        expect(avatar.entityPosition).toBe(
+                            correspondingField.entityPosition
+                        );
+                        expect(avatar.primaryText).toBe(
+                            correspondingField.primaryText
+                        );
+                        expect(avatar.secondaryText).toBe(
+                            correspondingField.secondaryText
+                        );
+                        expect(avatar.tertiaryText).toBe(
+                            correspondingField.tertiaryText
+                        );
+                    });
+                });
+            });
+        });
+
+        describe('Keyboard assistive text', () => {
+            it('Passed to the component', () => {
+                element.keyboardAssistiveText =
+                    'Move between the items by using arrow keys';
+
+                return Promise.resolve().then(() => {
+                    const assistiveText = element.shadowRoot.querySelector(
+                        '[data-element-id="keyboard-assistive-text"]'
                     );
-                    expect(avatar.statusPosition).toBe(
-                        correspondingField.statusPosition
-                    );
-                    expect(avatar.presence).toBe(correspondingField.presence);
-                    expect(avatar.presenceTitle).toBe(
-                        correspondingField.presenceTitle
-                    );
-                    expect(avatar.presencePosition).toBe(
-                        correspondingField.presencePosition
-                    );
-                    expect(avatar.entityIconName).toBe(
-                        correspondingField.entityIconName
-                    );
-                    expect(avatar.entityInitials).toBe(
-                        correspondingField.entityInitials
-                    );
-                    expect(avatar.entityVariant).toBe(
-                        correspondingField.entityVariant
-                    );
-                    expect(avatar.entitySrc).toBe(correspondingField.entitySrc);
-                    expect(avatar.entityPosition).toBe(
-                        correspondingField.entityPosition
-                    );
-                    expect(avatar.primaryText).toBe(
-                        correspondingField.primaryText
-                    );
-                    expect(avatar.secondaryText).toBe(
-                        correspondingField.secondaryText
-                    );
-                    expect(avatar.tertiaryText).toBe(
-                        correspondingField.tertiaryText
+                    expect(assistiveText.textContent).toBe(
+                        'Move between the items by using arrow keys'
                     );
                 });
             });
         });
 
-        // layout
         describe('layout', () => {
             it('stack with less than 3', () => {
                 element.layout = 'stack';
@@ -470,13 +495,13 @@ describe('Avatar Group', () => {
                     return Promise.resolve()
                         .then(() => {
                             const button = element.shadowRoot.querySelector(
-                                '[data-element-id="lightning-button"]'
+                                '[data-element-id="show-more-lightning-button"]'
                             );
                             button.click();
                         })
                         .then(() => {
                             const button = element.shadowRoot.querySelector(
-                                '[data-element-id="lightning-button"]'
+                                '[data-element-id="show-more-lightning-button"]'
                             );
                             expect(button.iconName).toBe('utility:lock');
                         });
@@ -493,13 +518,13 @@ describe('Avatar Group', () => {
                     return Promise.resolve()
                         .then(() => {
                             const button = element.shadowRoot.querySelector(
-                                '[data-element-id="lightning-button"]'
+                                '[data-element-id="show-more-lightning-button"]'
                             );
                             button.click();
                         })
                         .then(() => {
                             const button = element.shadowRoot.querySelector(
-                                '[data-element-id="lightning-button"]'
+                                '[data-element-id="show-more-lightning-button"]'
                             );
                             expect(button.iconPosition).toBe('right');
                         });
@@ -515,13 +540,13 @@ describe('Avatar Group', () => {
                     return Promise.resolve()
                         .then(() => {
                             const button = element.shadowRoot.querySelector(
-                                '[data-element-id="lightning-button"]'
+                                '[data-element-id="show-more-lightning-button"]'
                             );
                             button.click();
                         })
                         .then(() => {
                             const button = element.shadowRoot.querySelector(
-                                '[data-element-id="lightning-button"]'
+                                '[data-element-id="show-more-lightning-button"]'
                             );
                             expect(button.label).toBe(
                                 'This is a list button label'
@@ -539,7 +564,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.iconName).toBe('utility:lock');
                     });
@@ -555,7 +580,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.iconPosition).toBe('right');
                     });
@@ -570,7 +595,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.label).toBe(
                             'This is a list button label'
@@ -589,7 +614,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('neutral');
                     });
@@ -604,7 +629,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('base');
                     });
@@ -619,7 +644,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('brand');
                     });
@@ -634,7 +659,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('brand-outline');
                     });
@@ -649,7 +674,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('destructive');
                     });
@@ -664,7 +689,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('destructive-text');
                     });
@@ -679,7 +704,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('inverse');
                     });
@@ -694,7 +719,7 @@ describe('Avatar Group', () => {
 
                     return Promise.resolve().then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         expect(button.variant).toBe('success');
                     });
@@ -702,7 +727,21 @@ describe('Avatar Group', () => {
             });
         });
 
-        // max count
+        describe('Loading', () => {
+            it('loading state alternative text', () => {
+                element.loadingStateAlternativeText = 'Loading';
+                element.isLoading = true;
+                element.items = longItems;
+
+                return Promise.resolve().then(() => {
+                    const loadingSpinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner-line"]'
+                    );
+                    expect(loadingSpinner.alternativeText).toBe('Loading');
+                });
+            });
+        });
+
         describe('max count', () => {
             it('max count', () => {
                 element.items = longItems;
@@ -753,7 +792,22 @@ describe('Avatar Group', () => {
             });
         });
 
-        // size
+        describe('Show more button alternative text', () => {
+            it('Passed to the component', () => {
+                element.items = longItems;
+                element.showMoreButtonAlternativeText = 'Show mores';
+                element.layout = 'list';
+                element.maxCount = 5;
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="show-more-lightning-button"]'
+                    );
+                    expect(button.title).toBe('Show mores');
+                });
+            });
+        });
+
         describe('Size', () => {
             it('size x-small', () => {
                 element.size = 'x-small';
@@ -950,7 +1004,6 @@ describe('Avatar Group', () => {
             });
         });
 
-        // variant
         describe('Variant', () => {
             it('square', () => {
                 element.variant = 'square';
@@ -1065,7 +1118,7 @@ describe('Avatar Group', () => {
                     })
                     .then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         button.click();
                     })
@@ -1191,7 +1244,6 @@ describe('Avatar Group', () => {
             });
         });
 
-        // Keyboard navigation
         it('change focus position on keyboard arrows', () => {
             element.items = [...items, ...item];
 
@@ -1262,9 +1314,7 @@ describe('Avatar Group', () => {
     });
 
     describe('Events', () => {
-        // Avatar click
         describe('avatarclick', () => {
-            // Action button click
             it('actionbuttonclick', () => {
                 element.items = item;
                 element.name = 'Avatar group name';
@@ -1296,7 +1346,7 @@ describe('Avatar Group', () => {
 
                 return Promise.resolve().then(() => {
                     const avatar = element.shadowRoot.querySelector(
-                        '.avonni-avatar-group__avatar'
+                        '[data-element-id="avonni-avatar"]'
                     );
                     avatar.click();
                     expect(handler).toHaveBeenCalled();
@@ -1364,8 +1414,6 @@ describe('Avatar Group', () => {
             });
         });
 
-        // Avatar action click
-        // Depends on action name
         it('avataractionclick', () => {
             element.items = items;
             element.layout = 'grid';
@@ -1416,7 +1464,7 @@ describe('Avatar Group', () => {
                     })
                     .then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         button.click();
                         expect(handler).toHaveBeenCalled();
@@ -1453,7 +1501,7 @@ describe('Avatar Group', () => {
                     })
                     .then(() => {
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-lightning-button"]'
                         );
                         button.click();
                         expect(handler).toHaveBeenCalled();

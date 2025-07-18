@@ -66,6 +66,7 @@ describe('Activity Timeline', () => {
             expect(element.itemIconSize).toBe('small');
             expect(element.items).toMatchObject([]);
             expect(element.loadMoreOffset).toBe(20);
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.locale).toBe('en-GB');
             expect(element.maxVisibleItems).toBeUndefined();
             expect(element.orientation).toBe('vertical');
@@ -388,6 +389,7 @@ describe('Activity Timeline', () => {
         describe('isLoading', () => {
             it('Passed to the component', () => {
                 element.isLoading = false;
+                element.loadingStateAlternativeText = 'Loading';
 
                 return Promise.resolve()
                     .then(() => {
@@ -402,6 +404,7 @@ describe('Activity Timeline', () => {
                         const spinner = element.shadowRoot.querySelector(
                             '[data-element-id="lightning-spinner"]'
                         );
+                        expect(spinner.alternativeText).toBe('Loading');
                         expect(spinner).toBeTruthy();
                     });
             });

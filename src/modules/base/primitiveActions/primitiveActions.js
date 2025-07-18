@@ -30,16 +30,18 @@ export default class PrimitiveActions extends LightningElement {
      */
     @api visibleActions;
 
+    /*
+     * ------------------------------------------------------------
+     * PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     get actionButtons() {
         return this.actions.slice(0, this.visible);
     }
 
     get actionsButtonMenu() {
         return this.actions.slice(this.visible, this.actions.length);
-    }
-
-    get singleAction() {
-        return this.actions.length === 1 && this.actions[0];
     }
 
     get hasActions() {
@@ -54,11 +56,21 @@ export default class PrimitiveActions extends LightningElement {
         return this.actionButtons.length === 0;
     }
 
+    get singleAction() {
+        return this.actions.length === 1 && this.actions[0];
+    }
+
     get visible() {
         return !this.visibleActions && this.visibleActions !== 0
             ? this.actions.length
             : this.visibleActions;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     handleActionButtonClick(event) {
         event.stopImmediatePropagation();

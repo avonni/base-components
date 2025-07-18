@@ -6,6 +6,7 @@ export default class MaxWidthPillContainer extends LightningElement {
     @api isCollapsible;
     @api isExpanded;
     @api items;
+    @api showMoreButtonLabel;
     @api singleLine;
     @api sortable;
 }

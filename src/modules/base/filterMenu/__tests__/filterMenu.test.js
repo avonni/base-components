@@ -92,7 +92,7 @@ describe('Filter Menu', () => {
             expect(element.iconSize).toBe('medium');
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
-            expect(element.loadingStateAlternativeText).toBe('Loading');
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.resetButtonLabel).toBe('Reset');
             expect(element.title).toBeUndefined();
@@ -149,7 +149,7 @@ describe('Filter Menu', () => {
 
         describe('Button Variant', () => {
             // Depends on iconName and label
-            it('buttonVariant = border', () => {
+            it('border', () => {
                 element.buttonVariant = 'border';
 
                 return Promise.resolve().then(() => {
@@ -162,7 +162,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border, with label', () => {
+            it('border, with label', () => {
                 element.buttonVariant = 'border';
                 element.label = 'A string label';
 
@@ -176,7 +176,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border, with icon', () => {
+            it('border, with icon', () => {
                 element.buttonVariant = 'border';
                 element.iconName = 'utility:user';
 
@@ -190,7 +190,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = bare', () => {
+            it('bare', () => {
                 element.buttonVariant = 'bare';
 
                 return Promise.resolve().then(() => {
@@ -203,7 +203,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = bare, with label', () => {
+            it('bare, with label', () => {
                 element.buttonVariant = 'bare';
                 element.label = 'A string label';
 
@@ -215,7 +215,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = bare, with icon', () => {
+            it('bare, with icon', () => {
                 element.buttonVariant = 'bare';
                 element.iconName = 'standard:user';
 
@@ -229,7 +229,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = container', () => {
+            it('container', () => {
                 element.buttonVariant = 'container';
 
                 return Promise.resolve().then(() => {
@@ -242,7 +242,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = container, with label', () => {
+            it('container, with label', () => {
                 element.buttonVariant = 'container';
                 element.label = 'A string label';
 
@@ -254,7 +254,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = container, with icon', () => {
+            it('container, with icon', () => {
                 element.buttonVariant = 'container';
                 element.icon = 'utility:user';
 
@@ -268,7 +268,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border-filled', () => {
+            it('border-filled', () => {
                 element.buttonVariant = 'border-filled';
 
                 return Promise.resolve().then(() => {
@@ -281,7 +281,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border-filled, with label', () => {
+            it('border-filled, with label', () => {
                 element.buttonVariant = 'border-filled';
                 element.label = 'A string label';
 
@@ -293,7 +293,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border-filled, with icon', () => {
+            it('border-filled, with icon', () => {
                 element.buttonVariant = 'border-filled';
                 element.iconName = 'utility:apps';
 
@@ -307,7 +307,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = bare-inverse', () => {
+            it('bare-inverse', () => {
                 element.buttonVariant = 'bare-inverse';
 
                 return Promise.resolve().then(() => {
@@ -320,7 +320,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = bare-inverse, with label', () => {
+            it('bare-inverse, with label', () => {
                 element.buttonVariant = 'bare-inverse';
                 element.label = 'A string label';
 
@@ -332,7 +332,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = bare-inverse, with icon', () => {
+            it('bare-inverse, with icon', () => {
                 element.buttonVariant = 'bare-inverse';
                 element.iconName = 'standard:apps';
 
@@ -346,7 +346,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border-inverse', () => {
+            it('border-inverse', () => {
                 element.buttonVariant = 'border-inverse';
 
                 return Promise.resolve().then(() => {
@@ -359,7 +359,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border-inverse, with label', () => {
+            it('border-inverse, with label', () => {
                 element.buttonVariant = 'border-inverse';
                 element.label = 'A string label';
 
@@ -373,7 +373,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('buttonVariant = border-inverse, with icon', () => {
+            it('border-inverse, with icon', () => {
                 element.buttonVariant = 'border-inverse';
                 element.icon = 'utility:apps';
 
@@ -460,7 +460,7 @@ describe('Filter Menu', () => {
         });
 
         describe('Dropdown Alignment & Dropdown Nubbin', () => {
-            it('dropdownAlignment = left and dropdownNubbin = true', () => {
+            it('left and dropdownNubbin = true', () => {
                 element.dropdownAlignment = 'left';
                 element.dropdownNubbin = true;
                 const button = element.shadowRoot.querySelector(
@@ -508,7 +508,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('dropdownAlignment = auto and dropdownNubbin = true', () => {
+            it('auto and dropdownNubbin = true', () => {
                 element.dropdownAlignment = 'auto';
                 element.dropdownNubbin = true;
                 const button = element.shadowRoot.querySelector(
@@ -556,7 +556,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('dropdownAlignment = center and dropdownNubbin = true', () => {
+            it('center and dropdownNubbin = true', () => {
                 element.dropdownAlignment = 'center';
                 element.dropdownNubbin = true;
                 const button = element.shadowRoot.querySelector(
@@ -606,7 +606,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('dropdownAlignment = right and dropdownNubbin = true', () => {
+            it('right and dropdownNubbin = true', () => {
                 element.dropdownAlignment = 'right';
                 element.dropdownNubbin = true;
                 const button = element.shadowRoot.querySelector(
@@ -654,7 +654,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('dropdownAlignment = bottom-left and dropdownNubbin = true', () => {
+            it('bottom-left and dropdownNubbin = true', () => {
                 element.dropdownAlignment = 'bottom-left';
                 element.dropdownNubbin = true;
                 const button = element.shadowRoot.querySelector(
@@ -702,7 +702,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('dropdownAlignment = bottom-center and dropdownNubbin = true', () => {
+            it('bottom-center and dropdownNubbin = true', () => {
                 element.dropdownAlignment = 'bottom-center';
                 element.dropdownNubbin = true;
                 const button = element.shadowRoot.querySelector(
@@ -750,7 +750,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('dropdownAlignment = bottom-right and dropdownNubbin = true', () => {
+            it('bottom-right and dropdownNubbin = true', () => {
                 element.dropdownAlignment = 'bottom-right';
                 element.dropdownNubbin = true;
                 const button = element.shadowRoot.querySelector(
@@ -832,7 +832,7 @@ describe('Filter Menu', () => {
 
         describe('Hide Apply Reset Buttons', () => {
             // Depends on variant
-            it('hideApplyResetButtons = false, with horizontal variant', () => {
+            it('false, with horizontal variant', () => {
                 element.hideApplyResetButtons = false;
                 element.typeAttributes = { items: ITEMS };
 
@@ -849,7 +849,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('hideApplyResetButtons = false, with vertical variant', () => {
+            it('false, with vertical variant', () => {
                 element.hideApplyResetButtons = false;
                 element.typeAttributes = { items: ITEMS };
                 element.variant = 'vertical';
@@ -862,7 +862,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('hideApplyResetButtons = true, with horizontal variant', () => {
+            it('true, with horizontal variant', () => {
                 element.hideApplyResetButtons = true;
 
                 const button = element.shadowRoot.querySelector(
@@ -878,7 +878,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('hideApplyResetButtons = true, with vertical variant', () => {
+            it('true, with vertical variant', () => {
                 element.hideApplyResetButtons = true;
                 element.variant = 'vertical';
 
@@ -893,7 +893,7 @@ describe('Filter Menu', () => {
 
         describe('Hide Selected Items', () => {
             // Depends on items, value and variant
-            it('hideSelectedItems = false, with horizontal variant', () => {
+            it('false, with horizontal variant', () => {
                 element.hideSelectedItems = false;
                 element.typeAttributes = { items: ITEMS };
                 element.value = VALUE;
@@ -906,7 +906,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('hideSelectedItems = false, with vertical variant', () => {
+            it('false, with vertical variant', () => {
                 element.hideSelectedItems = false;
                 element.variant = 'vertical';
                 element.typeAttributes = { items: ITEMS };
@@ -920,7 +920,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('hideSelectedItems = true, with horizontal variant', () => {
+            it('true, with horizontal variant', () => {
                 element.hideSelectedItems = true;
                 element.typeAttributes = { items: ITEMS };
                 element.value = VALUE;
@@ -938,7 +938,7 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('hideSelectedItems = true, with vertical variant', () => {
+            it('true, with vertical variant', () => {
                 element.hideSelectedItems = true;
                 element.variant = 'vertical';
                 element.typeAttributes = { items: ITEMS };
@@ -987,92 +987,93 @@ describe('Filter Menu', () => {
                 });
             });
 
-            // icon-size
-            it('iconSize = xx-small', () => {
-                element.iconSize = 'xx-small';
+            describe('iconSize', () => {
+                it('xx-small', () => {
+                    element.iconSize = 'xx-small';
 
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    expect(button.classList).toContain(
-                        'slds-button_icon-xx-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-x-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-large'
-                    );
+                    return Promise.resolve().then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        expect(button.classList).toContain(
+                            'slds-button_icon-xx-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-x-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-large'
+                        );
+                    });
                 });
-            });
 
-            it('iconSize = x-small', () => {
-                element.iconSize = 'x-small';
+                it('x-small', () => {
+                    element.iconSize = 'x-small';
 
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-xx-small'
-                    );
-                    expect(button.classList).toContain(
-                        'slds-button_icon-x-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-large'
-                    );
+                    return Promise.resolve().then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-xx-small'
+                        );
+                        expect(button.classList).toContain(
+                            'slds-button_icon-x-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-large'
+                        );
+                    });
                 });
-            });
 
-            it('iconSize = medium', () => {
-                element.iconSize = 'medium';
+                it('medium', () => {
+                    element.iconSize = 'medium';
 
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-xx-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-x-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-large'
-                    );
+                    return Promise.resolve().then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-xx-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-x-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-large'
+                        );
+                    });
                 });
-            });
 
-            it('iconSize = large', () => {
-                element.iconSize = 'large';
+                it('large', () => {
+                    element.iconSize = 'large';
 
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button"]'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-xx-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-x-small'
-                    );
-                    expect(button.classList).not.toContain(
-                        'slds-button_icon-small'
-                    );
-                    expect(button.classList).toContain(
-                        'slds-button_icon-large'
-                    );
+                    return Promise.resolve().then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-xx-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-x-small'
+                        );
+                        expect(button.classList).not.toContain(
+                            'slds-button_icon-small'
+                        );
+                        expect(button.classList).toContain(
+                            'slds-button_icon-large'
+                        );
+                    });
                 });
             });
         });
@@ -1096,6 +1097,8 @@ describe('Filter Menu', () => {
 
             it('isLoading = true', () => {
                 element.isLoading = true;
+                element.loadingStateAlternativeText = 'A string alt text';
+
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
                 );
@@ -1105,8 +1108,8 @@ describe('Filter Menu', () => {
                     const spinner = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-spinner"]'
                     );
-
                     expect(spinner).toBeTruthy();
+                    expect(spinner.alternativeText).toBe('A string alt text');
                 });
             });
         });
@@ -1130,7 +1133,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="lightning-button-reset"]'
                     );
                     const noResultMessage = element.shadowRoot.querySelector(
-                        '[data-element-id="p-no-result-message"]'
+                        '[data-element-id="p-no-results-message"]'
                     );
 
                     expect(apply).toBeTruthy();
@@ -1204,6 +1207,9 @@ describe('Filter Menu', () => {
                     '[data-element-id="button"]'
                 );
                 button.click();
+                element.typeAttributes = {
+                    noResultsMessage: 'A string no results message for test'
+                };
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
@@ -1216,12 +1222,15 @@ describe('Filter Menu', () => {
                         '[data-element-id="lightning-button-reset"]'
                     );
                     const noResultMessage = element.shadowRoot.querySelector(
-                        '[data-element-id="p-no-result-message"]'
+                        '[data-element-id="p-no-results-message"]'
                     );
 
                     expect(apply).toBeFalsy();
                     expect(reset).toBeFalsy();
                     expect(noResultMessage).toBeTruthy();
+                    expect(noResultMessage.textContent).toBe(
+                        'A string no results message for test'
+                    );
                     expect(items).toHaveLength(0);
                 });
             });

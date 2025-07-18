@@ -1,21 +1,21 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Scheduler extends LightningElement {
-    @api dialogLabels;
     @api availableDaysOfTheWeek;
     @api availableMonths;
     @api availableTimeFrames;
+    @api collapseDisabled;
     @api columns;
     @api contextMenuEmptySpotActions;
     @api contextMenuEventActions;
     @api customEventsPalette;
-    @api collapseDisabled;
     @api dateFormat;
+    @api dialogLabels;
     @api disabledDatesTimes;
     @api events;
+    @api eventsDisplayFields;
     @api eventsLabels;
     @api eventsPalette;
-    @api eventsDisplayFields;
     @api eventsTheme;
     @api hiddenActions;
     @api hiddenDisplays;

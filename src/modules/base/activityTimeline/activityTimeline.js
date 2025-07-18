@@ -45,9 +45,9 @@ const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_LOCALE = 'en-GB';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
-
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}/;
 
 const FIELD_VARIANTS = {
@@ -115,6 +115,13 @@ export default class ActivityTimeline extends LightningElement {
      * @public
      */
     @api buttonShowMoreLabel = DEFAULT_BUTTON_SHOW_MORE_LABEL;
+    /**
+     * The alternative text of the loading state. This attribute is only supported for the vertical orientation.
+     * @type {string}
+     * @default Loading...
+     * @public
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
      *

@@ -4,11 +4,11 @@
         aria-labelled-by={ariaLabelledBy}
         close-button-alternative-text={closeButtonAlternativeText}
         dialog-name={dialogName}
-        title={title}
-        loading-state-alternative-text={loadingStateAlternativeText}
-        size={size}
         is-loading={isLoading}
+        loading-state-alternative-text={loadingStateAlternativeText}
         show-dialog={showDialog}
+        size={size}
+        title={title}
     >
         <h2 slot="title" class="slds-modal__title slds-hyphenate">
             Modal Header (Slot Title)
@@ -28,11 +28,11 @@
             excepteur ea.
         </div>
         <div slot="footer">
-            <lightning-button label="Cancel"></lightning-button>
+            <lightning-button label={cancelButtonLabel}></lightning-button>
             <lightning-button
                 variant="brand"
                 class="slds-p-left_x-small"
-                label="Save"
+                label={saveButtonLabel}
             ></lightning-button>
         </div>
     </c-dialog>

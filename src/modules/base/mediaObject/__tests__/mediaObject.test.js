@@ -16,120 +16,133 @@ describe('MediaObject', () => {
         document.body.appendChild(element);
     });
 
-    it('Media object: Default attributes', () => {
-        expect(element.verticalAlign).toBe('start');
-        expect(element.responsive).toBeFalsy();
-        expect(element.inline).toBeFalsy();
-        expect(element.size).toBe('medium');
-    });
-
-    // vertical-align
-    it('Media object: VerticalAlign = start', () => {
-        element.verticalAlign = 'start';
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
-
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).not.toContain('slds-media_center');
-            expect(wrapper.classList).not.toContain(
-                'avonni-media-object_alignment-end'
-            );
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.verticalAlign).toBe('start');
+            expect(element.responsive).toBeFalsy();
+            expect(element.inline).toBeFalsy();
+            expect(element.size).toBe('medium');
         });
-    });
 
-    it('Media object: VerticalAlign = center', () => {
-        element.verticalAlign = 'center';
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
+        describe('Inline', () => {
+            it('false', () => {
+                element.inline = false;
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
 
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain('slds-media_center');
-            expect(wrapper.classList).not.toContain(
-                'avonni-media-object_alignment-end'
-            );
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-media-object_display-inline'
+                    );
+                });
+            });
+
+            it('true', () => {
+                element.inline = true;
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
+
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).toContain(
+                        'avonni-media-object_display-inline'
+                    );
+                });
+            });
         });
-    });
 
-    it('Media object: VerticalAlign = end', () => {
-        element.verticalAlign = 'end';
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
+        describe('Responsive', () => {
+            it('false', () => {
+                element.responsive = false;
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
 
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).not.toContain('slds-media_center');
-            expect(wrapper.classList).toContain(
-                'avonni-media-object_alignment-end'
-            );
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).not.toContain(
+                        'slds-media_responsive'
+                    );
+                });
+            });
+
+            it('true', () => {
+                element.responsive = true;
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
+
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).toContain(
+                        'slds-media_responsive'
+                    );
+                });
+            });
         });
-    });
 
-    // responsive
-    it('Media object: Responsive = false', () => {
-        element.responsive = false;
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
+        describe('Size', () => {
+            it('medium', () => {
+                element.size = 'medium';
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
 
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).not.toContain('slds-media_responsive');
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).not.toContain('slds-media_small');
+                    expect(wrapper.classList).not.toContain('slds-media_large');
+                });
+            });
+
+            it('small', () => {
+                element.size = 'small';
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
+
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).toContain('slds-media_small');
+                    expect(wrapper.classList).not.toContain('slds-media_large');
+                });
+            });
+
+            it('large', () => {
+                element.size = 'large';
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
+
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).not.toContain('slds-media_small');
+                    expect(wrapper.classList).toContain('slds-media_large');
+                });
+            });
         });
-    });
+        describe('VerticalAlign', () => {
+            it('start', () => {
+                element.verticalAlign = 'start';
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
 
-    it('Media object: Responsive = true', () => {
-        element.responsive = true;
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).not.toContain(
+                        'slds-media_center'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-media-object_alignment-end'
+                    );
+                });
+            });
 
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain('slds-media_responsive');
-        });
-    });
+            it('center', () => {
+                element.verticalAlign = 'center';
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
 
-    // inline
-    it('Media object: Inline = false', () => {
-        element.inline = false;
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).toContain('slds-media_center');
+                    expect(wrapper.classList).not.toContain(
+                        'avonni-media-object_alignment-end'
+                    );
+                });
+            });
 
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).not.toContain(
-                'avonni-media-object_display-inline'
-            );
-        });
-    });
+            it('end', () => {
+                element.verticalAlign = 'end';
+                const wrapper = element.shadowRoot.querySelector('.slds-media');
 
-    it('Media object: Inline = true', () => {
-        element.inline = true;
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
-
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain(
-                'avonni-media-object_display-inline'
-            );
-        });
-    });
-
-    // size
-    it('Media object: Size = medium', () => {
-        element.size = 'medium';
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
-
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).not.toContain('slds-media_small');
-            expect(wrapper.classList).not.toContain('slds-media_large');
-        });
-    });
-
-    it('Media object: Size = small', () => {
-        element.size = 'small';
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
-
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain('slds-media_small');
-            expect(wrapper.classList).not.toContain('slds-media_large');
-        });
-    });
-
-    it('Media object: Size = large', () => {
-        element.size = 'large';
-        const wrapper = element.shadowRoot.querySelector('.slds-media');
-
-        return Promise.resolve().then(() => {
-            expect(wrapper.classList).not.toContain('slds-media_small');
-            expect(wrapper.classList).toContain('slds-media_large');
+                return Promise.resolve().then(() => {
+                    expect(wrapper.classList).not.toContain(
+                        'slds-media_center'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'avonni-media-object_alignment-end'
+                    );
+                });
+            });
         });
     });
 });

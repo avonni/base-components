@@ -18,22 +18,22 @@
         <div class="slds-select_container">
             <select
                 class="slds-select"
+                accesskey={accessKey}
+                disabled={disabled}
                 id="select"
+                multiple={multiple}
                 name={name}
                 size={size}
-                accesskey={accessKey}
                 tabindex={tabIndex}
-                disabled={disabled}
-                multiple={multiple}
                 data-element-id="select"
-                onfocus={handleFocus}
                 onblur={handleBlur}
                 onchange={handleChange}
+                onfocus={handleFocus}
             >
                 <template for:each={options} for:item="option">
                     <option
-                        value={option.value}
                         key={option.value}
+                        value={option.value}
                         data-element-id="option"
                     >
                         {option.label}
@@ -45,9 +45,9 @@
     <div
         if:true={errorMessage}
         class="slds-form-element__help"
+        aria-live="assertive"
         id="help-message"
         data-help-message
-        aria-live="assertive"
     >
         {errorMessage}
     </div>

@@ -123,7 +123,8 @@ describe('Carousel', () => {
             expect(element.assistiveText).toMatchObject({
                 autoplayButton: 'Play / Stop auto-play',
                 nextPanel: 'Next Panel',
-                previousPanel: 'Previous Panel'
+                previousPanel: 'Previous Panel',
+                loading: 'Loading...'
             });
             expect(element.cropFit).toBe('cover');
             expect(element.currentPanel).toBeUndefined();
@@ -741,12 +742,14 @@ describe('Carousel', () => {
         it('true', () => {
             element.items = items;
             element.isLoading = true;
+            element.assistiveText.loading = 'Loading';
 
             return Promise.resolve().then(() => {
                 const spinner = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeTruthy();
+                expect(spinner.alternativeText).toBe('Loading');
             });
         });
     });

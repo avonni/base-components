@@ -1,22 +1,22 @@
 <template>
     <c-publisher
-        placeholder={placeholder}
         button-label={buttonLabel}
-        submit-action={submitAction}
-        variant={variant}
         disabled={disabled}
+        placeholder={placeholder}
+        submit-action={submitAction}
         value={value}
+        variant={variant}
     >
         <div slot="actions">
             <lightning-button-icon
+                alternative-text="Add user"
                 icon-name="utility:adduser"
                 variant="bare"
-                alternative-text="Add user"
             ></lightning-button-icon>
             <lightning-button-icon
+                alternative-text="Attach a file"
                 icon-name="utility:attach"
                 variant="bare"
-                alternative-text="Attach a file"
             ></lightning-button-icon>
         </div>
     </c-publisher>

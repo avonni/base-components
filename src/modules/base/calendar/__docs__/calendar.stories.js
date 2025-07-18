@@ -75,6 +75,28 @@ export default {
                 defaultValue: { summary: 'Date(2099, 11, 31)' }
             }
         },
+        nextMonthButtonAlternativeText: {
+            name: 'next-month-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the next month button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Next Month' }
+            }
+        },
+        previousMonthButtonAlternativeText: {
+            name: 'previous-month-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the previous month button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Previous Month' }
+            }
+        },
         selectionMode: {
             name: 'selection-mode',
             control: {
@@ -118,6 +140,17 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
             }
+        },
+        yearSelectAssistiveText: {
+            name: 'year-select-assistive-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the year select.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Pick a year' }
+            }
         }
     },
     args: {
@@ -125,6 +158,9 @@ export default {
         hideNavigation: false,
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
+        nextMonthButtonAlternativeText: 'Next Month',
+        previousMonthButtonAlternativeText: 'Previous Month',
+        yearSelectAssistiveText: 'Pick a year',
         selectionMode: 'single',
         weekNumber: false
     }

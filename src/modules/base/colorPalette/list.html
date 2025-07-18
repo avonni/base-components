@@ -4,7 +4,7 @@
         class="slds-is-relative avonni-color-palette__loading-wrapper"
     >
         <lightning-spinner
-            alternative-text="Loading..."
+            alternative-text={loadingStateAlternativeText}
             size="small"
             data-element-id="lightning-spinner"
         ></lightning-spinner>
@@ -13,8 +13,8 @@
     <div
         if:false={isLoading}
         class="avonni-color-palette__list-container slds-scrollable"
-        role="listbox"
         aria-roledescription="Color palette"
+        role="listbox"
     >
         <template for:each={computedGroups} for:item="group">
             <div key={group.name} role="presentation">
@@ -77,11 +77,11 @@
                                         "
                                     >
                                         <span
+                                            style={color.swatchStyle}
                                             class="
                                                 slds-swatch
                                                 avonni-primitive-color-palette-group__swatch
                                             "
-                                            style={color.swatchStyle}
                                             data-element-id="span-swatch"
                                         >
                                             <p class="slds-assistive-text">

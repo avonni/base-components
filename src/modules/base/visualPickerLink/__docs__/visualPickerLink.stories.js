@@ -56,6 +56,17 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        completedIconAlternativeText: {
+            name: 'completed-icon-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text when the link is completed.',
+            table: {
+                defaultValue: { summary: 'Completed' },
+                type: { summary: 'string' }
+            }
+        },
         infoOnly: {
             name: 'info-only',
             control: {
@@ -83,6 +94,7 @@ export default {
     },
     args: {
         completed: false,
+        completedIconAlternativeText: 'Completed',
         iconPosition: 'left',
         infoOnly: false,
         disabled: false

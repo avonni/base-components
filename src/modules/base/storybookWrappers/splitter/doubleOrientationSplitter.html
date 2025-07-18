@@ -1,6 +1,6 @@
 <template>
     <c-splitter orientation="vertical">
-        <c-splitter-pane resizable collapsible max="100px">
+        <c-splitter-pane collapsible max="100px" resizable>
             <c-splitter orientation="horizontal">
                 <c-splitter-pane size="25%">
                     <div
@@ -13,7 +13,7 @@
                         {text}
                     </div>
                 </c-splitter-pane>
-                <c-splitter-pane resizable collapsible>
+                <c-splitter-pane collapsible resizable>
                     <div style="padding: 0.5rem">
                         <c-progress-circle
                             value="25"
@@ -23,7 +23,7 @@
                         ></c-progress-circle>
                     </div>
                 </c-splitter-pane>
-                <c-splitter-pane size="30%" collapsible>
+                <c-splitter-pane collapsible size="30%">
                     <div
                         style="
                             padding: 0.5rem;
@@ -41,18 +41,18 @@
                 <c-splitter-pane>
                     <div style="padding: 0.5rem">
                         <c-progress-circle
-                            value="67"
-                            label="LEFT"
                             direction="drain"
+                            label="LEFT"
+                            value="67"
                         ></c-progress-circle>
                     </div>
                 </c-splitter-pane>
                 <c-splitter-pane size="300px">
                     <div style="padding: 0.5rem">
                         <c-progress-circle
-                            value="25"
                             color="#eea115"
                             direction="drain"
+                            value="25"
                         ></c-progress-circle>
                     </div>
                 </c-splitter-pane>

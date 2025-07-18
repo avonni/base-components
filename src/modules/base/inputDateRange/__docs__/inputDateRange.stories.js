@@ -3,17 +3,6 @@ import { InputDateRange } from '../__examples__/inputDateRange';
 export default {
     title: 'Example/Input Date Range',
     argTypes: {
-        fieldLevelHelp: {
-            name: 'field-level-help',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Help text detailing the purpose and function of the input.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         dateStyle: {
             name: 'date-style',
             control: {
@@ -39,6 +28,27 @@ export default {
                 category: 'Validation'
             }
         },
+        endDate: {
+            name: 'end-date',
+            control: {
+                type: 'text'
+            },
+            description: 'Specifies the value of the end date input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        fieldLevelHelp: {
+            name: 'field-level-help',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Help text detailing the purpose and function of the input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -47,27 +57,6 @@ export default {
                 required: true
             },
             description: 'Text label for the input.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        labelStartDate: {
-            name: 'label-start-date',
-            control: {
-                type: 'text'
-            },
-            description: 'Text label for the start input.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        labelStartTime: {
-            name: 'label-start-time',
-            control: {
-                type: 'text'
-            },
-            description:
-                'If type is datetime, text label for the start time input.',
             table: {
                 type: { summary: 'string' }
             }
@@ -93,22 +82,23 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        startDate: {
-            name: 'start-date',
+        labelStartDate: {
+            name: 'label-start-date',
             control: {
                 type: 'text'
             },
-            description: 'Specifies the value of the start date input.',
+            description: 'Text label for the start input.',
             table: {
                 type: { summary: 'string' }
             }
         },
-        endDate: {
-            name: 'end-date',
+        labelStartTime: {
+            name: 'label-start-time',
             control: {
                 type: 'text'
             },
-            description: 'Specifies the value of the end date input.',
+            description:
+                'If type is datetime, text label for the start time input.',
             table: {
                 type: { summary: 'string' }
             }
@@ -150,6 +140,28 @@ export default {
                 category: 'Validation'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' }
+            }
+        },
+        startDate: {
+            name: 'start-date',
+            control: {
+                type: 'text'
+            },
+            description: 'Specifies the value of the start date input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         timeStyle: {
             name: 'time-style',
             control: {
@@ -171,6 +183,17 @@ export default {
                 "Specifies the time zone used when type='datetime' only. This value defaults to the user's Salesforce time zone setting.",
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        todayButtonLabel: {
+            name: 'today-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Text label for the today button on the calendar.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Today' }
             }
         },
         type: {
@@ -202,7 +225,9 @@ export default {
         disabled: false,
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         timeStyle: 'short',
+        todayButtonLabel: 'Today',
         type: 'date',
         variant: 'standard'
     }

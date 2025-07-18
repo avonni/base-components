@@ -161,28 +161,32 @@ describe('Primitive Kanban Tile', () => {
             });
         });
 
-        it('Cover Image', () => {
-            const src =
-                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
-            element.coverImage = src;
+        describe('Cover Image', () => {
+            it('Passed to the component', () => {
+                const src =
+                    'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+                element.coverImage = src;
 
-            return Promise.resolve().then(() => {
-                const coverImage = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-kanban__tile_image_top"]'
-                );
-                expect(coverImage).toBeTruthy();
-                expect(coverImage.src).toBe(src);
+                return Promise.resolve().then(() => {
+                    const coverImage = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-kanban__tile_image_top"]'
+                    );
+                    expect(coverImage).toBeTruthy();
+                    expect(coverImage.src).toBe(src);
+                });
             });
         });
 
-        it('Description', () => {
-            element.description = 'some text';
+        describe('Description', () => {
+            it('Passed to the component', () => {
+                element.description = 'some text';
 
-            return Promise.resolve().then(() => {
-                const description = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-formatted-rich-text-description"]'
-                );
-                expect(description.value).toBe('some text');
+                return Promise.resolve().then(() => {
+                    const description = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-description"]'
+                    );
+                    expect(description.value).toBe('some text');
+                });
             });
         });
 
@@ -231,67 +235,73 @@ describe('Primitive Kanban Tile', () => {
             });
         });
 
-        it('Fields', () => {
-            const fields = [
-                {
-                    label: 'Name',
-                    type: 'text',
-                    value: 'Item 1'
-                },
-                {
-                    label: 'Available',
-                    type: 'boolean',
-                    value: true
-                }
-            ];
-            element.fields = fields;
+        describe('Fields', () => {
+            it('Passed to the component', () => {
+                const fields = [
+                    {
+                        label: 'Name',
+                        type: 'text',
+                        value: 'Item 1'
+                    },
+                    {
+                        label: 'Available',
+                        type: 'boolean',
+                        value: true
+                    }
+                ];
+                element.fields = fields;
 
-            return Promise.resolve().then(() => {
-                const fieldOutputs = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="field-output-data"]'
-                );
-                expect(fieldOutputs).toHaveLength(2);
-                fieldOutputs.forEach((fieldOutput, index) => {
-                    expect(fieldOutput.label).toBe(fields[index].label);
-                    expect(fieldOutput.type).toBe(fields[index].type);
-                    expect(fieldOutput.value).toBe(fields[index].value);
+                return Promise.resolve().then(() => {
+                    const fieldOutputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="field-output-data"]'
+                    );
+                    expect(fieldOutputs).toHaveLength(2);
+                    fieldOutputs.forEach((fieldOutput, index) => {
+                        expect(fieldOutput.label).toBe(fields[index].label);
+                        expect(fieldOutput.type).toBe(fields[index].type);
+                        expect(fieldOutput.value).toBe(fields[index].value);
+                    });
                 });
             });
         });
 
-        it('Field Attributes', () => {
-            const fieldAttributes = { variant: 'label-inline' };
-            element.fields = [
-                {
-                    label: 'Name',
-                    type: 'text',
-                    value: 'Item 1'
-                }
-            ];
-            element.fieldAttributes = fieldAttributes;
+        describe('Field Attributes', () => {
+            it('Passed to the component', () => {
+                const fieldAttributes = { variant: 'label-inline' };
+                element.fields = [
+                    {
+                        label: 'Name',
+                        type: 'text',
+                        value: 'Item 1'
+                    }
+                ];
+                element.fieldAttributes = fieldAttributes;
 
-            return Promise.resolve().then(() => {
-                const fieldOutputs = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="field-output-data"]'
-                );
-                expect(fieldOutputs).toHaveLength(1);
-                expect(fieldOutputs[0].variant).toBe('label-inline');
+                return Promise.resolve().then(() => {
+                    const fieldOutputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="field-output-data"]'
+                    );
+                    expect(fieldOutputs).toHaveLength(1);
+                    expect(fieldOutputs[0].variant).toBe('label-inline');
+                });
             });
         });
 
-        it('Icons', () => {
-            element.icons = [
-                {
-                    key: 'icon1',
-                    name: 'standard:account'
-                }
-            ];
-            return Promise.resolve().then(() => {
-                const icons = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-kanban__tile_icon"]'
-                );
-                expect(icons).toHaveLength(1);
-                expect(icons[0].iconName).toBe('standard:account');
+        describe('Icons', () => {
+            it('Passed to the component', () => {
+                element.icons = [
+                    {
+                        key: 'icon1',
+                        name: 'standard:account'
+                    }
+                ];
+                return Promise.resolve().then(() => {
+                    const icons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-kanban__tile_icon"]'
+                    );
+                    expect(icons).toHaveLength(1);
+                    expect(icons[0].iconName).toBe('standard:account');
+                });
             });
         });
 
@@ -351,32 +361,34 @@ describe('Primitive Kanban Tile', () => {
             });
         });
 
-        it('Infos', () => {
-            element.infos = [
-                {
-                    key: 'info1',
-                    label: 'some text'
-                },
-                {
-                    key: 'info2',
-                    label: 'some url',
-                    href: 'https://www.salesforce.com'
-                }
-            ];
-            return Promise.resolve().then(() => {
-                const formattedUrl = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-kanban__tile_info_url"]'
-                );
-                const infos = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-kanban__tile_info"]'
-                );
-                expect(formattedUrl).toHaveLength(1);
-                expect(formattedUrl[0].label).toBe('some url');
-                expect(formattedUrl[0].value).toBe(
-                    'https://www.salesforce.com'
-                );
-                expect(infos).toHaveLength(1);
-                expect(infos[0].textContent).toBe('some text');
+        describe('Infos', () => {
+            it('Passed to the component', () => {
+                element.infos = [
+                    {
+                        key: 'info1',
+                        label: 'some text'
+                    },
+                    {
+                        key: 'info2',
+                        label: 'some url',
+                        href: 'https://www.salesforce.com'
+                    }
+                ];
+                return Promise.resolve().then(() => {
+                    const formattedUrl = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-kanban__tile_info_url"]'
+                    );
+                    const infos = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-kanban__tile_info"]'
+                    );
+                    expect(formattedUrl).toHaveLength(1);
+                    expect(formattedUrl[0].label).toBe('some url');
+                    expect(formattedUrl[0].value).toBe(
+                        'https://www.salesforce.com'
+                    );
+                    expect(infos).toHaveLength(1);
+                    expect(infos[0].textContent).toBe('some text');
+                });
             });
         });
 
@@ -408,54 +420,60 @@ describe('Primitive Kanban Tile', () => {
             });
         });
 
-        it('Start Date', () => {
-            element.startDate = startDate;
+        describe('Start Date', () => {
+            it('Passed to the component', () => {
+                element.startDate = startDate;
 
-            return Promise.resolve().then(() => {
-                const container = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-kanban__tile_dates"]'
-                );
-                const date = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-kanban__tile-start-date"]'
-                );
-                expect(container).toBeTruthy();
-                expect(date.value.toLocaleString()).toContain('7/20/2021');
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-kanban__tile_dates"]'
+                    );
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-kanban__tile-start-date"]'
+                    );
+                    expect(container).toBeTruthy();
+                    expect(date.value.toLocaleString()).toContain('7/20/2021');
+                });
             });
         });
 
-        it('Title', () => {
-            element.title = 'some text';
+        describe('Title', () => {
+            it('Passed to the component', () => {
+                element.title = 'some text';
 
-            return Promise.resolve().then(() => {
-                const title = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-kanban__tile_title"]'
-                );
-                expect(title.textContent).toBe('some text');
+                return Promise.resolve().then(() => {
+                    const title = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-kanban__tile_title"]'
+                    );
+                    expect(title.textContent).toBe('some text');
+                });
+            });
+
+            it('Title Url', () => {
+                const url = 'https://www.salesforce.com';
+                element.titleUrl = url;
+                element.title = 'some text';
+
+                return Promise.resolve().then(() => {
+                    const titleUrl = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-url-title"]'
+                    );
+                    expect(titleUrl.title).toBe('some text');
+                    expect(titleUrl.value).toBe(url);
+                });
             });
         });
 
-        it('Title Url', () => {
-            const url = 'https://www.salesforce.com';
-            element.titleUrl = url;
-            element.title = 'some text';
+        describe('Warning Icon', () => {
+            it('Passed to the component', () => {
+                element.warningIcon = 'utility:warning';
 
-            return Promise.resolve().then(() => {
-                const titleUrl = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-formatted-url-title"]'
-                );
-                expect(titleUrl.title).toBe('some text');
-                expect(titleUrl.value).toBe(url);
-            });
-        });
-
-        it('Warning Icon', () => {
-            element.warningIcon = 'utility:warning';
-
-            return Promise.resolve().then(() => {
-                const icon = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-icon-warning"]'
-                );
-                expect(icon.iconName).toBe('utility:warning');
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-warning"]'
+                    );
+                    expect(icon.iconName).toBe('utility:warning');
+                });
             });
         });
     });

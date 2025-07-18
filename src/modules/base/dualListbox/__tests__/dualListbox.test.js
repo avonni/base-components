@@ -37,8 +37,12 @@ describe('DualListbox', () => {
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.hideBottomDivider).toBeFalsy();
+            expect(element.keyboardInteractionAssistiveText).toBe(
+                'Press Ctrl (Cmd on Mac) + Left Arrow or Ctrl (Cmd on Mac) + Right Arrow to move items between lists.'
+            );
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.loadMoreOffset).toBe(20);
             expect(element.max).toBeUndefined();
             expect(element.maxVisibleOptions).toBe(5);
@@ -49,6 +53,7 @@ describe('DualListbox', () => {
             expect(element.name).toBeUndefined();
             expect(element.required).toBeFalsy();
             expect(element.requiredOptions).toMatchObject([]);
+            expect(element.searchInputPlaceholder).toBe('Search…');
             expect(element.selectedLabel).toBeUndefined();
             expect(element.selectedPlaceholder).toBeUndefined();
             expect(element.size).toBe('responsive');
@@ -379,12 +384,29 @@ describe('DualListbox', () => {
         describe('Is loading', () => {
             it('True', () => {
                 element.isLoading = true;
+                element.loadingStateAlternativeText = 'Loading...';
 
                 return Promise.resolve().then(() => {
                     const spinner = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-spinner"]'
                     );
                     expect(spinner).toBeTruthy();
+                    expect(spinner.alternativeText).toBe('Loading...');
+                });
+            });
+        });
+
+        describe('Keyboard interaction assistive text', () => {
+            it('Keyboard interaction assistive text', () => {
+                element.keyboardInteractionAssistiveText =
+                    'A string keyboard interaction assistive text';
+                return Promise.resolve().then(() => {
+                    const assistiveText = element.shadowRoot.querySelector(
+                        '[data-element-id="span-keyboard-interaction"]'
+                    );
+                    expect(assistiveText.textContent).toBe(
+                        'A string keyboard interaction assistive text'
+                    );
                 });
             });
         });
@@ -620,11 +642,18 @@ describe('DualListbox', () => {
         describe('Required', () => {
             it('True', () => {
                 element.required = true;
+                element.requiredAlternativeText =
+                    'A string required alternative text';
 
                 return Promise.resolve().then(() => {
-                    const asterisk =
-                        element.shadowRoot.querySelector('.slds-required');
+                    const asterisk = element.shadowRoot.querySelector(
+                        '[data-element-id="abbr-required"]'
+                    );
                     expect(asterisk).toBeTruthy();
+                    expect(asterisk.title).toBe(
+                        'A string required alternative text'
+                    );
+                    expect(asterisk.textContent).toBe('*');
                 });
             });
         });

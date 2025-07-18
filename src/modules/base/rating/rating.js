@@ -8,6 +8,14 @@ import {
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import Item from './item';
 
+const DEFAULT_MAX = 5;
+const DEFAULT_MIN = 1;
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
+
+const LABEL_VARIANTS = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
 const RATING_SELECTIONS = {
     valid: ['continuous', 'single'],
     default: 'continuous'
@@ -17,14 +25,6 @@ const RATING_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'large'
 };
-
-const LABEL_VARIANTS = {
-    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
-    default: 'standard'
-};
-
-const DEFAULT_MIN = 1;
-const DEFAULT_MAX = 5;
 
 /**
  * @class
@@ -53,6 +53,14 @@ export default class Rating extends LightningElement {
      * @type {string}
      */
     @api name = generateUUID();
+    /**
+     * Alternative text for the required indicator.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
 
     _disabled = false;
     _iconSize = RATING_SIZES.default;
@@ -65,9 +73,15 @@ export default class Rating extends LightningElement {
     _variant = LABEL_VARIANTS.default;
     _required = false;
 
-    items = [];
     helpMessage;
+    items = [];
     _connected = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.interactingState = new InteractingState();
@@ -93,7 +107,6 @@ export default class Rating extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
 
@@ -131,7 +144,6 @@ export default class Rating extends LightningElement {
     get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
             fallbackValue: RATING_SIZES.default,
@@ -150,7 +162,6 @@ export default class Rating extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         this._max = isNaN(parseInt(value, 10))
             ? DEFAULT_MAX
@@ -172,7 +183,6 @@ export default class Rating extends LightningElement {
     get min() {
         return this._min;
     }
-
     set min(value) {
         this._min = isNaN(parseInt(value, 10))
             ? DEFAULT_MIN
@@ -194,7 +204,6 @@ export default class Rating extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
 
@@ -214,7 +223,6 @@ export default class Rating extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
     }
@@ -230,7 +238,6 @@ export default class Rating extends LightningElement {
     get selection() {
         return this._selection;
     }
-
     set selection(selection) {
         this._selection = normalizeString(selection, {
             fallbackValue: RATING_SELECTIONS.default,
@@ -252,7 +259,6 @@ export default class Rating extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = Number(value);
 
@@ -283,7 +289,6 @@ export default class Rating extends LightningElement {
     get valueHidden() {
         return this._valueHidden;
     }
-
     set valueHidden(value) {
         this._valueHidden = normalizeBoolean(value);
     }
@@ -301,7 +306,6 @@ export default class Rating extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: LABEL_VARIANTS.default,
@@ -314,15 +318,6 @@ export default class Rating extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Display the rating.
-     *
-     * @type {boolean}
-     */
-    get showRating() {
-        return !this._valueHidden && this.value;
-    }
 
     /**
      * Computed container class styling for label inline and stacked.
@@ -369,15 +364,6 @@ export default class Rating extends LightningElement {
     }
 
     /**
-     * Returns true if the input is disabled or read-only.
-     *
-     * @type {boolean}
-     */
-    get isDisabled() {
-        return this.disabled || this.readOnly;
-    }
-
-    /**
      * Gets FieldConstraintApi.
      *
      * @type {object}
@@ -390,6 +376,24 @@ export default class Rating extends LightningElement {
             });
         }
         return this._constraintApi;
+    }
+
+    /**
+     * Returns true if the input is disabled or read-only.
+     *
+     * @type {boolean}
+     */
+    get isDisabled() {
+        return this.disabled || this.readOnly;
+    }
+
+    /**
+     * Display the rating.
+     *
+     * @type {boolean}
+     */
+    get showRating() {
+        return !this.valueHidden && this.value;
     }
 
     /*
@@ -473,6 +477,12 @@ export default class Rating extends LightningElement {
         }
         this.items = items;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Handle a click on a rating item. Update the value and dispatch the change event.

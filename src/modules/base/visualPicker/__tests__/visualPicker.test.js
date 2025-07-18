@@ -40,14 +40,17 @@ describe('Visual Picker', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.collapsedShowMoreButton).toBe('Show more');
             expect(element.columnAttributes).toMatchObject({});
             expect(element.disabled).toBeFalsy();
+            expect(element.expandedShowMoreButton).toBe('Show less');
             expect(element.fieldAttributes).toMatchObject({});
             expect(element.hideCheckMark).toBeFalsy();
             expect(element.imageAttributes).toMatchObject({});
             expect(element.isLoading).toBeFalsy();
             expect(element.items).toMatchObject([]);
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.max).toBeUndefined();
             expect(element.messageWhenRangeOverflow).toBeUndefined();
             expect(element.messageWhenRangeUnderflow).toBeUndefined();
@@ -56,6 +59,7 @@ describe('Visual Picker', () => {
             expect(element.name).not.toBeUndefined();
             expect(element.ratio).toBe('1-by-1');
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.size).toBe('medium');
             expect(element.type).toBe('radio');
             expect(element.validity).toMatchObject({});
@@ -154,7 +158,7 @@ describe('Visual Picker', () => {
         });
 
         describe('Disabled', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.disabled = false;
                 element.items = ITEMS;
 
@@ -170,7 +174,7 @@ describe('Visual Picker', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.disabled = true;
                 element.items = ITEMS;
 
@@ -186,7 +190,7 @@ describe('Visual Picker', () => {
         });
 
         describe('Field Attributes', () => {
-            it('Field Attributes', () => {
+            it('Passed to the component', () => {
                 element.fieldAttributes = { variant: 'label-hidden', cols: 12 };
 
                 return Promise.resolve().then(() => {
@@ -199,7 +203,7 @@ describe('Visual Picker', () => {
         });
 
         describe('Hide Check Mark', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.hideCheckMark = false;
                 element.items = ITEMS;
                 element.variant = 'coverable';
@@ -219,7 +223,7 @@ describe('Visual Picker', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.hideCheckMark = true;
                 element.items = ITEMS;
                 element.variant = 'coverable';
@@ -239,7 +243,7 @@ describe('Visual Picker', () => {
         });
 
         describe('Image Attributes', () => {
-            it('Image Attributes', () => {
+            it('Passed to the component', () => {
                 const fallbackSrc =
                     'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
                 const cropFit = 'contain';
@@ -377,6 +381,54 @@ describe('Visual Picker', () => {
             });
         });
 
+        describe('isLoading', () => {
+            it('Passed to the component as false', () => {
+                element.isLoading = false;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="loading-spinner"]'
+                    );
+                    expect(spinner).toBeFalsy();
+                });
+            });
+
+            it('Passed to the component as true', () => {
+                element.isLoading = true;
+                element.loadingStateAlternativeText = 'Loading... Text';
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="loading-spinner"]'
+                    );
+                    expect(spinner).toBeTruthy();
+                    expect(spinner.alternativeText).toBe('Loading... Text');
+                });
+            });
+
+            it('Loading disables the max count button', () => {
+                element.isLoading = false;
+                element.maxCount = 3;
+                element.items = longItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="show-more-button"]'
+                        );
+                        expect(button.disabled).toBeFalsy();
+
+                        element.isLoading = true;
+                    })
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="show-more-button"]'
+                        );
+                        expect(button.disabled).toBeTruthy();
+                    });
+            });
+        });
+
         describe('Items', () => {
             it('Tags', () => {
                 element.items = ITEMS_WITH_TAGS;
@@ -455,7 +507,7 @@ describe('Visual Picker', () => {
         });
 
         describe('Name', () => {
-            it('name', () => {
+            it('Passed to the component', () => {
                 element.name = 'a-string-name';
 
                 return Promise.resolve().then(() => {
@@ -470,7 +522,7 @@ describe('Visual Picker', () => {
         });
 
         describe('Ratio', () => {
-            it('ratio = 1-by-1', () => {
+            it('1-by-1', () => {
                 const ratios = [
                     '1-by-1',
                     '4-by-3',
@@ -502,7 +554,7 @@ describe('Visual Picker', () => {
                 });
             });
 
-            it('ratio = 4-by-3', () => {
+            it('4-by-3', () => {
                 const ratios = [
                     '1-by-1',
                     '4-by-3',
@@ -534,7 +586,7 @@ describe('Visual Picker', () => {
                 });
             });
 
-            it('ratio = 16-by-9', () => {
+            it('16-by-9', () => {
                 const ratios = [
                     '1-by-1',
                     '4-by-3',
@@ -566,7 +618,7 @@ describe('Visual Picker', () => {
                 });
             });
 
-            it('ratio = 3-by-4', () => {
+            it('3-by-4', () => {
                 const ratios = [
                     '1-by-1',
                     '4-by-3',
@@ -598,7 +650,7 @@ describe('Visual Picker', () => {
                 });
             });
 
-            it('ratio = 9-by-16', () => {
+            it('9-by-16', () => {
                 const ratios = [
                     '1-by-1',
                     '4-by-3',
@@ -632,7 +684,7 @@ describe('Visual Picker', () => {
         });
 
         describe('Required', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.required = false;
 
                 return Promise.resolve().then(() => {
@@ -648,8 +700,9 @@ describe('Visual Picker', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'Required text';
 
                 return Promise.resolve().then(() => {
                     const abbr = element.shadowRoot.querySelector(
@@ -661,6 +714,7 @@ describe('Visual Picker', () => {
 
                     expect(abbr).toBeTruthy();
                     expect(fieldset.ariaRequired).toBe('true');
+                    expect(abbr.title).toBe('Required text');
                 });
             });
 
@@ -681,6 +735,30 @@ describe('Visual Picker', () => {
                         );
                         expect(message).toBeTruthy();
                         expect(message.textContent).toBe('Value Missing!');
+                    });
+            });
+        });
+
+        describe('Show more button', () => {
+            it('Passed to the component', () => {
+                element.collapsedShowMoreButton = 'Show more button';
+                element.expandedShowMoreButton = 'Show less button';
+                element.maxCount = 99;
+                element.items = longItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="show-more-button"]'
+                        );
+                        expect(button.label).toBe('Show more button');
+                        button.click();
+                    })
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="show-more-button"]'
+                        );
+                        expect(button.label).toBe('Show less button');
                     });
             });
         });
@@ -1260,7 +1338,7 @@ describe('Visual Picker', () => {
                         );
                         expect(inputs).toHaveLength(3);
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-button"]'
                         );
                         button.click();
                         expect(handler).toHaveBeenCalled();
@@ -1294,7 +1372,7 @@ describe('Visual Picker', () => {
                         );
                         expect(inputs).toHaveLength(3);
                         const button = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button"]'
+                            '[data-element-id="show-more-button"]'
                         );
                         button.click();
                         expect(handler).toHaveBeenCalled();

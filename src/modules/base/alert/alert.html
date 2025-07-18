@@ -1,36 +1,35 @@
 <template>
     <template if:false={hideAlert}>
-        <div class={variantClass} data-element-id="div" role="alert">
+        <div class={computedVariantClass} data-element-id="div" role="alert">
             <span class="avonni-alert__content-container">
                 <lightning-icon
                     if:true={iconName}
-                    icon-name={iconName}
-                    size={iconSize}
                     class="
                         slds-m-right_x-small
                         avonni-alert__primitive-icon_color
                     "
+                    icon-name={iconName}
+                    size={iconSize}
                     data-element-id="lightning-icon"
                 ></lightning-icon>
                 <slot></slot>
             </span>
-            <template if:true={isDismissible}>
-                <button
-                    data-element-id="lightning-button-icon"
-                    class="slds-button slds-button_icon slds-notify__close"
-                    aria-label="Close"
-                    title="Close"
-                    type="button"
-                    onclick={closeAlert}
-                >
-                    <lightning-icon
-                        icon-name="utility:close"
-                        size="x-small"
-                        class="avonni-alert__button-icon"
-                        data-element-id="lightning-icon"
-                    ></lightning-icon>
-                </button>
-            </template>
+            <button
+                if:true={isDismissible}
+                class="slds-button slds-button_icon slds-notify__close"
+                aria-label="Close"
+                title="Close"
+                type="button"
+                data-element-id="lightning-button-icon"
+                onclick={closeAlert}
+            >
+                <lightning-icon
+                    class="avonni-alert__button-icon"
+                    icon-name="utility:close"
+                    size="x-small"
+                    data-element-id="lightning-icon"
+                ></lightning-icon>
+            </button>
         </div>
     </template>
 </template>

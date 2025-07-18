@@ -55,6 +55,18 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the carousel is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         itemsPerPanel: {
             name: 'items-per-panel',
             control: {
@@ -304,21 +316,22 @@ export default {
         actionsPosition: 'bottom-center',
         actionsVariant: 'border',
         assistiveText: {
+            autoplayButton: 'Start / Stop auto-play',
             nextPanel: 'Next Panel',
             previousPanel: 'Previous Panel',
-            autoplayButton: 'Start / Stop auto-play'
+            loading: 'Loading...'
         },
+        cropFit: 'cover',
         disableAutoRefresh: false,
         disableAutoScroll: false,
         hideIndicator: false,
         hidePreviousNextPanelNavigation: false,
+        imagePosition: 'top',
         indicatorVariant: 'base',
-        loadMoreOffset: 3,
         isInfinite: false,
         itemsPerPanel: 1,
-        scrollDuration: 5,
-        imagePosition: 'top',
-        cropFit: 'cover'
+        loadMoreOffset: 3,
+        scrollDuration: 5
     }
 };
 

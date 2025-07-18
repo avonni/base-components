@@ -20,6 +20,17 @@ import {
     isOutsideOfView
 } from './scrollUtils';
 
+const DEFAULT_BACK_ACTION = {
+    iconName: 'utility:chevronleft'
+};
+const DEFAULT_GROUP_NAME = 'ungrouped';
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_MIN = 0;
+const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
+const DEFAULT_PLACEHOLDER = 'Select an Option';
+const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const DROPDOWN_ALIGNMENTS = {
     valid: [
         'auto',
@@ -32,27 +43,15 @@ const DROPDOWN_ALIGNMENTS = {
     ],
     default: 'left'
 };
-
-const VARIANTS = {
-    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
-    default: 'standard'
-};
-
 const DROPDOWN_LENGTHS = {
     valid: ['5-items', '7-items', '10-items'],
     default: '7-items'
 };
-
-const DEFAULT_BACK_ACTION = {
-    iconName: 'utility:chevronleft'
-};
-const DEFAULT_LOAD_MORE_OFFSET = 20;
-const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
-const DEFAULT_MIN = 0;
-const DEFAULT_PLACEHOLDER = 'Select an Option';
-const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
-const DEFAULT_GROUP_NAME = 'ungrouped';
 const MIN_DROPDOWN_HEIGHT = 60;
+const VARIANTS = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
 
 /**
  * Primitive Combobox.
@@ -67,7 +66,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
-
     /**
      * Deprecated. The selected options are in the combobox component's DOM.
      *
@@ -75,7 +73,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @deprecated
      */
     @api hideSelectedOptions;
-
     /**
      * Text label for the primitive combobox.
      *
@@ -83,7 +80,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api label;
-
     /**
      * If multi-select, maximum number of selected options allowed.
      *
@@ -91,7 +87,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api max;
-
     /**
      * Error message to be displayed when a bad input is detected.
      *
@@ -99,7 +94,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api messageWhenBadInput;
-
     /**
      * Error message to be displayed when a range overflow is detected.
      *
@@ -107,7 +101,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api messageWhenRangeOverflow;
-
     /**
      * Error message to be displayed when a range underflow is detected.
      *
@@ -115,7 +108,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api messageWhenRangeUnderflow;
-
     /**
      * Error message to be displayed when the value is missing and input is required.
      *
@@ -123,7 +115,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
-
     /**
      * If multi-select, minimum number of selected options allowed.
      *
@@ -132,7 +123,6 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api min = DEFAULT_MIN;
-
     /**
      * Specifies the name of the primitive combobox.
      *
@@ -140,7 +130,22 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api name;
-
+    /**
+     * Message displayed when no search results are found.
+     *
+     * @type {string}
+     * @public
+     * @default No matches found
+     */
+    @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**
      * Deprecated. The selected options are in the combobox component's DOM.
      *
@@ -695,15 +700,6 @@ export default class PrimitiveCombobox extends LightningElement {
      */
 
     /**
-     * Returns true as a string if dropdown-visible is true and false as a string if false.
-     *
-     * @type {string}
-     */
-    get computedAriaExpanded() {
-        return this.dropdownVisible ? 'true' : 'false';
-    }
-
-    /**
      * Returns none if this.readOnly or this.disabled is present and list if not.
      *
      * @type {string}
@@ -713,20 +709,12 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Computed Dropdown Trigger Class styling.
+     * Returns true as a string if dropdown-visible is true and false as a string if false.
      *
      * @type {string}
      */
-    get computedDropdownTriggerClass() {
-        return classSet(
-            'slds-is-relative slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click combobox__dropdown-trigger'
-        )
-            .add({
-                'slds-is-open': this.dropdownVisible,
-                'slds-has-icon-only slds-combobox_container':
-                    this.showInputValueIcon
-            })
-            .toString();
+    get computedAriaExpanded() {
+        return this.dropdownVisible ? 'true' : 'false';
     }
 
     /**
@@ -750,6 +738,23 @@ export default class PrimitiveCombobox extends LightningElement {
                     this.dropdownAlignment === 'bottom-right',
                 'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
                     this.dropdownAlignment === 'bottom-left'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Dropdown Trigger Class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownTriggerClass() {
+        return classSet(
+            'slds-is-relative slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click combobox__dropdown-trigger'
+        )
+            .add({
+                'slds-is-open': this.dropdownVisible,
+                'slds-has-icon-only slds-combobox_container':
+                    this.showInputValueIcon
             })
             .toString();
     }
@@ -843,6 +848,11 @@ export default class PrimitiveCombobox extends LightningElement {
         return generateUUID();
     }
 
+    /**
+     * Returns a list of group elements.
+     *
+     * @type {element[]}
+     */
     get groupElements() {
         return this.template.querySelectorAll(
             '[data-element-id="avonni-primitive-combobox-group"]'
@@ -1035,6 +1045,11 @@ export default class PrimitiveCombobox extends LightningElement {
         );
     }
 
+    /**
+     * Returns the height of the top actions.
+     *
+     * @type {number}
+     */
     get topActionsHeight() {
         const topActions = this.template.querySelectorAll(
             '[data-group-name="actions"][data-position="top"]'
@@ -1435,6 +1450,9 @@ export default class PrimitiveCombobox extends LightningElement {
         }
     }
 
+    /**
+     * Computes the options.
+     */
     _initComputedOptions() {
         const options = this.currentParent
             ? this.currentParent.options
@@ -1519,6 +1537,9 @@ export default class PrimitiveCombobox extends LightningElement {
         }
     }
 
+    /**
+     * Initializes the visible options.
+     */
     _initVisibleOptions() {
         const nbOptions = this._computedOptions.length;
         if (!this.enableInfiniteLoading) {
@@ -1562,12 +1583,18 @@ export default class PrimitiveCombobox extends LightningElement {
         return unselectedOptions;
     }
 
+    /**
+     * Resets the visible options.
+     */
     _resetVisibleOptions() {
         this._startIndex = 0;
         this._endIndex = MAX_LOADED_OPTIONS;
         this._hasScrolled = false;
     }
 
+    /**
+     * Scrolls to the top visible option.
+     */
     _scrollToTopVisibleOption() {
         if (!this.list) {
             return;
@@ -1591,6 +1618,11 @@ export default class PrimitiveCombobox extends LightningElement {
         this._topVisibleOption = null;
     }
 
+    /**
+     * Sets the options.
+     *
+     * @param {array} value Array of options.
+     */
     _setOptions(value) {
         const options = normalizeArray(value);
         this._hasScrolled = false;
@@ -1703,7 +1735,9 @@ export default class PrimitiveCombobox extends LightningElement {
         });
     }
 
-    // remove-next-line-for-c-namespace
+    /**
+     * Stops the dropdown positioning.
+     */
     _stopDropdownPositioning() {
         if (this._autoPosition) {
             this._autoPosition.stop();

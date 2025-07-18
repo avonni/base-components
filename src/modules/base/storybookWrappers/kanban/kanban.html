@@ -1,20 +1,21 @@
 <template>
     <div style="height: 500px; max-height: 500px">
         <c-kanban
-            group-values={groupValues}
-            records={records}
-            summarize-attributes={summarizeAttributes}
             actions={actions}
-            disable-item-drag-and-drop={disableItemDragAndDrop}
+            card-attributes={cardAttributes}
             disable-column-drag-and-drop={disableColumnDragAndDrop}
+            disable-item-drag-and-drop={disableItemDragAndDrop}
             group-field-name={groupFieldName}
-            is-loading={isLoading}
-            variant={variant}
+            group-values={groupValues}
             hide-header={hideHeader}
             image-attributes={imageAttributes}
-            sub-group-field-name={subGroupFieldName}
+            is-loading={isLoading}
+            loading-state-alternative-text={loadingStateAlternativeText}
             key-field={keyField}
-            card-attributes={cardAttributes}
+            records={records}
+            sub-group-field-name={subGroupFieldName}
+            summarize-attributes={summarizeAttributes}
+            variant={variant}
         ></c-kanban>
     </div>
 </template>

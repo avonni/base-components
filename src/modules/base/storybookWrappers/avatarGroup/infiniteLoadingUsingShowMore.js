@@ -2,6 +2,7 @@ import { api, LightningElement } from 'lwc';
 
 export default class InfiniteLoadingUsingShowMore extends LightningElement {
     @api actionIconName;
+    @api keyboardAssistiveText;
     @api listButtonShowLessIconName;
     @api listButtonShowLessIconPosition;
     @api listButtonShowLessLabel;
@@ -10,7 +11,9 @@ export default class InfiniteLoadingUsingShowMore extends LightningElement {
     @api listButtonShowMoreLabel;
     @api listButtonVariant;
     @api loadMoreOffset;
+    @api loadingStateAlternativeText;
     @api name;
+    @api showMoreButtonAlternativeText;
     @api size;
     @api variant;
 

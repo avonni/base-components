@@ -2,15 +2,14 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utils';
 import qrcodeGeneration from './qrcodeGeneration';
 
+const DEFAULT_BACKGROUND_COLOR = '#ffffff';
+const DEFAULT_BORDER_WIDTH = 0;
+const DEFAULT_COLOR = '#000000';
+const DEFAULT_PADDING = 0;
+const DEFAULT_SIZE = 200;
 const QR_ENCODINGS = { valid: ['ISO_8859_1', 'UTF_8'], default: 'ISO_8859_1' };
 const QR_ERROR_CORRECTIONS = { valid: ['L', 'M', 'Q', 'H'], default: 'L' };
 const QR_RENDER_AS = { valid: ['canvas', 'svg'], default: 'svg' };
-
-const DEFAULT_BORDER_WIDTH = 0;
-const DEFAULT_PADDING = 0;
-const DEFAULT_SIZE = 200;
-const DEFAULT_COLOR = '#000000';
-const DEFAULT_BACKGROUND_COLOR = '#ffffff';
 
 /**
  * @class
@@ -39,6 +38,12 @@ export default class Qrcode extends LightningElement {
     _value;
 
     _rendered = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         this.redraw();

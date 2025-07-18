@@ -190,6 +190,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the listbox is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         loadMoreOffset: {
             name: 'load-more-offset',
             control: {
@@ -327,6 +339,19 @@ export default {
                 category: 'Validations'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' },
+                category: 'Validations'
+            }
+        },
         requiredOptions: {
             control: {
                 type: 'text'
@@ -343,6 +368,17 @@ export default {
                 'Custom search function to execute instead of the default search. It has to take an object with two keys as an argument (options and searchTerm) and return the new options.',
             table: {
                 type: { summary: 'function' }
+            }
+        },
+        searchInputPlaceholder: {
+            name: 'search-input-placeholder',
+            control: {
+                type: 'text'
+            },
+            description: 'The placeholder text for the search input.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Search…' }
             }
         },
         selectedLabel: {
@@ -464,6 +500,8 @@ export default {
         removeButtonLabel: 'Remove',
         removeButtonIconName: 'utility:left',
         required: false,
+        requiredAlternativeText: 'Required',
+        searchInputPlaceholder: 'Search…',
         size: 'responsive',
         upButtonIconName: 'utility:up',
         upButtonLabel: 'Up',

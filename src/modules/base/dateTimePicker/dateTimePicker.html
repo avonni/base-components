@@ -16,8 +16,8 @@
                         <c-layout-item
                             class="slds-p-right_small"
                             grow="1"
-                            size="12"
                             medium-container-size="auto"
+                            size="12"
                         >
                             <c-layout direction="column">
                                 <c-layout-item>
@@ -46,17 +46,18 @@
                                             >
                                                 <abbr
                                                     if:true={required}
-                                                    title="required"
-                                                    aria-label="required"
                                                     class="slds-required"
-                                                    >*</abbr
-                                                >
+                                                    aria-label="required"
+                                                    title={requiredAlternativeText}
+                                                    data-element-id="abbr-required"
+                                                    >*
+                                                </abbr>
                                                 {label}
                                                 <!-- Help text -->
                                                 <lightning-helptext
                                                     if:true={fieldLevelHelp}
-                                                    content={fieldLevelHelp}
                                                     class="slds-p-left_x-small"
+                                                    content={fieldLevelHelp}
                                                     data-element-id="lightning-helptext"
                                                 ></lightning-helptext>
                                             </p>
@@ -81,14 +82,14 @@
                                         class="slds-p-bottom_x-small"
                                     >
                                         <lightning-combobox
-                                            name="timezone"
-                                            label="Time Zone:"
-                                            value={timezone}
-                                            placeholder="Select time zone"
-                                            options={timezones}
                                             class="
                                                 avonni-date-time-picker__time-zone
                                             "
+                                            label={timezoneLabel}
+                                            name={name}
+                                            options={timezones}
+                                            placeholder={timezonePlaceholder}
+                                            value={timezone}
                                             data-element-id="lightning-combobox"
                                             onchange={handleTimeZoneChange}
                                         ></lightning-combobox>
@@ -111,29 +112,30 @@
                                     class="slds-m-bottom_small"
                                 >
                                     <lightning-button-icon
-                                        alternative-text="Previous dates"
-                                        icon-name="utility:left"
-                                        onclick={handlePrevNextClick}
-                                        title="Previous dates"
-                                        variant="border-filled"
+                                        alternative-text={previousDatesButtonAlternativeText}
                                         disabled={prevButtonIsDisabled}
+                                        icon-name="utility:left"
+                                        title={previousDatesButtonAlternativeText}
+                                        variant="border-filled"
                                         data-direction="previous"
                                         data-element-id="lightning-button-icon-previous"
+                                        onclick={handlePrevNextClick}
                                     ></lightning-button-icon>
                                     <lightning-button
-                                        label="Today"
+                                        label={todayButtonLabel}
+                                        title={todayButtonLabel}
                                         data-element-id="lightning-button-today"
                                         onclick={handleTodayClick}
                                     ></lightning-button>
                                     <lightning-button-icon
-                                        alternative-text="Next dates"
-                                        icon-name="utility:right"
-                                        onclick={handlePrevNextClick}
-                                        title="Next dates"
-                                        variant="border-filled"
+                                        alternative-text={nextDatesButtonAlternativeText}
                                         disabled={nextButtonIsDisabled}
+                                        icon-name="utility:right"
+                                        title={nextDatesButtonAlternativeText}
+                                        variant="border-filled"
                                         data-direction="next"
                                         data-element-id="lightning-button-icon-next"
+                                        onclick={handlePrevNextClick}
                                     ></lightning-button-icon>
                                 </lightning-button-group>
                             </c-layout-item>
@@ -148,9 +150,9 @@
                                     <!-- Input date picker -->
                                     <lightning-input
                                         label="Date"
-                                        name={name}
                                         max={maxToString}
                                         min={minToString}
+                                        name={name}
                                         timezone={timezone}
                                         type="date"
                                         value={datePickerValue}
@@ -189,10 +191,12 @@
                                     slds-is-absolute
                                     avonni-date-time-picker__inline-date-picker-previous-button
                                 "
-                                alternative-text="Previous week"
+                                alternative-text={previousWeekButtonAlternativeText}
                                 icon-name="utility:chevronleft"
                                 size="large"
+                                title={previousWeekButtonAlternativeText}
                                 variant="bare"
+                                data-element-id="lightning-button-icon-previous-week"
                                 onclick={handleInlineDatePickerPrevClick}
                             ></lightning-button-icon>
 
@@ -263,12 +267,12 @@
                                                     slds-show
                                                     slds-text-heading_medium
                                                 "
-                                                >{day.date.day}</span
-                                            >
+                                                >{day.date.day}
+                                            </span>
                                             <span
                                                 class="slds-show slds-truncate"
-                                                >{day.monthLabel}</span
-                                            >
+                                                >{day.monthLabel}
+                                            </span>
                                         </button>
                                     </c-layout-item>
                                 </template>
@@ -279,10 +283,12 @@
                                     slds-is-absolute
                                     avonni-date-time-picker__inline-date-picker-next-button
                                 "
-                                alternative-text="Next week"
+                                alternative-text={nextWeekButtonAlternativeText}
                                 icon-name="utility:chevronright"
                                 size="large"
+                                title={nextWeekButtonAlternativeText}
                                 variant="bare"
+                                data-element-id="lightning-button-icon-next-week"
                                 onclick={handleInlineDatePickerNextClick}
                             ></lightning-button-icon>
                         </div>
@@ -293,7 +299,7 @@
         <div class="avonni-date-time-picker__content-wrapper slds-col">
             <template if:true={entirePeriodIsDisabled}>
                 <p if:false={isMonthly} data-element-id="p-empty-message">
-                    No available time slots for this period.
+                    {noResultsMessage}
                 </p>
             </template>
             <c-layout multiple-rows>
@@ -315,7 +321,7 @@
                 <c-layout-item grow="1">
                     <template if:true={entirePeriodIsDisabled}>
                         <p if:true={isMonthly} class="slds-text-align_right">
-                            No available time slots for this period.
+                            {noResultsMessage}
                         </p>
                     </template>
                     <!-- Hour table -->
@@ -349,8 +355,8 @@
                                             slds-p-around_medium
                                         "
                                         grow="1"
-                                        data-today={day.isToday}
                                         data-element-id="div-day-label"
+                                        data-today={day.isToday}
                                     >
                                         {day.label}
                                     </c-layout-item>
@@ -375,12 +381,12 @@
                                                     "
                                                 >
                                                     <lightning-formatted-date-time
-                                                        value={time.hour}
-                                                        time-zone={timezone}
                                                         hour={timeFormatHour}
+                                                        hour12={timeFormatHour12}
                                                         minute={timeFormatMinute}
                                                         second={timeFormatSecond}
-                                                        hour12={timeFormatHour12}
+                                                        time-zone={timezone}
+                                                        value={time.hour}
                                                     ></lightning-formatted-date-time>
                                                 </c-layout-item>
 
@@ -393,29 +399,29 @@
                                                             <c-layout-item
                                                                 if:true={timelineTime.show}
                                                                 key={timelineTime.startTimeISO}
-                                                                data-element-id="avonni-layout-item-time-timeline"
                                                                 style={computedTimeSlotStyle}
+                                                                data-element-id="avonni-layout-item-time-timeline"
                                                             >
                                                                 <button
-                                                                    aria-label={timelineTime.computedAriaLabel}
-                                                                    aria-pressed={timelineTime.selected}
                                                                     class="
                                                                         avonni-date-time-picker__time-button
                                                                         slds-p-around_medium
                                                                     "
+                                                                    aria-label={timelineTime.computedAriaLabel}
+                                                                    aria-pressed={timelineTime.selected}
                                                                     disabled={timelineTime.disabled}
                                                                     type="button"
-                                                                    onclick={handleTimeSlotClick}
                                                                     onblur={handleValueBlur}
+                                                                    onclick={handleTimeSlotClick}
                                                                     onfocus={handleValueFocus}
                                                                 >
                                                                     <lightning-formatted-date-time
-                                                                        value={timelineTime.startTimeISO}
-                                                                        time-zone={timezone}
                                                                         hour={timeFormatHour}
+                                                                        hour12={timeFormatHour12}
                                                                         minute={timeFormatMinute}
                                                                         second={timeFormatSecond}
-                                                                        hour12={timeFormatHour12}
+                                                                        time-zone={timezone}
+                                                                        value={timelineTime.startTimeISO}
                                                                     ></lightning-formatted-date-time>
                                                                     <template
                                                                         if:true={showEndTime}
@@ -425,12 +431,12 @@
                                                                             class="
                                                                                 date-time-picker__formatted-end-time
                                                                             "
-                                                                            value={timelineTime.endTimeISO}
-                                                                            time-zone={timezone}
                                                                             hour={timeFormatHour}
+                                                                            hour12={timeFormatHour12}
                                                                             minute={timeFormatMinute}
                                                                             second={timeFormatSecond}
-                                                                            hour12={timeFormatHour12}
+                                                                            time-zone={timezone}
+                                                                            value={timelineTime.endTimeISO}
                                                                         ></lightning-formatted-date-time>
                                                                     </template>
                                                                 </button>
@@ -446,36 +452,36 @@
                                             <c-layout-item
                                                 if:true={time.show}
                                                 key={time.startTimeISO}
+                                                style={computedTimeSlotStyle}
+                                                large-container-size="calc(100% / 12 - 8px)"
+                                                medium-container-size="calc(100% / 6 - 8px)"
                                                 size="calc(100% / 3 - 8px)"
                                                 small-container-size="calc(25% - 8px)"
-                                                medium-container-size="calc(100% / 6 - 8px)"
-                                                large-container-size="calc(100% / 12 - 8px)"
                                                 data-element-id="avonni-layout-item-time"
-                                                style={computedTimeSlotStyle}
                                             >
                                                 <button
-                                                    aria-label={time.computedAriaLabel}
-                                                    aria-pressed={time.selected}
                                                     class="
                                                         avonni-date-time-picker__time-button
                                                         slds-p-around_small
                                                         slds-theme_default
                                                     "
+                                                    aria-label={time.computedAriaLabel}
+                                                    aria-pressed={time.selected}
                                                     disabled={time.disabled}
                                                     type="button"
                                                     data-element-id="button-default"
                                                     data-time={time.startTimeISO}
-                                                    onclick={handleTimeSlotClick}
                                                     onblur={handleValueBlur}
+                                                    onclick={handleTimeSlotClick}
                                                     onfocus={handleValueFocus}
                                                 >
                                                     <lightning-formatted-date-time
-                                                        value={time.startTimeISO}
-                                                        time-zone={timezone}
-                                                        hour={timeFormatHour}
                                                         minute={timeFormatMinute}
-                                                        second={timeFormatSecond}
+                                                        hour={timeFormatHour}
                                                         hour12={timeFormatHour12}
+                                                        second={timeFormatSecond}
+                                                        time-zone={timezone}
+                                                        value={time.startTimeISO}
                                                         data-element-id="lightning-formatted-date-time-default-start"
                                                     ></lightning-formatted-date-time>
                                                     <template
@@ -486,12 +492,12 @@
                                                             class="
                                                                 date-time-picker__formatted-end-time
                                                             "
-                                                            value={time.endTimeISO}
-                                                            time-zone={timezone}
                                                             hour={timeFormatHour}
+                                                            hour12={timeFormatHour12}
                                                             minute={timeFormatMinute}
                                                             second={timeFormatSecond}
-                                                            hour12={timeFormatHour12}
+                                                            time-zone={timezone}
+                                                            value={time.endTimeISO}
                                                             data-element-id="lightning-formatted-date-time-default-end"
                                                         ></lightning-formatted-date-time>
                                                     </template>
@@ -506,12 +512,12 @@
                 </c-layout-item>
             </c-layout>
             <!-- Error message -->
-            <div class="slds-has-error" if:true={helpMessage}>
+            <div if:true={helpMessage} class="slds-has-error">
                 <div
-                    id="help-message"
                     class="slds-form-element__help"
-                    data-help-message
+                    id="help-message"
                     role="alert"
+                    data-help-message
                 >
                     {helpMessage}
                 </div>

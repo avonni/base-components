@@ -1,14 +1,13 @@
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { LightningElement, api } from 'lwc';
 
-const ALERT_VARIANTS = {
-    valid: ['base', 'error', 'offline', 'warning'],
-    default: 'base'
-};
-
 const ALERT_ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'small'
+};
+const ALERT_VARIANTS = {
+    valid: ['base', 'error', 'offline', 'warning'],
+    default: 'base'
 };
 
 /**
@@ -26,7 +25,6 @@ export default class Alert extends LightningElement {
      * @public
      */
     @api iconName;
-
     /**
      * Custom function to execute when the user closes the alert.
      * @type {function}
@@ -56,7 +54,6 @@ export default class Alert extends LightningElement {
     get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(value) {
         this._iconSize = normalizeString(value, {
             fallbackValue: ALERT_ICON_SIZES.default,
@@ -88,7 +85,6 @@ export default class Alert extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: ALERT_VARIANTS.default,
@@ -106,9 +102,9 @@ export default class Alert extends LightningElement {
      * Wrapper div class, depending on the variant value.
      * @type {string}
      */
-    get variantClass() {
+    get computedVariantClass() {
         return classSet('avonni-alert__wrapper')
-            .add(`avonni-alert_${this._variant}`)
+            .add(`avonni-alert_${this.variant}`)
             .add({
                 'avonni-alert__wrapper_dismissible': this.isDismissible
             })

@@ -58,7 +58,6 @@ export default class InputData extends LightningElement {
      * @public
      */
     @api label;
-
     /**
      * Specifies the name of an input element.
      *
@@ -66,7 +65,6 @@ export default class InputData extends LightningElement {
      * @public
      */
     @api name;
-
     /**
      * Available options for picklist and multi-select picklist.
      *
@@ -74,7 +72,6 @@ export default class InputData extends LightningElement {
      * @public
      */
     @api options;
-
     /**
      * Message to be displayed when input field is empty, to prompt the user for a valid entry.
      *
@@ -94,10 +91,12 @@ export default class InputData extends LightningElement {
     _variant = VARIANTS.default;
     _value = '';
 
-    /**
-     * Called when the element is inserted in a document.
-     * Initializes the input value.
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
      */
+
     connectedCallback() {
         this.initalizeInputValue();
     }
@@ -119,7 +118,6 @@ export default class InputData extends LightningElement {
     get checked() {
         return this._checked;
     }
-
     set checked(value) {
         this._checked = normalizeBoolean(value);
     }
@@ -170,21 +168,6 @@ export default class InputData extends LightningElement {
     }
 
     /**
-     * Maximum number of lines in the dual list box for multi-select picklist.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get readOnly() {
-        return this._readOnly;
-    }
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
-    }
-
-    /**
      * If present, the input field is read-only and cannot be edited by users.
      *
      * @type {boolean}
@@ -200,6 +183,21 @@ export default class InputData extends LightningElement {
         this._maxLines = isNaN(number)
             ? DEFAULT_MULTI_PICKLIST_MAX_LINES
             : number;
+    }
+
+    /**
+     * Maximum number of lines in the dual list box for multi-select picklist.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
     }
 
     /**
@@ -247,7 +245,6 @@ export default class InputData extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value ? value : '';
     }
@@ -268,7 +265,6 @@ export default class InputData extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: VARIANTS.default,
@@ -283,16 +279,16 @@ export default class InputData extends LightningElement {
      */
 
     /**
-     * Whether the data input type is a number.
-     * Number, percent and currency types are considered as numbers.
+     * Whether the data input type is a boolean.
      *
      * @type {boolean}
      */
-    get isNumber() {
+    get isBaseInput() {
         return (
-            this.type === 'number' ||
-            this.type === 'percent' ||
-            this.type === 'currency'
+            !this.isLocation &&
+            !this.isPhone &&
+            !this.isPicklist &&
+            !this.isMultiPicklist
         );
     }
 
@@ -322,6 +318,20 @@ export default class InputData extends LightningElement {
     }
 
     /**
+     * Whether the data input type is a number.
+     * Number, percent and currency types are considered as numbers.
+     *
+     * @type {boolean}
+     */
+    get isNumber() {
+        return (
+            this.type === 'number' ||
+            this.type === 'percent' ||
+            this.type === 'currency'
+        );
+    }
+
+    /**
      * Whether the data input type is a phone number.
      * @type {boolean}
      */
@@ -338,30 +348,11 @@ export default class InputData extends LightningElement {
     }
 
     /**
-     * Whether the data input type is different from a location and a phone number.
-     * @type {boolean}
+     * The lightning-input element used as input.
+     * @type {Element}
      */
-    get isBaseInput() {
-        return (
-            !this.isLocation &&
-            !this.isPhone &&
-            !this.isPicklist &&
-            !this.isMultiPicklist
-        );
-    }
-
-    /**
-     * The Salesforce lightning-input type attribute equivalent for the data input type.
-     * @type {string}
-     */
-    get inputType() {
-        if (this.isNumber) {
-            return 'number';
-        } else if (this.isBoolean) {
-            return 'checkbox';
-        }
-
-        return this.type;
+    get input() {
+        return this.template.firstChild;
     }
 
     /**
@@ -386,20 +377,25 @@ export default class InputData extends LightningElement {
     }
 
     /**
+     * The Salesforce lightning-input type attribute equivalent for the data input type.
+     * @type {string}
+     */
+    get inputType() {
+        if (this.isNumber) {
+            return 'number';
+        } else if (this.isBoolean) {
+            return 'checkbox';
+        }
+        return this.type;
+    }
+
+    /**
      * The variant of the input.
      * If there is no label, the variant will be changed to label-hidden.
      * @type {string}
      */
     get inputVariant() {
         return this.label ? this.variant : 'label-hidden';
-    }
-
-    /**
-     * The lightning-input element used as input.
-     * @type {Element}
-     */
-    get input() {
-        return this.template.firstChild;
     }
 
     /*
@@ -409,16 +405,6 @@ export default class InputData extends LightningElement {
      */
 
     /**
-     * Sets focus on the input element.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        this.input.focus();
-    }
-
-    /**
      * Removes keyboard focus from the input element.
      *
      * @public
@@ -426,6 +412,16 @@ export default class InputData extends LightningElement {
     @api
     blur() {
         this.input.blur();
+    }
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.input.focus();
     }
 
     /**
@@ -484,39 +480,6 @@ export default class InputData extends LightningElement {
      */
 
     /**
-     * Initializes the value of the input according to its type
-     */
-    initalizeInputValue() {
-        if (this.isPhone && this.value) {
-            this._value = this.formatPhoneNumber(this.value.toString());
-        }
-    }
-
-    /**
-     * Returns the normalized value of the coordinate.
-     * Latitude ranges between -90 and 90.
-     * Longitude ranges between -180 and 180.
-     * @param {number|undefined}    value       - The value to normalize.
-     * @param {number}              absoluteMax - The maximum of the value as an absolute number.
-     * @return {number|undefined}
-     */
-    normalizeLocationValue(value, absoluteMax) {
-        return value !== 0 && !value
-            ? undefined
-            : Math.min(Math.max(value, -absoluteMax), absoluteMax);
-    }
-
-    /**
-     * Handles a change in the input if its type is a phone number.
-     * The phone number will be displayed in the format ###-###-####.
-     * @param {Event} event
-     */
-    handlePhoneInputChange(event) {
-        event.target.value = this.formatPhoneNumber(event.target.value);
-        this.handleInputChange(event);
-    }
-
-    /**
      * Changes a phone number to the format ###-###-####.
      * @param {string} unformattedTel - The phone number to format.
      * @return {string}
@@ -529,6 +492,36 @@ export default class InputData extends LightningElement {
             ? tel[1]
             : `${tel[1]}-${tel[2]}` + (tel[3] ? `-${tel[3]}` : '');
     }
+
+    /**
+     * Initializes the value of the input according to its type
+     */
+    initalizeInputValue() {
+        if (this.isPhone && this.value) {
+            this._value = this.formatPhoneNumber(this.value.toString());
+        }
+    }
+
+    /**
+     * Returns the normalized value of the coordinate.
+     * Latitude ranges between -90 and 90.
+     * Longitude ranges between -180 and 180.
+     *
+     * @param {number|undefined}    value       - The value to normalize.
+     * @param {number}              absoluteMax - The maximum of the value as an absolute number.
+     * @return {number|undefined}
+     */
+    normalizeLocationValue(value, absoluteMax) {
+        return value !== 0 && !value
+            ? undefined
+            : Math.min(Math.max(value, -absoluteMax), absoluteMax);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Transfers the lightning-input change event to the data input component.
@@ -602,5 +595,15 @@ export default class InputData extends LightningElement {
      */
     handleFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
+     * Handles a change in the input if its type is a phone number.
+     * The phone number will be displayed in the format ###-###-####.
+     * @param {Event} event
+     */
+    handlePhoneInputChange(event) {
+        event.target.value = this.formatPhoneNumber(event.target.value);
+        this.handleInputChange(event);
     }
 }

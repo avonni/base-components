@@ -38,7 +38,7 @@ describe('Button Menu', () => {
             expect(element.isDraft).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
-            expect(element.loadingStateAlternativeText).toBe('Loading');
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.menuAlignment).toBe('left');
             expect(element.nubbin).toBeFalsy();
             expect(element.prefixIconName).toBeFalsy();

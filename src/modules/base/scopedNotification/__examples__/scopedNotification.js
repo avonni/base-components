@@ -5,11 +5,11 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const ScopedNotification = ({ title, iconName, variant, iconSize }) => {
+export const ScopedNotification = ({ iconName, iconSize, title, variant }) => {
     const element = document.createElement('ac-base-scoped-notification');
-    element.title = title;
     element.iconName = iconName;
-    element.variant = variant;
     element.iconSize = iconSize;
+    element.title = title;
+    element.variant = variant;
     return element;
 };

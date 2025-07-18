@@ -30,6 +30,7 @@ export const ActivityTimeline = ({
     itemIconSize,
     items,
     loadMoreOffset,
+    loadingStateAlternativeText,
     locale,
     maxVisibleItems,
     orientation,
@@ -62,6 +63,7 @@ export const ActivityTimeline = ({
     element.items = items;
     element.intervalDaysLength = intervalDaysLength;
     element.loadMoreOffset = loadMoreOffset;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.locale = locale;
     element.maxVisibleItems = maxVisibleItems;
     element.orientation = orientation;

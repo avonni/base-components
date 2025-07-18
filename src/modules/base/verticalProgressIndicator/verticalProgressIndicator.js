@@ -31,6 +31,12 @@ export default class VerticalProgressIndicator extends LightningElement {
     _markAsComplete = false;
     _variant = INDICATOR_VARIANTS.default;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     renderedCallback() {
         let elements = this.template
             .querySelector('[data-element-id="slot-default"]')
@@ -105,7 +111,6 @@ export default class VerticalProgressIndicator extends LightningElement {
     get contentInLine() {
         return this._contentInLine;
     }
-
     set contentInLine(value) {
         this._contentInLine = normalizeBoolean(value);
     }
@@ -121,7 +126,6 @@ export default class VerticalProgressIndicator extends LightningElement {
     get format() {
         return this._format;
     }
-
     set format(format) {
         this._format = normalizeString(format, {
             fallbackValue: VERTICAL_PROGRESS_INDICATOR_FORMATS.default,
@@ -140,7 +144,6 @@ export default class VerticalProgressIndicator extends LightningElement {
     get hasError() {
         return this._hasError;
     }
-
     set hasError(value) {
         this._hasError = normalizeBoolean(value);
     }
@@ -156,7 +159,6 @@ export default class VerticalProgressIndicator extends LightningElement {
     get markAsComplete() {
         return this._markAsComplete;
     }
-
     set markAsComplete(value) {
         this._markAsComplete = normalizeBoolean(value);
     }
@@ -173,7 +175,6 @@ export default class VerticalProgressIndicator extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: INDICATOR_VARIANTS.default,

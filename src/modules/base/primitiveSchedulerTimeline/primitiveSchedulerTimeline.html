@@ -1,15 +1,15 @@
 <template>
     <div class="slds-grid avonni-scheduler__wrapper">
         <!-- Datatable or vertical headers -->
-        <div class={firstColClass} data-element-id="div-panel">
+        <div class={computedFirstColClass} data-element-id="div-panel">
             <c-datatable
                 if:false={isVertical}
                 class="slds-show avonni-scheduler__datatable"
-                max-column-width="9999999999"
                 columns={columns}
-                records={selectedDatatableRecords}
                 hide-checkbox-column
                 key-field="name"
+                max-column-width="9999999999"
+                records={selectedDatatableRecords}
                 resize-column-disabled={resizeColumnDisabled}
                 data-element-id="avonni-datatable"
                 onresize={handleDatatableResize}
@@ -58,7 +58,7 @@
         <!-- Splitter -->
         <div
             if:true={showSplitter}
-            class={splitterClass}
+            class={computedSplitterClass}
             data-element-id="div-splitter"
             onmousedown={handleSplitterResizeMouseDown}
         >
@@ -95,7 +95,6 @@
                 onmousedown={stopPropagation}
             ></lightning-button-icon>
         </div>
-
         <div
             class="
                 avonni-scheduler__second-col
@@ -132,7 +131,7 @@
                     >
                         <div
                             key={resource.name}
-                            class={verticalResourceHeaderCellClass}
+                            class={computedVerticalResourceHeaderCellClass}
                             data-element-id="div-vertical-resource-header"
                         >
                             <c-primitive-avatar
@@ -157,18 +156,18 @@
             </div>
 
             <div
-                class={scheduleWrapperClass}
+                class={computedScheduleWrapperClass}
                 data-element-id="div-schedule-wrapper"
                 onmousemove={handleMouseMove}
                 onscroll={handleScroll}
             >
                 <!-- Schedule -->
                 <div
-                    class={scheduleColClass}
+                    class={computedScheduleColClass}
                     data-element-id="div-schedule-col"
                 >
                     <div
-                        class={scheduleNestedColClass}
+                        class={computedScheduleNestedColClass}
                         data-element-id="div-schedule-nested-col"
                     >
                         <!-- Horizontal headers -->
@@ -205,7 +204,7 @@
                         <!-- Rows (horizontal) or columns (vertical) -->
                         <div
                             if:false={headersAreLoading}
-                            class={scheduleBodyClass}
+                            class={computedScheduleBodyClass}
                             data-element-id="div-schedule-body"
                             onclick={handleClick}
                         >
@@ -216,7 +215,7 @@
                             >
                                 <div
                                     key={resource.name}
-                                    class={resourceClass}
+                                    class={computedResourceClass}
                                     data-element-id="div-resource"
                                     data-index={index}
                                     data-name={resource.name}
@@ -228,7 +227,7 @@
                                     >
                                         <div
                                             key={cell.start}
-                                            class={cellClass}
+                                            class={computedCellClass}
                                             data-end={cell.end}
                                             data-element-id="div-cell"
                                             data-start={cell.start}
@@ -259,17 +258,17 @@
                                             <c-primitive-scheduler-event-occurrence
                                                 key={occurrence.key}
                                                 class="slds-is-absolute"
-                                                color={event.color}
-                                                header-cells={eventHeaderCellsSerialized}
-                                                hidden-actions={hiddenActions}
                                                 cell-duration={smallestCellDuration}
                                                 cell-height={cellHeight}
                                                 cell-width={cellWidth}
+                                                color={event.color}
                                                 date-format={dateFormat}
                                                 disabled={event.disabled}
                                                 event-data={event.data}
                                                 event-name={event.name}
                                                 from={occurrence.from}
+                                                header-cells={eventHeaderCellsSerialized}
+                                                hidden-actions={hiddenActions}
                                                 icon-name={event.iconName}
                                                 labels={event.labels}
                                                 occurrence={occurrence}
@@ -279,9 +278,9 @@
                                                 reference-line={event.referenceLine}
                                                 resource-key={occurrence.resourceName}
                                                 resources={visibleSimplifiedResources}
+                                                theme={event.theme}
                                                 timezone={timezone}
                                                 title={occurrence.title}
-                                                theme={event.theme}
                                                 to={occurrence.to}
                                                 variant={eventVariant}
                                                 zoom-to-fit={zoomToFit}

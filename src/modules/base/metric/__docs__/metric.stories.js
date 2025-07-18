@@ -47,6 +47,7 @@ export default {
             }
         },
         errorMessage: {
+            name: 'error-message',
             control: {
                 type: 'text'
             },
@@ -87,6 +88,18 @@ export default {
             description: 'Position of label.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message to display when the metric is in a loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         maximumFractionDigits: {
@@ -440,6 +453,8 @@ export default {
     args: {
         currencyDisplayAs: 'symbol',
         formatStyle: 'decimal',
+        labelPosition: 'top',
+        loadingStateAlternativeText: 'Loading...',
         secondaryCurrencyDisplayAs: 'symbol',
         secondaryFormatStyle: 'decimal',
         secondaryPosition: 'right',

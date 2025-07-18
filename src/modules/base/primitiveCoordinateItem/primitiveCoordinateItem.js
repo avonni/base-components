@@ -5,18 +5,17 @@ const i18n = {
 };
 
 export default class PrimitiveCoordinateItem extends LightningElement {
+    @api guid;
+    @api iconName;
     @api itemAddress;
     @api itemTitle;
-    @api iconName;
-    @api guid;
     @api selected = false;
 
-    /**
-     * getter for the i18 constant containing the localized strings
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
      */
-    get i18n() {
-        return i18n;
-    }
 
     connectedCallback() {
         this.dispatchEvent(
@@ -31,11 +30,41 @@ export default class PrimitiveCoordinateItem extends LightningElement {
         );
     }
 
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Getter for the computed assistive text.
+     */
     get computedAssistiveText() {
-        if (this.selected) {
-            return `${this.itemTitle} ${i18n.labelSelectedItemString}`;
-        }
-        return '';
+        return this.selected
+            ? `${this.itemTitle} ${i18n.labelSelectedItemString}`
+            : '';
+    }
+
+    /**
+     * Getter for the i18 constant containing the localized strings.
+     */
+    get i18n() {
+        return i18n;
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    handleClick() {
+        const coordinateclick = new CustomEvent('coordinateclick', {
+            detail: {
+                key: this.guid
+            }
+        });
+        this.dispatchEvent(coordinateclick);
     }
 
     handleMouseOver() {
@@ -45,14 +74,5 @@ export default class PrimitiveCoordinateItem extends LightningElement {
             }
         });
         this.dispatchEvent(coordinatehover);
-    }
-
-    handleClick() {
-        const coordinateclick = new CustomEvent('coordinateclick', {
-            detail: {
-                key: this.guid
-            }
-        });
-        this.dispatchEvent(coordinateclick);
     }
 }

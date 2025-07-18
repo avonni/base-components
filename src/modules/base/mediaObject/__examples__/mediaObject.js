@@ -5,11 +5,11 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const MediaObject = ({ verticalAlign, responsive, inline, size }) => {
+export const MediaObject = ({ inline, responsive, size, verticalAlign }) => {
     const element = document.createElement('ac-base-media-object');
-    element.verticalAlign = verticalAlign;
-    element.responsive = responsive;
     element.inline = inline;
+    element.responsive = responsive;
     element.size = size;
+    element.verticalAlign = verticalAlign;
     return element;
 };

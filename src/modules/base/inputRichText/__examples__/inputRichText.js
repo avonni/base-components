@@ -6,8 +6,13 @@ customElements.define(
 );
 
 export const InputRichText = ({
+    cancelButtonLabel,
+    customButtons,
     disabled,
     disabledCategories,
+    doneButtonLabel,
+    formats,
+    isPublisher,
     label,
     labelVisible,
     messageWhenBadInput,
@@ -15,13 +20,16 @@ export const InputRichText = ({
     readOnly,
     shareWithEntityId,
     value,
-    variant,
-    formats,
-    isPublisher
+    variant
 }) => {
     const element = document.createElement('ac-base-input-rich-text');
+    element.cancelButtonLabel = cancelButtonLabel;
+    element.customButtons = customButtons;
+    element.doneButtonLabel = doneButtonLabel;
     element.disabled = disabled;
     element.disabledCategories = disabledCategories || [];
+    element.formats = formats;
+    element.isPublisher = isPublisher;
     element.label = label;
     element.labelVisible = labelVisible;
     element.messageWhenBadInput = messageWhenBadInput;
@@ -30,7 +38,5 @@ export const InputRichText = ({
     element.shareWithEntityId = shareWithEntityId;
     element.value = value;
     element.variant = variant;
-    element.formats = formats;
-    element.isPublisher = isPublisher;
     return element;
 };

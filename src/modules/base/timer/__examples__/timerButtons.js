@@ -6,25 +6,25 @@ customElements.define(
 );
 
 export const TimerButtons = ({
-    value = 0,
-    variant,
-    type,
-    duration = 1,
     autoStart,
-    repeat,
+    duration = 1,
+    format,
     iconName,
     iconPosition,
-    format
+    repeat,
+    type,
+    value = 0,
+    variant
 }) => {
     const element = document.createElement('ac-base-timer-buttons');
-    element.value = value;
-    element.variant = variant;
-    element.type = type;
-    element.duration = duration;
     element.autoStart = autoStart;
-    element.repeat = repeat;
+    element.duration = duration;
+    element.format = format;
     element.iconName = iconName;
     element.iconPosition = iconPosition;
-    element.format = format;
+    element.repeat = repeat;
+    element.type = type;
+    element.value = value;
+    element.variant = variant;
     return element;
 };

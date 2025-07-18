@@ -10,6 +10,7 @@ export default class ButtonMenuBase extends LightningElement {
     @api iconSize;
     @api iconSrc;
     @api isDraft;
+    @api isButtonLoading;
     @api isLoading;
     @api label;
     @api loadingStateAlternativeText;

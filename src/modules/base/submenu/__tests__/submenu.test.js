@@ -162,6 +162,23 @@ describe('Submenu', () => {
     });
 
     describe('Methods', () => {
+        describe('close', () => {
+            it('close and open', () => {
+                element.open();
+
+                return Promise.resolve().then(() => {
+                    const a = element.shadowRoot.querySelector('a');
+                    expect(a.ariaExpanded).toBe('true');
+
+                    element.close();
+
+                    return Promise.resolve().then(() => {
+                        expect(a.ariaExpanded).toBe('false');
+                    });
+                });
+            });
+        });
+
         it('focus method', () => {
             const handler = jest.fn();
             element.addEventListener('focus', handler);

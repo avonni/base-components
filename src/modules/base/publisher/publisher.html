@@ -1,20 +1,18 @@
 <template>
     <div class="slds-media slds-comment slds-hint-parent">
-        <template if:true={showFigureSlot}>
-            <div class="slds-media__figure">
-                <slot name="figure"></slot>
-            </div>
-        </template>
+        <div if:true={showFigureSlot} class="slds-media__figure">
+            <slot name="figure"></slot>
+        </div>
         <div class="slds-media__body">
-            <div class={publisherClass}>
+            <div class={computedPublisherClass}>
                 <lightning-input
                     if:false={isActive}
-                    label="Publisher"
                     class="slds-publisher__input"
+                    disabled={disabled}
+                    label="Publisher"
+                    placeholder={placeholder}
                     type="text"
                     variant="label-hidden"
-                    placeholder={placeholder}
-                    disabled={disabled}
                     data-element-id="lightning-input"
                     onfocus={focus}
                 ></lightning-input>
@@ -22,13 +20,13 @@
                     <c-input-rich-text
                         if:true={isActive}
                         class="richTextPublisher"
-                        value={value}
                         placeholder={placeholder}
+                        value={value}
                         variant="bottom-toolbar"
                         data-element-id="avonni-input-rich-text"
                         onchange={handleChange}
                     ></c-input-rich-text>
-                    <div class={actionsSectionClass}>
+                    <div class={computedActionsSectionClass}>
                         <template if:true={isActive}>
                             <template if:true={showActionsSlot}>
                                 <slot name="actions"></slot>
@@ -36,13 +34,13 @@
                         </template>
                         <lightning-button
                             if:true={renderButton}
-                            variant="brand"
-                            label={buttonLabel}
-                            title={buttonLabel}
-                            onclick={handlerClick}
-                            disabled={buttonDisabled}
                             class="slds-m-left_x-small"
+                            disabled={buttonDisabled}
+                            label={buttonLabel}
+                            variant="brand"
+                            title={buttonLabel}
                             data-element-id="lightning-button"
+                            onclick={handlerClick}
                         ></lightning-button>
                     </div>
                 </div>

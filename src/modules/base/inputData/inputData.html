@@ -1,57 +1,57 @@
 <template>
     <lightning-input
         if:true={isBaseInput}
-        variant={inputVariant}
+        checked={checked}
+        disabled={disabled}
+        formatter={inputFormat}
         label={inputLabel}
         name={name}
         placeholder={placeholder}
-        checked={checked}
-        value={value}
-        disabled={disabled}
         read-only={readOnly}
         required={required}
-        type={inputType}
-        formatter={inputFormat}
         step="any"
+        type={inputType}
+        value={value}
+        variant={inputVariant}
         data-element-id="lightning-input-base"
+        onblur={handleBlur}
         onchange={handleInputChange}
         oncommit={handleInputCommit}
-        onblur={handleBlur}
         onfocus={handleFocus}
     ></lightning-input>
 
     <lightning-input
         if:true={isPhone}
-        variant={inputVariant}
-        label={inputLabel}
-        name={name}
-        placeholder={placeholder}
-        value={value}
         disabled={disabled}
+        label={inputLabel}
+        message-when-pattern-mismatch="Invalid phone number"
+        name={name}
+        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$"
+        placeholder={placeholder}
         read-only={readOnly}
         required={required}
         type="tel"
-        message-when-pattern-mismatch="Invalid phone number"
-        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$"
+        value={value}
+        variant={inputVariant}
         data-element-id="lightning-input-phone"
+        onblur={handleBlur}
         onchange={handlePhoneInputChange}
         oncommit={handleInputCommit}
-        onblur={handleBlur}
         onfocus={handleFocus}
     ></lightning-input>
 
     <lightning-input-location
         if:true={isLocation}
+        disabled={disabled}
         label={inputLabel}
         latitude={latitude}
         longitude={longitude}
-        disabled={disabled}
         read-only={readOnly}
         required={required}
         variant={inputVariant}
         data-element-id="lightning-input-location"
-        onchange={handleInputChange}
         onblur={handleBlur}
+        onchange={handleInputChange}
         onfocus={handleFocus}
     ></lightning-input-location>
 
@@ -66,21 +66,21 @@
         source-label="Available"
         value={value}
         data-element-id="lightning-input-multi-picklist"
-        onchange={handleInputChange}
         onblur={handleBlur}
+        onchange={handleInputChange}
         onfocus={handleFocus}
     ></lightning-dual-listbox>
 
     <lightning-combobox
         if:true={isPicklist}
-        name={name}
         label={inputLabel}
-        required={required}
+        name={name}
         options={options}
+        required={required}
         value={value}
         data-element-id="lightning-input-picklist"
-        onchange={handleInputChange}
         onblur={handleBlur}
+        onchange={handleInputChange}
         onfocus={handleFocus}
     ></lightning-combobox>
 </template>

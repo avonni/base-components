@@ -1,6 +1,6 @@
 <template>
     <div
-        class={disabledClass}
+        class={computedDisabledClass}
         style={disabledStyle}
         title={title}
         data-element-id="div-disabled-wrapper"
@@ -10,7 +10,7 @@
     >
         <div
             if:false={isStandalone}
-            class={disabledTitleClass}
+            class={computedDisabledTitleClass}
             data-element-id="div-disabled-title-wrapper"
         >
             <span>
@@ -28,11 +28,14 @@
                     avonni-primitive-scheduler-event-occurrence__flex-col
                 "
                 data-element-id="div-disabled-title"
-                >{title}</span
-            >
+                >{title}
+            </span>
         </div>
 
-        <div if:true={isStandalone} class={eventOccurrenceCenterLabelClass}>
+        <div
+            if:true={isStandalone}
+            class={computedEventOccurrenceCenterLabelClass}
+        >
             <!-- Standalone chip -->
             <div
                 if:true={displayAsDot}
@@ -46,9 +49,9 @@
 
             <lightning-icon
                 if:true={iconName}
+                class="slds-m-right_xx-small"
                 icon-name={iconName}
                 size="x-small"
-                class="slds-m-right_xx-small"
             ></lightning-icon>
             <span
                 if:true={title}
@@ -61,11 +64,11 @@
                         avonni-scheduler__event-dot-time
                         slds-text-color_weak
                     "
-                    >{startTime}</span
-                >
+                    >{startTime}
+                </span>
                 <span if:true={computedLabels.center}
-                    >{computedLabels.center.value}</span
-                >
+                    >{computedLabels.center.value}
+                </span>
             </span>
         </div>
     </div>

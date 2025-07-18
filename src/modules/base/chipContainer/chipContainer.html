@@ -3,11 +3,10 @@
         <span
             lwc:dom="manual"
             class="slds-assistive-text"
-            id="instructions"
             aria-live="assertive"
+            id="instructions"
             data-element-id="span-instructions"
         ></span>
-
         <span
             if:true={alternativeText}
             class="slds-assistive-text"
@@ -28,12 +27,12 @@
         >
             <template for:each={visibleItems} for:item="chip" for:index="index">
                 <li
-                    class={computedListItemClass}
                     key={chip.name}
+                    class={computedListItemClass}
                     data-element-id="li-item"
                     data-index={index}
-                    onmousemove={handleChipMouseMove}
                     onmousedown={handleChipMouseDown}
+                    onmousemove={handleChipMouseMove}
                 >
                     <c-primitive-chip
                         class={computedChipClass}
@@ -46,8 +45,8 @@
                         outline={chip.outline}
                         prefix-icon-name={chip.prefixIconName}
                         suffix-icon-name={chip.suffixIconName}
-                        variant={chip.variant}
                         tabindex="-1"
+                        variant={chip.variant}
                         data-element-id="avonni-primitive-chip"
                         data-index={index}
                         onclick={handleChipClick}
@@ -55,7 +54,6 @@
                 </li>
             </template>
         </ul>
-
         <div
             class="slds-is-relative slds-show_inline-block"
             data-element-id="button-show-more-container"
@@ -65,6 +63,7 @@
                 if:true={isCollapsed}
                 class="slds-p-horizontal_xx-small"
                 label={showMoreButtonLabel}
+                title={showMoreButtonAlternativeText}
                 variant="base"
                 data-element-id="lightning-button-show-more"
                 onclick={handleExpand}
@@ -93,8 +92,8 @@
                             data-element-id="li-item-hidden"
                             data-index={chip.index}
                             data-name={chip.name}
-                            onmousemove={handleChipMouseMove}
                             onmousedown={handleChipMouseDown}
+                            onmousemove={handleChipMouseMove}
                         >
                             <c-primitive-chip
                                 class={computedChipClass}
@@ -103,10 +102,10 @@
                                 name={chip.name}
                                 outline={chip.outline}
                                 prefix-icon-name={chip.prefixIconName}
-                                suffix-icon-name={chip.suffixIconName}
-                                variant={chip.variant}
                                 role="option"
+                                suffix-icon-name={chip.suffixIconName}
                                 tabindex="-1"
+                                variant={chip.variant}
                                 data-element-id="avonni-primitive-chip-hidden"
                                 data-index={chip.index}
                                 onclick={handleChipClick}

@@ -129,12 +129,26 @@ export default class SummaryDetail extends LightningElement {
      */
 
     /**
-     * Verify if the section is opened.
+     * Compute body class based on fullwidth.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get sectionIsOpen() {
-        return !this._closed;
+    get computedBodyClass() {
+        return classSet('avonni-summary-detail_min-width').add({
+            'avonni-summary-detail__flex-col': this.fullWidth
+        });
+    }
+
+    /**
+     * Compute content class based on body identation and icon visible.
+     *
+     * @type {string}
+     */
+    get computedContentClass() {
+        return classSet('slds-summary-detail__content').add({
+            'avonni-summary-detail__content_no-indent':
+                this.removeBodyIndentation && !this.hideIcon
+        });
     }
 
     /**
@@ -142,7 +156,7 @@ export default class SummaryDetail extends LightningElement {
      *
      * @type {string}
      */
-    get sectionClass() {
+    get computedSectionClass() {
         return classSet('slds-summary-detail')
             .add({
                 'slds-is-open': this.sectionIsOpen
@@ -155,32 +169,9 @@ export default class SummaryDetail extends LightningElement {
      *
      * @type {string}
      */
-    get titleClass() {
+    get computedTitleClass() {
         return classSet('avonni-summary-detail_min-width').add({
             'avonni-summary-detail__flex-col': this.fullWidth
-        });
-    }
-
-    /**
-     * Compute body class based on fullwidth.
-     *
-     * @type {string}
-     */
-    get bodyClass() {
-        return classSet('avonni-summary-detail_min-width').add({
-            'avonni-summary-detail__flex-col': this.fullWidth
-        });
-    }
-
-    /**
-     * Compute content class based on body identation and icon visible.
-     *
-     * @type {string}
-     */
-    get contentClass() {
-        return classSet('slds-summary-detail__content').add({
-            'avonni-summary-detail__content_no-indent':
-                this.removeBodyIndentation && !this.hideIcon
         });
     }
 
@@ -189,6 +180,15 @@ export default class SummaryDetail extends LightningElement {
      */
     get iconName() {
         return this.closed ? this.expandIconName : this.shrinkIconName;
+    }
+
+    /**
+     * Verify if the section is opened.
+     *
+     * @type {boolean}
+     */
+    get sectionIsOpen() {
+        return !this._closed;
     }
 
     /*

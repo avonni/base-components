@@ -1,30 +1,30 @@
 <template>
     <c-profile-card
-        title={title}
-        subtitle={subtitle}
-        background-src={backgroundSrc}
-        background-alternative-text={backgroundAlternativeText}
-        avatar-src={avatarSrc}
         avatar-alternative-text={avatarAlternativeText}
         avatar-fallback-icon-name={avatarFallbackIconName}
-        avatar-size={avatarSize}
-        avatar-position={avatarPosition}
-        avatar-variant={avatarVariant}
         avatar-mobile-position={avatarMobilePosition}
+        avatar-position={avatarPosition}
+        avatar-size={avatarSize}
+        avatar-src={avatarSrc}
+        avatar-variant={avatarVariant}
+        background-alternative-text={backgroundAlternativeText}
+        background-src={backgroundSrc}
+        subtitle={subtitle}
+        title={title}
     >
         <lightning-button-icon
             slot="actions"
-            icon-name="utility:settings"
-            variant="border-filled"
             alternative-text="Settings"
+            icon-name="utility:settings"
             title="Settings"
+            variant="border-filled"
         ></lightning-button-icon>
         <lightning-button-icon
             slot="avataractions"
-            icon-name="utility:photo"
-            variant="border-filled"
             alternative-text="photo"
+            icon-name="utility:photo"
             title="photo"
+            variant="border-filled"
         ></lightning-button-icon>
         <div slot="header">Header slot item</div>
         <div>Anything can go into the card body</div>

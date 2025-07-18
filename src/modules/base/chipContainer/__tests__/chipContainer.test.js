@@ -89,6 +89,7 @@ describe('Chip Container', () => {
             expect(element.isCollapsible).toEqual(false);
             expect(element.isExpanded).toEqual(false);
             expect(element.items).toEqual([]);
+            expect(element.showMoreButtonAlternativeText).toEqual('Show more');
             expect(element.singleLine).toBeFalsy();
             expect(element.sortable).toBeFalsy();
         });
@@ -116,6 +117,7 @@ describe('Chip Container', () => {
                     () => 200
                 );
                 element.items = ITEMS;
+                element.showMoreButtonAlternativeText = 'Show mores';
 
                 return Promise.resolve()
                     .then(() => {
@@ -149,6 +151,7 @@ describe('Chip Container', () => {
                             '[data-element-id="lightning-button-show-more"]'
                         );
                         expect(button).toBeTruthy();
+                        expect(button.title).toEqual('Show mores');
                         expect(items).toHaveLength(1);
 
                         element.isExpanded = true;

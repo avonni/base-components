@@ -10,8 +10,8 @@ const DEFAULT_ORIENTATION = 'horizontal';
 export default class Separator extends LightningElement {
     @api alignContent = DEFAULT_ALIGN_CONTENT;
     @api iconName;
-    @api iconSize = DEFAULT_ICON_SIZE;
     @api iconPosition = DEFAULT_ICON_POSITION;
+    @api iconSize = DEFAULT_ICON_SIZE;
     @api iconSrc;
     @api iconVariant = DEFAULT_ICON_VARIANT;
     @api label;

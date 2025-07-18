@@ -8,6 +8,7 @@ customElements.define(
 export const DualListbox = ({
     addButtonIconName,
     addButtonLabel,
+    allowSearch,
     buttonSize,
     buttonVariant,
     disableReordering,
@@ -15,25 +16,28 @@ export const DualListbox = ({
     downButtonIconName,
     downButtonLabel,
     draggable,
-    fieldLevelHelp,
     enableInfiniteLoading,
+    fieldLevelHelp,
     hideBottomDivider,
+    keyboardInteractionAssistiveText,
     isLoading,
     label,
+    loadingStateAlternativeText,
     loadMoreOffset,
-    maxVisibleOptions,
     max,
-    min,
+    maxVisibleOptions,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
     messageWhenValueMissing,
+    min,
     name,
     options,
     removeButtonIconName,
     removeButtonLabel,
     required,
+    requiredAlternativeText,
     requiredOptions,
-    allowSearch,
+    searchInputPlaceholder,
     selectedLabel,
     selectedPlaceholder,
     size,
@@ -46,6 +50,7 @@ export const DualListbox = ({
     const element = document.createElement('ac-base-dual-listbox');
     element.addButtonIconName = addButtonIconName;
     element.addButtonLabel = addButtonLabel;
+    element.allowSearch = allowSearch;
     element.buttonSize = buttonSize;
     element.buttonVariant = buttonVariant;
     element.disableReordering = disableReordering;
@@ -53,25 +58,28 @@ export const DualListbox = ({
     element.downButtonIconName = downButtonIconName;
     element.downButtonLabel = downButtonLabel;
     element.draggable = draggable;
-    element.fieldLevelHelp = fieldLevelHelp;
     element.enableInfiniteLoading = enableInfiniteLoading;
+    element.fieldLevelHelp = fieldLevelHelp;
     element.hideBottomDivider = hideBottomDivider;
+    element.keyboardInteractionAssistiveText = keyboardInteractionAssistiveText;
     element.isLoading = isLoading;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.loadMoreOffset = loadMoreOffset;
-    element.maxVisibleOptions = maxVisibleOptions;
     element.max = max;
-    element.min = min;
+    element.maxVisibleOptions = maxVisibleOptions;
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenValueMissing = messageWhenValueMissing;
+    element.min = min;
     element.name = name;
     element.options = options;
     element.removeButtonIconName = removeButtonIconName;
     element.removeButtonLabel = removeButtonLabel;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.requiredOptions = requiredOptions;
-    element.allowSearch = allowSearch;
+    element.searchInputPlaceholder = searchInputPlaceholder;
     element.selectedLabel = selectedLabel;
     element.selectedPlaceholder = selectedPlaceholder;
     element.size = size;

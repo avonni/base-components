@@ -105,11 +105,33 @@ export default {
                 type: { summary: 'string[]' },
                 category: 'Toolbar'
             }
+        },
+        cancelButtonLabel: {
+            name: 'cancel-button-label',
+            control: {
+                type: 'text'
+            },
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Cancel' }
+            }
+        },
+        doneButtonLabel: {
+            name: 'done-button-label',
+            control: {
+                type: 'text'
+            },
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Done' }
+            }
         }
     },
     args: {
-        labelVisible: false,
+        cancelButtonLabel: 'Cancel',
         disabled: false,
+        doneButtonLabel: 'Done',
+        labelVisible: false,
         isPublisher: false,
         variant: 'top-toolbar',
         readOnly: false

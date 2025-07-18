@@ -1,13 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeString } from 'c/utils';
 
-const SCOPED_NOTIFICATION_VARIANTS = {
-    valid: ['base', 'dark', 'warning', 'error', 'success'],
-    default: 'base'
-};
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
+};
+const SCOPED_NOTIFICATION_VARIANTS = {
+    valid: ['base', 'dark', 'warning', 'error', 'success'],
+    default: 'base'
 };
 
 /**
@@ -38,6 +38,12 @@ export default class ScopedNotification extends LightningElement {
 
     showTitle = true;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     renderedCallback() {
         if (this.titleSlot) {
             this.showTitle = this.titleSlot.assignedElements().length !== 0;
@@ -64,10 +70,10 @@ export default class ScopedNotification extends LightningElement {
      * @public
      * @default medium
      */
-    @api get iconSize() {
+    @api
+    get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(iconSize) {
         this._iconSize = normalizeString(iconSize, {
             fallbackValue: ICON_SIZES.default,
@@ -82,10 +88,10 @@ export default class ScopedNotification extends LightningElement {
      * @public
      * @default base
      */
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: SCOPED_NOTIFICATION_VARIANTS.default,
@@ -100,29 +106,26 @@ export default class ScopedNotification extends LightningElement {
      */
 
     /**
+     * Computed Icon variant class based on selection.
+     *
+     * @type {string}
+     */
+    get computedIconVariant() {
+        return this.variant === 'dark' ||
+            this.variant === 'success' ||
+            this.variant === 'error'
+            ? 'inverse'
+            : '';
+    }
+
+    /**
      * Computed notification class styling.
      *
      * @type {string}
      */
     get computedNotificationClass() {
         return classSet('slds-scoped-notification slds-media slds-media_center')
-            .add(`avonni-scoped-notification_theme-${this._variant}`)
-            .toString();
-    }
-
-    /**
-     * Computed Icon variant class based on selection.
-     *
-     * @type {string}
-     */
-    get computedIconVariant() {
-        return classSet()
-            .add({
-                inverse:
-                    this.variant === 'dark' ||
-                    this.variant === 'success' ||
-                    this.variant === 'error'
-            })
+            .add(`avonni-scoped-notification_theme-${this.variant}`)
             .toString();
     }
 }

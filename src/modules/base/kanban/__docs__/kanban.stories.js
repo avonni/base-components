@@ -16,7 +16,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: ' Name of a key of the records objects. ',
+            description: 'Name of a key of the records objects. ',
             table: {
                 type: { summary: 'String' }
             }
@@ -26,7 +26,7 @@ export default {
                 type: 'object'
             },
             description:
-                ' Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.',
+                'Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.',
             table: {
                 type: { summary: 'object[]' },
                 category: 'Group'
@@ -49,7 +49,7 @@ export default {
                 type: 'object'
             },
             description:
-                ' Array of group objects. Each group represents one step of the path.',
+                'Array of group objects. Each group represents one step of the path.',
             table: {
                 type: { summary: 'object[]' },
                 category: 'Group'
@@ -61,7 +61,7 @@ export default {
                 type: 'text'
             },
             description:
-                ' Name of the data field containing the group label the data belongs to. ',
+                'Name of the data field containing the group label the data belongs to. ',
             table: {
                 type: { summary: 'String' },
                 category: 'Group'
@@ -73,10 +73,22 @@ export default {
                 type: 'boolean'
             },
             description:
-                '  If present, the Kanban is in a loading state and shows a spinner.',
+                'If present, the Kanban is in a loading state and shows a spinner.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the kanban is in the loading state.',
+            table: {
+                type: { summary: 'String' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         disableColumnDragAndDrop: {
@@ -84,7 +96,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: ' If present, the columns cannot be dragged by users.',
+            description: 'If present, the columns cannot be dragged by users.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -96,7 +108,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: ' If present, the tiles cannot be dragged by users.',
+            description: 'If present, the tiles cannot be dragged by users.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -108,7 +120,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: ' If present, the group headers are hidden.',
+            description: 'If present, the group headers are hidden.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -120,7 +132,7 @@ export default {
                 type: 'object'
             },
             description:
-                ' Array of data objects. Each object will be displayed as a data card in one of the steps. The objects should have a key <code>id</code>, used as their unique identifier. The other keys should correspond to the available fields, and/or the summarize and group field names.',
+                'Array of data objects. Each object will be displayed as a data card in one of the steps. The objects should have a key <code>id</code>, used as their unique identifier. The other keys should correspond to the available fields, and/or the summarize and group field names.',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -131,7 +143,7 @@ export default {
                 type: 'object'
             },
             description:
-                ' The field containing the number to add to the group summarization, at the top of each column.',
+                'The field containing the number to add to the group summarization, at the top of each column.',
             table: {
                 type: { summary: 'object' },
                 category: 'Group'
@@ -143,7 +155,7 @@ export default {
                 type: 'text'
             },
             description:
-                ' Name of the data field containing the sub-group label the data belongs to. ',
+                'Name of the data field containing the sub-group label the data belongs to. ',
             table: {
                 type: { summary: 'String' },
                 category: 'Group'
@@ -185,6 +197,7 @@ export default {
         imageAttributes: IMAGE_ATTRIBUTES,
         isLoading: false,
         keyField: 'id',
+        loadingStateAlternativeText: 'Loading...',
         records: RECORDS,
         summarizeAttributes: SUMMARIZE_ATTRIBUTES,
         variant: 'base'

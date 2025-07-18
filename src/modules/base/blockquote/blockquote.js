@@ -34,9 +34,9 @@ export default class Blockquote extends LightningElement {
      */
     @api title;
 
-    _variant = BLOCKQUOTE_VARIANTS.default;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
+    _variant = BLOCKQUOTE_VARIANTS.default;
 
     /*
      * ------------------------------------------------------------
@@ -55,7 +55,6 @@ export default class Blockquote extends LightningElement {
     get iconPosition() {
         return this._iconPosition;
     }
-
     set iconPosition(position) {
         this._iconPosition = normalizeString(position, {
             fallbackValue: ICON_POSITIONS.default,
@@ -74,7 +73,6 @@ export default class Blockquote extends LightningElement {
     get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
             fallbackValue: ICON_SIZES.default,
@@ -93,7 +91,6 @@ export default class Blockquote extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: BLOCKQUOTE_VARIANTS.default,
@@ -112,7 +109,7 @@ export default class Blockquote extends LightningElement {
      *
      * @type {string}
      */
-    get blockquoteClass() {
+    get computedBlockquoteClass() {
         return classSet('avonni-blockquote__container')
             .add(`avonni-blockquote__theme-${this._variant}`)
             .toString();
@@ -123,7 +120,7 @@ export default class Blockquote extends LightningElement {
      *
      * @type {string}
      */
-    get blockquoteHeaderClass() {
+    get computedBlockquoteHeaderClass() {
         return classSet('slds-grid slds-grid--vertical-align-center')
             .add({
                 'avonni-blockquote__header-spacing':
@@ -149,7 +146,7 @@ export default class Blockquote extends LightningElement {
      * @type {boolean}
      */
     get leftIcon() {
-        return this._iconPosition === 'left' && this.iconName;
+        return this.iconPosition === 'left' && this.iconName;
     }
 
     /**
@@ -158,7 +155,7 @@ export default class Blockquote extends LightningElement {
      * @type {boolean}
      */
     get rightIcon() {
-        return this._iconPosition === 'right' && this.iconName;
+        return this.iconPosition === 'right' && this.iconName;
     }
 
     /**

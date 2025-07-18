@@ -21,17 +21,11 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
-
 const ICON_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'x-small'
-};
-
-const POPOVER_SIZES = {
-    valid: ['small', 'medium', 'large'],
-    default: 'medium'
 };
 const POPOVER_PLACEMENTS = {
     valid: [
@@ -45,18 +39,18 @@ const POPOVER_PLACEMENTS = {
     ],
     default: 'left'
 };
-
+const POPOVER_SIZES = {
+    valid: ['small', 'medium', 'large'],
+    default: 'medium'
+};
 const POPOVER_TRIGGERS = {
     valid: ['click', 'hover', 'focus'],
     default: 'click'
 };
-
 const POPOVER_VARIANTS = {
     valid: ['base', 'warning', 'error', 'walkthrough'],
     default: 'base'
 };
-
-const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
  * The button popover displays an avonni button. On click, open the popover.
@@ -110,6 +104,7 @@ export default class ButtonPopover extends LightningElement {
     _hideCloseButton = false;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
+    _isButtonLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _placement = POPOVER_PLACEMENTS.default;
     _popoverSize = POPOVER_SIZES.default;
@@ -238,6 +233,21 @@ export default class ButtonPopover extends LightningElement {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
+    }
+
+    /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get isButtonLoading() {
+        return this._isButtonLoading;
+    }
+    set isButtonLoading(value) {
+        this._isButtonLoading = normalizeBoolean(value);
     }
 
     /**

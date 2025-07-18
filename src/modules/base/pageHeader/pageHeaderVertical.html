@@ -1,36 +1,32 @@
 <template>
     <div class={computedVerticalOuterClass}>
         <div class="slds-media slds-media_center">
-            <template if:true={iconName}>
-                <div class="slds-media__figure">
-                    <div class={computedIconClass}>
-                        <c-primitive-icon
-                            svg-class="slds-icon slds-page-header__icon"
-                            icon-name={iconName}
-                            variant="bare"
-                        >
-                        </c-primitive-icon>
-                    </div>
-                    <div class={computedMobileIconClass}>
-                        <c-primitive-icon
-                            svg-class="slds-icon"
-                            icon-name={iconName}
-                            variant="bare"
-                            size="large"
-                        >
-                        </c-primitive-icon>
-                    </div>
+            <div if:true={iconName} class="slds-media__figure">
+                <div class={computedIconClass}>
+                    <c-primitive-icon
+                        svg-class="slds-icon slds-page-header__icon"
+                        icon-name={iconName}
+                        variant="bare"
+                    >
+                    </c-primitive-icon>
                 </div>
-            </template>
+                <div class={computedMobileIconClass}>
+                    <c-primitive-icon
+                        svg-class="slds-icon"
+                        icon-name={iconName}
+                        size="large"
+                        variant="bare"
+                    >
+                    </c-primitive-icon>
+                </div>
+            </div>
             <div class="slds-media__body">
                 <div class="slds-page-header__name">
                     <div class="slds-page-header__name-title">
                         <template if:false={hasStringLabel}>
                             <slot name="label" data-element-id="label"></slot>
                         </template>
-                        <template if:true={hasStringLabel}>
-                            <span>{label}</span>
-                        </template>
+                        <span if:true={hasStringLabel}>{label}</span>
                         <span
                             class="
                                 slds-page-header__title
@@ -40,8 +36,6 @@
                             <template if:true={hasStringTitle}>
                                 {title}
                             </template>
-                        </span>
-                        <span>
                             <template if:false={hasStringTitle}>
                                 <slot name="title"></slot>
                             </template>
@@ -49,11 +43,9 @@
                     </div>
                 </div>
             </div>
-            <template if:true={showControls}>
-                <div class="slds-page-header__col-controls">
-                    <slot name="controls"></slot>
-                </div>
-            </template>
+            <div if:true={showControls} class="slds-page-header__col-controls">
+                <slot name="controls"></slot>
+            </div>
         </div>
         <p
             class="
@@ -62,25 +54,21 @@
                 slds-m-top_xx-small
             "
         >
-            <template if:true={hasStringInfo}> {info} </template>
+            <template if:true={hasStringInfo}>{info}</template>
             <template if:false={hasStringInfo}>
                 <slot name="info"></slot>
             </template>
         </p>
-        <template if:true={showActionsOrDetails}>
-            <div
-                class="
-                    slds-page-header__controls
-                    avonni-page-header_flex-column
-                "
-            >
-                <template if:true={showActions}>
-                    <slot name="actions"></slot>
-                </template>
-                <template if:true={showDetails}>
-                    <slot name="details"></slot>
-                </template>
-            </div>
-        </template>
+        <div
+            if:true={showActionsOrDetails}
+            class="slds-page-header__controls avonni-page-header_flex-column"
+        >
+            <template if:true={showActions}>
+                <slot name="actions"></slot>
+            </template>
+            <template if:true={showDetails}>
+                <slot name="details"></slot>
+            </template>
+        </div>
     </div>
 </template>

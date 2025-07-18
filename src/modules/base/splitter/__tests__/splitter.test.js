@@ -16,56 +16,58 @@ describe('Splitter', () => {
         document.body.appendChild(element);
     });
 
-    it('Splitter: Default attributes', () => {
-        expect(element.orientation).toBe('horizontal');
-    });
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.orientation).toBe('horizontal');
+        });
 
-    /* ----- ATTRIBUTES ----- */
+        describe('orientation', () => {
+            it('horizontal', () => {
+                element.orientation = 'horizontal';
 
-    // orientation
-    it('Splitter: orientation = horizontal', () => {
-        element.orientation = 'horizontal';
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div"]'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'splitter-orientation-vertical'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'splitter-orientation-horizontal'
+                    );
+                });
+            });
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div"]'
-            );
-            expect(wrapper.classList).not.toContain(
-                'splitter-orientation-vertical'
-            );
-            expect(wrapper.classList).toContain(
-                'splitter-orientation-horizontal'
-            );
+            it('vertical', () => {
+                element.orientation = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div"]'
+                    );
+                    expect(wrapper.classList).toContain(
+                        'splitter-orientation-vertical'
+                    );
+                    expect(wrapper.classList).not.toContain(
+                        'splitter-orientation-horizontal'
+                    );
+                });
+            });
         });
     });
 
-    it('Splitter: orientation = vertical', () => {
-        element.orientation = 'vertical';
+    describe('Methods', () => {
+        describe('changeHeight', () => {
+            it('changeHeight method', () => {
+                element.changeHeight(300);
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div"]'
-            );
-            expect(wrapper.classList).toContain(
-                'splitter-orientation-vertical'
-            );
-            expect(wrapper.classList).not.toContain(
-                'splitter-orientation-horizontal'
-            );
-        });
-    });
-
-    /* ----- METHODS ----- */
-
-    // changeHeight
-    it('Splitter: changeHeight method', () => {
-        element.changeHeight(300);
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div"]'
-            );
-            expect(wrapper.style.height).toBe('300px');
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div"]'
+                    );
+                    expect(wrapper.style.height).toBe('300px');
+                });
+            });
         });
     });
 });

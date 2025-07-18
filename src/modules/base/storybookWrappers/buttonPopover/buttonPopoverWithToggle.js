@@ -9,17 +9,18 @@ const DEFAULT_BUTTON_TRIGGER = 'click';
 
 export default class ButtonPopoverWithToggle extends LightningElement {
     @api accessKey;
-    @api label;
-    @api title;
-    @api iconName;
-    @api loadingStateAlternativeText;
     @api disabled = false;
     @api hideCloseButton = false;
-    @api isLoading = false;
-    @api popoverSize = DEFAULT_POPOVER_SIZE;
-    @api placement = DEFAULT_POPOVER_PLACEMENT;
-    @api popoverVariant = DEFAULT_POPOVER_VARIANT;
+    @api iconName;
     @api iconPosition = DEFAULT_ICON_POSITION;
-    @api variant = DEFAULT_BUTTON_VARIANT;
+    @api isButtonLoading = false;
+    @api isLoading = false;
+    @api label;
+    @api loadingStateAlternativeText;
+    @api placement = DEFAULT_POPOVER_PLACEMENT;
+    @api popoverSize = DEFAULT_POPOVER_SIZE;
+    @api popoverVariant = DEFAULT_POPOVER_VARIANT;
+    @api title;
     @api triggers = DEFAULT_BUTTON_TRIGGER;
+    @api variant = DEFAULT_BUTTON_VARIANT;
 }

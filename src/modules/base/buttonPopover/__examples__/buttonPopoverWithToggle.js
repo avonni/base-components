@@ -13,6 +13,7 @@ export const ButtonPopoverWithToggle = ({
     iconPosition,
     iconSize,
     iconSrc,
+    isButtonLoading,
     isLoading,
     label,
     loadingStateAlternativeText,
@@ -29,11 +30,12 @@ export const ButtonPopoverWithToggle = ({
     element.accessKey = accessKey;
     element.disabled = disabled;
     element.hideCloseButton = hideCloseButton;
-    element.isLoading = isLoading;
     element.iconName = iconName;
     element.iconPosition = iconPosition;
     element.iconSize = iconSize;
     element.iconSrc = iconSrc;
+    element.isButtonLoading = isButtonLoading;
+    element.isLoading = isLoading;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.placement = placement;

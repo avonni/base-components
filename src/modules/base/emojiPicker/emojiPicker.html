@@ -6,11 +6,11 @@
                     <div class="avonni-emoji-viewer">
                         <template for:each={emojiGroups} for:item="item">
                             <section
+                                key={item.title}
                                 class="
                                     slds-p-vertical_x-small
                                     slds-p-horizontal_small
                                 "
-                                key={item.title}
                                 data-value={item.value}
                             >
                                 <h2
@@ -29,17 +29,17 @@
                                         for:item="emoji"
                                     >
                                         <span
+                                            key={emoji.value}
                                             class="avonni-emoji-entity"
-                                            title={emoji.title}
                                             role="gridcell"
                                             tabindex="0"
-                                            key={emoji.value}
+                                            title={emoji.title}
                                         >
                                             <button
                                                 tabindex="-1"
                                                 type="button"
-                                                onclick={dispatchSelectEmojiEvent}
                                                 value={emoji.value}
+                                                onclick={dispatchSelectEmojiEvent}
                                             >
                                                 {emoji.value}
                                             </button>
@@ -61,9 +61,9 @@
                                 <div class="slds-p-horizontal_x-small">
                                     <lightning-button-icon
                                         icon-name={item.iconName}
-                                        variant="bare"
                                         title={item.title}
                                         value={item.value}
+                                        variant="bare"
                                         onclick={goToSection}
                                     ></lightning-button-icon>
                                 </div>

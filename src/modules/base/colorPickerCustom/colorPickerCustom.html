@@ -1,28 +1,28 @@
 <template>
     <div class="slds-color-picker__custom">
-        <p id="color-picker-instructions" class="slds-assistive-text">
+        <p class="slds-assistive-text" id="color-picker-instructions">
             {i18n.colorPickerInstructions}
         </p>
         <!--gradient -->
         <div
+            style={gradientStyle}
             class="slds-m-bottom_small"
             data-id="color-gradient"
-            style={gradientStyle}
             onmousedown={handleMouseDown}
         >
-            <canvas width={canvasRect.x} height={canvasRect.y}></canvas>
+            <canvas height={canvasRect.y} width={canvasRect.x}></canvas>
             <a
-                data-id="color-anchor"
-                href="javascript:void(0)"
-                class="slds-color-picker__range-indicator"
                 style="position: absolute; display: inline"
-                aria-live="assertive"
+                class="slds-color-picker__range-indicator"
+                href="javascript:void(0)"
                 aria-atomic="true"
                 aria-describedby="color-picker-instructions"
-                onmousedrag={handlePreventDefault}
-                onmousedown={handlePreventDefault}
-                onkeydown={handleKeydown}
+                data-id="color-anchor"
+                aria-live="assertive"
                 onclick={handlePreventDefault}
+                onkeydown={handleKeydown}
+                onmousedown={handlePreventDefault}
+                onmousedrag={handlePreventDefault}
             >
                 <span class="slds-assistive-text">
                     {computedSaturationAndBrightness}
@@ -35,23 +35,23 @@
                 {i18n.hueInput}
             </label>
             <input
-                data-id="hue-slider"
-                type="range"
-                min="0"
-                max="360"
                 class="slds-color-picker__hue-slider"
                 id="rainbow"
-                value={_hueValue}
+                max="360"
+                min="0"
+                type="range"
+                value={hueValue}
+                data-id="hue-slider"
                 onmousedown={handleDrag}
-                onchange={onChange}
+                onchange={handleChange}
             />
             <span
+                style={thumbnailStyle}
                 class="slds-swatch"
                 data-id="color-preview"
-                style={thumbnailStyle}
             >
                 <span class="slds-assistive-text" aria-hidden="true">
-                    {_hex}
+                    {hex}
                 </span>
             </span>
         </div>
@@ -60,20 +60,20 @@
             <!--HEX-->
             <div class="slds-form-element slds-color-picker__input-custom-hex">
                 <label class="slds-form-element__label" for="input"
-                    >{i18n.hexLabel}</label
-                >
+                    >{i18n.hexLabel}
+                </label>
                 <div class="slds-form-element__control">
                     <input
-                        data-primary-input
-                        type="text"
-                        id="input"
                         class="slds-input"
-                        minlength="4"
+                        id="input"
                         maxlength="7"
+                        minlength="4"
                         pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
                         placeholder="#FFFFFF"
+                        type="text"
+                        value={hex}
+                        data-primary-input
                         onchange={handleHexChange}
-                        value={_hex}
                     />
                 </div>
             </div>
@@ -84,13 +84,13 @@
                 </label>
                 <div class="slds-form-element__control">
                     <input
-                        type="text"
-                        id="red"
-                        data-color-name="red"
                         class="slds-input"
+                        id="red"
                         placeholder="255"
+                        type="text"
+                        value={rgb.red}
+                        data-color-name="red"
                         onchange={handleRgbChange}
-                        value={_rgb.red}
                     />
                 </div>
             </div>
@@ -101,13 +101,13 @@
                 </label>
                 <div class="slds-form-element__control">
                     <input
-                        type="text"
-                        id="green"
-                        data-color-name="green"
                         class="slds-input"
+                        id="green"
                         placeholder="255"
+                        type="text"
+                        value={rgb.green}
+                        data-color-name="green"
                         onchange={handleRgbChange}
-                        value={_rgb.green}
                     />
                 </div>
             </div>
@@ -118,22 +118,23 @@
                 </label>
                 <div class="slds-form-element__control">
                     <input
-                        type="text"
-                        id="blue"
-                        data-color-name="blue"
                         class="slds-input"
+                        id="blue"
                         placeholder="255"
+                        type="text"
+                        value={rgb.blue}
+                        data-color-name="blue"
                         onchange={handleRgbChange}
-                        value={_rgb.blue}
                     />
                 </div>
             </div>
         </div>
-        <!-- Error Message  -->
-        <template if:true={_errorMessage}>
-            <div class="slds-form-element__help" aria-live="assertive">
-                {_errorMessage}
-            </div>
-        </template>
+        <div
+            if:true={errorMessage}
+            class="slds-form-element__help"
+            aria-live="assertive"
+        >
+            {errorMessage}
+        </div>
     </div>
 </template>

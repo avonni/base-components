@@ -309,6 +309,7 @@ export default {
         hideSelectedItems: false,
         iconSize: 'medium',
         isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         resetButtonLabel: 'Reset',
         type: 'list',
         variant: 'horizontal'

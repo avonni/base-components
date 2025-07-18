@@ -94,6 +94,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     start = DEFAULT_SELECTED_DATE;
     visibleInterval;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.setStartToBeginningOfUnit();
@@ -368,25 +374,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
-    get cellsGridClass() {
-        return classSet('slds-grid avonni-scheduler__flex-col slds-scrollable')
-            .add({
-                'slds-border_top slds-p-top_small avonni-scheduler-calendar__visible-scrollbar':
-                    !this.isMonth,
-                'avonni-scheduler__calendar-month-grid': this.isMonth
-            })
-            .toString();
-    }
-
-    get columnClass() {
-        return classSet('avonni-scheduler__calendar-column')
-            .add({
-                'avonni-scheduler__calendar-column_day':
-                    this.isDay && this.timeSpan.unit === 1
-            })
-            .toString();
-    }
-
     /**
      * Formatted available months, used to generate the calendars in the year view.
      *
@@ -410,12 +397,116 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
-    get dayHeaderWrapperClass() {
+    /**
+     * Computed CSS class for the cells grid.
+     *
+     * @type {string}
+     */
+    get computedCellsGridClass() {
+        return classSet('slds-grid avonni-scheduler__flex-col slds-scrollable')
+            .add({
+                'slds-border_top slds-p-top_small avonni-scheduler-calendar__visible-scrollbar':
+                    !this.isMonth,
+                'avonni-scheduler__calendar-month-grid': this.isMonth
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS class for the column.
+     *
+     * @type {string}
+     */
+    get computedColumnClass() {
+        return classSet('avonni-scheduler__calendar-column')
+            .add({
+                'avonni-scheduler__calendar-column_day':
+                    this.isDay && this.timeSpan.unit === 1
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS class for the day header wrapper.
+     *
+     * @type {string}
+     */
+    get computedDayHeaderWrapperClass() {
         return classSet(
             'avonni-scheduler__flex-col slds-scrollable_y avonni-scheduler__calendar-horizontal-header'
         ).add({
             'avonni-scheduler-calendar__visible-scrollbar': !this.isMonth
         });
+    }
+
+    /**
+     * Computed CSS class for the horizontal header wrapper.
+     *
+     * @type {string}
+     */
+    get computedHorizontalHeaderWrapperClass() {
+        return classSet(
+            'avonni-scheduler__calendar-day-header-wrapper slds-theme_default slds-is-relative slds-grid'
+        )
+            .add({
+                'avonni-scheduler__calendar-day-header-wrapper_month':
+                    this.isMonth
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the right panel.
+     *
+     * @type {string}
+     */
+    get computedMainPanelClass() {
+        return classSet(
+            'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section slds-scrollable'
+        )
+            .add({
+                'avonni-scheduler__main-border_left':
+                    this.hideSidePanel || this.sidePanelPosition === 'right',
+                'avonni-scheduler__main-border_right':
+                    this.hideSidePanel || this.sidePanelPosition === 'left'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the schedule wrapper.
+     *
+     * @type {string}
+     */
+    get computedScheduleWrapperClass() {
+        return classSet(
+            'slds-grid avonni-primitive-scheduler-calendar__inherit-height'
+        )
+            .add({
+                'slds-grid_vertical': !this.isYear,
+                'slds-wrap slds-scrollable_y': this.isYear
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the side panel.
+     *
+     * @type {string}
+     */
+    get computedSidePanelClass() {
+        return classSet(
+            'slds-scrollable avonni-scheduler__panel avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
+        )
+            .add({
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'avonni-scheduler__main-border_left':
+                    this.sidePanelPosition === 'left' || !this.showSplitter,
+                'avonni-scheduler__main-border_right':
+                    this.sidePanelPosition === 'right' || !this.showSplitter
+            })
+            .toString();
     }
 
     /**
@@ -455,22 +546,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             unit: 'day',
             span: this.timeSpan.span
         };
-    }
-
-    /**
-     * Computed CSS class for the horizontal header wrapper.
-     *
-     * @type {string}
-     */
-    get horizontalHeaderWrapperClass() {
-        return classSet(
-            'avonni-scheduler__calendar-day-header-wrapper slds-theme_default slds-is-relative slds-grid'
-        )
-            .add({
-                'avonni-scheduler__calendar-day-header-wrapper_month':
-                    this.isMonth
-            })
-            .toString();
     }
 
     /**
@@ -542,6 +617,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Variant of the main grid events.
+     *
+     * @type {string}
+     */
+    get mainGridEventVariant() {
+        return this.isMonth ? 'calendar-month' : 'calendar-vertical';
+    }
+
+    /**
      * Computed header cells used by the multi-day primitive events visible in the day and week view.
      *
      * @type {object}
@@ -602,43 +686,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Computed CSS classes for the right panel.
+     * HTML element of the popover.
      *
-     * @type {string}
+     * @type {HTMLElement}
      */
-    get mainPanelClass() {
-        return classSet(
-            'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section slds-scrollable'
-        )
-            .add({
-                'avonni-scheduler__main-border_left':
-                    this.hideSidePanel || this.sidePanelPosition === 'right',
-                'avonni-scheduler__main-border_right':
-                    this.hideSidePanel || this.sidePanelPosition === 'left'
-            })
-            .toString();
-    }
-
     get popoverElement() {
         return this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
         );
-    }
-
-    /**
-     * Computed CSS classes for the schedule wrapper.
-     *
-     * @type {string}
-     */
-    get scheduleWrapperClass() {
-        return classSet(
-            'slds-grid avonni-primitive-scheduler-calendar__inherit-height'
-        )
-            .add({
-                'slds-grid_vertical': !this.isYear,
-                'slds-wrap slds-scrollable_y': this.isYear
-            })
-            .toString();
     }
 
     /**
@@ -691,35 +746,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.multiDayEvents.length &&
             this.multiDayEventsCellGroup.cells
         );
-    }
-
-    /**
-     * Computed CSS classes for the side panel.
-     *
-     * @type {string}
-     */
-    get sidePanelClass() {
-        return classSet(
-            'slds-scrollable avonni-scheduler__panel avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
-        )
-            .add({
-                'avonni-scheduler__panel_collapsed': this._isCollapsed,
-                'avonni-scheduler__panel_expanded': this._isExpanded,
-                'avonni-scheduler__main-border_left':
-                    this.sidePanelPosition === 'left' || !this.showSplitter,
-                'avonni-scheduler__main-border_right':
-                    this.sidePanelPosition === 'right' || !this.showSplitter
-            })
-            .toString();
-    }
-
-    /**
-     * Variant of the main grid events.
-     *
-     * @type {string}
-     */
-    get mainGridEventVariant() {
-        return this.isMonth ? 'calendar-month' : 'calendar-vertical';
     }
 
     /**
@@ -810,176 +836,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Initialize the event data.
-     */
-    initEvents() {
-        const computeEvents = () => {
-            super.initEvents();
-            this._eventData.isCalendar = true;
-            this._eventData.isVertical = true;
-            this._eventData.smallestHeader = this.hourHeaders[0];
-            this._eventData.initEvents();
-
-            if (!this.hideSidePanel) {
-                this.initLeftPanelCalendarMarkedDates();
-            }
-
-            if (this.isDay || this.isWeek) {
-                // Create a cell group for the multi day events row
-                const referenceCells = this.columns.map((col) => {
-                    return {
-                        start: col.start.ts,
-                        end: col.end.ts - 1
-                    };
-                });
-                this.multiDayEventsCellGroup = new Column({
-                    referenceCells,
-                    timezone: this.timezone
-                });
-                this._eventData.multiDayEventsCellGroup =
-                    this.multiDayEventsCellGroup;
-            }
-            this.updateColumnEvents();
-        };
-
-        if (this.events.length > 20) {
-            this._eventsAreRendering = true;
-            this._renderAnimationFrames.forEach(cancelAnimationFrame);
-            this._renderAnimationFrames[0] = requestAnimationFrame(() => {
-                this._renderAnimationFrames[1] = requestAnimationFrame(() => {
-                    this._eventsAreRendering = false;
-                    computeEvents();
-                });
-            });
-        } else {
-            this._eventsAreRendering = false;
-            computeEvents();
-        }
-    }
-
-    /**
-     * Initialize the headers.
-     */
-    initHeaders() {
-        if (this.isYear) {
-            this.initEvents();
-            this._dayHeadersLoading = false;
-            this._hourHeadersLoading = false;
-            return;
-        }
-
-        this._dayHeadersLoading = true;
-        this._hourHeadersLoading = true;
-
-        // Reset the header cells used by the events to position themselves
-        this.eventHeaderCells = {};
-
-        // Start at the begining of the first day
-        let startDate = this.createDate(this.start).startOf('day');
-
-        // Create a column for each available day
-        const columns = [];
-        const availableDays = this.getVisibleWeekdays(startDate);
-
-        for (let i = 0; i < availableDays.length; i++) {
-            const column = {
-                events: [],
-                referenceCells: []
-            };
-            let weekday = availableDays[i];
-
-            if (startDate.weekday === 7 && weekday !== 0) {
-                // Make sure the day will be set to the next weekday,
-                // not the previous weekday
-                startDate = addToDate(startDate, 'day', 1);
-            } else if (weekday === 0) {
-                // Luxon's Sunday is 7, not 0
-                weekday = 7;
-            }
-            startDate = startDate.set({ weekday });
-
-            if (this.isMonth) {
-                const firstColumn = columns[0];
-                const minNumberOfCells = firstColumn
-                    ? firstColumn.cells.length
-                    : 0;
-                this.computeDayCells(column, startDate, minNumberOfCells);
-            } else {
-                this.computeHourCells(column, startDate);
-            }
-            columns.push(new Column({ ...column, timezone: this.timezone }));
-        }
-        this.columns = columns;
-
-        if (this.isMonth) {
-            this.initMonthTimeBoundaries();
-        }
-    }
-
-    /**
-     * Initialize the event header cells and the visible interval for the month view.
-     */
-    initMonthTimeBoundaries() {
-        // Set the vertical event header reference cells
-        const lastColumn = this.columns[this.columns.length - 1];
-        const yAxis = deepCopy(this.columns[0].referenceCells);
-        yAxis.forEach((cell, index) => {
-            const lastColumnCell = lastColumn.referenceCells[index];
-            cell.end = lastColumnCell.end;
-        });
-        this.eventHeaderCells.yAxis = yAxis;
-
-        // Set the horizontal event header reference cells
-        this.eventHeaderCells.xAxis = this.columns.map((col) => {
-            const cells = col.referenceCells;
-            const lastCell = cells[cells.length - 1];
-            return {
-                start: cells[0].start,
-                end: lastCell.end
-            };
-        });
-
-        // Set the visible interval
-        const lastCell = lastColumn.cells[lastColumn.cells.length - 1];
-        const end = this.createDate(lastCell.end);
-        this.visibleInterval = intervalFrom(this.start, end);
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-schedule-wrapper"]'
-        );
-        if (!wrapper) {
-            return null;
-        }
-        const resizeObserver = new AvonniResizeObserver(wrapper, () => {
-            if (this.isMonth) {
-                this.updateCellHeight();
-            }
-            this.updateCellWidth();
-            this.updateVisibleWidth();
-        });
-        if (this.leftPanelContent) {
-            resizeObserver.observe(this.leftPanelContent);
-        }
-        return resizeObserver;
-    }
-
-    /**
-     * Initialize the resources.
-     */
-    initResources() {
-        this.computedResources = this.resources.map((res) => {
-            return { ...res, height: 0, data: { res } };
-        });
-    }
 
     /**
      * Center the calendars visible in the year view on their month.
@@ -1278,6 +1134,176 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Initialize the event data.
+     */
+    initEvents() {
+        const computeEvents = () => {
+            super.initEvents();
+            this._eventData.isCalendar = true;
+            this._eventData.isVertical = true;
+            this._eventData.smallestHeader = this.hourHeaders[0];
+            this._eventData.initEvents();
+
+            if (!this.hideSidePanel) {
+                this.initLeftPanelCalendarMarkedDates();
+            }
+
+            if (this.isDay || this.isWeek) {
+                // Create a cell group for the multi day events row
+                const referenceCells = this.columns.map((col) => {
+                    return {
+                        start: col.start.ts,
+                        end: col.end.ts - 1
+                    };
+                });
+                this.multiDayEventsCellGroup = new Column({
+                    referenceCells,
+                    timezone: this.timezone
+                });
+                this._eventData.multiDayEventsCellGroup =
+                    this.multiDayEventsCellGroup;
+            }
+            this.updateColumnEvents();
+        };
+
+        if (this.events.length > 20) {
+            this._eventsAreRendering = true;
+            this._renderAnimationFrames.forEach(cancelAnimationFrame);
+            this._renderAnimationFrames[0] = requestAnimationFrame(() => {
+                this._renderAnimationFrames[1] = requestAnimationFrame(() => {
+                    this._eventsAreRendering = false;
+                    computeEvents();
+                });
+            });
+        } else {
+            this._eventsAreRendering = false;
+            computeEvents();
+        }
+    }
+
+    /**
+     * Initialize the headers.
+     */
+    initHeaders() {
+        if (this.isYear) {
+            this.initEvents();
+            this._dayHeadersLoading = false;
+            this._hourHeadersLoading = false;
+            return;
+        }
+
+        this._dayHeadersLoading = true;
+        this._hourHeadersLoading = true;
+
+        // Reset the header cells used by the events to position themselves
+        this.eventHeaderCells = {};
+
+        // Start at the begining of the first day
+        let startDate = this.createDate(this.start).startOf('day');
+
+        // Create a column for each available day
+        const columns = [];
+        const availableDays = this.getVisibleWeekdays(startDate);
+
+        for (let i = 0; i < availableDays.length; i++) {
+            const column = {
+                events: [],
+                referenceCells: []
+            };
+            let weekday = availableDays[i];
+
+            if (startDate.weekday === 7 && weekday !== 0) {
+                // Make sure the day will be set to the next weekday,
+                // not the previous weekday
+                startDate = addToDate(startDate, 'day', 1);
+            } else if (weekday === 0) {
+                // Luxon's Sunday is 7, not 0
+                weekday = 7;
+            }
+            startDate = startDate.set({ weekday });
+
+            if (this.isMonth) {
+                const firstColumn = columns[0];
+                const minNumberOfCells = firstColumn
+                    ? firstColumn.cells.length
+                    : 0;
+                this.computeDayCells(column, startDate, minNumberOfCells);
+            } else {
+                this.computeHourCells(column, startDate);
+            }
+            columns.push(new Column({ ...column, timezone: this.timezone }));
+        }
+        this.columns = columns;
+
+        if (this.isMonth) {
+            this.initMonthTimeBoundaries();
+        }
+    }
+
+    /**
+     * Initialize the event header cells and the visible interval for the month view.
+     */
+    initMonthTimeBoundaries() {
+        // Set the vertical event header reference cells
+        const lastColumn = this.columns[this.columns.length - 1];
+        const yAxis = deepCopy(this.columns[0].referenceCells);
+        yAxis.forEach((cell, index) => {
+            const lastColumnCell = lastColumn.referenceCells[index];
+            cell.end = lastColumnCell.end;
+        });
+        this.eventHeaderCells.yAxis = yAxis;
+
+        // Set the horizontal event header reference cells
+        this.eventHeaderCells.xAxis = this.columns.map((col) => {
+            const cells = col.referenceCells;
+            const lastCell = cells[cells.length - 1];
+            return {
+                start: cells[0].start,
+                end: lastCell.end
+            };
+        });
+
+        // Set the visible interval
+        const lastCell = lastColumn.cells[lastColumn.cells.length - 1];
+        const end = this.createDate(lastCell.end);
+        this.visibleInterval = intervalFrom(this.start, end);
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        if (!wrapper) {
+            return null;
+        }
+        const resizeObserver = new AvonniResizeObserver(wrapper, () => {
+            if (this.isMonth) {
+                this.updateCellHeight();
+            }
+            this.updateCellWidth();
+            this.updateVisibleWidth();
+        });
+        if (this.leftPanelContent) {
+            resizeObserver.observe(this.leftPanelContent);
+        }
+        return resizeObserver;
+    }
+
+    /**
+     * Initialize the resources.
+     */
+    initResources() {
+        this.computedResources = this.resources.map((res) => {
+            return { ...res, height: 0, data: { res } };
+        });
+    }
+
+    /**
      * Check if a cell is disabled.
      *
      * @param {object} cell Cell to check.
@@ -1449,6 +1475,58 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Update the event occurrences offset in the day and week view.
+     */
+    updateDayAndWeekEventsOffset() {
+        this.columns.forEach((column) => {
+            // Update the single day occurrences offset
+            const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"]`;
+            this.updateOccurrencesOffset(column, selector, true);
+
+            if (this.multiDayEvents.length) {
+                // Update the multi-day occurrences offset
+                const multiDaySelector =
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]';
+                const rowHeight = this.updateOccurrencesOffset(
+                    this.multiDayEventsCellGroup,
+                    multiDaySelector
+                );
+                const height = rowHeight || this.cellHeight;
+                this.multiDayCellHeight = height;
+                this.multiDayWrapper.style.height = `${height}px`;
+            } else {
+                this.multiDayWrapper.style.height = `15px`;
+            }
+        });
+    }
+
+    /**
+     * Update the event occurrences offset in the month view.
+     */
+    updateMonthEventsOffset() {
+        this.columns.forEach((column) => {
+            column.cells.forEach((cell) => {
+                const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"][data-day="${cell.day}"][data-month="${cell.month}"]`;
+                const occurrences = Array.from(
+                    this.template.querySelectorAll(selector)
+                );
+                const placeholders = this.getMultiDayPlaceholdersInCell(cell);
+                const allOccurrences = occurrences.concat(placeholders);
+
+                if (allOccurrences.length) {
+                    const cellSize = this.cellHeight - MONTH_DAY_LABEL_HEIGHT;
+                    updateOccurrencesOffset.call(this, {
+                        occurrenceElements: allOccurrences,
+                        isVertical: false,
+                        isCalendarMonth: this.isMonth,
+                        cellSize
+                    });
+                }
+            });
+        });
+    }
+
+    /**
      * Update the multi-day row object events.
      */
     updateMultiDayCellGroupEvents() {
@@ -1536,58 +1614,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Update the event occurrences offset in the day and week view.
-     */
-    updateDayAndWeekEventsOffset() {
-        this.columns.forEach((column) => {
-            // Update the single day occurrences offset
-            const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"]`;
-            this.updateOccurrencesOffset(column, selector, true);
-
-            if (this.multiDayEvents.length) {
-                // Update the multi-day occurrences offset
-                const multiDaySelector =
-                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]';
-                const rowHeight = this.updateOccurrencesOffset(
-                    this.multiDayEventsCellGroup,
-                    multiDaySelector
-                );
-                const height = rowHeight || this.cellHeight;
-                this.multiDayCellHeight = height;
-                this.multiDayWrapper.style.height = `${height}px`;
-            } else {
-                this.multiDayWrapper.style.height = `15px`;
-            }
-        });
-    }
-
-    /**
-     * Update the event occurrences offset in the month view.
-     */
-    updateMonthEventsOffset() {
-        this.columns.forEach((column) => {
-            column.cells.forEach((cell) => {
-                const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"][data-day="${cell.day}"][data-month="${cell.month}"]`;
-                const occurrences = Array.from(
-                    this.template.querySelectorAll(selector)
-                );
-                const placeholders = this.getMultiDayPlaceholdersInCell(cell);
-                const allOccurrences = occurrences.concat(placeholders);
-
-                if (allOccurrences.length) {
-                    const cellSize = this.cellHeight - MONTH_DAY_LABEL_HEIGHT;
-                    updateOccurrencesOffset.call(this, {
-                        occurrenceElements: allOccurrences,
-                        isVertical: false,
-                        isCalendarMonth: this.isMonth,
-                        cellSize
-                    });
-                }
-            });
-        });
-    }
-
-    /**
      * Update the visible width of the calendar, used by the day headers in the day, week and month views.
      */
     updateVisibleWidth() {
@@ -1657,11 +1683,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle a click on a cell. Dispatch a schedule click event.
+     *
+     * @param {Event} event `click` event fired by a cell.
+     */
     handleClick(event) {
         const { start, end } = event.target.dataset;
         this.dispatchScheduleClick({ from: start, to: end });
     }
 
+    /**
+     * Handle the close of the popover.
+     *
+     * @param {Event} event `click` event fired by the popover.
+     */
     handleClosePopover(event) {
         if (this.isYear && this._popoverDate) {
             const activeElement = this.template.activeElement;
@@ -1767,6 +1803,38 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         } else {
             this.cellWidth = cellSize;
         }
+    }
+
+    /**
+     * Handle a mouse down on a hidden event: in the month view "Show more" popover, or as a placeholder.
+     *
+     * @param {Event} mouseEvent
+     */
+    handleHiddenEventMouseDown(mouseEvent) {
+        if (this.isYear) {
+            return;
+        }
+        this._mouseIsDown = true;
+        const key =
+            mouseEvent.currentTarget.dataset.key || mouseEvent.detail.key;
+        const draggedEvent = this.template.querySelector(
+            `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-key="${key}"]`
+        );
+        const eventInfo = {
+            currentTarget: draggedEvent,
+            detail: mouseEvent.detail
+        };
+        this._eventData.handleExistingEventMouseDown(eventInfo);
+        this.dispatchHidePopovers();
+        this._centerDraggedEvent = true;
+        this._showPlaceholderOccurrence = true;
+
+        requestAnimationFrame(() => {
+            // If the event was only visible in the popover,
+            // or if the main event was hidden,
+            // we need to update the dragged element after render
+            this._eventData.setDraggedEvent();
+        });
     }
 
     /**
@@ -2050,38 +2118,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         this._showPlaceholderOccurrence = true;
         this.handleHiddenEventMouseDown(event);
-    }
-
-    /**
-     * Handle a mouse down on a hidden event: in the month view "Show more" popover, or as a placeholder.
-     *
-     * @param {Event} mouseEvent
-     */
-    handleHiddenEventMouseDown(mouseEvent) {
-        if (this.isYear) {
-            return;
-        }
-        this._mouseIsDown = true;
-        const key =
-            mouseEvent.currentTarget.dataset.key || mouseEvent.detail.key;
-        const draggedEvent = this.template.querySelector(
-            `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-key="${key}"]`
-        );
-        const eventInfo = {
-            currentTarget: draggedEvent,
-            detail: mouseEvent.detail
-        };
-        this._eventData.handleExistingEventMouseDown(eventInfo);
-        this.dispatchHidePopovers();
-        this._centerDraggedEvent = true;
-        this._showPlaceholderOccurrence = true;
-
-        requestAnimationFrame(() => {
-            // If the event was only visible in the popover,
-            // or if the main event was hidden,
-            // we need to update the dragged element after render
-            this._eventData.setDraggedEvent();
-        });
     }
 
     /**

@@ -6,30 +6,32 @@ customElements.define(
 );
 
 export const ColorPalette = ({
-    disabled,
-    readOnly,
-    isLoading,
     colors,
     columns,
+    disabled,
     groups,
-    showCheckmark,
     hideOutline,
-    tileWidth,
+    isLoading,
+    loadingStateAlternativeText,
+    readOnly,
+    showCheckmark,
     tileHeight,
+    tileWidth,
     value,
     variant
 }) => {
     const element = document.createElement('ac-base-color-palette');
-    element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.isLoading = isLoading;
     element.colors = colors;
     element.columns = columns;
+    element.disabled = disabled;
     element.groups = groups;
-    element.showCheckmark = showCheckmark;
     element.hideOutline = hideOutline;
-    element.tileWidth = tileWidth;
+    element.isLoading = isLoading;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.readOnly = readOnly;
+    element.showCheckmark = showCheckmark;
     element.tileHeight = tileHeight;
+    element.tileWidth = tileWidth;
     element.value = value;
     element.variant = variant;
     return element;

@@ -12,38 +12,9 @@ import { equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import Item from './item';
 
-const ICON_POSITIONS = {
-    valid: ['left', 'right'],
-    default: 'right'
-};
-
-const DIVIDER = {
-    valid: ['none', 'top', 'bottom', 'around'],
-    default: 'none'
-};
-
-const DEFAULT_LOAD_MORE_OFFSET = 20;
-
-const IMAGE_SIZE = {
-    valid: ['small', 'medium', 'large'],
-    default: 'large'
-};
-const IMAGE_CROP_FIT = {
-    valid: ['cover', 'contain', 'fill', 'none'],
-    default: 'cover'
-};
-const CROP_POSITION_DEFAULT = 50;
-const IMAGE_POSITION = {
-    valid: ['top', 'bottom', 'left', 'right', 'background', 'overlay'],
-    default: 'left'
-};
-
-const VARIANTS = {
-    valid: ['base', 'single-line', 'check-list'],
-    default: 'base'
-};
-
 const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+
+const CROP_POSITION_DEFAULT = 50;
 
 const DEFAULT_FIELD_COLUMNS = {
     default: 12,
@@ -51,10 +22,44 @@ const DEFAULT_FIELD_COLUMNS = {
     medium: 6,
     large: 4
 };
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_NEXT_BUTTON_ALTERNATIVE_TEXT = 'Next Items';
+const DEFAULT_PREVIOUS_BUTTON_ALTERNATIVE_TEXT = 'Previous Items';
+
+const DIVIDER = {
+    valid: ['none', 'top', 'bottom', 'around'],
+    default: 'none'
+};
 
 const FIELD_VARIANTS = {
     default: 'standard',
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+};
+
+const ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'right'
+};
+
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
+};
+
+const IMAGE_POSITION = {
+    valid: ['top', 'bottom', 'left', 'right', 'background', 'overlay'],
+    default: 'left'
+};
+
+const IMAGE_SIZE = {
+    valid: ['small', 'medium', 'large'],
+    default: 'large'
+};
+
+const VARIANTS = {
+    valid: ['base', 'single-line', 'check-list'],
+    default: 'base'
 };
 
 /**
@@ -79,6 +84,29 @@ export default class List extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Message displayed while the list is in the loading state.
+     *
+     * @type {string}
+     * @public
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    /**
+     * 	Alternative text for the next button.
+     *
+     * @type {string}
+     * @public
+     */
+    @api nextButtonAlternativeText = DEFAULT_NEXT_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the previous button.
+     *
+     * @type {string}
+     * @public
+     */
+    @api previousButtonAlternativeText =
+        DEFAULT_PREVIOUS_BUTTON_ALTERNATIVE_TEXT;
     /**
      * If present, displays the number of checked items out of the total.
      *
@@ -186,6 +214,41 @@ export default class List extends LightningElement {
     computedItems = [];
     computedMediaActions = [];
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
+    connectedCallback() {
+        this.updateColumnCount();
+        this.setItemProperties();
+        this._connected = true;
+
+        /**
+         * The event fired when the list is inserted in the DOM.
+         *
+         * @event
+         * @name privatelistconnected
+         * @param {object} callbacks Object containing the setDisplayWidth callback.
+         * @param {string} name Unique name of the list.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelistconnected', {
+                detail: {
+                    callbacks: {
+                        setDisplayWidth: this.setDisplayWidth.bind(this)
+                    },
+                    name: this._name
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
+    }
+
     renderedCallback() {
         if ((this._dragging || this._keyboardDragged) && this._draggedElement) {
             this.recoverDraggedElement();
@@ -220,35 +283,6 @@ export default class List extends LightningElement {
         ) {
             this.removeResizeObserver();
         }
-    }
-
-    connectedCallback() {
-        this.updateColumnCount();
-        this.setItemProperties();
-        this._connected = true;
-
-        /**
-         * The event fired when the list is inserted in the DOM.
-         *
-         * @event
-         * @name privatelistconnected
-         * @param {object} callbacks Object containing the setDisplayWidth callback.
-         * @param {string} name Unique name of the list.
-         * @bubbles
-         * @composed
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatelistconnected', {
-                detail: {
-                    callbacks: {
-                        setDisplayWidth: this.setDisplayWidth.bind(this)
-                    },
-                    name: this._name
-                },
-                composed: true,
-                bubbles: true
-            })
-        );
     }
 
     disconnectedCallback() {

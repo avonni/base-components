@@ -13,6 +13,7 @@ export const ButtonIconPopover = ({
     iconName,
     iconClass,
     iconSrc,
+    isButtonLoading,
     isLoading,
     loadingStateAlternativeText,
     placement,
@@ -32,6 +33,7 @@ export const ButtonIconPopover = ({
     element.iconName = iconName;
     element.iconClass = iconClass;
     element.iconSrc = iconSrc;
+    element.isButtonLoading = isButtonLoading;
     element.isLoading = isLoading;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.placement = placement;

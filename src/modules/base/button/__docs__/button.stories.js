@@ -92,8 +92,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description:
-                'Setting it to true show a loading spinner over the button.',
+            description: 'If present, shows a loading spinner over the button.',
             table: {
                 type: { summary: 'boolean' }
             }
@@ -105,6 +104,18 @@ export default {
             description: 'Optional text to be shown on the button.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the button is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         name: {
@@ -182,6 +193,8 @@ export default {
         disabled: false,
         iconPosition: 'left',
         iconSize: 'x-small',
+        isButtonLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         stretch: false,
         type: 'button',
         variant: 'neutral'

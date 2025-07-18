@@ -19,26 +19,26 @@
             </div>
             <button
                 class={computedButtonClass}
-                aria-haspopup="true"
                 aria-expanded="true"
+                aria-haspopup="true"
                 disabled={isDisabled}
-                data-element-id="button"
                 type="button"
+                data-element-id="button"
+                onblur={handleStepBlur}
                 onclick={handleStepClick}
+                onfocus={handleStepFocus}
                 onmouseenter={handleStepMouseEnter}
                 onmouseleave={handleStepMouseLeave}
-                onfocus={handleStepFocus}
-                onblur={handleStepBlur}
             >
                 <c-primitive-icon
+                    if:true={stepIconName}
                     class="
                         avonni-progress-step__icon_margin-bottom
                         avonni-progress-step__icon
                     "
-                    if:true={stepIconName}
-                    svg-class="slds-icon slds-icon-text-default"
                     icon-name={stepIconName}
                     size="xx-small"
+                    svg-class="slds-icon slds-icon-text-default"
                     data-element-id="avonni-primitive-icon-step"
                 ></c-primitive-icon>
                 <div
@@ -47,112 +47,107 @@
                 ></div>
             </button>
             <template if:true={displayPopover}>
-                <template if:false={popoverButton}>
-                    <div
-                        class={computedPopoverClass}
-                        onclick={handleStepPopoverClick}
-                    >
-                        <div class="avonni-progress-step_overflow-hidden">
-                            <div class={computedPopoverBody}>
-                                <div
-                                    class="avonni-progress-step__popover-text"
-                                    if:true={showPopoverText}
+                <div
+                    if:false={popoverButton}
+                    class={computedPopoverClass}
+                    onclick={handleStepPopoverClick}
+                >
+                    <div class="avonni-progress-step_overflow-hidden">
+                        <div class={computedPopoverBodyClass}>
+                            <div
+                                if:true={showPopoverText}
+                                class="avonni-progress-step__popover-text"
+                            >
+                                <p
+                                    if:true={popoverLabel}
+                                    class="slds-text-title_bold"
+                                    data-element-id="p-popover-label"
                                 >
-                                    <p
-                                        if:true={popoverLabel}
-                                        class="slds-text-title_bold"
-                                        data-element-id="p-popover-label"
-                                    >
-                                        {popoverLabel}
-                                    </p>
-                                    <p
-                                        if:true={popoverDescription}
-                                        class="
-                                            avonni-progress-step__popover-description
-                                        "
-                                        data-element-id="p-popover-description"
-                                    >
-                                        {popoverDescription}
-                                    </p>
-                                </div>
-                                <template if:true={showPopoverIcon}>
-                                    <c-primitive-icon
-                                        icon-name={popoverIconName}
-                                        size={computedPopoverIconSize}
-                                        src={popoverIconSrc}
-                                        variant={primitivePopoverIconVariant}
-                                        data-element-id="avonni-primitive-icon-popover-no-button"
-                                    ></c-primitive-icon>
-                                </template>
+                                    {popoverLabel}
+                                </p>
+                                <p
+                                    if:true={popoverDescription}
+                                    class="
+                                        avonni-progress-step__popover-description
+                                    "
+                                    data-element-id="p-popover-description"
+                                >
+                                    {popoverDescription}
+                                </p>
                             </div>
+                            <c-primitive-icon
+                                if:true={showPopoverIcon}
+                                icon-name={popoverIconName}
+                                size={popoverSize}
+                                src={popoverIconSrc}
+                                variant={primitivePopoverIconVariant}
+                                data-element-id="avonni-primitive-icon-popover-no-button"
+                            ></c-primitive-icon>
                         </div>
                     </div>
-                </template>
-                <template if:true={popoverButton}>
-                    <button
-                        class={computedPopoverClass}
-                        disabled={isDisabled}
-                        type="button"
-                        data-element-id="button-propover"
-                        onclick={handleStepPopoverClick}
-                    >
-                        <div class="avonni-progress-step_overflow-hidden">
-                            <div class={computedPopoverBody}>
-                                <div
-                                    class="avonni-progress-step__popover-text"
-                                    if:true={showPopoverText}
-                                >
-                                    <p
-                                        if:true={popoverLabel}
-                                        class="slds-text-title_bold"
-                                        data-element-id="p-popover-label"
-                                    >
-                                        {popoverLabel}
-                                    </p>
-                                    <p
-                                        if:true={popoverDescription}
-                                        class="
-                                            avonni-progress-step__popover-description
-                                        "
-                                        data-element-id="p-popover-description"
-                                    >
-                                        {popoverDescription}
-                                    </p>
-                                </div>
-                                <template if:true={showPopoverIcon}>
-                                    <c-primitive-icon
-                                        icon-name={popoverIconName}
-                                        size={computedPopoverIconSize}
-                                        src={popoverIconSrc}
-                                        variant={primitivePopoverIconVariant}
-                                        class="slds-current-color"
-                                        data-element-id="avonni-primitive-icon-popover-button"
-                                    ></c-primitive-icon>
-                                </template>
-                            </div>
-                        </div>
-                        <template if:true={showPopoverIconWhenHover}>
+                </div>
+                <button
+                    if:true={popoverButton}
+                    class={computedPopoverClass}
+                    disabled={isDisabled}
+                    type="button"
+                    data-element-id="button-propover"
+                    onclick={handleStepPopoverClick}
+                >
+                    <div class="avonni-progress-step_overflow-hidden">
+                        <div class={computedPopoverBodyClass}>
                             <div
-                                class="
-                                    avonni-progress-step__popover-icon-hover
-                                    avonni-progress-step__icon_color-brand
-                                "
+                                if:true={showPopoverText}
+                                class="avonni-progress-step__popover-text"
                             >
-                                <c-primitive-icon
-                                    icon-name={popoverIconNameWhenHover}
-                                    src={popoverIconSrcWhenHover}
-                                    size={computedPopoverIconSize}
-                                    class="slds-current-color"
-                                    data-element-id="avonni-primitive-icon-popover-hover"
-                                ></c-primitive-icon>
+                                <p
+                                    if:true={popoverLabel}
+                                    class="slds-text-title_bold"
+                                    data-element-id="p-popover-label"
+                                >
+                                    {popoverLabel}
+                                </p>
+                                <p
+                                    if:true={popoverDescription}
+                                    class="
+                                        avonni-progress-step__popover-description
+                                    "
+                                    data-element-id="p-popover-description"
+                                >
+                                    {popoverDescription}
+                                </p>
                             </div>
-                        </template>
-                    </button>
-                </template>
+                            <c-primitive-icon
+                                if:true={showPopoverIcon}
+                                class="slds-current-color"
+                                icon-name={popoverIconName}
+                                size={popoverSize}
+                                src={popoverIconSrc}
+                                variant={primitivePopoverIconVariant}
+                                data-element-id="avonni-primitive-icon-popover-button"
+                            ></c-primitive-icon>
+                        </div>
+                    </div>
+                    <div
+                        if:true={showPopoverIconWhenHover}
+                        class="
+                            avonni-progress-step__popover-icon-hover
+                            avonni-progress-step__icon_color-brand
+                        "
+                    >
+                        <c-primitive-icon
+                            class="slds-current-color"
+                            icon-name={popoverIconNameWhenHover}
+                            size={popoverSize}
+                            src={popoverIconSrcWhenHover}
+                            data-element-id="avonni-primitive-icon-popover-hover"
+                        ></c-primitive-icon>
+                    </div>
+                </button>
             </template>
             <span if:true={assistiveText} class="slds-assistive-text"
-                >{assistiveText}</span
-            >
+                >{assistiveText}
+            </span>
             <div
                 if:true={hasBottom}
                 class="avonni-progress-step_position-bottom"
@@ -173,14 +168,14 @@
                 </p>
                 <lightning-button
                     if:true={buttonLabel}
-                    onclick={handleStepButtonClick}
-                    name={buttonName}
-                    label={buttonLabel}
-                    variant={buttonVariant}
                     disabled={isButtonDisabled}
                     icon-name={buttonIconName}
                     icon-position={buttonIconPosition}
+                    label={buttonLabel}
+                    name={buttonName}
+                    variant={buttonVariant}
                     data-element-id="lightning-button"
+                    onclick={handleStepButtonClick}
                 ></lightning-button>
             </div>
         </li>

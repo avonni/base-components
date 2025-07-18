@@ -11,6 +11,7 @@ export const MaxWidthPillContainer = ({
     isCollapsible,
     isExpanded,
     items,
+    showMoreButtonLabel,
     singleLine,
     sortable
 }) => {
@@ -20,6 +21,7 @@ export const MaxWidthPillContainer = ({
     element.isCollapsible = isCollapsible;
     element.isExpanded = isExpanded;
     element.items = items;
+    element.showMoreButtonLabel = showMoreButtonLabel;
     element.singleLine = singleLine;
     element.sortable = sortable;
     return element;

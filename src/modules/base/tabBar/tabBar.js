@@ -1,6 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
 import { classSet, normalizeArray } from 'c/utils';
 
+const DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT = 'Show more';
+
 /**
  * @class
  * @description The Tab Bar component allows the user to separate information into logical sections based on functionality or use case.
@@ -9,19 +11,59 @@ import { classSet, normalizeArray } from 'c/utils';
  * @public
  */
 export default class TabBar extends LightningElement {
+    /**
+     * The alternative text used to describe the show more button.
+     *
+     * @type {string}
+     * @public
+     * @default Show more
+     */
+    @api showMoreButtonAlternativeText =
+        DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT;
+
+    _defaultTab;
     _items = [];
     _labels = [];
     _tabsHidden = 0;
-    _defaultTab;
 
-    @track visibleTabs;
     showHiddenTabsDropdown = false;
+    @track visibleTabs;
     _connected = false;
     _dropdownHasFocus = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.initializeVisibleTabs();
         this._connected = true;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * The value of the active tab by default.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get defaultTab() {
+        return this._defaultTab;
+    }
+    set defaultTab(value) {
+        this._defaultTab = value;
+
+        if (this._connected) {
+            this.initializeVisibleTabs();
+        }
     }
 
     /**
@@ -34,7 +76,6 @@ export default class TabBar extends LightningElement {
     get items() {
         return this._items;
     }
-
     set items(value) {
         this._items = normalizeArray(value);
 
@@ -54,7 +95,6 @@ export default class TabBar extends LightningElement {
     get labels() {
         return this._labels;
     }
-
     set labels(value) {
         this._labels = normalizeArray(value);
 
@@ -73,7 +113,6 @@ export default class TabBar extends LightningElement {
     get tabsHidden() {
         return this._tabsHidden;
     }
-
     set tabsHidden(value) {
         this._tabsHidden = value;
 
@@ -82,24 +121,11 @@ export default class TabBar extends LightningElement {
         }
     }
 
-    /**
-     * The value of the active tab by default.
-     *
-     * @type {string}
-     * @public
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
      */
-    @api
-    get defaultTab() {
-        return this._defaultTab;
-    }
-
-    set defaultTab(value) {
-        this._defaultTab = value;
-
-        if (this._connected) {
-            this.initializeVisibleTabs();
-        }
-    }
 
     /**
      * Whether the tab bar contains tabs.
@@ -110,12 +136,12 @@ export default class TabBar extends LightningElement {
     }
 
     /**
-     * Whether the tabs should be visible.
-     * When the number of tabs hidden matches the number of tabs, this will block the selected tab from appearing in the tab bar.
-     * @type {boolean}
+     * A list of the labels of the hidden tabs.
+     * @type {string[]}
      */
-    get showTabs() {
-        return this.tabsHidden < this.items.length;
+    get hiddenTabs() {
+        const visibleTabsName = this.visibleTabs.map((tab) => tab.name);
+        return this.items.filter(({ name }) => !visibleTabsName.includes(name));
     }
 
     /**
@@ -127,13 +153,19 @@ export default class TabBar extends LightningElement {
     }
 
     /**
-     * A list of the labels of the hidden tabs.
-     * @type {string[]}
+     * Whether the tabs should be visible.
+     * When the number of tabs hidden matches the number of tabs, this will block the selected tab from appearing in the tab bar.
+     * @type {boolean}
      */
-    get hiddenTabs() {
-        const visibleTabsName = this.visibleTabs.map((tab) => tab.name);
-        return this.items.filter(({ name }) => !visibleTabsName.includes(name));
+    get showTabs() {
+        return this.tabsHidden < this.items.length;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Set the focus on the selected tab.
@@ -149,6 +181,12 @@ export default class TabBar extends LightningElement {
             defaultTab.focus();
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Returns the computed CSS classes of a given tab during initialization.
@@ -216,56 +254,23 @@ export default class TabBar extends LightningElement {
     }
 
     /**
-     * Prevent event default handler.
-     *
-     * @param {Event} event
+     * Handles a blur of any element of the Tab Bar component.
+     * If no Tab Bar element is focused, a 'blur' event is dispatched.
      */
-    handlePreventDefault(event) {
-        event.preventDefault();
+    triggerBlur() {
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => {
+            if (!this.template.activeElement) {
+                this.dispatchEvent(new CustomEvent('blur'));
+            }
+        }, 0);
     }
 
-    /**
-     * Handles a click on a visible tab.
-     * @param {Event} event
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
      */
-    handleTabClick(event) {
-        event.preventDefault();
-
-        const tabName = event.currentTarget.dataset.name;
-
-        for (let i = 0; i < this.visibleTabs.length; i++) {
-            this.visibleTabs[i].classes = classSet('slds-tabs_default__item')
-                .add({
-                    'slds-is-active': this.visibleTabs[i].name === tabName
-                })
-                .toString();
-            this.visibleTabs[i].tabIndex =
-                this.visibleTabs[i].name === tabName ? 0 : -1;
-            this.visibleTabs[i].ariaSelected =
-                this.visibleTabs[i].name === tabName;
-        }
-
-        this.dispatchTabChange(tabName);
-    }
-
-    /**
-     * Handles a click on the hidden tabs menu button.
-     * @param {Event} event
-     */
-    handleShowHiddenTabsClick() {
-        this.showHiddenTabsDropdown = !this.showHiddenTabsDropdown;
-
-        if (this.showHiddenTabsDropdown) {
-            requestAnimationFrame(() => {
-                const hiddenMenu = this.template.querySelector(
-                    '[data-element-id="a-hidden-tab"]'
-                );
-                if (hiddenMenu) {
-                    hiddenMenu.focus();
-                }
-            });
-        }
-    }
 
     /**
      * Handles a click on a hidden tab.
@@ -307,38 +312,15 @@ export default class TabBar extends LightningElement {
     }
 
     /**
-     * Dispatches a 'select' event for a tab change.
-     * @param {string} tab - The name of the selected tab.
+     * Handles a blur of the hidden tabs menu button.
+     * The mouseover effect on the button is removed.
+     * @param {Event} event
      */
-    dispatchTabChange(tab) {
-        /**
-         * The event fired when a tab is selected.
-         *
-         * @event
-         * @name select
-         * @param {string} tab Name of the selected tab.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('select', {
-                detail: {
-                    value: tab
-                }
-            })
+    handleDropDownButtonBlur(event) {
+        event.currentTarget.parentElement.parentElement.classList.remove(
+            'slds-is-active'
         );
-    }
-
-    /**
-     * Handles a blur of any element of the Tab Bar component.
-     * If no Tab Bar element is focused, a 'blur' event is dispatched.
-     */
-    triggerBlur() {
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
-        setTimeout(() => {
-            if (!this.template.activeElement) {
-                this.dispatchEvent(new CustomEvent('blur'));
-            }
-        }, 0);
+        this.triggerBlur();
     }
 
     /**
@@ -353,21 +335,16 @@ export default class TabBar extends LightningElement {
     }
 
     /**
-     * Handles a blur of the hidden tabs menu button.
-     * The mouseover effect on the button is removed.
+     * Handles a focus in of the hidden tabs menu button.
      * @param {Event} event
      */
-    handleDropDownButtonBlur(event) {
-        event.currentTarget.parentElement.parentElement.classList.remove(
-            'slds-is-active'
-        );
-        this.triggerBlur();
-    }
-
     handleDropDownFocusIn() {
         this._dropdownHasFocus = true;
     }
 
+    /**
+     * Handles a focus out of the hidden tabs menu button.
+     */
     handleDropDownFocusOut() {
         this._dropdownHasFocus = false;
 
@@ -420,6 +397,58 @@ export default class TabBar extends LightningElement {
     }
 
     /**
+     * Prevent event default handler.
+     *
+     * @param {Event} event
+     */
+    handlePreventDefault(event) {
+        event.preventDefault();
+    }
+
+    /**
+     * Handles a click on the hidden tabs menu button.
+     * @param {Event} event
+     */
+    handleShowHiddenTabsClick() {
+        this.showHiddenTabsDropdown = !this.showHiddenTabsDropdown;
+
+        if (this.showHiddenTabsDropdown) {
+            requestAnimationFrame(() => {
+                const hiddenMenu = this.template.querySelector(
+                    '[data-element-id="a-hidden-tab"]'
+                );
+                if (hiddenMenu) {
+                    hiddenMenu.focus();
+                }
+            });
+        }
+    }
+
+    /**
+     * Handles a click on a visible tab.
+     * @param {Event} event
+     */
+    handleTabClick(event) {
+        event.preventDefault();
+
+        const tabName = event.currentTarget.dataset.name;
+
+        for (let i = 0; i < this.visibleTabs.length; i++) {
+            this.visibleTabs[i].classes = classSet('slds-tabs_default__item')
+                .add({
+                    'slds-is-active': this.visibleTabs[i].name === tabName
+                })
+                .toString();
+            this.visibleTabs[i].tabIndex =
+                this.visibleTabs[i].name === tabName ? 0 : -1;
+            this.visibleTabs[i].ariaSelected =
+                this.visibleTabs[i].name === tabName;
+        }
+
+        this.dispatchTabChange(tabName);
+    }
+
+    /**
      * Handles a keydown event when the hidden tabs menu is opened.
      * Tabs can be navigated using the side arrows.
      * @param {Event} event
@@ -461,5 +490,27 @@ export default class TabBar extends LightningElement {
                 }
             }
         }
+    }
+
+    /**
+     * Dispatches a 'select' event for a tab change.
+     * @param {string} tab - The name of the selected tab.
+     */
+    dispatchTabChange(tab) {
+        /**
+         * The event fired when a tab is selected.
+         *
+         * @event
+         * @name select
+         * @param {string} tab Name of the selected tab.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('select', {
+                detail: {
+                    value: tab
+                }
+            })
+        );
     }
 }

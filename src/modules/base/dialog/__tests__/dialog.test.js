@@ -26,99 +26,108 @@ describe('Dialog', () => {
         it('Default attributes', () => {
             expect(element.ariaDescribedBy).toBeUndefined();
             expect(element.ariaLabelledBy).toBeUndefined();
+            expect(element.cancelButtonLabel).toBe('Cancel');
             expect(element.closeButtonAlternativeText).toBe('Close');
-            expect(element.title).toBeUndefined();
-            expect(element.size).toBe('medium');
+            expect(element.dialogName).toBeUndefined();
             expect(element.isLoading).toBeFalsy();
             expect(element.loadingStateAlternativeText).toBeUndefined();
+            expect(element.saveButtonLabel).toBe('Save');
+            expect(element.showDialog).toBeFalsy();
+            expect(element.size).toBe('medium');
+            expect(element.title).toBeUndefined();
         });
 
-        // aria-described-by
-        it('Aria described by', () => {
-            element.ariaDescribedBy = 'This is an aria-described-by';
-            element.show();
+        describe('Aria described by', () => {
+            it('Passed to the component', () => {
+                element.ariaDescribedBy = 'This is an aria-described-by';
+                element.show();
 
-            return Promise.resolve().then(() => {
-                const modal = element.shadowRoot.querySelector(
-                    '[data-element-id="modal"]'
-                );
-                expect(modal.ariaDescribedBy).toBe(
-                    'This is an aria-described-by'
-                );
+                return Promise.resolve().then(() => {
+                    const modal = element.shadowRoot.querySelector(
+                        '[data-element-id="modal"]'
+                    );
+                    expect(modal.ariaDescribedBy).toBe(
+                        'This is an aria-described-by'
+                    );
+                });
             });
         });
 
-        // aria-labelled-by
-        it('Aria labelled by', () => {
-            element.ariaLabelledBy = 'This is an aria-labelled-by';
-            element.show();
+        describe('Aria labelled by', () => {
+            it('Passed to the component', () => {
+                element.ariaLabelledBy = 'This is an aria-labelled-by';
+                element.show();
 
-            return Promise.resolve().then(() => {
-                const modal = element.shadowRoot.querySelector(
-                    '[data-element-id="modal"]'
-                );
-                expect(modal.ariaLabelledBy).toBe(
-                    'This is an aria-labelled-by'
-                );
+                return Promise.resolve().then(() => {
+                    const modal = element.shadowRoot.querySelector(
+                        '[data-element-id="modal"]'
+                    );
+                    expect(modal.ariaLabelledBy).toBe(
+                        'This is an aria-labelled-by'
+                    );
+                });
             });
         });
 
-        // close-button-alternative-text
-        it('Close button alternative text', () => {
-            element.closeButtonAlternativeText = 'This is an alt text';
-            element.show();
+        describe('Close button alternative text', () => {
+            it('Passed to the component', () => {
+                element.closeButtonAlternativeText = 'This is an alt text';
+                element.show();
 
-            return Promise.resolve().then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon-close"]'
-                );
-                expect(button.alternativeText).toBe('This is an alt text');
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-close"]'
+                    );
+                    expect(button.alternativeText).toBe('This is an alt text');
+                });
             });
         });
 
-        // is loading
-        it('Is loading', () => {
-            element.isLoading = true;
-            element.show();
+        describe('Is loading', () => {
+            it('Passed to the component', () => {
+                element.isLoading = true;
+                element.show();
 
-            return Promise.resolve().then(() => {
-                const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-spinner"]'
-                );
-                expect(spinner).toBeTruthy();
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
+                    );
+                    expect(spinner).toBeTruthy();
+                });
             });
         });
 
-        // loading state alternative text
-        it('Loading state alternative text', () => {
-            element.isLoading = true;
-            element.loadingStateAlternativeText =
-                'This is a loading state alternative text';
-            element.show();
+        describe('Loading state alternative text', () => {
+            it('Passed to the component', () => {
+                element.isLoading = true;
+                element.loadingStateAlternativeText =
+                    'This is a loading state alternative text';
+                element.show();
 
-            return Promise.resolve().then(() => {
-                const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-spinner"]'
-                );
-                expect(spinner.alternativeText).toBe(
-                    'This is a loading state alternative text'
-                );
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
+                    );
+                    expect(spinner.alternativeText).toBe(
+                        'This is a loading state alternative text'
+                    );
+                });
             });
         });
 
-        // show dialog
-        it('Show dialog', () => {
-            element.showDialog = true;
+        describe('Show dialog', () => {
+            it('Passed to the component', () => {
+                element.showDialog = true;
 
-            return Promise.resolve().then(() => {
-                const modal = element.shadowRoot.querySelector(
-                    '[data-element-id="modal"]'
-                );
-                expect(modal).toBeTruthy();
+                return Promise.resolve().then(() => {
+                    const modal = element.shadowRoot.querySelector(
+                        '[data-element-id="modal"]'
+                    );
+                    expect(modal).toBeTruthy();
+                });
             });
         });
 
-        // size
         describe('Size', () => {
             it('x-small', () => {
                 element.size = 'x-small';
@@ -168,16 +177,17 @@ describe('Dialog', () => {
             });
         });
 
-        // title
-        it('Title', () => {
-            element.title = 'This is a title';
-            element.show();
+        describe('Title', () => {
+            it('Passed to the component', () => {
+                element.title = 'This is a title';
+                element.show();
 
-            return Promise.resolve().then(() => {
-                const title = element.shadowRoot.querySelector(
-                    '[data-element-id="h1"]'
-                );
-                expect(title.textContent).toBe('This is a title');
+                return Promise.resolve().then(() => {
+                    const title = element.shadowRoot.querySelector(
+                        '[data-element-id="h1"]'
+                    );
+                    expect(title.textContent).toBe('This is a title');
+                });
             });
         });
     });
@@ -189,99 +199,98 @@ describe('Dialog', () => {
      */
 
     describe('Methods', () => {
-        // close
-        it('Close', () => {
-            element.show();
-            element.hide();
+        describe('Close', () => {
+            it('Close', () => {
+                element.show();
+                element.hide();
 
-            return Promise.resolve().then(() => {
-                const modal = element.shadowRoot.querySelector(
-                    '[data-element-id="modal"]'
-                );
-                expect(modal).toBeFalsy();
-            });
-        });
-
-        // focus
-        it('Focus', () => {
-            element.title = 'some title';
-            element.show();
-
-            return Promise.resolve()
-                .then(() => {
-                    const title = element.shadowRoot.querySelector(
-                        '[data-element-id="h1"]'
-                    );
-                    const spy = jest.spyOn(title, 'focus');
-                    element.focus();
-                    expect(spy).toHaveBeenCalled();
-
-                    element.title = undefined;
-                })
-                .then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-icon-close"]'
-                    );
-                    const spy = jest.spyOn(button, 'focus');
-                    element.focus();
-                    expect(spy).toHaveBeenCalled();
-                });
-        });
-
-        // focusOnCloseButton
-        it('Focus on close button', () => {
-            element.showDialog = true;
-            const handler = jest.fn();
-
-            return Promise.resolve().then(() => {
-                const button =
-                    element.shadowRoot.querySelector('.slds-modal__close');
-                button.focus = handler;
-                element.focusOnCloseButton();
-                expect(handler).toHaveBeenCalled();
-            });
-        });
-
-        it('Hide', () => {
-            element.showDialog = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const modal = element.shadowRoot.querySelector(
-                        '[data-element-id="modal"]'
-                    );
-                    expect(modal).toBeTruthy();
-                    element.hide();
-                })
-                .then(() => {
+                return Promise.resolve().then(() => {
                     const modal = element.shadowRoot.querySelector(
                         '[data-element-id="modal"]'
                     );
                     expect(modal).toBeFalsy();
                 });
+            });
         });
 
-        // show
-        it('Show', () => {
-            element.show();
+        describe('Focus', () => {
+            it('Focus', () => {
+                element.title = 'some title';
+                element.show();
 
-            return Promise.resolve().then(() => {
-                const modal = element.shadowRoot.querySelector(
-                    '[data-element-id="modal"]'
-                );
-                expect(modal).toBeTruthy();
+                return Promise.resolve()
+                    .then(() => {
+                        const title = element.shadowRoot.querySelector(
+                            '[data-element-id="h1"]'
+                        );
+                        const spy = jest.spyOn(title, 'focus');
+                        element.focus();
+                        expect(spy).toHaveBeenCalled();
+
+                        element.title = undefined;
+                    })
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-icon-close"]'
+                        );
+                        const spy = jest.spyOn(button, 'focus');
+                        element.focus();
+                        expect(spy).toHaveBeenCalled();
+                    });
+            });
+        });
+
+        describe('Focus on close button', () => {
+            it('Focus on close button', () => {
+                element.showDialog = true;
+                const handler = jest.fn();
+
+                return Promise.resolve().then(() => {
+                    const button =
+                        element.shadowRoot.querySelector('.slds-modal__close');
+                    button.focus = handler;
+                    element.focusOnCloseButton();
+                    expect(handler).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('Hide', () => {
+            it('Hide', () => {
+                element.showDialog = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const modal = element.shadowRoot.querySelector(
+                            '[data-element-id="modal"]'
+                        );
+                        expect(modal).toBeTruthy();
+                        element.hide();
+                    })
+                    .then(() => {
+                        const modal = element.shadowRoot.querySelector(
+                            '[data-element-id="modal"]'
+                        );
+                        expect(modal).toBeFalsy();
+                    });
+            });
+        });
+
+        describe('Show', () => {
+            it('Show', () => {
+                element.show();
+
+                return Promise.resolve().then(() => {
+                    const modal = element.shadowRoot.querySelector(
+                        '[data-element-id="modal"]'
+                    );
+                    expect(modal).toBeTruthy();
+                });
             });
         });
     });
 
-    /*
-     * ------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
-
     describe('Events', () => {
-        // closedialog
         describe('closedialog', () => {
             it('Fired when clicking on the close button', () => {
                 const handler = jest.fn();
@@ -331,26 +340,27 @@ describe('Dialog', () => {
             });
         });
 
-        // outsideclick
-        it('outsideclick event', () => {
-            element.showDialog = true;
-            const handler = jest.fn();
-            element.addEventListener('outsideclick', handler);
+        describe('Outsideclick', () => {
+            it('Outsideclick event', () => {
+                element.showDialog = true;
+                const handler = jest.fn();
+                element.addEventListener('outsideclick', handler);
 
-            return Promise.resolve().then(() => {
-                const section = element.shadowRoot.querySelector(
-                    '[data-element-id="modal"]'
-                );
-                const content = element.shadowRoot.querySelector(
-                    '[data-element-id="div-content"]'
-                );
-                content.click();
-                expect(handler).not.toHaveBeenCalled();
-                section.click();
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                return Promise.resolve().then(() => {
+                    const section = element.shadowRoot.querySelector(
+                        '[data-element-id="modal"]'
+                    );
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="div-content"]'
+                    );
+                    content.click();
+                    expect(handler).not.toHaveBeenCalled();
+                    section.click();
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                });
             });
         });
     });

@@ -25,8 +25,9 @@ describe('Button Icon Popover', () => {
             expect(element.iconClass).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSrc).toBeUndefined();
+            expect(element.isButtonLoading).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
-            expect(element.loadingStateAlternativeText).toBe('Loading');
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.placement).toBe('left');
             expect(element.popoverSize).toBe('medium');
             expect(element.popoverVariant).toBe('base');
@@ -231,6 +232,7 @@ describe('Button Icon Popover', () => {
             describe('Loading State Alternative Text', () => {
                 it('Passed to the component', () => {
                     element.isLoading = true;
+                    element.isButtonLoading = true;
                     element.loadingStateAlternativeText =
                         'This is a loading text';
 
@@ -238,6 +240,10 @@ describe('Button Icon Popover', () => {
                         .then(() => {
                             const button = element.shadowRoot.querySelector(
                                 '[data-element-id="button-icon"]'
+                            );
+                            expect(button.isButtonLoading).toBeTruthy();
+                            expect(button.loadingStateAlternativeText).toBe(
+                                'This is a loading text'
                             );
                             button.focus();
                         })

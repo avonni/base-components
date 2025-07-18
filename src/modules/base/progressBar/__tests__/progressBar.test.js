@@ -41,6 +41,7 @@ describe('ProgressBar', () => {
             expect(element.alternativeText).toBeUndefined();
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.orientation).toBe('horizontal');
             expect(element.pinAttributes).toMatchObject({});
             expect(element.referenceLines).toMatchObject([]);
@@ -57,13 +58,15 @@ describe('ProgressBar', () => {
             expect(element.variant).toBe('base');
         });
 
-        it('Alternative Text', () => {
-            element.alternativeText = 'Loading progress';
+        describe('Alternative Text', () => {
+            it('Passed to the component', () => {
+                element.alternativeText = 'Loading progress';
 
-            return Promise.resolve().then(() => {
-                const outerWrapper =
-                    element.shadowRoot.querySelector('.slds-progress-bar');
-                expect(outerWrapper.ariaLabel).toBe('Loading progress');
+                return Promise.resolve().then(() => {
+                    const outerWrapper =
+                        element.shadowRoot.querySelector('.slds-progress-bar');
+                    expect(outerWrapper.ariaLabel).toBe('Loading progress');
+                });
             });
         });
 
@@ -90,6 +93,8 @@ describe('ProgressBar', () => {
 
             it('true', () => {
                 element.isLoading = true;
+                element.loadingStateAlternativeText =
+                    'Loading alternative text';
 
                 return Promise.resolve()
                     .then(() => {
@@ -105,6 +110,9 @@ describe('ProgressBar', () => {
                             '[data-element-id="lightning-spinner"]'
                         );
                         expect(spinner).toBeTruthy();
+                        expect(spinner.alternativeText).toBe(
+                            'Loading alternative text'
+                        );
                     });
             });
         });
@@ -1035,7 +1043,7 @@ describe('ProgressBar', () => {
                     );
 
                     expect(value.textContent.trim()).toBe('56%');
-                    expect(assistiveText.textContent).toBe('Progress: 56%');
+                    expect(assistiveText.textContent).toBe('56%');
                     expect(innerWrapper.style.clipPath).toBe(
                         'inset(0 44% 0 0)'
                     );
@@ -1058,7 +1066,7 @@ describe('ProgressBar', () => {
                     );
 
                     expect(value.textContent.trim()).toBe('100%');
-                    expect(assistiveText.textContent).toBe('Progress: 100%');
+                    expect(assistiveText.textContent).toBe('100%');
                     expect(innerWrapper.style.clipPath).toBe('inset(0 0% 0 0)');
                 });
             });
@@ -1079,7 +1087,7 @@ describe('ProgressBar', () => {
                     );
 
                     expect(value.textContent.trim()).toBe('0%');
-                    expect(assistiveText.textContent).toBe('Progress: 0%');
+                    expect(assistiveText.textContent).toBe('0%');
                     expect(innerWrapper.style.clipPath).toBe(
                         'inset(0 100% 0 0)'
                     );
@@ -1099,6 +1107,10 @@ describe('ProgressBar', () => {
                         '.avonni-progress-bar__value'
                     );
                     expect(value.textContent.trim()).toBe('Prefix 0% Suffix');
+                    const assistiveText = element.shadowRoot.querySelector(
+                        '.slds-assistive-text'
+                    );
+                    expect(assistiveText.textContent).toBe('Prefix 0% Suffix');
                 });
             });
         });

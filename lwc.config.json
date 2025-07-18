@@ -431,8 +431,8 @@
             "path": "src/modules/base/chipContainer/chipContainer.js"
         },
         {
-            "name": "c/primitiveColorpickerButton",
-            "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
+            "name": "c/primitiveColorPickerButton",
+            "path": "src/modules/base/primitiveColorPickerButton/primitiveColorPickerButton.js"
         },
         {
             "name": "c/primitiveCombobox",

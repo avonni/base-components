@@ -3,37 +3,37 @@ import Component from 'avonni/pagination';
 customElements.define('ac-base-pagination', Component.CustomElementConstructor);
 
 export const Pagination = ({
-    disabled,
-    value,
-    limit,
-    perPage,
-    totalRows,
-    ellipsisText,
     align,
-    firstButtonLabel,
+    disabled,
+    ellipsisText,
     firstButtonIconName,
-    previousButtonLabel,
-    previousButtonIconName,
-    nextButtonLabel,
-    nextButtonIconName,
+    firstButtonLabel,
+    lastButtonIconName,
     lastButtonLabel,
-    lastButtonIconName
+    limit,
+    nextButtonIconName,
+    nextButtonLabel,
+    perPage,
+    previousButtonIconName,
+    previousButtonLabel,
+    totalRows,
+    value
 }) => {
     const element = document.createElement('ac-base-pagination');
-    element.disabled = disabled;
-    element.value = value;
-    element.limit = limit;
-    element.perPage = perPage;
-    element.totalRows = totalRows;
-    element.ellipsisText = ellipsisText;
     element.align = align;
-    element.firstButtonLabel = firstButtonLabel;
+    element.disabled = disabled;
+    element.ellipsisText = ellipsisText;
     element.firstButtonIconName = firstButtonIconName;
-    element.previousButtonLabel = previousButtonLabel;
-    element.previousButtonIconName = previousButtonIconName;
-    element.nextButtonLabel = nextButtonLabel;
-    element.nextButtonIconName = nextButtonIconName;
-    element.lastButtonLabel = lastButtonLabel;
+    element.firstButtonLabel = firstButtonLabel;
     element.lastButtonIconName = lastButtonIconName;
+    element.lastButtonLabel = lastButtonLabel;
+    element.limit = limit;
+    element.nextButtonIconName = nextButtonIconName;
+    element.nextButtonLabel = nextButtonLabel;
+    element.perPage = perPage;
+    element.previousButtonIconName = previousButtonIconName;
+    element.previousButtonLabel = previousButtonLabel;
+    element.totalRows = totalRows;
+    element.value = value;
     return element;
 };

@@ -2,18 +2,18 @@
     <div class="slds-map_container">
         <div class="slds-map">
             <c-primitive-iframe
-                id="mapContainer"
-                title={i18n.primitiveMapIframeTitle}
-                src={mapSrc}
                 domain={mapDomain}
+                id="mapContainer"
+                src={mapSrc}
+                title={i18n.primitiveMapIframeTitle}
                 oniframeload={handleIframeLoad}
             ></c-primitive-iframe>
         </div>
         <div if:true={showFooter} class="slds-p-around_medium">
             <div class="slds-button slds-button_brand">
                 <c-external-link
-                    title={title}
                     href={mapHref}
+                    title={title}
                     data-element-id="avonni-external-link"
                 >
                     {i18n.openInGoogleMapsString}
@@ -35,10 +35,10 @@
             <template for:each={_coordinates} for:item="coordinate">
                 <li class="slds-coordinates__item" key={coordinate.key}>
                     <c-primitive-coordinate-item
-                        item-title={coordinate.title}
-                        item-address={coordinate.formattedAddress}
-                        icon-name={coordinate.icon}
                         guid={coordinate.key}
+                        item-address={coordinate.formattedAddress}
+                        item-title={coordinate.title}
+                        icon-name={coordinate.icon}
                         oncoordinateclick={handleCoordinateClick}
                         oncoordinatesmouseover={handleCoordinateHover}
                     ></c-primitive-coordinate-item>

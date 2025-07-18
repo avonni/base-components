@@ -1,9 +1,13 @@
 <template>
     <div class={computedOuterClass} aria-labelledby="group-label" role="group">
         <div class={computedGroupLabelClass} id="group-label">
-            <abbr if:true={required} class="slds-required" title={i18n.required}
-                >*</abbr
-            >
+            <abbr
+                if:true={required}
+                class="slds-required"
+                title={requiredAlternativeText}
+                data-element-id="abbr-required"
+                >*
+            </abbr>
             {label}
         </div>
         <lightning-helptext
@@ -17,9 +21,12 @@
                 onfocusin={handleFocus}
                 onfocusout={handleBlur}
             >
-                <span id="keyboard-interaction" class="slds-assistive-text">
-                    Press Ctrl (Cmd on Mac) + Left Arrow or Ctrl (Cmd on Mac) +
-                    Right Arrow to move items between lists.
+                <span
+                    class="slds-assistive-text"
+                    id="keyboard-interaction"
+                    data-element-id="span-keyboard-interaction"
+                >
+                    {keyboardInteractionAssistiveText}
                 </span>
                 <div class={computedListboxColumnsClass}>
                     <span
@@ -36,10 +43,11 @@
                         class="avonni-dual-listbox__search-container"
                     >
                         <lightning-input
-                            name="search"
                             label="Search Engine"
-                            variant="label-hidden"
+                            name="search"
+                            placeholder={searchInputPlaceholder}
                             type="search"
+                            variant="label-hidden"
                             data-element-id="lightning-input"
                             onchange={handleSearch}
                             onfocus={handleSearchFocus}
@@ -48,17 +56,17 @@
                     <div
                         class={computedListboxSourceContainerClass}
                         data-element-id="div-source-list"
-                        ondragover={handleDragOverSource}
                         ondragleave={handleDragLeaveSource}
+                        ondragover={handleDragOverSource}
                         onscroll={handleScroll}
                     >
                         <div
                             class="slds-listbox slds-listbox_vertical"
-                            id="source-list"
                             aria-describedby="keyboard-interaction"
                             aria-disabled={ariaDisabled}
                             aria-labelledby="source-list-label"
                             aria-multiselectable="true"
+                            id="source-list"
                             role="listbox"
                             data-element-id="ul-source-list"
                         >
@@ -96,7 +104,6 @@
                                     >
                                         <c-primitive-dual-listbox-option
                                             key={option.value}
-                                            role="presentation"
                                             avatar={option.avatar}
                                             description={option.description}
                                             disabled={disabled}
@@ -107,6 +114,7 @@
                                             is-locked={option.isLocked}
                                             label={option.label}
                                             lock-alternative-text={computedLockAssistiveText}
+                                            role="presentation"
                                             selected={option.selected}
                                             show-avatar={option.showAvatar}
                                             value={option.value}
@@ -158,9 +166,12 @@
                                 </template>
                             </template>
                         </div>
-                        <div if:true={isLoading} class={loadingSpinnerClass}>
+                        <div
+                            if:true={isLoading}
+                            class={computedLoadingSpinnerClass}
+                        >
                             <lightning-spinner
-                                alternative-text={i18n.loadingText}
+                                alternative-text={loadingStateAlternativeText}
                                 size="small"
                                 data-element-id="lightning-spinner"
                             ></lightning-spinner>
@@ -209,8 +220,8 @@
                     <div
                         class={computedListboxSelectedContainerClass}
                         data-element-id="div-selected-list"
-                        ondragover={handleDragOverSelected}
                         ondragleave={handleDragLeaveSelected}
+                        ondragover={handleDragOverSelected}
                     >
                         <div
                             class="slds-listbox slds-listbox_vertical"
@@ -258,7 +269,6 @@
                                     >
                                         <c-primitive-dual-listbox-option
                                             key={option.value}
-                                            role="presentation"
                                             avatar={option.avatar}
                                             description={option.description}
                                             disabled={disabled}
@@ -269,6 +279,7 @@
                                             is-locked={option.isLocked}
                                             label={option.label}
                                             lock-alternative-text={computedLockAssistiveText}
+                                            role="presentation"
                                             selected={option.selected}
                                             show-avatar={option.showAvatar}
                                             value={option.value}
@@ -280,9 +291,9 @@
                                             data-type="ul-selected-list"
                                             data-value={option.value}
                                             onclick={handleOptionClick}
-                                            ondragstart={handleDragStart}
                                             ondragend={handleDragEndSelected}
                                             ondragover={handleDragOver}
+                                            ondragstart={handleDragStart}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
                                         ></c-primitive-dual-listbox-option>
@@ -296,7 +307,6 @@
                                 >
                                     <c-primitive-dual-listbox-option
                                         key={option.value}
-                                        role="presentation"
                                         avatar={option.avatar}
                                         description={option.description}
                                         disabled={disabled}
@@ -306,6 +316,7 @@
                                         is-locked={option.isLocked}
                                         label={option.label}
                                         lock-alternative-text={computedLockAssistiveText}
+                                        role="presentation"
                                         selected={option.selected}
                                         show-avatar={option.showAvatar}
                                         value={option.value}
@@ -317,9 +328,9 @@
                                         data-type="ul-selected-list"
                                         data-value={option.value}
                                         onclick={handleOptionClick}
-                                        ondragstart={handleDragStart}
                                         ondragend={handleDragEndSelected}
                                         ondragover={handleDragOver}
+                                        ondragstart={handleDragStart}
                                         onkeydown={handleOptionKeyDown}
                                         onmouseup={dispatchOptionClick}
                                     ></c-primitive-dual-listbox-option>
@@ -333,37 +344,36 @@
                         </span>
                     </div>
                 </div>
-                <template if:false={disableReordering}>
-                    <div
-                        class="
-                            avonni-dual-listbox__list-column
-                            avonni-dual-listbox__buttons_centered
-                        "
-                    >
-                        <lightning-button-icon
-                            class="avonni-dual-listbox__button"
-                            alternative-text={upButtonLabel}
-                            disabled={upButtonDisabled}
-                            icon-name={upButtonIconName}
-                            size={buttonSize}
-                            title={upButtonLabel}
-                            variant={buttonVariant}
-                            data-element-id="lightning-button-icon-up"
-                            onclick={handleUpButtonClick}
-                        ></lightning-button-icon>
-                        <lightning-button-icon
-                            class="avonni-dual-listbox__button"
-                            alternative-text={downButtonLabel}
-                            disabled={downButtonDisabled}
-                            icon-name={downButtonIconName}
-                            size={buttonSize}
-                            title={downButtonLabel}
-                            variant={buttonVariant}
-                            data-element-id="lightning-button-icon-down"
-                            onclick={handleDownButtonClick}
-                        ></lightning-button-icon>
-                    </div>
-                </template>
+                <div
+                    if:false={disableReordering}
+                    class="
+                        avonni-dual-listbox__list-column
+                        avonni-dual-listbox__buttons_centered
+                    "
+                >
+                    <lightning-button-icon
+                        class="avonni-dual-listbox__button"
+                        alternative-text={upButtonLabel}
+                        disabled={upButtonDisabled}
+                        icon-name={upButtonIconName}
+                        size={buttonSize}
+                        title={upButtonLabel}
+                        variant={buttonVariant}
+                        data-element-id="lightning-button-icon-up"
+                        onclick={handleUpButtonClick}
+                    ></lightning-button-icon>
+                    <lightning-button-icon
+                        class="avonni-dual-listbox__button"
+                        alternative-text={downButtonLabel}
+                        disabled={downButtonDisabled}
+                        icon-name={downButtonIconName}
+                        size={buttonSize}
+                        title={downButtonLabel}
+                        variant={buttonVariant}
+                        data-element-id="lightning-button-icon-down"
+                        onclick={handleDownButtonClick}
+                    ></lightning-button-icon>
+                </div>
             </div>
         </div>
         <div

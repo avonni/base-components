@@ -16,126 +16,141 @@ describe('VerticalProgressStep', () => {
         document.body.appendChild(element);
     });
 
-    it('Vertical progress step: Default attributes', () => {
-        expect(element.label).toBeUndefined();
-        expect(element.value).toBeUndefined();
-    });
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.label).toBeUndefined();
+            expect(element.value).toBeUndefined();
+        });
 
-    /* ----- ATTRIBUTES ----- */
+        describe('label', () => {
+            it('Passed to the component', () => {
+                element.label = 'A string label';
 
-    // label
-    it('Vertical progress step: label', () => {
-        element.label = 'A string label';
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '.slds-progress__item_content .slds-truncate'
+                    );
+                    expect(label.textContent).toBe('A string label');
+                });
+            });
+        });
 
-        return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector(
-                '.slds-progress__item_content .slds-truncate'
-            );
-            expect(label.textContent).toBe('A string label');
+        describe('value', () => {
+            it('Passed to the component', () => {
+                element.value = 'a-string-value';
+
+                return Promise.resolve().then(() => {
+                    expect(element.dataset.step).toBe('a-string-value');
+                });
+            });
         });
     });
 
-    // value
-    it('Vertical progress step: value', () => {
-        element.value = 'a-string-value';
+    describe('Methods', () => {
+        describe('setAttributes', () => {
+            it('Passed to the component', () => {
+                element.setAttributes(true, true);
 
-        return Promise.resolve().then(() => {
-            expect(element.dataset.step).toBe('a-string-value');
+                return Promise.resolve().then(() => {
+                    expect(element.classList).toContain(
+                        'avonni-content-in-line'
+                    );
+                    expect(element.classList).toContain('avonni-spread');
+                });
+            });
+        });
+
+        describe('setIcon', () => {
+            it('Passed to the component', () => {
+                element.setIcon('utility:down');
+
+                return Promise.resolve().then(() => {
+                    const icon =
+                        element.shadowRoot.querySelector('lightning-icon');
+                    expect(icon.iconName).toBe('utility:down');
+                });
+            });
         });
     });
 
-    /* ----- METHODS ----- */
-    // setAttributes
-    it('Vertical progress step: setAttributes', () => {
-        element.setAttributes(true, true);
+    describe('Events', () => {
+        describe('stepblur', () => {
+            it('Passed to the component', () => {
+                element.value = 'a-string-value';
+                const handler = jest.fn();
+                element.addEventListener('stepblur', handler);
+                const marker = element.shadowRoot.querySelector(
+                    '.slds-progress__marker'
+                );
+                marker.dispatchEvent(new CustomEvent('blur'));
 
-        return Promise.resolve().then(() => {
-            expect(element.classList).toContain('avonni-content-in-line');
-            expect(element.classList).toContain('avonni-spread');
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.value).toBe(
+                    'a-string-value'
+                );
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
         });
-    });
 
-    // setIcon
-    it('Vertical progress step: setIcon', () => {
-        element.setIcon('utility:down');
+        describe('stepfocus', () => {
+            it('Passed to the component', () => {
+                element.value = 'a-string-value';
+                const handler = jest.fn();
+                element.addEventListener('stepfocus', handler);
+                const marker = element.shadowRoot.querySelector(
+                    '.slds-progress__marker'
+                );
+                marker.dispatchEvent(new CustomEvent('focus'));
 
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
-            expect(icon.iconName).toBe('utility:down');
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.value).toBe(
+                    'a-string-value'
+                );
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
         });
-    });
+        describe('stepmouseenter', () => {
+            it('Passed to the component', () => {
+                element.value = 'a-string-value';
+                const handler = jest.fn();
+                element.addEventListener('stepmouseenter', handler);
+                const marker = element.shadowRoot.querySelector(
+                    '.slds-progress__marker'
+                );
+                marker.dispatchEvent(new CustomEvent('mouseenter'));
 
-    /* ----- EVENTS ----- */
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.value).toBe(
+                    'a-string-value'
+                );
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+        });
 
-    // stepmouseenter
-    // Depends on value
-    it('Vertical progress step: stepmouseenter event', () => {
-        element.value = 'a-string-value';
-        const handler = jest.fn();
-        element.addEventListener('stepmouseenter', handler);
-        const marker = element.shadowRoot.querySelector(
-            '.slds-progress__marker'
-        );
-        marker.dispatchEvent(new CustomEvent('mouseenter'));
+        describe('stepmouseleave', () => {
+            it('Passed to the component', () => {
+                element.value = 'a-string-value';
+                const handler = jest.fn();
+                element.addEventListener('stepmouseleave', handler);
+                const marker = element.shadowRoot.querySelector(
+                    '.slds-progress__marker'
+                );
+                marker.dispatchEvent(new CustomEvent('mouseleave'));
 
-        expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.value).toBe('a-string-value');
-        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-        expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
-        expect(handler.mock.calls[0][0].composed).toBeFalsy();
-    });
-
-    // stepmouseleave
-    // Depends on value
-    it('Vertical progress step: stepmouseleave event', () => {
-        element.value = 'a-string-value';
-        const handler = jest.fn();
-        element.addEventListener('stepmouseleave', handler);
-        const marker = element.shadowRoot.querySelector(
-            '.slds-progress__marker'
-        );
-        marker.dispatchEvent(new CustomEvent('mouseleave'));
-
-        expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.value).toBe('a-string-value');
-        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-        expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
-        expect(handler.mock.calls[0][0].composed).toBeFalsy();
-    });
-
-    // stepblur
-    // Depends on value
-    it('Vertical progress step: stepblur event', () => {
-        element.value = 'a-string-value';
-        const handler = jest.fn();
-        element.addEventListener('stepblur', handler);
-        const marker = element.shadowRoot.querySelector(
-            '.slds-progress__marker'
-        );
-        marker.dispatchEvent(new CustomEvent('blur'));
-
-        expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.value).toBe('a-string-value');
-        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-        expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
-        expect(handler.mock.calls[0][0].composed).toBeFalsy();
-    });
-
-    // stepfocus
-    // Depends on value
-    it('Vertical progress step: stepfocus event', () => {
-        element.value = 'a-string-value';
-        const handler = jest.fn();
-        element.addEventListener('stepfocus', handler);
-        const marker = element.shadowRoot.querySelector(
-            '.slds-progress__marker'
-        );
-        marker.dispatchEvent(new CustomEvent('focus'));
-
-        expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.value).toBe('a-string-value');
-        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-        expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
-        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.value).toBe(
+                    'a-string-value'
+                );
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+        });
     });
 });

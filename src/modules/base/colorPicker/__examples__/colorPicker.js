@@ -6,67 +6,83 @@ customElements.define(
 );
 
 export const ColorPicker = ({
+    accessKey,
+    cancelButtonLabel,
+    colors,
     columns,
+    customTabLabel,
+    defaultTabLabel,
     disabled,
-    readOnly,
-    required,
+    doneButtonLabel,
+    fieldLevelHelp,
+    groups,
+    hideClearIcon,
+    hideColorInput,
     inline,
     isLoading,
     label,
-    name,
-    fieldLevelHelp,
-    hideClearIcon,
-    paletteShowCheckmark,
-    paletteHideOutline,
-    paletteTileHeight,
-    paletteTileWidth,
-    value,
-    variant,
-    type,
-    menuVariant,
+    loadingStateAlternativeText,
+    menuAlignment,
     menuIconName,
     menuIconSize,
     menuLabel,
-    menuAlignment,
     menuNubbin,
-    colors,
-    hideColorInput,
-    opacity,
+    menuVariant,
     messageWhenBadInput,
-    tokens,
     messageWhenValueMissing,
-    groups
+    name,
+    opacity,
+    paletteHideOutline,
+    paletteShowCheckmark,
+    paletteTileHeight,
+    paletteTileWidth,
+    readOnly,
+    required,
+    requiredAlternativeText,
+    tokens,
+    tokensTabLabel,
+    type,
+    value,
+    variant
 }) => {
     const element = document.createElement('ac-base-color-picker');
+    element.accessKey = accessKey;
+    element.cancelButtonLabel = cancelButtonLabel;
+    element.colors = colors;
     element.columns = columns;
+    element.customTabLabel = customTabLabel;
+    element.defaultTabLabel = defaultTabLabel;
     element.disabled = disabled;
+    element.doneButtonLabel = doneButtonLabel;
+    element.fieldLevelHelp = fieldLevelHelp;
+    element.groups = groups;
     element.hideClearIcon = hideClearIcon;
-    element.readOnly = readOnly;
-    element.required = required;
+    element.hideColorInput = hideColorInput;
     element.inline = inline;
+    element.isLoading = isLoading;
+    element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.menuAlignment = menuAlignment;
+    element.menuIconName = menuIconName;
+    element.menuIconSize = menuIconSize;
+    element.menuLabel = menuLabel;
+    element.menuNubbin = menuNubbin;
+    element.menuVariant = menuVariant;
+    element.messageWhenBadInput = messageWhenBadInput;
+    element.messageWhenValueMissing = messageWhenValueMissing;
+    element.name = name;
+    element.opacity = opacity;
     element.paletteHideOutline = paletteHideOutline;
     element.paletteShowCheckmark = paletteShowCheckmark;
     element.paletteTileHeight = paletteTileHeight;
     element.paletteTileWidth = paletteTileWidth;
-    element.isLoading = isLoading;
-    element.label = label;
-    element.name = name;
-    element.fieldLevelHelp = fieldLevelHelp;
+    element.readOnly = readOnly;
+    element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
+    element.tokens = tokens;
+    element.tokensTabLabel = tokensTabLabel;
+    element.type = type;
     element.value = value;
     element.variant = variant;
-    element.type = type;
-    element.menuVariant = menuVariant;
-    element.menuIconName = menuIconName;
-    element.menuIconSize = menuIconSize;
-    element.menuLabel = menuLabel;
-    element.menuAlignment = menuAlignment;
-    element.menuNubbin = menuNubbin;
-    element.colors = colors;
-    element.hideColorInput = hideColorInput;
-    element.opacity = opacity;
-    element.messageWhenBadInput = messageWhenBadInput;
-    element.tokens = tokens;
-    element.messageWhenValueMissing = messageWhenValueMissing;
-    element.groups = groups;
     return element;
 };

@@ -2,24 +2,15 @@ import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { observePosition } from 'c/utilsPrivate';
 
-const POPOVER_SIZES = {
-    valid: ['small', 'medium', 'large'],
+const BUTTON_SIZES = {
+    validBare: ['x-small', 'small', 'medium', 'large'],
+    validNonBare: ['xx-small', 'x-small', 'small', 'medium'],
     default: 'medium'
 };
-
-const POPOVER_PLACEMENTS = {
-    valid: [
-        'auto',
-        'left',
-        'center',
-        'right',
-        'bottom-left',
-        'bottom-center',
-        'bottom-right'
-    ],
-    default: 'left'
+const BUTTON_TRIGGERS = {
+    valid: ['click', 'hover', 'focus'],
+    default: 'click'
 };
-
 const BUTTON_VARIANTS = {
     valid: [
         'bare',
@@ -39,24 +30,27 @@ const BUTTON_VARIANTS = {
     ],
     default: 'border'
 };
-
-const BUTTON_SIZES = {
-    validBare: ['x-small', 'small', 'medium', 'large'],
-    validNonBare: ['xx-small', 'x-small', 'small', 'medium'],
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const POPOVER_PLACEMENTS = {
+    valid: [
+        'auto',
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
+const POPOVER_SIZES = {
+    valid: ['small', 'medium', 'large'],
     default: 'medium'
 };
-
-const BUTTON_TRIGGERS = {
-    valid: ['click', 'hover', 'focus'],
-    default: 'click'
-};
-
 const POPOVER_VARIANTS = {
     valid: ['base', 'warning', 'error', 'walkthrough'],
     default: 'base'
 };
-
-const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
  * The button popover display an avonni button icon. On trigger, opens the popover.
@@ -129,6 +123,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     _disabled = false;
     _hideCloseButton = false;
+    _isButtonLoading = false;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _placement = POPOVER_PLACEMENTS.default;
@@ -231,6 +226,21 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get isButtonLoading() {
+        return this._isButtonLoading;
+    }
+    set isButtonLoading(value) {
+        this._isButtonLoading = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the popover is in a loading state and shows a spinner.
      *
      * @type {boolean}
@@ -241,16 +251,15 @@ export default class ButtonIconPopover extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
 
     /**
-     * Message displayed while the popover is in the loading state.
+     * Message displayed while the popover or the button is in the loading state.
      *
      * @type {string}
-     * @default Loading
+     * @default Loading...
      * @public
      */
     @api
