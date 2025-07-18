@@ -191,7 +191,7 @@ export const ITEMS_WITH_WITH_TYPES = [
                 label: 'Go to Record 1.3',
                 href: '#record1',
                 name: 'node1-3',
-                type: 'standard',
+                type: 'child',
                 slottableTypes: ['standard', 'child']
             }
         ]

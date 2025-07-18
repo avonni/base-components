@@ -534,6 +534,7 @@ describe('Tree', () => {
                     composed: true
                 });
                 mouseMove.clientY = 35;
+                mouseMove.clientX = 15;
                 const tree = element.shadowRoot.querySelector(
                     '[data-element-id="div-tree-wrapper"]'
                 );
@@ -541,6 +542,7 @@ describe('Tree', () => {
 
                 // Mouse to the bottom of the item
                 mouseMove.clientY = 30;
+                mouseMove.clientX = 5;
                 const setBorderCallback =
                     fakeRegisters.invalidSorting.setBorder;
                 tree.dispatchEvent(mouseMove);

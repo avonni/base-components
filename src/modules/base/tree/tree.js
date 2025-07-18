@@ -782,7 +782,7 @@ export default class Tree extends LightningElement {
      */
     isSortingValid(position) {
         const { currentLevelItem, item, key } = this._dragState;
-        const targetItem = item || currentLevelItem;
+        const targetItem = currentLevelItem || item;
 
         const { index, items } = this.getPositionInBranch(key);
         const itemToSort = items[index];
@@ -806,7 +806,11 @@ export default class Tree extends LightningElement {
 
         const canInsertInCurrent = hasSlots && supportsType && isMiddle;
         const canInsertAtBottomOfCurrent =
-            hasSlots && supportsType && isBottom && isExpanded;
+            hasSlots &&
+            supportsType &&
+            isBottom &&
+            isExpanded &&
+            !currentLevelItem;
 
         // Parent
         const parentExists = !!parent;
@@ -819,17 +823,14 @@ export default class Tree extends LightningElement {
         const canInsertAtTopOfParent =
             isTop && parentHasSlots && parentSupportsType;
         const canInsertAtBottomOfParent =
-            isBottom && parentHasSlots && parentSupportsType && !isExpanded;
+            isBottom && parentHasSlots && parentSupportsType;
 
         // Root
         const isSlottableInRoot =
             this.rootSlottableTypes.length === 0 ||
             this.rootSlottableTypes.includes(itemType);
 
-        const canInsertAtRoot =
-            (isTop || (isBottom && !isExpanded)) &&
-            !parentExists &&
-            isSlottableInRoot;
+        const canInsertAtRoot = !isMiddle && !parentExists && isSlottableInRoot;
 
         return (
             canInsertInCurrent ||
@@ -964,7 +965,6 @@ export default class Tree extends LightningElement {
         const hasMovedLeft = x < initialX - 10;
         const hasMovedRight = x > initialX + 10;
         const { children, expanded } = item.treeNode;
-        const isValidSorting = this.isSortingValid('bottom');
 
         if (isNaN(initialX)) {
             // Show the bottom border
@@ -973,6 +973,7 @@ export default class Tree extends LightningElement {
             this.callbackMap[item.key].removeBorder();
             const level =
                 expanded && children.length ? item.level + 1 : item.level;
+            const isValidSorting = this.isSortingValid('bottom');
             this.callbackMap[item.key].setBorder(
                 'bottom',
                 level,
@@ -996,6 +997,7 @@ export default class Tree extends LightningElement {
 
             // ...move the border left, outward from the most nested item
             this._dragState.currentLevelItem = parentItem;
+            const isValidSorting = this.isSortingValid('bottom');
             const level = parentItem ? parentItem.level : 1;
             this.callbackMap[item.key].setBorder(
                 'bottom',
@@ -1013,6 +1015,7 @@ export default class Tree extends LightningElement {
             if (expanded && lastChild) {
                 const lastChildItem = this.treedata.getItem(lastChild.key);
                 this._dragState.currentLevelItem = lastChildItem;
+                const isValidSorting = this.isSortingValid('bottom');
                 this.callbackMap[item.key].setBorder(
                     'bottom',
                     lastChildItem.level,
