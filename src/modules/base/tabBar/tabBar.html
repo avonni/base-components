@@ -31,7 +31,7 @@
                     slds-tabs_default__item slds-tabs_default__overflow-button
                 "
                 role="presentation"
-                title="More icons"
+                title={showMoreButtonAlternativeText}
             >
                 <div
                     class="
@@ -42,18 +42,19 @@
                 >
                     <button
                         class="slds-button"
-                        role="tab"
-                        aria-haspopup="true"
                         aria-expanded={showHiddenTabsDropdown}
-                        aria-label="Show more icons"
+                        aria-haspopup="true"
+                        aria-label={showMoreButtonAlternativeText}
+                        role="tab"
                         type="button"
                         data-element-id="button-hidden-tabs"
-                        onfocus={handleDropDownButtonFocus}
                         onblur={handleDropDownButtonBlur}
                         onclick={handleShowHiddenTabsClick}
+                        onfocus={handleDropDownButtonFocus}
                     >
                         <span class="slds-icon_container">
                             <lightning-icon
+                                alternative-text={showMoreButtonAlternativeText}
                                 icon-name="utility:chevrondown"
                                 size="x-small"
                             ></lightning-icon>

@@ -22,6 +22,7 @@ describe('Scheduler', () => {
         document.body.appendChild(element);
 
         jest.useFakeTimers();
+
         jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
             setTimeout(() => {
                 cb();

@@ -1,6 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
 import { classSet, normalizeArray } from 'c/utils';
 
+const DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT = 'Show more';
+
 /**
  * @class
  * @description The Tab Bar component allows the user to separate information into logical sections based on functionality or use case.
@@ -9,15 +11,31 @@ import { classSet, normalizeArray } from 'c/utils';
  * @public
  */
 export default class TabBar extends LightningElement {
+    /**
+     * The alternative text used to describe the show more button.
+     *
+     * @type {string}
+     * @public
+     * @default Show more
+     */
+    @api showMoreButtonAlternativeText =
+        DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT;
+
     _defaultTab;
     _items = [];
     _labels = [];
     _tabsHidden = 0;
 
-    @track visibleTabs;
     showHiddenTabsDropdown = false;
+    @track visibleTabs;
     _connected = false;
     _dropdownHasFocus = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.initializeVisibleTabs();

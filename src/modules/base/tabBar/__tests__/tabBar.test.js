@@ -31,12 +31,6 @@ describe('Tab Bar', () => {
         document.body.appendChild(element);
     });
 
-    /*
-     * ------------------------------------------------------------
-     *  ATTRIBUTES
-     * -------------------------------------------------------------
-     */
-
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.defaultTab).toBeUndefined();
