@@ -21,10 +21,9 @@
                 <abbr
                     if:true={required}
                     class="slds-required"
-                    title="Required"
+                    title={requiredAlternativeText}
                     data-element-id="abbr"
-                >
-                    *
+                    >*
                 </abbr>
                 {label}
             </legend>
@@ -337,7 +336,7 @@
                         <lightning-spinner
                             if:true={isLoading}
                             class="slds-spinner_container"
-                            alternative-text="Loading..."
+                            alternative-text={loadingStateAlternativeText}
                             size="small"
                             data-element-id="loading-spinner"
                         ></lightning-spinner>
@@ -350,9 +349,10 @@
                                 avonni-visual-picker__show-more-button
                             "
                             disabled={isLoading}
-                            icon-name={currentShowButtonIconName}
-                            label={currentShowButtonLabel}
-                            data-element-id="lightning-button"
+                            icon-name={computedShowMoreButtonIconName}
+                            label={computedShowMoreButtonLabel}
+                            title={computedShowMoreButtonLabel}
+                            data-element-id="show-more-button"
                             onclick={handleToggleShowMoreButton}
                         ></lightning-button>
                     </c-layout-item>

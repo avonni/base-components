@@ -33,11 +33,15 @@ const DEFAULT_COLUMNS = {
     medium: 6,
     large: 4
 };
+const DEFAULT_COLLAPSED_SHOW_MORE_BUTTON = 'Show more';
 const DEFAULT_DISABLED = false;
+const DEFAULT_EXPANDED_SHOW_MORE_BUTTON = 'Show less';
 const DEFAULT_HIDE_CHECK_MARK = false;
 const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_MIN = 0;
 const DEFAULT_REQUIRED = false;
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
@@ -127,12 +131,36 @@ const VISUAL_PICKER_VARIANTS = {
  */
 export default class VisualPicker extends LightningElement {
     /**
+     * The label for the show more button when the items are collapsed.
+     *
+     * @type {string}
+     * @public
+     * @default 'Show more'
+     */
+    @api collapsedShowMoreButton = DEFAULT_COLLAPSED_SHOW_MORE_BUTTON;
+    /**
+     * The label for the show more button when the items are expanded.
+     *
+     * @type {string}
+     * @public
+     * @default 'Show less'
+     */
+    @api expandedShowMoreButton = DEFAULT_EXPANDED_SHOW_MORE_BUTTON;
+    /**
      * Text label to title the visual picker.
      *
      * @type {string}
      * @public
      */
     @api label;
+    /**
+     * Message displayed while the picker is in the loading state.
+     *
+     * @type {string}
+     * @public
+     * @default 'Loading...'
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Error message to be displayed when a range overflow is detected.
      *
@@ -162,6 +190,14 @@ export default class VisualPicker extends LightningElement {
      * @required
      */
     @api name = generateUUID();
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default 'Required'
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
 
     _columnAttributes = {};
     _disabled = DEFAULT_DISABLED;
@@ -745,7 +781,7 @@ export default class VisualPicker extends LightningElement {
      *
      * @type {string}
      */
-    get currentShowButtonIconName() {
+    get computedShowMoreButtonIconName() {
         return this._isCollapsed ? 'utility:down' : 'utility:up';
     }
 
@@ -754,8 +790,10 @@ export default class VisualPicker extends LightningElement {
      *
      * @type {string}
      */
-    get currentShowButtonLabel() {
-        return this._isCollapsed ? 'Show more' : 'Show less';
+    get computedShowMoreButtonLabel() {
+        return this._isCollapsed
+            ? this.collapsedShowMoreButton
+            : this.expandedShowMoreButton;
     }
 
     /**
