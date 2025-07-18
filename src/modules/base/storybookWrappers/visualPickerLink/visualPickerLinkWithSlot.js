@@ -4,6 +4,7 @@ const DEFAULT_ICON_POSITION = 'left';
 
 export default class VisualPickerLink extends LightningElement {
     @api completed = false;
+    @api completedIconAlternativeText;
     @api disabled = false;
     @api href;
     @api iconName;

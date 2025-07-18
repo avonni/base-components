@@ -3,6 +3,7 @@ import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import visualPickerLink from './visualPickerLink.html';
 import visualPickerLinkInfoOnly from './visualPickerLinkInfoOnly.html';
 
+const DEFAULT_COMPLETED_ALTERNATIVE_TEXT = 'Completed';
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 /**
@@ -12,6 +13,14 @@ const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
  * @public
  */
 export default class VisualPickerLink extends LightningElement {
+    /**
+     * The assistive text when the link is completed.
+     *
+     * @type {string}
+     * @public
+     * @default 'Completed'
+     */
+    @api completedIconAlternativeText = DEFAULT_COMPLETED_ALTERNATIVE_TEXT;
     /**
      * The URL of the page that the link goes to.
      *
