@@ -42,12 +42,12 @@
                             <slot name="title"></slot>
                         </div>
                         <template if:false={showTitle}>
-                            <h3
+                            <div
                                 if:true={title}
                                 class="avonni-visual-picker-link__tile-title"
                             >
                                 {title}
-                            </h3>
+                            </div>
                         </template>
                         <p class="avonni-visual-picker-link__tile-description">
                             <slot></slot>

@@ -1215,6 +1215,7 @@ describe('Tree', () => {
                     expect(handler.mock.calls[1][0].detail.action).toBe(
                         'Standard.Tree.Expand'
                     );
+                    expect(items[1].expanded).toBeTruthy();
                     expect(handler.mock.calls[1][0].detail.name).toBe(
                         ITEMS[2].name
                     );
