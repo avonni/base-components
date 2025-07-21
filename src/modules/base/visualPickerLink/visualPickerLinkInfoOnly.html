@@ -23,12 +23,12 @@
                 </div>
                 <div class="slds-media__body">
                     <div class={computedTileBodyClass}>
-                        <h3
+                        <div
                             if:true={showTitle}
                             class="avonni-visual-picker-link__tile-title"
                         >
                             <slot name="title"></slot>
-                        </h3>
+                        </div>
                         <template if:false={showTitle}>
                             <div
                                 if:true={title}

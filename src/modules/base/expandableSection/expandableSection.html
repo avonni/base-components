@@ -1,6 +1,6 @@
 <template>
     <div class={sectionClass}>
-        <h3 if:true={showHeader} class={headerClass} data-element-id="header">
+        <div if:true={showHeader} class={headerClass} data-element-id="header">
             <button
                 class={titleButtonClass}
                 type="button"
@@ -50,7 +50,7 @@
                     ></slot>
                 </template>
             </button>
-        </h3>
+        </div>
         <div
             class="avonni-expandable-section__content slds-section__content"
             id="section-content"
