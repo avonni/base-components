@@ -1,7 +1,7 @@
-
 import { LightningElement, api } from 'lwc';
 
 export default class VerticalSlider extends LightningElement {
+    @api alternativeText;
     @api label;
     @api size;
     @api type;
