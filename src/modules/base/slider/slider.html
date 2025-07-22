@@ -50,6 +50,8 @@
                                 value={value}
                                 data-group-name="input"
                                 data-index={index}
+                                onblur={handleUnlockPin}
+                                onfocus={handleLockPin}
                                 oninput={handleChange}
                                 onmousedown={handleLockPin}
                                 onmouseup={handleUnlockPin}
