@@ -16,6 +16,17 @@ export default {
                 category: 'View'
             }
         },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the input.',
+            table: {
+                type: { summary: 'string' },
+                category: 'View'
+            }
+        },
         disableSwap: {
             name: 'disable-swap',
             control: {
@@ -52,6 +63,7 @@ export default {
             }
         },
         showPin: {
+            name: 'show-pin',
             control: {
                 type: 'boolean'
             },

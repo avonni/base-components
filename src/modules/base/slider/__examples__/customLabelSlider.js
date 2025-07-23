@@ -26,7 +26,8 @@ export const CustomLabelSlider = ({
     minimumDistance,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
-    messageWhenStepMismatch
+    messageWhenStepMismatch,
+    alternativeText
 }) => {
     const element = document.createElement('ac-custom-label-slider');
     element.label = label;
@@ -50,5 +51,6 @@ export const CustomLabelSlider = ({
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenStepMismatch = messageWhenStepMismatch;
+    element.alternativeText = alternativeText;
     return element;
 };

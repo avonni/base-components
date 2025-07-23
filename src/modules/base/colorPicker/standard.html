@@ -19,6 +19,7 @@
                     accesskey={accessKey}
                     aria-expanded={computedAriaExpanded}
                     aria-haspopup="true"
+                    aria-label={computedAriaLabel}
                     disabled={disabled}
                     type="button"
                     data-element-id="button"
@@ -272,6 +273,7 @@
                     <template if:false={readOnly}>
                         <input
                             class="slds-input"
+                            aria-label="Color value"
                             disabled={disabled}
                             label="color"
                             name={name}

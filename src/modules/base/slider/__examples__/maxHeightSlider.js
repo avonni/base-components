@@ -23,7 +23,8 @@ export const MaxHeightSlider = ({
     minimumDistance,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
-    messageWhenStepMismatch
+    messageWhenStepMismatch,
+    alternativeText
 }) => {
     const element = document.createElement('ac-max-y-slider');
     element.label = label;
@@ -47,5 +48,6 @@ export const MaxHeightSlider = ({
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenStepMismatch = messageWhenStepMismatch;
+    element.alternativeText = alternativeText;
     return element;
 };
