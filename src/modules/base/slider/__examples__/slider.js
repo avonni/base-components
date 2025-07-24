@@ -3,6 +3,7 @@ import Component from '../slider';
 customElements.define('ac-slider', Component.CustomElementConstructor);
 
 export const Slider = ({
+    alternativeText,
     disabled,
     disableSwap,
     hideMinMaxValues,
@@ -26,6 +27,7 @@ export const Slider = ({
     variant
 }) => {
     const element = document.createElement('ac-slider');
+    element.alternativeText = alternativeText;
     element.disabled = disabled;
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;
