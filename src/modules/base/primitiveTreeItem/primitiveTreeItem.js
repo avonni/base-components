@@ -23,7 +23,7 @@ const DEFAULT_EDIT_FIELDS = [
     'isLoading'
 ];
 const UNSORTABLE_ITEMS_PARTS = [
-    'div-branch-buttons',
+    'div-actions',
     'div-popover',
     'lightning-button-icon-expand'
 ];
@@ -77,6 +77,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _enableInfiniteLoading = false;
     _expanded = false;
     _fields = [];
+    _hiddenActions = [];
     _href;
     _independentMultiSelect = false;
     _indeterminate = false;
@@ -86,9 +87,13 @@ export default class PrimitiveTreeItem extends LightningElement {
     _level;
     _metatext;
     _name;
+    _noSlots = false;
     _selected = false;
     _showCheckbox = false;
+    _slottableTypes = [];
     _sortable = false;
+    _type;
+    _unselectable = false;
 
     buttonActions = [];
     labelIsEdited = false;
@@ -136,7 +141,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
         this.addEventListener('keydown', this.handleKeydown);
         this.addEventListener('mousedown', this.handleMouseDown);
-        this.splitActions();
+        this.initActions();
         this.computeSelection();
         this._connected = true;
     }
@@ -167,7 +172,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
 
     /**
-     * Array of action objects to display to the riht of the item header.
+     * Array of action objects to display to the right of the item header.
      *
      * @type {object[]}
      * @public
@@ -178,7 +183,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actions(value) {
         this._actions = normalizeArray(value);
-        if (this._connected) this.splitActions();
+        if (this._connected) this.initActions();
     }
 
     /**
@@ -193,7 +198,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actionsWhenDisabled(value) {
         this._actionsWhenDisabled = normalizeArray(value);
-        if (this._connected) this.splitActions();
+        if (this._connected) this.initActions();
     }
 
     /**
@@ -256,51 +261,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.
-     *
-     * @type {string[]}
-     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
-     * @public
-     */
-    @api
-    get editableFields() {
-        return this._editableFields;
-    }
-    set editableFields(value) {
-        this._editableFields = normalizeArray(value);
-        if (this.popoverVisible) this.togglePopoverVisibility();
-    }
-
-    /**
-     * Array of output data objects. See Output Data for valid keys. The fields are visible only when the item is expanded.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get fields() {
-        return this._fields;
-    }
-    set fields(value) {
-        this._fields = normalizeArray(value);
-    }
-
-    /**
-     * If the item label should be a link, URL of the link.
-     * Links are incompatible with inline edition and multi-select trees.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get href() {
-        return this._href;
-    }
-    set href(value) {
-        this._href = value;
-    }
-
-    /**
      * If present, the item is disabled. A disabled item is grayed out and can't be focused.
      *
      * @type {boolean}
@@ -314,6 +274,22 @@ export default class PrimitiveTreeItem extends LightningElement {
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
         if (this._connected) this.splitActions();
+    }
+
+    /**
+     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.
+     *
+     * @type {string[]}
+     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
+     * @public
+     */
+    @api
+    get editableFields() {
+        return this._editableFields;
+    }
+    set editableFields(value) {
+        this._editableFields = normalizeArray(value);
+        if (this.popoverVisible) this.togglePopoverVisibility();
     }
 
     /**
@@ -344,6 +320,49 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set expanded(value) {
         this._expanded = normalizeBoolean(value);
+    }
+
+    /**
+     * Array of output data objects. See Output Data for valid keys. The fields are visible only when the item is expanded.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get fields() {
+        return this._fields;
+    }
+    set fields(value) {
+        this._fields = normalizeArray(value);
+    }
+
+    /**
+     * Array of action names that should be hidden for this item.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get hiddenActions() {
+        return this._hiddenActions;
+    }
+    set hiddenActions(value) {
+        this._hiddenActions = normalizeArray(value);
+    }
+
+    /**
+     * If the item label should be a link, URL of the link.
+     * Links are incompatible with inline edition and multi-select trees.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get href() {
+        return this._href;
+    }
+    set href(value) {
+        this._href = value;
     }
 
     /**
@@ -471,6 +490,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * If present, the item cannot accept items has a child when sorting.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get noSlots() {
+        return this._noSlots;
+    }
+    set noSlots(value) {
+        this._noSlots = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the item is selected.
      *
      * @type {boolean}
@@ -482,7 +516,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         return this._selected;
     }
     set selected(value) {
-        this._selected = normalizeBoolean(value);
+        if (!this.unselectable) {
+            this._selected = normalizeBoolean(value);
+        } else {
+            this._selected = false;
+        }
         if (this._connected) this.computeSelection();
     }
 
@@ -503,6 +541,20 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * Array of types of items that can be slotted into this item when sorting. If the array isn’t provided, any type of item can be slotted in this item.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get slottableTypes() {
+        return this._slottableTypes;
+    }
+    set slottableTypes(value) {
+        this._slottableTypes = normalizeArray(value);
+    }
+
+    /**
      * If present, the item is sortable in its parent.
      *
      * @type {boolean}
@@ -517,11 +569,49 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._sortable = normalizeBoolean(value);
     }
 
+    /**
+     * Type of the item. It will be used to determine if the item can be slotted into another item when sorting.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get type() {
+        return this._type;
+    }
+    set type(value) {
+        this._type = value;
+    }
+
+    /**
+     * If present, the item is not selectable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get unselectable() {
+        return this._unselectable;
+    }
+    set unselectable(value) {
+        this._unselectable = normalizeBoolean(value);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * True if the item is disabled or unselectable.
+     *
+     * @type {boolean}
+     */
+    get checkboxDisabled() {
+        return this.disabled || this.unselectable;
+    }
 
     get checkboxStyle() {
         if (this.color) {
@@ -628,6 +718,19 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * CSS class of the primitive tree item.
+     *
+     * @type {string}
+     */
+    get primitiveTreeItemClass() {
+        return classSet(
+            'avonni-primitive-tree-item__item slds-is-relative slds-grid slds-grid_vertical-align-center'
+        ).add({
+            'avonni-primitive-tree-item__item_selectable': !this.unselectable
+        });
+    }
+
+    /**
      * True if the child items should be visible.
      *
      * @type {boolean}
@@ -690,7 +793,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         return classSet('slds-is-relative')
             .add({
                 'avonni-primitive-tree-item__single-selection':
-                    !this.showCheckbox
+                    !this.showCheckbox && !this.unselectable
             })
             .toString();
     }
@@ -748,6 +851,24 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
 
     /**
+     * Check if all selectable children of a node are selected.
+     *
+     * @param {object} node Node to check.
+     * @returns {boolean} True if all selectable children are selected, false otherwise.
+     */
+    areSelectableChildrenSelected(node) {
+        if (!node.children || !node.children.length) {
+            return node.selected;
+        }
+        return node.children.every((child) => {
+            if (child.unselectable) {
+                return this.areSelectableChildrenSelected(child);
+            }
+            return child.selected;
+        });
+    }
+
+    /**
      * Transform a camel case string to a start case string.
      *
      * @param {string} string String to transform.
@@ -772,10 +893,11 @@ export default class PrimitiveTreeItem extends LightningElement {
             !this.selected &&
             this.showCheckbox &&
             this.childItems.length &&
-            !this.independentMultiSelect
+            !this.independentMultiSelect &&
+            !this.unselectable
         ) {
-            const selectedChildren = this.childItems.filter(
-                (child) => child.selected
+            const selectedChildren = this.childItems.filter((child) =>
+                this.areSelectableChildrenSelected(child)
             );
 
             if (selectedChildren.length === this.childItems.length) {
@@ -792,7 +914,8 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
 
         if (this.showCheckbox) {
-            this.ariaSelected = this.selected ? 'true' : 'false';
+            this.ariaSelected =
+                this.selected && !this.unselectable ? 'true' : 'false';
 
             // Force the children update
             const items = this.template.querySelectorAll(
@@ -800,11 +923,30 @@ export default class PrimitiveTreeItem extends LightningElement {
             );
             if (this.childItems.length === items.length) {
                 items.forEach((item, index) => {
-                    item.selected = this.childItems[index].selected;
+                    item.selected =
+                        this.childItems[index].selected &&
+                        !this.childItems[index].unselectable;
                 });
             }
         }
         this.updateCheckboxStatus();
+    }
+
+    /**
+     * Filter out hidden actions from the actions and actionsWhenDisabled arrays.
+     */
+    filterHiddenActions() {
+        if (this.hiddenActions.length === 0) {
+            return;
+        }
+        this._actions = this._actions.filter((action) => {
+            return !this.hiddenActions.includes(action.name);
+        });
+        this._actionsWhenDisabled = this._actionsWhenDisabled.filter(
+            (action) => {
+                return !this.hiddenActions.includes(action.name);
+            }
+        );
     }
 
     /**
@@ -858,10 +1000,10 @@ export default class PrimitiveTreeItem extends LightningElement {
     /**
      * Hide the action buttons.
      */
-    hideBranchButtons() {
+    hideActions() {
         if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
-                '[data-element-id="div-branch-buttons"]'
+                '[data-element-id="div-actions"]'
             ).style.opacity = 0;
 
             // Close button menu
@@ -874,6 +1016,14 @@ export default class PrimitiveTreeItem extends LightningElement {
                 }
             }
         }
+    }
+
+    /**
+     * Initialize the actions by filtering hidden actions and splitting them into button and menu actions.
+     */
+    initActions() {
+        this.filterHiddenActions();
+        this.splitActions();
     }
 
     /**
@@ -895,13 +1045,16 @@ export default class PrimitiveTreeItem extends LightningElement {
     removeBorder = () => {
         if (!this.itemElement) return;
         this.itemElement.classList.remove(
-            'avonni-primitive-tree-item__item_border-top'
+            'avonni-primitive-tree-item__item_border-top',
+            'avonni-primitive-tree-item__item_border-top_invalid'
         );
         this.itemElement.classList.remove(
-            'avonni-primitive-tree-item__item_border-bottom'
+            'avonni-primitive-tree-item__item_border-bottom',
+            'avonni-primitive-tree-item__item_border-bottom_invalid'
         );
         this.itemElement.classList.remove(
-            'avonni-primitive-tree-item__item_border'
+            'avonni-primitive-tree-item__item_border',
+            'avonni-primitive-tree-item__item_border_invalid'
         );
         this.itemElement.style = '';
     };
@@ -911,20 +1064,25 @@ export default class PrimitiveTreeItem extends LightningElement {
      *
      * @param {string} position Position of the border.
      * @param {number} level Level of the tree the border should extend to.
+     * @param {boolean} isValid True if the border is valid, false otherwise.
      */
-    setBorder = (position, level) => {
+    setBorder = (position, level, isValid) => {
         if (!this.itemElement) return;
 
         this.removeBorder();
         switch (position) {
             case 'top':
                 this.itemElement.classList.add(
-                    'avonni-primitive-tree-item__item_border-top'
+                    isValid
+                        ? 'avonni-primitive-tree-item__item_border-top'
+                        : 'avonni-primitive-tree-item__item_border-top_invalid'
                 );
                 break;
             case 'bottom':
                 this.itemElement.classList.add(
-                    'avonni-primitive-tree-item__item_border-bottom'
+                    isValid
+                        ? 'avonni-primitive-tree-item__item_border-bottom'
+                        : 'avonni-primitive-tree-item__item_border-bottom_invalid'
                 );
                 if (level) {
                     this.itemElement.style = `--avonni-tree-item-spacing-inline-start-border: ${level}rem;`;
@@ -932,7 +1090,9 @@ export default class PrimitiveTreeItem extends LightningElement {
                 break;
             default:
                 this.itemElement.classList.add(
-                    'avonni-primitive-tree-item__item_border'
+                    isValid && !this.noSlots
+                        ? 'avonni-primitive-tree-item__item_border'
+                        : 'avonni-primitive-tree-item__item_border_invalid'
                 );
                 break;
         }
@@ -944,17 +1104,17 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @param {boolean} value New value of the selected property.
      */
     setSelected = (value) => {
-        this._selected = value;
+        this._selected = value && !this.unselectable;
         this.computeSelection();
     };
 
     /**
      * Display the action buttons.
      */
-    showBranchButtons() {
+    showActions() {
         if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
-                '[data-element-id="div-branch-buttons"]'
+                '[data-element-id="div-actions"]'
             ).style.opacity = 1;
         }
     }
@@ -991,7 +1151,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
 
         this.popoverVisible = !this.popoverVisible;
-        this.hideBranchButtons();
+        this.hideActions();
     };
 
     /**
@@ -1150,7 +1310,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             }
 
             if (this.showCheckbox && target === 'anchor') {
-                this._selected = !this.selected;
+                this._selected = !this.selected && !this.unselectable;
                 this._checkboxIsIndeterminate = false;
             } else if (target === 'chevron') {
                 this._expanded = !this.expanded;

@@ -51,6 +51,7 @@ export function getTreeNode({
                 : node.expanded || false;
         },
         fields: node.fields,
+        hiddenActions: node.hiddenActions || [],
         href: node.href,
         iconName: node.iconName,
         indeterminate: node.indeterminate || false,
@@ -66,6 +67,10 @@ export function getTreeNode({
         metatext: node.metatext,
         name: node.name,
         nodeRef: node,
+        noSlots: node.noSlots || false,
+        type: node.type,
+        slottableTypes: node.slottableTypes || [],
+        unselectable: node.unselectable || false,
         visible: level === 1,
         visibleItems: []
     };

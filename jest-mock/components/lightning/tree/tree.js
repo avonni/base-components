@@ -10,4 +10,5 @@ export default class Tree extends LightningElement {
     @api header;
     @api items;
     @api selectedItem;
+    @api rootSlottableTypes;
 }

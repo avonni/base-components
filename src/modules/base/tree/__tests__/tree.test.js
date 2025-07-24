@@ -1,6 +1,11 @@
 import { createElement } from 'lwc';
 import Tree from '../tree';
-import { ACTIONS, generateFakeRegisters, ITEMS } from './data';
+import {
+    ACTIONS,
+    generateFakeRegisters,
+    ITEMS,
+    ITEMS_WITH_INVALID_SORTING
+} from './data';
 
 // Not tested:
 // Focus moving on keyboard navigation
@@ -44,6 +49,7 @@ describe('Tree', () => {
             expect(element.items).toEqual([]);
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.placeholder).toBeUndefined();
+            expect(element.rootSlottableTypes).toEqual([]);
             expect(element.selectedItems).toEqual([]);
             expect(element.sortable).toBeFalsy();
         });
@@ -297,6 +303,40 @@ describe('Tree', () => {
                     });
                 });
 
+                it('Selected Unselectable Items', () => {
+                    element.isMultiSelect = true;
+                    const handler = jest.fn();
+                    element.addEventListener('select', handler);
+                    element.items = ITEMS;
+                    element.selectedItems = [
+                        'secondLevelSelectable',
+                        'secondLevel3Selectable'
+                    ];
+
+                    return Promise.resolve().then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        items.forEach((item) =>
+                            expect(item.showCheckbox).toBeTruthy()
+                        );
+
+                        const unselectableChild = Array.from(items).find(
+                            (item) => item.name === 'unselectableChild'
+                        );
+                        expect(unselectableChild.expanded).toBeFalsy();
+                        expect(unselectableChild.selected).toBeTruthy();
+
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.selectedItems).toEqual([
+                            'secondLevelSelectable',
+                            'secondLevel3Selectable',
+                            'unselectableChild',
+                            'thirdLevelSelectable'
+                        ]);
+                    });
+                });
+
                 it('Selected Items and Independent Multi Select', () => {
                     element.isMultiSelect = true;
                     element.independentMultiSelect = true;
@@ -447,6 +487,71 @@ describe('Tree', () => {
                     '[data-element-id="avonni-primitive-tree-item"]'
                 );
                 items.forEach((item) => expect(item.sortable).toBeTruthy());
+            });
+        });
+
+        it('Root Slottable Types', () => {
+            const fakeRegisters = generateFakeRegisters(
+                ITEMS_WITH_INVALID_SORTING
+            );
+            element.rootSlottableTypes = ['valid'];
+            element.items = ITEMS_WITH_INVALID_SORTING;
+            element.sortable = true;
+
+            jest.useFakeTimers();
+            const handler = jest.fn();
+            element.addEventListener('change', handler);
+
+            return Promise.resolve().then(() => {
+                // Register the items, including the nested ones
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-tree-item"]'
+                );
+                Object.values(fakeRegisters).forEach((register) => {
+                    items[0].dispatchEvent(
+                        new CustomEvent('privateregisteritem', {
+                            bubbles: true,
+                            detail: register
+                        })
+                    );
+                });
+
+                // Mouse down
+                items[1].dispatchEvent(
+                    new CustomEvent('privatemousedown', {
+                        detail: {
+                            name: ITEMS[1].name,
+                            key: '2'
+                        },
+                        bubbles: true
+                    })
+                );
+                jest.runAllTimers();
+
+                // Move to the bottom item
+                const mouseMove = new CustomEvent('mousemove', {
+                    bubbles: true,
+                    composed: true
+                });
+                mouseMove.clientY = 35;
+                mouseMove.clientX = 15;
+                const tree = element.shadowRoot.querySelector(
+                    '[data-element-id="div-tree-wrapper"]'
+                );
+                tree.dispatchEvent(mouseMove);
+
+                // Mouse to the bottom of the item
+                mouseMove.clientY = 30;
+                mouseMove.clientX = 5;
+                const setBorderCallback =
+                    fakeRegisters.invalidSorting.setBorder;
+                tree.dispatchEvent(mouseMove);
+                expect(setBorderCallback).toHaveBeenCalled();
+                expect(setBorderCallback.mock.calls[0][0]).toBe('bottom');
+                expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                jest.runAllTimers();
+                expect(handler).toHaveBeenCalledTimes(0);
             });
         });
     });
@@ -719,13 +824,13 @@ describe('Tree', () => {
                     const event = new CustomEvent('privateactionclick', {
                         detail: {
                             name: 'Standard.Tree.Add',
-                            key: '4'
+                            key: '8'
                         },
                         bubbles: true
                     });
-                    items[3].dispatchEvent(event);
+                    items[7].dispatchEvent(event);
 
-                    const item = { ...ITEMS[3] };
+                    const item = { ...ITEMS[7] };
                     item.items = [
                         {
                             label: 'New branch'
@@ -737,19 +842,21 @@ describe('Tree', () => {
                         'Standard.Tree.Add'
                     );
                     expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
-                        3
+                        7
                     ]);
                     expect(
                         handler.mock.calls[0][0].detail.previousLevelPath
-                    ).toEqual([3]);
-                    expect(handler.mock.calls[0][0].detail.name).toBe('simple');
+                    ).toEqual([7]);
+                    expect(handler.mock.calls[0][0].detail.name).toBe(
+                        'simpleUnselectable'
+                    );
                     expect(
-                        handler.mock.calls[0][0].detail.items[3]
+                        handler.mock.calls[0][0].detail.items[7]
                     ).toMatchObject(item);
                     expect(
                         handler.mock.calls[0][0].detail.previousName
                     ).toBeUndefined();
-                    expect(element.items[3]).toMatchObject(item);
+                    expect(element.items[7]).toMatchObject(item);
                 });
             });
 
@@ -973,6 +1080,7 @@ describe('Tree', () => {
                     tree.dispatchEvent(mouseMove);
                     expect(setBorderCallback).toHaveBeenCalled();
                     expect(setBorderCallback.mock.calls[0][0]).toBe('bottom');
+                    expect(setBorderCallback.mock.calls[0][2]).toBeTruthy();
 
                     // Mouse move below the item
                     mouseMove.clientY = 35;
@@ -1059,6 +1167,7 @@ describe('Tree', () => {
                     tree.dispatchEvent(mouseMove);
                     expect(setBorderCallback).toHaveBeenCalled();
                     expect(setBorderCallback.mock.calls[0][0]).toBe('top');
+                    expect(setBorderCallback.mock.calls[0][2]).toBeTruthy();
 
                     // Mouse above the item
                     mouseMove.clientY = 5;
@@ -1149,6 +1258,8 @@ describe('Tree', () => {
                     tree.dispatchEvent(mouseMove);
                     expect(setBorderCallback).toHaveBeenCalled();
                     expect(setBorderCallback.mock.calls[0][0]).toBeUndefined();
+                    expect(setBorderCallback.mock.calls[0][2]).toBeTruthy();
+
                     // The item is expanded
                     jest.runAllTimers();
                     expect(handler).toHaveBeenCalledTimes(2);
@@ -1277,6 +1388,270 @@ describe('Tree', () => {
                     expect(detail.items[2].items[0].items[3]).toMatchObject(
                         ITEMS[3]
                     );
+                });
+            });
+
+            describe('Invalid sorting', () => {
+                it('Move an item inside another with noSlots', () => {
+                    const fakeRegisters = generateFakeRegisters(
+                        ITEMS_WITH_INVALID_SORTING
+                    );
+                    element.items = ITEMS_WITH_INVALID_SORTING;
+                    element.sortable = true;
+
+                    jest.useFakeTimers();
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+
+                    return Promise.resolve().then(() => {
+                        // Register the items, including the nested ones
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        Object.values(fakeRegisters).forEach((register) => {
+                            items[0].dispatchEvent(
+                                new CustomEvent('privateregisteritem', {
+                                    bubbles: true,
+                                    detail: register
+                                })
+                            );
+                        });
+
+                        // Mouse down
+                        items[1].dispatchEvent(
+                            new CustomEvent('privatemousedown', {
+                                detail: {
+                                    name: ITEMS[1].name,
+                                    key: '2'
+                                },
+                                bubbles: true
+                            })
+                        );
+                        jest.runAllTimers();
+
+                        // Move to the bottom item
+                        const mouseMove = new CustomEvent('mousemove', {
+                            bubbles: true,
+                            composed: true
+                        });
+                        mouseMove.clientY = 4;
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="div-tree-wrapper"]'
+                        );
+                        tree.dispatchEvent(mouseMove);
+
+                        // Mouse on the center of the item
+                        mouseMove.clientY = 5;
+                        const setBorderCallback =
+                            fakeRegisters.noSlots.setBorder;
+                        tree.dispatchEvent(mouseMove);
+                        expect(setBorderCallback).toHaveBeenCalled();
+                        expect(
+                            setBorderCallback.mock.calls[0][0]
+                        ).toBeUndefined();
+                        expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                        jest.runAllTimers();
+                        tree.dispatchEvent(
+                            new CustomEvent('mouseup', {
+                                bubbles: true,
+                                composed: true
+                            })
+                        );
+                        expect(handler).toHaveBeenCalledTimes(0);
+                    });
+                });
+
+                it('Move an item with invalid type inside another', () => {
+                    const fakeRegisters = generateFakeRegisters(
+                        ITEMS_WITH_INVALID_SORTING
+                    );
+                    element.items = ITEMS_WITH_INVALID_SORTING;
+                    element.sortable = true;
+
+                    jest.useFakeTimers();
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+
+                    return Promise.resolve().then(() => {
+                        // Register the items, including the nested ones
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        Object.values(fakeRegisters).forEach((register) => {
+                            items[0].dispatchEvent(
+                                new CustomEvent('privateregisteritem', {
+                                    bubbles: true,
+                                    detail: register
+                                })
+                            );
+                        });
+
+                        // Mouse down
+                        items[1].dispatchEvent(
+                            new CustomEvent('privatemousedown', {
+                                detail: {
+                                    name: ITEMS[1].name,
+                                    key: '2'
+                                },
+                                bubbles: true
+                            })
+                        );
+                        jest.runAllTimers();
+
+                        // Move to the bottom item
+                        const mouseMove = new CustomEvent('mousemove', {
+                            bubbles: true,
+                            composed: true
+                        });
+                        mouseMove.clientY = 24;
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="div-tree-wrapper"]'
+                        );
+                        tree.dispatchEvent(mouseMove);
+
+                        // Mouse on the center of the item
+                        mouseMove.clientY = 25;
+                        const setBorderCallback =
+                            fakeRegisters.invalidSorting.setBorder;
+                        tree.dispatchEvent(mouseMove);
+                        expect(setBorderCallback).toHaveBeenCalled();
+                        expect(
+                            setBorderCallback.mock.calls[0][0]
+                        ).toBeUndefined();
+                        expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalledTimes(0);
+                    });
+                });
+
+                it('Move an item with invalid type at bottom of another', () => {
+                    const fakeRegisters = generateFakeRegisters(
+                        ITEMS_WITH_INVALID_SORTING
+                    );
+                    element.items = ITEMS_WITH_INVALID_SORTING;
+                    element.sortable = true;
+
+                    jest.useFakeTimers();
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+
+                    return Promise.resolve().then(() => {
+                        // Register the items, including the nested ones
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        Object.values(fakeRegisters).forEach((register) => {
+                            items[0].dispatchEvent(
+                                new CustomEvent('privateregisteritem', {
+                                    bubbles: true,
+                                    detail: register
+                                })
+                            );
+                        });
+
+                        // Mouse down
+                        items[2].dispatchEvent(
+                            new CustomEvent('privatemousedown', {
+                                detail: {
+                                    name: ITEMS[2].name,
+                                    key: '3.2'
+                                },
+                                bubbles: true
+                            })
+                        );
+                        jest.runAllTimers();
+
+                        // Move to the bottom item
+                        const mouseMove = new CustomEvent('mousemove', {
+                            bubbles: true,
+                            composed: true
+                        });
+
+                        // Mouse to the bottom of the item
+                        mouseMove.clientY = 35;
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="div-tree-wrapper"]'
+                        );
+                        tree.dispatchEvent(mouseMove);
+
+                        // Mouse on the center of the item
+                        mouseMove.clientY = 40;
+                        const setBorderCallback =
+                            fakeRegisters.firstLevelInvalidSorting.setBorder;
+                        tree.dispatchEvent(mouseMove);
+                        expect(setBorderCallback).toHaveBeenCalled();
+                        expect(setBorderCallback.mock.calls[0][0]).toBe(
+                            'bottom'
+                        );
+                        expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalledTimes(0);
+                    });
+                });
+
+                it('Move an item with invalid type at top of another', () => {
+                    const fakeRegisters = generateFakeRegisters(
+                        ITEMS_WITH_INVALID_SORTING
+                    );
+                    element.items = ITEMS_WITH_INVALID_SORTING;
+                    element.sortable = true;
+
+                    jest.useFakeTimers();
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+
+                    return Promise.resolve().then(() => {
+                        // Register the items, including the nested ones
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        Object.values(fakeRegisters).forEach((register) => {
+                            items[0].dispatchEvent(
+                                new CustomEvent('privateregisteritem', {
+                                    bubbles: true,
+                                    detail: register
+                                })
+                            );
+                        });
+
+                        // Mouse down
+                        items[2].dispatchEvent(
+                            new CustomEvent('privatemousedown', {
+                                detail: {
+                                    name: ITEMS[2].name,
+                                    key: '3.2'
+                                },
+                                bubbles: true
+                            })
+                        );
+                        jest.runAllTimers();
+
+                        // Move to the bottom item
+                        const mouseMove = new CustomEvent('mousemove', {
+                            bubbles: true,
+                            composed: true
+                        });
+                        mouseMove.clientY = 35;
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="div-tree-wrapper"]'
+                        );
+                        tree.dispatchEvent(mouseMove);
+
+                        // Mouse to the top of the item
+                        mouseMove.clientY = 30;
+                        const setBorderCallback =
+                            fakeRegisters.firstLevelInvalidSorting.setBorder;
+                        tree.dispatchEvent(mouseMove);
+                        expect(setBorderCallback).toHaveBeenCalled();
+                        expect(setBorderCallback.mock.calls[0][0]).toBe('top');
+                        expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalledTimes(0);
+                    });
                 });
             });
         });
@@ -1561,6 +1936,34 @@ describe('Tree', () => {
                 });
             });
 
+            it('select unselectable', () => {
+                element.items = ITEMS;
+                element.selectedItems = ['thirdLevel'];
+
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items[1].dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: {
+                                bounds: { x: 5, y: 185 },
+                                target: 'anchor',
+                                key: '8'
+                            },
+                            bubbles: true,
+                            cancelable: true
+                        })
+                    );
+
+                    expect(handler).not.toHaveBeenCalled();
+                    expect(element.selectedItems).toEqual(['thirdLevel']);
+                });
+            });
+
             it('select is cancelled', () => {
                 element.items = ITEMS;
                 element.selectedItems = ['thirdLevel'];
@@ -1650,6 +2053,76 @@ describe('Tree', () => {
                         'secondLevel2',
                         'firstLevel',
                         'regular'
+                    ]);
+                });
+            });
+
+            it('For multi-select tree with unselectable items', () => {
+                const fakeRegisters = generateFakeRegisters();
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                element.items = ITEMS;
+                element.selectedItems = ['secondLevel3Selectable'];
+                element.isMultiSelect = true;
+                expect(handler).toHaveBeenCalledTimes(1);
+                expect(handler.mock.calls[0][0].detail.selectedItems).toEqual([
+                    'secondLevel3Selectable',
+                    'thirdLevelSelectable'
+                ]);
+
+                return Promise.resolve().then(() => {
+                    // Register the items, including the nested ones
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    Object.values(fakeRegisters).forEach((register) => {
+                        items[0].dispatchEvent(
+                            new CustomEvent('privateregisteritem', {
+                                bubbles: true,
+                                detail: register
+                            })
+                        );
+                    });
+
+                    items[5].dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: {
+                                target: 'anchor',
+                                key: '6.1.2',
+                                bounds: { x: 5, y: 12 }
+                            },
+                            bubbles: true
+                        })
+                    );
+                    expect(handler).toHaveBeenCalledTimes(1);
+
+                    items[5].dispatchEvent(
+                        new CustomEvent('privateitemclick', {
+                            detail: {
+                                target: 'anchor',
+                                key: '6.1.1',
+                                bounds: { x: 5, y: 12 }
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalledTimes(2);
+                    expect(handler.mock.calls[1][0].detail.bounds).toEqual({
+                        x: 5,
+                        y: 12
+                    });
+                    expect(handler.mock.calls[1][0].detail.levelPath).toEqual([
+                        5, 0, 0
+                    ]);
+                    expect(
+                        handler.mock.calls[1][0].detail.selectedItems
+                    ).toEqual([
+                        'secondLevel3Selectable',
+                        'thirdLevelSelectable',
+                        'secondLevelSelectable',
+                        'unselectableChild'
                     ]);
                 });
             });
