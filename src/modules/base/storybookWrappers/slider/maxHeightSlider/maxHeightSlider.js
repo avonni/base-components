@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class ColoredSlider extends LightningElement {
+    @api alternativeText;
     @api disabled;
     @api disableSwap;
     @api hideMinMaxValues;

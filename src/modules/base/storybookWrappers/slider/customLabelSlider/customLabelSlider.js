@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class CustomLabelSlider extends LightningElement {
+    @api alternativeText;
     @api disabled;
     @api disableSwap;
     @api hideMinMaxValues;

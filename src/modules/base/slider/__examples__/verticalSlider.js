@@ -3,6 +3,7 @@ import Component from '../../storybookWrappers/slider/verticalSlider/verticalSli
 customElements.define('ac-vertical-slider', Component.CustomElementConstructor);
 
 export const VerticalSlider = ({
+    alternativeText,
     disabled,
     disableSwap,
     hideMinMaxValues,
@@ -26,6 +27,7 @@ export const VerticalSlider = ({
     variant
 }) => {
     const element = document.createElement('ac-vertical-slider');
+    element.alternativeText = alternativeText;
     element.disabled = disabled;
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;

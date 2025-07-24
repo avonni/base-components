@@ -6,6 +6,7 @@ customElements.define(
 );
 
 export const CustomLabelSlider = ({
+    alternativeText,
     disabled,
     disableSwap,
     hideMinMaxValues,
@@ -29,6 +30,7 @@ export const CustomLabelSlider = ({
     variant
 }) => {
     const element = document.createElement('ac-custom-label-slider');
+    element.alternativeText = alternativeText;
     element.disabled = disabled;
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;

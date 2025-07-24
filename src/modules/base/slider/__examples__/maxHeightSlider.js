@@ -3,6 +3,7 @@ import Component from '../../storybookWrappers/slider/maxHeightSlider/maxHeightS
 customElements.define('ac-max-y-slider', Component.CustomElementConstructor);
 
 export const MaxHeightSlider = ({
+    alternativeText,
     disabled,
     disableSwap,
     hideMinMaxValues,
@@ -26,6 +27,7 @@ export const MaxHeightSlider = ({
     variant
 }) => {
     const element = document.createElement('ac-max-y-slider');
+    element.alternativeText = alternativeText;
     element.disabled = disabled;
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;

@@ -48,6 +48,7 @@ describe('Slider', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.alternativeText).toBeUndefined();
             expect(element.disabled).toEqual(false);
             expect(element.disableSwap).toEqual(false);
             expect(element.hideMinMaxValues).toEqual(false);
@@ -70,6 +71,19 @@ describe('Slider', () => {
             expect(element.validity).toEqual(true);
             expect(element.value).toEqual(50);
             expect(element.variant).toEqual('standard');
+        });
+
+        it('Alternative Text', () => {
+            element.alternativeText = 'some text';
+
+            return Promise.resolve().then(() => {
+                const inputs = element.shadowRoot.querySelectorAll(
+                    '[data-group-name="input"]'
+                );
+                inputs.forEach((input) => {
+                    expect(input.ariaLabel).toBe('some text');
+                });
+            });
         });
 
         describe('disabled', () => {
@@ -221,12 +235,14 @@ describe('Slider', () => {
                 element.label = 'test label';
 
                 return Promise.resolve().then(() => {
-                    expect(element.label).toEqual('test label');
-                    expect(
-                        element.shadowRoot.querySelector(
-                            '[ data-element-id="span-label"]'
-                        ).textContent
-                    ).toEqual('test label');
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const label = element.shadowRoot.querySelector(
+                        '[data-element-id="span-label"]'
+                    );
+                    expect(label.textContent).toEqual('test label');
+                    expect(input.ariaLabel).toBe('test label');
                 });
             });
         });

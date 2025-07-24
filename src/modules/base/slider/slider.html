@@ -41,6 +41,7 @@
                         <div class="slds-slider">
                             <input
                                 class={computedInputClass}
+                                aria-label={computedAriaLabel}
                                 disabled={disabled}
                                 max={computedMax}
                                 min={computedMin}
@@ -49,6 +50,8 @@
                                 value={value}
                                 data-group-name="input"
                                 data-index={index}
+                                onblur={handleUnlockPin}
+                                onfocus={handleLockPin}
                                 oninput={handleChange}
                                 onmousedown={handleLockPin}
                                 onmouseup={handleUnlockPin}

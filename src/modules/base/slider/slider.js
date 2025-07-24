@@ -50,6 +50,13 @@ const TICK_MARK_STYLES = {
  */
 export default class Slider extends LightningElement {
     /**
+     * The assistive text for the input.
+     *
+     * @public
+     * @type {string}
+     */
+    @api alternativeText;
+    /**
      * Text label to describe the slider. Provide your own label to describe the slider.
      *
      * @type {string}
@@ -556,6 +563,15 @@ export default class Slider extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Computed Aria label.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        return this.label || this.alternativeText;
+    }
 
     /**
      * Computed container class styling ( size, vertical ).

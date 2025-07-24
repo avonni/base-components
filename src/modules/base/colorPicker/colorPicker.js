@@ -738,6 +738,15 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * Computed Aria Label for button.
+     *
+     * @type {string}
+     */
+    get computedAriaLabel() {
+        return this.menuLabel || 'Choose a color';
+    }
+
+    /**
      * Computed Button class styling.
      *
      * @type {string}
