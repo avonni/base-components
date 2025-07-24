@@ -1,5 +1,5 @@
 <template>
-    <div class={wrapperClass} data-element-id="div-wrapper">
+    <div class={computedWrapperClass} data-element-id="div-wrapper">
         <!-- Avatar -->
         <c-primitive-avatar
             if:true={avatar}
@@ -15,9 +15,9 @@
         <!-- Label -->
         <a
             if:true={href}
+            class="slds-pill__label avonni-primitive-pill__label-link"
             href={href}
             title={label}
-            class="slds-pill__label avonni-primitive-pill__label-link"
             data-element-id="a-label"
             onmousedown={handleDraggableMouseDown}
         >

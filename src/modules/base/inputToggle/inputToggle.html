@@ -5,23 +5,24 @@
                 <abbr
                     if:true={required}
                     class="slds-required"
-                    title={i18n.required}
+                    title={requiredAlternativeText}
+                    data-element-id="required-abbr"
                     >*
                 </abbr>
                 {label}
             </span>
             <lightning-helptext
                 if:true={fieldLevelHelp}
-                content={fieldLevelHelp}
                 class="slds-m-right_x-small"
+                content={fieldLevelHelp}
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
             <input
-                id="avonni-input-toggle"
                 accesskey={accessKey}
                 aria-label={ariaLabel}
                 checked={checked}
                 disabled={disabled}
+                id="avonni-input-toggle"
                 name={name}
                 readonly={readOnly}
                 required={required}
@@ -38,11 +39,11 @@
                 data-toggle-description
             >
                 <span class={computedFauxToggleClass}></span>
-                <span if:true={messageToggleActive} class="slds-checkbox_on"
-                    >{messageToggleActive}
+                <span if:true={messageToggleActive} class="slds-checkbox_on">
+                    {messageToggleActive}
                 </span>
-                <span if:true={messageToggleInactive} class="slds-checkbox_off"
-                    >{messageToggleInactive}
+                <span if:true={messageToggleInactive} class="slds-checkbox_off">
+                    {messageToggleInactive}
                 </span>
             </span>
         </label>

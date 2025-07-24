@@ -2,25 +2,25 @@ import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
-const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
+const DEFAULT_MIN = 0;
 const DEFAULT_STEP = 1;
 
-const RANGE_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large', 'full'],
-    default: 'full'
-};
-const RANGE_TYPES = {
-    valid: ['horizontal', 'vertical'],
-    default: 'horizontal'
-};
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
 };
+const RANGE_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large', 'full'],
+    default: 'full'
+};
 const RANGE_UNITS = {
     valid: ['decimal', 'currency', 'percent'],
     default: 'decimal'
+};
+const RANGE_TYPES = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
 };
 
 /**
@@ -37,6 +37,20 @@ export default class Range extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Error message to be displayed when a bad input is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenBadInput;
+    /**
+     * Error message to be displayed when a pattern mismatch is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenPatternMismatch;
     /**
      * Error message to be displayed when a range overflow is detected.
      *
@@ -59,13 +73,6 @@ export default class Range extends LightningElement {
      */
     @api messageWhenStepMismatch;
     /**
-     * Error message to be displayed when the value is missing.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenValueMissing;
-    /**
      * Error message to be displayed when the value is too long.
      *
      * @type {string}
@@ -73,26 +80,19 @@ export default class Range extends LightningElement {
      */
     @api messageWhenTooLong;
     /**
-     * Error message to be displayed when a bad input is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenBadInput;
-    /**
-     * Error message to be displayed when a pattern mismatch is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenPatternMismatch;
-    /**
      * Error message to be displayed when a type mismatch is detected.
      *
      * @type {string}
      * @public
      */
     @api messageWhenTypeMismatch;
+    /**
+     * Error message to be displayed when the value is missing.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing;
     /**
      * Object containing selected fields for the unit type (currencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits).
      *
@@ -114,10 +114,15 @@ export default class Range extends LightningElement {
     _valueUpper = DEFAULT_MAX;
     _variant = LABEL_VARIANTS.default;
 
-    _helpMessage;
+    helpMessage;
     _moveEventWait = false;
-
     _rendered = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     constructor() {
         super();
@@ -135,8 +140,8 @@ export default class Range extends LightningElement {
 
     renderedCallback() {
         if (!this._rendered) {
-            this.updateMinProgressBar(parseInt(this._leftInput.value, 10));
-            this.updateMaxProgressBar(parseInt(this._rightInput.value, 10));
+            this.updateMinProgressBar(parseInt(this.leftInput.value, 10));
+            this.updateMaxProgressBar(parseInt(this.rightInput.value, 10));
             this.initRange();
             this._rendered = true;
         }
@@ -159,28 +164,8 @@ export default class Range extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-    }
-
-    /**
-     * The minimum value of the input range.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api
-    get min() {
-        return this._min;
-    }
-
-    set min(value) {
-        const intValue = parseInt(value, 10);
-        if (!isNaN(intValue)) {
-            this._min = intValue;
-        }
     }
 
     /**
@@ -194,11 +179,28 @@ export default class Range extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
             this._max = intValue;
+        }
+    }
+
+    /**
+     * The minimum value of the input range.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get min() {
+        return this._min;
+    }
+    set min(value) {
+        const intValue = parseInt(value, 10);
+        if (!isNaN(intValue)) {
+            this._min = intValue;
         }
     }
 
@@ -213,7 +215,6 @@ export default class Range extends LightningElement {
     get pin() {
         return this._pin;
     }
-
     set pin(value) {
         this._pin = normalizeBoolean(value);
     }
@@ -229,7 +230,6 @@ export default class Range extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: RANGE_SIZES.default,
@@ -248,7 +248,6 @@ export default class Range extends LightningElement {
     get step() {
         return this._step;
     }
-
     set step(value) {
         this._step = Number(value);
 
@@ -268,7 +267,6 @@ export default class Range extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(type) {
         this._type = normalizeString(type, {
             fallbackValue: RANGE_TYPES.default,
@@ -287,7 +285,6 @@ export default class Range extends LightningElement {
     get unit() {
         return this._unit;
     }
-
     set unit(unit) {
         this._unit = normalizeString(unit, {
             fallbackValue: RANGE_UNITS.default,
@@ -320,7 +317,6 @@ export default class Range extends LightningElement {
     get valueLower() {
         return this._valueLower;
     }
-
     set valueLower(value) {
         const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
@@ -338,7 +334,6 @@ export default class Range extends LightningElement {
     get valueUpper() {
         return this._valueUpper;
     }
-
     set valueUpper(value) {
         const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
@@ -356,7 +351,6 @@ export default class Range extends LightningElement {
     @api get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: LABEL_VARIANTS.default,
@@ -371,20 +365,26 @@ export default class Range extends LightningElement {
      */
 
     /**
-     * Computed label class styling.
+     * Computed left bubble class styling.
      *
      * @type {string}
      */
-    get computedLabelClass() {
-        const classes = classSet('avonni-slider__label');
+    get computedBubbleLeftClass() {
+        return classSet('left-bubble').add({
+            'avonni-range__bubble-vertical left-bubble': this.isVertical,
+            'avonni-range__bubble': !this.isVertical
+        });
+    }
 
-        classes.add(
-            this._variant === 'label-hidden'
-                ? 'slds-assistive-text'
-                : 'slds-slider-label__label'
-        );
-
-        return classes.toString();
+    /**
+     * Computed right bubble class styling.
+     *
+     * @type {string}
+     */
+    get computedBubbleRightClass() {
+        return this.isVertical
+            ? 'avonni-range__bubble-vertical right-bubble'
+            : 'avonni-range__bubble right-bubble';
     }
 
     /**
@@ -395,37 +395,30 @@ export default class Range extends LightningElement {
     get computedContainerClass() {
         return classSet('')
             .add({
-                [`avonni-range__container-horizontal-size_${this._size}`]:
-                    this._size,
-                'avonni-range__vertical': this._type === 'vertical',
-                [`avonni-range__container-vertical-size_${this._size}`]:
-                    this._size && this._type === 'vertical'
+                [`avonni-range__container-horizontal-size_${this.size}`]:
+                    this.size,
+                'avonni-range__vertical': this.isVertical,
+                [`avonni-range__container-vertical-size_${this.size}`]:
+                    this.size && this.isVertical
             })
             .toString();
     }
 
     /**
-     * Computed left bubble class styling.
+     * Computed label class styling.
      *
      * @type {string}
      */
-    get computedBubbleLeftClass() {
-        return classSet('left-bubble').add({
-            'avonni-range__bubble-vertical left-bubble':
-                this._type === 'vertical',
-            'avonni-range__bubble': this._type !== 'vertical'
-        });
-    }
+    get computedLabelClass() {
+        const classes = classSet('avonni-slider__label');
 
-    /**
-     * Computed right bubble class styling.
-     *
-     * @type {string}
-     */
-    get computedBubbleRightClass() {
-        return this._type === 'vertical'
-            ? 'avonni-range__bubble-vertical right-bubble'
-            : 'avonni-range__bubble right-bubble';
+        classes.add(
+            this.variant === 'label-hidden'
+                ? 'slds-assistive-text'
+                : 'slds-slider-label__label'
+        );
+
+        return classes.toString();
     }
 
     /**
@@ -437,15 +430,6 @@ export default class Range extends LightningElement {
         return classSet('avonni-range__progress').add({
             'avonni-range__progress_disabled': this.disabled
         });
-    }
-
-    /**
-     * Verify if range is vertical.
-     *
-     * @type {boolean}
-     */
-    get isVertical() {
-        return this._type === 'vertical';
     }
 
     /**
@@ -497,23 +481,32 @@ export default class Range extends LightningElement {
     }
 
     /**
-     *  Returns the progress bar html element.
+     * Verify if range is vertical.
+     *
+     * @type {boolean}
      */
-    get _progress() {
-        return this.template.querySelector('[data-element-id="progress-bar"]');
+    get isVertical() {
+        return this.type === 'vertical';
     }
 
     /**
      *  Returns the left (lowerValue) input html element.
      */
-    get _leftInput() {
+    get leftInput() {
         return this.template.querySelector('[data-element-id="input-left"]');
+    }
+
+    /**
+     *  Returns the progress bar html element.
+     */
+    get progress() {
+        return this.template.querySelector('[data-element-id="progress-bar"]');
     }
 
     /**
      *  Returns the right (higherValue) input html element.
      */
-    get _rightInput() {
+    get rightInput() {
         return this.template.querySelector('[data-element-id="input-right"]');
     }
 
@@ -559,7 +552,7 @@ export default class Range extends LightningElement {
                 helpMessage = helpMessage + message;
             }
         );
-        this._helpMessage = helpMessage;
+        this.helpMessage = helpMessage;
         return leftInputValidity && rightInputValidity;
     }
 
@@ -593,93 +586,6 @@ export default class Range extends LightningElement {
      */
 
     /**
-     * Initialize range cmp.
-     */
-    initRange() {
-        this.showHelpMessageIfInvalid();
-        this.setBubblesPosition();
-    }
-
-    /**
-     * Handle any slider value change.
-     *
-     * @param {Event} event
-     */
-    handleChange(event) {
-        this.updateInputRange(event);
-        this.setBubblesPosition();
-        this.changeRange();
-    }
-
-    /**
-     * If left slider is closer to mouse, adds a class which puts it above the right.
-     *
-     * @param {Event} event
-     */
-    setClosestOnTop(event) {
-        let total = this._leftInput.clientWidth;
-        let leftInputPos =
-            total *
-            (parseInt(this._leftInput.value - this.min, 10) /
-                (this.max - this.min));
-        let rightInputPos =
-            total *
-            ((parseInt(this._rightInput.value, 10) - this.min) /
-                (this.max - this.min));
-        if (
-            Math.abs(event.offsetX - leftInputPos + 1) <
-            Math.abs(event.offsetX - rightInputPos - 1)
-        )
-            this._leftInput.classList.add('avonni-range__slider-left_above');
-        else
-            this._leftInput.classList.remove('avonni-range__slider-left_above');
-    }
-
-    /**
-     * Updates the input range values based on its current value. Also handle the collision if two slider are equal.
-     *
-     * @param {Event} event
-     */
-    updateInputRange(event) {
-        let minVal = parseInt(this._leftInput.value, 10);
-        let maxVal = parseInt(this._rightInput.value, 10);
-        if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
-            this.updateMinProgressBar(minVal);
-            this.updateMaxProgressBar(maxVal);
-        } else if (maxVal - minVal < 0) {
-            if (event.target.dataset.elementId === 'input-left') {
-                this.updateMinProgressBar(maxVal);
-            } else {
-                this.updateMaxProgressBar(minVal);
-            }
-        }
-    }
-
-    /**
-     * Updates the lower progress bar position based on value.
-     *
-     * @param {number} value
-     */
-    updateMinProgressBar(value) {
-        this._leftInput.value = value;
-        this._valueLower = value;
-        this._progress.style.left =
-            ((value - this.min) / (this.max - this.min)) * 100 + '%';
-    }
-
-    /**
-     * Updates the higher progress bar position based on value.
-     *
-     * @param {number} value
-     */
-    updateMaxProgressBar(value) {
-        this._rightInput.value = value;
-        this._valueUpper = value;
-        this._progress.style.right =
-            100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
-    }
-
-    /**
      * Update range upper and lower values.
      */
     changeRange() {
@@ -706,32 +612,10 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Display left bubble.
-     */
-    showLeftBubble() {
-        if (this._pin) {
-            this.template
-                .querySelector('[data-element-id="left-bubble"]')
-                .classList.add('avonni-range__bubble_visible');
-        }
-    }
-
-    /**
-     * Display right bubble.
-     */
-    showRightBubble() {
-        if (this._pin) {
-            this.template
-                .querySelector('[data-element-id="right-bubble"]')
-                .classList.add('avonni-range__bubble_visible');
-        }
-    }
-
-    /**
      * Hide left bubble.
      */
     hideLeftBubble() {
-        if (this._pin) {
+        if (this.pin) {
             this.template
                 .querySelector('[data-element-id="left-bubble"]')
                 .classList.remove('avonni-range__bubble_visible');
@@ -742,7 +626,7 @@ export default class Range extends LightningElement {
      * Hide right bubble.
      */
     hideRightBubble() {
-        if (this._pin) {
+        if (this.pin) {
             this.template
                 .querySelector('[data-element-id="right-bubble"]')
                 .classList.remove('avonni-range__bubble_visible');
@@ -750,22 +634,30 @@ export default class Range extends LightningElement {
     }
 
     /**
+     * Initialize range cmp.
+     */
+    initRange() {
+        this.showHelpMessageIfInvalid();
+        this.setBubblesPosition();
+    }
+
+    /**
      * Calculate Bubbles position.
      */
     setBubblesPosition() {
-        if (this._pin) {
+        if (this.pin) {
             setTimeout(() => {
                 let bubbleLeft = this.template.querySelector('.left-bubble');
                 let bubbleRight = this.template.querySelector('.right-bubble');
 
                 let rightProgressBubble =
-                    ((this.valueUpper - this._leftInput.min) /
-                        (this._leftInput.max - this._leftInput.min)) *
+                    ((this.valueUpper - this.leftInput.min) /
+                        (this.leftInput.max - this.leftInput.min)) *
                     100;
 
                 let leftProgressBubble =
-                    ((this.valueLower - this._leftInput.min) /
-                        (this._leftInput.max - this._leftInput.min)) *
+                    ((this.valueLower - this.leftInput.min) /
+                        (this.leftInput.max - this.leftInput.min)) *
                     100;
 
                 bubbleLeft.style.left =
@@ -783,6 +675,95 @@ export default class Range extends LightningElement {
                     'px)';
             }, 1);
         }
+    }
+
+    /**
+     * If left slider is closer to mouse, adds a class which puts it above the right.
+     *
+     * @param {Event} event
+     */
+    setClosestOnTop(event) {
+        let total = this.leftInput.clientWidth;
+        let leftInputPos =
+            total *
+            (parseInt(this.leftInput.value - this.min, 10) /
+                (this.max - this.min));
+        let rightInputPos =
+            total *
+            ((parseInt(this.rightInput.value, 10) - this.min) /
+                (this.max - this.min));
+        if (
+            Math.abs(event.offsetX - leftInputPos + 1) <
+            Math.abs(event.offsetX - rightInputPos - 1)
+        )
+            this.leftInput.classList.add('avonni-range__slider-left_above');
+        else this.leftInput.classList.remove('avonni-range__slider-left_above');
+    }
+
+    /**
+     * Display left bubble.
+     */
+    showLeftBubble() {
+        if (this.pin) {
+            this.template
+                .querySelector('[data-element-id="left-bubble"]')
+                .classList.add('avonni-range__bubble_visible');
+        }
+    }
+
+    /**
+     * Display right bubble.
+     */
+    showRightBubble() {
+        if (this.pin) {
+            this.template
+                .querySelector('[data-element-id="right-bubble"]')
+                .classList.add('avonni-range__bubble_visible');
+        }
+    }
+
+    /**
+     * Updates the input range values based on its current value. Also handle the collision if two slider are equal.
+     *
+     * @param {Event} event
+     */
+    updateInputRange(event) {
+        let minVal = parseInt(this.leftInput.value, 10);
+        let maxVal = parseInt(this.rightInput.value, 10);
+        if (maxVal - minVal >= 0 && maxVal <= this.rightInput.max) {
+            this.updateMinProgressBar(minVal);
+            this.updateMaxProgressBar(maxVal);
+        } else if (maxVal - minVal < 0) {
+            if (event.target.dataset.elementId === 'input-left') {
+                this.updateMinProgressBar(maxVal);
+            } else {
+                this.updateMaxProgressBar(minVal);
+            }
+        }
+    }
+
+    /**
+     * Updates the higher progress bar position based on value.
+     *
+     * @param {number} value
+     */
+    updateMaxProgressBar(value) {
+        this.rightInput.value = value;
+        this._valueUpper = value;
+        this.progress.style.right =
+            100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
+    }
+
+    /**
+     * Updates the lower progress bar position based on value.
+     *
+     * @param {number} value
+     */
+    updateMinProgressBar(value) {
+        this.leftInput.value = value;
+        this._valueLower = value;
+        this.progress.style.left =
+            ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }
 
     /**
@@ -805,5 +786,22 @@ export default class Range extends LightningElement {
         if (this._constraintApiProxyInputRightUpdater) {
             this._constraintApiProxyInputRightUpdater(attributes);
         }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handle any slider value change.
+     *
+     * @param {Event} event
+     */
+    handleChange(event) {
+        this.updateInputRange(event);
+        this.setBubblesPosition();
+        this.changeRange();
     }
 }

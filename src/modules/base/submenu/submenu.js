@@ -57,7 +57,12 @@ export default class Submenu extends LightningElement {
     _tabIndex = DEFAULT_TAB_INDEX;
 
     isOpen = false;
-    init = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.classList.add('slds-dropdown__item');
@@ -143,10 +148,7 @@ export default class Submenu extends LightningElement {
 
     get computedDropdownClass() {
         return classSet('slds-dropdown slds-dropdown_submenu')
-            .add({
-                'slds-dropdown_submenu-right': this.menuAlignment === 'right',
-                'slds-dropdown_submenu-left': this.menuAlignment === 'left'
-            })
+            .add(`slds-dropdown_submenu-${this.menuAlignment}`)
             .toString();
     }
 
@@ -155,6 +157,16 @@ export default class Submenu extends LightningElement {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Closes the submenu.
+     *
+     * @public
+     */
+    @api
+    close() {
+        this.isOpen = false;
+    }
 
     /**
      * Sets focus on the anchor element in the menu item.
@@ -175,13 +187,13 @@ export default class Submenu extends LightningElement {
     }
 
     /**
-     * Close the submenu.
+     * Opens the submenu.
      *
      * @public
      */
     @api
-    close() {
-        this.isOpen = false;
+    open() {
+        this.isOpen = true;
     }
 
     /*

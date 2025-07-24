@@ -3,49 +3,49 @@ import Component from 'avonni/range';
 customElements.define('ac-base-range', Component.CustomElementConstructor);
 
 export const Range = ({
+    disabled,
     label,
+    max,
+    messageWhenBadInput,
+    messageWhenPatternMismatch,
+    messageWhenRangeOverflow,
+    messageWhenRangeUnderflow,
+    messageWhenStepMismatch,
+    messageWhenTooLong,
+    messageWhenTypeMismatch,
+    messageWhenValueMissing,
+    min,
+    pin,
     size,
+    step,
     type,
-    variant,
     unit,
     unitAttributes,
     valueLower,
     valueUpper,
-    pin,
-    min,
-    max,
-    step,
-    disabled,
-    messageWhenRangeOverflow,
-    messageWhenRangeUnderflow,
-    messageWhenStepMismatch,
-    messageWhenValueMissing,
-    messageWhenTooLong,
-    messageWhenBadInput,
-    messageWhenPatternMismatch,
-    messageWhenTypeMismatch
+    variant
 }) => {
     const element = document.createElement('ac-base-range');
+    element.disabled = disabled;
     element.label = label;
+    element.max = max || 100;
+    element.messageWhenBadInput = messageWhenBadInput;
+    element.messageWhenPatternMismatch = messageWhenPatternMismatch;
+    element.messageWhenRangeOverflow = messageWhenRangeOverflow;
+    element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
+    element.messageWhenStepMismatch = messageWhenStepMismatch;
+    element.messageWhenTooLong = messageWhenTooLong;
+    element.messageWhenTypeMismatch = messageWhenTypeMismatch;
+    element.messageWhenValueMissing = messageWhenValueMissing;
+    element.min = min || 0;
+    element.pin = pin;
     element.size = size;
+    element.step = step || 1;
     element.type = type;
-    element.variant = variant;
     element.unit = unit;
     element.unitAttributes = unitAttributes || [];
     element.valueLower = valueLower;
     element.valueUpper = valueUpper;
-    element.pin = pin;
-    element.min = min || 0;
-    element.max = max || 100;
-    element.step = step || 1;
-    element.disabled = disabled;
-    element.messageWhenRangeOverflow = messageWhenRangeOverflow;
-    element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
-    element.messageWhenStepMismatch = messageWhenStepMismatch;
-    element.messageWhenValueMissing = messageWhenValueMissing;
-    element.messageWhenTooLong = messageWhenTooLong;
-    element.messageWhenBadInput = messageWhenBadInput;
-    element.messageWhenPatternMismatch = messageWhenPatternMismatch;
-    element.messageWhenTypeMismatch = messageWhenTypeMismatch;
+    element.variant = variant;
     return element;
 };

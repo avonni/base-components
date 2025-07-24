@@ -15,6 +15,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        cancelButtonLabel: {
+            name: 'cancel-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the cancel button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Cancel' }
+            }
+        },
         colors: {
             control: {
                 type: 'object'
@@ -33,6 +44,30 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        customTabLabel: {
+            name: 'custom-tab-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the custom tab.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Custom' },
+                category: 'Tabs'
+            }
+        },
+        defaultTabLabel: {
+            name: 'default-tab-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the default tab.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Default' },
+                category: 'Tabs'
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -43,6 +78,17 @@ export default {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
                 category: 'Validation'
+            }
+        },
+        doneButtonLabel: {
+            name: 'done-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the done button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Done' }
             }
         },
         fieldLevelHelp: {
@@ -120,6 +166,18 @@ export default {
             description: 'Text label for the input.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the color picker is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         menuAlignment: {
@@ -326,6 +384,40 @@ export default {
                 category: 'Validation'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'required' }
+            }
+        },
+        tokens: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of token objects. If present, a token tab will be added in the menu.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        tokensTabLabel: {
+            name: 'tokens-tab-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the tokens tab.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Tokens' },
+                category: 'Tabs'
+            }
+        },
         type: {
             control: {
                 type: 'select'
@@ -363,25 +455,19 @@ export default {
                 defaultValue: { summary: 'standard' },
                 type: { summary: 'string' }
             }
-        },
-        tokens: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of token objects. If present, a token tab will be added in the menu.',
-            table: {
-                type: { summary: 'object[]' }
-            }
         }
     },
     args: {
+        cancelButtonLabel: 'Cancel',
+        customTabLabel: 'Custom',
+        defaultTabLabel: 'Default',
         disabled: false,
-        readOnly: false,
+        doneButtonLabel: 'Done',
         hideClearIcon: false,
         hideColorInput: false,
         inline: false,
         isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         menuAlignment: 'left',
         menuIconSize: 'x-small',
         menuNubbin: false,
@@ -389,7 +475,10 @@ export default {
         opacity: false,
         paletteHideOutline: false,
         paletteShowCheckmark: false,
+        readOnly: false,
         required: false,
+        requiredAlternativeText: 'required',
+        tokensTabLabel: 'Tokens',
         type: 'base',
         variant: 'standard'
     }

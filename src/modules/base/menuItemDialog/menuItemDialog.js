@@ -60,6 +60,12 @@ export default class MenuItemDialog extends LightningElement {
     _isDraft = false;
     _tabIndex = DEFAULT_TAB_INDEX;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.classList.add('slds-dropdown__item');
         this.setAttribute('role', 'presentation');
@@ -78,10 +84,10 @@ export default class MenuItemDialog extends LightningElement {
      * @public
      * @default false
      */
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -94,10 +100,10 @@ export default class MenuItemDialog extends LightningElement {
      * @public
      * @default false
      */
-    @api get isDraft() {
+    @api
+    get isDraft() {
         return this._isDraft;
     }
-
     set isDraft(value) {
         this._isDraft = normalizeBoolean(value);
     }
@@ -111,10 +117,10 @@ export default class MenuItemDialog extends LightningElement {
      * @public
      * @default 0
      */
-    @api get tabIndex() {
+    @api
+    get tabIndex() {
         return this._tabIndex;
     }
-
     set tabIndex(newValue) {
         this._tabIndex = newValue;
     }

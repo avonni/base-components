@@ -23,10 +23,6 @@ const AVATAR_VARIANTS = {
     valid: ['circle', 'square'],
     default: 'square'
 };
-const STATUS = {
-    valid: ['approved', 'locked', 'declined', 'unknown'],
-    default: null
-};
 const POSITIONS = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
     presenceDefault: 'bottom-right',
@@ -36,6 +32,10 @@ const POSITIONS = {
 };
 const PRESENCE = {
     valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
+    default: null
+};
+const STATUS = {
+    valid: ['approved', 'locked', 'declined', 'unknown'],
     default: null
 };
 const TEXT_POSITIONS = {
@@ -155,20 +155,6 @@ export default class Avatar extends LightningElement {
      */
 
     /**
-     * Array of action objects. If the array contains a single action, it is displayed as a button icon. Otherwise, actions are placed in a button menu with a label and icon.
-     *
-     * @public
-     * @type {object[]}
-     */
-    @api
-    get actions() {
-        return this._actions;
-    }
-    set actions(value) {
-        this._actions = normalizeArray(value);
-    }
-
-    /**
      * Position of the action button or menu relative to the avatar. Valid values include top-right, bottom-right, bottom-left or top-left.
      *
      * @public
@@ -184,6 +170,20 @@ export default class Avatar extends LightningElement {
             fallbackValue: POSITIONS.actionDefault,
             validValues: POSITIONS.valid
         });
+    }
+
+    /**
+     * Array of action objects. If the array contains a single action, it is displayed as a button icon. Otherwise, actions are placed in a button menu with a label and icon.
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(value) {
+        this._actions = normalizeArray(value);
     }
 
     /**

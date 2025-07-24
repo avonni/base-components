@@ -1,8 +1,8 @@
 <template>
     <c-button-menu alternative-text="Show menu" triggers={buttonMenuTriggers}>
         <lightning-menu-item
-            value="1"
             label="Menu Item 1"
+            value="1"
         ></lightning-menu-item>
         <c-submenu label="Base submenu">
             <lightning-menu-item label="Menu Item 2" value="2">
@@ -12,7 +12,7 @@
             <lightning-menu-item label="Menu Item 4" value="4">
             </lightning-menu-item>
         </c-submenu>
-        <c-submenu label="Disabled submenu" disabled>
+        <c-submenu disabled label="Disabled submenu">
             <lightning-menu-item label="Menu Item 2" value="2">
             </lightning-menu-item>
             <lightning-menu-item label="Menu Item 3" value="3">
@@ -20,17 +20,17 @@
             <lightning-menu-item label="Menu Item 4" value="4">
             </lightning-menu-item>
         </c-submenu>
-        <lightning-menu-item value="5" label="Menu Item 5">
+        <lightning-menu-item label="Menu Item 5" value="5">
         </lightning-menu-item>
-        <lightning-menu-item value="6" label="Menu Item 6">
+        <lightning-menu-item label="Menu Item 6" value="6">
         </lightning-menu-item>
-        <c-submenu label="Submenu with icon" icon-name="utility:right">
+        <c-submenu icon-name="utility:right" label="Submenu with icon">
             <lightning-menu-item label="Menu Item 7" value="7">
             </lightning-menu-item>
             <c-submenu
-                label="Draft submenu"
                 icon-name="utility:right"
                 is-draft="true"
+                label="Draft submenu"
             >
                 <lightning-menu-item label="Menu Item 8" value="8">
                 </lightning-menu-item>

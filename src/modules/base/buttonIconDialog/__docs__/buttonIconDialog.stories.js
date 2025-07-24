@@ -23,14 +23,26 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        tooltip: {
+        cancelButtonLabel: {
+            name: 'cancel-button-label',
             control: {
                 type: 'text'
             },
-            description:
-                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            description: 'The label for the cancel button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'button',
+                defaultValue: { summary: 'Cancel' }
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the popover can be opened by users.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         iconClass: {
@@ -68,6 +80,41 @@ export default {
                 category: 'icon'
             }
         },
+        isButtonLoading: {
+            name: 'is-button-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, shows a loading spinner over the button.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the button is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
+        saveButtonLabel: {
+            name: 'save-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the save button.',
+            table: {
+                type: { summary: 'string' },
+                category: 'button',
+                defaultValue: { summary: 'Save' }
+            }
+        },
         size: {
             control: {
                 type: 'select'
@@ -78,6 +125,16 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
+            }
+        },
+        tooltip: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         variant: {
@@ -106,21 +163,14 @@ export default {
                 defaultValue: { summary: 'border' },
                 type: { summary: 'string' }
             }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the popover can be opened by users.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
         }
     },
     args: {
-        alternativeText: 'Button Icon Dialog',
+        cancelButtonLabel: 'Cancel',
         disabled: false,
+        isButtonLoading: false,
+        loadingStateAlternativeText: 'Loading...',
+        saveButtonLabel: 'Save',
         size: 'medium',
         variant: 'border'
     }

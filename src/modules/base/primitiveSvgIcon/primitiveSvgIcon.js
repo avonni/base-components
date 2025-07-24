@@ -25,6 +25,12 @@ export default class PrimitiveSvgIcon extends LightningElement {
 
     _name = NAMES.default;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     render() {
         switch (this.name) {
             case 'eraser':
@@ -35,6 +41,12 @@ export default class PrimitiveSvgIcon extends LightningElement {
                 return eraser;
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Name of the icon. Valid values include eraser and inkPen.

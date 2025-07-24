@@ -5,17 +5,15 @@ import { DoubleMediaObject } from '../__examples__/doubleMediaObject';
 export default {
     title: 'Example/Media Object',
     argTypes: {
-        verticalAlign: {
-            name: 'vertical-align',
+        inline: {
             control: {
-                type: 'select'
+                type: 'boolean'
             },
-            options: ['start', 'center', 'end'],
             description:
-                'Determines how to align the media object items vertically in the container. The alignment options are start, center and end.',
+                'Aligns the figure and body to be inline-block of each other.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'start' }
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         responsive: {
@@ -23,17 +21,6 @@ export default {
                 type: 'boolean'
             },
             description: 'Figure and body stack on smaller screens.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        inline: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'Aligns the figure and body to be inline-block of each other.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -49,6 +36,19 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
+            }
+        },
+        verticalAlign: {
+            name: 'vertical-align',
+            control: {
+                type: 'select'
+            },
+            options: ['start', 'center', 'end'],
+            description:
+                'Determines how to align the media object items vertically in the container. The alignment options are start, center and end.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'start' }
             }
         }
     },

@@ -21,10 +21,10 @@
                 <abbr
                     if:true={required}
                     class="slds-required"
-                    title="Required"
+                    title={requiredAlternativeText}
                     data-element-id="abbr"
-                    >*</abbr
-                >
+                    >*
+                </abbr>
                 {label}
             </legend>
             <div
@@ -38,8 +38,8 @@
             >
                 <template for:each={visibleItems} for:item="item">
                     <div
-                        class={computedVerticalVisualPickerClass}
                         key={item.value}
+                        class={computedVerticalVisualPickerClass}
                         data-element-id="div-item-wrapper"
                         data-value={item.value}
                     >
@@ -53,9 +53,9 @@
                             value={item.value}
                             data-element-id="input"
                             onblur={handleBlur}
-                            onfocus={handleFocus}
                             onchange={handleChange}
                             onclick={handleClick}
+                            onfocus={handleFocus}
                             onkeyup={handleKeyUp}
                         />
                         <label
@@ -126,10 +126,10 @@
                                             >
                                                 <c-chip
                                                     if:true={tag.label}
+                                                    key={tag.label}
                                                     class="
                                                         avonni-vertical-visual-picker__tag
                                                     "
-                                                    key={tag.label}
                                                     label={tag.label}
                                                     variant={tag.variant}
                                                 ></c-chip>
@@ -170,9 +170,9 @@
                                 "
                             >
                                 <lightning-icon
+                                    class="slds-icon-text-check"
                                     icon-name="utility:check"
                                     size="x-small"
-                                    class="slds-icon-text-check"
                                     variant="inverse"
                                 ></lightning-icon>
                             </span>
@@ -207,7 +207,7 @@
                     <!-- Loading spinner -->
                     <lightning-spinner
                         if:true={isLoading}
-                        alternative-text="Loading..."
+                        alternative-text={loadingStateAlternativeText}
                         size="small"
                         data-element-id="lightning-spinner"
                     ></lightning-spinner>
@@ -221,9 +221,10 @@
                             avonni-vertical-visual-picker__show-more-button
                         "
                         disabled={isLoading}
-                        icon-name={currentShowButtonIconName}
-                        label={currentShowButtonLabel}
-                        data-element-id="lightning-button"
+                        icon-name={computedShowMoreButtonIconName}
+                        label={computedShowMoreButtonLabel}
+                        title={computedShowMoreButtonLabel}
+                        data-element-id="show-more-button"
                         onclick={handleToggleShowMoreButton}
                     ></lightning-button>
                 </div>
@@ -231,11 +232,11 @@
         </fieldset>
         <div
             if:true={helpMessage}
-            id="help-message"
             class="slds-form-element__help"
+            id="help-message"
+            role="alert"
             data-element-id="div-help-message"
             data-help-message
-            role="alert"
         >
             {helpMessage}
         </div>

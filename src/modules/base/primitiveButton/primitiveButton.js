@@ -25,17 +25,15 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
 };
-
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'x-small'
 };
-
 const TYPES = {
     valid: ['button', 'reset', 'submit'],
     default: 'button'
@@ -48,7 +46,6 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api accessKey;
-
     /**
      * Indicates the element that represents the current item within a container or set of related elements.
      * For example:
@@ -73,21 +70,18 @@ export default class PrimitiveButton extends LightningElement {
      * @default undefined
      */
     @api ariaKeyShortcuts;
-
     /**
      * Label describing the button to assistive technologies.
      *
      * @type {string}
      */
     @api ariaLabel;
-
     /**
      * Reserved for internal use only.
      * Describes the order of this element (first, middle or last) inside lightning-button-group.
      * @type {string}
      */
     @api groupOrder = '';
-
     /**
      * The Lightning Design System name of the icon.
      * Names are written in the format 'utility:down' where 'utility' is the category,
@@ -103,7 +97,13 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api label;
-
+    /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * The name for the button element.
      * This value is optional and can be used to identify the button in a callback.
@@ -111,7 +111,6 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api name;
-
     /**
      * Reserved for internal use only.
      * Should be set to -1 if button should not
@@ -121,14 +120,12 @@ export default class PrimitiveButton extends LightningElement {
      * @type {number}
      */
     @api tabIndex;
-
     /**
      * Displays tooltip text when the mouse cursor moves over the element.
      *
      * @type {string}
      */
     @api title;
-
     /**
      * The value for the button element.
      * This value is optional and can be used when submitting a form.
@@ -136,12 +133,11 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api value;
-
     _ariaAtomic;
     _ariaBusy;
     _ariaControls;
-    _ariaDetails;
     _ariaDescribedBy;
+    _ariaDetails;
     _ariaExpanded;
     _ariaFlowTo;
     _ariaHasPopup;
@@ -547,8 +543,7 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
-     * Setting it to true show a loading spinner over the button.
-     * This value defaults to false.
+     * If present, shows a loading spinner over the button.
      *
      * @public
      * @type {boolean}

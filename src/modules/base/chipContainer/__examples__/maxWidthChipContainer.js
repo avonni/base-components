@@ -10,14 +10,16 @@ export const MaxWidthChipContainer = ({
     isCollapsible,
     isExpanded,
     items,
+    showMoreButtonAlternativeText,
     singleLine,
     sortable
 }) => {
     const element = document.createElement('ac-max-width-chip-container');
-    element.items = items;
     element.alternativeText = alternativeText;
     element.isCollapsible = isCollapsible;
     element.isExpanded = isExpanded;
+    element.items = items;
+    element.showMoreButtonAlternativeText = showMoreButtonAlternativeText;
     element.singleLine = singleLine;
     element.sortable = sortable;
     return element;

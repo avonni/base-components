@@ -147,7 +147,8 @@ export default {
             description:
                 'Message displayed while the menu is in the loading state.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         menuAlignment: {
@@ -287,6 +288,7 @@ export default {
         iconPosition: 'left',
         iconSize: 'medium',
         isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         menuAlignment: 'left',
         menuLength: '7-items',
         menuWidth: 'small',

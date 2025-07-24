@@ -1,21 +1,22 @@
 import { LightningElement, api } from 'lwc';
 
 export default class InfiniteGrid extends LightningElement {
-    @api label;
-    @api alternativeText;
-    @api sortable;
     @api actions;
+    @api alternativeText;
+    @api cols;
+    @api divider;
+    @api imageAttributes;
+    @api label;
+    @api largeContainerCols;
+    @api loadingStateAlternativeText;
+    @api loadMoreOffset;
     @api mediaActions;
+    @api mediumContainerCols;
+    @api smallContainerCols;
+    @api sortable;
     @api sortableIconName;
     @api sortableIconPosition;
-    @api divider;
     @api variant;
-    @api cols;
-    @api smallContainerCols;
-    @api mediumContainerCols;
-    @api largeContainerCols;
-    @api imageAttributes;
-    @api loadMoreOffset;
 
     _enableInfiniteLoading = true;
     _isLoading = false;
@@ -30,6 +31,14 @@ export default class InfiniteGrid extends LightningElement {
     }
 
     @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = value;
+    }
+
+    @api
     get isLoading() {
         return this._isLoading;
     }
@@ -41,21 +50,12 @@ export default class InfiniteGrid extends LightningElement {
     get items() {
         return this._items;
     }
-
     set items(value) {
         this._items = Array.isArray(value) ? value : [];
 
         if (this._connected) {
             this.generateItems();
         }
-    }
-
-    @api
-    get enableInfiniteLoading() {
-        return this._enableInfiniteLoading;
-    }
-    set enableInfiniteLoading(value) {
-        this._enableInfiniteLoading = value;
     }
 
     generateItems() {

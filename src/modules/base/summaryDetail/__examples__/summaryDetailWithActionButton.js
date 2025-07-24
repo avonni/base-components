@@ -6,23 +6,23 @@ customElements.define(
 );
 
 export const SummaryDetailWithActionButton = ({
-    title,
+    closed,
+    expandIconName,
     fullWidth,
+    hideIcon,
     removeBodyIndentation,
     shrinkIconName,
-    expandIconName,
-    closed,
-    hideIcon
+    title
 }) => {
     const element = document.createElement(
         'ac-avonni-summary-detail-with-action-button'
     );
-    element.title = title;
+    element.closed = closed;
+    element.expandIconName = expandIconName;
     element.fullWidth = fullWidth;
+    element.hideIcon = hideIcon;
     element.removeBodyIndentation = removeBodyIndentation;
     element.shrinkIconName = shrinkIconName;
-    element.expandIconName = expandIconName;
-    element.closed = closed;
-    element.hideIcon = hideIcon;
+    element.title = title;
     return element;
 };

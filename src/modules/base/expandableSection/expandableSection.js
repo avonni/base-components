@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
+const DEFAULT_CLOSED_ICON_ALTERNATIVE_TEXT = 'Closed';
+const DEFAULT_OPENED_ICON_ALTERNATIVE_TEXT = 'Opened';
 const VARIANTS = {
     default: 'shaded',
     valid: ['base', 'shaded']
@@ -14,6 +16,20 @@ const VARIANTS = {
  */
 export default class ExpandableSection extends LightningElement {
     /**
+     * Alternative text for the closed icon.
+     *
+     * @type {string}
+     * @public
+     */
+    @api closedIconAlternativeText = DEFAULT_CLOSED_ICON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the open icon.
+     *
+     * @type {string}
+     * @public
+     */
+    @api openedIconAlternativeText = DEFAULT_OPENED_ICON_ALTERNATIVE_TEXT;
+    /**
      * The title can include text, and is displayed in the header.
      *
      * @type {string}
@@ -26,6 +42,12 @@ export default class ExpandableSection extends LightningElement {
     _variant = VARIANTS.default;
 
     showTitleSlot = true;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         this.showTitleSlot =
@@ -51,7 +73,6 @@ export default class ExpandableSection extends LightningElement {
     get closed() {
         return this._closed;
     }
-
     set closed(value) {
         this._closed = normalizeBoolean(value);
     }
@@ -67,7 +88,6 @@ export default class ExpandableSection extends LightningElement {
     get collapsible() {
         return this._collapsible;
     }
-
     set collapsible(value) {
         this._collapsible = normalizeBoolean(value);
     }
@@ -83,7 +103,6 @@ export default class ExpandableSection extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             validValues: VARIANTS.valid,
@@ -107,35 +126,12 @@ export default class ExpandableSection extends LightningElement {
     }
 
     /**
-     * Computed list of the section classes.
-     *
-     * @type {string}
-     * @default slds-section
-     */
-    get sectionClass() {
-        return classSet('slds-section slds-var-m-vertical_x-small')
-            .add({
-                'slds-is-open': !this.collapsible || !this.closed
-            })
-            .toString();
-    }
-
-    /**
-     * Get the title slot DOM element.
-     *
-     * @type {Element}
-     */
-    get titleSlot() {
-        return this.template.querySelector('slot[name=title]');
-    }
-
-    /**
      * Computed list of the header classes.
      *
      * @type {string}
      * @default slds-section__title
      */
-    get headerClass() {
+    get computedHeaderClass() {
         return classSet('slds-section__title')
             .add({
                 'slds-theme_shade':
@@ -143,7 +139,21 @@ export default class ExpandableSection extends LightningElement {
                 'avonni-expandable-section__header_collapsible':
                     this.collapsible
             })
-            .add(`avonni-expandable-section__header_${this._variant}`)
+            .add(`avonni-expandable-section__header_${this.variant}`)
+            .toString();
+    }
+
+    /**
+     * Computed list of the section classes.
+     *
+     * @type {string}
+     * @default slds-section
+     */
+    get computedSectionClass() {
+        return classSet('slds-section slds-var-m-vertical_x-small')
+            .add({
+                'slds-is-open': !this.collapsible || !this.closed
+            })
             .toString();
     }
 
@@ -153,18 +163,15 @@ export default class ExpandableSection extends LightningElement {
      * @type {string}
      * @default slds-button slds-section__title-action
      */
-    get titleButtonClass() {
+    get computedTitleButtonClass() {
         return classSet(
             'avonni-expandable-section__title-button slds-button slds-section__title-action slds-grid'
         )
             .add({
-                'avonni-expandable-section__title-button_base':
-                    this.variant === 'base',
-                'avonni-expandable-section__title-button_shaded':
-                    this.variant === 'shaded',
                 'avonni-expandable-section__title-button_noncollapsible':
                     !this.collapsible
             })
+            .add(`avonni-expandable-section__title-button_${this.variant}`)
             .toString();
     }
 
@@ -176,6 +183,15 @@ export default class ExpandableSection extends LightningElement {
      */
     get showHeader() {
         return this.title || this.showTitleSlot;
+    }
+
+    /**
+     * Get the title slot DOM element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
     }
 
     /*

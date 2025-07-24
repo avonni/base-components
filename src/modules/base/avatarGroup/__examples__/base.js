@@ -6,43 +6,49 @@ customElements.define(
 );
 
 export const AvatarGroup = ({
-    enableInfiniteLoading,
-    variant,
-    isLoading,
-    items,
-    size,
-    layout,
-    maxCount,
-    listButtonShowMoreLabel,
-    listButtonVariant,
-    listButtonShowMoreIconName,
-    listButtonShowMoreIconPosition,
-    listButtonShowLessIconPosition,
-    listButtonShowLessIconName,
-    listButtonShowLessLabel,
-    loadMoreOffset,
     actionAlternativeText,
     actionIconName,
-    name
+    enableInfiniteLoading,
+    isLoading,
+    items,
+    keyboardAssistiveText,
+    layout,
+    listButtonShowLessIconName,
+    listButtonShowLessIconPosition,
+    listButtonShowLessLabel,
+    listButtonShowMoreIconName,
+    listButtonShowMoreIconPosition,
+    listButtonShowMoreLabel,
+    listButtonVariant,
+    loadingStateAlternativeText,
+    loadMoreOffset,
+    maxCount,
+    name,
+    showMoreButtonAlternativeText,
+    size,
+    variant
 }) => {
     const element = document.createElement('ac-base-avatar-group');
+    element.actionAlternativeText = actionAlternativeText;
+    element.actionIconName = actionIconName;
     element.enableInfiniteLoading = enableInfiniteLoading;
     element.isLoading = isLoading;
     element.items = items;
-    element.variant = variant;
+    element.keyboardAssistiveText = keyboardAssistiveText;
     element.layout = layout;
-    element.size = size;
-    element.maxCount = maxCount;
-    element.listButtonShowMoreLabel = listButtonShowMoreLabel;
-    element.listButtonVariant = listButtonVariant;
+    element.listButtonShowLessIconName = listButtonShowLessIconName;
+    element.listButtonShowLessIconPosition = listButtonShowLessIconPosition;
+    element.listButtonShowLessLabel = listButtonShowLessLabel;
     element.listButtonShowMoreIconName = listButtonShowMoreIconName;
     element.listButtonShowMoreIconPosition = listButtonShowMoreIconPosition;
-    element.listButtonShowLessIconPosition = listButtonShowLessIconPosition;
-    element.listButtonShowLessIconName = listButtonShowLessIconName;
-    element.listButtonShowLessLabel = listButtonShowLessLabel;
+    element.listButtonShowMoreLabel = listButtonShowMoreLabel;
+    element.listButtonVariant = listButtonVariant;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.loadMoreOffset = loadMoreOffset;
-    element.actionAlternativeText = actionAlternativeText;
-    element.actionIconName = actionIconName;
+    element.maxCount = maxCount;
     element.name = name;
+    element.showMoreButtonAlternativeText = showMoreButtonAlternativeText;
+    element.size = size;
+    element.variant = variant;
     return element;
 };

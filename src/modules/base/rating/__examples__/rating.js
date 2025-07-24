@@ -3,33 +3,33 @@ import Component from 'avonni/rating';
 customElements.define('ac-base-rating', Component.CustomElementConstructor);
 
 export const Rating = ({
-    label,
+    disabled,
     fieldLevelHelp,
-    value,
-    variant,
     iconName,
     iconSize,
-    min,
+    label,
     max,
-    selection,
-    disabled,
+    min,
     readOnly,
     required,
-    valueHidden
+    selection,
+    value,
+    valueHidden,
+    variant
 }) => {
     const element = document.createElement('ac-base-rating');
-    element.label = label;
+    element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
-    element.value = value;
-    element.variant = variant;
     element.iconName = iconName;
     element.iconSize = iconSize;
-    element.min = min || 1;
+    element.label = label;
     element.max = max || 5;
-    element.selection = selection;
-    element.disabled = disabled;
+    element.min = min || 1;
     element.readOnly = readOnly;
     element.required = required;
+    element.selection = selection;
+    element.value = value;
     element.valueHidden = valueHidden;
+    element.variant = variant;
     return element;
 };

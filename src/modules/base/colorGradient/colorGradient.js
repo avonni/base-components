@@ -2,11 +2,9 @@ import { LightningElement, api } from 'lwc';
 import { colorType, generateColors, HSVToHSL } from 'c/colorUtils';
 import { classSet, normalizeBoolean } from 'c/utils';
 
-const INDICATOR_SIZE = 12;
-
-const DEFAULT_VALUE = '#ffffff';
-
 const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
+const DEFAULT_VALUE = '#ffffff';
+const INDICATOR_SIZE = 12;
 
 /**
  * @class
@@ -29,20 +27,26 @@ export default class ColorGradient extends LightningElement {
     _readOnly = false;
     _value = DEFAULT_VALUE;
 
-    _setColorChangeTimeout;
     colors = generateColors(DEFAULT_VALUE);
-    positionX;
-    positionY;
-    paletteWidth;
-    paletteHeight;
     data;
     down = false;
     init = false;
+    paletteHeight;
+    paletteWidth;
+    positionX;
+    positionY;
     showError = false;
+    _setColorChangeTimeout;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
-        this.onMouseUp = this.handlerMouseUp.bind(this);
-        this.onMouseMove = this.handlerMouseMove.bind(this);
+        this.onMouseUp = this.handleMouseUp.bind(this);
+        this.onMouseMove = this.handleMouseMove.bind(this);
 
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('mouseup', this.onMouseUp);
@@ -90,7 +94,6 @@ export default class ColorGradient extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
 
@@ -116,7 +119,6 @@ export default class ColorGradient extends LightningElement {
     get opacity() {
         return this._opacity;
     }
-
     set opacity(value) {
         this._opacity = normalizeBoolean(value);
         // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -138,7 +140,6 @@ export default class ColorGradient extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
@@ -153,7 +154,6 @@ export default class ColorGradient extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         if (colorType(this.value) !== null) {
             this._value = value;
@@ -192,15 +192,6 @@ export default class ColorGradient extends LightningElement {
     }
 
     /**
-     * Disable input handler.
-     *
-     * @type {boolean}
-     */
-    get disabledInput() {
-        return this.disabled || this.readOnly;
-    }
-
-    /**
      * Retrieve color value if present.
      *
      * @type {string}
@@ -209,6 +200,15 @@ export default class ColorGradient extends LightningElement {
         return this.colors.A < 1 && this.opacity
             ? this.colors.hexa
             : this.colors.hex;
+    }
+
+    /**
+     * Disable input handle.
+     *
+     * @type {boolean}
+     */
+    get disabledInput() {
+        return this.disabled || this.readOnly;
     }
 
     /*
@@ -245,222 +245,20 @@ export default class ColorGradient extends LightningElement {
      */
 
     /**
-     * Private focus handler.
+     * Remove errors.
      */
-    handleFocus() {
-        /**
-         * @event
-         * @name privatefocus
-         * @private
-         * @cancelable
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatefocus', {
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    }
+    hideErrors() {
+        this.showError = false;
 
-    /**
-     * Public and private blur handler.
-     */
-    handleBlur() {
-        /**
-         * The event fired when the color gradient loses focus.
-         *
-         * @event
-         * @name blur
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('blur'));
+        this.template
+            .querySelector('.slds-color-picker__input-custom-hex')
+            .classList.remove('slds-has-error');
 
-        /**
-         * @event
-         * @name privateblur
-         * @composed
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('privateblur', {
-                composed: true,
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    }
-
-    /**
-     * Change dispatcher.
-     */
-    dispatchChange() {
-        if (this.disabled || this.readOnly) {
-            return;
-        }
-        clearTimeout(this._setColorChangeTimeout);
-        this._setColorChangeTimeout = setTimeout(() => {
-            /**
-             * The event fired when the color value changed.
-             *
-             * @event
-             * @name change
-             * @public
-             * @param {string} hex Color in hexadecimal format.
-             * @param {string} hexa Color in hexadecimal format with alpha.
-             * @param {string} rgb Color in rgb format.
-             * @param {string} rgba Color in rgba format.
-             * @param {string} alpha Alpha value of the color.
-             * @cancelable
-             * @bubbles
-             */
-            this.dispatchEvent(
-                new CustomEvent('change', {
-                    bubbles: true,
-                    cancelable: true,
-                    detail: {
-                        hex: this.colors.hex,
-                        hexa: this.colors.hexa,
-                        rgb: this.colors.rgb,
-                        rgba: this.colors.rgba,
-                        alpha: this.colors.A
-                    }
-                })
-            );
-        }, 250);
-    }
-
-    /**
-     * Change event handler.
-     *
-     * @param {object} event
-     */
-    handleChange(event) {
-        event.stopPropagation();
-    }
-
-    /**
-     * Input event handler.
-     *
-     * @param {object} event
-     */
-    handlerInput(event) {
-        event.stopPropagation();
-        if (!this.readOnly) {
-            let H = event.target.value;
-
-            this.setPaletteColor(H);
-
-            if (this.opacity) {
-                this.setOpacityColor(H);
-
-                let color = `hsla(${H}, ${this.colors.S}%, ${this.colors.L}%, ${this.colors.A})`;
-
-                if (colorType(color) === null) {
-                    color = `hsla(${H}, ${this.colors.S}%, ${this.colors.L}%, 1)`;
-                }
-
-                this.colors = generateColors(color);
-            } else {
-                this.colors = generateColors(
-                    `hsl(${H}, ${this.colors.S}%, ${this.colors.L}%)`
-                );
+        [...this.template.querySelectorAll('.avonni-color-input')].forEach(
+            (element) => {
+                element.classList.remove('slds-has-error');
             }
-
-            this.colors.H = H;
-
-            this.setSwatchColor(this.colors.hexa);
-            this.hideErrors();
-            this.dispatchChange();
-        }
-    }
-
-    /**
-     * Input opacity event handler.
-     *
-     * @param {object} event
-     */
-    handlerInputOpacity(event) {
-        if (!this.readOnly) {
-            let alpha = event.target.value;
-
-            this.colors = generateColors(
-                `hsla(${this.colors.H}, ${this.colors.S}%, ${this.colors.L}%, ${alpha})`
-            );
-
-            this.setSwatchColor(this.colors.hexa);
-            this.hideErrors();
-            this.dispatchChange();
-        }
-    }
-
-    /**
-     * Input color event handler.
-     *
-     * @param {object} event
-     */
-    handleInputColor(event) {
-        let color = event.target.value;
-
-        if (this.colors.A < 1 && this.opacity) {
-            this.colors.hexa = color;
-        } else {
-            this.colors.hex = color;
-        }
-
-        if (
-            colorType(color) === 'hex' ||
-            (colorType(color) === 'hexa' && this.opacity)
-        ) {
-            this.hideErrors();
-            this.updateColors(color);
-        } else {
-            this.showError = true;
-            this.template
-                .querySelector('.slds-color-picker__input-custom-hex')
-                .classList.add('slds-has-error');
-        }
-    }
-
-    /**
-     * Handle Red input in RGBA.
-     *
-     * @param {object} event
-     */
-    handleInputRed(event) {
-        this.colors.R = event.target.value;
-        this.processingRGBColor(event);
-    }
-
-    /**
-     * Handle Green input in RGBA.
-     *
-     * @param {object} event
-     */
-    handleInputGreen(event) {
-        this.colors.G = event.target.value;
-        this.processingRGBColor(event);
-    }
-
-    /**
-     * Handle Blue input in RGBA.
-     *
-     * @param {object} event
-     */
-    handleInputBlue(event) {
-        this.colors.B = event.target.value;
-        this.processingRGBColor(event);
-    }
-
-    /**
-     * Handle Alpha input in RGBA.
-     *
-     * @param {object} event
-     */
-    handleInputAlpha(event) {
-        this.colors.A = event.target.value;
-        this.processingRGBColor(event);
+        );
     }
 
     /**
@@ -478,96 +276,6 @@ export default class ColorGradient extends LightningElement {
             event.target.parentElement.parentElement.classList.add(
                 'slds-has-error'
             );
-        }
-    }
-
-    /**
-     * Palette Click event handler.
-     *
-     * @param {object} event
-     */
-    handlerClickPalet(event) {
-        if (
-            event.target.className !== 'slds-color-picker__range-indicator' &&
-            !this.disabled &&
-            !this.readOnly
-        ) {
-            let indicator = this.template.querySelector(
-                '.slds-color-picker__range-indicator'
-            );
-
-            indicator.style.top = `${event.offsetY - INDICATOR_SIZE}px`;
-            indicator.style.left = `${event.offsetX}px`;
-
-            this.setColor(event.offsetX, event.offsetY - INDICATOR_SIZE);
-        }
-    }
-
-    /**
-     * Mouse down event handler.
-     *
-     * @param {object} event
-     */
-    handlerMouseDown(event) {
-        this.down = true;
-        this.data = {
-            x: event.x,
-            y: event.y,
-            top: event.offsetY - INDICATOR_SIZE,
-            left: event.offsetX,
-            width: this.paletteWidth,
-            height: this.paletteHeight - INDICATOR_SIZE
-        };
-    }
-
-    /**
-     * Mouse up handler.
-     */
-    handlerMouseUp() {
-        this.down = false;
-    }
-
-    /**
-     * Mouse mouse event handler.
-     *
-     * @param {object} event
-     */
-    handlerMouseMove(event) {
-        if (this.down && !this.readOnly && !this.disabled) {
-            let indicator = this.template.querySelector(
-                '.slds-color-picker__range-indicator'
-            );
-
-            let delta = {
-                x: this.data.left + event.clientX - this.data.x,
-                y: this.data.top + event.clientY - this.data.y
-            };
-
-            if (delta.x < this.data.width) {
-                if (delta.x < 0) {
-                    indicator.style.left = '0px';
-                    delta.x = 0;
-                } else {
-                    indicator.style.left = `${delta.x}px`;
-                }
-            } else {
-                indicator.style.left = `${this.data.width}px`;
-                delta.x = this.data.width;
-            }
-
-            if (delta.y < this.data.height) {
-                if (delta.y < -INDICATOR_SIZE) {
-                    indicator.style.top = `-${INDICATOR_SIZE}px`;
-                    delta.y = -INDICATOR_SIZE;
-                } else {
-                    indicator.style.top = `${delta.y}px`;
-                }
-            } else {
-                indicator.style.top = `${this.data.height}px`;
-                delta.y = this.data.height;
-            }
-
-            this.setColor(delta.x, delta.y);
         }
     }
 
@@ -622,24 +330,6 @@ export default class ColorGradient extends LightningElement {
     }
 
     /**
-     * Update color parameters.
-     *
-     * @param {string} color
-     */
-    updateColors(color) {
-        this.colors = generateColors(color);
-
-        if (this.opacity) {
-            this.setOpacityColor(this.colors.H);
-        }
-
-        this.setPaletteColor(this.colors.H);
-        this.setSwatchColor(this.colors.hexa);
-        this.setIndicatorPosition();
-        this.dispatchChange();
-    }
-
-    /**
      * Set indicator position based on color value.
      */
     setIndicatorPosition() {
@@ -662,6 +352,21 @@ export default class ColorGradient extends LightningElement {
 
         this.positionX = x;
         this.positionY = y;
+    }
+
+    /**
+     * Set opacity color.
+     *
+     * @param {string} value
+     */
+    setOpacityColor(value) {
+        const opacity = this.template.querySelector('.avonni-opacity-input');
+
+        if (opacity) {
+            opacity.style.backgroundImage = this.disabled
+                ? 'none'
+                : `linear-gradient(to right, hsla(0,100%,50%, 0), hsla(${value},100%,50%,1))`;
+        }
     }
 
     /**
@@ -688,34 +393,335 @@ export default class ColorGradient extends LightningElement {
     }
 
     /**
-     * Set opacity color.
+     * Update color parameters.
      *
-     * @param {string} value
+     * @param {string} color
      */
-    setOpacityColor(value) {
-        const opacity = this.template.querySelector('.avonni-opacity-input');
+    updateColors(color) {
+        this.colors = generateColors(color);
 
-        if (opacity) {
-            opacity.style.backgroundImage = this.disabled
-                ? 'none'
-                : `linear-gradient(to right, hsla(0,100%,50%, 0), hsla(${value},100%,50%,1))`;
+        if (this.opacity) {
+            this.setOpacityColor(this.colors.H);
+        }
+
+        this.setPaletteColor(this.colors.H);
+        this.setSwatchColor(this.colors.hexa);
+        this.setIndicatorPosition();
+        this.dispatchChange();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS & DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Public and private blur handle.
+     */
+    handleBlur() {
+        /**
+         * The event fired when the color gradient loses focus.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+
+        /**
+         * @event
+         * @name privateblur
+         * @composed
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('privateblur', {
+                composed: true,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+    }
+
+    /**
+     * Change event handle.
+     *
+     * @param {object} event
+     */
+    handleChange(event) {
+        event.stopPropagation();
+    }
+
+    /**
+     * Palette Click event handle.
+     *
+     * @param {object} event
+     */
+    handleClickPalet(event) {
+        if (
+            event.target.className !== 'slds-color-picker__range-indicator' &&
+            !this.disabled &&
+            !this.readOnly
+        ) {
+            let indicator = this.template.querySelector(
+                '.slds-color-picker__range-indicator'
+            );
+
+            indicator.style.top = `${event.offsetY - INDICATOR_SIZE}px`;
+            indicator.style.left = `${event.offsetX}px`;
+
+            this.setColor(event.offsetX, event.offsetY - INDICATOR_SIZE);
         }
     }
 
     /**
-     * Remove errors.
+     * Private focus handle.
      */
-    hideErrors() {
-        this.showError = false;
-
-        this.template
-            .querySelector('.slds-color-picker__input-custom-hex')
-            .classList.remove('slds-has-error');
-
-        [...this.template.querySelectorAll('.avonni-color-input')].forEach(
-            (element) => {
-                element.classList.remove('slds-has-error');
-            }
+    handleFocus() {
+        /**
+         * @event
+         * @name privatefocus
+         * @private
+         * @cancelable
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatefocus', {
+                bubbles: true,
+                cancelable: true
+            })
         );
+    }
+
+    /**
+     * Input event handle.
+     *
+     * @param {object} event
+     */
+    handleInput(event) {
+        event.stopPropagation();
+        if (!this.readOnly) {
+            let H = event.target.value;
+
+            this.setPaletteColor(H);
+
+            if (this.opacity) {
+                this.setOpacityColor(H);
+
+                let color = `hsla(${H}, ${this.colors.S}%, ${this.colors.L}%, ${this.colors.A})`;
+
+                if (colorType(color) === null) {
+                    color = `hsla(${H}, ${this.colors.S}%, ${this.colors.L}%, 1)`;
+                }
+
+                this.colors = generateColors(color);
+            } else {
+                this.colors = generateColors(
+                    `hsl(${H}, ${this.colors.S}%, ${this.colors.L}%)`
+                );
+            }
+
+            this.colors.H = H;
+
+            this.setSwatchColor(this.colors.hexa);
+            this.hideErrors();
+            this.dispatchChange();
+        }
+    }
+
+    /**
+     * Handle Alpha input in RGBA.
+     *
+     * @param {object} event
+     */
+    handleInputAlpha(event) {
+        this.colors.A = event.target.value;
+        this.processingRGBColor(event);
+    }
+
+    /**
+     * Handle Blue input in RGBA.
+     *
+     * @param {object} event
+     */
+    handleInputBlue(event) {
+        this.colors.B = event.target.value;
+        this.processingRGBColor(event);
+    }
+
+    /**
+     * Input color event handle.
+     *
+     * @param {object} event
+     */
+    handleInputColor(event) {
+        let color = event.target.value;
+
+        if (this.colors.A < 1 && this.opacity) {
+            this.colors.hexa = color;
+        } else {
+            this.colors.hex = color;
+        }
+
+        if (
+            colorType(color) === 'hex' ||
+            (colorType(color) === 'hexa' && this.opacity)
+        ) {
+            this.hideErrors();
+            this.updateColors(color);
+        } else {
+            this.showError = true;
+            this.template
+                .querySelector('.slds-color-picker__input-custom-hex')
+                .classList.add('slds-has-error');
+        }
+    }
+
+    /**
+     * Handle Green input in RGBA.
+     *
+     * @param {object} event
+     */
+    handleInputGreen(event) {
+        this.colors.G = event.target.value;
+        this.processingRGBColor(event);
+    }
+
+    /**
+     * Input opacity event handle.
+     *
+     * @param {object} event
+     */
+    handleInputOpacity(event) {
+        if (!this.readOnly) {
+            let alpha = event.target.value;
+
+            this.colors = generateColors(
+                `hsla(${this.colors.H}, ${this.colors.S}%, ${this.colors.L}%, ${alpha})`
+            );
+
+            this.setSwatchColor(this.colors.hexa);
+            this.hideErrors();
+            this.dispatchChange();
+        }
+    }
+
+    /**
+     * Handle Red input in RGBA.
+     *
+     * @param {object} event
+     */
+    handleInputRed(event) {
+        this.colors.R = event.target.value;
+        this.processingRGBColor(event);
+    }
+
+    /**
+     * Mouse down event handle.
+     *
+     * @param {object} event
+     */
+    handleMouseDown(event) {
+        this.down = true;
+        this.data = {
+            x: event.x,
+            y: event.y,
+            top: event.offsetY - INDICATOR_SIZE,
+            left: event.offsetX,
+            width: this.paletteWidth,
+            height: this.paletteHeight - INDICATOR_SIZE
+        };
+    }
+
+    /**
+     * Mouse mouse event handle.
+     *
+     * @param {object} event
+     */
+    handleMouseMove(event) {
+        if (this.down && !this.readOnly && !this.disabled) {
+            let indicator = this.template.querySelector(
+                '.slds-color-picker__range-indicator'
+            );
+
+            let delta = {
+                x: this.data.left + event.clientX - this.data.x,
+                y: this.data.top + event.clientY - this.data.y
+            };
+
+            if (delta.x < this.data.width) {
+                if (delta.x < 0) {
+                    indicator.style.left = '0px';
+                    delta.x = 0;
+                } else {
+                    indicator.style.left = `${delta.x}px`;
+                }
+            } else {
+                indicator.style.left = `${this.data.width}px`;
+                delta.x = this.data.width;
+            }
+
+            if (delta.y < this.data.height) {
+                if (delta.y < -INDICATOR_SIZE) {
+                    indicator.style.top = `-${INDICATOR_SIZE}px`;
+                    delta.y = -INDICATOR_SIZE;
+                } else {
+                    indicator.style.top = `${delta.y}px`;
+                }
+            } else {
+                indicator.style.top = `${this.data.height}px`;
+                delta.y = this.data.height;
+            }
+
+            this.setColor(delta.x, delta.y);
+        }
+    }
+
+    /**
+     * Mouse up handle.
+     */
+    handleMouseUp() {
+        this.down = false;
+    }
+
+    /**
+     * Change dispatcher.
+     */
+    dispatchChange() {
+        if (this.disabled || this.readOnly) {
+            return;
+        }
+        clearTimeout(this._setColorChangeTimeout);
+        this._setColorChangeTimeout = setTimeout(() => {
+            /**
+             * The event fired when the color value changed.
+             *
+             * @event
+             * @name change
+             * @public
+             * @param {string} hex Color in hexadecimal format.
+             * @param {string} hexa Color in hexadecimal format with alpha.
+             * @param {string} rgb Color in rgb format.
+             * @param {string} rgba Color in rgba format.
+             * @param {string} alpha Alpha value of the color.
+             * @cancelable
+             * @bubbles
+             */
+            this.dispatchEvent(
+                new CustomEvent('change', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        hex: this.colors.hex,
+                        hexa: this.colors.hexa,
+                        rgb: this.colors.rgb,
+                        rgba: this.colors.rgba,
+                        alpha: this.colors.A
+                    }
+                })
+            );
+        }, 250);
     }
 }

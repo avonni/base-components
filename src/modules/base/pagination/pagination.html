@@ -5,7 +5,12 @@
     >
         <button
             if:true={showFirstButton}
-            class={computedFirstButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             aria-label={computedFirstButtonAriaLabel}
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-first"
@@ -21,7 +26,12 @@
             {firstButtonLabel}
         </button>
         <button
-            class={computedPreviousButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             aria-label={computedPreviousButtonAriaLabel}
             disabled={disabledLeftButtons}
             data-element-id="lightning-button-previous"
@@ -71,7 +81,12 @@
             {ellipsisText}
         </button>
         <button
-            class={computedNextButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             aria-label={computedNextButtonAriaLabel}
             disabled={disabledRightButtons}
             data-element-id="lightning-button-next"
@@ -86,10 +101,14 @@
             ></c-primitive-icon>
             {nextButtonLabel}
         </button>
-
         <button
             if:true={showLastButton}
-            class={computedLastButtonClass}
+            class="
+                slds-button
+                avonni-pagination__button_neutral
+                avonni-pagination__navigation-button
+                slds-button_neutral
+            "
             aria-label={computedLastButtonAriaLabel}
             disabled={disabledRightButtons}
             data-element-id="lightning-button-last"

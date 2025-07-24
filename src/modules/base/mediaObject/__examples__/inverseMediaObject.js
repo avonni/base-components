@@ -6,15 +6,15 @@ customElements.define(
 );
 
 export const InverseMediaObject = ({
-    verticalAlign,
-    responsive,
     inline,
-    size
+    responsive,
+    size,
+    verticalAlign
 }) => {
     const element = document.createElement('ac-base-inverse-media-object');
-    element.verticalAlign = verticalAlign;
-    element.responsive = responsive;
     element.inline = inline;
+    element.responsive = responsive;
     element.size = size;
+    element.verticalAlign = verticalAlign;
     return element;
 };

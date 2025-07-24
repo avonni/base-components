@@ -282,11 +282,11 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * @type {string}
      */
     get computedCoverImageStyle() {
-        const cropX = this._imageAttributes.cropPositionX;
-        const cropY = this._imageAttributes.cropPositionY;
+        const cropX = this.imageAttributes.cropPositionX;
+        const cropY = this.imageAttributes.cropPositionY;
         const imageObjectPosition = `object-position:${cropX}%${cropY}%;`;
-        const objectFit = `object-fit:${this._imageAttributes.cropFit};`;
-        const heightStyle = `height:${this._imageAttributes.height}px;`;
+        const objectFit = `object-fit:${this.imageAttributes.cropFit};`;
+        const heightStyle = `height:${this.imageAttributes.height}px;`;
         return `${heightStyle}${imageObjectPosition}${objectFit}`;
     }
 
@@ -355,10 +355,10 @@ export default class PrimitiveKanbanTile extends LightningElement {
      */
     get hasAvatar() {
         return (
-            this._avatar &&
-            (this._avatar.src ||
-                this._avatar.fallbackIconName ||
-                this._avatar.initials)
+            this.avatar &&
+            (this.avatar.src ||
+                this.avatar.fallbackIconName ||
+                this.avatar.initials)
         );
     }
 
@@ -422,7 +422,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * @type {boolean}
      */
     get isCoverImageTop() {
-        return this.coverImage && this._imageAttributes.position === 'top';
+        return this.coverImage && this.imageAttributes.position === 'top';
     }
 
     /**
@@ -431,7 +431,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
      * @type {boolean}
      */
     get isCoverImageBottom() {
-        return this.coverImage && this._imageAttributes.position === 'bottom';
+        return this.coverImage && this.imageAttributes.position === 'bottom';
     }
 
     /**

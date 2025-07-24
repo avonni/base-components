@@ -24,7 +24,6 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 const DEFAULT_LOADING_TEXT = 'Loading';
-
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'small'
@@ -127,8 +126,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _isLoading = false;
     _timezone;
 
-    formattedStartDate = '';
     formattedEndDate = '';
+    formattedStartDate = '';
     _connected = false;
 
     /*
@@ -476,22 +475,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     /**
-     * Toggles for item expansion.
-     *
-     * @type {string}
-     */
-    get activityTimelineItemOuterClass() {
-        return classSet('slds-timeline__item_expandable')
-            .add({
-                'slds-is-open': !this.closed
-            })
-            .add(
-                `avonni-primitive-activity-timeline-item__icon_${this.iconSize}`
-            )
-            .toString();
-    }
-
-    /**
      * Returns the avatar to display.
      *
      * @type {string}
@@ -557,6 +540,22 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                 'avonni-primitive-activity-timeline-item__no-fields_margin':
                     !this.hasFields
             })
+            .toString();
+    }
+
+    /**
+     * Toggles for item expansion.
+     *
+     * @type {string}
+     */
+    get computedTimelineItemOuterClass() {
+        return classSet('slds-timeline__item_expandable')
+            .add({
+                'slds-is-open': !this.closed
+            })
+            .add(
+                `avonni-primitive-activity-timeline-item__icon_${this.iconSize}`
+            )
             .toString();
     }
 

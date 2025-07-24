@@ -249,9 +249,46 @@ export default {
                 type: { summary: 'object' },
                 category: 'Compare'
             }
+        },
+        leftCompareIconAlternativeText: {
+            name: 'left-compare-icon-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Alternative text for the icon on the left of the compare slider.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: {
+                    summary: 'Press left to show the original image'
+                },
+                category: 'Compare'
+            }
+        },
+        rightCompareIconAlternativeText: {
+            name: 'right-compare-icon-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Alternative text for the icon on the right of the compare slider.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: {
+                    summary: 'Press right to show the compared image'
+                },
+                category: 'Compare'
+            }
         }
     },
     args: {
+        compareAttributes: {
+            compareLabel: '',
+            moveOn: 'click',
+            orientation: 'horizontal',
+            originalLabel: '',
+            showLabelsOnHover: false
+        },
         cropFit: 'cover',
         cropPositionX: 50,
         cropPositionY: 50,
@@ -259,26 +296,22 @@ export default {
         fluid: false,
         fluidGrow: false,
         lazyLoading: 'auto',
-        position: 'left',
-        staticImages: false,
-        thumbnail: false,
-        magnifierType: 'none',
+        leftCompareIconAlternativeText: 'Press left to show the original image',
         magnifierAttributes: {
-            position: 'auto',
             horizontalOffset: 0,
-            verticalOffset: 0,
+            position: 'auto',
             smoothMove: true,
+            verticalOffset: 0,
             zoomFactor: 2,
-            zoomRatioWidth: 100,
-            zoomRatioHeight: 100
+            zoomRatioHeight: 100,
+            zoomRatioWidth: 100
         },
-        compareAttributes: {
-            orientation: 'horizontal',
-            moveOn: 'click',
-            originalLabel: '',
-            compareLabel: '',
-            showLabelsOnHover: false
-        }
+        magnifierType: 'none',
+        position: 'left',
+        rightCompareIconAlternativeText:
+            'Press right to show the compared image',
+        staticImages: false,
+        thumbnail: false
     }
 };
 

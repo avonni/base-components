@@ -36,7 +36,6 @@ describe('Layout Item', () => {
             expect(element.smallContainerSize).toBeUndefined();
         });
 
-        // alignment-bump
         describe('Alignment bump', () => {
             it('alignmentBump = left', () => {
                 document.body.appendChild(element);
@@ -71,7 +70,6 @@ describe('Layout Item', () => {
             });
         });
 
-        // Container orders
         describe('Container orders', () => {
             it('container orders', () => {
                 let setContainerSize;
@@ -119,7 +117,6 @@ describe('Layout Item', () => {
             });
         });
 
-        // Container sizes
         it('container sizes', () => {
             let setContainerSize;
             element.addEventListener('privatelayoutitemconnected', (event) => {
@@ -177,11 +174,6 @@ describe('Layout Item', () => {
         });
     });
 
-    /*
-     * ------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
     describe('Events', () => {
         // Connected and disconnected event
         it('connected and disconnected events', () => {

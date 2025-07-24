@@ -49,7 +49,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api color;
-
     /**
      * Unique name of the event this occurrence belongs to.
      *
@@ -57,7 +56,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api eventName;
-
     /**
      * The Lightning Design System name of the icon. Names are written in the format utility:user.
      * The icon is only used by the disabled occurrences and is appended to the left of the title.
@@ -66,7 +64,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api iconName;
-
     /**
      * Unique key of the occurrence.
      *
@@ -74,7 +71,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api occurrenceKey;
-
     /**
      * Theme of the occurrence.
      * If the event is a reference line, valid values include default, inverse, success, warning, error and lightest. Otherwise, valid values include default, transparent, line, hollow and rounded.
@@ -87,21 +83,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _cellDuration = 0;
     _cellHeight = 0;
     _cellWidth = 0;
-    _headerCells = [];
-    _hiddenActions = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
-    _preventPastEventCreation = false;
-    _eventData = {};
-    _scrollOffset = 0;
     _disabled = false;
     _event;
+    _eventData = {};
     _from;
+    _headerCells = [];
+    _hiddenActions = [];
     _labels = {};
     _occurrence = {};
+    _preventPastEventCreation = false;
     _readOnly = false;
     _referenceLine = false;
     _resourceKey;
     _resources = [];
+    _scrollOffset = 0;
     _timezone;
     _title;
     _to;
@@ -113,6 +109,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _focused = false;
     _offsetStart = 0;
     computedLabels = {};
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.initLabels();
@@ -236,6 +238,29 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Position of the end extremity of the occurrence. Right for horizontal, bottom for vertical.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get endPosition() {
+        if (this.isVertical) {
+            return (
+                this.startPosition +
+                this.hostElement.getBoundingClientRect().height
+            );
+        }
+        return (
+            this.x +
+            this._offsetStart +
+            this.hostElement.getBoundingClientRect().width +
+            this.rightLabelWidth
+        );
+    }
+
+    /**
      * Initial event object, before it was computed and transformed into a SchedulerEvent.
      * It may be used by the labels.
      *
@@ -327,6 +352,34 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._labels = typeof value === 'object' ? { ...value } : {};
 
         if (this._connected) this.initLabels();
+    }
+
+    /**
+     * Left label element width.
+     *
+     * @type {HTMLElement}
+     * @public
+     * @default 0
+     */
+    @api
+    get leftLabelWidth() {
+        const label = this.template.querySelector(
+            '.avonni-scheduler__event-label_left'
+        );
+        return label ? label.getBoundingClientRect().width : 0;
+    }
+
+    /**
+     * Deprecated. Use `start-position` instead.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     * @deprecated
+     */
+    @api
+    get leftPosition() {
+        return this.startPosition;
     }
 
     /**
@@ -423,6 +476,34 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Right label element width.
+     *
+     * @type {HTMLElement}
+     * @public
+     * @default 0
+     */
+    @api
+    get rightLabelWidth() {
+        const label = this.template.querySelector(
+            '.avonni-scheduler__event-label_right'
+        );
+        return label ? label.getBoundingClientRect().width : 0;
+    }
+
+    /**
+     * Deprecated. Use `end-position` instead.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     * @deprecated
+     */
+    @api
+    get rightPosition() {
+        return this.endPosition;
+    }
+
+    /**
      * Deprecated. Use `resource-key` instead.
      *
      * @type {string}
@@ -483,6 +564,23 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set scrollOffset(value) {
         this._scrollOffset = !isNaN(Number(value)) ? Number(value) : 0;
         if (this._connected) this.updateStickyLabels();
+    }
+
+    /**
+     * Position of the start extremity of the occurrence. Left for horizontal, top for vertical.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get startPosition() {
+        if (this.isVertical) {
+            const top = this.y + this._offsetStart;
+            return top;
+        }
+        const left = this.x + this._offsetStart - this.leftLabelWidth;
+        return left > 0 ? left : 0;
     }
 
     /**
@@ -572,6 +670,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Total width of the occurrence, including the labels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get width() {
+        if (this.hostElement) {
+            const width = this.hostElement.getBoundingClientRect().width;
+            return this.leftLabelWidth + width + this.rightLabelWidth;
+        }
+        return 0;
+    }
+
+    /**
      * Horizontal position of the occurrence in the scheduler, in pixels.
      *
      * @type {number}
@@ -624,118 +738,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updateStickyLabels();
     }
 
-    /**
-     * Position of the end extremity of the occurrence. Right for horizontal, bottom for vertical.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api
-    get endPosition() {
-        if (this.isVertical) {
-            return (
-                this.startPosition +
-                this.hostElement.getBoundingClientRect().height
-            );
-        }
-        return (
-            this.x +
-            this._offsetStart +
-            this.hostElement.getBoundingClientRect().width +
-            this.rightLabelWidth
-        );
-    }
-
-    /**
-     * Left label element width.
-     *
-     * @type {HTMLElement}
-     * @public
-     * @default 0
-     */
-    @api
-    get leftLabelWidth() {
-        const label = this.template.querySelector(
-            '.avonni-scheduler__event-label_left'
-        );
-        return label ? label.getBoundingClientRect().width : 0;
-    }
-
-    /**
-     * Deprecated. Use `start-position` instead.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     * @deprecated
-     */
-    @api
-    get leftPosition() {
-        return this.startPosition;
-    }
-
-    /**
-     * Right label element width.
-     *
-     * @type {HTMLElement}
-     * @public
-     * @default 0
-     */
-    @api
-    get rightLabelWidth() {
-        const label = this.template.querySelector(
-            '.avonni-scheduler__event-label_right'
-        );
-        return label ? label.getBoundingClientRect().width : 0;
-    }
-
-    /**
-     * Deprecated. Use `end-position` instead.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     * @deprecated
-     */
-    @api
-    get rightPosition() {
-        return this.endPosition;
-    }
-
-    /**
-     * Position of the start extremity of the occurrence. Left for horizontal, top for vertical.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api
-    get startPosition() {
-        if (this.isVertical) {
-            const top = this.y + this._offsetStart;
-            return top;
-        }
-        const left = this.x + this._offsetStart - this.leftLabelWidth;
-        return left > 0 ? left : 0;
-    }
-
-    /**
-     * Total width of the occurrence, including the labels.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api
-    get width() {
-        if (this.hostElement) {
-            const width = this.hostElement.getBoundingClientRect().width;
-            return this.leftLabelWidth + width + this.rightLabelWidth;
-        }
-        return 0;
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -743,11 +745,85 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
 
     /**
+     * Computed CSS classes of the disabled events wrapper.
+     *
+     * @type {string}
+     */
+    get computedDisabledClass() {
+        return classSet(
+            'slds-theme_alert-texture avonni-scheduler__disabled-date'
+        )
+            .add({
+                'slds-theme_shade': this.isTimeline,
+                'slds-is-absolute': !this.isStandalone,
+                'avonni-scheduler__disabled-date_standalone slds-p-horizontal_x-small slds-m-bottom_xx-small slds-is-relative':
+                    this.isStandalone,
+                'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
+                    !this.displayAsDot && this.occurrence.startsInPreviousCell,
+                'avonni-scheduler__event_month-multi-day-ends-in-later-cell':
+                    !this.displayAsDot && this.occurrence.endsInLaterCell
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes of the disabled occurrences' title.
+     *
+     * @type {string}
+     */
+    get computedDisabledTitleClass() {
+        return classSet(
+            'avonni-scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-grid slds-grid-vertical-align_center slds-text-color_weak'
+        )
+            .add({
+                'avonni-scheduler__disabled-date-title_vertical':
+                    this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes of the event occurence center label.
+     *
+     * @type {string}
+     */
+    get computedEventOccurrenceCenterLabelClass() {
+        return classSet(
+            'slds-truncate slds-grid avonni-scheduler__event-label_center'
+        )
+            .add({
+                'slds-p-horizontal_x-small':
+                    !this.isVerticalTimeline && !this.displayAsDot,
+                'slds-m-top_small': this.isVertical && this.theme === 'line',
+                'slds-grid_vertical-align-center': this.displayAsDot
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes of the event occurrences.
+     *
+     * @type {string}
+     */
+    get computedEventOccurrenceClass() {
+        return classSet('slds-grid')
+            .add({
+                'slds-grid_vertical-align-center':
+                    !this.isVerticalTimeline &&
+                    !this.isVerticalCalendar &&
+                    !this.displayAsDot,
+                'avonni-scheduler__event-wrapper_vertical': this.isVertical,
+                'avonni-scheduler__event-wrapper': !this.isVertical
+            })
+            .toString();
+    }
+
+    /**
      * Computed CSS classes of the occurrence.
      *
      * @type {string}
      */
-    get computedClass() {
+    get computedOccurrenceClass() {
         const theme = this.theme;
         const isPast = this.to < Date.now();
         const centerLabel = normalizeObject(this.labels.center);
@@ -789,34 +865,27 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Computed CSS classes of the reference line.
+     *
+     * @type {string}
+     */
+    get computedReferenceLineClass() {
+        return classSet('avonni-scheduler__reference-line slds-is-absolute')
+            .add({
+                'avonni-scheduler__reference-line_vertical':
+                    this.isVerticalTimeline || this.isVerticalCalendar,
+                'avonni-scheduler__reference-line_standalone': this.isStandalone
+            })
+            .toString();
+    }
+
+    /**
      * Computed background color of the occurrence.
      *
      * @type {string}
      */
     get computedColor() {
         return this.color || this.resourceColor;
-    }
-
-    /**
-     * Computed CSS classes for the disabled events wrapper.
-     *
-     * @type {string}
-     */
-    get disabledClass() {
-        return classSet(
-            'slds-theme_alert-texture avonni-scheduler__disabled-date'
-        )
-            .add({
-                'slds-theme_shade': this.isTimeline,
-                'slds-is-absolute': !this.isStandalone,
-                'avonni-scheduler__disabled-date_standalone slds-p-horizontal_x-small slds-m-bottom_xx-small slds-is-relative':
-                    this.isStandalone,
-                'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
-                    !this.displayAsDot && this.occurrence.startsInPreviousCell,
-                'avonni-scheduler__event_month-multi-day-ends-in-later-cell':
-                    !this.displayAsDot && this.occurrence.endsInLaterCell
-            })
-            .toString();
     }
 
     /**
@@ -834,64 +903,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Computed CSS classes of the disabled occurrences' title.
-     *
-     * @type {string}
-     */
-    get disabledTitleClass() {
-        return classSet(
-            'avonni-scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-grid slds-grid-vertical-align_center slds-text-color_weak'
-        )
-            .add({
-                'avonni-scheduler__disabled-date-title_vertical':
-                    this.isVertical
-            })
-            .toString();
-    }
-
-    /**
      * True if the event should be displayed as a dot.
      *
      * @type {boolean}
      */
     get displayAsDot() {
         return this.isStandalone && !this.spansOnMoreThanOneDay;
-    }
-
-    /**
-     * Computed CSS classes of the event occurence center label.
-     *
-     * @type {string}
-     */
-    get eventOccurrenceCenterLabelClass() {
-        return classSet(
-            'slds-truncate slds-grid avonni-scheduler__event-label_center'
-        )
-            .add({
-                'slds-p-horizontal_x-small':
-                    !this.isVerticalTimeline && !this.displayAsDot,
-                'slds-m-top_small': this.isVertical && this.theme === 'line',
-                'slds-grid_vertical-align-center': this.displayAsDot
-            })
-            .toString();
-    }
-
-    /**
-     * Computed CSS classes of the event occurrences.
-     *
-     * @type {string}
-     */
-    get eventOccurrenceClass() {
-        return classSet('slds-grid')
-            .add({
-                'slds-grid_vertical-align-center':
-                    !this.isVerticalTimeline &&
-                    !this.isVerticalCalendar &&
-                    !this.displayAsDot,
-                'avonni-scheduler__event-wrapper_vertical': this.isVertical,
-                'avonni-scheduler__event-wrapper': !this.isVertical
-            })
-            .toString();
     }
 
     /**
@@ -1006,15 +1023,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * True if the event start and end are on different days.
-     *
-     * @type {boolean}
-     */
-    get spansOnMoreThanOneDay() {
-        return spansOnMoreThanOneDay(this.eventData, this.from, this.to);
-    }
-
-    /**
      * True if the event is part of a timeline.
      *
      * @type {boolean}
@@ -1069,23 +1077,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.occurrence?.offsetSide || 0;
     }
 
+    /**
+     * True if the occurrence overflows the cell.
+     *
+     * @type {boolean}
+     */
     get overflowsCell() {
         return this.occurrence?.overflowsCell;
-    }
-
-    /**
-     * Computed CSS classes of the reference line.
-     *
-     * @type {string}
-     */
-    get referenceLineClass() {
-        return classSet('avonni-scheduler__reference-line slds-is-absolute')
-            .add({
-                'avonni-scheduler__reference-line_vertical':
-                    this.isVerticalTimeline || this.isVerticalCalendar,
-                'avonni-scheduler__reference-line_standalone': this.isStandalone
-            })
-            .toString();
     }
 
     /**
@@ -1100,10 +1098,29 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return resource && resource.color;
     }
 
+    /**
+     * True if the event start and end are on different days.
+     *
+     * @type {boolean}
+     */
+    get spansOnMoreThanOneDay() {
+        return spansOnMoreThanOneDay(this.eventData, this.from, this.to);
+    }
+
+    /**
+     * Computed inline style of the standalone chip.
+     *
+     * @type {string}
+     */
     get standaloneChipStyle() {
         return `background-color: ${this.computedColor};`;
     }
 
+    /**
+     * Computed start time of the occurrence.
+     *
+     * @type {string}
+     */
     get startTime() {
         return this.from ? this.from.toFormat('t') : '';
     }
@@ -1146,6 +1163,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return style;
     }
 
+    /**
+     * Computed timeline header cells.
+     *
+     * @type {object[]}
+     */
     get timelineHeaderCells() {
         return this.isVerticalTimeline
             ? this.headerCells.yAxis
@@ -1238,22 +1260,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Update the position of the occurrence in the scheduler grid.
-     *
-     * @public
-     */
-    @api
-    updatePosition() {
-        if (this.isTimeline || this.isHorizontalCalendar) {
-            this.updatePositionInTimeline();
-        } else {
-            this.updatePositionInCalendar();
-        }
-
-        this.updateHostTranslate();
-    }
-
-    /**
      * Update the length of the occurrence in the scheduler grid.
      *
      * @public
@@ -1325,6 +1331,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Update the position of the occurrence in the scheduler grid.
+     *
+     * @public
+     */
+    @api
+    updatePosition() {
+        if (this.isTimeline || this.isHorizontalCalendar) {
+            this.updatePositionInTimeline();
+        } else {
+            this.updatePositionInCalendar();
+        }
+
+        this.updateHostTranslate();
+    }
+
+    /**
      * Update the thickness of a disabled occurrence.
      *
      * @public
@@ -1374,67 +1396,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Initialize the labels values.
-     */
-    initLabels() {
-        if (!this.resources.length || !this.resourceKey) return;
-
-        const labels = {};
-        const resource = this.resources.find(
-            (res) => res.name === this.resourceKey
-        );
-
-        if (resource) {
-            for (let i = 0; i < Object.entries(this.labels).length; i++) {
-                const label = Object.entries(this.labels)[i];
-                const position = label[0];
-                const hideLabels =
-                    this.isVertical ||
-                    this.isMonthCalendar ||
-                    this.isAgenda ||
-                    this.isHorizontalCalendar;
-                if (hideLabels && position !== 'center') {
-                    continue;
-                }
-
-                const { value, fieldName, iconName } = label[1];
-
-                labels[position] = {};
-                if (value) {
-                    // If the label has a fixed value, prioritize it
-                    labels[position].value = value;
-                } else if (fieldName) {
-                    // Else, search for a field name in the occurrence,
-                    // then the event, then the resource
-                    const computedValue =
-                        this[fieldName] ||
-                        this.eventData[fieldName] ||
-                        resource.data[fieldName];
-
-                    // If the field name is a date, parse it with the date format
-                    if (
-                        ['from', 'to', 'recurrenceEndDate'].includes(fieldName)
-                    ) {
-                        const dateValue = this.createDate(computedValue);
-                        labels[position].value = dateValue
-                            ? dateValue.toFormat(this.dateFormat)
-                            : computedValue;
-                    } else {
-                        labels[position].value = computedValue;
-                    }
-                }
-                labels[position].iconName = iconName;
-            }
-        }
-
-        this.computedLabels = labels;
-
-        requestAnimationFrame(() => {
-            this.updateStickyLabels();
-        });
-    }
 
     /**
      * Align the event with its resource.
@@ -1539,6 +1500,67 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Initialize the labels values.
+     */
+    initLabels() {
+        if (!this.resources.length || !this.resourceKey) return;
+
+        const labels = {};
+        const resource = this.resources.find(
+            (res) => res.name === this.resourceKey
+        );
+
+        if (resource) {
+            for (let i = 0; i < Object.entries(this.labels).length; i++) {
+                const label = Object.entries(this.labels)[i];
+                const position = label[0];
+                const hideLabels =
+                    this.isVertical ||
+                    this.isMonthCalendar ||
+                    this.isAgenda ||
+                    this.isHorizontalCalendar;
+                if (hideLabels && position !== 'center') {
+                    continue;
+                }
+
+                const { value, fieldName, iconName } = label[1];
+
+                labels[position] = {};
+                if (value) {
+                    // If the label has a fixed value, prioritize it
+                    labels[position].value = value;
+                } else if (fieldName) {
+                    // Else, search for a field name in the occurrence,
+                    // then the event, then the resource
+                    const computedValue =
+                        this[fieldName] ||
+                        this.eventData[fieldName] ||
+                        resource.data[fieldName];
+
+                    // If the field name is a date, parse it with the date format
+                    if (
+                        ['from', 'to', 'recurrenceEndDate'].includes(fieldName)
+                    ) {
+                        const dateValue = this.createDate(computedValue);
+                        labels[position].value = dateValue
+                            ? dateValue.toFormat(this.dateFormat)
+                            : computedValue;
+                    } else {
+                        labels[position].value = computedValue;
+                    }
+                }
+                labels[position].iconName = iconName;
+            }
+        }
+
+        this.computedLabels = labels;
+
+        requestAnimationFrame(() => {
+            this.updateStickyLabels();
+        });
+    }
+
+    /**
      * Set the length of the event through its CSS style.
      *
      * @param {number} length Length of the event.
@@ -1576,46 +1598,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (this.hostElement) {
             this.hostElement.style.transform = `translate(${x}px, ${y}px)`;
         }
-    }
-
-    /**
-     * Compute and update the length of a standalone event.
-     */
-    updateStandaloneLength() {
-        const headerCells = this.headerCells.xAxis;
-        const { to, cellWidth } = this;
-        const isOneCellLength =
-            this.referenceLine || !this.spansOnMoreThanOneDay;
-
-        if ((isOneCellLength || !headerCells) && this.hostElement) {
-            // The event should span on one cell
-            this.hostElement.style.width = cellWidth ? `${cellWidth}px` : null;
-            this.hostElement.style.height = null;
-            return;
-        }
-
-        // The event should span on more than one cell.
-        // Find the cell where it starts.
-        const from = this.occurrence.firstAllowedDate;
-        let i = headerCells.findIndex((cell) => {
-            const cellStart = this.createDate(cell.start);
-            return cellStart.weekday === from.weekday;
-        });
-        if (i < 0) return;
-
-        let length = 0;
-
-        // Add the full length of the cells the event passes through
-        while (i < headerCells.length) {
-            const cellStart = this.createDate(headerCells[i].start);
-            const sameWeek = getWeekNumber(from) === getWeekNumber(to);
-            if (getWeekday(cellStart) > getWeekday(to) && sameWeek) {
-                break;
-            }
-            length += cellWidth;
-            i += 1;
-        }
-        this.setLength(length);
     }
 
     /**
@@ -1717,11 +1699,73 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
     }
 
+    /**
+     * Compute and update the length of a standalone event.
+     */
+    updateStandaloneLength() {
+        const headerCells = this.headerCells.xAxis;
+        const { to, cellWidth } = this;
+        const isOneCellLength =
+            this.referenceLine || !this.spansOnMoreThanOneDay;
+
+        if ((isOneCellLength || !headerCells) && this.hostElement) {
+            // The event should span on one cell
+            this.hostElement.style.width = cellWidth ? `${cellWidth}px` : null;
+            this.hostElement.style.height = null;
+            return;
+        }
+
+        // The event should span on more than one cell.
+        // Find the cell where it starts.
+        const from = this.occurrence.firstAllowedDate;
+        let i = headerCells.findIndex((cell) => {
+            const cellStart = this.createDate(cell.start);
+            return cellStart.weekday === from.weekday;
+        });
+        if (i < 0) return;
+
+        let length = 0;
+
+        // Add the full length of the cells the event passes through
+        while (i < headerCells.length) {
+            const cellStart = this.createDate(headerCells[i].start);
+            const sameWeek = getWeekNumber(from) === getWeekNumber(to);
+            if (getWeekday(cellStart) > getWeekday(to) && sameWeek) {
+                break;
+            }
+            length += cellWidth;
+            i += 1;
+        }
+        this.setLength(length);
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Handle the blur event fired by the occurrence if it is not disabled.
+     * Dispatch a privateblur event.
+     *
+     * @param {Event} event
+     */
+    handleBlur() {
+        this._focused = false;
+
+        /**
+         * The event fired when the occurrence is blurred, if it is not disabled.
+         *
+         * @event
+         * @name privateblur
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(new CustomEvent('privateblur'));
+    }
 
     /**
      * Handle the contextmenu event fired by the occurrence if it is not disabled.
@@ -1746,8 +1790,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Handle the contextmenu event fired by disabled and reference line occurrences.
-     * Dispatch a privatedisabledcontextmenu event.
+     * Handle the dblclick event fired by the disabled and reference line occurrences.
+     * Dispatch a privatedisableddblclick event.
      *
      * @param {Event} event
      */
@@ -1770,26 +1814,145 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Dispatch a custom event. The name of the event to dispatch is given as a parameter.
+     * Handle the dblclick event fired by the disabled and reference line occurrences.
+     * Dispatch a privatedisableddblclick event.
      *
-     * @param {string} name
      * @param {Event} event
      */
-    dispatchCustomEvent(name, event) {
-        const x =
-            event.clientX || event.currentTarget.getBoundingClientRect().x;
-        const y =
-            event.clientY || event.currentTarget.getBoundingClientRect().bottom;
+    handleDisabledDoubleClick(event) {
+        const customEvent = new CustomEvent('privatedisableddblclick');
+        customEvent.clientX = event.clientX;
+        customEvent.clientY = event.clientY;
 
+        /**
+         * The event fired when the user double-clicks on a disabled or reference line occurrence.
+         *
+         * @event
+         * @name privatedisableddblclick
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(customEvent);
+    }
+
+    /**
+     * Handle the mousedown event fired by disabled and reference line occurrences.
+     * Dispatch a privatedisabledmousedown event.
+     *
+     * @param {Event} event
+     */
+    handleDisabledMouseDown(event) {
+        if (event.button !== 0) return;
+
+        /**
+         * The event fired when the mouse is pressed on a disabled or reference line occurrence.
+         *
+         * @event
+         * @name privatedisabledmousedown
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchEvent(
-            new CustomEvent(name, {
+            new CustomEvent('privatedisabledmousedown', {
+                detail: {
+                    x: event.clientX,
+                    y: event.clientY
+                }
+            })
+        );
+    }
+
+    /**
+     * Handle the dblclick event fired by the occurrence if it is not disabled.
+     * Dispatch a privatedblclick event.
+     *
+     * @param {Event} event
+     */
+    handleDoubleClick(event) {
+        /**
+         * The event fired when the user double-clicks on the occurrence, if it is not disabled.
+         *
+         * @event
+         * @name privatedblclick
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchCustomEvent('privatedblclick', event);
+    }
+
+    /**
+     * Handle the focus event fired by the occurrence if it is not disabled.
+     * Dispatch a privatefocus event.
+     *
+     * @param {Event} event
+     */
+    handleFocus(event) {
+        this._focused = true;
+
+        /**
+         * The event fired when the occurrence is focused, if it is not disabled.
+         *
+         * @event
+         * @name privatefocus
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchCustomEvent('privatefocus', event);
+    }
+
+    /**
+     * Handle the keydown event fired by the occurrence if it is not disabled.
+     * Open the context menu if the space bar or enter were pressed.
+     *
+     * @param {Event} event
+     */
+    handleKeyDown(event) {
+        const key = event.key;
+        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+            event.preventDefault();
+            this.handleContextMenu(event);
+        }
+    }
+
+    /**
+     * Handle the mousedown event fired by the occurrence if it is not disabled.
+     * Dispatch a privatemousedown event.
+     *
+     * @param {Event} event
+     */
+    handleMouseDown(event) {
+        if (
+            event.button !== 0 ||
+            this.readOnly ||
+            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
+        )
+            return;
+
+        const resize = event.target.dataset.resize;
+
+        /**
+         * The event fired when the mouse is pressed on the occurrence, if it is not disabled.
+         *
+         * @event
+         * @name privatemousedown
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatemousedown', {
                 detail: {
                     eventName: this.eventName,
                     key: this.occurrenceKey,
                     from: this.from,
-                    to: this.to,
-                    x,
-                    y
+                    x: event.clientX,
+                    y: event.clientY,
+                    side: resize
                 }
             })
         );
@@ -1836,169 +1999,28 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Handle the dblclick event fired by the occurrence if it is not disabled.
-     * Dispatch a privatedblclick event.
+     * Dispatch a custom event. The name of the event to dispatch is given as a parameter.
      *
+     * @param {string} name
      * @param {Event} event
      */
-    handleDoubleClick(event) {
-        /**
-         * The event fired when the user double-clicks on the occurrence, if it is not disabled.
-         *
-         * @event
-         * @name privatedblclick
-         * @param {string} eventName Name of the event this occurrence belongs to.
-         * @param {string} key Key of this occurrence.
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
-         */
-        this.dispatchCustomEvent('privatedblclick', event);
-    }
+    dispatchCustomEvent(name, event) {
+        const x =
+            event.clientX || event.currentTarget.getBoundingClientRect().x;
+        const y =
+            event.clientY || event.currentTarget.getBoundingClientRect().bottom;
 
-    /**
-     * Handle the dblclick event fired by the disabled and reference line occurrences.
-     * Dispatch a privatedisableddblclick event.
-     *
-     * @param {Event} event
-     */
-    handleDisabledDoubleClick(event) {
-        const customEvent = new CustomEvent('privatedisableddblclick');
-        customEvent.clientX = event.clientX;
-        customEvent.clientY = event.clientY;
-
-        /**
-         * The event fired when the user double-clicks on a disabled or reference line occurrence.
-         *
-         * @event
-         * @name privatedisableddblclick
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
-         */
-        this.dispatchEvent(customEvent);
-    }
-
-    /**
-     * Handle the focus event fired by the occurrence if it is not disabled.
-     * Dispatch a privatefocus event.
-     *
-     * @param {Event} event
-     */
-    handleFocus(event) {
-        this._focused = true;
-
-        /**
-         * The event fired when the occurrence is focused, if it is not disabled.
-         *
-         * @event
-         * @name privatefocus
-         * @param {string} eventName Name of the event this occurrence belongs to.
-         * @param {string} key Key of this occurrence.
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
-         */
-        this.dispatchCustomEvent('privatefocus', event);
-    }
-
-    /**
-     * Handle the blur event fired by the occurrence if it is not disabled.
-     * Dispatch a privateblur event.
-     *
-     * @param {Event} event
-     */
-    handleBlur() {
-        this._focused = false;
-
-        /**
-         * The event fired when the occurrence is blurred, if it is not disabled.
-         *
-         * @event
-         * @name privateblur
-         * @param {string} eventName Name of the event this occurrence belongs to.
-         * @param {string} key Key of this occurrence.
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
-         */
-        this.dispatchEvent(new CustomEvent('privateblur'));
-    }
-
-    /**
-     * Handle the mousedown event fired by the occurrence if it is not disabled.
-     * Dispatch a privatemousedown event.
-     *
-     * @param {Event} event
-     */
-    handleMouseDown(event) {
-        if (
-            event.button !== 0 ||
-            this.readOnly ||
-            this.hiddenActions.includes(DEFAULT_ACTION_NAMES.edit)
-        )
-            return;
-
-        const resize = event.target.dataset.resize;
-
-        /**
-         * The event fired when the mouse is pressed on the occurrence, if it is not disabled.
-         *
-         * @event
-         * @name privatemousedown
-         * @param {string} eventName Name of the event this occurrence belongs to.
-         * @param {string} key Key of this occurrence.
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
-         */
         this.dispatchEvent(
-            new CustomEvent('privatemousedown', {
+            new CustomEvent(name, {
                 detail: {
                     eventName: this.eventName,
                     key: this.occurrenceKey,
                     from: this.from,
-                    x: event.clientX,
-                    y: event.clientY,
-                    side: resize
+                    to: this.to,
+                    x,
+                    y
                 }
             })
         );
-    }
-
-    /**
-     * Handle the mousedown event fired by disabled and reference line occurrences.
-     * Dispatch a privatedisabledmousedown event.
-     *
-     * @param {Event} event
-     */
-    handleDisabledMouseDown(event) {
-        if (event.button !== 0) return;
-
-        /**
-         * The event fired when the mouse is pressed on a disabled or reference line occurrence.
-         *
-         * @event
-         * @name privatedisabledmousedown
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatedisabledmousedown', {
-                detail: {
-                    x: event.clientX,
-                    y: event.clientY
-                }
-            })
-        );
-    }
-
-    /**
-     * Handle the keydown event fired by the occurrence if it is not disabled.
-     * Open the context menu if the space bar or enter were pressed.
-     *
-     * @param {Event} event
-     */
-    handleKeyDown(event) {
-        const key = event.key;
-        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
-            event.preventDefault();
-            this.handleContextMenu(event);
-        }
     }
 }

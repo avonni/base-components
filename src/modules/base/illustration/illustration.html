@@ -1,9 +1,9 @@
 <template>
-    <div class={illustrationClass}>
+    <div class={computedIllustrationClass}>
         <img
             if:true={showSvg}
-            src={svgURL}
             class="slds-illustration__svg"
+            src={svgURL}
             data-element-id="img"
         />
         <div class="slds-text-longform">

@@ -15,9 +15,15 @@ const SPLITTER_ORIENTATIONS = {
 export default class Splitter extends LightningElement {
     _orientation = SPLITTER_ORIENTATIONS.default;
 
-    down = false;
     data;
+    down = false;
     selectedSeparator;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         let splitter = this.template.querySelector(
@@ -269,7 +275,6 @@ export default class Splitter extends LightningElement {
                 }
             });
         }
-        // slot.remove();
 
         this.template
             .querySelectorAll('.splitter-orientation-horizontal')
@@ -306,12 +311,34 @@ export default class Splitter extends LightningElement {
     get orientation() {
         return this._orientation;
     }
-
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
             fallbackValue: SPLITTER_ORIENTATIONS.default,
             validValues: SPLITTER_ORIENTATIONS.valid
         });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Change horizontal container height.
+     *
+     * @param {number} height New height of the container.
+     * @public
+     */
+    @api
+    changeHeight(height) {
+        const horizontalContainer = this.template.querySelector(
+            '.splitter-orientation-horizontal'
+        );
+
+        if (horizontalContainer) {
+            horizontalContainer.style.height = height + 'px';
+        }
     }
 
     /*
@@ -326,7 +353,7 @@ export default class Splitter extends LightningElement {
      * @type {string}
      */
     get computedOrientationClass() {
-        return this._orientation === 'vertical'
+        return this.orientation === 'vertical'
             ? 'splitter-orientation-vertical'
             : 'splitter-orientation-horizontal';
     }
@@ -337,7 +364,7 @@ export default class Splitter extends LightningElement {
      * @type {string}
      */
     get computedSeparatorClass() {
-        return this._orientation === 'vertical'
+        return this.orientation === 'vertical'
             ? 'separator-vertical'
             : 'separator-horizontal';
     }
@@ -347,178 +374,6 @@ export default class Splitter extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * On mouse down event method.
-     *
-     * @param {Event} event
-     */
-    onMouseDown(event) {
-        if (event.button) {
-            return;
-        }
-
-        let selectedSeparator = event.target;
-
-        if (selectedSeparator.className.indexOf('icon') > -1) {
-            selectedSeparator = selectedSeparator.parentNode;
-        }
-
-        let first = selectedSeparator.previousSibling;
-        let second = selectedSeparator.nextSibling;
-        this.selectedSeparator = selectedSeparator;
-
-        if (second && first) {
-            this.data = {
-                event,
-                offsetLeft: selectedSeparator.offsetLeft,
-                offsetTop: selectedSeparator.offsetTop,
-                firstWidth: first.offsetWidth,
-                firstHeight: first.offsetHeight,
-                secondWidth: second.offsetWidth,
-                secondHeight: second.offsetHeight
-            };
-        }
-
-        if (selectedSeparator.style.cursor !== 'auto') {
-            this.down = true;
-        }
-    }
-
-    /**
-     * On mouse move event method.
-     *
-     * @param {Event} event
-     */
-    onMouseMove(event) {
-        if (this.down) {
-            let separator = this.selectedSeparator;
-            let first = separator.previousSibling;
-            let second = separator.nextSibling;
-
-            let delta = {
-                x: event.clientX - this.data.event.x,
-                y: event.clientY - this.data.event.y
-            };
-
-            if (this.orientation === 'horizontal') {
-                delta.x = Math.min(
-                    Math.max(delta.x, -this.data.firstWidth),
-                    this.data.secondWidth
-                );
-
-                let firstDelta = Number(this.data.firstWidth + delta.x);
-                let secondDelta = Number(this.data.secondWidth - delta.x);
-
-                let firstAvailable = this.validate(firstDelta, first);
-                let secondAvailable = this.validate(secondDelta, second);
-                let maxWidthValidation = firstDelta >= 0 && secondDelta >= 0;
-
-                if (firstAvailable && secondAvailable && maxWidthValidation) {
-                    separator.style.left =
-                        this.data.offsetLeft + delta.x + 'px';
-
-                    first.style.flexBasis = firstDelta + 'px';
-                    first.classList.add('state-static');
-                    first.setAttribute('is-static', 'true');
-
-                    second.style.flexBasis = secondDelta + 'px';
-                    second.classList.add('state-static');
-                    second.setAttribute('is-static', 'true');
-                }
-            } else {
-                delta.y = Math.min(
-                    Math.max(delta.y, -this.data.firstHeight),
-                    this.data.secondHeight
-                );
-
-                let firstDelta = Number(this.data.firstHeight + delta.y);
-                let secondDelta = Number(this.data.secondHeight - delta.y);
-
-                let firstAvailable = this.validate(firstDelta, first);
-                let secondAvailable = this.validate(secondDelta, second);
-
-                if (firstAvailable && secondAvailable) {
-                    separator.style.top = this.data.offsetTop + delta.y + 'px';
-
-                    first.style.flexBasis = firstDelta + 'px';
-                    first.classList.add('state-static');
-                    first.setAttribute('is-static', 'true');
-
-                    second.style.flexBasis = secondDelta + 'px';
-                    second.classList.add('state-static');
-                    second.setAttribute('is-static', 'true');
-
-                    this.querySelectorAll(
-                        '.slot-' +
-                            first.getAttribute('slot-id') +
-                            ' .horizontal'
-                    ).forEach((element) => {
-                        element.changeHeight(firstDelta);
-                    });
-                    this.querySelectorAll(
-                        '.slot-' +
-                            second.getAttribute('slot-id') +
-                            ' .horizontal'
-                    ).forEach((element) => {
-                        element.changeHeight(secondDelta);
-                    });
-                }
-            }
-        }
-    }
-
-    /**
-     * On mouse up method.
-     */
-    onMouseUp() {
-        this.down = false;
-    }
-
-    /**
-     * Validate size constraints.
-     *
-     * @param {number} delta
-     * @param {Element} element
-     * @returns {boolean} valide
-     */
-    validate(delta, element) {
-        let valide = true;
-        let min = element.getAttribute('min');
-        let max = element.getAttribute('max');
-        let parentSize =
-            this.orientation === 'horizontal'
-                ? element.parentNode.offsetWidth
-                : element.parentNode.offsetHeight;
-
-        if (min) {
-            if (min.indexOf('%') > 0) {
-                let minSize = Number(min.replace('%', ''));
-                let minContainerSize = (parentSize * minSize) / 100;
-                valide = delta >= minContainerSize;
-            }
-
-            if (min.indexOf('px') > 0) {
-                let minSize = Number(min.replace('px', ''));
-                valide = delta >= minSize;
-            }
-        }
-
-        if (max && valide) {
-            if (max.indexOf('%') > 0) {
-                let maxSize = Number(max.replace('%', ''));
-                let maxContainerSize = (parentSize * maxSize) / 100;
-                valide = delta <= maxContainerSize;
-            }
-
-            if (max.indexOf('px') > 0) {
-                let maxSize = Number(max.replace('px', ''));
-                valide = delta <= maxSize;
-            }
-        }
-
-        return valide;
-    }
 
     /**
      * Splitter elements collapsed left.
@@ -666,6 +521,133 @@ export default class Splitter extends LightningElement {
                 rightSeparator.style.cursor = 'auto';
             }
         }
+    }
+
+    /**
+     * On mouse down event method.
+     *
+     * @param {Event} event
+     */
+    onMouseDown(event) {
+        if (event.button) {
+            return;
+        }
+
+        let selectedSeparator = event.target;
+
+        if (selectedSeparator.className.indexOf('icon') > -1) {
+            selectedSeparator = selectedSeparator.parentNode;
+        }
+
+        let first = selectedSeparator.previousSibling;
+        let second = selectedSeparator.nextSibling;
+        this.selectedSeparator = selectedSeparator;
+
+        if (second && first) {
+            this.data = {
+                event,
+                offsetLeft: selectedSeparator.offsetLeft,
+                offsetTop: selectedSeparator.offsetTop,
+                firstWidth: first.offsetWidth,
+                firstHeight: first.offsetHeight,
+                secondWidth: second.offsetWidth,
+                secondHeight: second.offsetHeight
+            };
+        }
+
+        if (selectedSeparator.style.cursor !== 'auto') {
+            this.down = true;
+        }
+    }
+
+    /**
+     * On mouse move event method.
+     *
+     * @param {Event} event
+     */
+    onMouseMove(event) {
+        if (this.down) {
+            let separator = this.selectedSeparator;
+            let first = separator.previousSibling;
+            let second = separator.nextSibling;
+
+            let delta = {
+                x: event.clientX - this.data.event.x,
+                y: event.clientY - this.data.event.y
+            };
+
+            if (this.orientation === 'horizontal') {
+                delta.x = Math.min(
+                    Math.max(delta.x, -this.data.firstWidth),
+                    this.data.secondWidth
+                );
+
+                let firstDelta = Number(this.data.firstWidth + delta.x);
+                let secondDelta = Number(this.data.secondWidth - delta.x);
+
+                let firstAvailable = this.validate(firstDelta, first);
+                let secondAvailable = this.validate(secondDelta, second);
+                let maxWidthValidation = firstDelta >= 0 && secondDelta >= 0;
+
+                if (firstAvailable && secondAvailable && maxWidthValidation) {
+                    separator.style.left =
+                        this.data.offsetLeft + delta.x + 'px';
+
+                    first.style.flexBasis = firstDelta + 'px';
+                    first.classList.add('state-static');
+                    first.setAttribute('is-static', 'true');
+
+                    second.style.flexBasis = secondDelta + 'px';
+                    second.classList.add('state-static');
+                    second.setAttribute('is-static', 'true');
+                }
+            } else {
+                delta.y = Math.min(
+                    Math.max(delta.y, -this.data.firstHeight),
+                    this.data.secondHeight
+                );
+
+                let firstDelta = Number(this.data.firstHeight + delta.y);
+                let secondDelta = Number(this.data.secondHeight - delta.y);
+
+                let firstAvailable = this.validate(firstDelta, first);
+                let secondAvailable = this.validate(secondDelta, second);
+
+                if (firstAvailable && secondAvailable) {
+                    separator.style.top = this.data.offsetTop + delta.y + 'px';
+
+                    first.style.flexBasis = firstDelta + 'px';
+                    first.classList.add('state-static');
+                    first.setAttribute('is-static', 'true');
+
+                    second.style.flexBasis = secondDelta + 'px';
+                    second.classList.add('state-static');
+                    second.setAttribute('is-static', 'true');
+
+                    this.querySelectorAll(
+                        '.slot-' +
+                            first.getAttribute('slot-id') +
+                            ' .horizontal'
+                    ).forEach((element) => {
+                        element.changeHeight(firstDelta);
+                    });
+                    this.querySelectorAll(
+                        '.slot-' +
+                            second.getAttribute('slot-id') +
+                            ' .horizontal'
+                    ).forEach((element) => {
+                        element.changeHeight(secondDelta);
+                    });
+                }
+            }
+        }
+    }
+
+    /**
+     * On mouse up method.
+     */
+    onMouseUp() {
+        this.down = false;
     }
 
     /**
@@ -953,19 +935,47 @@ export default class Splitter extends LightningElement {
     }
 
     /**
-     * Change horizontal container height.
+     * Validate size constraints.
      *
-     * @param {number} height New height of the container.
-     * @public
+     * @param {number} delta
+     * @param {Element} element
+     * @returns {boolean} valide
      */
-    @api
-    changeHeight(height) {
-        const horizontalContainer = this.template.querySelector(
-            '.splitter-orientation-horizontal'
-        );
+    validate(delta, element) {
+        let valide = true;
+        let min = element.getAttribute('min');
+        let max = element.getAttribute('max');
+        let parentSize =
+            this.orientation === 'horizontal'
+                ? element.parentNode.offsetWidth
+                : element.parentNode.offsetHeight;
 
-        if (horizontalContainer) {
-            horizontalContainer.style.height = height + 'px';
+        if (min) {
+            if (min.indexOf('%') > 0) {
+                let minSize = Number(min.replace('%', ''));
+                let minContainerSize = (parentSize * minSize) / 100;
+                valide = delta >= minContainerSize;
+            }
+
+            if (min.indexOf('px') > 0) {
+                let minSize = Number(min.replace('px', ''));
+                valide = delta >= minSize;
+            }
         }
+
+        if (max && valide) {
+            if (max.indexOf('%') > 0) {
+                let maxSize = Number(max.replace('%', ''));
+                let maxContainerSize = (parentSize * maxSize) / 100;
+                valide = delta <= maxContainerSize;
+            }
+
+            if (max.indexOf('px') > 0) {
+                let maxSize = Number(max.replace('px', ''));
+                valide = delta <= maxSize;
+            }
+        }
+
+        return valide;
     }
 }

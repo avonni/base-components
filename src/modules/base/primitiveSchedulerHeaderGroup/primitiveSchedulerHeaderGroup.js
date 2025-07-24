@@ -15,15 +15,9 @@ import {
     normalizeString
 } from 'c/utils';
 
-const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
-const DEFAULT_START_DATE = new Date();
 const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
-const DEFAULT_TIME_SPAN = {
-    unit: 'day',
-    span: 1
-};
 const DEFAULT_AVAILABLE_TIME_SPANS = [
     { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
     { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
@@ -42,7 +36,12 @@ const DEFAULT_HEADERS = [
         label: 'ccc, LLL d'
     }
 ];
-
+const DEFAULT_START_DATE = new Date();
+const DEFAULT_TIME_SPAN = {
+    unit: 'day',
+    span: 1
+};
+const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 const VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -70,6 +69,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _connected = false;
     _initHeadersTimeout;
     computedHeaders = [];
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.initHeaders();
@@ -303,25 +308,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
-     * If present, horizontal scrolling will be prevented.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get zoomToFit() {
-        return this._zoomToFit;
-    }
-    set zoomToFit(value) {
-        this._zoomToFit = normalizeBoolean(value);
-
-        if (this._connected) {
-            this.computeCellSize();
-        }
-    }
-
-    /**
      * Interval of time between the current start and end.
      *
      * @type {Interval}
@@ -362,13 +348,37 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         }
     }
 
+    /**
+     * If present, horizontal scrolling will be prevented.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get zoomToFit() {
+        return this._zoomToFit;
+    }
+    set zoomToFit(value) {
+        this._zoomToFit = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.computeCellSize();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
 
-    get cellClass() {
+    /**
+     * Computed CSS classes of each header cell.
+     *
+     * @type {string}
+     */
+    get computedCellClass() {
         return classSet(
             'avonni-scheduler__border_right slds-grid slds-grid_vertical-align-center slds-grid_align-center slds-grow avonni-scheduler-header-group__header-cell'
         )
@@ -441,7 +451,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      *
      * @type {string}
      */
-    get headerClass() {
+    get computedHeaderClass() {
         return classSet('slds-grid slds-is-relative')
             .add({
                 'slds-grid_vertical avonni-scheduler-header-group__header_vertical':
@@ -452,11 +462,21 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             .toString();
     }
 
+    /**
+     * True if the headers are vertical.
+     *
+     * @type {boolean}
+     */
     get isVertical() {
         return this.variant === 'vertical';
     }
 
-    get nonStickyCellLabelClass() {
+    /**
+     * Computed CSS classes of the non-sticky cell label.
+     *
+     * @type {string}
+     */
+    get computedNonStickyCellLabelClass() {
         return classSet(
             'slds-truncate slds-text-color_weak avonni-scheduler-header-group__header-label'
         )
@@ -483,7 +503,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this.computedHeaders[lastIndex];
     }
 
-    get stickyCellLabelClass() {
+    /**
+     * Computed CSS classes of the sticky cell label.
+     *
+     * @type {string}
+     */
+    get computedStickyCellLabelClass() {
         return classSet(
             'slds-truncate slds-p-horizontal_x-small avonni-scheduler-header-group__header-label avonni-scheduler-header-group__header-label_sticky'
         )
@@ -499,7 +524,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      *
      * @type {string}
      */
-    get wrapperClass() {
+    get computedWrapperClass() {
         return classSet()
             .add({
                 'slds-grid': this.isVertical

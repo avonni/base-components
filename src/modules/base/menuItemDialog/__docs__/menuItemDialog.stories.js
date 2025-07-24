@@ -3,25 +3,6 @@ import { MenuItemDialog } from '../__examples__/menuItemDialog';
 export default {
     title: 'Example/Menu Item Dialog (only with avonni-button-menu)',
     argTypes: {
-        label: {
-            control: {
-                type: 'text'
-            },
-            description: 'Text of the menu item.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        value: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'A value associated with the menu item. This value will be the same with dialog (dialog-name === value)',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         accessKey: {
             name: 'access-key',
             control: {
@@ -31,6 +12,17 @@ export default {
             table: {
                 type: { summary: 'string' },
                 category: 'Accessibility'
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the menu item is disabled and users cannot interact with it.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         draftAlternativeText: {
@@ -52,6 +44,27 @@ export default {
             },
             description:
                 'The name of an icon to display after the text of the menu item.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        isDraft: {
+            name: 'is-draft',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a draft indicator is shown on the menu item. A draft indicator is denoted by blue asterisk on the left of the menu item. When you use a draft indicator, include alternative text for accessibility using draft-alternative-text.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Text of the menu item.',
             table: {
                 type: { summary: 'string' }
             }
@@ -79,27 +92,14 @@ export default {
                 category: 'Accessibility'
             }
         },
-        disabled: {
+        value: {
             control: {
-                type: 'boolean'
+                type: 'text'
             },
             description:
-                'If present, the menu item is disabled and users cannot interact with it.',
+                'A value associated with the menu item. This value will be the same with dialog (dialog-name === value)',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
-        isDraft: {
-            name: 'is-draft',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, a draft indicator is shown on the menu item. A draft indicator is denoted by blue asterisk on the left of the menu item. When you use a draft indicator, include alternative text for accessibility using draft-alternative-text.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'string' }
             }
         }
     },

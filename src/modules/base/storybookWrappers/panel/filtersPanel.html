@@ -1,10 +1,10 @@
 <template>
     <c-page-header
+        info="10 items • Updated 13 minutes ago"
         icon-name="standard:opportunity"
         label="Opportunities"
         title="My Opportunities"
         variant="record-home"
-        info="10 items • Updated 13 minutes ago"
     >
         <div slot="actions">
             <lightning-button-group>
@@ -17,34 +17,34 @@
             <ul class="slds-button-group-row">
                 <li class="slds-button-group-item">
                     <lightning-button-icon
+                        alternative-text="Settings"
                         icon-name="utility:edit"
-                        variant="border-filled"
-                        alternative-text="Settings"
                         size="medium"
+                        variant="border-filled"
                     ></lightning-button-icon>
                 </li>
                 <li class="slds-button-group-item">
                     <lightning-button-icon
+                        alternative-text="Settings"
                         icon-name="utility:refresh"
-                        variant="border-filled"
-                        alternative-text="Settings"
                         size="medium"
+                        variant="border-filled"
                     ></lightning-button-icon>
                 </li>
                 <li class="slds-button-group-item">
                     <lightning-button-icon
+                        alternative-text="Settings"
                         icon-name="utility:chart"
-                        variant="border-filled"
-                        alternative-text="Settings"
                         size="medium"
+                        variant="border-filled"
                     ></lightning-button-icon>
                 </li>
                 <li class="slds-button-group-item">
                     <lightning-button-icon
-                        icon-name="utility:filterList"
-                        variant="border-filled"
                         alternative-text="Settings"
+                        icon-name="utility:filterList"
                         size="medium"
+                        variant="border-filled"
                         onclick={toggle}
                     ></lightning-button-icon>
                 </li>
@@ -61,9 +61,9 @@
                 <c-panel
                     if:false={isRight}
                     position={position}
-                    title={title}
-                    size={size}
                     show-panel={showPanel}
+                    size={size}
+                    title={title}
                     data-element-id="avonni-panel"
                 >
                     <div slot="title">Filter</div>

@@ -17,14 +17,32 @@ const DEFAULT_COLOR = '#000000';
  */
 export default class ColorPickerPanel extends LightningElement {
     /**
+     * The label for the cancel button.
+     * @type {string}
+     * @default Cancel
+     */
+    @api cancelButtonLabel = i18n.cancelButton;
+    /**
      * Get currentColor.
      *
      * @public
      */
     @api currentColor;
+    /**
+     * The label for the done button.
+     * @type {string}
+     * @default Done
+     */
+    @api doneButtonLabel = i18n.doneButton;
 
     _isCustomTabActive = false;
     _selectedColor = null;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this._selectedColor = this.currentColor || DEFAULT_COLOR;
@@ -37,36 +55,12 @@ export default class ColorPickerPanel extends LightningElement {
      */
 
     /**
-     * Localization.
-     *
-     * @type {object}
-     */
-    get i18n() {
-        return i18n;
-    }
-
-    /**
-     * Computed Panel class default styling.
+     * Aria for Custom Panel.
      *
      * @type {string}
      */
-    get computedClassDefault() {
-        return classSet({
-            'slds-tabs_default__item': true,
-            'slds-is-active': !this._isCustomTabActive
-        }).toString();
-    }
-
-    /**
-     * Computed Panel class custom styling.
-     *
-     * @type {string}
-     */
-    get computedClassCustom() {
-        return classSet({
-            'slds-tabs_default__item': true,
-            'slds-is-active': this._isCustomTabActive
-        }).toString();
+    get ariaSelectedCustom() {
+        return this._isCustomTabActive.toString();
     }
 
     /**
@@ -79,12 +73,38 @@ export default class ColorPickerPanel extends LightningElement {
     }
 
     /**
-     * Aria for Custom Panel.
+     * Computed Panel class custom styling.
      *
      * @type {string}
      */
-    get ariaSelectedCustom() {
-        return this._isCustomTabActive.toString();
+    get computedClassCustom() {
+        return classSet('slds-tabs_default__item')
+            .add({
+                'slds-is-active': this._isCustomTabActive
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Panel class default styling.
+     *
+     * @type {string}
+     */
+    get computedClassDefault() {
+        return classSet('slds-tabs_default__item')
+            .add({
+                'slds-is-active': !this._isCustomTabActive
+            })
+            .toString();
+    }
+
+    /**
+     * Localization.
+     *
+     * @type {object}
+     */
+    get i18n() {
+        return i18n;
     }
 
     /*
@@ -92,6 +112,48 @@ export default class ColorPickerPanel extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Handle Click on cancel.
+     */
+    handleCancelClick() {
+        this.dispatchUpdateColorEventWithColor(this.currentColor);
+    }
+
+    /**
+     * Handle Click on done.
+     */
+    handleDoneClick() {
+        this.dispatchUpdateColorEventWithColor(this._selectedColor);
+    }
+
+    /**
+     * Handle Keydown event.
+     *
+     * @param {Event} event
+     */
+    handleKeydown(event) {
+        if (event.keyCode === keyCodes.escape) {
+            event.preventDefault();
+            this.dispatchUpdateColorEventWithColor(this.currentColor);
+        } else if (
+            event.shiftKey &&
+            event.keyCode === keyCodes.tab &&
+            event.target.dataset.id === 'color-anchor'
+        ) {
+            event.preventDefault();
+            this.template.querySelector('button[name="done"]').focus();
+        } else if (
+            !event.shiftKey &&
+            event.keyCode === keyCodes.tab &&
+            event.target.name === 'done'
+        ) {
+            event.preventDefault();
+            this.template
+                .querySelector('[data-element-id="avonni-color-picker-custom"]')
+                .focus();
+        }
+    }
 
     /**
      * Tab change handler.
@@ -138,47 +200,5 @@ export default class ColorPickerPanel extends LightningElement {
                 detail: { color }
             })
         );
-    }
-
-    /**
-     * Handle Click on done.
-     */
-    handleDoneClick() {
-        this.dispatchUpdateColorEventWithColor(this._selectedColor);
-    }
-
-    /**
-     * Handle Click on cancel.
-     */
-    handleCancelClick() {
-        this.dispatchUpdateColorEventWithColor(this.currentColor);
-    }
-
-    /**
-     * Handle Keydown event.
-     *
-     * @param {Event} event
-     */
-    handleKeydown(event) {
-        if (event.keyCode === keyCodes.escape) {
-            event.preventDefault();
-            this.dispatchUpdateColorEventWithColor(this.currentColor);
-        } else if (
-            event.shiftKey &&
-            event.keyCode === keyCodes.tab &&
-            event.target.dataset.id === 'color-anchor'
-        ) {
-            event.preventDefault();
-            this.template.querySelector('button[name="done"]').focus();
-        } else if (
-            !event.shiftKey &&
-            event.keyCode === keyCodes.tab &&
-            event.target.name === 'done'
-        ) {
-            event.preventDefault();
-            this.template
-                .querySelector('[data-element-id="avonni-color-picker-custom"]')
-                .focus();
-        }
     }
 }

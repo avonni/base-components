@@ -22,6 +22,7 @@ export const InputToggle = ({
     name,
     readOnly,
     required,
+    requiredAlternativeText,
     size,
     value,
     variant
@@ -43,6 +44,7 @@ export const InputToggle = ({
     element.name = name;
     element.readOnly = readOnly;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.size = size;
     element.value = value;
     element.variant = variant;

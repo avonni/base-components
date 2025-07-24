@@ -3,113 +3,113 @@
         <ul class="slds-tabs_default__nav" role="tablist">
             <template if:true={showTabs} for:each={visibleTabs} for:item="tab">
                 <li
+                    key={tab.name}
                     class={tab.classes}
                     role="presentation"
-                    key={tab.name}
                     onkeydown={handleVisibleTabKeyDown}
                 >
                     <a
-                        title={tab.title}
                         class="slds-tabs_default__link"
+                        aria-selected={tab.ariaSelected}
                         href="javascript:void(0);"
                         role="tab"
                         tabindex={tab.tabIndex}
-                        aria-selected={tab.ariaSelected}
+                        title={tab.title}
                         data-element-id="a-tab-link"
                         data-name={tab.name}
-                        onclick={handleTabClick}
                         onblur={triggerBlur}
+                        onclick={handleTabClick}
                     >
                         {tab.title}
                     </a>
                 </li>
             </template>
-            <template if:true={showOverflowArrow}>
-                <li
+
+            <li
+                if:true={showOverflowArrow}
+                class="
+                    slds-tabs_default__item slds-tabs_default__overflow-button
+                "
+                role="presentation"
+                title={showMoreButtonAlternativeText}
+            >
+                <div
                     class="
-                        slds-tabs_default__item
-                        slds-tabs_default__overflow-button
+                        slds-dropdown-trigger slds-dropdown-trigger_click
+                        slds-is-open
                     "
                     role="presentation"
-                    title="More icons"
                 >
-                    <div
-                        class="
-                            slds-dropdown-trigger slds-dropdown-trigger_click
-                            slds-is-open
-                        "
-                        role="presentation"
+                    <button
+                        class="slds-button"
+                        aria-expanded={showHiddenTabsDropdown}
+                        aria-haspopup="true"
+                        aria-label={showMoreButtonAlternativeText}
+                        role="tab"
+                        type="button"
+                        data-element-id="button-hidden-tabs"
+                        onblur={handleDropDownButtonBlur}
+                        onclick={handleShowHiddenTabsClick}
+                        onfocus={handleDropDownButtonFocus}
                     >
-                        <button
-                            class="slds-button"
-                            role="tab"
-                            aria-haspopup="true"
-                            aria-expanded={showHiddenTabsDropdown}
-                            aria-label="Show more icons"
-                            type="button"
-                            data-element-id="button-hidden-tabs"
-                            onfocus={handleDropDownButtonFocus}
-                            onblur={handleDropDownButtonBlur}
-                            onclick={handleShowHiddenTabsClick}
-                        >
-                            <span class="slds-icon_container">
-                                <lightning-icon
-                                    icon-name="utility:chevrondown"
-                                    size="x-small"
-                                ></lightning-icon>
-                            </span>
-                        </button>
+                        <span class="slds-icon_container">
+                            <lightning-icon
+                                alternative-text={showMoreButtonAlternativeText}
+                                icon-name="utility:chevrondown"
+                                size="x-small"
+                            ></lightning-icon>
+                        </span>
+                    </button>
 
-                        <!-- Hidden tabs dropdown -->
-                        <div
-                            if:true={showHiddenTabsDropdown}
-                            onfocusin={handleDropDownFocusIn}
-                            onfocusout={handleDropDownFocusOut}
-                        >
-                            <div class="slds-dropdown slds-dropdown_right">
-                                <ul
-                                    class="
-                                        slds-dropdown__list
-                                        slds-dropdown_length-with-icon-10
-                                    "
-                                    role="menu"
+                    <!-- Hidden tabs dropdown -->
+                    <div
+                        if:true={showHiddenTabsDropdown}
+                        onfocusin={handleDropDownFocusIn}
+                        onfocusout={handleDropDownFocusOut}
+                    >
+                        <div class="slds-dropdown slds-dropdown_right">
+                            <ul
+                                class="
+                                    slds-dropdown__list
+                                    slds-dropdown_length-with-icon-10
+                                "
+                                role="menu"
+                            >
+                                <template
+                                    for:each={hiddenTabs}
+                                    for:item="hiddenTab"
                                 >
-                                    <template
-                                        for:each={hiddenTabs}
-                                        for:item="hiddenTab"
+                                    <li
+                                        class="slds-dropdown__item"
+                                        role="presentation"
+                                        key={hiddenTab.name}
+                                        data-name={hiddenTab.name}
+                                        onkeydown={handleDropDownItemKeyDown}
                                     >
-                                        <li
-                                            class="slds-dropdown__item"
-                                            role="presentation"
-                                            key={hiddenTab.name}
+                                        <a
+                                            href="javascript:void(0);"
+                                            role="menuitem"
+                                            tabindex="-1"
+                                            title={hiddenTab.label}
+                                            data-element-id="a-hidden-tab"
                                             data-name={hiddenTab.name}
-                                            onkeydown={handleDropDownItemKeyDown}
+                                            onclick={handlePreventDefault}
+                                            onmousedown={changeLastCategory}
                                         >
-                                            <a
-                                                href="javascript:void(0);"
-                                                role="menuitem"
-                                                tabindex="-1"
+                                            <span
+                                                class="slds-truncate"
                                                 title={hiddenTab.label}
-                                                data-name={hiddenTab.name}
-                                                data-element-id="a-hidden-tab"
-                                                onmousedown={changeLastCategory}
-                                                onclick={handlePreventDefault}
                                             >
-                                                <span
-                                                    class="slds-truncate"
-                                                    title={hiddenTab.label}
-                                                >
-                                                    {hiddenTab.label}
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </div>
+                                                {hiddenTab.label}
+                                            </span>
+                                        </a>
+                                    </li>
+                                </template>
+                            </ul>
                         </div>
                     </div>
-                </li>
-            </template>
+                </div>
+            </li>
         </ul>
     </div>
 </template>

@@ -3,6 +3,16 @@ import { ProgressBar } from '../__examples__/progressBar';
 export default {
     title: 'Example/Progress Bar',
     argTypes: {
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the progress bar.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         isLoading: {
             name: 'is-loading',
             control: {
@@ -15,16 +25,6 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        alternativeText: {
-            name: 'alternative-text',
-            control: {
-                type: 'text'
-            },
-            description: 'The assistive text for the progress bar.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         label: {
             control: {
                 type: 'text'
@@ -34,28 +34,60 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        size: {
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the progress bar is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
+        orientation: {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large', 'full'],
+            options: ['horizontal', 'vertical'],
             description:
-                'The size of the progress bar. Valid values are x-small, small, medium, large and full. The default value is medium.',
+                'Orientation of the progress bar to be used. Valid values include horizontal and vertical.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'full' }
+                defaultValue: { summary: 'horizontal' }
             }
         },
-        value: {
+        pinAttributes: {
+            name: 'pin-attributes',
             control: {
-                type: 'number',
-                min: 0,
-                max: 100
+                type: 'object'
             },
-            description: 'The percentage value of the progress bar.',
+            description: 'Object of attributes for the pin.',
             table: {
-                type: { summary: 'number', detail: 'From 0 to 100' },
-                defaultValue: { summary: '0' },
+                type: { summary: 'object' },
+                category: 'Value'
+            }
+        },
+        referenceLines: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, inverse, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li></ul>',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        showPin: {
+            name: 'show-pin',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display the pin.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
                 category: 'Value'
             }
         },
@@ -71,15 +103,71 @@ export default {
                 category: 'Value'
             }
         },
-        showPin: {
-            name: 'show-pin',
+        size: {
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large', 'full'],
+            description:
+                'The size of the progress bar. Valid values are x-small, small, medium, large and full. The default value is medium.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'full' }
+            }
+        },
+        textured: {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, display the pin.',
+            description: 'If present, display a texture background.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        theme: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'base',
+                'success',
+                'inverse',
+                'alt-inverse',
+                'warning',
+                'info',
+                'error',
+                'offline'
+            ],
+            description:
+                'Defines the theme of the progress bar. Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'base' }
+            }
+        },
+        thickness: {
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large'],
+            description:
+                'Set progress bar thickness. Valid values include x-small, small, medium and large',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
+            }
+        },
+        value: {
+            control: {
+                type: 'number',
+                min: 0,
+                max: 100
+            },
+            description: 'The percentage value of the progress bar.',
+            table: {
+                type: { summary: 'number', detail: 'From 0 to 100' },
+                defaultValue: { summary: '0' },
                 category: 'Value'
             }
         },
@@ -128,27 +216,6 @@ export default {
                 category: 'Value'
             }
         },
-        pinAttributes: {
-            name: 'pin-attributes',
-            control: {
-                type: 'object'
-            },
-            description: 'Object of attributes for the pin.',
-            table: {
-                type: { summary: 'object' },
-                category: 'Value'
-            }
-        },
-        referenceLines: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, inverse, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li></ul>',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
         variant: {
             control: {
                 type: 'select'
@@ -160,65 +227,11 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' }
             }
-        },
-        theme: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'base',
-                'success',
-                'inverse',
-                'alt-inverse',
-                'warning',
-                'info',
-                'error',
-                'offline'
-            ],
-            description:
-                'Defines the theme of the progress bar. Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'base' }
-            }
-        },
-        textured: {
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, display a texture background.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        thickness: {
-            control: {
-                type: 'select'
-            },
-            options: ['x-small', 'small', 'medium', 'large'],
-            description:
-                'Set progress bar thickness. Valid values include x-small, small, medium and large',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
-            }
-        },
-        orientation: {
-            control: {
-                type: 'select'
-            },
-            options: ['horizontal', 'vertical'],
-            description:
-                'Orientation of the progress bar to be used. Valid values include horizontal and vertical.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'horizontal' }
-            }
         }
     },
     args: {
         isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         orientation: 'horizontal',
         showPin: false,
         showValue: false,

@@ -17,87 +17,79 @@
             </span>
             <template if:false={showEmptyValue}>
                 <!-- Boolean -->
-                <template if:true={showBoolean}>
-                    <lightning-icon
-                        size="x-small"
-                        icon-name="utility:check"
-                        data-element-id="lightning-icon"
-                    ></lightning-icon>
-                </template>
+                <lightning-icon
+                    if:true={showBoolean}
+                    icon-name="utility:check"
+                    size="x-small"
+                    data-element-id="lightning-icon"
+                ></lightning-icon>
                 <!-- Date -->
-                <template if:true={isDate}>
-                    <lightning-formatted-date-time
-                        value={value}
-                        day={normalizedTypeAttributes.day}
-                        era={normalizedTypeAttributes.era}
-                        hour={normalizedTypeAttributes.hour}
-                        hour12={normalizedTypeAttributes.hour12}
-                        minute={normalizedTypeAttributes.minute}
-                        month={normalizedTypeAttributes.month}
-                        second={normalizedTypeAttributes.second}
-                        time-zone={normalizedTypeAttributes.timeZone}
-                        time-zone-name={normalizedTypeAttributes.timeZoneName}
-                        weekday={normalizedTypeAttributes.weekday}
-                        year={normalizedTypeAttributes.year}
-                        data-element-id="lightning-formatted-date-time"
-                    ></lightning-formatted-date-time>
-                </template>
+                <lightning-formatted-date-time
+                    if:true={isDate}
+                    day={normalizedTypeAttributes.day}
+                    era={normalizedTypeAttributes.era}
+                    hour={normalizedTypeAttributes.hour}
+                    hour12={normalizedTypeAttributes.hour12}
+                    minute={normalizedTypeAttributes.minute}
+                    month={normalizedTypeAttributes.month}
+                    second={normalizedTypeAttributes.second}
+                    time-zone={normalizedTypeAttributes.timeZone}
+                    time-zone-name={normalizedTypeAttributes.timeZoneName}
+                    value={value}
+                    weekday={normalizedTypeAttributes.weekday}
+                    year={normalizedTypeAttributes.year}
+                    data-element-id="lightning-formatted-date-time"
+                ></lightning-formatted-date-time>
                 <!-- Email -->
-                <template if:true={isEmail}>
-                    <lightning-formatted-email
-                        value={value}
-                        hide-icon={normalizedTypeAttributes.hideIcon}
-                        data-element-id="lightning-formatted-email"
-                    ></lightning-formatted-email>
-                </template>
+                <lightning-formatted-email
+                    if:true={isEmail}
+                    hide-icon={normalizedTypeAttributes.hideIcon}
+                    value={value}
+                    data-element-id="lightning-formatted-email"
+                ></lightning-formatted-email>
                 <!-- Location -->
-                <template if:true={isLocation}>
-                    <lightning-formatted-location
-                        latitude={normalizedTypeAttributes.latitude}
-                        longitude={normalizedTypeAttributes.longitude}
-                        data-element-id="lightning-formatted-location"
-                    ></lightning-formatted-location>
-                </template>
+                <lightning-formatted-location
+                    if:true={isLocation}
+                    latitude={normalizedTypeAttributes.latitude}
+                    longitude={normalizedTypeAttributes.longitude}
+                    data-element-id="lightning-formatted-location"
+                ></lightning-formatted-location>
                 <!-- Number (includes currency and percent) -->
-                <template if:true={isNumber}>
-                    <lightning-formatted-number
-                        value={value}
-                        format-style={numberFormatStyle}
-                        currency-code={normalizedTypeAttributes.currencyCode}
-                        currency-display-as={normalizedTypeAttributes.currencyDisplayAs}
-                        minimum-integer-digits={normalizedTypeAttributes.minimumIntegerDigits}
-                        minimum-fraction-digits={normalizedTypeAttributes.minimumFractionDigits}
-                        maximum-fraction-digits={normalizedTypeAttributes.maximumFractionDigits}
-                        minimum-significant-digits={normalizedTypeAttributes.minimumSignificantDigits}
-                        maximum-significant-digits={normalizedTypeAttributes.maximumSignificantDigits}
-                        data-element-id="lightning-formatted-number"
-                    ></lightning-formatted-number>
-                </template>
+                <lightning-formatted-number
+                    if:true={isNumber}
+                    currency-code={normalizedTypeAttributes.currencyCode}
+                    currency-display-as={normalizedTypeAttributes.currencyDisplayAs}
+                    format-style={numberFormatStyle}
+                    maximum-fraction-digits={normalizedTypeAttributes.maximumFractionDigits}
+                    maximum-significant-digits={normalizedTypeAttributes.maximumSignificantDigits}
+                    minimum-fraction-digits={normalizedTypeAttributes.minimumFractionDigits}
+                    minimum-integer-digits={normalizedTypeAttributes.minimumIntegerDigits}
+                    minimum-significant-digits={normalizedTypeAttributes.minimumSignificantDigits}
+                    value={value}
+                    data-element-id="lightning-formatted-number"
+                ></lightning-formatted-number>
                 <!-- Phone -->
-                <template if:true={isPhone}>
-                    <lightning-formatted-phone
-                        value={value}
-                        data-element-id="lightning-formatted-phone"
-                    ></lightning-formatted-phone>
-                </template>
+                <lightning-formatted-phone
+                    if:true={isPhone}
+                    value={value}
+                    data-element-id="lightning-formatted-phone"
+                ></lightning-formatted-phone>
                 <!-- Text -->
-                <template if:true={isText}>
-                    <lightning-formatted-text
-                        value={value}
-                        linkify={normalizedTypeAttributes.linkify}
-                        data-element-id="lightning-formatted-text"
-                    ></lightning-formatted-text>
-                </template>
+                <lightning-formatted-text
+                    if:true={isText}
+                    linkify={normalizedTypeAttributes.linkify}
+                    value={value}
+                    data-element-id="lightning-formatted-text"
+                ></lightning-formatted-text>
                 <!-- URL -->
-                <template if:true={isUrl}>
-                    <lightning-formatted-url
-                        value={value}
-                        tooltip={normalizedTypeAttributes.tooltip}
-                        target={normalizedTypeAttributes.target}
-                        label={normalizedTypeAttributes.label}
-                        data-element-id="lightning-formatted-url"
-                    ></lightning-formatted-url>
-                </template>
+                <lightning-formatted-url
+                    if:true={isUrl}
+                    label={normalizedTypeAttributes.label}
+                    target={normalizedTypeAttributes.target}
+                    tooltip={normalizedTypeAttributes.tooltip}
+                    value={value}
+                    data-element-id="lightning-formatted-url"
+                ></lightning-formatted-url>
             </template>
         </div>
     </div>

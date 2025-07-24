@@ -3,11 +3,11 @@
         <label class={computedLegendClass} data-element-id="label-main">
             <abbr
                 if:true={required}
-                title="required"
                 class="slds-required"
+                title={requiredAlternativeText}
                 data-element-id="abbr"
-                >*</abbr
-            >
+                >*
+            </abbr>
             {label}
         </label>
         <lightning-helptext
@@ -20,13 +20,13 @@
             <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
                 <!-- Button menu -->
                 <button
-                    id="toggleMenuButton"
                     class={computedButtonClass}
-                    disabled={disabled}
+                    accesskey={accessKey}
                     aria-expanded={computedAriaExpanded}
                     aria-label={computedAriaLabel}
-                    accesskey={accessKey}
                     aria-haspopup="true"
+                    disabled={disabled}
+                    id="toggleMenuButton"
                     type="button"
                     data-element-id="button-toggle-menu"
                     onclick={handleButtonClick}
@@ -56,10 +56,10 @@
                         class="slds-icon_container avonni-icon-picker__icon"
                     >
                         <svg
-                            version="1.1"
                             baseProfile="full"
-                            width={emptyIconSize}
                             height={emptyIconSize}
+                            width={emptyIconSize}
+                            version="1.1"
                             xmlns="http://www.w3.org/2000/svg"
                         >
                             <rect
@@ -107,14 +107,14 @@
                             onkeydown={handleMenuKeydown}
                         >
                             <lightning-input
-                                type="search"
                                 class="
                                     slds-p-top_x-small
                                     slds-p-horizontal_x-small
                                     slds-align_absolute-center
                                 "
                                 label="Search"
-                                placeholder="Type icon name to search"
+                                placeholder={searchInputPlaceholder}
+                                type="search"
                                 variant="label-hidden"
                                 data-element-id="lightning-input"
                                 data-is-focusable
@@ -131,9 +131,9 @@
                                 <div class="slds-tabs_default">
                                     <c-tab-bar
                                         if:false={hideTabs}
-                                        labels={allTabs}
-                                        tabs-hidden={nHiddenCategories}
                                         default-tab={currentTab}
+                                        labels={allTabs}
+                                        tabs-hidden={nbHiddenCategories}
                                         data-element-id="avonni-builder-tab-bar"
                                         data-is-focusable
                                         onclick={stopPropagation}
@@ -151,8 +151,9 @@
                                                 slds-scrollable_y
                                                 slds-p-left_xx-small
                                             "
-                                            role="listbox"
                                             aria-label="Choose an icon"
+                                            role="listbox"
+                                            data-element-id="avonni-builder-icon-picker-icon-container"
                                         >
                                             <template
                                                 for:each={tabContent}
@@ -202,8 +203,8 @@
                                                             >
                                                                 <lightning-icon
                                                                     icon-name={icon.value}
-                                                                    title={icon.title}
                                                                     size="small"
+                                                                    title={icon.title}
                                                                     data-element-id="lightning-icon-color"
                                                                     data-icon={icon.value}
                                                                     onclick={handleSelectIcon}
@@ -247,8 +248,8 @@
                                                             >
                                                                 <lightning-icon
                                                                     icon-name={icon.value}
-                                                                    title={icon.title}
                                                                     size="small"
+                                                                    title={icon.title}
                                                                     data-icon={icon.value}
                                                                     onclick={handleSelectIcon}
                                                                 ></lightning-icon>
@@ -275,17 +276,17 @@
                             >
                                 <div class="slds-color-picker__selector-footer">
                                     <lightning-button
-                                        label="Cancel"
-                                        title="Cancel"
+                                        label={cancelButtonLabel}
+                                        title={cancelButtonLabel}
                                         data-element-id="lightning-button-cancel"
                                         data-is-focusable
                                         onclick={handleCancel}
                                     ></lightning-button>
                                     <lightning-button
-                                        variant="brand"
                                         class="slds-m-left_x-small"
-                                        label="Done"
-                                        title="Done"
+                                        label={doneButtonLabel}
+                                        title={doneButtonLabel}
+                                        variant="brand"
                                         data-element-id="lightning-button-done"
                                         data-is-focusable
                                         onclick={handleDone}
@@ -302,17 +303,16 @@
             >
                 <div class={computedInputClass}>
                     <input
-                        aria-label="Icon value"
-                        type="text"
-                        id="icon_input"
                         class="slds-input"
-                        placeholder={placeholder}
-                        name={name}
                         disabled={disabled}
+                        id="icon_input"
+                        name={name}
+                        placeholder={placeholder}
+                        type="text"
                         value={computedValue}
                         data-element-id="input"
-                        oninput={handleInputIcon}
                         onblur={handleInputIconBlur}
+                        oninput={handleInputIcon}
                     />
                     <button
                         if:true={allowClearInput}
@@ -321,17 +321,19 @@
                             slds-input__icon slds-input__icon_right
                             avonni-builder-icon-picker-clear-icon
                         "
-                        title="Clear"
+                        title={clearButtonAlternativeText}
                         type="button"
                         data-element-id="button-clear"
                         onclick={clearIconInput}
                     >
                         <lightning-icon
-                            size="xx-small"
                             class="slds-button__icon slds-icon-text-light"
                             icon-name="utility:clear"
+                            size="xx-small"
                         ></lightning-icon>
-                        <span class="slds-assistive-text">Clear</span>
+                        <span class="slds-assistive-text"
+                            >{clearButtonAlternativeText}
+                        </span>
                     </button>
                 </div>
             </div>

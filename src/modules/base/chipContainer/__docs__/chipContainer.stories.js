@@ -26,6 +26,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        showMoreButtonAlternativeText: {
+            name: 'show-more-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the show more button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show more' }
+            }
+        },
         isCollapsible: {
             name: 'is-collapsible',
             control: {
@@ -75,6 +87,7 @@ export default {
         alternativeText: 'Selected Options:',
         isCollapsible: false,
         isExpanded: false,
+        showMoreButtonAlternativeText: 'Show more',
         singleLine: false,
         sortable: false
     }

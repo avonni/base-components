@@ -31,11 +31,13 @@ export const InfiniteLoadingCombobox = ({
     min,
     multiLevelGroups,
     name,
+    noResultsMessage,
     options,
     placeholder,
     readOnly,
     removeSelectedOptions,
     required,
+    requiredAlternativeText,
     scopes,
     scopesGroups,
     search,
@@ -72,11 +74,13 @@ export const InfiniteLoadingCombobox = ({
     element.min = min;
     element.multiLevelGroups = multiLevelGroups;
     element.name = name;
+    element.noResultsMessage = noResultsMessage;
     element.options = options;
     element.placeholder = placeholder;
     element.readOnly = readOnly;
     element.removeSelectedOptions = removeSelectedOptions;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.scopes = scopes;
     element.scopesGroups = scopesGroups;
     element.search = search;

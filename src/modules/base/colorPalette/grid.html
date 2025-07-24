@@ -9,7 +9,7 @@
     >
         <lightning-spinner
             if:true={isLoading}
-            alternative-text="Loading..."
+            alternative-text={loadingStateAlternativeText}
             size="small"
             data-element-id="lightning-spinner"
         ></lightning-spinner>
@@ -17,7 +17,7 @@
             <template for:each={computedGroups} for:item="group">
                 <div
                     key={group.name}
-                    class={groupClass}
+                    class={computedGroupClass}
                     data-element-id="div-group"
                 >
                     <div
@@ -31,7 +31,6 @@
                     >
                         {group.label}
                     </div>
-
                     <ul
                         class="slds-grid slds-color-picker__swatches slds-wrap"
                         role="listbox"
@@ -61,6 +60,7 @@
                                     onfocus={handleFocus}
                                 >
                                     <span
+                                        style={color.swatchStyle}
                                         class="
                                             slds-swatch
                                             slds-grid
@@ -69,7 +69,6 @@
                                             avonni-primitive-color-palette-group__swatch
                                         "
                                         data-element-id="span-swatch"
-                                        style={color.swatchStyle}
                                     >
                                         <span
                                             if:true={color.showCheckMark}

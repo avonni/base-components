@@ -1,6 +1,6 @@
 <template>
     <template if:true={isVertical}>
-        <div class="slds-m-bottom_medium" if:true={showSelectedItems}>
+        <div if:true={showSelectedItems} class="slds-m-bottom_medium">
             <avonni-pill-container
                 actions={pillActions}
                 items={selectedPills}
@@ -11,7 +11,7 @@
         </div>
     </template>
     <ul
-        class={filtersWrapperClass}
+        class={computedFiltersWrapperClass}
         data-element-id="ul"
         onapply={handleApply}
         onclose={handleClose}
@@ -22,7 +22,7 @@
         onselect={handleSelect}
     >
         <template for:each={computedMenus} for:item="menu">
-            <li class={filtersClass} key={menu.name}>
+            <li class={computedFiltersClass} key={menu.name}>
                 <avonni-filter-menu
                     access-key={menu.accessKey}
                     alternative-text={menu.alternativeText}
@@ -55,32 +55,30 @@
             </li>
         </template>
     </ul>
-    <template if:false={isVertical}>
-        <div class="slds-m-top_x-small">
-            <avonni-pill-container
-                if:true={showSelectedItems}
-                actions={pillActions}
-                items={selectedPills}
-                data-element-id="avonni-pill-container-horizontal"
-                data-group-name="focusable-element"
-                onactionclick={handleSelectedItemRemove}
-            ></avonni-pill-container>
-        </div>
-    </template>
+    <div if:false={isVertical} class="slds-m-top_x-small">
+        <avonni-pill-container
+            if:true={showSelectedItems}
+            actions={pillActions}
+            items={selectedPills}
+            data-element-id="avonni-pill-container-horizontal"
+            data-group-name="focusable-element"
+            onactionclick={handleSelectedItemRemove}
+        ></avonni-pill-container>
+    </div>
     <template if:true={showApplyResetButtons}>
         <lightning-button
             class="slds-m-right_x-small"
-            variant="base"
             label={resetButtonLabel}
             title={resetButtonLabel}
+            variant="base"
             data-element-id="lightning-button-reset"
             data-group-name="focusable-element"
             onclick={handleResetClick}
         ></lightning-button>
         <lightning-button
-            variant="brand"
             label={applyButtonLabel}
             title={applyButtonLabel}
+            variant="brand"
             data-element-id="lightning-button-apply"
             data-group-name="focusable-element"
             onclick={handleApplyClick}

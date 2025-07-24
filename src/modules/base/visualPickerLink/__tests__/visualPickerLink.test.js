@@ -19,6 +19,7 @@ describe('VisualPickerLink', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.completed).toBeFalsy();
+            expect(element.completedIconAlternativeText).toBe('Completed');
             expect(element.href).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
@@ -28,7 +29,7 @@ describe('VisualPickerLink', () => {
         });
 
         describe('Completed', () => {
-            it('false', () => {
+            it('Passed to the component as false', () => {
                 element.completed = false;
 
                 return Promise.resolve().then(() => {
@@ -41,8 +42,10 @@ describe('VisualPickerLink', () => {
                 });
             });
 
-            it('true', () => {
+            it('Passed to the component as true', () => {
                 element.completed = true;
+                element.completedIconAlternativeText = 'Completed text';
+                element.iconName = 'utility:check';
 
                 return Promise.resolve().then(() => {
                     const wrapper = element.shadowRoot.querySelector(
@@ -51,6 +54,10 @@ describe('VisualPickerLink', () => {
                     expect(wrapper.classList).toContain(
                         'slds-welcome-mat__tile_complete'
                     );
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="completed-icon"]'
+                    );
+                    expect(icon.alternativeText).toBe('Completed text');
                 });
             });
         });

@@ -1,7 +1,7 @@
 <template>
     <!-- Root avatar / title -->
-    <div if:true={hasHeader} class={headerClass}>
-        <avonni-media-object vertical-align="center" inline={inlineHeader}>
+    <div if:true={hasHeader} class={computedHeaderClass}>
+        <avonni-media-object inline={inlineHeader} vertical-align="center">
             <avonni-avatar
                 if:true={hasAvatar}
                 slot="figure"
@@ -19,11 +19,12 @@
         </avonni-media-object>
     </div>
 
-    <div if:true={hasActions} class={actionsClass}>
+    <div if:true={hasActions} class={computedActionsClass}>
         <template for:each={actions} for:item="action">
             <div key={action.name}>
                 <button
-                    class={actionButtonClass}
+                    class={computedActionButtonClass}
+                    alternative-text={action.label}
                     disabled={action.disabled}
                     name={action.name}
                     type="button"
@@ -42,15 +43,16 @@
         </template>
     </div>
 
-    <div class={wrapperClass}>
+    <div class={computedWrapperClass}>
         <div
             if:true={hasRootHeader}
-            class={lineClass}
+            class={computedLineClass}
             data-element-id="div-line"
         ></div>
 
         <!-- Levels -->
         <c-primitive-relationship-graph-level
+            actions-menu-alternative-text={actionsMenuAlternativeText}
             expand-icon-name={expandIconName}
             group-actions={groupActions}
             group-actions-position={groupActionsPosition}
@@ -59,6 +61,8 @@
             hide-items-count={hideItemsCount}
             is-first-level="true"
             item-actions={itemActions}
+            loading-state-alternative-text={loadingStateAlternativeText}
+            no-results-message={noResultsMessage}
             shrink-icon-name={shrinkIconName}
             variant={variant}
             data-element-id="avonni-primitive-relationship-graph-level"

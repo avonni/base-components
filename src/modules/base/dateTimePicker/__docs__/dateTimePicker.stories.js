@@ -85,7 +85,8 @@ export default {
             },
             description: 'Specifies the name of an input element.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validation'
             }
         },
         readOnly: {
@@ -108,6 +109,19 @@ export default {
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
                 type: { summary: 'boolean' },
+                category: 'Validation'
+            }
+        },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' },
                 category: 'Validation'
             }
         },
@@ -400,6 +414,99 @@ export default {
                 type: { summary: 'string' },
                 category: 'Time'
             }
+        },
+        timezoneLabel: {
+            name: 'timezone-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the time zone.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Time',
+                defaultValue: { summary: 'Time Zone:' }
+            }
+        },
+        timezonePlaceholder: {
+            name: 'timezone-placeholder',
+            control: {
+                type: 'text'
+            },
+            description: 'The placeholder for the time zone combobox.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Time',
+                defaultValue: { summary: 'Select time zone' }
+            }
+        },
+        todayButtonLabel: {
+            name: 'today-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The label for the today button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Today' }
+            }
+        },
+        nextDatesButtonAlternativeText: {
+            name: 'next-dates-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the next dates button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Next dates' }
+            }
+        },
+        nextWeekButtonAlternativeText: {
+            name: 'next-week-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the next week button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Next week' }
+            }
+        },
+        previousDatesButtonAlternativeText: {
+            name: 'previous-dates-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the previous dates button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Previous dates' }
+            }
+        },
+        previousWeekButtonAlternativeText: {
+            name: 'previous-week-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the previous week button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Previous week' }
+            }
+        },
+        noResultsMessage: {
+            name: 'no-results-message',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The message to be displayed when there are no available time slots for the selected period.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: {
+                    summary: 'No available time slots for this period.'
+                }
+            }
         }
     },
     args: {
@@ -415,8 +522,10 @@ export default {
         hideNavigation: false,
         max: '2099-12-31',
         min: '1900-01-01',
+        noResultsMessage: 'No available time slots for this period.',
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         showDisabledDates: false,
         showEndTime: false,
         showTimeZone: false,
@@ -425,6 +534,9 @@ export default {
         timeFormatHour12: false,
         timeFormatMinute: '2-digit',
         timeSlotDuration: '00:30',
+        timezoneLabel: 'Time Zone:',
+        timezonePlaceholder: 'Select time zone',
+        todayButtonLabel: 'Today',
         type: 'radio',
         variant: 'daily'
     }

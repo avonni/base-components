@@ -142,7 +142,7 @@
                 <!-- Loading spinner -->
                 <lightning-spinner
                     if:true={isLoading}
-                    alternative-text="Loading..."
+                    alternative-text={loadingStateAlternativeText}
                     size={loadingSpinnerSize}
                     data-element-id="lightning-spinner"
                 ></lightning-spinner>
@@ -154,6 +154,7 @@
                     icon-name={currentShowButtonIcon}
                     icon-position={currentShowButtonPosition}
                     label={currentShowButtonLabel}
+                    title={currentShowButtonLabel}
                     variant={buttonVariant}
                     data-element-id="lightning-button"
                     onclick={handleToggleShowMoreButton}

@@ -8,10 +8,10 @@
         <abbr
             if:true={required}
             class="slds-required"
-            title="Required"
+            title={requiredAlternativeText}
             data-element-id="abbr"
-            >*</abbr
-        >
+            >*
+        </abbr>
         {label}
     </label>
     <lightning-helptext
@@ -28,9 +28,9 @@
             <lightning-icon
                 if:true={showInputValueIcon}
                 class="slds-input__icon slds-input__icon_left"
+                aria-hidden="true"
                 icon-name={selectedOption.iconName}
                 size="x-small"
-                aria-hidden="true"
             ></lightning-icon>
 
             <!-- Selected option avatar -->
@@ -48,7 +48,6 @@
             ></c-primitive-avatar>
             <!-- Main input -->
             <input
-                id="combobox-input"
                 class="
                     slds-input
                     slds-combobox__input
@@ -62,6 +61,7 @@
                 aria-required={required}
                 autocomplete="off"
                 disabled={disabled}
+                id="combobox-input"
                 name={name}
                 placeholder={placeholder}
                 readonly={hasNoSearch}
@@ -200,7 +200,7 @@
                     role="presentation"
                     data-element-id="li-no-matches"
                 >
-                    No matches found
+                    {noResultsMessage}
                 </li>
 
                 <!-- Groups -->

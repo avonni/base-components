@@ -5,20 +5,6 @@ import ModalView from './modal.html';
 import CardView from './card.html';
 import QuickActionPanelView from './quickActionPanel.html';
 
-const VARIANTS = {
-    valid: ['base', 'modal', 'card', 'quickActionPanel'],
-    default: 'base'
-};
-const INDICATOR_POSITIONS = {
-    valid: ['top', 'bottom', 'right', 'left'],
-    default: 'bottom'
-};
-
-const INDICATOR_TYPES = {
-    valid: ['base', 'base-shaded', 'path', 'bullet', 'fractions', 'bar'],
-    default: 'base'
-};
-
 const BUTTON_VARIANTS = {
     valid: [
         'bare',
@@ -34,6 +20,20 @@ const BUTTON_VARIANTS = {
     defaultNextButton: 'neutral',
     defaultFinishButton: 'neutral'
 };
+const DEFAULT_FINISH_BUTTON_LABEL = 'Finish';
+const DEFAULT_FRACTION_LABEL = 'of';
+const DEFAULT_FRACTION_PREFIX_LABEL = 'Step';
+const DEFAULT_NEXT_BUTTON_LABEL = 'Next';
+const DEFAULT_PREVIOUS_BUTTON_LABEL = 'Previous';
+const INDICATOR_POSITIONS = {
+    valid: ['top', 'bottom', 'right', 'left'],
+    default: 'bottom'
+};
+
+const INDICATOR_TYPES = {
+    valid: ['base', 'base-shaded', 'path', 'bullet', 'fractions', 'bar'],
+    default: 'base'
+};
 
 const POSITIONS = {
     valid: ['left', 'right'],
@@ -42,12 +42,10 @@ const POSITIONS = {
     defaultFinishButtonIcon: 'left',
     defaultAction: 'left'
 };
-
-const DEFAULT_PREVIOUS_BUTTON_LABEL = 'Previous';
-const DEFAULT_NEXT_BUTTON_LABEL = 'Next';
-const DEFAULT_FINISH_BUTTON_LABEL = 'Finish';
-const DEFAULT_FRACTION_PREFIX_LABEL = 'Step';
-const DEFAULT_FRACTION_LABEL = 'of';
+const VARIANTS = {
+    valid: ['base', 'modal', 'card', 'quickActionPanel'],
+    default: 'base'
+};
 
 /**
  * @class
@@ -100,19 +98,29 @@ export default class Wizard extends LightningElement {
     _variant = VARIANTS.default;
 
     errorMessage;
-    steps = [];
     showAction = true;
     showTitleSlot = true;
     showWizard = true;
+    steps = [];
     _showHeader = true;
 
-    handleStepRegister(event) {
-        event.stopPropagation();
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
-        const step = event.detail;
-        this.steps.push(step);
-
-        this._initSteps();
+    render() {
+        switch (this.variant) {
+            case 'modal':
+                return ModalView;
+            case 'card':
+                return CardView;
+            case 'quickActionPanel':
+                return QuickActionPanelView;
+            default:
+                return BaseView;
+        }
     }
 
     connectedCallback() {
@@ -154,47 +162,6 @@ export default class Wizard extends LightningElement {
      */
     get titleSlot() {
         return this.template.querySelector('slot[name=title]');
-    }
-
-    render() {
-        switch (this.variant) {
-            case 'modal':
-                return ModalView;
-            case 'card':
-                return CardView;
-            case 'quickActionPanel':
-                return QuickActionPanelView;
-            default:
-                return BaseView;
-        }
-    }
-
-    /**
-     * Initialize steps.
-     */
-    _initSteps() {
-        // Make sure all steps have a name
-        this.steps.forEach((step, index) => {
-            step.name = step.name || `step-${index}`;
-        });
-
-        // If no current step was given, set current step to first step
-        const stepNames = this.steps.map((step) => step.name);
-        const index = stepNames.indexOf(this._initialCurrentStep);
-        this._currentStep =
-            index === -1 ? this.steps[0].name : this.steps[index].name;
-
-        this._updateStepDisplay();
-    }
-
-    /**
-     * Update step display visibility.
-     */
-    _updateStepDisplay() {
-        this.steps.forEach((step) => {
-            step.callbacks.setClass('slds-hide');
-        });
-        this.steps[this.currentStepIndex].callbacks.setClass(undefined);
     }
 
     /*
@@ -570,6 +537,58 @@ export default class Wizard extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Computed main column class styling.
+     *
+     * @type {string}
+     */
+    get computedMainColClass() {
+        return classSet('main-col').add({
+            'avonni-wizard__flex-col':
+                this.indicatorPosition === 'right' ||
+                this.indicatorPosition === 'left',
+            'slds-order_2': this.indicatorPosition === 'left'
+        });
+    }
+
+    /**
+     * Computed side column class styling.
+     *
+     * @type {string}
+     */
+    get computedSideColClass() {
+        return classSet('slds-container_small side-col').add({
+            'slds-align-bottom': this.indicatorType === 'fractions',
+            'slds-p-right_medium': this.indicatorPosition === 'right',
+            'slds-p-left_medium': this.indicatorPosition === 'left',
+            'slds-p-bottom_medium':
+                this.variant === 'base' && !this.indicatorType === 'fractions',
+            'slds-p-bottom_large':
+                this.variant === 'base' && this.indicatorType === 'fractions'
+        });
+    }
+
+    /**
+     * Computed wrapper class styling.
+     *
+     * @type {string}
+     */
+    get computedWrapperClass() {
+        return classSet().add({
+            'slds-p-around_medium slds-modal__content':
+                this.variant === 'quickActionPanel',
+            'slds-grid slds-gutters slds-has-flexi-truncate slds-grid_vertical-stretch':
+                this.indicatorPosition === 'right' ||
+                this.indicatorPosition === 'left'
+        });
+    }
+
+    /**
+     * Get current step has error.
+     *
+     * @type {boolean}
+     */
     get currentStepHasError() {
         return normalizeBoolean(this.errorMessage);
     }
@@ -608,52 +627,6 @@ export default class Wizard extends LightningElement {
     }
 
     /**
-     * Computed wrapper class styling.
-     *
-     * @type {string}
-     */
-    get wrapperClass() {
-        return classSet().add({
-            'slds-p-around_medium slds-modal__content':
-                this.variant === 'quickActionPanel',
-            'slds-grid slds-gutters slds-has-flexi-truncate slds-grid_vertical-stretch':
-                this.indicatorPosition === 'right' ||
-                this.indicatorPosition === 'left'
-        });
-    }
-
-    /**
-     * Computed main column class styling.
-     *
-     * @type {string}
-     */
-    get mainColClass() {
-        return classSet('main-col').add({
-            'avonni-wizard__flex-col':
-                this.indicatorPosition === 'right' ||
-                this.indicatorPosition === 'left',
-            'slds-order_2': this.indicatorPosition === 'left'
-        });
-    }
-
-    /**
-     * Computed side column class styling.
-     *
-     * @type {string}
-     */
-    get sideColClass() {
-        return classSet('slds-container_small side-col').add({
-            'slds-align-bottom': this.indicatorType === 'fractions',
-            'slds-p-right_medium': this.indicatorPosition === 'right',
-            'slds-p-left_medium': this.indicatorPosition === 'left',
-            'slds-p-bottom_medium':
-                this.variant === 'base' && !this.indicatorType === 'fractions',
-            'slds-p-bottom_large':
-                this.variant === 'base' && this.indicatorType === 'fractions'
-        });
-    }
-
-    /**
      * Returns true if there is a title, a title slot or a iconName.
      *
      * @type {boolean}
@@ -667,16 +640,6 @@ export default class Wizard extends LightningElement {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Display the wizard.
-     *
-     * @public
-     */
-    @api
-    show() {
-        this.showWizard = true;
-    }
 
     /**
      * Hide the wizard.
@@ -717,7 +680,7 @@ export default class Wizard extends LightningElement {
             })
         );
 
-        this._updateStepDisplay();
+        this.updateStepDisplay();
     }
 
     /**
@@ -739,7 +702,17 @@ export default class Wizard extends LightningElement {
             })
         );
 
-        this._updateStepDisplay();
+        this.updateStepDisplay();
+    }
+
+    /**
+     * Display the wizard.
+     *
+     * @public
+     */
+    @api
+    show() {
+        this.showWizard = true;
     }
 
     /*
@@ -763,6 +736,40 @@ export default class Wizard extends LightningElement {
             return resolve(step.callbacks.beforeChange());
         });
     }
+
+    /**
+     * Initialize steps.
+     */
+    initSteps() {
+        // Make sure all steps have a name
+        this.steps.forEach((step, index) => {
+            step.name = step.name || `step-${index}`;
+        });
+
+        // If no current step was given, set current step to first step
+        const stepNames = this.steps.map((step) => step.name);
+        const index = stepNames.indexOf(this._initialCurrentStep);
+        this._currentStep =
+            index === -1 ? this.steps[0].name : this.steps[index].name;
+
+        this.updateStepDisplay();
+    }
+
+    /**
+     * Update step display visibility.
+     */
+    updateStepDisplay() {
+        this.steps.forEach((step) => {
+            step.callbacks.setClass('slds-hide');
+        });
+        this.steps[this.currentStepIndex].callbacks.setClass(undefined);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Change event handler.
@@ -812,5 +819,14 @@ export default class Wizard extends LightningElement {
      */
     handleCloseDialog() {
         this.hide();
+    }
+
+    handleStepRegister(event) {
+        event.stopPropagation();
+
+        const step = event.detail;
+        this.steps.push(step);
+
+        this.initSteps();
     }
 }

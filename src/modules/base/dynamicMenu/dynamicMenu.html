@@ -78,15 +78,14 @@
                         onchange={handleSearchChange}
                     ></lightning-input>
                 </div>
-
                 <div class="slds-popover__body slds-p-around_none">
                     <slot></slot>
                     <ul
                         if:true={showItems}
+                        style={computedListHeight}
                         class="slds-listbox slds-listbox_vertical"
-                        role="menu"
                         aria-orientation="vertical"
-                        style={listHeight}
+                        role="menu"
                     >
                         <template
                             for:each={computedListItems}
@@ -94,13 +93,13 @@
                             for:index="index"
                         >
                             <li
+                                key={item.key}
                                 class="
                                     avonni-dynamic-menu__item_min-height
                                     avonni-dynamic-menu__item_color-background
                                 "
-                                key={item.key}
-                                role="menuitemradio"
                                 aria-checked={item.selected}
+                                role="menuitemradio"
                                 tabindex="-1"
                                 data-element-id="item"
                                 data-index={index}
@@ -127,22 +126,19 @@
                                                     slds-current-color
                                                     slds-icon_container
                                                 "
+                                                aria-hidden="true"
                                                 icon-name="utility:check"
                                                 size="x-small"
-                                                aria-hidden="true"
                                                 data-element-id="check-mark"
                                             ></lightning-icon>
                                         </template>
                                         <template if:true={hideCheckMark}>
-                                            <template if:true={item.avatar}>
-                                                <lightning-icon
-                                                    if:true={item.avatar.fallbackIconName}
-                                                    icon-name={item.avatar.fallbackIconName}
-                                                    size="small"
-                                                    alternative-text={item.avatar.alternativeText}
-                                                    variant={variantInverse}
-                                                ></lightning-icon>
-                                            </template>
+                                            <lightning-icon
+                                                if:true={item.avatar.fallbackIconName}
+                                                alternative-text={item.avatar.alternativeText}
+                                                icon-name={item.avatar.fallbackIconName}
+                                                size="small"
+                                            ></lightning-icon>
                                         </template>
                                     </div>
                                     <template if:true={item.avatar}>
@@ -154,10 +150,9 @@
                                             "
                                         >
                                             <lightning-icon
+                                                alternative-text={item.avatar.alternativeText}
                                                 icon-name={item.avatar.fallbackIconName}
                                                 size="small"
-                                                alternative-text={item.avatar.alternativeText}
-                                                variant={variantInverse}
                                             ></lightning-icon>
                                         </div>
                                     </template>
@@ -180,33 +175,31 @@
                                             {item.metaJoin}
                                         </div>
                                     </div>
-                                    <template if:true={item.actions}>
-                                        <div
-                                            class="
-                                                slds-media__figure
-                                                slds-media__figure_reverse
-                                                avonni-dynamic-menu__actions-icon
-                                            "
-                                            if:true={item.actions}
+                                    <div
+                                        if:true={item.actions}
+                                        class="
+                                            slds-media__figure
+                                            slds-media__figure_reverse
+                                            avonni-dynamic-menu__actions-icon
+                                        "
+                                    >
+                                        <template
+                                            for:each={item.actions}
+                                            for:item="action"
                                         >
-                                            <template
-                                                for:each={item.actions}
-                                                for:item="action"
-                                            >
-                                                <lightning-button-icon
-                                                    class="slds-m-left_x-small"
-                                                    alternative-text={action.alternativeText}
-                                                    disabled={action.disabled}
-                                                    icon-name={action.iconName}
-                                                    key={action.name}
-                                                    name={action.name}
-                                                    size="small"
-                                                    variant="bare"
-                                                    data-element-id="action"
-                                                ></lightning-button-icon>
-                                            </template>
-                                        </div>
-                                    </template>
+                                            <lightning-button-icon
+                                                key={action.name}
+                                                class="slds-m-left_x-small"
+                                                alternative-text={action.alternativeText}
+                                                disabled={action.disabled}
+                                                icon-name={action.iconName}
+                                                name={action.name}
+                                                size="small"
+                                                variant="bare"
+                                                data-element-id="action"
+                                            ></lightning-button-icon>
+                                        </template>
+                                    </div>
                                 </div>
                             </li>
                         </template>

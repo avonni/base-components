@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 
-const validVariants = ['base', 'comment'];
+const VALID_VARIANTS = { valid: ['base', 'comment'], default: 'base' };
 
 /**
  * @class
@@ -24,40 +24,42 @@ export default class Publisher extends LightningElement {
      * @public
      */
     @api placeholder;
+    /**
+     * The action to be performed when the publisher is submitted.
+     *
+     * @type {function}
+     * @public
+     */
     @api submitAction;
 
     _disabled = false;
-    _variant = 'base';
     _value;
+    _variant = VALID_VARIANTS.default;
 
     isActive = false;
-    showFigureSlot = true;
     showActionsSlot = true;
+    showFigureSlot = true;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         if (this.isActive) {
             this.template.querySelector('.richTextPublisher').focus();
         }
 
+        if (this.actionsSlot) {
+            this.showActionsSlot =
+                this.actionsSlot.assignedElements().length !== 0;
+        }
         if (this.figureSlot) {
             this.showFigureSlot =
                 this.figureSlot.assignedElements().length !== 0 &&
                 this._variant === 'comment';
         }
-
-        if (this.actionsSlot) {
-            this.showActionsSlot =
-                this.actionsSlot.assignedElements().length !== 0;
-        }
-    }
-
-    /**
-     * Get figure slot DOM element.
-     *
-     * @type {Element}
-     */
-    get figureSlot() {
-        return this.template.querySelector('slot[name=figure]');
     }
 
     /**
@@ -67,6 +69,15 @@ export default class Publisher extends LightningElement {
      */
     get actionsSlot() {
         return this.template.querySelector('slot[name=actions]');
+    }
+
+    /**
+     * Get figure slot DOM element.
+     *
+     * @type {Element}
+     */
+    get figureSlot() {
+        return this.template.querySelector('slot[name=figure]');
     }
 
     /*
@@ -82,10 +93,10 @@ export default class Publisher extends LightningElement {
      * @public
      * @default false
      */
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -96,10 +107,10 @@ export default class Publisher extends LightningElement {
      * @type {string}
      * @public
      */
-    @api get value() {
+    @api
+    get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
@@ -111,14 +122,14 @@ export default class Publisher extends LightningElement {
      * @public
      * @default base
      */
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'base',
-            validValues: validVariants
+            fallbackValue: VALID_VARIANTS.default,
+            validValues: VALID_VARIANTS.valid
         });
     }
 
@@ -129,28 +140,28 @@ export default class Publisher extends LightningElement {
      */
 
     /**
-     * Compute Publisher class isActive.
+     * Compute actions section class.
      *
      * @type {string}
      */
-    get publisherClass() {
-        return classSet('slds-publisher')
+    get computedActionsSectionClass() {
+        return classSet('slds-publisher__actions slds-grid')
             .add({
-                'slds-is-active': this.isActive
+                'slds-grid_align-spread': this.showActionsSlot,
+                'slds-grid_align-end': !this.showActionsSlot
             })
             .toString();
     }
 
     /**
-     * Compute actions section class.
+     * Compute Publisher class isActive.
      *
      * @type {string}
      */
-    get actionsSectionClass() {
-        return classSet('slds-publisher__actions slds-grid')
+    get computedPublisherClass() {
+        return classSet('slds-publisher')
             .add({
-                'slds-grid_align-spread': this.showActionsSlot,
-                'slds-grid_align-end': !this.showActionsSlot
+                'slds-is-active': this.isActive
             })
             .toString();
     }
@@ -178,16 +189,6 @@ export default class Publisher extends LightningElement {
      */
 
     /**
-     * Set focus on the publisher.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        this.isActive = true;
-    }
-
-    /**
      * Removes focus from the publisher.
      *
      * @public
@@ -199,9 +200,19 @@ export default class Publisher extends LightningElement {
         }
     }
 
+    /**
+     * Set focus on the publisher.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.isActive = true;
+    }
+
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
 

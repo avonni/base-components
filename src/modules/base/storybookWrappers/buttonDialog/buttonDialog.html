@@ -6,7 +6,9 @@
         icon-name={iconName}
         icon-position={iconPosition}
         icon-src={iconSrc}
+        is-button-loading={isButtonLoading}
         label={label}
+        loading-state-alternative-text={loadingStateAlternativeText}
         stretch={stretch}
         variant={variant}
     >
@@ -29,11 +31,11 @@
                 elit consequat minim ullamco mollit enim excepteur ea.
             </div>
             <div slot="footer">
-                <lightning-button label="Cancel"></lightning-button>
+                <lightning-button label={cancelButtonLabel}></lightning-button>
                 <lightning-button
                     variant="brand"
                     class="slds-p-left_x-small"
-                    label="Save"
+                    label={saveButtonLabel}
                 ></lightning-button>
             </div>
         </c-dialog>

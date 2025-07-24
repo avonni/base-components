@@ -1,24 +1,24 @@
 <template>
     <lightning-layout
-        vertical-align="center"
+        class="avonni-height_full"
         multiple-rows
         pull-to-boundary="small"
-        class="avonni-height_full"
+        vertical-align="center"
         data-element-id="lightning-layout-wrapper"
     >
         <!-- Previous button -->
         <lightning-layout-item
             if:false={hidePreviousButton}
-            class={previousButtonColClass}
+            class={computedPreviousButtonColClass}
         >
             <lightning-button
+                class="slds-m-right_xx-small slds-m-left_small"
                 icon-name={previousButtonIconName}
                 icon-position={previousButtonIconPosition}
                 label={previousButtonLabel}
                 variant={previousButtonVariant}
                 data-action="previous"
                 data-element-id="lightning-button-previous"
-                class="slds-m-right_xx-small slds-m-left_small"
                 onclick={handleButtonClick}
             ></lightning-button>
         </lightning-layout-item>
@@ -26,8 +26,8 @@
         <!-- Indicator -->
         <lightning-layout-item
             if:true={showIndicator}
+            class={computedProgressColClass}
             flexibility="auto"
-            class={progressColClass}
             padding="horizontal-small"
             data-element-id="lightning-layout-item-indicator"
         >
@@ -77,17 +77,17 @@
                 "
                 aria-label="Progress indicator"
             >
-                <template for:each={_steps} for:item="step">
-                    <li key={step.name} class={carouselIndicatorClass}>
+                <template for:each={steps} for:item="step">
+                    <li key={step.name} class={computedCarouselIndicatorClass}>
                         <span
                             class={step.bulletClass}
-                            title={step.label}
                             aria-selected={step.selected}
+                            title={step.label}
                             data-element-id="span-bullet"
                         >
                             <span class="slds-assistive-text"
-                                >{step.label}</span
-                            >
+                                >{step.label}
+                            </span>
                         </span>
                     </li>
                 </template>
@@ -102,49 +102,49 @@
             <!-- Bar indicator -->
             <c-progress-bar
                 if:true={showBarIndicator}
-                value={progressBarValue}
                 orientation={progressBarOrientation}
                 thickness="large"
+                value={progressBarValue}
                 data-element-id="avonni-progress-bar"
             ></c-progress-bar>
         </lightning-layout-item>
         <!-- Actions slot and Next/Finish buttons -->
         <lightning-layout-item
             if:false={sideNavigation}
-            class={actionsNextFinishButtonColClass}
+            class={computedActionsNextFinishButtonColClass}
             alignment-bump="left"
         >
             <lightning-layout class="slds-m-right_small" multiple-rows>
                 <lightning-layout-item
-                    class={actionsSlotColClass}
+                    class={computedActionsSlotColClass}
                     flexibility="auto"
                 >
                     <slot></slot>
                 </lightning-layout-item>
                 <lightning-layout-item
                     if:false={hideNextFinishButton}
-                    class={nextFinishButtonColClass}
+                    class={computedNextFinishButtonColClass}
                 >
                     <lightning-button
                         if:false={lastStep}
+                        class="slds-m-left_xx-small"
                         icon-name={nextButtonIconName}
                         icon-position={nextButtonIconPosition}
                         label={nextButtonLabel}
-                        data-action="next"
                         variant={nextButtonVariant}
-                        class="slds-m-left_xx-small"
+                        data-action="next"
                         data-element-id="lightning-button-next"
                         onclick={handleButtonClick}
                     ></lightning-button>
                     <lightning-button
                         if:true={lastStep}
+                        class="slds-m-left_xx-small"
                         icon-name={finishButtonIconName}
                         icon-position={finishButtonIconPosition}
-                        data-action="finish"
                         label={finishButtonLabel}
                         variant={finishButtonVariant}
+                        data-action="finish"
                         data-element-id="lightning-button-last"
-                        class="slds-m-left_xx-small"
                         onclick={handleButtonClick}
                     ></lightning-button>
                 </lightning-layout-item>

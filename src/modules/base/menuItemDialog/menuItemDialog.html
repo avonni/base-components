@@ -1,16 +1,16 @@
 <template>
     <div class="slds-dropdown__item" role="presentation">
         <a
+            accesskey={accessKey}
+            aria-disabled={disabled}
             href="javascript:void(0)"
             role="menuitem"
             tabindex={tabIndex}
-            accesskey={accessKey}
-            aria-disabled={disabled}
             data-element-id="a"
+            onblur={handleBlur}
             onclick={handleClick}
             onfocus={handleFocus}
             onkeydown={handleKeyDown}
-            onblur={handleBlur}
         >
             <span
                 class="slds-truncate"
@@ -22,30 +22,28 @@
                     class="slds-indicator_unsaved"
                     title={draftAlternativeText}
                     data-element-id="abbr"
-                    >*</abbr
-                >
-                <template if:true={prefixIconName}>
-                    <lightning-icon
-                        icon-name={prefixIconName}
-                        size="x-small"
-                        class="slds-m-right_x-small slds-icon-text-default"
-                        data-element-id="lightning-icon-prefix"
-                    ></lightning-icon>
-                </template>
+                    >*
+                </abbr>
+                <lightning-icon
+                    if:true={prefixIconName}
+                    class="slds-m-right_x-small slds-icon-text-default"
+                    icon-name={prefixIconName}
+                    size="x-small"
+                    data-element-id="lightning-icon-prefix"
+                ></lightning-icon>
                 {label}
             </span>
-            <template if:true={iconName}>
-                <lightning-icon
-                    icon-name={iconName}
-                    size="x-small"
-                    class="
-                        slds-icon-text-default
-                        slds-m-left_small
-                        slds-shrink-none
-                    "
-                    data-element-id="lightning-icon"
-                ></lightning-icon>
-            </template>
+            <lightning-icon
+                if:true={iconName}
+                class="
+                    slds-icon-text-default
+                    slds-m-left_small
+                    slds-shrink-none
+                "
+                icon-name={iconName}
+                size="x-small"
+                data-element-id="lightning-icon"
+            ></lightning-icon>
         </a>
     </div>
 </template>

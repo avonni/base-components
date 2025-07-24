@@ -157,19 +157,19 @@ export default class Barcode extends LightningElement {
 
     _background = DEFAULT_BACKGROUND;
     _color = DEFAULT_COLOR;
-    _textColor = DEFAULT_TEXT_COLOR;
     _checksum = false;
     _errorMessage;
+    _height;
     _hideValue = false;
     _textAlignment = TEXT_ALIGNMENT.default;
+    _textColor = DEFAULT_TEXT_COLOR;
     _type;
     _width = '100%';
-    _height;
 
+    initialRender = true;
     textXAlign = 'center';
     textYAlign = 'below';
     validCode = true;
-    initialRender = true;
 
     renderedCallback() {
         this.renderBarcode();
@@ -261,22 +261,6 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The text color as a hexadecimal color value.
-     *
-     * @public
-     * @type {string}
-     * @default #000000
-     */
-    @api
-    get textColor() {
-        return this._textColor;
-    }
-    set textColor(value) {
-        this._textColor = normalizeString(value);
-        this.rerenderBarcode();
-    }
-
-    /**
      * The position of the displayed value. Accepted values are top-left, top-center, top-right, top-justify, center-left, center-center, center-right, center-justify, bottom-left, bottom-center, bottom-right, bottom-justify.
      *
      * @public
@@ -304,6 +288,22 @@ export default class Barcode extends LightningElement {
             validValues: TEXT_Y_ALIGN.valid,
             fallbackValue: TEXT_Y_ALIGN.default
         });
+        this.rerenderBarcode();
+    }
+
+    /**
+     * The text color as a hexadecimal color value.
+     *
+     * @public
+     * @type {string}
+     * @default #000000
+     */
+    @api
+    get textColor() {
+        return this._textColor;
+    }
+    set textColor(value) {
+        this._textColor = normalizeString(value);
         this.rerenderBarcode();
     }
 
@@ -442,6 +442,12 @@ export default class Barcode extends LightningElement {
         return normalizedValue;
     }
 
+    /**
+     * Parse the error message from bwip-js.
+     *
+     * @param {string} message - The error message from bwip-js.
+     * @returns {string} The parsed error message.
+     */
     parseErrorMessage(message) {
         let errorMessage = message.replace(/bwipp.|bwip-js: /gi, '');
         errorMessage = errorMessage.replace(' bcid ', ' type ');
@@ -468,6 +474,9 @@ export default class Barcode extends LightningElement {
         }
     }
 
+    /**
+     * Rerender the barcode.
+     */
     rerenderBarcode() {
         if (!this.initialRender) {
             this.renderBarcode();

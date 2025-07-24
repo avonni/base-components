@@ -41,10 +41,9 @@ const DEFAULT_COLORS = [
     '#b67d11',
     '#b85d0d'
 ];
-
-const DEFAULT_TILE_WIDTH = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TILE_HEIGHT = 20;
-
+const DEFAULT_TILE_WIDTH = 20;
 const VARIANTS = {
     default: 'grid',
     valid: ['grid', 'list']
@@ -57,6 +56,15 @@ const VARIANTS = {
  * @public
  */
 export default class ColorPalette extends LightningElement {
+    /**
+     * Message displayed while the palette is in the loading state.
+     *
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+
     _colors = DEFAULT_COLORS;
     _columns;
     _disabled = false;
@@ -65,17 +73,23 @@ export default class ColorPalette extends LightningElement {
     _isLoading = false;
     _readOnly = false;
     _showCheckmark = false;
-    _tileWidth = DEFAULT_TILE_WIDTH;
     _tileHeight = DEFAULT_TILE_HEIGHT;
+    _tileWidth = DEFAULT_TILE_WIDTH;
     _value;
     _variant = VARIANTS.default;
 
+    _connected = false;
     computedGroups = [];
-    _isConnected = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.initGroups();
-        this._isConnected = true;
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -107,7 +121,7 @@ export default class ColorPalette extends LightningElement {
         const colors = normalizeArray(value);
         this._colors = colors.length ? colors : DEFAULT_COLORS;
 
-        if (this._isConnected) {
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -122,7 +136,6 @@ export default class ColorPalette extends LightningElement {
     get columns() {
         return this._columns;
     }
-
     set columns(value) {
         this._columns = Number(value);
         this.initContainer();
@@ -139,11 +152,10 @@ export default class ColorPalette extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
 
-        if (this._isConnected) {
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -158,11 +170,10 @@ export default class ColorPalette extends LightningElement {
     get groups() {
         return this._groups;
     }
-
     set groups(value) {
         this._groups = normalizeArray(value);
 
-        if (this._isConnected) this.initGroups();
+        if (this._connected) this.initGroups();
     }
 
     /**
@@ -176,11 +187,10 @@ export default class ColorPalette extends LightningElement {
     get hideOutline() {
         return this._hideOutline;
     }
-
     set hideOutline(value) {
         this._hideOutline = normalizeBoolean(value);
 
-        if (this._isConnected) {
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -196,11 +206,10 @@ export default class ColorPalette extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
 
-        if (this._isConnected) {
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -216,11 +225,10 @@ export default class ColorPalette extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
 
-        if (this._isConnected) {
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -236,31 +244,10 @@ export default class ColorPalette extends LightningElement {
     get showCheckmark() {
         return this._showCheckmark;
     }
-
     set showCheckmark(value) {
         this._showCheckmark = normalizeBoolean(value);
 
-        if (this._isConnected) {
-            this.initGroups();
-        }
-    }
-
-    /**
-     * Tile width in px.
-     *
-     * @public
-     * @default 20
-     * @type {number}
-     */
-    @api
-    get tileWidth() {
-        return this._tileWidth;
-    }
-
-    set tileWidth(value) {
-        this._tileWidth = Number(value);
-
-        if (this._isConnected) {
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -276,11 +263,29 @@ export default class ColorPalette extends LightningElement {
     get tileHeight() {
         return this._tileHeight;
     }
-
     set tileHeight(value) {
         this._tileHeight = Number(value);
 
-        if (this._isConnected) {
+        if (this._connected) {
+            this.initGroups();
+        }
+    }
+
+    /**
+     * Tile width in px.
+     *
+     * @public
+     * @default 20
+     * @type {number}
+     */
+    @api
+    get tileWidth() {
+        return this._tileWidth;
+    }
+    set tileWidth(value) {
+        this._tileWidth = Number(value);
+
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -295,11 +300,10 @@ export default class ColorPalette extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
 
-        if (this._isConnected) {
+        if (this._connected) {
             this.initGroups();
         }
     }
@@ -315,7 +319,6 @@ export default class ColorPalette extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: VARIANTS.default,

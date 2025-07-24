@@ -8,12 +8,17 @@ import { keyCodes } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 import { TreeData } from './treeData';
 
+const DEFAULT_ADD_BUTTON_LABEL = 'Add Item';
 const DEFAULT_ACTION_NAMES = [
     'Standard.Tree.Add',
     'Standard.Tree.Edit',
     'Standard.Tree.Delete',
     'Standard.Tree.Duplicate'
 ];
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_COLLAPSE_BUTTON_ALTERNATIVE_TEXT = 'Collapse Branch';
+const DEFAULT_CLOSE_BUTTON_ICON_ALTERNATIVE_TEXT = 'Close Dialog';
+const DEFAULT_DONE_BUTTON_LABEL = 'Done';
 const DEFAULT_EDITABLE_FIELDS = [
     'label',
     'metatext',
@@ -23,7 +28,10 @@ const DEFAULT_EDITABLE_FIELDS = [
     'disabled',
     'isLoading'
 ];
+const DEFAULT_EXPAND_BUTTON_ALTERNATIVE_TEXT = 'Expand Branch';
+const DEFAULT_LOAD_MORE_BUTTON_LABEL = 'Load More';
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SAVE_BUTTON_ALTERNATIVE_TEXT = 'Save Label';
 
 /**
  * Tree of nested items. Used to display a visualization of a structural hierarchy.
@@ -35,13 +43,70 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
  */
 export default class Tree extends LightningElement {
     /**
+     * Label for the add button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Add Item'
+     */
+    @api addButtonLabel = DEFAULT_ADD_BUTTON_LABEL;
+    /**
+     * The label for the cancel button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Cancel'
+     */
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
+    /**
+     * The alternative text used to describe the close button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Close Dialog'
+     */
+    @api closeButtonAlternativeText =
+        DEFAULT_CLOSE_BUTTON_ICON_ALTERNATIVE_TEXT;
+    /**
+     * The alternative text used to describe the collapse button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Collapse Branch'
+     */
+    @api collapseButtonAlternativeText =
+        DEFAULT_COLLAPSE_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The label for the done button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Done'
+     */
+    @api doneButtonLabel = DEFAULT_DONE_BUTTON_LABEL;
+    /**
+     * The alternative text used to describe the expand button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Expand Branch'
+     */
+    @api expandButtonAlternativeText = DEFAULT_EXPAND_BUTTON_ALTERNATIVE_TEXT;
+    /**
      * Tree heading.
      *
      * @type {string}
      * @public
      */
     @api header;
-
+    /**
+     * Label for the load more button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Load More'
+     */
+    @api loadMoreButtonLabel = DEFAULT_LOAD_MORE_BUTTON_LABEL;
     /**
      * New branch default label.
      *
@@ -49,6 +114,14 @@ export default class Tree extends LightningElement {
      * @public
      */
     @api placeholder;
+    /**
+     * The alternative text used to describe the save button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Save Label'
+     */
+    @api saveButtonIconAlternativeText = DEFAULT_SAVE_BUTTON_ALTERNATIVE_TEXT;
 
     _actions = [];
     _actionsWhenDisabled = [];
@@ -68,10 +141,10 @@ export default class Tree extends LightningElement {
     callbackMap = {};
     @track children = [];
     treedata = new TreeData();
+    _connected = false;
     _dragState;
     _editedItemKey;
     _focusedItem;
-    _connected = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
     _previousSelectedItems = [];
@@ -120,7 +193,6 @@ export default class Tree extends LightningElement {
     get actions() {
         return this._actions;
     }
-
     set actions(value) {
         this._actions = normalizeArray(value);
 
@@ -139,7 +211,6 @@ export default class Tree extends LightningElement {
     get actionsWhenDisabled() {
         return this._actionsWhenDisabled;
     }
-
     set actionsWhenDisabled(value) {
         this._actionsWhenDisabled = normalizeArray(value);
     }
@@ -155,7 +226,6 @@ export default class Tree extends LightningElement {
     get allowInlineEdit() {
         return this._allowInlineEdit;
     }
-
     set allowInlineEdit(value) {
         this._allowInlineEdit = normalizeBoolean(value);
     }
@@ -171,7 +241,6 @@ export default class Tree extends LightningElement {
     get collapseDisabled() {
         return this._collapseDisabled;
     }
-
     set collapseDisabled(value) {
         this._collapseDisabled = normalizeBoolean(value);
     }
@@ -187,7 +256,6 @@ export default class Tree extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
 
@@ -207,7 +275,6 @@ export default class Tree extends LightningElement {
     get editableFields() {
         return this._editableFields;
     }
-
     set editableFields(value) {
         this._editableFields = normalizeArray(value);
     }
@@ -240,7 +307,6 @@ export default class Tree extends LightningElement {
     get independentMultiSelect() {
         return this._independentMultiSelect;
     }
-
     set independentMultiSelect(value) {
         this._independentMultiSelect = normalizeBoolean(value);
 
@@ -260,7 +326,6 @@ export default class Tree extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -276,7 +341,6 @@ export default class Tree extends LightningElement {
     get isMultiSelect() {
         return this._isMultiSelect;
     }
-
     set isMultiSelect(value) {
         this._isMultiSelect = value;
         if (this._connected) this.resetSelection();
@@ -292,7 +356,6 @@ export default class Tree extends LightningElement {
     get items() {
         return this._items || [];
     }
-
     set items(value) {
         const items = normalizeArray(value);
         this._items = items.map((item) => {
@@ -313,7 +376,6 @@ export default class Tree extends LightningElement {
     get loadingStateAlternativeText() {
         return this._loadingStateAlternativeText;
     }
-
     set loadingStateAlternativeText(value) {
         this._loadingStateAlternativeText =
             typeof value === 'string'
@@ -334,7 +396,6 @@ export default class Tree extends LightningElement {
     get selectedItems() {
         return this._selectedItems;
     }
-
     set selectedItems(value) {
         this._selectedItems =
             typeof value === 'string'
@@ -355,7 +416,6 @@ export default class Tree extends LightningElement {
     get sortable() {
         return this._sortable;
     }
-
     set sortable(value) {
         this._sortable = value;
     }
@@ -447,36 +507,6 @@ export default class Tree extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Initialize the tree items.
-     * Check the input data for circular references or cycles and build a list of items in depth-first manner for traversing the tree by keyboard.
-     * Build a list of visible items to be checked while traversing the tree, at any point any branch is expanded or collapsed, this list has to be kept updated.
-     */
-    initItems() {
-        // Reset the state
-        this.setFocusToItem({});
-        this.treedata = new TreeData(this.disabled, this.actions);
-        if (!this.items.length) {
-            this.children = [];
-            return;
-        }
-
-        // Create a new tree
-        const treeRoot = this.treedata.parse(
-            this.items,
-            this.computedSelectedItems
-        );
-        this.children = treeRoot ? treeRoot.children : [];
-        this._focusedItem = treeRoot.selectedItem;
-
-        // Compute the selected items
-        if (this.isMultiSelect) {
-            this.computeMultiSelection();
-        } else if (this._focusedItem) {
-            this.treedata.expandTo(this._focusedItem);
-        }
-    }
 
     /**
      * Add a new child item to the given parent item.
@@ -758,6 +788,64 @@ export default class Tree extends LightningElement {
     }
 
     /**
+     * Initialize the tree items.
+     * Check the input data for circular references or cycles and build a list of items in depth-first manner for traversing the tree by keyboard.
+     * Build a list of visible items to be checked while traversing the tree, at any point any branch is expanded or collapsed, this list has to be kept updated.
+     */
+    initItems() {
+        // Reset the state
+        this.setFocusToItem({});
+        this.treedata = new TreeData(this.disabled, this.actions);
+        if (!this.items.length) {
+            this.children = [];
+            return;
+        }
+
+        // Create a new tree
+        const treeRoot = this.treedata.parse(
+            this.items,
+            this.computedSelectedItems
+        );
+        this.children = treeRoot ? treeRoot.children : [];
+        this._focusedItem = treeRoot.selectedItem;
+
+        // Compute the selected items
+        if (this.isMultiSelect) {
+            this.computeMultiSelection();
+        } else if (this._focusedItem) {
+            this.treedata.expandTo(this._focusedItem);
+        }
+    }
+
+    /**
+     * Reset the selected items to the current value of selectedItems.
+     */
+    resetSelection() {
+        if (!this.children.length) return;
+
+        // Reset all selection
+        this.treedata.resetSelection(this.computedSelectedItems);
+
+        if (this.isMultiSelect) {
+            this.computeMultiSelection();
+        } else {
+            const selectedItem = this.treedata.getItemFromName(
+                this.computedSelectedItems[0]
+            );
+            if (selectedItem) {
+                this.treedata.expandTo(selectedItem);
+                this.setFocusToItem(selectedItem);
+            } else if (this._focusedItem) {
+                const callbacks = this.callbackMap[this._focusedItem.key];
+                callbacks.setSelected(false);
+                callbacks.unfocus();
+                this._focusedItem = null;
+            }
+            this.forceChildrenSelectionUpdate();
+        }
+    }
+
+    /**
      * Set the focus on the first item.
      */
     setFocusToFirstItem() {
@@ -846,23 +934,6 @@ export default class Tree extends LightningElement {
                 child.ariaSelected = true;
             }
         }
-    }
-
-    /**
-     * Update the currently selected item when the tree is not multi-select.
-     *
-     * @param {string} name Name of the item to select.
-     * @param {Event} event Event that triggered the selection.
-     */
-    singleSelect(name, event) {
-        if (
-            this.isMultiSelect ||
-            (this.selectedItems.length === 1 && this.selectedItems[0] === name)
-        )
-            return;
-        this._previousSelectedItems = [...this.selectedItems];
-        this._selectedItems = [name];
-        this.dispatchSelect(event);
     }
 
     /**
@@ -963,31 +1034,20 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Reset the selected items to the current value of selectedItems.
+     * Update the currently selected item when the tree is not multi-select.
+     *
+     * @param {string} name Name of the item to select.
+     * @param {Event} event Event that triggered the selection.
      */
-    resetSelection() {
-        if (!this.children.length) return;
-
-        // Reset all selection
-        this.treedata.resetSelection(this.computedSelectedItems);
-
-        if (this.isMultiSelect) {
-            this.computeMultiSelection();
-        } else {
-            const selectedItem = this.treedata.getItemFromName(
-                this.computedSelectedItems[0]
-            );
-            if (selectedItem) {
-                this.treedata.expandTo(selectedItem);
-                this.setFocusToItem(selectedItem);
-            } else if (this._focusedItem) {
-                const callbacks = this.callbackMap[this._focusedItem.key];
-                callbacks.setSelected(false);
-                callbacks.unfocus();
-                this._focusedItem = null;
-            }
-            this.forceChildrenSelectionUpdate();
-        }
+    singleSelect(name, event) {
+        if (
+            this.isMultiSelect ||
+            (this.selectedItems.length === 1 && this.selectedItems[0] === name)
+        )
+            return;
+        this._previousSelectedItems = [...this.selectedItems];
+        this._selectedItems = [name];
+        this.dispatchSelect(event);
     }
 
     /**

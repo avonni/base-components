@@ -1,6 +1,6 @@
 <template>
     <c-splitter orientation={orientation}>
-        <c-splitter-pane collapsible collapsed collapsed-size="20px" size="20%">
+        <c-splitter-pane collapsed collapsed-size="20px" collapsible size="20%">
             <div style="padding: 0.5rem; height: 400px; white-space: normal">
                 Collapsed splitter pane, with a collapsed size of 20px and a
                 max.
@@ -11,13 +11,13 @@
                 Splitter pane with 25% size.
             </div>
         </c-splitter-pane>
-        <c-splitter-pane resizable collapsible size="25%" min="10%">
+        <c-splitter-pane collapsible min="10%" resizable size="25%">
             <div style="padding: 0.5rem">
                 Resizable and collapsible splitter pane, with a minimum size of
                 10% and a size of 25%.
             </div>
         </c-splitter-pane>
-        <c-splitter-pane scrollable collapsible>
+        <c-splitter-pane collapsible scrollable>
             <div style="padding: 0.5rem; height: 400px; white-space: normal">
                 <p>
                     <strong>Scrollable and collapsible splitter pane</strong>

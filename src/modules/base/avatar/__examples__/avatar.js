@@ -3,8 +3,8 @@ import Component from 'avonni/avatar';
 customElements.define('ac-base-avatar', Component.CustomElementConstructor);
 
 export const Avatar = ({
-    actionPosition,
     actionMenuIcon,
+    actionPosition,
     actions,
     alternativeText,
     entityIconName,
@@ -27,14 +27,14 @@ export const Avatar = ({
     status,
     statusPosition,
     statusTitle,
-    variant,
+    tags,
     tertiaryText,
     textPosition,
-    tags
+    variant
 }) => {
     const element = document.createElement('ac-base-avatar');
-    element.actionPosition = actionPosition;
     element.actionMenuIcon = actionMenuIcon;
+    element.actionPosition = actionPosition;
     element.actions = actions;
     element.alternativeText = alternativeText;
     element.entityIconName = entityIconName;
@@ -57,9 +57,9 @@ export const Avatar = ({
     element.status = status;
     element.statusPosition = statusPosition;
     element.statusTitle = statusTitle;
-    element.variant = variant;
+    element.tags = tags;
     element.tertiaryText = tertiaryText;
     element.textPosition = textPosition;
-    element.tags = tags;
+    element.variant = variant;
     return element;
 };

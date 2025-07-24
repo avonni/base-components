@@ -196,6 +196,18 @@ export default {
                 defaultValue: { summary: '20' }
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the avatar group is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         maxCount: {
             name: 'max-count',
             control: {
@@ -249,18 +261,47 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'square' }
             }
+        },
+        keyboardAssistiveText: {
+            name: 'keyboard-assistive-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text used to describe the keyboard navigation.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: {
+                    summary: 'Move between the items by using arrow keys.'
+                }
+            }
+        },
+        showMoreButtonAlternativeText: {
+            name: 'show-more-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the show more button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show more' }
+            }
         }
     },
     args: {
         enableInfiniteLoading: false,
         isLoading: false,
+        keyboardAssistiveText: 'Move between the items by using arrow keys.',
         layout: 'stack',
-        listButtonShowLessLabel: 'Show less',
         listButtonShowLessIconPosition: 'left',
+        listButtonShowLessLabel: 'Show less',
         listButtonShowMoreIconPosition: 'left',
         listButtonShowMoreLabel: 'Show more',
         listButtonVariant: 'neutral',
         loadMoreOffset: 20,
+        loadingStateAlternativeText: 'Loading...',
+        showMoreButtonAlternativeText: 'Show more',
         size: 'medium',
         variant: 'square'
     }

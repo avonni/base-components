@@ -24,6 +24,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        cancelButtonLabel: {
+            name: 'cancel-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label for the cancel button.',
+            table: {
+                defaultValue: { summary: 'Cancel' },
+                type: { summary: 'string' }
+            }
+        },
         closeButtonAlternativeText: {
             name: 'close-button-alternative-text',
             control: {
@@ -69,6 +80,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        saveButtonLabel: {
+            name: 'save-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label for the save button.',
+            table: {
+                defaultValue: { summary: 'Save' },
+                type: { summary: 'string' }
+            }
+        },
         showDialog: {
             name: 'show-dialog',
             control: {
@@ -103,6 +125,8 @@ export default {
         }
     },
     args: {
+        cancelButtonLabel: 'Cancel',
+        saveButtonLabel: 'Save',
         isLoading: false,
         size: 'medium',
         showDialog: false

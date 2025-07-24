@@ -11,6 +11,7 @@ export const Metric = ({
     errorMessage,
     formatStyle,
     label,
+    loadingStateAlternativeText,
     labelPosition,
     maximumFractionDigits,
     maximumSignificantDigits,
@@ -53,6 +54,7 @@ export const Metric = ({
     element.errorMessage = errorMessage;
     element.formatStyle = formatStyle;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.labelPosition = labelPosition;
     element.maximumFractionDigits = maximumFractionDigits;
     element.maximumSignificantDigits = maximumSignificantDigits;

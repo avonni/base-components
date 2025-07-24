@@ -47,11 +47,13 @@ describe('Combobox', () => {
             expect(element.min).toBe(0);
             expect(element.multiLevelGroups).toBeFalsy();
             expect(element.name).toBeUndefined();
+            expect(element.noResultsMessage).toBe('No matches found');
             expect(element.options).toMatchObject([]);
             expect(element.placeholder).toBe('Select an Option');
             expect(element.readOnly).toBeFalsy();
             expect(element.removeSelectedOptions).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
             expect(element.selectedOptionsDirection).toBe('horizontal');
             expect(element.sortableSelectedOptions).toBeFalsy();
@@ -436,6 +438,19 @@ describe('Combobox', () => {
             });
         });
 
+        describe('No Results Message', () => {
+            it('Passed to the component', () => {
+                element.noResultsMessage = 'A string message';
+
+                return Promise.resolve().then(() => {
+                    const combobox = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-combobox-main"]'
+                    );
+                    expect(combobox.noResultsMessage).toBe('A string message');
+                });
+            });
+        });
+
         describe('Options', () => {
             it('Passed to the component', () => {
                 element.options = options;
@@ -498,12 +513,17 @@ describe('Combobox', () => {
         describe('Required', () => {
             it('Passed to the component', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'A string text';
 
                 return Promise.resolve().then(() => {
                     const combobox = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-combobox-main"]'
                     );
                     expect(combobox.required).toBeTruthy();
+                    const required = element.shadowRoot.querySelector(
+                        '[data-element-id="abbr-required"]'
+                    );
+                    expect(required.title).toBe('A string text');
                 });
             });
         });

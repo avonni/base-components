@@ -7,8 +7,8 @@ customElements.define(
 
 export const Illustration = ({ title, size, variant }) => {
     const element = document.createElement('ac-base-illustration');
-    element.title = title;
     element.size = size;
+    element.title = title;
     element.variant = variant;
     return element;
 };

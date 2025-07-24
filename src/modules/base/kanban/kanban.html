@@ -1,7 +1,8 @@
 <template>
     <lightning-spinner
         if:true={isLoading}
-        alternative-text="Loading..."
+        alternative-text={loadingStateAlternativeText}
+        data-element-id="avonni-kanban-loading"
     ></lightning-spinner>
     <div
         lwc:dom="manual"
@@ -9,7 +10,7 @@
         aria-live="polite"
         data-element-id="span-instructions"
     ></div>
-    <div if:false={isLoading} class={variantClass}>
+    <div if:false={isLoading} class={computedVariantClass}>
         <div
             class="
                 slds-path
@@ -34,8 +35,8 @@
                         >
                             <ul
                                 class="slds-path__nav"
-                                role="listbox"
                                 aria-orientation="horizontal"
+                                role="listbox"
                             >
                                 <li
                                     for:each={computedGroups}
@@ -47,12 +48,12 @@
                                         slds-is-active
                                         avonni-kanban__path_item
                                     "
-                                    data-element-id="avonni-kanban__path_item"
                                     role="presentation"
+                                    data-element-id="avonni-kanban__path_item"
                                 >
                                     <a
-                                        aria-selected="true"
                                         class="slds-path__link"
+                                        aria-selected="true"
                                         role="option"
                                         tabindex="0"
                                         onclick={handlePreventDefault}
@@ -71,14 +72,14 @@
                                                 class="slds-var-p-right_x-small"
                                             >
                                                 <c-primitive-avatar
-                                                    size="small"
                                                     class="
                                                         avonni-kanban__avatar
                                                     "
                                                     fallback-icon-name={item.avatar.fallbackIconName}
                                                     initials={item.avatar.initials}
-                                                    variant={item.avatar.variant}
+                                                    size="small"
                                                     src={item.avatar.src}
+                                                    variant={item.avatar.variant}
                                                 ></c-primitive-avatar>
                                             </span>
                                             {item.label}&nbsp;
@@ -104,15 +105,15 @@
                 onmousemove={handleTileMouseMove}
             >
                 <div
-                    data-element-id="avonni-kanban__group_dropzone"
                     class="avonni-kanban__group_dropzone slds-m-around_x-small"
+                    data-element-id="avonni-kanban__group_dropzone"
                 ></div>
                 <div
-                    class={computedFieldClass}
                     for:each={computedGroups}
                     for:item="group"
                     for:index="groupIndex"
                     key={group.index}
+                    class={computedFieldClass}
                     style={group.backgroundStyle}
                     tabindex={groupTabIndex}
                     data-element-id="avonni-kanban__field"
@@ -135,22 +136,22 @@
                     <div
                         if:false={hideHeader}
                         class="avonni-kanban__group_header"
+                        data-element-id="avonni-kanban__group_header"
                         onmousedown={handleGroupMouseDown}
                         onmouseup={handleGroupMouseUp}
-                        data-element-id="avonni-kanban__group_header"
                     >
                         <div if:true={group.headerActions.length}>
                             <c-button-menu
+                                class="avonni-kanban__header_action"
                                 alternative-text="Show menu"
+                                hide-down-arrow
+                                icon-name="action:more"
                                 icon-size="x-small"
                                 menu-alignment="right"
-                                class="avonni-kanban__header_action"
                                 variant="bare"
-                                icon-name="action:more"
-                                onselect={handleActionClick}
                                 data-group={group.value}
                                 data-element-id="avonni-kanban__header_action_menu"
-                                hide-down-arrow
+                                onselect={handleActionClick}
                             >
                                 <template
                                     for:each={group.headerActions}
@@ -158,12 +159,12 @@
                                 >
                                     <lightning-menu-item
                                         key={action.name}
+                                        class="slds-text-color_default"
+                                        disabled={action.disabled}
+                                        label={action.label}
+                                        prefix-icon-name={action.iconName}
                                         value={action.name}
                                         onmousedown={handleMenuClick}
-                                        label={action.label}
-                                        disabled={action.disabled}
-                                        prefix-icon-name={action.iconName}
-                                        class="slds-text-color_default"
                                     ></lightning-menu-item>
                                 </template>
                             </c-button-menu>
@@ -195,8 +196,8 @@
                                         class="avonni-kanban__avatar"
                                         fallback-icon-name={group.avatar.fallbackIconName}
                                         initials={group.avatar.initials}
-                                        variant={group.avatar.variant}
                                         src={group.avatar.src}
+                                        variant={group.avatar.variant}
                                     ></c-primitive-avatar>
                                 </div>
                                 {group.label}&nbsp;
@@ -205,10 +206,6 @@
                                 >
                             </h2>
                             <c-output-data
-                                value={group.summarize.value}
-                                type={group.summarize.type}
-                                type-attributes={group.summarize.typeAttributes}
-                                variant="label-hidden"
                                 class="
                                     slds-text-align_center
                                     slds-grid
@@ -216,11 +213,14 @@
                                     slds-grid_vertical-align-center
                                     avonni-kanban__summarize
                                 "
+                                type={group.summarize.type}
+                                type-attributes={group.summarize.typeAttributes}
+                                value={group.summarize.value}
+                                variant="label-hidden"
                                 data-element-id="summarize"
                             ></c-output-data>
                         </div>
                     </div>
-
                     <div
                         class="
                             avonni-kanban__tile_dropzone
@@ -257,7 +257,7 @@
                                 title={record.title}
                                 title-url={record.titleUrl}
                                 warning-icon={record.warningIcon}
-                                data-element-id="avonni-kanban__tile"
+                                data-element-id="avonni-kanban-tile"
                                 data-group={group.value}
                                 data-group-index={groupIndex}
                                 data-index={index}
@@ -279,35 +279,34 @@
                         "
                         data-element-id="avonni-kanban__footer_action"
                     >
-                        <template if:true={group.footerActions}>
-                            <button
-                                onclick={handleActionClick}
-                                for:each={group.footerActions}
-                                for:item="action"
-                                key={action.name}
+                        <button
+                            if:true={group.footerActions}
+                            for:each={group.footerActions}
+                            for:item="action"
+                            key={action.name}
+                            class="
+                                slds-grid slds-grid_vertical-align-center
+                                avonni-kanban__footer_action
+                            "
+                            disabled={action.disabled}
+                            data-name={action.label}
+                            data-group={group.value}
+                            onclick={handleActionClick}
+                        >
+                            <lightning-icon
+                                if:true={action.iconName}
+                                icon-name={action.iconName}
+                                size="small"
+                            ></lightning-icon>
+                            <span
                                 class="
-                                    slds-grid slds-grid_vertical-align-center
-                                    avonni-kanban__footer_action
+                                    slds-text-color_default
+                                    slds-text-body_regular
                                 "
-                                disabled={action.disabled}
-                                data-name={action.label}
-                                data-group={group.value}
                             >
-                                <lightning-icon
-                                    if:true={action.iconName}
-                                    size="small"
-                                    icon-name={action.iconName}
-                                ></lightning-icon>
-                                <span
-                                    class="
-                                        slds-text-color_default
-                                        slds-text-body_regular
-                                    "
-                                >
-                                    {action.label}
-                                </span>
-                            </button>
-                        </template>
+                                {action.label}
+                            </span>
+                        </button>
                     </div>
                 </div>
             </div>

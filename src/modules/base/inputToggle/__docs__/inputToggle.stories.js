@@ -163,6 +163,19 @@ export default {
                 category: 'Validation'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' },
+                category: 'Validation'
+            }
+        },
         accessKey: {
             name: 'access-key',
             control: {
@@ -231,6 +244,7 @@ export default {
         messageToggleInactive: 'Inactive',
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         size: 'medium',
         variant: 'standard'
     }

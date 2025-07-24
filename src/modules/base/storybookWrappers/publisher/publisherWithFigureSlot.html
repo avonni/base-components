@@ -1,17 +1,17 @@
 <template>
     <c-publisher
-        placeholder={placeholder}
         button-label={buttonLabel}
-        submit-action={submitAction}
-        variant={variant}
         disabled={disabled}
+        placeholder={placeholder}
+        submit-action={submitAction}
         value={value}
+        variant={variant}
     >
         <c-avatar
             slot="figure"
-            variant="circle"
+            hide-avatar-details
             src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"
-            hide-avatar-details="true"
+            variant="circle"
         ></c-avatar>
     </c-publisher>
 </template>
