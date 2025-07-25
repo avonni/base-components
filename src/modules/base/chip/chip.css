@@ -40,7 +40,10 @@
 
 .avonni-chip_theme-base,
 .avonni-chip__circle_theme-base {
-    background-color: var(--avonni-chip-base-color-background, #f3f3f3);
+    background-color: var(
+        --avonni-chip-base-color-background,
+        var(--slds-g-color-surface-container-3, #f3f3f3)
+    );
     border-color: var(--avonni-chip-base-color-border, transparent);
     color: var(
         --avonni-chip-base-text-color,
@@ -143,7 +146,10 @@
 .avonni-chip_outline.avonni-chip_theme-base,
 .avonni-chip_outline.avonni-chip__circle_theme-base {
     background-color: var(--avonni-chip-base-color-background, #ffffff);
-    border-color: var(--avonni-chip-base-outline-color, #ecebea);
+    border-color: var(
+        --avonni-chip-base-outline-color,
+        var(--slds-g-color-surface-container-3, #ecebea)
+    );
     color: var(
         --avonni-chip-base-outline-color,
         var(--slds-g-color-on-surface-1, #080707)
@@ -162,11 +168,11 @@
     background-color: var(--avonni-chip-error-color-background, #ffffff);
     border-color: var(
         --avonni-chip-error-outline-color,
-        var(--slds-g-color-on-error-1, #ba0517)
+        var(--slds-g-color-error-container-1, #ba0517)
     );
     color: var(
         --avonni-chip-error-outline-color,
-        var(--slds-g-color-on-error-1, #ba0517)
+        var(--slds-g-color-error-container-1, #ba0517)
     );
 }
 
@@ -175,11 +181,11 @@
     background-color: var(--avonni-chip-info-color-background, #ffffff);
     border-color: var(
         --avonni-chip-info-outline-color,
-        var(--slds-g-color-on-info-1, #706e6b)
+        var(--slds-g-color-info-container-1, #706e6b)
     );
     color: var(
         --avonni-chip-info-outline-color,
-        var(--slds-g-color-on-info-1, #706e6b)
+        var(--slds-g-color-info-container-1, #706e6b)
     );
 }
 
@@ -214,11 +220,11 @@
     background-color: var(--avonni-chip-success-color-background, #ffffff);
     border-color: var(
         --avonni-chip-success-outline-color,
-        var(--slds-g-color-on-success-1, #2e844a)
+        var(--slds-g-color-success-container-1, #2e844a)
     );
     color: var(
         --avonni-chip-success-outline-color,
-        var(--slds-g-color-on-success-1, #2e844a)
+        var(--slds-g-color-success-container-1, #2e844a)
     );
 }
 
@@ -227,11 +233,11 @@
     background-color: var(--avonni-chip-warning-color-background, #ffffff);
     border-color: var(
         --avonni-chip-warning-outline-color,
-        var(--slds-g-color-on-warning-1, #dd7a01)
+        var(--slds-g-color-warning-container-1, #dd7a01)
     );
     color: var(
         --avonni-chip-warning-outline-color,
-        var(--slds-g-color-on-warning-1, #dd7a01)
+        var(--slds-g-color-warning-container-1, #dd7a01)
     );
 }
 
