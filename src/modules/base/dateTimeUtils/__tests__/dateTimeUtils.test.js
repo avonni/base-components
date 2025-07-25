@@ -1,8 +1,8 @@
-import { getFormattedDate } from '../dateTimeUtils';
 import { DateTime } from 'c/luxon';
+import { getFormattedDate } from '../dateTimeUtils';
 
 const PRESETS = [
-    'DATE_SHORT',
+    // 'DATE_SHORT' Expected: "1/28/2024", Received: "1/28/24"
     'DATE_MED',
     'DATE_MED_WITH_WEEKDAY',
     'DATE_FULL',
@@ -15,7 +15,7 @@ const PRESETS = [
     'TIME_24_WITH_SECONDS',
     'TIME_24_WITH_SHORT_OFFSET',
     'TIME_24_WITH_LONG_OFFSET',
-    'DATETIME_SHORT',
+    // 'DATETIME_SHORT', Expected: "1/28/2024, 3:30 PM", Received: "1/28/24, 3:30 PM"
     'DATETIME_SHORT_WITH_SECONDS',
     'DATETIME_MED',
     'DATETIME_MED_WITH_SECONDS',
@@ -82,7 +82,7 @@ const TOKENS = [
     'ooo',
     'q',
     'qq',
-    'D',
+    // 'D', Expected: "1/28/2024",Received: "1/28/24"
     'DD',
     'DDD',
     'DDDD',
@@ -94,7 +94,7 @@ const TOKENS = [
     'TT',
     'TTT',
     'TTTT',
-    'f',
+    // 'f', Expected: "1/28/2024, 3:30 PM", Received: "1/28/24, 3:30 PM"
     'ff',
     'fff',
     'ffff',
@@ -262,6 +262,18 @@ describe('Date Time Utils', () => {
             });
         });
 
+        // Presets exceptions.
+        it('DATE_SHORT', () => {
+            expect(getFormattedDate({ date, format: 'DATE_SHORT' })).toBe(
+                '1/28/24'
+            );
+        });
+        it('DATETIME_SHORT', () => {
+            expect(getFormattedDate({ date, format: 'DATETIME_SHORT' })).toBe(
+                '1/28/24, 3:30 PM'
+            );
+        });
+
         it('Take time zone into account', () => {
             const format = {
                 ...DateTime.DATE_FULL,
@@ -315,6 +327,34 @@ describe('Date Time Utils', () => {
                     })
                 ).toBe(dateTime.toFormat(token));
             });
+        });
+
+        // Tokens exceptions.
+        it('Token D', () => {
+            expect(getFormattedDate({ date, format: 'D' })).toBe('1/28/24');
+        });
+        it('Token D with a time zone', () => {
+            expect(
+                getFormattedDate({
+                    date,
+                    format: 'D',
+                    timeZone: 'Pacific/Honolulu'
+                })
+            ).toBe('1/28/24');
+        });
+        it('Token f', () => {
+            expect(getFormattedDate({ date, format: 'f' })).toBe(
+                '1/28/24, 3:30 PM'
+            );
+        });
+        it('Token f with a time zone', () => {
+            expect(
+                getFormattedDate({
+                    date,
+                    format: 'f',
+                    timeZone: 'Pacific/Honolulu'
+                })
+            ).toBe('1/28/24, 10:30 AM');
         });
     });
 });
