@@ -24,6 +24,7 @@ export const Tree = ({
     loadMoreButtonLabel,
     loadingStateAlternativeText,
     placeholder,
+    rootSlottableTypes,
     saveButtonIconAlternativeText,
     selectedItems,
     sortable
@@ -50,6 +51,7 @@ export const Tree = ({
     element.loadMoreButtonLabel = loadMoreButtonLabel;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.placeholder = placeholder;
+    element.rootSlottableTypes = rootSlottableTypes;
     element.saveButtonIconAlternativeText = saveButtonIconAlternativeText;
     element.selectedItems = selectedItems;
     element.sortable = sortable;

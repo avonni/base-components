@@ -21,6 +21,7 @@ export default class Tree extends LightningElement {
     @api loadingStateAlternativeText;
     @api loadMoreButtonLabel;
     @api placeholder;
+    @api rootSlottableTypes;
     @api saveButtonIconAlternativeText;
     @api selectedItems;
     @api sortable;

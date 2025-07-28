@@ -3,7 +3,8 @@ import {
     ACTIONS,
     ACTIONS_WHEN_DISABLED,
     ITEMS,
-    ITEMS_WITH_FIELDS
+    ITEMS_WITH_FIELDS,
+    ITEMS_WITH_WITH_TYPES
 } from './data';
 
 export default {
@@ -278,6 +279,17 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Save Label' }
             }
+        },
+        rootSlottableTypes: {
+            name: 'root-slottable-types',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of types of items that can be slotted in the root of the tree.',
+            table: {
+                type: { summary: 'string[]' }
+            }
         }
     },
     args: {
@@ -304,6 +316,7 @@ export default {
         isMultiSelect: false,
         loadingStateAlternativeText: 'Loading...',
         loadMoreButtonLabel: 'Load More',
+        rootSlottableTypes: [],
         saveButtonIconAlternativeText: 'Save Label',
         sortable: false
     }
@@ -330,6 +343,14 @@ export const Sortable = Template.bind({});
 Sortable.args = {
     items: ITEMS,
     header: 'Tree With Sortable Items',
+    sortable: true
+};
+
+export const RootSlottableTypes = Template.bind({});
+RootSlottableTypes.args = {
+    items: ITEMS_WITH_WITH_TYPES,
+    header: 'Tree With Root Slottable Types',
+    rootSlottableTypes: ['standard'],
     sortable: true
 };
 

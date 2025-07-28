@@ -34,6 +34,11 @@
  * @property {object[]} items Nested item objects.
  * @property {string} name Required. The unique name of the item. It will be returned by the `onselect` event handler.
  * @property {string} href If the item label should be a link, URL of the link.
+ * @property {string[]} hiddenActions Array of action names that should be hidden for this item.
+ * @property {boolean} noSlots If true, the item cannot accept items has a child when sorting.
+ * @property {string[]} slottableTypes Array of types of items that can be slotted into this item when sorting. If the array isn’t provided, any type of item can be slotted in this item.
+ * @property {string} type Type of the item. It will be used to determine if the item can be slotted into another item when sorting.
+ * @property {boolean} unselectable If true, the item is not selectable.
  * Links are incompatible with inline edition and multi-select trees.
  * @property {boolean} expanded If true, the item branch is expanded. An expanded branch displays its nested items visually. Defaults to false.
  * @property {boolean} disabled If true, the item is disabled. A disabled item is grayed out and can't be focused. Defaults to false.

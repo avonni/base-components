@@ -18,6 +18,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api expanded;
     @api expandButtonAlternativeText;
     @api fields;
+    @api hiddenActions;
     @api href;
     @api iconName;
     @api independentMultiSelect;
@@ -31,8 +32,12 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api metatext;
     @api name;
     @api nodeKey;
+    @api noSlots;
     @api saveButtonIconAlternativeText;
     @api selected;
     @api showCheckbox;
+    @api slottableTypes;
     @api sortable;
+    @api type;
+    @api unselectable;
 }

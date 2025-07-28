@@ -89,17 +89,37 @@
     right: 0;
 }
 
-.avonni-primitive-tree-item__item_border-bottom::after {
+.avonni-primitive-tree-item__item_border-bottom_invalid::after,
+.avonni-primitive-tree-item__item_border-top_invalid::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: var(--slds-g-color-border-error-1, #ba0517);
+    position: absolute;
+    left: var(
+        --avonni-tree-item-spacing-inline-start-border,
+        var(--avonni-tree-item-spacing-inline-left, 0)
+    );
+    right: 0;
+}
+
+.avonni-primitive-tree-item__item_border-bottom::after,
+.avonni-primitive-tree-item__item_border-bottom_invalid::after {
     bottom: 0;
 }
 
-.avonni-primitive-tree-item__item_border-top::before {
+.avonni-primitive-tree-item__item_border-top::before,
+.avonni-primitive-tree-item__item_border-top_invalid::before {
     top: 0;
 }
 
 .avonni-primitive-tree-item__item.slds-is-hovered,
 .avonni-primitive-tree-item__item:hover {
     background: var(--avonni-tree-item-color-background-hover, #f3f2f2);
+}
+
+.avonni-primitive-tree-item__item_selectable.slds-is-hovered,
+.avonni-primitive-tree-item__item_selectable:hover {
     cursor: pointer;
 }
 
@@ -108,9 +128,16 @@
     box-shadow: inset 0 0 0 1px #c9c9c9;
 }
 
-.avonni-primitive-tree-item__branch-buttons {
+.avonni-primitive-tree-item__item_border_invalid {
+    -webkit-box-shadow: var(--slds-g-color-border-error-1, #ba0517) 0 0 0 1px
+        inset;
+    box-shadow: inset 0 0 0 1px var(--slds-g-color-border-error-1, #ba0517);
+}
+
+.avonni-primitive-tree-item__actions {
     opacity: 0;
     transition: 0.17s;
+    margin-left: var(--avonni-tree-item-actions-spacing-inline-left);
 }
 
 .avonni-primitive-tree-item__popover {

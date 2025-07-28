@@ -141,6 +141,7 @@ describe('Primitive Tree Item', () => {
             expect(element.metatext).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.nodeKey).toBeUndefined();
+            expect(element.noSlots).toBeFalsy();
             expect(element.saveButtonIconAlternativeText).toBe('Save Label');
             expect(element.selected).toBeFalsy();
             expect(element.showCheckbox).toBeFalsy();
@@ -198,10 +199,10 @@ describe('Primitive Tree Item', () => {
                         '[data-element-id="div-header"]'
                     );
                     const buttons = header.querySelector(
-                        '[data-element-id="div-branch-buttons"]'
+                        '[data-element-id="div-actions"]'
                     );
                     expect(buttons.classList).toContain(
-                        'avonni-primitive-tree-item__branch-buttons'
+                        'avonni-primitive-tree-item__actions'
                     );
 
                     // Show buttons on header hover
@@ -1610,5 +1611,19 @@ describe('Primitive Tree Item', () => {
                 expect(otherElement.selected).toBeTruthy();
             });
         });
+    });
+
+    it('privateregisteritem event, setSelected callback, unselectable', () => {
+        const otherElement = createElement('base-primitive-tree-item', {
+            is: PrimitiveTreeItem
+        });
+        otherElement.unselectable = true;
+        const handler = jest.fn();
+        otherElement.addEventListener('privateregisteritem', handler);
+        document.body.appendChild(otherElement);
+
+        const callbacks = handler.mock.calls[0][0].detail;
+        callbacks.setSelected(true);
+        expect(otherElement.selected).toBeFalsy();
     });
 });

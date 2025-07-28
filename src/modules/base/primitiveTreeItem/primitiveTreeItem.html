@@ -1,7 +1,7 @@
 <template>
     <div class={computedWrapperClass} data-element-id="div-wrapper">
         <div
-            class="avonni-primitive-tree-item__item slds-is-relative slds-grid"
+            class={computedPrimitiveTreeItemClass}
             data-element-id="div-item"
             onclick={handleClick}
         >
@@ -26,10 +26,10 @@
                         avonni-primitive-tree-item__header
                     "
                     data-element-id="div-header"
-                    onfocusin={showBranchButtons}
-                    onfocusout={hideBranchButtons}
-                    onmouseenter={showBranchButtons}
-                    onmouseleave={hideBranchButtons}
+                    onfocusin={showActions}
+                    onfocusout={hideActions}
+                    onmouseenter={showActions}
+                    onmouseleave={hideActions}
                 >
                     <!-- Checkbox -->
                     <span
@@ -40,7 +40,7 @@
                     >
                         <input
                             checked={selected}
-                            disabled={disabled}
+                            disabled={checkboxDisabled}
                             id="checkbox"
                             type="checkbox"
                             data-element-id="input-checkbox"
@@ -134,10 +134,12 @@
                     <div
                         if:true={visibleActions.length}
                         class="
-                            avonni-primitive-tree-item__branch-buttons
+                            avonni-primitive-tree-item__actions
                             slds-grid slds-grid_vertical-align-center
+                            slds-m-right_x-small
                         "
-                        data-element-id="div-branch-buttons"
+                        data-element-id="div-actions"
+                        onmousedown={stopPropagation}
                     >
                         <!-- Action icons -->
                         <template for:each={buttonActions} for:item="action">
@@ -167,7 +169,7 @@
                             menu-alignment="auto"
                             variant="bare"
                             data-element-id="avonni-button-menu"
-                            onblur={hideBranchButtons}
+                            onblur={hideActions}
                             onclick={stopPropagation}
                             onclose={handleActionMenuClose}
                             onfocusout={stopPropagation}
@@ -331,6 +333,7 @@
                     expand-button-alternative-text={expandButtonAlternativeText}
                     expanded={item.expanded}
                     fields={item.fields}
+                    hidden-actions={item.hiddenActions}
                     href={item.href}
                     icon-name={item.iconName}
                     independent-multi-select={independentMultiSelect}
@@ -344,11 +347,15 @@
                     metatext={item.metatext}
                     name={item.name}
                     node-key={item.key}
+                    no-slots={item.noSlots}
                     role="treeitem"
                     save-button-icon-alternative-text={saveButtonIconAlternativeText}
                     selected={item.selected}
                     show-checkbox={showCheckbox}
+                    slottable-types={item.slottableTypes}
                     sortable={sortable}
+                    type={item.type}
+                    unselectable={item.unselectable}
                     data-element-id="avonni-primitive-tree-item"
                     data-key={item.key}
                 ></c-primitive-tree-item>

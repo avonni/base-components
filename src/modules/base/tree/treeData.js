@@ -50,6 +50,24 @@ export class TreeData {
     }
 
     /**
+     * Check if all selectable children of a node are selected.
+     *
+     * @param {object} node Node to check.
+     * @returns {boolean} True if all selectable children are selected, false otherwise.
+     */
+    areSelectableChildrenSelected(node) {
+        if (!node.children || !node.children.length) {
+            return node.selected || node.unselectable;
+        }
+        return node.children.every((child) => {
+            if (child.unselectable) {
+                return this.areSelectableChildrenSelected(child);
+            }
+            return child.selected;
+        });
+    }
+
+    /**
      * Select all children descendants of a node.
      *
      * @param {object} node Node to select all descendants of.
@@ -59,8 +77,10 @@ export class TreeData {
         node.children.forEach((child) => {
             const name = child.name;
             if (!selectedItems.includes(name)) {
-                selectedItems.push(name);
-                child.selected = true;
+                if (!child.unselectable) {
+                    selectedItems.push(name);
+                    child.selected = true;
+                }
                 this.cascadeSelectionDown(child, selectedItems);
             }
         });
@@ -76,12 +96,13 @@ export class TreeData {
         const node = item.treeNode;
         const name = node.name;
         if (!selectedItems.includes(name)) {
-            const allChildrenAreSelected = node.children.every((child) => {
-                return child.selected;
-            });
+            const allChildrenAreSelected =
+                this.areSelectableChildrenSelected(node);
             if (allChildrenAreSelected) {
-                node.selected = true;
-                selectedItems.push(name);
+                if (!node.unselectable) {
+                    node.selected = true;
+                    selectedItems.push(name);
+                }
                 const parent = this.getItem(item.parent);
                 if (parent) {
                     this.cascadeSelectionUp(parent, selectedItems);
@@ -101,7 +122,8 @@ export class TreeData {
         const item = this.getItemFromName(name);
         if (!item) return;
 
-        item.treeNode.selected = true;
+        item.treeNode.selected = !item.treeNode.unselectable;
+
         if (cascadeSelection) {
             this.cascadeSelectionDown(item.treeNode, selectedItems);
             const parent = this.getItem(item.parent);
@@ -437,9 +459,11 @@ export class TreeData {
      * @param {boolean} cascadeSelection If true, select all children of the item.
      */
     selectNode(node, selectedItems, cascadeSelection) {
-        node.selected = true;
-        if (!selectedItems.includes(node.name)) {
-            selectedItems.push(node.name);
+        if (!node.unselectable) {
+            node.selected = true;
+            if (!selectedItems.includes(node.name)) {
+                selectedItems.push(node.name);
+            }
         }
 
         if (cascadeSelection && node.children) {

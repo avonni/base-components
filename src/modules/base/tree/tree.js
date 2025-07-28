@@ -135,6 +135,7 @@ export default class Tree extends LightningElement {
     _isMultiSelect = false;
     @track _items = [];
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    _rootSlottableTypes = [];
     _selectedItems = [];
     _sortable = false;
 
@@ -384,6 +385,20 @@ export default class Tree extends LightningElement {
     }
 
     /**
+     * Array of types of items that can be slotted in the root of the tree.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get rootSlottableTypes() {
+        return this._rootSlottableTypes;
+    }
+    set rootSlottableTypes(value) {
+        this._rootSlottableTypes = normalizeArray(value);
+    }
+
+    /**
      * Array of tree item names to select and highlight.
      * If the tree is not multi-select:
      * * Only the first item of the list will be selected.
@@ -532,7 +547,7 @@ export default class Tree extends LightningElement {
             this.items.push(newItem);
         }
 
-        this.singleSelect(name);
+        this.singleSelect(newItem);
     }
 
     /**
@@ -552,8 +567,9 @@ export default class Tree extends LightningElement {
 
         this._dragState.position = 'center';
         const { key, treeNode, index } = this._dragState.item;
+        const isValidSorting = this.isSortingValid();
         this.callbackMap[key].removeBorder();
-        this.callbackMap[key].setBorder();
+        this.callbackMap[key].setBorder(undefined, undefined, isValidSorting);
         this._dragState.currentLevelItem = null;
 
         if (treeNode.children.length && !treeNode.nodeRef.expanded) {
@@ -666,7 +682,7 @@ export default class Tree extends LightningElement {
         const duplicated = this.treedata.cloneItem(items[index]);
         duplicated.name = name;
         items.splice(index + 1, 0, duplicated);
-        this.singleSelect(name);
+        this.singleSelect(duplicated);
         return duplicated;
     }
 
@@ -698,7 +714,7 @@ export default class Tree extends LightningElement {
             case 'Standard.Tree.Delete': {
                 const prevItem = this.treedata.findPrevNodeToFocus(item.index);
                 if (prevItem && !this.isMultiSelect) {
-                    this.singleSelect(prevItem.treeNode.name);
+                    this.singleSelect(prevItem.treeNode);
                 }
                 const { index, items } = this.getPositionInBranch(key);
                 items.splice(index, 1);
@@ -745,7 +761,9 @@ export default class Tree extends LightningElement {
         );
         if (children.length === this.children.length) {
             children.forEach((child, index) => {
-                child.selected = this.children[index].selected;
+                child.selected =
+                    this.children[index].selected &&
+                    !this.children[index].unselectable;
             });
         }
     }
@@ -846,6 +864,72 @@ export default class Tree extends LightningElement {
     }
 
     /**
+     * Verify if the item can be sorted into the given position.
+     *
+     * @param {string} position Position of the item being sorted. Can be 'top' or 'bottom'.
+     */
+    isSortingValid(position) {
+        const { currentLevelItem, item, key } = this._dragState;
+        const targetItem = currentLevelItem || item;
+
+        const { index, items } = this.getPositionInBranch(key);
+        const itemToSort = items[index];
+        const parent = this.treedata.getItem(targetItem.parent);
+
+        const { treeNode } = targetItem;
+        const { slottableTypes, noSlots, expanded, children } = treeNode;
+
+        const itemType = itemToSort?.type;
+
+        // Position
+        const isTop = position === 'top';
+        const isBottom = position === 'bottom';
+        const isMiddle = !isTop && !isBottom;
+
+        // Target item
+        const hasSlots = !noSlots;
+        const supportsType =
+            slottableTypes.length === 0 || slottableTypes.includes(itemType);
+        const isExpanded = expanded && children.length > 0;
+
+        const canInsertInCurrent = hasSlots && supportsType && isMiddle;
+        const canInsertAtBottomOfCurrent =
+            hasSlots &&
+            supportsType &&
+            isBottom &&
+            isExpanded &&
+            !currentLevelItem;
+
+        // Parent
+        const parentExists = !!parent;
+        const parentHasSlots = parentExists && !parent.noSlots;
+        const parentSupportsType =
+            parentExists &&
+            (parent.treeNode.slottableTypes.length === 0 ||
+                parent.treeNode.slottableTypes.includes(itemType));
+
+        const canInsertAtTopOfParent =
+            isTop && parentHasSlots && parentSupportsType;
+        const canInsertAtBottomOfParent =
+            isBottom && parentHasSlots && parentSupportsType;
+
+        // Root
+        const isSlottableInRoot =
+            this.rootSlottableTypes.length === 0 ||
+            this.rootSlottableTypes.includes(itemType);
+
+        const canInsertAtRoot = !isMiddle && !parentExists && isSlottableInRoot;
+
+        return (
+            canInsertInCurrent ||
+            canInsertAtBottomOfCurrent ||
+            canInsertAtTopOfParent ||
+            canInsertAtBottomOfParent ||
+            canInsertAtRoot
+        );
+    }
+
+    /**
      * Set the focus on the first item.
      */
     setFocusToFirstItem() {
@@ -937,6 +1021,25 @@ export default class Tree extends LightningElement {
     }
 
     /**
+     * Update the currently selected item when the tree is not multi-select.
+     *
+     * @param {string} name Name of the item to select.
+     * @param {Event} event Event that triggered the selection.
+     */
+    singleSelect(node, event) {
+        const isAlreadySelected =
+            this.selectedItems.length === 1 &&
+            this.selectedItems[0] === node.name;
+        if (this.isMultiSelect || isAlreadySelected || node.unselectable) {
+            return;
+        }
+
+        this._previousSelectedItems = [...this.selectedItems];
+        this._selectedItems = [node.name];
+        this.dispatchSelect(event);
+    }
+
+    /**
      * Display a bottom border on the hovered item, when an item is being dragged.
      *
      * @param {number} x The horizontal position of the mouse pointer.
@@ -956,7 +1059,12 @@ export default class Tree extends LightningElement {
             this.callbackMap[item.key].removeBorder();
             const level =
                 expanded && children.length ? item.level + 1 : item.level;
-            this.callbackMap[item.key].setBorder('bottom', level);
+            const isValidSorting = this.isSortingValid('bottom');
+            this.callbackMap[item.key].setBorder(
+                'bottom',
+                level,
+                isValidSorting
+            );
         } else if (hasMovedLeft) {
             this._dragState.initialX = x;
             // If the hovered item is not expanded...
@@ -975,8 +1083,13 @@ export default class Tree extends LightningElement {
 
             // ...move the border left, outward from the most nested item
             this._dragState.currentLevelItem = parentItem;
+            const isValidSorting = this.isSortingValid('bottom');
             const level = parentItem ? parentItem.level : 1;
-            this.callbackMap[item.key].setBorder('bottom', level);
+            this.callbackMap[item.key].setBorder(
+                'bottom',
+                level,
+                isValidSorting
+            );
         } else if (hasMovedRight) {
             // Move right, towards the most nested item
             this._dragState.initialX = x;
@@ -988,9 +1101,11 @@ export default class Tree extends LightningElement {
             if (expanded && lastChild) {
                 const lastChildItem = this.treedata.getItem(lastChild.key);
                 this._dragState.currentLevelItem = lastChildItem;
+                const isValidSorting = this.isSortingValid('bottom');
                 this.callbackMap[item.key].setBorder(
                     'bottom',
-                    lastChildItem.level
+                    lastChildItem.level,
+                    isValidSorting
                 );
             }
         }
@@ -1006,13 +1121,18 @@ export default class Tree extends LightningElement {
 
         const { initialX, item } = this._dragState;
         const hasMovedRight = x > initialX + 10;
+        const isValidSorting = this.isSortingValid('top');
 
         if (isNaN(initialX)) {
             // Show the top border
             this._dragState.position = 'top';
             this._dragState.initialX = x;
             this.callbackMap[item.key].removeBorder();
-            this.callbackMap[item.key].setBorder('top');
+            this.callbackMap[item.key].setBorder(
+                'top',
+                undefined,
+                isValidSorting
+            );
         } else if (hasMovedRight) {
             this._dragState.initialX = x;
             const prevItemInSameBranch = this.treedata.findPrevNodeInSameBranch(
@@ -1034,23 +1154,6 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Update the currently selected item when the tree is not multi-select.
-     *
-     * @param {string} name Name of the item to select.
-     * @param {Event} event Event that triggered the selection.
-     */
-    singleSelect(name, event) {
-        if (
-            this.isMultiSelect ||
-            (this.selectedItems.length === 1 && this.selectedItems[0] === name)
-        )
-            return;
-        this._previousSelectedItems = [...this.selectedItems];
-        this._selectedItems = [name];
-        this.dispatchSelect(event);
-    }
-
-    /**
      * Update the selection state of an item's parent. The parent is selected only if all its children are selected.
      *
      * @param {object} node Child item.
@@ -1058,9 +1161,9 @@ export default class Tree extends LightningElement {
     updateParentsSelection(node) {
         const parent = this.treedata.getItem(node.parent);
         if (parent) {
-            const children = parent.treeNode.children;
-            const selectedChildren = children.filter((child) => child.selected);
-            const isSelected = selectedChildren.length === children.length;
+            const isSelected =
+                this.treedata.areSelectableChildrenSelected(parent.treeNode) &&
+                !parent.treeNode.unselectable;
 
             if (isSelected !== parent.treeNode.selected) {
                 parent.treeNode.selected = isSelected;
@@ -1075,6 +1178,8 @@ export default class Tree extends LightningElement {
                     this.selectedItems.splice(selectedItemIndex, 1);
                 }
 
+                this.updateParentsSelection(parent);
+            } else if (parent.treeNode.unselectable) {
                 this.updateParentsSelection(parent);
             }
         }
@@ -1155,7 +1260,7 @@ export default class Tree extends LightningElement {
             item[property] = value;
         });
 
-        this.singleSelect(item.name);
+        this.singleSelect(item);
         this.initItems();
         this.dispatchChange({
             name: item.name,
@@ -1189,9 +1294,13 @@ export default class Tree extends LightningElement {
                     }
                 }
             } else if (target === 'anchor') {
+                if (node.unselectable) {
+                    return;
+                }
                 if (this.isMultiSelect) {
                     this._previousSelectedItems = [...this.selectedItems];
                     const cascadeSelection = !this.independentMultiSelect;
+
                     if (!node.selected) {
                         this.treedata.selectNode(
                             node,
@@ -1213,7 +1322,7 @@ export default class Tree extends LightningElement {
                     this.dispatchSelect(event);
                 } else {
                     this.setFocusToItem(item);
-                    this.singleSelect(node.name, event);
+                    this.singleSelect(node, event);
                 }
             }
         }
@@ -1379,53 +1488,56 @@ export default class Tree extends LightningElement {
         const currentItem = currentLevelItem || item;
 
         if (currentItem.key !== key) {
-            // Get the item, and its initial position in the tree
+            // Get the new position of the item in the tree
+            const { items, index } = this.getPositionInBranch(currentItem.key);
             const initialPosition = this.getPositionInBranch(key);
             const initialBranch = initialPosition.items;
             const initialIndex = initialPosition.index;
             const initialItem = this.treedata.cloneItem(
                 initialBranch[initialIndex]
             );
-            const temporaryName = generateUUID();
-            initialBranch[initialIndex].name = temporaryName;
 
-            // Get the new position of the item in the tree
-            const { items, index } = this.getPositionInBranch(currentItem.key);
+            if (this.isSortingValid(position)) {
+                const temporaryName = generateUUID();
+                initialBranch[initialIndex].name = temporaryName;
 
-            // Copy the item in the new position
-            switch (position) {
-                case 'top':
-                    items.splice(index, 0, initialItem);
-                    break;
-                case 'bottom':
-                    if (
-                        item.treeNode.expanded &&
-                        item.treeNode.children.length
-                    ) {
+                // Copy the item in the new position
+                switch (position) {
+                    case 'top':
+                        items.splice(index, 0, initialItem);
+                        break;
+                    case 'bottom':
+                        if (
+                            item.treeNode.expanded &&
+                            item.treeNode.children.length
+                        ) {
+                            items[index].items.unshift(initialItem);
+                        } else {
+                            items.splice(index + 1, 0, initialItem);
+                        }
+                        break;
+                    default:
                         items[index].items.unshift(initialItem);
-                    } else {
-                        items.splice(index + 1, 0, initialItem);
-                    }
-                    break;
-                default:
-                    items[index].items.unshift(initialItem);
-                    break;
-            }
-
-            // Remove the item from its original position
-            const initialItemNewIndex = initialPosition.items.findIndex(
-                (it) => {
-                    return it.name === temporaryName;
+                        break;
                 }
-            );
-            initialPosition.items.splice(initialItemNewIndex, 1);
-            this.singleSelect(initialItem.name);
-            this.initItems();
-            this.dispatchChange({
-                name: initialItem.name,
-                action: 'Standard.Tree.Move',
-                key
-            });
+
+                // Remove the item from its original position
+                const initialItemNewIndex = initialPosition.items.findIndex(
+                    (it) => {
+                        return it.name === temporaryName;
+                    }
+                );
+                initialPosition.items.splice(initialItemNewIndex, 1);
+                if (!initialItem.unselectable) {
+                    this.singleSelect(initialItem);
+                }
+                this.initItems();
+                this.dispatchChange({
+                    name: initialItem.name,
+                    action: 'Standard.Tree.Move',
+                    key
+                });
+            }
         }
 
         this._dragState = null;
