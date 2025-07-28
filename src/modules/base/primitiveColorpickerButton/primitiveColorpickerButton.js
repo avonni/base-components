@@ -6,7 +6,7 @@ const i18n = {
     a11yTriggerText: 'Choose a color. Current color: '
 };
 
-export default class PrimitiveColorPickerButton extends LightningElement {
+export default class PrimitiveColorpickerButton extends LightningElement {
     /**
      * The label for the cancel button.
      * @type {string}

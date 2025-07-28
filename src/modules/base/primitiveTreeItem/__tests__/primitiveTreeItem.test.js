@@ -230,6 +230,53 @@ describe('Primitive Tree Item', () => {
                     expect(buttons.style.opacity).toBe('0');
                 });
             });
+
+            it('Action buttons do not display actions that are in hiddenActions', () => {
+                element.hiddenActions = [
+                    'Standard.Tree.Edit',
+                    'Standard.Tree.Delete'
+                ];
+                element.actions = ACTIONS;
+                element.actionsWhenDisabled = ACTIONS;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const icons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="lightning-button-icon-action"]'
+                        );
+                        expect(icons).toHaveLength(1);
+                        expect(icons[0].alternativeText).toBe(ACTIONS[3].label);
+                        expect(icons[0].iconName).toBe(ACTIONS[3].iconName);
+                        expect(icons[0].name).toBe(ACTIONS[3].name);
+
+                        const menuItems = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="lightning-menu-item-action"]'
+                        );
+                        expect(menuItems).toHaveLength(1);
+                        expect(menuItems[0].label).toBe(ACTIONS[1].label);
+                        expect(menuItems[0].value).toBe(ACTIONS[1].name);
+                        expect(menuItems[0].iconName).toBe(ACTIONS[1].iconName);
+
+                        element.disabled = true;
+                    })
+                    .then(() => {
+                        const icons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="lightning-button-icon-action"]'
+                        );
+                        expect(icons).toHaveLength(1);
+                        expect(icons[0].alternativeText).toBe(ACTIONS[3].label);
+                        expect(icons[0].iconName).toBe(ACTIONS[3].iconName);
+                        expect(icons[0].name).toBe(ACTIONS[3].name);
+
+                        const menuItems = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="lightning-menu-item-action"]'
+                        );
+                        expect(menuItems).toHaveLength(1);
+                        expect(menuItems[0].label).toBe(ACTIONS[1].label);
+                        expect(menuItems[0].value).toBe(ACTIONS[1].name);
+                        expect(menuItems[0].iconName).toBe(ACTIONS[1].iconName);
+                    });
+            });
         });
 
         describe('actionsWhenDisabled', () => {
@@ -888,6 +935,144 @@ describe('Primitive Tree Item', () => {
                     expect(checkbox.checked).toBeFalsy();
                 });
             });
+
+            it('selected = false, with showCheckbox, some selected childItems and unselectable', () => {
+                element.unselectable = true;
+                element.independentMultiSelect = false;
+                element.selected = false;
+                element.showCheckbox = true;
+                element.childItems = [
+                    {
+                        label: 'not selected',
+                        name: 'notSelected'
+                    },
+                    {
+                        label: 'selected',
+                        name: 'selected',
+                        selected: true
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    expect(element.selected).toBeFalsy();
+                    expect(element.ariaSelected).toBe('false');
+                    const checkbox = element.shadowRoot.querySelector(
+                        '[data-element-id="input-checkbox"]'
+                    );
+                    expect(checkbox.indeterminate).toBeFalsy();
+                    expect(checkbox.checked).toBeFalsy();
+                });
+            });
+
+            it('selected = false, with showCheckbox, all selected childItems and unselectable', () => {
+                element.unselectable = true;
+                element.independentMultiSelect = false;
+                element.selected = false;
+                element.showCheckbox = true;
+                element.childItems = [
+                    {
+                        label: 'selected too',
+                        name: 'selectedToo',
+                        selected: true
+                    },
+                    {
+                        label: 'selected',
+                        name: 'selected',
+                        selected: true
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    expect(element.selected).toBeFalsy();
+                    expect(element.ariaSelected).toBe('false');
+                    const checkbox = element.shadowRoot.querySelector(
+                        '[data-element-id="input-checkbox"]'
+                    );
+                    expect(checkbox.indeterminate).toBeFalsy();
+                    expect(checkbox.checked).toBeFalsy();
+                });
+            });
+
+            it('selected = true, with showCheckbox, all selected childItems and unselectable direct child', () => {
+                element.independentMultiSelect = false;
+                element.selected = false;
+                element.showCheckbox = true;
+                element.childItems = [
+                    {
+                        label: 'selected too',
+                        name: 'selectedToo',
+                        unselectable: true,
+                        children: [
+                            {
+                                label: 'Child 1.1',
+                                href: '#child1-1',
+                                name: 'child1-1',
+                                selected: true
+                            }
+                        ]
+                    },
+                    {
+                        label: 'selected',
+                        name: 'selected',
+                        selected: true
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    expect(element.selected).toBeTruthy();
+                    expect(element.ariaSelected).toBe('true');
+                    const checkbox = element.shadowRoot.querySelector(
+                        '[data-element-id="input-checkbox"]'
+                    );
+                    expect(checkbox.indeterminate).toBeFalsy();
+                    expect(checkbox.checked).toBeTruthy();
+                });
+            });
+
+            it('selected = true, with showCheckbox, some selected childItems and unselectable direct child', () => {
+                element.independentMultiSelect = false;
+                element.selected = false;
+                element.showCheckbox = true;
+                element.childItems = [
+                    {
+                        label: 'selected too',
+                        name: 'selectedToo',
+                        unselectable: true,
+                        children: [
+                            {
+                                label: 'Child 1.1',
+                                href: '#child1-1',
+                                name: 'child1-1',
+                                unselectable: true,
+                                children: [
+                                    {
+                                        label: 'Child 1.1.1',
+                                        href: '#child1-1-1',
+                                        name: 'child1-1-1',
+                                        selected: false
+                                    }
+                                ],
+                                selected: true
+                            }
+                        ]
+                    },
+                    {
+                        label: 'selected',
+                        name: 'selected',
+                        selected: true
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    expect(element.selected).toBeFalsy();
+                    expect(element.ariaSelected).toBe('false');
+                    const checkbox = element.shadowRoot.querySelector(
+                        '[data-element-id="input-checkbox"]'
+                    );
+                    expect(checkbox.indeterminate).toBeTruthy();
+                    expect(checkbox.checked).toBeFalsy();
+                });
+            });
         });
 
         describe('sortable', () => {
@@ -928,6 +1113,20 @@ describe('Primitive Tree Item', () => {
                     const spy = jest.spyOn(event, 'preventDefault');
                     link.dispatchEvent(event);
                     expect(spy).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('unselectable', () => {
+            it('unselectable checkbox', () => {
+                element.unselectable = true;
+                element.showCheckbox = true;
+
+                return Promise.resolve().then(() => {
+                    const checkbox = element.shadowRoot.querySelector(
+                        '[data-element-id="input-checkbox"]'
+                    );
+                    expect(checkbox.disabled).toBeTruthy();
                 });
             });
         });
@@ -1431,6 +1630,41 @@ describe('Primitive Tree Item', () => {
                     );
                 });
             });
+
+            it('privateitemclick event on label, unselectable', () => {
+                element.unselectable = true;
+                element.showCheckbox = true;
+                element.childItems = ITEMS;
+                element.label = 'boubou';
+                const handler = jest.fn();
+                element.addEventListener('privateitemclick', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const checkbox = element.shadowRoot.querySelector(
+                            '[data-element-id="input-checkbox"]'
+                        );
+                        expect(checkbox.indeterminate).toBeFalsy();
+
+                        const label = element.shadowRoot.querySelector(
+                            '[data-element-id="span-label"]'
+                        );
+                        label.click();
+
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].detail.target).toBe(
+                            'anchor'
+                        );
+                        expect(element.selected).toBeFalsy();
+                    })
+                    .then(() => {
+                        const checkbox = element.shadowRoot.querySelector(
+                            '[data-element-id="input-checkbox"]'
+                        );
+                        expect(checkbox.indeterminate).toBeFalsy();
+                        expect(checkbox.checked).toBeFalsy();
+                    });
+            });
         });
 
         describe('privateitemloadmore', () => {
@@ -1571,30 +1805,52 @@ describe('Primitive Tree Item', () => {
                 const handler = jest.fn();
                 otherElement.addEventListener('privateregisteritem', handler);
                 document.body.appendChild(otherElement);
-
                 const item = otherElement.shadowRoot.querySelector(
                     '[data-element-id="div-item"]'
                 );
                 const callbacks = handler.mock.calls[0][0].detail;
 
-                callbacks.setBorder('top');
+                // Valid sorting
+                callbacks.setBorder('top', undefined, true);
                 expect(item.classList).toContain(
                     'avonni-primitive-tree-item__item_border-top'
                 );
-                callbacks.setBorder('bottom', 3);
+                callbacks.setBorder('bottom', 3, true);
                 expect(item.classList).toContain(
                     'avonni-primitive-tree-item__item_border-bottom'
                 );
                 expect(item.style.cssText).toBe(
                     '--avonni-tree-item-spacing-inline-start-border: 3rem;'
                 );
-                callbacks.setBorder();
+                callbacks.setBorder('', undefined, true);
                 expect(item.classList).toContain(
                     'avonni-primitive-tree-item__item_border'
                 );
                 callbacks.removeBorder();
                 expect(item.classList).not.toContain(
                     'avonni-primitive-tree-item__item_border'
+                );
+
+                // Invalid sorting
+                callbacks.setBorder('top', undefined, false);
+                expect(item.classList).toContain(
+                    'avonni-primitive-tree-item__item_border-top_invalid'
+                );
+                callbacks.setBorder('bottom', 3, false);
+                expect(item.classList).toContain(
+                    'avonni-primitive-tree-item__item_border-bottom_invalid'
+                );
+                expect(item.style.cssText).toBe(
+                    '--avonni-tree-item-spacing-inline-start-border: 3rem;'
+                );
+                callbacks.setBorder();
+                expect(item.classList).toContain(
+                    'avonni-primitive-tree-item__item_border_invalid'
+                );
+                otherElement.noSlots = true;
+                callbacks.setBorder('', undefined, true);
+                expect(item.classList).toContain(
+                    'avonni-primitive-tree-item__item_border_invalid'
                 );
             });
 
@@ -1609,6 +1865,20 @@ describe('Primitive Tree Item', () => {
                 const callbacks = handler.mock.calls[0][0].detail;
                 callbacks.setSelected(true);
                 expect(otherElement.selected).toBeTruthy();
+            });
+
+            it('privateregisteritem event, setSelected callback, unselectable', () => {
+                const otherElement = createElement('base-primitive-tree-item', {
+                    is: PrimitiveTreeItem
+                });
+                otherElement.unselectable = true;
+                const handler = jest.fn();
+                otherElement.addEventListener('privateregisteritem', handler);
+                document.body.appendChild(otherElement);
+
+                const callbacks = handler.mock.calls[0][0].detail;
+                callbacks.setSelected(true);
+                expect(otherElement.selected).toBeFalsy();
             });
         });
     });

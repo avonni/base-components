@@ -112,7 +112,7 @@
                     </div>
                 </template>
             </div>
-            <c-primitive-color-picker-button
+            <c-primitive-colorpicker-button
                 if:true={isColorpickerVisible}
                 cancel-button-label={cancelButtonLabel}
                 disabled={disabled}
@@ -120,7 +120,7 @@
                 value={selectedTextColorValue}
                 data-element-id="avonni-primitive-colorpicker-button"
                 onchange={handleColorUpdate}
-            ></c-primitive-color-picker-button>
+            ></c-primitive-colorpicker-button>
             <template for:each={computedCategories} for:item="category">
                 <ul
                     key={category.label}
