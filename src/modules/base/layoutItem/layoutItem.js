@@ -451,7 +451,7 @@ export default class LayoutItem extends LightningElement {
         if (host.style.flex !== newFlex) {
             host.style.flex = newFlex;
         }
-        if (host.style.order !== order) {
+        if (host.style.order !== String(order)) {
             host.style.order = order;
         }
     }
