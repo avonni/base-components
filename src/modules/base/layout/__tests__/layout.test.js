@@ -1,6 +1,6 @@
+import { callObserver } from 'c/resizeObserver';
 import { createElement } from 'lwc';
 import Layout from '../layout';
-import { callObserver } from 'c/resizeObserver';
 
 let element;
 describe('Layout', () => {
@@ -324,6 +324,7 @@ describe('Layout', () => {
                         'getBoundingClientRect'
                     ).mockReturnValue({ width: 1000 });
                     setItemsSize();
+                    jest.runAllTimers();
                     expect(callback).toHaveBeenCalledTimes(2);
                     expect(callback.mock.calls[1][0]).toBe('medium');
                 });
@@ -370,6 +371,7 @@ describe('Layout', () => {
 
                 callback.mockClear();
                 callObserver();
+                jest.runAllTimers();
                 expect(callback).toHaveBeenCalledTimes(1);
                 expect(callback.mock.calls[0][0]).toBe('small');
                 expect(sizeChangeHandler).toHaveBeenCalledTimes(1);
@@ -435,6 +437,7 @@ describe('Layout', () => {
 
                     callback.mockClear();
                     callObserver();
+                    jest.runAllTimers();
                     expect(callback).not.toHaveBeenCalled();
                     expect(sizeChangeHandler).not.toHaveBeenCalled();
                 });
