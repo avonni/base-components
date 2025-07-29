@@ -118,6 +118,10 @@
         --avonni-button-icon-bare-text-color,
         var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
     );
+    padding-left: var(--avonni-button-icon-bare-spacing-inline-start, 0);
+    padding-right: var(--avonni-button-icon-bare-spacing-inline-end, 0);
+    padding-top: var(--avonni-button-icon-bare-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-bare-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -177,6 +181,13 @@
         --avonni-button-icon-bare-inverse-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+    padding-right: var(--avonni-button-icon-bare-inverse-spacing-inline-end, 0);
+    padding-left: var(
+        --avonni-button-icon-bare-inverse-spacing-inline-start,
+        0
+    );
+    padding-top: var(--avonni-button-icon-bare-inverse-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-bare-inverse-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -218,6 +229,10 @@
     );
     --slds-c-button-color-border: var(--avonni-button-icon-base-color-border);
     --slds-c-button-text-color: var(--avonni-button-icon-base-text-color);
+    padding-right: var(--avonni-button-icon-base-spacing-inline-end, 0);
+    padding-left: var(--avonni-button-icon-base-spacing-inline-start, 0);
+    padding-top: var(--avonni-button-icon-base-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-base-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -271,6 +286,10 @@
         --avonni-button-icon-border-text-color,
         var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
     );
+    padding-right: var(--avonni-button-icon-border-spacing-inline-end, 0);
+    padding-left: var(--avonni-button-icon-border-spacing-inline-start, 0);
+    padding-top: var(--avonni-button-icon-border-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-border-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -326,6 +345,19 @@
     color: var(
         --avonni-button-icon-border-filled-text-color,
         var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
+    );
+    padding-right: var(
+        --avonni-button-icon-border-filled-spacing-inline-end,
+        0
+    );
+    padding-left: var(
+        --avonni-button-icon-border-filled-spacing-inline-start,
+        0
+    );
+    padding-top: var(--avonni-button-icon-border-filled-spacing-block-start, 0);
+    padding-bottom: var(
+        --avonni-button-icon-border-filled-spacing-block-end,
+        0
     );
 }
 
@@ -392,6 +424,22 @@
         --avonni-button-icon-border-inverse-text-color,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+    padding-right: var(
+        --avonni-button-icon-border-inverse-spacing-inline-end,
+        0
+    );
+    padding-left: var(
+        --avonni-button-icon-border-inverse-spacing-inline-start,
+        0
+    );
+    padding-top: var(
+        --avonni-button-icon-border-inverse-spacing-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-button-icon-border-inverse-spacing-block-end,
+        0
+    );
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -427,8 +475,6 @@
 }
 
 .avonni-button-icon_brand {
-    --slds-c-button-brand-spacing-inline-start: 0rem;
-    --slds-c-button-brand-spacing-inline-end: 0rem;
     --slds-c-button-brand-color-background: var(
         --avonni-button-icon-brand-color-background
     );
@@ -439,6 +485,16 @@
         --avonni-button-icon-brand-text-color,
         var(--slds-g-color-neutral-base-100, white)
     );
+    --slds-c-button-brand-spacing-inline-start: var(
+        --avonni-button-icon-brand-spacing-inline-start,
+        0rem
+    );
+    --slds-c-button-brand-spacing-inline-end: var(
+        --avonni-button-icon-brand-spacing-inline-end,
+        0rem
+    );
+    padding-top: var(--avonni-button-icon-brand-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-brand-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -477,8 +533,6 @@
 }
 
 .avonni-button-icon_brand-outline {
-    --slds-c-button-outline-brand-spacing-inline-start: 0rem;
-    --slds-c-button-outline-brand-spacing-inline-end: 0rem;
     --slds-c-button-outline-brand-color-background: var(
         --avonni-button-icon-outline-brand-color-background
     );
@@ -487,6 +541,19 @@
     );
     --slds-c-button-text-color: var(
         --avonni-button-icon-outline-brand-text-color
+    );
+    --slds-c-button-outline-brand-spacing-inline-start: var(
+        --avonni-button-icon-outline-brand-spacing-inline-start,
+        0rem
+    );
+    --slds-c-button-outline-brand-spacing-inline-end: var(
+        --avonni-button-icon-outline-brand-spacing-inline-end,
+        0rem
+    );
+    padding-top: var(--avonni-button-icon-outline-brand-spacing-block-start, 0);
+    padding-bottom: var(
+        --avonni-button-icon-outline-brand-spacing-block-end,
+        0
     );
 }
 
@@ -531,6 +598,10 @@
         --avonni-button-icon-container-text-color,
         var(--slds-s-button-color, var(--lwc-colorTextIconDefault, #747474))
     );
+    padding-left: var(--avonni-button-icon-container-spacing-inline-start, 0);
+    padding-right: var(--avonni-button-icon-container-spacing-inline-end, 0);
+    padding-top: var(--avonni-button-icon-container-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-container-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -582,8 +653,6 @@
 }
 
 .avonni-button-icon_destructive {
-    --slds-c-button-destructive-spacing-inline-start: 0rem;
-    --slds-c-button-destructive-spacing-inline-end: 0rem;
     --slds-c-button-destructive-color-background: var(
         --avonni-button-icon-destructive-color-background
     );
@@ -593,6 +662,16 @@
     --slds-c-button-destructive-text-color: var(
         --avonni-button-icon-destructive-text-color
     );
+    --slds-c-button-destructive-spacing-inline-start: var(
+        --avonni-button-icon-destructive-spacing-inline-start,
+        0rem
+    );
+    --slds-c-button-destructive-spacing-inline-end: var(
+        --avonni-button-icon-destructive-spacing-inline-end,
+        0rem
+    );
+    padding-top: var(--avonni-button-icon-destructive-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-destructive-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -622,8 +701,6 @@
 }
 
 .avonni-button-icon_destructive-text {
-    --slds-c-button-text-destructive-spacing-inline-start: 0rem;
-    --slds-c-button-text-destructive-spacing-inline-end: 0rem;
     --slds-c-button-text-destructive-color-background: var(
         --avonni-button-icon-text-destructive-color-background
     );
@@ -632,6 +709,22 @@
     );
     --slds-c-button-text-destructive-text-color: var(
         --avonni-button-icon-text-destructive-text-color
+    );
+    --slds-c-button-text-destructive-spacing-inline-start: var(
+        --avonni-button-icon-text-destructive-spacing-inline-start,
+        0rem
+    );
+    --slds-c-button-text-destructive-spacing-inline-end: var(
+        --avonni-button-icon-text-destructive-spacing-inline-end,
+        0rem
+    );
+    padding-top: var(
+        --avonni-button-icon-text-destructive-spacing-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-button-icon-text-destructive-spacing-block-end,
+        0
     );
 }
 
@@ -662,8 +755,6 @@
 }
 
 .avonni-button-icon_inverse {
-    --slds-c-button-inverse-spacing-inline-start: 0rem;
-    --slds-c-button-inverse-spacing-inline-end: 0rem;
     --slds-c-button-inverse-color-background: var(
         --avonni-button-icon-inverse-color-background
     );
@@ -673,6 +764,16 @@
     --slds-c-button-inverse-text-color: var(
         --avonni-button-icon-inverse-text-color
     );
+    --slds-c-button-inverse-spacing-inline-start: var(
+        --avonni-button-icon-inverse-spacing-inline-start,
+        0rem
+    );
+    --slds-c-button-inverse-spacing-inline-end: var(
+        --avonni-button-icon-inverse-spacing-inline-end,
+        0rem
+    );
+    padding-top: var(--avonni-button-icon-inverse-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-inverse-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -707,8 +808,6 @@
 }
 
 .avonni-button-icon_neutral {
-    --slds-c-button-neutral-spacing-inline-start: 0rem;
-    --slds-c-button-neutral-spacing-inline-end: 0rem;
     --slds-c-button-neutral-color-background: var(
         --avonni-button-icon-neutral-color-background
     );
@@ -716,6 +815,16 @@
         --avonni-button-icon-neutral-color-border
     );
     --slds-c-button-text-color: var(--avonni-button-icon-neutral-text-color);
+    --slds-c-button-neutral-spacing-inline-start: var(
+        --avonni-button-icon-neutral-spacing-inline-start,
+        0rem
+    );
+    --slds-c-button-neutral-spacing-inline-end: var(
+        --avonni-button-icon-neutral-spacing-inline-end,
+        0rem
+    );
+    padding-top: var(--avonni-button-icon-neutral-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-neutral-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
@@ -747,8 +856,6 @@
 }
 
 .avonni-button-icon_success {
-    --slds-c-button-success-spacing-inline-start: 0rem;
-    --slds-c-button-success-spacing-inline-end: 0rem;
     --slds-c-button-success-color-background: var(
         --avonni-button-icon-success-color-background
     );
@@ -758,6 +865,16 @@
     --slds-c-button-success-text-color: var(
         --avonni-button-icon-success-text-color
     );
+    --slds-c-button-success-spacing-inline-start: var(
+        --avonni-button-icon-success-spacing-inline-start,
+        0rem
+    );
+    --slds-c-button-success-spacing-inline-end: var(
+        --avonni-button-icon-success-spacing-inline-end,
+        0rem
+    );
+    padding-top: var(--avonni-button-icon-success-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-icon-success-spacing-block-end, 0);
 }
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
