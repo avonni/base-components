@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
@@ -6,6 +5,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const DIRECTIONS = {
     valid: ['row', 'row-reverse', 'column', 'column-reverse'],
@@ -44,8 +44,12 @@ export default class Layout extends LightningElement {
     _items = new Map();
     _name = generateUUID();
     _previousWidth;
+    _requestId;
     _resizeIsHandledByParent = false;
     _resizeObserver;
+    _resizeTimeoutId; // Add debounce timeout
+    _cachedWidth; // Cache the current width to avoid unnecessary updates
+    _pendingSizeUpdates = new Set(); // Track items that need size updates
 
     /*
      * ------------------------------------------------------------
@@ -81,15 +85,23 @@ export default class Layout extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this._resizeObserver && !this._resizeIsHandledByParent) {
-            this.initResizeObserver();
-        } else if (this._resizeIsHandledByParent) {
-            this.removeResizeObserver();
-        }
+        this.initResizeObserver();
     }
 
     disconnectedCallback() {
         this.removeResizeObserver();
+
+        // Clear any pending resize timeout
+        if (this._resizeTimeoutId) {
+            clearTimeout(this._resizeTimeoutId);
+            this._resizeTimeoutId = null;
+        }
+
+        // Clear any pending animation frame
+        if (this._requestId) {
+            cancelAnimationFrame(this._requestId);
+            this._requestId = null;
+        }
 
         /**
          * The event fired when the layout is removed from the DOM.
@@ -250,12 +262,19 @@ export default class Layout extends LightningElement {
      * Initialize the resize observer, triggered when the layout is resized.
      */
     initResizeObserver() {
-        if (!this.wrapper) return;
-        this.dispatchSizeChange();
+        if (
+            !this.wrapper ||
+            this._resizeObserver ||
+            this._resizeIsHandledByParent
+        ) {
+            return;
+        }
+        this._dispatchSizeChange();
+        this.debouncedSetItemsSize();
 
         this._resizeObserver = new AvonniResizeObserver(this.wrapper, () => {
-            this.dispatchSizeChange();
-            this.setItemsSize();
+            this._dispatchSizeChange();
+            this.debouncedSetItemsSize();
         });
     }
 
@@ -276,23 +295,58 @@ export default class Layout extends LightningElement {
      */
     setIsResizedByParent(value) {
         this._resizeIsHandledByParent = normalizeBoolean(value);
+
+        if (this._resizeIsHandledByParent) {
+            this.removeResizeObserver();
+        } else {
+            this.initResizeObserver();
+        }
+    }
+
+    /**
+     * Debounced version of setItemsSize to prevent excessive updates during rapid resize events.
+     */
+    debouncedSetItemsSize() {
+        if (this._disconnected) return;
+
+        // Clear any pending timeout
+        if (this._resizeTimeoutId) {
+            clearTimeout(this._resizeTimeoutId);
+        }
+
+        // Debounce resize updates to prevent excessive calculations
+        this._resizeTimeoutId = setTimeout(() => {
+            this.setItemsSize();
+        }, 16); // ~60fps debounce
     }
 
     /**
      * Set the size of the items.
      */
     setItemsSize() {
-        if (this._disconnected) {
-            return;
-        }
-        this._items.forEach((item) => {
-            item.setContainerSize(this.width);
+        if (this._disconnected) return;
+
+        const currentWidth = this.width;
+
+        // Skip if width hasn't changed
+        if (this._cachedWidth === currentWidth) return;
+
+        this._cachedWidth = currentWidth;
+
+        // We use requestAnimationFrame to improve rendering performance,
+        // especially when there is a lot of items.
+        cancelAnimationFrame(this._requestId);
+        this._requestId = requestAnimationFrame(() => {
+            // Batch all size updates in a single frame
+            this._items.forEach((item) => {
+                item.setContainerSize(currentWidth);
+            });
         });
     }
 
     /*
      * ------------------------------------------------------------
-     *  EVENT HANDLERS AND DISPATCHERS
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
 
@@ -306,11 +360,10 @@ export default class Layout extends LightningElement {
         const { name, callbacks } = event.detail;
         this._items.set(name, callbacks);
 
-        // We use requestAnimationFrame to improve rendering performance,
-        // especially when there is a lot of items.
-        requestAnimationFrame(() => {
-            callbacks.setContainerSize(this.width);
-        });
+        // Only update size if we have a cached width, otherwise wait for first resize
+        if (this._cachedWidth) {
+            this.debouncedSetItemsSize();
+        }
     }
 
     /**
@@ -324,29 +377,34 @@ export default class Layout extends LightningElement {
         this._items.delete(name);
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Dispatch the `sizechange` event when the layout width changes.
      */
-    dispatchSizeChange() {
+    _dispatchSizeChange() {
         const newWidth = this.width;
-        if (this._previousWidth !== newWidth) {
-            this._previousWidth = newWidth;
+        if (this._previousWidth === newWidth) return;
+        this._previousWidth = newWidth;
 
-            /**
-             * The event fired when the layout width changes.
-             *
-             * @event
-             * @name sizechange
-             * @param {string} width Current width of the layout: default, small, medium or large.
-             * @public
-             */
-            this.dispatchEvent(
-                new CustomEvent('sizechange', {
-                    detail: {
-                        width: newWidth
-                    }
-                })
-            );
-        }
+        /**
+         * The event fired when the layout width changes.
+         *
+         * @event
+         * @name sizechange
+         * @param {string} width Current width of the layout: default, small, medium or large.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('sizechange', {
+                detail: {
+                    width: newWidth
+                }
+            })
+        );
     }
 }

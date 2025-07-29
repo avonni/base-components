@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
-import { classListMutation } from 'c/utilsPrivate';
 import { generateUUID, normalizeString } from 'c/utils';
+import { classListMutation } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const ALIGNMENT_BUMPS = {
     default: undefined,
@@ -41,6 +41,8 @@ export default class LayoutItem extends LightningElement {
     _orders = { default: 0 };
     _sizes = { default: DEFAULT_SIZE };
     name = generateUUID();
+    _lastUpdateTime = 0; // Track last update time for throttling
+    _pendingUpdate = false; // Flag to prevent multiple pending updates
 
     /*
      * ------------------------------------------------------------
@@ -75,10 +77,13 @@ export default class LayoutItem extends LightningElement {
     }
 
     renderedCallback() {
-        this.updateClassAndStyle();
+        this.debouncedUpdateClassAndStyle();
     }
 
     disconnectedCallback() {
+        // Clear any pending updates
+        this._pendingUpdate = false;
+
         /**
          * The event fired when the layout item is removed from the DOM.
          *
@@ -120,7 +125,7 @@ export default class LayoutItem extends LightningElement {
         });
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -143,7 +148,7 @@ export default class LayoutItem extends LightningElement {
                 : normalizedNumber;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -165,7 +170,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.large = this.largeContainerOrder;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -184,7 +189,7 @@ export default class LayoutItem extends LightningElement {
         this._sizes.large = this.largeContainerSize;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -206,7 +211,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.medium = this.mediumContainerOrder;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -225,7 +230,7 @@ export default class LayoutItem extends LightningElement {
         this._sizes.medium = this.mediumContainerSize;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -247,7 +252,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.default = this.order;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -270,7 +275,7 @@ export default class LayoutItem extends LightningElement {
                 : normalizedNumber;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -294,7 +299,7 @@ export default class LayoutItem extends LightningElement {
         this._sizes.default = this.size;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -316,7 +321,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.small = this.smallContainerOrder;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -335,7 +340,7 @@ export default class LayoutItem extends LightningElement {
         this._sizes.small = this.smallContainerSize;
 
         if (this._connected) {
-            this.updateClassAndStyle();
+            this.debouncedUpdateClassAndStyle();
         }
     }
 
@@ -392,18 +397,48 @@ export default class LayoutItem extends LightningElement {
      * @public
      */
     setContainerSize(width) {
+        const oldContainerWidth = this._containerWidth;
         this._containerWidth = normalizeString(width, {
             fallbackValue: CONTAINER_WIDTHS.default,
             validValues: CONTAINER_WIDTHS.valid
         });
 
-        this.updateClassAndStyle();
+        if (oldContainerWidth === this._containerWidth) return;
+
+        this.debouncedUpdateClassAndStyle();
+    }
+
+    /**
+     * Debounced version of updateClassAndStyle to prevent excessive DOM updates.
+     */
+    debouncedUpdateClassAndStyle() {
+        if (this._pendingUpdate) return;
+
+        const now = Date.now();
+        if (now - this._lastUpdateTime < 16) {
+            // ~60fps throttle
+            this._pendingUpdate = true;
+            requestAnimationFrame(() => {
+                this.updateClassAndStyle();
+                this._pendingUpdate = false;
+                this._lastUpdateTime = Date.now();
+            });
+        } else {
+            this.updateClassAndStyle();
+            this._lastUpdateTime = now;
+        }
     }
 
     /**
      * Update the class and style of the item.
      */
     updateClassAndStyle() {
+        // Batch DOM updates
+        const host = this.template.host;
+        const flexBasis = this.getCurrentValue(this._sizes);
+        const order = this.getCurrentValue(this._orders);
+
+        // Update classes
         classListMutation(this.classList, {
             'slds-col_bump-left': this.alignmentBump === 'left',
             'slds-col_bump-right': this.alignmentBump === 'right',
@@ -411,8 +446,13 @@ export default class LayoutItem extends LightningElement {
             'slds-col_bump-bottom': this.alignmentBump === 'bottom'
         });
 
-        const flexBasis = this.getCurrentValue(this._sizes);
-        this.template.host.style.flex = `${this.grow} ${this.shrink} ${flexBasis}`;
-        this.template.host.style.order = this.getCurrentValue(this._orders);
+        // Update styles in a single operation
+        const newFlex = `${this.grow} ${this.shrink} ${flexBasis}`;
+        if (host.style.flex !== newFlex) {
+            host.style.flex = newFlex;
+        }
+        if (host.style.order !== order) {
+            host.style.order = order;
+        }
     }
 }
