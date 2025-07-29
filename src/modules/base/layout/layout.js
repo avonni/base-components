@@ -85,6 +85,7 @@ export default class Layout extends LightningElement {
     }
 
     renderedCallback() {
+        this._initializeCachedWidth();
         this.initResizeObserver();
     }
 
@@ -279,6 +280,16 @@ export default class Layout extends LightningElement {
     }
 
     /**
+     * Initialize the cached width immediately if not already set.
+     * This ensures newly connected items can be sized immediately.
+     */
+    _initializeCachedWidth() {
+        if (this._cachedWidth === undefined && this.wrapper) {
+            this._cachedWidth = this.width;
+        }
+    }
+
+    /**
      * Remove the resize observer.
      */
     removeResizeObserver() {
@@ -298,6 +309,8 @@ export default class Layout extends LightningElement {
 
         if (this._resizeIsHandledByParent) {
             this.removeResizeObserver();
+            // Initialize cached width even when parent handles resizing
+            this._initializeCachedWidth();
         } else {
             this.initResizeObserver();
         }
@@ -328,7 +341,7 @@ export default class Layout extends LightningElement {
 
         const currentWidth = this.width;
 
-        // Skip if width hasn't changed
+        // Skip if width hasn't changed and we have a cached width
         if (this._cachedWidth === currentWidth) return;
 
         this._cachedWidth = currentWidth;
@@ -360,9 +373,12 @@ export default class Layout extends LightningElement {
         const { name, callbacks } = event.detail;
         this._items.set(name, callbacks);
 
-        // Only update size if we have a cached width, otherwise wait for first resize
+        // Initialize cached width if not already set
+        this._initializeCachedWidth();
+
+        // Size the newly connected item immediately
         if (this._cachedWidth) {
-            this.debouncedSetItemsSize();
+            callbacks.setContainerSize(this._cachedWidth);
         }
     }
 

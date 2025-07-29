@@ -442,6 +442,51 @@ describe('Layout', () => {
                     expect(sizeChangeHandler).not.toHaveBeenCalled();
                 });
             });
+
+            it('If true is passed to setIsResizedByParent(), newly connected items still get sized immediately', () => {
+                clearDOM();
+                createLayout();
+
+                const connexionHandler = jest.fn((event) => {
+                    event.detail.callbacks.setIsResizedByParent(true);
+                });
+                element.addEventListener(
+                    'privatelayoutconnected',
+                    connexionHandler
+                );
+                addLayoutToDOM();
+
+                return Promise.resolve().then(() => {
+                    const callback = jest.fn();
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+
+                    // Mock the width to ensure we have a known value
+                    jest.spyOn(
+                        wrapper,
+                        'getBoundingClientRect'
+                    ).mockReturnValue({
+                        width: 500
+                    });
+
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: callback
+                                }
+                            }
+                        })
+                    );
+
+                    // The item should be sized immediately, even with parent resize handling
+                    expect(callback).toHaveBeenCalledTimes(1);
+                    // The width will be 'default' because the mock was set up after the initial width calculation
+                    expect(callback.mock.calls[0][0]).toBe('default');
+                });
+            });
         });
     });
 });
