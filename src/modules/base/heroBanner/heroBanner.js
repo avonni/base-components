@@ -1,40 +1,40 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeString } from 'c/utils';
 
-const HORIZONTAL_ALIGNMENT_OPTIONS = {
-    valid: ['left', 'center', 'right'],
-    default: 'left'
-};
-const VERTICAL_ALIGNMENT_OPTIONS = {
-    valid: ['top', 'center', 'bottom'],
-    default: 'center'
-};
-
 const BUTTON_VARIANTS = {
     valid: [
         'base',
-        'neutral',
         'brand',
         'brand-outline',
         'destructive',
         'destructive-text',
         'inverse',
+        'neutral',
         'success'
     ],
     default: 'neutral'
 };
 
+const DEFAULT_CONTENT_WIDTH = 100;
+const DEFAULT_HEIGHT = 400;
+const DEFAULT_MAX_WIDTH = 960;
+
+const HORIZONTAL_ALIGNMENT_OPTIONS = {
+    valid: ['center', 'left', 'right'],
+    default: 'left'
+};
+
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    valid: ['large', 'medium', 'small', 'x-small', 'xx-small'],
     default: 'medium'
 };
 
 const IMAGE_LAYOUTS = {
     valid: [
-        'scale-to-fill',
         'fit',
+        'scale-to-fill',
         'tile',
         'tile-horizontally',
         'tile-vertically'
@@ -44,22 +44,23 @@ const IMAGE_LAYOUTS = {
 
 const IMAGE_POSITIONS = {
     valid: [
+        'bottom-center',
+        'bottom-left',
+        'bottom-right',
         'center',
         'left',
         'right',
-        'top-left',
-        'top-right',
         'top-center',
-        'bottom-center',
-        'bottom-left',
-        'bottom-right'
+        'top-left',
+        'top-right'
     ],
     default: 'center'
 };
 
-const DEFAULT_HEIGHT = 400;
-const DEFAULT_MAX_WIDTH = 960;
-const DEFAULT_CONTENT_WIDTH = 100;
+const VERTICAL_ALIGNMENT_OPTIONS = {
+    valid: ['bottom', 'center', 'top'],
+    default: 'center'
+};
 
 /**
  * @class
@@ -139,9 +140,9 @@ export default class HeroBanner extends LightningElement {
      */
     @api title;
 
-    _contentWidth = DEFAULT_CONTENT_WIDTH;
     _contentHorizontalAlignment = HORIZONTAL_ALIGNMENT_OPTIONS.default;
     _contentVerticalAlignment = VERTICAL_ALIGNMENT_OPTIONS.default;
+    _contentWidth = DEFAULT_CONTENT_WIDTH;
     _height = DEFAULT_HEIGHT;
     _imageLayout = IMAGE_LAYOUTS.default;
     _imagePosition = IMAGE_POSITIONS.default;
@@ -156,6 +157,12 @@ export default class HeroBanner extends LightningElement {
     _rendered = false;
     showSlot = true;
     showFooterSlot = true;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         if (!this._rendered) {
@@ -207,7 +214,6 @@ export default class HeroBanner extends LightningElement {
     get contentHorizontalAlignment() {
         return this._contentHorizontalAlignment;
     }
-
     set contentHorizontalAlignment(alignment) {
         this._contentHorizontalAlignment = normalizeString(alignment, {
             fallbackValue: HORIZONTAL_ALIGNMENT_OPTIONS.default,
@@ -227,7 +233,6 @@ export default class HeroBanner extends LightningElement {
     get contentVerticalAlignment() {
         return this._contentVerticalAlignment;
     }
-
     set contentVerticalAlignment(alignment) {
         this._contentVerticalAlignment = normalizeString(alignment, {
             fallbackValue: VERTICAL_ALIGNMENT_OPTIONS.default,
@@ -246,7 +251,6 @@ export default class HeroBanner extends LightningElement {
     get contentWidth() {
         return this._contentWidth;
     }
-
     set contentWidth(value) {
         const number = isNaN(parseInt(value, 10))
             ? DEFAULT_CONTENT_WIDTH
@@ -265,7 +269,6 @@ export default class HeroBanner extends LightningElement {
     get height() {
         return this._height;
     }
-
     set height(value) {
         const number = isNaN(parseInt(value, 10)) ? DEFAULT_HEIGHT : value;
         this._height = number;
@@ -282,7 +285,6 @@ export default class HeroBanner extends LightningElement {
     get imageLayout() {
         return this._imageLayout;
     }
-
     set imageLayout(layout) {
         this._imageLayout = normalizeString(layout, {
             fallbackValue: IMAGE_LAYOUTS.default,
@@ -301,7 +303,6 @@ export default class HeroBanner extends LightningElement {
     get imagePosition() {
         return this._imagePosition;
     }
-
     set imagePosition(position) {
         this._imagePosition = normalizeString(position, {
             fallbackValue: IMAGE_POSITIONS.default,
@@ -320,7 +321,6 @@ export default class HeroBanner extends LightningElement {
     get maxWidth() {
         return this._maxWidth;
     }
-
     set maxWidth(value) {
         const number = isNaN(parseInt(value, 10)) ? DEFAULT_MAX_WIDTH : value;
         this._maxWidth = number;
@@ -337,7 +337,6 @@ export default class HeroBanner extends LightningElement {
     get primaryButtonIconPosition() {
         return this._primaryButtonIconPosition;
     }
-
     set primaryButtonIconPosition(primaryButtonIconPosition) {
         this._primaryButtonIconPosition = normalizeString(
             primaryButtonIconPosition,
@@ -359,7 +358,6 @@ export default class HeroBanner extends LightningElement {
     get primaryButtonIconSize() {
         return this._primaryButtonIconSize;
     }
-
     set primaryButtonIconSize(size) {
         this._primaryButtonIconSize = normalizeString(size, {
             fallbackValue: ICON_SIZES.default,
@@ -378,7 +376,6 @@ export default class HeroBanner extends LightningElement {
     get primaryButtonVariant() {
         return this._primaryButtonVariant;
     }
-
     set primaryButtonVariant(primaryButtonVariant) {
         this._primaryButtonVariant = normalizeString(primaryButtonVariant, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -397,7 +394,6 @@ export default class HeroBanner extends LightningElement {
     get secondaryButtonIconPosition() {
         return this._secondaryButtonIconPosition;
     }
-
     set secondaryButtonIconPosition(secondaryButtonIconPosition) {
         this._secondaryButtonIconPosition = normalizeString(
             secondaryButtonIconPosition,
@@ -419,7 +415,6 @@ export default class HeroBanner extends LightningElement {
     get secondaryButtonIconSize() {
         return this._secondaryButtonIconSize;
     }
-
     set secondaryButtonIconSize(size) {
         this._secondaryButtonIconSize = normalizeString(size, {
             fallbackValue: ICON_SIZES.default,
@@ -438,7 +433,6 @@ export default class HeroBanner extends LightningElement {
     get secondaryButtonVariant() {
         return this._secondaryButtonVariant;
     }
-
     set secondaryButtonVariant(secondaryButtonVariant) {
         this._secondaryButtonVariant = normalizeString(secondaryButtonVariant, {
             fallbackValue: BUTTON_VARIANTS.default,
@@ -538,7 +532,7 @@ export default class HeroBanner extends LightningElement {
      *
      * @type {string}
      */
-    get computedContentContainer() {
+    get computedContentContainerClass() {
         return classSet('slds-var-p-around_medium')
             .add({
                 'avonni-hero-banner__text-container-without-slot_height':
@@ -547,7 +541,7 @@ export default class HeroBanner extends LightningElement {
                     this.showFooterSlot
             })
             .add(
-                `avonni-hero-banner__vertical-alignment_${this._contentVerticalAlignment}`
+                `avonni-hero-banner__vertical-alignment_${this.contentVerticalAlignment}`
             )
             .toString();
     }
@@ -557,10 +551,10 @@ export default class HeroBanner extends LightningElement {
      *
      * @type {string}
      */
-    get computedWidthContainer() {
+    get computedWidthContainerClass() {
         return classSet('slds-grid')
             .add(
-                `avonni-hero-banner__horizontal-alignment_${this._contentHorizontalAlignment}`
+                `avonni-hero-banner__horizontal-alignment_${this.contentHorizontalAlignment}`
             )
             .toString();
     }
@@ -573,7 +567,7 @@ export default class HeroBanner extends LightningElement {
     get computedButtonAlignmentClass() {
         return classSet('slds-grid slds-m-top_small')
             .add(
-                `avonni-hero-banner__horizontal-alignment_${this._contentHorizontalAlignment}`
+                `avonni-hero-banner__horizontal-alignment_${this.contentHorizontalAlignment}`
             )
             .toString();
     }

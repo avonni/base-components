@@ -6,14 +6,16 @@ import {
     normalizeString
 } from 'c/utils';
 
+const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
 
 export default class PrimitiveRelationshipGraphItem extends LightningElement {
-    @api avatarSrc;
+    @api actionsMenuAlternativeText = DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT;
     @api avatarFallbackIconName;
+    @api avatarSrc;
     @api contentData;
     @api hideDefaultActions = false;
     @api href;
@@ -28,7 +30,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     _selected = false;
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
-    wrapperClass;
+    computedWrapperClass;
 
     /*
      * -------------------------------------------------------------
@@ -129,12 +131,10 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
 
     get ariaExpanded() {
-        if (this.groups.length > 0 && !this.selected) {
-            return false;
-        } else if (this.groups.length > 0 && this.selected) {
-            return true;
+        if (!this.groups.length) {
+            return undefined;
         }
-        return undefined;
+        return this.selected;
     }
 
     get displayAsLink() {
@@ -153,7 +153,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         if (this.groups.length === 0) return false;
 
         return this.groups.some(
-            (group) => Array.isArray(group.items) && group.items.length > 0
+            (group) => Array.isArray(group.items) && group.items.length
         );
     }
 
@@ -163,8 +163,11 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Update the classes of the component.
+     */
     updateClasses() {
-        this.wrapperClass = classSet(
+        this.computedWrapperClass = classSet(
             'slds-box slds-box_small slds-m-bottom_small slds-is-relative item'
         ).add({
             'item_has-groups': this.groups.length > 0,
@@ -182,6 +185,11 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle the action click event.
+     *
+     * @param {Event} event
+     */
     handleActionClick(event) {
         const name = event.currentTarget.value;
 
@@ -211,6 +219,11 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         }
     }
 
+    /**
+     * Handle the click event.
+     *
+     * @param {Event} event
+     */
     handleClick(event) {
         // Stop event if click was on action menu button or if pressed key is not Enter of Space bar
         const target = event.target.tagName;

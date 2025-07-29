@@ -118,13 +118,13 @@ export default class ButtonMenu extends PrimitiveButton {
      * @type {string}
      */
     /**
-     * Message displayed while the menu is in the loading state.
+     * Message displayed while the button is in the loading state.
      *
+     * @name loadingStateAlternativeText
      * @public
      * @type {string}
-     * @default Loading
+     * @default Loading...
      */
-    @api loadingStateAlternativeText = i18n.loading;
     /**
      * The Lightning Design System name of the icon positionned before the label.
      *

@@ -34,6 +34,28 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        closedIconAlternativeText: {
+            name: 'closed-icon-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the closed icon.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Closed' }
+            }
+        },
+        openedIconAlternativeText: {
+            name: 'opened-icon-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text for the opened icon.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Opened' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -49,7 +71,9 @@ export default {
     },
     args: {
         closed: false,
+        closedIconAlternativeText: 'Closed',
         collapsible: false,
+        openedIconAlternativeText: 'Opened',
         variant: 'shaded'
     }
 };

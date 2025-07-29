@@ -31,8 +31,8 @@ const CELL_SELECTOR = '[data-element-id="div-cell"]';
  */
 export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _columns = [];
-    _start = DEFAULT_START_DATE;
     _orientation = ORIENTATIONS.default;
+    _start = DEFAULT_START_DATE;
 
     _eventData;
     _initialState = {};
@@ -47,6 +47,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     headersAreLoading = true;
     simplifiedResources = [];
     smallestHeader;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -264,7 +270,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      *
      * @type {string}
      */
-    get cellClass() {
+    get computedCellClass() {
         return classSet('slds-p-around_none slds-wrap avonni-scheduler__cell')
             .add({
                 'avonni-scheduler__flex-col slds-border_right avonni-scheduler__cell-horizontal avonni-scheduler__border_bottom':
@@ -277,12 +283,134 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the first column.
+     *
+     * @type {string}
+     */
+    get computedFirstColClass() {
+        return classSet(
+            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__main-border_left avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
+        )
+            .add({
+                'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
+                    this.isVertical,
+                'avonni-scheduler__first-col_horizontal':
+                    !this.isVertical && !this._isCollapsed,
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'avonni-scheduler__border_right':
+                    !this.showSplitter && !this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the timeline resources.
+     *
+     * @type {string}
+     */
+    get computedResourceClass() {
+        return classSet('slds-grid slds-is-relative')
+            .add({
+                'slds-grid_vertical avonni-scheduler__flex-col': this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the timeline body.
+     *
+     * @type {string}
+     */
+    get computedScheduleBodyClass() {
+        return classSet('slds-is-relative')
+            .add({
+                'slds-grid avonni-scheduler__schedule-body_vertical':
+                    this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the timeline column.
+     *
+     * @type {string}
+     */
+    get computedScheduleColClass() {
+        return classSet(
+            'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
+        )
+            .add({
+                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the nested schedule column.
+     *
+     * @type {string}
+     */
+    get computedScheduleNestedColClass() {
+        return classSet('avonni-scheduler__flex-col')
+            .add({
+                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the timeline wrapper.
+     *
+     * @type {string}
+     */
+    get computedScheduleWrapperClass() {
+        return classSet(
+            'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper'
+        )
+            .add({
+                'avonni-scheduler__schedule-wrapper_vertical slds-border_top':
+                    this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes for the splitter.
+     *
+     * @type {string}
+     */
+    get computedSplitterClass() {
+        return classSet(super.splitterClass)
+            .add({
+                'avonni-scheduler__vertical-splitter': this.isVertical
+            })
+            .toString();
+    }
+
+    /**
      * Start date as a Luxon DateTime object, including the timezone.
      *
      * @type {DateTime}
      */
     get computedStart() {
         return this.createDate(this.start);
+    }
+
+    /**
+     * Computed CSS classes for the vertical resource header cells.
+     *
+     * @type {string}
+     */
+    get computedVerticalResourceHeaderCellClass() {
+        return classSet(
+            'avonni-scheduler__border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
+        )
+            .add({
+                'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':
+                    this.zoomToFit
+            })
+            .toString();
     }
 
     /**
@@ -327,28 +455,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Computed CSS classes for the first column.
-     *
-     * @type {string}
-     */
-    get firstColClass() {
-        return classSet(
-            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__main-border_left avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
-        )
-            .add({
-                'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
-                    this.isVertical,
-                'avonni-scheduler__first-col_horizontal':
-                    !this.isVertical && !this._isCollapsed,
-                'avonni-scheduler__panel_collapsed': this._isCollapsed,
-                'avonni-scheduler__panel_expanded': this._isExpanded,
-                'avonni-scheduler__border_right':
-                    !this.showSplitter && !this.isVertical
-            })
-            .toString();
-    }
-
-    /**
      * First column width, in pixels.
      *
      * @type {number}
@@ -382,19 +488,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Computed CSS classes for the timeline resources.
-     *
-     * @type {string}
-     */
-    get resourceClass() {
-        return classSet('slds-grid slds-is-relative')
-            .add({
-                'slds-grid_vertical avonni-scheduler__flex-col': this.isVertical
-            })
-            .toString();
-    }
-
-    /**
      * HTML element of the timeline body.
      *
      * @type {HTMLElement}
@@ -403,35 +496,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return this.template.querySelector(
             '[data-element-id="div-schedule-body"]'
         );
-    }
-
-    /**
-     * Computed CSS classes for the timeline body.
-     *
-     * @type {string}
-     */
-    get scheduleBodyClass() {
-        return classSet('slds-is-relative')
-            .add({
-                'slds-grid avonni-scheduler__schedule-body_vertical':
-                    this.isVertical
-            })
-            .toString();
-    }
-
-    /**
-     * Computed CSS classes for the timeline column.
-     *
-     * @type {string}
-     */
-    get scheduleColClass() {
-        return classSet(
-            'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
-        )
-            .add({
-                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
-            })
-            .toString();
     }
 
     /**
@@ -446,39 +510,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return 0;
     }
 
-    /**
-     * Computed CSS classes for the nested schedule column.
-     *
-     * @type {string}
-     */
-    get scheduleNestedColClass() {
-        return classSet('avonni-scheduler__flex-col')
-            .add({
-                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
-            })
-            .toString();
-    }
-
     get scheduleWrapper() {
         return this.template.querySelector(
             '[data-element-id="div-schedule-wrapper"]'
         );
-    }
-
-    /**
-     * Computed CSS classes for the timeline wrapper.
-     *
-     * @type {string}
-     */
-    get scheduleWrapperClass() {
-        return classSet(
-            'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper'
-        )
-            .add({
-                'avonni-scheduler__schedule-wrapper_vertical slds-border_top':
-                    this.isVertical
-            })
-            .toString();
     }
 
     /**
@@ -509,14 +544,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return this.createDate(headerCellEnd).diff(header.start).milliseconds;
     }
 
-    get splitterClass() {
-        return classSet(super.splitterClass)
-            .add({
-                'avonni-scheduler__vertical-splitter': this.isVertical
-            })
-            .toString();
-    }
-
     /**
      * Timezone label, in the format GMT+0.
      *
@@ -525,22 +552,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     get timezoneLabel() {
         const timezone = this.computedStart.toFormat('Z');
         return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
-    }
-
-    /**
-     * Computed CSS classes for the vertical resource header cells.
-     *
-     * @type {string}
-     */
-    get verticalResourceHeaderCellClass() {
-        return classSet(
-            'avonni-scheduler__border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
-        )
-            .add({
-                'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':
-                    this.zoomToFit
-            })
-            .toString();
     }
 
     /**
@@ -671,6 +682,55 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
 
     /**
+     * Find the event occurrences for a given resource name.
+     *
+     * @param {string} name The unique name of the resource.
+     * @returns {object[]} Array of occurrence objects.
+     */
+    getOccurrencesFromResourceName(name) {
+        const occurrences = [];
+        this.computedEvents.forEach((event) => {
+            if (!event.disabled) {
+                const occ = event.occurrences.filter((occurrence) => {
+                    return occurrence.resourceName === name;
+                });
+                occurrences.push(occ);
+            }
+        });
+
+        return occurrences.flat();
+    }
+
+    /**
+     * Find a computed resource from its name.
+     *
+     * @param {string} name The unique name of the resource.
+     * @returns {SchedulerResource} The computed resource object.
+     */
+    getResourceFromName(name) {
+        return this.computedResources.find(
+            (resource) => resource.name === name
+        );
+    }
+
+    /**
+     * Get the HTML element of a resource, from its position.
+     *
+     * @param {number} x Position of the resource on the X axis.
+     * @param {number} y Position of the resource on the Y axis.
+     * @returns {HTMLElement} Resource element.
+     */
+    getResourceElementFromPosition(x, y) {
+        const position = this.isVertical ? x : y;
+        const selector = '[data-element-id="div-resource"]';
+
+        if (this.isVertical) {
+            return getElementOnXAxis(this.template, position, selector);
+        }
+        return getElementOnYAxis(this.template, position, selector);
+    }
+
+    /**
      * Initialize the event data.
      */
     initEvents() {
@@ -767,55 +827,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 this.updateCellWidth();
             });
         }
-    }
-
-    /**
-     * Find the event occurrences for a given resource name.
-     *
-     * @param {string} name The unique name of the resource.
-     * @returns {object[]} Array of occurrence objects.
-     */
-    getOccurrencesFromResourceName(name) {
-        const occurrences = [];
-        this.computedEvents.forEach((event) => {
-            if (!event.disabled) {
-                const occ = event.occurrences.filter((occurrence) => {
-                    return occurrence.resourceName === name;
-                });
-                occurrences.push(occ);
-            }
-        });
-
-        return occurrences.flat();
-    }
-
-    /**
-     * Get the HTML element of a resource, from its position.
-     *
-     * @param {number} x Position of the resource on the X axis.
-     * @param {number} y Position of the resource on the Y axis.
-     * @returns {HTMLElement} Resource element.
-     */
-    getResourceElementFromPosition(x, y) {
-        const position = this.isVertical ? x : y;
-        const selector = '[data-element-id="div-resource"]';
-
-        if (this.isVertical) {
-            return getElementOnXAxis(this.template, position, selector);
-        }
-        return getElementOnYAxis(this.template, position, selector);
-    }
-
-    /**
-     * Find a computed resource from its name.
-     *
-     * @param {string} name The unique name of the resource.
-     * @returns {SchedulerResource} The computed resource object.
-     */
-    getResourceFromName(name) {
-        return this.computedResources.find(
-            (resource) => resource.name === name
-        );
     }
 
     /**
@@ -925,6 +936,23 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
+     * Save the datatable rows heights and use them as a min-height for the schedule rows.
+     */
+    updateRowsHeight() {
+        if (this.isVertical || (!this.isVertical && !this.datatable)) {
+            return;
+        }
+
+        this._rowsHeight = [];
+        this.simplifiedResources.forEach((resource) => {
+            const resourceName = resource.name;
+            const height = this.datatable.getRowHeight(resourceName);
+            resource.minHeight = height;
+            this._rowsHeight.push({ resourceName, height });
+        });
+    }
+
+    /**
      * Set the resources height and cell width.
      */
     updateResourcesStyle() {
@@ -972,23 +1000,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 resourceElement.style = style;
             });
         }
-    }
-
-    /**
-     * Save the datatable rows heights and use them as a min-height for the schedule rows.
-     */
-    updateRowsHeight() {
-        if (this.isVertical || (!this.isVertical && !this.datatable)) {
-            return;
-        }
-
-        this._rowsHeight = [];
-        this.simplifiedResources.forEach((resource) => {
-            const resourceName = resource.name;
-            const height = this.datatable.getRowHeight(resourceName);
-            resource.minHeight = height;
-            this._rowsHeight.push({ resourceName, height });
-        });
     }
 
     /**

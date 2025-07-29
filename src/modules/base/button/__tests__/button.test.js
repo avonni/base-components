@@ -25,6 +25,7 @@ describe('Button', () => {
             expect(element.iconPosition).toBe('left');
             expect(element.iconSize).toBe('small');
             expect(element.iconSrc).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.label).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.stretch).toBeFalsy();
@@ -284,12 +285,14 @@ describe('Button', () => {
             it('Passed to the component', () => {
                 element.label = 'Label';
                 element.isButtonLoading = true;
+                element.loadingStateAlternativeText = 'Loading';
 
                 return Promise.resolve().then(() => {
                     const spinner = element.shadowRoot.querySelector(
                         '[data-element-id="spinner"]'
                     );
                     expect(spinner).not.toBeNull();
+                    expect(spinner.alternativeText).toBe('Loading');
                     expect(spinner.size).toBe('x-small');
 
                     const computedStyle = getComputedStyle(element);

@@ -7,12 +7,6 @@ import {
 import { keyCodes } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
-const i18n = {
-    collapseBranch: 'Collapse Branch',
-    expandBranch: 'Expand Branch'
-};
-
-const POPOVER_FOOTER_HEIGHT = 55;
 const DEFAULT_EDIT_FIELDS = [
     'label',
     'metatext',
@@ -22,6 +16,15 @@ const DEFAULT_EDIT_FIELDS = [
     'disabled',
     'isLoading'
 ];
+const i18n = {
+    cancelButton: 'Cancel',
+    closeDialog: 'Close Dialog',
+    collapseBranch: 'Collapse Branch',
+    doneButton: 'Done',
+    expandBranch: 'Expand Branch',
+    saveLabel: 'Save Label'
+};
+const POPOVER_FOOTER_HEIGHT = 55;
 const UNSORTABLE_ITEMS_PARTS = [
     'div-actions',
     'div-popover',
@@ -34,13 +37,52 @@ const UNSORTABLE_ITEMS_PARTS = [
  */
 export default class PrimitiveTreeItem extends LightningElement {
     /**
+     * The label for the cancel button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Cancel'
+     */
+    @api cancelButtonLabel = i18n.cancelButton;
+    /**
+     * The alternative text used to describe the dialog close button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Close Dialog'
+     */
+    @api closeButtonAlternativeText = i18n.closeDialog;
+    /**
      * Color of the item checkbox, if the tree is in multi-select mode.
      *
      * @type {string}
      * @public
      */
     @api color;
-
+    /**
+     * The alternative text used to describe the collapse button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Collapse Branch'
+     */
+    @api collapseButtonAlternativeText = i18n.collapseBranch;
+    /**
+     * The label for the done button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Done'
+     */
+    @api doneButtonLabel = i18n.doneButton;
+    /**
+     * The alternative text used to describe the expand button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Expand Branch'
+     */
+    @api expandButtonAlternativeText = i18n.expandBranch;
     /**
      * The Lightning Design System name of the icon displayed after the label. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
@@ -48,7 +90,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      */
     @api iconName;
-
     /**
      * The alternative text used to describe the reason for the wait and need for a spinner.
      *
@@ -56,7 +97,13 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      */
     @api loadingStateAlternativeText;
-
+    /**
+     * Label for the load more button.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadMoreButtonLabel;
     /**
      * Unique key of the item.
      *
@@ -65,6 +112,14 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @required
      */
     @api nodeKey;
+    /**
+     * The alternative text used to describe the save button icon.
+     *
+     * @type {string}
+     * @public
+     * @default 'Save Label'
+     */
+    @api saveButtonIconAlternativeText = i18n.saveLabel;
 
     _actions = [];
     _actionsWhenDisabled = [];
@@ -96,15 +151,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     _unselectable = false;
 
     buttonActions = [];
-    labelIsEdited = false;
-    menuActions = [];
     draftValues = {};
     hasError = false;
+    labelIsEdited = false;
+    menuActions = [];
     popoverVisible = false;
     _checkboxIsIndeterminate = false;
-    _focusOn = false;
     _connected = false;
+    _focusOn = false;
     _menuIsOpen = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         /**
@@ -613,6 +674,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         return this.disabled || this.unselectable;
     }
 
+    /**
+     * CSS style of the checkbox.
+     *
+     * @type {string}
+     */
     get checkboxStyle() {
         if (this.color) {
             return `
@@ -621,6 +687,23 @@ export default class PrimitiveTreeItem extends LightningElement {
             `;
         }
         return null;
+    }
+
+    /**
+     * CSS class of the expand button.
+     *
+     * @type {string}
+     */
+    get computedExpandButtonClass() {
+        return classSet(
+            'slds-m-right_x-small slds-p-vertical_xx-small avonni-primitive-tree-item__chevron'
+        )
+            .add({
+                'slds-hidden': this.isLeaf || this.disabled,
+                'avonni-primitive-tree-item__chevron_expanded': this.expanded,
+                'slds-p-top_xx-small': this.metatext
+            })
+            .toString();
     }
 
     /**
@@ -645,30 +728,41 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
-     * Name of the expand button icon.
+     * CSS class of the label.
      *
      * @type {string}
      */
-    get expandButtonIconName() {
-        return document.dir === 'rtl'
-            ? 'utility:chevronleft'
-            : 'utility:chevronright';
+    get computedLabelClass() {
+        return classSet('slds-truncate slds-col')
+            .add({
+                'slds-p-vertical_xx-small': !this.buttonActions.length
+            })
+            .toString();
     }
 
     /**
-     * CSS class of the expand button.
+     * CSS class of the primitive tree item.
      *
      * @type {string}
-     * @public
      */
-    get expandButtonClass() {
+    get computedPrimitiveTreeItemClass() {
         return classSet(
-            'slds-m-right_x-small slds-p-vertical_xx-small avonni-primitive-tree-item__chevron'
-        )
+            'avonni-primitive-tree-item__item slds-is-relative slds-grid slds-grid_vertical-align-center'
+        ).add({
+            'avonni-primitive-tree-item__item_selectable': !this.unselectable
+        });
+    }
+
+    /**
+     * CSS class of the wrapper div.
+     *
+     * @type {string}
+     */
+    get computedWrapperClass() {
+        return classSet('slds-is-relative')
             .add({
-                'slds-hidden': this.isLeaf || this.disabled,
-                'avonni-primitive-tree-item__chevron_expanded': this.expanded,
-                'slds-p-top_xx-small': this.metatext
+                'avonni-primitive-tree-item__single-selection':
+                    !this.showCheckbox
             })
             .toString();
     }
@@ -681,9 +775,20 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get expandButtonLabel() {
         if (this.expanded) {
-            return i18n.collapseBranch;
+            return this.collapseButtonAlternativeText;
         }
-        return i18n.expandBranch;
+        return this.expandButtonAlternativeText;
+    }
+
+    /**
+     * Name of the expand button icon.
+     *
+     * @type {string}
+     */
+    get expandButtonIconName() {
+        return document.dir === 'rtl'
+            ? 'utility:chevronleft'
+            : 'utility:chevronright';
     }
 
     /**
@@ -702,32 +807,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get itemElement() {
         return this.template.querySelector('[data-element-id="div-item"]');
-    }
-
-    /**
-     * CSS class of the label.
-     *
-     * @type {string}
-     */
-    get labelClass() {
-        return classSet('slds-truncate slds-col')
-            .add({
-                'slds-p-vertical_xx-small': !this.buttonActions.length
-            })
-            .toString();
-    }
-
-    /**
-     * CSS class of the primitive tree item.
-     *
-     * @type {string}
-     */
-    get primitiveTreeItemClass() {
-        return classSet(
-            'avonni-primitive-tree-item__item slds-is-relative slds-grid slds-grid_vertical-align-center'
-        ).add({
-            'avonni-primitive-tree-item__item_selectable': !this.unselectable
-        });
     }
 
     /**
@@ -782,20 +861,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     get visibleActions() {
         return this.disabled ? this.actionsWhenDisabled : this.actions;
-    }
-
-    /**
-     * CSS class of the wrapper div.
-     *
-     * @type {string}
-     */
-    get wrapperClass() {
-        return classSet('slds-is-relative')
-            .add({
-                'avonni-primitive-tree-item__single-selection':
-                    !this.showCheckbox && !this.unselectable
-            })
-            .toString();
     }
 
     /*
@@ -879,6 +944,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
 
+    /**
+     * Close the edit popover.
+     */
     closePopover = () => {
         if (this.popoverVisible) {
             this.togglePopoverVisibility();

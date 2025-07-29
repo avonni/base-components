@@ -16,49 +16,47 @@ describe('Primitive Svg Icon', () => {
         document.body.appendChild(element);
     });
 
-    it('Primitive Svg Icon: Default attributes', () => {
-        expect(element.name).toBe('eraser');
-        expect(element.svgClass).toBeUndefined();
-    });
-
-    /*
-     * ------------------------------------------------------------
-     *  ATTRIBUTES
-     * -------------------------------------------------------------
-     */
-
-    // name
-    it('Primitive Svg Icon: name = eraser', () => {
-        element.name = 'eraser';
-
-        return Promise.resolve().then(() => {
-            const svg = element.shadowRoot.querySelector(
-                '[data-element-id="svg-eraser"]'
-            );
-            expect(svg).toBeTruthy();
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.name).toBe('eraser');
+            expect(element.svgClass).toBeUndefined();
         });
-    });
 
-    it('Primitive Svg Icon: name = inkPen', () => {
-        element.name = 'inkPen';
+        describe('name', () => {
+            it('Passed to the component as eraser', () => {
+                element.name = 'eraser';
 
-        return Promise.resolve().then(() => {
-            const svg = element.shadowRoot.querySelector(
-                '[data-element-id="svg-ink-pen"]'
-            );
-            expect(svg).toBeTruthy();
+                return Promise.resolve().then(() => {
+                    const svg = element.shadowRoot.querySelector(
+                        '[data-element-id="svg-eraser"]'
+                    );
+                    expect(svg).toBeTruthy();
+                });
+            });
+
+            it('Passed to the component as inkPen', () => {
+                element.name = 'inkPen';
+
+                return Promise.resolve().then(() => {
+                    const svg = element.shadowRoot.querySelector(
+                        '[data-element-id="svg-ink-pen"]'
+                    );
+                    expect(svg).toBeTruthy();
+                });
+            });
         });
-    });
 
-    // svg-class
-    it('Primitive Svg Icon: svgClass', () => {
-        element.svgClass = 'slds-button__icon';
+        describe('svgClass', () => {
+            it('Passed to the component', () => {
+                element.svgClass = 'slds-button__icon';
 
-        return Promise.resolve().then(() => {
-            const svg = element.shadowRoot.querySelector(
-                '[data-element-id="svg-eraser"]'
-            );
-            expect(svg.classList).toContain('slds-button__icon');
+                return Promise.resolve().then(() => {
+                    const svg = element.shadowRoot.querySelector(
+                        '[data-element-id="svg-eraser"]'
+                    );
+                    expect(svg.classList).toContain('slds-button__icon');
+                });
+            });
         });
     });
 });

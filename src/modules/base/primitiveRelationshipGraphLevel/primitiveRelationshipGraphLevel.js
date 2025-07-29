@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { classSet, normalizeArray } from 'c/utils';
 
 export default class PrimitiveRelationshipGraphLevel extends LightningElement {
+    @api actionsMenuAlternativeText;
     @api activeGroups;
     @api expandIconName;
     @api groupActions;
@@ -10,6 +11,8 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api hideItemsCount = false;
     @api isFirstLevel = false;
     @api itemActions;
+    @api loadingStateAlternativeText;
+    @api noResultsMessage;
     @api shrinkIconName;
     @api variant;
 
@@ -89,6 +92,37 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         );
     }
 
+    get computedCurrentLevelClass() {
+        return classSet('current-level').add({
+            'slds-grid': this.variant === 'vertical',
+            'slds-m-left_x-large':
+                this.variant === 'horizontal' &&
+                (!this.isFirstLevel ||
+                    (this.hasRootHeader && this.isFirstLevel))
+        });
+    }
+
+    get computedCurrentLevelWrapperClass() {
+        return this.variant === 'vertical'
+            ? 'slds-show_inline-block'
+            : undefined;
+    }
+
+    get computedLineClass() {
+        return classSet('line').add({
+            line_active: this.containsActiveItem,
+            line_horizontal: this.variant === 'vertical',
+            'slds-m-left_x-large line_vertical': this.variant === 'horizontal'
+        });
+    }
+
+    get computedWrapperClass() {
+        return classSet('').add({
+            'slds-grid': this.variant === 'horizontal',
+            'slds-show_inline-block': this.variant === 'vertical'
+        });
+    }
+
     get containsActiveItem() {
         return Array.from(this.groups).some((group) => {
             if (!group.items) return false;
@@ -101,34 +135,10 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return this.template.querySelector('.current-level');
     }
 
-    get currentLevelClass() {
-        return classSet('current-level').add({
-            'slds-grid': this.variant === 'vertical',
-            'slds-m-left_x-large':
-                this.variant === 'horizontal' &&
-                (!this.isFirstLevel ||
-                    (this.hasRootHeader && this.isFirstLevel))
-        });
-    }
-
-    get currentLevelWrapperClass() {
-        return this.variant === 'vertical'
-            ? 'slds-show_inline-block'
-            : undefined;
-    }
-
     get hasSelectedGroups() {
         return (
             Array.isArray(this.selectedGroups) && this.selectedGroups.length > 0
         );
-    }
-
-    get lineClass() {
-        return classSet('line').add({
-            line_active: this.containsActiveItem,
-            line_horizontal: this.variant === 'vertical',
-            'slds-m-left_x-large line_vertical': this.variant === 'horizontal'
-        });
     }
 
     get selectedGroupComponent() {
@@ -155,13 +165,6 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             if (selection) selectedItem = selection;
         });
         return selectedItem;
-    }
-
-    get wrapperClass() {
-        return classSet('').add({
-            'slds-grid': this.variant === 'horizontal',
-            'slds-show_inline-block': this.variant === 'vertical'
-        });
     }
 
     /*
@@ -250,6 +253,27 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    handleCloseActiveGroup() {
+        this.cleanSelection();
+    }
+
+    handleGroupHeightChange() {
+        this.updateLine();
+        this.dispatchEvent(new CustomEvent('heightchange'));
+    }
+
+    handleSelect(event) {
+        this.cleanSelection();
+        this.dispatchSelectEvent(event);
+    }
+
+    handleToggle(event) {
+        this.dispatchToggleEvent(event);
+        if (event.detail.closed && event.detail.isActiveGroup) {
+            this.cleanSelection();
+        }
+    }
+
     dispatchActionClickEvent(event) {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
@@ -277,26 +301,5 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
                 }
             })
         );
-    }
-
-    handleCloseActiveGroup() {
-        this.cleanSelection();
-    }
-
-    handleGroupHeightChange() {
-        this.updateLine();
-        this.dispatchEvent(new CustomEvent('heightchange'));
-    }
-
-    handleSelect(event) {
-        this.cleanSelection();
-        this.dispatchSelectEvent(event);
-    }
-
-    handleToggle(event) {
-        this.dispatchToggleEvent(event);
-        if (event.detail.closed && event.detail.isActiveGroup) {
-            this.cleanSelection();
-        }
     }
 }

@@ -120,7 +120,6 @@ export default class ProgressIndicator extends LightningElement {
     get steps() {
         return this._steps;
     }
-
     set steps(value) {
         this._steps = normalizeArray(value);
 
@@ -141,7 +140,6 @@ export default class ProgressIndicator extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: INDICATOR_VARIANTS.default,

@@ -15,6 +15,18 @@ import {
 export default {
     title: 'Example/Vertical Visual Picker',
     argTypes: {
+        collapsedShowMoreButton: {
+            name: 'collapsed-show-more-button',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The label for the show more button when the items are collapsed.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show more' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -37,6 +49,18 @@ export default {
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
+            }
+        },
+        expandedShowMoreButton: {
+            name: 'expanded-show-more-button',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The label for the show more button when the items are expanded.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show less' }
             }
         },
         hideCheckMark: {
@@ -91,6 +115,18 @@ export default {
             table: {
                 defaultValue: { summary: '20' },
                 type: { summary: 'number' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the picker is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         maxCount: {
@@ -182,6 +218,19 @@ export default {
                 category: 'Validations'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' },
+                category: 'Validations'
+            }
+        },
         size: {
             control: {
                 type: 'select'
@@ -230,12 +279,16 @@ export default {
         }
     },
     args: {
+        collapsedShowMoreButton: 'Show more',
         disabled: false,
         enableInfiniteLoading: false,
+        expandedShowMoreButton: 'Show less',
         hideCheckMark: false,
         isLoading: false,
         loadMoreOffset: 20,
+        loadingStateAlternativeText: 'Loading...',
         required: false,
+        requiredAlternativeText: 'Required',
         size: 'medium',
         type: 'radio',
         variant: 'non-coverable'

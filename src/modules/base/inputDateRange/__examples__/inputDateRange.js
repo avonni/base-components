@@ -6,41 +6,45 @@ customElements.define(
 );
 
 export const InputDateRange = ({
-    type,
-    label,
+    dateStyle,
+    disabled,
+    endDate,
     fieldLevelHelp,
+    label,
+    labelEndDate,
+    labelEndTime,
     labelStartDate,
     labelStartTime,
-    labelEndTime,
-    labelEndDate,
-    startDate,
-    endDate,
-    dateStyle,
+    messageWhenValueMissing,
     readOnly,
+    required,
+    requiredAlternativeText,
+    startDate,
     timeStyle,
     timezone,
-    disabled,
-    required,
-    messageWhenValueMissing,
+    todayButtonLabel,
+    type,
     variant
 }) => {
     const element = document.createElement('ac-base-input-date-range');
-    element.type = type;
-    element.label = label;
+    element.dateStyle = dateStyle;
+    element.disabled = disabled;
+    element.endDate = endDate;
     element.fieldLevelHelp = fieldLevelHelp;
-    element.labelStartDate = labelStartDate;
-    element.labelStartTime = labelStartTime;
+    element.label = label;
     element.labelEndDate = labelEndDate;
     element.labelEndTime = labelEndTime;
-    element.startDate = startDate;
-    element.endDate = endDate;
-    element.dateStyle = dateStyle;
+    element.labelStartDate = labelStartDate;
+    element.labelStartTime = labelStartTime;
+    element.messageWhenValueMissing = messageWhenValueMissing;
     element.readOnly = readOnly;
+    element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
+    element.startDate = startDate;
     element.timeStyle = timeStyle;
     element.timezone = timezone;
-    element.disabled = disabled;
-    element.required = required;
-    element.messageWhenValueMissing = messageWhenValueMissing;
+    element.todayButtonLabel = todayButtonLabel;
+    element.type = type;
     element.variant = variant;
     return element;
 };

@@ -2,7 +2,7 @@
     <div class="slds-grid slds-wrap avonni-metric__wrapper">
         <c-primitive-avatar
             if:true={avatar}
-            class={avatarClass}
+            class={computedAvatarClass}
             alternative-text={avatar.alternativeText}
             fallback-icon-name={avatar.fallbackIconName}
             initials={avatar.initials}
@@ -31,15 +31,16 @@
                     ></lightning-helptext>
                 </span>
             </div>
-            <div class={metricsClass} data-element-id="div-metrics">
+            <div class={computedMetricsClass} data-element-id="div-metrics">
                 <!-- Primary -->
                 <div class="slds-truncate">
                     <c-primitive-metric
-                        class={primaryClass}
+                        class={computedPrimaryClass}
                         currency-code={currencyCode}
                         currency-display-as={currencyDisplayAs}
                         format-style={formatStyle}
                         is-loading={valueIsLoading}
+                        loading-state-alternative-text={loadingStateAlternativeText}
                         maximum-fraction-digits={maximumFractionDigits}
                         maximum-significant-digits={maximumSignificantDigits}
                         minimum-fraction-digits={minimumFractionDigits}
@@ -60,11 +61,12 @@
                 <div class="avonni-metric__secondary-wrapper slds-truncate">
                     <c-primitive-metric
                         if:true={showSecondaryMetric}
-                        class={secondaryClass}
+                        class={computedSecondaryClass}
                         currency-code={secondaryCurrencyCode}
                         currency-display-as={secondaryCurrencyDisplayAs}
                         format-style={secondaryFormatStyle}
                         is-loading={secondaryValueIsLoading}
+                        loading-state-alternative-text={loadingStateAlternativeText}
                         maximum-fraction-digits={secondaryMaximumFractionDigits}
                         maximum-significant-digits={secondaryMaximumSignificantDigits}
                         minimum-fraction-digits={secondaryMinimumFractionDigits}

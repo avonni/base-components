@@ -16,10 +16,16 @@ export default class SplitterPane extends LightningElement {
     _scrollable = false;
     _size;
 
+    startHeight;
     startX;
     startY;
     startWidth;
-    startHeight;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         if (this.max) {
@@ -38,10 +44,10 @@ export default class SplitterPane extends LightningElement {
             this.setAttribute('collapsedSize', this.collapsedSize);
         }
 
-        this.setAttribute('resizable', this._resizable);
-        this.setAttribute('scrollable', this._scrollable);
-        this.setAttribute('collapsed', this._collapsed);
-        this.setAttribute('collapsible', this._collapsible);
+        this.setAttribute('resizable', this.resizable);
+        this.setAttribute('scrollable', this.scrollable);
+        this.setAttribute('collapsed', this.collapsed);
+        this.setAttribute('collapsible', this.collapsible);
     }
 
     renderedCallback() {

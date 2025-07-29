@@ -25,9 +25,10 @@ describe('Button Popover', () => {
             expect(element.iconPosition).toBe('left');
             expect(element.iconSize).toBe('x-small');
             expect(element.iconSrc).toBeUndefined();
+            expect(element.isButtonLoading).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.label).toBeUndefined();
-            expect(element.loadingStateAlternativeText).toBe('Loading');
             expect(element.placement).toBe('left');
             expect(element.popoverSize).toBe('medium');
             expect(element.popoverVariant).toBe('base');

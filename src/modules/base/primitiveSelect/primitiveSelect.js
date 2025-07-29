@@ -13,118 +13,28 @@ const i18n = { required: 'required' };
 const { reduce: selectedOptionValues } = Array.prototype;
 
 export default class PrivateSelect extends LightningElement {
-    @api label;
-    @api name;
-    @api messageWhenValueMissing;
     @api accessKey;
+    @api label;
+    @api messageWhenValueMissing;
+    @api name;
 
-    _errorMessage = '';
-    _options = [];
-    _selectedValue;
-    _variant;
-    _required = false;
-    _disabled = false;
-    _multiple = false;
-    _fieldLevelHelp;
-    _size;
     _ariaDescribedBy;
+    _disabled = false;
+    _errorMessage = '';
+    _fieldLevelHelp;
+    _multiple = false;
+    _options = [];
+    _required = false;
+    _selectedValue;
+    _size;
     _tabIndex;
+    _variant;
 
-    @api
-    get fieldLevelHelp() {
-        return this._fieldLevelHelp;
-    }
-
-    set fieldLevelHelp(value) {
-        this._fieldLevelHelp = value;
-    }
-
-    @api
-    get variant() {
-        return this._variant || VARIANT.STANDARD;
-    }
-
-    set variant(value) {
-        this._variant = normalizeVariant(value);
-        this.updateClassList();
-    }
-
-    @api
-    get multiple() {
-        return this._multiple;
-    }
-
-    set multiple(value) {
-        this._multiple = normalizeBoolean(value);
-    }
-
-    @api
-    get size() {
-        if (this.multiple) {
-            if (this._size === undefined) {
-                return '4';
-            }
-            return this._size;
-        }
-        return null;
-    }
-
-    set size(value) {
-        this._size = value;
-    }
-
-    @api
-    get required() {
-        return this._required;
-    }
-
-    set required(value) {
-        this._required = normalizeBoolean(value);
-    }
-
-    @api
-    get disabled() {
-        return this._disabled;
-    }
-
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
-    }
-
-    @api
-    get value() {
-        return this._selectedValue;
-    }
-
-    set value(value) {
-        this._selectedValue = value;
-
-        if (this._connected && value) {
-            this.selectOptionsByValue(value);
-        }
-    }
-
-    @api
-    get options() {
-        return this._options;
-    }
-
-    set options(value) {
-        this._options = value;
-
-        if (this._connected && value) {
-            this.selectOptionsByValue(this._selectedValue);
-        }
-    }
-
-    @api
-    get tabIndex() {
-        return this._tabIndex;
-    }
-
-    set tabIndex(value) {
-        this._tabIndex = value;
-    }
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -132,14 +42,6 @@ export default class PrivateSelect extends LightningElement {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
-    }
-
-    updateClassList() {
-        classListMutation(this.classList, {
-            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
-            'slds-form-element_horizontal':
-                this.variant === VARIANT.LABEL_INLINE
-        });
     }
 
     renderedCallback() {
@@ -152,18 +54,70 @@ export default class PrivateSelect extends LightningElement {
         this._connected = false;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     @api
-    focus() {
-        if (this._connected) {
-            this.getElement.focus();
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
+
+    @api
+    get fieldLevelHelp() {
+        return this._fieldLevelHelp;
+    }
+    set fieldLevelHelp(value) {
+        this._fieldLevelHelp = value;
+    }
+
+    @api
+    get multiple() {
+        return this._multiple;
+    }
+    set multiple(value) {
+        this._multiple = normalizeBoolean(value);
+    }
+
+    @api
+    get options() {
+        return this._options;
+    }
+    set options(value) {
+        this._options = value;
+
+        if (this._connected && value) {
+            this.selectOptionsByValue(this._selectedValue);
         }
     }
 
     @api
-    blur() {
-        if (this._connected) {
-            this.getElement.blur();
-        }
+    get required() {
+        return this._required;
+    }
+    set required(value) {
+        this._required = normalizeBoolean(value);
+    }
+
+    @api
+    get size() {
+        return this.multiple ? this._size || '4' : null;
+    }
+    set size(value) {
+        this._size = value;
+    }
+
+    @api
+    get tabIndex() {
+        return this._tabIndex;
+    }
+    set tabIndex(value) {
+        this._tabIndex = value;
     }
 
     @api
@@ -183,6 +137,78 @@ export default class PrivateSelect extends LightningElement {
     }
 
     @api
+    get value() {
+        return this._selectedValue;
+    }
+    set value(value) {
+        this._selectedValue = value;
+
+        if (this._connected && value) {
+            this.selectOptionsByValue(value);
+        }
+    }
+
+    @api
+    get variant() {
+        return this._variant || VARIANT.STANDARD;
+    }
+    set variant(value) {
+        this._variant = normalizeVariant(value);
+        this.updateClassList();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get computedAriaDescribedBy() {
+        return this._ariaDescribedBy;
+    }
+
+    get computedLabelClass() {
+        return classSet('slds-form-element__label')
+            .add({
+                'slds-assistive-text': this.isLabelHidden
+            })
+            .toString();
+    }
+
+    get computedUniqueErrorMessageElementId() {
+        return getRealDOMId(this.template.querySelector('[data-help-message]'));
+    }
+
+    get errorMessage() {
+        return this._errorMessage;
+    }
+
+    get getElement() {
+        return this.template.querySelector('[data-element-id="select"]');
+    }
+
+    get i18n() {
+        return i18n;
+    }
+
+    get isLabelHidden() {
+        return this.variant === VARIANT.LABEL_HIDDEN;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    blur() {
+        if (this._connected) {
+            this.getElement.blur();
+        }
+    }
+
+    @api
     checkValidity() {
         const value = this.validity.valid;
 
@@ -195,6 +221,13 @@ export default class PrivateSelect extends LightningElement {
         }
 
         return value;
+    }
+
+    @api
+    focus() {
+        if (this._connected) {
+            this.getElement.focus();
+        }
     }
 
     @api
@@ -226,65 +259,30 @@ export default class PrivateSelect extends LightningElement {
         }
     }
 
-    get i18n() {
-        return i18n;
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    getSelectedOptionValues() {
+        if (this.multiple) {
+            const options = this.template.querySelectorAll(
+                '[data-element-id^="option"]'
+            );
+            return selectedOptionValues.call(
+                options,
+                (option, item) => (
+                    item.selected && option.push(item.value), option
+                ),
+                []
+            );
+        }
+        return this.getElement.value;
     }
 
-    get errorMessage() {
-        return this._errorMessage;
-    }
-
-    get getElement() {
-        return this.template.querySelector('[data-element-id="select"]');
-    }
-
-    get computedUniqueErrorMessageElementId() {
-        return getRealDOMId(this.template.querySelector('[data-help-message]'));
-    }
-
-    get isLabelHidden() {
-        return this.variant === VARIANT.LABEL_HIDDEN;
-    }
-
-    get computedLabelClass() {
-        return classSet('slds-form-element__label')
-            .add({
-                'slds-assistive-text': this.isLabelHidden
-            })
-            .toString();
-    }
-
-    get computedAriaDescribedBy() {
-        return this._ariaDescribedBy;
-    }
-
-    handleChange(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        this._selectedValue = this.getSelectedOptionValues();
-        this.dispatchChangeEvent();
-    }
-
-    handleFocus() {
-        this.interactingState.enter();
-        this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    handleBlur() {
-        this.interactingState.leave();
-        this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    dispatchChangeEvent() {
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                composed: true,
-                bubbles: true,
-                detail: {
-                    value: this._selectedValue
-                }
-            })
-        );
+    removeAriaDescribedBy() {
+        this.getElement.removeAttribute('aria-describedby');
     }
 
     selectOptionsByValue(value) {
@@ -301,27 +299,50 @@ export default class PrivateSelect extends LightningElement {
         }
     }
 
-    getSelectedOptionValues() {
-        if (this.multiple) {
-            const option = this.template.querySelectorAll(
-                '[data-element-id^="option"]'
-            );
-            return selectedOptionValues.call(
-                option,
-                (option, item) => (
-                    item.selected && option.push(item.value), option
-                ),
-                []
-            );
-        }
-        return this.getElement.value;
-    }
-
     setAriaDescribedBy(value) {
         this.getElement.setAttribute('aria-describedby', value);
     }
 
-    removeAriaDescribedBy() {
-        this.getElement.removeAttribute('aria-describedby');
+    updateClassList() {
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
+            'slds-form-element_horizontal':
+                this.variant === VARIANT.LABEL_INLINE
+        });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS && DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    handleBlur() {
+        this.interactingState.leave();
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    handleChange(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this._selectedValue = this.getSelectedOptionValues();
+        this.dispatchChangeEvent();
+    }
+
+    handleFocus() {
+        this.interactingState.enter();
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    dispatchChangeEvent() {
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                composed: true,
+                bubbles: true,
+                detail: {
+                    value: this._selectedValue
+                }
+            })
+        );
     }
 }

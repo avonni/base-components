@@ -1,10 +1,10 @@
 <template>
     <div
-        class={wrapperClass}
+        class={computedWrapperClass}
         data-element-id="avonni-primitive-relationship-graph-group"
     >
         <div class="avonni-relationship-graph-group__header slds-grid">
-            <div class={groupTitleClass}>
+            <div class={computedGroupTitleClass}>
                 <button
                     class="
                         avonni-relationship-graph-group__header-title-button
@@ -19,32 +19,28 @@
                     onclick={handleToggle}
                 >
                     <template if:true={hasCollapsibleIcon}>
-                        <template if:false={closed}>
-                            <lightning-icon
-                                if:true={shrinkIconName}
-                                icon-name={shrinkIconName}
-                                size="x-small"
-                                class="
-                                    avonni-relationship-graph-group__collapse-icon
-                                    slds-button__icon slds-button__icon_left
-                                    slds-m-bottom_xxx-small
-                                "
-                                data-element-id="lightning-icon-opened"
-                            ></lightning-icon>
-                        </template>
-                        <template if:true={closed}>
-                            <lightning-icon
-                                if:true={expandIconName}
-                                icon-name={expandIconName}
-                                size="x-small"
-                                class="
-                                    avonni-relationship-graph-group__collapse-icon
-                                    slds-button__icon slds-button__icon_left
-                                    slds-m-bottom_xxx-small
-                                "
-                                data-element-id="lightning-icon-closed"
-                            ></lightning-icon>
-                        </template>
+                        <lightning-icon
+                            if:false={closed}
+                            class="
+                                avonni-relationship-graph-group__collapse-icon
+                                slds-button__icon slds-button__icon_left
+                                slds-m-bottom_xxx-small
+                            "
+                            icon-name={shrinkIconName}
+                            size="x-small"
+                            data-element-id="lightning-icon-opened"
+                        ></lightning-icon>
+                        <lightning-icon
+                            if:true={closed}
+                            class="
+                                avonni-relationship-graph-group__collapse-icon
+                                slds-button__icon slds-button__icon_left
+                                slds-m-bottom_xxx-small
+                            "
+                            icon-name={expandIconName}
+                            size="x-small"
+                            data-element-id="lightning-icon-closed"
+                        ></lightning-icon>
                     </template>
                     <avonni-avatar
                         if:true={hasAvatar}
@@ -59,8 +55,8 @@
                         <a
                             if:true={href}
                             href={href}
-                            onclick={handleAnchorTagClick}
                             data-element-id="title"
+                            onclick={handleAnchorTagClick}
                         >
                             {title}
                         </a>
@@ -77,46 +73,46 @@
             </div>
             <!-- Top actions -->
             <div
-                if:true={topActions}
+                if:true={topActions.length}
                 class="avonni-relationship-graph-group__header-actions"
             >
-                <template if:true={hasMoreThanOneAction}>
-                    <lightning-button-menu
-                        alternative-text="Show menu"
-                        icon-size="small"
-                        menu-alignment="right"
-                        variant="border"
-                    >
-                        <template for:each={actions} for:item="action">
-                            <lightning-menu-item
-                                key={action.name}
-                                value={action.name}
-                                label={action.label}
-                                onclick={handleActionClick}
-                                disabled={action.disabled}
-                                prefix-icon-name={action.iconName}
-                            ></lightning-menu-item>
-                        </template>
-                    </lightning-button-menu>
-                </template>
+                <lightning-button-menu
+                    if:true={hasMoreThanOneAction}
+                    alternative-text={actionsMenuAlternativeText}
+                    icon-size="small"
+                    menu-alignment="right"
+                    variant="border"
+                >
+                    <template for:each={actions} for:item="action">
+                        <lightning-menu-item
+                            key={action.name}
+                            disabled={action.disabled}
+                            label={action.label}
+                            prefix-icon-name={action.iconName}
+                            value={action.name}
+                            onclick={handleActionClick}
+                        ></lightning-menu-item>
+                    </template>
+                </lightning-button-menu>
                 <template if:false={hasMoreThanOneAction}>
                     <template for:each={actions} for:item="action">
                         <div key={action.name}>
                             <button
-                                class={actionButtonClass}
+                                class={computedActionButtonClass}
+                                alternative-text={action.label}
                                 disabled={action.disabled}
                                 type="button"
-                                onclick={handleActionClick}
                                 value={action.name}
                                 data-element-id="avonni-primitive-relationship-graph-group-action-button"
+                                onclick={handleActionClick}
                             >
                                 <lightning-icon
                                     if:true={action.iconName}
-                                    icon-name={action.iconName}
                                     class="
                                         slds-current-color
                                         slds-m-right_x-small
                                     "
+                                    icon-name={action.iconName}
                                     size="xx-small"
                                     data-element-id="avonni-primitive-relationship-graph-group-action-button-icon"
                                 ></lightning-icon>
@@ -132,8 +128,8 @@
                 avonni-relationship-graph-group__content
                 slds-section__content
             "
-            id="section-content"
             aria-hidden={closed}
+            id="section-content"
             data-element-id="avonni-primitive-relation-graph-group-content"
         >
             <div
@@ -144,72 +140,72 @@
                 "
             >
                 <lightning-spinner
-                    alternative-text="Loading..."
+                    alternative-text={loadingStateAlternativeText}
                     size="small"
                     data-element-id="lightning-spinner"
                 ></lightning-spinner>
             </div>
-            <div if:true={showEmptyMessage}>No items to display.</div>
+            <div
+                if:true={showNoResultsMessage}
+                data-element-id="no-results-message"
+            >
+                {noResultsMessage}
+            </div>
 
             <!-- Items -->
-            <template if:true={items}>
-                <template for:each={items} for:item="item">
-                    <c-primitive-relationship-graph-item
-                        key={item.name}
-                        active-selection={item.activeSelection}
-                        avatar-fallback-icon-name={item.avatarFallbackIconName}
-                        avatar-src={item.avatarSrc}
-                        content-data={item.data}
-                        custom-actions={item.actions}
-                        default-actions={itemActions}
-                        disabled={item.disabled}
-                        groups={item.groups}
-                        hide-default-actions={item.hideDefaultActions}
-                        href={item.href}
-                        label={item.label}
-                        name={item.name}
-                        selected={item.selected}
-                        variant={variant}
-                        data-element-id="avonni-primitive-relationship-graph-item"
-                        onactionclick={dispatchActionClickEvent}
-                        onselect={handleSelect}
-                    ></c-primitive-relationship-graph-item>
-                </template>
+            <template for:each={items} for:item="item">
+                <c-primitive-relationship-graph-item
+                    key={item.name}
+                    actions-menu-alternative-text={actionsMenuAlternativeText}
+                    active-selection={item.activeSelection}
+                    avatar-fallback-icon-name={item.avatarFallbackIconName}
+                    avatar-src={item.avatarSrc}
+                    content-data={item.data}
+                    custom-actions={item.actions}
+                    default-actions={itemActions}
+                    disabled={item.disabled}
+                    groups={item.groups}
+                    hide-default-actions={item.hideDefaultActions}
+                    href={item.href}
+                    label={item.label}
+                    name={item.name}
+                    selected={item.selected}
+                    variant={variant}
+                    data-element-id="avonni-primitive-relationship-graph-item"
+                    onactionclick={dispatchActionClickEvent}
+                    onselect={handleSelect}
+                ></c-primitive-relationship-graph-item>
             </template>
 
             <!-- Bottom actions -->
-            <template if:true={actions}>
-                <template if:false={topActions}>
-                    <template for:each={actions} for:item="action">
-                        <div
-                            key={action.name}
-                            class="slds-m-bottom_xx-small"
-                            data-bottom-actions
+            <template if:false={topActions}>
+                <template for:each={actions} for:item="action">
+                    <div
+                        key={action.name}
+                        class="slds-m-bottom_xx-small"
+                        data-bottom-actions
+                    >
+                        <button
+                            class={computedActionButtonClass}
+                            alternative-text={action.label}
+                            disabled={action.disabled}
+                            name={action.name}
+                            type="button"
+                            value={action.name}
+                            variant="neutral"
+                            onclick={handleActionClick}
+                            data-element-id="avonni-primitive-relationship-graph-group-action-button"
                         >
-                            <button
-                                class={actionButtonClass}
-                                disabled={action.disabled}
-                                name={action.name}
-                                type="button"
-                                value={action.name}
-                                variant="neutral"
-                                onclick={handleActionClick}
-                                data-element-id="avonni-primitive-relationship-graph-group-action-button"
-                            >
-                                <lightning-icon
-                                    if:true={action.iconName}
-                                    class="
-                                        slds-current-color
-                                        slds-m-right_x-small
-                                    "
-                                    icon-name={action.iconName}
-                                    size="xx-small"
-                                    data-element-id="avonni-primitive-relationship-graph-group-action-button-icon"
-                                ></lightning-icon>
-                                {action.label}
-                            </button>
-                        </div>
-                    </template>
+                            <lightning-icon
+                                if:true={action.iconName}
+                                class="slds-current-color slds-m-right_x-small"
+                                icon-name={action.iconName}
+                                size="xx-small"
+                                data-element-id="avonni-primitive-relationship-graph-group-action-button-icon"
+                            ></lightning-icon>
+                            {action.label}
+                        </button>
+                    </div>
                 </template>
             </template>
         </div>

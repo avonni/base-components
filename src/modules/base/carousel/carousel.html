@@ -4,37 +4,35 @@
         data-element-id="avonni-carousel-container"
     >
         <lightning-layout vertical-align="center">
-            <template if:false={hidePreviousNextPanelNavigation}>
-                <lightning-layout-item>
-                    <!-- Previous navigation -->
-                    <button
-                        class="
-                            slds-button
-                            slds-button_icon
-                            slds-button_icon-small
-                            slds-button_icon-border-filled
-                            slds-m-right_medium
-                            slds-m-bottom_large
-                            avonni-carousel__nav-button
-                        "
-                        disabled={previousPanelNavigationDisabled}
-                        title={assistiveText.previousPanel}
-                        type="button"
-                        data-element-id="lightning-button-icon-previous"
-                        onclick={previous}
-                    >
-                        <c-primitive-icon
-                            class="avonni-carousel__nav-icon"
-                            icon-name="utility:chevronleft"
-                            svg-class="slds-button__icon"
-                            variant="bare"
-                        ></c-primitive-icon>
-                        <span class="slds-assistive-text"
-                            >{assistiveText.previousPanel}</span
-                        >
-                    </button>
-                </lightning-layout-item>
-            </template>
+            <lightning-layout-item if:false={hidePreviousNextPanelNavigation}>
+                <!-- Previous navigation -->
+                <button
+                    class="
+                        slds-button
+                        slds-button_icon
+                        slds-button_icon-small
+                        slds-button_icon-border-filled
+                        slds-m-right_medium
+                        slds-m-bottom_large
+                        avonni-carousel__nav-button
+                    "
+                    disabled={previousPanelNavigationDisabled}
+                    title={assistiveText.previousPanel}
+                    type="button"
+                    data-element-id="lightning-button-icon-previous"
+                    onclick={previous}
+                >
+                    <c-primitive-icon
+                        class="avonni-carousel__nav-icon"
+                        icon-name="utility:chevronleft"
+                        svg-class="slds-button__icon"
+                        variant="bare"
+                    ></c-primitive-icon>
+                    <span class="slds-assistive-text"
+                        >{assistiveText.previousPanel}
+                    </span>
+                </button>
+            </lightning-layout-item>
             <lightning-layout-item
                 class="avonni-carousel__stage_min-width"
                 flexibility="auto"
@@ -52,7 +50,6 @@
                         data-element-id="lightning-button-icon"
                         onclick={toggleAutoScroll}
                     ></lightning-button-icon>
-
                     <!-- Carousel panels -->
                     <div class="slds-carousel__panels" style={panelStyle}>
                         <template
@@ -61,11 +58,11 @@
                             for:index="panelIndex"
                         >
                             <div
-                                class="avonni-carousel__panel"
                                 key={panel.key}
-                                id={panel.key}
+                                class="avonni-carousel__panel"
                                 aria-hidden={panel.ariaHidden}
                                 aria-labelledby={panel.ariaLabelledby}
+                                id={panel.key}
                                 role="tabpanel"
                                 tabindex={panel.tabIndex}
                                 data-element-id="div-panel"
@@ -158,7 +155,7 @@
                         </template>
                         <lightning-spinner
                             if:true={isLoading}
-                            alternative-text="Loading..."
+                            alternative-text={assistiveText.loading}
                             role="tab"
                             size="x-small"
                         ></lightning-spinner>
@@ -174,7 +171,7 @@
                 <lightning-spinner
                     if:true={isLoading}
                     class="slds-m-left_medium slds-m-bottom_large"
-                    alternative-text="Loading..."
+                    alternative-text={assistiveText.loading}
                     size="x-small"
                     data-element-id="lightning-spinner"
                 ></lightning-spinner>

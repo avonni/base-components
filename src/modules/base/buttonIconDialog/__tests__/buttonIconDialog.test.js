@@ -20,10 +20,14 @@ describe('Button Icon Dialog', () => {
         it('Default attributes', () => {
             expect(element.accessKey).toBeUndefined();
             expect(element.alternativeText).toBeUndefined();
+            expect(element.cancelButtonLabel).toBe('Cancel');
             expect(element.disabled).toBeFalsy();
             expect(element.iconClass).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSrc).toBeUndefined();
+            expect(element.isButtonLoading).toBeFalsy();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
+            expect(element.saveButtonLabel).toBe('Save');
             expect(element.size).toBe('medium');
             expect(element.tooltip).toBeUndefined();
             expect(element.variant).toBe('border');
@@ -181,6 +185,34 @@ describe('Button Icon Dialog', () => {
                     return Promise.resolve().then(() => {
                         expect(button.size).toBe('large');
                     });
+                });
+            });
+        });
+
+        describe('Is Button Loading', () => {
+            it('Passed to the component', () => {
+                element.isButtonLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button-icon"]'
+                    );
+
+                    expect(button.isButtonLoading).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Loading State Alternative Text', () => {
+            it('Passed to the component', () => {
+                element.loadingStateAlternativeText = 'Loading';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button-icon"]'
+                    );
+
+                    expect(button.loadingStateAlternativeText).toBe('Loading');
                 });
             });
         });

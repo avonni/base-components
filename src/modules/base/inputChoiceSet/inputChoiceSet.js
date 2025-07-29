@@ -23,10 +23,6 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import { Direction } from 'c/positionLibrary';
 
-const i18n = {
-    required: 'required'
-};
-
 const CHECK_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
@@ -38,6 +34,8 @@ const DEFAULT_COLUMNS = {
     medium: 6,
     large: 4
 };
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const INPUT_CHOICE_ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
@@ -92,6 +90,14 @@ export default class InputChoiceSet extends LightningElement {
      */
     @api label;
     /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    /**
      * Optional message to be displayed when no option is selected and the required attribute is set.
      *
      * @type {string}
@@ -106,6 +112,14 @@ export default class InputChoiceSet extends LightningElement {
      * @required
      */
     @api name;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
 
     _checkPosition = CHECK_POSITIONS.default;
     _disabled = false;
@@ -133,45 +147,31 @@ export default class InputChoiceSet extends LightningElement {
     _tooltipTimeout;
     _transformedOptions = [];
 
-    /**
-     * Synchronize all inputs Aria help element ID.
-     */
-    synchronizeA11y() {
-        const inputs = this.template.querySelectorAll(
-            '[data-element-id^="input"]'
-        );
-        Array.prototype.slice.call(inputs).forEach((input) => {
-            synchronizeAttrs(input, {
-                'aria-describedby': this.computedUniqueHelpElementId
-            });
-        });
-    }
-
     connectedCallback() {
         if (!Object.keys(this.computedOrientationAttributes).length) {
-            this._initOrientationAttributes();
+            this.initOrientationAttributes();
         }
 
         this.classList.add('slds-form-element');
-        this._updateClassList();
+        this.updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-        this._initOptions();
+        this.initOptions();
         this._connected = true;
     }
 
     renderedCallback() {
         this.synchronizeA11y();
         if (!this._resizeObserver) {
-            this._initResizeObserver();
+            this.initResizeObserver();
         }
 
         if (!this._rendered) {
-            this._setWidth();
-            this._updateLabelsStyle();
+            this.setWidth();
+            this.updateLabelsStyle();
         }
         this._rendered = true;
-        this._updateCheckboxCheckedState();
+        this.updateCheckboxCheckedState();
     }
 
     disconnectedCallback() {
@@ -179,7 +179,7 @@ export default class InputChoiceSet extends LightningElement {
             this._resizeObserver.disconnect();
             this._resizeObserver = undefined;
         }
-        this._destroyTooltip();
+        this.destroyTooltip();
     }
 
     /*
@@ -204,7 +204,7 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: CHECK_POSITIONS.default,
             validValues: CHECK_POSITIONS.valid
         });
-        this._setWidth();
+        this.setWidth();
     }
 
     /**
@@ -250,7 +250,7 @@ export default class InputChoiceSet extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
-        this._setWidth();
+        this.setWidth();
     }
 
     /**
@@ -268,7 +268,7 @@ export default class InputChoiceSet extends LightningElement {
         this._options = normalizeArray(value);
 
         if (this._connected) {
-            this._initOptions();
+            this.initOptions();
         }
     }
 
@@ -289,9 +289,9 @@ export default class InputChoiceSet extends LightningElement {
             validValues: INPUT_CHOICE_ORIENTATIONS.valid
         });
         if (this._connected) {
-            this._initOrientationAttributes();
-            this._setWidth();
-            this._destroyTooltip();
+            this.initOrientationAttributes();
+            this.setWidth();
+            this.destroyTooltip();
         }
     }
 
@@ -307,11 +307,11 @@ export default class InputChoiceSet extends LightningElement {
     }
     set orientationAttributes(value) {
         this._orientationAttributes = normalizeObject(value);
-        this._normalizeOrientationAttributes();
+        this.normalizeOrientationAttributes();
 
         if (this._connected) {
-            this._initOrientationAttributes();
-            this._setWidth();
+            this.initOrientationAttributes();
+            this.setWidth();
         }
     }
 
@@ -362,7 +362,7 @@ export default class InputChoiceSet extends LightningElement {
         console.warn(
             'The "stretch" attribute is deprecated. Add a "stretch" key to the type attributes instead.'
         );
-        this._supportDeprecatedAttributes();
+        this.supportDeprecatedAttributes();
     }
 
     /**
@@ -382,8 +382,8 @@ export default class InputChoiceSet extends LightningElement {
             validValues: INPUT_CHOICE_TYPES.valid
         });
         if (this._connected) {
-            this._initOptions();
-            this._destroyTooltip();
+            this.initOptions();
+            this.destroyTooltip();
         }
     }
 
@@ -399,9 +399,9 @@ export default class InputChoiceSet extends LightningElement {
     }
     set typeAttributes(value) {
         this._typeAttributes = normalizeObject(value);
-        this._normalizeTypeAttributes();
+        this.normalizeTypeAttributes();
         if (this._connected) {
-            this._destroyTooltip();
+            this.destroyTooltip();
         }
     }
 
@@ -431,8 +431,8 @@ export default class InputChoiceSet extends LightningElement {
         this._value = value;
 
         if (this._connected) {
-            this._updateCheckboxCheckedState();
-            this._updateLabelsStyle();
+            this.updateCheckboxCheckedState();
+            this.updateLabelsStyle();
         }
     }
 
@@ -453,7 +453,7 @@ export default class InputChoiceSet extends LightningElement {
     }
     set variant(value) {
         this._variant = normalizeVariant(value);
-        this._updateClassList();
+        this.updateClassList();
     }
 
     /*
@@ -755,15 +755,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Localization.
-     *
-     * @type {i18n}
-     */
-    get i18n() {
-        return i18n;
-    }
-
-    /**
      * True if orientation is horizontal.
      *
      * @type {boolean}
@@ -866,7 +857,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Clear all tooltips and remove all event listeners.
      */
-    _destroyTooltip() {
+    destroyTooltip() {
         if (this._tooltipTimeout) {
             clearTimeout(this._tooltipTimeout);
         }
@@ -883,7 +874,7 @@ export default class InputChoiceSet extends LightningElement {
      * @param {HTMLElement} target event target.
      * @param {boolean} isInput If the target is an input.
      */
-    _handleChecking(value, target, isInput) {
+    handleChecking(value, target, isInput) {
         const isSingleToggle =
             this.type === 'toggle' && this.checkboxes.length === 1;
         if (this.isMultiSelect || isSingleToggle) {
@@ -919,14 +910,14 @@ export default class InputChoiceSet extends LightningElement {
                 checkbox.dataset.checked = 'false';
             });
         }
-        this._value = this._valueChangeHandler();
+        this._value = this.valueChangeHandler();
         this._dispatchChangeEvent();
     }
 
     /**
      * Initialize the options.
      */
-    _initOptions() {
+    initOptions() {
         const { options, value, type, computedWidth } = this;
         this._transformedOptions = Array.isArray(options)
             ? options.map((option) => {
@@ -943,18 +934,18 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Initialize the orientation attributes.
      */
-    _initOrientationAttributes() {
+    initOrientationAttributes() {
         const attributes = deepCopy(this.orientationAttributes);
-        const small = this._normalizeHorizontalColumns(
+        const small = this.normalizeHorizontalColumns(
             attributes.smallContainerCols
         );
-        const medium = this._normalizeHorizontalColumns(
+        const medium = this.normalizeHorizontalColumns(
             attributes.mediumContainerCols
         );
-        const large = this._normalizeHorizontalColumns(
+        const large = this.normalizeHorizontalColumns(
             attributes.largeContainerCols
         );
-        const defaults = this._normalizeHorizontalColumns(attributes.cols);
+        const defaults = this.normalizeHorizontalColumns(attributes.cols);
 
         // Keep same logic as in layoutItem.
         attributes.cols = this.isHorizontal
@@ -980,7 +971,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Initialize the resize observer, triggered when the layout is resized.
      */
-    _initResizeObserver() {
+    initResizeObserver() {
         const wrapper = this.template.querySelector(
             '[data-element-id="container"]'
         );
@@ -988,8 +979,8 @@ export default class InputChoiceSet extends LightningElement {
 
         this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
             this._containerWidth = wrapper.getBoundingClientRect().width;
-            this._setWidth();
-            this._destroyTooltip();
+            this.setWidth();
+            this.destroyTooltip();
         });
     }
 
@@ -999,7 +990,7 @@ export default class InputChoiceSet extends LightningElement {
      * @param {number} value
      * @returns {number}
      */
-    _normalizeColumns(value) {
+    normalizeColumns(value) {
         const numValue = parseInt(value, 10);
         return COLUMNS.valid.includes(numValue) ? numValue : null;
     }
@@ -1011,8 +1002,8 @@ export default class InputChoiceSet extends LightningElement {
      * @param {number} value
      * @returns {number}
      */
-    _normalizeHorizontalColumns(value) {
-        const normalizedCols = this._normalizeColumns(value);
+    normalizeHorizontalColumns(value) {
+        const normalizedCols = this.normalizeColumns(value);
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
             : null;
@@ -1021,7 +1012,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Create the computed orientation attributes. Make sure only the authorized attributes for the given orientation are kept.
      */
-    _normalizeOrientationAttributes() {
+    normalizeOrientationAttributes() {
         const orientationAttributes = {};
         Object.entries(this._orientationAttributes).forEach(([key, value]) => {
             const allowedAttribute =
@@ -1038,7 +1029,7 @@ export default class InputChoiceSet extends LightningElement {
      * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated
      * attributes and compute the input choice set.
      */
-    _normalizeTypeAttributes() {
+    normalizeTypeAttributes() {
         const typeAttributes = {};
         Object.entries(this.typeAttributes).forEach(([key, value]) => {
             const allowedAttribute =
@@ -1049,13 +1040,13 @@ export default class InputChoiceSet extends LightningElement {
             }
         });
         this.computedTypeAttributes = typeAttributes;
-        this._supportDeprecatedAttributes();
+        this.supportDeprecatedAttributes();
     }
 
     /**
      * Set the width of the label icon container when check position is right and orientation vertical.
      */
-    _setWidth() {
+    setWidth() {
         const labelIconContainers = this.template.querySelectorAll(
             '[data-element-id="label-icon-container"]'
         );
@@ -1084,7 +1075,7 @@ export default class InputChoiceSet extends LightningElement {
         this.computedWidth = `width: ${maxWidth + 4}px;`;
     }
 
-    _showTooltip(tooltipValue, target) {
+    showTooltip(tooltipValue, target) {
         if (!tooltipValue) {
             return;
         }
@@ -1115,7 +1106,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Make sure the deprecated attributes are still supported through the type attributes.
      */
-    _supportDeprecatedAttributes() {
+    supportDeprecatedAttributes() {
         const { stretch } = this.computedTypeAttributes;
         if (stretch === undefined) {
             this.computedTypeAttributes.stretch = this.stretch;
@@ -1123,9 +1114,23 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Synchronize all inputs Aria help element ID.
+     */
+    synchronizeA11y() {
+        const inputs = this.template.querySelectorAll(
+            '[data-element-id^="input"]'
+        );
+        Array.prototype.slice.call(inputs).forEach((input) => {
+            synchronizeAttrs(input, {
+                'aria-describedby': this.computedUniqueHelpElementId
+            });
+        });
+    }
+
+    /**
      * Update the checkbox checked state.
      */
-    _updateCheckboxCheckedState() {
+    updateCheckboxCheckedState() {
         this.checkboxes.forEach((checkbox) => {
             const value = checkbox.value || checkbox.name;
             const valueSet = new Set(this.value);
@@ -1138,7 +1143,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Update form class styling.
      */
-    _updateClassList() {
+    updateClassList() {
         classListMutation(this.classList, {
             'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
             'slds-form-element_horizontal':
@@ -1149,7 +1154,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Update label styling.
      */
-    _updateLabelsStyle() {
+    updateLabelsStyle() {
         const labels = this.template.querySelectorAll(
             '[data-element-id="label"]'
         );
@@ -1192,7 +1197,7 @@ export default class InputChoiceSet extends LightningElement {
      * Value change handler.
      * @returns {array} Checked values.
      */
-    _valueChangeHandler() {
+    valueChangeHandler() {
         const checkedValues = Array.from(this.checkboxes)
             .filter(
                 (checkbox) =>
@@ -1214,7 +1219,7 @@ export default class InputChoiceSet extends LightningElement {
     handleBlur() {
         this.interactingState.leave();
         if (this.buttonVariant) {
-            this._destroyTooltip();
+            this.destroyTooltip();
         }
 
         /**
@@ -1245,8 +1250,8 @@ export default class InputChoiceSet extends LightningElement {
                 `[data-element-id="input-toggle"][data-value="${value}"]`
             );
         }
-        this._handleChecking(value, target, isInput);
-        this._updateLabelsStyle();
+        this.handleChecking(value, target, isInput);
+        this.updateLabelsStyle();
     }
 
     /**
@@ -1275,7 +1280,7 @@ export default class InputChoiceSet extends LightningElement {
             const option = this.options.find(
                 (opt) => opt.value === buttonValue
             );
-            this._showTooltip(option?.tooltip, target);
+            this.showTooltip(option?.tooltip, target);
         }
     }
 
@@ -1291,7 +1296,7 @@ export default class InputChoiceSet extends LightningElement {
             const option = this.options.find(
                 (opt) => opt.value === buttonValue
             );
-            this._showTooltip(option?.tooltip, target);
+            this.showTooltip(option?.tooltip, target);
         }
 
         /**
@@ -1311,7 +1316,7 @@ export default class InputChoiceSet extends LightningElement {
      */
     handleLeave() {
         if (this.buttonVariant) {
-            this._destroyTooltip();
+            this.destroyTooltip();
         }
     }
 

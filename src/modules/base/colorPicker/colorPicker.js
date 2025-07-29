@@ -12,47 +12,6 @@ import { LightningElement, api } from 'lwc';
 import inline from './inline.html';
 import standard from './standard.html';
 
-const VARIANTS = {
-    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
-    default: 'standard'
-};
-
-const TYPES = {
-    valid: ['base', 'custom', 'predefined', 'tokens'],
-    default: 'base'
-};
-
-const MENU_VARIANTS = {
-    valid: [
-        'bare',
-        'bare-inverse',
-        'border',
-        'border-filled',
-        'border-inverse',
-        'container',
-        'neutral'
-    ],
-    default: 'border'
-};
-
-const MENU_ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'x-small'
-};
-
-const MENU_ALIGNMENTS = {
-    valid: [
-        'auto',
-        'left',
-        'center',
-        'right',
-        'bottom-left',
-        'bottom-center',
-        'bottom-right'
-    ],
-    default: 'left'
-};
-
 const DEFAULT_COLORS = [
     '#e3abec',
     '#c2dbf6',
@@ -83,12 +42,54 @@ const DEFAULT_COLORS = [
     '#b67d11',
     '#b85d0d'
 ];
-
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_DONE_BUTTON_LABEL = 'Done';
 const DEFAULT_COLUMNS = 7;
+const DEFAULT_CUSTOM_TAB_LABEL = 'Custom';
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'required';
 const DEFAULT_TAB = 'default';
-const MINIMUM_TILE_SIZE = 5;
-const DEFAULT_TILE_WIDTH = 20;
+const DEFAULT_TAB_LABEL = 'Default';
 const DEFAULT_TILE_HEIGHT = 20;
+const DEFAULT_TILE_WIDTH = 20;
+const MENU_ALIGNMENTS = {
+    valid: [
+        'auto',
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
+const MENU_ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
+const MENU_VARIANTS = {
+    valid: [
+        'bare',
+        'bare-inverse',
+        'border',
+        'border-filled',
+        'border-inverse',
+        'container',
+        'neutral'
+    ],
+    default: 'border'
+};
+const MINIMUM_TILE_SIZE = 5;
+const TOKENS_TAB_LABEL = 'Tokens';
+const TYPES = {
+    valid: ['base', 'custom', 'predefined', 'tokens'],
+    default: 'base'
+};
+const VARIANTS = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
 
 /**
  * @class
@@ -105,6 +106,38 @@ export default class ColorPicker extends LightningElement {
      */
     @api accessKey;
     /**
+     * The label for the cancel button.
+     *
+     * @public
+     * @type {string}
+     * @default Cancel
+     */
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
+    /**
+     * The label for the custom tab.
+     *
+     * @public
+     * @type {string}
+     * @default Custom
+     */
+    @api customTabLabel = DEFAULT_CUSTOM_TAB_LABEL;
+    /**
+     * The label for the default tab.
+     *
+     * @public
+     * @type {string}
+     * @default Default
+     */
+    @api defaultTabLabel = DEFAULT_TAB_LABEL;
+    /**
+     * The label for the done button.
+     *
+     * @public
+     * @type {string}
+     * @default Done
+     */
+    @api doneButtonLabel = DEFAULT_DONE_BUTTON_LABEL;
+    /**
      * Help text detailing the purpose and function of the input.
      *
      * @public
@@ -119,6 +152,14 @@ export default class ColorPicker extends LightningElement {
      * @required
      */
     @api label;
+    /**
+     * Message displayed while the color picker is in the loading state.
+     *
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * The Lightning Design System name of the icon to use as a button icon, instead of the color dropdown. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
      *
@@ -147,6 +188,22 @@ export default class ColorPicker extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
+    /**
+     * The label for the tokens tab.
+     *
+     * @public
+     * @type {string}
+     * @default Tokens
+     */
+    @api tokensTabLabel = TOKENS_TAB_LABEL;
 
     _colors = DEFAULT_COLORS;
     _columns = DEFAULT_COLUMNS;

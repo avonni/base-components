@@ -7,20 +7,20 @@ customElements.define(
 
 export const ProgressIndicator = ({
     completedSteps,
+    currentStep,
     disabledSteps,
     errorSteps,
-    warningSteps,
-    currentStep,
+    steps,
     variant,
-    steps
+    warningSteps
 }) => {
     const element = document.createElement('ac-base-progress-indicator');
     element.completedSteps = completedSteps;
+    element.currentStep = currentStep;
     element.disabledSteps = disabledSteps;
     element.errorSteps = errorSteps;
-    element.warningSteps = warningSteps;
-    element.currentStep = currentStep;
-    element.variant = variant;
     element.steps = steps;
+    element.variant = variant;
+    element.warningSteps = warningSteps;
     return element;
 };

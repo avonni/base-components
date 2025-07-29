@@ -1,19 +1,23 @@
 <template>
     <c-vertical-visual-picker
+        style="height: 300px"
         class="slds-show"
+        collapsed-show-more-button={collapsedShowMoreButton}
         disabled={disabled}
         enable-infinite-loading
+        expanded-show-more-button={expandedShowMoreButton}
         hide-check-mark={hideCheckMark}
         is-loading={isLoading}
         items={items}
         label={label}
         load-more-offset={loadMoreOffset}
+        loading-state-alternative-text={loadingStateAlternativeText}
         max-count={maxCount}
         message-when-value-missing={messageWhenValueMissing}
         name={name}
         required={required}
+        required-alternative-text={requiredAlternativeText}
         size={size}
-        style="height: 300px"
         type={type}
         value={value}
         variant={variant}

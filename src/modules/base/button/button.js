@@ -45,6 +45,13 @@ export default class Button extends PrimitiveButton {
      * @default left
      */
     /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @name isButtonLoading
+     * @public
+     * @type {boolean}
+     * @default false
+    /**
      * URL to set for the image attribute.
      *
      * @name iconSrc
@@ -57,6 +64,14 @@ export default class Button extends PrimitiveButton {
      * @name label
      * @public
      * @type {string}
+     */
+    /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @name loadingStateAlternativeText
+     * @public
+     * @type {string}
+     * @default Loading...
      */
     /**
      * The name for the button element.

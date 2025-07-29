@@ -18,22 +18,22 @@ describe('Avatar', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
-            expect(element.actions).toMatchObject([]);
-            expect(element.actionPosition).toBe('bottom-left');
             expect(element.actionMenuIcon).toBeUndefined();
+            expect(element.actionPosition).toBe('bottom-left');
+            expect(element.actions).toMatchObject([]);
             expect(element.alternativeText).toBe('Avatar');
             expect(element.entityIconName).toBeUndefined();
-            expect(element.entityVariant).toBe('square');
+            expect(element.entityPosition).toBe('top-left');
             expect(element.entitySrc).toBeUndefined();
             expect(element.entityTitle).toBe('Entity');
-            expect(element.entityPosition).toBe('top-left');
+            expect(element.entityVariant).toBe('square');
             expect(element.fallbackIconName).toBeUndefined();
             expect(element.hideAvatarDetails).toBeFalsy();
             expect(element.href).toBeUndefined();
             expect(element.initials).toBeUndefined();
             expect(element.presence).toBeNull();
-            expect(element.presenceTitle).toBe('Presence');
             expect(element.presencePosition).toBe('bottom-right');
+            expect(element.presenceTitle).toBe('Presence');
             expect(element.primaryText).toBeUndefined();
             expect(element.secondaryText).toBeUndefined();
             expect(element.size).toBe('medium');
@@ -417,23 +417,6 @@ describe('Avatar', () => {
                 });
             });
 
-            describe('Presence Title', () => {
-                it('title', () => {
-                    element.presence = 'online';
-                    element.presenceTitle = 'Title';
-                    element.hideAvatarDetails = true;
-                    element.src =
-                        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
-
-                    return Promise.resolve().then(() => {
-                        const avatar = element.shadowRoot.querySelector(
-                            '[data-element-id="avonni-primitive-avatar-no-details"]'
-                        );
-                        expect(avatar.presenceTitle).toBe('Title');
-                    });
-                });
-            });
-
             describe('Presence Position', () => {
                 it('bottom-right', () => {
                     element.presence = 'online';
@@ -492,6 +475,23 @@ describe('Avatar', () => {
                             '[data-element-id="avonni-primitive-avatar-no-details"]'
                         );
                         expect(avatar.presencePosition).toBe('top-right');
+                    });
+                });
+            });
+
+            describe('Presence Title', () => {
+                it('title', () => {
+                    element.presence = 'online';
+                    element.presenceTitle = 'Title';
+                    element.hideAvatarDetails = true;
+                    element.src =
+                        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+                    return Promise.resolve().then(() => {
+                        const avatar = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-avatar-no-details"]'
+                        );
+                        expect(avatar.presenceTitle).toBe('Title');
                     });
                 });
             });

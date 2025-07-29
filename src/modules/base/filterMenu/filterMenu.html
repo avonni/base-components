@@ -2,18 +2,18 @@
     <div class="slds-is-relative">
         <button
             class={computedButtonClass}
-            disabled={disabled}
+            accesskey={accessKey}
             aria-expanded={computedAriaExpanded}
             aria-haspopup="true"
-            title={title}
-            accesskey={accessKey}
-            value={value}
-            type="button"
+            disabled={disabled}
             name={name}
+            title={title}
+            type="button"
+            value={value}
             data-element-id="button"
             onblur={handleButtonBlur}
-            onfocus={handleButtonFocus}
             onclick={handleButtonClick}
+            onfocus={handleButtonFocus}
         >
             {label}
             <c-primitive-icon
@@ -38,10 +38,10 @@
             class={computedDropdownClass}
             tabindex="0"
             data-element-id="div-dropdown"
+            onfocus={focusDropdown}
             onfocusin={handleDropdownFocusIn}
             onfocusout={handleDropdownFocusOut}
             onkeyup={handleDropdownKeyUp}
-            onfocus={focusDropdown}
         >
             <c-focus-trap data-element-id="avonni-focus-trap">
                 <div class="slds-p-vertical_xx-small" role="menu">
@@ -60,11 +60,11 @@
                         onchange={handleSearch}
                     ></lightning-input>
                     <p
-                        if:true={showNoResultMessage}
+                        if:true={showNoResultsMessage}
                         class="slds-p-around_small"
-                        data-element-id="p-no-result-message"
+                        data-element-id="p-no-results-message"
                     >
-                        No matches found
+                        {computedNoResultsMessage}
                     </p>
                     <div
                         class={computedDropdownContentClass}
@@ -100,9 +100,9 @@
                                     >
                                         <a
                                             class="slds-truncate"
-                                            href="javascript:void(0)"
                                             aria-checked={item.checked}
                                             aria-disabled={item.disabled}
+                                            href="javascript:void(0)"
                                             role="menuitemcheckbox"
                                             tabindex={item.tabindex}
                                             data-disabled={item.disabled}
@@ -121,13 +121,13 @@
                                                 ></c-primitive-icon>
                                                 <c-primitive-icon
                                                     if:true={item.color}
+                                                    style={item.colorStyle}
                                                     class="
                                                         slds-current-color
                                                         slds-m-right_x-small
                                                     "
                                                     icon-name="utility:record"
                                                     size="x-small"
-                                                    style={item.colorStyle}
                                                     data-element-id="avonni-primitive-icon-color"
                                                 ></c-primitive-icon>
                                                 <c-primitive-icon
@@ -163,8 +163,8 @@
                             class="slds-is-relative slds-p-vertical_large"
                         >
                             <lightning-spinner
-                                size="small"
                                 alternative-text={loadingStateAlternativeText}
+                                size="small"
                                 data-element-id="lightning-spinner"
                             ></lightning-spinner>
                         </div>
@@ -227,9 +227,9 @@
                         <lightning-button
                             class="slds-m-right_x-small"
                             disabled={isLoading}
-                            variant="base"
                             label={resetButtonLabel}
                             title={resetButtonLabel}
+                            variant="base"
                             data-element-id="lightning-button-reset"
                             data-is-focusable
                             onclick={handleResetClick}

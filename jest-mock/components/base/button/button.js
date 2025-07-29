@@ -8,7 +8,9 @@ export default class Button extends LightningElement {
     @api iconPosition;
     @api iconSize;
     @api iconSrc;
+    @api isButtonLoading;
     @api label;
+    @api loadingStateAlternativeText;
     @api name;
     @api stretch;
     @api type;

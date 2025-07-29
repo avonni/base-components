@@ -43,6 +43,39 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        addButtonLabel: {
+            name: 'add-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label for the add button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Add Item' }
+            }
+        },
+        cancelButtonLabel: {
+            name: 'cancel-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label for the cancel button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Cancel' }
+            }
+        },
+        doneButtonLabel: {
+            name: 'done-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label for the done button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Done' }
+            }
+        },
         independentMultiSelect: {
             name: 'independent-multi-select',
             control: {
@@ -130,6 +163,17 @@ export default {
                 defaultValue: { summary: 'Loading...' }
             }
         },
+        loadMoreButtonLabel: {
+            name: 'load-more-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label for the load more button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Load More' }
+            }
+        },
         sortable: {
             control: {
                 type: 'boolean'
@@ -164,6 +208,18 @@ export default {
                 defaultValue: { summary: 'New branch' }
             }
         },
+        disabled: {
+            name: 'disabled',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the component is disabled and items cannot be selected or edited.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         collapseDisabled: {
             name: 'collapse-disabled',
             control: {
@@ -174,6 +230,54 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
+            }
+        },
+        collapseButtonAlternativeText: {
+            name: 'collapse-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the collapse button icon.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Collapse Branch' }
+            }
+        },
+        closeButtonAlternativeText: {
+            name: 'close-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the close button icon.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Close Dialog' }
+            }
+        },
+        expandButtonAlternativeText: {
+            name: 'expand-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the expand button icon.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Expand Branch' }
+            }
+        },
+        saveButtonIconAlternativeText: {
+            name: 'save-button-icon-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the save button icon.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Save Label' }
             }
         },
         rootSlottableTypes: {
@@ -189,23 +293,32 @@ export default {
         }
     },
     args: {
+        addButtonLabel: 'Add Item',
         allowInlineEdit: false,
-        independentMultiSelect: false,
+        cancelButtonLabel: 'Cancel',
+        closeButtonAlternativeText: 'Close Dialog',
+        collapseButtonAlternativeText: 'Collapse Branch',
+        collapseDisabled: false,
+        disabled: false,
+        doneButtonLabel: 'Done',
+        expandButtonAlternativeText: 'Expand Branch',
         editableFields: [
+            'disabled',
+            'expanded',
+            'href',
+            'isLoading',
             'label',
             'metatext',
-            'name',
-            'href',
-            'expanded',
-            'disabled',
-            'isLoading'
+            'name'
         ],
+        independentMultiSelect: false,
         isLoading: false,
-        loadingStateAlternativeText: 'Loading...',
-        sortable: false,
         isMultiSelect: false,
-        collapseDisabled: false,
-        rootSlottableTypes: []
+        loadingStateAlternativeText: 'Loading...',
+        loadMoreButtonLabel: 'Load More',
+        rootSlottableTypes: [],
+        saveButtonIconAlternativeText: 'Save Label',
+        sortable: false
     }
 };
 

@@ -29,8 +29,15 @@ describe('Tree', () => {
         it('Default attributes', () => {
             expect(element.actions).toEqual([]);
             expect(element.actionsWhenDisabled).toEqual([]);
+            expect(element.addButtonLabel).toBe('Add Item');
             expect(element.allowInlineEdit).toBeFalsy();
+            expect(element.cancelButtonLabel).toBe('Cancel');
             expect(element.collapseDisabled).toBeFalsy();
+            expect(element.collapseButtonAlternativeText).toBe(
+                'Collapse Branch'
+            );
+            expect(element.doneButtonLabel).toBe('Done');
+            expect(element.expandButtonAlternativeText).toBe('Expand Branch');
             expect(element.disabled).toBeFalsy();
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.editableFields).toEqual([
@@ -48,184 +55,240 @@ describe('Tree', () => {
             expect(element.isMultiSelect).toBeFalsy();
             expect(element.items).toEqual([]);
             expect(element.loadingStateAlternativeText).toBe('Loading...');
+            expect(element.loadMoreButtonLabel).toBe('Load More');
             expect(element.placeholder).toBeUndefined();
             expect(element.rootSlottableTypes).toEqual([]);
+            expect(element.saveButtonIconAlternativeText).toBe('Save Label');
             expect(element.selectedItems).toEqual([]);
             expect(element.sortable).toBeFalsy();
         });
 
-        it('Actions', () => {
-            const addButton = element.shadowRoot.querySelector(
-                '[data-element-id="button-add-action"]'
-            );
-            expect(addButton).toBeFalsy();
-
-            element.actions = ACTIONS;
-            element.items = ITEMS;
-
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                items.forEach((item) => expect(item.actions).toEqual(ACTIONS));
-
-                const addButtonAction = element.shadowRoot.querySelector(
+        describe('Actions', () => {
+            it('Passed to the component', () => {
+                const addButton = element.shadowRoot.querySelector(
                     '[data-element-id="button-add-action"]'
                 );
-                expect(addButtonAction).toBeTruthy();
-                const icon = addButtonAction.querySelector(
-                    '[data-element-id="lightning-icon-add-action"]'
-                );
-                expect(icon.iconName).toBe('utility:add');
-            });
-        });
+                expect(addButton).toBeFalsy();
 
-        it('Actions, merged with items actions', () => {
-            const addButton = element.shadowRoot.querySelector(
-                '[data-element-id="button-add-action"]'
-            );
-            expect(addButton).toBeFalsy();
+                element.actions = ACTIONS;
+                element.items = ITEMS;
+                element.addButtonLabel = 'Add Item Test';
 
-            const customAction = {
-                name: 'second-action',
-                label: 'Second action'
-            };
-            element.actions = ACTIONS;
-            element.items = [
-                ITEMS[0],
-                {
-                    label: 'second item',
-                    name: 'second',
-                    actions: [customAction]
-                }
-            ];
-
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                expect(items[0].actions).toEqual(ACTIONS);
-                expect(items[1].actions).toEqual([...ACTIONS, customAction]);
-            });
-        });
-
-        it('Actions When Disabled', () => {
-            element.actionsWhenDisabled = ACTIONS;
-            element.items = ITEMS;
-
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                items.forEach((item) =>
-                    expect(item.actionsWhenDisabled).toEqual(ACTIONS)
-                );
-
-                const addButtonAction = element.shadowRoot.querySelector(
-                    '[data-element-id="button-add-action"]'
-                );
-                expect(addButtonAction).toBeFalsy();
-            });
-        });
-
-        it('Allow Inline Edit', () => {
-            element.allowInlineEdit = true;
-            element.items = ITEMS;
-
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                items.forEach((item) =>
-                    expect(item.allowInlineEdit).toBeTruthy()
-                );
-            });
-        });
-
-        it('Collapse Disabled', () => {
-            element.collapseDisabled = true;
-            element.items = ITEMS;
-
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                items.forEach((item) =>
-                    expect(item.collapseDisabled).toBeTruthy()
-                );
-            });
-        });
-
-        it('Disabled', () => {
-            element.disabled = true;
-            element.items = ITEMS;
-
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                items.forEach((item) => expect(item.disabled).toBeTruthy());
-            });
-        });
-
-        it('Editable Fields', () => {
-            const editableFields = ['metatext', 'href'];
-            element.editableFields = editableFields;
-            element.items = ITEMS;
-
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                items.forEach((item) =>
-                    expect(item.editableFields).toEqual(editableFields)
-                );
-            });
-        });
-
-        it('Enable infinite loading', () => {
-            element.enableInfiniteLoading = true;
-
-            return Promise.resolve()
-                .then(() => {
-                    const loadMore = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-load-more"]'
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
                     );
-                    expect(loadMore).toBeTruthy();
-
-                    element.isLoading = true;
-                })
-                .then(() => {
-                    // Button is hidden if is loading
-                    const loadMore = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-load-more"]'
+                    items.forEach((item) =>
+                        expect(item.actions).toEqual(ACTIONS)
                     );
-                    expect(loadMore).toBeFalsy();
+
+                    const addButtonAction = element.shadowRoot.querySelector(
+                        '[data-element-id="button-add-action"]'
+                    );
+                    expect(addButtonAction).toBeTruthy();
+                    const icon = addButtonAction.querySelector(
+                        '[data-element-id="lightning-icon-add-action"]'
+                    );
+                    expect(icon.iconName).toBe('utility:add');
+                    expect(addButtonAction.textContent).toBe('Add Item Test');
                 });
-        });
+            });
 
-        it('Header', () => {
-            element.header = 'Some header';
-
-            return Promise.resolve().then(() => {
-                const header = element.shadowRoot.querySelector(
-                    '[data-element-id="h4-header"]'
+            it('Actions, merged with items actions', () => {
+                const addButton = element.shadowRoot.querySelector(
+                    '[data-element-id="button-add-action"]'
                 );
-                expect(header.textContent).toBe('Some header');
+                expect(addButton).toBeFalsy();
+
+                const customAction = {
+                    name: 'second-action',
+                    label: 'Second action'
+                };
+                element.actions = ACTIONS;
+                element.items = [
+                    ITEMS[0],
+                    {
+                        label: 'second item',
+                        name: 'second',
+                        actions: [customAction]
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    expect(items[0].actions).toEqual(ACTIONS);
+                    expect(items[1].actions).toEqual([
+                        ...ACTIONS,
+                        customAction
+                    ]);
+                });
+            });
+
+            it('Actions When Disabled', () => {
+                element.actionsWhenDisabled = ACTIONS;
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) =>
+                        expect(item.actionsWhenDisabled).toEqual(ACTIONS)
+                    );
+
+                    const addButtonAction = element.shadowRoot.querySelector(
+                        '[data-element-id="button-add-action"]'
+                    );
+                    expect(addButtonAction).toBeFalsy();
+                });
             });
         });
 
-        it('Is Loading and Loading State Alternative Text', () => {
-            element.isLoading = true;
-            element.loadingStateAlternativeText = 'Some loading text';
-            element.items = ITEMS;
+        describe('Allow Inline Edit', () => {
+            it('true', () => {
+                element.allowInlineEdit = true;
+                element.items = ITEMS;
 
-            return Promise.resolve().then(() => {
-                const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-spinner"]'
-                );
-                expect(spinner).toBeTruthy();
-                expect(spinner.alternativeText).toBe('Some loading text');
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) =>
+                        expect(item.allowInlineEdit).toBeTruthy()
+                    );
+                });
+            });
+        });
+
+        describe('Alternative Texts', () => {
+            it('Passed to the component', () => {
+                element.items = ITEMS;
+                element.collapseButtonAlternativeText = 'Collapse Branch Test';
+                element.closeButtonAlternativeText = 'Close Dialog Test';
+                element.expandButtonAlternativeText = 'Expand Branch Test';
+                element.saveButtonIconAlternativeText = 'Save Label Test';
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) => {
+                        expect(item.collapseButtonAlternativeText).toBe(
+                            'Collapse Branch Test'
+                        );
+                        expect(item.closeButtonAlternativeText).toBe(
+                            'Close Dialog Test'
+                        );
+                        expect(item.expandButtonAlternativeText).toBe(
+                            'Expand Branch Test'
+                        );
+                        expect(item.saveButtonIconAlternativeText).toBe(
+                            'Save Label Test'
+                        );
+                    });
+                });
+            });
+        });
+
+        describe('Collapse Disabled', () => {
+            it('true', () => {
+                element.collapseDisabled = true;
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) =>
+                        expect(item.collapseDisabled).toBeTruthy()
+                    );
+                });
+            });
+        });
+
+        describe('Disabled', () => {
+            it('true', () => {
+                element.disabled = true;
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) => expect(item.disabled).toBeTruthy());
+                });
+            });
+        });
+
+        describe('Editable Fields', () => {
+            it('Passed to the component', () => {
+                const editableFields = ['metatext', 'href'];
+                element.editableFields = editableFields;
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) =>
+                        expect(item.editableFields).toEqual(editableFields)
+                    );
+                });
+            });
+        });
+
+        describe('Enable infinite loading', () => {
+            it('true', () => {
+                element.enableInfiniteLoading = true;
+                element.loadMoreButtonLabel = 'Load More Test';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const loadMore = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-load-more"]'
+                        );
+                        expect(loadMore).toBeTruthy();
+                        expect(loadMore.label).toBe('Load More Test');
+                        element.isLoading = true;
+                    })
+                    .then(() => {
+                        // Button is hidden if is loading
+                        const loadMore = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-load-more"]'
+                        );
+                        expect(loadMore).toBeFalsy();
+                    });
+            });
+        });
+
+        describe('Header', () => {
+            it('Passed to the component', () => {
+                element.header = 'Some header';
+
+                return Promise.resolve().then(() => {
+                    const header = element.shadowRoot.querySelector(
+                        '[data-element-id="h4-header"]'
+                    );
+                    expect(header.textContent).toBe('Some header');
+                });
+            });
+        });
+
+        describe('Is Loading and Loading State Alternative Text', () => {
+            it('Passed to the component', () => {
+                element.isLoading = true;
+                element.loadingStateAlternativeText = 'Some loading text';
+                element.items = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
+                    );
+                    expect(spinner).toBeTruthy();
+                    expect(spinner.alternativeText).toBe('Some loading text');
+                });
             });
         });
 
@@ -373,120 +436,129 @@ describe('Tree', () => {
             });
         });
 
-        it('Items', () => {
-            element.items = ITEMS;
+        describe('Items', () => {
+            it('Passed to the component', () => {
+                element.items = ITEMS;
 
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                expect(items).toHaveLength(ITEMS.length);
-                items.forEach((item, index) => {
-                    const originalItem = ITEMS[index];
-                    const infiniteLoading = originalItem.enableInfiniteLoading;
-                    expect(item.ariaDisabled).toBe(
-                        originalItem.disabled ? 'true' : 'false'
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
                     );
-                    expect(item.ariaExpanded).toBe(
-                        originalItem.expanded ||
-                            (!originalItem.items && !infiniteLoading)
-                            ? 'true'
-                            : 'false'
+                    expect(items).toHaveLength(ITEMS.length);
+                    items.forEach((item, index) => {
+                        const originalItem = ITEMS[index];
+                        const infiniteLoading =
+                            originalItem.enableInfiniteLoading;
+                        expect(item.ariaDisabled).toBe(
+                            originalItem.disabled ? 'true' : 'false'
+                        );
+                        expect(item.ariaExpanded).toBe(
+                            originalItem.expanded ||
+                                (!originalItem.items && !infiniteLoading)
+                                ? 'true'
+                                : 'false'
+                        );
+                        expect(item.ariaLabel).toBe(originalItem.label);
+                        expect(item.ariaLevel).toBe('1');
+                        expect(item.avatar).toEqual(originalItem.avatar);
+                        expect(item.disabled).toBe(
+                            originalItem.disabled || false
+                        );
+                        expect(item.expanded).toBe(
+                            originalItem.expanded ||
+                                (!originalItem.items && !infiniteLoading) ||
+                                false
+                        );
+                        expect(item.fields).toEqual(originalItem.fields);
+                        expect(item.href).toBe(originalItem.href);
+                        expect(item.isLoading).toBe(
+                            originalItem.isLoading || false
+                        );
+                        expect(item.label).toBe(originalItem.label);
+                        expect(item.level).toBe(1);
+                        expect(item.metatext).toBe(originalItem.metatext);
+                        expect(item.name).toBe(originalItem.name);
+                        expect(item.nodeKey).toBe((index + 1).toString());
+                    });
+
+                    [items[0], items[1], items[2]].forEach((item) =>
+                        expect(item.isLeaf).toBeFalsy()
                     );
-                    expect(item.ariaLabel).toBe(originalItem.label);
-                    expect(item.ariaLevel).toBe('1');
-                    expect(item.avatar).toEqual(originalItem.avatar);
-                    expect(item.disabled).toBe(originalItem.disabled || false);
-                    expect(item.expanded).toBe(
-                        originalItem.expanded ||
-                            (!originalItem.items && !infiniteLoading) ||
-                            false
-                    );
-                    expect(item.fields).toEqual(originalItem.fields);
-                    expect(item.href).toBe(originalItem.href);
-                    expect(item.isLoading).toBe(
-                        originalItem.isLoading || false
-                    );
-                    expect(item.label).toBe(originalItem.label);
-                    expect(item.level).toBe(1);
-                    expect(item.metatext).toBe(originalItem.metatext);
-                    expect(item.name).toBe(originalItem.name);
-                    expect(item.nodeKey).toBe((index + 1).toString());
+                    expect(items[3].isLeaf).toBeTruthy();
+                    expect(items[2].childItems).toMatchObject([
+                        {
+                            label: 'First level',
+                            name: 'firstLevel',
+                            children: [
+                                {
+                                    label: 'Second level',
+                                    name: 'secondLevel'
+                                },
+                                {
+                                    label: 'Second level 2',
+                                    name: 'secondLevel2',
+                                    isLoading: true
+                                },
+                                {
+                                    label: 'Second level 3',
+                                    name: 'secondLevel3',
+                                    children: [
+                                        {
+                                            label: 'Third level',
+                                            name: 'thirdLevel'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]);
                 });
-
-                [items[0], items[1], items[2]].forEach((item) =>
-                    expect(item.isLeaf).toBeFalsy()
-                );
-                expect(items[3].isLeaf).toBeTruthy();
-                expect(items[2].childItems).toMatchObject([
-                    {
-                        label: 'First level',
-                        name: 'firstLevel',
-                        children: [
-                            {
-                                label: 'Second level',
-                                name: 'secondLevel'
-                            },
-                            {
-                                label: 'Second level 2',
-                                name: 'secondLevel2',
-                                isLoading: true
-                            },
-                            {
-                                label: 'Second level 3',
-                                name: 'secondLevel3',
-                                children: [
-                                    {
-                                        label: 'Third level',
-                                        name: 'thirdLevel'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]);
             });
         });
 
-        it('Placeholder', () => {
-            const placeholder = 'Test branch';
-            element.items = ITEMS;
-            element.placeholder = placeholder;
+        describe('Placeholder', () => {
+            it('Passed to the component', () => {
+                const placeholder = 'Test branch';
+                element.items = ITEMS;
+                element.placeholder = placeholder;
 
-            return Promise.resolve().then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                const event = new CustomEvent('privateactionclick', {
-                    detail: {
-                        name: 'Standard.Tree.Add',
-                        key: '4'
-                    },
-                    bubbles: true
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    const event = new CustomEvent('privateactionclick', {
+                        detail: {
+                            name: 'Standard.Tree.Add',
+                            key: '4'
+                        },
+                        bubbles: true
+                    });
+                    items[3].dispatchEvent(event);
+
+                    const item = { ...ITEMS[3] };
+                    item.items = [
+                        {
+                            label: placeholder
+                        }
+                    ];
+
+                    expect(element.items[3]).toMatchObject(item);
                 });
-                items[3].dispatchEvent(event);
-
-                const item = { ...ITEMS[3] };
-                item.items = [
-                    {
-                        label: placeholder
-                    }
-                ];
-
-                expect(element.items[3]).toMatchObject(item);
             });
         });
 
-        it('Sortable', () => {
-            element.items = ITEMS;
-            element.sortable = true;
+        describe('Sortable', () => {
+            it('true', () => {
+                element.items = ITEMS;
+                element.sortable = true;
 
-            return Promise.resolve().then(() => {
-                // Register the items
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-tree-item"]'
-                );
-                items.forEach((item) => expect(item.sortable).toBeTruthy());
+                return Promise.resolve().then(() => {
+                    // Register the items
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-tree-item"]'
+                    );
+                    items.forEach((item) => expect(item.sortable).toBeTruthy());
+                });
             });
         });
 
@@ -556,12 +628,6 @@ describe('Tree', () => {
         });
     });
 
-    /*
-     * ------------------------------------------------------------
-     *  METHODS
-     * -------------------------------------------------------------
-     */
-
     describe('Methods', () => {
         it('Blur and Focus', () => {
             element.items = ITEMS;
@@ -593,12 +659,6 @@ describe('Tree', () => {
             });
         });
     });
-
-    /*
-     * ------------------------------------------------------------
-     *  EVENTS
-     * -------------------------------------------------------------
-     */
 
     describe('Events', () => {
         describe('actionclick', () => {

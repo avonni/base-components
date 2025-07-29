@@ -2,19 +2,19 @@
     <div style="width: 70%; max-width: 500px; margin: 0 auto">
         <c-card
             icon-name={iconName}
-            media-src={mediaSrc}
+            media-alternative-text={mediaAlternativeText}
             media-position={mediaPosition}
+            media-src={mediaSrc}
             title={title}
         >
             <lightning-button slot="actions" label="New"></lightning-button>
-
             <lightning-button-icon
-                slot="media-actions"
+                alternative-text="Bookmark"
                 icon-name="utility:bookmark"
                 size="x-small"
-                variant="border-filled"
-                alternative-text="Bookmark"
+                slot="media-actions"
                 title="Bookmark"
+                variant="border-filled"
             ></lightning-button-icon>
         </c-card>
     </div>

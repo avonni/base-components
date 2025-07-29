@@ -7,10 +7,10 @@
         <abbr
             if:true={required}
             class="slds-required"
-            title="required"
+            title={requiredAlternativeText}
             data-element-id="abbr"
-            >*</abbr
-        >
+            >*
+        </abbr>
         {label}
     </label>
     <lightning-helptext
@@ -23,11 +23,11 @@
             <lightning-button-icon
                 if:false={readOnly}
                 class="slds-input__button_decrement"
-                alternative-text="Decrement counter"
+                alternative-text={decrementButtonTitle}
                 disabled={disabled}
                 icon-name="utility:ban"
                 size="medium"
-                title="Decrement counter"
+                title={decrementButtonTitle}
                 variant="bare"
                 data-element-id="lightning-button-icon-decrement"
                 onclick={handleDecrement}
@@ -57,11 +57,11 @@
             <lightning-button-icon
                 if:false={readOnly}
                 class="slds-input__button_increment"
-                alternative-text="Increment counter"
+                alternative-text={incrementButtonTitle}
                 disabled={disabled}
                 icon-name="utility:new"
                 size="medium"
-                title="Increment counter"
+                title={incrementButtonTitle}
                 variant="bare"
                 data-element-id="lightning-button-icon-increment"
                 onclick={handleIncrement}

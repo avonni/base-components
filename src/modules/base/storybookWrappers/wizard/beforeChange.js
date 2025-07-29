@@ -1,30 +1,30 @@
 import { LightningElement, api } from 'lwc';
 
 export default class BeforeChange extends LightningElement {
-    @api title;
-    @api iconName;
-    @api variant;
+    @api actionPosition;
+    @api buttonAlignmentBump;
     @api currentStep;
-    @api hideNavigation;
-    @api indicatorType;
-    @api indicatorPosition;
+    @api finishButtonIconName;
+    @api finishButtonIconPosition;
+    @api finishButtonLabel;
+    @api finishButtonVariant;
+    @api fractionLabel;
+    @api fractionPrefixLabel;
     @api hideIndicator;
-    @api previousButtonIconName;
-    @api previousButtonIconPosition;
-    @api previousButtonLabel;
-    @api previousButtonVariant;
+    @api hideNavigation;
+    @api iconName;
+    @api indicatorPosition;
+    @api indicatorType;
     @api nextButtonIconName;
     @api nextButtonIconPosition;
     @api nextButtonLabel;
     @api nextButtonVariant;
-    @api finishButtonIconName;
-    @api finishButtonIconPosition;
-    @api finishButtonVariant;
-    @api finishButtonLabel;
-    @api buttonAlignmentBump;
-    @api actionPosition;
-    @api fractionPrefixLabel;
-    @api fractionLabel;
+    @api previousButtonIconName;
+    @api previousButtonIconPosition;
+    @api previousButtonLabel;
+    @api previousButtonVariant;
+    @api title;
+    @api variant;
 
     counter = 4;
     errorMessage = `Keep clicking on a button to change step!`;

@@ -6,17 +6,17 @@ customElements.define(
 );
 
 export const NoSlotScopedNotification = ({
-    title,
     iconName,
-    variant,
-    iconSize
+    iconSize,
+    title,
+    variant
 }) => {
     const element = document.createElement(
         'ac-avonni-no-slot-scoped-notification'
     );
-    element.title = title;
     element.iconName = iconName;
-    element.variant = variant;
     element.iconSize = iconSize;
+    element.title = title;
+    element.variant = variant;
     return element;
 };

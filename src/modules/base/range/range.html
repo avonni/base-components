@@ -6,8 +6,8 @@
     >
         <span class="slds-slider-label">
             <span class={computedLabelClass} data-element-id="span-label"
-                >{label}</span
-            >
+                >{label}
+            </span>
         </span>
     </label>
     <div
@@ -16,15 +16,15 @@
         data-element-id="vertical-max-unit-container"
     >
         <lightning-formatted-number
-            value={max}
-            format-style={unit}
             currency-code={unitAttributes.currencyCode}
             currency-display-as={unitAttributes.currencyDisplayAs}
+            format-style={unit}
             maximum-fraction-digits={unitAttributes.maximumFractionDigits}
             maximum-significant-digits={unitAttributes.maximumSignificantDigits}
             minimum-fraction-digits={unitAttributes.minimumFractionDigits}
             minimum-integer-digits={unitAttributes.minimumIntegerDigits}
             minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+            value={max}
             data-element-id="lightning-formatted-number-max-vertical"
         ></lightning-formatted-number>
     </div>
@@ -35,12 +35,12 @@
                     <input
                         class="slds-slider__range avonni-range__slider-left"
                         aria-label="Minimum"
-                        type="range"
-                        min={min}
-                        max={max}
-                        step={step}
-                        value={valueLower}
                         disabled={disabled}
+                        max={max}
+                        min={min}
+                        step={step}
+                        type="range"
+                        value={valueLower}
                         data-element-id="input-left"
                         data-group-name="input"
                         oninput={handleChange}
@@ -55,15 +55,15 @@
                     >
                         <p>
                             <lightning-formatted-number
-                                value={valueLower}
-                                format-style={unit}
                                 currency-code={unitAttributes.currencyCode}
                                 currency-display-as={unitAttributes.currencyDisplayAs}
+                                format-style={unit}
                                 maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                                 maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                                 minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                                 minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                                 minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+                                value={valueLower}
                                 data-element-id="lightning-formatted-number-left"
                             ></lightning-formatted-number>
                         </p>
@@ -75,13 +75,13 @@
                     <input
                         class="slds-slider__range avonni-range__slider-right"
                         aria-label="Maximum"
-                        type="range"
-                        min={min}
-                        max={max}
-                        step={step}
-                        value={valueUpper}
                         disabled={disabled}
+                        max={max}
+                        min={min}
+                        step={step}
                         tabindex={index}
+                        type="range"
+                        value={valueUpper}
                         data-element-id="input-right"
                         data-group-name="input"
                         oninput={handleChange}
@@ -96,15 +96,15 @@
                     >
                         <p>
                             <lightning-formatted-number
-                                value={valueUpper}
-                                format-style={unit}
                                 currency-code={unitAttributes.currencyCode}
                                 currency-display-as={unitAttributes.currencyDisplayAs}
+                                format-style={unit}
                                 maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                                 maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                                 minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                                 minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                                 minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+                                value={valueUpper}
                                 data-element-id="lightning-formatted-number-right"
                             ></lightning-formatted-number>
                         </p>
@@ -124,27 +124,27 @@
             data-element-id="horizontal-unit-container"
         >
             <lightning-formatted-number
-                value={min}
-                format-style={unit}
                 currency-code={unitAttributes.currencyCode}
                 currency-display-as={unitAttributes.currencyDisplayAs}
+                format-style={unit}
                 maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                 maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                 minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                 minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                 minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+                value={min}
                 data-element-id="lightning-formatted-number-min"
             ></lightning-formatted-number>
             <lightning-formatted-number
-                value={max}
-                format-style={unit}
                 currency-code={unitAttributes.currencyCode}
                 currency-display-as={unitAttributes.currencyDisplayAs}
+                format-style={unit}
                 maximum-fraction-digits={unitAttributes.maximumFractionDigits}
                 maximum-significant-digits={unitAttributes.maximumSignificantDigits}
                 minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                 minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                 minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+                value={max}
                 data-element-id="lightning-formatted-number-max"
             ></lightning-formatted-number>
         </div>
@@ -155,25 +155,25 @@
         data-element-id="vertical-min-unit-container"
     >
         <lightning-formatted-number
-            value={min}
-            format-style={unit}
             currency-code={unitAttributes.currencyCode}
             currency-display-as={unitAttributes.currencyDisplayAs}
+            format-style={unit}
             maximum-fraction-digits={unitAttributes.maximumFractionDigits}
             maximum-significant-digits={unitAttributes.maximumSignificantDigits}
             minimum-fraction-digits={unitAttributes.minimumFractionDigits}
             minimum-integer-digits={unitAttributes.minimumIntegerDigits}
             minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+            value={min}
             data-element-id="lightning-formatted-number-min-vertical"
         ></lightning-formatted-number>
     </div>
-    <template if:true={_helpMessage}>
+    <template if:true={helpMessage}>
         <div
-            id="message-id"
             class="slds-form-element__help"
             aria-live="assertive"
+            id="message-id"
         >
-            {_helpMessage}
+            {helpMessage}
         </div>
     </template>
 </template>

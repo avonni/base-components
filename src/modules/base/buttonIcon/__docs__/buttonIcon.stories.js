@@ -15,6 +15,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: `The alternative text used to describe the icon. This text should describe what happens when you click the button, for example 'Upload File', not what the icon looks like, 'Paperclip'.`,
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         disabled: {
             name: 'disabled',
             control: {
@@ -59,6 +69,18 @@ export default {
                 'Setting it to true show a loading spinner over the button.',
             table: {
                 type: { summary: 'boolean' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the button is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
             }
         },
         size: {
@@ -157,8 +179,9 @@ export default {
         }
     },
     args: {
-        alternativeText: 'Button Icon',
         disabled: false,
+        isButtonLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         size: 'medium',
         type: 'button',
         variant: 'border'

@@ -42,6 +42,12 @@ export default class LayoutItem extends LightningElement {
     _sizes = { default: DEFAULT_SIZE };
     name = generateUUID();
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.updateClassAndStyle();
         this._connected = true;

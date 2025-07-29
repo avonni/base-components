@@ -49,7 +49,6 @@ export default class ProgressRing extends LightningElement {
     get direction() {
         return this._direction;
     }
-
     set direction(direction) {
         this._direction = normalizeString(direction, {
             fallbackValue: PROGRESS_RING_DIRECTIONS.default,
@@ -68,7 +67,6 @@ export default class ProgressRing extends LightningElement {
     get hideIcon() {
         return this._hideIcon;
     }
-
     set hideIcon(value) {
         this._hideIcon = normalizeBoolean(value);
     }
@@ -84,7 +82,6 @@ export default class ProgressRing extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: PROGRESS_RING_SIZES.default,
@@ -103,7 +100,6 @@ export default class ProgressRing extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         const normalizedValue = parseInt(value, 10);
 
@@ -132,7 +128,6 @@ export default class ProgressRing extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: PROGRESS_RING_VARIANTS.default,
@@ -145,6 +140,36 @@ export default class ProgressRing extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+    /**
+     * Computed alternative text based on variant.
+     *
+     * @type {string}
+     */
+    get computedAltText() {
+        if (this.variant === 'warning') {
+            return 'Warning';
+        }
+        if (this.variant === 'expired') {
+            return 'Expired';
+        }
+        if (this._variant === 'base-autocomplete' && this.value === 100) {
+            return 'Complete';
+        }
+        return undefined;
+    }
+
+    /**
+     * Computed Icon theme variant class.
+     *
+     * @type {string}
+     */
+    get computedIconClass() {
+        return classSet('slds-icon_container').add({
+            'slds-icon-utility-warning': this.variant === 'warning',
+            'slds-icon-utility-error': this.variant === 'expired',
+            'slds-icon-utility-check': this.variant === 'base-autocomplete'
+        });
+    }
 
     /**
      * Computed outer class styling based on selected attributes.
@@ -154,28 +179,15 @@ export default class ProgressRing extends LightningElement {
     get computedOuterClass() {
         return classSet('slds-progress-ring')
             .add({
-                'slds-progress-ring_large': this._size === 'large',
-                'slds-progress-ring_warning': this._variant === 'warning',
-                'slds-progress-ring_expired': this._variant === 'expired',
+                'slds-progress-ring_large': this.size === 'large',
+                'slds-progress-ring_warning': this.variant === 'warning',
+                'slds-progress-ring_expired': this.variant === 'expired',
                 'slds-progress-ring_active-step':
-                    this._variant === 'active-step',
+                    this.variant === 'active-step',
                 'slds-progress-ring_complete':
-                    this._variant === 'base-autocomplete' && this._value === 100
+                    this.variant === 'base-autocomplete' && this.value === 100
             })
             .toString();
-    }
-
-    /**
-     * Computed Icon theme variant class.
-     *
-     * @type {string}
-     */
-    get computedIconTheme() {
-        return classSet('slds-icon_container').add({
-            'slds-icon-utility-warning': this._variant === 'warning',
-            'slds-icon-utility-error': this._variant === 'expired',
-            'slds-icon-utility-check': this._variant === 'base-autocomplete'
-        });
     }
 
     /**
@@ -196,34 +208,16 @@ export default class ProgressRing extends LightningElement {
     }
 
     /**
-     * Computed alternative text based on variant.
-     *
-     * @type {string}
-     */
-    get computedAltText() {
-        if (this.variant === 'warning') {
-            return 'Warning';
-        }
-        if (this.variant === 'expired') {
-            return 'Expired';
-        }
-        if (this._variant === 'base-autocomplete' && this._value === 100) {
-            return 'Complete';
-        }
-        return undefined;
-    }
-
-    /**
      * Modify icon name value based on variant.
      *
      * @type {string}
      */
     get iconName() {
-        if (this._variant === 'warning') {
+        if (this.variant === 'warning') {
             return 'utility:warning';
-        } else if (this._variant === 'expired') {
+        } else if (this.variant === 'expired') {
             return 'utility:error';
-        } else if (this._variant === 'base-autocomplete') {
+        } else if (this.variant === 'base-autocomplete') {
             return 'utility:check';
         }
         return null;
@@ -235,16 +229,12 @@ export default class ProgressRing extends LightningElement {
      * @type {boolean}
      */
     get iconPresence() {
-        if (
-            (this._variant === 'base-autocomplete' &&
-                this._value === 100 &&
-                this._hideIcon === false) ||
-            (this._variant === 'warning' && this._hideIcon === false) ||
-            (this._variant === 'expired' && this._hideIcon === false)
-        ) {
-            return true;
-        }
-        return false;
+        return (
+            !this.hideIcon &&
+            ((this.variant === 'base-autocomplete' && this.value === 100) ||
+                this.variant === 'warning' ||
+                this.variant === 'expired')
+        );
     }
 
     /**

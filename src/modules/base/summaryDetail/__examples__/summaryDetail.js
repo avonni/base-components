@@ -6,21 +6,21 @@ customElements.define(
 );
 
 export const SummaryDetail = ({
-    title,
+    closed,
+    expandIconName,
     fullWidth,
+    hideIcon,
     removeBodyIndentation,
     shrinkIconName,
-    expandIconName,
-    closed,
-    hideIcon
+    title
 }) => {
     const element = document.createElement('ac-base-summary-detail');
-    element.title = title;
+    element.closed = closed;
+    element.expandIconName = expandIconName;
     element.fullWidth = fullWidth;
+    element.hideIcon = hideIcon;
     element.removeBodyIndentation = removeBodyIndentation;
     element.shrinkIconName = shrinkIconName;
-    element.expandIconName = expandIconName;
-    element.closed = closed;
-    element.hideIcon = hideIcon;
+    element.title = title;
     return element;
 };

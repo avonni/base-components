@@ -7,8 +7,10 @@ customElements.define(
 
 export const InputCounter = ({
     disabled,
+    decrementButtonTitle,
     fieldLevelHelp,
     fractionDigits,
+    incrementButtonTitle,
     label,
     max,
     messageWhenBadInput,
@@ -20,6 +22,7 @@ export const InputCounter = ({
     min,
     readOnly,
     required,
+    requiredAlternativeText,
     step,
     type,
     value,
@@ -27,8 +30,10 @@ export const InputCounter = ({
 }) => {
     const element = document.createElement('ac-base-input-counter');
     element.disabled = disabled;
+    element.decrementButtonTitle = decrementButtonTitle;
     element.fieldLevelHelp = fieldLevelHelp;
     element.fractionDigits = fractionDigits;
+    element.incrementButtonTitle = incrementButtonTitle;
     element.label = label;
     element.max = max;
     element.messageWhenBadInput = messageWhenBadInput;
@@ -40,6 +45,7 @@ export const InputCounter = ({
     element.min = min;
     element.readOnly = readOnly;
     element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
     element.step = step;
     element.type = type;
     element.value = value;

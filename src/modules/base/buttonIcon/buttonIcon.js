@@ -87,6 +87,22 @@ export default class ButtonIcon extends PrimitiveButton {
      * @type {string}
      */
     /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @name isButtonLoading
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @name loadingStateAlternativeText
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    /**
      * The name for the button element.
      * This value is optional and can be used to identify the button in a callback.
      *

@@ -33,6 +33,9 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
+
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
@@ -65,8 +68,6 @@ const MENU_WIDTHS = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'small'
 };
-
-const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 
 /**
  * @class
@@ -108,8 +109,9 @@ export default class DynamicMenu extends LightningElement {
      *
      * @type {string}
      * @public
+     * @default Loading...
      */
-    @api loadingStateAlternativeText;
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Text that is displayed when the field is empty, to prompt the user for a valid entry.
      *
@@ -150,16 +152,22 @@ export default class DynamicMenu extends LightningElement {
     dropdownOpened = false;
     filteredItems = [];
     hoverItem;
-    listHeight;
+    computedListHeight;
     queryTerm;
     showFooter = true;
 
+    _boundingRect = {};
     _cancelBlur = false;
     _dropdownIsFocused = false;
     _dropdownVisible = false;
     _focusedIndex = 0;
     _order;
-    _boundingRect = {};
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.classList.add(
@@ -697,7 +705,7 @@ export default class DynamicMenu extends LightningElement {
         if (items) {
             height += getListHeight(items, length);
         }
-        this.listHeight = `max-height: ${height}px; overflow-y: auto;`;
+        this.computedlistHeight = `max-height: ${height}px; overflow-y: auto;`;
     }
 
     /**
@@ -1045,6 +1053,11 @@ export default class DynamicMenu extends LightningElement {
         }
     }
 
+    /**
+     * Key down event handler.
+     *
+     * @param {Event} event
+     */
     handleItemKeyDown(event) {
         switch (event.keyCode) {
             case keyCodes.left:

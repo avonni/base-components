@@ -9,8 +9,8 @@ export const Barcode = ({
     color,
     height,
     hideValue,
-    textColor,
     textAlignment,
+    textColor,
     type,
     value,
     width

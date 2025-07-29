@@ -5,19 +5,16 @@ const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
-
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
-
 const FORMAT_STYLES = {
     default: 'decimal',
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
-
 const TREND_ICONS = {
     valid: ['dynamic', 'arrow', 'caret'],
     default: undefined
 };
-
 const VALUE_SIGNS = {
     valid: ['negative', 'positive-and-negative', 'none'],
     default: 'negative'
@@ -35,7 +32,13 @@ export default class PrimitiveMetric extends LightningElement {
      * @public
      */
     @api currencyCode;
-
+    /**
+     * Message to display when the metric is in a loading state.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Text to display before the primary value
      *
@@ -43,7 +46,6 @@ export default class PrimitiveMetric extends LightningElement {
      * @public
      */
     @api prefix;
-
     /**
      * Text to display after the primary value.
      *
@@ -293,7 +295,7 @@ export default class PrimitiveMetric extends LightningElement {
      *
      * @type {string}
      */
-    get dynamicIconClass() {
+    get computedDynamicIconClass() {
         return classSet('slds-align-middle')
             .add({
                 'slds-m-right_x-small': this.value > this.trendBreakpointValue,
@@ -301,15 +303,6 @@ export default class PrimitiveMetric extends LightningElement {
                 'slds-m-right_xx-small': this.value <= this.trendBreakpointValue
             })
             .toString();
-    }
-
-    /**
-     * True if the value is a not a valid number.
-     *
-     * @type {boolean}
-     */
-    get isEmpty() {
-        return !isFinite(this.value);
     }
 
     /**
@@ -335,6 +328,15 @@ export default class PrimitiveMetric extends LightningElement {
             return neutral;
         }
         return this.value > this.trendBreakpointValue ? up : down;
+    }
+
+    /**
+     * True if the value is a not a valid number.
+     *
+     * @type {boolean}
+     */
+    get isEmpty() {
+        return !isFinite(this.value);
     }
 
     /**

@@ -9,13 +9,12 @@ import {
 import { LightningElement, api } from 'lwc';
 import Menu from './menu';
 
+const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
+const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
-
-const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
-const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 /**
  * @class
@@ -36,6 +35,12 @@ export default class FilterMenuGroup extends LightningElement {
     selectedPills = [];
     _connected = false;
     _selectedValue = {};
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.computeValue();
@@ -182,25 +187,25 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
-     * Filter Wrapper class styling
-     *
-     * @type {string}
-     */
-    get filtersWrapperClass() {
-        return classSet({
-            'slds-grid': !this.isVertical
-        });
-    }
-
-    /**
      * Filters class styling
      *
      * @type {string}
      */
-    get filtersClass() {
+    get computedFiltersClass() {
         return classSet({
             'slds-m-right_xx-small': !this.isVertical,
             'slds-m-bottom_small': this.isVertical
+        });
+    }
+
+    /**
+     * Filter Wrapper class styling
+     *
+     * @type {string}
+     */
+    get computedFiltersWrapperClass() {
+        return classSet({
+            'slds-grid': !this.isVertical
         });
     }
 
@@ -220,15 +225,6 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get isVertical() {
         return this.variant === 'vertical';
-    }
-
-    /**
-     * Check if selectedPills is populated and if items are not hidden.
-     *
-     * @type {boolean}
-     */
-    get showSelectedItems() {
-        return !this.hideSelectedItems && this.selectedPills.length;
     }
 
     /**
@@ -253,6 +249,15 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get showApplyResetButtons() {
         return this.isVertical && !this.hideApplyResetButtons;
+    }
+
+    /**
+     * Check if selectedPills is populated and if items are not hidden.
+     *
+     * @type {boolean}
+     */
+    get showSelectedItems() {
+        return !this.hideSelectedItems && this.selectedPills.length;
     }
 
     /*

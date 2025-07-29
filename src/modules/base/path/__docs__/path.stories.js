@@ -208,6 +208,19 @@ export default {
                 category: 'Path navigation',
                 subcategory: 'Button'
             }
+        },
+        toggleButtonAlternativeText: {
+            name: 'toggle-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the toggle button icon.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Toggle Coaching' },
+                category: 'Coaching'
+            }
         }
     },
     args: {
@@ -221,7 +234,8 @@ export default {
         nextButtonLabel: 'Mark as Complete',
         nextButtonIconPosition: 'left',
         selectButtonLabel: 'Mark as Current Stage',
-        selectButtonIconPosition: 'left'
+        selectButtonIconPosition: 'left',
+        toggleButtonAlternativeText: 'Toggle Coaching'
     }
 };
 

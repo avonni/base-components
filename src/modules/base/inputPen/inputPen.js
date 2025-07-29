@@ -11,11 +11,12 @@ import { LightningElement, api } from 'lwc';
 import { SmoothToolManager } from './smoothToolManager';
 import { StraightToolManager } from './straightToolManager';
 
+const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
+
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
     default: 'bottom-toolbar'
 };
-const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
 
 const DEFAULT_BACKGROUND_COLORS = [
     '#e3abec',
@@ -54,10 +55,21 @@ const DEFAULT_BACKGROUND_COLORS = [
     '#3a3a3a',
     '#000000'
 ];
-
-const DEFAULT_COLOR = '#000';
+const DEFAULT_BACKGROUND_BUTTON_ALTERNATIVE_TEXT = 'Background color';
 const DEFAULT_BACKGROUND_COLOR = '#ffffff00';
+const DEFAULT_CLEAR_BUTTON_ALTERNATIVE_TEXT = 'Clear';
+const DEFAULT_COLOR = '#000';
+const DEFAULT_COLOR_BUTTON_ALTERNATIVE_TEXT = 'Pen color';
+const DEFAULT_DOWNLOAD_BUTTON_ALTERNATIVE_TEXT = 'Download PNG';
+const DEFAULT_DRAW_BUTTON_ALTERNATIVE_TEXT = 'Draw';
+const DEFAULT_ERASE_BUTTON_ALTERNATIVE_TEXT = 'Erase';
+const DEFAULT_INK_BUTTON_ALTERNATIVE_TEXT = 'Ink';
+const DEFAULT_PAINT_BUTTON_ALTERNATIVE_TEXT = 'Paint';
+const DEFAULT_REDO_BUTTON_ALTERNATIVE_TEXT = 'Redo';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const DEFAULT_SIZE = 3;
+const DEFAULT_SIZE_BUTTON_ALTERNATIVE_TEXT = 'Size';
+const DEFAULT_UNDO_BUTTON_ALTERNATIVE_TEXT = 'Undo';
 
 /**
  * @class
@@ -67,12 +79,70 @@ const DEFAULT_SIZE = 3;
  */
 export default class InputPen extends LightningElement {
     /**
+     * Alternative text for the background button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Background color'
+     */
+    @api backgroundButtonAlternativeText =
+        DEFAULT_BACKGROUND_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the clear button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Clear'
+     */
+    @api clearButtonAlternativeText = DEFAULT_CLEAR_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the color button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Pen color'
+     */
+    @api colorButtonAlternativeText = DEFAULT_COLOR_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the download button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Download PNG'
+     */
+    @api downloadButtonAlternativeText =
+        DEFAULT_DOWNLOAD_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the draw button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Draw'
+     */
+    @api drawButtonAlternativeText = DEFAULT_DRAW_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the erase button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Erase'
+     */
+    @api eraseButtonAlternativeText = DEFAULT_ERASE_BUTTON_ALTERNATIVE_TEXT;
+    /**
      * Help text detailing the purpose and function of the input.
      *
      * @type {string}
      * @public
      */
     @api fieldLevelHelp;
+    /**
+     * Alternative text for the ink button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Ink'
+     */
+    @api inkButtonAlternativeText = DEFAULT_INK_BUTTON_ALTERNATIVE_TEXT;
     /**
      * Text label for the input.
      *
@@ -87,6 +157,45 @@ export default class InputPen extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
+    /**
+     * Alternative text for the paint button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Paint'
+     */
+    @api paintButtonAlternativeText = DEFAULT_PAINT_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the redo button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Redo'
+     */
+    @api redoButtonAlternativeText = DEFAULT_REDO_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the size button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Size'
+     */
+    @api sizeButtonAlternativeText = DEFAULT_SIZE_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the undo button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Undo'
+     */
+    @api undoButtonAlternativeText = DEFAULT_UNDO_BUTTON_ALTERNATIVE_TEXT;
 
     _color = DEFAULT_COLOR;
     _disabled = false;
@@ -316,23 +425,7 @@ export default class InputPen extends LightningElement {
      */
     @api
     get hideControls() {
-        if (
-            !this.showPen &&
-            !this.showPaint &&
-            !this.showInk &&
-            !this.showErase &&
-            !this.showSize &&
-            !this.showColor &&
-            !this.showBackground &&
-            !this.showDownload &&
-            !this.showUndo &&
-            !this.showRedo &&
-            !this.showClear
-        ) {
-            return true;
-        }
-
-        return this._hideControls;
+        return this.controlsHidden || this._hideControls;
     }
     set hideControls(value) {
         this._hideControls = normalizeBoolean(value);
@@ -561,6 +654,51 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Compute the constraintApi with fieldConstraintApiWithProxyInput.
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this,
+                {
+                    valueMissing: () => {
+                        return !this.value && this.required;
+                    }
+                }
+            );
+
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
+                    type: () => 'url',
+                    value: () => this.value,
+                    disabled: () => this.disabled
+                });
+        }
+        return this._constraintApi;
+    }
+
+    /**
+     * Returns true if all controls are hidden.
+     *
+     * @type {boolean}
+     */
+    get controlsHidden() {
+        return (
+            !this.showPen &&
+            !this.showPaint &&
+            !this.showInk &&
+            !this.showErase &&
+            !this.showSize &&
+            !this.showColor &&
+            !this.showBackground &&
+            !this.showDownload &&
+            !this.showUndo &&
+            !this.showRedo &&
+            !this.showClear
+        );
+    }
+
+    /**
      * Base64 value of the background and foreground.
      */
     get dataURL() {
@@ -625,7 +763,6 @@ export default class InputPen extends LightningElement {
     /**
      * Check if background fill tool is shown.
      * @type {boolean}
-     *
      */
     get showBackground() {
         return !this.disabledButtons.includes('background');
@@ -736,30 +873,6 @@ export default class InputPen extends LightningElement {
      */
     get showUndoRedo() {
         return this.showUndo || this.showRedo;
-    }
-
-    /**
-     * Compute the constraintApi with fieldConstraintApiWithProxyInput.
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApiWithProxyInput(
-                () => this,
-                {
-                    valueMissing: () => {
-                        return !this.value && this.required;
-                    }
-                }
-            );
-
-            this._constraintApiProxyInputUpdater =
-                this._constraintApi.setInputAttributes({
-                    type: () => 'url',
-                    value: () => this.value,
-                    disabled: () => this.disabled
-                });
-        }
-        return this._constraintApi;
     }
 
     /*

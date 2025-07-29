@@ -15,6 +15,28 @@ export default {
                 category: 'Validation'
             }
         },
+        decrementButtonTitle: {
+            name: 'decrement-button-title',
+            control: {
+                type: 'text'
+            },
+            description: 'Title for the decrement button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Decrement counter' }
+            }
+        },
+        incrementButtonTitle: {
+            name: 'increment-button-title',
+            control: {
+                type: 'text'
+            },
+            description: 'Title for the increment button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Increment counter' }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
@@ -70,7 +92,6 @@ export default {
                 category: 'Validation'
             }
         },
-
         messageWhenBadInput: {
             name: 'message-when-bad-input',
             control: {
@@ -185,6 +206,18 @@ export default {
                 category: 'Validation'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Required' }
+            }
+        },
         step: {
             name: 'step',
             control: {
@@ -239,9 +272,12 @@ export default {
     },
     args: {
         disabled: false,
+        decrementButtonTitle: 'Decrement counter',
         hideValue: false,
+        incrementButtonTitle: 'Increment counter',
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         step: 1,
         type: 'number',
         variant: 'standard'

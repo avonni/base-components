@@ -11,34 +11,28 @@ const AVATAR_POSITIONS = {
     default: 'left',
     valid: ['top', 'bottom', 'left', 'right']
 };
-
 const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
-
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
-
 const FORMAT_STYLES = {
     default: 'decimal',
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
-
 const LABEL_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
-
 const POSITIONS = {
     valid: ['right', 'left', 'top', 'bottom'],
     default: 'right'
 };
-
 const TREND_ICONS = {
     valid: ['dynamic', 'arrow', 'caret'],
     default: undefined
 };
-
 const VALUE_SIGNS = {
     valid: ['negative', 'positive-and-negative', 'none'],
     default: 'negative'
@@ -58,7 +52,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api currencyCode;
-
     /**
      * Additional text to display below the label.
      *
@@ -66,7 +59,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api description;
-
     /**
      * Error message text to display next to the label.
      *
@@ -74,7 +66,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api errorMessage;
-
     /**
      * Label of the metric. If present, it will be displayed on top of the data.
      *
@@ -82,7 +73,13 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api label;
-
+    /**
+     * Message to display when the metric is in a loading state.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     /**
      * Text to display before the primary value
      *
@@ -90,7 +87,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api prefix;
-
     /**
      * Only used if `secondary-format-style="currency"`, this attribute determines which currency is displayed. Possible values are the ISO 4217 currency codes, such as `USD` for the US dollar.
      *
@@ -98,7 +94,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api secondaryCurrencyCode;
-
     /**
      * Text to display before the secondary value.
      *
@@ -106,7 +101,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api secondaryPrefix;
-
     /**
      * Text to display after the secondary value.
      *
@@ -114,7 +108,6 @@ export default class Metric extends LightningElement {
      * @public
      */
     @api secondarySuffix;
-
     /**
      * Text to display after the primary value.
      *
@@ -153,6 +146,12 @@ export default class Metric extends LightningElement {
     _value;
     _valueIsLoading = false;
     _valueSign = VALUE_SIGNS.default;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     renderedCallback() {
         this.initTooltip();
@@ -713,7 +712,7 @@ export default class Metric extends LightningElement {
      *
      * @type {string}
      */
-    get avatarClass() {
+    get computedAvatarClass() {
         const position = normalizeString(this.avatar.position, {
             fallbackValue: AVATAR_POSITIONS.default,
             validValues: AVATAR_POSITIONS.valid
@@ -731,7 +730,7 @@ export default class Metric extends LightningElement {
             .toString();
     }
 
-    get metricsClass() {
+    get computedMetricsClass() {
         const position = this.secondaryPosition;
         return classSet('avonni-metric__primary-and-secondary-wrapper')
             .add({
@@ -749,7 +748,7 @@ export default class Metric extends LightningElement {
      *
      * @type {string}
      */
-    get primaryClass() {
+    get computedPrimaryClass() {
         const position = this.secondaryPosition;
         const classes = classSet('avonni-metric__primary').add({
             'slds-show_inline-block':
@@ -779,7 +778,7 @@ export default class Metric extends LightningElement {
      *
      * @type {string}
      */
-    get secondaryClass() {
+    get computedSecondaryClass() {
         const position = this.secondaryPosition;
         const classes = classSet('avonni-metric__secondary').add({
             'slds-show_inline-block':
@@ -805,15 +804,6 @@ export default class Metric extends LightningElement {
     }
 
     /**
-     * True if the label should be shown at the top.
-     *
-     * @type {boolean}
-     */
-    get showTopLabel() {
-        return this.labelPosition === 'top';
-    }
-
-    /**
      * True if the secondary metric should be visible.
      *
      * @type {boolean}
@@ -823,22 +813,12 @@ export default class Metric extends LightningElement {
     }
 
     /**
-     * Computed CSS classes for the wrapper.
+     * True if the label should be shown at the top.
      *
-     * @type {string}
+     * @type {boolean}
      */
-    get wrapperClass() {
-        const position = normalizeString(this.avatar.position, {
-            fallbackValue: AVATAR_POSITIONS.default,
-            validValues: AVATAR_POSITIONS.valid
-        });
-
-        return classSet('slds-grid slds-wrap avonni-metric__wrapper').add({
-            'avonni-metric__wrapper_vertical':
-                position === 'top' || position === 'bottom',
-            'avonni-metric__wrapper_horizontal':
-                position === 'left' || position === 'right'
-        });
+    get showTopLabel() {
+        return this.labelPosition === 'top';
     }
 
     /*

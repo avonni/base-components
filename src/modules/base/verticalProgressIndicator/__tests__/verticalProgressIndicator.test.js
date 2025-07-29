@@ -22,78 +22,85 @@ describe('VerticalProgressIndicator', () => {
         document.body.appendChild(element);
     });
 
-    it('Vertical progress indicator: Default attributes', () => {
-        expect(element.completedSteps).toMatchObject([]);
-        expect(element.contentInLine).toBeFalsy();
-        expect(element.currentStep).toBeUndefined();
-        expect(element.format).toBe('linear');
-        expect(element.hasError).toBeFalsy();
-        expect(element.markAsComplete).toBeFalsy();
-        expect(element.variant).toBe('base');
-    });
-
-    /* ----- ATTRIBUTES ----- */
-
-    // content-in-line
-    it('Vertical progress indicator: contentInLine = false', () => {
-        element.contentInLine = false;
-
-        return Promise.resolve().then(() => {
-            const progressList = element.shadowRoot.querySelector(
-                '.slds-progress__list'
-            );
-            expect(progressList.classList).not.toContain(
-                'slds-progress__list-bordered'
-            );
-        });
-    });
-
-    it('Vertical progress indicator: contentInLine = true', () => {
-        element.contentInLine = true;
-
-        return Promise.resolve().then(() => {
-            const progressList = element.shadowRoot.querySelector(
-                '.slds-progress__list'
-            );
-            expect(progressList.classList).toContain(
-                'slds-progress__list-bordered'
-            );
-        });
-    });
-
-    // hasError
-    it('Vertical progress indicator: hasError = false', () => {
-        element.hasError = false;
-
-        return Promise.resolve().then(() => {
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.completedSteps).toMatchObject([]);
+            expect(element.contentInLine).toBeFalsy();
+            expect(element.currentStep).toBeUndefined();
+            expect(element.format).toBe('linear');
             expect(element.hasError).toBeFalsy();
+            expect(element.markAsComplete).toBeFalsy();
+            expect(element.variant).toBe('base');
         });
-    });
 
-    it('Vertical progress indicator: hasError = true', () => {
-        element.hasError = true;
+        describe('contentInLine', () => {
+            it('false', () => {
+                element.contentInLine = false;
 
-        return Promise.resolve().then(() => {
-            expect(element.hasError).toBeTruthy();
+                return Promise.resolve().then(() => {
+                    const progressList = element.shadowRoot.querySelector(
+                        '.slds-progress__list'
+                    );
+                    expect(progressList.classList).not.toContain(
+                        'slds-progress__list-bordered'
+                    );
+                });
+            });
+
+            it('true', () => {
+                element.contentInLine = true;
+
+                return Promise.resolve().then(() => {
+                    const progressList = element.shadowRoot.querySelector(
+                        '.slds-progress__list'
+                    );
+                    expect(progressList.classList).toContain(
+                        'slds-progress__list-bordered'
+                    );
+                });
+            });
         });
-    });
 
-    // variant
-    it('Vertical progress indicator: variant = base', () => {
-        element.variant = 'base';
+        describe('hasError', () => {
+            it('false', () => {
+                element.hasError = false;
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('.slds-progress');
-            expect(wrapper.classList).not.toContain('slds-progress_shade');
+                return Promise.resolve().then(() => {
+                    expect(element.hasError).toBeFalsy();
+                });
+            });
+
+            it('true', () => {
+                element.hasError = true;
+
+                return Promise.resolve().then(() => {
+                    expect(element.hasError).toBeTruthy();
+                });
+            });
         });
-    });
 
-    it('Vertical progress indicator: variant = shaded', () => {
-        element.variant = 'shaded';
+        describe('variant', () => {
+            it('base', () => {
+                element.variant = 'base';
 
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('.slds-progress');
-            expect(wrapper.classList).toContain('slds-progress_shade');
+                return Promise.resolve().then(() => {
+                    const wrapper =
+                        element.shadowRoot.querySelector('.slds-progress');
+                    expect(wrapper.classList).not.toContain(
+                        'slds-progress_shade'
+                    );
+                });
+            });
+
+            it('shaded', () => {
+                element.variant = 'shaded';
+
+                return Promise.resolve().then(() => {
+                    const wrapper =
+                        element.shadowRoot.querySelector('.slds-progress');
+                    expect(wrapper.classList).toContain('slds-progress_shade');
+                });
+            });
         });
     });
 });

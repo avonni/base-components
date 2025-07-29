@@ -6,21 +6,23 @@ customElements.define(
 );
 
 export const VisualPickerLink = ({
-    iconName,
-    title,
-    href,
-    iconPosition,
     completed,
+    completedIconAlternativeText,
+    disabled,
+    href,
+    iconName,
+    iconPosition,
     infoOnly,
-    disabled
+    title
 }) => {
     const element = document.createElement('ac-base-visual-picker-link');
-    element.iconName = iconName;
-    element.title = title;
-    element.href = href;
-    element.iconPosition = iconPosition;
     element.completed = completed;
-    element.infoOnly = infoOnly;
+    element.completedIconAlternativeText = completedIconAlternativeText;
     element.disabled = disabled;
+    element.href = href;
+    element.iconName = iconName;
+    element.iconPosition = iconPosition;
+    element.infoOnly = infoOnly;
+    element.title = title;
     return element;
 };

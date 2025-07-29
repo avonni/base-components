@@ -32,23 +32,29 @@ const CANVAS = { x: 198, y: 80 };
  * @descriptor avonni-color-picker-custom
  */
 export default class ColorPickerCustom extends LightningElement {
-    _hueValue = null;
-    _rgb = {
+    _currentColor = null;
+
+    errorMessage = null;
+    hex = '#5679C0';
+    hueValue = null;
+    rgb = {
         red: '86',
         green: '121',
         blue: '192'
     };
-    _hex = '#5679C0';
-    _errorMessage = null;
-    _currentColor = null;
+    _initialized = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     constructor() {
         super();
 
         this.uniqueId = generateUUID();
     }
-
-    _initialized = false;
 
     renderedCallback() {
         if (!this._initialized) {
@@ -81,8 +87,8 @@ export default class ColorPickerCustom extends LightningElement {
     set currentColor(value) {
         const fullHex = fullHexValue(value);
         this._currentColor = value;
-        this._hex = fullHex;
-        this._rgb = hexToRgb(fullHex);
+        this.hex = fullHex;
+        this.rgb = hexToRgb(fullHex);
     }
 
     /*
@@ -92,32 +98,12 @@ export default class ColorPickerCustom extends LightningElement {
      */
 
     /**
-     * Localization.
+     * Get DOM anchor element.
      *
-     * @type {object}
+     * @type {Element}
      */
-    get i18n() {
-        return i18n;
-    }
-
-    /**
-     * Compute thumbnail styling.
-     *
-     * @type {string}
-     */
-    get thumbnailStyle() {
-        return `background: ${this._hex || 'hsl(220, 46%, 55%)'};`;
-    }
-
-    /**
-     * Compute gradient styling.
-     *
-     * @type {string}
-     */
-    get gradientStyle() {
-        return `background: ${
-            this._hex || 'rgb(0, 85, 255)'
-        }; position: relative;`;
+    get anchorElement() {
+        return this.template.querySelector('*[data-id="color-anchor"]');
     }
 
     /**
@@ -130,21 +116,16 @@ export default class ColorPickerCustom extends LightningElement {
     }
 
     /**
-     * Get DOM anchor element.
+     * Computed Saturation and Brightness styling.
      *
-     * @type {Element}
+     * @type {string}
      */
-    get anchorElement() {
-        return this.template.querySelector('*[data-id="color-anchor"]');
-    }
+    get computedSaturationAndBrightness() {
+        const rgb = this.rgb;
+        const saturation = rgbToHsv(rgb).saturation || 0;
+        const brightness = rgbToHsv(rgb).brightness || 0;
 
-    /**
-     * Get DOM thumbnail element.
-     *
-     * @type {Element}
-     */
-    get thumbnailElement() {
-        return this.template.querySelector('*[data-id="color-preview"]');
+        return `Saturation: ${saturation.toFixed()}%. Brightness: ${brightness.toFixed()}%.`;
     }
 
     /**
@@ -157,16 +138,41 @@ export default class ColorPickerCustom extends LightningElement {
     }
 
     /**
-     * Computed Saturation and Brightness styling.
+     * Compute gradient styling.
      *
      * @type {string}
      */
-    get computedSaturationAndBrightness() {
-        const rgb = this._rgb;
-        const saturation = rgbToHsv(rgb).saturation || 0;
-        const brightness = rgbToHsv(rgb).brightness || 0;
+    get gradientStyle() {
+        return `background: ${
+            this.hex || 'rgb(0, 85, 255)'
+        }; position: relative;`;
+    }
 
-        return `Saturation: ${saturation.toFixed()}%. Brightness: ${brightness.toFixed()}%.`;
+    /**
+     * Localization.
+     *
+     * @type {object}
+     */
+    get i18n() {
+        return i18n;
+    }
+
+    /**
+     * Get DOM thumbnail element.
+     *
+     * @type {Element}
+     */
+    get thumbnailElement() {
+        return this.template.querySelector('*[data-id="color-preview"]');
+    }
+
+    /**
+     * Compute thumbnail styling.
+     *
+     * @type {string}
+     */
+    get thumbnailStyle() {
+        return `background: ${this.hex || 'hsl(220, 46%, 55%)'};`;
     }
 
     /*
@@ -192,176 +198,132 @@ export default class ColorPickerCustom extends LightningElement {
      */
 
     /**
-     * Prevent event default handler.
+     * Set Canvas context on canvas DOM element.
+     */
+    canvasContext() {
+        this._canvas = this.template.querySelector('canvas');
+        this._canvasCtx = this._canvas.getContext('2d');
+        this._cursorActive = false;
+    }
+
+    /**
+     * Compute color from gradient from x,y coordinates of cursor position.
      *
      * @param {Event} event
      */
-    handlePreventDefault(event) {
-        event.preventDefault();
-    }
+    getColorFromGradient(event) {
+        let cursorPosition;
 
-    /**
-     * Color select event handler.
-     *
-     * @param {Event} event
-     */
-    selectColor(event) {
-        this.dispatchEvent(
-            /**
-             * Event that fires when updating the color value.
-             *
-             * @event
-             * @name updatecolor
-             * @params {string} color
-             * @bubbles
-             * @composed
-             * @cancelable
-             */
-            new CustomEvent('updatecolor', {
-                bubbles: true,
-                composed: true,
-                cancelable: true,
-                detail: { color: event.target.innerText }
-            })
-        );
-    }
-
-    /**
-     * Mouse down event handler.
-     *
-     * @param {Event} event
-     */
-    handleMouseDown(event) {
-        event.preventDefault();
-        this.onMouseDrag(event, true);
-    }
-
-    /**
-     * Mouse Drag event handler.
-     *
-     * @param {Event} event
-     */
-    handleDrag(event) {
-        this.onMouseDrag(event, false);
-    }
-
-    /**
-     * On Change handler assign rainbow cursor.
-     */
-    onChange() {
-        this.rainbowCursor();
-    }
-
-    /**
-     * Parse and limit color numerical values.
-     *
-     * @param {number} value
-     * @return {number} out
-     */
-    parseAndLimit(value) {
-        let out = value;
-        if (!value || parseInt(value, 10) < 0 || isNaN(value)) {
-            out = 0;
-        } else if (parseInt(value, 10) > 255) {
-            out = 255;
-        }
-        return out;
-    }
-
-    /**
-     * RGB Change handler.
-     *
-     * @param {Event} event
-     */
-    handleRgbChange(event) {
-        const target = event.currentTarget;
-        const value = this.parseAndLimit(target.value);
-        // Fix for no rerender on second bad value attempt
-        target.value = value;
-
-        const color = target.getAttribute('data-color-name');
-        if (color === 'red') {
-            this._rgb.red = value;
-        } else if (color === 'green') {
-            this._rgb.green = value;
-        } else if (color === 'blue') {
-            this._rgb.blue = value;
-        }
-
-        const rgb = this._rgb;
-
-        const hue = rgbToHsl(rgb).hue;
-        const position = this.rgbToPosition(rgb);
-        const selectedColor = `#${rgbToHex(rgb)}`;
-
-        this.updateRainbow(hue);
-        this.setCanvasColor(hue);
-        this.setCanvasCursor(position.x, position.y);
-        this.updateSelectedColor(selectedColor);
-    }
-
-    /**
-     * Hex Change handler.
-     *
-     * @param {Event} event
-     */
-    handleHexChange(event) {
-        const isInputValid = event.srcElement.validity.valid;
-
-        if (isInputValid) {
-            const selectedColor = fullHexValue(event.target.value);
-            this.classList.remove('slds-has-error');
-            this._errorMessage = null;
-
-            const rgb = hexToRgb(selectedColor);
-            this._rgb = rgb;
-
-            const hue = rgbToHsl(rgb).hue;
-            const position = this.rgbToPosition(rgb);
-
-            this.updateRainbow(hue);
-            this.setCanvasColor(hue);
-            this.setCanvasCursor(position.x, position.y);
-            this.updateSelectedColor(selectedColor);
+        if (event.type === 'keydown' && event.key !== 'Tab') {
+            cursorPosition = this.gradientCursorPositionFromKeydown(event);
+        } else if (event.type === 'mousedown' || event.type === 'mousemove') {
+            cursorPosition = this.gradientCursorPosition(event);
         } else {
-            event.srcElement.classList.add('slds-has-error');
-            this._errorMessage = getErrorMessage(event.srcElement.validity, {
-                patternMismatch: this.i18n.errorMessage
-            });
+            return;
         }
+
+        const x = cursorPosition.x;
+        const y = cursorPosition.y;
+
+        // Get the current HUE value and update the canvas & cursor
+        this.setCanvasColor(this.hueValue);
+
+        // set color from gradient
+        this.setRGBValues(x, y);
     }
 
     /**
-     * Update Selected Color.
-     *
-     * @param {string} selectedColor
+     * Compute hue gradient and update canvas.
      */
-    updateSelectedColor(selectedColor) {
-        this.template
-            .querySelector(`[data-primary-input]`)
-            .classList.remove('slds-has-error');
-        this._errorMessage = null;
+    gradient() {
+        const hue = rgbToHsl(this.rgb).hue;
+        this.canvasContext();
+        this.setCanvasColor(hue);
+        this.updateRainbow(hue);
+    }
 
-        this._hex = selectedColor;
+    /**
+     * Get Cursor position on canvas gradient.
+     *
+     * @param {Event} event
+     * @returns {object} x,y number coordinates
+     */
+    gradientCursorPosition(event) {
+        const canvas = this._canvas;
+        const gradientCanvas = canvas.getBoundingClientRect();
 
-        /**
-         * The event that fires when the selected color is updated.
-         *
-         * @event
-         * @name updateselectedcolor
-         * @params {string} color
-         * @bubbles
-         * @composed
-         * @cancelable
+        let x = event.clientX - gradientCanvas.left;
+        let y = event.clientY - gradientCanvas.top;
+
+        if (x > gradientCanvas.width) {
+            x = gradientCanvas.width - 1;
+        }
+        if (x < 0) {
+            x = 0;
+        }
+        if (y > gradientCanvas.height) {
+            y = gradientCanvas.height;
+        }
+        if (y < 0) {
+            y = 0;
+        }
+
+        /*
+         * Caching the position x & y in the component so that we can use it when moving the rainbow slider
+         * instead of calculating the position of x & y each time.
          */
-        this.dispatchEvent(
-            new CustomEvent('updateselectedcolor', {
-                bubbles: true,
-                composed: true,
-                cancelable: true,
-                detail: { color: selectedColor }
-            })
-        );
+        this._cachePosition = { x, y };
+        return { x, y };
+    }
+
+    /**
+     * Get Cursor position from keydown event on canvas gradient.
+     *
+     * @param {Event} event
+     * @return {object} x,y number coordinates
+     */
+    gradientCursorPositionFromKeydown(event) {
+        event.preventDefault();
+        const canvas = this._canvas;
+        const gradientCanvas = canvas.getBoundingClientRect();
+        const keyCode = event.keyCode;
+        let x, y;
+
+        if (!this._cachePosition) {
+            this._cachePosition = this.rgbToPosition(this.rgb);
+        }
+
+        const positionMap = {};
+        positionMap[keyCodes.left] = { x: -1, y: 0 };
+        positionMap[keyCodes.up] = { x: 0, y: -1 };
+        positionMap[keyCodes.right] = { x: +1, y: 0 };
+        positionMap[keyCodes.down] = { x: 0, y: +1 };
+
+        const transform = positionMap[keyCode]
+            ? positionMap[keyCode]
+            : { x: 0, y: 0 };
+        x = this._cachePosition.x + transform.x;
+        y = this._cachePosition.y + transform.y;
+
+        if (x > gradientCanvas.width) {
+            x = gradientCanvas.width - 1;
+        }
+        if (x < 0) {
+            x = 0;
+        }
+        if (y > gradientCanvas.height) {
+            y = gradientCanvas.height;
+        }
+        if (y < 0) {
+            y = 0;
+        }
+
+        /*
+         * Caching the position x & y in the component so that we can use it when moving the rainbow slider
+         * instead of calculating the position of x & y each time.
+         */
+        this._cachePosition = { x, y };
+        return { x, y };
     }
 
     /**
@@ -416,39 +378,19 @@ export default class ColorPickerCustom extends LightningElement {
     }
 
     /**
-     * Compute hue gradient and update canvas.
-     */
-    gradient() {
-        const hue = rgbToHsl(this._rgb).hue;
-        this.canvasContext();
-        this.setCanvasColor(hue);
-        this.updateRainbow(hue);
-    }
-
-    /**
-     * Compute color from gradient from x,y coordinates of cursor position.
+     * Parse and limit color numerical values.
      *
-     * @param {Event} event
+     * @param {number} value
+     * @return {number} out
      */
-    getColorFromGradient(event) {
-        let cursorPosition;
-
-        if (event.type === 'keydown' && event.key !== 'Tab') {
-            cursorPosition = this.gradientCursorPositionFromKeydown(event);
-        } else if (event.type === 'mousedown' || event.type === 'mousemove') {
-            cursorPosition = this.gradientCursorPosition(event);
-        } else {
-            return;
+    parseAndLimit(value) {
+        let out = value;
+        if (!value || parseInt(value, 10) < 0 || isNaN(value)) {
+            out = 0;
+        } else if (parseInt(value, 10) > 255) {
+            out = 255;
         }
-
-        const x = cursorPosition.x;
-        const y = cursorPosition.y;
-
-        // Get the current HUE value and update the canvas & cursor
-        this.setCanvasColor(this._hueValue);
-
-        // set color from gradient
-        this.setRGBValues(x, y);
+        return out;
     }
 
     /**
@@ -456,7 +398,7 @@ export default class ColorPickerCustom extends LightningElement {
      */
     rainbowCursor() {
         const rainbow = this.template.querySelector('*[data-id="hue-slider"]');
-        const position = this._cachePosition || this.rgbToPosition(this._rgb);
+        const position = this._cachePosition || this.rgbToPosition(this.rgb);
 
         this.setCanvasColor(rainbow.value);
         this.setRGBValues(position.x, position.y);
@@ -464,133 +406,29 @@ export default class ColorPickerCustom extends LightningElement {
     }
 
     /**
-     * Update hue color.
-     *
-     * @param {string} hue
-     */
-    updateRainbow(hue) {
-        this._hueValue = hue;
-    }
-
-    /**
-     * Update anchor element position handler.
-     */
-    handleUpdateAnchor() {
-        const position = this._cachePosition || this.rgbToPosition(this._rgb);
-
-        const anchor = this.anchorElement;
-        const offset = anchor.offsetWidth / 2;
-        const x = position.x - offset + 5;
-        const y = position.y - offset - 5;
-        const xPercent = (x / this._canvas.width) * 100;
-        const yPercent = (y / this._canvas.height) * 100;
-
-        anchor.style.left = `${xPercent}%`;
-        anchor.style.top = `${yPercent}%`;
-    }
-
-    /**
-     * Get Cursor position on canvas gradient.
+     * Color select event handler.
      *
      * @param {Event} event
-     * @returns {object} x,y number coordinates
      */
-    gradientCursorPosition(event) {
-        const canvas = this._canvas;
-        const gradientCanvas = canvas.getBoundingClientRect();
-
-        let x = event.clientX - gradientCanvas.left;
-        let y = event.clientY - gradientCanvas.top;
-
-        if (x > gradientCanvas.width) {
-            x = gradientCanvas.width - 1;
-        }
-        if (x < 0) {
-            x = 0;
-        }
-        if (y > gradientCanvas.height) {
-            y = gradientCanvas.height;
-        }
-        if (y < 0) {
-            y = 0;
-        }
-
-        /*
-         * Caching the position x & y in the component so that we can use it when moving the rainbow slider
-         * instead of calculating the position of x & y each time.
-         */
-        this._cachePosition = { x, y };
-        return { x, y };
-    }
-
-    /**
-     * Get Cursor position from keydown event on canvas gradient.
-     *
-     * @param {Event} event
-     * @return {object} x,y number coordinates
-     */
-    gradientCursorPositionFromKeydown(event) {
-        event.preventDefault();
-        const canvas = this._canvas;
-        const gradientCanvas = canvas.getBoundingClientRect();
-        const keyCode = event.keyCode;
-        let x, y;
-
-        if (!this._cachePosition) {
-            this._cachePosition = this.rgbToPosition(this._rgb);
-        }
-
-        const positionMap = {};
-        positionMap[keyCodes.left] = { x: -1, y: 0 };
-        positionMap[keyCodes.up] = { x: 0, y: -1 };
-        positionMap[keyCodes.right] = { x: +1, y: 0 };
-        positionMap[keyCodes.down] = { x: 0, y: +1 };
-
-        const transform = positionMap[keyCode]
-            ? positionMap[keyCode]
-            : { x: 0, y: 0 };
-        x = this._cachePosition.x + transform.x;
-        y = this._cachePosition.y + transform.y;
-
-        if (x > gradientCanvas.width) {
-            x = gradientCanvas.width - 1;
-        }
-        if (x < 0) {
-            x = 0;
-        }
-        if (y > gradientCanvas.height) {
-            y = gradientCanvas.height;
-        }
-        if (y < 0) {
-            y = 0;
-        }
-
-        /*
-         * Caching the position x & y in the component so that we can use it when moving the rainbow slider
-         * instead of calculating the position of x & y each time.
-         */
-        this._cachePosition = { x, y };
-        return { x, y };
-    }
-
-    /**
-     * RGB values compute.
-     *
-     * @param {number} x
-     * @param {number} y
-     */
-    setRGBValues(x, y) {
-        const ctx = this._canvasCtx;
-        const imageData = ctx.getImageData(x, y, 1, 1).data;
-        const rgb = {
-            red: imageData[0],
-            green: imageData[1],
-            blue: imageData[2]
-        };
-        const color = `#${rgbToHex(rgb)}`;
-        this._rgb = rgb;
-        this.updateSelectedColor(color);
-        this.handleUpdateAnchor();
+    selectColor(event) {
+        this.dispatchEvent(
+            /**
+             * Event that fires when updating the color value.
+             *
+             * @event
+             * @name updatecolor
+             * @params {string} color
+             * @bubbles
+             * @composed
+             * @cancelable
+             */
+            new CustomEvent('updatecolor', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: { color: event.target.innerText }
+            })
+        );
     }
 
     /**
@@ -637,12 +475,145 @@ export default class ColorPickerCustom extends LightningElement {
     }
 
     /**
-     * Set Canvas context on canvas DOM element.
+     * RGB values compute.
+     *
+     * @param {number} x
+     * @param {number} y
      */
-    canvasContext() {
-        this._canvas = this.template.querySelector('canvas');
-        this._canvasCtx = this._canvas.getContext('2d');
-        this._cursorActive = false;
+    setRGBValues(x, y) {
+        const ctx = this._canvasCtx;
+        const imageData = ctx.getImageData(x, y, 1, 1).data;
+        const rgb = {
+            red: imageData[0],
+            green: imageData[1],
+            blue: imageData[2]
+        };
+        const color = `#${rgbToHex(rgb)}`;
+        this.rgb = rgb;
+        this.updateSelectedColor(color);
+        this.handleUpdateAnchor();
+    }
+
+    /**
+     * Update hue color.
+     *
+     * @param {string} hue
+     */
+    updateRainbow(hue) {
+        this.hueValue = hue;
+    }
+
+    /**
+     * Update Selected Color.
+     *
+     * @param {string} selectedColor
+     */
+    updateSelectedColor(selectedColor) {
+        this.template
+            .querySelector(`[data-primary-input]`)
+            .classList.remove('slds-has-error');
+        this._errorMessage = null;
+
+        this.hex = selectedColor;
+
+        /**
+         * The event that fires when the selected color is updated.
+         *
+         * @event
+         * @name updateselectedcolor
+         * @params {string} color
+         * @bubbles
+         * @composed
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('updateselectedcolor', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: { color: selectedColor }
+            })
+        );
+    }
+
+    /**
+     * Use RGB to set position on canvas.
+     *
+     * @param {string} rgb
+     * @returns object x,y number
+     */
+    rgbToPosition(rgb) {
+        return rgbToPosition(rgb, this.canvasRect);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS & DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Update anchor element position handler.
+     */
+    handleUpdateAnchor() {
+        const position = this._cachePosition || this.rgbToPosition(this.rgb);
+
+        const anchor = this.anchorElement;
+        const offset = anchor.offsetWidth / 2;
+        const x = position.x - offset + 5;
+        const y = position.y - offset - 5;
+        const xPercent = (x / this._canvas.width) * 100;
+        const yPercent = (y / this._canvas.height) * 100;
+
+        anchor.style.left = `${xPercent}%`;
+        anchor.style.top = `${yPercent}%`;
+    }
+
+    /**
+     * On Change handler assign rainbow cursor.
+     */
+    handleChange() {
+        this.rainbowCursor();
+    }
+
+    /**
+     * Mouse Drag event handler.
+     *
+     * @param {Event} event
+     */
+    handleDrag(event) {
+        this.onMouseDrag(event, false);
+    }
+
+    /**
+     * Hex Change handler.
+     *
+     * @param {Event} event
+     */
+    handleHexChange(event) {
+        const isInputValid = event.srcElement.validity.valid;
+
+        if (isInputValid) {
+            const selectedColor = fullHexValue(event.target.value);
+            this.classList.remove('slds-has-error');
+            this._errorMessage = null;
+
+            const rgb = hexToRgb(selectedColor);
+            this.rgb = rgb;
+
+            const hue = rgbToHsl(rgb).hue;
+            const position = this.rgbToPosition(rgb);
+
+            this.updateRainbow(hue);
+            this.setCanvasColor(hue);
+            this.setCanvasCursor(position.x, position.y);
+            this.updateSelectedColor(selectedColor);
+        } else {
+            event.srcElement.classList.add('slds-has-error');
+            this._errorMessage = getErrorMessage(event.srcElement.validity, {
+                patternMismatch: this.i18n.errorMessage
+            });
+        }
     }
 
     /**
@@ -655,12 +626,53 @@ export default class ColorPickerCustom extends LightningElement {
     }
 
     /**
-     * Use RGB to set position on canvas.
+     * Mouse down event handler.
      *
-     * @param {string} rgb
-     * @returns object x,y number
+     * @param {Event} event
      */
-    rgbToPosition(rgb) {
-        return rgbToPosition(rgb, this.canvasRect);
+    handleMouseDown(event) {
+        event.preventDefault();
+        this.onMouseDrag(event, true);
+    }
+
+    /**
+     * Prevent event default handler.
+     *
+     * @param {Event} event
+     */
+    handlePreventDefault(event) {
+        event.preventDefault();
+    }
+
+    /**
+     * RGB Change handler.
+     *
+     * @param {Event} event
+     */
+    handleRgbChange(event) {
+        const target = event.currentTarget;
+        const value = this.parseAndLimit(target.value);
+        // Fix for no rerender on second bad value attempt
+        target.value = value;
+
+        const color = target.getAttribute('data-color-name');
+        if (color === 'red') {
+            this.rgb.red = value;
+        } else if (color === 'green') {
+            this.rgb.green = value;
+        } else if (color === 'blue') {
+            this.rgb.blue = value;
+        }
+
+        const rgb = this.rgb;
+
+        const hue = rgbToHsl(rgb).hue;
+        const position = this.rgbToPosition(rgb);
+        const selectedColor = `#${rgbToHex(rgb)}`;
+
+        this.updateRainbow(hue);
+        this.setCanvasColor(hue);
+        this.setCanvasCursor(position.x, position.y);
+        this.updateSelectedColor(selectedColor);
     }
 }

@@ -3,6 +3,15 @@ import { TabBar } from '../__examples__/tabBar';
 export default {
     title: 'Example/Tab Bar',
     argTypes: {
+        defaultTab: {
+            control: {
+                type: 'text'
+            },
+            description: 'The label of the active tab by default.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         items: {
             control: {
                 type: 'object'
@@ -10,6 +19,17 @@ export default {
             description: 'Array of items',
             table: {
                 type: { summary: 'object[]' }
+            }
+        },
+        showMoreButtonAlternativeText: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the show more button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show more' }
             }
         },
         tabsHidden: {
@@ -21,18 +41,10 @@ export default {
                 defaultValue: { summary: 0 },
                 type: { summary: 'number' }
             }
-        },
-        defaultTab: {
-            control: {
-                type: 'text'
-            },
-            description: 'The label of the active tab by default.',
-            table: {
-                type: { summary: 'string' }
-            }
         }
     },
     args: {
+        showMoreButtonAlternativeText: 'Show more',
         tabsHidden: 0
     }
 };

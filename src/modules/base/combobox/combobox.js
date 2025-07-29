@@ -8,6 +8,18 @@ import {
     normalizeString
 } from 'c/utils';
 
+const DEFAULT_BACK_ACTION = {
+    iconName: 'utility:chevronleft'
+};
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
+const DEFAULT_MIN = 0;
+const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
+const DEFAULT_PLACEHOLDER = 'Select an Option';
+const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
+const DEFAULT_READ_ONLY_LABEL = 'Read Only Combobox';
+const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
+const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 const DROPDOWN_ALIGNMENTS = {
     valid: [
         'auto',
@@ -20,28 +32,10 @@ const DROPDOWN_ALIGNMENTS = {
     ],
     default: 'left'
 };
-
-const VARIANTS = {
-    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
-    default: 'standard'
-};
-
 const DROPDOWN_LENGTHS = {
     valid: ['5-items', '7-items', '10-items'],
     default: '7-items'
 };
-
-const DEFAULT_BACK_ACTION = {
-    iconName: 'utility:chevronleft'
-};
-const DEFAULT_LOAD_MORE_OFFSET = 20;
-const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
-const DEFAULT_MIN = 0;
-const DEFAULT_PLACEHOLDER = 'Select an Option';
-const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
-const DEFAULT_READ_ONLY_LABEL = 'Read Only Combobox';
-const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
-
 const SELECTED_OPTIONS_ACTIONS = [
     {
         name: 'remove',
@@ -52,6 +46,10 @@ const SELECTED_OPTIONS_ACTIONS = [
 const SELECTED_OPTIONS_DIRECTIONS = {
     default: 'horizontal',
     valid: ['horizontal', 'vertical']
+};
+const VARIANTS = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
 };
 
 /**
@@ -70,7 +68,6 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
-
     /**
      * Text label for the combobox.
      *
@@ -78,7 +75,6 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api label;
-
     /**
      * Error message to be displayed when a bad input is detected.
      *
@@ -86,7 +82,6 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api messageWhenBadInput;
-
     /**
      * Error message to be displayed when a range overflow is detected.
      *
@@ -94,7 +89,6 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api messageWhenRangeOverflow;
-
     /**
      * Error message to be displayed when a range underflow is detected.
      *
@@ -102,7 +96,6 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api messageWhenRangeUnderflow;
-
     /**
      * Error message to be displayed when the value is missing and input is required.
      *
@@ -110,7 +103,6 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api messageWhenValueMissing;
-
     /**
      * Specifies the name of the combobox.
      *
@@ -118,7 +110,22 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api name;
-
+    /**
+     * Message displayed when no search results are found.
+     *
+     * @type {string}
+     * @public
+     * @default No matches found
+     */
+    @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
+    /**
+     * The assistive text when the required attribute is set to true.
+     *
+     * @type {string}
+     * @public
+     * @default Required
+     */
+    @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
     /**
      * Custom search function to execute instead of the default search. It has to:
      * * Take an object with two keys as an argument: <code>options</code> and <code>searchTerm</code>.
@@ -128,7 +135,6 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api search;
-
     /**
      * The Lightning Design System name of the icon indicating that the selected options are sortable. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
      * The icon is visible only if `sortable-selected-options` is present, and selected-options-direction is vertical.

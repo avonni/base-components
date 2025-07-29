@@ -118,6 +118,18 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Message displayed while the palette is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
+        },
         variant: {
             control: {
                 type: 'radio'
@@ -173,6 +185,7 @@ export default {
         ],
         disabled: false,
         isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         readOnly: false,
         tileHeight: 20,
         tileWidth: 20,

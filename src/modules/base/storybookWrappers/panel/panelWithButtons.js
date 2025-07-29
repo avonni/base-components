@@ -5,9 +5,9 @@ const DEFAULT_PANEL_SIZE = 'medium';
 
 export default class PanelWithButtons extends LightningElement {
     @api position = DEFAULT_PANEL_POSITION;
-    @api title;
-    @api size = DEFAULT_PANEL_SIZE;
     @api showPanel = false;
+    @api size = DEFAULT_PANEL_SIZE;
+    @api title;
 
     open() {
         this.template.querySelector('[data-element-id="avonni-panel"]').open();

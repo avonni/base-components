@@ -6,43 +6,53 @@ customElements.define(
 );
 
 export const IconPicker = ({
-    value,
     accessKey,
+    cancelButtonLabel,
+    clearButtonAlternativeText,
+    doneButtonLabel,
     disabled,
     fieldLevelHelp,
-    label,
-    name,
-    readOnly,
-    required,
-    variant,
     hiddenCategories,
-    menuVariant,
+    hideClearIcon,
+    hideFooter,
+    hideInputText,
+    label,
     menuIconSize,
     menuLabel,
+    menuVariant,
     messageWhenBadInput,
-    hideClearIcon,
-    hideInputText,
-    hideFooter,
-    placeholder
+    name,
+    placeholder,
+    readOnly,
+    required,
+    requiredAlternativeText,
+    searchInputPlaceholder,
+    value,
+    variant
 }) => {
     const element = document.createElement('avonni-base-icon-picker');
-    element.value = value;
     element.accessKey = accessKey;
+    element.cancelButtonLabel = cancelButtonLabel;
+    element.clearButtonAlternativeText = clearButtonAlternativeText;
+    element.doneButtonLabel = doneButtonLabel;
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
-    element.label = label;
-    element.name = name;
-    element.readOnly = readOnly;
-    element.required = required;
-    element.variant = variant;
     element.hiddenCategories = hiddenCategories;
     element.hideClearIcon = hideClearIcon;
-    element.menuVariant = menuVariant;
+    element.hideFooter = hideFooter;
+    element.hideInputText = hideInputText;
+    element.label = label;
     element.menuIconSize = menuIconSize;
     element.menuLabel = menuLabel;
+    element.menuVariant = menuVariant;
     element.messageWhenBadInput = messageWhenBadInput;
-    element.hideInputText = hideInputText;
-    element.hideFooter = hideFooter;
+    element.name = name;
     element.placeholder = placeholder;
+    element.readOnly = readOnly;
+    element.required = required;
+    element.requiredAlternativeText = requiredAlternativeText;
+    element.searchInputPlaceholder = searchInputPlaceholder;
+    element.value = value;
+    element.variant = variant;
     return element;
 };

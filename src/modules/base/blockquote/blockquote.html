@@ -1,14 +1,14 @@
 <template>
-    <blockquote class={blockquoteClass}>
-        <div if:true={showHeader} class={blockquoteHeaderClass}>
+    <blockquote class={computedBlockquoteClass}>
+        <div if:true={showHeader} class={computedBlockquoteHeaderClass}>
             <lightning-icon
                 if:true={leftIcon}
-                icon-name={iconName}
-                size={iconSize}
                 class="
                     slds-m-right_x-small
                     avonni-blockquote__primitive-icon_color
                 "
+                icon-name={iconName}
+                size={iconSize}
                 data-element-id="lightning-icon-left"
             ></lightning-icon>
             <p class="avonni-blockquote__container avonni-blockquote__title">
@@ -16,12 +16,12 @@
             </p>
             <lightning-icon
                 if:true={rightIcon}
-                icon-name={iconName}
-                size={iconSize}
                 class="
                     slds-m-left_x-small
                     avonni-blockquote__primitive-icon_color
                 "
+                icon-name={iconName}
+                size={iconSize}
                 data-element-id="lightning-icon-right"
             ></lightning-icon>
         </div>

@@ -6,19 +6,23 @@ import {
     normalizeString
 } from 'c/utils';
 
-const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
-    valid: ['horizontal', 'vertical'],
-    default: 'horizontal'
-};
 const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
 
-const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
+const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
+const DEFAULT_NO_RESULTS_MESSAGE = 'No items to display.';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
+const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
 
 export default class PrimitiveRelationshipGraphGroup extends LightningElement {
+    @api actionsMenuAlternativeText = DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT;
     @api activeChild = false;
     @api avatarFallbackIconName;
     @api avatarSrc;
@@ -31,6 +35,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api isFirstLevel = false;
     @api itemActions;
     @api label;
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
     @api name;
     @api selected = false;
     @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
@@ -165,12 +171,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    get actionButtonClass() {
-        return classSet('slds-button slds-button_neutral').add({
-            'slds-button_stretch': this.actionsPosition === 'bottom'
-        });
-    }
-
     get actions() {
         if (this.hideDefaultActions) return this.customActions;
 
@@ -181,11 +181,17 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.items && this.items.find((item) => item.activeSelection);
     }
 
+    get computedActionButtonClass() {
+        return classSet('slds-button slds-button_neutral').add({
+            'slds-button_stretch': this.actionsPosition === 'bottom'
+        });
+    }
+
     get computedAriaExpanded() {
         return String(!this.closed);
     }
 
-    get groupTitleClass() {
+    get computedGroupTitleClass() {
         return classSet(
             'avonni-relationship-graph-group__header-title slds-section__title'
         )
@@ -193,6 +199,21 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
                 'slds-m-right_xx-small': this.topActions
             })
             .toString();
+    }
+
+    get computedWrapperClass() {
+        return classSet(
+            'avonni-relationship-graph-group slds-p-around_medium slds-m-bottom_medium group slds-box slds-theme_default slds-section'
+        ).add({
+            'group_active-child': this.activeChild,
+            'group_active-parent': !this.closed && this.activeParent,
+            group_selected: this.selected && this.hasSelectedChildren,
+            'group_horizontal slds-is-relative': this.variant === 'horizontal',
+            group_vertical: this.variant === 'vertical',
+            'slds-m-right_medium': this.variant === 'vertical',
+            'avonni-relationship-graph-group__parent-line': this.showParentLine,
+            'slds-is-open': !this.closed
+        });
     }
 
     get hasAvatar() {
@@ -234,7 +255,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.actions && this.actionsPosition === 'top';
     }
 
-    get showEmptyMessage() {
+    get showNoResultsMessage() {
         return (
             !this.isLoading &&
             (!Array.isArray(this.items) || this.items.length === 0)
@@ -243,21 +264,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
 
     get showParentLine() {
         return (this.hasRootHeader && this.isFirstLevel) || !this.isFirstLevel;
-    }
-
-    get wrapperClass() {
-        return classSet(
-            'avonni-relationship-graph-group slds-p-around_medium slds-m-bottom_medium group slds-box slds-theme_default slds-section'
-        ).add({
-            'group_active-child': this.activeChild,
-            'group_active-parent': !this.closed && this.activeParent,
-            group_selected: this.selected && this.hasSelectedChildren,
-            'group_horizontal slds-is-relative': this.variant === 'horizontal',
-            group_vertical: this.variant === 'vertical',
-            'slds-m-right_medium': this.variant === 'vertical',
-            'avonni-relationship-graph-group__parent-line': this.showParentLine,
-            'slds-is-open': !this.closed
-        });
     }
 
     /*

@@ -13,10 +13,13 @@ export const List = ({
     isLoading,
     items,
     label,
+    loadingStateAlternativeText,
     largeContainerCols,
     loadMoreOffset,
     mediaActions,
     mediumContainerCols,
+    nextButtonAlternativeText,
+    previousButtonAlternativeText,
     smallContainerCols,
     showCheckCounter,
     sortable,
@@ -38,10 +41,13 @@ export const List = ({
     element.isLoading = isLoading;
     element.items = items;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.largeContainerCols = largeContainerCols;
     element.loadMoreOffset = loadMoreOffset;
     element.mediaActions = mediaActions;
     element.mediumContainerCols = mediumContainerCols;
+    element.nextButtonAlternativeText = nextButtonAlternativeText;
+    element.previousButtonAlternativeText = previousButtonAlternativeText;
     element.smallContainerCols = smallContainerCols;
     element.showCheckCounter = showCheckCounter;
     element.sortable = sortable;

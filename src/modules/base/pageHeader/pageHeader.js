@@ -50,12 +50,18 @@ export default class PageHeader extends LightningElement {
     _isJoined = false;
     _variant = PAGE_HEADER_VARIANTS.default;
 
-    showTitle = true;
-    showLabel = true;
     showActions = true;
+    showControls = true;
     showDetails = true;
     showInfo = true;
-    showControls = true;
+    showLabel = true;
+    showTitle = true;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Render html template based on variant 'vertical'.
@@ -92,30 +98,21 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Get the title slot DOM element.
-     *
-     * @type {Element}
-     */
-    get titleSlot() {
-        return this.template.querySelector('slot[name=title]');
-    }
-
-    /**
-     * Get the label slot DOM element.
-     *
-     * @type {Element}
-     */
-    get labelSlot() {
-        return this.template.querySelector('slot[name=label]');
-    }
-
-    /**
      * Get the action slot DOM element.
      *
      * @type {Element}
      */
     get actionsSlot() {
         return this.template.querySelector('slot[name=actions]');
+    }
+
+    /**
+     * Get the controls slot DOM element.
+     *
+     * @type {Element}
+     */
+    get controlsSlot() {
+        return this.template.querySelector('slot[name=controls]');
     }
 
     /**
@@ -137,12 +134,21 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Get the controls slot DOM element.
+     * Get the label slot DOM element.
      *
      * @type {Element}
      */
-    get controlsSlot() {
-        return this.template.querySelector('slot[name=controls]');
+    get labelSlot() {
+        return this.template.querySelector('slot[name=label]');
+    }
+
+    /**
+     * Get the title slot DOM element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
     }
 
     /*
@@ -162,7 +168,6 @@ export default class PageHeader extends LightningElement {
     get isJoined() {
         return this._isJoined;
     }
-
     set isJoined(value) {
         this._isJoined = normalizeBoolean(value);
     }
@@ -178,7 +183,6 @@ export default class PageHeader extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: PAGE_HEADER_VARIANTS.default,
@@ -191,29 +195,6 @@ export default class PageHeader extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Computed Outer class styling based on variant 'object-home' or 'record-home'.
-     *
-     * @type {string}
-     */
-    get computedOuterClass() {
-        return classSet('slds-page-header')
-            .add({ 'slds-page-header_joined': this._isJoined })
-            .add(`avonni-page-header__header_${this._variant}`)
-            .toString();
-    }
-
-    /**
-     * Computed Outer class styling based on variant 'record-home-vertical'.
-     *
-     * @type {string}
-     */
-    get computedVerticalOuterClass() {
-        return classSet('slds-page-header slds-page-header_vertical')
-            .add({ 'slds-page-header_joined': this._isJoined })
-            .toString();
-    }
 
     /**
      * Computed Icon class styling for normal viewport.
@@ -238,30 +219,35 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Check if variant is 'base'.
+     * Computed Outer class styling based on variant 'object-home' or 'record-home'.
      *
      * @type {string}
      */
-    get isBaseVariant() {
-        return this._variant === 'base';
+    get computedOuterClass() {
+        return classSet('slds-page-header')
+            .add({ 'slds-page-header_joined': this.isJoined })
+            .add(`avonni-page-header__header_${this.variant}`)
+            .toString();
     }
 
     /**
-     * Check if variant is 'record-home'.
+     * Computed Outer class styling based on variant 'record-home-vertical'.
      *
      * @type {string}
      */
-    get isRecordHomeVariant() {
-        return this._variant === 'record-home';
+    get computedVerticalOuterClass() {
+        return classSet('slds-page-header slds-page-header_vertical')
+            .add({ 'slds-page-header_joined': this.isJoined })
+            .toString();
     }
 
     /**
-     * Check if Title text is specified.
+     * Check if Info text is specified.
      *
      * @type {string}
      */
-    get hasStringTitle() {
-        return !!this.title;
+    get hasStringInfo() {
+        return !!this.info;
     }
 
     /**
@@ -274,12 +260,30 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Check if Info text is specified.
+     * Check if Title text is specified.
      *
      * @type {string}
      */
-    get hasStringInfo() {
-        return !!this.info;
+    get hasStringTitle() {
+        return !!this.title;
+    }
+
+    /**
+     * Check if variant is 'base'.
+     *
+     * @type {string}
+     */
+    get isBaseVariant() {
+        return this.variant === 'base';
+    }
+
+    /**
+     * Check if variant is 'record-home'.
+     *
+     * @type {string}
+     */
+    get isRecordHomeVariant() {
+        return this.variant === 'record-home';
     }
 
     /**

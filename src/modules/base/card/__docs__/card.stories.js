@@ -15,6 +15,29 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        mediaAlternativeText: {
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the media.',
+            table: {
+                type: { summary: 'string' },
+                category: 'media',
+                defaultValue: {
+                    summary: 'Card media'
+                }
+            }
+        },
+        mediaSrc: {
+            control: {
+                type: 'text'
+            },
+            description: 'Media link of the card image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'media'
+            }
+        },
         mediaPosition: {
             control: {
                 type: 'select'
@@ -31,6 +54,7 @@ export default {
             description: 'Media position.',
             table: {
                 type: { summary: 'string' },
+                category: 'media',
                 defaultValue: { summary: 'top' }
             }
         },
@@ -42,18 +66,10 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
-        },
-        mediaSrc: {
-            control: {
-                type: 'text'
-            },
-            description: 'Media link of the card image.',
-            table: {
-                type: { summary: 'string' }
-            }
         }
     },
     args: {
+        mediaAlternativeText: 'Card media',
         mediaPosition: 'top'
     }
 };

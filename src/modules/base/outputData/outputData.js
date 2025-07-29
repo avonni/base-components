@@ -24,17 +24,23 @@ export default class OutputData extends LightningElement {
      */
     @api label;
 
-    _typeAttributes = {};
     _type = TYPES.default;
+    _typeAttributes = {};
     _value;
     _variant = VARIANTS.default;
 
+    _connected = false;
     normalizedTypeAttributes = {};
-    _isConnected = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.normalizeTypeAttributes();
-        this._isConnected = true;
+        this._connected = true;
     }
 
     /*
@@ -42,22 +48,6 @@ export default class OutputData extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Attributes specific to the type (see <strong>Types and Type Attributes</strong>).
-     *
-     * @type {object}
-     * @public
-     */
-    @api
-    get typeAttributes() {
-        return this._typeAttributes;
-    }
-    set typeAttributes(value) {
-        this._typeAttributes = typeof value === 'object' ? value : {};
-
-        if (this._isConnected) this.normalizeTypeAttributes();
-    }
 
     /**
      * Type of the output. Valid types include boolean, currency, date, email, location, number, percent, phone, url and text.
@@ -75,7 +65,23 @@ export default class OutputData extends LightningElement {
             validValues: TYPES.valid
         });
 
-        if (this._isConnected) this.normalizeTypeAttributes();
+        if (this._connected) this.normalizeTypeAttributes();
+    }
+
+    /**
+     * Attributes specific to the type (see <strong>Types and Type Attributes</strong>).
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get typeAttributes() {
+        return this._typeAttributes;
+    }
+    set typeAttributes(value) {
+        this._typeAttributes = typeof value === 'object' ? value : {};
+
+        if (this._connected) this.normalizeTypeAttributes();
     }
 
     /**
@@ -89,7 +95,6 @@ export default class OutputData extends LightningElement {
         if (this.isBoolean) {
             return this._value === 'true' || this._value;
         }
-
         if (this.isNumber) {
             return this.truncateNumber(this._value);
         }
@@ -147,12 +152,13 @@ export default class OutputData extends LightningElement {
      * @type {string}
      */
     get computedWrapperClass() {
-        const variant = this.variant;
         return classSet()
             .add({
                 'slds-list_stacked':
-                    variant === 'label-stacked' || variant === 'standard',
-                'slds-list_horizontal slds-wrap': variant === 'label-inline'
+                    this.variant === 'label-stacked' ||
+                    this.variant === 'standard',
+                'slds-list_horizontal slds-wrap':
+                    this.variant === 'label-inline'
             })
             .toString();
     }

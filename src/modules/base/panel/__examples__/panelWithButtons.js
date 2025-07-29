@@ -5,11 +5,18 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const PanelWithButtons = ({ position, title, size, showPanel }) => {
+export const PanelWithButtons = ({
+    closeButtonAlternativeText,
+    position,
+    showPanel,
+    size,
+    title
+}) => {
     const element = document.createElement('ac-with-buttons-panel');
+    element.closeButtonAlternativeText = closeButtonAlternativeText;
     element.position = position;
-    element.title = title;
-    element.size = size;
     element.showPanel = showPanel;
+    element.size = size;
+    element.title = title;
     return element;
 };

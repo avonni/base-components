@@ -12,6 +12,7 @@
             <!-- Cover image - Top -->
             <img
                 if:true={isCoverImageTop}
+                style={computedCoverImageStyle}
                 class="
                     avonni-kanban__tile_image avonni-kanban__tile_image-top
                     slds-m-bottom_small
@@ -19,7 +20,6 @@
                 alt=""
                 draggable="false"
                 src={coverImage}
-                style={computedCoverImageStyle}
                 data-element-id="avonni-kanban__tile_image_top"
             />
 
@@ -129,8 +129,8 @@
                             value={info.href}
                             data-element-id="avonni-kanban__tile_info_url"
                             onmousedown={handleStopPropagation}
-                            onmouseup={handleStopPropagation}
                             onmousemove={handleStopPropagation}
+                            onmouseup={handleStopPropagation}
                         ></lightning-formatted-url>
                         <span
                             if:false={info.href}
@@ -143,7 +143,7 @@
             </ul>
 
             <!-- Fields -->
-            <ul data-element-id="fields" class="avonni-kanban__tile_fields">
+            <ul class="avonni-kanban__tile_fields" data-element-id="fields">
                 <li for:each={fields} for:item="field" key={field.label}>
                     <p>
                         <c-output-data
@@ -202,7 +202,6 @@
                     </div>
                 </li>
             </ul>
-
             <!-- Annotation Icons -->
             <div
                 if:true={hasIcons}
@@ -223,18 +222,18 @@
             <!-- Cover image - Bottom -->
             <img
                 if:true={isCoverImageBottom}
+                style={computedCoverImageStyle}
                 class="
                     avonni-kanban__tile_image avonni-kanban__tile_image-bottom
                 "
                 alt=""
                 draggable="false"
                 src={coverImage}
-                style={computedCoverImageStyle}
                 data-element-id="avonni-kanban__tile_image_bottom"
             />
 
             <!-- Actions - Position Absolute -->
-            <div class="avonni-kanban__tile_actions" if:true={hasActions}>
+            <div if:true={hasActions} class="avonni-kanban__tile_actions">
                 <c-button-menu
                     class="slds-is-relative"
                     alternative-text="Show menu"

@@ -17,6 +17,12 @@ import { LightningElement, api } from 'lwc';
 import CalendarDate from './date';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DEFAULT_MAX = new Date(2099, 11, 31);
+const DEFAULT_MIN = new Date(1900, 0, 1);
+const DEFAULT_NEXT_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Next Month';
+const DEFAULT_PREVIOUS_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Previous Month';
+const DEFAULT_YEAR_SELECT_ASSISTIVE_TEXT = 'Pick a year';
+const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 const MONTHS = [
     'January',
     'February',
@@ -31,15 +37,7 @@ const MONTHS = [
     'November',
     'December'
 ];
-
-const DEFAULT_MAX = new Date(2099, 11, 31);
-
-const DEFAULT_MIN = new Date(1900, 0, 1);
-
-const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
-
 const NULL_DATE = new Date('12/31/1969').setHours(0, 0, 0, 0);
-
 const SELECTION_MODES = {
     valid: ['single', 'multiple', 'interval'],
     default: 'single'
@@ -53,6 +51,30 @@ const SELECTION_MODES = {
  * @public
  */
 export default class Calendar extends LightningElement {
+    /**
+     * The alternative text for the next month button.
+     *
+     * @public
+     * @type {string}
+     */
+    @api nextMonthButtonAlternativeText =
+        DEFAULT_NEXT_MONTH_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The alternative text for the previous month button.
+     *
+     * @public
+     * @type {string}
+     */
+    @api previousMonthButtonAlternativeText =
+        DEFAULT_PREVIOUS_MONTH_BUTTON_ALTERNATIVE_TEXT;
+    /**
+     * The assistive text for the year select.
+     *
+     * @public
+     * @type {string}
+     */
+    @api yearSelectAssistiveText = DEFAULT_YEAR_SELECT_ASSISTIVE_TEXT;
+
     _dateLabels = [];
     _disabled = false;
     _disabledDates = [];
@@ -65,7 +87,6 @@ export default class Calendar extends LightningElement {
     _value;
     _weekNumber = false;
 
-    _focusDate;
     _computedDateLabels = [];
     _computedDisabledDates = [];
     _computedMarkedDates = [];
@@ -73,12 +94,19 @@ export default class Calendar extends LightningElement {
     _computedMin;
     _computedValue = [];
     _connected = false;
+    _focusDate;
+    calendarData;
+    day;
     displayDate; // The calendar displays this date's month
-    year;
     month;
     months = MONTHS;
-    day;
-    calendarData;
+    year;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.initDates();
@@ -105,7 +133,6 @@ export default class Calendar extends LightningElement {
     get dateLabels() {
         return this._dateLabels;
     }
-
     set dateLabels(value) {
         this._dateLabels = deepCopy(normalizeArray(value, 'object'));
 
@@ -126,7 +153,6 @@ export default class Calendar extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
 
@@ -145,7 +171,6 @@ export default class Calendar extends LightningElement {
     get disabledDates() {
         return this._disabledDates;
     }
-
     set disabledDates(value) {
         this._disabledDates =
             value && !Array.isArray(value) ? [value] : normalizeArray(value);
@@ -181,7 +206,6 @@ export default class Calendar extends LightningElement {
     get markedDates() {
         return this._markedDates;
     }
-
     set markedDates(value) {
         this._markedDates = normalizeArray(value, 'object');
 
@@ -202,7 +226,6 @@ export default class Calendar extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         this._max = this.isInvalidDate(value) ? DEFAULT_MAX : value;
 
@@ -228,7 +251,6 @@ export default class Calendar extends LightningElement {
     get min() {
         return this._min;
     }
-
     set min(value) {
         this._min = this.isInvalidDate(value) ? DEFAULT_MIN : value;
 
@@ -256,7 +278,6 @@ export default class Calendar extends LightningElement {
     get selectionMode() {
         return this._selectionMode;
     }
-
     set selectionMode(value) {
         this._selectionMode = normalizeString(value, {
             validValues: SELECTION_MODES.valid,
@@ -297,7 +318,6 @@ export default class Calendar extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         if (equal(value, this._value)) {
             return;
@@ -325,7 +345,6 @@ export default class Calendar extends LightningElement {
     get weekNumber() {
         return this._weekNumber;
     }
-
     set weekNumber(value) {
         this._weekNumber = normalizeBoolean(value);
 
@@ -348,6 +367,20 @@ export default class Calendar extends LightningElement {
         return this._computedValue.every(
             (value) => this.isBeforeMin(value) || this.isAfterMax(value)
         );
+    }
+
+    /**
+     * Computed class for the table.
+     *
+     * @return {string}
+     */
+    get computedTableClasses() {
+        const isLabeled = this._dateLabels.length > 0;
+        return classSet(
+            'slds-datepicker__month slds-is-relative avonni-calendar__table'
+        )
+            .add({ 'avonni-calendar__date-with-labels': isLabeled })
+            .toString();
     }
 
     /**
@@ -411,24 +444,16 @@ export default class Calendar extends LightningElement {
         );
     }
 
+    /**
+     * Check if the calendar is in multi-select mode.
+     *
+     * @return {boolean}
+     */
     get isMultiSelect() {
         return (
             this.selectionMode === 'interval' ||
             this.selectionMode === 'multiple'
         );
-    }
-
-    /**
-     *
-     * @type {string}
-     */
-    get tableClasses() {
-        const isLabeled = this._dateLabels.length > 0;
-        return classSet(
-            'slds-datepicker__month slds-is-relative avonni-calendar__table'
-        )
-            .add({ 'avonni-calendar__date-with-labels': isLabeled })
-            .toString();
     }
 
     /**
@@ -526,99 +551,6 @@ export default class Calendar extends LightningElement {
      */
 
     /**
-     * Initialize the date labels to include the timezone.
-     */
-    initDateLabels() {
-        this._computedDateLabels = this.dateLabels.map((label) => {
-            return {
-                ...label,
-                date: this.getDateWithTimezone(label.date)
-            };
-        });
-    }
-
-    /**
-     * Initialize all the properties depending on dates, to include the timezone and set them to the beginning of the day.
-     */
-    initDates() {
-        const max = this.getDateWithTimezone(this.max);
-        const min = this.getDateWithTimezone(this.min);
-        this._computedMax = setDate(max, 'hours', 0, 0, 0, 0);
-        this._computedMin = setDate(min, 'hours', 0, 0, 0, 0);
-        this.initDateLabels();
-        this.initDisabledDates();
-        this.initMarkedDates();
-        this.initValue();
-
-        if (this.displayDate) {
-            this.displayDate = this.startOfDay(this.displayDate);
-        }
-    }
-
-    /**
-     * Initialize the disabled dates to include the timezone and set them to the beginning of the day.
-     */
-    initDisabledDates() {
-        this._computedDisabledDates = this.disabledDates.map((date) => {
-            if (DAYS.includes(date) || this.isInvalidDate(date)) {
-                return date;
-            }
-            const fullDate = this.getDateWithTimezone(date);
-            return this.startOfDay(fullDate);
-        });
-    }
-
-    /**
-     * Initialize the displayed date to center the calendar on the appropriate month.
-     */
-    initDisplayDate() {
-        let date = this.getDateWithTimezone(DEFAULT_DATE);
-        if (this._computedValue[0]) {
-            date = this._computedValue[0];
-        } else if (date < this._computedMin) {
-            date = this._computedMin;
-        } else if (date > this._computedMax) {
-            date = this._computedMax;
-        }
-        this.displayDate = new Date(date);
-    }
-
-    /**
-     * Initialize the marked dates to include the timezone and set them to the beginning of the day.
-     */
-    initMarkedDates() {
-        this._computedMarkedDates = this.markedDates.map((marker) => {
-            return {
-                color: marker.color,
-                date: this.isInvalidDate(marker.date)
-                    ? marker.date
-                    : this.startOfDay(this.getDateWithTimezone(marker.date))
-            };
-        });
-    }
-
-    /**
-     * Initialize the value to include the timezone, sort them and set them to the beginning of the day.
-     */
-    initValue() {
-        const normalizedValue =
-            this.value && !Array.isArray(this.value)
-                ? [this.value]
-                : normalizeArray(this.value);
-        const computedValues = [];
-        normalizedValue.forEach((date) => {
-            if (!this.isInvalidDate(date)) {
-                const normalizedDate = this.startOfDay(
-                    this.getDateWithTimezone(date)
-                );
-                computedValues.push(normalizedDate);
-            }
-        });
-        computedValues.sort((a, b) => a.getTime() - b.getTime());
-        this._computedValue = computedValues;
-    }
-
-    /**
      * Place focus according to keyboard selection
      *
      * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
@@ -703,6 +635,12 @@ export default class Calendar extends LightningElement {
         });
     }
 
+    /**
+     * Returns the end of the month for the given date.
+     *
+     * @param {Date} date Date to get the end of the month for.
+     * @returns {Date} The end of the month for the given date.
+     */
     endOfMonth(date) {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0);
     }
@@ -892,6 +830,113 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Initialize the date labels to include the timezone.
+     */
+    initDateLabels() {
+        this._computedDateLabels = this.dateLabels.map((label) => {
+            return {
+                ...label,
+                date: this.getDateWithTimezone(label.date)
+            };
+        });
+    }
+
+    /**
+     * Initialize all the properties depending on dates, to include the timezone and set them to the beginning of the day.
+     */
+    initDates() {
+        const max = this.getDateWithTimezone(this.max);
+        const min = this.getDateWithTimezone(this.min);
+        this._computedMax = setDate(max, 'hours', 0, 0, 0, 0);
+        this._computedMin = setDate(min, 'hours', 0, 0, 0, 0);
+        this.initDateLabels();
+        this.initDisabledDates();
+        this.initMarkedDates();
+        this.initValue();
+
+        if (this.displayDate) {
+            this.displayDate = this.startOfDay(this.displayDate);
+        }
+    }
+
+    /**
+     * Initialize the disabled dates to include the timezone and set them to the beginning of the day.
+     */
+    initDisabledDates() {
+        this._computedDisabledDates = this.disabledDates.map((date) => {
+            if (DAYS.includes(date) || this.isInvalidDate(date)) {
+                return date;
+            }
+            const fullDate = this.getDateWithTimezone(date);
+            return this.startOfDay(fullDate);
+        });
+    }
+
+    /**
+     * Initialize the displayed date to center the calendar on the appropriate month.
+     */
+    initDisplayDate() {
+        let date = this.getDateWithTimezone(DEFAULT_DATE);
+        if (this._computedValue[0]) {
+            date = this._computedValue[0];
+        } else if (date < this._computedMin) {
+            date = this._computedMin;
+        } else if (date > this._computedMax) {
+            date = this._computedMax;
+        }
+        this.displayDate = new Date(date);
+    }
+
+    /**
+     * Initialize the marked dates to include the timezone and set them to the beginning of the day.
+     */
+    initMarkedDates() {
+        this._computedMarkedDates = this.markedDates.map((marker) => {
+            return {
+                color: marker.color,
+                date: this.isInvalidDate(marker.date)
+                    ? marker.date
+                    : this.startOfDay(this.getDateWithTimezone(marker.date))
+            };
+        });
+    }
+
+    /**
+     * Initialize the value to include the timezone, sort them and set them to the beginning of the day.
+     */
+    initValue() {
+        const normalizedValue =
+            this.value && !Array.isArray(this.value)
+                ? [this.value]
+                : normalizeArray(this.value);
+        const computedValues = [];
+        normalizedValue.forEach((date) => {
+            if (!this.isInvalidDate(date)) {
+                const normalizedDate = this.startOfDay(
+                    this.getDateWithTimezone(date)
+                );
+                computedValues.push(normalizedDate);
+            }
+        });
+        computedValues.sort((a, b) => a.getTime() - b.getTime());
+        this._computedValue = computedValues;
+    }
+
+    /**
+     * Check if value is after max date.
+     */
+    isAfterMax(value) {
+        return value.getTime() > this._computedMax.getTime();
+    }
+
+    /**
+     * Check if value is before min date.
+     */
+    isBeforeMin(value) {
+        return value.getTime() < this._computedMin.getTime();
+    }
+
+    /**
      * Check if the given date is disabled.
      *
      * @param {DateTime} date Date to check.
@@ -908,20 +953,6 @@ export default class Calendar extends LightningElement {
             this.weekDaysFromArray(dates).indexOf(weekday) > -1 ||
             this.monthDaysFromArray(dates).indexOf(monthDay) > -1
         );
-    }
-
-    /**
-     * Check if value is after max date.
-     */
-    isAfterMax(value) {
-        return value.getTime() > this._computedMax.getTime();
-    }
-
-    /**
-     * Check if value is before min date.
-     */
-    isBeforeMin(value) {
-        return value.getTime() < this._computedMin.getTime();
     }
 
     /**
@@ -1041,10 +1072,22 @@ export default class Calendar extends LightningElement {
         }
     }
 
+    /**
+     * Returns the start of the day for the given date.
+     *
+     * @param {Date} date Date to get the start of the day for.
+     * @returns {Date} The start of the day for the given date.
+     */
     startOfDay(date) {
         return setDate(date, 'hour', 0, 0, 0, 0);
     }
 
+    /**
+     * Returns the ISO string for the given date.
+     *
+     * @param {Date} dateObject Date to get the ISO string for.
+     * @returns {string} The ISO string for the given date.
+     */
     toISO(dateObject) {
         const date = getFormattedDate({
             date: dateObject,
@@ -1081,24 +1124,6 @@ export default class Calendar extends LightningElement {
         });
         this._value =
             this.selectionMode === 'single' ? stringDates[0] : stringDates;
-    }
-
-    /**
-     * Filter the strings from the given array.
-     *
-     * @param {object[]} array Array to filter.
-     * @returns Array of strings.
-     */
-    weekDaysFromArray(array) {
-        let dates = [];
-
-        array.forEach((date) => {
-            if (typeof date === 'string') {
-                dates.push(date);
-            }
-        });
-
-        return dates;
     }
 
     /**
@@ -1188,6 +1213,24 @@ export default class Calendar extends LightningElement {
             }
             this.updateDateParameters();
         }
+    }
+
+    /**
+     * Filter the strings from the given array.
+     *
+     * @param {object[]} array Array to filter.
+     * @returns Array of strings.
+     */
+    weekDaysFromArray(array) {
+        let dates = [];
+
+        array.forEach((date) => {
+            if (typeof date === 'string') {
+                dates.push(date);
+            }
+        });
+
+        return dates;
     }
 
     /*

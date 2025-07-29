@@ -1,13 +1,13 @@
 <template>
-    <div class={wrapperClass} data-element-id="div-wrapper">
+    <div class={computedWrapperClass} data-element-id="div-wrapper">
         <div
-            class={primitiveTreeItemClass}
+            class={computedPrimitiveTreeItemClass}
             data-element-id="div-item"
             onclick={handleClick}
         >
             <lightning-button-icon
                 if:false={collapseDisabled}
-                class={expandButtonClass}
+                class={computedExpandButtonClass}
                 alternative-text={expandButtonLabel}
                 aria-expanded={expanded}
                 icon-name={expandButtonIconName}
@@ -19,7 +19,6 @@
                 onfocus={handleExpandButtonFocus}
             >
             </lightning-button-icon>
-
             <div class="slds-has-flexi-truncate">
                 <div
                     class="
@@ -35,14 +34,14 @@
                     <!-- Checkbox -->
                     <span
                         if:true={showCheckbox}
+                        style={checkboxStyle}
                         class="slds-checkbox slds-m-right_xx-small"
                         data-element-id="span-checkbox"
-                        style={checkboxStyle}
                     >
                         <input
-                            id="checkbox"
                             checked={selected}
                             disabled={checkboxDisabled}
+                            id="checkbox"
                             type="checkbox"
                             data-element-id="input-checkbox"
                             onchange={stopPropagation}
@@ -58,8 +57,8 @@
                                     slds-form-element__label
                                     slds-assistive-text
                                 "
-                                >Select</span
-                            >
+                                >Select
+                            </span>
                         </label>
                     </span>
 
@@ -80,15 +79,18 @@
 
                     <!-- Label -->
                     <div class="slds-grid slds-grid_vertical-align-center">
-                        <div if:false={labelIsEdited} class={labelClass}>
+                        <div
+                            if:false={labelIsEdited}
+                            class={computedLabelClass}
+                        >
                             <a
                                 if:true={showLink}
                                 class="avonni-primitive-item__link"
                                 href={href}
                                 data-element-id="a-label-link"
                                 data-group-name="link"
-                                onmousedown={handleLinkMouseDown}
                                 onclick={handleAnchorTagClick}
+                                onmousedown={handleLinkMouseDown}
                             >
                                 {label}
                             </a>
@@ -96,8 +98,8 @@
                                 if:false={showLink}
                                 data-element-id="span-label"
                                 ondblclick={handleLabelDoubleClick}
-                                >{label}</span
-                            >
+                                >{label}
+                            </span>
                         </div>
                         <lightning-input
                             if:true={labelIsEdited}
@@ -114,15 +116,15 @@
                             class="slds-m-left_x-small"
                             aria-hidden="true"
                             icon-name={iconName}
-                            data-element-id="lightning-icon-label"
                             size="x-small"
+                            data-element-id="lightning-icon-label"
                         ></lightning-icon>
                     </div>
 
                     <lightning-button-icon
                         if:true={labelIsEdited}
-                        alternative-text="Save Label"
                         class="slds-m-left_x-small slds-m-vertical_xx-small"
+                        alternative-text={saveButtonIconAlternativeText}
                         icon-name="utility:check"
                         variant="bare"
                         data-element-id="lightning-button-icon-inline-save"
@@ -171,9 +173,9 @@
                             onclick={stopPropagation}
                             onclose={handleActionMenuClose}
                             onfocusout={stopPropagation}
+                            onkeydown={handleActionMenuKeyDown}
                             onopen={handleActionMenuOpen}
                             onselect={handleActionClick}
-                            onkeydown={handleActionMenuKeyDown}
                         >
                             <template for:each={menuActions} for:item="action">
                                 <lightning-menu-item
@@ -200,11 +202,11 @@
                         href={href}
                         data-group-name="link"
                         onmousedown={handleLinkMouseDown}
-                        >{metatext}</a
-                    >
+                        >{metatext}
+                    </a>
                     <span if:false={showLink} data-element-id="span-metatext"
-                        >{metatext}</span
-                    >
+                        >{metatext}
+                    </span>
                 </div>
 
                 <!-- Fields -->
@@ -243,11 +245,11 @@
             <!-- Close button -->
             <div class="slds-text-align_right">
                 <lightning-button-icon
-                    alternative-text="Close dialog"
                     class="slds-popover__close"
+                    alternative-text={closeButtonAlternativeText}
                     icon-name="utility:close"
-                    variant="bare"
                     size="small"
+                    variant="bare"
                     data-element-id="lightning-button-icon-close"
                     onclick={togglePopoverVisibility}
                     onkeydown={handlePopoverCloseKeyDown}
@@ -289,12 +291,12 @@
             >
                 <lightning-button
                     class="slds-m-right_xx-small"
-                    label="Cancel"
+                    label={cancelButtonLabel}
                     onclick={togglePopoverVisibility}
                 ></lightning-button>
                 <lightning-button
                     disabled={hasError}
-                    label="Done"
+                    label={doneButtonLabel}
                     variant="brand"
                     data-element-id="lightning-button-done"
                     onclick={handleDone}
@@ -308,8 +310,8 @@
             <!-- Child items -->
             <template for:each={childItems} for:item="item">
                 <c-primitive-tree-item
-                    class="slds-is-relative"
                     key={item.key}
+                    class="slds-is-relative"
                     actions={item.actions}
                     actions-when-disabled={actionsWhenDisabled}
                     allow-inline-edit={allowInlineEdit}
@@ -319,28 +321,35 @@
                     aria-level={item.level}
                     avatar={item.avatar}
                     child-items={item.children}
+                    cancel-button-label={cancelButtonLabel}
+                    close-button-alternative-text={closeButtonAlternativeText}
+                    collapse-button-alternative-text={collapseButtonAlternativeText}
                     collapse-disabled={collapseDisabled}
                     color={item.color}
                     enable-infinite-loading={item.enableInfiniteLoading}
-                    independent-multi-select={independentMultiSelect}
                     disabled={item.disabled}
+                    done-button-label={doneButtonLabel}
                     editable-fields={editableFields}
+                    expand-button-alternative-text={expandButtonAlternativeText}
                     expanded={item.expanded}
                     fields={item.fields}
                     hidden-actions={item.hiddenActions}
                     href={item.href}
                     icon-name={item.iconName}
+                    independent-multi-select={independentMultiSelect}
                     indeterminate={item.indeterminate}
                     is-leaf={item.isLeaf}
                     is-loading={item.isLoading}
                     label={item.label}
                     level={item.level}
                     loading-state-alternative-text={loadingStateAlternativeText}
+                    load-more-button-label={loadMoreButtonLabel}
                     metatext={item.metatext}
                     name={item.name}
                     node-key={item.key}
                     no-slots={item.noSlots}
                     role="treeitem"
+                    save-button-icon-alternative-text={saveButtonIconAlternativeText}
                     selected={item.selected}
                     show-checkbox={showCheckbox}
                     slottable-types={item.slottableTypes}
@@ -351,7 +360,6 @@
                     data-key={item.key}
                 ></c-primitive-tree-item>
             </template>
-
             <div
                 if:true={isLoading}
                 class="
@@ -365,11 +373,10 @@
                     data-element-id="lightning-spinner-loading"
                 ></lightning-spinner>
             </div>
-
             <lightning-button
                 if:true={showLoadMoreButton}
                 class="avonni-primitive-tree-item__load-more-button"
-                label="Load more"
+                label={loadMoreButtonLabel}
                 variant="base"
                 data-element-id="lightning-button-load-more"
                 onclick={handleLoadMore}

@@ -39,7 +39,6 @@ export default class MediaObject extends LightningElement {
     get inline() {
         return this._inline;
     }
-
     set inline(value) {
         this._inline = normalizeBoolean(value);
     }
@@ -55,7 +54,6 @@ export default class MediaObject extends LightningElement {
     get responsive() {
         return this._responsive;
     }
-
     set responsive(value) {
         this._responsive = normalizeBoolean(value);
     }
@@ -71,7 +69,6 @@ export default class MediaObject extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: MEDIA_OBJECT_SIZES.default,
@@ -90,7 +87,6 @@ export default class MediaObject extends LightningElement {
     get verticalAlign() {
         return this._verticalAlign;
     }
-
     set verticalAlign(verticalAlign) {
         this._verticalAlign = normalizeString(verticalAlign, {
             fallbackValue: VERTICAL_ALIGNMENTS.default,
@@ -109,16 +105,16 @@ export default class MediaObject extends LightningElement {
      *
      * @type {string}
      */
-    get mediaObjectClass() {
+    get computedMediaObjectClass() {
         return classSet('slds-media')
             .add({
-                'slds-media_small': this._size === 'small',
-                'slds-media_large': this._size === 'large',
-                'slds-media_center': this._verticalAlign === 'center',
+                'slds-media_small': this.size === 'small',
+                'slds-media_large': this.size === 'large',
+                'slds-media_center': this.verticalAlign === 'center',
                 'avonni-media-object_alignment-end':
-                    this._verticalAlign === 'end',
-                'slds-media_responsive': this._responsive,
-                'avonni-media-object_display-inline': this._inline
+                    this.verticalAlign === 'end',
+                'slds-media_responsive': this.responsive,
+                'avonni-media-object_display-inline': this.inline
             })
             .toString();
     }

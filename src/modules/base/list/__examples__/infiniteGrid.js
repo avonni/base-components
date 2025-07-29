@@ -17,9 +17,12 @@ export const InfiniteGrid = ({
     items,
     label,
     largeContainerCols,
+    loadingStateAlternativeText,
     loadMoreOffset,
     mediaActions,
     mediumContainerCols,
+    nextButtonAlternativeText,
+    previousButtonAlternativeText,
     smallContainerCols,
     sortable,
     sortableIconName,
@@ -40,9 +43,12 @@ export const InfiniteGrid = ({
     element.items = items;
     element.label = label;
     element.largeContainerCols = largeContainerCols;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.loadMoreOffset = loadMoreOffset;
     element.mediaActions = mediaActions;
     element.mediumContainerCols = mediumContainerCols;
+    element.nextButtonAlternativeText = nextButtonAlternativeText;
+    element.previousButtonAlternativeText = previousButtonAlternativeText;
     element.smallContainerCols = smallContainerCols;
     element.sortable = sortable;
     element.sortableIconName = sortableIconName;

@@ -8,25 +8,16 @@ import {
 } from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 
-const PATH_FORMATS = {
-    valid: ['linear', 'non-linear'],
-    default: 'linear'
-};
-
-const ICON_POSITIONS = {
-    valid: ['left', 'right'],
-    default: 'left'
-};
-
-const DEFAULT_KEYFIELDS_LABEL = 'Key Fields';
-const DEFAULT_GUIDANCE_LABEL = 'Guidance for Success';
-const DEFAULT_NEXT_BUTTON_LABEL = 'Mark as Complete';
-const DEFAULT_SELECT_BUTTON_LABEL = 'Mark as Current Stage';
-const DEFAULT_CHANGE_COMPLETION_OPTION_LABEL = 'Change Completion Status';
-const DEFAULT_COMPLETED_OPTION = 'base';
-
 const CONFETTI_FREQUENCY = {
     valid: [
+        {
+            label: 'always',
+            value: 1
+        },
+        {
+            label: 'often',
+            value: 0.75
+        },
         {
             label: 'rarely',
             value: 0.25
@@ -34,20 +25,30 @@ const CONFETTI_FREQUENCY = {
         {
             label: 'sometimes',
             value: 0.5
-        },
-        {
-            label: 'often',
-            value: 0.75
-        },
-        {
-            label: 'always',
-            value: 1
         }
     ],
     default: {
         label: 'sometimes',
         value: 0.5
     }
+};
+
+const DEFAULT_CHANGE_COMPLETION_OPTION_LABEL = 'Change Completion Status';
+const DEFAULT_COMPLETED_OPTION = 'base';
+const DEFAULT_GUIDANCE_LABEL = 'Guidance for Success';
+const DEFAULT_KEYFIELDS_LABEL = 'Key Fields';
+const DEFAULT_NEXT_BUTTON_LABEL = 'Mark as Complete';
+const DEFAULT_SELECT_BUTTON_LABEL = 'Mark as Current Stage';
+const DEFAULT_TOGGLE_COACHING_ALTERNATIVE_TEXT = 'Toggle Coaching';
+
+const ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+
+const PATH_FORMATS = {
+    valid: ['linear', 'non-linear'],
+    default: 'linear'
 };
 
 /**
@@ -73,6 +74,14 @@ export default class Path extends LightningElement {
      * @default Mark as Current Stage
      */
     @api selectButtonIconName;
+    /**
+     * The alternative text used to describe the toggle button icon.
+     *
+     * @type {string}
+     * @public
+     * @default Toggle Coaching
+     */
+    @api toggleButtonAlternativeText = DEFAULT_TOGGLE_COACHING_ALTERNATIVE_TEXT;
 
     _actions = [];
     _changeCompletionStatusLabel = DEFAULT_CHANGE_COMPLETION_OPTION_LABEL;
@@ -89,19 +98,19 @@ export default class Path extends LightningElement {
     _selectButtonLabel = DEFAULT_SELECT_BUTTON_LABEL;
     @track _steps = [];
 
-    _status = DEFAULT_COMPLETED_OPTION;
     _activeStep;
     _candidateStep;
-    _isConnected = false;
+    _connected = false;
+    _status = DEFAULT_COMPLETED_OPTION;
     coachingIsVisible = false;
-    computedCurrentStep;
     completedOptions;
+    computedCurrentStep;
     showDialog;
 
     connectedCallback() {
         this.initSteps();
         this.initCurrentStep(this.currentStep);
-        this._isConnected = true;
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -163,7 +172,7 @@ export default class Path extends LightningElement {
         if (typeof value === 'string') {
             this._currentStep = value;
 
-            if (this._isConnected) this.initCurrentStep(this.currentStep);
+            if (this._connected) this.initCurrentStep(this.currentStep);
         }
     }
 
@@ -348,7 +357,7 @@ export default class Path extends LightningElement {
     set steps(proxy) {
         this._steps = deepCopy(normalizeArray(proxy));
 
-        if (this._isConnected) {
+        if (this._connected) {
             this.initSteps();
             this.initCurrentStep(this.currentStep);
         }
@@ -361,23 +370,46 @@ export default class Path extends LightningElement {
      */
 
     /**
-     * Toggle to display Coaching icon.
+     * Computed path class based on attribute selections.
      *
      * @type {string}
      */
-    get toggleCoachingIcon() {
-        return this.coachingIsVisible
-            ? 'utility:chevrondown'
-            : 'utility:chevronright';
+    get computedPathClass() {
+        const isComplete = this.currentStepIndex === this.steps.length - 1;
+        const isLinear = this.format === 'linear';
+        const display = isComplete || !isLinear;
+
+        return classSet('slds-path slds-path_has-coaching')
+            .add({
+                'slds-is-expanded': this.coachingIsVisible,
+                'slds-is-won': this._status === 'success' && display,
+                'slds-is-lost': this._status === 'error' && display,
+                'path-is-complete': display,
+                'path-is-complete_warning':
+                    this._status === 'warning' && display,
+                'path-is-complete_offline':
+                    this._status === 'offline' && display,
+                'path-is-complete_base': this._status === 'base' && display
+            })
+            .toString();
     }
 
     /**
-     * Name string of the last step.
+     * Find current Step index
      *
-     * @type {string}
+     * @type {number}
      */
-    get lastStepName() {
-        return this.steps[this.steps.length - 1].name;
+    get currentStepIndex() {
+        return this.steps.findIndex((step) => step.name === this.currentStep);
+    }
+
+    /**
+     * Verify if the current step is also the active step.
+     *
+     * @type {boolean}
+     */
+    get currentStepIsActive() {
+        return this._activeStep && this._activeStep.name === this.currentStep;
     }
 
     /**
@@ -390,12 +422,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * Verify if the current step is also the active step.
+     * Name string of the last step.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get currentStepIsActive() {
-        return this._activeStep && this._activeStep.name === this.currentStep;
+    get lastStepName() {
+        return this.steps?.[this.steps.length - 1]?.name;
     }
 
     /**
@@ -413,15 +445,6 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * Display the Select button when active step and is not the current step.
-     *
-     * @type {boolean}
-     */
-    get showSelectButton() {
-        return this._activeStep && !this.currentStepIsActive;
-    }
-
-    /**
      * Display next button when not at end of steps and the current step is the active one.
      *
      * @type {boolean}
@@ -434,39 +457,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * Find current Step index
+     * Display the Select button when active step and is not the current step.
      *
-     * @type {number}
+     * @type {boolean}
      */
-    get currentStepIndex() {
-        return this.steps.findIndex((step) => step.name === this.currentStep);
-    }
-
-    /**
-     * Computed path class based on attribute selections.
-     *
-     * @type {string}
-     */
-    get pathClass() {
-        const isComplete = this.currentStepIndex === this.steps.length - 1;
-        const isLinear = this.format === 'linear';
-
-        return classSet('slds-path slds-path_has-coaching')
-            .add({
-                'slds-is-expanded': this.coachingIsVisible,
-                'slds-is-won':
-                    this._status === 'success' && (isComplete || !isLinear),
-                'slds-is-lost':
-                    this._status === 'error' && (isComplete || !isLinear),
-                'path-is-complete': isComplete || !isLinear,
-                'path-is-complete_warning':
-                    this._status === 'warning' && (isComplete || !isLinear),
-                'path-is-complete_offline':
-                    this._status === 'offline' && (isComplete || !isLinear),
-                'path-is-complete_base':
-                    this._status === 'base' && (isComplete || !isLinear)
-            })
-            .toString();
+    get showSelectButton() {
+        return this._activeStep && !this.currentStepIsActive;
     }
 
     /**
@@ -476,8 +472,19 @@ export default class Path extends LightningElement {
      */
     get stageTitle() {
         return this._activeStep
-            ? this._activeStep.label
-            : this.computedCurrentStep.label;
+            ? this._activeStep?.label
+            : this.computedCurrentStep?.label;
+    }
+
+    /**
+     * Toggle to display Coaching icon.
+     *
+     * @type {string}
+     */
+    get toggleCoachingIcon() {
+        return this.coachingIsVisible
+            ? 'utility:chevrondown'
+            : 'utility:chevronright';
     }
 
     /*
@@ -521,6 +528,106 @@ export default class Path extends LightningElement {
      */
 
     /**
+     * Compute path step movement.
+     *
+     * @param {object} toIndex
+     * @param {object} toName
+     */
+    computeMovement({ toIndex, toName }) {
+        const toStep = toName
+            ? this.getStepFromName(toName)
+            : this.steps[toIndex];
+
+        // The completed options come from the step just before the step we are moving to
+        const i =
+            toIndex || this.steps.findIndex((step) => step.name === toName);
+        const options = this.steps[i - 1] && this.steps[i - 1].completedOptions;
+
+        // If there are many completed options, open the dialog
+        if (options?.length > 1) {
+            this._candidateStep = toStep;
+            this.completedOptions = options;
+            this.showDialog = true;
+        } else {
+            // If there is only one completed option,
+            // the new status of the path will be its variant.
+            if (options && options.length === 1) {
+                this._status = options[0].variant;
+                this._completedOptionValue = options[0].value;
+            } else {
+                // If there is no completed option, the default is used
+                this._status = DEFAULT_COMPLETED_OPTION;
+                this._completedOptionValue = undefined;
+            }
+
+            const fromName = this.currentStep;
+            this.moveToStep(toStep.name);
+            this.dispatchChange(fromName);
+        }
+    }
+
+    /**
+     * Fire confetti method based on showConfetti attribute and previousStep completion.
+     */
+    fireConfetti() {
+        const previousStep = this.steps[this.currentStepIndex - 1];
+        const showConfetti = previousStep && previousStep.showConfetti;
+
+        if (showConfetti) {
+            const stepFrequency = CONFETTI_FREQUENCY.valid.find((frequency) => {
+                return frequency.label === previousStep.confettiFrequency;
+            });
+            const frequency = stepFrequency
+                ? stepFrequency.value
+                : CONFETTI_FREQUENCY.default.value;
+            const randomConfetti = Math.random() < frequency;
+            if (randomConfetti) {
+                this.template.querySelector('.path__confetti').fire();
+            }
+        }
+    }
+
+    /**
+     * Retrieve step name
+     *
+     * @param {string} name
+     * @returns {string} step.name
+     */
+    getStepFromName(name) {
+        return this.steps.find((step) => step.name === name);
+    }
+
+    /**
+     * Hide dialog in case step is not defined.
+     */
+    hideDialog() {
+        this._candidateStep = undefined;
+        this.showDialog = false;
+    }
+
+    /**
+     * Initialize Current step.
+     *
+     * @param {string} name
+     */
+    initCurrentStep(name) {
+        const currentStep = this.getStepFromName(name);
+
+        if (currentStep) {
+            this._currentStep = name;
+            this.computedCurrentStep = currentStep;
+            this._activeStep = currentStep;
+        } else {
+            // Sets current step to first step
+            this._currentStep = this.steps[0]?.name;
+            this.computedCurrentStep = this.steps[0];
+            this._activeStep = this.steps[0];
+        }
+
+        this.updateStepsStatus();
+    }
+
+    /**
      * Initialize steps properties. ( keyFields, actions, tooltip )
      */
     initSteps() {
@@ -548,28 +655,6 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * Initialize Current step.
-     *
-     * @param {string} name
-     */
-    initCurrentStep(name) {
-        const currentStep = this.getStepFromName(name);
-
-        if (currentStep) {
-            this._currentStep = name;
-            this.computedCurrentStep = currentStep;
-            this._activeStep = currentStep;
-        } else {
-            // Sets current step to first step
-            this._currentStep = this.steps[0].name;
-            this.computedCurrentStep = this.steps[0];
-            this._activeStep = this.steps[0];
-        }
-
-        this.updateStepsStatus();
-    }
-
-    /**
      * Initialize the tooltips parameters.
      */
     initTooltips() {
@@ -578,44 +663,6 @@ export default class Path extends LightningElement {
                 step.tooltip.initialize();
             }
         });
-    }
-
-    /**
-     * Compute path step movement.
-     *
-     * @param {object} param0 toIndex, toName
-     */
-    computeMovement({ toIndex, toName }) {
-        const toStep = toName
-            ? this.getStepFromName(toName)
-            : this.steps[toIndex];
-
-        // The completed options come from the step just before the step we are moving to
-        const i =
-            toIndex || this.steps.findIndex((step) => step.name === toName);
-        const options = this.steps[i - 1] && this.steps[i - 1].completedOptions;
-
-        // If there are many completed options, open the dialog
-        if (options && options.length > 1) {
-            this._candidateStep = toStep;
-            this.completedOptions = options;
-            this.showDialog = true;
-        } else {
-            // If there is only one completed option,
-            // the new status of the path will be its variant.
-            if (options && options.length === 1) {
-                this._status = options[0].variant;
-                this._completedOptionValue = options[0].value;
-            } else {
-                // If there is no completed option, the default is used
-                this._status = DEFAULT_COMPLETED_OPTION;
-                this._completedOptionValue = undefined;
-            }
-
-            const fromName = this.currentStep;
-            this.moveToStep(toStep.name);
-            this.dispatchChange(fromName);
-        }
     }
 
     /**
@@ -629,16 +676,6 @@ export default class Path extends LightningElement {
         this._activeStep = undefined;
         this.updateStepsStatus();
         this.fireConfetti();
-    }
-
-    /**
-     * Retrieve step name
-     *
-     * @param {string} name
-     * @returns {string} step.name
-     */
-    getStepFromName(name) {
-        return this.steps.find((step) => step.name === name);
     }
 
     /**
@@ -696,56 +733,35 @@ export default class Path extends LightningElement {
         });
     }
 
-    /**
-     * Hide dialog in case step is not defined.
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
      */
-    hideDialog() {
-        this._candidateStep = undefined;
-        this.showDialog = false;
-    }
 
     /**
-     * Fire confetti method based on showConfetti attribute and previousStep completion.
+     * Action button click event handler.
+     *
+     * @param {Event} event
      */
-    fireConfetti() {
-        const previousStep = this.steps[this.currentStepIndex - 1];
-        const showConfetti = previousStep && previousStep.showConfetti;
-
-        if (showConfetti) {
-            const stepFrequency = CONFETTI_FREQUENCY.valid.find((frequency) => {
-                return frequency.label === previousStep.confettiFrequency;
-            });
-            const frequency = stepFrequency
-                ? stepFrequency.value
-                : CONFETTI_FREQUENCY.default.value;
-            const randomConfetti = Math.random() < frequency;
-            if (randomConfetti) {
-                this.template.querySelector('.path__confetti').fire();
-            }
-        }
-    }
-
-    /**
-     * Save the value of current dialog handler.
-     */
-    handleSaveDialog() {
-        this._completedOptionValue =
-            this.template.querySelector('lightning-combobox').value;
-        if (!this._completedOptionValue) return;
-
-        // Get the new path status (base, success, etc.)
-        const selectedOption = this.completedOptions.find(
-            (option) => option.value === this._completedOptionValue
+    handleActionClick(event) {
+        /**
+         * The event fired when a user clicks on an action button.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName Name of the step the action is related to.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: event.currentTarget.name,
+                    targetName: event.currentTarget.dataset.stepName
+                }
+            })
         );
-        this._status = selectedOption.variant;
-
-        // Save the current step to dispatch it later
-        const previousStep = this.currentStep;
-
-        // Go to new step
-        this.moveToStep(this._candidateStep.name);
-        this.hideDialog();
-        this.dispatchChange(previousStep);
     }
 
     /**
@@ -774,36 +790,34 @@ export default class Path extends LightningElement {
     }
 
     /**
+     * Save the value of current dialog handler.
+     */
+    handleSaveDialog() {
+        this._completedOptionValue =
+            this.template.querySelector('lightning-combobox').value;
+        if (!this._completedOptionValue) return;
+
+        // Get the new path status (base, success, etc.)
+        const selectedOption = this.completedOptions.find(
+            (option) => option.value === this._completedOptionValue
+        );
+        this._status = selectedOption.variant;
+
+        // Save the current step to dispatch it later
+        const previousStep = this.currentStep;
+
+        // Go to new step
+        this.moveToStep(this._candidateStep.name);
+        this.hideDialog();
+        this.dispatchChange(previousStep);
+    }
+
+    /**
      * Click on select button handler.
      */
     handleSelectButtonClick() {
         const toName = this._activeStep.name;
         this.computeMovement({ toName });
-    }
-
-    /**
-     * Action button click event handler.
-     *
-     * @param {Event} event
-     */
-    handleActionClick(event) {
-        /**
-         * The event fired when a user clicks on an action button.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {string} targetName Name of the step the action is related to.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: event.currentTarget.name,
-                    targetName: event.currentTarget.dataset.stepName
-                }
-            })
-        );
     }
 
     /**

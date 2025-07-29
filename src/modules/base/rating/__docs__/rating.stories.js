@@ -145,6 +145,17 @@ export default {
                 category: 'Validation'
             }
         },
+        requiredAlternativeText: {
+            name: 'required-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text when the required attribute is set to true.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         valueHidden: {
             name: 'value-hidden',
             control: {
@@ -164,6 +175,7 @@ export default {
         min: 1,
         readOnly: false,
         required: false,
+        requiredAlternativeText: 'Required',
         selection: 'continuous',
         valueHidden: false,
         variant: 'standard'

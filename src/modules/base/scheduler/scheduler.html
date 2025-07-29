@@ -15,6 +15,7 @@
                     key={button.name}
                     disabled={showEmptyTimelineMessage}
                     label={button.label}
+                    title={button.label}
                     variant={button.variant}
                     value={button.name}
                     data-element-id="lightning-button-toolbar-time-span"
@@ -64,8 +65,8 @@
                     class="slds-truncate avonni-scheduler__"
                     title={visibleIntervalLabel}
                     data-element-id="span-visible-interval-label"
-                    >{visibleIntervalLabel}</span
-                >
+                    >{visibleIntervalLabel}
+                </span>
                 <span>
                     <lightning-icon
                         class="slds-button__icon slds-button__icon_right"
@@ -126,7 +127,7 @@
             <!-- Displays -->
             <c-button-menu
                 if:true={moreThanOneDisplay}
-                class={displayButtonClass}
+                class={computedDisplayButtonClass}
                 label={computedSelectedDisplay.label}
                 menu-alignment="right"
                 data-element-id="avonni-button-menu-toolbar-display"
@@ -143,11 +144,10 @@
                     ></lightning-menu-item>
                 </template>
             </c-button-menu>
-
             <!-- Actions -->
             <lightning-button
                 if:true={oneToolbarActionButton}
-                class={toolbarActionButtonClass}
+                class={computedToolbarActionButtonClass}
                 icon-name={oneToolbarActionButton.iconName}
                 label={oneToolbarActionButton.label}
                 value={oneToolbarActionButton.name}
@@ -155,7 +155,7 @@
             ></lightning-button>
             <lightning-button-icon
                 if:true={oneToolbarActionButtonIcon}
-                class={toolbarActionButtonClass}
+                class={computedToolbarActionButtonClass}
                 alternative-text={oneToolbarActionButtonIcon.name}
                 icon-name={oneToolbarActionButtonIcon.iconName}
                 value={oneToolbarActionButtonIcon.name}
@@ -164,7 +164,7 @@
             ></lightning-button-icon>
             <c-button-menu
                 if:true={moreThanOneToolbarAction}
-                class={toolbarActionButtonClass}
+                class={computedToolbarActionButtonClass}
                 alternative-text="Actions"
                 icon-size="medium"
                 menu-alignment="right"
@@ -347,8 +347,8 @@
     <div
         if:true={showDetailPopover}
         class="slds-is-absolute slds-popover slds-popover_medium"
-        role="tooltip"
         aria-live="polite"
+        role="tooltip"
         data-element-id="div-detail-popover"
         onkeyup={handleDetailPopoverKeyUp}
         onmouseenter={handleDetailPopoverMouseEnter}
@@ -440,8 +440,8 @@
     <c-primitive-dropdown-menu
         if:true={contextMenuActions.length}
         class="slds-is-fixed avonni-scheduler__context-menu"
-        show={showContextMenu}
         items={contextMenuActions}
+        show={showContextMenu}
         data-element-id="avonni-primitive-dropdown-menu"
         onclose={hideContextMenu}
         onprivateselect={handleActionSelect}
@@ -451,8 +451,8 @@
     <c-dialog
         if:true={showRecurrenceDialog}
         show-dialog={showRecurrenceDialog}
-        title={editDialogTitle}
         size="small"
+        title={editDialogTitle}
         data-element-id="avonni-dialog"
         onclosedialog={handleCloseRecurrenceDialog}
     >
@@ -472,16 +472,16 @@
             <lightning-button
                 class="slds-m-right_xx-small"
                 label={dialogLabels.saveOneRecurrent}
-                variant="brand"
                 value="one"
+                variant="brand"
                 data-element-id="lightning-button-recurrence-dialog-save-one"
                 onclick={handleSaveEvent}
             ></lightning-button>
             <lightning-button
                 class="slds-m-right_xx-small"
                 label={dialogLabels.saveAllRecurrent}
-                variant="brand"
                 value="all"
+                variant="brand"
                 data-element-id="lightning-button-recurrence-dialog-save-all"
                 onclick={handleSaveEvent}
                 onkeydown={handleEditSaveKeyDown}
@@ -493,8 +493,8 @@
     <c-dialog
         if:true={showDeleteConfirmationDialog}
         show-dialog={showDeleteConfirmationDialog}
-        title={dialogLabels.deleteTitle}
         size="small"
+        title={dialogLabels.deleteTitle}
         data-element-id="avonni-dialog"
         onclosedialog={handleCloseDeleteConfirmationDialog}
     >
@@ -525,30 +525,30 @@
     <c-dialog
         if:true={showEditDialog}
         show-dialog={showEditDialog}
-        title={editDialogTitle}
         size="small"
+        title={editDialogTitle}
         data-element-id="avonni-dialog"
         onclosedialog={handleCloseEditDialog}
     >
         <lightning-input
-            label={dialogLabels.title}
-            value={selection.occurrence.title}
-            name="title"
             class="slds-m-bottom_small"
             autocomplete="off"
+            label={dialogLabels.title}
+            name="title"
             required
+            value={selection.occurrence.title}
             data-element-id="lightning-input-event-title"
             onchange={handleEventTitleChange}
         ></lightning-input>
         <div class="slds-m-bottom_small">
             <c-input-date-range
-                label-start-date={dialogLabels.from}
-                start-date={selection.occurrence.from}
                 end-date={selection.occurrence.to}
                 label-end-date={dialogLabels.to}
+                label-start-date={dialogLabels.from}
+                required
+                start-date={selection.occurrence.from}
                 timezone={timezone}
                 type="datetime"
-                required
                 variant="label-hidden"
                 data-element-id="avonni-input-date-range-event-dates"
                 onchange={handleEventDateChange}
@@ -558,13 +558,13 @@
             <c-combobox
                 if:true={resourceOptions.length}
                 allow-search
+                dropdown-length="5-items"
                 is-multi-select
                 label={dialogLabels.resources}
-                value={selection.occurrence.resourceNames}
                 options={resourceOptions}
                 remove-selected-options
-                dropdown-length="5-items"
                 required
+                value={selection.occurrence.resourceNames}
                 data-element-id="avonni-combobox-event-resources"
                 onchange={handleEventResourceNamesChange}
             ></c-combobox>
@@ -589,17 +589,17 @@
                 label={dialogLabels.saveButton}
                 menu-alignment="bottom-right"
                 data-element-id="lightning-button-menu-save-edit"
-                onselect={handleSaveEvent}
                 onkeydown={handleEditSaveKeyDown}
+                onselect={handleSaveEvent}
             >
                 <lightning-menu-item
-                    value="one"
                     label={dialogLabels.saveOneRecurrent}
+                    value="one"
                     data-element-id="lightning-menu-item-save-one"
                 ></lightning-menu-item>
                 <lightning-menu-item
-                    value="all"
                     label={dialogLabels.saveAllRecurrent}
+                    value="all"
                     data-element-id="lightning-menu-item-save-all"
                 ></lightning-menu-item>
             </lightning-button-menu>

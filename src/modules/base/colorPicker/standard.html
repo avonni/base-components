@@ -1,9 +1,12 @@
 <template>
     <div class={computedContainerClass} data-element-id="div-container">
         <label class={computedLabelClass} data-element-id="label">
-            <abbr if:true={required} title="required" class="slds-required"
-                >*</abbr
-            >
+            <abbr
+                class="slds-required"
+                if:true={required}
+                title={requiredAlternativeText}
+                >*
+            </abbr>
             {label}
         </label>
         <lightning-helptext
@@ -74,11 +77,11 @@
                                 class="avonni-color-picker__spinner-container"
                             >
                                 <lightning-spinner
+                                    alternative-text={loadingStateAlternativeText}
                                     size="small"
                                     data-element-id="lightning-spinner"
                                 ></lightning-spinner>
                             </div>
-
                             <template if:false={isLoading}>
                                 <div
                                     class="
@@ -103,7 +106,7 @@
                                                 slds-is-active
                                             "
                                             role="presentation"
-                                            title="Default"
+                                            title={defaultTabLabel}
                                         >
                                             <a
                                                 class="
@@ -112,21 +115,21 @@
                                                 "
                                                 href="javascript:void(0);"
                                                 role="tab"
-                                                data-group-name="tabs"
                                                 data-element-id="default"
+                                                data-group-name="tabs"
                                                 data-tab-name="default"
                                                 onclick={handleTabClick}
                                                 onblur={handleMenuBlur}
-                                                >Default</a
-                                            >
+                                                >{defaultTabLabel}
+                                            </a>
                                         </li>
                                         <li
                                             if:true={tokens.length}
                                             class="
                                                 avonni-color-picker-tabs_default__item
                                             "
-                                            title="Tokens"
                                             role="presentation"
+                                            title={tokensTabLabel}
                                             data-element-id="li-tokens-tab"
                                         >
                                             <a
@@ -139,17 +142,17 @@
                                                 data-element-id="a-tokens-tab"
                                                 data-group-name="tabs"
                                                 data-tab-name="tokens"
-                                                onclick={handleTabClick}
                                                 onblur={handleMenuBlur}
-                                                >Tokens</a
-                                            >
+                                                onclick={handleTabClick}
+                                                >{tokensTabLabel}
+                                            </a>
                                         </li>
                                         <li
                                             class="
                                                 avonni-color-picker-tabs_default__item
                                             "
-                                            title="Custom"
                                             role="presentation"
+                                            title={customTabLabel}
                                         >
                                             <a
                                                 class="
@@ -158,13 +161,13 @@
                                                 "
                                                 href="javascript:void(0);"
                                                 role="tab"
-                                                data-group-name="tabs"
                                                 data-element-id="custom"
+                                                data-group-name="tabs"
                                                 data-tab-name="custom"
-                                                onclick={handleTabClick}
                                                 onblur={handleMenuBlur}
-                                                >Custom</a
-                                            >
+                                                onclick={handleTabClick}
+                                                >{customTabLabel}
+                                            </a>
                                         </li>
                                     </ul>
                                     <div
@@ -184,6 +187,7 @@
                                             columns={columns}
                                             hide-outline={paletteHideOutline}
                                             is-loading={paletteIsLoading}
+                                            loading-state-alternative-text={loadingStateAlternativeText}
                                             read-only={readOnly}
                                             show-checkmark={paletteShowCheckmark}
                                             value={value}
@@ -199,8 +203,8 @@
                                             if:true={showColorGradient}
                                             message-when-bad-input={messageWhenBadInput}
                                             opacity={opacity}
-                                            value={computedGradientValue}
                                             read-only={readOnly}
+                                            value={computedGradientValue}
                                             data-element-id="avonni-color-gradient"
                                             data-is-focusable
                                             onblur={handleMenuBlur}
@@ -238,8 +242,8 @@
                                             class="
                                                 avonni-color-picker__popover-button
                                             "
-                                            label="Cancel"
-                                            title="Cancel"
+                                            label={cancelButtonLabel}
+                                            title={cancelButtonLabel}
                                             data-element-id="lightning-button-cancel"
                                             data-is-focusable
                                             onclick={handleCancel}
@@ -250,8 +254,8 @@
                                                 slds-m-left_x-small
                                                 avonni-color-picker__popover-button
                                             "
-                                            label="Done"
-                                            title="Done"
+                                            label={doneButtonLabel}
+                                            title={doneButtonLabel}
                                             data-element-id="lightning-button-done"
                                             data-is-focusable
                                             onclick={handleDone}

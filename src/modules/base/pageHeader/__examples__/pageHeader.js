@@ -7,18 +7,18 @@ customElements.define(
 
 export const PageHeader = ({
     iconName,
+    info,
+    isJoined,
     label,
     title,
-    info,
-    variant,
-    isJoined
+    variant
 }) => {
     const element = document.createElement('ac-base-page-header');
     element.iconName = iconName;
+    element.info = info;
+    element.isJoined = isJoined;
     element.label = label;
     element.title = title;
-    element.info = info;
     element.variant = variant;
-    element.isJoined = isJoined;
     return element;
 };

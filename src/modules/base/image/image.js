@@ -13,46 +13,55 @@ import {
     standardMagnifier
 } from './magnifier';
 
+const COMPARE_ORIENTATION = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+
 const CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
 };
+
+const CROP_POSITION_X_DEFAULT = '50';
+const CROP_POSITION_Y_DEFAULT = '50';
+
 const CROP_SIZE = {
     valid: ['1x1', '4x3', '16x9', 'none'],
     default: 'none'
 };
-const POSITIONS = {
-    valid: ['left', 'right', 'center'],
-    default: undefined
-};
+
+const DEFAULT_LEFT_COMPARE_ICON_ALTERNATIVE_TEXT =
+    'Press left to show the original image';
+const DEFAULT_RIGHT_COMPARE_ICON_ALTERNATIVE_TEXT =
+    'Press right to show the compared image';
+
+const DEFAULT_ZOOM_FACTOR = 2;
+const DEFAULT_ZOOM_RATIO = '100px';
 
 const LAZY_LOADING_VARIANTS = {
     valid: ['auto', 'lazy'],
     default: 'auto'
 };
 
-const CROP_POSITION_X_DEFAULT = '50';
-const CROP_POSITION_Y_DEFAULT = '50';
+const MAGNIFIER_POSITIONS = {
+    valid: ['auto', 'left', 'right', 'top', 'bottom'],
+    default: 'auto'
+};
 
 const MAGNIFIER_TYPES = {
     valid: ['standard', 'inner', 'follow'],
     default: undefined
 };
-const MAGNIFIER_POSITIONS = {
-    valid: ['auto', 'left', 'right', 'top', 'bottom'],
-    default: 'auto'
-};
-const DEFAULT_ZOOM_RATIO = '100px';
-const DEFAULT_ZOOM_FACTOR = 2;
-
-const COMPARE_ORIENTATION = {
-    valid: ['horizontal', 'vertical'],
-    default: 'horizontal'
-};
 
 const MOVE_ON_OPTIONS = {
     valid: ['hover', 'click'],
     default: 'click'
+};
+
+const POSITIONS = {
+    valid: ['left', 'right', 'center'],
+    default: undefined
 };
 
 /**
@@ -69,7 +78,6 @@ export default class Image extends LightningElement {
      * @type  {string}
      */
     @api alternativeText;
-
     /**
      * The value to set for the 'alt' attribute on the image to compare with.
      *
@@ -77,7 +85,6 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     @api compareAlternativeText;
-
     /**
      * The image to compare with.
      *
@@ -85,6 +92,24 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     @api compareSrc;
+    /**
+     * Alternative text for the icon on the left of the compare slider.
+     *
+     * @public
+     * @type {string}
+     * @default 'Press left to show the original image'
+     */
+    @api leftCompareIconAlternativeText =
+        DEFAULT_LEFT_COMPARE_ICON_ALTERNATIVE_TEXT;
+    /**
+     * Alternative text for the icon on the right of the compare slider.
+     *
+     * @public
+     * @type {string}
+     * @default 'Press right to show the compared image'
+     */
+    @api rightCompareIconAlternativeText =
+        DEFAULT_RIGHT_COMPARE_ICON_ALTERNATIVE_TEXT;
 
     _aspectRatio;
     _compareAttributes = {
@@ -92,9 +117,9 @@ export default class Image extends LightningElement {
         moveOn: MOVE_ON_OPTIONS.default,
         showLabelsOnHover: false
     };
+    _cropFit = CROP_FIT.default;
     _cropPositionX = CROP_POSITION_X_DEFAULT;
     _cropPositionY = CROP_POSITION_Y_DEFAULT;
-    _cropFit = CROP_FIT.default;
     _cropSize;
     _fluid = false;
     _fluidGrow = false;
@@ -137,7 +162,6 @@ export default class Image extends LightningElement {
     get compareAttributes() {
         return this._compareAttributes;
     }
-
     set compareAttributes(value) {
         const normalizedAttributes = normalizeObject(value);
 
@@ -170,6 +194,24 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * Image fit behavior inside its container. Valid values include cover, contain, fill and none.
+     *
+     * @public
+     * @type {string}
+     * @default cover
+     */
+    @api
+    get cropFit() {
+        return this._cropFit;
+    }
+    set cropFit(value) {
+        this._cropFit = normalizeString(value, {
+            fallbackValue: CROP_FIT.default,
+            validValues: CROP_FIT.valid
+        });
+    }
+
+    /**
      * Position of the image on the X axis (in percent).
      *
      * @public
@@ -179,7 +221,6 @@ export default class Image extends LightningElement {
     get cropPositionX() {
         return this._cropPositionX;
     }
-
     set cropPositionX(value) {
         const normalizedValue = parseFloat(value);
         if (!isNaN(normalizedValue)) {
@@ -197,31 +238,11 @@ export default class Image extends LightningElement {
     get cropPositionY() {
         return this._cropPositionY;
     }
-
     set cropPositionY(value) {
         const normalizedValue = parseFloat(value);
         if (!isNaN(normalizedValue)) {
             this._cropPositionY = normalizedValue;
         }
-    }
-
-    /**
-     * Image fit behavior inside its container. Valid values include cover, contain, fill and none.
-     *
-     * @public
-     * @type {string}
-     * @default cover
-     */
-    @api
-    get cropFit() {
-        return this._cropFit;
-    }
-
-    set cropFit(value) {
-        this._cropFit = normalizeString(value, {
-            fallbackValue: CROP_FIT.default,
-            validValues: CROP_FIT.valid
-        });
     }
 
     /**
@@ -235,7 +256,6 @@ export default class Image extends LightningElement {
     get cropSize() {
         return this._cropSize;
     }
-
     set cropSize(value) {
         const cropSize = normalizeString(value, {
             fallbackValue: CROP_SIZE.default,
@@ -271,7 +291,6 @@ export default class Image extends LightningElement {
     get fluid() {
         return this._fluid;
     }
-
     set fluid(value) {
         this._fluid = normalizeBoolean(value);
     }
@@ -287,7 +306,6 @@ export default class Image extends LightningElement {
     get fluidGrow() {
         return this._fluidGrow;
     }
-
     set fluidGrow(value) {
         this._fluidGrow = normalizeBoolean(value);
     }
@@ -302,7 +320,6 @@ export default class Image extends LightningElement {
     get height() {
         return this._height;
     }
-
     set height(value) {
         if (value && !isNaN(value)) {
             this._height = `${value}px`;
@@ -323,7 +340,6 @@ export default class Image extends LightningElement {
     get lazyLoading() {
         return this._lazyLoading;
     }
-
     set lazyLoading(value) {
         this._lazyLoading = normalizeString(value, {
             fallbackValue: LAZY_LOADING_VARIANTS.default,
@@ -341,7 +357,6 @@ export default class Image extends LightningElement {
     get magnifierAttributes() {
         return this._magnifierAttributes;
     }
-
     set magnifierAttributes(value) {
         const normalizedAttributes = normalizeObject(value);
 
@@ -431,7 +446,6 @@ export default class Image extends LightningElement {
     get magnifierType() {
         return this._magnifierType;
     }
-
     set magnifierType(value) {
         this._magnifierType = normalizeString(value, {
             fallbackValue: MAGNIFIER_TYPES.default,
@@ -449,7 +463,6 @@ export default class Image extends LightningElement {
     get position() {
         return this._position;
     }
-
     set position(value) {
         this._position = normalizeString(value, {
             fallbackValue: POSITIONS.default,
@@ -467,7 +480,6 @@ export default class Image extends LightningElement {
     get sizes() {
         return this._sizes;
     }
-
     set sizes(value) {
         if (Array.isArray(value)) {
             this._sizes = value.join(',');
@@ -486,7 +498,6 @@ export default class Image extends LightningElement {
     get src() {
         return this._src;
     }
-
     set src(value) {
         this._src = value;
     }
@@ -501,7 +512,6 @@ export default class Image extends LightningElement {
     get srcset() {
         return this._srcset;
     }
-
     set srcset(value) {
         if (Array.isArray(value)) {
             this._srcset = value.join(',');
@@ -521,7 +531,6 @@ export default class Image extends LightningElement {
     get staticImages() {
         return this._staticImages;
     }
-
     set staticImages(value) {
         this._staticImages = normalizeBoolean(value);
     }
@@ -537,7 +546,6 @@ export default class Image extends LightningElement {
     get thumbnail() {
         return this._thumbnail;
     }
-
     set thumbnail(value) {
         this._thumbnail = normalizeBoolean(value);
     }
@@ -552,7 +560,6 @@ export default class Image extends LightningElement {
     get width() {
         return this._width;
     }
-
     set width(value) {
         if (value && !isNaN(value)) {
             this._width = `${value}px`;
@@ -560,6 +567,12 @@ export default class Image extends LightningElement {
             this._width = value;
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Final computed compare container class styling.
@@ -690,28 +703,6 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Final computed Magnifier Style.
-     *
-     * @type {string}
-     */
-    get computedMagnifierStyle() {
-        const styleProperties = {};
-
-        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
-        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
-
-        let styleValue = '';
-        if (styleProperties) {
-            Object.keys(styleProperties).forEach((key) => {
-                if (styleProperties[key]) {
-                    styleValue += `${key}: ${styleProperties[key]}; `;
-                }
-            });
-        }
-        return styleValue;
-    }
-
-    /**
      * Final Computed Magnifier Image Style.
      *
      * @type {string}
@@ -736,6 +727,28 @@ export default class Image extends LightningElement {
             Object.keys(styleProperties).forEach((key) => {
                 if (styleProperties[key]) {
                     styleValue += `${key}: ${styleProperties[key]};`;
+                }
+            });
+        }
+        return styleValue;
+    }
+
+    /**
+     * Final computed Magnifier Style.
+     *
+     * @type {string}
+     */
+    get computedMagnifierStyle() {
+        const styleProperties = {};
+
+        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
+        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
                 }
             });
         }

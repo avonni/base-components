@@ -64,7 +64,7 @@ describe('Primitive Combobox', () => {
             expect(element.keepOpenOnSelect).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.loadMoreOffset).toBe(20);
-            expect(element.loadingStateAlternativeText).toBe('Loading');
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.max).toBeUndefined();
             expect(element.messageWhenBadInput).toBeUndefined();
             expect(element.messageWhenRangeOverflow).toBeUndefined();
@@ -73,19 +73,19 @@ describe('Primitive Combobox', () => {
             expect(element.min).toBe(0);
             expect(element.multiLevelGroups).toBeFalsy();
             expect(element.name).toBeUndefined();
+            expect(element.noResultsMessage).toBe('No matches found');
             expect(element.options).toMatchObject([]);
             expect(element.placeholder).toBe('Select an Option');
             expect(element.readOnly).toBeFalsy();
             expect(element.removeSelectedOptions).toBeFalsy();
             expect(element.required).toBeFalsy();
+            expect(element.requiredAlternativeText).toBe('Required');
             expect(element.search).toBeInstanceOf(Function);
             expect(element.hideClearIcon).toBeFalsy();
             expect(element.validity).toMatchObject({});
             expect(element.value).toMatchObject([]);
             expect(element.variant).toBe('standard');
         });
-
-        /* ----- ATTRIBUTES ----- */
 
         describe('Actions', () => {
             it('Default', () => {
@@ -1181,6 +1181,7 @@ describe('Primitive Combobox', () => {
 
             it('True', () => {
                 element.required = true;
+                element.requiredAlternativeText = 'A string text';
                 element.label = 'A string label';
 
                 return Promise.resolve().then(() => {
@@ -1188,6 +1189,7 @@ describe('Primitive Combobox', () => {
                         '[data-element-id="abbr"]'
                     );
                     expect(abbr).toBeTruthy();
+                    expect(abbr.title).toBe('A string text');
                 });
             });
         });

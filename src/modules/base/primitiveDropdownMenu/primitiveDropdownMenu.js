@@ -11,6 +11,12 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     _items = [];
     _show = false;
 
+    /*
+     * -------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this._keyboardInterface = this.menuKeyboardInterface();
     }
@@ -18,6 +24,12 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     renderedCallback() {
         if (this.show) this.focusOnMenuItemAfterRender();
     }
+
+    /*
+     * -------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Array of item objects. Valid object keys include name, label and iconName.
@@ -31,21 +43,6 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     }
     set items(value) {
         this._items = normalizeArray(value);
-    }
-
-    /**
-     * If present, show the menu.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get show() {
-        return this._show;
-    }
-    set show(value) {
-        this._show = normalizeBoolean(value);
     }
 
     /**
@@ -73,6 +70,27 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     }
 
     /**
+     * If present, show the menu.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get show() {
+        return this._show;
+    }
+    set show(value) {
+        this._show = normalizeBoolean(value);
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
      * Menu items HTML elements.
      *
      * @type {HTMLElement}
@@ -85,57 +103,32 @@ export default class PrimitiveDropdownMenu extends LightningElement {
         );
     }
 
-    /**
-     * Computed keyboard interface. It contains the possible actions on the menu items and is used to handle a key down on a menu item.
-     *
-     * @returns {object} Keyboard interface
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
      */
-    menuKeyboardInterface() {
-        const that = this;
-        return {
-            getTotalMenuItems() {
-                return that.menuItems.length;
-            },
-            focusOnIndex(index) {
-                that.focusOnMenuItem(index);
-            },
-            setNextFocusIndex(index) {
-                that._focusOnIndexDuringRenderedCallback = index;
-            },
-            isMenuVisible() {
-                return that.show;
-            },
-            returnFocus() {
-                that.dispatchReturnFocus();
-            },
-            toggleMenuVisibility() {
-                that.toggleMenuVisibility();
-            },
-            focusMenuItemWithText(text) {
-                const match = [...that.menuItems].filter((menuItem) => {
-                    const label = menuItem.label;
-                    return label && label.toLowerCase().indexOf(text) === 0;
-                });
-                if (match.length > 0) {
-                    that.focusOnMenuItem(match[0]);
-                }
-            }
-        };
+
+    /**
+     * Allow blur and closing of the dropdown.
+     */
+    allowBlur() {
+        this._cancelBlur = false;
     }
 
     /**
-     * Toggle menu visibility and dispatch close event if the menu was closed.
+     * Prevent the dropdown to close on blur. Set focus on the HTML element given.
+     *
+     * @param {HTMLElement} menuItem
      */
-    toggleMenuVisibility() {
-        this._show = !this.show;
-        if (!this.show) {
-            /**
-             * The event fired when the dropdown is closed.
-             * @event
-             * @name close
-             */
-            this.dispatchEvent(new CustomEvent('close'));
+    cancelBlurAndFocusOnMenuItem(menuItem) {
+        if (menuItem) {
+            // prevent blur during a non-blurring focus change
+            // set lock so that while focusing on menutitem, menu doesnt close
+            this._cancelBlur = true;
+            menuItem.focus();
         }
+        // allowBlur is called when the menu items receives focus
     }
 
     /**
@@ -233,54 +226,124 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     }
 
     /**
-     * Allow blur and closing of the dropdown.
-     */
-    allowBlur() {
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Prevent the dropdown to close on blur. Set focus on the HTML element given.
+     * Computed keyboard interface. It contains the possible actions on the menu items and is used to handle a key down on a menu item.
      *
-     * @param {HTMLElement} menuItem
+     * @returns {object} Keyboard interface
      */
-    cancelBlurAndFocusOnMenuItem(menuItem) {
-        if (menuItem) {
-            // prevent blur during a non-blurring focus change
-            // set lock so that while focusing on menutitem, menu doesnt close
-            this._cancelBlur = true;
-            menuItem.focus();
-        }
-        // allowBlur is called when the menu items receives focus
+    menuKeyboardInterface() {
+        const that = this;
+        return {
+            getTotalMenuItems() {
+                return that.menuItems.length;
+            },
+            focusOnIndex(index) {
+                that.focusOnMenuItem(index);
+            },
+            setNextFocusIndex(index) {
+                that._focusOnIndexDuringRenderedCallback = index;
+            },
+            isMenuVisible() {
+                return that.show;
+            },
+            returnFocus() {
+                that.dispatchReturnFocus();
+            },
+            toggleMenuVisibility() {
+                that.toggleMenuVisibility();
+            },
+            focusMenuItemWithText(text) {
+                const match = [...that.menuItems].filter((menuItem) => {
+                    const label = menuItem.label;
+                    return label && label.toLowerCase().indexOf(text) === 0;
+                });
+                if (match.length > 0) {
+                    that.focusOnMenuItem(match[0]);
+                }
+            }
+        };
     }
 
     /**
-     * Handle the privateselect event fired by the menu item elements.
-     * Close the dropdown and dispatch a privateselect event.
+     * Toggle menu visibility and dispatch close event if the menu was closed.
+     */
+    toggleMenuVisibility() {
+        this._show = !this.show;
+        if (!this.show) {
+            /**
+             * The event fired when the dropdown is closed.
+             * @event
+             * @name close
+             */
+            this.dispatchEvent(new CustomEvent('close'));
+        }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handle the keydown event fired by the menu item elements.
+     *
+     * @param {}
+     * @returns {}
+     * @public
+     */
+    handleKeyDownMenuItem(event) {
+        const menuItem = this.findMenuItemFromEventTarget(event.target);
+        if (menuItem) {
+            handleKeyDownOnMenuItem(
+                event,
+                this.findMenuItemIndex(menuItem),
+                this._keyboardInterface
+            );
+        }
+    }
+
+    /**
+     * Handle the mousedown event fired by the dropdown menu.
+     * Prevent the menu from closing on dragging its scrollbar with the mouse.
+     * @param {Event} event
+     */
+    handleMenuMouseDown(event) {
+        const mainButton = 0;
+        if (event.button === mainButton) {
+            this._cancelBlur = true;
+        }
+    }
+
+    /**
+     * Handle the mouseleave event fired by the dropdown menu.
+     * It is used to close the menu after mousedown happens on scrollbar. In this case we close immediately if no menu-items were hovered/focused. Without it the menu would remain open, since the blur on the menu items has happened already when clicking the scrollbar.
+     *
+     */
+    handleMenuMouseLeave() {
+        if (!this._hasFocus && this.show) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Handle the mouseup event fired by the dropdown menu.
+     * Allow blur after a scrollbar was dragged with the mouse.
+     */
+    handleMenuMouseUp() {
+        this.allowBlur();
+    }
+
+    /**
+     * Handle the mouseover event fired by the menu item elements. Set focus on the hovered menu item.
      *
      * @param {Event} event
      */
-    handleMenuItemPrivateSelect(event) {
-        event.stopPropagation();
-
-        if (this.show) {
-            this.toggleMenuVisibility();
+    handleMouseOverOnMenuItem(event) {
+        const menuItem = this.findMenuItemFromEventTarget(event.target);
+        if (menuItem) {
+            const menuItemIndex = this.findMenuItemIndex(menuItem);
+            this.focusOnMenuItem(menuItemIndex);
         }
-
-        /**
-         * The event fired when selecting an item.
-         *
-         * @event
-         * @name privateselect
-         * @param {string} name Value of the item selected.
-         */
-        this.dispatchEvent(
-            new CustomEvent('privateselect', {
-                detail: {
-                    name: event.detail.value
-                }
-            })
-        );
     }
 
     /**
@@ -311,65 +374,32 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     }
 
     /**
-     * Handle the mouseover event fired by the menu item elements. Set focus on the hovered menu item.
+     * Handle the privateselect event fired by the menu item elements.
+     * Close the dropdown and dispatch a privateselect event.
      *
      * @param {Event} event
      */
-    handleMouseOverOnMenuItem(event) {
-        const menuItem = this.findMenuItemFromEventTarget(event.target);
-        if (menuItem) {
-            const menuItemIndex = this.findMenuItemIndex(menuItem);
-            this.focusOnMenuItem(menuItemIndex);
-        }
-    }
+    handleMenuItemPrivateSelect(event) {
+        event.stopPropagation();
 
-    /**
-     * Handle the keydown event fired by the menu item elements.
-     *
-     * @param {}
-     * @returns {}
-     * @public
-     */
-    handleKeyDownMenuItem(event) {
-        const menuItem = this.findMenuItemFromEventTarget(event.target);
-        if (menuItem) {
-            handleKeyDownOnMenuItem(
-                event,
-                this.findMenuItemIndex(menuItem),
-                this._keyboardInterface
-            );
-        }
-    }
-
-    /**
-     * Handle the mouseleave event fired by the dropdown menu.
-     * It is used to close the menu after mousedown happens on scrollbar. In this case we close immediately if no menu-items were hovered/focused. Without it the menu would remain open, since the blur on the menu items has happened already when clicking the scrollbar.
-     *
-     */
-    handleMenuMouseLeave() {
-        if (!this._hasFocus && this.show) {
+        if (this.show) {
             this.toggleMenuVisibility();
         }
-    }
 
-    /**
-     * Handle the mousedown event fired by the dropdown menu.
-     * Prevent the menu from closing on dragging its scrollbar with the mouse.
-     * @param {Event} event
-     */
-    handleMenuMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this._cancelBlur = true;
-        }
-    }
-
-    /**
-     * Handle the mouseup event fired by the dropdown menu.
-     * Allow blur after a scrollbar was dragged with the mouse.
-     */
-    handleMenuMouseUp() {
-        this.allowBlur();
+        /**
+         * The event fired when selecting an item.
+         *
+         * @event
+         * @name privateselect
+         * @param {string} name Value of the item selected.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privateselect', {
+                detail: {
+                    name: event.detail.value
+                }
+            })
+        );
     }
 
     /**

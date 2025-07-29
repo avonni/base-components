@@ -127,11 +127,11 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If present, the popover is in a loading state and shows a spinner.',
+                'If present, the menu is in a loading state and shows a spinner.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
-                category: 'Popover'
+                category: 'menu'
             }
         },
         label: {
@@ -149,10 +149,10 @@ export default {
                 type: 'text'
             },
             description:
-                'Message displayed while the popover is in the loading state.',
+                'Message displayed while the menu is in the loading state.',
             table: {
                 type: { summary: 'string' },
-                category: 'Popover'
+                category: 'menu'
             }
         },
         menuAlignment: {
@@ -173,7 +173,8 @@ export default {
                 'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                category: 'menu'
             }
         },
         nubbin: {
@@ -184,7 +185,8 @@ export default {
                 'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: false }
+                defaultValue: { summary: false },
+                category: 'menu'
             }
         },
         prefixIconName: {
@@ -206,8 +208,7 @@ export default {
             description:
                 'Displays title text when the mouse moves over the button menu.',
             table: {
-                type: { summary: 'string' },
-                category: 'Popover'
+                type: { summary: 'string' }
             }
         },
         tooltip: {

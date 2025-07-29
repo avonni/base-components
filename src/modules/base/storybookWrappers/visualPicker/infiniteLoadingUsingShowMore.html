@@ -1,15 +1,19 @@
 <template>
     <c-visual-picker
         class="slds-show"
+        collapsed-show-more-button={collapsedShowMoreButton}
         disabled={disabled}
+        expanded-show-more-button={expandedShowMoreButton}
         hide-check-mark={hideCheckMark}
         is-loading={isLoading}
         items={items}
         label={label}
+        loading-state-alternative-text={loadingStateAlternativeText}
         max-count={computedMaxCount}
         message-when-value-missing={messageWhenValueMissing}
         name={name}
         required={required}
+        required-alternative-text={requiredAlternativeText}
         size={size}
         type={type}
         value={value}

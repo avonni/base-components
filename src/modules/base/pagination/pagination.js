@@ -98,7 +98,6 @@ export default class Pagination extends LightningElement {
     get align() {
         return this._align;
     }
-
     set align(align) {
         this._align = normalizeString(align, {
             fallbackValue: PAGINATION_ALIGNS.default,
@@ -117,7 +116,6 @@ export default class Pagination extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
@@ -149,7 +147,6 @@ export default class Pagination extends LightningElement {
     get limit() {
         return this._limit;
     }
-
     set limit(value) {
         this._limit = Number(value);
 
@@ -173,7 +170,6 @@ export default class Pagination extends LightningElement {
 
         return this._nextButtonIconName;
     }
-
     set nextButtonIconName(value) {
         this._nextButtonIconName = value;
     }
@@ -209,7 +205,6 @@ export default class Pagination extends LightningElement {
 
         return this._previousButtonIconName;
     }
-
     set previousButtonIconName(value) {
         this._previousButtonIconName = value;
     }
@@ -241,7 +236,6 @@ export default class Pagination extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = Number(value);
     }
@@ -302,17 +296,6 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Computed first button class styling.
-     *
-     * @type {string}
-     */
-    get computedFirstButtonClass() {
-        return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        );
-    }
-
-    /**
      * Computed first icon class styling.
      *
      * @type {string}
@@ -324,54 +307,12 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Computed Aria Label for next button.
-     *
-     * @type {string}
-     */
-    get computedNextButtonAriaLabel() {
-        return this.nextButtonLabel || 'Next';
-    }
-
-    /**
-     * Computed next button class styling.
-     *
-     * @type {string}
-     */
-    get computedNextButtonClass() {
-        return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        );
-    }
-
-    /**
-     * Computed next icon class styling.
-     *
-     * @type {string}
-     */
-    get computedNextIconClass() {
-        return classSet('slds-button__icon').add({
-            'slds-button__icon_left': this.nextButtonLabel
-        });
-    }
-
-    /**
      * Computed Aria Label for last button.
      *
      * @type {string}
      */
     get computedLastButtonAriaLabel() {
         return this.lastButtonLabel || 'Last';
-    }
-
-    /**
-     * Computed last button class styling.
-     *
-     * @type {string}
-     */
-    get computedLastButtonClass() {
-        return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        );
     }
 
     /**
@@ -386,23 +327,32 @@ export default class Pagination extends LightningElement {
     }
 
     /**
+     * Computed Aria Label for next button.
+     *
+     * @type {string}
+     */
+    get computedNextButtonAriaLabel() {
+        return this.nextButtonLabel || 'Next';
+    }
+
+    /**
+     * Computed next icon class styling.
+     *
+     * @type {string}
+     */
+    get computedNextIconClass() {
+        return classSet('slds-button__icon').add({
+            'slds-button__icon_left': this.nextButtonLabel
+        });
+    }
+
+    /**
      * Computed Aria Label for previous button.
      *
      * @type {string}
      */
     get computedPreviousButtonAriaLabel() {
         return this.previousButtonLabel || 'Previous';
-    }
-
-    /**
-     * Computed previous button class styling.
-     *
-     * @type {string}
-     */
-    get computedPreviousButtonClass() {
-        return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
-        );
     }
 
     /**
@@ -597,16 +547,25 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Go to previous page.
+     * Go to page at index.
+     *
+     * @param {number} index Index of the page.
+     */
+    @api
+    goto(index) {
+        this._value = Number(index);
+        this.handleChange();
+    }
+
+    /**
+     * Go to last page.
      *
      * @public
      */
     @api
-    previous() {
-        if (this.value > 1) {
-            this._value = this.value - 1;
-            this.handleChange();
-        }
+    last() {
+        this._value = this.paginationSize;
+        this.handleChange();
     }
 
     /**
@@ -623,25 +582,16 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Go to last page.
+     * Go to previous page.
      *
      * @public
      */
     @api
-    last() {
-        this._value = this.paginationSize;
-        this.handleChange();
-    }
-
-    /**
-     * Go to page at index.
-     *
-     * @param {number} index Index of the page.
-     */
-    @api
-    goto(index) {
-        this._value = Number(index);
-        this.handleChange();
+    previous() {
+        if (this.value > 1) {
+            this._value = this.value - 1;
+            this.handleChange();
+        }
     }
 
     /*
@@ -658,6 +608,28 @@ export default class Pagination extends LightningElement {
     goToIndex(event) {
         this.goto(Number(event.target.value));
     }
+
+    /**
+     * Function to set the currently selected button as "avonni-button-active".
+     */
+    setActiveButton() {
+        const buttons = this.template.querySelectorAll(
+            '[data-element-id="button"]'
+        );
+        buttons.forEach((button) => {
+            if (Number(button.value) === this.value) {
+                button.classList.add('avonni-pagination__button_active');
+            } else {
+                button.classList.remove('avonni-pagination__button_active');
+            }
+        });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Change event handler.
@@ -693,21 +665,5 @@ export default class Pagination extends LightningElement {
      */
     handlePreviousEllipsisClick() {
         this.goto(this.paginationButtons[0] - 1);
-    }
-
-    /**
-     * Function to set the currently selected button as "avonni-button-active".
-     */
-    setActiveButton() {
-        const buttons = this.template.querySelectorAll(
-            '[data-element-id="button"]'
-        );
-        buttons.forEach((button) => {
-            if (Number(button.value) === this.value) {
-                button.classList.add('avonni-pagination__button_active');
-            } else {
-                button.classList.remove('avonni-pagination__button_active');
-            }
-        });
     }
 }

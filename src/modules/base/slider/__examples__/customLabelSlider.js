@@ -6,51 +6,51 @@ customElements.define(
 );
 
 export const CustomLabelSlider = ({
-    label,
-    size,
-    type,
-    variant,
-    unit,
-    unitAttributes,
-    value,
-    showPin,
-    min,
-    max,
-    step,
+    alternativeText,
     disabled,
-    tickMarkStyle,
-    showTickMarks,
     disableSwap,
     hideMinMaxValues,
     hideTrack,
-    minimumDistance,
+    label,
+    max,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
     messageWhenStepMismatch,
-    alternativeText
+    min,
+    minimumDistance,
+    showPin,
+    showTickMarks,
+    size,
+    step,
+    tickMarkStyle,
+    type,
+    unit,
+    unitAttributes,
+    value,
+    variant
 }) => {
     const element = document.createElement('ac-custom-label-slider');
-    element.label = label;
-    element.size = size;
-    element.type = type;
-    element.variant = variant;
-    element.unit = unit;
-    element.unitAttributes = unitAttributes;
-    element.tickMarkStyle = tickMarkStyle;
-    element.showTickMarks = showTickMarks;
+    element.alternativeText = alternativeText;
+    element.disabled = disabled;
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;
     element.hideTrack = hideTrack;
-    element.minimumDistance = minimumDistance;
-    element.value = value;
-    element.showPin = showPin;
-    element.min = min;
+    element.label = label;
     element.max = max;
-    element.step = step;
-    element.disabled = disabled;
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenStepMismatch = messageWhenStepMismatch;
-    element.alternativeText = alternativeText;
+    element.min = min;
+    element.minimumDistance = minimumDistance;
+    element.showPin = showPin;
+    element.showTickMarks = showTickMarks;
+    element.size = size;
+    element.step = step;
+    element.tickMarkStyle = tickMarkStyle;
+    element.type = type;
+    element.unit = unit;
+    element.unitAttributes = unitAttributes;
+    element.value = value;
+    element.variant = variant;
     return element;
 };

@@ -5,13 +5,12 @@ export const ACTIONS = [
     },
     {
         label: 'Action 2',
-        name: 'action2',
-        disabled: true
+        name: 'action2'
     },
     {
         label: 'Action 3',
         name: 'action3',
-        hidden: true
+        disabled: true
     }
 ];
 

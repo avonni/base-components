@@ -7,6 +7,10 @@ const DIALOG_SIZES = {
     default: 'medium'
 };
 
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_CLOSE_BUTTON_ALTERNATIVE_TEXT = 'Close';
+const DEFAULT_SAVE_BUTTON_LABEL = 'Save';
+
 /**
  * @class
  * @descriptor avonni-dialog
@@ -21,7 +25,6 @@ export default class Dialog extends LightningElement {
      * @public
      */
     @api ariaDescribedBy;
-
     /**
      * Id of the element labelling the dialog. If a title is present, defaults to the title tag.
      *
@@ -29,7 +32,14 @@ export default class Dialog extends LightningElement {
      * @public
      */
     @api ariaLabelledBy;
-
+    /**
+     * Label for the cancel button.
+     *
+     * @type {string}
+     * @default Cancel
+     * @public
+     */
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
     /**
      * Alternative text for the close button. If the dialog contains a cancel button, the alternative text should be equal to the button label.
      *
@@ -37,8 +47,7 @@ export default class Dialog extends LightningElement {
      * @default Close
      * @public
      */
-    @api closeButtonAlternativeText = 'Close';
-
+    @api closeButtonAlternativeText = DEFAULT_CLOSE_BUTTON_ALTERNATIVE_TEXT;
     /**
      * Dialog name.
      *
@@ -46,7 +55,6 @@ export default class Dialog extends LightningElement {
      * @public
      */
     @api dialogName;
-
     /**
      * Message displayed while the modal box is in the loading state.
      *
@@ -54,7 +62,14 @@ export default class Dialog extends LightningElement {
      * @public
      */
     @api loadingStateAlternativeText;
-
+    /**
+     * Label for the save button.
+     *
+     * @type {string}
+     * @default Save
+     * @public
+     */
+    @api saveButtonLabel = DEFAULT_SAVE_BUTTON_LABEL;
     /**
      * The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.
      *
@@ -71,6 +86,12 @@ export default class Dialog extends LightningElement {
     _showDialog = false;
     showFooter = true;
     showHeader = true;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.template.addEventListener('click', this.handleClick);
@@ -133,7 +154,6 @@ export default class Dialog extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -149,7 +169,6 @@ export default class Dialog extends LightningElement {
     get showDialog() {
         return this._showDialog;
     }
-
     set showDialog(value) {
         this._showDialog = normalizeBoolean(value);
     }
@@ -165,7 +184,6 @@ export default class Dialog extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: DIALOG_SIZES.default,
@@ -179,6 +197,11 @@ export default class Dialog extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Computed aria-labelledby attribute.
+     *
+     * @type {string}
+     */
     get computedAriaLabelledby() {
         return this.hasStringTitle && !this.ariaLabelledBy
             ? 'h1-dialog'
@@ -225,33 +248,6 @@ export default class Dialog extends LightningElement {
      */
 
     /**
-     * Open the modal box.
-     *
-     * @public
-     */
-    @api
-    show() {
-        this._showDialog = true;
-    }
-
-    /**
-     * Close the modal box.
-     *
-     * @public
-     */
-    @api
-    hide() {
-        this._showDialog = false;
-        /**
-         * The event fired when the dialog closes.
-         *
-         * @event
-         * @name closedialog
-         */
-        this.dispatchEvent(new CustomEvent('closedialog'));
-    }
-
-    /**
      * Set the focus on the given title, if any. Otherwise set the focus on the close button.
      *
      * @public
@@ -278,6 +274,33 @@ export default class Dialog extends LightningElement {
     focusOnCloseButton() {
         const button = this.template.querySelector('.slds-modal__close');
         if (button) button.focus();
+    }
+
+    /**
+     * Close the modal box.
+     *
+     * @public
+     */
+    @api
+    hide() {
+        this._showDialog = false;
+        /**
+         * The event fired when the dialog closes.
+         *
+         * @event
+         * @name closedialog
+         */
+        this.dispatchEvent(new CustomEvent('closedialog'));
+    }
+
+    /**
+     * Open the modal box.
+     *
+     * @public
+     */
+    @api
+    show() {
+        this._showDialog = true;
     }
 
     /*
@@ -316,10 +339,16 @@ export default class Dialog extends LightningElement {
         this._contentClicked = true;
     }
 
+    /**
+     * Handle a focus in event.
+     */
     handleFocusIn() {
         this._focusedIn = true;
     }
 
+    /**
+     * Handle a focus out event.
+     */
     handleFocusOut() {
         this._focusedIn = false;
 

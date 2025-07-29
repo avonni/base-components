@@ -1,17 +1,17 @@
 <template>
     <div class={computedWrapperClass} data-element-id="div-wrapper">
         <span
-            id="instructions"
             class="slds-assistive-text"
             aria-live="assertive"
+            id="instructions"
             lwc:dom="manual"
             data-element-id="span-instructions"
         ></span>
 
         <span
             if:true={alternativeText}
-            id="label"
             class="slds-assistive-text"
+            id="label"
             data-element-id="span-alternative-text"
         >
             {alternativeText}
@@ -25,22 +25,21 @@
             data-element-id="ul"
             onfocusin={handlePillFocus}
             onfocusout={handlePillBlur}
-            onopenactionmenu={handleOpenActionMenu}
             onkeydown={handleKeyDown}
+            onopenactionmenu={handleOpenActionMenu}
         >
             <template for:each={visibleItems} for:item="pill" for:index="index">
                 <li
-                    data-element-id="li-item"
-                    data-index={index}
                     key={pill.name}
                     class={computedListItemClass}
-                    onmousemove={handlePillMouseMove}
+                    role="presentation"
+                    data-element-id="li-item"
+                    data-index={index}
                     onmousedown={handlePillMouseDown}
+                    onmousemove={handlePillMouseMove}
                     onmouseup={handlePillMouseUp}
                 >
                     <c-primitive-pill
-                        data-element-id="avonni-primitive-pill"
-                        data-index={index}
                         class={computedPillClass}
                         actions={actions}
                         avatar={pill.avatar}
@@ -48,6 +47,8 @@
                         label={pill.label}
                         name={pill.name}
                         tabindex="-1"
+                        data-element-id="avonni-primitive-pill"
+                        data-index={index}
                         onactionclick={handleActionClick}
                         onclick={handlePillClick}
                     ></c-primitive-pill>
@@ -59,23 +60,23 @@
             <!-- Show more -->
             <lightning-button
                 if:true={isCollapsed}
-                data-element-id="lightning-button-show-more"
                 class="slds-p-horizontal_xx-small"
-                label={buttonLabel}
+                label={computedShowMoreButtonLabel}
                 variant="base"
+                data-element-id="lightning-button-show-more"
                 onclick={handleExpand}
                 onmouseenter={handleMoreButtonMouseEnter}
                 onmouseleave={handleMoreButtonMouseLeave}
             ></lightning-button>
             <div
                 if:true={showPopover}
-                data-element-id="div-popover"
                 class="
                     avonni-pill-container__dropdown
                     slds-dropdown slds-dropdown_right slds-dropdown_length-7
                     slds-p-vertical_none
                     slds-p-horizontal_xx-small
                 "
+                data-element-id="div-popover"
                 onfocusin={handlePopoverFocusIn}
                 onfocusout={handlePopoverFocusOut}
                 onscroll={handlePopoverScroll}
@@ -90,19 +91,17 @@
                     >
                         <template for:each={hiddenItems} for:item="pill">
                             <li
-                                data-element-id="li-item-hidden"
-                                data-index={pill.index}
-                                data-name={pill.name}
                                 key={pill.name}
                                 class={computedHiddenListItemClass}
                                 role="presentation"
-                                onmousemove={handlePillMouseMove}
+                                data-element-id="li-item-hidden"
+                                data-index={pill.index}
+                                data-name={pill.name}
                                 onmousedown={handlePillMouseDown}
+                                onmousemove={handlePillMouseMove}
                                 onmouseup={handlePillMouseUp}
                             >
                                 <c-primitive-pill
-                                    data-element-id="avonni-primitive-pill-hidden"
-                                    data-index={pill.index}
                                     class={computedPillClass}
                                     actions={actions}
                                     avatar={pill.avatar}
@@ -112,6 +111,8 @@
                                     role="option"
                                     tabindex="-1"
                                     variant="list"
+                                    data-element-id="avonni-primitive-pill-hidden"
+                                    data-index={pill.index}
                                     onactionclick={handleActionClick}
                                     onclick={handlePillClick}
                                 ></c-primitive-pill>
@@ -121,13 +122,12 @@
                 </c-focus-trap>
             </div>
         </div>
-
         <c-primitive-dropdown-menu
             if:true={showActionMenu}
-            data-element-id="avonni-primitive-dropdown-menu"
             class="slds-is-absolute avonni-pill-container__action-menu"
-            show={showActionMenu}
             items={actions}
+            show={showActionMenu}
+            data-element-id="avonni-primitive-dropdown-menu"
             onclose={handleCloseActionMenu}
             onprivateselect={handleActionSelect}
         ></c-primitive-dropdown-menu>

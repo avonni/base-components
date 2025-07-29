@@ -39,7 +39,7 @@ describe('Dynamic Menu', () => {
             expect(element.isLoading).toBeFalsy();
             expect(element.items).toMatchObject([]);
             expect(element.label).toBeUndefined();
-            expect(element.loadingStateAlternativeText).toBeUndefined();
+            expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.menuAlignment).toBe('left');
             expect(element.menuLength).toBe('7-items');
             expect(element.menuWidth).toBe('small');

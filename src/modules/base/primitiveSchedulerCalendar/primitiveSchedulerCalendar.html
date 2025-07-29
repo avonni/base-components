@@ -13,7 +13,10 @@
         >
             <!-- Side panel: left position-->
             <template if:true={showLeftPanel}>
-                <div class={sidePanelClass} data-element-id="div-panel-left">
+                <div
+                    class={computedSidePanelClass}
+                    data-element-id="div-panel-left"
+                >
                     <div
                         class="slds-p-around_medium"
                         data-element-id="div-panel-content"
@@ -38,11 +41,11 @@
                             >
                                 <lightning-input
                                     key={resource.value}
-                                    label={resource.label}
+                                    style={resource.style}
                                     checked={resource.selected}
+                                    label={resource.label}
                                     type="checkbox"
                                     value={resource.value}
-                                    style={resource.style}
                                     data-element-id="lightning-input-resource"
                                     onchange={handleResourceToggle}
                                 ></lightning-input>
@@ -52,7 +55,7 @@
                 </div>
                 <div
                     if:true={showSplitter}
-                    class={splitterClass}
+                    class={computedSplitterClass}
                     data-element-id="div-splitter"
                     onmousedown={handleSplitterResizeMouseDown}
                 >
@@ -91,16 +94,19 @@
                 </div>
             </template>
 
-            <div class={mainPanelClass} data-element-id="div-main-panel">
+            <div
+                class={computedMainPanelClass}
+                data-element-id="div-main-panel"
+            >
                 <div
-                    class={scheduleWrapperClass}
+                    class={computedScheduleWrapperClass}
                     data-element-id="div-schedule-wrapper"
                     onclick={handleClick}
                 >
                     <!-- Day, week and month schedule -->
                     <template if:false={isYear}>
                         <div
-                            class={horizontalHeaderWrapperClass}
+                            class={computedHorizontalHeaderWrapperClass}
                             data-element-id="div-horizontal-header-wrapper"
                         >
                             <!-- First column -->
@@ -123,12 +129,12 @@
                                             avonni-scheduler__flex-col
                                             slds-text-align_center
                                         "
-                                        >{timezoneLabel}</span
-                                    >
+                                        >{timezoneLabel}
+                                    </span>
                                 </div>
                             </div>
                             <div
-                                class={dayHeaderWrapperClass}
+                                class={computedDayHeaderWrapperClass}
                                 data-element-id="div-day-header-wrapper"
                             >
                                 <!-- Day(s) header -->
@@ -244,7 +250,7 @@
                             </div>
                         </div>
                         <div
-                            class={cellsGridClass}
+                            class={computedCellsGridClass}
                             data-element-id="div-cells-grid"
                         >
                             <!-- Hours -->
@@ -303,8 +309,8 @@
                                                         class="
                                                             slds-assistive-text
                                                         "
-                                                        >{cell.title}</span
-                                                    >
+                                                        >{cell.title}
+                                                    </span>
                                                     <!-- Cell content visible only for the month time span -->
                                                     <div
                                                         if:true={isMonth}
@@ -563,7 +569,10 @@
                         onmousedown={stopPropagation}
                     ></lightning-button-icon>
                 </div>
-                <div class={sidePanelClass} data-element-id="div-panel-right">
+                <div
+                    class={computedSidePanelClass}
+                    data-element-id="div-panel-right"
+                >
                     <div
                         class="slds-p-around_medium"
                         data-element-id="div-panel-content"
@@ -588,11 +597,11 @@
                             >
                                 <lightning-input
                                     key={resource.value}
-                                    label={resource.label}
+                                    style={resource.style}
                                     checked={resource.selected}
+                                    label={resource.label}
                                     type="checkbox"
                                     value={resource.value}
-                                    style={resource.style}
                                     data-element-id="lightning-input-resource"
                                     onchange={handleResourceToggle}
                                 ></lightning-input>

@@ -7,6 +7,17 @@ import { FiltersPanel } from '../__examples__/filtersPanel';
 export default {
     title: 'Example/Panel',
     argTypes: {
+        closeButtonAlternativeText: {
+            name: 'close-button-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The alternative text for the close button.',
+            table: {
+                type: { summary: 'String' },
+                defaultValue: { summary: 'Close panel' }
+            }
+        },
         position: {
             control: {
                 type: 'select'
@@ -19,14 +30,16 @@ export default {
                 defaultValue: { summary: 'right' }
             }
         },
-        title: {
+        showPanel: {
+            name: 'show-panel',
             control: {
-                type: 'text'
+                type: 'boolean'
             },
             description:
-                'The title can include text, and is displayed in the panel header. To include additional markup or another component, use the title slot.',
+                'If present, the panel is visible. By default, the panel is hidden.',
             table: {
-                type: { summary: 'String' }
+                type: { summary: 'Boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         size: {
@@ -40,10 +53,22 @@ export default {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'medium' }
             }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the panel header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'String' }
+            }
         }
     },
     args: {
+        closeButtonAlternativeText: 'Close panel',
         position: 'right',
+        showPanel: false,
         size: 'medium'
     }
 };

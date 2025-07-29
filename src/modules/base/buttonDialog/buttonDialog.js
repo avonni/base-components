@@ -20,8 +20,10 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
+const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_SAVE_BUTTON_LABEL = 'Save';
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
-
 const ICON_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'x-small'
@@ -51,6 +53,14 @@ export default class ButtonDialog extends LightningElement {
      */
     @api alternativeText;
     /**
+     * The label for the cancel button.
+     *
+     * @public
+     * @type {string}
+     * @default Cancel
+     */
+    @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
+    /**
      * The name of the icon to be used in the format 'utility:down'.
      *
      * @public
@@ -71,10 +81,27 @@ export default class ButtonDialog extends LightningElement {
      * @type {string}
      */
     @api label;
+    /**
+     * Message displayed while the button is in the loading state.
+     *
+     * @public
+     * @type {string}
+     * @default Loading...
+     */
+    @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    /**
+     * The label for the save button.
+     *
+     * @public
+     * @type {string}
+     * @default Save
+     */
+    @api saveButtonLabel = DEFAULT_SAVE_BUTTON_LABEL;
 
     _disabled = false;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
+    _isButtonLoading = false;
     _stretch = false;
     _variant = BUTTON_VARIANTS.default;
 
@@ -150,6 +177,21 @@ export default class ButtonDialog extends LightningElement {
     }
 
     /**
+     * If present, shows a loading spinner over the button.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isButtonLoading() {
+        return this._isButtonLoading;
+    }
+    set isButtonLoading(value) {
+        this._isButtonLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Setting it to true allows the button to take up the entire available width.
      *
      * @public
@@ -190,47 +232,6 @@ export default class ButtonDialog extends LightningElement {
      */
 
     /**
-     * Open the modal box.
-     *
-     * @public
-     */
-    @api
-    show() {
-        if (this.disabled) return;
-        if (this._dialogSlot.assignedElements().length !== 0) {
-            this._dialogSlot.assignedElements()[0].show();
-        }
-        /**
-         * The event fired when the modal box is opened.
-         *
-         * @event
-         * @name show
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('show'));
-    }
-
-    /**
-     * Close the modal box.
-     *
-     * @public
-     */
-    @api
-    hide() {
-        if (this._dialogSlot.assignedElements().length !== 0) {
-            this._dialogSlot.assignedElements()[0].hide();
-        }
-        /**
-         * The event fired when the modal box is closed.
-         *
-         * @event
-         * @name hide
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('hide'));
-    }
-
-    /**
      * Simulate a click on the button.
      *
      * @public
@@ -263,5 +264,46 @@ export default class ButtonDialog extends LightningElement {
          * @name focus
          */
         this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
+     * Close the modal box.
+     *
+     * @public
+     */
+    @api
+    hide() {
+        if (this._dialogSlot.assignedElements().length !== 0) {
+            this._dialogSlot.assignedElements()[0].hide();
+        }
+        /**
+         * The event fired when the modal box is closed.
+         *
+         * @event
+         * @name hide
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('hide'));
+    }
+
+    /**
+     * Open the modal box.
+     *
+     * @public
+     */
+    @api
+    show() {
+        if (this.disabled) return;
+        if (this._dialogSlot.assignedElements().length !== 0) {
+            this._dialogSlot.assignedElements()[0].show();
+        }
+        /**
+         * The event fired when the modal box is opened.
+         *
+         * @event
+         * @name show
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('show'));
     }
 }

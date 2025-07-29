@@ -1,21 +1,22 @@
 <template>
-    <div class={wrapperClass}>
+    <div class={computedWrapperClass}>
         <!-- Current level -->
-        <div class={currentLevelWrapperClass}>
+        <div class={computedCurrentLevelWrapperClass}>
             <!-- Nested div necessary to calculate the level height/width -->
-            <div class={currentLevelClass}>
+            <div class={computedCurrentLevelClass}>
                 <template iterator:group={groups}>
                     <c-primitive-relationship-graph-group
                         key={group.value.name}
                         class="slds-is-relative"
+                        actions-menu-alternative-text={actionsMenuAlternativeText}
                         actions-position={groupActionsPosition}
                         active-child={activeGroups}
                         avatar-fallback-icon-name={group.value.avatarFallbackIconName}
                         avatar-src={group.value.avatarSrc}
                         custom-actions={group.value.actions}
                         default-actions={groupActions}
-                        expanded={group.value.expanded}
                         expand-icon-name={expandIconName}
+                        expanded={group.value.expanded}
                         has-root-header={hasRootHeader}
                         hide-default-actions={group.value.hideDefaultActions}
                         hide-items-count={hideItemsCount}
@@ -23,10 +24,12 @@
                         is-first-child={group.first}
                         is-first-level={isFirstLevel}
                         is-loading={group.value.isLoading}
+                        loading-state-alternative-text={loadingStateAlternativeText}
                         item-actions={itemActions}
                         items={group.value.items}
                         label={group.value.label}
                         name={group.value.name}
+                        no-results-message={noResultsMessage}
                         selected={group.value.selected}
                         shrink-icon-name={shrinkIconName}
                         variant={variant}
@@ -40,10 +43,11 @@
             </div>
         </div>
         <!-- Vertical line -->
-        <div class={lineClass} if:true={hasSelectedGroups}></div>
+        <div if:true={hasSelectedGroups} class={computedLineClass}></div>
         <!-- Selected level -->
-        <div class="slds-grid" if:true={hasSelectedGroups}>
+        <div if:true={hasSelectedGroups} class="slds-grid">
             <c-primitive-relationship-graph-level
+                actions-menu-alternative-text={actionsMenuAlternativeText}
                 active-groups={containsActiveItem}
                 expand-icon-name={expandIconName}
                 group-actions={groupActions}
@@ -51,6 +55,8 @@
                 groups={selectedGroups}
                 hide-items-count={hideItemsCount}
                 item-actions={itemActions}
+                loading-state-alternative-text={loadingStateAlternativeText}
+                no-results-message={noResultsMessage}
                 shrink-icon-name={shrinkIconName}
                 variant={variant}
                 data-element-id="avonni-primitive-relationship-graph-level"

@@ -15,6 +15,7 @@ export default class ButtonIconPopoverWithToggle extends LightningElement {
     @api iconName;
     @api iconClass;
     @api iconSrc;
+    @api isButtonLoading = false;
     @api isLoading = false;
     @api loadingStateAlternativeText;
     @api placement = DEFAULT_POPOVER_PLACEMENT;

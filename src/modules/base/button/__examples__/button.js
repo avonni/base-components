@@ -12,6 +12,7 @@ export const Button = ({
     iconSrc,
     isButtonLoading,
     label,
+    loadingStateAlternativeText,
     name,
     stretch,
     type,
@@ -28,6 +29,7 @@ export const Button = ({
     element.iconSrc = iconSrc;
     element.isButtonLoading = isButtonLoading;
     element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
     element.stretch = stretch;
     element.type = type;

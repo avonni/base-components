@@ -2,6 +2,7 @@ import { api, LightningElement } from 'lwc';
 
 export default class InfiniteLoadingAvatarGroup extends LightningElement {
     @api actionIconName;
+    @api keyboardAssistiveText;
     @api layout;
     @api listButtonShowLessIconName;
     @api listButtonShowLessIconPosition;
@@ -10,9 +11,11 @@ export default class InfiniteLoadingAvatarGroup extends LightningElement {
     @api listButtonShowMoreIconPosition;
     @api listButtonShowMoreLabel;
     @api listButtonVariant;
+    @api loadingStateAlternativeText;
     @api loadMoreOffset;
     @api maxCount;
     @api name;
+    @api showMoreButtonAlternativeText;
     @api size;
     @api variant;
 
