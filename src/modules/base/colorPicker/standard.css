@@ -38,6 +38,10 @@
     width: var(--avonni-color-picker-popover-width, 16rem);
 }
 
+.avonni-color-picker__input-container {
+    width: var(--avonni-color-picker-input-width, 195.5px);
+}
+
 .slds-nubbin_top {
     position: absolute;
     top: 100%;
