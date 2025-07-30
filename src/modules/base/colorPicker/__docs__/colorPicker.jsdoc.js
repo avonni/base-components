@@ -54,3 +54,15 @@
  * @default 0.125rem
  * @type dimension
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-picker-popover-width
+ * @default 16rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-picker-input-width
+ * @default 195.5px
+ * @type dimension
+ */
