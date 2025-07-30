@@ -282,9 +282,7 @@ describe('Primitive Metric', () => {
                         expect(dynamicIcon).toBeFalsy();
                         expect(icon).toBeTruthy();
                         expect(icon.iconName).toBe('utility:arrowdown');
-                        expect(altText.textContent).toBe(
-                            'Trend direction: down'
-                        );
+                        expect(altText.textContent).toBe('down');
 
                         element.trendIcon = 'caret';
                     })
@@ -301,9 +299,7 @@ describe('Primitive Metric', () => {
                         expect(dynamicIcon).toBeFalsy();
                         expect(icon).toBeTruthy();
                         expect(icon.iconName).toBe('utility:down');
-                        expect(altText.textContent).toBe(
-                            'Trend direction: down'
-                        );
+                        expect(altText.textContent).toBe('down');
                     });
             });
 
@@ -340,9 +336,7 @@ describe('Primitive Metric', () => {
                         expect(dynamicIcon).toBeFalsy();
                         expect(icon).toBeTruthy();
                         expect(icon.iconName).toBe('utility:forward');
-                        expect(altText.textContent).toBe(
-                            'Trend direction: neutral'
-                        );
+                        expect(altText.textContent).toBe('neutral');
 
                         element.trendIcon = 'caret';
                     })
@@ -359,9 +353,7 @@ describe('Primitive Metric', () => {
                         expect(dynamicIcon).toBeFalsy();
                         expect(icon).toBeTruthy();
                         expect(icon.iconName).toBe('utility:right');
-                        expect(altText.textContent).toBe(
-                            'Trend direction: neutral'
-                        );
+                        expect(altText.textContent).toBe('neutral');
                     });
             });
 
@@ -398,7 +390,7 @@ describe('Primitive Metric', () => {
                         expect(dynamicIcon).toBeFalsy();
                         expect(icon).toBeTruthy();
                         expect(icon.iconName).toBe('utility:arrowup');
-                        expect(altText.textContent).toBe('Trend direction: up');
+                        expect(altText.textContent).toBe('up');
 
                         element.trendIcon = 'caret';
                     })
@@ -415,7 +407,7 @@ describe('Primitive Metric', () => {
                         expect(dynamicIcon).toBeFalsy();
                         expect(icon).toBeTruthy();
                         expect(icon.iconName).toBe('utility:up');
-                        expect(altText.textContent).toBe('Trend direction: up');
+                        expect(altText.textContent).toBe('up');
                     });
             });
         });

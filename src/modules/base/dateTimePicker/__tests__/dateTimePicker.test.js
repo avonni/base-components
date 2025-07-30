@@ -243,6 +243,7 @@ describe('DateTimePicker', () => {
                             '[data-element-id="button-inline-date-picker"]'
                         );
                         expect(buttons).toHaveLength(7);
+
                         expect(buttons[0].textContent).toBe('9avril');
                     });
                 });
