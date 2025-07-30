@@ -13,6 +13,10 @@ describe('Layout Item', () => {
         element = createElement('avonni-layout-item', {
             is: LayoutItem
         });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     /*
@@ -40,33 +44,25 @@ describe('Layout Item', () => {
             it('alignmentBump = left', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'left';
-                expect(element.shadowRoot.host.classList).toContain(
-                    'slds-col_bump-left'
-                );
+                expect(element.classList).toContain('slds-col_bump-left');
             });
 
             it('alignmentBump = right', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'right';
-                expect(element.shadowRoot.host.classList).toContain(
-                    'slds-col_bump-right'
-                );
+                expect(element.classList).toContain('slds-col_bump-right');
             });
 
             it('alignmentBump = top', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'top';
-                expect(element.shadowRoot.host.classList).toContain(
-                    'slds-col_bump-top'
-                );
+                expect(element.classList).toContain('slds-col_bump-top');
             });
 
             it('alignmentBump = bottom', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'bottom';
-                expect(element.shadowRoot.host.classList).toContain(
-                    'slds-col_bump-bottom'
-                );
+                expect(element.classList).toContain('slds-col_bump-bottom');
             });
         });
 
@@ -81,20 +77,20 @@ describe('Layout Item', () => {
                     }
                 );
                 document.body.appendChild(element);
-                expect(element.shadowRoot.host.style.order).toBe('0');
+                expect(element.style.order).toBe('0');
 
                 element.largeContainerOrder = 3;
                 element.mediumContainerOrder = 2;
                 element.smallContainerOrder = 1;
                 element.order = 6;
 
-                expect(element.shadowRoot.host.style.order).toBe('6');
+                expect(element.style.order).toBe('6');
                 setContainerSize('large');
-                expect(element.shadowRoot.host.style.order).toBe('3');
+                expect(element.style.order).toBe('3');
                 setContainerSize('medium');
-                expect(element.shadowRoot.host.style.order).toBe('2');
+                expect(element.style.order).toBe('2');
                 setContainerSize('small');
-                expect(element.shadowRoot.host.style.order).toBe('1');
+                expect(element.style.order).toBe('1');
             });
 
             it('Inheritance', () => {
@@ -108,12 +104,12 @@ describe('Layout Item', () => {
                 );
                 document.body.appendChild(element);
                 setContainerSize('large');
-                expect(element.shadowRoot.host.style.order).toBe('0');
+                expect(element.style.order).toBe('0');
 
                 element.order = 6;
-                expect(element.shadowRoot.host.style.order).toBe('6');
+                expect(element.style.order).toBe('6');
                 element.largeContainerOrder = 3;
-                expect(element.shadowRoot.host.style.order).toBe('3');
+                expect(element.style.order).toBe('3');
             });
         });
 
@@ -123,36 +119,36 @@ describe('Layout Item', () => {
                 setContainerSize = event.detail.callbacks.setContainerSize;
             });
             document.body.appendChild(element);
-            expect(element.shadowRoot.host.style.flexBasis).toBe('auto');
+            expect(element.style.flex).toBe('0 1 auto');
 
             element.largeContainerSize = '3';
             element.mediumContainerSize = 12;
             element.smallContainerSize = 'auto';
             element.size = '4rem';
-
-            expect(element.shadowRoot.host.style.flexBasis).toBe('4rem');
+            expect(element.style.flex).toBe('0 1 4rem');
             setContainerSize('large');
-            expect(element.shadowRoot.host.style.flexBasis).toBe('25%');
+            expect(element.style.flex).toBe('0 1 25%');
             setContainerSize('medium');
-            expect(element.shadowRoot.host.style.flexBasis).toBe('100%');
+            expect(element.style.flex).toBe('0 1 100%');
             setContainerSize('small');
-            expect(element.shadowRoot.host.style.flexBasis).toBe('auto');
+            expect(element.style.flex).toBe('0 1 auto');
         });
 
         describe('Grow', () => {
             it('Ignore invalid value', () => {
                 document.body.appendChild(element);
                 element.grow = -3;
-                expect(element.shadowRoot.host.style.flexGrow).toBe('0');
+                expect(element.style.flex).toBe('0 1 auto');
 
                 element.grow = 'some text';
-                expect(element.shadowRoot.host.style.flexGrow).toBe('0');
+                expect(element.style.flex).toBe('0 1 auto');
             });
 
             it('Applied to the host', () => {
                 document.body.appendChild(element);
                 element.grow = 3;
-                expect(element.shadowRoot.host.style.flexGrow).toBe('3');
+
+                expect(element.style.flex).toBe('3 1 auto');
             });
         });
 
@@ -160,16 +156,17 @@ describe('Layout Item', () => {
             it('Ignore invalid value', () => {
                 document.body.appendChild(element);
                 element.shrink = -3;
-                expect(element.shadowRoot.host.style.flexShrink).toBe('1');
+                expect(element.style.flex).toBe('0 1 auto');
 
                 element.shrink = 'some text';
-                expect(element.shadowRoot.host.style.flexShrink).toBe('1');
+                expect(element.style.flex).toBe('0 1 auto');
             });
 
             it('Applied to the host', () => {
                 document.body.appendChild(element);
                 element.shrink = 3;
-                expect(element.shadowRoot.host.style.flexShrink).toBe('3');
+
+                expect(element.style.flex).toBe('0 3 auto');
             });
         });
     });
@@ -204,7 +201,7 @@ describe('Layout Item', () => {
                 document.body.removeChild(document.body.firstChild);
             }
             expect(disconnectedHandler).toHaveBeenCalled();
-            const disconnectedCall = connectedHandler.mock.calls[0][0];
+            const disconnectedCall = disconnectedHandler.mock.calls[0][0];
             expect(disconnectedCall.detail.name).toBeTruthy();
             expect(typeof disconnectedCall.detail.name).toBe('string');
             expect(disconnectedCall.bubbles).toBeTruthy();

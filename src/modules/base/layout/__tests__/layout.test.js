@@ -1,6 +1,6 @@
+import { callObserver } from 'c/resizeObserver';
 import { createElement } from 'lwc';
 import Layout from '../layout';
-import { callObserver } from 'c/resizeObserver';
 
 let element;
 describe('Layout', () => {
@@ -324,6 +324,7 @@ describe('Layout', () => {
                         'getBoundingClientRect'
                     ).mockReturnValue({ width: 1000 });
                     setItemsSize();
+                    jest.runAllTimers();
                     expect(callback).toHaveBeenCalledTimes(2);
                     expect(callback.mock.calls[1][0]).toBe('medium');
                 });
@@ -370,12 +371,15 @@ describe('Layout', () => {
 
                 callback.mockClear();
                 callObserver();
-                expect(callback).toHaveBeenCalledTimes(1);
-                expect(callback.mock.calls[0][0]).toBe('small');
                 expect(sizeChangeHandler).toHaveBeenCalledTimes(1);
                 expect(sizeChangeHandler.mock.calls[0][0].detail.width).toBe(
                     'small'
                 );
+
+                // Skip the debounce
+                jest.runAllTimers();
+                expect(callback).toHaveBeenCalledTimes(1);
+                expect(callback.mock.calls[0][0]).toBe('small');
             });
 
             it('If true is passed to setIsResizedByParent(), do not fire sizechange on render', () => {
@@ -392,6 +396,9 @@ describe('Layout', () => {
                     connexionHandler
                 );
                 addLayoutToDOM();
+                // Clear the inital renderedCallback call
+                sizeChangeHandler.mockClear();
+                jest.runAllTimers();
                 expect(sizeChangeHandler).not.toHaveBeenCalled();
             });
 
@@ -409,6 +416,8 @@ describe('Layout', () => {
                 const sizeChangeHandler = jest.fn();
                 element.addEventListener('sizechange', sizeChangeHandler);
                 addLayoutToDOM();
+                sizeChangeHandler.mockClear();
+                jest.runAllTimers();
 
                 return Promise.resolve().then(() => {
                     const callback = jest.fn();
@@ -437,6 +446,50 @@ describe('Layout', () => {
                     callObserver();
                     expect(callback).not.toHaveBeenCalled();
                     expect(sizeChangeHandler).not.toHaveBeenCalled();
+                });
+            });
+
+            it('If true is passed to setIsResizedByParent(), newly connected items get sized after the debounce', () => {
+                clearDOM();
+                createLayout();
+
+                const connexionHandler = jest.fn((event) => {
+                    event.detail.callbacks.setIsResizedByParent(true);
+                });
+                element.addEventListener(
+                    'privatelayoutconnected',
+                    connexionHandler
+                );
+                addLayoutToDOM();
+
+                return Promise.resolve().then(() => {
+                    const callback = jest.fn();
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+
+                    // Mock the width to ensure we have a known value
+                    jest.spyOn(
+                        wrapper,
+                        'getBoundingClientRect'
+                    ).mockReturnValue({
+                        width: 500
+                    });
+
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: callback
+                                }
+                            }
+                        })
+                    );
+
+                    jest.runAllTimers();
+                    expect(callback).toHaveBeenCalledTimes(1);
+                    expect(callback.mock.calls[0][0]).toBe('small');
                 });
             });
         });

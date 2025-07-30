@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
-import { classListMutation } from 'c/utilsPrivate';
 import { generateUUID, normalizeString } from 'c/utils';
+import { classListMutation } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const ALIGNMENT_BUMPS = {
     default: undefined,
@@ -43,62 +43,28 @@ export default class LayoutItem extends LightningElement {
     name = generateUUID();
 
     /*
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      *  LIFECYCLE HOOKS
      * -------------------------------------------------------------
      */
 
     connectedCallback() {
-        this.updateClassAndStyle();
         this._connected = true;
-
-        /**
-         * The event fired when the layout item is inserted in the DOM.
-         *
-         * @event
-         * @name privatelayoutitemconnected
-         * @param {string} name Unique name of the layout item.
-         * @param {object} callbacks Object with one key, setContainerSize, which contains the callback that should be called when the layout size changes.
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatelayoutitemconnected', {
-                detail: {
-                    name: this.name,
-                    callbacks: {
-                        setContainerSize: this.setContainerSize.bind(this)
-                    }
-                },
-                bubbles: true
-            })
-        );
+        this.dispatchConnected();
     }
 
     renderedCallback() {
+        if (this._rendered) return;
+        this._rendered = true;
         this.updateClassAndStyle();
     }
 
     disconnectedCallback() {
-        /**
-         * The event fired when the layout item is removed from the DOM.
-         *
-         * @event
-         * @name privatelayoutitemdisconnected
-         * @param {string} name Unique name of the layout item.
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatelayoutitemdisconnected', {
-                detail: {
-                    name: this.name
-                },
-                bubbles: true
-            })
-        );
+        this.dispatchDisconnected();
     }
 
     /*
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
@@ -340,7 +306,7 @@ export default class LayoutItem extends LightningElement {
     }
 
     /*
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
@@ -392,11 +358,12 @@ export default class LayoutItem extends LightningElement {
      * @public
      */
     setContainerSize(width) {
+        const oldContainerWidth = this._containerWidth;
         this._containerWidth = normalizeString(width, {
             fallbackValue: CONTAINER_WIDTHS.default,
             validValues: CONTAINER_WIDTHS.valid
         });
-
+        if (oldContainerWidth === this._containerWidth) return;
         this.updateClassAndStyle();
     }
 
@@ -404,6 +371,7 @@ export default class LayoutItem extends LightningElement {
      * Update the class and style of the item.
      */
     updateClassAndStyle() {
+        // Update classes
         classListMutation(this.classList, {
             'slds-col_bump-left': this.alignmentBump === 'left',
             'slds-col_bump-right': this.alignmentBump === 'right',
@@ -411,8 +379,69 @@ export default class LayoutItem extends LightningElement {
             'slds-col_bump-bottom': this.alignmentBump === 'bottom'
         });
 
+        // Update styles
+        const host = this.template.host;
         const flexBasis = this.getCurrentValue(this._sizes);
-        this.template.host.style.flex = `${this.grow} ${this.shrink} ${flexBasis}`;
-        this.template.host.style.order = this.getCurrentValue(this._orders);
+        const order = this.getCurrentValue(this._orders);
+        const newFlex = `${this.grow} ${this.shrink} ${flexBasis}`;
+
+        if (host.style.flex !== newFlex) {
+            host.style.flex = newFlex;
+        }
+        if (host.style.order !== String(order)) {
+            host.style.order = order;
+        }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Dispatch the `privatelayoutitemconnected` event.
+     */
+    dispatchConnected() {
+        /**
+         * The event fired when the layout item is inserted in the DOM.
+         *
+         * @event
+         * @name privatelayoutitemconnected
+         * @param {string} name Unique name of the layout item.
+         * @param {object} callbacks Object with one key, setContainerSize, which contains the callback that should be called when the layout size changes.
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutitemconnected', {
+                detail: {
+                    name: this.name,
+                    callbacks: {
+                        setContainerSize: this.setContainerSize.bind(this)
+                    }
+                },
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Dispatch the `privatelayoutitemdisconnected` event.
+     */
+    dispatchDisconnected() {
+        /**
+         * The event fired when the layout item is removed from the DOM.
+         *
+         * @event
+         * @name privatelayoutitemdisconnected
+         * @param {string} name Unique name of the layout item.
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutitemdisconnected', {
+                detail: { name: this.name },
+                bubbles: true
+            })
+        );
     }
 }
