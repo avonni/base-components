@@ -17,6 +17,8 @@ const HORIZONTAL_ALIGNMENTS = {
     default: 'start'
 };
 
+const ONE_TWENTY_FPS = 1000 / 120;
+
 const VERTICAL_ALIGNMENTS = {
     valid: ['start', 'center', 'end', 'stretch'],
     default: 'stretch'
@@ -43,13 +45,11 @@ export default class Layout extends LightningElement {
     _disconnected = false;
     _items = new Map();
     _name = generateUUID();
-    _previousWidth;
-    _requestId;
+    _previouslyDispatchedWidth;
+    _rendered = false;
+    _debounceTimeoutId;
     _resizeIsHandledByParent = false;
     _resizeObserver;
-    _resizeTimeoutId; // Add debounce timeout
-    _cachedWidth; // Cache the current width to avoid unnecessary updates
-    _pendingSizeUpdates = new Set(); // Track items that need size updates
 
     /*
      * ------------------------------------------------------------
@@ -58,70 +58,22 @@ export default class Layout extends LightningElement {
      */
 
     connectedCallback() {
-        /**
-         * The event fired when the layout is inserted in the DOM.
-         *
-         * @event
-         * @name privatelayoutconnected
-         * @param {string} name Unique name of the layout.
-         * @param {object} callbacks Object with two keys:
-         * * `setItemsSize`: When called, the layout passes down its current width to its layout items.
-         * * `setIsResizedByParent`: If called with `true`, the resizing of the layout is handled by its parent. The layout will not watch its width and update the size of its items automatically.
-         * @bubbles
-         * @composed
-         */
-        const event = new CustomEvent('privatelayoutconnected', {
-            detail: {
-                callbacks: {
-                    setItemsSize: this.setItemsSize.bind(this),
-                    setIsResizedByParent: this.setIsResizedByParent.bind(this)
-                },
-                name: this._name
-            },
-            composed: true,
-            bubbles: true
-        });
-        this.dispatchEvent(event);
+        this.dispatchConnected();
     }
 
     renderedCallback() {
-        this._initializeCachedWidth();
+        if (this._rendered) return;
+        this._rendered = true;
+        this.dispatchSizeChange();
+        this.setItemsSize();
         this.initResizeObserver();
     }
 
     disconnectedCallback() {
         this.removeResizeObserver();
+        this.dispatchDisconnected();
+        this.clearDebounceTimeout();
 
-        // Clear any pending resize timeout
-        if (this._resizeTimeoutId) {
-            clearTimeout(this._resizeTimeoutId);
-            this._resizeTimeoutId = null;
-        }
-
-        // Clear any pending animation frame
-        if (this._requestId) {
-            cancelAnimationFrame(this._requestId);
-            this._requestId = null;
-        }
-
-        /**
-         * The event fired when the layout is removed from the DOM.
-         *
-         * @event
-         * @name privatelayoutdisconnected
-         * @param {string} name Unique name of the layout.
-         * @bubbles
-         * @composed
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatelayoutdisconnected', {
-                detail: {
-                    name: this._name
-                },
-                composed: true,
-                bubbles: true
-            })
-        );
         // If the parent is disconnected too, the event won't get to its other ancestors.
         // Use _disconnected to still make sure setItemsSize() is not called uselessly.
         this._disconnected = true;
@@ -260,6 +212,17 @@ export default class Layout extends LightningElement {
      */
 
     /**
+     * Clear the debounce timeout.
+     */
+    clearDebounceTimeout() {
+        // Clear any pending animation frame
+        if (this._debounceTimeoutId) {
+            clearTimeout(this._debounceTimeoutId);
+            this._debounceTimeoutId = null;
+        }
+    }
+
+    /**
      * Initialize the resize observer, triggered when the layout is resized.
      */
     initResizeObserver() {
@@ -270,23 +233,11 @@ export default class Layout extends LightningElement {
         ) {
             return;
         }
-        this._dispatchSizeChange();
-        this.debouncedSetItemsSize();
 
         this._resizeObserver = new AvonniResizeObserver(this.wrapper, () => {
-            this._dispatchSizeChange();
-            this.debouncedSetItemsSize();
+            this.dispatchSizeChange();
+            this.setItemsSize();
         });
-    }
-
-    /**
-     * Initialize the cached width immediately if not already set.
-     * This ensures newly connected items can be sized immediately.
-     */
-    _initializeCachedWidth() {
-        if (this._cachedWidth === undefined && this.wrapper) {
-            this._cachedWidth = this.width;
-        }
     }
 
     /**
@@ -309,28 +260,9 @@ export default class Layout extends LightningElement {
 
         if (this._resizeIsHandledByParent) {
             this.removeResizeObserver();
-            // Initialize cached width even when parent handles resizing
-            this._initializeCachedWidth();
         } else {
             this.initResizeObserver();
         }
-    }
-
-    /**
-     * Debounced version of setItemsSize to prevent excessive updates during rapid resize events.
-     */
-    debouncedSetItemsSize() {
-        if (this._disconnected) return;
-
-        // Clear any pending timeout
-        if (this._resizeTimeoutId) {
-            clearTimeout(this._resizeTimeoutId);
-        }
-
-        // Debounce resize updates to prevent excessive calculations
-        this._resizeTimeoutId = setTimeout(() => {
-            this.setItemsSize();
-        }, 16); // ~60fps debounce
     }
 
     /**
@@ -339,22 +271,12 @@ export default class Layout extends LightningElement {
     setItemsSize() {
         if (this._disconnected) return;
 
-        const currentWidth = this.width;
-
-        // Skip if width hasn't changed and we have a cached width
-        if (this._cachedWidth === currentWidth) return;
-
-        this._cachedWidth = currentWidth;
-
-        // We use requestAnimationFrame to improve rendering performance,
-        // especially when there is a lot of items.
-        cancelAnimationFrame(this._requestId);
-        this._requestId = requestAnimationFrame(() => {
-            // Batch all size updates in a single frame
+        this.clearDebounceTimeout();
+        this._debounceTimeoutId = setTimeout(() => {
             this._items.forEach((item) => {
-                item.setContainerSize(currentWidth);
+                item.setContainerSize(this.width);
             });
-        });
+        }, ONE_TWENTY_FPS);
     }
 
     /*
@@ -373,13 +295,9 @@ export default class Layout extends LightningElement {
         const { name, callbacks } = event.detail;
         this._items.set(name, callbacks);
 
-        // Initialize cached width if not already set
-        this._initializeCachedWidth();
-
-        // Size the newly connected item immediately
-        if (this._cachedWidth) {
-            callbacks.setContainerSize(this._cachedWidth);
-        }
+        // Here we use the setItemsSize() method instead of setting the size immediately.
+        // This ensures that it does not freeze with a lot of items, since there is a debounce.
+        this.setItemsSize();
     }
 
     /**
@@ -400,12 +318,67 @@ export default class Layout extends LightningElement {
      */
 
     /**
+     * Dispatch the `privatelayoutconnected` event.
+     */
+    dispatchConnected() {
+        /**
+         * The event fired when the layout is inserted in the DOM.
+         *
+         * @event
+         * @name privatelayoutconnected
+         * @param {string} name Unique name of the layout.
+         * @param {object} callbacks Object with two keys:
+         * * `setItemsSize`: When called, the layout passes down its current width to its layout items.
+         * * `setIsResizedByParent`: If called with `true`, the resizing of the layout is handled by its parent. The layout will not watch its width and update the size of its items automatically.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutconnected', {
+                detail: {
+                    callbacks: {
+                        setItemsSize: this.setItemsSize.bind(this),
+                        setIsResizedByParent:
+                            this.setIsResizedByParent.bind(this)
+                    },
+                    name: this._name
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Dispatch the `privatelayoutdisconnected` event.
+     */
+    dispatchDisconnected() {
+        /**
+         * The event fired when the layout is removed from the DOM.
+         *
+         * @event
+         * @name privatelayoutdisconnected
+         * @param {string} name Unique name of the layout.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutdisconnected', {
+                detail: { name: this._name },
+                composed: true,
+                bubbles: true
+            })
+        );
+    }
+
+    /**
      * Dispatch the `sizechange` event when the layout width changes.
      */
-    _dispatchSizeChange() {
+    dispatchSizeChange() {
+        if (this._resizeIsHandledByParent) return;
         const newWidth = this.width;
-        if (this._previousWidth === newWidth) return;
-        this._previousWidth = newWidth;
+        if (this._previouslyDispatchedWidth === newWidth) return;
+        this._previouslyDispatchedWidth = newWidth;
 
         /**
          * The event fired when the layout width changes.
@@ -417,9 +390,7 @@ export default class Layout extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('sizechange', {
-                detail: {
-                    width: newWidth
-                }
+                detail: { width: newWidth }
             })
         );
     }

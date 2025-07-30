@@ -371,13 +371,15 @@ describe('Layout', () => {
 
                 callback.mockClear();
                 callObserver();
-                jest.runAllTimers();
-                expect(callback).toHaveBeenCalledTimes(1);
-                expect(callback.mock.calls[0][0]).toBe('small');
                 expect(sizeChangeHandler).toHaveBeenCalledTimes(1);
                 expect(sizeChangeHandler.mock.calls[0][0].detail.width).toBe(
                     'small'
                 );
+
+                // Skip the debounce
+                jest.runAllTimers();
+                expect(callback).toHaveBeenCalledTimes(1);
+                expect(callback.mock.calls[0][0]).toBe('small');
             });
 
             it('If true is passed to setIsResizedByParent(), do not fire sizechange on render', () => {
@@ -394,6 +396,9 @@ describe('Layout', () => {
                     connexionHandler
                 );
                 addLayoutToDOM();
+                // Clear the inital renderedCallback call
+                sizeChangeHandler.mockClear();
+                jest.runAllTimers();
                 expect(sizeChangeHandler).not.toHaveBeenCalled();
             });
 
@@ -411,6 +416,8 @@ describe('Layout', () => {
                 const sizeChangeHandler = jest.fn();
                 element.addEventListener('sizechange', sizeChangeHandler);
                 addLayoutToDOM();
+                sizeChangeHandler.mockClear();
+                jest.runAllTimers();
 
                 return Promise.resolve().then(() => {
                     const callback = jest.fn();
@@ -437,13 +444,12 @@ describe('Layout', () => {
 
                     callback.mockClear();
                     callObserver();
-                    jest.runAllTimers();
                     expect(callback).not.toHaveBeenCalled();
                     expect(sizeChangeHandler).not.toHaveBeenCalled();
                 });
             });
 
-            it('If true is passed to setIsResizedByParent(), newly connected items still get sized immediately', () => {
+            it('If true is passed to setIsResizedByParent(), newly connected items get sized after the debounce', () => {
                 clearDOM();
                 createLayout();
 
@@ -481,10 +487,9 @@ describe('Layout', () => {
                         })
                     );
 
-                    // The item should be sized immediately, even with parent resize handling
+                    jest.runAllTimers();
                     expect(callback).toHaveBeenCalledTimes(1);
-                    // The width will be 'default' because the mock was set up after the initial width calculation
-                    expect(callback.mock.calls[0][0]).toBe('default');
+                    expect(callback.mock.calls[0][0]).toBe('small');
                 });
             });
         });

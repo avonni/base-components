@@ -41,69 +41,30 @@ export default class LayoutItem extends LightningElement {
     _orders = { default: 0 };
     _sizes = { default: DEFAULT_SIZE };
     name = generateUUID();
-    _lastUpdateTime = 0; // Track last update time for throttling
-    _pendingUpdate = false; // Flag to prevent multiple pending updates
 
     /*
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      *  LIFECYCLE HOOKS
      * -------------------------------------------------------------
      */
 
     connectedCallback() {
-        this.updateClassAndStyle();
         this._connected = true;
-
-        /**
-         * The event fired when the layout item is inserted in the DOM.
-         *
-         * @event
-         * @name privatelayoutitemconnected
-         * @param {string} name Unique name of the layout item.
-         * @param {object} callbacks Object with one key, setContainerSize, which contains the callback that should be called when the layout size changes.
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatelayoutitemconnected', {
-                detail: {
-                    name: this.name,
-                    callbacks: {
-                        setContainerSize: this.setContainerSize.bind(this)
-                    }
-                },
-                bubbles: true
-            })
-        );
+        this.dispatchConnected();
     }
 
     renderedCallback() {
-        this.debouncedUpdateClassAndStyle();
+        if (this._rendered) return;
+        this._rendered = true;
+        this.updateClassAndStyle();
     }
 
     disconnectedCallback() {
-        // Clear any pending updates
-        this._pendingUpdate = false;
-
-        /**
-         * The event fired when the layout item is removed from the DOM.
-         *
-         * @event
-         * @name privatelayoutitemdisconnected
-         * @param {string} name Unique name of the layout item.
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatelayoutitemdisconnected', {
-                detail: {
-                    name: this.name
-                },
-                bubbles: true
-            })
-        );
+        this.dispatchDisconnected();
     }
 
     /*
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
@@ -125,7 +86,7 @@ export default class LayoutItem extends LightningElement {
         });
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -148,7 +109,7 @@ export default class LayoutItem extends LightningElement {
                 : normalizedNumber;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -170,7 +131,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.large = this.largeContainerOrder;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -189,7 +150,7 @@ export default class LayoutItem extends LightningElement {
         this._sizes.large = this.largeContainerSize;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -211,7 +172,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.medium = this.mediumContainerOrder;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -230,7 +191,7 @@ export default class LayoutItem extends LightningElement {
         this._sizes.medium = this.mediumContainerSize;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -252,7 +213,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.default = this.order;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -275,7 +236,7 @@ export default class LayoutItem extends LightningElement {
                 : normalizedNumber;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -299,7 +260,7 @@ export default class LayoutItem extends LightningElement {
         this._sizes.default = this.size;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -321,7 +282,7 @@ export default class LayoutItem extends LightningElement {
         this._orders.small = this.smallContainerOrder;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
@@ -340,12 +301,12 @@ export default class LayoutItem extends LightningElement {
         this._sizes.small = this.smallContainerSize;
 
         if (this._connected) {
-            this.debouncedUpdateClassAndStyle();
+            this.updateClassAndStyle();
         }
     }
 
     /*
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
@@ -402,42 +363,14 @@ export default class LayoutItem extends LightningElement {
             fallbackValue: CONTAINER_WIDTHS.default,
             validValues: CONTAINER_WIDTHS.valid
         });
-
         if (oldContainerWidth === this._containerWidth) return;
-
-        this.debouncedUpdateClassAndStyle();
-    }
-
-    /**
-     * Debounced version of updateClassAndStyle to prevent excessive DOM updates.
-     */
-    debouncedUpdateClassAndStyle() {
-        if (this._pendingUpdate) return;
-
-        const now = Date.now();
-        if (now - this._lastUpdateTime < 16) {
-            // ~60fps throttle
-            this._pendingUpdate = true;
-            requestAnimationFrame(() => {
-                this.updateClassAndStyle();
-                this._pendingUpdate = false;
-                this._lastUpdateTime = Date.now();
-            });
-        } else {
-            this.updateClassAndStyle();
-            this._lastUpdateTime = now;
-        }
+        this.updateClassAndStyle();
     }
 
     /**
      * Update the class and style of the item.
      */
     updateClassAndStyle() {
-        // Batch DOM updates
-        const host = this.template.host;
-        const flexBasis = this.getCurrentValue(this._sizes);
-        const order = this.getCurrentValue(this._orders);
-
         // Update classes
         classListMutation(this.classList, {
             'slds-col_bump-left': this.alignmentBump === 'left',
@@ -446,13 +379,69 @@ export default class LayoutItem extends LightningElement {
             'slds-col_bump-bottom': this.alignmentBump === 'bottom'
         });
 
-        // Update styles in a single operation
+        // Update styles
+        const host = this.template.host;
+        const flexBasis = this.getCurrentValue(this._sizes);
+        const order = this.getCurrentValue(this._orders);
         const newFlex = `${this.grow} ${this.shrink} ${flexBasis}`;
+
         if (host.style.flex !== newFlex) {
             host.style.flex = newFlex;
         }
         if (host.style.order !== String(order)) {
             host.style.order = order;
         }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Dispatch the `privatelayoutitemconnected` event.
+     */
+    dispatchConnected() {
+        /**
+         * The event fired when the layout item is inserted in the DOM.
+         *
+         * @event
+         * @name privatelayoutitemconnected
+         * @param {string} name Unique name of the layout item.
+         * @param {object} callbacks Object with one key, setContainerSize, which contains the callback that should be called when the layout size changes.
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutitemconnected', {
+                detail: {
+                    name: this.name,
+                    callbacks: {
+                        setContainerSize: this.setContainerSize.bind(this)
+                    }
+                },
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Dispatch the `privatelayoutitemdisconnected` event.
+     */
+    dispatchDisconnected() {
+        /**
+         * The event fired when the layout item is removed from the DOM.
+         *
+         * @event
+         * @name privatelayoutitemdisconnected
+         * @param {string} name Unique name of the layout item.
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutitemdisconnected', {
+                detail: { name: this.name },
+                bubbles: true
+            })
+        );
     }
 }

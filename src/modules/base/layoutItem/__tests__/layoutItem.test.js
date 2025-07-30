@@ -44,28 +44,24 @@ describe('Layout Item', () => {
             it('alignmentBump = left', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'left';
-                jest.runAllTimers();
                 expect(element.classList).toContain('slds-col_bump-left');
             });
 
             it('alignmentBump = right', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'right';
-                jest.runAllTimers();
                 expect(element.classList).toContain('slds-col_bump-right');
             });
 
             it('alignmentBump = top', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'top';
-                jest.runAllTimers();
                 expect(element.classList).toContain('slds-col_bump-top');
             });
 
             it('alignmentBump = bottom', () => {
                 document.body.appendChild(element);
                 element.alignmentBump = 'bottom';
-                jest.runAllTimers();
                 expect(element.classList).toContain('slds-col_bump-bottom');
             });
         });
@@ -88,16 +84,12 @@ describe('Layout Item', () => {
                 element.smallContainerOrder = 1;
                 element.order = 6;
 
-                jest.runAllTimers();
                 expect(element.style.order).toBe('6');
                 setContainerSize('large');
-                jest.runAllTimers();
                 expect(element.style.order).toBe('3');
                 setContainerSize('medium');
-                jest.runAllTimers();
                 expect(element.style.order).toBe('2');
                 setContainerSize('small');
-                jest.runAllTimers();
                 expect(element.style.order).toBe('1');
             });
 
@@ -112,14 +104,11 @@ describe('Layout Item', () => {
                 );
                 document.body.appendChild(element);
                 setContainerSize('large');
-                jest.runAllTimers();
                 expect(element.style.order).toBe('0');
 
                 element.order = 6;
-                jest.runAllTimers();
                 expect(element.style.order).toBe('6');
                 element.largeContainerOrder = 3;
-                jest.runAllTimers();
                 expect(element.style.order).toBe('3');
             });
         });
@@ -136,17 +125,12 @@ describe('Layout Item', () => {
             element.mediumContainerSize = 12;
             element.smallContainerSize = 'auto';
             element.size = '4rem';
-
-            jest.runAllTimers();
             expect(element.style.flex).toBe('0 1 4rem');
             setContainerSize('large');
-            jest.runAllTimers();
             expect(element.style.flex).toBe('0 1 25%');
             setContainerSize('medium');
-            jest.runAllTimers();
             expect(element.style.flex).toBe('0 1 100%');
             setContainerSize('small');
-            jest.runAllTimers();
             expect(element.style.flex).toBe('0 1 auto');
         });
 
@@ -154,19 +138,15 @@ describe('Layout Item', () => {
             it('Ignore invalid value', () => {
                 document.body.appendChild(element);
                 element.grow = -3;
-                jest.runAllTimers();
                 expect(element.style.flex).toBe('0 1 auto');
 
                 element.grow = 'some text';
-                jest.runAllTimers();
                 expect(element.style.flex).toBe('0 1 auto');
             });
 
             it('Applied to the host', () => {
                 document.body.appendChild(element);
                 element.grow = 3;
-
-                jest.runAllTimers();
 
                 expect(element.style.flex).toBe('3 1 auto');
             });
@@ -176,19 +156,15 @@ describe('Layout Item', () => {
             it('Ignore invalid value', () => {
                 document.body.appendChild(element);
                 element.shrink = -3;
-                jest.runAllTimers();
                 expect(element.style.flex).toBe('0 1 auto');
 
                 element.shrink = 'some text';
-                jest.runAllTimers();
                 expect(element.style.flex).toBe('0 1 auto');
             });
 
             it('Applied to the host', () => {
                 document.body.appendChild(element);
                 element.shrink = 3;
-
-                jest.runAllTimers();
 
                 expect(element.style.flex).toBe('0 3 auto');
             });
