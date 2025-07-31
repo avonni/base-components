@@ -1,5 +1,5 @@
 import { LightningElement, api, track } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import {
     classSet,
     deepCopy,
@@ -983,9 +983,9 @@ export default class ChipContainer extends LightningElement {
             ? this._dragState.lastHoveredIndex
             : this._focusedIndex;
 
-        switch (event.keyCode) {
-            case keyCodes.left:
-            case keyCodes.up: {
+        switch (event.key) {
+            case keyValues.left:
+            case keyValues.up: {
                 // Prevent the page from scrolling
                 event.preventDefault();
 
@@ -1004,8 +1004,8 @@ export default class ChipContainer extends LightningElement {
                 }
                 break;
             }
-            case keyCodes.right:
-            case keyCodes.down: {
+            case keyValues.right:
+            case keyValues.down: {
                 // Prevent the page from scrolling
                 event.preventDefault();
 
@@ -1024,7 +1024,8 @@ export default class ChipContainer extends LightningElement {
                 }
                 break;
             }
-            case keyCodes.space:
+            case keyValues.space:
+            case keyValues.spacebar:
                 // Prevent the page from scrolling
                 event.preventDefault();
 
@@ -1034,7 +1035,7 @@ export default class ChipContainer extends LightningElement {
                     this.initDragState(index);
                 }
                 break;
-            case keyCodes.escape:
+            case keyValues.escape:
                 this.clearDrag();
                 if (this.showPopover) {
                     this._popoverHasFocus = false;

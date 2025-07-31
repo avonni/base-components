@@ -5,7 +5,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
+import { animationFrame, keyValues, timeout } from 'c/utilsPrivate';
 import {
     Direction,
     startPositioning,
@@ -1563,30 +1563,31 @@ export default class AvatarGroup extends LightningElement {
      * @param {Event} event `keydown` event.
      */
     handleItemsKeyDown(event) {
-        switch (event.keyCode) {
-            case keyCodes.left:
-            case keyCodes.up: {
+        switch (event.key) {
+            case keyValues.left:
+            case keyValues.up: {
                 // Prevent the page from scrolling
                 event.preventDefault();
                 this.switchFocus(this._focusedIndex - 1);
                 this.focusItem();
                 break;
             }
-            case keyCodes.right:
-            case keyCodes.down: {
+            case keyValues.right:
+            case keyValues.down: {
                 // Prevent the page from scrolling
                 event.preventDefault();
                 this.switchFocus(this._focusedIndex + 1);
                 this.focusItem();
                 break;
             }
-            case keyCodes.space:
-            case keyCodes.enter:
+            case keyValues.space:
+            case keyValues.spacebar:
+            case keyValues.enter:
                 // Prevent the page from scrolling
                 event.preventDefault();
                 this.handleAvatarClick(event);
                 break;
-            case keyCodes.escape:
+            case keyValues.escape:
                 if (this.showHiddenItems) {
                     this.handleToggleShowHiddenItems();
                 }

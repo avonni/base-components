@@ -1,4 +1,4 @@
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 
 function preventDefaultAndStopPropagation(event) {
     event.preventDefault();
@@ -48,25 +48,26 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
     if (event.metaKey || event.ctrlKey) {
         keyboardInterface.setShiftIndex(-1);
         const keyCodesA = 'A'.charCodeAt(0);
-        switch (event.keyCode) {
-            case keyCodes.up:
+        switch (event.key) {
+            case keyValues.up:
                 preventDefaultAndStopPropagation(event);
                 setFocusOnNextOption(event.target, true, keyboardInterface);
                 break;
-            case keyCodes.down:
+            case keyValues.down:
                 preventDefaultAndStopPropagation(event);
                 setFocusOnNextOption(event.target, false, keyboardInterface);
                 break;
-            case keyCodes.right:
+            case keyValues.right:
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.moveOptionsBetweenLists(true);
                 break;
-            case keyCodes.left:
+            case keyValues.left:
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.moveOptionsBetweenLists(false);
                 break;
-            case keyCodes.enter:
-            case keyCodes.space:
+            case keyValues.enter:
+            case keyValues.space:
+            case keyValues.spacebar:
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.updateSelectedOptions(
                     event.target,
@@ -82,8 +83,8 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
             // do nothing
         }
     } else if (event.shiftKey) {
-        switch (event.keyCode) {
-            case keyCodes.up:
+        switch (event.key) {
+            case keyValues.up:
                 preventDefaultAndStopPropagation(event);
                 selectNextOptionFromShift(
                     event.target,
@@ -92,7 +93,7 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
                     keyboardInterface
                 );
                 break;
-            case keyCodes.down:
+            case keyValues.down:
                 preventDefaultAndStopPropagation(event);
                 selectNextOptionFromShift(
                     event.target,
@@ -106,17 +107,18 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
         }
     } else {
         keyboardInterface.setShiftIndex(-1);
-        switch (event.keyCode) {
-            case keyCodes.up:
+        switch (event.key) {
+            case keyValues.up:
                 preventDefaultAndStopPropagation(event);
                 selectNextOption(event.target, true, keyboardInterface);
                 break;
-            case keyCodes.down:
+            case keyValues.down:
                 preventDefaultAndStopPropagation(event);
                 selectNextOption(event.target, false, keyboardInterface);
                 break;
-            case keyCodes.enter:
-            case keyCodes.space:
+            case keyValues.enter:
+            case keyValues.space:
+            case keyValues.spacebar:
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.updateSelectedOptions(
                     event.target,

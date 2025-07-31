@@ -1310,7 +1310,6 @@ describe('DualListbox', () => {
 
                     const event = new CustomEvent('keydown');
                     event.key = ' ';
-                    event.keyCode = 32;
                     options[1].dispatchEvent(event);
 
                     expect(handler).toHaveBeenCalled();

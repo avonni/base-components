@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 
 const i18n = {
     cancelButton: 'Cancel',
@@ -133,19 +133,19 @@ export default class ColorPickerPanel extends LightningElement {
      * @param {Event} event
      */
     handleKeydown(event) {
-        if (event.keyCode === keyCodes.escape) {
+        if (event.key === keyValues.escape) {
             event.preventDefault();
             this.dispatchUpdateColorEventWithColor(this.currentColor);
         } else if (
             event.shiftKey &&
-            event.keyCode === keyCodes.tab &&
+            event.key === keyValues.tab &&
             event.target.dataset.id === 'color-anchor'
         ) {
             event.preventDefault();
             this.template.querySelector('button[name="done"]').focus();
         } else if (
             !event.shiftKey &&
-            event.keyCode === keyCodes.tab &&
+            event.key === keyValues.tab &&
             event.target.name === 'done'
         ) {
             event.preventDefault();

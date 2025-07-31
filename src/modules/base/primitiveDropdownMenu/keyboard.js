@@ -7,7 +7,7 @@
  *
  * https://www.w3.org/TR/wai-aria-practices/#menubutton
  */
-import { keyCodes, runActionOnBufferedTypedCharacters } from 'c/utilsPrivate';
+import { keyValues, runActionOnBufferedTypedCharacters } from 'c/utilsPrivate';
 
 function preventDefaultAndStopPropagation(event) {
     event.preventDefault();
@@ -22,14 +22,14 @@ function moveFocusToTypedCharacters(event, menuInterface) {
 }
 
 export function handleKeyDownOnMenuItem(event, menuItemIndex, menuInterface) {
-    switch (event.keyCode) {
+    switch (event.key) {
         // W3: Down Arrow and Up Arrow: move focus to the next and previous items, respectively, optionally
         // wrapping from last to first and vice versa.
-        case keyCodes.down:
-        case keyCodes.up: {
+        case keyValues.down:
+        case keyValues.up: {
             preventDefaultAndStopPropagation(event);
             let nextIndex =
-                event.keyCode === keyCodes.up
+                event.key === keyValues.up
                     ? menuItemIndex - 1
                     : menuItemIndex + 1;
             const totalMenuItems = menuInterface.getTotalMenuItems();
@@ -44,12 +44,12 @@ export function handleKeyDownOnMenuItem(event, menuItemIndex, menuInterface) {
         }
         // W3: Home and End: If arrow key wrapping is not supported, move focus to first and last item
         // Note: We do support wrapping, but it doesn't hurt to support these keys anyway.
-        case keyCodes.home: {
+        case keyValues.home: {
             preventDefaultAndStopPropagation(event);
             menuInterface.focusOnIndex(0);
             break;
         }
-        case keyCodes.end: {
+        case keyValues.end: {
             preventDefaultAndStopPropagation(event);
             menuInterface.focusOnIndex(menuInterface.getTotalMenuItems() - 1);
             break;
@@ -61,12 +61,12 @@ export function handleKeyDownOnMenuItem(event, menuItemIndex, menuInterface) {
         // return the focus and the browser will then handle the tab key default event and will move the focus
         // appropriately. It's handy to return focus for 'Tab' anyway for cases where the menu is in a detached
         // popup (one that's using a panel attached directly to the body).
-        case keyCodes.escape:
-        case keyCodes.tab: {
+        case keyValues.escape:
+        case keyValues.tab: {
             // hide menu item list if it is visible
             if (menuInterface.isMenuVisible()) {
                 // prevent default escape key action only when menu is visible
-                if (event.keyCode === keyCodes.escape) {
+                if (event.key === keyValues.escape) {
                     preventDefaultAndStopPropagation(event);
                 }
 
@@ -86,23 +86,24 @@ export function handleKeyDownOnMenuItem(event, menuItemIndex, menuInterface) {
 
 export function handleKeyDownOnMenuTrigger(event, menuInterface) {
     const isVisible = menuInterface.isMenuVisible();
-    switch (event.keyCode) {
+    switch (event.key) {
         // W3 suggests that opening a menu should place the focus on the first item (as we do with Up/Down),
         // but we're not doing that because it would differ from most of the native menus behaviour.
-        case keyCodes.enter:
-        case keyCodes.space:
+        case keyValues.enter:
+        case keyValues.space:
+        case keyValues.spacebar:
             preventDefaultAndStopPropagation(event);
             menuInterface.toggleMenuVisibility();
             break;
-        case keyCodes.down:
-        case keyCodes.up:
+        case keyValues.down:
+        case keyValues.up:
             preventDefaultAndStopPropagation(event);
             if (!isVisible) {
                 // default to first menu item
                 let focusNextIndex = 0;
 
                 // if key was up-arrow then set to last menu item
-                if (event.keyCode === keyCodes.up) {
+                if (event.key === keyValues.up) {
                     focusNextIndex = 'LAST';
                 }
                 menuInterface.setNextFocusIndex(focusNextIndex);
@@ -112,18 +113,18 @@ export function handleKeyDownOnMenuTrigger(event, menuInterface) {
             break;
         // W3: Home and End: If arrow key wrapping is not supported, move focus to first and last item
         // Note: We do support wrapping, but it doesn't hurt to support these keys anyway.
-        case keyCodes.home:
+        case keyValues.home:
             preventDefaultAndStopPropagation(event);
             menuInterface.focusOnIndex(0);
             break;
-        case keyCodes.end:
+        case keyValues.end:
             preventDefaultAndStopPropagation(event);
             menuInterface.focusOnIndex(menuInterface.getTotalMenuItems() - 1);
             break;
         // W3: Escape: Close the menu and return focus to the element or context, e.g., menu button or
         // parent menu item, from which the menu was opened
-        case keyCodes.escape:
-        case keyCodes.tab:
+        case keyValues.escape:
+        case keyValues.tab:
             if (isVisible) {
                 preventDefaultAndStopPropagation(event);
                 menuInterface.toggleMenuVisibility();
