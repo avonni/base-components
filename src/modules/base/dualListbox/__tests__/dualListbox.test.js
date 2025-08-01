@@ -1372,38 +1372,78 @@ describe('DualListbox', () => {
     });
 
     describe('Keyboard accessibility', () => {
-        it('Select all options', () => {
-            const options = [
-                { label: 'Adam Mangrove', value: 'AM' },
-                { label: 'Adam Mantium', value: 'AMa' },
-                { label: 'Laurie Mantle', value: 'LM' }
-            ];
-            element.options = options;
+        describe('Select all options', () => {
+            it('CTRL key and lowercase a', () => {
+                const options = [
+                    { label: 'Adam Mangrove', value: 'AM' },
+                    { label: 'Adam Mantium', value: 'AMa' },
+                    { label: 'Laurie Mantle', value: 'LM' }
+                ];
+                element.options = options;
 
-            return Promise.resolve()
-                .then(() => {
-                    const sourceOptions = element.shadowRoot.querySelectorAll(
-                        '[data-type="ul-source-list"]'
-                    );
-                    expect(sourceOptions).toHaveLength(3);
-                    expect(sourceOptions[0].selected).toBeFalsy();
-                    expect(sourceOptions[1].selected).toBeFalsy();
-                    expect(sourceOptions[2].selected).toBeFalsy();
-                    sourceOptions[0].dispatchEvent(
-                        new KeyboardEvent('keydown', {
-                            key: 'a',
-                            ctrlKey: true
-                        })
-                    );
-                })
-                .then(() => {
-                    const sourceOptions = element.shadowRoot.querySelectorAll(
-                        '[data-type="ul-source-list"]'
-                    );
-                    expect(sourceOptions[0].selected).toBeTruthy();
-                    expect(sourceOptions[1].selected).toBeTruthy();
-                    expect(sourceOptions[2].selected).toBeTruthy();
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(3);
+                        expect(sourceOptions[0].selected).toBeFalsy();
+                        expect(sourceOptions[1].selected).toBeFalsy();
+                        expect(sourceOptions[2].selected).toBeFalsy();
+                        sourceOptions[0].dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'a',
+                                ctrlKey: true
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions[0].selected).toBeTruthy();
+                        expect(sourceOptions[1].selected).toBeTruthy();
+                        expect(sourceOptions[2].selected).toBeTruthy();
+                    });
+            });
+
+            it('CTRL key and uppercase A', () => {
+                const options = [
+                    { label: 'Adam Mangrove', value: 'AM' },
+                    { label: 'Adam Mantium', value: 'AMa' },
+                    { label: 'Laurie Mantle', value: 'LM' }
+                ];
+                element.options = options;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(3);
+                        expect(sourceOptions[0].selected).toBeFalsy();
+                        expect(sourceOptions[1].selected).toBeFalsy();
+                        expect(sourceOptions[2].selected).toBeFalsy();
+                        sourceOptions[0].dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'A',
+                                ctrlKey: true
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions[0].selected).toBeTruthy();
+                        expect(sourceOptions[1].selected).toBeTruthy();
+                        expect(sourceOptions[2].selected).toBeTruthy();
+                    });
+            });
         });
     });
 });

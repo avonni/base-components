@@ -74,6 +74,7 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
                     true
                 );
                 break;
+            case 'A':
             case 'a':
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.selectAllOptions(event.target);
