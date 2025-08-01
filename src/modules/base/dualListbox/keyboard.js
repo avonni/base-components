@@ -47,7 +47,6 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
     const selected = event.target.dataset.selected === 'true';
     if (event.metaKey || event.ctrlKey) {
         keyboardInterface.setShiftIndex(-1);
-        const keyCodesA = 'A'.charCodeAt(0);
         switch (event.key) {
             case keyValues.up:
                 preventDefaultAndStopPropagation(event);
@@ -75,7 +74,7 @@ export function handleKeyDownOnOption(event, keyboardInterface) {
                     true
                 );
                 break;
-            case keyCodesA:
+            case 'a':
                 preventDefaultAndStopPropagation(event);
                 keyboardInterface.selectAllOptions(event.target);
                 break;
