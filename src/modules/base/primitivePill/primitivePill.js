@@ -1,5 +1,5 @@
 import { classSet, normalizeArray, normalizeString } from 'c/utils';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const VARIANTS = {
@@ -209,7 +209,7 @@ export default class PrimitivePill extends LightningElement {
      */
     handleKeyDown = (event) => {
         if (
-            event.keyCode === keyCodes.tab &&
+            event.key === keyValues.tab &&
             this.actions.length &&
             !this._focusedActions &&
             !event.shiftKey

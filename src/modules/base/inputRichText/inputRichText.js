@@ -13,6 +13,7 @@ import {
     inputRichTextLibrary,
     applyEmitterShadowDOMFix
 } from 'c/quillLib';
+import { keyValues } from 'c/utilsPrivate';
 
 const BINDINGS = {
     lightningIndent: {
@@ -95,19 +96,6 @@ const i18n = {
 };
 
 const IMAGE_FORMATS = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
-
-const KEY_CODES = {
-    down: 40,
-    end: 35,
-    enter: 13,
-    escape: 27,
-    home: 36,
-    left: 37,
-    right: 39,
-    space: 32,
-    tab: 9,
-    up: 38
-};
 
 function PARSE_INT_STYLE(element, value) {
     return parseInt(element.style[value], 10);
@@ -1373,10 +1361,10 @@ export default class InputRichText extends LightningElement {
         this.activateEditor();
         let status = false;
 
-        if (event.keyCode === KEY_CODES.enter) {
+        if (event.key === keyValues.enter) {
             this.saveLink();
             status = true;
-        } else if (event.keyCode === KEY_CODES.escape) {
+        } else if (event.key === keyValues.escape) {
             this.closeLinkPanel();
             status = true;
         }
@@ -1499,11 +1487,11 @@ export default class InputRichText extends LightningElement {
                 return;
             }
 
-            if (event.keyCode === KEY_CODES.right) {
+            if (event.key === keyValues.right) {
                 this.moveToNextButton(buttons, button);
             }
 
-            if (event.keyCode === KEY_CODES.left) {
+            if (event.key === keyValues.left) {
                 this.moveToPreviousButton(buttons, button);
             }
         }

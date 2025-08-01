@@ -1082,4 +1082,54 @@ describe('Carousel', () => {
             });
         });
     });
+
+    describe('Keyboard Accessibility', () => {
+        describe('Switch active panel using arrow keys on indicator', () => {
+            it('Arrow left', () => {
+                element.items = items;
+                element.disableAutoScroll = true;
+
+                return Promise.resolve().then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '.slds-carousel__indicator-action'
+                    );
+                    expect(indicators).toHaveLength(items.length);
+                    const currentIndicator = indicators[1];
+                    const previousIndicator = indicators[0];
+                    currentIndicator.click();
+                    const spy = jest.spyOn(previousIndicator, 'focus');
+                    currentIndicator.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'ArrowLeft',
+                            bubbles: true
+                        })
+                    );
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+
+            it('Arrow right', () => {
+                element.items = items;
+                element.disableAutoScroll = true;
+
+                return Promise.resolve().then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '.slds-carousel__indicator-action'
+                    );
+                    expect(indicators).toHaveLength(items.length);
+                    const currentIndicator = indicators[1];
+                    const nextIndicator = indicators[2];
+                    currentIndicator.click();
+                    const spy = jest.spyOn(nextIndicator, 'focus');
+                    currentIndicator.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'ArrowRight',
+                            bubbles: true
+                        })
+                    );
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+        });
+    });
 });

@@ -205,4 +205,25 @@ describe('MenuItemDialog', () => {
             });
         });
     });
+
+    describe('Keyboard accessbility', () => {
+        it('Select menu item using space key', () => {
+            element.label = 'Menu Item 1';
+
+            const handler = jest.fn();
+            element.addEventListener('click', handler);
+
+            return Promise.resolve().then(() => {
+                const link = element.shadowRoot.querySelector(
+                    '[data-element-id="a"]'
+                );
+                link.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        key: ' '
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+            });
+        });
+    });
 });

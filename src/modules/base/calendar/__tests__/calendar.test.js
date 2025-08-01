@@ -205,11 +205,6 @@ describe('Calendar', () => {
             });
         });
 
-        /**
-         * Keyboard accessibility:
-         *  [right = 39], [left = 37], [down = 40], [up = 38]
-         *  [PageUp = 33], [PageDown = 34]
-         */
         describe('keyboard accessibility', () => {
             it('[left]', () => {
                 element.value = '05/09/2021';
@@ -224,7 +219,7 @@ describe('Calendar', () => {
                         element.shadowRoot.querySelector('td[tabindex="0"]');
                     day9.dispatchEvent(
                         new KeyboardEvent('keydown', {
-                            keyCode: 37,
+                            key: 'ArrowLeft',
                             bubbles: true
                         })
                     );
@@ -247,7 +242,7 @@ describe('Calendar', () => {
                         element.shadowRoot.querySelector('td[tabindex="0"]');
                     day9.dispatchEvent(
                         new KeyboardEvent('keydown', {
-                            keyCode: 39,
+                            key: 'ArrowRight',
                             bubbles: true
                         })
                     );
@@ -270,7 +265,7 @@ describe('Calendar', () => {
                         element.shadowRoot.querySelector('td[tabindex="0"]');
                     day9.dispatchEvent(
                         new KeyboardEvent('keydown', {
-                            keyCode: 38,
+                            key: 'ArrowUp',
                             bubbles: true
                         })
                     );
@@ -293,7 +288,7 @@ describe('Calendar', () => {
                         element.shadowRoot.querySelector('td[tabindex="0"]');
                     day9.dispatchEvent(
                         new KeyboardEvent('keydown', {
-                            keyCode: 40,
+                            key: 'ArrowDown',
                             bubbles: true
                         })
                     );
@@ -316,7 +311,7 @@ describe('Calendar', () => {
                         element.shadowRoot.querySelector('td[tabindex="0"]');
                     day9.dispatchEvent(
                         new KeyboardEvent('keydown', {
-                            keyCode: 36,
+                            key: 'Home',
                             bubbles: true
                         })
                     );
@@ -339,7 +334,7 @@ describe('Calendar', () => {
                         element.shadowRoot.querySelector('td[tabindex="0"]');
                     day9.dispatchEvent(
                         new KeyboardEvent('keydown', {
-                            keyCode: 35,
+                            key: 'End',
                             bubbles: true
                         })
                     );
@@ -360,7 +355,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 34,
+                                key: 'PageDown',
                                 bubbles: true
                             })
                         );
@@ -388,7 +383,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 33,
+                                key: 'PageUp',
                                 bubbles: true
                             })
                         );
@@ -416,7 +411,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 34,
+                                key: 'PageDown',
                                 altKey: true,
                                 bubbles: true
                             })
@@ -444,7 +439,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 33,
+                                key: 'PageUp',
                                 altKey: true,
                                 bubbles: true
                             })
@@ -1274,7 +1269,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 37,
+                                key: 'ArrowLeft',
                                 bubbles: true
                             })
                         );
@@ -1302,7 +1297,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 39,
+                                key: 'ArrowRight',
                                 bubbles: true
                             })
                         );
@@ -1330,7 +1325,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 38,
+                                key: 'ArrowUp',
                                 bubbles: true
                             })
                         );
@@ -1358,7 +1353,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 40,
+                                key: 'ArrowDown',
                                 bubbles: true
                             })
                         );
@@ -1386,7 +1381,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 36,
+                                key: 'Home',
                                 bubbles: true
                             })
                         );
@@ -1414,7 +1409,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 35,
+                                key: 'End',
                                 bubbles: true
                             })
                         );
@@ -1442,7 +1437,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 35,
+                                key: 'End',
                                 bubbles: true
                             })
                         );
@@ -1470,7 +1465,7 @@ describe('Calendar', () => {
                             );
                         day9.dispatchEvent(
                             new KeyboardEvent('keydown', {
-                                keyCode: 34,
+                                key: 'PageDown',
                                 bubbles: true
                             })
                         );

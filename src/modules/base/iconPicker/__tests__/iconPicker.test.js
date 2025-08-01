@@ -1129,7 +1129,7 @@ describe('IconPicker', () => {
                         '[data-element-id="a-color"]'
                     );
                     icon.dispatchEvent(
-                        new KeyboardEvent('keydown', { keyCode: 13 })
+                        new KeyboardEvent('keydown', { key: 'Enter' })
                     );
                 })
                 .then(() => {
@@ -1155,7 +1155,7 @@ describe('IconPicker', () => {
                         '[data-element-id="a-color"]'
                     );
                     icon.dispatchEvent(
-                        new KeyboardEvent('keydown', { keyCode: 1 })
+                        new KeyboardEvent('keydown', { key: 'abc' })
                     );
                 })
                 .then(() => {
@@ -1319,7 +1319,7 @@ describe('IconPicker', () => {
                         '[data-element-id="lightning-input"]'
                     ).parentElement;
                     popover.dispatchEvent(
-                        new KeyboardEvent('keydown', { keyCode: 9 })
+                        new KeyboardEvent('keydown', { key: 'Tab' })
                     );
                 })
                 .then(() => {
@@ -1333,7 +1333,7 @@ describe('IconPicker', () => {
                         '[data-element-id="lightning-input"]'
                     ).parentElement;
                     popover.dispatchEvent(
-                        new KeyboardEvent('keyup', { keyCode: 9 })
+                        new KeyboardEvent('keyup', { key: 'Tab' })
                     );
                 })
                 .then(() => {
@@ -1356,10 +1356,10 @@ describe('IconPicker', () => {
                         '[data-element-id="lightning-input"]'
                     ).parentElement;
                     popover.dispatchEvent(
-                        new KeyboardEvent('keydown', { keyCode: 16 })
+                        new KeyboardEvent('keydown', { key: 'Shift' })
                     );
                     popover.dispatchEvent(
-                        new KeyboardEvent('keydown', { keyCode: 9 })
+                        new KeyboardEvent('keydown', { key: 'Tab' })
                     );
                 })
                 .then(() => {
@@ -1373,10 +1373,10 @@ describe('IconPicker', () => {
                         '[data-element-id="lightning-input"]'
                     ).parentElement;
                     popover.dispatchEvent(
-                        new KeyboardEvent('keyup', { keyCode: 9 })
+                        new KeyboardEvent('keyup', { key: 'Tab' })
                     );
                     popover.dispatchEvent(
-                        new KeyboardEvent('keyup', { keyCode: 16 })
+                        new KeyboardEvent('keyup', { key: 'Shift' })
                     );
                 })
                 .then(() => {
@@ -1399,7 +1399,7 @@ describe('IconPicker', () => {
                         '[data-element-id="lightning-input"]'
                     ).parentElement;
                     popover.dispatchEvent(
-                        new KeyboardEvent('keydown', { keyCode: 27 })
+                        new KeyboardEvent('keydown', { key: 'Escape' })
                     );
                 })
                 .then(() => {
