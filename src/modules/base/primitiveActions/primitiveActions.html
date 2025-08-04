@@ -10,6 +10,7 @@
                         disabled={action.disabled}
                         icon-name={action.iconName}
                         label={action.label}
+                        title={action.title}
                         variant="border-filled"
                         onclick={handleActionButtonClick}
                     ></lightning-button>
@@ -22,6 +23,7 @@
                         disabled={action.disabled}
                         icon-name={action.iconName}
                         size="medium"
+                        title={action.title}
                         value={action.name}
                         variant="border-filled"
                         onclick={handleActionButtonClick}
@@ -71,6 +73,7 @@
                 disabled={singleAction.disabled}
                 icon-name={singleAction.iconName}
                 label={singleAction.label}
+                title={singleAction.title}
                 variant="border-filled"
                 onclick={handleActionButtonClick}
             ></lightning-button>
@@ -83,6 +86,7 @@
                 disabled={singleAction.disabled}
                 icon-name={singleAction.iconName}
                 size={buttonIconSize}
+                title={singleAction.title}
                 value={singleAction.name}
                 variant={buttonIconVariant}
                 onclick={handleActionButtonClick}
