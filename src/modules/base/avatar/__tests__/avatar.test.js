@@ -30,6 +30,7 @@ describe('Avatar', () => {
             expect(element.fallbackIconName).toBeUndefined();
             expect(element.hideAvatarDetails).toBeFalsy();
             expect(element.href).toBeUndefined();
+            expect(element.iconPosition).toBe('start');
             expect(element.initials).toBeUndefined();
             expect(element.presence).toBeNull();
             expect(element.presencePosition).toBe('bottom-right');
@@ -314,6 +315,47 @@ describe('Avatar', () => {
                         '[data-element-id="avonni-primitive-avatar-no-details"]'
                     );
                     expect(avatar.href).toBe('url');
+                });
+            });
+        });
+
+        describe('Icon Position', () => {
+            it('Start', () => {
+                element.src =
+                    'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+                element.iconPosition = 'start';
+
+                return Promise.resolve().then(() => {
+                    const mediaObject = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-media-object"]'
+                    );
+                    expect(mediaObject.verticalAlign).toBe('start');
+                });
+            });
+
+            it('Center', () => {
+                element.src =
+                    'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+                element.iconPosition = 'center';
+
+                return Promise.resolve().then(() => {
+                    const mediaObject = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-media-object"]'
+                    );
+                    expect(mediaObject.verticalAlign).toBe('center');
+                });
+            });
+
+            it('End', () => {
+                element.src =
+                    'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+                element.iconPosition = 'end';
+
+                return Promise.resolve().then(() => {
+                    const mediaObject = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-media-object"]'
+                    );
+                    expect(mediaObject.verticalAlign).toBe('end');
                 });
             });
         });
