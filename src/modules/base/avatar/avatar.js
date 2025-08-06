@@ -23,6 +23,10 @@ const AVATAR_VARIANTS = {
     valid: ['circle', 'square'],
     default: 'square'
 };
+const ICON_POSITIONS = {
+    valid: ['start', 'center', 'end'],
+    default: 'start'
+};
 const POSITIONS = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
     presenceDefault: 'bottom-right',
@@ -136,6 +140,7 @@ export default class Avatar extends LightningElement {
     _entityTitle = DEFAULT_ENTITY_TITLE;
     _entityVariant = AVATAR_VARIANTS.default;
     _hideAvatarDetails = false;
+    _iconPosition = ICON_POSITIONS.default;
     _presence = PRESENCE.default;
     _presencePosition = POSITIONS.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
@@ -282,6 +287,24 @@ export default class Avatar extends LightningElement {
     }
     set hideAvatarDetails(value) {
         this._hideAvatarDetails = normalizeBoolean(value);
+    }
+
+    /**
+     * The position of the avatar icon. Valid values are top, center, end.
+     *
+     * @public
+     * @type {string}
+     * @default top
+     */
+    @api
+    get iconPosition() {
+        return this._iconPosition;
+    }
+    set iconPosition(value) {
+        this._iconPosition = normalizeString(value, {
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
+        });
     }
 
     /**
