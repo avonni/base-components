@@ -4,7 +4,7 @@ import {
     normalizeArray,
     normalizeBoolean
 } from 'c/utils';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 import { TreeData } from './treeData';
 
@@ -1353,22 +1353,22 @@ export default class Tree extends LightningElement {
         const item = this.treedata.getItem(key);
 
         switch (keyCode) {
-            case keyCodes.up:
+            case keyValues.up:
                 this.setFocusToPrevItem();
                 break;
-            case keyCodes.down:
+            case keyValues.down:
                 this.setFocusToNextItem();
                 break;
-            case keyCodes.home:
+            case keyValues.home:
                 this.setFocusToFirstItem();
                 break;
-            case keyCodes.end:
+            case keyValues.end:
                 this.setFocusToLastItem();
                 break;
-            case keyCodes.right:
+            case keyValues.right:
                 this.expandBranch(item.treeNode);
                 break;
-            case keyCodes.left:
+            case keyValues.left:
                 if (item.treeNode.nodeRef.expanded && !item.treeNode.isLeaf) {
                     this.collapseBranch(item.treeNode);
                 }

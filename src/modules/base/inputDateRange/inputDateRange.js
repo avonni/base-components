@@ -6,7 +6,7 @@ import {
     stopPositioning
 } from 'c/positionLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { animationFrame, keyCodes, timeout } from 'c/utilsPrivate';
+import { animationFrame, keyValues, timeout } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const DATE_STYLES = {
@@ -817,13 +817,13 @@ export default class InputDateRange extends LightningElement {
      * @param {Event} event
      */
     handleCalendarDialogKeyDown(event) {
-        if (!event.keyCode || !event.target) {
+        if (!event.key || !event.target) {
             return;
         }
         const elementId = event.target.dataset.elementId;
 
-        switch (event.keyCode) {
-            case keyCodes.escape:
+        switch (event.key) {
+            case keyValues.escape:
                 if (elementId.includes('start-date')) {
                     this.showStartDate = false;
                     this.stopPositioning();
@@ -835,8 +835,9 @@ export default class InputDateRange extends LightningElement {
                 }
                 break;
 
-            case keyCodes.space:
-            case keyCodes.enter:
+            case keyValues.space:
+            case keyValues.spacebar:
+            case keyValues.enter:
                 this.calendarKeyEvent = 'keyboard';
                 break;
 
@@ -1249,7 +1250,7 @@ export default class InputDateRange extends LightningElement {
      * @param {Event} event
      */
     handleInputKeyDown(event) {
-        if (event.key === 'Escape') {
+        if (event.key === keyValues.escape) {
             if (
                 event.currentTarget === this.startDateInput ||
                 event.currentTarget === this.startDateIcon

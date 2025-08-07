@@ -4,7 +4,7 @@ import {
     normalizeArray,
     normalizeBoolean
 } from 'c/utils';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const DEFAULT_EDIT_FIELDS = [
@@ -1448,8 +1448,8 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     handleKeydown = (event) => {
         if (this.popoverVisible) return;
-        switch (event.keyCode) {
-            case keyCodes.enter: {
+        switch (event.key) {
+            case keyValues.enter: {
                 this.preventDefaultAndStopPropagation(event);
                 const link = this.template.querySelector(
                     '[data-element-id="a-label-link"]'
@@ -1461,12 +1461,12 @@ export default class PrimitiveTreeItem extends LightningElement {
                 }
                 break;
             }
-            case keyCodes.up:
-            case keyCodes.down:
-            case keyCodes.right:
-            case keyCodes.left:
-            case keyCodes.home:
-            case keyCodes.end:
+            case keyValues.up:
+            case keyValues.down:
+            case keyValues.right:
+            case keyValues.left:
+            case keyValues.home:
+            case keyValues.end:
                 this.preventDefaultAndStopPropagation(event);
                 this.dispatchEvent(
                     new CustomEvent('privateitemkeydown', {
@@ -1475,7 +1475,7 @@ export default class PrimitiveTreeItem extends LightningElement {
                         cancelable: true,
                         detail: {
                             key: this.nodeKey,
-                            keyCode: event.keyCode
+                            keyCode: event.key
                         }
                     })
                 );
@@ -1580,7 +1580,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     handlePopoverCloseKeyDown(event) {
         // Trap the keyboard focus inside the popover
-        if (event.keyCode === keyCodes.tab && event.shiftKey) {
+        if (event.key === keyValues.tab && event.shiftKey) {
             this.template
                 .querySelector('[data-element-id="lightning-button-done"]')
                 .focus();
@@ -1595,7 +1595,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     handlePopoverDoneKeyDown(event) {
         // Trap the keyboard focus inside the popover
-        if (event.keyCode === keyCodes.tab && !event.shiftKey) {
+        if (event.key === keyValues.tab && !event.shiftKey) {
             this.template
                 .querySelector(
                     '[data-element-id="lightning-button-icon-close"]'

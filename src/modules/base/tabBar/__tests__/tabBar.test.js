@@ -250,19 +250,19 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[3].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 40 })
+                            new KeyboardEvent('keydown', { key: 'ArrowDown' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[4].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 40 })
+                            new KeyboardEvent('keydown', { key: 'ArrowDown' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[3].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 13 })
+                            new KeyboardEvent('keydown', { key: 'Enter' })
                         );
                     })
                     .then(() => {
@@ -286,19 +286,19 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[3].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 38 })
+                            new KeyboardEvent('keydown', { key: 'ArrowUp' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[4].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 38 })
+                            new KeyboardEvent('keydown', { key: 'ArrowUp' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[3].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 13 })
+                            new KeyboardEvent('keydown', { key: 'Enter' })
                         );
                     })
                     .then(() => {
@@ -327,7 +327,7 @@ describe('Tab Bar', () => {
                         const event = new CustomEvent('keydown', {
                             bubbles: true
                         });
-                        event.keyCode = 27;
+                        event.key = 'Escape';
                         tabs[0].dispatchEvent(event);
                         jest.runAllTimers();
                     })
@@ -358,7 +358,7 @@ describe('Tab Bar', () => {
                         const event = new CustomEvent('keydown', {
                             bubbles: true
                         });
-                        event.keyCode = 9;
+                        event.key = 'Tab';
                         tabs[1].dispatchEvent(event);
                         jest.runAllTimers();
                     })
@@ -404,12 +404,12 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[3].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 1 })
+                            new KeyboardEvent('keydown', { key: 'abc' })
                         );
                     })
                     .then(() => {
                         element.shadowRoot.dispatchEvent(
-                            new KeyboardEvent('keyup', { keyCode: 1 })
+                            new KeyboardEvent('keyup', { key: 'abc' })
                         );
                     })
                     .then(() => {
@@ -429,13 +429,13 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[1].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 39 })
+                            new KeyboardEvent('keydown', { key: 'ArrowRight' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[2].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 39 })
+                            new KeyboardEvent('keydown', { key: 'ArrowRight' })
                         );
                     })
                     .then(() => {
@@ -452,13 +452,13 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[3].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 39 })
+                            new KeyboardEvent('keydown', { key: 'ArrowRight' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[4].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 39 })
+                            new KeyboardEvent('keydown', { key: 'ArrowRight' })
                         );
                     })
                     .then(() => {
@@ -476,13 +476,13 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[1].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 37 })
+                            new KeyboardEvent('keydown', { key: 'ArrowLeft' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[0].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 37 })
+                            new KeyboardEvent('keydown', { key: 'ArrowLeft' })
                         );
                     })
                     .then(() => {
@@ -499,13 +499,13 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[1].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 37 })
+                            new KeyboardEvent('keydown', { key: 'ArrowLeft' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[0].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 37 })
+                            new KeyboardEvent('keydown', { key: 'ArrowLeft' })
                         );
                     })
                     .then(() => {
@@ -523,13 +523,13 @@ describe('Tab Bar', () => {
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[1].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 37 })
+                            new KeyboardEvent('keydown', { key: 'ArrowLeft' })
                         );
                     })
                     .then(() => {
                         const tabs = element.shadowRoot.querySelectorAll('a');
                         tabs[2].parentElement.dispatchEvent(
-                            new KeyboardEvent('keydown', { keyCode: 1 })
+                            new KeyboardEvent('keydown', { key: 'abc' })
                         );
                     })
                     .then(() => {

@@ -1310,7 +1310,6 @@ describe('DualListbox', () => {
 
                     const event = new CustomEvent('keydown');
                     event.key = ' ';
-                    event.keyCode = 32;
                     options[1].dispatchEvent(event);
 
                     expect(handler).toHaveBeenCalled();
@@ -1367,6 +1366,82 @@ describe('DualListbox', () => {
                         expect(sourceOptions).toHaveLength(2);
                         expect(sourceOptions[0].dataset.value).toBe('AM');
                         expect(sourceOptions[1].dataset.value).toBe('AMa');
+                    });
+            });
+        });
+    });
+
+    describe('Keyboard accessibility', () => {
+        describe('Select all options', () => {
+            it('CTRL key and lowercase a', () => {
+                const options = [
+                    { label: 'Adam Mangrove', value: 'AM' },
+                    { label: 'Adam Mantium', value: 'AMa' },
+                    { label: 'Laurie Mantle', value: 'LM' }
+                ];
+                element.options = options;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(3);
+                        expect(sourceOptions[0].selected).toBeFalsy();
+                        expect(sourceOptions[1].selected).toBeFalsy();
+                        expect(sourceOptions[2].selected).toBeFalsy();
+                        sourceOptions[0].dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'a',
+                                ctrlKey: true
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions[0].selected).toBeTruthy();
+                        expect(sourceOptions[1].selected).toBeTruthy();
+                        expect(sourceOptions[2].selected).toBeTruthy();
+                    });
+            });
+
+            it('CTRL key and uppercase A', () => {
+                const options = [
+                    { label: 'Adam Mangrove', value: 'AM' },
+                    { label: 'Adam Mantium', value: 'AMa' },
+                    { label: 'Laurie Mantle', value: 'LM' }
+                ];
+                element.options = options;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(3);
+                        expect(sourceOptions[0].selected).toBeFalsy();
+                        expect(sourceOptions[1].selected).toBeFalsy();
+                        expect(sourceOptions[2].selected).toBeFalsy();
+                        sourceOptions[0].dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'A',
+                                ctrlKey: true
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions[0].selected).toBeTruthy();
+                        expect(sourceOptions[1].selected).toBeTruthy();
+                        expect(sourceOptions[2].selected).toBeTruthy();
                     });
             });
         });

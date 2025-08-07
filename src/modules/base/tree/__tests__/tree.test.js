@@ -832,7 +832,7 @@ describe('Tree', () => {
                     const event = new CustomEvent('privateitemkeydown', {
                         detail: {
                             key: '3',
-                            keyCode: 39
+                            keyCode: 'ArrowRight'
                         },
                         bubbles: true
                     });
@@ -862,7 +862,7 @@ describe('Tree', () => {
                     ).toBeUndefined();
                     expect(element.items[2]).toMatchObject(item);
 
-                    event.detail.keyCode = 37;
+                    event.detail.keyCode = 'ArrowLeft';
                     items[2].dispatchEvent(event);
                     expect(handler).toHaveBeenCalledTimes(2);
                     expect(handler.mock.calls[1][0].detail.action).toBe(
@@ -1749,7 +1749,7 @@ describe('Tree', () => {
                     const event = new CustomEvent('privateitemkeydown', {
                         detail: {
                             key: '2',
-                            keyCode: 38
+                            keyCode: 'ArrowUp'
                         },
                         bubbles: true
                     });
@@ -1791,7 +1791,7 @@ describe('Tree', () => {
                     const event = new CustomEvent('privateitemkeydown', {
                         detail: {
                             key: '2',
-                            keyCode: 40
+                            keyCode: 'ArrowDown'
                         },
                         bubbles: true
                     });
@@ -1832,7 +1832,7 @@ describe('Tree', () => {
                     const event = new CustomEvent('privateitemkeydown', {
                         detail: {
                             key: '3',
-                            keyCode: 36
+                            keyCode: 'Home'
                         },
                         bubbles: true
                     });
@@ -1874,7 +1874,7 @@ describe('Tree', () => {
                     const event = new CustomEvent('privateitemkeydown', {
                         detail: {
                             key: '1',
-                            keyCode: 35
+                            keyCode: 'End'
                         },
                         bubbles: true
                     });
