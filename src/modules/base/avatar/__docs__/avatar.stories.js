@@ -156,7 +156,7 @@ export default {
             options: ['start', 'center', 'end'],
             description: 'Position of the avatar icon.',
             table: {
-                defaultValue: { summary: 'start' },
+                defaultValue: { summary: 'center' },
                 type: { summary: 'string' }
             }
         },
@@ -365,7 +365,7 @@ export default {
         actionPosition: 'bottom-left',
         entityPosition: 'top-left',
         entityVariant: 'square',
-        iconPosition: 'start',
+        iconPosition: 'center',
         hideAvatarDetails: false,
         presencePosition: 'bottom-right',
         size: 'medium',

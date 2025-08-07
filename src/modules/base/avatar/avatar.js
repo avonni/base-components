@@ -25,7 +25,7 @@ const AVATAR_VARIANTS = {
 };
 const ICON_POSITIONS = {
     valid: ['start', 'center', 'end'],
-    default: 'start'
+    default: 'center'
 };
 const POSITIONS = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
@@ -294,7 +294,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default start
+     * @default center
      */
     @api
     get iconPosition() {
