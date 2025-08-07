@@ -536,7 +536,7 @@ export default class Slider extends LightningElement {
             this.scaleValues();
             this.capValues();
         } else {
-            this.sortComputedValues();
+            this.sortComputedValues(this._value);
         }
 
         this._domModified = true;
@@ -1550,7 +1550,7 @@ export default class Slider extends LightningElement {
         }
         this.computedMin = this._min * this._scalingFactor;
         this.computedMax = this._max * this._scalingFactor;
-        this.sortComputedValues();
+        this.sortComputedValues(this._computedValues);
     }
 
     /**
@@ -1680,14 +1680,14 @@ export default class Slider extends LightningElement {
         wrapper.style.width = `${parentHeight + this.thumbRadius}px`;
     }
 
-    sortComputedValues() {
-        if (Array.isArray(this._value)) {
+    sortComputedValues(value) {
+        if (Array.isArray(value)) {
             // The top pin should receive focus first
             this._computedValues = this.isVertical
-                ? [...this._value].sort((a, b) => b - a)
-                : [...this._value];
+                ? [...value].sort((a, b) => b - a)
+                : [...value].sort((a, b) => a - b);
         } else {
-            this._computedValues = [this._value];
+            this._computedValues = [value];
         }
     }
 
