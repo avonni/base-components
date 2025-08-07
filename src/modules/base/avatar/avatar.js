@@ -290,11 +290,11 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * The position of the avatar icon. Valid values are top, center, end.
+     * The position of the avatar icon. Valid values are start, center, end.
      *
      * @public
      * @type {string}
-     * @default top
+     * @default start
      */
     @api
     get iconPosition() {
