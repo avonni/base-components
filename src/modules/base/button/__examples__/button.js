@@ -15,6 +15,7 @@ export const Button = ({
     loadingStateAlternativeText,
     name,
     stretch,
+    title,
     type,
     value,
     variant
@@ -32,6 +33,7 @@ export const Button = ({
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
     element.stretch = stretch;
+    element.title = title;
     element.type = type;
     element.value = value;
     element.variant = variant;

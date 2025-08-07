@@ -118,6 +118,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        title: {
+            name: 'title',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The text to be displayed when hovering over the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         tooltip: {
             control: {
                 type: 'text'

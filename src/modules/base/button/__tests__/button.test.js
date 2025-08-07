@@ -29,6 +29,7 @@ describe('Button', () => {
             expect(element.label).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.stretch).toBeFalsy();
+            expect(element.title).toBeUndefined();
             expect(element.type).toBe('button');
             expect(element.value).toBeUndefined();
             expect(element.variant).toBe('neutral');
@@ -356,6 +357,20 @@ describe('Button', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList).toContain('slds-button_stretch');
+                });
+            });
+        });
+
+        describe('Title', () => {
+            it('Passed to the component', () => {
+                element.label = 'Label';
+                element.title = 'some text';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.title).toBe('some text');
                 });
             });
         });

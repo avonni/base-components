@@ -16,6 +16,7 @@ export const ButtonIcon = ({
     loadingStateAlternativeText,
     name,
     size,
+    title,
     tooltip,
     type,
     value,
@@ -32,6 +33,7 @@ export const ButtonIcon = ({
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
     element.size = size;
+    element.title = title;
     element.tooltip = tooltip;
     element.type = type;
     element.value = value;

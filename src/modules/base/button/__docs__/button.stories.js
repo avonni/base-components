@@ -138,6 +138,17 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        title: {
+            name: 'title',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The text to be displayed when hovering over the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         type: {
             control: {
                 type: 'select'
