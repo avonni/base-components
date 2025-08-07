@@ -88,7 +88,6 @@ export default class MediaObject extends LightningElement {
         return this._verticalAlign;
     }
     set verticalAlign(verticalAlign) {
-        console.log('myVerticalAlign');
         this._verticalAlign = normalizeString(verticalAlign, {
             fallbackValue: VERTICAL_ALIGNMENTS.default,
             validValues: VERTICAL_ALIGNMENTS.value
