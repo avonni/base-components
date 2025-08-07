@@ -9,6 +9,7 @@ import { LightningElement, api } from 'lwc';
 export default class Avatar extends LightningElement {
     @api alternativeText;
     @api fallbackIconName;
+    @api iconPosition;
     @api initials;
     @api size;
     @api src;
