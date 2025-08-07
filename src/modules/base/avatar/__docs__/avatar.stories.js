@@ -365,6 +365,7 @@ export default {
         actionPosition: 'bottom-left',
         entityPosition: 'top-left',
         entityVariant: 'square',
+        iconPosition: 'start',
         hideAvatarDetails: false,
         presencePosition: 'bottom-right',
         size: 'medium',
