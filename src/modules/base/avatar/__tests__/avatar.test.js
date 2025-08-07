@@ -30,7 +30,7 @@ describe('Avatar', () => {
             expect(element.fallbackIconName).toBeUndefined();
             expect(element.hideAvatarDetails).toBeFalsy();
             expect(element.href).toBeUndefined();
-            expect(element.iconPosition).toBe('start');
+            expect(element.iconPosition).toBe('center');
             expect(element.initials).toBeUndefined();
             expect(element.presence).toBeNull();
             expect(element.presencePosition).toBe('bottom-right');
