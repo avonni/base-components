@@ -1,22 +1,22 @@
-import { LightningElement, api, track } from 'lwc';
-import { keyValues } from 'c/utilsPrivate';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
+    generateUUID,
     normalizeArray,
-    normalizeBoolean,
-    generateUUID
+    normalizeBoolean
 } from 'c/utils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
+import { keyValues } from 'c/utilsPrivate';
+import { LightningElement, api, track } from 'lwc';
 
 const AUTO_SCROLL_INCREMENT = 5;
 const AUTO_SCROLL_THRESHOLD = 50;
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
 const DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT = 'Show more';
+const DEFAULT_SHOW_MORE_BUTTON_WIDTH = 60;
 const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
-const SHOW_MORE_BUTTON_WIDTH = 60;
 
 /**
  * @class
@@ -824,7 +824,11 @@ export default class ChipContainer extends LightningElement {
 
             // Remove some items to allocate some space for the "Show More" button
             if (width >= totalWidth || fittingCount < this.items.length) {
-                totalWidth -= SHOW_MORE_BUTTON_WIDTH;
+                const buttonWidth =
+                    this.template.querySelector(
+                        '[data-element-id="lightning-button-show-more"]'
+                    )?.offsetWidth || DEFAULT_SHOW_MORE_BUTTON_WIDTH;
+                totalWidth -= buttonWidth;
                 while (width >= totalWidth) {
                     const lastItemWidth =
                         fittingCount > 0

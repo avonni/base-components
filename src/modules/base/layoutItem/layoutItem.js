@@ -54,8 +54,6 @@ export default class LayoutItem extends LightningElement {
     }
 
     renderedCallback() {
-        if (this._rendered) return;
-        this._rendered = true;
         this.updateClassAndStyle();
     }
 

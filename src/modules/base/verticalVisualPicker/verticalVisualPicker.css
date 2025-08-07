@@ -69,10 +69,17 @@
     );
 }
 
+.slds-visual-picker input:checked ~ label .slds-visual-picker__icon {
+    background-color: var(
+        --avonni-vertical-visual-picker-figure-color-background-selected,
+        var(--lwc-brandPrimary, #1b96ff)
+    );
+}
+
 .slds-visual-picker
     input:checked:not(:disabled)
     ~ label
-    .avonni-vertical-visual-picker__figure {
+    .slds-visual-picker__text {
     background-color: var(
         --avonni-vertical-visual-picker-figure-color-background-selected,
         #ffffff
