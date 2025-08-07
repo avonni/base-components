@@ -962,7 +962,10 @@ export default class Slider extends LightningElement {
      * @type {number[]}
      */
     get values() {
-        return this._computedValues;
+        if (this.isVertical) {
+            return this._computedValues.sort((a, b) => b - a);
+        }
+        return this._computedValues.sort((a, b) => a - b);
     }
 
     /**
