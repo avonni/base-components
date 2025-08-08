@@ -14,6 +14,11 @@ import {
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
+const AVATAR_GROUP_ICON_POSITIONS = {
+    valid: ['start', 'center', 'end'],
+    default: 'center'
+};
+
 const AVATAR_GROUP_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
     default: 'medium'
@@ -135,6 +140,7 @@ export default class AvatarGroup extends LightningElement {
         DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT;
 
     _enableInfiniteLoading = false;
+    _iconPosition = AVATAR_GROUP_ICON_POSITIONS.default;
     _isLoading = false;
     _items = [];
     _layout = AVATAR_GROUP_LAYOUTS.default;
@@ -232,6 +238,24 @@ export default class AvatarGroup extends LightningElement {
         } else if (this._connected) {
             this.handleListScroll();
         }
+    }
+
+    /**
+     * The icon position of the avatars . Valid values are start, center, end.
+     *
+     * @public
+     * @type {string}
+     * @default center
+     */
+    @api
+    get iconPosition() {
+        return this._iconPosition;
+    }
+    set iconPosition(value) {
+        this._iconPosition = normalizeString(value, {
+            fallbackValue: AVATAR_GROUP_ICON_POSITIONS.default,
+            validValues: AVATAR_GROUP_ICON_POSITIONS.valid
+        });
     }
 
     /**
