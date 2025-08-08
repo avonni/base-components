@@ -42,6 +42,18 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        iconPosition: {
+            control: {
+                type: 'select'
+            },
+            options: ['start', 'center', 'end'],
+            description:
+                'The icon position of the avatars. Valid values include x-small, small, medium, large, x-large and xx-large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'center' }
+            }
+        },
         isLoading: {
             name: 'is-loading',
             control: {
@@ -291,6 +303,7 @@ export default {
     },
     args: {
         enableInfiniteLoading: false,
+        iconPosition: 'center',
         isLoading: false,
         keyboardAssistiveText: 'Move between the items by using arrow keys.',
         layout: 'stack',

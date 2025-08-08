@@ -148,6 +148,18 @@ export default {
                 category: 'Details'
             }
         },
+        iconPosition: {
+            name: 'icon-position',
+            control: {
+                type: 'select'
+            },
+            options: ['start', 'center', 'end'],
+            description: 'Position of the avatar icon.',
+            table: {
+                defaultValue: { summary: 'center' },
+                type: { summary: 'string' }
+            }
+        },
         initials: {
             control: {
                 type: 'text'
@@ -353,6 +365,7 @@ export default {
         actionPosition: 'bottom-left',
         entityPosition: 'top-left',
         entityVariant: 'square',
+        iconPosition: 'center',
         hideAvatarDetails: false,
         presencePosition: 'bottom-right',
         size: 'medium',
@@ -472,6 +485,51 @@ BaseWithCenteredDetails.args = {
     secondaryText: 'VP, Finance',
     tertiaryText: 'Online',
     textPosition: 'center'
+};
+
+export const BaseWithIconPositionCenter = Template.bind({});
+BaseWithIconPositionCenter.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    iconPosition: 'center',
+    tags: tags
+};
+
+export const BaseWithIconPositionEnd = Template.bind({});
+BaseWithIconPositionEnd.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    iconPosition: 'end',
+    tags: tags
+};
+
+export const BaseWithIconPositionStart = Template.bind({});
+BaseWithIconPositionStart.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    iconPosition: 'start',
+    tags: tags
 };
 
 export const BaseWithLeftDetails = Template.bind({});

@@ -9,6 +9,7 @@ export const InfiniteLoadingUsingShowMoreAvatarGroup = ({
     actionAlternativeText,
     actionIconName,
     enableInfiniteLoading,
+    iconPosition,
     isLoading,
     items,
     keyboardAssistiveText,
@@ -34,6 +35,7 @@ export const InfiniteLoadingUsingShowMoreAvatarGroup = ({
     element.actionAlternativeText = actionAlternativeText;
     element.actionIconName = actionIconName;
     element.enableInfiniteLoading = enableInfiniteLoading;
+    element.iconPosition = iconPosition;
     element.isLoading = isLoading;
     element.items = items;
     element.keyboardAssistiveText = keyboardAssistiveText;
