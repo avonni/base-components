@@ -33,6 +33,7 @@ describe('Button Icon', () => {
             expect(element.size).toBe('medium');
             expect(element.tabIndex).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
+            expect(element.title).toBeUndefined();
             expect(element.type).toBe('button');
             expect(element.value).toBeUndefined();
             expect(element.variant).toBe('border');
@@ -424,6 +425,19 @@ describe('Button Icon', () => {
 
                 const instance = Tooltip.mock.instances[0];
                 expect(instance.initialize).toHaveBeenCalled();
+            });
+        });
+
+        describe('Title', () => {
+            it('Passed to the component', () => {
+                element.title = 'some text';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.title).toBe('some text');
+                });
             });
         });
 
