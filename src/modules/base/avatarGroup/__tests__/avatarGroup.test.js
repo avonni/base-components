@@ -101,6 +101,7 @@ describe('Avatar Group', () => {
             expect(element.actionAlternativeText).toBeUndefined();
             expect(element.actionIconName).toBeUndefined();
             expect(element.enableInfiniteLoading).toBeFalsy();
+            expect(element.iconPosition).toBe('center');
             expect(element.isLoading).toBeFalsy();
             expect(element.items).toEqual([]);
             expect(element.keyboardAssistiveText).toBe(
