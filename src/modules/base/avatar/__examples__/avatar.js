@@ -16,6 +16,7 @@ export const Avatar = ({
     fallbackIconName,
     hideAvatarDetails,
     initials,
+    iconPosition,
     presence,
     presencePosition,
     presenceTitle,
@@ -45,6 +46,7 @@ export const Avatar = ({
     element.entityVariant = entityVariant;
     element.fallbackIconName = fallbackIconName;
     element.hideAvatarDetails = hideAvatarDetails;
+    element.iconPosition = iconPosition;
     element.initials = initials;
     element.presence = presence;
     element.presencePosition = presencePosition;
