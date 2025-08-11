@@ -1794,5 +1794,109 @@ describe('Primitive Combobox', () => {
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
             });
         });
+
+        describe('Private option click', () => {
+            it('Has a search term and option clicked has children', () => {
+                element.groups = groups;
+                element.options = options;
+                element.allowSearch = true;
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+
+                input.click();
+                const handler = jest.fn();
+                element.addEventListener('search', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        input.value = 'Tyr';
+                        input.dispatchEvent(new CustomEvent('input'));
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        const comboboxGroup = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-group"]'
+                        );
+                        jest.spyOn(
+                            comboboxGroup,
+                            'optionElements',
+                            'get'
+                        ).mockReturnValue([
+                            {
+                                dataset: {
+                                    ariaDisabled: 'false',
+                                    value: options[3].value
+                                }
+                            }
+                        ]);
+                        comboboxGroup.dispatchEvent(
+                            new CustomEvent('privateoptionclick', {
+                                detail: { value: options[3].value }
+                            })
+                        );
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalledTimes(2);
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(handler.mock.calls[1][0].detail.value).toBe('');
+                    });
+            });
+
+            it('Has a search term and option clicked does not have children', () => {
+                element.groups = groups;
+                element.options = options;
+                element.allowSearch = true;
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+
+                input.click();
+                const handler = jest.fn();
+                element.addEventListener('search', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        input.value = 'Bur';
+                        input.dispatchEvent(new CustomEvent('input'));
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        const comboboxGroup = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-group"]'
+                        );
+                        jest.spyOn(
+                            comboboxGroup,
+                            'optionElements',
+                            'get'
+                        ).mockReturnValue([
+                            {
+                                dataset: {
+                                    ariaDisabled: 'false',
+                                    value: options[0].value
+                                }
+                            }
+                        ]);
+                        comboboxGroup.dispatchEvent(
+                            new CustomEvent('privateoptionclick', {
+                                detail: { value: options[0].value }
+                            })
+                        );
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalledTimes(1);
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(handler.mock.calls[0][0].detail.value).toBe(
+                            'Bur'
+                        );
+                    });
+            });
+        });
     });
 });
