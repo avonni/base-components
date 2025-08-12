@@ -386,6 +386,17 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
+     * Computed image class.
+     *
+     * @type {string}
+     */
+    get computedImageClass() {
+        return classSet('avonni-profile-card__image')
+            .add(this.computedCircleClass)
+            .toString();
+    }
+
+    /**
      * Computed Main container class styling based on selected attributes.
      *
      * @type {string}

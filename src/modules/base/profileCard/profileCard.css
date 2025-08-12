@@ -54,20 +54,12 @@ article.avonni-profile-card {
     width: 9.25rem;
     transition: border-color 0.2s ease;
     z-index: 50;
-    object-fit: cover;
 }
 
 .avonni-profile-card__avatar-img-circle {
     height: 100%;
     width: 100%;
     border-radius: 50%;
-}
-.avonni-profile-card__avatar-wrapper {
-    position: relative;
-    overflow: hidden;
-    z-index: -10;
-    width: 100%;
-    height: 100%;
 }
 
 .avonni-profile-card__avatar_size-x-small {
@@ -128,32 +120,47 @@ article.avonni-profile-card {
     z-index: -10;
 }
 
+.avonni-profile-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avonni-profile-card__image-wrapper {
+    position: relative;
+    overflow: hidden;
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+}
+
 .avonni-profile-card__lightning-icon {
     align-items: center;
     justify-self: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    object-fit: cover;
 }
 
 .avonni-profile-card__lightning-icon_size-x-small {
-    scale: 1.7;
+    transform: scale(1.7);
 }
 
 .avonni-profile-card__lightning-icon_size-small {
-    scale: 2.4;
+    transform: scale(2.4);
 }
 
 .avonni-profile-card__lightning-icon_size-medium {
-    scale: 3;
+    transform: scale(3);
 }
 
 .avonni-profile-card__lightning-icon_size-large {
-    scale: 4.8;
+    transform: scale(4.8);
 }
 
 .avonni-profile-card__lightning-icon_size-x-large {
-    scale: 5.8;
+    transform: scale(5.8);
 }
 
 .avonni-profile-card__text {
