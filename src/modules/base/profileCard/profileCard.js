@@ -428,24 +428,6 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Convert profile card avatar size to primitive avatar size
-     *
-     * @type {boolean}
-     */
-    get primitiveAvatarSize() {
-        switch (this.avatarSize) {
-            case 'x-small':
-                return 'medium';
-            case 'small':
-                return 'large';
-            case 'medium':
-                return 'x-large';
-            default:
-                return 'xx-large';
-        }
-    }
-
-    /**
      * HTML element for the profile card container.
      *
      * @type {HTMLElement}
