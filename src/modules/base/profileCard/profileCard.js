@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_POSITIONS = {
     valid: [
@@ -358,6 +358,18 @@ export default class ProfileCard extends LightningElement {
             'slds-media slds-media_center slds-has-flexi-truncate avonni-profile-card_color-background'
         )
             .add(`avonni-profile-card__background_size-${this.avatarSize}`)
+            .toString();
+    }
+
+    /**
+     * Computed lightning-icon class.
+     *
+     * @type {string}
+     */
+    get computedIconClass() {
+        return classSet('avonni-profile-card__lightning-icon')
+            .add(`avonni-profile-card__lightning-icon_size-${this.avatarSize}`)
+            .add(this.computedCircleClass)
             .toString();
     }
 

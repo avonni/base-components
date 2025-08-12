@@ -12,16 +12,16 @@
                 <div class={computedAvatarClass} data-element-id="avatar">
                     <div
                         if:true={showAvatarFallbackIcon}
-                        class={computedCircleClass}
                         data-element-id="icon-wrapper"
                     >
-                        <c-primitive-avatar
+                        <lightning-icon
+                            class={computedIconClass}
                             alternative-text={avatarAlternativeText}
-                            fallback-icon-name={avatarFallbackIconName}
-                            size={primitiveAvatarSize}
-                            variant={avatarVariant}
+                            icon-name={avatarFallbackIconName}
+                            title={avatarAlternativeText}
                             data-element-id="avatar-lightning-icon"
-                        ></c-primitive-avatar>
+                        >
+                        </lightning-icon>
                     </div>
                     <img
                         if:true={avatarSrc}
