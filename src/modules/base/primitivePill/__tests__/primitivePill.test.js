@@ -83,7 +83,7 @@ describe('Primitive Pill', () => {
                     const event = new CustomEvent('keydown');
                     const propagationSpy = jest.spyOn(event, 'stopPropagation');
                     const defaultSpy = jest.spyOn(event, 'preventDefault');
-                    event.keyCode = 9;
+                    event.key = 'Tab';
 
                     element.dispatchEvent(event);
                     expect(focusSpy).toHaveBeenCalledTimes(1);

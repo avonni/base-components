@@ -7,6 +7,7 @@ import {
 } from 'c/utils';
 import { LightningElement, api, track } from 'lwc';
 import { ICON_TYPES } from './icons/salesforceIcons';
+import { keyValues } from 'c/utilsPrivate';
 
 const DEFAULT_BAD_INPUT_MESSAGE = 'Please ensure the value is correct.';
 const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
@@ -1080,7 +1081,7 @@ export default class IconPicker extends LightningElement {
      * @param {Event} event
      */
     handleMenuKeydown(event) {
-        if (event.keyCode === 27) {
+        if (event.key === keyValues.escape) {
             this.handleCancel(event);
         }
     }
@@ -1166,7 +1167,7 @@ export default class IconPicker extends LightningElement {
      * @param {Event} event
      */
     handleSelectIconFromKeyboard(event) {
-        if (event.keyCode === 13) {
+        if (event.key === keyValues.enter) {
             this.newValue = event.currentTarget.dataset.icon;
             this.handleDone(event);
         }

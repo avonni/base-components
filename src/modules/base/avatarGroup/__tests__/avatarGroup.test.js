@@ -1232,7 +1232,7 @@ describe('Avatar Group', () => {
                         const event = new CustomEvent('keydown', {
                             bubbles: true
                         });
-                        event.keyCode = 27;
+                        event.key = 'Escape';
                         avatarHidden[0].dispatchEvent(event);
                     })
                     .then(() => {
@@ -1267,7 +1267,7 @@ describe('Avatar Group', () => {
 
                 // Move focus to the right
                 const event = new CustomEvent('keydown', { bubbles: true });
-                event.keyCode = 39;
+                event.key = 'ArrowRight';
                 avatars[0].dispatchEvent(event);
                 expect(firstAvatarFocus).toHaveBeenCalledTimes(1);
                 expect(secondAvatarFocus).toHaveBeenCalledTimes(1);
@@ -1282,7 +1282,7 @@ describe('Avatar Group', () => {
                 expect(thirdAvatarFocus).toHaveBeenCalledTimes(2);
 
                 // Move focus back to the left
-                event.keyCode = 37;
+                event.key = 'ArrowLeft';
                 avatars[2].dispatchEvent(event);
                 avatars[1].dispatchEvent(event);
                 expect(firstAvatarFocus).toHaveBeenCalledTimes(2);
@@ -1374,7 +1374,7 @@ describe('Avatar Group', () => {
                         '[data-element-id="li-visible"]'
                     );
                     const event = new CustomEvent('keydown', { bubbles: true });
-                    event.keyCode = 13;
+                    event.key = 'Enter';
                     avatar.dispatchEvent(event);
                     expect(handler).toHaveBeenCalled();
                     expect([

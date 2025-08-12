@@ -1622,7 +1622,7 @@ describe('Color Picker', () => {
 
                     dropdownElement.dispatchEvent(
                         new KeyboardEvent('keydown', {
-                            keyCode: 9,
+                            key: 'Tab',
                             shiftKey: true
                         })
                     );
