@@ -374,6 +374,18 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
+     * Computed icon-wrapper class.
+     *
+     * @type {string}
+     */
+    get computedIconWrapperClass() {
+        return classSet('avonni-profile-card__icon-wrapper')
+            .add(this.computedCircleClass)
+            .add('slds-align_absolute-center')
+            .toString();
+    }
+
+    /**
      * Computed Main container class styling based on selected attributes.
      *
      * @type {string}

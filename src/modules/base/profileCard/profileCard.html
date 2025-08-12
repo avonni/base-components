@@ -13,6 +13,7 @@
                     <div
                         if:true={showAvatarFallbackIcon}
                         data-element-id="icon-wrapper"
+                        class={computedIconWrapperClass}
                     >
                         <lightning-icon
                             class={computedIconClass}
@@ -23,14 +24,21 @@
                         >
                         </lightning-icon>
                     </div>
-                    <img
+
+                    <div
+                        class="avonni-profile-card__avatar-wrapper"
+                        data-element-id="avatar-wrapper"
                         if:true={avatarSrc}
-                        class={computedCircleClass}
-                        alt={avatarAlternativeText}
-                        src={avatarSrc}
-                        data-element-id="img"
-                        onerror={handleImageError}
-                    />
+                    >
+                        <img
+                            class={computedCircleClass}
+                            alt={avatarAlternativeText}
+                            src={avatarSrc}
+                            data-element-id="img"
+                            onerror={handleImageError}
+                        />
+                    </div>
+
                     <div
                         if:true={showAvatarActions}
                         class="slds-is-absolute"
