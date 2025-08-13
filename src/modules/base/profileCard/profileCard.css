@@ -20,6 +20,18 @@ article.avonni-profile-card {
     flex-direction: column;
 }
 
+.avonni-profile-card__flex-container__center {
+    align-items: center;
+}
+
+.avonni-profile-card__flex-container__left {
+    align-items: flex-start;
+}
+
+.avonni-profile-card__flex-container__right {
+    align-items: flex-end;
+}
+
 .avonni-profile-card_color-background {
     background-color: var(
         --avonni-profile-card-header-color-background,

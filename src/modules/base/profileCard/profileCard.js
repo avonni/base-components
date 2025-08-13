@@ -239,10 +239,12 @@ export default class ProfileCard extends LightningElement {
      * @type {object[]}
      * @deprecated
      */
+    /* istanbul ignore next */
     @api
     get size() {
         return this.avatarSize;
     }
+    /* istanbul ignore next */
     set size(value) {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.avatarSize = value;
@@ -427,6 +429,28 @@ export default class ProfileCard extends LightningElement {
         containerClass.add(`avonni-profile-card__card_size-${this.avatarSize}`);
 
         return containerClass.toString();
+    }
+
+    /**
+     * Computed the text container class styling.
+     *
+     * @type {string}
+     */
+    get computedTextContainerClass() {
+        const isDesktop = !this._isSmallContainer;
+        const position = isDesktop
+            ? this.avatarPosition
+            : this.avatarMobilePosition;
+        return classSet('avonni-profile-card__flex-container slds-size_full')
+            .add({
+                'avonni-profile-card__flex-container__left':
+                    position.includes('left'),
+                'avonni-profile-card__flex-container__right':
+                    position.includes('right'),
+                'avonni-profile-card__flex-container__center':
+                    position.includes('center')
+            })
+            .toString();
     }
 
     /**
