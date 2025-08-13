@@ -80,7 +80,7 @@ describe('ProfileCard', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="avatar-lightning-icon"]'
                     );
-                    expect(icon.fallbackIconName).toBe('standard:user');
+                    expect(icon.iconName).toBe('standard:user');
                     expect(avatarWrapper.classList).toContain(
                         'slds-align_absolute-center'
                     );
@@ -595,14 +595,14 @@ describe('ProfileCard', () => {
                     const avatar = element.shadowRoot.querySelector(
                         '[data-element-id="avatar"]'
                     );
-                    const iconWrapper = element.shadowRoot.querySelector(
-                        '[data-element-id="icon-wrapper"]'
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="avatar-lightning-icon"]'
                     );
 
                     expect(avatar.classList).toContain(
                         'avonni-profile-card__avatar-img-circle'
                     );
-                    expect(iconWrapper.classList).toContain(
+                    expect(icon.classList).toContain(
                         'avonni-profile-card__avatar-img-circle'
                     );
                 });
