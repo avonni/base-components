@@ -888,6 +888,13 @@ export default class ChipContainer extends LightningElement {
         }
 
         event.stopPropagation();
+        this.dispatchEvent(
+            new CustomEvent('privatechipclick', {
+                detail: {
+                    item: this._items[index]
+                }
+            })
+        );
     }
 
     /**

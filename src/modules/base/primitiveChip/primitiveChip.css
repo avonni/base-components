@@ -1,3 +1,7 @@
+.avonni-primitive-chip {
+    cursor: var(--avonni-chip-cursor, default);
+}
+
 .avonni-primitive-chip__avatar {
     --avonni-avatar-sizing-border: var(--avonni-chip-avatar-sizing-border);
     --avonni-avatar-color-border: var(--avonni-chip-avatar-color-border);

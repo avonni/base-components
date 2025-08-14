@@ -175,7 +175,7 @@ export default class PrimitiveChip extends LightningElement {
      *  Computed class for chip.
      */
     get computedChipClass() {
-        return classSet('').add({
+        return classSet('avonni-primitive-chip').add({
             'slds-is-collapsed': this.hidden
         });
     }

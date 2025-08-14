@@ -293,6 +293,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-chip-cursor
+ * @default default
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-chip-radius-border
  * @default 15rem
  * @type dimension
