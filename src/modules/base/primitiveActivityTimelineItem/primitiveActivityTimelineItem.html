@@ -124,7 +124,13 @@
                         </div>
                     </div>
                 </div>
-                <p if:true={description} class="slds-m-horizontal_xx-small">
+                <p
+                    if:true={description}
+                    class="
+                        avonni-primitive-activity-timeline-item__description
+                        slds-m-horizontal_xx-small
+                    "
+                >
                     <lightning-formatted-rich-text
                         value={description}
                         data-element-id="lightning-formatted-rich-text-description"

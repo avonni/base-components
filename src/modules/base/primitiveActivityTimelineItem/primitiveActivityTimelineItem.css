@@ -170,3 +170,13 @@
         1rem
     );
 }
+
+.avonni-primitive-activity-timeline-item__description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(
+        --avonni-activity-timeline-item-description-line-clamp,
+        3
+    );
+}
