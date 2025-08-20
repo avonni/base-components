@@ -92,13 +92,16 @@
         <!-- Entity -->
         <div if:true={showEntity} class={computedEntityClass}>
             <!-- Image -->
-            <img
-                if:true={entitySrc}
-                alt={entityTitle}
-                src={entitySrc}
-                title={entityTitle}
-                onerror={handleImageError}
-            />
+            <div>
+                <img
+                    if:true={entitySrc}
+                    class="avonni-avatar__entity-image"
+                    alt={entityTitle}
+                    src={entitySrc}
+                    title={entityTitle}
+                    onerror={handleImageError}
+                />
+            </div>
             <!-- Initials -->
             <abbr
                 if:true={entityInitials}
