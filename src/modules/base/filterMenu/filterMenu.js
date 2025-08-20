@@ -132,7 +132,7 @@ const TYPES = {
  * @storyId example-filter-menu--base
  * @public
  */
-export default class AvonniFilterMenu extends LightningElement {
+export default class FilterMenu extends LightningElement {
     /**
      * The keyboard shortcut for the button menu (horizontal variant) or the checkbox group (vertical variant).
      *
