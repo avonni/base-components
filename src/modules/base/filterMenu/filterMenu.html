@@ -221,7 +221,9 @@
                         class="
                             slds-p-horizontal_small
                             slds-p-bottom_x-small
-                            slds-text-align_left
+                            slds-grid
+                            slds-grid_align-spread
+                            slds-grid_vertical-align-center
                         "
                     >
                         <lightning-button
@@ -234,6 +236,11 @@
                             data-is-focusable
                             onclick={handleResetClick}
                         ></lightning-button>
+                        <lightning-formatted-text
+                            value={selectedOverTotal}
+                            data-element-id="lightning-formatted-text-number-values"
+                            if:true={isList}
+                        ></lightning-formatted-text>
                     </div>
                 </div>
             </c-focus-trap>

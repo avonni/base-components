@@ -1144,6 +1144,17 @@ export default class AvonniFilterMenu extends LightningElement {
     }
 
     /**
+     * The number of selected items
+     *
+     * @type {string}
+     */
+    get selectedOverTotal() {
+        const currentLength = this.selectedItems?.length ?? 0;
+        const totalLength = this.computedItems?.length ?? 0;
+        return `${currentLength} of ${totalLength}`;
+    }
+
+    /**
      * Array of one action: remove. The action is shown on the selected items pills.
      *
      * @type {object[]}
