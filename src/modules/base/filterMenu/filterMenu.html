@@ -221,11 +221,11 @@
                         class="
                             slds-p-horizontal_small
                             slds-p-bottom_x-small
-                            slds-text-align_right
+                            slds-text-align_left
                         "
                     >
                         <lightning-button
-                            class="slds-m-right_x-small"
+                            class="slds-m-left_x_small"
                             disabled={isLoading}
                             label={resetButtonLabel}
                             title={resetButtonLabel}
@@ -233,15 +233,6 @@
                             data-element-id="lightning-button-reset"
                             data-is-focusable
                             onclick={handleResetClick}
-                        ></lightning-button>
-                        <lightning-button
-                            disabled={isLoading}
-                            label={applyButtonLabel}
-                            title={applyButtonLabel}
-                            variant="brand"
-                            data-element-id="lightning-button-apply"
-                            data-is-focusable
-                            onclick={handleApply}
                         ></lightning-button>
                     </div>
                 </div>

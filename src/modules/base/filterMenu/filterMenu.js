@@ -48,7 +48,7 @@ const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_RANGE_VALUE = [0, 100];
-const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
+const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 
 const i18n = {
@@ -132,7 +132,7 @@ const TYPES = {
  * @storyId example-filter-menu--base
  * @public
  */
-export default class FilterMenu extends LightningElement {
+export default class AvonniFilterMenu extends LightningElement {
     /**
      * The keyboard shortcut for the button menu (horizontal variant) or the checkbox group (vertical variant).
      *
@@ -1960,6 +1960,9 @@ export default class FilterMenu extends LightningElement {
          */
         this.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
         this.reset();
+        this._value = [...this.currentValue];
+        this.computeSelectedItems();
+        this.dispatchApply();
     }
 
     /**
@@ -2193,15 +2196,13 @@ export default class FilterMenu extends LightningElement {
             })
         );
 
-        if (this.hideApplyResetButtons) {
-            // Save the selection immediately
-            this._value = [...this.currentValue];
-            this.computeSelectedItems();
-            this.dispatchApply();
+        // Save the selection immediately
+        this._value = [...this.currentValue];
+        this.computeSelectedItems();
+        this.dispatchApply();
 
-            if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
-                this.close();
-            }
+        if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
+            this.close();
         }
     }
 

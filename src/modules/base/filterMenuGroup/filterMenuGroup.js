@@ -10,7 +10,7 @@ import { LightningElement, api } from 'lwc';
 import Menu from './menu';
 
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
-const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
+const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
 const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -574,11 +574,9 @@ export default class FilterMenuGroup extends LightningElement {
             })
         );
 
-        if (this.hideApplyResetButtons) {
-            // Save the selection immediately
-            this.apply();
-            this.dispatchApply(menuName);
-        }
+        // Save the selection immediately
+        this.apply();
+        this.dispatchApply(menuName);
     }
 
     /**
