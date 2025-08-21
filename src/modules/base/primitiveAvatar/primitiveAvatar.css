@@ -479,7 +479,7 @@
     font-weight: var(--avonni-avatar-entity-initials-text-font-weight, 400);
     border-radius: var(--avonni-avatar-entity-border-radius, 0);
     border-color: var(--avonni-avatar-entity-border-color, transparent);
-    border-style: var(--avonni-avatar-entity-border-style, none);
+    border-style: var(--avonni-avatar-entity-border-style, solid);
     border-width: var(--avonni-avatar-entity-border-size, 0);
     background-color: var(--avonni-avatar-entity-background-color, transparent);
 }
