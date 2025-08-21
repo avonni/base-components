@@ -15,6 +15,7 @@ describe('ProfileCard', () => {
             is: ProfileCard
         });
         document.body.appendChild(element);
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
     });
 
     describe('Attributes', () => {
@@ -685,6 +686,21 @@ describe('ProfileCard', () => {
                     );
                     expect(header.style.backgroundImage).toBe(
                         'url(https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg)'
+                    );
+                });
+            });
+        });
+
+        describe('size', () => {
+            it('Passed to the component', () => {
+                element.size = 'x-small';
+
+                return Promise.resolve().then(() => {
+                    const avatar = element.shadowRoot.querySelector(
+                        '[data-element-id="avatar"]'
+                    );
+                    expect(avatar.classList).toContain(
+                        'avonni-profile-card__avatar_size-x-small'
                     );
                 });
             });
