@@ -385,6 +385,10 @@ export default class PrimitiveAvatar extends LightningElement {
         return !this.entitySrc && !this.entityInitials;
     }
 
+    get showEntityInitials() {
+        return !this.entitySrc && this.entityInitials;
+    }
+
     get showIcon() {
         return !this._src && !this.initials;
     }

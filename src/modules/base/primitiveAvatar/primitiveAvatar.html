@@ -92,18 +92,17 @@
         <!-- Entity -->
         <div if:true={showEntity} class={computedEntityClass}>
             <!-- Image -->
-            <div if:true={entitySrc}>
-                <img
-                    class="avonni-avatar__entity-image"
-                    alt={entityTitle}
-                    src={entitySrc}
-                    title={entityTitle}
-                    onerror={handleImageError}
-                />
-            </div>
+            <img
+                if:true={entitySrc}
+                class="avonni-avatar__entity-image"
+                alt={entityTitle}
+                src={entitySrc}
+                title={entityTitle}
+                onerror={handleImageError}
+            />
             <!-- Initials -->
             <abbr
-                if:true={entityInitials}
+                if:true={showEntityInitials}
                 class={computedEntityInitialsClass}
                 aria-hidden="true"
                 title={entityTitle}
