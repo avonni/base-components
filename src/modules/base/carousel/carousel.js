@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import {
     classSet,
     normalizeArray,
@@ -1142,10 +1142,10 @@ export default class Carousel extends LightningElement {
         if (this.isLoading) {
             return;
         }
-        const key = event.keyCode;
+        const key = event.key;
         let indicatorActionsElements = this.indicatorActionsElements;
 
-        if (key === keyCodes.right) {
+        if (key === keyValues.right) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -1158,7 +1158,7 @@ export default class Carousel extends LightningElement {
             }
         }
 
-        if (key === keyCodes.left) {
+        if (key === keyValues.left) {
             event.preventDefault();
             event.stopPropagation();
 

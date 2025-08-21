@@ -277,4 +277,46 @@ describe('InputRichText', () => {
             });
         });
     });
+
+    describe('Keyboard Accessibility', () => {
+        describe('Focused button changes using arrow keys', () => {
+            it('Arrow Right', () => {
+                return Promise.resolve().then(() => {
+                    const actions = element.shadowRoot.querySelectorAll(
+                        '.slds-button-group-list .slds-button'
+                    );
+                    const currentAction = actions[0];
+                    currentAction.focus();
+                    const nextItem = actions[1];
+                    const spy = jest.spyOn(nextItem, 'focus');
+                    currentAction.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'ArrowRight',
+                            bubbles: true
+                        })
+                    );
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+
+            it('Arrow Left', () => {
+                return Promise.resolve().then(() => {
+                    const actions = element.shadowRoot.querySelectorAll(
+                        '.slds-button-group-list .slds-button'
+                    );
+                    const currentAction = actions[1];
+                    currentAction.focus();
+                    const previousItem = actions[0];
+                    const spy = jest.spyOn(previousItem, 'focus');
+                    currentAction.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'ArrowLeft',
+                            bubbles: true
+                        })
+                    );
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+        });
+    });
 });

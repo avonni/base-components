@@ -12,7 +12,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { equal, keyCodes } from 'c/utilsPrivate';
+import { equal, keyValues } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import CalendarDate from './date';
 
@@ -1313,30 +1313,30 @@ export default class Calendar extends LightningElement {
         let nextDate;
 
         if (event.altKey) {
-            if (event.keyCode === keyCodes.pageup) {
+            if (event.key === keyValues.pageup) {
                 nextDate = setDate(initialDate, 'year', year - 1);
             }
-            if (event.keyCode === keyCodes.pagedown) {
+            if (event.key === keyValues.pagedown) {
                 nextDate = setDate(initialDate, 'year', year + 1);
             }
         } else {
-            switch (event.keyCode) {
-                case keyCodes.left:
+            switch (event.key) {
+                case keyValues.left:
                     nextDate = setDate(initialDate, 'date', day - 1);
                     break;
-                case keyCodes.right:
+                case keyValues.right:
                     nextDate = setDate(initialDate, 'date', day + 1);
                     break;
-                case keyCodes.up:
+                case keyValues.up:
                     nextDate = setDate(initialDate, 'date', day - 7);
                     break;
-                case keyCodes.down:
+                case keyValues.down:
                     nextDate = setDate(initialDate, 'date', day + 7);
                     break;
-                case keyCodes.home:
+                case keyValues.home:
                     nextDate = getStartOfWeek(initialDate);
                     break;
-                case keyCodes.end: {
+                case keyValues.end: {
                     const startOfWeek = getStartOfWeek(initialDate);
                     nextDate = setDate(
                         startOfWeek,
@@ -1345,14 +1345,15 @@ export default class Calendar extends LightningElement {
                     );
                     break;
                 }
-                case keyCodes.pagedown:
+                case keyValues.pagedown:
                     nextDate = setDate(initialDate, 'month', month - 1);
                     break;
-                case keyCodes.pageup:
+                case keyValues.pageup:
                     nextDate = setDate(initialDate, 'month', month + 1);
                     break;
-                case keyCodes.space:
-                case keyCodes.enter:
+                case keyValues.space:
+                case keyValues.spacebar:
+                case keyValues.enter:
                     {
                         const selectedDay = event.target.querySelector(
                             '[data-element-id="span-day-label"]'

@@ -11,6 +11,7 @@ import {
 import { LightningElement, api } from 'lwc';
 import inline from './inline.html';
 import standard from './standard.html';
+import { keyValues } from 'c/utilsPrivate';
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -1520,11 +1521,11 @@ export default class ColorPicker extends LightningElement {
      * @param {Event} event
      */
     handleMenuKeydown(event) {
-        if (event.keyCode === 9) {
+        if (event.key === keyValues.tab) {
             this.tabPressed = true;
-        } else if (event.keyCode === 16) {
+        } else if (event.key === keyValues.shift) {
             this.shiftPressed = true;
-        } else if (event.keyCode === 27) {
+        } else if (event.key === keyValues.escape) {
             this.handleCancel();
         }
     }
@@ -1535,9 +1536,9 @@ export default class ColorPicker extends LightningElement {
      * @param {Event} event
      */
     handleMenuKeyUp(event) {
-        if (event.keyCode === 9) {
+        if (event.key === keyValues.tab) {
             this.tabPressed = false;
-        } else if (event.keyCode === 16) {
+        } else if (event.key === keyValues.shift) {
             this.shiftPressed = false;
         }
     }
