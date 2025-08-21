@@ -344,7 +344,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     get computedEntityInitialsClass() {
-        return classSet('slds-avatar__initials')
+        return classSet('slds-avatar__initials avonni-avatar__entity-initials')
             .add(computeSldsClass(this.entityIconName))
             .toString();
     }
@@ -385,6 +385,10 @@ export default class PrimitiveAvatar extends LightningElement {
         return !this.entitySrc && !this.entityInitials;
     }
 
+    get showEntityInitials() {
+        return !this.entitySrc && this.entityInitials;
+    }
+
     get showIcon() {
         return !this._src && !this.initials;
     }
@@ -410,11 +414,11 @@ export default class PrimitiveAvatar extends LightningElement {
             : '';
 
         this.computedEntityClass = classSet(
-            `avonni-avatar slds-current-color avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
+            `avonni-avatar avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
         )
             .add(`avonni-avatar_${entityPosition}`)
             .add({
-                'slds-avatar_circle': entityVariant === 'circle'
+                'avonni-avatar__entity_circle': entityVariant === 'circle'
             });
     }
 
