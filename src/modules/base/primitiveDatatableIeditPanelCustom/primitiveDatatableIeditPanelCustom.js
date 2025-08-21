@@ -2,7 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
 import { getResolvedCellChanges } from 'c/primitiveCellUtils';
-import { keyValues } from 'c/utilsPrivate/';
+import { keyValues } from 'c/utilsPrivate';
 
 export default class PrimitiveDatatableIeditPanelCustom extends LightningElement {
     @api colKeyValue;
