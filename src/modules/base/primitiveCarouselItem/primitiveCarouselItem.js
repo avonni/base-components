@@ -1,7 +1,7 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import tag from './tag.html';
+import { LightningElement, api } from 'lwc';
 import noTag from './noTag.html';
+import tag from './tag.html';
 
 const ACTIONS_POSITIONS = {
     valid: [
@@ -36,7 +36,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     @api name;
     @api panelIndex;
     @api panelItems;
-    @api src;
     @api title;
 
     _actions = [];
@@ -45,8 +44,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _cropFit = IMAGE_CROP_FIT.default;
     _imagePosition = IMAGE_POSITIONS.default;
     _isFocusable = false;
+    _src;
 
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
+    displayImageError = false;
 
     render() {
         return normalizeBoolean(this.href) ? tag : noTag;
@@ -163,6 +164,23 @@ export default class PrimitiveCarouselItem extends LightningElement {
             typeof isFocusable === 'string'
                 ? isFocusable === 'true'
                 : normalizeBoolean(isFocusable);
+    }
+
+    /**
+     * The URL of the image.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get src() {
+        return this._src;
+    }
+    set src(src) {
+        this._src = src;
+        if (!src) {
+            this.displayImageError = true;
+        }
     }
 
     /*
@@ -415,6 +433,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
     handleButtonMenuClick(event) {
         event.stopPropagation();
         event.preventDefault();
+    }
+
+    /**
+     * Image error event handler.
+     */
+    handleImageError() {
+        this.displayImageError = true;
     }
 
     /**

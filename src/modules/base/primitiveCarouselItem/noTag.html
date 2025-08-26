@@ -77,11 +77,21 @@
                 </avonni-button-menu>
             </div>
             <img
+                if:false={displayImageError}
                 class={computedImageMediaClass}
                 alt={imageAssistiveText}
                 src={src}
                 data-element-id="img"
+                onerror={handleImageError}
             />
+            <avonni-illustration
+                if:true={displayImageError}
+                class="slds-p-around_medium"
+                size="large"
+                variant="no-preview"
+                data-element-id="avonni-illustration-image-error"
+            >
+            </avonni-illustration>
         </div>
         <div
             if:true={displayContentContainer}
