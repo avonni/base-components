@@ -15,7 +15,25 @@
             onclick={handleButtonClick}
             onfocus={handleButtonFocus}
         >
-            {label}
+            <span
+                class={computedMenuLabelClass}
+                data-element-id="span-menu-label"
+            >
+                {label}
+            </span>
+            <span
+                if:true={selectedElementLabels}
+                data-element-id="span-menu-selected-labels"
+            >
+                : {selectedElementLabels}&nbsp;
+            </span>
+            <span
+                if:true={selectedItemCountLabel}
+                class="slds-badge avonni-filter-menu__selected-item-count"
+                data-element-id="span-menu-selected-item-count"
+            >
+                {selectedItemCountLabel}
+            </span>
             <c-primitive-icon
                 if:true={iconName}
                 class="slds-m-horizontal_xx-small"

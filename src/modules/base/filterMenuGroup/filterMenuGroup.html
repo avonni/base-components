@@ -1,29 +1,31 @@
 <template>
     <template if:true={isVertical}>
         <div if:true={showSelectedItems} class="slds-m-bottom_medium">
-            <avonni-pill-container
+            <c-pill-container
                 actions={pillActions}
                 items={selectedPills}
                 data-element-id="avonni-pill-container-vertical"
                 data-group-name="focusable-element"
                 onactionclick={handleSelectedItemRemove}
-            ></avonni-pill-container>
+            ></c-pill-container>
         </div>
     </template>
+
     <ul
         class={computedFiltersWrapperClass}
         data-element-id="ul"
         onapply={handleApply}
         onclose={handleClose}
         onloadmore={handleLoadMore}
+        onnbfilteritems={handleNbFilterItems}
         onopen={handleOpen}
         onreset={handleReset}
         onsearch={handleSearch}
         onselect={handleSelect}
     >
-        <template for:each={computedMenus} for:item="menu">
+        <template for:each={visibleMenus} for:item="menu">
             <li class={computedFiltersClass} key={menu.name}>
-                <avonni-filter-menu
+                <c-filter-menu
                     access-key={menu.accessKey}
                     alternative-text={menu.alternativeText}
                     apply-button-label={applyButtonLabel}
@@ -51,19 +53,70 @@
                     data-element-id="avonni-filter-menu"
                     data-group-name="focusable-element"
                     data-name={menu.name}
-                ></avonni-filter-menu>
+                ></c-filter-menu>
             </li>
         </template>
+        <c-layout-item lwc:if={isOverflow} class="slds-text-align_right">
+            <c-button-popover
+                class="
+                    slds-show_inline-block
+                    slds-p-left_x-small
+                    slds-text-align_left
+                "
+                label="More Filters"
+                icon-name="utility:filterList"
+                icon-position="right"
+                placement="right"
+                popover-size="large"
+                variant="border-filled"
+                data-element-id="filter-menu-group-button-icon-popover"
+            >
+                <template for:each={hiddenMenus} for:item="menu">
+                    <li class={computedFiltersClass} key={menu.name}>
+                        <c-filter-menu
+                            access-key={menu.accessKey}
+                            alternative-text={menu.alternativeText}
+                            apply-button-label={applyButtonLabel}
+                            button-variant={menu.buttonVariant}
+                            closed={menu.closed}
+                            collapsible={menu.collapsible}
+                            disabled={menu.disabled}
+                            dropdown-alignment={menu.dropdownAlignment}
+                            dropdown-nubbin={menu.dropdownNubbin}
+                            hide-apply-reset-buttons={hideMenuApplyResetButtons}
+                            hide-selected-items
+                            icon-name={menu.iconName}
+                            icon-size={menu.iconSize}
+                            is-loading={menu.isLoading}
+                            label={menu.label}
+                            loading-state-alternative-text={menu.loadingStateAlternativeText}
+                            name={menu.name}
+                            reset-button-label={resetButtonLabel}
+                            title={menu.title}
+                            type={menu.type}
+                            type-attributes={menu.typeAttributes}
+                            tooltip={menu.tooltip}
+                            value={menu.value}
+                            variant="vertical"
+                            data-element-id="avonni-filter-menu-overflow"
+                            data-group-name="focusable-element"
+                            data-name={menu.name}
+                        ></c-filter-menu>
+                    </li>
+                </template>
+            </c-button-popover>
+        </c-layout-item>
     </ul>
+
     <div if:false={isVertical} class="slds-m-top_x-small">
-        <avonni-pill-container
+        <c-pill-container
             if:true={showSelectedItems}
             actions={pillActions}
             items={selectedPills}
             data-element-id="avonni-pill-container-horizontal"
             data-group-name="focusable-element"
             onactionclick={handleSelectedItemRemove}
-        ></avonni-pill-container>
+        ></c-pill-container>
     </div>
     <template if:true={showApplyResetButtons}>
         <lightning-button

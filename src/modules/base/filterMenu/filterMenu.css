@@ -1,0 +1,7 @@
+.avonni-filter-menu__selected-item-button {
+    background-color: #edf2fe;
+}
+
+.avonni-filter-menu__selected-item-count {
+    background-color: var(--lwc-brandPrimary);
+}

@@ -40,7 +40,8 @@ const BUTTON_VARIANTS = {
         'border',
         'border-filled',
         'border-inverse',
-        'container'
+        'container',
+        'outline-brand'
     ]
 };
 
@@ -105,6 +106,7 @@ const TYPE_ATTRIBUTES = {
         'hasNestedItems',
         'isMultiSelect',
         'items',
+        'nbFilterItems',
         'noResultsMessage',
         'searchInputPlaceholder'
     ],
@@ -253,6 +255,7 @@ export default class FilterMenu extends LightningElement {
             // to click on the load more button
             this.dispatchLoadMore();
         }
+        this.dispatchNbFilterItems();
     }
 
     disconnectedCallback() {
@@ -855,7 +858,9 @@ export default class FilterMenu extends LightningElement {
         if (this.label) {
             classes.add({
                 'slds-button_neutral': this.buttonVariant === 'border',
-                'slds-button_inverse': this.buttonVariant === 'border-inverse'
+                'slds-button_inverse': this.buttonVariant === 'border-inverse',
+                'slds-button_outline-brand':
+                    this.buttonVariant === 'outline-brand'
             });
         } else {
             // The inverse check is to allow for a combination of a non-default icon and an -inverse buttonVariant
@@ -888,6 +893,11 @@ export default class FilterMenu extends LightningElement {
                 'slds-button_icon-large': this.iconSize === 'large' && !isBare
             });
         }
+
+        classes.add({
+            'avonni-filter-menu__selected-item-button':
+                this.selectedItemsLabels.length > 0
+        });
 
         return classes
             .add({
@@ -944,6 +954,19 @@ export default class FilterMenu extends LightningElement {
             );
         }
         return classes.toString();
+    }
+
+    /**
+     * Computed Menu Label with selected items.
+     *
+     * @type {string}
+     */
+    get computedMenuLabelClass() {
+        return classSet('slds-dropdown__list')
+            .add({
+                'slds-text-title_bold': this.selectedItemsLabels.length > 0
+            })
+            .toString();
     }
 
     /**
@@ -1144,13 +1167,14 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * The number of selected items
+     * The loaded number of filter items over the total number of filter items
      *
      * @type {string}
      */
     get selectedOverTotal() {
-        const currentLength = this.selectedItems?.length ?? 0;
-        const totalLength = this.computedItems?.length ?? 0;
+        const currentLength = this.visibleItems.length;
+        let totalLength = this.computedTypeAttributes?.nbFilterItems ?? 0;
+        totalLength = currentLength > totalLength ? currentLength : totalLength;
         return `${currentLength} of ${totalLength}`;
     }
 
@@ -1196,6 +1220,54 @@ export default class FilterMenu extends LightningElement {
         return (
             visibleHeight + scrolledDistance + LOAD_MORE_OFFSET >= fullHeight
         );
+    }
+
+    /**
+     * Display the count if more than 2 items are selected
+     *
+     * @type {string}
+     */
+    get selectedItemCountLabel() {
+        const selectedCount = this.selectedItemsLabels.length;
+
+        return selectedCount > 2 ? `${selectedCount - 2}+` : '';
+    }
+
+    /**
+     * Computed Menu Label with selected items.
+     *
+     * @type {string}
+     */
+    get selectedElementLabels() {
+        const selectedCount = this.selectedItemsLabels.length;
+
+        if (selectedCount === 0) {
+            return '';
+        }
+
+        if (selectedCount <= 2) {
+            const selectedLabels = this.selectedItemsLabels.join(', ');
+            return `(${selectedLabels})`;
+        }
+
+        const firstTwoLabels = this.selectedItemsLabels
+            .slice(0, 2)
+            .map((item) => item)
+            .join(', ');
+        return `(${firstTwoLabels})`;
+    }
+
+    /**
+     * Display the labels of the selected items
+     *
+     * @type {string[]}
+     */
+    get selectedItemsLabels() {
+        const isMultiSelect = this.computedTypeAttributes?.isMultiSelect;
+        const labels = isMultiSelect
+            ? this._value
+            : this.selectedItems.map((item) => item.label);
+        return labels;
     }
 
     /**
@@ -2164,6 +2236,29 @@ export default class FilterMenu extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('loadmore', {
+                bubbles: true,
+                detail: { item: deepCopy(item) }
+            })
+        );
+    }
+
+    /**
+     * Dispatch the `nbfilteritems` event.
+     *
+     * @param {object} item Parent item that triggered the `nbfilteritems` event, if the items are nested.
+     */
+    dispatchNbFilterItems(item) {
+        /**
+         * The event fired when the list is opened or the search term is modified.
+         *
+         * @event
+         * @name nbfilteritems
+         * @param {object} item If the event was triggered by a nested item, definition of this item.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('nbfilteritems', {
                 bubbles: true,
                 detail: { item: deepCopy(item) }
             })

@@ -15,6 +15,8 @@ const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
+const RECOMPUTE_OVERFLOW_THRESHOLD_PX = 25;
+const OVERFLOW_FACTOR = 0.4;
 
 /**
  * @class
@@ -30,11 +32,18 @@ export default class FilterMenuGroup extends LightningElement {
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _value = {};
     _variant = MENU_VARIANTS.default;
+    _searchBarWidth = 0;
+    _wrapperWidth = 0;
+    _wrapperWidthWhenLastResized = 0;
 
     computedMenus = [];
     selectedPills = [];
     _connected = false;
+    _computedMenusWhenLastOverflow = [];
+    _hiddenMenusLength = 0;
+    _isCalculatingOverflow = false;
     _selectedValue = {};
+    _sliceIndex = 0;
 
     /*
      * ------------------------------------------------------------
@@ -141,6 +150,22 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Width of the search bar in pixels. It is used to compute the overflow of the menu group.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get searchBarWidth() {
+        return this._searchBarWidth;
+    }
+    set searchBarWidth(value) {
+        this._searchBarWidth = value ?? 0;
+        this.recomputeOverflow();
+    }
+
+    /**
      * Value of the menus. The object follows the structure `{ menuName: menuValue }`.
      * Depending on the menu type, its value will have a different type:
      * * `list`: selected item’s value, or array of selected items' values.
@@ -180,6 +205,24 @@ export default class FilterMenuGroup extends LightningElement {
         });
     }
 
+    /**
+     * Width of the wrapper in pixels. It is used to compute the overflow of the menu group.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get wrapperWidth() {
+        return this._wrapperWidth;
+    }
+    set wrapperWidth(value) {
+        this._wrapperWidth = value ?? 0;
+        if (this.needsRecomputeHorizontal) {
+            this.recomputeOverflow();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -205,8 +248,19 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get computedFiltersWrapperClass() {
         return classSet({
-            'slds-grid': !this.isVertical
+            'slds-grid': !this.isVertical,
+            'avonni-filter-menu-group__wrapper_hidden':
+                this._isCalculatingOverflow
         });
+    }
+
+    /**
+     * Dynamically compute the hidden menus based on the slice index.
+     *
+     * @type {object[]}
+     */
+    get hiddenMenus() {
+        return this.computedMenus.slice(this._sliceIndex);
     }
 
     /**
@@ -225,6 +279,52 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get isVertical() {
         return this.variant === 'vertical';
+    }
+
+    /**
+     * Check if there is an overflow from the filters
+     *
+     * @type {boolean}
+     */
+    get isOverflow() {
+        return this._hiddenMenusLength > 0;
+    }
+
+    /**
+     * Returns the list of filter menu elements.
+     *
+     * @type {NodeListOf<HTMLElement>}
+     */
+    get listMenus() {
+        return this.template.querySelectorAll(
+            '[data-element-id="avonni-filter-menu"]'
+        );
+    }
+
+    /**
+     * Return the menu group wrapper.
+     *
+     * @type {Element}
+     */
+    get menuGroupWrapper() {
+        return this.template.querySelector('[data-element-id="ul"]');
+    }
+
+    /**
+     * True if the new width requires a recompute
+     *
+     * @type {boolean}
+     */
+    get needsRecomputeHorizontal() {
+        return !(
+            this._wrapperWidthWhenLastResized &&
+            this._wrapperWidth <
+                this._wrapperWidthWhenLastResized +
+                    RECOMPUTE_OVERFLOW_THRESHOLD_PX &&
+            this._wrapperWidth >
+                this._wrapperWidthWhenLastResized -
+                    RECOMPUTE_OVERFLOW_THRESHOLD_PX
+        );
     }
 
     /**
@@ -258,6 +358,15 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedPills.length;
+    }
+
+    /**
+     * Dynamically compute the visible menus based on the slice index.
+     *
+     * @type {object[]}
+     */
+    get visibleMenus() {
+        return this.computedMenus.slice(0, this._sliceIndex);
     }
 
     /*
@@ -348,10 +457,106 @@ export default class FilterMenuGroup extends LightningElement {
         const pills = [];
         this.computedMenus.forEach((menu) => {
             menu.value = deepCopy(this.value[menu.name]);
+            if (!this.isVertical) {
+                menu.buttonVariant = menu?._value.length
+                    ? 'outline-brand'
+                    : 'border';
+            }
             pills.push(menu.selectedItems);
         });
+        if (!this.isVertical) {
+            this.computedMenus = [...this.computedMenus];
+        }
+        if (this._hiddenMenusLength === 0) {
+            this._sliceIndex = this.computedMenus.length;
+        }
+        if (!this._computedMenusWhenLastOverflow.length) {
+            this._computedMenusWhenLastOverflow = this.computedMenus.map(
+                (menu) => ({
+                    name: menu.name,
+                    label: menu.label
+                })
+            );
+        }
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
+        if (this.isDifferentComputedMenu()) {
+            this.recomputeOverflow();
+        }
+    }
+
+    /**
+     * True the menus have changed since the last overflow
+     *
+     * @type {boolean}
+     */
+    isDifferentComputedMenu() {
+        const currentMenusState = this.computedMenus.map((menu) => ({
+            name: menu.name,
+            label: menu.label
+        }));
+
+        return (
+            this._computedMenusWhenLastOverflow.length !==
+                currentMenusState.length ||
+            this._computedMenusWhenLastOverflow.some((prevMenu, index) => {
+                const currentMenu = currentMenusState[index];
+                return (
+                    prevMenu.name !== currentMenu.name ||
+                    prevMenu.label !== currentMenu.label
+                );
+            })
+        );
+    }
+
+    /**
+     * Recompute the overflow for each computed menu.
+     */
+    recomputeOverflow() {
+        if (
+            !this._connected ||
+            !this.menuGroupWrapper ||
+            !this.wrapperWidth ||
+            this.isVertical
+        ) {
+            return;
+        }
+        this._sliceIndex = this.computedMenus.length;
+        this._isCalculatingOverflow = true;
+
+        requestAnimationFrame(() => {
+            let totalWidth = this.searchBarWidth;
+            let sliceIndex = 0;
+
+            this.listMenus.forEach((listMenu) => {
+                const menuName = listMenu.getAttribute('data-name');
+                const menu = this.computedMenus.find(
+                    (m) => m.name === menuName
+                );
+                if (!menu) return;
+
+                menu.width = listMenu.getBoundingClientRect().width;
+
+                if (
+                    totalWidth + menu.width <=
+                    this.wrapperWidth * OVERFLOW_FACTOR
+                ) {
+                    totalWidth += menu.width;
+                    sliceIndex++;
+                }
+            });
+
+            this._sliceIndex = sliceIndex;
+            this._hiddenMenusLength = this.hiddenMenus.length;
+            this._isCalculatingOverflow = false;
+            this._computedMenusWhenLastOverflow = this.computedMenus.map(
+                (menu) => ({
+                    name: menu.name,
+                    label: menu.label
+                })
+            );
+            this._wrapperWidthWhenLastResized = this._wrapperWidth;
+        });
     }
 
     /*
@@ -393,6 +598,7 @@ export default class FilterMenuGroup extends LightningElement {
     handleClose(event) {
         event.stopPropagation();
         const menuName = event.target.dataset.name;
+        this.recomputeOverflow();
 
         /**
          * The event fired when a dropdown is closed (horizontal variant) or a section is closed (vertical variant).
@@ -431,6 +637,31 @@ export default class FilterMenuGroup extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('loadmore', {
+                detail: { item: event.detail.item, name: menuName }
+            })
+        );
+    }
+
+    /**
+     * Handle the nb filter items event.
+     *
+     * @param {Event} event `nbfilteritems` event fired by the menu.
+     */
+    handleNbFilterItems(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when the list is opened or the search term is modified.
+         *
+         * @event
+         * @name nbfilteritems
+         * @param {object} item If the event was triggered by a nested item, definition of this item.
+         * @param {string} name Name of the menu that triggered the event.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('nbfilteritems', {
                 detail: { item: event.detail.item, name: menuName }
             })
         );
