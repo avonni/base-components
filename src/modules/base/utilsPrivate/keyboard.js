@@ -22,7 +22,7 @@ export const keyValues = {
     enter: 'Enter',
     escape: 'Escape',
     space: ' ',
-    spacebar: 'Spacebar',
+    spacebar: 'Spacebar', // For older browsers
     pageup: 'PageUp',
     pagedown: 'PageDown',
     end: 'End',

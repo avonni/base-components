@@ -15,6 +15,7 @@ describe('ProfileCard', () => {
             is: ProfileCard
         });
         document.body.appendChild(element);
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
     });
 
     describe('Attributes', () => {
@@ -80,7 +81,7 @@ describe('ProfileCard', () => {
                     const icon = element.shadowRoot.querySelector(
                         '[data-element-id="avatar-lightning-icon"]'
                     );
-                    expect(icon.fallbackIconName).toBe('standard:user');
+                    expect(icon.iconName).toBe('standard:user');
                     expect(avatarWrapper.classList).toContain(
                         'slds-align_absolute-center'
                     );
@@ -595,14 +596,14 @@ describe('ProfileCard', () => {
                     const avatar = element.shadowRoot.querySelector(
                         '[data-element-id="avatar"]'
                     );
-                    const iconWrapper = element.shadowRoot.querySelector(
-                        '[data-element-id="icon-wrapper"]'
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="avatar-lightning-icon"]'
                     );
 
                     expect(avatar.classList).toContain(
                         'avonni-profile-card__avatar-img-circle'
                     );
-                    expect(iconWrapper.classList).toContain(
+                    expect(icon.classList).toContain(
                         'avonni-profile-card__avatar-img-circle'
                     );
                 });
@@ -685,6 +686,21 @@ describe('ProfileCard', () => {
                     );
                     expect(header.style.backgroundImage).toBe(
                         'url(https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg)'
+                    );
+                });
+            });
+        });
+
+        describe('size', () => {
+            it('Passed to the component', () => {
+                element.size = 'x-small';
+
+                return Promise.resolve().then(() => {
+                    const avatar = element.shadowRoot.querySelector(
+                        '[data-element-id="avatar"]'
+                    );
+                    expect(avatar.classList).toContain(
+                        'avonni-profile-card__avatar_size-x-small'
                     );
                 });
             });

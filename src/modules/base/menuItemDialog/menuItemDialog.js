@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import { normalizeBoolean } from 'c/utils';
 
 const DEFAULT_TAB_INDEX = '0';
@@ -230,10 +230,8 @@ export default class MenuItemDialog extends LightningElement {
             return;
         }
 
-        if (event.keyCode === keyCodes.space) {
-            if (this.href) {
-                this.template.querySelector('[data-element-id="a"]').click();
-            }
+        if (event.key === keyValues.space || event.key === keyValues.spacebar) {
+            this.template.querySelector('[data-element-id="a"]').click();
         }
     }
 

@@ -1,5 +1,6 @@
-import { LightningElement, api, track } from 'lwc';
 import { classSet, normalizeArray } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
+import { api, LightningElement, track } from 'lwc';
 
 const DEFAULT_SHOW_MORE_BUTTON_ALTERNATIVE_TEXT = 'Show more';
 
@@ -371,25 +372,28 @@ export default class TabBar extends LightningElement {
      * @param {Event} event
      */
     handleDropDownItemKeyDown(event) {
-        if (event.keyCode === 40) {
+        if (event.key === keyValues.down) {
             // Down arrow
             if (event.currentTarget.nextSibling) {
                 event.currentTarget.nextSibling.firstChild.focus();
             } else {
                 event.currentTarget.parentElement.firstChild.firstChild.focus();
             }
-        } else if (event.keyCode === 38) {
+        } else if (event.key === keyValues.up) {
             // Up arrow
             if (event.currentTarget.previousSibling) {
                 event.currentTarget.previousSibling.firstChild.focus();
             } else {
                 event.currentTarget.parentElement.lastChild.firstChild.focus();
             }
-        } else if (event.keyCode === 13) {
+        } else if (event.key === keyValues.enter) {
             // Enter key
             this.changeLastCategory(event);
             this.handleDropDownFocusOut();
-        } else if (event.keyCode === 27 || event.keyCode === 9) {
+        } else if (
+            event.key === keyValues.escape ||
+            event.key === keyValues.tab
+        ) {
             // Escape key and Tab key
             this.handleDropDownFocusOut();
             this.template.querySelector('button').focus();
@@ -454,7 +458,7 @@ export default class TabBar extends LightningElement {
      * @param {Event} event
      */
     handleVisibleTabKeyDown(event) {
-        if (event.keyCode === 39) {
+        if (event.key === keyValues.right) {
             // Right arrow
             for (let i = 0; i < this.visibleTabs.length; i++) {
                 this.visibleTabs[i].tabIndex = 0;
@@ -467,7 +471,7 @@ export default class TabBar extends LightningElement {
             } else {
                 event.currentTarget.parentElement.firstChild.firstChild.focus();
             }
-        } else if (event.keyCode === 37) {
+        } else if (event.key === keyValues.left) {
             // Left arrow
             for (let i = 0; i < this.visibleTabs.length; i++) {
                 this.visibleTabs[i].tabIndex = 0;
@@ -482,7 +486,7 @@ export default class TabBar extends LightningElement {
             } else {
                 event.currentTarget.parentElement.lastChild.firstChild.focus();
             }
-        } else if (event.keyCode === 9) {
+        } else if (event.key === keyValues.tab) {
             // Tab key
             for (let i = 0; i < this.visibleTabs.length; i++) {
                 if (!this.visibleTabs[i].ariaSelected) {

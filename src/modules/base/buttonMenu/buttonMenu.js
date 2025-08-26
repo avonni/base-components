@@ -3,7 +3,7 @@ import { AutoPosition, Direction } from 'c/positionLibrary';
 import PrimitiveButton from 'c/primitiveButton';
 import { Tooltip } from 'c/tooltipLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { buttonGroupOrderClass, keyCodes } from 'c/utilsPrivate';
+import { buttonGroupOrderClass, keyValues } from 'c/utilsPrivate';
 import { api } from 'lwc';
 
 const BUTTON_VARIANTS = {
@@ -988,12 +988,12 @@ export default class ButtonMenu extends PrimitiveButton {
         if (!menuItem) return;
 
         const menuItemIndex = this.findMenuItemIndex(menuItem);
-        switch (event.keyCode) {
-            case keyCodes.down:
-            case keyCodes.up: {
+        switch (event.key) {
+            case keyValues.down:
+            case keyValues.up: {
                 this.preventDefaultAndStopPropagation(event);
                 let nextIndex =
-                    event.keyCode === keyCodes.up
+                    event.key === keyValues.up
                         ? menuItemIndex - 1
                         : menuItemIndex + 1;
 
@@ -1005,7 +1005,7 @@ export default class ButtonMenu extends PrimitiveButton {
                 this.focusOnMenuItem(nextIndex);
                 break;
             }
-            case keyCodes.escape: {
+            case keyValues.escape: {
                 if (this._dropdownVisible && !this.isTriggerFocus) {
                     this.preventDefaultAndStopPropagation(event);
                     this.toggleMenuVisibility();

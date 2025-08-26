@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
 import { getResolvedCellChanges } from 'c/primitiveCellUtils';
+import { keyValues } from 'c/utilsPrivate';
 
 export default class PrimitiveDatatableIeditPanelCustom extends LightningElement {
     @api colKeyValue;
@@ -308,9 +309,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handleCellKeydown(event) {
-        const { keyCode } = event;
+        const { key } = event;
 
-        if (keyCode === 27) {
+        if (key === keyValues.escape) {
             // Esc key
             event.stopPropagation();
             this.cancelEdition();

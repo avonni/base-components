@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import { getErrorMessage } from 'c/inputUtils';
 import {
@@ -286,7 +286,7 @@ export default class ColorPickerCustom extends LightningElement {
         event.preventDefault();
         const canvas = this._canvas;
         const gradientCanvas = canvas.getBoundingClientRect();
-        const keyCode = event.keyCode;
+        const key = event.key;
         let x, y;
 
         if (!this._cachePosition) {
@@ -294,14 +294,12 @@ export default class ColorPickerCustom extends LightningElement {
         }
 
         const positionMap = {};
-        positionMap[keyCodes.left] = { x: -1, y: 0 };
-        positionMap[keyCodes.up] = { x: 0, y: -1 };
-        positionMap[keyCodes.right] = { x: +1, y: 0 };
-        positionMap[keyCodes.down] = { x: 0, y: +1 };
+        positionMap[keyValues.left] = { x: -1, y: 0 };
+        positionMap[keyValues.up] = { x: 0, y: -1 };
+        positionMap[keyValues.right] = { x: +1, y: 0 };
+        positionMap[keyValues.down] = { x: 0, y: +1 };
 
-        const transform = positionMap[keyCode]
-            ? positionMap[keyCode]
-            : { x: 0, y: 0 };
+        const transform = positionMap[key] ? positionMap[key] : { x: 0, y: 0 };
         x = this._cachePosition.x + transform.x;
         y = this._cachePosition.y + transform.y;
 

@@ -4,7 +4,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { getListHeight, keyCodes, observePosition } from 'c/utilsPrivate';
+import { getListHeight, keyValues, observePosition } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const BUTTON_SIZES = {
@@ -1059,25 +1059,26 @@ export default class DynamicMenu extends LightningElement {
      * @param {Event} event
      */
     handleItemKeyDown(event) {
-        switch (event.keyCode) {
-            case keyCodes.left:
-            case keyCodes.up: {
+        switch (event.key) {
+            case keyValues.left:
+            case keyValues.up: {
                 // Prevent the page from scrolling
                 event.preventDefault();
                 this.switchFocus(this._focusedIndex - 1);
                 this.focusItem();
                 break;
             }
-            case keyCodes.right:
-            case keyCodes.down: {
+            case keyValues.right:
+            case keyValues.down: {
                 // Prevent the page from scrolling
                 event.preventDefault();
                 this.switchFocus(this._focusedIndex + 1);
                 this.focusItem();
                 break;
             }
-            case keyCodes.space:
-            case keyCodes.enter:
+            case keyValues.space:
+            case keyValues.spacebar:
+            case keyValues.enter:
                 // Prevent the page from scrolling
                 event.preventDefault();
                 this.handleItemClick(event);

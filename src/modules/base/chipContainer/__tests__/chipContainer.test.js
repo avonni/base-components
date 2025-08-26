@@ -489,26 +489,26 @@ describe('Chip Container', () => {
                     const focusLinkFirst = jest.spyOn(chips[0], 'focus');
 
                     // Press right
-                    keyDown.keyCode = 39;
+                    keyDown.key = 'ArrowRight';
                     ul.dispatchEvent(keyDown);
                     expect(chips[1].tabIndex).toBe(0);
                     expect(focusSpySecond).toHaveBeenCalled();
 
                     // Press left
-                    keyDown.keyCode = 37;
+                    keyDown.key = 'ArrowLeft';
                     ul.dispatchEvent(keyDown);
                     expect(chips[1].tabIndex).toBe(-1);
                     expect(chips[0].tabIndex).toBe(0);
                     expect(focusLinkFirst).toHaveBeenCalled();
 
                     // Press left again, to loop back to the last item
-                    keyDown.keyCode = 37;
+                    keyDown.key = 'ArrowLeft';
                     ul.dispatchEvent(keyDown);
                     expect(chips[0].tabIndex).toBe(-1);
                     expect(chips[2].tabIndex).toBe(0);
 
                     // Press right again, to loop back to the first item
-                    keyDown.keyCode = 39;
+                    keyDown.key = 'ArrowRight';
                     ul.dispatchEvent(keyDown);
                     expect(chips[0].tabIndex).toBe(0);
                     expect(chips[2].tabIndex).toBe(-1);
@@ -743,7 +743,7 @@ describe('Chip Container', () => {
                         );
 
                         // Press space
-                        keyDown.keyCode = 32;
+                        keyDown.key = ' ';
                         ul.dispatchEvent(keyDown);
                         const wrapper = element.shadowRoot.querySelector(
                             '[data-element-id="div-wrapper"]'
@@ -754,7 +754,7 @@ describe('Chip Container', () => {
                         expect(0).toHavePosition(1);
 
                         // Press right more times than the length of the list
-                        keyDown.keyCode = 39;
+                        keyDown.key = 'ArrowRight';
                         ul.dispatchEvent(keyDown);
                         expect(items[1].classList).toContain(
                             'avonni-chip-container__chip_after-border'
@@ -770,7 +770,7 @@ describe('Chip Container', () => {
                         expect(0).toHavePosition(3);
 
                         // Press space
-                        keyDown.keyCode = 32;
+                        keyDown.key = ' ';
                         ul.dispatchEvent(keyDown);
                         expect(handler).toHaveBeenCalledTimes(1);
                         expect(handler.mock.calls[0][0].detail.items).toEqual([
@@ -792,7 +792,7 @@ describe('Chip Container', () => {
                         expect(2).toHavePosition(3);
 
                         // Press left more times than the length of the list
-                        keyDown.keyCode = 37;
+                        keyDown.key = 'ArrowLeft';
                         ul.dispatchEvent(keyDown);
                         expect(items[1].classList).toContain(
                             'avonni-chip-container__chip_before-border'
@@ -808,7 +808,7 @@ describe('Chip Container', () => {
                         expect(2).toHavePosition(1);
 
                         // Press space
-                        keyDown.keyCode = 32;
+                        keyDown.key = ' ';
                         ul.dispatchEvent(keyDown);
                         expect(handler).toHaveBeenCalledTimes(2);
                         expect(handler.mock.calls[1][0].detail.items).toEqual([
@@ -833,15 +833,15 @@ describe('Chip Container', () => {
                     );
 
                     // Press space
-                    keyDown.keyCode = 32;
+                    keyDown.key = ' ';
                     ul.dispatchEvent(keyDown);
 
                     // Press right
-                    keyDown.keyCode = 39;
+                    keyDown.key = 'ArrowRight';
                     ul.dispatchEvent(keyDown);
 
                     // Press escape
-                    keyDown.keyCode = 27;
+                    keyDown.key = 'Escape';
                     ul.dispatchEvent(keyDown);
                     expect(handler).not.toHaveBeenCalled();
                 });

@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_POSITIONS = {
     valid: [
@@ -244,8 +244,8 @@ export default class ProfileCard extends LightningElement {
         return this.avatarSize;
     }
     set size(value) {
-        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.avatarSize = value;
+        this._avatarSize = value;
+
         console.warn(
             'The "size" attribute is deprecated. Use "avatar-size" instead.'
         );
@@ -362,6 +362,41 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
+     * Computed lightning-icon class.
+     *
+     * @type {string}
+     */
+    get computedIconClass() {
+        return classSet('avonni-profile-card__lightning-icon')
+            .add(`avonni-profile-card__lightning-icon_size-${this.avatarSize}`)
+            .add(this.computedCircleClass)
+            .toString();
+    }
+
+    /**
+     * Computed icon-wrapper class.
+     *
+     * @type {string}
+     */
+    get computedIconWrapperClass() {
+        return classSet('avonni-profile-card__icon-wrapper')
+            .add(this.computedCircleClass)
+            .add('slds-align_absolute-center')
+            .toString();
+    }
+
+    /**
+     * Computed image class.
+     *
+     * @type {string}
+     */
+    get computedImageClass() {
+        return classSet('avonni-profile-card__image')
+            .add(this.computedCircleClass)
+            .toString();
+    }
+
+    /**
      * Computed Main container class styling based on selected attributes.
      *
      * @type {string}
@@ -395,30 +430,34 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
+     * Computed the text container class styling.
+     *
+     * @type {string}
+     */
+    get computedTextContainerClass() {
+        const isDesktop = !this._isSmallContainer;
+        const position = isDesktop
+            ? this.avatarPosition
+            : this.avatarMobilePosition;
+        return classSet('avonni-profile-card__flex-container slds-size_full')
+            .add({
+                'avonni-profile-card__flex-container__left':
+                    position.includes('left'),
+                'avonni-profile-card__flex-container__right':
+                    position.includes('right'),
+                'avonni-profile-card__flex-container__center':
+                    position.includes('center')
+            })
+            .toString();
+    }
+
+    /**
      * Get the footer slot DOM element.
      *
      * @type {Element}
      */
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
-    }
-
-    /**
-     * Convert profile card avatar size to primitive avatar size
-     *
-     * @type {boolean}
-     */
-    get primitiveAvatarSize() {
-        switch (this.avatarSize) {
-            case 'x-small':
-                return 'medium';
-            case 'small':
-                return 'large';
-            case 'medium':
-                return 'x-large';
-            default:
-                return 'xx-large';
-        }
     }
 
     /**

@@ -1039,4 +1039,187 @@ describe('Dynamic Menu', () => {
             });
         });
     });
+
+    describe('Keyboard Accessibility', () => {
+        describe('Focused menu item changes using arrow keys', () => {
+            it('Arrow Down', () => {
+                element.items = baseItems;
+                element.label = 'label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                        const activeItem = items[0];
+                        activeItem.focus();
+                        const nextItem = items[1];
+                        const spy = jest.spyOn(nextItem, 'focus');
+                        activeItem.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'ArrowDown'
+                            })
+                        );
+                        expect(spy).toHaveBeenCalled();
+                    });
+            });
+
+            it('Arrow Left', () => {
+                element.items = baseItems;
+                element.label = 'label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                        const activeItem = items[1];
+                        activeItem.focus();
+                        const previousItem = items[0];
+                        const spy = jest.spyOn(previousItem, 'focus');
+                        activeItem.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'ArrowLeft'
+                            })
+                        );
+                        expect(spy).toHaveBeenCalled();
+                    });
+            });
+
+            it('Arrow Right', () => {
+                element.items = baseItems;
+                element.label = 'label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                        const activeItem = items[0];
+                        activeItem.focus();
+                        const nextItem = items[1];
+                        const spy = jest.spyOn(nextItem, 'focus');
+                        activeItem.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'ArrowRight'
+                            })
+                        );
+                        expect(spy).toHaveBeenCalled();
+                    });
+            });
+
+            it('Arrow Up', () => {
+                element.items = baseItems;
+                element.label = 'label';
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                        const activeItem = items[1];
+                        activeItem.focus();
+                        const previousItem = items[0];
+                        const spy = jest.spyOn(previousItem, 'focus');
+                        activeItem.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'ArrowUp'
+                            })
+                        );
+                        expect(spy).toHaveBeenCalled();
+                    });
+            });
+        });
+        describe('Select menu item', () => {
+            it('Enter', () => {
+                element.items = baseItems;
+                element.label = 'label';
+
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeTruthy();
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                        const activeItem = items[1];
+                        activeItem.focus();
+                        activeItem.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'Enter'
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(
+                            handler.mock.calls[0][0].cancelable
+                        ).toBeTruthy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    });
+            });
+
+            it('Space', () => {
+                element.items = baseItems;
+                element.label = 'label';
+
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeTruthy();
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(items.length).toBe(3);
+                        const activeItem = items[1];
+                        activeItem.focus();
+                        activeItem.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: ' '
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(
+                            handler.mock.calls[0][0].cancelable
+                        ).toBeTruthy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    });
+            });
+        });
+    });
 });

@@ -357,7 +357,7 @@ describe('Primitive Tree Item', () => {
             it('allowInlineEdit triggered by keyboard', () => {
                 element.allowInlineEdit = true;
                 const event = new CustomEvent('keydown');
-                event.keyCode = 13;
+                event.key = 'Enter';
                 element.dispatchEvent(event);
 
                 return Promise.resolve().then(() => {
@@ -1492,7 +1492,7 @@ describe('Primitive Tree Item', () => {
                         const spyClose = jest.spyOn(closeButton, 'focus');
 
                         const event = new CustomEvent('keydown');
-                        event.keyCode = 9;
+                        event.key = 'Tab';
                         event.shiftKey = true;
                         closeButton.dispatchEvent(event);
                         expect(spyDone).toHaveBeenCalled();
@@ -1621,7 +1621,7 @@ describe('Primitive Tree Item', () => {
 
                 return Promise.resolve().then(() => {
                     const event = new CustomEvent('keydown');
-                    event.keyCode = 13;
+                    event.key = 'Enter';
                     element.dispatchEvent(event);
 
                     expect(handler).toHaveBeenCalled();
@@ -1700,12 +1700,12 @@ describe('Primitive Tree Item', () => {
                 element.addEventListener('privateitemkeydown', handler);
 
                 const event = new CustomEvent('keydown');
-                event.keyCode = 38;
+                event.key = 'ArrowUp';
                 element.dispatchEvent(event);
 
                 expect(handler).toHaveBeenCalled();
                 expect(handler.mock.calls[0][0].detail.key).toBe('someKey');
-                expect(handler.mock.calls[0][0].detail.keyCode).toBe(38);
+                expect(handler.mock.calls[0][0].detail.keyCode).toBe('ArrowUp');
                 expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(handler.mock.calls[0][0].composed).toBeTruthy();
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();

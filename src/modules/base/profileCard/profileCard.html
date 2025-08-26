@@ -12,25 +12,33 @@
                 <div class={computedAvatarClass} data-element-id="avatar">
                     <div
                         if:true={showAvatarFallbackIcon}
-                        class={computedCircleClass}
+                        class={computedIconWrapperClass}
                         data-element-id="icon-wrapper"
                     >
-                        <c-primitive-avatar
+                        <lightning-icon
+                            class={computedIconClass}
                             alternative-text={avatarAlternativeText}
-                            fallback-icon-name={avatarFallbackIconName}
-                            size={primitiveAvatarSize}
-                            variant={avatarVariant}
+                            icon-name={avatarFallbackIconName}
+                            title={avatarAlternativeText}
                             data-element-id="avatar-lightning-icon"
-                        ></c-primitive-avatar>
+                        >
+                        </lightning-icon>
                     </div>
-                    <img
+
+                    <div
                         if:true={avatarSrc}
-                        class={computedCircleClass}
-                        alt={avatarAlternativeText}
-                        src={avatarSrc}
-                        data-element-id="img"
-                        onerror={handleImageError}
-                    />
+                        class="avonni-profile-card__image-wrapper"
+                        data-element-id="image-wrapper"
+                    >
+                        <img
+                            class={computedImageClass}
+                            alt={avatarAlternativeText}
+                            src={avatarSrc}
+                            data-element-id="img"
+                            onerror={handleImageError}
+                        />
+                    </div>
+
                     <div
                         if:true={showAvatarActions}
                         class="slds-is-absolute"
@@ -41,7 +49,7 @@
                 </div>
 
                 <div
-                    class="avonni-profile-card__flex-container slds-size_full"
+                    class={computedTextContainerClass}
                     data-element-id="text-container"
                 >
                     <template if:true={showHeaderSlot}>

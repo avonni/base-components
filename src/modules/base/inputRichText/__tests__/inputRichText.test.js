@@ -39,6 +39,7 @@ describe('InputRichText', () => {
         describe('disabled', () => {
             it('Passed to the component', () => {
                 element.disabled = true;
+                element.formats = ['color'];
 
                 return Promise.resolve().then(() => {
                     const comboboxes = element.shadowRoot.querySelectorAll(
@@ -51,10 +52,7 @@ describe('InputRichText', () => {
                     const colorPicker = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-colorpicker-button"]'
                     );
-                    if (colorPicker) {
-                        expect(colorPicker.disabled).toBeTruthy();
-                    }
-
+                    expect(colorPicker.disabled).toBeTruthy();
                     const buttons = element.shadowRoot.querySelectorAll(
                         '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button'
                     );
@@ -66,6 +64,7 @@ describe('InputRichText', () => {
 
             it('false', () => {
                 element.disabled = false;
+                element.formats = ['color'];
 
                 return Promise.resolve().then(() => {
                     const comboboxes = element.shadowRoot.querySelectorAll(
@@ -78,17 +77,15 @@ describe('InputRichText', () => {
                     const colorPicker = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-colorpicker-button"]'
                     );
-                    if (colorPicker) expect(colorPicker.disabled).toBeFalsy();
+                    expect(colorPicker.disabled).toBeFalsy();
 
                     const buttons = element.shadowRoot.querySelectorAll(
                         '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button'
                     );
-                    buttons.forEach((button) => {
-                        if (button.classList.contains('ql-link')) {
-                            expect(button.disabled).toBeTruthy();
-                        } else {
-                            expect(button.disabled).toBeFalsy();
-                        }
+                    [...buttons].forEach((b) => {
+                        const shouldBeDisabled =
+                            b.classList.contains('ql-link');
+                        expect(b.disabled).toBe(shouldBeDisabled);
                     });
                 });
             });
@@ -273,6 +270,48 @@ describe('InputRichText', () => {
                         '.slds-rich-text-editor__textarea + .slds-rich-text-editor__toolbar'
                     );
                     expect(toolbar).toBeTruthy();
+                });
+            });
+        });
+    });
+
+    describe('Keyboard Accessibility', () => {
+        describe('Focused button changes using arrow keys', () => {
+            it('Arrow Right', () => {
+                return Promise.resolve().then(() => {
+                    const actions = element.shadowRoot.querySelectorAll(
+                        '.slds-button-group-list .slds-button'
+                    );
+                    const currentAction = actions[0];
+                    currentAction.focus();
+                    const nextItem = actions[1];
+                    const spy = jest.spyOn(nextItem, 'focus');
+                    currentAction.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'ArrowRight',
+                            bubbles: true
+                        })
+                    );
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+
+            it('Arrow Left', () => {
+                return Promise.resolve().then(() => {
+                    const actions = element.shadowRoot.querySelectorAll(
+                        '.slds-button-group-list .slds-button'
+                    );
+                    const currentAction = actions[1];
+                    currentAction.focus();
+                    const previousItem = actions[0];
+                    const spy = jest.spyOn(previousItem, 'focus');
+                    currentAction.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'ArrowLeft',
+                            bubbles: true
+                        })
+                    );
+                    expect(spy).toHaveBeenCalled();
                 });
             });
         });
