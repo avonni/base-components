@@ -239,15 +239,12 @@ export default class ProfileCard extends LightningElement {
      * @type {object[]}
      * @deprecated
      */
-    /* istanbul ignore next */
     @api
     get size() {
-        return this.avatarSize;
+        return this._avatarSize;
     }
-    /* istanbul ignore next */
     set size(value) {
-        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.avatarSize = value;
+        this._avatarSize = value;
         console.warn(
             'The "size" attribute is deprecated. Use "avatar-size" instead.'
         );

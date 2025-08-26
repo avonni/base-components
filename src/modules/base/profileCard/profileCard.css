@@ -11,7 +11,7 @@ article.avonni-profile-card {
         --avonni-profile-card-color-border,
         var(--slds-g-color-border-base-1, #c9c9c9)
     );
-    border-radius: var(--avonni-profile-card-radius-border, 0.25rem);
+    border-radius: var(--avonni-profile-card-radius-border, 0rem);
     box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
 }
 

@@ -174,6 +174,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-profile-card-radius-border
- * @default 0.25rem
+ * @default 0rem
  * @type radius
  */
