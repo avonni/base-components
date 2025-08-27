@@ -70,8 +70,13 @@ describe('Primitive Carousel Item', () => {
             expect(element.description).toBeUndefined();
             expect(element.href).toBeUndefined();
             expect(element.imageAssistiveText).toBeUndefined();
+            expect(element.imageErrorLabel).toBe('No Preview Available');
             expect(element.imagePosition).toBe('top');
             expect(element.infos).toBeUndefined();
+            expect(element.name).toBeUndefined();
+            expect(element.noImageLabel).toBe('No Image Source Provided');
+            expect(element.panelIndex).toBeUndefined();
+            expect(element.panelItems).toBeUndefined();
             expect(element.src).toBeUndefined();
             expect(element.title).toBeUndefined();
         });

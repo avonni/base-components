@@ -18,6 +18,8 @@ const ACTIONS_VARIANTS = {
     default: 'border'
 };
 const DEFAULT_CAROUSEL_HEIGHT = 6.625;
+const DEFAULT_IMAGE_ERROR_LABEL = 'No Preview Available';
+const DEFAULT_NO_IMAGE_LABEL = 'No Image Source Provided';
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
@@ -31,9 +33,11 @@ export default class PrimitiveCarouselItem extends LightningElement {
     @api description;
     @api href;
     @api imageAssistiveText;
+    @api imageErrorLabel = DEFAULT_IMAGE_ERROR_LABEL;
     @api infos;
     @api itemIndex;
     @api name;
+    @api noImageLabel = DEFAULT_NO_IMAGE_LABEL;
     @api panelIndex;
     @api panelItems;
     @api title;
@@ -179,6 +183,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
     set src(src) {
         this._src = src;
         if (!src) {
+            this.illustrationVariant = 'desert';
+            this.illustrationTitle = this.noImageLabel;
             this.displayImageError = true;
         }
     }
@@ -439,6 +445,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * Image error event handler.
      */
     handleImageError() {
+        this.illustrationVariant = 'no-preview';
+        this.illustrationTitle = this.imageErrorLabel;
         this.displayImageError = true;
     }
 
