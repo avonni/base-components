@@ -104,7 +104,9 @@ export default class FilterMenuGroup extends LightningElement {
     @api applyButtonLabel;
     @api hideApplyResetButtons;
     @api hideSelectedItems;
+    @api isToggleButtonVariant;
     @api resetButtonLabel;
+    @api showSelectedFilterValueCount;
     @api variant;
 
     _menus = [];

@@ -23,7 +23,7 @@ describe('FilterMenuGroup', () => {
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
             expect(element.menus).toMatchObject([]);
-            expect(element.resetButtonLabel).toBe('Reset');
+            expect(element.resetButtonLabel).toBe('Clear selection');
             expect(element.value).toEqual({});
             expect(element.variant).toBe('horizontal');
         });
@@ -308,12 +308,16 @@ describe('FilterMenuGroup', () => {
         describe('apply', () => {
             it('apply method', () => {
                 element.menus = MENUS;
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
 
                 return Promise.resolve()
                     .then(() => {
                         const menu = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-filter-menu"]'
                         );
+
+                        expect(element.value).toEqual({});
                         menu.dispatchEvent(
                             new CustomEvent('select', {
                                 detail: {
@@ -323,9 +327,8 @@ describe('FilterMenuGroup', () => {
                             })
                         );
 
-                        expect(element.value).toEqual({});
-                        element.apply();
                         expect(element.value).toEqual({ contact: ['call'] });
+                        expect(handler).toHaveBeenCalled();
                     })
                     .then(() => {
                         const pills = element.shadowRoot.querySelector(
@@ -474,8 +477,7 @@ describe('FilterMenuGroup', () => {
                         applyButton.click();
 
                         expect(handler).toHaveBeenCalled();
-                        const detail = handler.mock.calls[0][0].detail;
-                        expect(detail.value).toEqual({
+                        expect(element.value).toEqual({
                             editions: ['professional', 'enterprise'],
                             contact: ['call'],
                             price: [2, 45],
@@ -484,7 +486,6 @@ describe('FilterMenuGroup', () => {
                                 '2019-01-31T13:40:00.000Z'
                             ]
                         });
-                        expect(detail.name).toBeUndefined();
                     })
                     .then(() => {
                         const pills = element.shadowRoot.querySelector(
@@ -834,7 +835,7 @@ describe('FilterMenuGroup', () => {
                     expect(call.bubbles).toBeFalsy();
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
-                    expect(element.value).toEqual({});
+                    expect(element.value).toEqual({ contact: ['call'] });
                 });
             });
         });

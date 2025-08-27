@@ -3,5 +3,5 @@
 }
 
 .avonni-filter-menu__selected-item-count {
-    background-color: var(--lwc-brandPrimary);
+    background-color: var(--lwc-brandPrimary, #1b96ff);
 }

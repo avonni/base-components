@@ -5,6 +5,8 @@ export default class FilterMenu extends LightningElement {
     @api alternativeText;
     @api applyButtonLabel;
     @api buttonVariant;
+    @api closed;
+    @api collapsible;
     @api disabled;
     @api dropdownAlignment;
     @api dropdownNubbin;
@@ -17,6 +19,7 @@ export default class FilterMenu extends LightningElement {
     @api loadingStateAlternativeText;
     @api name;
     @api resetButtonLabel;
+    @api showSelectedFilterValueCount;
     @api title;
     @api tooltip;
     @api type;
@@ -27,5 +30,6 @@ export default class FilterMenu extends LightningElement {
     @api apply() {}
     @api clear() {}
     @api focus() {}
+    @api focusSearchInput() {}
     @api reset() {}
 }

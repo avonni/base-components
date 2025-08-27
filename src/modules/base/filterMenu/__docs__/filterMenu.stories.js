@@ -233,6 +233,19 @@ export default {
                 category: 'Button'
             }
         },
+        showSelectedFilterValueCount: {
+            name: 'show-selected-filter-value-count',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected filter value and count are displayed in the label.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
+            }
+        },
         title: {
             control: {
                 type: 'text'
@@ -311,6 +324,7 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
         resetButtonLabel: 'Reset',
+        showSelectedFilterValueCount: false,
         type: 'list',
         variant: 'horizontal'
     }

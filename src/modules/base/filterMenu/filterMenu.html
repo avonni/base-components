@@ -22,10 +22,10 @@
                 {label}
             </span>
             <span
-                if:true={selectedElementLabels}
+                if:true={showSelectedFilterValue}
                 data-element-id="span-menu-selected-labels"
             >
-                : {selectedElementLabels}&nbsp;
+                : {selectedFilterLabels}&nbsp;
             </span>
             <span
                 if:true={selectedItemCountLabel}

@@ -44,6 +44,7 @@
                     loading-state-alternative-text={menu.loadingStateAlternativeText}
                     name={menu.name}
                     reset-button-label={resetButtonLabel}
+                    show-selected-filter-value-count={showMenuSelectedFilterValueCount}
                     title={menu.title}
                     type={menu.type}
                     type-attributes={menu.typeAttributes}
@@ -56,7 +57,7 @@
                 ></c-filter-menu>
             </li>
         </template>
-        <c-layout-item lwc:if={isOverflow} class="slds-text-align_right">
+        <c-layout-item if:true={isOverflow} class="slds-text-align_right">
             <c-button-popover
                 class="
                     slds-show_inline-block

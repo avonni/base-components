@@ -9,8 +9,10 @@ export const FilterMenuGroup = ({
     applyButtonLabel,
     hideApplyResetButtons,
     hideSelectedItems,
+    isToggleButtonVariant,
     menus,
     resetButtonLabel,
+    showSelectedFilterValueCount,
     value,
     variant
 }) => {
@@ -18,8 +20,10 @@ export const FilterMenuGroup = ({
     element.applyButtonLabel = applyButtonLabel;
     element.hideApplyResetButtons = hideApplyResetButtons;
     element.hideSelectedItems = hideSelectedItems;
+    element.isToggleButtonVariant = isToggleButtonVariant;
     element.menus = menus;
     element.resetButtonLabel = resetButtonLabel;
+    element.showSelectedFilterValueCount = showSelectedFilterValueCount;
     element.value = value;
     element.variant = variant;
     return element;

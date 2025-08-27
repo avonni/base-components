@@ -184,6 +184,7 @@ export default class FilterMenu extends LightningElement {
     _loadingStateAlternativeText = i18n.loading;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+    _showSelectedFilterValueCount = false;
     _showSearchBox = false;
     _tooltip;
     _type = TYPES.default;
@@ -691,6 +692,20 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * If present, the selected filter value and count are displayed in the label.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showSelectedFilterValueCount() {
+        return this._showSelectedFilterValueCount;
+    }
+    set showSelectedFilterValueCount(value) {
+        this._showSelectedFilterValueCount = normalizeBoolean(value);
+    }
+
+    /**
      * The tooltip is displayed on hover or focus on the button (horizontal variant), or on the help icon (vertical variant).
      *
      * @type {string}
@@ -896,7 +911,8 @@ export default class FilterMenu extends LightningElement {
 
         classes.add({
             'avonni-filter-menu__selected-item-button':
-                this.selectedItemsLabels.length > 0
+                this.selectedItemLabels.length > 0 &&
+                this.showSelectedFilterValue
         });
 
         return classes
@@ -964,7 +980,9 @@ export default class FilterMenu extends LightningElement {
     get computedMenuLabelClass() {
         return classSet('slds-dropdown__list')
             .add({
-                'slds-text-title_bold': this.selectedItemsLabels.length > 0
+                'slds-text-title_bold':
+                    this.selectedItemLabels.length > 0 &&
+                    this.showSelectedFilterValueCount
             })
             .toString();
     }
@@ -1223,34 +1241,23 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Display the count if more than 2 items are selected
+     * Computed Menu Label with selected filters.
      *
      * @type {string}
      */
-    get selectedItemCountLabel() {
-        const selectedCount = this.selectedItemsLabels.length;
-
-        return selectedCount > 2 ? `${selectedCount - 2}+` : '';
-    }
-
-    /**
-     * Computed Menu Label with selected items.
-     *
-     * @type {string}
-     */
-    get selectedElementLabels() {
-        const selectedCount = this.selectedItemsLabels.length;
+    get selectedFilterLabels() {
+        const selectedCount = this.selectedItemLabels.length;
 
         if (selectedCount === 0) {
             return '';
         }
 
         if (selectedCount <= 2) {
-            const selectedLabels = this.selectedItemsLabels.join(', ');
+            const selectedLabels = this.selectedItemLabels.join(', ');
             return `(${selectedLabels})`;
         }
 
-        const firstTwoLabels = this.selectedItemsLabels
+        const firstTwoLabels = this.selectedItemLabels
             .slice(0, 2)
             .map((item) => item)
             .join(', ');
@@ -1258,11 +1265,22 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Display the count if more than 2 items are selected
+     *
+     * @type {string}
+     */
+    get selectedItemCountLabel() {
+        const selectedCount = this.selectedItemLabels.length;
+
+        return selectedCount > 2 ? `${selectedCount - 2}+` : '';
+    }
+
+    /**
      * Display the labels of the selected items
      *
      * @type {string[]}
      */
-    get selectedItemsLabels() {
+    get selectedItemLabels() {
         const isMultiSelect = this.computedTypeAttributes?.isMultiSelect;
         const labels = isMultiSelect
             ? this._value
@@ -1300,6 +1318,15 @@ export default class FilterMenu extends LightningElement {
             this.type === 'list' &&
             (this.searchTerm || this.variant === 'horizontal')
         );
+    }
+
+    /**
+     * True if the selected filter value should be visible
+     *
+     * @type {boolean}
+     */
+    get showSelectedFilterValue() {
+        return this.showSelectedFilterValueCount && !!this.selectedFilterLabels;
     }
 
     /**

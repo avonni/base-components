@@ -28,11 +28,13 @@ export default class FilterMenuGroup extends LightningElement {
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
     _hideApplyResetButtons = false;
     _hideSelectedItems = false;
+    _isToggleButtonVariant = false;
     _menus = [];
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _value = {};
     _variant = MENU_VARIANTS.default;
     _searchBarWidth = 0;
+    _showSelectedFilterValueCount = false;
     _wrapperWidth = 0;
     _wrapperWidthWhenLastResized = 0;
 
@@ -111,6 +113,21 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * If present, each menu will have its button variant toggled between the border and outline-brand variants
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isToggleButtonVariant() {
+        return this._isToggleButtonVariant;
+    }
+    set isToggleButtonVariant(value) {
+        this._isToggleButtonVariant = normalizeBoolean(value);
+    }
+
+    /**
      * Array of menu objects.
      *
      * @type {object[]}
@@ -163,6 +180,20 @@ export default class FilterMenuGroup extends LightningElement {
     set searchBarWidth(value) {
         this._searchBarWidth = value ?? 0;
         this.recomputeOverflow();
+    }
+
+    /**
+     * If present, the selected filter value and count are displayed in the label.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showSelectedFilterValueCount() {
+        return this._showSelectedFilterValueCount;
+    }
+    set showSelectedFilterValueCount(value) {
+        this._showSelectedFilterValueCount = normalizeBoolean(value);
     }
 
     /**
@@ -361,6 +392,15 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * True if the Selected Filter Value and Count should be displayed for each menu
+     *
+     * @type {boolean}
+     */
+    get showMenuSelectedFilterValueCount() {
+        return !this.isVertical && this.showSelectedFilterValueCount;
+    }
+
+    /**
      * Dynamically compute the visible menus based on the slice index.
      *
      * @type {object[]}
@@ -457,14 +497,14 @@ export default class FilterMenuGroup extends LightningElement {
         const pills = [];
         this.computedMenus.forEach((menu) => {
             menu.value = deepCopy(this.value[menu.name]);
-            if (!this.isVertical) {
+            if (this.isToggleButtonVariant) {
                 menu.buttonVariant = menu?._value.length
                     ? 'outline-brand'
                     : 'border';
             }
             pills.push(menu.selectedItems);
         });
-        if (!this.isVertical) {
+        if (!this.isToggleButtonVariant) {
             this.computedMenus = [...this.computedMenus];
         }
         if (this._hiddenMenusLength === 0) {

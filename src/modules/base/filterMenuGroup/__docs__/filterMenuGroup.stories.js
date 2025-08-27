@@ -57,6 +57,30 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        isToggleButtonVariant: {
+            name: 'is-toggle-button-variant',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, each menu will have its button variant toggled between the border and outline-brand variants',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        showSelectedFilterValueCount: {
+            name: 'show-selected-filter-value-count',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected filter value and count are displayed in the label.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         value: {
             control: {
                 type: 'object'
@@ -84,7 +108,9 @@ export default {
         applyButtonLabel: 'Apply',
         hideApplyResetButtons: false,
         hideSelectedItems: false,
+        isToggleButtonVariant: false,
         resetButtonLabel: 'Reset',
+        showSelectedFilterValueCount: false,
         variant: 'horizontal'
     }
 };
