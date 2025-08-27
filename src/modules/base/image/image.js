@@ -717,7 +717,7 @@ export default class Image extends LightningElement {
                 'avonni-image_fluid-grow': this.fluidGrow,
                 'avonni-image_thumbnail': this.thumbnail,
                 'slds-float_left':
-                    this.position === 'left' && this._lazyLoading === 'auto',
+                    this.position === 'left' && this.lazyLoading === 'auto',
                 'slds-float_right': this.position === 'right',
                 'slds-align_absolute-center': this.position === 'center',
                 'slds-show': this.position === 'center',
@@ -753,28 +753,6 @@ export default class Image extends LightningElement {
             Object.keys(styleProperties).forEach((key) => {
                 if (styleProperties[key]) {
                     styleValue += `${key}: ${styleProperties[key]};`;
-                }
-            });
-        }
-        return styleValue;
-    }
-
-    /**
-     * Final computed Magnifier Style.
-     *
-     * @type {string}
-     */
-    get computedMagnifierStyle() {
-        const styleProperties = {};
-
-        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
-        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
-
-        let styleValue = '';
-        if (styleProperties) {
-            Object.keys(styleProperties).forEach((key) => {
-                if (styleProperties[key]) {
-                    styleValue += `${key}: ${styleProperties[key]}; `;
                 }
             });
         }
