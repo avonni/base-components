@@ -94,7 +94,7 @@ describe('Filter Menu', () => {
             expect(element.label).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
-            expect(element.resetButtonLabel).toBe('Reset');
+            expect(element.resetButtonLabel).toBe('Clear selection');
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.type).toBe('list');
@@ -125,24 +125,6 @@ describe('Filter Menu', () => {
                         '.slds-assistive-text'
                     );
                     expect(altText.textContent).toBe('A string alt text');
-                });
-            });
-        });
-
-        describe('Apply Button Label', () => {
-            it('applyButtonLabel', () => {
-                element.typeAttributes = { items: ITEMS };
-                element.applyButtonLabel = 'A string label';
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                button.click();
-
-                return Promise.resolve().then(() => {
-                    const submitButton = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-apply"]'
-                    );
-                    expect(submitButton.label).toBe('A string label');
                 });
             });
         });
@@ -845,7 +827,7 @@ describe('Filter Menu', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(2);
+                    expect(buttons).toHaveLength(1);
                 });
             });
 
@@ -1126,9 +1108,6 @@ describe('Filter Menu', () => {
                     const items = element.shadowRoot.querySelectorAll(
                         '[data-element-id="a-list-item"]'
                     );
-                    const apply = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-apply"]'
-                    );
                     const reset = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-reset"]'
                     );
@@ -1136,7 +1115,6 @@ describe('Filter Menu', () => {
                         '[data-element-id="p-no-results-message"]'
                     );
 
-                    expect(apply).toBeTruthy();
                     expect(reset).toBeTruthy();
                     expect(noResultMessage).toBeFalsy();
                     expect(items).toHaveLength(6);
@@ -1801,6 +1779,9 @@ describe('Filter Menu', () => {
                         ]);
                     })
                     .then(() => {
+                        button.click();
+                    })
+                    .then(() => {
                         const item = element.shadowRoot.querySelector(
                             '[data-element-id="a-list-item"][data-index="1"]'
                         );
@@ -2002,7 +1983,6 @@ describe('Filter Menu', () => {
                         expect(items[0].ariaChecked).toBe('true');
                         expect(items[1].ariaChecked).toBe('true');
                         expect(items[2].ariaChecked).toBe('false');
-
                         items[2].click();
                     })
                     .then(() => {
@@ -2016,25 +1996,25 @@ describe('Filter Menu', () => {
                         element.value = JSON.parse(JSON.stringify(VALUE));
                     })
                     .then(() => {
-                        // Selected items were not erased
-                        // because the new value was identical
-                        const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="a-list-item"]'
-                        );
-                        expect(items[0].ariaChecked).toBe('true');
-                        expect(items[1].ariaChecked).toBe('true');
-                        expect(items[2].ariaChecked).toBe('true');
-
-                        element.value = [VALUE[0]];
-                    })
-                    .then(() => {
                         // Selected items were erased
                         // because the new value was different
                         const items = element.shadowRoot.querySelectorAll(
                             '[data-element-id="a-list-item"]'
                         );
                         expect(items[0].ariaChecked).toBe('true');
-                        expect(items[1].ariaChecked).toBe('false');
+                        expect(items[1].ariaChecked).toBe('true');
+                        expect(items[2].ariaChecked).toBe('false');
+
+                        element.value = JSON.parse(JSON.stringify(VALUE));
+                    })
+                    .then(() => {
+                        // Selected items were erased
+                        // because the new value was identical
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items[0].ariaChecked).toBe('true');
+                        expect(items[1].ariaChecked).toBe('true');
                         expect(items[2].ariaChecked).toBe('false');
                     });
             });
@@ -2329,7 +2309,7 @@ describe('Filter Menu', () => {
                         expect(items[2].ariaChecked).toBe('false');
                         items[2].click();
 
-                        expect(applyHandler).not.toHaveBeenCalled();
+                        expect(applyHandler).toHaveBeenCalled();
                         expect(handler).toHaveBeenCalled();
                         const call = handler.mock.calls[0][0];
                         expect(call.bubbles).toBeTruthy();
@@ -2338,11 +2318,18 @@ describe('Filter Menu', () => {
                         expect(call.detail.value).toEqual(['item-3']);
                     })
                     .then(() => {
+                        button.click();
+                    })
+                    .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
                             '[data-element-id="a-list-item"]'
                         );
+                        console.log('length', items.length);
                         expect(items[2].ariaChecked).toBe('true');
                         items[2].click();
+                    })
+                    .then(() => {
+                        button.click();
                     })
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
@@ -2554,10 +2541,6 @@ describe('Filter Menu', () => {
                             '[data-element-id="a-list-item"]'
                         );
                         items[3].click();
-                        const applyButton = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-apply"]'
-                        );
-                        applyButton.click();
 
                         expect(handler).toHaveBeenCalled();
                         expect(handler.mock.calls[0][0].detail.value).toEqual([
@@ -2654,10 +2637,6 @@ describe('Filter Menu', () => {
                         '[data-element-id="a-list-item"]'
                     );
                     items[3].click();
-                    const applyButton = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-apply"]'
-                    );
-                    applyButton.click();
 
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toEqual([

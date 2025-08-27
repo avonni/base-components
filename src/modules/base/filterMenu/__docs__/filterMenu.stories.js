@@ -50,10 +50,11 @@ export default {
                 'container',
                 'border-filled',
                 'bare-inverse',
-                'border-inverse'
+                'border-inverse',
+                'outline-brand'
             ],
             description:
-                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
+                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, outline-brand, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' },

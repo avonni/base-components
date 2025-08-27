@@ -22,13 +22,13 @@
                 {label}
             </span>
             <span
-                if:true={showSelectedFilterValue}
+                if:true={showFilterValue}
                 data-element-id="span-menu-selected-labels"
             >
-                : {selectedFilterLabels}&nbsp;
+                &nbsp;{selectedFilterLabels}&nbsp;
             </span>
             <span
-                if:true={selectedItemCountLabel}
+                if:true={showCount}
                 class="slds-badge avonni-filter-menu__selected-item-count"
                 data-element-id="span-menu-selected-item-count"
             >

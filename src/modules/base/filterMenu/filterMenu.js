@@ -1298,6 +1298,26 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the selected filter value should be visible
+     *
+     * @type {boolean}
+     */
+    get showCount() {
+        return (
+            this.showSelectedFilterValueCount && !!this.selectedItemCountLabel
+        );
+    }
+
+    /**
+     * True if the selected filter value should be visible
+     *
+     * @type {boolean}
+     */
+    get showFilterValue() {
+        return this.showSelectedFilterValueCount && !!this.selectedFilterLabels;
+    }
+
+    /**
      * True if the load more button should be visible.
      *
      * @type {boolean}
@@ -1318,15 +1338,6 @@ export default class FilterMenu extends LightningElement {
             this.type === 'list' &&
             (this.searchTerm || this.variant === 'horizontal')
         );
-    }
-
-    /**
-     * True if the selected filter value should be visible
-     *
-     * @type {boolean}
-     */
-    get showSelectedFilterValue() {
-        return this.showSelectedFilterValueCount && !!this.selectedFilterLabels;
     }
 
     /**
