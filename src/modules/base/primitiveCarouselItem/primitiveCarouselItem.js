@@ -52,6 +52,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
 
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
     displayImageError = false;
+    illustrationTitle;
+    illustrationVariant;
 
     render() {
         return normalizeBoolean(this.href) ? tag : noTag;
