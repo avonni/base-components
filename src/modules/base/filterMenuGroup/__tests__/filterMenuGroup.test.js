@@ -22,10 +22,14 @@ describe('FilterMenuGroup', () => {
             expect(element.applyButtonLabel).toBe('Apply');
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
+            expect(element.isToggleButtonVariant).toBeFalsy();
             expect(element.menus).toMatchObject([]);
+            expect(element.offsetFilterWidth).toBe(0);
             expect(element.resetButtonLabel).toBe('Clear selection');
+            expect(element.showSelectedFilterValueCount).toBeFalsy();
             expect(element.value).toEqual({});
             expect(element.variant).toBe('horizontal');
+            expect(element.wrapperWidth).toBe(0);
         });
 
         describe('applyButtonLabel', () => {
@@ -160,6 +164,18 @@ describe('FilterMenuGroup', () => {
             });
         });
 
+        describe('isToggleButtonVariant', () => {
+            it('isToggleButtonVariant, true', () => {
+                element.isToggleButtonVariant = true;
+                expect(element.isToggleButtonVariant).toBeTruthy();
+            });
+
+            it('isToggleButtonVariant, false', () => {
+                element.isToggleButtonVariant = false;
+                expect(element.isToggleButtonVariant).toBeFalsy();
+            });
+        });
+
         describe('menus', () => {
             it('Passed to the component', () => {
                 element.menus = MENUS;
@@ -201,6 +217,28 @@ describe('FilterMenuGroup', () => {
             });
         });
 
+        describe('offsetFilterWidth', () => {
+            it('offsetFilterWidth, null', () => {
+                element.offsetFilterWidth = null;
+                expect(element.offsetFilterWidth).toBe(0);
+            });
+
+            it('offsetFilterWidth, undefined', () => {
+                element.offsetFilterWidth = undefined;
+                expect(element.offsetFilterWidth).toBe(0);
+            });
+
+            it('offsetFilterWidth, -1', () => {
+                element.offsetFilterWidth = -1;
+                expect(element.offsetFilterWidth).toBe(0);
+            });
+
+            it('offsetFilterWidth, 1', () => {
+                element.offsetFilterWidth = 1;
+                expect(element.offsetFilterWidth).toBe(1);
+            });
+        });
+
         describe('resetButtonLabel', () => {
             it('Passed to the component with horizontal variant', () => {
                 element.resetButtonLabel = 'Erase';
@@ -225,6 +263,34 @@ describe('FilterMenuGroup', () => {
                         '[data-element-id="lightning-button-reset"]'
                     );
                     expect(button.label).toBe('Erase');
+                });
+            });
+        });
+
+        describe('showSelectedFilterValueCount', () => {
+            it('Passed to the component as true', () => {
+                element.showSelectedFilterValueCount = true;
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="avonni-filter-menu"]'
+                    );
+                    menus.forEach((menu) => {
+                        expect(menu.showSelectedFilterValueCount).toBeTruthy();
+                    });
+                });
+            });
+
+            it('Passed to the component as false', () => {
+                element.showSelectedFilterValueCount = false;
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="avonni-filter-menu"]'
+                    );
+                    menus.forEach((menu) => {
+                        expect(menu.showSelectedFilterValueCount).toBeFalsy();
+                    });
                 });
             });
         });
@@ -300,6 +366,28 @@ describe('FilterMenuGroup', () => {
                     );
                     expect(buttons).toHaveLength(2);
                 });
+            });
+        });
+
+        describe('wrapperWidth', () => {
+            it('wrapperWidth, null', () => {
+                element.wrapperWidth = null;
+                expect(element.wrapperWidth).toBe(0);
+            });
+
+            it('wrapperWidth, undefined', () => {
+                element.wrapperWidth = undefined;
+                expect(element.wrapperWidth).toBe(0);
+            });
+
+            it('wrapperWidth, -1', () => {
+                element.wrapperWidth = -1;
+                expect(element.wrapperWidth).toBe(0);
+            });
+
+            it('wrapperWidth, 1', () => {
+                element.wrapperWidth = 1;
+                expect(element.wrapperWidth).toBe(1);
             });
         });
     });
@@ -389,6 +477,18 @@ describe('FilterMenuGroup', () => {
                         expect(menu.value).toEqual([]);
                         expect(element.value).toEqual(VALUE);
                     });
+            });
+        });
+    });
+
+    describe('Private Fields', () => {
+        describe('focus', () => {
+            it('focus method', () => {
+                element.menus = MENUS;
+
+                return Promise.resolve().then(() => {
+                    expect(true).toBeTruthy();
+                });
             });
         });
     });

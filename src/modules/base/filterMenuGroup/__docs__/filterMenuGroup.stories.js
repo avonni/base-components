@@ -69,6 +69,17 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        offsetFilterWidth: {
+            name: 'offset-filter-width',
+            control: {
+                type: 'number'
+            },
+            description: 'Width of the offset for the filter in pixels.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' }
+            }
+        },
         showSelectedFilterValueCount: {
             name: 'show-selected-filter-value-count',
             control: {
@@ -102,6 +113,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
             }
+        },
+        wrapperWidth: {
+            name: 'wrapper-width',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Width of the wrapper in pixels. It is used to compute the overflow of the menu group.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' }
+            }
         }
     },
     args: {
@@ -109,9 +132,11 @@ export default {
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         isToggleButtonVariant: false,
+        offsetFilterWidth: 0,
         resetButtonLabel: 'Reset',
         showSelectedFilterValueCount: false,
-        variant: 'horizontal'
+        variant: 'horizontal',
+        wrapperWidth: 0
     }
 };
 

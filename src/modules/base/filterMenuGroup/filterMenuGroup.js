@@ -30,10 +30,10 @@ export default class FilterMenuGroup extends LightningElement {
     _hideSelectedItems = false;
     _isToggleButtonVariant = false;
     _menus = [];
+    _offsetFilterWidth = 0;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _value = {};
     _variant = MENU_VARIANTS.default;
-    _searchBarWidth = 0;
     _showSelectedFilterValueCount = false;
     _wrapperWidth = 0;
     _wrapperWidthWhenLastResized = 0;
@@ -113,11 +113,10 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * If present, each menu will have its button variant toggled between the border and outline-brand variants
+     * If present, each menu will have its button variant toggled between the border and outline-brand variants.
      *
      * @type {boolean}
      * @public
-     * @default false
      */
     @api
     get isToggleButtonVariant() {
@@ -149,6 +148,23 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Width of the offset for the filter in pixels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get offsetFilterWidth() {
+        return this._offsetFilterWidth;
+    }
+    set offsetFilterWidth(value) {
+        this._offsetFilterWidth =
+            typeof value === 'number' && value >= 0 ? value : 0;
+        this.recomputeOverflow();
+    }
+
+    /**
      * Label of the reset button.
      *
      * @type {string}
@@ -164,22 +180,6 @@ export default class FilterMenuGroup extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_RESET_BUTTON_LABEL;
-    }
-
-    /**
-     * Width of the search bar in pixels. It is used to compute the overflow of the menu group.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api
-    get searchBarWidth() {
-        return this._searchBarWidth;
-    }
-    set searchBarWidth(value) {
-        this._searchBarWidth = value ?? 0;
-        this.recomputeOverflow();
     }
 
     /**
@@ -248,7 +248,8 @@ export default class FilterMenuGroup extends LightningElement {
         return this._wrapperWidth;
     }
     set wrapperWidth(value) {
-        this._wrapperWidth = value ?? 0;
+        this._wrapperWidth =
+            typeof value === 'number' && value >= 0 ? value : 0;
         if (this.needsRecomputeHorizontal) {
             this.recomputeOverflow();
         }
@@ -565,7 +566,7 @@ export default class FilterMenuGroup extends LightningElement {
         this._isCalculatingOverflow = true;
 
         requestAnimationFrame(() => {
-            let totalWidth = this.searchBarWidth;
+            let totalWidth = this.offsetFilterWidth;
             let sliceIndex = 0;
 
             this.listMenus.forEach((listMenu) => {

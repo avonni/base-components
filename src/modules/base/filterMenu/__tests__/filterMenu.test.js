@@ -95,6 +95,7 @@ describe('Filter Menu', () => {
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.resetButtonLabel).toBe('Clear selection');
+            expect(element.showSelectedFilterValueCount).toBeFalsy();
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.type).toBe('list');
@@ -365,6 +366,20 @@ describe('Filter Menu', () => {
                     );
                     expect(button.classList.value).toBe(
                         'slds-button slds-button_icon-border-inverse'
+                    );
+                });
+            });
+
+            it('outline-brand, with label', () => {
+                element.buttonVariant = 'outline-brand';
+                element.label = 'A string label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList.value).toBe(
+                        'slds-button slds-button_outline-brand'
                     );
                 });
             });
@@ -1283,6 +1298,40 @@ describe('Filter Menu', () => {
                         '.slds-dropdown lightning-button:first-of-type'
                     );
                     expect(resetButton.label).toBe('A string label');
+                });
+            });
+        });
+
+        describe('Show Selected Filter Value Count', () => {
+            it('showSelectedFilterValueCount, true', () => {
+                element.showSelectedFilterValueCount = true;
+                element.selectedItems = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const selectedLabels = element.shadowRoot.querySelector(
+                        '[data-element-id="span-menu-selected-labels"]'
+                    );
+                    const selectedCount = element.shadowRoot.querySelector(
+                        '[data-element-id="span-menu-selected-item-count"]'
+                    );
+                    expect(selectedLabels).toBeDefined();
+                    expect(selectedCount).toBeDefined();
+                });
+            });
+
+            it('showSelectedFilterValueCount, false', () => {
+                element.showSelectedFilterValueCount = false;
+                element.selectedItems = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const selectedLabels = element.shadowRoot.querySelector(
+                        '[data-element-id="span-menu-selected-labels"]'
+                    );
+                    const selectedCount = element.shadowRoot.querySelector(
+                        '[data-element-id="span-menu-selected-item-count"]'
+                    );
+                    expect(selectedLabels).toBeFalsy();
+                    expect(selectedCount).toBeFalsy();
                 });
             });
         });
