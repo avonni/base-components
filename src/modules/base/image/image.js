@@ -525,6 +525,8 @@ export default class Image extends LightningElement {
             this.illustrationVariant = 'desert';
             this.illustrationTitle = this.noImageLabel;
             this.displayImageError = true;
+        } else {
+            this.displayImageError = false;
         }
     }
 
