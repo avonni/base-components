@@ -58,6 +58,12 @@ export default class FilterMenuGroup extends LightningElement {
         this._connected = true;
     }
 
+    renderedCallback() {
+        if (this.needsRecomputeHorizontal) {
+            this.recomputeOverflow();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES

@@ -8,11 +8,17 @@ describe('FilterMenuGroup', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('base-filter-menu-group', {
             is: FilterMenuGroup
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -389,6 +395,53 @@ describe('FilterMenuGroup', () => {
                 element.wrapperWidth = 1;
                 expect(element.wrapperWidth).toBe(1);
             });
+
+            it('wrapperWidth, 100000', () => {
+                element.menus = MENUS;
+                element.wrapperWidth = 100000;
+                expect(element.wrapperWidth).toBe(100000);
+                return Promise.resolve()
+                    .then(() => {
+                        jest.runAllTimers();
+                        expect(element.wrapperWidth).toBe(100000);
+                    })
+                    .then(() => {
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id^="avonni-filter-menu"]'
+                        );
+                        expect(menus).toHaveLength(MENUS.length);
+                        menus.forEach((menu, i) => {
+                            expect(menu.accessKey).toBe(MENUS[i].accessKey);
+                            expect(menu.alternativeText).toBe(
+                                MENUS[i].alternativeText
+                            );
+                            expect(menu.closed).toBe(MENUS[i].closed);
+                            expect(menu.collapsible).toBe(MENUS[i].collapsible);
+                            expect(menu.disabled).toBe(MENUS[i].disabled);
+                            expect(menu.iconName).toBe(MENUS[i].iconName);
+                            expect(menu.iconSize).toBe(MENUS[i].iconSize);
+                            expect(menu.isLoading).toBe(MENUS[i].isLoading);
+                            expect(menu.label).toBe(MENUS[i].label);
+                            expect(menu.loadingStateAlternativeText).toBe(
+                                MENUS[i].loadingStateAlternativeText
+                            );
+                            expect(menu.type).toBe(MENUS[i].type);
+                            expect(menu.typeAttributes).toEqual(
+                                MENUS[i].typeAttributes
+                            );
+                            expect(menu.title).toBe(MENUS[i].title);
+                            expect(menu.tooltip).toBe(MENUS[i].tooltip);
+                            expect(menu.value).toEqual([]);
+                            expect(menu.buttonVariant).toBe(
+                                MENUS[i].buttonVariant
+                            );
+                            expect(menu.dropdownAlignment).toBe(
+                                MENUS[i].dropdownAlignment
+                            );
+                            expect(menu.name).toBe(MENUS[i].name);
+                        });
+                    });
+            });
         });
     });
 
@@ -477,18 +530,6 @@ describe('FilterMenuGroup', () => {
                         expect(menu.value).toEqual([]);
                         expect(element.value).toEqual(VALUE);
                     });
-            });
-        });
-    });
-
-    describe('Private Fields', () => {
-        describe('focus', () => {
-            it('focus method', () => {
-                element.menus = MENUS;
-
-                return Promise.resolve().then(() => {
-                    expect(true).toBeTruthy();
-                });
             });
         });
     });
@@ -781,6 +822,38 @@ describe('FilterMenuGroup', () => {
                         MENUS[0].typeAttributes.items[0]
                     );
                     expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+        });
+
+        describe('nbfilteritems', () => {
+            it('nbfilteritems event', () => {
+                element.menus = MENUS;
+
+                const handler = jest.fn();
+                element.addEventListener('nbfilteritems', handler);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('nbfilteritems', {
+                            detail: {
+                                name: MENUS[0].name,
+                                item: {}
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.name).toBe(MENUS[0].name);
+                    expect(call.detail.item).toEqual({});
                     expect(call.bubbles).toBeFalsy();
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
