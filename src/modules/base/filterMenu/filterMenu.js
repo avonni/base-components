@@ -928,7 +928,7 @@ export default class FilterMenu extends LightningElement {
         classes.add({
             'avonni-filter-menu__selected-item-button':
                 this.selectedItemLabels.length > 0 &&
-                this.showSelectedFilterValue
+                this.showSelectedFilterValueCount
         });
 
         return classes
@@ -1298,8 +1298,14 @@ export default class FilterMenu extends LightningElement {
      */
     get selectedItemLabels() {
         const isMultiSelect = this.computedTypeAttributes?.isMultiSelect;
+        const itemMap = new Map(
+            this.computedItems.map((item) => [item.value, item.label])
+        );
+        const valueLabels = this.value.map(
+            (value) => itemMap.get(value) || value
+        );
         const labels = isMultiSelect
-            ? this._value
+            ? valueLabels
             : this.selectedItems.map((item) => item.label);
         return labels;
     }

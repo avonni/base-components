@@ -145,7 +145,7 @@ export default {
         hideSelectedItems: false,
         isToggleButtonVariant: false,
         offsetFilterWidth: 0,
-        resetButtonLabel: 'Reset',
+        resetButtonLabel: 'Clear selection',
         showSelectedFilterValueCount: false,
         variant: 'horizontal',
         wrapperWidth: 0

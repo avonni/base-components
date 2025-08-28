@@ -337,7 +337,7 @@ export default {
         iconSize: 'medium',
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
-        resetButtonLabel: 'Reset',
+        resetButtonLabel: 'Clear selection',
         showSelectedFilterValueCount: false,
         type: 'list',
         variant: 'horizontal'

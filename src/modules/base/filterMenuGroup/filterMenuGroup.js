@@ -545,13 +545,13 @@ export default class FilterMenuGroup extends LightningElement {
         this.computedMenus.forEach((menu) => {
             menu.value = deepCopy(this.value[menu.name]);
             if (this.isToggleButtonVariant) {
-                menu.buttonVariant = menu?._value.length
+                menu.buttonVariant = menu?.value?.length
                     ? 'outline-brand'
                     : 'border';
             }
             pills.push(menu.selectedItems);
         });
-        if (!this.isToggleButtonVariant) {
+        if (this.isToggleButtonVariant) {
             this.computedMenus = [...this.computedMenus];
         }
         if (this._hiddenMenusLength === 0) {

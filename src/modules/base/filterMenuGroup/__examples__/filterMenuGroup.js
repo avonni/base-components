@@ -7,6 +7,7 @@ customElements.define(
 
 export const FilterMenuGroup = ({
     applyButtonLabel,
+    hideApplyButton,
     hideApplyResetButtons,
     hideSelectedItems,
     isToggleButtonVariant,
@@ -20,6 +21,7 @@ export const FilterMenuGroup = ({
 }) => {
     const element = document.createElement('ac-base-filter-menu-group');
     element.applyButtonLabel = applyButtonLabel;
+    element.hideApplyButton = hideApplyButton;
     element.hideApplyResetButtons = hideApplyResetButtons;
     element.hideSelectedItems = hideSelectedItems;
     element.isToggleButtonVariant = isToggleButtonVariant;
