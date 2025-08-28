@@ -764,6 +764,8 @@ export default class FilterMenuGroup extends LightningElement {
         }
         this.reset();
         this.dispatchReset();
+        this.apply();
+        this.dispatchApply();
     }
 
     /**

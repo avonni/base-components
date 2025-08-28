@@ -53,18 +53,6 @@ describe('FilterMenuGroup', () => {
                     });
                 });
             });
-
-            it('applyButtonLabel, with vertical variant', () => {
-                element.applyButtonLabel = 'Save';
-                element.variant = 'vertical';
-
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-apply"]'
-                    );
-                    expect(button.label).toBe('Save');
-                });
-            });
         });
 
         describe('hideApplyResetButtons', () => {
@@ -370,7 +358,7 @@ describe('FilterMenuGroup', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(2);
+                    expect(buttons).toHaveLength(1);
                 });
             });
         });
@@ -611,11 +599,6 @@ describe('FilterMenuGroup', () => {
                                 bubbles: true
                             })
                         );
-
-                        const applyButton = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-apply"]'
-                        );
-                        applyButton.click();
 
                         expect(handler).toHaveBeenCalled();
                         expect(element.value).toEqual({
@@ -945,7 +928,7 @@ describe('FilterMenuGroup', () => {
                         menus.forEach((menu) => {
                             expect(menu.value).toEqual([]);
                         });
-                        expect(element.value).toEqual(VALUE);
+                        expect(element.value).toEqual({});
                     });
             });
         });
