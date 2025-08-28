@@ -36,9 +36,11 @@ const DEFAULT_ASSISTIVE_TEXT_PREVIOUS_PANEL = 'Previous Panel';
 const DEFAULT_ASSISTIVE_TEXT_NEXT_PANEL = 'Next Panel';
 const DEFAULT_AUTOCROLL_PLAY_ICON = 'utility:play';
 const DEFAULT_AUTOCROLL_PAUSE_ICON = 'utility:pause';
+const DEFAULT_IMAGE_ERROR_LABEL = 'No Preview Available';
 const DEFAULT_ITEMS_PER_PANEL = 1;
 const DEFAULT_LOADING_STATE_ASSISTIVE_TEXT = 'Loading...';
 const DEFAULT_LOAD_MORE_OFFSET = 1;
+const DEFAULT_NO_IMAGE_LABEL = 'No Image Source Provided';
 const DEFAULT_SCROLL_DURATION = 5;
 const i18n = {
     autoplayButton: DEFAULT_ASSISTIVE_TEXT_AUTOPLAY_BUTTON,
@@ -95,6 +97,13 @@ export default class Carousel extends LightningElement {
      */
     @api hidePreviousNextPanelNavigation;
     /**
+     * Text shown when an image fails to load.
+     * @type {string}
+     * @public
+     * @default 'No Preview Available'
+     */
+    @api imageErrorLabel = DEFAULT_IMAGE_ERROR_LABEL;
+    /**
      * If present, the carousel will loop when reaching the last panel.
      *
      * @type {boolean}
@@ -102,6 +111,14 @@ export default class Carousel extends LightningElement {
      * @default false
      */
     @api isInfinite;
+    /**
+     * Text shown when no src is provided.
+     *
+     * @type {string}
+     * @public
+     * @default 'No Image Source Provided'
+     */
+    @api noImageLabel = DEFAULT_NO_IMAGE_LABEL;
 
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;

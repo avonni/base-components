@@ -1,26 +1,28 @@
 <template>
     <div class="storybook-image-container">
         <c-image
-            src={src}
-            srcset={srcset}
             alternative-text={alternativeText}
-            width={width}
-            height={height}
-            fluid={fluid}
-            fluid-grow={fluidGrow}
-            thumbnail={thumbnail}
-            position={position}
-            static-images={staticImages}
-            lazy-loading={lazyLoading}
-            crop-size={cropSize}
+            compare-alternative-text={compareAlternativeText}
+            compare-attributes={compareAttributes}
+            compare-src={compareSrc}
             crop-fit={cropFit}
             crop-position-x={cropPositionX}
             crop-position-y={cropPositionY}
-            magnifier-type={magnifierType}
+            crop-size={cropSize}
+            fluid={fluid}
+            fluid-grow={fluidGrow}
+            height={height}
+            image-error-label={imageErrorLabel}
+            lazy-loading={lazyLoading}
+            no-image-label={noImageLabel}
             magnifier-attributes={magnifierAttributes}
-            compare-alternative-text={compareAlternativeText}
-            compare-src={compareSrc}
-            compare-attributes={compareAttributes}
+            magnifier-type={magnifierType}
+            position={position}
+            src={src}
+            srcset={srcset}
+            static-images={staticImages}
+            thumbnail={thumbnail}
+            width={width}
         >
         </c-image>
     </div>

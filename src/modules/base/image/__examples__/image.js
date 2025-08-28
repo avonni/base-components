@@ -14,10 +14,12 @@ export const Image = ({
     fluid,
     fluidGrow,
     height,
+    imageErrorLabel,
     lazyLoading,
     leftCompareIconAlternativeText,
     magnifierAttributes,
     magnifierType,
+    noImageLabel,
     position,
     rightCompareIconAlternativeText,
     sizes,
@@ -39,10 +41,12 @@ export const Image = ({
     element.fluid = fluid;
     element.fluidGrow = fluidGrow;
     element.height = height;
+    element.imageErrorLabel = imageErrorLabel;
     element.lazyLoading = lazyLoading;
     element.leftCompareIconAlternativeText = leftCompareIconAlternativeText;
     element.magnifierAttributes = magnifierAttributes;
     element.magnifierType = magnifierType;
+    element.noImageLabel = noImageLabel;
     element.position = position;
     element.rightCompareIconAlternativeText = rightCompareIconAlternativeText;
     element.sizes = sizes;

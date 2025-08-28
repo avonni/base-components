@@ -9,7 +9,9 @@ export default class Image extends LightningElement {
     @api fluid;
     @api fluidGrow;
     @api height;
+    @api imageErrorLabel;
     @api lazyLoading;
+    @api noImageLabel;
     @api position;
     @api src = [];
     @api srcset;

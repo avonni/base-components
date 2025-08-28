@@ -70,37 +70,18 @@ describe('Primitive Carousel Item', () => {
             expect(element.description).toBeUndefined();
             expect(element.href).toBeUndefined();
             expect(element.imageAssistiveText).toBeUndefined();
+            expect(element.imageErrorLabel).toBe('No Preview Available');
             expect(element.imagePosition).toBe('top');
             expect(element.infos).toBeUndefined();
+            expect(element.name).toBeUndefined();
+            expect(element.noImageLabel).toBe('No Image Source Provided');
+            expect(element.panelIndex).toBeUndefined();
+            expect(element.panelItems).toBeUndefined();
             expect(element.src).toBeUndefined();
             expect(element.title).toBeUndefined();
         });
 
         describe('Action Variant', () => {
-            it('Bare without label', () => {
-                element.actions = bareActions;
-                element.actionsVariant = 'bare';
-
-                return Promise.resolve().then(() => {
-                    const action = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-button-icon-actions"]'
-                    );
-                    expect(action.variant).toBe('base');
-                });
-            });
-
-            it('Border without label', () => {
-                element.actions = bareActions;
-                element.actionsVariant = 'border';
-
-                return Promise.resolve().then(() => {
-                    const action = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-button-icon-actions"]'
-                    );
-                    expect(action.variant).toBe('neutral');
-                });
-            });
-
             it('Bare with label', () => {
                 element.actions = menuActions;
                 element.actionsVariant = 'bare';
@@ -108,6 +89,18 @@ describe('Primitive Carousel Item', () => {
                 return Promise.resolve().then(() => {
                     const action = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-button-actions"]'
+                    );
+                    expect(action.variant).toBe('base');
+                });
+            });
+
+            it('Bare without label', () => {
+                element.actions = bareActions;
+                element.actionsVariant = 'bare';
+
+                return Promise.resolve().then(() => {
+                    const action = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-button-icon-actions"]'
                     );
                     expect(action.variant).toBe('base');
                 });
@@ -125,15 +118,35 @@ describe('Primitive Carousel Item', () => {
                 });
             });
 
-            it('Menu', () => {
-                element.actions = menuActions;
-                element.actionsVariant = 'menu';
+            it('Border without label', () => {
+                element.actions = bareActions;
+                element.actionsVariant = 'border';
 
                 return Promise.resolve().then(() => {
                     const action = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-button-menu"]'
+                        '[data-element-id="avonni-button-icon-actions"]'
                     );
-                    expect(action).toBeTruthy();
+                    expect(action.variant).toBe('neutral');
+                });
+            });
+
+            it('HTML with no tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
+                element.href = null;
+                element.actions = menuActions;
+                element.actionsPosition = 'top-center';
+                element.actionsVariant = 'bare';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button-bare-border"]'
+                    );
+                    const lightningButton = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-button-actions"'
+                    );
+                    expect(button.className).toBe(
+                        'slds-show_small slds-grid slds-grid_vertical-align-center'
+                    );
+                    expect(button.contains(lightningButton)).toBeTruthy();
                 });
             });
 
@@ -157,47 +170,15 @@ describe('Primitive Carousel Item', () => {
                 });
             });
 
-            it('HTML with no tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
-                element.href = null;
+            it('Menu', () => {
                 element.actions = menuActions;
-                element.actionsPosition = 'top-center';
-                element.actionsVariant = 'bare';
+                element.actionsVariant = 'menu';
 
                 return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="button-bare-border"]'
+                    const action = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-button-menu"]'
                     );
-                    const lightningButton = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-button-actions"'
-                    );
-                    expect(button.className).toBe(
-                        'slds-show_small slds-grid slds-grid_vertical-align-center'
-                    );
-                    expect(button.contains(lightningButton)).toBeTruthy();
-                });
-            });
-        });
-
-        describe('Tag Variant', () => {
-            it('Tag variant', () => {
-                element.href = 'example.com';
-
-                return Promise.resolve().then(() => {
-                    const tag = element.shadowRoot.querySelector(
-                        '[data-element-id="a-actions-tag"]'
-                    );
-                    expect(tag).toBeTruthy();
-                });
-            });
-
-            it('No Tag Variant', () => {
-                element.href = null;
-
-                return Promise.resolve().then(() => {
-                    const noTag = element.shadowRoot.querySelector(
-                        '[data-element-id="a-actions-noTag"]'
-                    );
-                    expect(noTag).toBeTruthy();
+                    expect(action).toBeTruthy();
                 });
             });
         });
@@ -223,26 +204,6 @@ describe('Primitive Carousel Item', () => {
                 });
             });
 
-            it('Bottom-right', () => {
-                element.actions = bareActions;
-                element.actionsPosition = 'bottom-right';
-
-                return Promise.resolve().then(() => {
-                    const contentContainer = element.shadowRoot.querySelector(
-                        '.slds-carousel__content'
-                    );
-                    expect(contentContainer.className).toContain(
-                        'avonni-carousel__content-bottom'
-                    );
-                    const actionContainer = element.shadowRoot.querySelector(
-                        '.avonni-carousel__actions-container'
-                    );
-                    expect(actionContainer.className).toContain(
-                        'avonni-carousel__actions-right'
-                    );
-                });
-            });
-
             it('Bottom-left', () => {
                 element.actions = bareActions;
                 element.actionsPosition = 'bottom-left';
@@ -259,6 +220,26 @@ describe('Primitive Carousel Item', () => {
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-left'
+                    );
+                });
+            });
+
+            it('Bottom-right', () => {
+                element.actions = bareActions;
+                element.actionsPosition = 'bottom-right';
+
+                return Promise.resolve().then(() => {
+                    const contentContainer = element.shadowRoot.querySelector(
+                        '.slds-carousel__content'
+                    );
+                    expect(contentContainer.className).toContain(
+                        'avonni-carousel__content-bottom'
+                    );
+                    const actionContainer = element.shadowRoot.querySelector(
+                        '.avonni-carousel__actions-container'
+                    );
+                    expect(actionContainer.className).toContain(
+                        'avonni-carousel__actions-right'
                     );
                 });
             });
@@ -287,6 +268,82 @@ describe('Primitive Carousel Item', () => {
                     );
                     expect(actionContainer.className).toContain(
                         'avonni-carousel__actions-right'
+                    );
+                });
+            });
+        });
+
+        describe('Content Height', () => {
+            it('With actions', () => {
+                element.actions = bareActions;
+
+                return Promise.resolve().then(() => {
+                    const carouselContent = element.shadowRoot.querySelector(
+                        '.slds-carousel__content'
+                    );
+                    expect(carouselContent.style.height).toBe('7.5rem');
+                });
+            });
+
+            it('Without actions and text', () => {
+                return Promise.resolve().then(() => {
+                    const carouselContent = element.shadowRoot.querySelector(
+                        '.slds-carousel__content'
+                    );
+                    expect(carouselContent).toBeNull();
+                });
+            });
+        });
+
+        describe('Crop Fit', () => {
+            it('Contain', () => {
+                element.cropFit = 'contain';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_contain'
+                    );
+                });
+            });
+
+            it('Cover', () => {
+                element.cropFit = 'cover';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_cover'
+                    );
+                });
+            });
+
+            it('Fill', () => {
+                element.cropFit = 'fill';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_fill'
+                    );
+                });
+            });
+
+            it('None', () => {
+                element.cropFit = 'none';
+
+                return Promise.resolve().then(() => {
+                    const image = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(image.className).toContain(
+                        'avonni-carousel__image-object-fit_none'
                     );
                 });
             });
@@ -346,84 +403,81 @@ describe('Primitive Carousel Item', () => {
             });
         });
 
-        describe('Content Height', () => {
-            it('With actions', () => {
-                element.actions = bareActions;
+        describe('src', () => {
+            it('Error Handling', () => {
+                element.src =
+                    'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jg';
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                image.dispatchEvent(new CustomEvent('error'));
 
                 return Promise.resolve().then(() => {
-                    const carouselContent = element.shadowRoot.querySelector(
-                        '.slds-carousel__content'
+                    const illustration = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-illustration-image-error"]'
                     );
-                    expect(carouselContent.style.height).toBe('7.5rem');
-                });
-            });
-
-            it('Without actions and text', () => {
-                return Promise.resolve().then(() => {
-                    const carouselContent = element.shadowRoot.querySelector(
-                        '.slds-carousel__content'
-                    );
-                    expect(carouselContent).toBeNull();
+                    expect(illustration).toBeTruthy();
                 });
             });
         });
 
-        describe('Crop Fit', () => {
-            it('Contain', () => {
-                element.cropFit = 'contain';
+        describe('Tag Variant', () => {
+            it('Tag variant', () => {
+                element.href = 'example.com';
 
                 return Promise.resolve().then(() => {
-                    const image = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
+                    const tag = element.shadowRoot.querySelector(
+                        '[data-element-id="a-actions-tag"]'
                     );
-                    expect(image.className).toContain(
-                        'avonni-carousel__image-object-fit_contain'
-                    );
+                    expect(tag).toBeTruthy();
                 });
             });
 
-            it('Cover', () => {
-                element.cropFit = 'cover';
+            it('No Tag Variant', () => {
+                element.href = null;
 
                 return Promise.resolve().then(() => {
-                    const image = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
+                    const noTag = element.shadowRoot.querySelector(
+                        '[data-element-id="a-actions-noTag"]'
                     );
-                    expect(image.className).toContain(
-                        'avonni-carousel__image-object-fit_cover'
-                    );
-                });
-            });
-
-            it('None', () => {
-                element.cropFit = 'none';
-
-                return Promise.resolve().then(() => {
-                    const image = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
-                    );
-                    expect(image.className).toContain(
-                        'avonni-carousel__image-object-fit_none'
-                    );
-                });
-            });
-
-            it('Fill', () => {
-                element.cropFit = 'fill';
-
-                return Promise.resolve().then(() => {
-                    const image = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
-                    );
-                    expect(image.className).toContain(
-                        'avonni-carousel__image-object-fit_fill'
-                    );
+                    expect(noTag).toBeTruthy();
                 });
             });
         });
     });
 
     describe('Events', () => {
+        it('Action click', () => {
+            element.title = 'Visit App Exchange';
+            element.description =
+                'Extend Salesforce with the #1 business marketplace.';
+            element.imageAssistiveText = 'Appy';
+            element.src =
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
+            element.href = 'https://www.salesforce.com';
+            element.actions = bareActions;
+            element.name = 'someName';
+
+            const handler = jest.fn();
+            element.addEventListener('actionclick', handler);
+
+            return Promise.resolve().then(() => {
+                const actions = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-button-icon-actions"]'
+                );
+                const action = actions[0];
+                action.dispatchEvent(new CustomEvent('click'));
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.name).toBe('action-add');
+                expect([handler.mock.calls[0][0].detail.item]).toMatchObject(
+                    ex
+                );
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
         it('Item click', () => {
             const handler = jest.fn();
             element.addEventListener('itemclick', handler);

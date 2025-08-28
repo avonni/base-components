@@ -202,4 +202,15 @@ const imageItems = [
     }
 ];
 
-export { items, menuItems, imageItems };
+const itemsWithNoImageAndError = [
+    {
+        name: '1',
+        src: null
+    },
+    {
+        name: '2',
+        src: 'https://v1.lightningdesignsystem.com/assets/images/carousel/carousel-02.jg'
+    }
+];
+
+export { items, menuItems, imageItems, itemsWithNoImageAndError };

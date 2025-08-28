@@ -1,6 +1,6 @@
 import { Carousel } from '../__examples__/carousel';
 import { InfiniteLoadingCarousel } from '../__examples__/infiniteLoadingCarousel';
-import { items, menuItems, imageItems } from './data';
+import { items, menuItems, imageItems, itemsWithNoImageAndError } from './data';
 
 export default {
     title: 'Example/Carousel',
@@ -309,6 +309,30 @@ export default {
                 defaultValue: { summary: 'cover' },
                 category: 'Layout'
             }
+        },
+        imageErrorLabel: {
+            name: 'image-error-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Text shown when an image fails to load.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'No Preview Available' },
+                category: 'Image'
+            }
+        },
+        noImageLabel: {
+            name: 'no-image-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Text shown when no src is provided.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'No Image Source Provided' },
+                category: 'Image'
+            }
         }
     },
 
@@ -326,11 +350,13 @@ export default {
         disableAutoScroll: false,
         hideIndicator: false,
         hidePreviousNextPanelNavigation: false,
+        imageErrorLabel: 'No Preview Available',
         imagePosition: 'top',
         indicatorVariant: 'base',
         isInfinite: false,
         itemsPerPanel: 1,
         loadMoreOffset: 3,
+        noImageLabel: 'No Image Source Provided',
         scrollDuration: 5
     }
 };
@@ -446,4 +472,11 @@ InfiniteLoading.args = {
     itemsPerPanel: 3,
     maxIndicatorItems: 5,
     disableAutoScroll: true
+};
+
+export const ItemsWithNoImageAndError = Template.bind({});
+ItemsWithNoImageAndError.args = {
+    items: itemsWithNoImageAndError,
+    noImageLabel: 'No image source (test)',
+    imageErrorLabel: 'No preview available (test)'
 };

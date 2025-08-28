@@ -133,16 +133,18 @@ describe('Carousel', () => {
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.hideIndicator).toBeFalsy();
             expect(element.hidePreviousNextPanelNavigation).toBeFalsy();
-            expect(element.items).toMatchObject([]);
+            expect(element.imageErrorLabel).toBe('No Preview Available');
             expect(element.imagePosition).toBe('top');
             expect(element.indicatorVariant).toBe('base');
-            expect(element.isInfinite).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
+            expect(element.isInfinite).toBeFalsy();
+            expect(element.items).toMatchObject([]);
             expect(element.itemsPerPanel).toBe(1);
             expect(element.largeItemsPerPanel).toBeUndefined();
             expect(element.loadMoreOffset).toBe(1);
             expect(element.maxIndicatorItems).toBeUndefined();
             expect(element.mediumItemsPerPanel).toBeUndefined();
+            expect(element.noImageLabel).toBe('No Image Source Provided');
             expect(element.scrollDuration).toBe(5);
             expect(element.smallItemsPerPanel).toBeUndefined();
         });
@@ -171,34 +173,6 @@ describe('Carousel', () => {
                         'c-primitive-carousel-item'
                     );
                     expect(action.actionsPosition).toBe('top-left');
-                });
-            });
-        });
-
-        describe('Image crop fit', () => {
-            it('Image crop fit contain', () => {
-                element.items = items;
-                element.cropFit = 'contain';
-
-                return Promise.resolve().then(() => {
-                    const item = element.shadowRoot.querySelector(
-                        'c-primitive-carousel-item'
-                    );
-                    expect(item.cropFit).toBe('contain');
-                });
-            });
-        });
-
-        describe('Image positions', () => {
-            it('Image position left', () => {
-                element.items = items;
-                element.imagePosition = 'left';
-
-                return Promise.resolve().then(() => {
-                    const item = element.shadowRoot.querySelector(
-                        'c-primitive-carousel-item'
-                    );
-                    expect(item.imagePosition).toBe('left');
                 });
             });
         });
@@ -263,6 +237,49 @@ describe('Carousel', () => {
             });
         });
 
+        describe('Current Panel', () => {
+            it('Current panel', () => {
+                element.currentPanel = '3';
+                element.items = items;
+
+                return Promise.resolve().then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-panel"]'
+                    );
+                    const thirdPanel = panels[2];
+                    expect(thirdPanel.ariaHidden).toBe('false');
+                });
+            });
+
+            it('Current panel, more than one item per panel', () => {
+                element.currentPanel = '3';
+                element.items = items;
+                element.itemsPerPanel = 2;
+
+                return Promise.resolve().then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-panel"]'
+                    );
+                    const secondPanel = panels[1];
+                    expect(secondPanel.ariaHidden).toBe('false');
+                });
+            });
+
+            it('Current panel is set automatically on navigation', () => {
+                element.items = items;
+                element.itemsPerPanel = 2;
+
+                return Promise.resolve().then(() => {
+                    expect(element.currentPanel).toBeUndefined();
+                    const next = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-next"]'
+                    );
+                    next.click();
+                    expect(element.currentPanel).toBe('3');
+                });
+            });
+        });
+
         describe('Disable Auto Refresh', () => {
             it('Disable auto refresh', () => {
                 element.items = items;
@@ -285,7 +302,6 @@ describe('Carousel', () => {
                     });
             });
 
-            // disable auto scrollable
             it('Disable auto scrollable with indicator', () => {
                 element.items = items;
                 element.disableAutoScroll = true;
@@ -309,6 +325,87 @@ describe('Carousel', () => {
                         '.avonni-carousel__autoscroll-button-without-indicator'
                     );
                     expect(autoPlayButton).toBeFalsy();
+                });
+            });
+        });
+
+        describe('Hide Indicator', () => {
+            it('hide indicator', () => {
+                element.items = items;
+                element.hideIndicator = true;
+
+                return Promise.resolve().then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="li-pagination"]'
+                    );
+                    expect(indicators).toHaveLength(0);
+                });
+            });
+        });
+
+        describe('hide previous next panel navigation', () => {
+            it('hide previous next panel navigation', () => {
+                element.items = [
+                    {
+                        name: '1',
+                        title: 'Visit App Exchange',
+                        description:
+                            'Extend Salesforce with the #1 business marketplace.',
+                        imageAssistiveText: 'Appy',
+                        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                        href: 'https://www.salesforce.com'
+                    }
+                ];
+                element.hidePreviousNextPanelNavigation = true;
+
+                return Promise.resolve().then(() => {
+                    // only the autoplay button is present
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button-icon"]'
+                    );
+                    expect(buttons).toHaveLength(1);
+                });
+            });
+        });
+
+        describe('Image crop fit', () => {
+            it('Image crop fit contain', () => {
+                element.items = items;
+                element.cropFit = 'contain';
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(item.cropFit).toBe('contain');
+                });
+            });
+        });
+
+        describe('Image error label', () => {
+            it('Image error label', () => {
+                element.items = items;
+                element.imageErrorLabel = 'Image error label';
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(item.imageErrorLabel).toBe('Image error label');
+                });
+            });
+        });
+
+        describe('Image positions', () => {
+            it('Image position left', () => {
+                element.items = items;
+                element.imagePosition = 'left';
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(item.imagePosition).toBe('left');
                 });
             });
         });
@@ -356,84 +453,30 @@ describe('Carousel', () => {
             });
         });
 
-        describe('Current Panel', () => {
-            it('Current panel', () => {
-                element.currentPanel = '3';
+        describe('Is loading', () => {
+            it('false', () => {
                 element.items = items;
+                element.isLoading = false;
 
                 return Promise.resolve().then(() => {
-                    const panels = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="div-panel"]'
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
                     );
-                    const thirdPanel = panels[2];
-                    expect(thirdPanel.ariaHidden).toBe('false');
+                    expect(spinner).toBeFalsy();
                 });
             });
 
-            it('Current panel, more than one item per panel', () => {
-                element.currentPanel = '3';
+            it('true', () => {
                 element.items = items;
-                element.itemsPerPanel = 2;
+                element.isLoading = true;
+                element.assistiveText.loading = 'Loading';
 
                 return Promise.resolve().then(() => {
-                    const panels = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="div-panel"]'
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
                     );
-                    const secondPanel = panels[1];
-                    expect(secondPanel.ariaHidden).toBe('false');
-                });
-            });
-
-            it('Current panel is set automatically on navigation', () => {
-                element.items = items;
-                element.itemsPerPanel = 2;
-
-                return Promise.resolve().then(() => {
-                    expect(element.currentPanel).toBeUndefined();
-                    const next = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-icon-next"]'
-                    );
-                    next.click();
-                    expect(element.currentPanel).toBe('3');
-                });
-            });
-        });
-
-        describe('Hide Indicator', () => {
-            it('hide indicator', () => {
-                element.items = items;
-                element.hideIndicator = true;
-
-                return Promise.resolve().then(() => {
-                    const indicators = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="li-pagination"]'
-                    );
-                    expect(indicators).toHaveLength(0);
-                });
-            });
-        });
-
-        describe('hide previous next panel navigation', () => {
-            it('hide previous next panel navigation', () => {
-                element.items = [
-                    {
-                        name: '1',
-                        title: 'Visit App Exchange',
-                        description:
-                            'Extend Salesforce with the #1 business marketplace.',
-                        imageAssistiveText: 'Appy',
-                        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                        href: 'https://www.salesforce.com'
-                    }
-                ];
-                element.hidePreviousNextPanelNavigation = true;
-
-                return Promise.resolve().then(() => {
-                    // only the autoplay button is present
-                    const buttons = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="lightning-button-icon"]'
-                    );
-                    expect(buttons).toHaveLength(1);
+                    expect(spinner).toBeTruthy();
+                    expect(spinner.alternativeText).toBe('Loading');
                 });
             });
         });
@@ -724,32 +767,29 @@ describe('Carousel', () => {
                     });
             });
         });
-    });
 
-    describe('Is loading', () => {
-        it('false', () => {
-            element.items = items;
-            element.isLoading = false;
+        describe('No image label', () => {
+            it('No image label', () => {
+                element.items = items;
+                element.noImageLabel = 'No image label';
 
-            return Promise.resolve().then(() => {
-                const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-spinner"]'
-                );
-                expect(spinner).toBeFalsy();
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(item.noImageLabel).toBe('No image label');
+                });
             });
         });
 
-        it('true', () => {
-            element.items = items;
-            element.isLoading = true;
-            element.assistiveText.loading = 'Loading';
+        describe('Scroll duration', () => {
+            it('Passed to the component as null', () => {
+                element.items = items;
+                element.scrollDuration = null;
 
-            return Promise.resolve().then(() => {
-                const spinner = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-spinner"]'
-                );
-                expect(spinner).toBeTruthy();
-                expect(spinner.alternativeText).toBe('Loading');
+                return Promise.resolve().then(() => {
+                    expect(element.scrollDuration).toBe(5);
+                });
             });
         });
     });

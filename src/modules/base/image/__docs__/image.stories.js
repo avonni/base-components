@@ -279,6 +279,30 @@ export default {
                 },
                 category: 'Compare'
             }
+        },
+        imageErrorLabel: {
+            name: 'image-error-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Text shown when the image fails to load.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'No Preview Available' },
+                category: 'Illustration'
+            }
+        },
+        noImageLabel: {
+            name: 'no-image-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Text shown when no src is provided.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'No Image Source Provided' },
+                category: 'Illustration'
+            }
         }
     },
     args: {
@@ -295,6 +319,7 @@ export default {
         cropSize: 'none',
         fluid: false,
         fluidGrow: false,
+        imageErrorLabel: 'No Preview Available',
         lazyLoading: 'auto',
         leftCompareIconAlternativeText: 'Press left to show the original image',
         magnifierAttributes: {
@@ -307,6 +332,7 @@ export default {
             zoomRatioWidth: 100
         },
         magnifierType: 'none',
+        noImageLabel: 'No Image Source Provided',
         position: 'left',
         rightCompareIconAlternativeText:
             'Press right to show the compared image',
@@ -422,4 +448,16 @@ Magnifier.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     magnifierType: 'standard'
+};
+
+export const ImageError = Template.bind({});
+ImageError.args = {
+    src: 'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jg',
+    alternativeText: 'Alternative text',
+    imageErrorLabel: 'No Preview Available for this image'
+};
+
+export const NoImage = Template.bind({});
+NoImage.args = {
+    noImageLabel: 'No Image Source Provided'
 };

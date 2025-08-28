@@ -1,7 +1,7 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import tag from './tag.html';
+import { LightningElement, api } from 'lwc';
 import noTag from './noTag.html';
+import tag from './tag.html';
 
 const ACTIONS_POSITIONS = {
     valid: [
@@ -18,6 +18,8 @@ const ACTIONS_VARIANTS = {
     default: 'border'
 };
 const DEFAULT_CAROUSEL_HEIGHT = 6.625;
+const DEFAULT_IMAGE_ERROR_LABEL = 'No Preview Available';
+const DEFAULT_NO_IMAGE_LABEL = 'No Image Source Provided';
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
@@ -31,12 +33,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
     @api description;
     @api href;
     @api imageAssistiveText;
+    @api imageErrorLabel = DEFAULT_IMAGE_ERROR_LABEL;
     @api infos;
     @api itemIndex;
     @api name;
+    @api noImageLabel = DEFAULT_NO_IMAGE_LABEL;
     @api panelIndex;
     @api panelItems;
-    @api src;
     @api title;
 
     _actions = [];
@@ -45,8 +48,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _cropFit = IMAGE_CROP_FIT.default;
     _imagePosition = IMAGE_POSITIONS.default;
     _isFocusable = false;
+    _src;
 
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
+    displayImageError = false;
+    illustrationTitle;
+    illustrationVariant;
 
     render() {
         return normalizeBoolean(this.href) ? tag : noTag;
@@ -163,6 +170,27 @@ export default class PrimitiveCarouselItem extends LightningElement {
             typeof isFocusable === 'string'
                 ? isFocusable === 'true'
                 : normalizeBoolean(isFocusable);
+    }
+
+    /**
+     * The URL of the image.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get src() {
+        return this._src;
+    }
+    set src(src) {
+        this._src = src;
+        if (!src) {
+            this.illustrationVariant = 'desert';
+            this.illustrationTitle = this.noImageLabel;
+            this.displayImageError = true;
+        } else {
+            this.displayImageError = false;
+        }
     }
 
     /*
@@ -415,6 +443,15 @@ export default class PrimitiveCarouselItem extends LightningElement {
     handleButtonMenuClick(event) {
         event.stopPropagation();
         event.preventDefault();
+    }
+
+    /**
+     * Image error event handler.
+     */
+    handleImageError() {
+        this.illustrationVariant = 'no-preview';
+        this.illustrationTitle = this.imageErrorLabel;
+        this.displayImageError = true;
     }
 
     /**
