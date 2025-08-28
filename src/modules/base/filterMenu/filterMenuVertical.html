@@ -216,6 +216,7 @@
             disabled={disabledOrLoading}
         ></lightning-button>
         <lightning-button
+            if:false={hideApplyButton}
             variant="brand"
             label={applyButtonLabel}
             title={applyButtonLabel}

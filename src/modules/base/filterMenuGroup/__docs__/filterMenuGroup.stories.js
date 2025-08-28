@@ -35,6 +35,17 @@ export default {
                 defaultValue: { summary: 'Reset' }
             }
         },
+        hideApplyButton: {
+            name: 'hide-apply-button',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the apply button is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         hideApplyResetButtons: {
             name: 'hide-apply-reset-buttons',
             control: {
@@ -129,6 +140,7 @@ export default {
     },
     args: {
         applyButtonLabel: 'Apply',
+        hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         isToggleButtonVariant: false,

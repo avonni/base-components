@@ -86,6 +86,7 @@ describe('Filter Menu', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.dropdownAlignment).toBe('left');
             expect(element.dropdownNubbin).toBeFalsy();
+            expect(element.hideApplyButton).toBeFalsy();
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
             expect(element.iconName).toBe('utility:down');
@@ -126,6 +127,24 @@ describe('Filter Menu', () => {
                         '.slds-assistive-text'
                     );
                     expect(altText.textContent).toBe('A string alt text');
+                });
+            });
+        });
+
+        describe('Apply Button Label', () => {
+            it('applyButtonLabel', () => {
+                element.typeAttributes = { items: ITEMS };
+                element.applyButtonLabel = 'A string label';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const submitButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    expect(submitButton.label).toBe('A string label');
                 });
             });
         });
@@ -827,6 +846,68 @@ describe('Filter Menu', () => {
             });
         });
 
+        describe('Hide Apply Button', () => {
+            // Depends on variant
+            it('false, with horizontal variant', () => {
+                element.hideApplyButton = false;
+                element.typeAttributes = { items: ITEMS };
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(2);
+                });
+            });
+
+            it('false, with vertical variant', () => {
+                element.hideApplyButton = false;
+                element.typeAttributes = { items: ITEMS };
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(2);
+                });
+            });
+
+            it('true, with horizontal variant', () => {
+                element.hideApplyButton = true;
+                element.typeAttributes = { items: ITEMS };
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(1);
+                });
+            });
+
+            it('true, with vertical variant', () => {
+                element.hideApplyButton = true;
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(1);
+                });
+            });
+        });
+
         describe('Hide Apply Reset Buttons', () => {
             // Depends on variant
             it('false, with horizontal variant', () => {
@@ -842,7 +923,7 @@ describe('Filter Menu', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(1);
+                    expect(buttons).toHaveLength(2);
                 });
             });
 
@@ -1123,6 +1204,9 @@ describe('Filter Menu', () => {
                     const items = element.shadowRoot.querySelectorAll(
                         '[data-element-id="a-list-item"]'
                     );
+                    const apply = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
                     const reset = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-reset"]'
                     );
@@ -1130,6 +1214,68 @@ describe('Filter Menu', () => {
                         '[data-element-id="p-no-results-message"]'
                     );
 
+                    expect(apply).toBeTruthy();
+                    expect(reset).toBeTruthy();
+                    expect(noResultMessage).toBeFalsy();
+                    expect(items).toHaveLength(6);
+
+                    items.forEach((item, index) => {
+                        const label = item.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text"]'
+                        );
+                        const disabled = ITEMS[index].disabled ? 'true' : null;
+                        expect(item.dataset.value).toBe(ITEMS[index].value);
+                        expect(item.ariaDisabled).toBe(disabled);
+                        expect(label.value).toBe(ITEMS[index].label);
+                    });
+
+                    const prefixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-prefix"]'
+                    );
+                    const suffixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-suffix"]'
+                    );
+                    expect(prefixIcon).toBeTruthy();
+                    expect(suffixIcon).toBeTruthy();
+                    expect(items[1].tabIndex).toBe(0);
+
+                    [0, 2, 3, 4, 5].forEach((index) => {
+                        const prefix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-prefix"]'
+                        );
+                        const suffix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-suffix"]'
+                        );
+                        expect(prefix).toBeFalsy();
+                        expect(suffix).toBeFalsy();
+                        expect(items[index].tabIndex).toBe(-1);
+                    });
+                });
+            });
+
+            it('items, hide apply button', () => {
+                element.hideApplyButton = true;
+                element.typeAttributes = { items: ITEMS };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+                    const apply = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    const reset = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-reset"]'
+                    );
+                    const noResultMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="p-no-results-message"]'
+                    );
+
+                    expect(apply).toBeFalsy();
                     expect(reset).toBeTruthy();
                     expect(noResultMessage).toBeFalsy();
                     expect(items).toHaveLength(6);
@@ -1828,6 +1974,40 @@ describe('Filter Menu', () => {
                         ]);
                     })
                     .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            '[data-element-id="a-list-item"][data-index="1"]'
+                        );
+                        item.click();
+                        expect(handler.mock.calls[1][0].detail.value).toEqual([
+                            ITEMS[1].value
+                        ]);
+                    });
+            });
+
+            it('typeAttributes for list, isMultiSelect = false, hideApplyButton = true', () => {
+                element.hideApplyButton = true;
+                element.typeAttributes = {
+                    items: ITEMS,
+                    isMultiSelect: false
+                };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            '[data-element-id="a-list-item"][data-index="2"]'
+                        );
+                        item.click();
+                        expect(handler.mock.calls[0][0].detail.value).toEqual([
+                            ITEMS[2].value
+                        ]);
+                    })
+                    .then(() => {
                         button.click();
                     })
                     .then(() => {
@@ -2032,6 +2212,7 @@ describe('Filter Menu', () => {
                         expect(items[0].ariaChecked).toBe('true');
                         expect(items[1].ariaChecked).toBe('true');
                         expect(items[2].ariaChecked).toBe('false');
+
                         items[2].click();
                     })
                     .then(() => {
@@ -2045,25 +2226,25 @@ describe('Filter Menu', () => {
                         element.value = JSON.parse(JSON.stringify(VALUE));
                     })
                     .then(() => {
-                        // Selected items were erased
-                        // because the new value was different
-                        const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="a-list-item"]'
-                        );
-                        expect(items[0].ariaChecked).toBe('true');
-                        expect(items[1].ariaChecked).toBe('true');
-                        expect(items[2].ariaChecked).toBe('false');
-
-                        element.value = JSON.parse(JSON.stringify(VALUE));
-                    })
-                    .then(() => {
-                        // Selected items were erased
+                        // Selected items were not erased
                         // because the new value was identical
                         const items = element.shadowRoot.querySelectorAll(
                             '[data-element-id="a-list-item"]'
                         );
                         expect(items[0].ariaChecked).toBe('true');
                         expect(items[1].ariaChecked).toBe('true');
+                        expect(items[2].ariaChecked).toBe('true');
+
+                        element.value = [VALUE[0]];
+                    })
+                    .then(() => {
+                        // Selected items were erased
+                        // because the new value was different
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items[0].ariaChecked).toBe('true');
+                        expect(items[1].ariaChecked).toBe('false');
                         expect(items[2].ariaChecked).toBe('false');
                     });
             });
@@ -2358,7 +2539,7 @@ describe('Filter Menu', () => {
                         expect(items[2].ariaChecked).toBe('false');
                         items[2].click();
 
-                        expect(applyHandler).toHaveBeenCalled();
+                        expect(applyHandler).not.toHaveBeenCalled();
                         expect(handler).toHaveBeenCalled();
                         const call = handler.mock.calls[0][0];
                         expect(call.bubbles).toBeTruthy();
@@ -2367,18 +2548,11 @@ describe('Filter Menu', () => {
                         expect(call.detail.value).toEqual(['item-3']);
                     })
                     .then(() => {
-                        button.click();
-                    })
-                    .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
                             '[data-element-id="a-list-item"]'
                         );
-                        console.log('length', items.length);
                         expect(items[2].ariaChecked).toBe('true');
                         items[2].click();
-                    })
-                    .then(() => {
-                        button.click();
                     })
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
@@ -2590,6 +2764,51 @@ describe('Filter Menu', () => {
                             '[data-element-id="a-list-item"]'
                         );
                         items[3].click();
+                        const applyButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-apply"]'
+                        );
+                        applyButton.click();
+
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].detail.value).toEqual([
+                            'item-4'
+                        ]);
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(element.value).toEqual(['item-4']);
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="div-dropdown"]'
+                        );
+                        expect(dropdown).toBeFalsy();
+                    });
+            });
+
+            it('apply event, hideApplyButton = true', () => {
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+                element.hideApplyButton = true;
+                element.typeAttributes = {
+                    items: ITEMS
+                };
+                element.value = VALUE;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        items[3].click();
+                        const applyButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-apply"]'
+                        );
+                        expect(applyButton).toBeFalsy();
 
                         expect(handler).toHaveBeenCalled();
                         expect(handler.mock.calls[0][0].detail.value).toEqual([
@@ -2686,6 +2905,43 @@ describe('Filter Menu', () => {
                         '[data-element-id="a-list-item"]'
                     );
                     items[3].click();
+                    const applyButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    applyButton.click();
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toEqual([
+                        ...VALUE,
+                        'item-4'
+                    ]);
+                });
+            });
+            it('apply event, multi-select, hideApplyButton', () => {
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+
+                element.hideApplyButton = true;
+                element.typeAttributes = {
+                    items: ITEMS,
+                    isMultiSelect: true
+                };
+                element.value = VALUE;
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+                    items[3].click();
+                    const applyButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    expect(applyButton).toBeFalsy();
 
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toEqual([

@@ -10,6 +10,7 @@ export default class FilterMenu extends LightningElement {
     @api disabled;
     @api dropdownAlignment;
     @api dropdownNubbin;
+    @api hideApplyButton;
     @api hideApplyResetButtons;
     @api hideSelectedItems;
     @api iconName;

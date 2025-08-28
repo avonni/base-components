@@ -174,6 +174,7 @@ export default class FilterMenu extends LightningElement {
     _dropdownLength;
     _dropdownNubbin = false;
     _dropdownWidth = MENU_WIDTHS.default;
+    _hideApplyButton = false;
     _hideApplyResetButtons = false;
     _hideSelectedItems = false;
     _iconName = DEFAULT_ICON_NAME;
@@ -469,6 +470,21 @@ export default class FilterMenu extends LightningElement {
         if (this._connected) {
             this.supportDeprecatedAttributes();
         }
+    }
+
+    /**
+     * If present, the apply button is hidden and the value is immediately saved every time the selection changes.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideApplyButton() {
+        return this._hideApplyButton;
+    }
+    set hideApplyButton(value) {
+        this._hideApplyButton = normalizeBoolean(value);
     }
 
     /**
@@ -2341,12 +2357,13 @@ export default class FilterMenu extends LightningElement {
         );
 
         // Save the selection immediately
-        this._value = [...this.currentValue];
-        this.computeSelectedItems();
-        this.dispatchApply();
-
-        if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
-            this.close();
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
+            this._value = [...this.currentValue];
+            this.computeSelectedItems();
+            this.dispatchApply();
+            if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
+                this.close();
+            }
         }
     }
 

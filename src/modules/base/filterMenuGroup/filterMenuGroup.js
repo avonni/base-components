@@ -26,6 +26,7 @@ const OVERFLOW_FACTOR = 0.4;
  */
 export default class FilterMenuGroup extends LightningElement {
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
+    _hideApplyButton = false;
     _hideApplyResetButtons = false;
     _hideSelectedItems = false;
     _isToggleButtonVariant = false;
@@ -86,6 +87,21 @@ export default class FilterMenuGroup extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_APPLY_BUTTON_LABEL;
+    }
+
+    /**
+     * If present, the apply button is hidden and the value is immediately saved every time the selection changes.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideApplyButton() {
+        return this._hideApplyButton;
+    }
+    set hideApplyButton(value) {
+        this._hideApplyButton = normalizeBoolean(value);
     }
 
     /**
@@ -311,6 +327,30 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * True if the menus have changed since the last overflow calculation.
+     *
+     * @type {boolean}
+     */
+    get isDifferentComputedMenu() {
+        const currentMenusState = this.computedMenus.map((menu) => ({
+            name: menu.name,
+            label: menu.label
+        }));
+
+        return (
+            this._computedMenusWhenLastOverflow.length !==
+                currentMenusState.length ||
+            this._computedMenusWhenLastOverflow.some((prevMenu, index) => {
+                const currentMenu = currentMenusState[index];
+                return (
+                    prevMenu.name !== currentMenu.name ||
+                    prevMenu.label !== currentMenu.label
+                );
+            })
+        );
+    }
+
+    /**
      * Check if Vertical variant.
      *
      * @type {boolean}
@@ -527,33 +567,9 @@ export default class FilterMenuGroup extends LightningElement {
         }
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
-        if (this.isDifferentComputedMenu()) {
+        if (this.isDifferentComputedMenu) {
             this.recomputeOverflow();
         }
-    }
-
-    /**
-     * True the menus have changed since the last overflow
-     *
-     * @type {boolean}
-     */
-    isDifferentComputedMenu() {
-        const currentMenusState = this.computedMenus.map((menu) => ({
-            name: menu.name,
-            label: menu.label
-        }));
-
-        return (
-            this._computedMenusWhenLastOverflow.length !==
-                currentMenusState.length ||
-            this._computedMenusWhenLastOverflow.some((prevMenu, index) => {
-                const currentMenu = currentMenusState[index];
-                return (
-                    prevMenu.name !== currentMenu.name ||
-                    prevMenu.label !== currentMenu.label
-                );
-            })
-        );
     }
 
     /**
@@ -764,8 +780,10 @@ export default class FilterMenuGroup extends LightningElement {
         }
         this.reset();
         this.dispatchReset();
-        this.apply();
-        this.dispatchApply();
+        if (this.hideApplyButton) {
+            this.apply();
+            this.dispatchApply();
+        }
     }
 
     /**
@@ -855,8 +873,10 @@ export default class FilterMenuGroup extends LightningElement {
         );
 
         // Save the selection immediately
-        this.apply();
-        this.dispatchApply(menuName);
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
+            this.apply();
+            this.dispatchApply(menuName);
+        }
     }
 
     /**

@@ -128,6 +128,18 @@ export default {
                 category: 'Dropdown menu'
             }
         },
+        hideApplyButton: {
+            name: 'hide-apply-button',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the apply button is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
+            }
+        },
         hideApplyResetButtons: {
             name: 'hide-apply-reset-buttons',
             control: {
@@ -319,6 +331,7 @@ export default {
         disabled: false,
         dropdownAlignment: 'left',
         dropdownNubbin: false,
+        hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         iconSize: 'medium',

@@ -15,6 +15,7 @@ export const FilterMenu = ({
     disabled,
     dropdownAlignment,
     dropdownNubbin,
+    hideApplyButton,
     hideApplyResetButtons,
     hideSelectedItems,
     iconName,
@@ -42,6 +43,7 @@ export const FilterMenu = ({
     element.disabled = disabled;
     element.dropdownAlignment = dropdownAlignment;
     element.dropdownNubbin = dropdownNubbin;
+    element.hideApplyButton = hideApplyButton;
     element.hideApplyResetButtons = hideApplyResetButtons;
     element.hideSelectedItems = hideSelectedItems;
     element.iconName = iconName;

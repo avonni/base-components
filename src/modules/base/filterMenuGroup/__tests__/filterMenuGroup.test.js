@@ -26,6 +26,7 @@ describe('FilterMenuGroup', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.applyButtonLabel).toBe('Apply');
+            expect(element.hideApplyButton).toBeFalsy();
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
             expect(element.isToggleButtonVariant).toBeFalsy();
@@ -358,7 +359,7 @@ describe('FilterMenuGroup', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(1);
+                    expect(buttons).toHaveLength(2);
                 });
             });
         });
@@ -437,16 +438,12 @@ describe('FilterMenuGroup', () => {
         describe('apply', () => {
             it('apply method', () => {
                 element.menus = MENUS;
-                const handler = jest.fn();
-                element.addEventListener('apply', handler);
 
                 return Promise.resolve()
                     .then(() => {
                         const menu = element.shadowRoot.querySelector(
                             '[data-element-id="avonni-filter-menu"]'
                         );
-
-                        expect(element.value).toEqual({});
                         menu.dispatchEvent(
                             new CustomEvent('select', {
                                 detail: {
@@ -456,8 +453,9 @@ describe('FilterMenuGroup', () => {
                             })
                         );
 
+                        expect(element.value).toEqual({});
+                        element.apply();
                         expect(element.value).toEqual({ contact: ['call'] });
-                        expect(handler).toHaveBeenCalled();
                     })
                     .then(() => {
                         const pills = element.shadowRoot.querySelector(
@@ -599,6 +597,10 @@ describe('FilterMenuGroup', () => {
                                 bubbles: true
                             })
                         );
+                        const applyButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-apply"]'
+                        );
+                        applyButton.click();
 
                         expect(handler).toHaveBeenCalled();
                         expect(element.value).toEqual({
@@ -665,9 +667,100 @@ describe('FilterMenuGroup', () => {
                     });
             });
 
+            it('apply event, hideApplyButton', () => {
+                element.menus = MENUS;
+                element.hideApplyButton = true;
+
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('select', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('apply', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalledTimes(2);
+                        const detail = handler.mock.calls[0][0].detail;
+                        expect(detail.value).toEqual({
+                            contact: ['call']
+                        });
+                        expect(detail.name).toBe('contact');
+                    })
+                    .then(() => {
+                        const pills = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-pill-container-horizontal"]'
+                        );
+                        expect(pills.items).toHaveLength(1);
+                        expect(pills.items[0].name).toBe('contact.call');
+                    });
+            });
+
             it('apply event, hideApplyResetButtons with vertical variant', () => {
                 element.menus = MENUS;
                 element.hideApplyResetButtons = true;
+                element.variant = 'vertical';
+
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('select', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('apply', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalledTimes(1);
+                        const detail = handler.mock.calls[0][0].detail;
+                        expect(detail.value).toEqual({
+                            contact: ['call']
+                        });
+                        expect(detail.name).toBe('contact');
+                    })
+                    .then(() => {
+                        const pills = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-pill-container-vertical"]'
+                        );
+                        expect(pills.items).toHaveLength(1);
+                        expect(pills.items[0].name).toBe('contact.call');
+                    });
+            });
+
+            it('apply event, hideApplyButton with vertical variant', () => {
+                element.menus = MENUS;
+                element.hideApplyButton = true;
                 element.variant = 'vertical';
 
                 const handler = jest.fn();
@@ -826,8 +919,7 @@ describe('FilterMenuGroup', () => {
                     menu.dispatchEvent(
                         new CustomEvent('nbfilteritems', {
                             detail: {
-                                name: MENUS[0].name,
-                                item: {}
+                                name: MENUS[0].name
                             },
                             bubbles: true
                         })
@@ -836,7 +928,6 @@ describe('FilterMenuGroup', () => {
                     expect(handler).toHaveBeenCalled();
                     const call = handler.mock.calls[0][0];
                     expect(call.detail.name).toBe(MENUS[0].name);
-                    expect(call.detail.item).toEqual({});
                     expect(call.bubbles).toBeFalsy();
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
@@ -928,7 +1019,7 @@ describe('FilterMenuGroup', () => {
                         menus.forEach((menu) => {
                             expect(menu.value).toEqual([]);
                         });
-                        expect(element.value).toEqual({});
+                        expect(element.value).toEqual(VALUE);
                     });
             });
         });
@@ -966,6 +1057,37 @@ describe('FilterMenuGroup', () => {
 
         describe('select', () => {
             it('select event', () => {
+                element.menus = MENUS;
+
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('select', {
+                            detail: {
+                                value: ['call']
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.value).toEqual(['call']);
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                    expect(element.value).toEqual({});
+                });
+            });
+
+            it('select event, hideApplyButton', () => {
+                element.hideApplyButton = true;
                 element.menus = MENUS;
 
                 const handler = jest.fn();

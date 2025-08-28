@@ -15,6 +15,7 @@ export const FilterMenuInfiniteLoading = ({
     disabled,
     dropdownAlignment,
     dropdownNubbin,
+    hideApplyButton,
     hideApplyResetButtons,
     hideSelectedItems,
     iconName,
@@ -44,6 +45,7 @@ export const FilterMenuInfiniteLoading = ({
     element.disabled = disabled;
     element.dropdownAlignment = dropdownAlignment;
     element.dropdownNubbin = dropdownNubbin;
+    element.hideApplyButton = hideApplyButton;
     element.hideApplyResetButtons = hideApplyResetButtons;
     element.hideSelectedItems = hideSelectedItems;
     element.iconName = iconName;

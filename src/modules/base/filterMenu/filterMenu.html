@@ -254,11 +254,32 @@
                             data-is-focusable
                             onclick={handleResetClick}
                         ></lightning-button>
-                        <lightning-formatted-text
-                            value={selectedOverTotal}
-                            data-element-id="lightning-formatted-text-number-values"
-                            if:true={isList}
-                        ></lightning-formatted-text>
+                        <div
+                            class="
+                                slds-col_bump-left
+                                slds-grid
+                                slds-grid_align-center
+                                slds-grid_vertical-align-center
+                            "
+                        >
+                            <lightning-button
+                                if:false={hideApplyButton}
+                                disabled={isLoading}
+                                label={applyButtonLabel}
+                                title={applyButtonLabel}
+                                variant="brand"
+                                data-element-id="lightning-button-apply"
+                                data-is-focusable
+                                onclick={handleApply}
+                            ></lightning-button>
+
+                            <lightning-formatted-text
+                                if:true={isList}
+                                value={selectedOverTotal}
+                                class="slds-m-left_x-small"
+                                data-element-id="lightning-formatted-text-number-values"
+                            ></lightning-formatted-text>
+                        </div>
                     </div>
                 </div>
             </c-focus-trap>
