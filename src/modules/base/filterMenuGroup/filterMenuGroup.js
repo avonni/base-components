@@ -37,7 +37,6 @@ export default class FilterMenuGroup extends LightningElement {
     _variant = MENU_VARIANTS.default;
     _showSelectedFilterValueCount = false;
     _wrapperWidth = 0;
-    _wrapperWidthWhenLastResized = 0;
 
     computedMenus = [];
     selectedPills = [];
@@ -47,6 +46,7 @@ export default class FilterMenuGroup extends LightningElement {
     _isCalculatingOverflow = false;
     _selectedValue = {};
     _sliceIndex = 0;
+    _wrapperWidthWhenLastResized = 0;
 
     /*
      * ------------------------------------------------------------
