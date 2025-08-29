@@ -40,10 +40,6 @@
     box-shadow: 0 0 0 4px white;
 }
 
-.avonni-activity-timeline-item-header {
-    flex-wrap: wrap;
-}
-
 .avonni-activity-timeline-item-header-date {
     margin-left: auto;
     max-width: 100%;
