@@ -257,6 +257,7 @@ export default class FilterMenu extends LightningElement {
             // to click on the load more button
             this.dispatchLoadMore();
         }
+        this.dispatchNbFilterItems();
     }
 
     disconnectedCallback() {
@@ -1869,7 +1870,6 @@ export default class FilterMenu extends LightningElement {
             if (this.dropdownVisible) {
                 this.startPositioning();
                 this.dispatchOpen();
-                this.dispatchNbFilterItems();
 
                 // update the bounding rect when the menu is toggled
                 this._boundingRect = this.getBoundingClientRect();
@@ -2309,7 +2309,7 @@ export default class FilterMenu extends LightningElement {
      */
     dispatchNbFilterItems(item) {
         /**
-         * The event fired when the list is opened or the search term is modified.
+         * The event fired when the list is is rendered or the search term is modified.
          *
          * @event
          * @name nbfilteritems
@@ -2383,7 +2383,6 @@ export default class FilterMenu extends LightningElement {
             this.dispatchClose();
         } else {
             this.dispatchOpen();
-            this.dispatchNbFilterItems();
         }
     }
 }
