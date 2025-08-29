@@ -727,7 +727,7 @@ export default class FilterMenuGroup extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('itemscountupdate', {
-                detail: { item: event.detail.item, name: menuName }
+                detail: { name: menuName }
             })
         );
     }

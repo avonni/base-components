@@ -2281,10 +2281,8 @@ export default class FilterMenu extends LightningElement {
 
     /**
      * Dispatch the `itemscountupdate` event.
-     *
-     * @param {object} item Parent item that triggered the `itemscountupdate` event, if the items are nested.
      */
-    dispatchItemsCountUpdate(item) {
+    dispatchItemsCountUpdate() {
         /**
          * The event fired when the list is is rendered or the search term is modified.
          *
@@ -2295,10 +2293,7 @@ export default class FilterMenu extends LightningElement {
          * @bubbles
          */
         this.dispatchEvent(
-            new CustomEvent('itemscountupdate', {
-                bubbles: true,
-                detail: { item: deepCopy(item) }
-            })
+            new CustomEvent('itemscountupdate', { bubbles: true })
         );
     }
 
