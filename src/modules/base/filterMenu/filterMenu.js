@@ -2290,7 +2290,6 @@ export default class FilterMenu extends LightningElement {
          *
          * @event
          * @name itemscountupdate
-         * @param {object} item If the event was triggered by a nested item, definition of this item.
          * @public
          * @bubbles
          */

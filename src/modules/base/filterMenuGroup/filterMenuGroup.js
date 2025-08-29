@@ -721,7 +721,6 @@ export default class FilterMenuGroup extends LightningElement {
          *
          * @event
          * @name itemscountupdate
-         * @param {object} item If the event was triggered by a nested item, definition of this item.
          * @param {string} name Name of the menu that triggered the event.
          * @public
          */
