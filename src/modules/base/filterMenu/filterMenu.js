@@ -106,7 +106,7 @@ const TYPE_ATTRIBUTES = {
         'hasNestedItems',
         'isMultiSelect',
         'items',
-        'nbFilterItems',
+        'itemsCount',
         'noResultsMessage',
         'searchInputPlaceholder'
     ],
@@ -185,8 +185,8 @@ export default class FilterMenu extends LightningElement {
     _loadingStateAlternativeText = i18n.loading;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
-    _showSelectedFilterValueCount = false;
     _showSearchBox = false;
+    _showSelectedFilterValueCount = false;
     _tooltip;
     _type = TYPES.default;
     _typeAttributes = {};
@@ -257,7 +257,7 @@ export default class FilterMenu extends LightningElement {
             // to click on the load more button
             this.dispatchLoadMore();
         }
-        this.dispatchNbFilterItems();
+        this.dispatchItemsCountUpdate();
     }
 
     disconnectedCallback() {
@@ -1207,7 +1207,7 @@ export default class FilterMenu extends LightningElement {
      */
     get selectedOverTotal() {
         const currentLength = this.visibleItems.length;
-        let totalLength = this.computedTypeAttributes?.nbFilterItems ?? 0;
+        let totalLength = this.computedTypeAttributes?.itemsCount ?? 0;
         totalLength = currentLength > totalLength ? currentLength : totalLength;
         return `${currentLength} of ${totalLength}`;
     }
@@ -2280,6 +2280,29 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Dispatch the `itemscountupdate` event.
+     *
+     * @param {object} item Parent item that triggered the `itemscountupdate` event, if the items are nested.
+     */
+    dispatchItemsCountUpdate(item) {
+        /**
+         * The event fired when the list is is rendered or the search term is modified.
+         *
+         * @event
+         * @name itemscountupdate
+         * @param {object} item If the event was triggered by a nested item, definition of this item.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemscountupdate', {
+                bubbles: true,
+                detail: { item: deepCopy(item) }
+            })
+        );
+    }
+
+    /**
      * Dispatch the `loadmore` event.
      *
      * @param {object} item Parent item that triggered the `loadmore` event, if the items are nested.
@@ -2296,29 +2319,6 @@ export default class FilterMenu extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('loadmore', {
-                bubbles: true,
-                detail: { item: deepCopy(item) }
-            })
-        );
-    }
-
-    /**
-     * Dispatch the `nbfilteritems` event.
-     *
-     * @param {object} item Parent item that triggered the `nbfilteritems` event, if the items are nested.
-     */
-    dispatchNbFilterItems(item) {
-        /**
-         * The event fired when the list is is rendered or the search term is modified.
-         *
-         * @event
-         * @name nbfilteritems
-         * @param {object} item If the event was triggered by a nested item, definition of this item.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('nbfilteritems', {
                 bubbles: true,
                 detail: { item: deepCopy(item) }
             })

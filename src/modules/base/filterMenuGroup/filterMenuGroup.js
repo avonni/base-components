@@ -708,6 +708,31 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Handle the nb filter items event.
+     *
+     * @param {Event} event `itemscountupdate` event fired by the menu.
+     */
+    handleItemsCountUpdate(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when the list is opened or the search term is modified.
+         *
+         * @event
+         * @name itemscountupdate
+         * @param {object} item If the event was triggered by a nested item, definition of this item.
+         * @param {string} name Name of the menu that triggered the event.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemscountupdate', {
+                detail: { item: event.detail.item, name: menuName }
+            })
+        );
+    }
+
+    /**
      * Handle the load more event.
      *
      * @param {Event} event `loadmore` event fired by the menu.
@@ -727,31 +752,6 @@ export default class FilterMenuGroup extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('loadmore', {
-                detail: { item: event.detail.item, name: menuName }
-            })
-        );
-    }
-
-    /**
-     * Handle the nb filter items event.
-     *
-     * @param {Event} event `nbfilteritems` event fired by the menu.
-     */
-    handleNbFilterItems(event) {
-        event.stopPropagation();
-        const menuName = event.target.dataset.name;
-
-        /**
-         * The event fired when the list is opened or the search term is modified.
-         *
-         * @event
-         * @name nbfilteritems
-         * @param {object} item If the event was triggered by a nested item, definition of this item.
-         * @param {string} name Name of the menu that triggered the event.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('nbfilteritems', {
                 detail: { item: event.detail.item, name: menuName }
             })
         );
