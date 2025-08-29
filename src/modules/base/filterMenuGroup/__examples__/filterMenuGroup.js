@@ -7,20 +7,30 @@ customElements.define(
 
 export const FilterMenuGroup = ({
     applyButtonLabel,
+    hideApplyButton,
     hideApplyResetButtons,
     hideSelectedItems,
+    isToggleButtonVariant,
     menus,
+    offsetFilterWidth,
     resetButtonLabel,
+    showSelectedFilterValueCount,
     value,
-    variant
+    variant,
+    wrapperWidth
 }) => {
     const element = document.createElement('ac-base-filter-menu-group');
     element.applyButtonLabel = applyButtonLabel;
+    element.hideApplyButton = hideApplyButton;
     element.hideApplyResetButtons = hideApplyResetButtons;
     element.hideSelectedItems = hideSelectedItems;
+    element.isToggleButtonVariant = isToggleButtonVariant;
     element.menus = menus;
+    element.offsetFilterWidth = offsetFilterWidth;
     element.resetButtonLabel = resetButtonLabel;
+    element.showSelectedFilterValueCount = showSelectedFilterValueCount;
     element.value = value;
     element.variant = variant;
+    element.wrapperWidth = wrapperWidth;
     return element;
 };
