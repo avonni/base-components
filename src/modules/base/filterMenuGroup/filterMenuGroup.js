@@ -389,6 +389,17 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Return the menu group wrapper.
+     *
+     * @type {Element}
+     */
+    get moreFilterElement() {
+        return this.template.querySelector(
+            '[data-element-id="filter-menu-group-button-popover"]'
+        );
+    }
+
+    /**
      * True if the new width requires a recompute
      *
      * @type {boolean}
@@ -418,6 +429,22 @@ export default class FilterMenuGroup extends LightningElement {
                 iconName: 'utility:close'
             }
         ];
+    }
+
+    /**
+     * Returns the placement of the more filter button.
+     *
+     * @type {string}
+     */
+    get placement() {
+        if (!this.moreFilterElement) {
+            return 'auto';
+        }
+        const rect = this.moreFilterElement.getBoundingClientRect();
+        const elementCenterX = rect.left + rect.width / 2;
+        const viewportCenterX = window.innerWidth / 2;
+        const horizontal = elementCenterX < viewportCenterX ? 'left' : 'right';
+        return horizontal;
     }
 
     /**

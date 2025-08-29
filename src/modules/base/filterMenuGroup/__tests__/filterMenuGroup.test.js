@@ -213,22 +213,22 @@ describe('FilterMenuGroup', () => {
         });
 
         describe('offsetFilterWidth', () => {
-            it('offsetFilterWidth, null', () => {
+            it('offsetFilterWidth = null', () => {
                 element.offsetFilterWidth = null;
                 expect(element.offsetFilterWidth).toBe(0);
             });
 
-            it('offsetFilterWidth, undefined', () => {
+            it('offsetFilterWidth = undefined', () => {
                 element.offsetFilterWidth = undefined;
                 expect(element.offsetFilterWidth).toBe(0);
             });
 
-            it('offsetFilterWidth, -1', () => {
+            it('offsetFilterWidth = -1', () => {
                 element.offsetFilterWidth = -1;
                 expect(element.offsetFilterWidth).toBe(0);
             });
 
-            it('offsetFilterWidth, 1', () => {
+            it('offsetFilterWidth = 1', () => {
                 element.offsetFilterWidth = 1;
                 expect(element.offsetFilterWidth).toBe(1);
             });
@@ -365,27 +365,27 @@ describe('FilterMenuGroup', () => {
         });
 
         describe('wrapperWidth', () => {
-            it('wrapperWidth, null', () => {
+            it('wrapperWidth = null', () => {
                 element.wrapperWidth = null;
                 expect(element.wrapperWidth).toBe(0);
             });
 
-            it('wrapperWidth, undefined', () => {
+            it('wrapperWidth = undefined', () => {
                 element.wrapperWidth = undefined;
                 expect(element.wrapperWidth).toBe(0);
             });
 
-            it('wrapperWidth, -1', () => {
+            it('wrapperWidth = -1', () => {
                 element.wrapperWidth = -1;
                 expect(element.wrapperWidth).toBe(0);
             });
 
-            it('wrapperWidth, 1', () => {
+            it('wrapperWidth = 1', () => {
                 element.wrapperWidth = 1;
                 expect(element.wrapperWidth).toBe(1);
             });
 
-            it('wrapperWidth, 100000', () => {
+            it('wrapperWidth  = 100000', () => {
                 element.menus = MENUS;
                 element.wrapperWidth = 100000;
                 expect(element.wrapperWidth).toBe(100000);

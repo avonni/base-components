@@ -68,10 +68,10 @@
                 label="More Filters"
                 icon-name="utility:filterList"
                 icon-position="right"
-                placement="auto"
+                placement={placement}
                 popover-size="large"
                 variant="border-filled"
-                data-element-id="filter-menu-group-button-icon-popover"
+                data-element-id="filter-menu-group-button-popover"
             >
                 <template for:each={hiddenMenus} for:item="menu">
                     <li class={computedFiltersClass} key={menu.name}>
