@@ -716,7 +716,8 @@ export default class Image extends LightningElement {
         return classSet('avonni-image_container')
             .add({
                 'avonni-image_fluid': this.fluid || this.fluidGrow,
-                'avonni-image_fluid-grow': this.fluidGrow,
+                'avonni-image_fluid-grow':
+                    this.fluidGrow || this.displayImageError,
                 'avonni-image_thumbnail': this.thumbnail,
                 'slds-float_left':
                     this.position === 'left' && this.lazyLoading === 'auto',
