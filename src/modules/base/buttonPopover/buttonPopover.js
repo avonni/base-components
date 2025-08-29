@@ -585,7 +585,7 @@ export default class ButtonPopover extends LightningElement {
      * Sets the focus on the popover.
      */
     focusOnPopover() {
-        this.template.querySelector('.slds-popover')?.focus();
+        this.template.querySelector('.slds-popover').focus();
     }
 
     /**
