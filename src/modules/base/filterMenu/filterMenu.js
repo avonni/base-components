@@ -1332,7 +1332,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * True if the selected filter value should be visible
+     * True if the selected filter count should be visible
      *
      * @type {boolean}
      */

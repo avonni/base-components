@@ -466,15 +466,6 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * True if the Selected Filter Value and Count should be displayed for each menu
-     *
-     * @type {boolean}
-     */
-    get showMenuSelectedFilterValueCount() {
-        return !this.isVertical && this.showSelectedFilterValueCount;
-    }
-
-    /**
      * Dynamically compute the visible menus based on the slice index.
      *
      * @type {object[]}
