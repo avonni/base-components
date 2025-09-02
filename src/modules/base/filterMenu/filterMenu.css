@@ -4,4 +4,12 @@
 
 .avonni-filter-menu__selected-item-count {
     background-color: var(--lwc-brandPrimary, #1b96ff);
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.avonni-filter-menu__truncate {
+    max-width: 300px;
 }

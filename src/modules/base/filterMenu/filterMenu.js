@@ -884,7 +884,7 @@ export default class FilterMenu extends LightningElement {
             this.buttonVariant === 'bare' ||
             this.buttonVariant === 'bare-inverse';
 
-        const classes = classSet('slds-button');
+        const classes = classSet('slds-button avonni-filter-menu__truncate');
 
         if (this.label) {
             classes.add({
@@ -942,6 +942,18 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed button title.
+     *
+     * @type {string}
+     */
+    get computedButtonTitle() {
+        if (this.showSelectedFilterValueCount) {
+            return `${this.label} ${this.selectedFilterLabels} ${this.selectedItemCountLabel}`;
+        }
+        return this.title;
+    }
+
+    /**
      * Computed collapsible button icon name.
      *
      * @type {string}
@@ -994,7 +1006,7 @@ export default class FilterMenu extends LightningElement {
      * @type {string}
      */
     get computedMenuLabelClass() {
-        return classSet('slds-dropdown__list')
+        return classSet('slds-dropdown__list slds-truncate')
             .add({
                 'slds-text-title_bold':
                     this.selectedItemLabels.length > 0 &&

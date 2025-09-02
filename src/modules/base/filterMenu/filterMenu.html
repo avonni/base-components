@@ -7,7 +7,7 @@
             aria-haspopup="true"
             disabled={disabled}
             name={name}
-            title={title}
+            title={computedButtonTitle}
             type="button"
             value={value}
             data-element-id="button"
@@ -23,6 +23,7 @@
             </span>
             <span
                 if:true={showFilterValue}
+                class="slds-truncate"
                 data-element-id="span-menu-selected-labels"
             >
                 &nbsp;{selectedFilterLabels}&nbsp;

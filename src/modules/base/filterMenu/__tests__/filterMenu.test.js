@@ -159,7 +159,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-border'
                     );
                 });
             });
@@ -173,7 +173,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_neutral'
+                        'slds-button avonni-filter-menu__truncate slds-button_neutral'
                     );
                 });
             });
@@ -187,7 +187,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-more'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon slds-button_icon-more'
                     );
                 });
             });
@@ -200,7 +200,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-bare'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-bare'
                     );
                 });
             });
@@ -213,7 +213,9 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(
+                        'slds-button avonni-filter-menu__truncate'
+                    );
                 });
             });
 
@@ -226,7 +228,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-more'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon slds-button_icon-bare slds-button_icon-more'
                     );
                 });
             });
@@ -239,7 +241,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-container'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-container'
                     );
                 });
             });
@@ -252,7 +254,9 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(
+                        'slds-button avonni-filter-menu__truncate'
+                    );
                 });
             });
 
@@ -265,7 +269,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-container'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-container'
                     );
                 });
             });
@@ -278,7 +282,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border-filled'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-border-filled'
                     );
                 });
             });
@@ -291,7 +295,9 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(
+                        'slds-button avonni-filter-menu__truncate'
+                    );
                 });
             });
 
@@ -304,7 +310,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
                     );
                 });
             });
@@ -317,7 +323,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-bare slds-button_icon-inverse'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-bare slds-button_icon-inverse'
                     );
                 });
             });
@@ -330,7 +336,9 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(
+                        'slds-button avonni-filter-menu__truncate'
+                    );
                 });
             });
 
@@ -343,7 +351,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
                     );
                 });
             });
@@ -356,7 +364,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border-inverse'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-border-inverse'
                     );
                 });
             });
@@ -370,7 +378,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_inverse'
+                        'slds-button avonni-filter-menu__truncate slds-button_inverse'
                     );
                 });
             });
@@ -384,7 +392,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border-inverse'
+                        'slds-button avonni-filter-menu__truncate slds-button_icon-border-inverse'
                     );
                 });
             });
@@ -398,7 +406,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_outline-brand'
+                        'slds-button avonni-filter-menu__truncate slds-button_outline-brand'
                     );
                 });
             });
