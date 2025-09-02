@@ -33,6 +33,7 @@ export default class FilterMenuInfiniteLoading extends LightningElement {
     @api loadingStateAlternativeText;
     @api name;
     @api resetButtonLabel;
+    @api showClearButton;
     @api title;
     @api tooltip;
     @api type;

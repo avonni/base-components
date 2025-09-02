@@ -91,6 +91,18 @@ export default {
                 defaultValue: { summary: '0' }
             }
         },
+        showClearButton: {
+            name: 'show-clear-button',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a clear button is displayed next to each filter.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         showSelectedFilterValueCount: {
             name: 'show-selected-filter-value-count',
             control: {
@@ -146,6 +158,7 @@ export default {
         isToggleButtonVariant: false,
         offsetFilterWidth: 0,
         resetButtonLabel: 'Clear selection',
+        showClearButton: false,
         showSelectedFilterValueCount: false,
         variant: 'horizontal',
         wrapperWidth: 0

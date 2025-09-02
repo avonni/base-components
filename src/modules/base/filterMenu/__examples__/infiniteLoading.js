@@ -25,6 +25,7 @@ export const FilterMenuInfiniteLoading = ({
     loadingStateAlternativeText,
     name,
     resetButtonLabel,
+    showClearButton,
     showSelectedFilterValueCount,
     title,
     tooltip,
@@ -55,6 +56,7 @@ export const FilterMenuInfiniteLoading = ({
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
     element.resetButtonLabel = resetButtonLabel;
+    element.showClearButton = showClearButton;
     element.showSelectedFilterValueCount = showSelectedFilterValueCount;
     element.title = title;
     element.tooltip = tooltip;

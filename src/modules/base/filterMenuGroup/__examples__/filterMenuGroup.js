@@ -14,6 +14,7 @@ export const FilterMenuGroup = ({
     menus,
     offsetFilterWidth,
     resetButtonLabel,
+    showClearButton,
     showSelectedFilterValueCount,
     value,
     variant,
@@ -28,6 +29,7 @@ export const FilterMenuGroup = ({
     element.menus = menus;
     element.offsetFilterWidth = offsetFilterWidth;
     element.resetButtonLabel = resetButtonLabel;
+    element.showClearButton = showClearButton;
     element.showSelectedFilterValueCount = showSelectedFilterValueCount;
     element.value = value;
     element.variant = variant;

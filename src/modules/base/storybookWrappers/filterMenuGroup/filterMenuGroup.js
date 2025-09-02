@@ -108,6 +108,7 @@ export default class FilterMenuGroup extends LightningElement {
     @api isToggleButtonVariant;
     @api offsetFilterWidth;
     @api resetButtonLabel;
+    @api showClearButton;
     @api showSelectedFilterValueCount;
     @api variant;
     @api wrapperWidth;

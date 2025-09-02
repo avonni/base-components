@@ -246,6 +246,19 @@ export default {
                 category: 'Button'
             }
         },
+        showClearButton: {
+            name: 'show-clear-button',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a clear button is displayed next to each filter.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
+            }
+        },
         showSelectedFilterValueCount: {
             name: 'show-selected-filter-value-count',
             control: {
@@ -338,6 +351,7 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
         resetButtonLabel: 'Clear selection',
+        showClearButton: false,
         showSelectedFilterValueCount: false,
         type: 'list',
         variant: 'horizontal'

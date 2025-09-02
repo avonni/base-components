@@ -35,6 +35,9 @@
             "
         >
             <span class="avonni-filter-menu__label">{label}</span>
+            <span if:true={showCount} class="avonni-filter-menu__label">
+                &nbsp;({selectedItemCountLabel})
+            </span>
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}
@@ -60,6 +63,9 @@
                 class="slds-m-right_x-small"
             ></lightning-icon>
             <span class="avonni-filter-menu__label">{label}</span>
+            <span if:true={showCount} class="avonni-filter-menu__label">
+                &nbsp;({selectedItemCountLabel})
+            </span>
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}
@@ -71,19 +77,33 @@
     </template>
     <template if:true={displayFilters}>
         <!-- Search box -->
-        <lightning-input
-            if:true={computedTypeAttributes.allowSearch}
-            class="slds-p-vertical_x-small"
-            disabled={disabled}
-            label={computedTypeAttributes.searchInputPlaceholder}
-            placeholder={computedTypeAttributes.searchInputPlaceholder}
-            variant="label-hidden"
-            type="search"
-            value={searchTerm}
-            autocomplete="off"
-            data-element-id="lightning-input"
-            onchange={handleSearch}
-        ></lightning-input>
+        <div class="avonni-filter-menu__search-wrapper">
+            <lightning-input
+                if:true={computedTypeAttributes.allowSearch}
+                class="avonni-filter-menu__search-input slds-p-vertical_x-small"
+                disabled={disabled}
+                label={computedTypeAttributes.searchInputPlaceholder}
+                placeholder={computedTypeAttributes.searchInputPlaceholder}
+                variant="label-hidden"
+                type="search"
+                value={searchTerm}
+                autocomplete="off"
+                data-element-id="lightning-input"
+                onchange={handleSearch}
+            ></lightning-input>
+
+            <template if:true={showClearSection}>
+                <lightning-button
+                    class="slds-m-left_x-small"
+                    variant="base"
+                    label={resetButtonLabel}
+                    title={resetButtonLabel}
+                    data-element-id="lightning-button-reset"
+                    onclick={handleResetClick}
+                    disabled={disabledOrLoading}
+                ></lightning-button>
+            </template>
+        </div>
 
         <p if:true={showNoResultMessage} class="slds-p-around_small">
             No matches found

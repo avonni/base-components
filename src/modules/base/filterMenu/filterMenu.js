@@ -185,6 +185,7 @@ export default class FilterMenu extends LightningElement {
     _loadingStateAlternativeText = i18n.loading;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+    _showClearButton = false;
     _showSearchBox = false;
     _showSelectedFilterValueCount = false;
     _tooltip;
@@ -682,6 +683,20 @@ export default class FilterMenu extends LightningElement {
         if (this._connected) {
             this.supportDeprecatedAttributes();
         }
+    }
+
+    /**
+     * If present, a clear button is displayed next to each filter.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showClearButton() {
+        return this._showClearButton;
+    }
+    set showClearButton(value) {
+        this._showClearButton = normalizeBoolean(value);
     }
 
     /**
@@ -1293,14 +1308,20 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Display the count if more than 2 items are selected
+     * Display the count for the selected items
      *
      * @type {string}
      */
     get selectedItemCountLabel() {
-        const selectedCount = this.selectedItemLabels.length;
+        if (this.isVertical) {
+            const count = this.isList ? this.value.length : 0;
 
-        return selectedCount > 2 ? `${selectedCount - 2}+` : '';
+            return count > 0 ? String(count) : '';
+        }
+
+        const count = this.value.length;
+
+        return count > 2 ? `${count - 2}+` : '';
     }
 
     /**
@@ -1358,6 +1379,15 @@ export default class FilterMenu extends LightningElement {
      */
     get showLoadMoreButton() {
         return this.infiniteLoad && !this.isLoading;
+    }
+
+    /**
+     * True if clear only section should be visible.
+     *
+     * @type {boolean}
+     */
+    get showClearSection() {
+        return this.showClearButton && this.currentValue.length > 0;
     }
 
     /**
@@ -2115,7 +2145,7 @@ export default class FilterMenu extends LightningElement {
          */
         this.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
         this.reset();
-        if (this.hideApplyButton) {
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
             this._value = [...this.currentValue];
             this.computeSelectedItems();
             this.dispatchApply();

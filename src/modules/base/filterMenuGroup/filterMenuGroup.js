@@ -33,6 +33,7 @@ export default class FilterMenuGroup extends LightningElement {
     _menus = [];
     _offsetFilterWidth = 0;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
+    _showClearButton = false;
     _value = {};
     _variant = MENU_VARIANTS.default;
     _showSelectedFilterValueCount = false;
@@ -202,6 +203,20 @@ export default class FilterMenuGroup extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_RESET_BUTTON_LABEL;
+    }
+
+    /**
+     * If present, a clear button is displayed next to each filter.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showClearButton() {
+        return this._showClearButton;
+    }
+    set showClearButton(value) {
+        this._showClearButton = normalizeBoolean(value);
     }
 
     /**
@@ -549,6 +564,19 @@ export default class FilterMenuGroup extends LightningElement {
         this.computedMenus = [...this.computedMenus];
     }
 
+    /**
+     * Unselect all values and saves the changes.
+     *
+     * @public
+     */
+    @api
+    resetApply() {
+        this.reset();
+        this.dispatchReset();
+        this.apply();
+        this.dispatchApply();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -653,7 +681,10 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleApply(event) {
         event.stopPropagation();
-        if (this.hideMenuApplyResetButtons) {
+        if (
+            this.hideMenuApplyResetButtons &&
+            (!this.showClearButton || !this.hideApplyButton)
+        ) {
             // The apply and select events are fired at the same time
             return;
         }
@@ -780,7 +811,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleReset(event) {
         event.stopPropagation();
-        if (this.isVertical) {
+        if (this.isVertical && !this.showClearButton) {
             return;
         }
         const menuName = event.target.dataset.name;
