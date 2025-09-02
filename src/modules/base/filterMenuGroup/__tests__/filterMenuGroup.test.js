@@ -33,6 +33,7 @@ describe('FilterMenuGroup', () => {
             expect(element.menus).toMatchObject([]);
             expect(element.offsetFilterWidth).toBe(0);
             expect(element.resetButtonLabel).toBe('Clear selection');
+            expect(element.showClearButton).toBeFalsy();
             expect(element.showSelectedFilterValueCount).toBeFalsy();
             expect(element.value).toEqual({});
             expect(element.variant).toBe('horizontal');
@@ -258,6 +259,34 @@ describe('FilterMenuGroup', () => {
                         '[data-element-id="lightning-button-reset"]'
                     );
                     expect(button.label).toBe('Erase');
+                });
+            });
+        });
+
+        describe('showClearButton', () => {
+            it('Passed to the component as true', () => {
+                element.showClearButton = true;
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="avonni-filter-menu"]'
+                    );
+                    menus.forEach((menu) => {
+                        expect(menu.showClearButton).toBeTruthy();
+                    });
+                });
+            });
+
+            it('Passed to the component as false', () => {
+                element.showClearButton = false;
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="avonni-filter-menu"]'
+                    );
+                    menus.forEach((menu) => {
+                        expect(menu.showClearButton).toBeFalsy();
+                    });
                 });
             });
         });
@@ -515,6 +544,26 @@ describe('FilterMenuGroup', () => {
                         );
                         expect(menu.value).toEqual([]);
                         expect(element.value).toEqual(VALUE);
+                    });
+            });
+        });
+
+        describe('resetApply', () => {
+            it('resetApply method', () => {
+                element.menus = MENUS;
+                element.value = VALUE;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.resetApply();
+                    })
+                    .then(() => {
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        menus.forEach((menu) => {
+                            expect(menu.value).toEqual([]);
+                        });
                     });
             });
         });
@@ -804,6 +853,40 @@ describe('FilterMenuGroup', () => {
                     });
             });
 
+            it('apply event, hideApplyButton and showClearButton with vertical variant', () => {
+                element.menus = MENUS;
+                element.hideApplyButton = true;
+                element.showClearButton = true;
+                element.variant = 'vertical';
+
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="avonni-filter-menu"]'
+                    );
+                    menus[0].dispatchEvent(
+                        new CustomEvent('apply', {
+                            detail: {
+                                value: ['call']
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.value).toEqual({
+                        contact: ['call']
+                    });
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+
             it('apply event, remove a selected item', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
@@ -992,10 +1075,11 @@ describe('FilterMenuGroup', () => {
                 });
             });
 
-            it('reset event, vertical variant', () => {
+            it('reset event, vertical variant, showClearButton = false', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
                 element.variant = 'vertical';
+                element.showClearButton = false;
 
                 const handler = jest.fn();
                 element.addEventListener('reset', handler);
@@ -1021,6 +1105,34 @@ describe('FilterMenuGroup', () => {
                         });
                         expect(element.value).toEqual(VALUE);
                     });
+            });
+
+            it('reset event, vertical variant, showClearButton = true', () => {
+                element.menus = MENUS;
+                element.value = VALUE;
+                element.variant = 'vertical';
+                element.showClearButton = true;
+
+                const handler = jest.fn();
+                element.addEventListener('reset', handler);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('reset', { bubbles: true })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+
+                    expect(element.value).toEqual(VALUE);
+                });
             });
         });
 

@@ -96,6 +96,7 @@ describe('Filter Menu', () => {
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.resetButtonLabel).toBe('Clear selection');
+            expect(element.showClearButton).toBeFalsy();
             expect(element.showSelectedFilterValueCount).toBeFalsy();
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
@@ -1452,6 +1453,34 @@ describe('Filter Menu', () => {
                         '.slds-dropdown lightning-button:first-of-type'
                     );
                     expect(resetButton.label).toBe('A string label');
+                });
+            });
+        });
+
+        describe('Show Clear Button', () => {
+            it('showClearButton, true', () => {
+                element.showClearButton = true;
+                element.variant = 'vertical';
+                element.value = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const buttonClear = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-clear"]'
+                    );
+                    expect(buttonClear).toBeTruthy();
+                });
+            });
+
+            it('showClearButton, false', () => {
+                element.showClearButton = false;
+                element.variant = 'vertical';
+                element.value = ITEMS;
+
+                return Promise.resolve().then(() => {
+                    const buttonClear = element.shadowRoot.querySelector(
+                        '[data-element-id="span-menu-selected-labels"]'
+                    );
+                    expect(buttonClear).toBeFalsy();
                 });
             });
         });
