@@ -833,40 +833,6 @@ describe('FilterMenuGroup', () => {
                     });
             });
 
-            it('apply event, hideApplyButton and showClearButton with vertical variant', () => {
-                element.menus = MENUS;
-                element.hideApplyButton = true;
-                element.showClearButton = true;
-                element.variant = 'vertical';
-
-                const handler = jest.fn();
-                element.addEventListener('apply', handler);
-
-                return Promise.resolve().then(() => {
-                    const menus = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="avonni-filter-menu"]'
-                    );
-                    menus[0].dispatchEvent(
-                        new CustomEvent('apply', {
-                            detail: {
-                                value: ['call']
-                            },
-                            bubbles: true
-                        })
-                    );
-
-                    expect(handler).toHaveBeenCalled();
-                    const call = handler.mock.calls[0][0];
-                    expect(call.detail.value).toEqual({
-                        contact: ['call']
-                    });
-                    expect(call.detail.name).toBe('contact');
-                    expect(call.bubbles).toBeFalsy();
-                    expect(call.composed).toBeFalsy();
-                    expect(call.cancelable).toBeFalsy();
-                });
-            });
-
             it('apply event, remove a selected item', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
@@ -1092,10 +1058,6 @@ describe('FilterMenuGroup', () => {
                 element.value = VALUE;
                 element.variant = 'vertical';
                 element.showClearButton = true;
-                const expectedValue = {
-                    editions: VALUE.editions,
-                    publication: VALUE.publication
-                };
 
                 const handler = jest.fn();
                 element.addEventListener('reset', handler);
@@ -1115,7 +1077,7 @@ describe('FilterMenuGroup', () => {
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
 
-                    expect(element.value).toEqual(expectedValue);
+                    expect(element.value).toEqual(VALUE);
                 });
             });
         });

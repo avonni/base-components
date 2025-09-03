@@ -668,10 +668,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleApply(event) {
         event.stopPropagation();
-        if (
-            this.hideMenuApplyResetButtons &&
-            (!this.showClearButton || !this.hideApplyButton)
-        ) {
+        if (this.hideMenuApplyResetButtons) {
             // The apply and select events are fired at the same time
             return;
         }
@@ -803,7 +800,7 @@ export default class FilterMenuGroup extends LightningElement {
         }
         const menuName = event.target.dataset.name;
         delete this._selectedValue[menuName];
-        if (this.hideApplyButton || this.hideMenuApplyResetButtons) {
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
             this._value = deepCopy(this._selectedValue);
             this.computeValue();
         }
