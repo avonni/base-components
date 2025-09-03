@@ -564,19 +564,6 @@ export default class FilterMenuGroup extends LightningElement {
         this.computedMenus = [...this.computedMenus];
     }
 
-    /**
-     * Unselect all values and saves the changes.
-     *
-     * @public
-     */
-    @api
-    resetApply() {
-        this.reset();
-        this.dispatchReset();
-        this.apply();
-        this.dispatchApply();
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -816,6 +803,10 @@ export default class FilterMenuGroup extends LightningElement {
         }
         const menuName = event.target.dataset.name;
         delete this._selectedValue[menuName];
+        if (this.hideApplyButton || this.hideMenuApplyResetButtons) {
+            this._value = deepCopy(this._selectedValue);
+            this.computeValue();
+        }
         this.dispatchReset(menuName);
     }
 
@@ -827,11 +818,10 @@ export default class FilterMenuGroup extends LightningElement {
             return;
         }
         this.reset();
-        this.dispatchReset();
         if (this.hideApplyButton) {
             this.apply();
-            this.dispatchApply();
         }
+        this.dispatchReset();
     }
 
     /**

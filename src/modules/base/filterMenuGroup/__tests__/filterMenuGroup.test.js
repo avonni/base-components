@@ -547,26 +547,6 @@ describe('FilterMenuGroup', () => {
                     });
             });
         });
-
-        describe('resetApply', () => {
-            it('resetApply method', () => {
-                element.menus = MENUS;
-                element.value = VALUE;
-
-                return Promise.resolve()
-                    .then(() => {
-                        element.resetApply();
-                    })
-                    .then(() => {
-                        const menus = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-filter-menu"]'
-                        );
-                        menus.forEach((menu) => {
-                            expect(menu.value).toEqual([]);
-                        });
-                    });
-            });
-        });
     });
 
     describe('Events', () => {
@@ -1112,6 +1092,10 @@ describe('FilterMenuGroup', () => {
                 element.value = VALUE;
                 element.variant = 'vertical';
                 element.showClearButton = true;
+                const expectedValue = {
+                    editions: VALUE.editions,
+                    publication: VALUE.publication
+                };
 
                 const handler = jest.fn();
                 element.addEventListener('reset', handler);
@@ -1131,7 +1115,7 @@ describe('FilterMenuGroup', () => {
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
 
-                    expect(element.value).toEqual(VALUE);
+                    expect(element.value).toEqual(expectedValue);
                 });
             });
         });
