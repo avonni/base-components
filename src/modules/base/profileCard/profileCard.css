@@ -11,7 +11,7 @@ article.avonni-profile-card {
         --avonni-profile-card-color-border,
         var(--slds-g-color-border-base-1, #c9c9c9)
     );
-    border-radius: var(--avonni-profile-card-radius-border, 0rem);
+    border-radius: var(--avonni-profile-card-radius-border, 0.25rem);
     box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
 }
 
@@ -30,6 +30,15 @@ article.avonni-profile-card {
 
 .avonni-profile-card__flex-container__right {
     align-items: flex-end;
+}
+
+.avonni-profile-card__header-border {
+    border-top-left-radius: calc(
+        var(--avonni-profile-card-radius-border, 0.25rem) - 1px
+    );
+    border-top-right-radius: calc(
+        var(--avonni-profile-card-radius-border, 0.25rem) - 1px
+    );
 }
 
 .avonni-profile-card_color-background {
@@ -421,7 +430,7 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__avatar-center
     [data-element-id='text-container'] {
-    padding: 1rem 1rem 0 1rem;
+    padding: 0 1rem 0 1rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center

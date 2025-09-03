@@ -351,7 +351,7 @@ export default class ProfileCard extends LightningElement {
      */
     get computedHeaderClass() {
         return classSet(
-            'slds-media slds-media_center slds-has-flexi-truncate avonni-profile-card_color-background'
+            'slds-media slds-media_center slds-has-flexi-truncate avonni-profile-card_color-background avonni-profile-card__header-border'
         )
             .add(`avonni-profile-card__background_size-${this.avatarSize}`)
             .toString();
