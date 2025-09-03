@@ -72,6 +72,10 @@ article.avonni-profile-card {
     border-radius: 50%;
 }
 
+.avonni-profile-card__avatar-img-square {
+    border-radius: 0;
+}
+
 .avonni-profile-card__avatar_size-x-small {
     height: 3.25rem;
     width: 3.25rem;

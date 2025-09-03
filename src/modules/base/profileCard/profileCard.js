@@ -302,11 +302,8 @@ export default class ProfileCard extends LightningElement {
     get computedAvatarClass() {
         return classSet('avonni-profile-card__avatar-img')
             .add(`avonni-profile-card__avatar_size-${this.avatarSize}`)
-            .add({
-                'avonni-profile-card__avatar-img-circle':
-                    this.avatarVariant === 'circle',
-                'slds-align_absolute-center': this.showAvatarFallbackIcon
-            })
+            .add(`avonni-profile-card__avatar-img-${this.avatarVariant}`)
+            .add({ 'slds-align_absolute-center': this.showAvatarFallbackIcon })
             .toString();
     }
 
@@ -318,7 +315,7 @@ export default class ProfileCard extends LightningElement {
     get computedCircleClass() {
         return this.avatarVariant === 'circle'
             ? 'avonni-profile-card__avatar-img-circle'
-            : '';
+            : 'avonni-profile-card__avatar-img-square';
     }
 
     /**
