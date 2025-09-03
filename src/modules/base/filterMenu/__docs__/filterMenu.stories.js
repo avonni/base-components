@@ -50,10 +50,11 @@ export default {
                 'container',
                 'border-filled',
                 'bare-inverse',
-                'border-inverse'
+                'border-inverse',
+                'outline-brand'
             ],
             description:
-                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
+                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, outline-brand, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' },
@@ -125,6 +126,18 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
                 category: 'Dropdown menu'
+            }
+        },
+        hideApplyButton: {
+            name: 'hide-apply-button',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the apply button is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
             }
         },
         hideApplyResetButtons: {
@@ -233,6 +246,32 @@ export default {
                 category: 'Button'
             }
         },
+        showClearButton: {
+            name: 'show-clear-button',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a clear button is displayed next to each filter.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
+            }
+        },
+        showSelectedFilterValueCount: {
+            name: 'show-selected-filter-value-count',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected filter value and count are displayed in the label.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
+            }
+        },
         title: {
             control: {
                 type: 'text'
@@ -305,12 +344,15 @@ export default {
         disabled: false,
         dropdownAlignment: 'left',
         dropdownNubbin: false,
+        hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         iconSize: 'medium',
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
-        resetButtonLabel: 'Reset',
+        resetButtonLabel: 'Clear selection',
+        showClearButton: false,
+        showSelectedFilterValueCount: false,
         type: 'list',
         variant: 'horizontal'
     }

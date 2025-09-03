@@ -35,6 +35,17 @@ export default {
                 defaultValue: { summary: 'Reset' }
             }
         },
+        hideApplyButton: {
+            name: 'hide-apply-button',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the apply button is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         hideApplyResetButtons: {
             name: 'hide-apply-reset-buttons',
             control: {
@@ -52,6 +63,53 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, the selected items are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        isToggleButtonVariant: {
+            name: 'is-toggle-button-variant',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, each menu will have its button variant toggled between the border and outline-brand variants',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        offsetFilterWidth: {
+            name: 'offset-filter-width',
+            control: {
+                type: 'number'
+            },
+            description: 'Width of the offset for the filter in pixels.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' }
+            }
+        },
+        showClearButton: {
+            name: 'show-clear-button',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a clear button is displayed next to each filter.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        showSelectedFilterValueCount: {
+            name: 'show-selected-filter-value-count',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected filter value and count are displayed in the label.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -78,14 +136,32 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
             }
+        },
+        wrapperWidth: {
+            name: 'wrapper-width',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Width of the wrapper in pixels. It is used to compute the overflow of the menu group.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' }
+            }
         }
     },
     args: {
         applyButtonLabel: 'Apply',
+        hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
-        resetButtonLabel: 'Reset',
-        variant: 'horizontal'
+        isToggleButtonVariant: false,
+        offsetFilterWidth: 0,
+        resetButtonLabel: 'Clear selection',
+        showClearButton: false,
+        showSelectedFilterValueCount: false,
+        variant: 'horizontal',
+        wrapperWidth: 0
     }
 };
 

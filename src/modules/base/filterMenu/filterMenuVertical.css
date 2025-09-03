@@ -1,3 +1,13 @@
+.avonni-filter-menu__search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.avonni-filter-menu__search-input {
+    flex: 1;
+    min-width: 0;
+}
+
 .avonni-filter-menu__title-button_base {
     background-color: var(
         --avonni-filter-menu-vertical-label-color-background,
