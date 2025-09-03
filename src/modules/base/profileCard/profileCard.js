@@ -9,7 +9,10 @@ const AVATAR_POSITIONS = {
         'top-right',
         'bottom-left',
         'bottom-center',
-        'bottom-right'
+        'bottom-right',
+        'left',
+        'center',
+        'right'
     ],
     default: 'top-left'
 };
@@ -149,7 +152,7 @@ export default class ProfileCard extends LightningElement {
      */
 
     /**
-     * Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.
+     * Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, right.
      *
      * @type {string}
      * @public
@@ -166,7 +169,7 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.
+     * Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, right.
      *
      * @type {string}
      * @public
