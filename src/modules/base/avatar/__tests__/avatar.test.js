@@ -667,6 +667,20 @@ describe('Avatar', () => {
                     expect(avatar.size).toBe('xx-large');
                 });
             });
+
+            it('xxx-large', () => {
+                element.size = 'xxx-large';
+                element.hideAvatarDetails = true;
+                element.src =
+                    'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+                return Promise.resolve().then(() => {
+                    const avatar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-avatar-no-details"]'
+                    );
+                    expect(avatar.size).toBe('xxx-large');
+                });
+            });
         });
 
         describe('Src', () => {
