@@ -244,10 +244,11 @@ export default class ProfileCard extends LightningElement {
      */
     @api
     get size() {
-        return this._avatarSize;
+        return this.avatarSize;
     }
     set size(value) {
         this._avatarSize = value;
+
         console.warn(
             'The "size" attribute is deprecated. Use "avatar-size" instead.'
         );
@@ -331,18 +332,22 @@ export default class ProfileCard extends LightningElement {
             .add({
                 'avonni-profile-card__flex-container_align-center':
                     this.avatarPosition === 'top-center' ||
-                    this.avatarPosition === 'bottom-center',
+                    this.avatarPosition === 'bottom-center' ||
+                    this.avatarPosition === 'center',
                 'avonni-profile-card__flex-container_align-end':
                     this.avatarPosition === 'top-right' ||
-                    this.avatarPosition === 'bottom-right'
+                    this.avatarPosition === 'bottom-right' ||
+                    this.avatarPosition === 'right'
             })
             .add({
                 'avonni-profile-card__flex-container-mobile_align-center':
                     this.avatarMobilePosition === 'top-center' ||
-                    this.avatarMobilePosition === 'bottom-center',
+                    this.avatarMobilePosition === 'bottom-center' ||
+                    this.avatarMobilePosition === 'center',
                 'avonni-profile-card__flex-container-mobile_align-end':
                     this.avatarMobilePosition === 'top-right' ||
-                    this.avatarMobilePosition === 'bottom-right'
+                    this.avatarMobilePosition === 'bottom-right' ||
+                    this.avatarMobilePosition === 'right'
             })
             .toString();
     }
