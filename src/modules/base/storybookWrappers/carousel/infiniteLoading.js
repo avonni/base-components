@@ -15,6 +15,7 @@ export default class InfiniteLoadingCarousel extends LightningElement {
     @api disableAutoScroll;
     @api hideIndicator;
     @api hidePreviousNextPanelNavigation;
+    @api imageErrorLabel;
     @api imagePosition;
     @api indicatorVariant;
     @api isInfinite;
@@ -23,6 +24,7 @@ export default class InfiniteLoadingCarousel extends LightningElement {
     @api loadMoreOffset;
     @api maxIndicatorItems;
     @api mediumItemsPerPanel;
+    @api noImageLabel;
     @api scrollDuration;
     @api smallItemsPerPanel;
 

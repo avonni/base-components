@@ -2,26 +2,28 @@
     <template for:each={itemList} for:item="item">
         <div key={item.key} class="slds-p-bottom_large">
             <c-image
-                src={item.src}
-                srcset={item.srcset}
                 alternative-text={item.alternativeText}
-                width={item.width}
-                height={item.height}
-                fluid={item.fluid}
-                fluid-grow={item.fluidGrow}
-                thumbnail={item.thumbnail}
-                position={item.position}
-                static-images={item.staticImages}
-                lazy-loading={item.lazyLoading}
-                crop-size={item.cropSize}
+                compare-alternative-text={compareAlternativeText}
+                compare-attributes={compareAttributes}
+                compare-src={compareSrc}
                 crop-fit={item.cropFit}
                 crop-position-x={item.cropPositionX}
                 crop-position-y={item.cropPositionY}
-                magnifier-type={magnifierType}
+                crop-size={item.cropSize}
+                fluid={item.fluid}
+                fluid-grow={item.fluidGrow}
+                height={item.height}
+                image-error-label={imageErrorLabel}
+                lazy-loading={item.lazyLoading}
+                no-image-label={noImageLabel}
                 magnifier-attributes={magnifierAttributes}
-                compare-alternative-text={compareAlternativeText}
-                compare-src={compareSrc}
-                compare-attributes={compareAttributes}
+                magnifier-type={magnifierType}
+                position={item.position}
+                src={item.src}
+                srcset={item.srcset}
+                static-images={item.staticImages}
+                thumbnail={item.thumbnail}
+                width={item.width}
             >
             </c-image>
         </div>

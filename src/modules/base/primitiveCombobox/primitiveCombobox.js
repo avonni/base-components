@@ -2206,7 +2206,11 @@ export default class PrimitiveCombobox extends LightningElement {
             }
             this.focus();
             this.showStartLoader = false;
-            this._searchTerm = '';
+            this.inputValue = '';
+            if (this._searchTerm) {
+                this._searchTerm = '';
+                this.handleSearch();
+            }
 
             /**
              * The event fired when an option with nested options has been selected.

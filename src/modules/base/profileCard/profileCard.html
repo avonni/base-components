@@ -12,8 +12,8 @@
                 <div class={computedAvatarClass} data-element-id="avatar">
                     <div
                         if:true={showAvatarFallbackIcon}
-                        data-element-id="icon-wrapper"
                         class={computedIconWrapperClass}
+                        data-element-id="icon-wrapper"
                     >
                         <lightning-icon
                             class={computedIconClass}
@@ -26,9 +26,9 @@
                     </div>
 
                     <div
+                        if:true={avatarSrc}
                         class="avonni-profile-card__image-wrapper"
                         data-element-id="image-wrapper"
-                        if:true={avatarSrc}
                     >
                         <img
                             class={computedImageClass}

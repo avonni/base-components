@@ -41,6 +41,7 @@ describe('Image', () => {
             expect(element.fluid).toBeFalsy();
             expect(element.fluidGrow).toBeFalsy();
             expect(element.height).toBeUndefined();
+            expect(element.imageErrorLabel).toBe('No Preview Available');
             expect(element.lazyLoading).toBe('auto');
             expect(element.leftCompareIconAlternativeText).toBe(
                 'Press left to show the original image'
@@ -53,6 +54,7 @@ describe('Image', () => {
             expect(element.magnifierAttributes.zoomRatioWidth).toBe('100px');
             expect(element.magnifierAttributes.zoomRatioHeight).toBe('100px');
             expect(element.magnifierType).toBeUndefined();
+            expect(element.noImageLabel).toBe('No Image Source Provided');
             expect(element.position).toBeUndefined();
             expect(element.rightCompareIconAlternativeText).toBe(
                 'Press right to show the compared image'
@@ -681,6 +683,26 @@ describe('Image', () => {
             });
         });
 
+        describe('imageErrorLabel', () => {
+            it('Passed to the component', () => {
+                element.src =
+                    'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jg';
+                element.imageErrorLabel = 'No Preview Available';
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.dispatchEvent(new CustomEvent('load'));
+                img.dispatchEvent(new ErrorEvent('error'));
+
+                return Promise.resolve().then(() => {
+                    const illustration = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-illustration-image-error"]'
+                    );
+                    expect(illustration).toBeTruthy();
+                });
+            });
+        });
+
         describe('magnifierAttributes', () => {
             it('Passed to the component', () => {
                 element.src = src;
@@ -940,6 +962,20 @@ describe('Image', () => {
             });
         });
 
+        describe('noImageLabel', () => {
+            it('Passed to the component', () => {
+                element.src = null;
+                element.noImageLabel = 'No Image Source Provided';
+
+                return Promise.resolve().then(() => {
+                    const illustration = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-illustration-image-error"]'
+                    );
+                    expect(illustration).toBeTruthy();
+                });
+            });
+        });
+
         describe('Position', () => {
             it('left', () => {
                 element.src = src;
@@ -1057,120 +1093,6 @@ describe('Image', () => {
                     expect(img.srcset).toBe(
                         'https://www.avonni.app/, https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
                     );
-                });
-            });
-        });
-
-        describe('Static image', () => {
-            it('Static Image - No Crop - Width - No Height', () => {
-                element.src = src;
-                element.staticImages = true;
-                element.width = '400';
-
-                return Promise.resolve().then(() => {
-                    const img = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
-                    );
-                    expect(img.style.maxWidth).toBe('400px');
-                    expect(img.style.height).toBeFalsy();
-                });
-            });
-            it('Static Image - No Crop - No Width - Height', () => {
-                element.src = src;
-                element.staticImages = true;
-                element.height = '400';
-
-                return Promise.resolve().then(() => {
-                    const img = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
-                    );
-                    expect(img.style.maxHeight).toBe('400px');
-                    expect(img.style.minHeight).toBe('400px');
-                    expect(img.style.height).toBe('400px');
-                });
-            });
-
-            it('Static Image - No Crop - No Width - No Height', () => {
-                element.src = src;
-                element.staticImages = true;
-                element.width = 400;
-                element.height = 300;
-                document.body.appendChild(element);
-
-                return Promise.resolve()
-                    .then(() => {})
-                    .then(() => {
-                        const img = element.shadowRoot.querySelector(
-                            '[data-element-id="img"]'
-                        );
-                        expect(img.style.minWidth).toBe('400px');
-                        expect(img.style.minHeight).toBe('300px');
-                        expect(img.style.maxWidth).toBe('400px');
-                        expect(img.style.maxHeight).toBe('300px');
-                    });
-            });
-
-            it('Static Image - No Crop - Width - Height', () => {
-                element.src = src;
-                element.staticImages = true;
-                element.height = 400;
-                element.width = 400;
-
-                return Promise.resolve()
-                    .then(() => {})
-                    .then(() => {
-                        const img = element.shadowRoot.querySelector(
-                            '[data-element-id="img"]'
-                        );
-                        expect(img.style.minWidth).toBe('400px');
-                        expect(img.style.minHeight).toBe('400px');
-                        expect(img.style.maxWidth).toBe('400px');
-                        expect(img.style.maxHeight).toBe('400px');
-                    });
-            });
-
-            it('Static Image - Crop 1x1 - Width - No Height', () => {
-                element.src = src;
-                element.staticImages = true;
-                element.width = '400';
-                element.cropSize = '1x1';
-
-                return Promise.resolve().then(() => {
-                    const img = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
-                    );
-                    expect(img.style.maxWidth).toBe('400px');
-                    expect(img.style.minWidth).toBe('400px');
-                });
-            });
-        });
-
-        describe('thumbnail', () => {
-            it('Passed to the component', () => {
-                element.src = src;
-                element.thumbnail = true;
-
-                return Promise.resolve().then(() => {
-                    const container = element.shadowRoot.querySelector(
-                        '[data-element-id="container"]'
-                    );
-                    expect(container.classList).toContain(
-                        'avonni-image_thumbnail'
-                    );
-                });
-            });
-        });
-
-        describe('width', () => {
-            it('Passed to the component', () => {
-                element.src = src;
-                element.width = '50%';
-
-                return Promise.resolve().then(() => {
-                    const img = element.shadowRoot.querySelector(
-                        '[data-element-id="img"]'
-                    );
-                    expect(img.style.width).toBe('50%');
                 });
             });
         });
@@ -1336,6 +1258,120 @@ describe('Image', () => {
                     img.dispatchEvent(new MouseEvent('mousemove'));
                     expect(magnifier.style.top).toBe(top);
                     expect(magnifier.style.left).toBe(left);
+                });
+            });
+        });
+
+        describe('Static image', () => {
+            it('Static Image - No Crop - Width - No Height', () => {
+                element.src = src;
+                element.staticImages = true;
+                element.width = '400';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.style.maxWidth).toBe('400px');
+                    expect(img.style.height).toBeFalsy();
+                });
+            });
+            it('Static Image - No Crop - No Width - Height', () => {
+                element.src = src;
+                element.staticImages = true;
+                element.height = '400';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.style.maxHeight).toBe('400px');
+                    expect(img.style.minHeight).toBe('400px');
+                    expect(img.style.height).toBe('400px');
+                });
+            });
+
+            it('Static Image - No Crop - No Width - No Height', () => {
+                element.src = src;
+                element.staticImages = true;
+                element.width = 400;
+                element.height = 300;
+                document.body.appendChild(element);
+
+                return Promise.resolve()
+                    .then(() => {})
+                    .then(() => {
+                        const img = element.shadowRoot.querySelector(
+                            '[data-element-id="img"]'
+                        );
+                        expect(img.style.minWidth).toBe('400px');
+                        expect(img.style.minHeight).toBe('300px');
+                        expect(img.style.maxWidth).toBe('400px');
+                        expect(img.style.maxHeight).toBe('300px');
+                    });
+            });
+
+            it('Static Image - No Crop - Width - Height', () => {
+                element.src = src;
+                element.staticImages = true;
+                element.height = 400;
+                element.width = 400;
+
+                return Promise.resolve()
+                    .then(() => {})
+                    .then(() => {
+                        const img = element.shadowRoot.querySelector(
+                            '[data-element-id="img"]'
+                        );
+                        expect(img.style.minWidth).toBe('400px');
+                        expect(img.style.minHeight).toBe('400px');
+                        expect(img.style.maxWidth).toBe('400px');
+                        expect(img.style.maxHeight).toBe('400px');
+                    });
+            });
+
+            it('Static Image - Crop 1x1 - Width - No Height', () => {
+                element.src = src;
+                element.staticImages = true;
+                element.width = '400';
+                element.cropSize = '1x1';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.style.maxWidth).toBe('400px');
+                    expect(img.style.minWidth).toBe('400px');
+                });
+            });
+        });
+
+        describe('thumbnail', () => {
+            it('Passed to the component', () => {
+                element.src = src;
+                element.thumbnail = true;
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+                    expect(container.classList).toContain(
+                        'avonni-image_thumbnail'
+                    );
+                });
+            });
+        });
+
+        describe('width', () => {
+            it('Passed to the component', () => {
+                element.src = src;
+                element.width = '50%';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.style.width).toBe('50%');
                 });
             });
         });

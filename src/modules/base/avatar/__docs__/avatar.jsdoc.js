@@ -207,6 +207,50 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-avatar-entity-border-radius
+ * @default 0
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-border-color
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-border-style
+ * @default none
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-border-size
+ * @default 0
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-background-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-foreground-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-foreground-color-utility
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-image-object-fit
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-avatar-entity-initials-text-color
  * @default #ffffff
  * @type color
