@@ -2115,10 +2115,9 @@ export default class FilterMenu extends LightningElement {
          */
         this.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
         this.reset();
-        if (this.hideApplyButton) {
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
             this._value = [...this.currentValue];
             this.computeSelectedItems();
-            this.dispatchApply();
         }
     }
 
