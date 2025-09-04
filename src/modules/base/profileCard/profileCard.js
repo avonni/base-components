@@ -312,17 +312,6 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Computed circle class styling.
-     *
-     * @type {string}
-     */
-    get computedCircleClass() {
-        return this.avatarVariant === 'circle'
-            ? 'avonni-profile-card__avatar-img-circle'
-            : 'avonni-profile-card__avatar-img-square';
-    }
-
-    /**
      * Computed container class styling based on selected attributes.
      *
      * @type {string}
@@ -373,7 +362,7 @@ export default class ProfileCard extends LightningElement {
     get computedIconClass() {
         return classSet('avonni-profile-card__lightning-icon')
             .add(`avonni-profile-card__lightning-icon_size-${this.avatarSize}`)
-            .add(this.computedCircleClass)
+            .add(this.computedVariantClass)
             .toString();
     }
 
@@ -384,7 +373,7 @@ export default class ProfileCard extends LightningElement {
      */
     get computedIconWrapperClass() {
         return classSet('avonni-profile-card__icon-wrapper')
-            .add(this.computedCircleClass)
+            .add(this.computedVariantClass)
             .add('slds-align_absolute-center')
             .toString();
     }
@@ -396,7 +385,7 @@ export default class ProfileCard extends LightningElement {
      */
     get computedImageClass() {
         return classSet('avonni-profile-card__image')
-            .add(this.computedCircleClass)
+            .add(this.computedVariantClass)
             .toString();
     }
 
@@ -453,6 +442,17 @@ export default class ProfileCard extends LightningElement {
                     position.includes('center')
             })
             .toString();
+    }
+
+    /**
+     * Computed avatar variant class styling.
+     *
+     * @type {string}
+     */
+    get computedVariantClass() {
+        return this.avatarVariant === 'circle'
+            ? 'avonni-profile-card__avatar-img-circle'
+            : 'avonni-profile-card__avatar-img-square';
     }
 
     /**

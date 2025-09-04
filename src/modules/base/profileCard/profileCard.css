@@ -120,15 +120,15 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__background_size-small {
-    min-height: 70px;
+    min-height: 74px;
 }
 
 .avonni-profile-card__background_size-medium {
-    min-height: 96px;
+    min-height: 94px;
 }
 
 .avonni-profile-card__background_size-large {
-    min-height: 144px;
+    min-height: 150px;
 }
 
 .avonni-profile-card__background_size-x-large {
