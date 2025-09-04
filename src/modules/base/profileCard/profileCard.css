@@ -32,6 +32,17 @@ article.avonni-profile-card {
     align-items: flex-end;
 }
 
+.avonni-profile-card__body-border {
+    border-bottom-left-radius: var(
+        --avonni-profile-card-radius-border,
+        0.25rem
+    );
+    border-bottom-right-radius: var(
+        --avonni-profile-card-radius-border,
+        0.25rem
+    );
+}
+
 .avonni-profile-card__header-border {
     border-top-left-radius: calc(
         var(--avonni-profile-card-radius-border, 0.25rem) - 1px
