@@ -234,6 +234,7 @@
             oneventchange={handleEventChange}
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
+            oneventmouseclick={handleEventMouseClick}
             oneventmouseenter={handleEventMouseEnter}
             oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
@@ -287,6 +288,7 @@
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
             oneventselect={handleEventSelect}
+            oneventmouseclick={handleEventMouseClick}
             oneventmouseenter={handleEventMouseEnter}
             oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
@@ -325,6 +327,7 @@
             oneventchange={handleEventChange}
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
+            oneventmouseclick={handleEventMouseClick}
             oneventmouseenter={handleEventMouseEnter}
             oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
@@ -346,7 +349,7 @@
     <!-- Event detail popover -->
     <div
         if:true={showDetailPopover}
-        class="slds-is-absolute slds-popover slds-popover_medium"
+        class={detailPopoverClass}
         aria-live="polite"
         role="tooltip"
         data-element-id="div-detail-popover"
