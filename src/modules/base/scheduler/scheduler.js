@@ -2371,6 +2371,7 @@ export default class Scheduler extends LightningElement {
         this.showDetailPopover = true;
         this.selection = this.schedule.selectEvent(event.detail);
         this.showPopover();
+        this.dispatchMouseEventClick(event);
     }
 
     /**
@@ -2799,6 +2800,30 @@ export default class Scheduler extends LightningElement {
         }
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);
+    }
+
+    /**
+     * Dispatch the eventmouseclick event.
+     *
+     * @param {Event} event
+     */
+    dispatchMouseEventClick(event) {
+        /**
+         * The event fired when the mouse clicks an event occurrence.
+         *
+         * @event
+         * @name eventmouseclick
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventmouseclick', {
+                detail: event.detail
+            })
+        );
     }
 
     /**

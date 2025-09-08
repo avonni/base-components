@@ -1068,10 +1068,10 @@ export class ScheduleBase extends LightningElement {
      */
     handleEventMouseClick(event) {
         /**
-         * The event fired when the mouse enters an event.
+         * The event fired when the mouse clicks an event.
          *
          * @event
-         * @name eventmouseenter
+         * @name eventmouseclick
          * @param {string} eventName Name of the event.
          * @param {string} key Key of the occurrence.
          * @param {number} x Horizontal position of the occurrence.

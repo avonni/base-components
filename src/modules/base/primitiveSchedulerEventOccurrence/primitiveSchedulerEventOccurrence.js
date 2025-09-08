@@ -1930,7 +1930,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const resize = event.target.dataset.resize;
 
         /**
-         * The event fired when the mouse is pressed on the occurrence, if it is not disabled.
+         * The event fired when the mouse is pressed on the occurrence.
          *
          * @event
          * @name privatemouseclick
