@@ -1175,6 +1175,21 @@ export default class Scheduler extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    hideDetailPopover() {
+        clearTimeout(this._closeDetailPopoverTimeout);
+        this.showDetailPopover = false;
+        if (this.showDetailFullOverlay) {
+            this.dispatchEventPopoverToggle(false);
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
@@ -1840,14 +1855,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Hide the detail popover.
-     */
-    hideDetailPopover() {
-        clearTimeout(this._closeDetailPopoverTimeout);
-        this.showDetailPopover = false;
-    }
-
-    /**
      * Hide the edit dialog.
      */
     hideEditDialog() {
@@ -2371,7 +2378,7 @@ export default class Scheduler extends LightningElement {
         this.showDetailPopover = true;
         this.selection = this.schedule.selectEvent(event.detail);
         this.showPopover();
-        this.dispatchMouseEventClick(event);
+        this.dispatchEventPopoverToggle(true);
     }
 
     /**
@@ -2803,25 +2810,24 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Dispatch the eventmouseclick event.
+     * Dispatch the eventpopovertoggle event.
      *
      * @param {Event} event
      */
-    dispatchMouseEventClick(event) {
+    dispatchEventPopoverToggle(isExpanded) {
         /**
          * The event fired when the mouse clicks an event occurrence.
          *
          * @event
-         * @name eventmouseclick
-         * @param {string} eventName Name of the event.
-         * @param {string} key Key of the occurrence.
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
+         * @name eventpopovertoggle
+         * @param {boolean} isExpanded State of the event detail popover.
          * @public
          */
         this.dispatchEvent(
-            new CustomEvent('eventmouseclick', {
-                detail: event.detail
+            new CustomEvent('eventpopovertoggle', {
+                detail: {
+                    isExpanded
+                }
             })
         );
     }
