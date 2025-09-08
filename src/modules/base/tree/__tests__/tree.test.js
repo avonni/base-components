@@ -1482,7 +1482,8 @@ describe('Tree', () => {
                         items[1].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[1].name,
+                                    name: ITEMS_WITH_INVALID_SORTING_NO_SLOTS[1]
+                                        .name,
                                     key: '2'
                                 },
                                 bubbles: true
@@ -1552,7 +1553,8 @@ describe('Tree', () => {
                         items[2].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[2].name,
+                                    name: ITEMS_WITH_INVALID_SORTING_NO_SLOTS[2]
+                                        .items[1].name,
                                     key: '3.2'
                                 },
                                 bubbles: true
@@ -1618,7 +1620,8 @@ describe('Tree', () => {
                         items[2].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[2].name,
+                                    name: ITEMS_WITH_INVALID_SORTING_NO_SLOTS[2]
+                                        .items[1].name,
                                     key: '3.2'
                                 },
                                 bubbles: true
@@ -1680,7 +1683,7 @@ describe('Tree', () => {
                         items[1].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[1].name,
+                                    name: ITEMS_WITH_INVALID_SORTING[1].name,
                                     key: '2'
                                 },
                                 bubbles: true
@@ -1741,10 +1744,11 @@ describe('Tree', () => {
                         });
 
                         // Mouse down
-                        items[1].dispatchEvent(
+                        items[2].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[1].name,
+                                    name: ITEMS_WITH_INVALID_SORTING[2].items[1]
+                                        .name,
                                     key: '3.2'
                                 },
                                 bubbles: true
@@ -1810,7 +1814,8 @@ describe('Tree', () => {
                         items[2].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[2].name,
+                                    name: ITEMS_WITH_INVALID_SORTING[2].items[1]
+                                        .name,
                                     key: '3.2'
                                 },
                                 bubbles: true
