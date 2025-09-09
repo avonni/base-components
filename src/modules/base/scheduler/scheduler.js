@@ -1183,9 +1183,6 @@ export default class Scheduler extends LightningElement {
     hideDetailPopover() {
         clearTimeout(this._closeDetailPopoverTimeout);
         this.showDetailPopover = false;
-        if (this.showDetailFullOverlay) {
-            this.dispatchEventPopoverToggle(false);
-        }
     }
 
     /*
@@ -2378,7 +2375,6 @@ export default class Scheduler extends LightningElement {
         this.showDetailPopover = true;
         this.selection = this.schedule.selectEvent(event.detail);
         this.showPopover();
-        this.dispatchEventPopoverToggle(true);
     }
 
     /**
@@ -2807,29 +2803,6 @@ export default class Scheduler extends LightningElement {
         }
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);
-    }
-
-    /**
-     * Dispatch the eventpopovertoggle event.
-     *
-     * @param {Event} event
-     */
-    dispatchEventPopoverToggle(isExpanded) {
-        /**
-         * The event fired when the mouse clicks an event occurrence.
-         *
-         * @event
-         * @name eventpopovertoggle
-         * @param {boolean} isExpanded State of the event detail popover.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('eventpopovertoggle', {
-                detail: {
-                    isExpanded
-                }
-            })
-        );
     }
 
     /**
