@@ -4,7 +4,8 @@ import {
     ACTIONS,
     generateFakeRegisters,
     ITEMS,
-    ITEMS_WITH_INVALID_SORTING
+    ITEMS_WITH_INVALID_SORTING,
+    ITEMS_WITH_INVALID_SORTING_NO_SLOTS
 } from './data';
 
 // Not tested:
@@ -1454,9 +1455,9 @@ describe('Tree', () => {
             describe('Invalid sorting', () => {
                 it('Move an item inside another with noSlots', () => {
                     const fakeRegisters = generateFakeRegisters(
-                        ITEMS_WITH_INVALID_SORTING
+                        ITEMS_WITH_INVALID_SORTING_NO_SLOTS
                     );
-                    element.items = ITEMS_WITH_INVALID_SORTING;
+                    element.items = ITEMS_WITH_INVALID_SORTING_NO_SLOTS;
                     element.sortable = true;
 
                     jest.useFakeTimers();
@@ -1481,7 +1482,8 @@ describe('Tree', () => {
                         items[1].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[1].name,
+                                    name: ITEMS_WITH_INVALID_SORTING_NO_SLOTS[1]
+                                        .name,
                                     key: '2'
                                 },
                                 bubbles: true
@@ -1522,6 +1524,136 @@ describe('Tree', () => {
                     });
                 });
 
+                it('Move an item inside another with noSlots, by being under one of its child', () => {
+                    const fakeRegisters = generateFakeRegisters(
+                        ITEMS_WITH_INVALID_SORTING_NO_SLOTS
+                    );
+                    element.items = ITEMS_WITH_INVALID_SORTING_NO_SLOTS;
+                    element.sortable = true;
+
+                    jest.useFakeTimers();
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+
+                    return Promise.resolve().then(() => {
+                        // Register the items, including the nested ones
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        Object.values(fakeRegisters).forEach((register) => {
+                            items[0].dispatchEvent(
+                                new CustomEvent('privateregisteritem', {
+                                    bubbles: true,
+                                    detail: register
+                                })
+                            );
+                        });
+
+                        // Mouse down
+                        items[2].dispatchEvent(
+                            new CustomEvent('privatemousedown', {
+                                detail: {
+                                    name: ITEMS_WITH_INVALID_SORTING_NO_SLOTS[2]
+                                        .items[1].name,
+                                    key: '3.2'
+                                },
+                                bubbles: true
+                            })
+                        );
+                        jest.runAllTimers();
+
+                        // Move to the bottom item
+                        const mouseMove = new CustomEvent('mousemove', {
+                            bubbles: true,
+                            composed: true
+                        });
+
+                        // Mouse to the bottom of the item
+                        mouseMove.clientY = 15;
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="div-tree-wrapper"]'
+                        );
+                        tree.dispatchEvent(mouseMove);
+
+                        // Mouse on the center of the item
+                        mouseMove.clientY = 40;
+                        const setBorderCallback =
+                            fakeRegisters.firstLevelNoSlotsChild.setBorder;
+                        tree.dispatchEvent(mouseMove);
+                        expect(setBorderCallback).toHaveBeenCalled();
+                        expect(setBorderCallback.mock.calls[0][0]).toBe(
+                            'bottom'
+                        );
+                        expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalledTimes(0);
+                    });
+                });
+
+                it('Move an item inside another with noSlots, by being above one of its child', () => {
+                    const fakeRegisters = generateFakeRegisters(
+                        ITEMS_WITH_INVALID_SORTING_NO_SLOTS
+                    );
+                    element.items = ITEMS_WITH_INVALID_SORTING_NO_SLOTS;
+                    element.sortable = true;
+
+                    jest.useFakeTimers();
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+
+                    return Promise.resolve().then(() => {
+                        // Register the items, including the nested ones
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        Object.values(fakeRegisters).forEach((register) => {
+                            items[0].dispatchEvent(
+                                new CustomEvent('privateregisteritem', {
+                                    bubbles: true,
+                                    detail: register
+                                })
+                            );
+                        });
+
+                        // Mouse down
+                        items[2].dispatchEvent(
+                            new CustomEvent('privatemousedown', {
+                                detail: {
+                                    name: ITEMS_WITH_INVALID_SORTING_NO_SLOTS[2]
+                                        .items[1].name,
+                                    key: '3.2'
+                                },
+                                bubbles: true
+                            })
+                        );
+                        jest.runAllTimers();
+
+                        // Move to the bottom item
+                        const mouseMove = new CustomEvent('mousemove', {
+                            bubbles: true,
+                            composed: true
+                        });
+                        mouseMove.clientY = 15;
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="div-tree-wrapper"]'
+                        );
+                        tree.dispatchEvent(mouseMove);
+
+                        // Mouse to the top of the item
+                        mouseMove.clientY = 30;
+                        const setBorderCallback =
+                            fakeRegisters.firstLevelNoSlotsChild.setBorder;
+                        tree.dispatchEvent(mouseMove);
+                        expect(setBorderCallback).toHaveBeenCalled();
+                        expect(setBorderCallback.mock.calls[0][0]).toBe('top');
+                        expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalledTimes(0);
+                    });
+                });
+
                 it('Move an item with invalid type inside another', () => {
                     const fakeRegisters = generateFakeRegisters(
                         ITEMS_WITH_INVALID_SORTING
@@ -1551,7 +1683,7 @@ describe('Tree', () => {
                         items[1].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[1].name,
+                                    name: ITEMS_WITH_INVALID_SORTING[1].name,
                                     key: '2'
                                 },
                                 bubbles: true
@@ -1615,7 +1747,8 @@ describe('Tree', () => {
                         items[2].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[2].name,
+                                    name: ITEMS_WITH_INVALID_SORTING[2].items[1]
+                                        .name,
                                     key: '3.2'
                                 },
                                 bubbles: true
@@ -1630,7 +1763,7 @@ describe('Tree', () => {
                         });
 
                         // Mouse to the bottom of the item
-                        mouseMove.clientY = 35;
+                        mouseMove.clientY = 15;
                         const tree = element.shadowRoot.querySelector(
                             '[data-element-id="div-tree-wrapper"]'
                         );
@@ -1681,7 +1814,8 @@ describe('Tree', () => {
                         items[2].dispatchEvent(
                             new CustomEvent('privatemousedown', {
                                 detail: {
-                                    name: ITEMS[2].name,
+                                    name: ITEMS_WITH_INVALID_SORTING[2].items[1]
+                                        .name,
                                     key: '3.2'
                                 },
                                 bubbles: true
@@ -1694,7 +1828,7 @@ describe('Tree', () => {
                             bubbles: true,
                             composed: true
                         });
-                        mouseMove.clientY = 35;
+                        mouseMove.clientY = 15;
                         const tree = element.shadowRoot.querySelector(
                             '[data-element-id="div-tree-wrapper"]'
                         );
