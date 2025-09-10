@@ -149,6 +149,7 @@
                             onclick={handleClick}
                         >
                             <div class={computedDayHeadingClass}>
+                                <!-- Mobile view -->
                                 <template if:true={isMobileView}>
                                     <div
                                         class="
@@ -182,6 +183,7 @@
                                         </div>
                                     </div>
                                 </template>
+                                <!-- Desktop view -->
                                 <template if:false={isMobileView}>
                                     <div
                                         class="

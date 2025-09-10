@@ -643,7 +643,9 @@ Mobile.args = {
     resources,
     start,
     events: basicEvents,
+    selectedDisplay: 'agenda',
     selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
     hideSidePanel: true,
     isMobileView: true
 };

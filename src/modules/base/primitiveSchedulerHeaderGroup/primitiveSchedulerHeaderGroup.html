@@ -26,7 +26,32 @@
                             title={cell.label}
                             data-element-id="span-label-sticky"
                             data-today={cell.isToday}
-                            >{cell.label}
+                        >
+                            <template if:false={cell.isMobileView}>
+                                {cell.label}
+                            </template>
+                            <div
+                                if:true={cell.isMobileView}
+                                class="
+                                    slds-grid
+                                    slds-grid_vertical
+                                    slds-grid_align-center
+                                    slds-grid_vertical-align-center
+                                "
+                            >
+                                <span
+                                    class="
+                                        avonni-scheduler-header-group__header-label_day
+                                    "
+                                    >{cell.day}</span
+                                >
+                                <span
+                                    class="
+                                        avonni-scheduler-header-group__header-label_date
+                                    "
+                                    >{cell.date}</span
+                                >
+                            </div>
                         </span>
                         <span
                             if:true={header.last}
@@ -34,7 +59,32 @@
                             title={cell.label}
                             data-element-id="span-label-non-sticky"
                             data-today={cell.isToday}
-                            >{cell.label}
+                        >
+                            <template if:false={cell.isMobileView}>
+                                {cell.label}
+                            </template>
+                            <div
+                                if:true={cell.isMobileView}
+                                class="
+                                    slds-grid
+                                    slds-grid_vertical
+                                    slds-grid_align-center
+                                    slds-grid_vertical-align-center
+                                "
+                            >
+                                <span
+                                    class="
+                                        avonni-scheduler-header-group__header-label_day
+                                    "
+                                    >{cell.day}</span
+                                >
+                                <span
+                                    class="
+                                        avonni-scheduler-header-group__header-label_date
+                                    "
+                                    >{cell.date}</span
+                                >
+                            </div>
                         </span>
                     </div>
                 </template>
