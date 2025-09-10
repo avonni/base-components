@@ -75,6 +75,7 @@ export default class Scheduler extends LightningElement {
     _hideResourcesFilter = false;
     _hideSidePanel = false;
     _hideToolbar = false;
+    _isMobileView = false;
     _isLoading = false;
     _labelNoEventsFound = DEFAULT_LABEL_NO_EVENTS_FOUND;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -87,7 +88,6 @@ export default class Scheduler extends LightningElement {
     _selectedDisplay = DISPLAYS.default;
     _selectedResources = [];
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
-    _showDetailFullOverlay = false;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
     _start = DEFAULT_START_DATE;
     _timeSpans = TIME_SPANS.default;
@@ -106,6 +106,7 @@ export default class Scheduler extends LightningElement {
     _renderAnimationFrames = [];
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
+
     computedDisabledDatesTimes = [];
     @track computedEvents = [];
     computedHeaders = [];
@@ -151,7 +152,7 @@ export default class Scheduler extends LightningElement {
 
     renderedCallback() {
         // Position the detail popover
-        if (this.showDetailPopover && !this.showDetailFullOverlay) {
+        if (this.showDetailPopover && !this.isMobileView) {
             const popover = this.template.querySelector(
                 '[data-element-id="div-detail-popover"]'
             );
@@ -676,6 +677,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * If present, the mobile view is displayed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isMobileView() {
+        return this._isMobileView;
+    }
+    set isMobileView(value) {
+        this._isMobileView = normalizeBoolean(value);
+    }
+
+    /**
      * If present, a loading spinner will be visible.
      *
      * @type {boolean}
@@ -941,21 +957,6 @@ export default class Scheduler extends LightningElement {
                 this.computedStart
             );
         }
-    }
-
-    /**
-     * If true, display the event detail in a full overlay instead of a popover.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get showDetailFullOverlay() {
-        return this._showDetailFullOverlay;
-    }
-    set showDetailFullOverlay(value) {
-        this._showDetailFullOverlay = normalizeBoolean(value);
     }
 
     /**
@@ -1441,9 +1442,9 @@ export default class Scheduler extends LightningElement {
     get detailPopoverClass() {
         return classSet('slds-is-absolute slds-popover')
             .add({
-                'slds-popover_medium': !this.showDetailFullOverlay,
+                'slds-popover_medium': !this.isMobileView,
                 'avonni-scheduler__event-details-popover-full':
-                    this.showDetailFullOverlay
+                    this.isMobileView
             })
             .toString();
     }
@@ -2182,7 +2183,7 @@ export default class Scheduler extends LightningElement {
      * Handle the cursor entering the event detail popover.
      */
     handleDetailPopoverMouseEnter() {
-        if (this.showDetailFullOverlay) {
+        if (this.isMobileView) {
             return;
         }
         clearTimeout(this._closeDetailPopoverTimeout);
@@ -2192,7 +2193,7 @@ export default class Scheduler extends LightningElement {
      * Handle the cursor leaving the event detail popover.
      */
     handleDetailPopoverMouseLeave() {
-        if (this.showDetailFullOverlay) {
+        if (this.isMobileView) {
             return;
         }
         clearTimeout(this._closeDetailPopoverTimeout);
@@ -2369,7 +2370,7 @@ export default class Scheduler extends LightningElement {
      * Handle the click event fired by the event.
      */
     handleEventMouseClick(event) {
-        if (!this.showDetailFullOverlay) {
+        if (!this.isMobileView) {
             return;
         }
         this.showDetailPopover = true;
@@ -2383,7 +2384,7 @@ export default class Scheduler extends LightningElement {
      * @param {Event} event
      */
     handleEventMouseEnter(event) {
-        if (this.showContextMenu || this.showDetailFullOverlay) {
+        if (this.showContextMenu || this.isMobileView) {
             return;
         }
 
@@ -2405,7 +2406,7 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventMouseLeave(event) {
-        if (this.showDetailFullOverlay) {
+        if (this.isMobileView) {
             return;
         }
 

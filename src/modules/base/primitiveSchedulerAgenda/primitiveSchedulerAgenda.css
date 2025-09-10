@@ -33,10 +33,18 @@
     border-bottom: none;
 }
 
+.avonni-scheduler__agenda-day-heading {
+    width: fit-content;
+}
+
 .avonni-scheduler__agenda-day {
     font-size: 2.625rem;
     min-width: 3rem;
     height: 3rem;
+}
+
+.avonni-scheduler__agenda-day_small {
+    font-size: 1.5rem;
 }
 
 .avonni-scheduler__agenda-day_today {
