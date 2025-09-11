@@ -1366,12 +1366,12 @@ export default class FilterMenu extends LightningElement {
      * Create the computed grouped items, based on the given items.
      */
     computeGroupItems() {
-        if (!this.isList) {
+        if (!this.isList || !this.computedTypeAttributes?.groupItems) {
             return;
         }
 
         this.computedGroupItems = deepCopy(
-            normalizeObject(this.computedTypeAttributes?.groupItems)
+            normalizeObject(this.computedTypeAttributes.groupItems)
         );
     }
 
