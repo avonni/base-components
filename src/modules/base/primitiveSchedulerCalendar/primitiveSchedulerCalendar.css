@@ -103,7 +103,23 @@
 }
 
 .avonni-scheduler__calendar-month-grid .avonni-scheduler__calendar-cell_today {
-    border: 1px solid var(--lwc-colorBorderRowSelected, #0176d3);
+    border: 1px solid
+        var(--lwc-colorBorderRowSelected, var(--lwc-brandAccessible, #0176d3));
+}
+
+.avonni-scheduler__calendar-month-grid
+    .avonni-scheduler__calendar-cell_today
+    .avonni-scheduler__calendar-cell-month-day
+    span {
+    color: var(--lwc-colorTextInverse, #fff);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--lwc-brandAccessible, #0176d3);
+    border-radius: 50%;
+    width: 1.15rem;
+    height: 1.15rem;
 }
 
 .avonni-scheduler__calendar-cell:last-of-type {

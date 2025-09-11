@@ -275,7 +275,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      * @type {string}
      */
     get computedDayHeadingClass() {
-        return classSet('slds-grid slds-wrap').add({
+        return classSet(
+            'avonni-scheduler__agenda-day-heading slds-grid slds-wrap'
+        ).add({
             'slds-grid_vertical-align-center slds-m-right_large ':
                 !this.isMobileView,
             'slds-grid_vertical slds-m-right_medium': this.isMobileView
