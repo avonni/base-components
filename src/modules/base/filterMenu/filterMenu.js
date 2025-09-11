@@ -1370,16 +1370,9 @@ export default class FilterMenu extends LightningElement {
             return;
         }
 
-        const groupItems = this.computedTypeAttributes.groupItems;
-
-        if (groupItems) {
-            this.computedGroupItems = {
-                ...this.computedGroupItems,
-                ...groupItems
-            };
-        } else {
-            this.computedGroupItems = this.computedGroupItems ?? {};
-        }
+        this.computedGroupItems = deepCopy(
+            normalizeObject(this.computedTypeAttributes?.groupItems)
+        );
     }
 
     /**
