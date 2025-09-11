@@ -494,7 +494,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {boolean}
      */
     get isVertical() {
-        return this.orientation === 'vertical' || this._isMobileView;
+        return this.orientation === 'vertical' || this.isMobileView;
     }
 
     /**

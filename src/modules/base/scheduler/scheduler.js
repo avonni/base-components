@@ -11,6 +11,7 @@ import {
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
@@ -104,8 +105,10 @@ export default class Scheduler extends LightningElement {
     _noEventActions = false;
     _openDetailPopoverTimeout;
     _renderAnimationFrames = [];
+    _resizeObserver;
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
+    _wrapperWidth;
 
     computedDisabledDatesTimes = [];
     @track computedEvents = [];
@@ -151,6 +154,10 @@ export default class Scheduler extends LightningElement {
      */
 
     renderedCallback() {
+        if (!this._resizeObserver) {
+            this.initResizeObserver();
+        }
+
         // Position the detail popover
         if (this.showDetailPopover && !this.isMobileView) {
             const popover = this.template.querySelector(
@@ -172,6 +179,13 @@ export default class Scheduler extends LightningElement {
             this.template
                 .querySelector('[data-element-id="avonni-dialog"]')
                 .focusOnCloseButton();
+        }
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
         }
     }
 
@@ -677,7 +691,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If present, the mobile view is displayed.
+     * If present, the mobile view is displayed and the popovers are displayed in full overlay.
      *
      * @type {boolean}
      * @public
@@ -1199,6 +1213,19 @@ export default class Scheduler extends LightningElement {
      */
     get bounds() {
         return this.template.host.getBoundingClientRect();
+    }
+
+    /**
+     * If true, display the mobile view.
+     *
+     * @type {object[]}
+     */
+    get displayInMobileView() {
+        return (
+            this.isMobileView ||
+            this._wrapperWidth === 'small' ||
+            this._wrapperWidth === 'default'
+        );
     }
 
     /**
@@ -2005,6 +2032,29 @@ export default class Scheduler extends LightningElement {
             allDay && occurrence.endOfTo.ts === occurrence.from.endOf('day').ts;
         const hasNoDuration = occurrence.from.ts === occurrence.to.ts;
         return spansOnWholeDay || hasNoDuration;
+    }
+
+    /**
+     * Initialize the resize observer, triggered when the layout is resized.
+     */
+    initResizeObserver() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-wrapper"]'
+        );
+        if (!wrapper) return;
+
+        this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
+            const width = wrapper.getBoundingClientRect().width;
+            if (width >= 1024) {
+                this._wrapperWidth = 'large';
+            } else if (width >= 768) {
+                this._wrapperWidth = 'medium';
+            } else if (width >= 480) {
+                this._wrapperWidth = 'small';
+            } else {
+                this._wrapperWidth = 'default';
+            }
+        });
     }
 
     /**

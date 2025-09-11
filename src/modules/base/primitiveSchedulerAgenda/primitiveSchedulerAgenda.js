@@ -141,6 +141,10 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
     set isMobileView(value) {
         this._isMobileView = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.initEventGroups();
+        }
     }
 
     /**

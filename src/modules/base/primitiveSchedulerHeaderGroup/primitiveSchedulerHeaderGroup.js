@@ -208,6 +208,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set isMobileView(value) {
         this._isMobileView = normalizeBoolean(value);
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
