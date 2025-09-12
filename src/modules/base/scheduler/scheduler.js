@@ -1311,6 +1311,18 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Computed CSS classes for the event details popover field layout.
+     *
+     * @type {string}
+     */
+    get computedPopoverFieldLayoutClass() {
+        return classSet('slds-col slds-p-vertical_xx-small').add({
+            'slds-size_1-of-2': !this.isMobileView,
+            'slds-size_1-of-1': this.isMobileView
+        });
+    }
+
+    /**
      * Start date as a Luxon DateTime object, including the timezone.
      *
      * @type {DateTime}

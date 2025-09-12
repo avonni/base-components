@@ -390,11 +390,7 @@
                         <div
                             if:false={field.isHidden}
                             key={field.key}
-                            class="
-                                slds-col
-                                slds-size_1-of-2
-                                slds-p-vertical_xx-small
-                            "
+                            class={computedPopoverFieldLayoutClass}
                         >
                             <c-output-data
                                 label={field.label}
