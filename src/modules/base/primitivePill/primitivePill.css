@@ -1,9 +1,9 @@
 .avonni-primitive-pill:not(.avonni-primitive-pill_list) {
+    border-style: var(--avonni-pill-styling-border, solid);
     --slds-c-pill-line-height: var(--avonni-pill-line-height, 1.5);
     --slds-c-pill-radius-border: var(--avonni-pill-radius-border, 0.25rem);
     --slds-c-pill-shadow: var(--avonni-pill-shadow);
     --slds-c-pill-sizing-border: var(--avonni-pill-sizing-border, 1px);
-    border-style: var(--avonni-pill-styling-border, solid);
     --slds-c-pill-spacing-block-end: var(
         --avonni-pill-spacing-block-end,
         0.125rem
@@ -12,11 +12,27 @@
         --avonni-pill-spacing-block-start,
         0.125rem
     );
+    --slds-c-pill-spacing-blockend: var(
+        --avonni-pill-spacing-block-end,
+        0.125rem
+    );
+    --slds-c-pill-spacing-blockstart: var(
+        --avonni-pill-spacing-block-start,
+        0.125rem
+    );
     --slds-c-pill-spacing-inline-end: var(
         --avonni-pill-spacing-inline-end,
         0.125rem
     );
     --slds-c-pill-spacing-inline-start: var(
+        --avonni-pill-spacing-inline-start,
+        0.125rem
+    );
+    --slds-c-pill-spacing-inlineend: var(
+        --avonni-pill-spacing-inline-end,
+        0.125rem
+    );
+    --slds-c-pill-spacing-inlinestart: var(
         --avonni-pill-spacing-inline-start,
         0.125rem
     );
