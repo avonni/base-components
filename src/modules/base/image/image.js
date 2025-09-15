@@ -31,6 +31,9 @@ const CROP_SIZE = {
     default: 'none'
 };
 
+const DEFAULT_IMAGE_ERROR_LABEL = 'No Preview Available';
+const DEFAULT_NO_IMAGE_LABEL = 'No Image Source Provided';
+
 const DEFAULT_LEFT_COMPARE_ICON_ALTERNATIVE_TEXT =
     'Press left to show the original image';
 const DEFAULT_RIGHT_COMPARE_ICON_ALTERNATIVE_TEXT =
@@ -93,6 +96,13 @@ export default class Image extends LightningElement {
      */
     @api compareSrc;
     /**
+     * Text shown when the image fails to load.
+     *
+     * @public
+     * @type {string}
+     */
+    @api imageErrorLabel = DEFAULT_IMAGE_ERROR_LABEL;
+    /**
      * Alternative text for the icon on the left of the compare slider.
      *
      * @public
@@ -101,6 +111,13 @@ export default class Image extends LightningElement {
      */
     @api leftCompareIconAlternativeText =
         DEFAULT_LEFT_COMPARE_ICON_ALTERNATIVE_TEXT;
+    /**
+     * Text shown when no src is provided.
+     *
+     * @public
+     * @type {string}
+     */
+    @api noImageLabel = DEFAULT_NO_IMAGE_LABEL;
     /**
      * Alternative text for the icon on the right of the compare slider.
      *
@@ -111,7 +128,6 @@ export default class Image extends LightningElement {
     @api rightCompareIconAlternativeText =
         DEFAULT_RIGHT_COMPARE_ICON_ALTERNATIVE_TEXT;
 
-    _aspectRatio;
     _compareAttributes = {
         orientation: COMPARE_ORIENTATION.default,
         moveOn: MOVE_ON_OPTIONS.default,
@@ -124,11 +140,7 @@ export default class Image extends LightningElement {
     _fluid = false;
     _fluidGrow = false;
     _height;
-    _imgElementWidth;
-    _imgElementHeight;
-    _isDraggingCompareCursor = false;
     _lazyLoading = LAZY_LOADING_VARIANTS.default;
-    _magnifierType = MAGNIFIER_TYPES.default;
     _magnifierAttributes = {
         position: MAGNIFIER_POSITIONS.default,
         horizontalOffset: 0,
@@ -138,6 +150,7 @@ export default class Image extends LightningElement {
         zoomRatioWidth: DEFAULT_ZOOM_RATIO,
         zoomRatioHeight: DEFAULT_ZOOM_RATIO
     };
+    _magnifierType = MAGNIFIER_TYPES.default;
     _position = POSITIONS.default;
     _sizes;
     _src;
@@ -145,6 +158,14 @@ export default class Image extends LightningElement {
     _staticImages = false;
     _thumbnail = false;
     _width;
+
+    _aspectRatio;
+    _imgElementWidth;
+    _imgElementHeight;
+    _isDraggingCompareCursor = false;
+    displayImageError = false;
+    illustrationVariant;
+    illustrationTitle;
 
     /*
      * ------------------------------------------------------------
@@ -500,6 +521,13 @@ export default class Image extends LightningElement {
     }
     set src(value) {
         this._src = value;
+        if (!value) {
+            this.illustrationVariant = 'desert';
+            this.illustrationTitle = this.noImageLabel;
+            this.displayImageError = true;
+        } else {
+            this.displayImageError = false;
+        }
     }
 
     /**
@@ -688,10 +716,11 @@ export default class Image extends LightningElement {
         return classSet('avonni-image_container')
             .add({
                 'avonni-image_fluid': this.fluid || this.fluidGrow,
-                'avonni-image_fluid-grow': this.fluidGrow,
+                'avonni-image_fluid-grow':
+                    this.fluidGrow || this.displayImageError,
                 'avonni-image_thumbnail': this.thumbnail,
                 'slds-float_left':
-                    this.position === 'left' && this._lazyLoading === 'auto',
+                    this.position === 'left' && this.lazyLoading === 'auto',
                 'slds-float_right': this.position === 'right',
                 'slds-align_absolute-center': this.position === 'center',
                 'slds-show': this.position === 'center',
@@ -727,28 +756,6 @@ export default class Image extends LightningElement {
             Object.keys(styleProperties).forEach((key) => {
                 if (styleProperties[key]) {
                     styleValue += `${key}: ${styleProperties[key]};`;
-                }
-            });
-        }
-        return styleValue;
-    }
-
-    /**
-     * Final computed Magnifier Style.
-     *
-     * @type {string}
-     */
-    get computedMagnifierStyle() {
-        const styleProperties = {};
-
-        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
-        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
-
-        let styleValue = '';
-        if (styleProperties) {
-            Object.keys(styleProperties).forEach((key) => {
-                if (styleProperties[key]) {
-                    styleValue += `${key}: ${styleProperties[key]}; `;
                 }
             });
         }
@@ -869,6 +876,24 @@ export default class Image extends LightningElement {
         }
 
         return styleValue;
+    }
+
+    /**
+     * If the compare label should be displayed.
+     *
+     * @type {boolean}
+     */
+    get displayCompareLabel() {
+        return this.compareAttributes.compareLabel && !this.displayImageError;
+    }
+
+    /**
+     * If the compare image source should be displayed.
+     *
+     * @type {boolean}
+     */
+    get displayCompareSrc() {
+        return this.compareSrc && !this.displayImageError;
     }
 
     /*
@@ -1123,6 +1148,15 @@ export default class Image extends LightningElement {
         } else {
             this._clickSlider(event);
         }
+    }
+
+    /**
+     * Image error event handler.
+     */
+    handleImageError() {
+        this.illustrationVariant = 'no-preview';
+        this.illustrationTitle = this.imageErrorLabel;
+        this.displayImageError = true;
     }
 
     /**

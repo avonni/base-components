@@ -362,6 +362,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-title-text-color-selected
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-title-font-size
  * @default 1.25rem
  * @type font

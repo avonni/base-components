@@ -15,6 +15,7 @@ export const InfiniteLoadingCarousel = ({
     disableAutoScroll,
     hideIndicator,
     hidePreviousNextPanelNavigation,
+    imageErrorLabel,
     imagePosition,
     indicatorVariant,
     isInfinite,
@@ -25,6 +26,7 @@ export const InfiniteLoadingCarousel = ({
     loadMoreOffset,
     maxIndicatorItems,
     mediumItemsPerPanel,
+    noImageLabel,
     scrollDuration,
     smallItemsPerPanel
 }) => {
@@ -38,6 +40,7 @@ export const InfiniteLoadingCarousel = ({
     element.disableAutoScroll = disableAutoScroll;
     element.hideIndicator = hideIndicator;
     element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
+    element.imageErrorLabel = imageErrorLabel;
     element.imagePosition = imagePosition;
     element.indicatorVariant = indicatorVariant;
     element.isInfinite = isInfinite;
@@ -48,6 +51,7 @@ export const InfiniteLoadingCarousel = ({
     element.loadMoreOffset = loadMoreOffset;
     element.maxIndicatorItems = maxIndicatorItems;
     element.mediumItemsPerPanel = mediumItemsPerPanel;
+    element.noImageLabel = noImageLabel;
     element.scrollDuration = scrollDuration;
     element.smallItemsPerPanel = smallItemsPerPanel;
     return element;

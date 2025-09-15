@@ -94,6 +94,7 @@
             <!-- Image -->
             <img
                 if:true={entitySrc}
+                class="avonni-avatar__entity-image"
                 alt={entityTitle}
                 src={entitySrc}
                 title={entityTitle}
@@ -101,7 +102,7 @@
             />
             <!-- Initials -->
             <abbr
-                if:true={entityInitials}
+                if:true={showEntityInitials}
                 class={computedEntityInitialsClass}
                 aria-hidden="true"
                 title={entityTitle}

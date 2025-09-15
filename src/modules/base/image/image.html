@@ -3,6 +3,7 @@
         <div class={computedImageClass} data-element-id="container">
             <div class="slds-is-relative">
                 <img
+                    if:false={displayImageError}
                     style={computedStyle}
                     class="avonni-image_img_border-radius"
                     alt={alternativeText}
@@ -11,6 +12,7 @@
                     src={src}
                     srcset={srcset}
                     data-element-id="img"
+                    onerror={handleImageError}
                     onload={handleLoadImage}
                     onmousemove={handleMagnifierMove}
                     onmouseout={handleMagnifierOut}
@@ -18,8 +20,18 @@
                     ontouchmove={handleMagnifierMove}
                     ontouchstart={handleMagnifierMove}
                 />
+                <avonni-illustration
+                    if:true={displayImageError}
+                    style={computedStyle}
+                    class="slds-p-around_medium"
+                    size="large"
+                    title={illustrationTitle}
+                    variant={illustrationVariant}
+                    data-element-id="avonni-illustration-image-error"
+                >
+                </avonni-illustration>
                 <div
-                    if:true={compareAttributes.compareLabel}
+                    if:true={displayCompareLabel}
                     class={computedOverlayAfterClass}
                     data-element-id="compare-overlay-after"
                 >
@@ -55,7 +67,7 @@
                     />
                 </div>
                 <div
-                    if:true={compareSrc}
+                    if:true={displayCompareSrc}
                     class={computedCompareContainerClass}
                     data-element-id="compare-container"
                     onmousedown={handleCompareMouseDown}
