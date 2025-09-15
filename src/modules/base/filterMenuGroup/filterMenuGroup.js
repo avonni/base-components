@@ -714,6 +714,30 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Handle the groupitems event.
+     *
+     * @param {Event} event `groupitems` event fired by the menu.
+     */
+    handleGroupItems(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when the number of records by item needs to be updated. It is only fired if type of the menu is a list and the`enableInfiniteLoading` type attribute is absent.
+         *
+         * @event
+         * @name groupitems
+         * @param {string} name Name of the menu that triggered the event.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('groupitems', {
+                detail: { name: menuName }
+            })
+        );
+    }
+
+    /**
      * Handle the nb filter items event.
      *
      * @param {Event} event `itemscountupdate` event fired by the menu.
@@ -815,10 +839,11 @@ export default class FilterMenuGroup extends LightningElement {
             return;
         }
         this.reset();
+        this.dispatchReset();
         if (this.hideApplyButton) {
             this.apply();
+            this.dispatchApply();
         }
-        this.dispatchReset();
     }
 
     /**

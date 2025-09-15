@@ -103,6 +103,7 @@ const TYPE_ATTRIBUTES = {
         'dropdownLength',
         'dropdownWidth',
         'enableInfiniteLoading',
+        'groupItems',
         'hasNestedItems',
         'isMultiSelect',
         'items',
@@ -203,6 +204,7 @@ export default class FilterMenu extends LightningElement {
 
     @track computedItems = [];
     computedTypeAttributes = {};
+    computedGroupItems = {};
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
@@ -244,6 +246,7 @@ export default class FilterMenu extends LightningElement {
 
         this.dispatchEvent(privatebuttonregister);
         this.normalizeTypeAttributes();
+        this.computeGroupItems();
         this.computeListItems();
         this.computeSelectedItems();
         this._connected = true;
@@ -257,6 +260,8 @@ export default class FilterMenu extends LightningElement {
             // Fire the loadmore event without waiting for the user
             // to click on the load more button
             this.dispatchLoadMore();
+        } else if (!this.infiniteLoad && this.isList) {
+            this.dispatchGroupItems();
         }
         this.dispatchItemsCountUpdate();
     }
@@ -621,6 +626,7 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.supportDeprecatedAttributes();
+            this.computeGroupItems();
             this.computeListItems();
         }
     }
@@ -838,6 +844,7 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = deepCopy(array);
 
         if (this._connected) {
+            this.computeGroupItems();
             this.computeListItems();
             this.computeSelectedItems();
         }
@@ -1211,6 +1218,22 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the labels have a count.
+     *
+     * @type {boolean}
+     */
+    get hasCountLabel() {
+        let hasProperty = false;
+        for (const key in this.computedGroupItems) {
+            if (Object.hasOwn(this.computedGroupItems, key)) {
+                hasProperty = true;
+                break;
+            }
+        }
+        return hasProperty;
+    }
+
+    /**
      * True if no list items are visible.
      *
      * @type {boolean}
@@ -1332,7 +1355,7 @@ export default class FilterMenu extends LightningElement {
     get selectedItemLabels() {
         const isMultiSelect = this.computedTypeAttributes?.isMultiSelect;
         const itemMap = new Map(
-            this.computedItems.map((item) => [item.value, item.label])
+            this.computedItems.map((item) => [item.value, item.noCountLabel])
         );
         const valueLabels = this.value.map(
             (value) => itemMap.get(value) || value
@@ -1440,6 +1463,7 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
+        this.computeGroupItems();
         this.computeListItems();
         this.computeSelectedItems();
 
@@ -1503,6 +1527,7 @@ export default class FilterMenu extends LightningElement {
     reset() {
         this.currentValue = [];
         if (this.isList) {
+            this.computeGroupItems();
             this.computeListItems();
         }
     }
@@ -1523,6 +1548,19 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Create the computed grouped items, based on the given items.
+     */
+    computeGroupItems() {
+        if (!this.isList || !this.computedTypeAttributes?.groupItems) {
+            return;
+        }
+
+        this.computedGroupItems = deepCopy(
+            normalizeObject(this.computedTypeAttributes.groupItems)
+        );
+    }
+
+    /**
      * Create the computed list items, based on the given items.
      */
     computeListItems() {
@@ -1533,12 +1571,18 @@ export default class FilterMenu extends LightningElement {
         const items = deepCopy(
             normalizeArray(this.computedTypeAttributes.items, 'object')
         );
+        const hasCountLabel = this.hasCountLabel;
 
         this.computedItems = items.map((item) => {
             let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
                 firstFocusableItem = true;
                 tabindex = '0';
+            }
+            const numberRecords = this.computedGroupItems[item?.value] ?? 0;
+            item.noCountLabel = item.label;
+            if (hasCountLabel) {
+                item.label = `${item.label} (${numberRecords})`;
             }
             const computedItem = new Item({
                 ...item,
@@ -1575,7 +1619,10 @@ export default class FilterMenu extends LightningElement {
         this.value.forEach((v) => {
             const item = getItemByName(v, this.computedItems);
             if (item) {
-                selectedItems.push({ label: item.label, name: item.value });
+                selectedItems.push({
+                    label: item.noCountLabel ?? item.label,
+                    name: item.value
+                });
             }
         });
 
@@ -1759,6 +1806,7 @@ export default class FilterMenu extends LightningElement {
         });
         this.computedTypeAttributes = typeAttributes;
         this.supportDeprecatedAttributes();
+        this.computeGroupItems();
         this.computeListItems();
     }
 
@@ -1918,6 +1966,7 @@ export default class FilterMenu extends LightningElement {
 
                 this.pollBoundingRect();
                 this.currentValue = [...this.value];
+                this.computeGroupItems();
                 this.computeListItems();
                 this.focusDropdown();
             } else {
@@ -2211,6 +2260,8 @@ export default class FilterMenu extends LightningElement {
                 this.noVisibleListItem
             ) {
                 this.dispatchLoadMore();
+            } else if (!this.infiniteLoad && this.isList) {
+                this.dispatchGroupItems();
             }
         }, 300);
     }
@@ -2235,6 +2286,7 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
+        this.computeGroupItems();
         this.computeListItems();
         this.dispatchApply();
     }
@@ -2320,6 +2372,26 @@ export default class FilterMenu extends LightningElement {
          * @bubbles
          */
         this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
+    }
+
+    /**
+     * Dispatch the `groupitems` event.
+     *
+     */
+    dispatchGroupItems() {
+        /**
+         * The event fired when the number of records by item needs to be updated. It is only fired if type of the menu is a list and the`enableInfiniteLoading` type attribute is absent.
+         *
+         * @event
+         * @name groupitems
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('groupitems', {
+                bubbles: true
+            })
+        );
     }
 
     /**

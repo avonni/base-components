@@ -1323,6 +1323,72 @@ describe('Filter Menu', () => {
                 });
             });
 
+            it('items with group items', () => {
+                const itemMap = ITEMS.reduce((acc, item, index) => {
+                    acc[item.value] = index;
+                    return acc;
+                }, {});
+                element.typeAttributes = { items: ITEMS, groupItems: itemMap };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+                    const apply = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    const reset = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-reset"]'
+                    );
+                    const noResultMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="p-no-results-message"]'
+                    );
+
+                    expect(apply).toBeTruthy();
+                    expect(reset).toBeTruthy();
+                    expect(noResultMessage).toBeFalsy();
+                    expect(items).toHaveLength(6);
+
+                    items.forEach((item, index) => {
+                        const label = item.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text"]'
+                        );
+                        const disabled = ITEMS[index].disabled ? 'true' : null;
+                        expect(item.dataset.value).toBe(ITEMS[index].value);
+                        expect(item.ariaDisabled).toBe(disabled);
+                        expect(label.value).toBe(
+                            `${ITEMS[index].label} (${index})`
+                        );
+                    });
+
+                    const prefixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-prefix"]'
+                    );
+                    const suffixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-suffix"]'
+                    );
+                    expect(prefixIcon).toBeTruthy();
+                    expect(suffixIcon).toBeTruthy();
+                    expect(items[1].tabIndex).toBe(0);
+
+                    [0, 2, 3, 4, 5].forEach((index) => {
+                        const prefix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-prefix"]'
+                        );
+                        const suffix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-suffix"]'
+                        );
+                        expect(prefix).toBeFalsy();
+                        expect(suffix).toBeFalsy();
+                        expect(items[index].tabIndex).toBe(-1);
+                    });
+                });
+            });
+
             it('items with colors', () => {
                 const colorItems = [
                     { label: 'Item 1', value: '1', color: 'tomato' },
