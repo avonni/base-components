@@ -10,6 +10,7 @@
     -ms-flex-pack: center;
     justify-content: center;
     width: 100%;
+    height: 100%;
     padding-top: var(--avonni-alert-spacing-block-start, 0.5rem);
     padding-right: var(--avonni-alert-spacing-inline-end, 0.5rem);
     padding-bottom: var(--avonni-alert-spacing-block-end, 0.5rem);
