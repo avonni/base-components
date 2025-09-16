@@ -11,7 +11,7 @@
 }
 
 .avonni-visual-picker__figure-title.avonni-visual-picker__item-selected {
-    color: var(--avonni-visual-picker-item-title-text-color-selected, #090909);
+    color: var(--avonni-visual-picker-title-text-color-selected, #181818);
 }
 
 .avonni-primitive-visual-picker-title__avatar {

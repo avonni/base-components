@@ -557,6 +557,12 @@
     font-size: 0.6rem;
 }
 
+.avonni-avatar_xxx-large .avonni-avatar__entity {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+}
+
 /**
 * initials
 */
