@@ -37,7 +37,7 @@ div:focus {
 }
 
 .avonni-calendar__container {
-    width: fit-content;
+    width: var(--avonni-calendar-width, fit-content);
 }
 
 .avonni-calendar__year-select {

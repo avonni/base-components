@@ -64,6 +64,7 @@ const SPLITTER_BAR_WIDTH = 12;
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hideResourcesFilter = false;
     _hideSidePanel = false;
+    _isMobileView = false;
     _selectedDate = DEFAULT_SELECTED_DATE;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
@@ -246,6 +247,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
     set hideSidePanel(value) {
         this._hideSidePanel = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the mobile view is displayed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isMobileView() {
+        return this._isMobileView;
+    }
+    set isMobileView(value) {
+        this._isMobileView = normalizeBoolean(value);
     }
 
     /**

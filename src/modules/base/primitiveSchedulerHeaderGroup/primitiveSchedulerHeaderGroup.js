@@ -57,6 +57,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
     _availableTimeSpans = DEFAULT_AVAILABLE_TIME_SPANS;
     _headers = DEFAULT_HEADERS;
+    _isMobileView = false;
     _scrollLeftOffset = 0;
     _start = DEFAULT_START_DATE;
     _timeSpan = DEFAULT_TIME_SPAN;
@@ -189,6 +190,24 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         }
 
         this._headers = normalizeArray(value);
+        if (this._connected) {
+            this.initHeaders();
+        }
+    }
+
+    /**
+     * If present, the mobile view is displayed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isMobileView() {
+        return this._isMobileView;
+    }
+    set isMobileView(value) {
+        this._isMobileView = normalizeBoolean(value);
         if (this._connected) {
             this.initHeaders();
         }
@@ -634,7 +653,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                         availableDaysOfTheWeek: this.availableDaysOfTheWeek,
                         availableMonths: this.availableMonths,
                         numberOfCells: cells / header.span,
-                        timezone: this.timezone
+                        timezone: this.timezone,
+                        isMobileView: this.isMobileView
                     });
                 }
 

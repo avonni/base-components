@@ -30,6 +30,7 @@ const SIDE_PANEL_POSITIONS = {
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     _hideResourcesFilter = false;
     _hideSidePanel = false;
+    _isMobileView = false;
     _labelNoEventsFound = DEFAULT_LABEL_NO_EVENTS_FOUND;
     _selectedDate = DEFAULT_SELECTED_DATE;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
@@ -125,6 +126,25 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
     set hideSidePanel(value) {
         this._hideSidePanel = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the mobile view is displayed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isMobileView() {
+        return this._isMobileView;
+    }
+    set isMobileView(value) {
+        this._isMobileView = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.initEventGroups();
+        }
     }
 
     /**
@@ -250,6 +270,21 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the day heading.
+     *
+     * @type {string}
+     */
+    get computedDayHeadingClass() {
+        return classSet(
+            'avonni-scheduler__agenda-day-heading slds-grid slds-wrap'
+        ).add({
+            'slds-grid_vertical-align-center slds-m-right_large ':
+                !this.isMobileView,
+            'slds-grid_vertical slds-m-right_medium': this.isMobileView
+        });
+    }
+
+    /**
      * Computed CSS classes for the right panel.
      *
      * @type {string}
@@ -285,6 +320,19 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                     this.sidePanelPosition === 'right' || !this.showSplitter
             })
             .toString();
+    }
+
+    /**
+     * Computed CSS classes for the time container.
+     *
+     * @type {string}
+     */
+    get computedTimeContainerClass() {
+        return classSet(
+            'slds-size_1-of-5 slds-has-flexi-truncate avonni-scheduler__agenda-time'
+        ).add({
+            'avonni-scheduler__flex-col': !this.isMobileView
+        });
     }
 
     /**
@@ -434,7 +482,8 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                     events,
                     isFirstDayOfMonth:
                         this.isYear && date.month !== currentMonth,
-                    isToday: ISODay === today.toISO()
+                    isToday: ISODay === today.toISO(),
+                    isMobileView: this.isMobileView
                 })
             );
             currentMonth = date.month;

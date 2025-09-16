@@ -31,6 +31,8 @@ import {
  *
  * @param {boolean} isHidden If true, the header will be hidden.
  *
+ * @param {boolean} isMobileView If true, the header will be displayed in mobile view.
+ *
  * @param {boolean} isReference If true, the header unit is the one used by the visibleSpan of the parent Scheduler.
  *
  * @param {string} key Unique identifier for the header.
@@ -59,6 +61,7 @@ export default class SchedulerHeader {
         this.cellWidths = [];
         this.duration = props.duration;
         this.isHidden = props.isHidden;
+        this.isMobileView = props.isMobileView;
         this.isReference = props.isReference;
         this.key = generateUUID();
         this.label = props.label;
@@ -161,11 +164,22 @@ export default class SchedulerHeader {
 
             const startOfUnit =
                 unit === 'week' ? getStartOfWeek(date) : date.startOf(unit);
+            const formattedLabel = startOfUnit.toFormat(label);
             this.cells.push({
                 isToday,
-                label: startOfUnit.toFormat(label),
+                label: formattedLabel,
                 start: date.ts,
-                end: cellEnd.ts
+                end: cellEnd.ts,
+                isMobileView:
+                    this.isMobileView &&
+                    this.numberOfCells === 7 &&
+                    label === 'ccc dd',
+                ...(unit === 'day' && this.isMobileView
+                    ? {
+                          day: startOfUnit.toFormat('ccc').charAt(0),
+                          date: startOfUnit.toFormat('d')
+                      }
+                    : {})
             });
 
             // Set date to the next cell's start

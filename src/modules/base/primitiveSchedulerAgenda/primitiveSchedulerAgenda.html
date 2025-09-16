@@ -142,34 +142,81 @@
                     >
                         <!-- Day heading -->
                         <div
-                            class="slds-m-right_large slds-size_1-of-5"
+                            class="slds-size_1-of-5"
                             data-element-id="div-day-heading"
                             data-end={group.end.ts}
                             data-start={group.start.ts}
                             onclick={handleClick}
                         >
-                            <div
-                                class="
-                                    slds-grid slds-grid_vertical-align-center
-                                "
-                            >
+                            <div class={computedDayHeadingClass}>
+                                <!-- Mobile view -->
+                                <template if:true={isMobileView}>
+                                    <div
+                                        class="
+                                            slds-text-title_caps
+                                            slds-truncate
+                                        "
+                                    >
+                                        <div
+                                            class="
+                                                avonni-scheduler__agenda-day-weekday
+                                                slds-truncate
+                                            "
+                                            title={group.weekday}
+                                        >
+                                            {group.weekday}
+                                        </div>
+                                    </div>
+                                </template>
                                 <div class={group.dayClass} title={group.day}>
                                     {group.day}
                                 </div>
-                                <div class="slds-text-title_caps slds-truncate">
+                                <template if:true={isMobileView}>
                                     <div
-                                        class="slds-truncate"
-                                        title={group.weekday}
+                                        class="
+                                            slds-text-title_caps
+                                            slds-truncate
+                                        "
                                     >
-                                        {group.weekday}
+                                        <div
+                                            class="
+                                                avonni-scheduler__agenda-day-month
+                                                slds-truncate
+                                            "
+                                            title={group.month}
+                                        >
+                                            {group.month}
+                                        </div>
                                     </div>
+                                </template>
+                                <!-- Desktop view -->
+                                <template if:false={isMobileView}>
                                     <div
-                                        class="slds-truncate"
-                                        title={group.month}
+                                        class="
+                                            slds-text-title_caps
+                                            slds-truncate
+                                        "
                                     >
-                                        {group.month} {group.year}
+                                        <div
+                                            class="
+                                                avonni-scheduler__agenda-day-weekday
+                                                slds-truncate
+                                            "
+                                            title={group.weekday}
+                                        >
+                                            {group.weekday}
+                                        </div>
+                                        <div
+                                            class="
+                                                avonni-scheduler__agenda-day-month
+                                                slds-truncate
+                                            "
+                                            title={group.month}
+                                        >
+                                            {group.month} {group.year}
+                                        </div>
                                     </div>
-                                </div>
+                                </template>
                             </div>
                         </div>
                         <!-- Day events -->
@@ -181,12 +228,7 @@
                                 class="slds-grid slds-m-bottom_x-small"
                             >
                                 <div
-                                    class="
-                                        avonni-scheduler__flex-col
-                                        slds-size_1-of-5
-                                        slds-has-flexi-truncate
-                                        avonni-scheduler__agenda-time
-                                    "
+                                    class={computedTimeContainerClass}
                                     data-element-id="div-event-time"
                                 >
                                     <div
@@ -235,6 +277,7 @@
                                     onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                     onprivatedisableddblclick={handleDoubleClick}
                                     onprivatefocus={handleEventFocus}
+                                    onprivatemouseclick={handleEventMouseClick}
                                     onprivatemouseenter={handleEventMouseEnter}
                                     onprivatemouseleave={handleEventMouseLeave}
                                 ></c-primitive-scheduler-event-occurrence>

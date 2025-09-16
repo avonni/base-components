@@ -1919,6 +1919,41 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Handle the mouseclick event fired by the occurrence.
+     * Dispatch a privatemouseclick event.
+     *
+     * @param {Event} event
+     */
+    handleMouseClick(event) {
+        if (event.button !== 0) return;
+
+        const resize = event.target.dataset.resize;
+
+        /**
+         * The event fired when the mouse is pressed on the occurrence.
+         *
+         * @event
+         * @name privatemouseclick
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatemouseclick', {
+                detail: {
+                    eventName: this.eventName,
+                    key: this.occurrenceKey,
+                    from: this.from,
+                    x: event.clientX,
+                    y: event.clientY,
+                    side: resize
+                }
+            })
+        );
+    }
+
+    /**
      * Handle the mousedown event fired by the occurrence if it is not disabled.
      * Dispatch a privatemousedown event.
      *

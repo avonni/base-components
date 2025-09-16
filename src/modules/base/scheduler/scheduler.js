@@ -11,6 +11,7 @@ import {
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
@@ -75,6 +76,7 @@ export default class Scheduler extends LightningElement {
     _hideResourcesFilter = false;
     _hideSidePanel = false;
     _hideToolbar = false;
+    _isMobileView = false;
     _isLoading = false;
     _labelNoEventsFound = DEFAULT_LABEL_NO_EVENTS_FOUND;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -103,8 +105,11 @@ export default class Scheduler extends LightningElement {
     _noEventActions = false;
     _openDetailPopoverTimeout;
     _renderAnimationFrames = [];
+    _resizeObserver;
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
+    _wrapperWidth;
+
     computedDisabledDatesTimes = [];
     @track computedEvents = [];
     computedHeaders = [];
@@ -149,8 +154,12 @@ export default class Scheduler extends LightningElement {
      */
 
     renderedCallback() {
+        if (!this._resizeObserver) {
+            this.initResizeObserver();
+        }
+
         // Position the detail popover
-        if (this.showDetailPopover) {
+        if (this.showDetailPopover && !this.isMobileView) {
             const popover = this.template.querySelector(
                 '[data-element-id="div-detail-popover"]'
             );
@@ -170,6 +179,13 @@ export default class Scheduler extends LightningElement {
             this.template
                 .querySelector('[data-element-id="avonni-dialog"]')
                 .focusOnCloseButton();
+        }
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
         }
     }
 
@@ -675,6 +691,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * If present, the mobile view is displayed and the popovers are displayed in full overlay.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isMobileView() {
+        return this._isMobileView;
+    }
+    set isMobileView(value) {
+        this._isMobileView = normalizeBoolean(value);
+    }
+
+    /**
      * If present, a loading spinner will be visible.
      *
      * @type {boolean}
@@ -1159,6 +1190,18 @@ export default class Scheduler extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    hideDetailPopover() {
+        clearTimeout(this._closeDetailPopoverTimeout);
+        this.showDetailPopover = false;
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
@@ -1170,6 +1213,19 @@ export default class Scheduler extends LightningElement {
      */
     get bounds() {
         return this.template.host.getBoundingClientRect();
+    }
+
+    /**
+     * If true, display the mobile view.
+     *
+     * @type {object[]}
+     */
+    get displayInMobileView() {
+        return (
+            this.isMobileView ||
+            this._wrapperWidth === 'small' ||
+            this._wrapperWidth === 'default'
+        );
     }
 
     /**
@@ -1251,6 +1307,18 @@ export default class Scheduler extends LightningElement {
         }
         return DEFAULT_CONTEXT_MENU_EVENT_ACTIONS.filter((action) => {
             return !this.hiddenActions.includes(action.name);
+        });
+    }
+
+    /**
+     * Computed CSS classes for the event details popover field layout.
+     *
+     * @type {string}
+     */
+    get computedPopoverFieldLayoutClass() {
+        return classSet('slds-col slds-p-vertical_xx-small').add({
+            'slds-size_1-of-2': !this.isMobileView,
+            'slds-size_1-of-1': this.isMobileView
         });
     }
 
@@ -1403,6 +1471,21 @@ export default class Scheduler extends LightningElement {
         return this.customEventsPalette.length
             ? this.customEventsPalette
             : PALETTES[this.eventsPalette];
+    }
+
+    /**
+     * Computed CSS classes for the display popover.
+     *
+     * @type {string}
+     */
+    get detailPopoverClass() {
+        return classSet('slds-is-absolute slds-popover')
+            .add({
+                'slds-popover_medium': !this.isMobileView,
+                'avonni-scheduler__event-details-popover-full':
+                    this.isMobileView
+            })
+            .toString();
     }
 
     /**
@@ -1809,14 +1892,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Hide the detail popover.
-     */
-    hideDetailPopover() {
-        clearTimeout(this._closeDetailPopoverTimeout);
-        this.showDetailPopover = false;
-    }
-
-    /**
      * Hide the edit dialog.
      */
     hideEditDialog() {
@@ -1972,6 +2047,29 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Initialize the resize observer, triggered when the layout is resized.
+     */
+    initResizeObserver() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-wrapper"]'
+        );
+        if (!wrapper) return;
+
+        this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
+            const width = wrapper.getBoundingClientRect().width;
+            if (width >= 1024) {
+                this._wrapperWidth = 'large';
+            } else if (width >= 768) {
+                this._wrapperWidth = 'medium';
+            } else if (width >= 480) {
+                this._wrapperWidth = 'small';
+            } else {
+                this._wrapperWidth = 'default';
+            }
+        });
+    }
+
+    /**
      * Normalize the given date to be on the first day of the month.
      *
      * @param {DateTime} date Date to normalize.
@@ -1980,6 +2078,56 @@ export default class Scheduler extends LightningElement {
     normalizeDateToStartOfMonth(date) {
         date = addToDate(date, 'week', 1);
         return date.startOf('month');
+    }
+
+    /**
+     * Display the event details.
+     */
+    showPopover() {
+        this.detailPopoverFields = this.eventsDisplayFields.map((field) => {
+            const { type, label, variant } = field;
+            const eventData = this.selection.event.data;
+            const occurrenceData = this.selection.occurrence;
+            let isHidden = false;
+            let value = occurrenceData[field.value] || eventData[field.value];
+
+            const isDate = type === 'date' && this.createDate(value);
+            const isResources =
+                field.value === 'resourceNames' && Array.isArray(value);
+            if (isDate) {
+                value = this.createDate(value);
+                const format = eventData.dateFormat || this.dateFormat;
+                value = value.toFormat(format);
+                isHidden = this.isFieldHiddenFromDetailPopover(field.value);
+            } else if (isResources) {
+                value = value
+                    .map((res) => {
+                        const resource = this.computedResources.find((r) => {
+                            return r.name === res;
+                        });
+                        return resource.label;
+                    })
+                    .join(', ');
+            }
+
+            return {
+                key: generateUUID(),
+                isHidden,
+                label,
+                type: isDate ? 'text' : type,
+                value,
+                variant
+            };
+        });
+
+        requestAnimationFrame(() => {
+            const closeButton = this.template.querySelector(
+                '[data-element-id="lightning-button-icon-detail-popover-close-button"]'
+            );
+            if (closeButton) {
+                closeButton.focus();
+            }
+        });
     }
 
     /**
@@ -2097,6 +2245,9 @@ export default class Scheduler extends LightningElement {
      * Handle the cursor entering the event detail popover.
      */
     handleDetailPopoverMouseEnter() {
+        if (this.isMobileView) {
+            return;
+        }
         clearTimeout(this._closeDetailPopoverTimeout);
     }
 
@@ -2104,6 +2255,9 @@ export default class Scheduler extends LightningElement {
      * Handle the cursor leaving the event detail popover.
      */
     handleDetailPopoverMouseLeave() {
+        if (this.isMobileView) {
+            return;
+        }
         clearTimeout(this._closeDetailPopoverTimeout);
         this._closeDetailPopoverTimeout = setTimeout(() => {
             this.hideDetailPopover();
@@ -2275,12 +2429,24 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Handle the click event fired by the event.
+     */
+    handleEventMouseClick(event) {
+        if (!this.isMobileView) {
+            return;
+        }
+        this.showDetailPopover = true;
+        this.selection = this.schedule.selectEvent(event.detail);
+        this.showPopover();
+    }
+
+    /**
      * Handle the mouse entering on an event.
      *
      * @param {Event} event
      */
     handleEventMouseEnter(event) {
-        if (this.showContextMenu) {
+        if (this.showContextMenu || this.isMobileView) {
             return;
         }
 
@@ -2297,58 +2463,15 @@ export default class Scheduler extends LightningElement {
             }
             this.showDetailPopover = true;
             this.selection = this.schedule.selectEvent(event.detail);
-
-            this.detailPopoverFields = this.eventsDisplayFields.map((field) => {
-                const { type, label, variant } = field;
-                const eventData = this.selection.event.data;
-                const occurrenceData = this.selection.occurrence;
-                let isHidden = false;
-                let value =
-                    occurrenceData[field.value] || eventData[field.value];
-
-                const isDate = type === 'date' && this.createDate(value);
-                const isResources =
-                    field.value === 'resourceNames' && Array.isArray(value);
-                if (isDate) {
-                    value = this.createDate(value);
-                    const format = eventData.dateFormat || this.dateFormat;
-                    value = value.toFormat(format);
-                    isHidden = this.isFieldHiddenFromDetailPopover(field.value);
-                } else if (isResources) {
-                    value = value
-                        .map((res) => {
-                            const resource = this.computedResources.find(
-                                (r) => {
-                                    return r.name === res;
-                                }
-                            );
-                            return resource.label;
-                        })
-                        .join(', ');
-                }
-
-                return {
-                    key: generateUUID(),
-                    isHidden,
-                    label,
-                    type: isDate ? 'text' : type,
-                    value,
-                    variant
-                };
-            });
-
-            requestAnimationFrame(() => {
-                const closeButton = this.template.querySelector(
-                    '[data-element-id="lightning-button-icon-detail-popover-close-button"]'
-                );
-                if (closeButton) {
-                    closeButton.focus();
-                }
-            });
+            this.showPopover();
         }, 500);
     }
 
     handleEventMouseLeave(event) {
+        if (this.isMobileView) {
+            return;
+        }
+
         clearTimeout(this._openDetailPopoverTimeout);
         const key = event.detail.key;
         if (this.showDetailPopover && key === this.selection.occurrence.key) {

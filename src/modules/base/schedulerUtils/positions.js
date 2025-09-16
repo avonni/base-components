@@ -144,20 +144,32 @@ function computeEventLevelInCellGroup(
  */
 export function positionPopover(bounds, popover, { x, y }, horizontalCenter) {
     // Make sure the popover is not outside of the screen
+    const offset = 10;
     const height = popover.offsetHeight;
     const width = popover.offsetWidth;
-    const popoverBottom = y + height;
-    const popoverRight = x + width;
-    const { left, top, right } = bounds;
+    const { left, top } = bounds;
 
-    const bottomView = window.innerHeight;
-    const yTransform = popoverBottom > bottomView ? (height + 10) * -1 : 10;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-    let xTransform = 10;
-    if (popoverRight > right) {
-        xTransform = (width + 10) * -1;
-    } else if (horizontalCenter) {
-        xTransform = (width / 2) * -1;
+    let popoverTop = y + offset;
+    let popoverLeft = x + offset;
+
+    if (horizontalCenter) {
+        popoverLeft = x - width / 2;
+    }
+
+    if (popoverLeft < offset) {
+        popoverLeft = offset;
+    } else if (popoverLeft + width > viewportWidth - offset) {
+        popoverLeft = viewportWidth - width - offset;
+    }
+
+    if (popoverTop + height > viewportHeight - offset) {
+        popoverTop = viewportHeight - height - offset;
+    }
+    if (popoverTop < offset) {
+        popoverTop = offset;
     }
 
     // The context menu is in fixed position by default,
@@ -165,9 +177,8 @@ export function positionPopover(bounds, popover, { x, y }, horizontalCenter) {
     popover.classList.remove('slds-is-fixed');
     popover.classList.add('slds-is-absolute');
 
-    popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
-    popover.style.top = `${y - top}px`;
-    popover.style.left = `${x - left}px`;
+    popover.style.top = `${popoverTop - top}px`;
+    popover.style.left = `${popoverLeft - left}px`;
 }
 
 /**

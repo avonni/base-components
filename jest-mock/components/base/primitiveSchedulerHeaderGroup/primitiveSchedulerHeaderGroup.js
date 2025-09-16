@@ -8,6 +8,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api availableTimeFrames;
     @api availableTimeSpans;
     @api headers;
+    @api isMobileView;
     @api scrollLeftOffset;
     @api variant;
     @api visibleWidth;

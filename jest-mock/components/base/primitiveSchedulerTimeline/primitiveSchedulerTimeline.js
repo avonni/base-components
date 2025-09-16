@@ -14,6 +14,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     @api hiddenActions;
     @api hideResourcesFilter;
     @api hideSidePanel;
+    @api isMobileView;
     @api loadingStateAlternativeText;
     @api newEventTitle;
     @api orientation;

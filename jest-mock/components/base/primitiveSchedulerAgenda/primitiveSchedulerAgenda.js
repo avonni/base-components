@@ -13,6 +13,7 @@ export default class PrimitiveSchedulerAgenda extends LightningElement {
     @api hiddenActions;
     @api hideResourcesFilter;
     @api hideSidePanel;
+    @api isMobileView;
     @api labelNoEventsFound;
     @api loadingStateAlternativeText;
     @api newEventTitle;

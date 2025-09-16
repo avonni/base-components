@@ -331,6 +331,17 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        isMobileView: {
+            name: 'is-mobile-view',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the mobile view is displayed.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         labelNoEventsFound: {
             name: 'label-no-events-found',
             control: {
@@ -624,6 +635,19 @@ Base.args = {
     start,
     events: basicEvents,
     selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
+};
+
+export const Mobile = Template.bind({});
+Mobile.args = {
+    columns,
+    resources,
+    start,
+    events: basicEvents,
+    selectedDisplay: 'agenda',
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    hideSidePanel: true,
+    isMobileView: true
 };
 
 export const Calendar = Template.bind({});

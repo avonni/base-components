@@ -16,6 +16,24 @@
     right: 2px;
 }
 
+.avonni-scheduler__event-details-popover-full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.avonni-scheduler__event-details-popover-full > * {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.avonni-scheduler__event-details-popover-full .slds-popover__body {
+    flex-grow: 1;
+}
+
 .avonni-scheduler__calendar {
     z-index: 0;
 }

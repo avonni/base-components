@@ -25,6 +25,7 @@ export const Scheduler = ({
     hideSidePanel,
     hideToolbar,
     isLoading,
+    isMobileView,
     labelNoEventsFound,
     readOnly,
     recurrentEditModes,
@@ -65,6 +66,7 @@ export const Scheduler = ({
     element.hideSidePanel = hideSidePanel;
     element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
+    element.isMobileView = isMobileView;
     element.labelNoEventsFound = labelNoEventsFound;
     element.readOnly = readOnly;
     element.recurrentEditModes = recurrentEditModes;
