@@ -240,6 +240,72 @@ describe('ProfileCard', () => {
                     );
                 });
             });
+
+            it('left', () => {
+                element.avatarPosition = 'left';
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+                    const mainContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="main-container"]'
+                    );
+                    expect(container.className).toBe(
+                        'avonni-profile-card__flex-container'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-desktop'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-left'
+                    );
+                });
+            });
+
+            it('center', () => {
+                element.avatarPosition = 'center';
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+                    const mainContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="main-container"]'
+                    );
+                    expect(container.classList).toContain(
+                        'avonni-profile-card__flex-container_align-center'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-desktop'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-center'
+                    );
+                });
+            });
+
+            it('right', () => {
+                element.avatarPosition = 'right';
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+                    const mainContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="main-container"]'
+                    );
+                    expect(container.classList).toContain(
+                        'avonni-profile-card__flex-container_align-end'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-desktop'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-right'
+                    );
+                });
+            });
         });
 
         describe('avatarMobilePosition', () => {
@@ -410,6 +476,84 @@ describe('ProfileCard', () => {
                     );
                     expect(mainContainer.classList).toContain(
                         'avonni-profile-card__avatar-bottom'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-right'
+                    );
+                });
+            });
+
+            it('left', () => {
+                const mainContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="main-container"]'
+                );
+                jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(
+                    200
+                );
+                element.avatarMobilePosition = 'left';
+                callObserver();
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+                    expect(container.className).toBe(
+                        'avonni-profile-card__flex-container'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-mobile'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-left'
+                    );
+                });
+            });
+
+            it('center', () => {
+                const mainContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="main-container"]'
+                );
+                jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(
+                    200
+                );
+                element.avatarMobilePosition = 'center';
+                callObserver();
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+                    expect(container.classList).toContain(
+                        'avonni-profile-card__flex-container-mobile_align-center'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-mobile'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-center'
+                    );
+                });
+            });
+
+            it('right', () => {
+                const mainContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="main-container"]'
+                );
+                jest.spyOn(mainContainer, 'clientWidth', 'get').mockReturnValue(
+                    200
+                );
+                element.avatarMobilePosition = 'right';
+                callObserver();
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="container"]'
+                    );
+                    expect(container.classList).toContain(
+                        'avonni-profile-card__flex-container-mobile_align-end'
+                    );
+                    expect(mainContainer.classList).toContain(
+                        'avonni-profile-card__avatar-mobile'
                     );
                     expect(mainContainer.classList).toContain(
                         'avonni-profile-card__avatar-right'

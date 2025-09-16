@@ -32,6 +32,26 @@ article.avonni-profile-card {
     align-items: flex-end;
 }
 
+.avonni-profile-card__body-border {
+    border-bottom-left-radius: var(
+        --avonni-profile-card-radius-border,
+        0.25rem
+    );
+    border-bottom-right-radius: var(
+        --avonni-profile-card-radius-border,
+        0.25rem
+    );
+}
+
+.avonni-profile-card__header-border {
+    border-top-left-radius: calc(
+        var(--avonni-profile-card-radius-border, 0.25rem) - 1px
+    );
+    border-top-right-radius: calc(
+        var(--avonni-profile-card-radius-border, 0.25rem) - 1px
+    );
+}
+
 .avonni-profile-card_color-background {
     background-color: var(
         --avonni-profile-card-header-color-background,
@@ -72,6 +92,10 @@ article.avonni-profile-card {
     border-radius: 50%;
 }
 
+.avonni-profile-card__avatar-img-square {
+    border-radius: 0.25rem;
+}
+
 .avonni-profile-card__avatar_size-x-small {
     height: 3.25rem;
     width: 3.25rem;
@@ -107,15 +131,15 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__background_size-small {
-    min-height: 70px;
+    min-height: 74px;
 }
 
 .avonni-profile-card__background_size-medium {
-    min-height: 96px;
+    min-height: 94px;
 }
 
 .avonni-profile-card__background_size-large {
-    min-height: 144px;
+    min-height: 150px;
 }
 
 .avonni-profile-card__background_size-x-large {
@@ -270,12 +294,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small
     .avonni-profile-card__avatar-img {
-    top: -0.75rem;
+    top: -1rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-small
     .avonni-profile-card__avatar-img {
-    top: 0.75rem;
+    top: 1rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-small
@@ -294,12 +318,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__card_size-small
     .avonni-profile-card__avatar-img {
-    top: -1rem;
+    top: -1.25rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-small
     .avonni-profile-card__avatar-img {
-    top: 1rem;
+    top: 1.25rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-left.avonni-profile-card__card_size-small
@@ -318,12 +342,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__card_size-medium
     .avonni-profile-card__avatar-img {
-    top: -1.25rem;
+    top: -1.5rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-medium
     .avonni-profile-card__avatar-img {
-    top: 1.25rem;
+    top: 1.5rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-left.avonni-profile-card__card_size-medium
@@ -342,12 +366,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__card_size-large
     .avonni-profile-card__avatar-img {
-    top: -1.5rem;
+    top: -1.75rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-large
     .avonni-profile-card__avatar-img {
-    top: 1.5rem;
+    top: 1.75rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-left.avonni-profile-card__card_size-large
@@ -366,12 +390,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-large
     .avonni-profile-card__avatar-img {
-    top: -1.75rem;
+    top: -2rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-large
     .avonni-profile-card__avatar-img {
-    top: 1.75rem;
+    top: 2rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-large
@@ -417,7 +441,7 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__avatar-center
     [data-element-id='text-container'] {
-    padding: 1rem 1rem 0 1rem;
+    padding: 0 1rem;
 }
 
 .avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center
@@ -545,20 +569,6 @@ article.avonni-profile-card {
     margin-bottom: 1rem;
 }
 
-.avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small {
-    margin-top: 0.75rem;
-}
-
-.avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small
-    .avonni-profile-card__avatar-img {
-    top: -0.75rem;
-}
-
-.avonni-profile-card__avatar-desktop.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-small
-    .avonni-profile-card__avatar-img {
-    top: 0.75rem;
-}
-
 /* MOBILE */
 .avonni-profile-card__avatar-mobile
     .avonni-profile-card__flex-container-mobile_align-center {
@@ -589,12 +599,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small
     .avonni-profile-card__avatar-img {
-    top: -0.75rem;
+    top: -1rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-small
     .avonni-profile-card__avatar-img {
-    top: 0.75rem;
+    top: 1rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-small
@@ -613,12 +623,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-top.avonni-profile-card__card_size-small
     .avonni-profile-card__avatar-img {
-    top: -1rem;
+    top: -1.25rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-small
     .avonni-profile-card__avatar-img {
-    top: 1rem;
+    top: 1.25rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-left.avonni-profile-card__card_size-small
@@ -637,12 +647,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-top.avonni-profile-card__card_size-medium
     .avonni-profile-card__avatar-img {
-    top: -1.25rem;
+    top: -1.5rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-medium
     .avonni-profile-card__avatar-img {
-    top: 1.25rem;
+    top: 1.5rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-left.avonni-profile-card__card_size-medium
@@ -661,12 +671,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-top.avonni-profile-card__card_size-large
     .avonni-profile-card__avatar-img {
-    top: -1.5rem;
+    top: -1.75rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-large
     .avonni-profile-card__avatar-img {
-    top: 1.5rem;
+    top: 1.75rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-left.avonni-profile-card__card_size-large
@@ -685,12 +695,12 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-large
     .avonni-profile-card__avatar-img {
-    top: -1.75rem;
+    top: -2rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-large
     .avonni-profile-card__avatar-img {
-    top: 1.75rem;
+    top: 2rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-left.avonni-profile-card__card_size-x-large
@@ -736,7 +746,7 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-top.avonni-profile-card__avatar-center
     [data-element-id='text-container'] {
-    padding: 1rem 1rem 0 1rem;
+    padding: 0 1rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center
@@ -870,10 +880,10 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small
     .avonni-profile-card__avatar-img {
-    top: -0.75rem;
+    top: -1rem;
 }
 
 .avonni-profile-card__avatar-mobile.avonni-profile-card__avatar-bottom.avonni-profile-card__card_size-x-small
     .avonni-profile-card__avatar-img {
-    top: 0.75rem;
+    top: 1rem;
 }

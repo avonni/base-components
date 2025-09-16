@@ -9,7 +9,10 @@ const AVATAR_POSITIONS = {
         'top-right',
         'bottom-left',
         'bottom-center',
-        'bottom-right'
+        'bottom-right',
+        'left',
+        'center',
+        'right'
     ],
     default: 'top-left'
 };
@@ -149,7 +152,7 @@ export default class ProfileCard extends LightningElement {
      */
 
     /**
-     * Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.
+     * Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, right.
      *
      * @type {string}
      * @public
@@ -166,7 +169,7 @@ export default class ProfileCard extends LightningElement {
     }
 
     /**
-     * Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.
+     * Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, right.
      *
      * @type {string}
      * @public
@@ -303,23 +306,9 @@ export default class ProfileCard extends LightningElement {
     get computedAvatarClass() {
         return classSet('avonni-profile-card__avatar-img')
             .add(`avonni-profile-card__avatar_size-${this.avatarSize}`)
-            .add({
-                'avonni-profile-card__avatar-img-circle':
-                    this.avatarVariant === 'circle',
-                'slds-align_absolute-center': this.showAvatarFallbackIcon
-            })
+            .add(`avonni-profile-card__avatar-img-${this.avatarVariant}`)
+            .add({ 'slds-align_absolute-center': this.showAvatarFallbackIcon })
             .toString();
-    }
-
-    /**
-     * Computed circle class styling.
-     *
-     * @type {string}
-     */
-    get computedCircleClass() {
-        return this.avatarVariant === 'circle'
-            ? 'avonni-profile-card__avatar-img-circle'
-            : '';
     }
 
     /**
@@ -332,18 +321,22 @@ export default class ProfileCard extends LightningElement {
             .add({
                 'avonni-profile-card__flex-container_align-center':
                     this.avatarPosition === 'top-center' ||
-                    this.avatarPosition === 'bottom-center',
+                    this.avatarPosition === 'bottom-center' ||
+                    this.avatarPosition === 'center',
                 'avonni-profile-card__flex-container_align-end':
                     this.avatarPosition === 'top-right' ||
-                    this.avatarPosition === 'bottom-right'
+                    this.avatarPosition === 'bottom-right' ||
+                    this.avatarPosition === 'right'
             })
             .add({
                 'avonni-profile-card__flex-container-mobile_align-center':
                     this.avatarMobilePosition === 'top-center' ||
-                    this.avatarMobilePosition === 'bottom-center',
+                    this.avatarMobilePosition === 'bottom-center' ||
+                    this.avatarMobilePosition === 'center',
                 'avonni-profile-card__flex-container-mobile_align-end':
                     this.avatarMobilePosition === 'top-right' ||
-                    this.avatarMobilePosition === 'bottom-right'
+                    this.avatarMobilePosition === 'bottom-right' ||
+                    this.avatarMobilePosition === 'right'
             })
             .toString();
     }
@@ -355,7 +348,7 @@ export default class ProfileCard extends LightningElement {
      */
     get computedHeaderClass() {
         return classSet(
-            'slds-media slds-media_center slds-has-flexi-truncate avonni-profile-card_color-background'
+            'slds-media slds-media_center slds-has-flexi-truncate avonni-profile-card_color-background avonni-profile-card__header-border'
         )
             .add(`avonni-profile-card__background_size-${this.avatarSize}`)
             .toString();
@@ -369,7 +362,7 @@ export default class ProfileCard extends LightningElement {
     get computedIconClass() {
         return classSet('avonni-profile-card__lightning-icon')
             .add(`avonni-profile-card__lightning-icon_size-${this.avatarSize}`)
-            .add(this.computedCircleClass)
+            .add(this.computedVariantClass)
             .toString();
     }
 
@@ -380,7 +373,7 @@ export default class ProfileCard extends LightningElement {
      */
     get computedIconWrapperClass() {
         return classSet('avonni-profile-card__icon-wrapper')
-            .add(this.computedCircleClass)
+            .add(this.computedVariantClass)
             .add('slds-align_absolute-center')
             .toString();
     }
@@ -392,7 +385,7 @@ export default class ProfileCard extends LightningElement {
      */
     get computedImageClass() {
         return classSet('avonni-profile-card__image')
-            .add(this.computedCircleClass)
+            .add(this.computedVariantClass)
             .toString();
     }
 
@@ -449,6 +442,17 @@ export default class ProfileCard extends LightningElement {
                     position.includes('center')
             })
             .toString();
+    }
+
+    /**
+     * Computed avatar variant class styling.
+     *
+     * @type {string}
+     */
+    get computedVariantClass() {
+        return this.avatarVariant === 'circle'
+            ? 'avonni-profile-card__avatar-img-circle'
+            : 'avonni-profile-card__avatar-img-square';
     }
 
     /**
