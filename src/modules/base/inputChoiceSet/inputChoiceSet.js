@@ -1182,8 +1182,10 @@ export default class InputChoiceSet extends LightningElement {
             const color = label.dataset.color;
             if (!color) return;
             if (hasValue && !this.toggleVariant) {
-                label.style.backgroundColor = color;
-                label.style.borderColor = color;
+                if (this.buttonVariant) {
+                    label.style.backgroundColor = color;
+                    label.style.borderColor = color;
+                }
                 label.style.color = this.buttonVariant ? 'white' : color;
             } else {
                 label.style.backgroundColor = '';
