@@ -92,3 +92,208 @@ button:disabled {
     font-weight: var(--avonni-icon-picker-label-font-weight, 400);
     font-style: var(--avonni-icon-picker-label-font-style, normal);
 }
+
+/* Workaround for missing background colors for certain new icons in Experience Builder Custom Property Editors (XPCPE) */
+/* Classes definitions taken from Salesforce Experience Preview Stylesheet */
+.slds-icon-standard-account-score {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #5867e8)
+    );
+}
+
+.slds-icon-standard-aggregate {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #107cad)
+    );
+}
+
+.slds-icon-standard-app-form-participant {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #056764)
+    );
+}
+
+.slds-icon-standard-app-form-product-participant {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #7e2600)
+    );
+}
+
+.slds-icon-standard-cost-model {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #032d60)
+    );
+}
+
+.slds-icon-standard-custody-chain-entry {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #06a59a)
+    );
+}
+
+.slds-icon-standard-custody-entry-verification {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #06a59a)
+    );
+}
+
+.slds-icon-standard-custody-override {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #06a59a)
+    );
+}
+
+.slds-icon-standard-digital-verification-config-group {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #107cad)
+    );
+}
+
+.slds-icon-standard-digital-verification-config {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #107cad)
+    );
+}
+
+.slds-icon-standard-labels {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #107cad)
+    );
+}
+
+.slds-icon-standard-linked {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #06a59a)
+    );
+}
+
+.slds-icon-standard-list-fee {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #2f2cb7)
+    );
+}
+
+.slds-icon-standard-list-rate {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #396547)
+    );
+}
+
+.slds-icon-standard-party-profile {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #5a1ba9)
+    );
+}
+
+.slds-icon-standard-path-experiment {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #dd7a01)
+    );
+}
+
+.slds-icon-standard-people-score {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #5867e8)
+    );
+}
+
+.slds-icon-standard-price-adjustment-schedule {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #ff538a)
+    );
+}
+
+.slds-icon-standard-price-adjustment-tier {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #032d60)
+    );
+}
+
+.slds-icon-standard-program-cohort-member {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #1b96ff)
+    );
+}
+
+.slds-icon-standard-program-cohort {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #1b96ff)
+    );
+}
+
+.slds-icon-standard-prompt-builder {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #2f2cb7)
+    );
+}
+
+.slds-icon-standard-rate-adjustment {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #b60554)
+    );
+}
+
+.slds-icon-standard-real-time {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #ff5d2d)
+    );
+}
+
+.slds-icon-standard-record-consent {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #ff538a)
+    );
+}
+
+.slds-icon-standard-scheduling-workspace-territory {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #ff538a)
+    );
+}
+
+.slds-icon-standard-title-party {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #107cad)
+    );
+}
+
+.slds-icon-standard-whatsapp {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #3ba755)
+    );
+}
+
+.slds-icon-standard-work-summary {
+    background-color: var(
+        --slds-c-icon-color-background,
+        var(--sds-c-icon-color-background, #b60554)
+    );
+}
