@@ -93,7 +93,7 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__avatar-img-square {
-    border-radius: 0;
+    border-radius: 0.25rem;
 }
 
 .avonni-profile-card__avatar_size-x-small {
