@@ -1223,14 +1223,7 @@ export default class FilterMenu extends LightningElement {
      * @type {boolean}
      */
     get hasCountLabel() {
-        let hasProperty = false;
-        for (const key in this.computedGroupItems) {
-            if (Object.hasOwn(this.computedGroupItems, key)) {
-                hasProperty = true;
-                break;
-            }
-        }
-        return hasProperty;
+        return Object.keys(this.computedGroupItems).length > 0;
     }
 
     /**
