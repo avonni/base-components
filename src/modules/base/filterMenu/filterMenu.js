@@ -107,9 +107,9 @@ const TYPE_ATTRIBUTES = {
         'hasNestedItems',
         'isMultiSelect',
         'items',
-        'itemsCount',
         'noResultsMessage',
-        'searchInputPlaceholder'
+        'searchInputPlaceholder',
+        'totalCount'
     ],
     range: [
         'hideMinMaxValues',
@@ -263,7 +263,7 @@ export default class FilterMenu extends LightningElement {
         } else if (!this.infiniteLoad && this.isList) {
             this.dispatchGroupItems();
         }
-        this.dispatchItemsCountUpdate();
+        this.dispatchLoadTotalCount();
     }
 
     disconnectedCallback() {
@@ -1250,7 +1250,7 @@ export default class FilterMenu extends LightningElement {
      */
     get selectedOverTotal() {
         const currentLength = this.visibleItems.length;
-        let totalLength = this.computedTypeAttributes?.itemsCount ?? 0;
+        let totalLength = this.computedTypeAttributes?.totalCount ?? 0;
         totalLength = currentLength > totalLength ? currentLength : totalLength;
         return `${currentLength} of ${totalLength}`;
     }
@@ -2388,19 +2388,19 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Dispatch the `itemscountupdate` event.
+     * Dispatch the `loadtotalcount` event.
      */
-    dispatchItemsCountUpdate() {
+    dispatchLoadTotalCount() {
         /**
          * The event fired when the list is is rendered or the search term is modified.
          *
          * @event
-         * @name itemscountupdate
+         * @name loadtotalcount
          * @public
          * @bubbles
          */
         this.dispatchEvent(
-            new CustomEvent('itemscountupdate', { bubbles: true })
+            new CustomEvent('loadtotalcount', { bubbles: true })
         );
     }
 

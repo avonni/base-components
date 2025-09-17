@@ -903,36 +903,6 @@ describe('FilterMenuGroup', () => {
             });
         });
 
-        describe('itemscountupdate', () => {
-            it('itemscountupdate event', () => {
-                element.menus = MENUS;
-
-                const handler = jest.fn();
-                element.addEventListener('itemscountupdate', handler);
-
-                return Promise.resolve().then(() => {
-                    const menu = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-filter-menu"]'
-                    );
-                    menu.dispatchEvent(
-                        new CustomEvent('itemscountupdate', {
-                            detail: {
-                                name: MENUS[0].name
-                            },
-                            bubbles: true
-                        })
-                    );
-
-                    expect(handler).toHaveBeenCalled();
-                    const call = handler.mock.calls[0][0];
-                    expect(call.detail.name).toBe(MENUS[0].name);
-                    expect(call.bubbles).toBeFalsy();
-                    expect(call.composed).toBeFalsy();
-                    expect(call.cancelable).toBeFalsy();
-                });
-            });
-        });
-
         describe('loadmore', () => {
             it('loadmore event', () => {
                 element.menus = MENUS;
@@ -957,6 +927,36 @@ describe('FilterMenuGroup', () => {
                         MENUS[0].typeAttributes.items[0]
                     );
                     expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+        });
+
+        describe('loadtotalcount', () => {
+            it('loadtotalcount event', () => {
+                element.menus = MENUS;
+
+                const handler = jest.fn();
+                element.addEventListener('loadtotalcount', handler);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('loadtotalcount', {
+                            detail: {
+                                name: MENUS[0].name
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.name).toBe(MENUS[0].name);
                     expect(call.bubbles).toBeFalsy();
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();

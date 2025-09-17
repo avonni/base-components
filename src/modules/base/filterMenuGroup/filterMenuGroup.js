@@ -740,9 +740,9 @@ export default class FilterMenuGroup extends LightningElement {
     /**
      * Handle the nb filter items event.
      *
-     * @param {Event} event `itemscountupdate` event fired by the menu.
+     * @param {Event} event `loadtotalcount` event fired by the menu.
      */
-    handleItemsCountUpdate(event) {
+    handleLoadTotalCount(event) {
         event.stopPropagation();
         const menuName = event.target.dataset.name;
 
@@ -750,12 +750,12 @@ export default class FilterMenuGroup extends LightningElement {
          * The event fired when the list is opened or the search term is modified.
          *
          * @event
-         * @name itemscountupdate
+         * @name loadtotalcount
          * @param {string} name Name of the menu that triggered the event.
          * @public
          */
         this.dispatchEvent(
-            new CustomEvent('itemscountupdate', {
+            new CustomEvent('loadtotalcount', {
                 detail: { name: menuName }
             })
         );
