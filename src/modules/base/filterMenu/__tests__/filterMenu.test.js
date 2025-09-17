@@ -1328,7 +1328,7 @@ describe('Filter Menu', () => {
                     acc[item.value] = index;
                     return acc;
                 }, {});
-                element.typeAttributes = { items: ITEMS, groupItems: itemMap };
+                element.typeAttributes = { items: ITEMS, itemCounts: itemMap };
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
                 );

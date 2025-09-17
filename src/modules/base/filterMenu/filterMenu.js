@@ -103,9 +103,9 @@ const TYPE_ATTRIBUTES = {
         'dropdownLength',
         'dropdownWidth',
         'enableInfiniteLoading',
-        'groupItems',
         'hasNestedItems',
         'isMultiSelect',
+        'itemCounts',
         'items',
         'noResultsMessage',
         'searchInputPlaceholder',
@@ -202,9 +202,9 @@ export default class FilterMenu extends LightningElement {
     _preventDropdownToggle = false;
     _searchTimeOut;
 
+    computedItemCounts = {};
     @track computedItems = [];
     computedTypeAttributes = {};
-    computedGroupItems = {};
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
@@ -246,7 +246,7 @@ export default class FilterMenu extends LightningElement {
 
         this.dispatchEvent(privatebuttonregister);
         this.normalizeTypeAttributes();
-        this.computeGroupItems();
+        this.computeItemCounts();
         this.computeListItems();
         this.computeSelectedItems();
         this._connected = true;
@@ -261,7 +261,7 @@ export default class FilterMenu extends LightningElement {
             // to click on the load more button
             this.dispatchLoadMore();
         } else if (!this.infiniteLoad && this.isList) {
-            this.dispatchGroupItems();
+            this.dispatchLoadItemCounts();
         }
         this.dispatchLoadTotalCount();
     }
@@ -626,7 +626,7 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.supportDeprecatedAttributes();
-            this.computeGroupItems();
+            this.computeItemCounts();
             this.computeListItems();
         }
     }
@@ -844,7 +844,7 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = deepCopy(array);
 
         if (this._connected) {
-            this.computeGroupItems();
+            this.computeItemCounts();
             this.computeListItems();
             this.computeSelectedItems();
         }
@@ -1223,7 +1223,7 @@ export default class FilterMenu extends LightningElement {
      * @type {boolean}
      */
     get hasCountLabel() {
-        return Object.keys(this.computedGroupItems).length > 0;
+        return Object.keys(this.computedItemCounts).length > 0;
     }
 
     /**
@@ -1456,7 +1456,7 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
-        this.computeGroupItems();
+        this.computeItemCounts();
         this.computeListItems();
         this.computeSelectedItems();
 
@@ -1520,7 +1520,7 @@ export default class FilterMenu extends LightningElement {
     reset() {
         this.currentValue = [];
         if (this.isList) {
-            this.computeGroupItems();
+            this.computeItemCounts();
             this.computeListItems();
         }
     }
@@ -1541,15 +1541,15 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Create the computed grouped items, based on the given items.
+     * Create the computed item counts, based on the given items.
      */
-    computeGroupItems() {
-        if (!this.isList || !this.computedTypeAttributes?.groupItems) {
+    computeItemCounts() {
+        if (!this.isList || !this.computedTypeAttributes?.itemCounts) {
             return;
         }
 
-        this.computedGroupItems = deepCopy(
-            normalizeObject(this.computedTypeAttributes.groupItems)
+        this.computedItemCounts = deepCopy(
+            normalizeObject(this.computedTypeAttributes.itemCounts)
         );
     }
 
@@ -1572,7 +1572,7 @@ export default class FilterMenu extends LightningElement {
                 firstFocusableItem = true;
                 tabindex = '0';
             }
-            const numberRecords = this.computedGroupItems[item?.value] ?? 0;
+            const numberRecords = this.computedItemCounts[item?.value] ?? 0;
             item.noCountLabel = item.label;
             if (hasCountLabel) {
                 item.label = `${item.label} (${numberRecords})`;
@@ -1799,7 +1799,7 @@ export default class FilterMenu extends LightningElement {
         });
         this.computedTypeAttributes = typeAttributes;
         this.supportDeprecatedAttributes();
-        this.computeGroupItems();
+        this.computeItemCounts();
         this.computeListItems();
     }
 
@@ -1959,7 +1959,7 @@ export default class FilterMenu extends LightningElement {
 
                 this.pollBoundingRect();
                 this.currentValue = [...this.value];
-                this.computeGroupItems();
+                this.computeItemCounts();
                 this.computeListItems();
                 this.focusDropdown();
             } else {
@@ -2254,7 +2254,7 @@ export default class FilterMenu extends LightningElement {
             ) {
                 this.dispatchLoadMore();
             } else if (!this.infiniteLoad && this.isList) {
-                this.dispatchGroupItems();
+                this.dispatchLoadItemCounts();
             }
         }, 300);
     }
@@ -2279,7 +2279,7 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
-        this.computeGroupItems();
+        this.computeItemCounts();
         this.computeListItems();
         this.dispatchApply();
     }
@@ -2368,20 +2368,20 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Dispatch the `groupitems` event.
+     * Dispatch the `loaditemcounts` event.
      *
      */
-    dispatchGroupItems() {
+    dispatchLoadItemCounts() {
         /**
          * The event fired when the number of records by item needs to be updated. It is only fired if type of the menu is a list and the`enableInfiniteLoading` type attribute is absent.
          *
          * @event
-         * @name groupitems
+         * @name loaditemcounts
          * @public
          * @bubbles
          */
         this.dispatchEvent(
-            new CustomEvent('groupitems', {
+            new CustomEvent('loaditemcounts', {
                 bubbles: true
             })
         );
