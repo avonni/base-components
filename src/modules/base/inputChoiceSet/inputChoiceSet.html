@@ -54,6 +54,7 @@
                             for:item="option"
                         >
                             <c-layout-item
+                                if:false={option.hidden}
                                 key={option.value}
                                 class="slds-grid"
                                 grow="1"
@@ -72,7 +73,7 @@
                                 >
                                     <input
                                         class={computedInputClass}
-                                        disabled={disabled}
+                                        disabled={option.disabled}
                                         id={option.value}
                                         name={name}
                                         readonly={readOnly}
@@ -89,7 +90,7 @@
                                     />
                                     <label
                                         for={option.value}
-                                        class={computedLabelClass}
+                                        class={option.computedLabelClass}
                                         style={option.computedButtonLabelStyle}
                                         data-color={option.color}
                                         data-element-id="label"
@@ -112,7 +113,7 @@
                                                 <c-input-toggle
                                                     if:true={toggleVariant}
                                                     aria-label={option.label}
-                                                    disabled={disabled}
+                                                    disabled={option.disabled}
                                                     hide-mark={computedHideCheck}
                                                     label={option.label}
                                                     message-toggle-active={computedTypeAttributes.messageToggleActive}
@@ -214,6 +215,7 @@
                         for:item="option"
                     >
                         <span
+                            if:false={option.hidden}
                             key={option.value}
                             class={computedButtonContainerClass}
                             data-element-id="span-checkbox-container"
@@ -223,7 +225,7 @@
                         >
                             <input
                                 class={computedInputClass}
-                                disabled={disabled}
+                                disabled={option.disabled}
                                 id={option.value}
                                 name={name}
                                 readonly={readOnly}
@@ -240,7 +242,7 @@
                             />
                             <label
                                 for={option.value}
-                                class={computedLabelClass}
+                                class={option.computedLabelClass}
                                 style={option.computedButtonLabelStyle}
                                 data-color={option.color}
                                 data-element-id="label"
