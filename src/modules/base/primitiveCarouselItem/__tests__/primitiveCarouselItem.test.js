@@ -274,23 +274,29 @@ describe('Primitive Carousel Item', () => {
         });
 
         describe('Content Height', () => {
-            it('With actions', () => {
-                element.actions = bareActions;
+            it('Without content', () => {
+                const wrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-noTag"]');
+                expect(wrapper.className).not.toContain('avonni-carousel__panel-action_with-content');
 
+                element.href = 'example.com';
                 return Promise.resolve().then(() => {
-                    const carouselContent = element.shadowRoot.querySelector(
-                        '.slds-carousel__content'
-                    );
-                    expect(carouselContent.style.height).toBe('7.5rem');
+                    const tagWrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-tag"]');
+                    expect(tagWrapper.className).not.toContain('avonni-carousel__panel-action_with-content');
                 });
             });
-
-            it('Without actions and text', () => {
+            
+            it('With title', () => {
+                element.title = 'Some item title';
+                
                 return Promise.resolve().then(() => {
-                    const carouselContent = element.shadowRoot.querySelector(
-                        '.slds-carousel__content'
-                    );
-                    expect(carouselContent).toBeNull();
+                    const wrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-noTag"]');
+                    expect(wrapper.className).toContain('avonni-carousel__panel-action_with-content');
+
+                    element.href = 'example.com';
+                }).then(() => {
+                    const tagWrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-tag"]');
+                    expect(tagWrapper.className).toContain('avonni-carousel__panel-action_with-content');
+
                 });
             });
         });

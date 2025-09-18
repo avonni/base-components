@@ -1,4 +1,4 @@
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { classSet, normalizeArray, normalizeBoolean, normalizeString } from 'c/utils';
 import { LightningElement, api } from 'lwc';
 import noTag from './noTag.html';
 import tag from './tag.html';
@@ -17,7 +17,6 @@ const ACTIONS_VARIANTS = {
     valid: ['bare', 'border', 'menu', 'stretch'],
     default: 'border'
 };
-const DEFAULT_CAROUSEL_HEIGHT = 6.625;
 const DEFAULT_IMAGE_ERROR_LABEL = 'No Preview Available';
 const DEFAULT_NO_IMAGE_LABEL = 'No Image Source Provided';
 const IMAGE_CROP_FIT = {
@@ -50,7 +49,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _isFocusable = false;
     _src;
 
-    _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
     displayImageError = false;
     illustrationTitle;
     illustrationVariant;
@@ -77,8 +75,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return this._actions;
     }
     set actions(actions) {
-        this._actions = actions;
-        this._initializeCarouselHeight();
+        this._actions = normalizeArray(actions);
     }
 
     /**
@@ -115,7 +112,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
             fallbackValue: ACTIONS_VARIANTS.default,
             validValues: ACTIONS_VARIANTS.valid
         });
-        this._initializeCarouselHeight();
     }
 
     /**
@@ -265,7 +261,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return classSet(
             `slds-carousel__panel-action avonni-carousel__panel-action avonni-carousel__image-${this.imagePosition}`
         ).add({
-            'slds-text-link_reset': normalizeBoolean(this.href)
+            'slds-text-link_reset': normalizeBoolean(this.href),
+            'avonni-carousel__panel-action_with-content': this.displayContentContainer
         });
     }
 
@@ -276,19 +273,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
     get computedCarouselContentClass() {
         return classSet(
-            'slds-carousel__content avonni-carousel__content avonni-primitive-carousel-item__content_background'
+            'slds-col slds-carousel__content avonni-carousel__content avonni-primitive-carousel-item__content_background'
         ).add({
             'avonni-carousel__content-bottom': this.isBottomPosition
         });
-    }
-
-    /**
-     * Computed Carousel content size height styling.
-     *
-     * @type {string}
-     */
-    get computedCarouselContentSize() {
-        return `height: ${this._carouselContentHeight}rem;`;
     }
 
     /**
@@ -401,20 +389,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
     get isTopPosition() {
         return this.actionsPosition.includes('top') && this.hasActions;
-    }
-
-    /*
-     * ------------------------------------------------------------
-     *  PRIVATE METHODS
-     * -------------------------------------------------------------
-     */
-
-    /**
-     * Carousel height initialization.
-     */
-    _initializeCarouselHeight() {
-        const isStretch = this.isStretchVariant ? 8.5 : 7.5;
-        this._carouselContentHeight = this.isBottomPosition ? isStretch : 6.625;
     }
 
     /*
