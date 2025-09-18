@@ -116,7 +116,7 @@ export default class InputChoiceOption {
     get computedLabelClass() {
         return classSet(this.labelClass).add({
             "avonni-input-choice-set__option-label": !this.disabled
-        })
+        }).toString()
     }
 
     /**
