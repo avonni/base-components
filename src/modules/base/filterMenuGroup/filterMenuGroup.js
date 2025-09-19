@@ -10,11 +10,13 @@ import { LightningElement, api } from 'lwc';
 import Menu from './menu';
 
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
-const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
+const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
 const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
+const RECOMPUTE_OVERFLOW_THRESHOLD_PX = 25;
+const OVERFLOW_FACTOR = 0.4;
 
 /**
  * @class
@@ -24,17 +26,28 @@ const MENU_VARIANTS = {
  */
 export default class FilterMenuGroup extends LightningElement {
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
+    _hideApplyButton = false;
     _hideApplyResetButtons = false;
     _hideSelectedItems = false;
+    _isToggleButtonVariant = false;
     _menus = [];
+    _offsetFilterWidth = 0;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
+    _showClearButton = false;
     _value = {};
     _variant = MENU_VARIANTS.default;
+    _showSelectedFilterValueCount = false;
+    _wrapperWidth = 0;
 
     computedMenus = [];
     selectedPills = [];
     _connected = false;
+    _computedMenusWhenLastOverflow = [];
+    _hiddenMenusLength = 0;
+    _isCalculatingOverflow = false;
     _selectedValue = {};
+    _sliceIndex = 0;
+    _wrapperWidthWhenLastResized = 0;
 
     /*
      * ------------------------------------------------------------
@@ -45,6 +58,12 @@ export default class FilterMenuGroup extends LightningElement {
     connectedCallback() {
         this.computeValue();
         this._connected = true;
+    }
+
+    renderedCallback() {
+        if (this.needsRecomputeHorizontal) {
+            this.recomputeOverflow();
+        }
     }
 
     /*
@@ -69,6 +88,21 @@ export default class FilterMenuGroup extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_APPLY_BUTTON_LABEL;
+    }
+
+    /**
+     * If present, the apply button is hidden and the value is immediately saved every time the selection changes.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideApplyButton() {
+        return this._hideApplyButton;
+    }
+    set hideApplyButton(value) {
+        this._hideApplyButton = normalizeBoolean(value);
     }
 
     /**
@@ -102,6 +136,20 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * If present, each menu will have its button variant toggled between the border and outline-brand variants.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get isToggleButtonVariant() {
+        return this._isToggleButtonVariant;
+    }
+    set isToggleButtonVariant(value) {
+        this._isToggleButtonVariant = normalizeBoolean(value);
+    }
+
+    /**
      * Array of menu objects.
      *
      * @type {object[]}
@@ -123,6 +171,23 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Width of the offset for the filter in pixels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get offsetFilterWidth() {
+        return this._offsetFilterWidth;
+    }
+    set offsetFilterWidth(value) {
+        this._offsetFilterWidth =
+            typeof value === 'number' && value >= 0 ? value : 0;
+        this.recomputeOverflow();
+    }
+
+    /**
      * Label of the reset button.
      *
      * @type {string}
@@ -138,6 +203,34 @@ export default class FilterMenuGroup extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_RESET_BUTTON_LABEL;
+    }
+
+    /**
+     * If present, a clear button is displayed next to each filter.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showClearButton() {
+        return this._showClearButton;
+    }
+    set showClearButton(value) {
+        this._showClearButton = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the selected filter value and count are displayed in the label.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showSelectedFilterValueCount() {
+        return this._showSelectedFilterValueCount;
+    }
+    set showSelectedFilterValueCount(value) {
+        this._showSelectedFilterValueCount = normalizeBoolean(value);
     }
 
     /**
@@ -180,6 +273,25 @@ export default class FilterMenuGroup extends LightningElement {
         });
     }
 
+    /**
+     * Width of the wrapper in pixels. It is used to compute the overflow of the menu group.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get wrapperWidth() {
+        return this._wrapperWidth;
+    }
+    set wrapperWidth(value) {
+        this._wrapperWidth =
+            typeof value === 'number' && value >= 0 ? value : 0;
+        if (this.needsRecomputeHorizontal) {
+            this.recomputeOverflow();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -205,8 +317,19 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get computedFiltersWrapperClass() {
         return classSet({
-            'slds-grid': !this.isVertical
+            'slds-grid': !this.isVertical,
+            'avonni-filter-menu-group__wrapper_hidden':
+                this._isCalculatingOverflow
         });
+    }
+
+    /**
+     * Dynamically compute the hidden menus based on the slice index.
+     *
+     * @type {object[]}
+     */
+    get hiddenMenus() {
+        return this.computedMenus.slice(this._sliceIndex);
     }
 
     /**
@@ -219,12 +342,93 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * True if the menus have changed since the last overflow calculation.
+     *
+     * @type {boolean}
+     */
+    get isDifferentComputedMenu() {
+        const currentMenusState = this.computedMenus.map((menu) => ({
+            name: menu.name,
+            label: menu.label
+        }));
+
+        return (
+            this._computedMenusWhenLastOverflow.length !==
+                currentMenusState.length ||
+            this._computedMenusWhenLastOverflow.some((prevMenu, index) => {
+                const currentMenu = currentMenusState[index];
+                return (
+                    prevMenu.name !== currentMenu.name ||
+                    prevMenu.label !== currentMenu.label
+                );
+            })
+        );
+    }
+
+    /**
      * Check if Vertical variant.
      *
      * @type {boolean}
      */
     get isVertical() {
         return this.variant === 'vertical';
+    }
+
+    /**
+     * Check if there is an overflow from the filters
+     *
+     * @type {boolean}
+     */
+    get isOverflow() {
+        return this._hiddenMenusLength > 0;
+    }
+
+    /**
+     * Returns the list of filter menu elements.
+     *
+     * @type {NodeListOf<HTMLElement>}
+     */
+    get listMenus() {
+        return this.template.querySelectorAll(
+            '[data-element-id="avonni-filter-menu"]'
+        );
+    }
+
+    /**
+     * Return the menu group wrapper.
+     *
+     * @type {Element}
+     */
+    get menuGroupWrapper() {
+        return this.template.querySelector('[data-element-id="ul"]');
+    }
+
+    /**
+     * Return the menu group wrapper.
+     *
+     * @type {Element}
+     */
+    get moreFilterElement() {
+        return this.template.querySelector(
+            '[data-element-id="filter-menu-group-button-popover"]'
+        );
+    }
+
+    /**
+     * True if the new width requires a recompute
+     *
+     * @type {boolean}
+     */
+    get needsRecomputeHorizontal() {
+        return !(
+            this._wrapperWidthWhenLastResized &&
+            this._wrapperWidth <
+                this._wrapperWidthWhenLastResized +
+                    RECOMPUTE_OVERFLOW_THRESHOLD_PX &&
+            this._wrapperWidth >
+                this._wrapperWidthWhenLastResized -
+                    RECOMPUTE_OVERFLOW_THRESHOLD_PX
+        );
     }
 
     /**
@@ -243,6 +447,22 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Returns the placement of the more filter button.
+     *
+     * @type {string}
+     */
+    get placement() {
+        if (!this.moreFilterElement) {
+            return 'auto';
+        }
+        const rect = this.moreFilterElement.getBoundingClientRect();
+        const elementCenterX = rect.left + rect.width / 2;
+        const viewportCenterX = window.innerWidth / 2;
+        const horizontal = elementCenterX < viewportCenterX ? 'left' : 'right';
+        return horizontal;
+    }
+
+    /**
      * True if the apply and reset buttons should be displayed at the end of the menus.
      *
      * @type {boolean}
@@ -258,6 +478,15 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedPills.length;
+    }
+
+    /**
+     * Dynamically compute the visible menus based on the slice index.
+     *
+     * @type {object[]}
+     */
+    get visibleMenus() {
+        return this.computedMenus.slice(0, this._sliceIndex);
     }
 
     /*
@@ -348,10 +577,82 @@ export default class FilterMenuGroup extends LightningElement {
         const pills = [];
         this.computedMenus.forEach((menu) => {
             menu.value = deepCopy(this.value[menu.name]);
+            if (this.isToggleButtonVariant) {
+                menu.buttonVariant = menu?.value?.length
+                    ? 'outline-brand'
+                    : 'border';
+            }
             pills.push(menu.selectedItems);
         });
+        if (this.isToggleButtonVariant) {
+            this.computedMenus = [...this.computedMenus];
+        }
+        if (this._hiddenMenusLength === 0) {
+            this._sliceIndex = this.computedMenus.length;
+        }
+        if (!this._computedMenusWhenLastOverflow.length) {
+            this._computedMenusWhenLastOverflow = this.computedMenus.map(
+                (menu) => ({
+                    name: menu.name,
+                    label: menu.label
+                })
+            );
+        }
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
+        if (this.isDifferentComputedMenu) {
+            this.recomputeOverflow();
+        }
+    }
+
+    /**
+     * Recompute the overflow for each computed menu.
+     */
+    recomputeOverflow() {
+        if (
+            !this._connected ||
+            !this.menuGroupWrapper ||
+            !this.wrapperWidth ||
+            this.isVertical
+        ) {
+            return;
+        }
+        this._sliceIndex = this.computedMenus.length;
+        this._isCalculatingOverflow = true;
+
+        requestAnimationFrame(() => {
+            let totalWidth = this.offsetFilterWidth;
+            let sliceIndex = 0;
+
+            this.listMenus.forEach((listMenu) => {
+                const menuName = listMenu.getAttribute('data-name');
+                const menu = this.computedMenus.find(
+                    (m) => m.name === menuName
+                );
+                if (!menu) return;
+
+                menu.width = listMenu.getBoundingClientRect().width;
+
+                if (
+                    totalWidth + menu.width <=
+                    this.wrapperWidth * OVERFLOW_FACTOR
+                ) {
+                    totalWidth += menu.width;
+                    sliceIndex++;
+                }
+            });
+
+            this._sliceIndex = sliceIndex;
+            this._hiddenMenusLength = this.hiddenMenus.length;
+            this._isCalculatingOverflow = false;
+            this._computedMenusWhenLastOverflow = this.computedMenus.map(
+                (menu) => ({
+                    name: menu.name,
+                    label: menu.label
+                })
+            );
+            this._wrapperWidthWhenLastResized = this._wrapperWidth;
+        });
     }
 
     /*
@@ -393,6 +694,7 @@ export default class FilterMenuGroup extends LightningElement {
     handleClose(event) {
         event.stopPropagation();
         const menuName = event.target.dataset.name;
+        this.recomputeOverflow();
 
         /**
          * The event fired when a dropdown is closed (horizontal variant) or a section is closed (vertical variant).
@@ -407,6 +709,54 @@ export default class FilterMenuGroup extends LightningElement {
                 detail: {
                     name: menuName
                 }
+            })
+        );
+    }
+
+    /**
+     * Handle the loaditemcounts event.
+     *
+     * @param {Event} event `loaditemcounts` event fired by the menu.
+     */
+    handleLoadItemCounts(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when the number of records by item needs to be updated. It is only fired if type of the menu is a list and the`enableInfiniteLoading` type attribute is absent.
+         *
+         * @event
+         * @name loaditemcounts
+         * @param {string} name Name of the menu that triggered the event.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('loaditemcounts', {
+                detail: { name: menuName }
+            })
+        );
+    }
+
+    /**
+     * Handle the nb filter items event.
+     *
+     * @param {Event} event `loadtotalcount` event fired by the menu.
+     */
+    handleLoadTotalCount(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when the list is opened or the search term is modified.
+         *
+         * @event
+         * @name loadtotalcount
+         * @param {string} name Name of the menu that triggered the event.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadtotalcount', {
+                detail: { name: menuName }
             })
         );
     }
@@ -469,11 +819,15 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleReset(event) {
         event.stopPropagation();
-        if (this.isVertical) {
+        if (this.isVertical && !this.showClearButton) {
             return;
         }
         const menuName = event.target.dataset.name;
         delete this._selectedValue[menuName];
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
+            this._value = deepCopy(this._selectedValue);
+            this.computeValue();
+        }
         this.dispatchReset(menuName);
     }
 
@@ -486,6 +840,10 @@ export default class FilterMenuGroup extends LightningElement {
         }
         this.reset();
         this.dispatchReset();
+        if (this.hideApplyButton) {
+            this.apply();
+            this.dispatchApply();
+        }
     }
 
     /**
@@ -574,8 +932,8 @@ export default class FilterMenuGroup extends LightningElement {
             })
         );
 
-        if (this.hideApplyResetButtons) {
-            // Save the selection immediately
+        // Save the selection immediately
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
             this.apply();
             this.dispatchApply(menuName);
         }
