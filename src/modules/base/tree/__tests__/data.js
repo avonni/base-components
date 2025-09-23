@@ -69,7 +69,6 @@ export const ITEMS = [
             {
                 label: 'First level',
                 name: 'firstLevel',
-                noSlots: true,
                 items: [
                     {
                         label: 'Second level',
@@ -144,6 +143,41 @@ export const ITEMS = [
         label: 'Simple unselectable',
         name: 'simpleUnselectable',
         unselectable: true
+    }
+];
+
+export const ITEMS_WITH_INVALID_SORTING_NO_SLOTS = [
+    {
+        label: 'No slots',
+        name: 'noSlots',
+        noSlots: true,
+        type: 'valid',
+        slottableTypes: ['invalidSorting']
+    },
+    {
+        label: 'Item to move',
+        name: 'itemToMove',
+        type: 'invalidSorting'
+    },
+    {
+        label: 'No slots with children',
+        name: 'noSlotsWithChildren',
+        noSlots: true,
+        items: [
+            {
+                label: 'First level no slots child',
+                name: 'firstLevelNoSlotsChild',
+                type: 'invalidSorting'
+            },
+            {
+                label: 'First level no slots child 2',
+                name: 'firstLevelNoSlotsChild2',
+                type: 'invalidSorting'
+            }
+        ],
+        type: 'valid',
+        slottableTypes: ['valid'],
+        expanded: true
     }
 ];
 
