@@ -38,10 +38,13 @@ export default {
                 'top-right',
                 'bottom-left',
                 'bottom-center',
-                'bottom-right'
+                'bottom-right',
+                'left',
+                'center',
+                'right'
             ],
             description:
-                'Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+                'Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, center, left, right.',
             table: {
                 defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
@@ -59,10 +62,13 @@ export default {
                 'top-right',
                 'bottom-left',
                 'bottom-center',
-                'bottom-right'
+                'bottom-right',
+                'left',
+                'center',
+                'right'
             ],
             description:
-                'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+                'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, right.',
             table: {
                 defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
