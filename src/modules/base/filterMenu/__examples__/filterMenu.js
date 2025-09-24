@@ -15,6 +15,7 @@ export const FilterMenu = ({
     disabled,
     dropdownAlignment,
     dropdownNubbin,
+    hideApplyButton,
     hideApplyResetButtons,
     hideSelectedItems,
     iconName,
@@ -24,6 +25,8 @@ export const FilterMenu = ({
     loadingStateAlternativeText,
     name,
     resetButtonLabel,
+    showClearButton,
+    showSelectedFilterValueCount,
     title,
     tooltip,
     type,
@@ -41,6 +44,7 @@ export const FilterMenu = ({
     element.disabled = disabled;
     element.dropdownAlignment = dropdownAlignment;
     element.dropdownNubbin = dropdownNubbin;
+    element.hideApplyButton = hideApplyButton;
     element.hideApplyResetButtons = hideApplyResetButtons;
     element.hideSelectedItems = hideSelectedItems;
     element.iconName = iconName;
@@ -50,6 +54,8 @@ export const FilterMenu = ({
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
     element.resetButtonLabel = resetButtonLabel;
+    element.showClearButton = showClearButton;
+    element.showSelectedFilterValueCount = showSelectedFilterValueCount;
     element.title = title;
     element.tooltip = tooltip;
     element.type = type;
