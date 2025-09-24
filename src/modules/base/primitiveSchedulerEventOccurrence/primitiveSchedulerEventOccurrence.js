@@ -974,7 +974,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {boolean}
      */
     get isAllDay() {
-        return isAllDay(this.eventData, this.from, this.to);
+        return isAllDay({
+            event: this.eventData,
+            from: this.from,
+            to: this.to,
+            endOfTo: this.occurrence.endOfTo,
+            startOfFrom: this.occurrence.startOfFrom
+        });
     }
 
     /**
@@ -1104,7 +1110,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {boolean}
      */
     get spansOnMoreThanOneDay() {
-        return spansOnMoreThanOneDay(this.eventData, this.from, this.to);
+        return spansOnMoreThanOneDay({
+            event: this.eventData,
+            from: this.from,
+            to: this.to,
+            endOfTo: this.occurrence.endOfTo,
+            startOfFrom: this.occurrence.startOfFrom
+        });
     }
 
     /**

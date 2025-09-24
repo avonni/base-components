@@ -1,4 +1,8 @@
-import { addToDate, dateTimeObjectFrom } from 'c/luxonDateTimeUtils';
+import {
+    addToDate,
+    dateTimeObjectFrom,
+    intervalFrom
+} from 'c/luxonDateTimeUtils';
 import { deepCopy, normalizeArray } from 'c/utils';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
@@ -76,9 +80,11 @@ export default class SchedulerEventData {
      * @param {SchedulerEvent} event The event to add.
      */
     addToSingleAndMultiDayEvents(event) {
-        if (
-            spansOnMoreThanOneDay(event, event.computedFrom, event.computedTo)
-        ) {
+        const from = event.computedFrom;
+        const to = event.computedTo;
+        const endOfTo = to.endOf('day');
+        const startOfFrom = from.startOf('day');
+        if (spansOnMoreThanOneDay({ event, from, to, endOfTo, startOfFrom })) {
             this.multiDayEvents.push(event);
         } else {
             this.singleDayEvents.push(event);
@@ -626,7 +632,15 @@ export default class SchedulerEventData {
         const visibleStart = interval.s;
         const from = this.createDate(event.from);
         const to = this.normalizedEventTo(event);
-        const isMultiDay = spansOnMoreThanOneDay(event, from, to);
+        const endOfTo = to.endOf('day');
+        const startOfFrom = from.startOf('day');
+        const isMultiDay = spansOnMoreThanOneDay({
+            event,
+            from,
+            to,
+            endOfTo,
+            startOfFrom
+        });
         const isCalendarMultiDay =
             isMultiDay && (this.isCalendar || this.isAgenda);
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;

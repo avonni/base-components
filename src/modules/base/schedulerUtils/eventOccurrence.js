@@ -27,22 +27,20 @@ export class SchedulerEventOccurrence {
         Object.assign(this, props);
     }
 
-    /**
-     * End of the day, of the end date of the occurrence.
-     *
-     * @type {DateTime}
-     */
-    get endOfTo() {
-        return this.to.endOf('day');
+    get from() {
+        return this._from;
+    }
+    set from(value) {
+        this._from = value;
+        this.startOfFrom = this.from.startOf('day');
     }
 
-    /**
-     * Start of the day, of the start date of the occurrence.
-     *
-     * @type {DateTime}
-     */
-    get startOfFrom() {
-        return this.from.startOf('day');
+    get to() {
+        return this._to;
+    }
+    set to(value) {
+        this._to = value;
+        this.endOfTo = this.to.endOf('day');
     }
 
     /**

@@ -406,7 +406,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                         endsInLaterCell: to.day > date.day,
                         event,
                         startsInPreviousCell: from.day < date.day,
-                        time: this.formatTime(event, from, to),
+                        time: this.formatTime(event, from, to, occ),
                         to
                     });
                     date = addToDate(date, 'day', 1);
@@ -473,12 +473,22 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      * @param {DateTime} to Ending date of the event.
      * @returns {string} Formatted time describing the event duration.
      */
-    formatTime(event, from, to) {
+    formatTime(event, from, to, occurrence) {
+        const endOfTo = occurrence.endOfTo;
+        const startOfFrom = occurrence.startOfFrom;
         if (event.referenceLine || from.ts === to.ts) {
             return from.toFormat('t');
-        } else if (isAllDay(event, from, to)) {
+        } else if (
+            isAllDay({
+                event,
+                from,
+                to,
+                endOfTo,
+                startOfFrom
+            })
+        ) {
             return 'All Day';
-        } else if (spansOnMoreThanOneDay(event, from, to)) {
+        } else if (spansOnMoreThanOneDay({ event, from, to, endOfTo, startOfFrom })) {
             return `${from.toFormat('dd LLL')} - ${to.toFormat('dd LLL')}`;
         }
         return `${from.toFormat('t')} - ${to.toFormat('t')}`;

@@ -993,16 +993,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @returns {object[]} Placeholders created.
      */
     getMultiDayPlaceholders(isFirstCol, col, event, occ) {
-        const { from, to } = occ;
-        const isMultiDay = spansOnMoreThanOneDay(
+        const { from, to, endOfTo, startOfFrom } = occ;
+        const isMultiDay = spansOnMoreThanOneDay({
             event,
-            event.computedFrom,
-            event.computedTo
-        );
+            from: event.computedFrom,
+            to: event.computedTo,
+            endOfTo,
+            startOfFrom
+        });
         const cellsPassed = col.cells.filter((cell) => {
             return (
                 cell.start > from &&
-                (event.referenceLine || cell.end <= to.endOf('day'))
+                (event.referenceLine || cell.end <= endOfTo)
             );
         });
         const spansOnMoreThanOneWeek =
@@ -1978,7 +1980,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const shouldShrinkMultiDayEvent =
             this.isMonth &&
             !isMoving &&
-            spansOnMoreThanOneDay(event, occurrence.from, occurrence.to);
+            spansOnMoreThanOneDay({
+                event,
+                from: occurrence.from,
+                to: occurrence.to,
+                endOfTo: occurrence.endOfTo,
+                startOfFrom: occurrence.startOfFrom
+            });
 
         if (this._showPlaceholderOccurrence) {
             // Make sure the main occurrence is not hidden in a popover
