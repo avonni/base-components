@@ -837,6 +837,27 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    addOverflowingEventsCountToCells(col) {
+        col.cells.forEach((cell) => {
+            const dayKey = `${cell.month}-${cell.day}`;
+            const dayMap = this._eventData.eventsPerDayMap;
+            const dayData = dayMap[dayKey];
+
+            if (dayData && dayData.count) {
+                const totalEvents = cell.events.concat(
+                    cell.placeholders
+                );
+                const visibleEvents = totalEvents.filter(
+                    (event) => !event.overflowsCell
+                );
+                cell.overflowingEvents =
+                    dayData.count - visibleEvents.length;
+            } else {
+                cell.overflowingEvents = 0;
+            }
+        });
+    }
+
     /**
      * Center the calendars visible in the year view on their month.
      */
@@ -981,6 +1002,38 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             ? `[data-element-id="div-multi-day-events-wrapper"] ${CELL_SELECTOR}`
             : COLUMN_SELECTOR;
         return getElementOnXAxis(this.template, x, selector);
+    }
+
+    getMonthCellOccurrences(cell, startDate) {
+        const dayKey = `${cell.month}-${cell.day}`;
+        const dayData = this._eventData.eventsPerDayMap[dayKey];
+        const dayInterval = intervalFrom(startDate, startDate.endOf('day'));
+        const { events } = this._eventData.getEventsInInterval(
+            dayData.events,
+            dayInterval,
+            false
+        );
+        const occurrences = [];
+        events.forEach((evt) => {
+            evt.occurrences.forEach((occ) => {
+                const occurrence = { ...occ };
+                occurrence.overflowsCell = false;
+                occurrence.event = evt;
+
+                // If the event is a reference line,
+                // use the start date as an end date too
+                const to = occ.to ? occ.to : occ.from;
+                occurrence.startsInPreviousCell =
+                    occ.from.startOf('day') < startDate.startOf('day');
+                occurrence.endsInLaterCell =
+                    to.endOf('day') > startDate.endOf('day');
+                occurrences.push(occurrence);
+            });
+        });
+        occurrences.sort((a, b) => {
+            return a.from - b.from;
+        });
+        return occurrences;
     }
 
     /**
@@ -1469,6 +1522,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             col.events = events.flat();
             col.disabledEvents = disabledEvents.flat();
             col.initCells();
+
+            if (this.isMonth) {
+                // Add the overflowing events count to the cells
+                this.addOverflowingEventsCountToCells(col);
+            }
         });
 
         if (this.isDay || this.isWeek) {
@@ -1669,7 +1727,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 const button = this.template.querySelector(
                     `[data-element-id="lightning-button-month-show-more"][data-start="${cell.start}"]`
                 );
-                if (cell.overflowingEvents.length) {
+                if (cell.overflowingEvents) {
                     button.classList.remove('slds-hide');
                     button.label = cell.showMoreLabel;
                 } else {
@@ -1872,6 +1930,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event `click` event.
      */
     handleMonthCellShowMoreClick(event) {
+        // Get the cell that contains the show more button
         const columnIndex = Number(event.currentTarget.dataset.columnIndex);
         const start = Number(event.currentTarget.dataset.start);
         const startDate = this.createDate(start);
@@ -1879,34 +1938,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             return c.start === start;
         });
 
-        // Include the multi-day events that are going through the cell
-        const allEvents = cell.events.concat(cell.placeholders);
+        // Create occurrences for the events in the cell
+        const occurrences = this.getMonthCellOccurrences(cell, startDate);
 
-        allEvents.sort((a, b) => {
-            return a.from - b.from;
-        });
-        const events = allEvents.map((occ) => {
-            const occurrence = { ...occ };
-            occurrence.overflowsCell = false;
-            occurrence.event = this._eventData.events.find((e) => {
-                return e.key === occ.eventKey;
-            });
-            // If the event is a reference line,
-            // use the start date as an end date too
-            const to = occ.to ? occ.to : occ.from;
-            occurrence.startsInPreviousCell =
-                occ.from.startOf('day') < startDate.startOf('day');
-            occurrence.endsInLaterCell =
-                to.endOf('day') > startDate.endOf('day');
-            return occurrence;
-        });
-
+        // Open the popover
         const { x, width } = event.currentTarget.getBoundingClientRect();
         const buttonCenter = x + width / 2;
 
-        const date = this.createDate(start);
         this._popoverPosition = { x: buttonCenter, y: event.clientY };
-        this.popoverElement.open({ events, label: date.toFormat('cccc d') });
+        this.popoverElement.open({ events: occurrences, label: startDate.toFormat('cccc d') });
         this.popoverElement.classList.remove('slds-hide');
 
         requestAnimationFrame(() => {

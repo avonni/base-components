@@ -1,4 +1,5 @@
 import {
+    numberOfUnitsBetweenDates,
     addToDate,
     dateTimeObjectFrom,
     intervalFrom
@@ -28,6 +29,7 @@ import { spansOnMoreThanOneDay } from './dateComputations';
  */
 export default class SchedulerEventData {
     eventDrag;
+    eventsPerDayMap = {};
     selection;
 
     constructor(schedule, props) {
@@ -70,8 +72,35 @@ export default class SchedulerEventData {
             return;
         }
 
-        this.events = this.getEventsInInterval();
+        const skipOverflowingEvents = this.isCalendar && this.schedule.isMonth;
+        const { events, eventsPerDayMap } = this.getEventsInInterval(
+            this.events,
+            this.visibleInterval,
+            skipOverflowingEvents
+        );
+        this.eventsPerDayMap = eventsPerDayMap;
+        this.events = events;
         this.refreshEvents();
+    }
+
+    addToEventsPerDayMap(eventsPerDayMap, event, intersection) {
+        const daysCount = numberOfUnitsBetweenDates('day', intersection.start, intersection.end);
+
+        for (let i = 0; i < daysCount; i++) {
+            const date = intersection.start.plus({ days: i });
+            const dayKey = `${date.month}-${date.day}`;
+
+            if (eventsPerDayMap[dayKey]) {
+                const dayData = eventsPerDayMap[dayKey];
+                dayData.count += 1;
+                dayData.events.push(event);
+            } else {
+                eventsPerDayMap[dayKey] = {
+                    count: 1,
+                    events: [event]
+                };
+            }
+        }
     }
 
     /**
@@ -253,35 +282,61 @@ export default class SchedulerEventData {
         return body.getBoundingClientRect();
     }
 
-    getEventsInInterval(events = this.events, interval = this.visibleInterval) {
+    getEventsInInterval(events, interval, skipOverflowingEvents) {
         if (!interval) {
             return [];
         }
-        const eventsInTimeFrame = events.filter((event) => {
+        const eventsPerDayMap = {};
+        const eventsInTimeFrame = [];
+
+        for (let i = 0; i < events.length; i++) {
+            const event = events[i];
             const from = this.createDate(event.from);
             let to = this.createDate(event.to);
-            if (event.allDay && !to) {
-                to = from.endOf('day');
+            if (!to) {
+                to = from.set({
+                    hour: 23,
+                    minute: 59,
+                    second: 59,
+                    millisecond: 999
+                });
             }
-            return (
+
+            const eventInterval = intervalFrom(from, to);
+            const intersection = interval.intersection(eventInterval);
+            const isInTimeFrame =
                 this.belongsToSelectedResources(event) &&
-                (interval.contains(from) ||
-                    interval.contains(to) ||
-                    (interval.isAfter(from) && interval.isBefore(to)) ||
-                    event.recurrence)
-            );
+                (event.recurrence || intersection);
+
+            if (!isInTimeFrame) {
+                continue;
+            }
+
+            if (skipOverflowingEvents) {
+                this.addToEventsPerDayMap(eventsPerDayMap, event, intersection);
+            } else {
+                eventsInTimeFrame.push(event);
+            }
+        }
+
+        Object.values(eventsPerDayMap).forEach((dayData) => {
+            dayData.events.sort((a, b) => {
+                return a.from - b.from;
+            });
+            eventsInTimeFrame.push(...dayData.events.slice(0, 10));
         });
 
-        return eventsInTimeFrame.reduce((computedEvents, evt) => {
+        const computedEvents = eventsInTimeFrame.reduce((evts, evt) => {
             const event = { ...evt };
             this.updateEventDefaults(event, true, interval);
             const computedEvent = new SchedulerEvent(event);
 
             if (computedEvent.occurrences.length) {
-                computedEvents.push(computedEvent);
+                evts.push(computedEvent);
             }
-            return computedEvents;
+            return evts;
         }, []);
+        return { events: computedEvents, eventsPerDayMap };
     }
 
     /**

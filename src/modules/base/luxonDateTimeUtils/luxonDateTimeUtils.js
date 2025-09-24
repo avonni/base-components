@@ -195,6 +195,19 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
     let normalizedStart = isWeek ? addToDate(start, 'day', 1) : start;
     let normalizedEnd = isWeek ? addToDate(end, 'day', 1) : end;
 
+    if (unit === 'day') {
+        // This way saves on performance compared to using intersection.count('days').
+        const startDay = start.day;
+        const endDay = end.day;
+        if (endDay > startDay) {
+            return endDay - startDay + 1;
+        } else if (endDay < startDay) {
+            const lastDayOfMonth = new Date(start.year, start.month, 0).getDate();
+            return lastDayOfMonth - startDay + endDay + 1;
+        }
+        return 1;
+    }
+    
     const interval = Interval.fromDateTimes(normalizedStart, normalizedEnd);
     return interval.count(unit);
 };
