@@ -75,6 +75,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hourHeadersLoading = true;
     _mouseIsDown = false;
     _popoverDate;
+    _popoverStartIndex = 0;
     _popoverPosition;
     _renderAnimationFrames = [];
     _resizeObserver;
@@ -841,29 +842,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
 
     /**
-    * Add the count of hidden overflowing events to the given column's cells.
-    * 
-    * @param {object} column Column object to which the counts should be added.
-    */
-    addOverflowingEventsCountToCells(column) {
-        column.cells.forEach((cell) => {
-            const dayKey = `${cell.month}-${cell.day}`;
-            const dayMap = this._eventData.eventsPerDayMap;
-            const dayData = dayMap[dayKey];
-
-            if (dayData && dayData.count) {
-                const totalEvents = cell.events.concat(cell.placeholders);
-                const visibleEvents = totalEvents.filter(
-                    (event) => !event.overflowsCell
-                );
-                cell.overflowingEvents = dayData.count - visibleEvents.length;
-            } else {
-                cell.overflowingEvents = 0;
-            }
-        });
-    }
-
-    /**
      * Center the calendars visible in the year view on their month.
      */
     centerCalendarsOnRightMonths() {
@@ -1100,17 +1078,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * To avoid performance issues, only the first occurrences are returned, starting from the given index.
      *
      * @param {object[]} events Array of events that have at least one occurrence on the popover date.
-     * @param {number} startIndex Index of the first event to transform into occurrences. Defaults to 0.
      * @returns {object[]} Array of event occurrences.
      */
-    getPopoverEventsOccurrences(events, startIndex = 0) {
+    getPopoverEventsOccurrences(events) {
         const endOfDay = this._popoverDate.endOf('day');
         const dayInterval = intervalFrom(this._popoverDate, endOfDay);
-        const endIndex = startIndex + MONTH_LOAD_MORE_OFFSET;
+        const endIndex = this._popoverStartIndex + MONTH_LOAD_MORE_OFFSET;
         const computedEvents = this._eventData.computeEventsOccurrences(
-            events.slice(startIndex, endIndex),
+            events.slice(this._popoverStartIndex, endIndex),
             dayInterval
         );
+        this._popoverStartIndex = endIndex;
         if (endIndex >= events.length) {
             this.popoverEnableInfiniteLoading = false;
         }
@@ -1125,7 +1103,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 // If the event is a reference line,
                 // use the start date as an end date too
                 const to = occ.to ? occ.to : occ.from;
-                
+
                 occurrence.startsInPreviousCell =
                     occ.from.startOf('day') < this._popoverDate.startOf('day');
                 occurrence.endsInLaterCell = to.endOf('day') > endOfDay;
@@ -1538,11 +1516,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             col.events = events.flat();
             col.disabledEvents = disabledEvents.flat();
             col.initCells();
-
-            if (this.isMonth) {
-                // Add the overflowing events count to the cells
-                this.addOverflowingEventsCountToCells(col);
-            }
         });
 
         if (this.isDay || this.isWeek) {
@@ -1597,6 +1570,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                         isCalendarMonth: this.isMonth,
                         cellSize
                     });
+                }
+
+                // Add the overflowing events count to the cell
+                const dayKey = `${cell.month}-${cell.day}`;
+                const dayMap = this._eventData.eventsPerDayMap;
+                const dayData = dayMap[dayKey];
+
+                if (dayData && dayData.count) {
+                    const visibleOccurrences = allOccurrences.filter(
+                        (element) => !element.occurrence.overflowsCell
+                    );
+                    cell.overflowingEvents =
+                        dayData.count - visibleOccurrences.length;
+                } else {
+                    cell.overflowingEvents = 0;
                 }
             });
         });
@@ -1950,6 +1938,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const { x, width } = event.currentTarget.getBoundingClientRect();
         const start = Number(event.currentTarget.dataset.start);
         this._popoverDate = this.createDate(start);
+        this._popoverStartIndex = 0;
         const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
         const dayData = this._eventData.eventsPerDayMap[dayKey];
         const events = dayData.events;
@@ -2202,12 +2191,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle the loading event coming from the show more popover.
-     *
-     * @param {Event} event `loadmore` event.
+     * Handle the load more event coming from the show more popover.
      */
-    handlePopoverLoadMore(event) {
-        const eventsLength = event.detail.eventsLength;
+    handlePopoverLoadMore() {
         this.popoverIsLoading = true;
 
         requestAnimationFrame(() => {
@@ -2215,10 +2201,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
                 const dayData = this._eventData.eventsPerDayMap[dayKey];
                 const events = dayData.events;
-                const occurrences = this.getPopoverEventsOccurrences(
-                    events,
-                    eventsLength
-                );
+                const occurrences = this.getPopoverEventsOccurrences(events);
                 this.popoverElement.addEvents(occurrences);
                 this.popoverIsLoading = false;
             });

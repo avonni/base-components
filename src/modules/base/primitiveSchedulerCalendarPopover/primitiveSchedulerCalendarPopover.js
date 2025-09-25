@@ -70,11 +70,11 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      */
 
     /**
-    * Add the given events to the existing events.
-    * 
-    * @param {object[]} events Array of events to add.
-    * @public
-    */
+     * Add the given events to the existing events.
+     *
+     * @param {object[]} events Array of events to add.
+     * @public
+     */
     @api
     addEvents(events = []) {
         this.events = this.events.concat(events);
@@ -284,6 +284,7 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
             const lastLoadedEvent =
                 loadedEvents && loadedEvents[loadedEvents.length - 1];
             const allEventsLoaded =
+                lastLoadedEvent &&
                 this.events.length === lastLoadedEvent.index + 1;
             if (allEventsLoaded && this.enableInfiniteLoading) {
                 this._dispatchLoadMore();
@@ -356,13 +357,9 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
     }
 
     /**
-    * Dispatch the `loadmore` event.
-    */
+     * Dispatch the `loadmore` event.
+     */
     _dispatchLoadMore() {
-        this.dispatchEvent(new CustomEvent('loadmore', {
-            detail: {
-                eventsLength: this.events.length
-            }
-        }));
+        this.dispatchEvent(new CustomEvent('loadmore'));
     }
 }

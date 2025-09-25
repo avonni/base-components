@@ -95,18 +95,21 @@ export default class SchedulerEventData {
     addToEventsPerDayMap({ eventsPerDayMap, event, interval, intersection }) {
         const addEventToMap = (date) => {
             const dayKey = `${date.month}-${date.day}`;
+            const resources = this.selectedResources.filter((r) =>
+                event.resourceNames.includes(r)
+            );
 
             if (eventsPerDayMap[dayKey]) {
                 const dayData = eventsPerDayMap[dayKey];
-                dayData.count += 1;
+                dayData.count += resources.length;
                 dayData.events.push(event);
             } else {
                 eventsPerDayMap[dayKey] = {
-                    count: 1,
+                    count: resources.length,
                     events: [event]
                 };
             }
-        }
+        };
 
         if (event.recurrence) {
             // If it is recurring, we have to create the event occurrences
@@ -114,24 +117,30 @@ export default class SchedulerEventData {
             const evt = { ...event };
             this.updateEventDefaults(evt, true, interval);
             const computedEvent = new SchedulerEvent(evt);
+            const occurrences = computedEvent.occurrences;
 
-            computedEvent.occurrences.forEach((occurrence) => {
-                const date = occurrence.from;
-                addEventToMap(date);
-            });
+            if (occurrences.length) {
+                // Make sure the event is added only once for all of its resources
+                const firstResource = occurrences[0].resourceName;
+                const uniqueDateOccurrences = occurrences.filter((occ) => {
+                    return occ.resourceName === firstResource;
+                });
+                uniqueDateOccurrences.forEach((occurrence) => {
+                    addEventToMap(occurrence.from);
+                });
+            }
         } else {
             const daysCount = numberOfUnitsBetweenDates(
                 'day',
                 intersection.start,
                 intersection.end
             );
-    
+
             for (let i = 0; i < daysCount; i++) {
                 const date = intersection.start.plus({ days: i });
                 addEventToMap(date);
             }
         }
-
     }
 
     /**
@@ -199,12 +208,12 @@ export default class SchedulerEventData {
     }
 
     /**
-    * Compute the events for the given interval.
-    * 
-    * @param {object[]} events Array of events to compute.
-    * @param {Interval} interval Interval of time in which the events occurrences should be happening.
-    * @returns {object[]} Array of computed events.
-    */
+     * Compute the events for the given interval.
+     *
+     * @param {object[]} events Array of events to compute.
+     * @param {Interval} interval Interval of time in which the events occurrences should be happening.
+     * @returns {object[]} Array of computed events.
+     */
     computeEventsOccurrences(events, interval) {
         return events.reduce((computedEvents, evt) => {
             const event = { ...evt };
@@ -395,7 +404,10 @@ export default class SchedulerEventData {
         }
 
         // Compute the event occurrences
-        const computedEvents = this.computeEventsOccurrences(eventsInTimeFrame, interval);
+        const computedEvents = this.computeEventsOccurrences(
+            eventsInTimeFrame,
+            interval
+        );
         return { events: computedEvents, eventsPerDayMap };
     }
 
