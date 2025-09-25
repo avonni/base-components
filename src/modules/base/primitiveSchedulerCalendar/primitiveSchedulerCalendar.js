@@ -34,7 +34,7 @@ const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
 const MONTH_DAY_LABEL_HEIGHT = 30;
-const MONTH_LOAD_MORE_OFFSET = 30;
+const POPOVER_LOAD_MORE_OFFSET = 30;
 const MONTHS = {
     0: 'January',
     1: 'February',
@@ -1083,7 +1083,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     getPopoverEventsOccurrences(events) {
         const endOfDay = this._popoverDate.endOf('day');
         const dayInterval = intervalFrom(this._popoverDate, endOfDay);
-        const endIndex = this._popoverStartIndex + MONTH_LOAD_MORE_OFFSET;
+        const endIndex = this._popoverStartIndex + POPOVER_LOAD_MORE_OFFSET;
         const computedEvents = this._eventData.computeEventsOccurrences(
             events.slice(this._popoverStartIndex, endIndex),
             dayInterval
@@ -1944,7 +1944,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const events = dayData.events;
 
         // Display a loading spinner on the button
-        if (events.length > MONTH_LOAD_MORE_OFFSET) {
+        if (events.length > POPOVER_LOAD_MORE_OFFSET) {
             this.popoverEnableInfiniteLoading = true;
             event.currentTarget.isButtonLoading = true;
         }
@@ -2254,36 +2254,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.initLeftPanelCalendarMarkedDates();
         const { x, y, width, height } = event.detail.bounds;
 
-        const events = [];
-        this._eventData.events.forEach((ev) => {
-            ev.occurrences.forEach((occ) => {
-                // If the event is a reference line,
-                // use the start date as an end date too
-                const to = occ.to ? occ.to : occ.from;
-                const interval = intervalFrom(occ.from, to);
-                const day = intervalFrom(
-                    date.startOf('day'),
-                    date.endOf('day')
-                );
-                if (interval.overlaps(day)) {
-                    events.push({
-                        ...occ,
-                        event: ev,
-                        startsInPreviousCell:
-                            occ.from.startOf('day') < date.startOf('day'),
-                        endsInLaterCell: to.endOf('day') > date.endOf('day')
-                    });
-                }
-            });
-        });
-
         this._popoverPosition = {
             x: x + width / 2,
             y: y + height / 2
         };
+        this._popoverStartIndex = 0;
         this._popoverDate = date;
+        const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
+        const dayData = this._eventData.eventsPerDayMap[dayKey];
+        const events = dayData.events;
+        if (events.length > POPOVER_LOAD_MORE_OFFSET) {
+            this.popoverEnableInfiniteLoading = true;
+        }
+        
+        const occurrences = this.getPopoverEventsOccurrences(events);
         this.popoverElement.open({
-            events,
+            events: occurrences,
             label: date.toFormat('LLLL d')
         });
         this.popoverElement.classList.remove('slds-hide');

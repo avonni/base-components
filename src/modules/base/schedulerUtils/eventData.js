@@ -72,7 +72,8 @@ export default class SchedulerEventData {
             return;
         }
 
-        const skipOverflowingEvents = this.isCalendar && this.schedule.isMonth;
+        const skipOverflowingEvents =
+            this.isCalendar && (this.schedule.isMonth || this.schedule.isYear);
         const { events, eventsPerDayMap } = this.getEventsInInterval(
             this.events,
             this.visibleInterval,
