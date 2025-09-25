@@ -83,11 +83,17 @@ export default class SchedulerEventData {
         this.refreshEvents();
     }
 
-    addToEventsPerDayMap(eventsPerDayMap, event, intersection) {
-        const daysCount = numberOfUnitsBetweenDates('day', intersection.start, intersection.end);
-
-        for (let i = 0; i < daysCount; i++) {
-            const date = intersection.start.plus({ days: i });
+    /**
+     * Map the event objects to the days they span on.
+     * Used in the calendar month view, to avoid computing the event occurrences before they are visible.
+     *
+     * @param {object} eventsPerDayMap Object containing a key per visible day. The value of each key is an object containing the count and the events that day.
+     * @param {object} event Event object to add to the map.
+     * @param {Interval} intersection Time interval representing the intersection of the event with the visible interval.
+     * @param {Interval} interval Currently visible time interval.
+     */
+    addToEventsPerDayMap({ eventsPerDayMap, event, interval, intersection }) {
+        const addEventToMap = (date) => {
             const dayKey = `${date.month}-${date.day}`;
 
             if (eventsPerDayMap[dayKey]) {
@@ -101,6 +107,31 @@ export default class SchedulerEventData {
                 };
             }
         }
+
+        if (event.recurrence) {
+            // If it is recurring, we have to create the event occurrences
+            // to know all of the days the event spans on
+            const evt = { ...event };
+            this.updateEventDefaults(evt, true, interval);
+            const computedEvent = new SchedulerEvent(evt);
+
+            computedEvent.occurrences.forEach((occurrence) => {
+                const date = occurrence.from;
+                addEventToMap(date);
+            });
+        } else {
+            const daysCount = numberOfUnitsBetweenDates(
+                'day',
+                intersection.start,
+                intersection.end
+            );
+    
+            for (let i = 0; i < daysCount; i++) {
+                const date = intersection.start.plus({ days: i });
+                addEventToMap(date);
+            }
+        }
+
     }
 
     /**
@@ -289,6 +320,7 @@ export default class SchedulerEventData {
         const eventsPerDayMap = {};
         const eventsInTimeFrame = [];
 
+        // Keep only events that are in the currently visible interval
         for (let i = 0; i < events.length; i++) {
             const event = events[i];
             const from = this.createDate(event.from);
@@ -313,19 +345,36 @@ export default class SchedulerEventData {
             }
 
             if (skipOverflowingEvents) {
-                this.addToEventsPerDayMap(eventsPerDayMap, event, intersection);
+                this.addToEventsPerDayMap({
+                    eventsPerDayMap,
+                    event,
+                    interval,
+                    intersection
+                });
             } else {
                 eventsInTimeFrame.push(event);
             }
         }
 
-        Object.values(eventsPerDayMap).forEach((dayData) => {
-            dayData.events.sort((a, b) => {
-                return a.from - b.from;
-            });
-            eventsInTimeFrame.push(...dayData.events.slice(0, 10));
-        });
+        if (skipOverflowingEvents) {
+            // Keep only 10 events per day
+            Object.values(eventsPerDayMap).forEach((dayData) => {
+                dayData.events.sort((a, b) => {
+                    // The recurring events are pushed to the bottom of the list.
+                    // Otherwise, they would always appear first.
+                    if (b.recurrence) {
+                        return -1;
+                    } else if (a.recurrence) {
+                        return 1;
+                    }
+                    return a.from - b.from;
+                });
 
+                eventsInTimeFrame.push(...dayData.events.slice(0, 10));
+            });
+        }
+
+        // Compute the event occurrences
         const computedEvents = eventsInTimeFrame.reduce((evts, evt) => {
             const event = { ...evt };
             this.updateEventDefaults(event, true, interval);
