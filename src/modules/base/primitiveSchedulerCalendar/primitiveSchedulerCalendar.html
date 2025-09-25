@@ -392,7 +392,7 @@
                                                                 ></c-primitive-scheduler-event-occurrence>
                                                             </template>
                                                         </div>
-                                                        <lightning-button
+                                                        <c-button
                                                             class="
                                                                 slds-text-align_center
                                                                 avonni-primitive-scheduler-calendar__month-show-more-button
@@ -401,10 +401,10 @@
                                                             variant="base"
                                                             data-column-index={index}
                                                             data-start={cell.start}
-                                                            data-element-id="lightning-button-month-show-more"
+                                                            data-element-id="avonni-button-month-show-more"
                                                             onclick={handleMonthCellShowMoreClick}
                                                             onmousedown={stopPropagation}
-                                                        ></lightning-button>
+                                                        ></c-button>
                                                     </div>
                                                 </div>
                                             </template>
@@ -620,6 +620,8 @@
             "
             date-format={dateFormat}
             hidden-actions={hiddenActions}
+            enable-infinite-loading={popoverEnableInfiniteLoading}
+            is-loading={popoverIsLoading}
             prevent-past-event-creation={preventPastEventCreation}
             read-only={readOnly}
             resources={computedResources}
@@ -628,6 +630,7 @@
             onclose={handleClosePopover}
             oneventdblclick={handleEventDoubleClick}
             oneventmousedown={handleHiddenEventMouseDown}
+            onloadmore={handlePopoverLoadMore}
         ></c-primitive-scheduler-calendar-popover>
     </div>
 </template>

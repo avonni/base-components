@@ -961,7 +961,7 @@ describe('Primitive Scheduler Calendar', () => {
                         const openSpy = jest.spyOn(popover, 'open');
                         const cellStart = new Date(2022, 8, 19).getTime();
                         const showMoreButton = element.shadowRoot.querySelector(
-                            `[data-element-id="lightning-button-month-show-more"][data-start="${cellStart}"]`
+                            `[data-element-id="avonni-button-month-show-more"][data-start="${cellStart}"]`
                         );
                         expect(showMoreButton.label).toBe(
                             `+${SELECTED_DATE_EVENTS.length} more`

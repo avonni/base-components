@@ -84,6 +84,18 @@
                         onprivatemousedown={handleEventMouseDown}
                     ></c-primitive-scheduler-event-occurrence>
                 </template>
+                <div
+                    if:true={isLoading}
+                    class="
+                        slds-is-relative
+                        avonni-primitive-scheduler-calendar-popover__loading-spinner
+                    "
+                >
+                    <lightning-spinner
+                        alternative-text="Loading more events..."
+                        size="small"
+                    ></lightning-spinner>
+                </div>
             </div>
         </c-focus-trap>
     </div>

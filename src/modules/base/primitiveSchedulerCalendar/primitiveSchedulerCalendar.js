@@ -34,6 +34,7 @@ const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
 const MONTH_DAY_LABEL_HEIGHT = 30;
+const MONTH_LOAD_MORE_OFFSET = 30;
 const MONTHS = {
     0: 'January',
     1: 'February',
@@ -90,6 +91,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     multiDayCellHeight = 0;
     multiDayEvents = [];
     multiDayEventsCellGroup = new Column({});
+    popoverEnableInfiniteLoading = false;
+    popoverIsLoading = false;
     singleDayEvents = [];
     start = DEFAULT_SELECTED_DATE;
     visibleInterval;
@@ -837,21 +840,23 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
-    addOverflowingEventsCountToCells(col) {
-        col.cells.forEach((cell) => {
+    /**
+    * Add the count of hidden overflowing events to the given column's cells.
+    * 
+    * @param {object} column Column object to which the counts should be added.
+    */
+    addOverflowingEventsCountToCells(column) {
+        column.cells.forEach((cell) => {
             const dayKey = `${cell.month}-${cell.day}`;
             const dayMap = this._eventData.eventsPerDayMap;
             const dayData = dayMap[dayKey];
 
             if (dayData && dayData.count) {
-                const totalEvents = cell.events.concat(
-                    cell.placeholders
-                );
+                const totalEvents = cell.events.concat(cell.placeholders);
                 const visibleEvents = totalEvents.filter(
                     (event) => !event.overflowsCell
                 );
-                cell.overflowingEvents =
-                    dayData.count - visibleEvents.length;
+                cell.overflowingEvents = dayData.count - visibleEvents.length;
             } else {
                 cell.overflowingEvents = 0;
             }
@@ -1004,38 +1009,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return getElementOnXAxis(this.template, x, selector);
     }
 
-    getMonthCellOccurrences(cell, startDate) {
-        const dayKey = `${cell.month}-${cell.day}`;
-        const dayData = this._eventData.eventsPerDayMap[dayKey];
-        const dayInterval = intervalFrom(startDate, startDate.endOf('day'));
-        const { events } = this._eventData.getEventsInInterval(
-            dayData.events,
-            dayInterval,
-            false
-        );
-        const occurrences = [];
-        events.forEach((evt) => {
-            evt.occurrences.forEach((occ) => {
-                const occurrence = { ...occ };
-                occurrence.overflowsCell = false;
-                occurrence.event = evt;
-
-                // If the event is a reference line,
-                // use the start date as an end date too
-                const to = occ.to ? occ.to : occ.from;
-                occurrence.startsInPreviousCell =
-                    occ.from.startOf('day') < startDate.startOf('day');
-                occurrence.endsInLaterCell =
-                    to.endOf('day') > startDate.endOf('day');
-                occurrences.push(occurrence);
-            });
-        });
-        occurrences.sort((a, b) => {
-            return a.from - b.from;
-        });
-        return occurrences;
-    }
-
     /**
      * Get the placeholders for the given occurrence, in a specific column.
      *
@@ -1120,6 +1093,49 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             });
         }
         return placeholders;
+    }
+
+    /**
+     * Get the occurrences for the events happening on the popover date.
+     * To avoid performance issues, only the first occurrences are returned, starting from the given index.
+     *
+     * @param {object[]} events Array of events that have at least one occurrence on the popover date.
+     * @param {number} startIndex Index of the first event to transform into occurrences. Defaults to 0.
+     * @returns {object[]} Array of event occurrences.
+     */
+    getPopoverEventsOccurrences(events, startIndex = 0) {
+        const endOfDay = this._popoverDate.endOf('day');
+        const dayInterval = intervalFrom(this._popoverDate, endOfDay);
+        const endIndex = startIndex + MONTH_LOAD_MORE_OFFSET;
+        const computedEvents = this._eventData.computeEventsOccurrences(
+            events.slice(startIndex, endIndex),
+            dayInterval
+        );
+        if (endIndex >= events.length) {
+            this.popoverEnableInfiniteLoading = false;
+        }
+
+        const occurrences = [];
+        computedEvents.forEach((evt) => {
+            evt.occurrences.forEach((occ) => {
+                const occurrence = { ...occ };
+                occurrence.overflowsCell = false;
+                occurrence.event = evt;
+
+                // If the event is a reference line,
+                // use the start date as an end date too
+                const to = occ.to ? occ.to : occ.from;
+                
+                occurrence.startsInPreviousCell =
+                    occ.from.startOf('day') < this._popoverDate.startOf('day');
+                occurrence.endsInLaterCell = to.endOf('day') > endOfDay;
+                occurrences.push(occurrence);
+            });
+        });
+        occurrences.sort((a, b) => {
+            return a.from - b.from;
+        });
+        return occurrences;
     }
 
     /**
@@ -1725,7 +1741,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.columns.forEach((col) => {
             col.cells.forEach((cell) => {
                 const button = this.template.querySelector(
-                    `[data-element-id="lightning-button-month-show-more"][data-start="${cell.start}"]`
+                    `[data-element-id="avonni-button-month-show-more"][data-start="${cell.start}"]`
                 );
                 if (cell.overflowingEvents) {
                     button.classList.remove('slds-hide');
@@ -1931,26 +1947,43 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     handleMonthCellShowMoreClick(event) {
         // Get the cell that contains the show more button
-        const columnIndex = Number(event.currentTarget.dataset.columnIndex);
-        const start = Number(event.currentTarget.dataset.start);
-        const startDate = this.createDate(start);
-        const cell = this.columns[columnIndex].cells.find((c) => {
-            return c.start === start;
-        });
-
-        // Create occurrences for the events in the cell
-        const occurrences = this.getMonthCellOccurrences(cell, startDate);
-
-        // Open the popover
         const { x, width } = event.currentTarget.getBoundingClientRect();
-        const buttonCenter = x + width / 2;
+        const start = Number(event.currentTarget.dataset.start);
+        this._popoverDate = this.createDate(start);
+        const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
+        const dayData = this._eventData.eventsPerDayMap[dayKey];
+        const events = dayData.events;
 
-        this._popoverPosition = { x: buttonCenter, y: event.clientY };
-        this.popoverElement.open({ events: occurrences, label: startDate.toFormat('cccc d') });
-        this.popoverElement.classList.remove('slds-hide');
+        // Display a loading spinner on the button
+        if (events.length > MONTH_LOAD_MORE_OFFSET) {
+            this.popoverEnableInfiniteLoading = true;
+            event.currentTarget.isButtonLoading = true;
+        }
 
         requestAnimationFrame(() => {
-            this.positionPopover();
+            requestAnimationFrame(() => {
+                // Create occurrences for the events in the cell
+                const occurrences = this.getPopoverEventsOccurrences(events);
+
+                // Open the popover
+                const buttonCenter = x + width / 2;
+                this._popoverPosition = { x: buttonCenter, y: event.clientY };
+                this.popoverElement.open({
+                    events: occurrences,
+                    label: this._popoverDate.toFormat('cccc d')
+                });
+                this.popoverElement.classList.remove('slds-hide');
+
+                // Position the popover and hide the loading spinner
+                requestAnimationFrame(() => {
+                    this.positionPopover();
+
+                    const button = this.template.querySelector(
+                        `[data-element-id="avonni-button-month-show-more"][data-start="${start}"]`
+                    );
+                    button.isButtonLoading = false;
+                });
+            });
         });
     }
 
@@ -2166,6 +2199,30 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         this._showPlaceholderOccurrence = true;
         this.handleHiddenEventMouseDown(event);
+    }
+
+    /**
+     * Handle the loading event coming from the show more popover.
+     *
+     * @param {Event} event `loadmore` event.
+     */
+    handlePopoverLoadMore(event) {
+        const eventsLength = event.detail.eventsLength;
+        this.popoverIsLoading = true;
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
+                const dayData = this._eventData.eventsPerDayMap[dayKey];
+                const events = dayData.events;
+                const occurrences = this.getPopoverEventsOccurrences(
+                    events,
+                    eventsLength
+                );
+                this.popoverElement.addEvents(occurrences);
+                this.popoverIsLoading = false;
+            });
+        });
     }
 
     /**

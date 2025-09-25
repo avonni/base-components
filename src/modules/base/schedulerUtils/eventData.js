@@ -199,6 +199,26 @@ export default class SchedulerEventData {
     }
 
     /**
+    * Compute the events for the given interval.
+    * 
+    * @param {object[]} events Array of events to compute.
+    * @param {Interval} interval Interval of time in which the events occurrences should be happening.
+    * @returns {object[]} Array of computed events.
+    */
+    computeEventsOccurrences(events, interval) {
+        return events.reduce((computedEvents, evt) => {
+            const event = { ...evt };
+            this.updateEventDefaults(event, true, interval);
+            const computedEvent = new SchedulerEvent(event);
+
+            if (computedEvent.occurrences.length) {
+                computedEvents.push(computedEvent);
+            }
+            return computedEvents;
+        }, []);
+    }
+
+    /**
      * Create a Luxon DateTime object from a date, including the timezone.
      *
      * @param {string|number|Date} date Date to convert.
@@ -375,16 +395,7 @@ export default class SchedulerEventData {
         }
 
         // Compute the event occurrences
-        const computedEvents = eventsInTimeFrame.reduce((evts, evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event, true, interval);
-            const computedEvent = new SchedulerEvent(event);
-
-            if (computedEvent.occurrences.length) {
-                evts.push(computedEvent);
-            }
-            return evts;
-        }, []);
+        const computedEvents = this.computeEventsOccurrences(eventsInTimeFrame, interval);
         return { events: computedEvents, eventsPerDayMap };
     }
 

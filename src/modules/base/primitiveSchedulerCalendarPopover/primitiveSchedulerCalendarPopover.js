@@ -8,6 +8,8 @@ const LOADING_THRESHOLD = 60;
 export default class PrimitiveSchedulerCalendarPopover extends LightningElement {
     @api dateFormat;
     @api hiddenActions;
+    @api enableInfiniteLoading;
+    @api isLoading;
     @api preventPastEventCreation;
     @api readOnly;
     @api resources;
@@ -66,6 +68,17 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+    * Add the given events to the existing events.
+    * 
+    * @param {object[]} events Array of events to add.
+    * @public
+    */
+    @api
+    addEvents(events = []) {
+        this.events = this.events.concat(events);
+    }
 
     /**
      * Set the focus on the close button.
@@ -257,8 +270,9 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
             newIndex = this._startIndex - LOADING_OFFSET;
         } else if (loadDown) {
             const nextIndex = this._startIndex + LOADING_OFFSET;
-            const maxIndex =
-                this.events.length - MAX_LOADED_EVENTS - LOADING_OFFSET;
+            const maxIndex = this.enableInfiniteLoading
+                ? nextIndex
+                : this.events.length - MAX_LOADED_EVENTS - LOADING_OFFSET;
             newIndex = Math.min(nextIndex, maxIndex);
         }
         newIndex = Math.max(newIndex, 0);
@@ -266,6 +280,14 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
         if (!isNaN(newIndex) && this._startIndex !== newIndex) {
             const topItem = this._getEventFromPosition(popoverTop);
             this._startIndex = newIndex;
+            const loadedEvents = this.loadedEvents;
+            const lastLoadedEvent =
+                loadedEvents && loadedEvents[loadedEvents.length - 1];
+            const allEventsLoaded =
+                this.events.length === lastLoadedEvent.index + 1;
+            if (allEventsLoaded && this.enableInfiniteLoading) {
+                this._dispatchLoadMore();
+            }
 
             requestAnimationFrame(() => {
                 // Move the scroll bar back to the previous top item
@@ -331,5 +353,16 @@ export default class PrimitiveSchedulerCalendarPopover extends LightningElement 
      */
     _dispatchEventMouseDown(detail) {
         this.dispatchEvent(new CustomEvent('eventmousedown', { detail }));
+    }
+
+    /**
+    * Dispatch the `loadmore` event.
+    */
+    _dispatchLoadMore() {
+        this.dispatchEvent(new CustomEvent('loadmore', {
+            detail: {
+                eventsLength: this.events.length
+            }
+        }));
     }
 }
