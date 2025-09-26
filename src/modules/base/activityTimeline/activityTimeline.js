@@ -200,11 +200,6 @@ export default class ActivityTimeline extends LightningElement {
 
         if (this.isTimelineHorizontal) {
             this.initHorizontalTimeline();
-
-            window.addEventListener(
-                'keydown',
-                this.handleHorizontalTimelineKeyDown
-            );
         }
     }
 
@@ -1045,6 +1040,14 @@ export default class ActivityTimeline extends LightningElement {
         this.horizontalTimeline = new HorizontalActivityTimeline(
             this,
             this.sortedItems
+        );
+        window.removeEventListener(
+            'keydown',
+            this.handleHorizontalTimelineKeyDown
+        );
+        window.addEventListener(
+            'keydown',
+            this.handleHorizontalTimelineKeyDown
         );
     }
 

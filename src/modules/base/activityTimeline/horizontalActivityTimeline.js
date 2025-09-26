@@ -479,6 +479,10 @@ export class HorizontalActivityTimeline {
                     .append('g')
                     .attr('id', 'timeline-item-' + item.name)
                     .attr('class', 'avonni-horizontal-activity-timeline__item')
+                    .attr(
+                        'data-element-id',
+                        'avonni-primitive-activity-timeline-item'
+                    )
                     .attr('data-name', item.name)
                     .attr('tabindex', 0);
 
