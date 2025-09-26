@@ -145,6 +145,7 @@
                                     "
                                     available-days-of-the-week={availableDaysOfTheWeek}
                                     headers={dayHeaders}
+                                    is-mobile-view={isMobileView}
                                     start={start}
                                     time-span={dayHeadersTimeSpan}
                                     timezone={timezone}
@@ -328,7 +329,9 @@
                                                                 avonni-scheduler__calendar-cell-month-day
                                                             "
                                                         >
-                                                            {cell.day}
+                                                            <span
+                                                                >{cell.day}</span
+                                                            >
                                                         </div>
                                                         <!-- Placeholders used to take space in cells the multi-day events go through -->
                                                         <div
@@ -467,6 +470,7 @@
                                                     onprivatefocus={handleEventFocus}
                                                     onprivatecontextmenu={handleEventContextMenu}
                                                     onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                                    onprivatemouseclick={handleEventMouseClick}
                                                     onprivatemouseenter={handleEventMouseEnter}
                                                     onprivatemouseleave={handleEventMouseLeave}
                                                     onprivatedblclick={handleEventDoubleClick}

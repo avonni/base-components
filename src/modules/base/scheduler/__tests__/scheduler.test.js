@@ -97,6 +97,7 @@ describe('Scheduler', () => {
             expect(element.hideSidePanel).toBeFalsy();
             expect(element.hideToolbar).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
+            expect(element.isMobileView).toBeFalsy();
             expect(element.labelNoEventsFound).toBe(
                 'No events for the selected date.'
             );
@@ -1733,6 +1734,46 @@ describe('Scheduler', () => {
                         '[data-element-id="lightning-spinner"]'
                     );
                     expect(spinner).toBeTruthy();
+                });
+            });
+        });
+
+        describe('isMobileView', () => {
+            it('agenda display', () => {
+                element.isMobileView = true;
+                element.selectedDisplay = 'agenda';
+
+                return Promise.resolve().then(() => {
+                    const agenda = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-agenda"]'
+                    );
+                    expect(agenda.isMobileView).toBeTruthy();
+                });
+            });
+
+            it('calendar display', () => {
+                element.isMobileView = true;
+                element.selectedDisplay = 'calendar';
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                    );
+                    expect(calendar.isMobileView).toBeTruthy();
+                });
+            });
+
+            it('timeline display', () => {
+                element.isMobileView = true;
+                element.selectedDisplay = 'timeline';
+                element.resources = RESOURCES;
+                element.selectedResources = ['resource-1'];
+
+                return Promise.resolve().then(() => {
+                    const timeline = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    expect(timeline.isMobileView).toBeTruthy();
                 });
             });
         });

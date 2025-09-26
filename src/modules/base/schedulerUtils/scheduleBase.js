@@ -1062,6 +1062,30 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * Handle the cursor clicking an event.
+     *
+     * @param {Event} event `privatemouseclick` event fired by a primitive event occurrence.
+     */
+    handleEventMouseClick(event) {
+        /**
+         * The event fired when the mouse clicks an event.
+         *
+         * @event
+         * @name eventmouseclick
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventmouseclick', {
+                detail: event.detail
+            })
+        );
+    }
+
+    /**
      * Handle the `privatecontextmenu` event fired by a primitive event occurrence. Select the event and open its context menu.
      *
      * @param {Event} event

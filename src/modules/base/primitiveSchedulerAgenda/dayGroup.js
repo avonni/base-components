@@ -20,11 +20,12 @@ export default class SchedulerAgendaDayGroup {
      * @type {string}
      */
     get dayClass() {
-        return classSet(
-            'avonni-scheduler__agenda-day slds-grid slds-m-right_small slds-grid_vertical-align-center slds-grid_align-center'
-        )
+        return classSet('slds-grid')
             .add({
-                'avonni-scheduler__agenda-day_today': this.isToday
+                'avonni-scheduler__agenda-day_today': this.isToday,
+                'avonni-scheduler__agenda-day slds-grid_vertical-align-center slds-grid_align-center slds-m-right_small':
+                    !this.isMobileView,
+                'avonni-scheduler__agenda-day_small': this.isMobileView
             })
             .toString();
     }
@@ -80,7 +81,9 @@ export default class SchedulerAgendaDayGroup {
      * @type {string}
      */
     get weekday() {
-        return this.date.toFormat('cccc');
+        return this.isMobileView
+            ? this.date.toFormat('ccc')
+            : this.date.toFormat('cccc');
     }
 
     /**
