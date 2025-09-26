@@ -1865,6 +1865,8 @@ export class HorizontalActivityTimeline {
      * Handles moving the interval to the left using the keyboard arrow key.
      */
     handleIntervalKeyboardScrollLeft() {
+        this.handleMouseOutOfPopover();
+
         const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
         let position =
             this.scrollTimeScale(this._intervalMinDate) - SCROLL_STEP;
@@ -1878,11 +1880,15 @@ export class HorizontalActivityTimeline {
      * Handles moving the interval to the right using the keyboard arrow key.
      */
     handleIntervalKeyboardScrollRight() {
+        this.handleMouseOutOfPopover();
+
         const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
+        const width = Number(this._timeIntervalSelector.attr('width'));
+        const startMaxXPosition = maxXPosition - width;
         let position =
             this.scrollTimeScale(this._intervalMinDate) + SCROLL_STEP;
-        if (position > maxXPosition) {
-            position = maxXPosition;
+        if (position > startMaxXPosition) {
+            position = startMaxXPosition;
         }
         this.moveIntervalToPosition(position);
     }
