@@ -14,6 +14,9 @@ describe('Button', () => {
             is: Button
         });
         document.body.appendChild(element);
+
+        // PointerEvent is not supported in Jest
+        global.window.PointerEvent = MouseEvent;
     });
 
     describe('Attributes', () => {
