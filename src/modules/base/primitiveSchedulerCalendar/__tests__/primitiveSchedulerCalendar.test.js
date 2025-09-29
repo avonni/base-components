@@ -194,6 +194,10 @@ describe('Primitive Scheduler Calendar', () => {
             is: PrimitiveSchedulerCalendar
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     /*
@@ -943,7 +947,7 @@ describe('Primitive Scheduler Calendar', () => {
                     });
             });
 
-            it('Primitive Scheduler Calendar: events, month time span, show more popover', () => {
+            it('Events, month time span, show more popover', () => {
                 element.events = SELECTED_DATE_EVENTS;
                 element.selectedResources = ALL_RESOURCES;
                 element.resources = RESOURCES;
@@ -967,6 +971,7 @@ describe('Primitive Scheduler Calendar', () => {
                             `+${SELECTED_DATE_EVENTS.length} more`
                         );
                         showMoreButton.click();
+                        jest.runAllTimers();
                         expect(openSpy).toHaveBeenCalled();
                         const call = openSpy.mock.calls[0][0];
                         expect(call.events).toHaveLength(
@@ -1144,12 +1149,12 @@ describe('Primitive Scheduler Calendar', () => {
                     const call = openSpy.mock.calls[0][0];
                     expect(call.events).toHaveLength(2);
 
-                    expect(call.events[0].event.name).toBe('event-2');
-                    expect(call.events[1].event.name).toBe('disabled-event');
-                    expect(call.events[1].startsInPreviousCell).toBeTruthy();
-                    expect(call.events[1].endsInLaterCell).toBeTruthy();
-                    expect(call.events[0].startsInPreviousCell).toBeFalsy();
-                    expect(call.events[0].endsInLaterCell).toBeFalsy();
+                    expect(call.events[0].event.name).toBe('disabled-event');
+                    expect(call.events[0].startsInPreviousCell).toBeTruthy();
+                    expect(call.events[0].endsInLaterCell).toBeTruthy();
+                    expect(call.events[1].event.name).toBe('event-2');
+                    expect(call.events[1].startsInPreviousCell).toBeFalsy();
+                    expect(call.events[1].endsInLaterCell).toBeFalsy();
                 });
             });
 

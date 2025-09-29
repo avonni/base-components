@@ -978,8 +978,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             event: this.eventData,
             from: this.from,
             to: this.to,
-            endOfTo: this.occurrence.endOfTo,
-            startOfFrom: this.occurrence.startOfFrom
+            endOfTo: this.occurrence && this.occurrence.endOfTo,
+            startOfFrom: this.occurrence && this.occurrence.startOfFrom
         });
     }
 
@@ -1114,8 +1114,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             event: this.eventData,
             from: this.from,
             to: this.to,
-            endOfTo: this.occurrence.endOfTo,
-            startOfFrom: this.occurrence.startOfFrom
+            endOfTo: this.occurrence && this.occurrence.endOfTo,
+            startOfFrom: this.occurrence && this.occurrence.startOfFrom
         });
     }
 

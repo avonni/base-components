@@ -310,6 +310,8 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
         element.variant = 'calendar-month';
         element.occurrence = {
             firstAllowedDate: dateTimeObjectFrom(new Date(2021, 11, 2)),
+            startOfFrom: new Date(2021, 11, 2),
+            endOfTo: new Date(2021, 11, 4, 23, 59),
             startsInPreviousCell: true,
             endsInLaterCell: true
         };
@@ -373,6 +375,8 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
         element.timezone = 'Asia/Shanghai';
         element.variant = 'calendar-month';
         element.occurrence = {
+            startOfFrom: new Date(2021, 11, 2),
+            endOfTo: new Date(2021, 11, 2, 23, 59),
             firstAllowedDate: dateTimeObjectFrom(new Date(2021, 11, 2), {
                 zone: 'Asia/Shanghai'
             })

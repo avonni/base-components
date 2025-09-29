@@ -373,7 +373,8 @@ const isAllDay = ({ event, from, to, endOfTo, startOfFrom }) => {
     const startAtBeginningOfDay = startOfFrom.ts === from.ts;
     // A time set to 23:59 is considered to be at the end of the day,
     // even if the seconds/ms are not at 59
-    const normalizedToTime = new Date(to).setMilliseconds(59999);
+    let normalizedToTime = new Date(to).setSeconds(59);
+    normalizedToTime = new Date(normalizedToTime).setMilliseconds(999);
     const endAtEndOfDay = endOfTo.ts === normalizedToTime;
     return event.allDay || (startAtBeginningOfDay && endAtEndOfDay);
 };
@@ -387,7 +388,7 @@ const isAllDay = ({ event, from, to, endOfTo, startOfFrom }) => {
  * @returns {boolean} True if the event spans on more than one day.
  */
 const spansOnMoreThanOneDay = ({ event, from, to, endOfTo, startOfFrom }) => {
-    if (!event || !from || !to) {
+    if (!event || !from || !to || !endOfTo || !startOfFrom) {
         return false;
     }
     const differentStartAndEndDay = from.day !== to.day;
