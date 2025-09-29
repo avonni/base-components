@@ -1,15 +1,13 @@
 <template>
-    <template if:true={isVertical}>
-        <div if:true={showSelectedItems} class="slds-m-bottom_medium">
-            <avonni-pill-container
-                actions={pillActions}
-                items={selectedPills}
-                data-element-id="avonni-pill-container-vertical"
-                data-group-name="focusable-element"
-                onactionclick={handleSelectedItemRemove}
-            ></avonni-pill-container>
-        </div>
-    </template>
+    <div if:true={showVerticalSelectedItems} class="slds-m-bottom_medium">
+        <avonni-pill-container
+            actions={pillActions}
+            items={selectedPills}
+            data-element-id="avonni-pill-container-vertical"
+            data-group-name="focusable-element"
+            onactionclick={handleSelectedItemRemove}
+        ></avonni-pill-container>
+    </div>
     <ul
         class={computedFiltersWrapperClass}
         data-element-id="ul"
@@ -55,16 +53,15 @@
             </li>
         </template>
     </ul>
-    <div if:false={isVertical} class="slds-m-top_x-small">
-        <avonni-pill-container
-            if:true={showSelectedItems}
-            actions={pillActions}
-            items={selectedPills}
-            data-element-id="avonni-pill-container-horizontal"
-            data-group-name="focusable-element"
-            onactionclick={handleSelectedItemRemove}
-        ></avonni-pill-container>
-    </div>
+    <avonni-pill-container
+        if:true={showHorizontalSelectedItems}
+        class="slds-m-top_x-small slds-show"
+        actions={pillActions}
+        items={selectedPills}
+        data-element-id="avonni-pill-container-horizontal"
+        data-group-name="focusable-element"
+        onactionclick={handleSelectedItemRemove}
+    ></avonni-pill-container>
     <template if:true={showApplyResetButtons}>
         <lightning-button
             class="slds-m-right_x-small"
