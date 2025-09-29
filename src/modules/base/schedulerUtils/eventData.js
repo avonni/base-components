@@ -348,7 +348,7 @@ export default class SchedulerEventData {
             return [];
         }
         const eventsPerDayMap = {};
-        const eventsInTimeFrame = [];
+        const eventsInTimeFrame = new Set();
 
         // Keep only events that are in the currently visible interval
         for (let i = 0; i < events.length; i++) {
@@ -382,31 +382,22 @@ export default class SchedulerEventData {
                     intersection
                 });
             } else {
-                eventsInTimeFrame.push(event);
+                eventsInTimeFrame.add(event);
             }
         }
 
         if (skipOverflowingEvents) {
             // Keep only 10 events per day
             Object.values(eventsPerDayMap).forEach((dayData) => {
-                dayData.events.sort((a, b) => {
-                    // The recurring events are pushed to the bottom of the list.
-                    // Otherwise, they would always appear first.
-                    if (b.recurrence) {
-                        return -1;
-                    } else if (a.recurrence) {
-                        return 1;
-                    }
-                    return a.from - b.from;
-                });
-
-                eventsInTimeFrame.push(...dayData.events.slice(0, 10));
+                for (let i = 0; i < dayData.events.length && i < 10; i++) {
+                    eventsInTimeFrame.add(dayData.events[i]);
+                }
             });
         }
 
         // Compute the event occurrences
         const computedEvents = this.computeEventsOccurrences(
-            eventsInTimeFrame,
+            Array.from(eventsInTimeFrame),
             interval
         );
         return { events: computedEvents, eventsPerDayMap };
