@@ -252,12 +252,29 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Check if selectedPills is populated and if items are not hidden.
+     * True if some filter options are selected, and the filter menu is horizontal.
      *
      * @type {boolean}
      */
-    get showSelectedItems() {
-        return !this.hideSelectedItems && this.selectedPills.length;
+    get showHorizontalSelectedItems() {
+        return (
+            !this.isVertical &&
+            !this.hideSelectedItems &&
+            this.selectedPills.length
+        );
+    }
+
+    /**
+     * True if some filter options are selected, and the filter menu is vertical.
+     *
+     * @type {boolean}
+     */
+    get showVerticalSelectedItems() {
+        return (
+            this.isVertical &&
+            !this.hideSelectedItems &&
+            this.selectedPills.length
+        );
     }
 
     /*
