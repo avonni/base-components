@@ -219,6 +219,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this._connected) {
             this.initHeaders();
             this._dayHeadersLoading = false;
+            this._hourHeadersLoading = false;
         }
     }
 
@@ -2266,7 +2267,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (events.length > POPOVER_LOAD_MORE_OFFSET) {
             this.popoverEnableInfiniteLoading = true;
         }
-        
+
         const occurrences = this.getPopoverEventsOccurrences(events);
         this.popoverElement.open({
             events: occurrences,
