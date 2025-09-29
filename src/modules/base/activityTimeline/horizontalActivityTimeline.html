@@ -80,7 +80,9 @@
                 slds-is-absolute
                 slds-p-around_none
             "
+            aria-live="polite"
             name={selectedItem.name}
+            role="tooltip"
             data-element-id="avonni-horizontal-activity-timeline__item-popover"
             data-name={selectedItem.name}
         >
@@ -127,16 +129,16 @@
                                     href={selectedItem.href}
                                     onclick={handleAnchorTagClick}
                                 >
-                                    <h3 class="slds-truncate">
+                                    <div class="slds-truncate">
                                         {selectedItem.title}
-                                    </h3>
+                                    </div>
                                 </a>
-                                <h3
+                                <div
                                     if:false={selectedItem.href}
                                     class="slds-truncate"
                                 >
                                     {selectedItem.title}
-                                </h3>
+                                </div>
                             </div>
                             <!-- Formatted date -->
                             <div
@@ -189,6 +191,7 @@
                                 slds-p-around_none
                                 slds-m-around_none
                             "
+                            alternative-text="Close popover"
                             icon-name="utility:close"
                             size="medium"
                             variant="bare"
