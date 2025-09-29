@@ -1876,10 +1876,7 @@ export default class Scheduler extends LightningElement {
             }
 
             events.sort((first, second) => {
-                return this.createDate(first.from) <
-                    this.createDate(second.from)
-                    ? -1
-                    : 1;
+                return new Date(first.from) < new Date(second.from) ? -1 : 1;
             });
             this.computedEvents = events;
         };
