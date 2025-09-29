@@ -96,17 +96,21 @@ export default class SchedulerEventData {
     addToEventsPerDayMap({ eventsPerDayMap, event, interval, intersection }) {
         const addEventToMap = (date) => {
             const dayKey = `${date.month}-${date.day}`;
-            const resources = this.selectedResources.filter((r) =>
-                event.resourceNames.includes(r)
-            );
+            let count = 1;
+            if (event.resourceNames) {
+                const resources = this.selectedResources.filter((r) =>
+                    event.resourceNames.includes(r)
+                );
+                count = resources.length;
+            }
 
             if (eventsPerDayMap[dayKey]) {
                 const dayData = eventsPerDayMap[dayKey];
-                dayData.count += resources.length;
+                dayData.count += count;
                 dayData.events.push(event);
             } else {
                 eventsPerDayMap[dayKey] = {
-                    count: resources.length,
+                    count,
                     events: [event]
                 };
             }
