@@ -24,10 +24,10 @@ import { nextAllowedDay } from './dateComputations';
 export class SchedulerEventOccurrence {
     constructor(props) {
         Object.assign(this, props);
-        
+
         this.offsetSide = 0;
-        this.startOfFrom = this.from.startOf('day');
-        this.endOfTo = this.to.endOf('day');
+        this.startOfFrom = this.from ? this.from.startOf('day') : null;
+        this.endOfTo = this.to ? this.to.endOf('day') : null;
     }
 
     /**
