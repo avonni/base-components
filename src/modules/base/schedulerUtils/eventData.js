@@ -1,4 +1,9 @@
-import { addToDate, dateTimeObjectFrom } from 'c/luxonDateTimeUtils';
+import {
+    numberOfUnitsBetweenDates,
+    addToDate,
+    dateTimeObjectFrom,
+    intervalFrom
+} from 'c/luxonDateTimeUtils';
 import { deepCopy, normalizeArray } from 'c/utils';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
@@ -24,6 +29,7 @@ import { spansOnMoreThanOneDay } from './dateComputations';
  */
 export default class SchedulerEventData {
     eventDrag;
+    eventsPerDayMap = {};
     selection;
 
     constructor(schedule, props) {
@@ -66,8 +72,80 @@ export default class SchedulerEventData {
             return;
         }
 
-        this.events = this.getEventsInInterval();
+        const skipOverflowingEvents =
+            this.isCalendar && (this.schedule.isMonth || this.schedule.isYear);
+        const { events, eventsPerDayMap } = this.getEventsInInterval(
+            this.events,
+            this.visibleInterval,
+            skipOverflowingEvents
+        );
+        this.eventsPerDayMap = eventsPerDayMap;
+        this.events = events;
         this.refreshEvents();
+    }
+
+    /**
+     * Map the event objects to the days they span on.
+     * Used in the calendar month view, to avoid computing the event occurrences before they are visible.
+     *
+     * @param {object} eventsPerDayMap Object containing a key per visible day. The value of each key is an object containing the count and the events that day.
+     * @param {object} event Event object to add to the map.
+     * @param {Interval} intersection Time interval representing the intersection of the event with the visible interval.
+     * @param {Interval} interval Currently visible time interval.
+     */
+    addToEventsPerDayMap({ eventsPerDayMap, event, interval, intersection }) {
+        const addEventToMap = (date) => {
+            const dayKey = `${date.month}-${date.day}`;
+            let count = 1;
+            if (event.resourceNames) {
+                const resources = this.selectedResources.filter((r) =>
+                    event.resourceNames.includes(r)
+                );
+                count = resources.length;
+            }
+
+            if (eventsPerDayMap[dayKey]) {
+                const dayData = eventsPerDayMap[dayKey];
+                dayData.count += count;
+                dayData.events.push(event);
+            } else {
+                eventsPerDayMap[dayKey] = {
+                    count,
+                    events: [event]
+                };
+            }
+        };
+
+        if (event.recurrence) {
+            // If it is recurring, we have to create the event occurrences
+            // to know all of the days the event spans on
+            const evt = { ...event };
+            this.updateEventDefaults(evt, true, interval);
+            const computedEvent = new SchedulerEvent(evt);
+            const occurrences = computedEvent.occurrences;
+
+            if (occurrences.length) {
+                // Make sure the event is added only once for all of its resources
+                const firstResource = occurrences[0].resourceName;
+                const uniqueDateOccurrences = occurrences.filter((occ) => {
+                    return occ.resourceName === firstResource;
+                });
+                uniqueDateOccurrences.forEach((occurrence) => {
+                    addEventToMap(occurrence.from);
+                });
+            }
+        } else {
+            const daysCount = numberOfUnitsBetweenDates(
+                'day',
+                intersection.start,
+                intersection.end
+            );
+
+            for (let i = 0; i < daysCount; i++) {
+                const date = intersection.start.plus({ days: i });
+                addEventToMap(date);
+            }
+        }
     }
 
     /**
@@ -76,9 +154,11 @@ export default class SchedulerEventData {
      * @param {SchedulerEvent} event The event to add.
      */
     addToSingleAndMultiDayEvents(event) {
-        if (
-            spansOnMoreThanOneDay(event, event.computedFrom, event.computedTo)
-        ) {
+        const from = event.computedFrom;
+        const to = event.computedTo;
+        const endOfTo = to.endOf('day');
+        const startOfFrom = from.startOf('day');
+        if (spansOnMoreThanOneDay({ event, from, to, endOfTo, startOfFrom })) {
             this.multiDayEvents.push(event);
         } else {
             this.singleDayEvents.push(event);
@@ -130,6 +210,26 @@ export default class SchedulerEventData {
             this.eventDrag.cleanDraggedElement();
             this.eventDrag = null;
         }
+    }
+
+    /**
+     * Compute the events for the given interval.
+     *
+     * @param {object[]} events Array of events to compute.
+     * @param {Interval} interval Interval of time in which the events occurrences should be happening.
+     * @returns {object[]} Array of computed events.
+     */
+    computeEventsOccurrences(events, interval) {
+        return events.reduce((computedEvents, evt) => {
+            const event = { ...evt };
+            this.updateEventDefaults(event, true, interval);
+            const computedEvent = new SchedulerEvent(event);
+
+            if (computedEvent.occurrences.length) {
+                computedEvents.push(computedEvent);
+            }
+            return computedEvents;
+        }, []);
     }
 
     /**
@@ -247,35 +347,67 @@ export default class SchedulerEventData {
         return body.getBoundingClientRect();
     }
 
-    getEventsInInterval(events = this.events, interval = this.visibleInterval) {
+    getEventsInInterval(events, interval, skipOverflowingEvents) {
         if (!interval) {
             return [];
         }
-        const eventsInTimeFrame = events.filter((event) => {
+        const eventsPerDayMap = {};
+        const eventsInTimeFrame = new Set();
+
+        // Keep only events that are in the currently visible interval
+        for (let i = 0; i < events.length; i++) {
+            const event = events[i];
             const from = this.createDate(event.from);
+            if (!from) {
+                continue;
+            }
             let to = this.createDate(event.to);
-            if (event.allDay && !to) {
-                to = from.endOf('day');
+            if (!to) {
+                to = from.set({
+                    hour: 23,
+                    minute: 59,
+                    second: 59,
+                    millisecond: 999
+                });
             }
-            return (
+
+            const eventInterval = intervalFrom(from, to);
+            const intersection = interval.intersection(eventInterval);
+            const isInTimeFrame =
                 this.belongsToSelectedResources(event) &&
-                (interval.contains(from) ||
-                    interval.contains(to) ||
-                    (interval.isAfter(from) && interval.isBefore(to)) ||
-                    event.recurrence)
-            );
-        });
+                (event.recurrence || intersection);
 
-        return eventsInTimeFrame.reduce((computedEvents, evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event, true, interval);
-            const computedEvent = new SchedulerEvent(event);
-
-            if (computedEvent.occurrences.length) {
-                computedEvents.push(computedEvent);
+            if (!isInTimeFrame) {
+                continue;
             }
-            return computedEvents;
-        }, []);
+
+            if (skipOverflowingEvents) {
+                this.addToEventsPerDayMap({
+                    eventsPerDayMap,
+                    event,
+                    interval,
+                    intersection
+                });
+            } else {
+                eventsInTimeFrame.add(event);
+            }
+        }
+
+        if (skipOverflowingEvents) {
+            // Keep only 10 events per day
+            Object.values(eventsPerDayMap).forEach((dayData) => {
+                for (let i = 0; i < dayData.events.length && i < 10; i++) {
+                    eventsInTimeFrame.add(dayData.events[i]);
+                }
+            });
+        }
+
+        // Compute the event occurrences
+        const computedEvents = this.computeEventsOccurrences(
+            Array.from(eventsInTimeFrame),
+            interval
+        );
+        return { events: computedEvents, eventsPerDayMap };
     }
 
     /**
@@ -626,7 +758,15 @@ export default class SchedulerEventData {
         const visibleStart = interval.s;
         const from = this.createDate(event.from);
         const to = this.normalizedEventTo(event);
-        const isMultiDay = spansOnMoreThanOneDay(event, from, to);
+        const endOfTo = to.endOf('day');
+        const startOfFrom = from.startOf('day');
+        const isMultiDay = spansOnMoreThanOneDay({
+            event,
+            from,
+            to,
+            endOfTo,
+            startOfFrom
+        });
         const isCalendarMultiDay =
             isMultiDay && (this.isCalendar || this.isAgenda);
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;

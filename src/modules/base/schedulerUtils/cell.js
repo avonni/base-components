@@ -23,6 +23,7 @@ export default class SchedulerCell {
         this._startDate = dateTimeObjectFrom(this.start, {
             zone: this.timezone
         });
+        this.overflowingEvents = 0;
     }
 
     /**
@@ -102,22 +103,12 @@ export default class SchedulerCell {
     }
 
     /**
-     * Used by the calendar display. Array of events that overflow the cell.
-     *
-     * @type {object[]}
-     */
-    get overflowingEvents() {
-        const events = this.events.concat(this.placeholders);
-        return events.filter((event) => event.overflowsCell);
-    }
-
-    /**
      * Label of the "show more" button, in the calendar month display.
      *
      * @type {string}
      */
     get showMoreLabel() {
-        return `+${this.overflowingEvents.length} more`;
+        return `+${this.overflowingEvents} more`;
     }
 
     /**

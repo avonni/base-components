@@ -886,9 +886,10 @@ export class ScheduleBase extends LightningElement {
         const start = selectedDate.startOf('month');
         const end = selectedDate.endOf('month');
         const interval = intervalFrom(start, end);
-        const events = this._eventData.getEventsInInterval(
+        const { events } = this._eventData.getEventsInInterval(
             this.events,
-            interval
+            interval,
+            true
         );
         this.navCalendarMarkedDates = this.getMonthMarkedDates(
             selectedDate.month,

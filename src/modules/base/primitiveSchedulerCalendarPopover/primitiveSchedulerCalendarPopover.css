@@ -6,3 +6,7 @@
 .avonni-primitive-scheduler-calendar-popover__body {
     height: 240px;
 }
+
+.avonni-primitive-scheduler-calendar-popover__loading-spinner {
+    height: 3rem;
+}
