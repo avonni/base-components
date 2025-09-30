@@ -358,6 +358,9 @@ export default class SchedulerEventData {
         for (let i = 0; i < events.length; i++) {
             const event = events[i];
             const from = this.createDate(event.from);
+            if (!from) {
+                continue;
+            }
             let to = this.createDate(event.to);
             if (!to) {
                 to = from.set({
