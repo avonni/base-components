@@ -153,13 +153,44 @@ const removeFromDate = (date, unit, span) => {
     return date.plus(options);
 };
 
-const getStartOfWeek = (date) => {
-    const isSunday = date.weekday === 7;
-    if (isSunday) {
-        return date.startOf('day');
+/**
+ * Get the start of the week for a given date.
+ *
+ * @param {DateTime} date Date we want to get the start of the week for.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+ * @returns {DateTime} The start of the week, as a DateTime object.
+ */
+const getStartOfWeek = (date, weekStartDay = 0) => {
+    if (weekStartDay === 0) {
+        const isSunday = date.weekday === 7;
+        if (isSunday) {
+            return date.startOf('day');
+        }
+        const monday = date.startOf('week');
+        return removeFromDate(monday, 'day', 1);
     }
-    const monday = date.startOf('week');
-    return removeFromDate(monday, 'day', 1);
+    if (date.weekday >= weekStartDay) {
+        return removeFromDate(date, 'day', date.weekday - weekStartDay).startOf(
+            'day'
+        );
+    }
+    return removeFromDate(
+        date,
+        'day',
+        7 - (weekStartDay - date.weekday)
+    ).startOf('day');
+};
+
+/**
+ * Get the end of the week for a given date.
+ *
+ * @param {DateTime} date Date we want to get the end of the week for.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+ * @returns {DateTime} The end of the week, as a DateTime object.
+ */
+const getEndOfWeek = (date, weekStartDay = 0) => {
+    const start = getStartOfWeek(date, weekStartDay).minus({ millisecond: 1 });
+    return start.plus({ week: 1 });
 };
 
 /**
@@ -189,19 +220,27 @@ const getWeekNumber = (date) => {
  * @param {DateTime} end The ending date.
  * @returns {number} Number of units between the start and end dates.
  */
-const numberOfUnitsBetweenDates = (unit, start, end) => {
-    // Compensate the fact that luxon weeks start on Monday
-    const isWeek = unit === 'week';
-    let normalizedStart = isWeek ? addToDate(start, 'day', 1) : start;
-    let normalizedEnd = isWeek ? addToDate(end, 'day', 1) : end;
+const numberOfUnitsBetweenDates = ({ unit, start, end, weekStartDay = 0 }) => {
+    if (unit === 'week') {
+        // Transform "0" Sunday to a "7" Luxon Sunday
+        let count = 1;
+        let date = getStartOfWeek(start, weekStartDay);
+        const endWeek = getStartOfWeek(end, weekStartDay);
+        while (date < endWeek) {
+            date = addToDate(date, 'week', 1);
+            count++;
+        }
+        return count;
+    }
 
-    const interval = Interval.fromDateTimes(normalizedStart, normalizedEnd);
+    const interval = Interval.fromDateTimes(start, end);
     return interval.count(unit);
 };
 
 export {
     addToDate,
     dateTimeObjectFrom,
+    getEndOfWeek,
     getStartOfWeek,
     getWeekday,
     getWeekNumber,

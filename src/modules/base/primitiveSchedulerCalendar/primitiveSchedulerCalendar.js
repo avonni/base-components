@@ -384,6 +384,30 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get weekStartDay() {
+        return super.weekStartDay;
+    }
+    set weekStartDay(value) {
+        super.weekStartDay = value;
+
+        if (this._connected) {
+            const previousStart = this.start && this.start.ts;
+            this.setStartToBeginningOfUnit();
+
+            if (!this.start || previousStart !== this.start.ts) {
+                this.initHeaders();
+            }
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -599,11 +623,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     get hourHeadersStart() {
         const startOfDay = this.start.startOf('day');
         const endOfDay = this.start.endOf('day');
-        const numberOfHours = numberOfUnitsBetweenDates(
-            'hour',
-            startOfDay,
-            endOfDay
-        );
+        const numberOfHours = numberOfUnitsBetweenDates({
+            unit: 'hour',
+            start: startOfDay,
+            end: endOfDay
+        });
         const isSpringTimeChange = numberOfHours < 24;
         return isSpringTimeChange
             ? addToDate(this.start, 'day', 1)

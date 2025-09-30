@@ -632,6 +632,7 @@ export default class SchedulerEventData {
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
         event.schedulerStart = isCalendarMultiDay ? null : visibleStart;
         event.selectedResources = normalizeArray(this.selectedResources);
+        event.weekStartDay = this.schedule.weekStartDay;
 
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels

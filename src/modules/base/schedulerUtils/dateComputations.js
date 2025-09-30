@@ -332,19 +332,28 @@ const getDisabledWeekdaysLabels = (allowedDays) => {
  *
  * @param {DateTime} start Starting date.
  * @param {number[]} availableDaysOfTheWeek Array of available days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
  * @returns {DateTime} Sunday date of the first week to have available days.
  */
-const getFirstAvailableWeek = (start, availableDaysOfTheWeek) => {
+const getFirstAvailableWeek = (
+    start,
+    availableDaysOfTheWeek,
+    weekStartDay = 0
+) => {
     let date = dateTimeObjectFrom(start);
-    const availableDays = [...availableDaysOfTheWeek];
+
+    // Transform "0" Sunday to a "7" Luxon Sunday
+    const normalizedWeekStartDay = weekStartDay === 0 ? 7 : weekStartDay;
+    const availableDays = [...availableDaysOfTheWeek].sort();
     if (availableDays[0] === 0) {
-        // Transform "0" Sunday to a "7" Luxon Sunday
         availableDays[0] = 7;
-        availableDays.sort();
     }
 
     let hasAvailableDayThisWeek = false;
-    while (date.weekday !== 7 && !hasAvailableDayThisWeek) {
+    while (
+        date.weekday !== normalizedWeekStartDay &&
+        !hasAvailableDayThisWeek
+    ) {
         hasAvailableDayThisWeek = availableDays.includes(date.weekday);
         date = addToDate(date, 'day', 1);
     }

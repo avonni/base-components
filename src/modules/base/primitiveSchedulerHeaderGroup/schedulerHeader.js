@@ -2,6 +2,7 @@ import { generateUUID } from 'c/utils';
 import {
     dateTimeObjectFrom,
     addToDate,
+    getEndOfWeek,
     getStartOfWeek,
     numberOfUnitsBetweenDates
 } from 'c/luxonDateTimeUtils';
@@ -70,6 +71,7 @@ export default class SchedulerHeader {
         this.start = props.start;
         this.timezone = props.timezone;
         this.unit = props.unit;
+        this.weekStartDay = props.weekStartDay;
 
         this.initCells();
     }
@@ -140,15 +142,20 @@ export default class SchedulerHeader {
                     'day',
                     date.diff(this.start, 'days').days
                 );
-                this.numberOfCells =
-                    numberOfUnitsBetweenDates(unit, date, pushedEnd) / span;
+                const numberOfUnits = numberOfUnitsBetweenDates({
+                    unit,
+                    start: date,
+                    end: pushedEnd,
+                    weekStartDay: this.weekStartDay
+                });
+                this.numberOfCells = numberOfUnits / span;
             }
 
             // Compute the cell end
             let cellEnd = addToDate(date, unit, span - 1);
             cellEnd =
                 unit === 'week'
-                    ? cellEnd.plus({ day: 1 }).endOf(unit).minus({ day: 1 })
+                    ? getEndOfWeek(cellEnd, this.weekStartDay)
                     : cellEnd.endOf(unit);
 
             // If the current date is bigger than the reference end, stop adding cells
@@ -186,7 +193,7 @@ export default class SchedulerHeader {
             date = addToDate(cellEnd, unit, 1);
             date =
                 unit === 'week'
-                    ? date.plus({ day: 1 }).startOf(unit).minus({ day: 1 })
+                    ? getStartOfWeek(date, this.weekStartDay)
                     : date.startOf(unit);
         }
 
@@ -209,8 +216,8 @@ export default class SchedulerHeader {
 
         // Compensate the fact that luxon weeks start on Monday
         if (unit === 'week') {
-            dateUnit = addToDate(date, 'day', 1).endOf(unit);
-            endUnit = addToDate(end, 'day', 1).endOf(unit);
+            dateUnit = getEndOfWeek(date, this.weekStartDay);
+            endUnit = getEndOfWeek(end, this.weekStartDay);
         } else {
             dateUnit = date.endOf(unit);
             endUnit = end.endOf(unit);
@@ -292,10 +299,7 @@ export default class SchedulerHeader {
                     end = end.set({ days: start.day - 1 });
                 }
                 if (unit === 'week') {
-                    if (start.weekday === 1) {
-                        end = addToDate(end, 'day', 1);
-                    }
-                    end = end.set({ weekday: start.weekday - 1 });
+                    end = getEndOfWeek(end, this.weekStartDay);
                 }
                 if (unit !== 'hour' && start.hour !== 0) {
                     end = end.set({ hours: start.hour - 1 });
@@ -343,9 +347,13 @@ export default class SchedulerHeader {
 
                     // Normalize the beginning of the week, because Luxon's week start on Monday
                     const normalizedStart =
-                        unit === 'week' ? addToDate(start, 'day', 1) : start;
+                        unit === 'week'
+                            ? getStartOfWeek(start, this.weekStartDay)
+                            : start;
                     const normalizedEnd =
-                        unit === 'week' ? addToDate(end, 'day', 1) : end;
+                        unit === 'week'
+                            ? getEndOfWeek(end, this.weekStartDay)
+                            : end;
 
                     const startUnit = normalizedStart.startOf(unit);
                     const endUnit = normalizedEnd.startOf(unit);

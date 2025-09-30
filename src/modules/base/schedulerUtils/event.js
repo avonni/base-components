@@ -1,4 +1,8 @@
-import { addToDate, dateTimeObjectFrom } from 'c/luxonDateTimeUtils';
+import {
+    addToDate,
+    dateTimeObjectFrom,
+    getStartOfWeek
+} from 'c/luxonDateTimeUtils';
 import {
     deepCopy,
     generateUUID,
@@ -103,6 +107,7 @@ export default class SchedulerEvent {
         this.name = props.name;
         this.theme = props.theme;
         this.title = props.title;
+        this.weekStartDay = props.weekStartDay;
 
         this.initOccurrences();
     }
@@ -525,11 +530,11 @@ export default class SchedulerEvent {
                         // If the first weekday is before the starting date,
                         // go to the next week
                         if (weekdayIndex === undefined) {
-                            startingDate = addToDate(
-                                startingDate,
-                                'week',
-                                1
-                            ).startOf('week');
+                            const nextWeek = addToDate(startingDate, 'week', 1);
+                            startingDate = getStartOfWeek(
+                                nextWeek,
+                                this.weekStartDay
+                            );
                         }
                     }
                 } else {

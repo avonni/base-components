@@ -1,7 +1,4 @@
 import { DEFAULT_ACTION_NAMES } from 'c/schedulerUtils';
-const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
-const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
-const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const DEFAULT_COLUMNS = [
     {
         label: 'Resource',
@@ -48,11 +45,6 @@ const DEFAULT_DIALOG_LABELS = {
     deleteTitle: 'Delete Event',
     deleteMessage: 'Are you sure you want to delete this event?',
     newEventTitle: 'New event'
-};
-const DEFAULT_EVENTS_LABELS = {
-    center: {
-        fieldName: 'title'
-    }
 };
 const DEFAULT_EVENTS_DISPLAY_FIELDS = [
     {
@@ -126,14 +118,7 @@ const DISPLAYS = {
     valid: ['agenda', 'calendar', 'timeline']
 };
 
-const DEFAULT_DATE_FORMAT = 'ff';
-
 const EDIT_MODES = ['all', 'one'];
-
-const EVENTS_THEMES = {
-    valid: ['default', 'transparent', 'line', 'hollow', 'rounded'],
-    default: 'default'
-};
 
 const EVENTS_PALETTES = {
     valid: [
@@ -202,30 +187,6 @@ const PALETTES = {
     ]
 };
 
-const RECURRENCES = [
-    {
-        name: 'daily',
-        unit: 'day'
-    },
-    {
-        name: 'weekly',
-        unit: 'week'
-    },
-    {
-        name: 'monthly',
-        unit: 'month'
-    },
-    {
-        name: 'yearly',
-        unit: 'year'
-    }
-];
-
-const REFERENCE_LINE_VARIANTS = {
-    valid: ['default', 'inverse', 'success', 'warning', 'error', 'lightest'],
-    default: 'default'
-};
-
 const SIDE_PANEL_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
@@ -238,15 +199,10 @@ const VARIANTS = {
 
 export {
     BIG_NUMBER_OF_EVENTS,
-    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
-    DEFAULT_AVAILABLE_TIME_FRAMES,
-    DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_COLUMNS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
-    DEFAULT_DATE_FORMAT,
     DEFAULT_DIALOG_LABELS,
-    DEFAULT_EVENTS_LABELS,
     DEFAULT_EVENTS_DISPLAY_FIELDS,
     DEFAULT_LABEL_NO_EVENTS_FOUND,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
@@ -254,11 +210,8 @@ export {
     DEFAULT_START_DATE,
     DISPLAYS,
     EDIT_MODES,
-    EVENTS_THEMES,
     EVENTS_PALETTES,
     PALETTES,
-    RECURRENCES,
-    REFERENCE_LINE_VARIANTS,
     SIDE_PANEL_POSITIONS,
     TIME_SPANS,
     VARIANTS
