@@ -135,11 +135,11 @@ export default class SchedulerEventData {
                 });
             }
         } else {
-            const daysCount = numberOfUnitsBetweenDates(
-                'day',
-                intersection.start,
-                intersection.end
-            );
+            const daysCount = numberOfUnitsBetweenDates({
+                unit: 'day',
+                start: intersection.start,
+                end: intersection.end
+            });
 
             for (let i = 0; i < daysCount; i++) {
                 const date = intersection.start.plus({ days: i });
