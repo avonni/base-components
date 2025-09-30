@@ -1117,7 +1117,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const span = this.timeSpan.span;
         const oneDay = this.isDay && span <= 1;
         const weekday = startDate.weekday === 7 ? 0 : startDate.weekday;
-        let availableDays = this.availableDaysOfTheWeek;
+        let availableDays = [...this.availableDaysOfTheWeek];
 
         if (oneDay) {
             availableDays = [weekday];
@@ -1133,6 +1133,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 const nextDay = this.availableDaysOfTheWeek[dayIndex + 1];
                 dayIndex = nextDay ? dayIndex + 1 : 0;
             }
+        } else if (this.weekStartDay !== 0) {
+            availableDays.sort();
+            const firstDayIndex = availableDays.findIndex((dayNumber) => {
+                return dayNumber >= this.weekStartDay;
+            });
+            const slice = availableDays.splice(0, firstDayIndex);
+            availableDays = [...availableDays, ...slice];
         }
         return availableDays;
     }
@@ -1252,15 +1259,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             };
             let weekday = availableDays[i];
 
-            if (startDate.weekday === 7 && weekday !== 0) {
-                // Make sure the day will be set to the next weekday,
-                // not the previous weekday
-                startDate = addToDate(startDate, 'day', 1);
-            } else if (weekday === 0) {
-                // Luxon's Sunday is 7, not 0
-                weekday = 7;
+            const nextDay = startDate.set({ weekday });
+            if (nextDay.ts < startDate.ts) {
+                startDate = addToDate(nextDay, 'week', 1);
+            } else {
+                startDate = nextDay;
             }
-            startDate = startDate.set({ weekday });
 
             if (this.isMonth) {
                 const firstColumn = columns[0];
