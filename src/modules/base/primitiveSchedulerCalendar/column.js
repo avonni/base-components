@@ -18,37 +18,7 @@ export default class SchedulerCalendarColumn extends SchedulerCellGroup {
         super(props);
         this.disabledEvents = normalizeArray(props.disabledEvents);
         this.multiDayPlaceholders = normalizeArray(props.multiDayPlaceholders);
-    }
-
-    /**
-     * Start date of the column.
-     *
-     * @type {DateTime}
-     */
-    get start() {
-        const start = dateTimeObjectFrom(this.cells[0].start, {
-            zone: this.timezone
-        });
-        return start.startOf('day');
-    }
-
-    /**
-     * End date of the column.
-     *
-     * @type {DateTime}
-     */
-    get end() {
-        const end = dateTimeObjectFrom(this.cells[0].end, {
-            zone: this.timezone
-        });
-        return end.endOf('day');
-    }
-
-    /**
-     * Week day number of the start date.
-     */
-    get weekday() {
-        return this.start.weekday === 7 ? 0 : this.start.weekday;
+        this._setStartAndEnd();
     }
 
     /**
@@ -56,6 +26,7 @@ export default class SchedulerCalendarColumn extends SchedulerCellGroup {
      */
     initCells() {
         super.initCells();
+        this._setStartAndEnd();
 
         if (this.multiDayPlaceholders) {
             // Order the placeholders that are spanning on multiple weeks
@@ -70,5 +41,22 @@ export default class SchedulerCalendarColumn extends SchedulerCellGroup {
                 this.addEventToCells(placeholder, 'placeholders');
             });
         }
+    }
+
+    _setStartAndEnd() {
+        const firstCell = this.cells[0];
+        if (!firstCell) {
+            return;
+        }
+        const start = dateTimeObjectFrom(firstCell.start, {
+            zone: this.timezone
+        });
+        const end = dateTimeObjectFrom(firstCell.end, {
+            zone: this.timezone
+        });
+
+        this.start = start.startOf('day');
+        this.end = end.endOf('day');
+        this.weekday = this.start.weekday === 7 ? 0 : this.start.weekday;
     }
 }

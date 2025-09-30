@@ -99,7 +99,9 @@ describe('Primitive Scheduler Calendar Popover', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.dateFormat).toBeUndefined();
+            expect(element.enableInfiniteLoading).toBeUndefined();
             expect(element.hiddenActions).toBeUndefined();
+            expect(element.isLoading).toBeUndefined();
             expect(element.preventPastEventCreation).toBeUndefined();
             expect(element.readOnly).toBeUndefined();
             expect(element.resources).toBeUndefined();
@@ -140,6 +142,26 @@ describe('Primitive Scheduler Calendar Popover', () => {
                     ]);
                 });
             });
+        });
+
+        it('Is loading', () => {
+            element.open({ events: EVENTS });
+            element.isLoading = false;
+
+            return Promise.resolve()
+                .then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="div-loading-spinner"]'
+                    );
+                    expect(spinner).toBeFalsy();
+                    element.isLoading = true;
+                })
+                .then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="div-loading-spinner"]'
+                    );
+                    expect(spinner).toBeTruthy();
+                });
         });
 
         it('Prevent past event creation', () => {
@@ -210,6 +232,21 @@ describe('Primitive Scheduler Calendar Popover', () => {
     });
 
     describe('Methods', () => {
+        it('Add events', () => {
+            element.open({ events: EVENTS });
+
+            return Promise.resolve()
+                .then(() => {
+                    element.addEvents(MANY_EVENTS.slice(0, 10));
+                })
+                .then(() => {
+                    const events = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                    );
+                    expect(events).toHaveLength(EVENTS.length + 10);
+                });
+        });
+
         describe('Focus', () => {
             it('Focus', () => {
                 element.open({ events: EVENTS });
@@ -517,7 +554,7 @@ describe('Primitive Scheduler Calendar Popover', () => {
             });
         });
 
-        describe('Scroll', () => {
+        describe('Load more', () => {
             it('A maximum of 25 events are displayed at a time', () => {
                 element.open({ events: MANY_EVENTS });
 
@@ -536,6 +573,9 @@ describe('Primitive Scheduler Calendar Popover', () => {
             });
 
             it('Display more events when scrolling', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
                 element.open({ events: MANY_EVENTS });
 
                 return Promise.resolve()
@@ -589,7 +629,38 @@ describe('Primitive Scheduler Calendar Popover', () => {
                                 MANY_EVENTS[index].key
                             );
                         });
+                        expect(handler).not.toHaveBeenCalled();
                     });
+            });
+
+            it('Fire loadmore event when all events are displayed', () => {
+                element.enableInfiniteLoading = true;
+                element.open({ events: MANY_EVENTS.slice(0, 15) });
+
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+
+                return Promise.resolve().then(() => {
+                    // Scroll down
+                    const div = element.shadowRoot.querySelector(
+                        '[data-element-id="div-body"]'
+                    );
+                    jest.spyOn(div, 'getBoundingClientRect').mockReturnValue({
+                        top: 20
+                    });
+                    jest.spyOn(div, 'scrollHeight', 'get').mockReturnValue(
+                        1000
+                    );
+                    jest.spyOn(div, 'clientHeight', 'get').mockReturnValue(350);
+                    jest.spyOn(div, 'scrollTop', 'get').mockReturnValue(650);
+                    div.dispatchEvent(new CustomEvent('scroll'));
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                });
             });
         });
     });

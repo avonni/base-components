@@ -70,6 +70,8 @@ describe('Primitive Scheduler Event Occurrence: agenda variant', () => {
         element.from = new Date(2022, 7, 23, 10);
         element.to = new Date(2022, 7, 25, 16, 30);
         element.occurrence = {
+            startOfFrom: new Date(2022, 7, 23),
+            endOfTo: new Date(2022, 7, 25, 23, 59),
             startsInPreviousCell: true,
             endsInLaterCell: true
         };
@@ -124,6 +126,8 @@ describe('Primitive Scheduler Event Occurrence: agenda variant', () => {
         element.from = new Date(2022, 7, 23, 10);
         element.to = new Date(2022, 7, 25, 16, 30);
         element.occurrence = {
+            startOfFrom: new Date(2022, 7, 23),
+            endOfTo: new Date(2022, 7, 25, 23, 59),
             startsInPreviousCell: true,
             endsInLaterCell: true
         };

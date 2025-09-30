@@ -221,20 +221,53 @@ const getWeekNumber = (date) => {
  * @returns {number} Number of units between the start and end dates.
  */
 const numberOfUnitsBetweenDates = ({ unit, start, end, weekStartDay = 0 }) => {
-    if (unit === 'week') {
-        // Transform "0" Sunday to a "7" Luxon Sunday
-        let count = 1;
-        let date = getStartOfWeek(start, weekStartDay);
-        const endWeek = getStartOfWeek(end, weekStartDay);
-        while (date < endWeek) {
-            date = addToDate(date, 'week', 1);
-            count++;
+    switch (unit) {
+        case 'week': {
+            // Transform "0" Sunday to a "7" Luxon Sunday
+            let count = 1;
+            let date = getStartOfWeek(start, weekStartDay);
+            const endWeek = getStartOfWeek(end, weekStartDay);
+            while (date < endWeek) {
+                date = addToDate(date, 'week', 1);
+                count++;
+            }
+            return count;
         }
-        return count;
-    }
+        case 'day': {
+            // Save performance compared to using intersection.count('days').
+            const normalizedStart = new Date(
+                start.year,
+                start.month - 1,
+                start.day
+            );
+            const normalizedEnd = new Date(
+                end.year,
+                end.month - 1,
+                end.day,
+                23,
+                59,
+                59,
+                999
+            );
+            const startTime = normalizedStart.getTime();
+            const endTime = normalizedEnd.getTime();
 
-    const interval = Interval.fromDateTimes(start, end);
-    return interval.count(unit);
+            let timeDiff = 1;
+            if (startTime > endTime) {
+                timeDiff = startTime - endTime;
+            } else if (startTime < endTime) {
+                timeDiff = endTime - startTime;
+            }
+
+            // Convert milliseconds to days and add 1 to include both start and end days
+            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+            return daysDiff;
+        }
+        default: {
+            const interval = Interval.fromDateTimes(start, end);
+            return interval.count(unit);
+        }
+    }
 };
 
 export {

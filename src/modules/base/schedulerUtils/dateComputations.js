@@ -4,6 +4,7 @@ import {
     isInTimeFrame,
     removeFromDate
 } from 'c/luxonDateTimeUtils';
+import { DateTime } from 'c/luxon';
 import { normalizeArray } from 'c/utils';
 import { DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK } from './defaults';
 
@@ -83,7 +84,10 @@ const nextAllowedMonth = (
  * @returns {DateTime} Date of the next allowed day of the week.
  */
 const nextAllowedDay = (startDate, allowedMonths, allowedDays) => {
-    let date = dateTimeObjectFrom(startDate);
+    let date =
+        startDate instanceof DateTime
+            ? startDate
+            : dateTimeObjectFrom(startDate);
     if (!isAllowedDay(date, allowedDays)) {
         // Add a day
         date = date
@@ -371,14 +375,16 @@ const getFirstAvailableWeek = (
  * @param {DateTime} to End date of the event.
  * @returns {boolean} True if the event spans on the whole day.
  */
-const isAllDay = (event, from, to) => {
+const isAllDay = ({ event, from, to, endOfTo, startOfFrom }) => {
     if (!event || !from || !to) {
         return false;
     }
-    const startAtBeginningOfDay = from.startOf('day').ts === from.ts;
+    const startAtBeginningOfDay = startOfFrom.ts === from.ts;
     // A time set to 23:59 is considered to be at the end of the day,
     // even if the seconds/ms are not at 59
-    const endAtEndOfDay = to.endOf('day').ts === to.endOf('minute').ts;
+    let normalizedToTime = new Date(to).setSeconds(59);
+    normalizedToTime = new Date(normalizedToTime).setMilliseconds(999);
+    const endAtEndOfDay = endOfTo.ts === normalizedToTime;
     return event.allDay || (startAtBeginningOfDay && endAtEndOfDay);
 };
 
@@ -390,8 +396,8 @@ const isAllDay = (event, from, to) => {
  * @param {DateTime} to End date of the event.
  * @returns {boolean} True if the event spans on more than one day.
  */
-const spansOnMoreThanOneDay = (event, from, to) => {
-    if (!event || !from || !to) {
+const spansOnMoreThanOneDay = ({ event, from, to, endOfTo, startOfFrom }) => {
+    if (!event || !from || !to || !endOfTo || !startOfFrom) {
         return false;
     }
     const differentStartAndEndDay = from.day !== to.day;
@@ -399,7 +405,14 @@ const spansOnMoreThanOneDay = (event, from, to) => {
         event.recurrenceAttributes && event.recurrenceAttributes.weekdays
     );
     return (
-        (isAllDay(event, from, to) || differentStartAndEndDay) &&
+        (isAllDay({
+            event,
+            from,
+            to,
+            endOfTo,
+            startOfFrom
+        }) ||
+            differentStartAndEndDay) &&
         !hasWeekdayRecurrence.length
     );
 };

@@ -34,6 +34,7 @@ const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
 const MONTH_DAY_LABEL_HEIGHT = 30;
+const POPOVER_LOAD_MORE_OFFSET = 30;
 const MONTHS = {
     0: 'January',
     1: 'February',
@@ -75,6 +76,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hourHeadersLoading = true;
     _mouseIsDown = false;
     _popoverDate;
+    _popoverStartIndex = 0;
     _popoverPosition;
     _renderAnimationFrames = [];
     _resizeObserver;
@@ -91,6 +93,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     multiDayCellHeight = 0;
     multiDayEvents = [];
     multiDayEventsCellGroup = new Column({});
+    popoverEnableInfiniteLoading = false;
+    popoverIsLoading = false;
     singleDayEvents = [];
     start = DEFAULT_SELECTED_DATE;
     visibleInterval;
@@ -216,6 +220,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this._connected) {
             this.initHeaders();
             this._dayHeadersLoading = false;
+            this._hourHeadersLoading = false;
         }
     }
 
@@ -1033,16 +1038,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @returns {object[]} Placeholders created.
      */
     getMultiDayPlaceholders(isFirstCol, col, event, occ) {
-        const { from, to } = occ;
-        const isMultiDay = spansOnMoreThanOneDay(
+        const { from, to, endOfTo, startOfFrom } = occ;
+        const isMultiDay = spansOnMoreThanOneDay({
             event,
-            event.computedFrom,
-            event.computedTo
-        );
+            from: event.computedFrom,
+            to: event.computedTo,
+            endOfTo,
+            startOfFrom
+        });
         const cellsPassed = col.cells.filter((cell) => {
             return (
                 cell.start > from &&
-                (event.referenceLine || cell.end <= to.endOf('day'))
+                (event.referenceLine || cell.end <= endOfTo)
             );
         });
         const spansOnMoreThanOneWeek =
@@ -1105,6 +1112,49 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             });
         }
         return placeholders;
+    }
+
+    /**
+     * Get the occurrences for the events happening on the popover date.
+     * To avoid performance issues, only the first occurrences are returned, starting from the given index.
+     *
+     * @param {object[]} events Array of events that have at least one occurrence on the popover date.
+     * @returns {object[]} Array of event occurrences.
+     */
+    getPopoverEventsOccurrences(events) {
+        const endOfDay = this._popoverDate.endOf('day');
+        const dayInterval = intervalFrom(this._popoverDate, endOfDay);
+        const endIndex = this._popoverStartIndex + POPOVER_LOAD_MORE_OFFSET;
+        const computedEvents = this._eventData.computeEventsOccurrences(
+            events.slice(this._popoverStartIndex, endIndex),
+            dayInterval
+        );
+        this._popoverStartIndex = endIndex;
+        if (endIndex >= events.length) {
+            this.popoverEnableInfiniteLoading = false;
+        }
+
+        const occurrences = [];
+        computedEvents.forEach((evt) => {
+            evt.occurrences.forEach((occ) => {
+                const occurrence = { ...occ };
+                occurrence.overflowsCell = false;
+                occurrence.event = evt;
+
+                // If the event is a reference line,
+                // use the start date as an end date too
+                const to = occ.to ? occ.to : occ.from;
+
+                occurrence.startsInPreviousCell =
+                    occ.from.startOf('day') < this._popoverDate.startOf('day');
+                occurrence.endsInLaterCell = to.endOf('day') > endOfDay;
+                occurrences.push(occurrence);
+            });
+        });
+        occurrences.sort((a, b) => {
+            return a.from - b.from;
+        });
+        return occurrences;
     }
 
     /**
@@ -1566,6 +1616,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                         cellSize
                     });
                 }
+
+                // Add the overflowing events count to the cell
+                const dayKey = `${cell.month}-${cell.day}`;
+                const dayMap = this._eventData.eventsPerDayMap;
+                const dayData = dayMap[dayKey];
+
+                if (dayData && dayData.count) {
+                    const visibleOccurrences = allOccurrences.filter(
+                        (element) => !element.occurrence.overflowsCell
+                    );
+                    cell.overflowingEvents =
+                        dayData.count - visibleOccurrences.length;
+                } else {
+                    cell.overflowingEvents = 0;
+                }
             });
         });
     }
@@ -1709,9 +1774,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.columns.forEach((col) => {
             col.cells.forEach((cell) => {
                 const button = this.template.querySelector(
-                    `[data-element-id="lightning-button-month-show-more"][data-start="${cell.start}"]`
+                    `[data-element-id="avonni-button-month-show-more"][data-start="${cell.start}"]`
                 );
-                if (cell.overflowingEvents.length) {
+                if (cell.overflowingEvents) {
                     button.classList.remove('slds-hide');
                     button.label = cell.showMoreLabel;
                 } else {
@@ -1914,45 +1979,45 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event `click` event.
      */
     handleMonthCellShowMoreClick(event) {
-        const columnIndex = Number(event.currentTarget.dataset.columnIndex);
-        const start = Number(event.currentTarget.dataset.start);
-        const startDate = this.createDate(start);
-        const cell = this.columns[columnIndex].cells.find((c) => {
-            return c.start === start;
-        });
-
-        // Include the multi-day events that are going through the cell
-        const allEvents = cell.events.concat(cell.placeholders);
-
-        allEvents.sort((a, b) => {
-            return a.from - b.from;
-        });
-        const events = allEvents.map((occ) => {
-            const occurrence = { ...occ };
-            occurrence.overflowsCell = false;
-            occurrence.event = this._eventData.events.find((e) => {
-                return e.key === occ.eventKey;
-            });
-            // If the event is a reference line,
-            // use the start date as an end date too
-            const to = occ.to ? occ.to : occ.from;
-            occurrence.startsInPreviousCell =
-                occ.from.startOf('day') < startDate.startOf('day');
-            occurrence.endsInLaterCell =
-                to.endOf('day') > startDate.endOf('day');
-            return occurrence;
-        });
-
+        // Get the cell that contains the show more button
         const { x, width } = event.currentTarget.getBoundingClientRect();
-        const buttonCenter = x + width / 2;
+        const start = Number(event.currentTarget.dataset.start);
+        this._popoverDate = this.createDate(start);
+        this._popoverStartIndex = 0;
+        const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
+        const dayData = this._eventData.eventsPerDayMap[dayKey];
+        const events = dayData.events;
 
-        const date = this.createDate(start);
-        this._popoverPosition = { x: buttonCenter, y: event.clientY };
-        this.popoverElement.open({ events, label: date.toFormat('cccc d') });
-        this.popoverElement.classList.remove('slds-hide');
+        // Display a loading spinner on the button
+        if (events.length > POPOVER_LOAD_MORE_OFFSET) {
+            this.popoverEnableInfiniteLoading = true;
+            event.currentTarget.isButtonLoading = true;
+        }
 
         requestAnimationFrame(() => {
-            this.positionPopover();
+            requestAnimationFrame(() => {
+                // Create occurrences for the events in the cell
+                const occurrences = this.getPopoverEventsOccurrences(events);
+
+                // Open the popover
+                const buttonCenter = x + width / 2;
+                this._popoverPosition = { x: buttonCenter, y: event.clientY };
+                this.popoverElement.open({
+                    events: occurrences,
+                    label: this._popoverDate.toFormat('cccc d')
+                });
+                this.popoverElement.classList.remove('slds-hide');
+
+                // Position the popover and hide the loading spinner
+                requestAnimationFrame(() => {
+                    this.positionPopover();
+
+                    const button = this.template.querySelector(
+                        `[data-element-id="avonni-button-month-show-more"][data-start="${start}"]`
+                    );
+                    button.isButtonLoading = false;
+                });
+            });
         });
     }
 
@@ -2022,7 +2087,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const shouldShrinkMultiDayEvent =
             this.isMonth &&
             !isMoving &&
-            spansOnMoreThanOneDay(event, occurrence.from, occurrence.to);
+            spansOnMoreThanOneDay({
+                event,
+                from: occurrence.from,
+                to: occurrence.to,
+                endOfTo: occurrence.endOfTo,
+                startOfFrom: occurrence.startOfFrom
+            });
 
         if (this._showPlaceholderOccurrence) {
             // Make sure the main occurrence is not hidden in a popover
@@ -2165,6 +2236,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Handle the load more event coming from the show more popover.
+     */
+    handlePopoverLoadMore() {
+        this.popoverIsLoading = true;
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
+                const dayData = this._eventData.eventsPerDayMap[dayKey];
+                const events = dayData.events;
+                const occurrences = this.getPopoverEventsOccurrences(events);
+                this.popoverElement.addEvents(occurrences);
+                this.popoverIsLoading = false;
+            });
+        });
+    }
+
+    /**
      * Handle a change of the vertical primitive headers, corresponding to the hours in the week and day views.
      *
      * @param {Event} event
@@ -2210,36 +2299,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.initLeftPanelCalendarMarkedDates();
         const { x, y, width, height } = event.detail.bounds;
 
-        const events = [];
-        this._eventData.events.forEach((ev) => {
-            ev.occurrences.forEach((occ) => {
-                // If the event is a reference line,
-                // use the start date as an end date too
-                const to = occ.to ? occ.to : occ.from;
-                const interval = intervalFrom(occ.from, to);
-                const day = intervalFrom(
-                    date.startOf('day'),
-                    date.endOf('day')
-                );
-                if (interval.overlaps(day)) {
-                    events.push({
-                        ...occ,
-                        event: ev,
-                        startsInPreviousCell:
-                            occ.from.startOf('day') < date.startOf('day'),
-                        endsInLaterCell: to.endOf('day') > date.endOf('day')
-                    });
-                }
-            });
-        });
-
         this._popoverPosition = {
             x: x + width / 2,
             y: y + height / 2
         };
+        this._popoverStartIndex = 0;
         this._popoverDate = date;
+        const dayKey = `${this._popoverDate.month}-${this._popoverDate.day}`;
+        const dayData = this._eventData.eventsPerDayMap[dayKey];
+        const events = dayData.events;
+        if (events.length > POPOVER_LOAD_MORE_OFFSET) {
+            this.popoverEnableInfiniteLoading = true;
+        }
+
+        const occurrences = this.getPopoverEventsOccurrences(events);
         this.popoverElement.open({
-            events,
+            events: occurrences,
             label: date.toFormat('LLLL d')
         });
         this.popoverElement.classList.remove('slds-hide');
