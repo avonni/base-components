@@ -1618,19 +1618,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 }
 
                 // Add the overflowing events count to the cell
-                const dayKey = `${cell.month}-${cell.day}`;
-                const dayMap = this._eventData.eventsPerDayMap;
-                const dayData = dayMap[dayKey];
+                if (this._eventData) {
+                    const dayKey = `${cell.month}-${cell.day}`;
+                    const dayMap = this._eventData.eventsPerDayMap;
+                    const dayData = dayMap[dayKey];
 
-                if (dayData && dayData.count) {
-                    const visibleOccurrences = allOccurrences.filter(
-                        (element) => !element.occurrence.overflowsCell
-                    );
-                    cell.overflowingEvents =
-                        dayData.count - visibleOccurrences.length;
-                } else {
-                    cell.overflowingEvents = 0;
+                    if (dayData && dayData.count) {
+                        const visibleOccurrences = allOccurrences.filter(
+                            (element) => !element.occurrence.overflowsCell
+                        );
+                        cell.overflowingEvents =
+                            dayData.count - visibleOccurrences.length;
+                        return;
+                    }
                 }
+                cell.overflowingEvents = 0;
             });
         });
     }
