@@ -136,40 +136,76 @@ function computeEventLevelInCellGroup(
 }
 
 /**
- * Position a popover in the viewport.
+ * Position a popover inside given bounds.
  *
+ * @param {DOMRect} bounds Bounding box that should not be overflowed.
  * @param {HTMLElement} popover HTML element of the popover.
- * @param {object} position Position of the popover. Valid keys are x and y.
+ * @param {object} position Position aimed for the popover. It contains two keys: x and y.
  * @param {boolean} horizontalCenter If true, the popover should be centered horizontally.
  */
 export function positionPopover(bounds, popover, { x, y }, horizontalCenter) {
-    // Make sure the popover is not outside of the screen
     const offset = 10;
     const height = popover.offsetHeight;
     const width = popover.offsetWidth;
-    const { left, top } = bounds;
+    const { left, top, right, bottom } = bounds;
 
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    // Calculate available space in each direction within the bounds
+    const spaceBelow = bottom - y - offset;
+    const spaceAbove = y - top - offset;
+    const spaceRight = right - x - offset;
+    const spaceLeft = x - left - offset;
 
-    let popoverTop = y + offset;
-    let popoverLeft = x + offset;
+    // Determine vertical position: below if there's room, otherwise above
+    let popoverTop;
+    if (spaceBelow >= height) {
+        // Position below
+        popoverTop = y + offset;
+    } else if (spaceAbove >= height) {
+        // Position above
+        popoverTop = y - height - offset;
+    } else {
+        // Not enough space in either direction, use the one with more space
+        if (spaceBelow > spaceAbove) {
+            popoverTop = y + offset;
+        } else {
+            popoverTop = y - height - offset;
+        }
+    }
 
+    // Determine horizontal position: right if there's room, otherwise left
+    let popoverLeft;
     if (horizontalCenter) {
+        // Center horizontally around x
         popoverLeft = x - width / 2;
+    } else {
+        if (spaceRight >= width) {
+            // Position to the right
+            popoverLeft = x + offset;
+        } else if (spaceLeft >= width) {
+            // Position to the left
+            popoverLeft = x - width - offset;
+        } else {
+            // Not enough space in either direction, use the one with more space
+            if (spaceRight > spaceLeft) {
+                popoverLeft = x + offset;
+            } else {
+                popoverLeft = x - width - offset;
+            }
+        }
     }
 
-    if (popoverLeft < offset) {
-        popoverLeft = offset;
-    } else if (popoverLeft + width > viewportWidth - offset) {
-        popoverLeft = viewportWidth - width - offset;
+    // Ensure popover never overflows bounds width
+    if (popoverLeft < left + offset) {
+        popoverLeft = left + offset;
+    } else if (popoverLeft + width > right - offset) {
+        popoverLeft = right - width - offset;
     }
 
-    if (popoverTop + height > viewportHeight - offset) {
-        popoverTop = viewportHeight - height - offset;
-    }
-    if (popoverTop < offset) {
-        popoverTop = offset;
+    // Ensure popover never overflows bounds height
+    if (popoverTop < top + offset) {
+        popoverTop = top + offset;
+    } else if (popoverTop + height > bottom - offset) {
+        popoverTop = bottom - height - offset;
     }
 
     // The context menu is in fixed position by default,
