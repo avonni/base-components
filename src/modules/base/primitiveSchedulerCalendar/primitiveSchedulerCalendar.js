@@ -15,6 +15,7 @@ import {
     positionPopover,
     ScheduleBase,
     SchedulerEventOccurrence,
+    sortDaysOfTheWeek,
     spansOnMoreThanOneDay,
     updateOccurrencesOffset,
     updateOccurrencesPosition
@@ -1167,31 +1168,26 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const span = this.timeSpan.span;
         const oneDay = this.isDay && span <= 1;
         const weekday = startDate.weekday === 7 ? 0 : startDate.weekday;
-        let availableDays = [...this.availableDaysOfTheWeek];
+        const sortedDays = sortDaysOfTheWeek(
+            this.availableDaysOfTheWeek,
+            this.weekStartDay
+        );
 
         if (oneDay) {
-            availableDays = [weekday];
+            return [weekday];
         } else if (this.isDay) {
-            availableDays = [];
-            let dayIndex = this.availableDaysOfTheWeek.findIndex(
-                (dayNumber) => {
-                    return dayNumber === weekday;
-                }
-            );
+            const availableDays = [];
+            let dayIndex = sortedDays.findIndex((dayNumber) => {
+                return dayNumber === weekday;
+            });
             for (let i = 0; i < span; i++) {
-                availableDays.push(this.availableDaysOfTheWeek[dayIndex]);
-                const nextDay = this.availableDaysOfTheWeek[dayIndex + 1];
+                availableDays.push(sortedDays[dayIndex]);
+                const nextDay = sortedDays[dayIndex + 1];
                 dayIndex = nextDay ? dayIndex + 1 : 0;
             }
-        } else if (this.weekStartDay !== 0) {
-            availableDays.sort();
-            const firstDayIndex = availableDays.findIndex((dayNumber) => {
-                return dayNumber >= this.weekStartDay;
-            });
-            const slice = availableDays.splice(0, firstDayIndex);
-            availableDays = [...availableDays, ...slice];
+            return availableDays;
         }
-        return availableDays;
+        return sortedDays;
     }
 
     /**

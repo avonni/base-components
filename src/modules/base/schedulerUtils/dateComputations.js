@@ -332,6 +332,23 @@ const getDisabledWeekdaysLabels = (allowedDays) => {
 };
 
 /**
+ * Sort the days of the week starting from the first given day.
+ *
+ * @param {number[]} days Array of days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+ * @returns {number[]} Sorted array of days of the week,
+ */
+const sortDaysOfTheWeek = (days, weekStartDay) => {
+    const computedDays = [...days];
+    computedDays.sort();
+    const firstDayIndex = computedDays.findIndex((dayNumber) => {
+        return dayNumber >= weekStartDay;
+    });
+    const slice = computedDays.splice(0, firstDayIndex);
+    return [...computedDays, ...slice];
+};
+
+/**
  * Get the first available week, from a starting date.
  *
  * @param {DateTime} start Starting date.
@@ -344,27 +361,28 @@ const getFirstAvailableWeek = (
     availableDaysOfTheWeek,
     weekStartDay = 0
 ) => {
-    let date = dateTimeObjectFrom(start);
+    const availableDays = sortDaysOfTheWeek(
+        availableDaysOfTheWeek,
+        weekStartDay
+    );
 
     // Transform "0" Sunday to a "7" Luxon Sunday
     const normalizedWeekStartDay = weekStartDay === 0 ? 7 : weekStartDay;
-    const availableDays = [...availableDaysOfTheWeek].sort();
     if (availableDays[0] === 0) {
         availableDays[0] = 7;
     }
 
-    let hasAvailableDayThisWeek = false;
-    while (
-        date.weekday !== normalizedWeekStartDay &&
-        !hasAvailableDayThisWeek
-    ) {
-        hasAvailableDayThisWeek = availableDays.includes(date.weekday);
+    let date = dateTimeObjectFrom(start);
+    for (let i = 0; i < 7; i++) {
+        if (availableDays.includes(date.weekday)) {
+            return start;
+        } else if (date.weekday === normalizedWeekStartDay) {
+            break;
+        }
         date = addToDate(date, 'day', 1);
     }
-    if (!hasAvailableDayThisWeek) {
-        return addToDate(start, 'week', 1);
-    }
-    return start;
+
+    return addToDate(start, 'week', 1);
 };
 
 /**
@@ -430,5 +448,6 @@ export {
     previousAllowedDay,
     previousAllowedMonth,
     previousAllowedTime,
+    sortDaysOfTheWeek,
     spansOnMoreThanOneDay
 };

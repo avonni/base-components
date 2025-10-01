@@ -11,6 +11,7 @@ export {
     previousAllowedDay,
     previousAllowedMonth,
     previousAllowedTime,
+    sortDaysOfTheWeek,
     spansOnMoreThanOneDay
 } from './dateComputations';
 export { ScheduleBase } from './scheduleBase';
