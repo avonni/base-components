@@ -345,18 +345,14 @@ export default class SchedulerHeader {
                 while (cellIndex < smallestCells.length) {
                     start = this.createDate(smallestCells[cellIndex].start);
 
-                    // Normalize the beginning of the week, because Luxon's week start on Monday
-                    const normalizedStart =
+                    const startUnit =
                         unit === 'week'
                             ? getStartOfWeek(start, this.weekStartDay)
-                            : start;
-                    const normalizedEnd =
+                            : start.startOf(unit);
+                    const endUnit =
                         unit === 'week'
-                            ? getEndOfWeek(end, this.weekStartDay)
-                            : end;
-
-                    const startUnit = normalizedStart.startOf(unit);
-                    const endUnit = normalizedEnd.startOf(unit);
+                            ? getStartOfWeek(end, this.weekStartDay)
+                            : end.startOf(unit);
 
                     // Stop if the next smallestHeader cell belongs to the next header unit
                     if (endUnit <= startUnit) {
