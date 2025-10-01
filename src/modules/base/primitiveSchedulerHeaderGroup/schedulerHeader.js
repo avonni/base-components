@@ -299,7 +299,7 @@ export default class SchedulerHeader {
                     end = end.set({ days: start.day - 1 });
                 }
                 if (unit === 'week') {
-                    end = getEndOfWeek(end, this.weekStartDay);
+                    end = end.set({ weekday: start.weekday - 1 });
                 }
                 if (unit !== 'hour' && start.hour !== 0) {
                     end = end.set({ hours: start.hour - 1 });
