@@ -69,7 +69,7 @@ const intervalFrom = (start, end) => {
     if (!normalizedStart || !normalizedEnd) {
         return null;
     }
-    return Interval.fromDateTimes(start, end);
+    return Interval.fromDateTimes(normalizedStart, normalizedEnd);
 };
 
 /**
@@ -79,6 +79,10 @@ const intervalFrom = (start, end) => {
  * @returns {object} Object with three possible keys: valid, start and end.
  */
 const parseTimeFrame = (timeFrame, options) => {
+    if (typeof timeFrame !== 'string') {
+        console.error('Time frame must be a string');
+        return { valid: false };
+    }
     const startMatch = timeFrame.match(/^([0-9:]+(\.\d+)?)-/);
     const endMatch = timeFrame.match(/-([0-9:]+(\.\d+)?)$/);
 
@@ -228,10 +232,11 @@ const numberOfUnitsBetweenDates = ({
 }) => {
     switch (unit) {
         case 'week': {
-            // Transform "0" Sunday to a "7" Luxon Sunday
             let count = 1;
-            let date = getStartOfWeek(firstDate, weekStartDay);
-            const endWeek = getStartOfWeek(secondDate, weekStartDay);
+            const startDate = firstDate < secondDate ? firstDate : secondDate;
+            const endDate = firstDate > secondDate ? firstDate : secondDate;
+            let date = getStartOfWeek(startDate, weekStartDay);
+            const endWeek = getStartOfWeek(endDate, weekStartDay);
             while (date < endWeek) {
                 date = addToDate(date, 'week', 1);
                 count++;
@@ -240,28 +245,26 @@ const numberOfUnitsBetweenDates = ({
         }
         case 'day': {
             // Save performance compared to using intersection.count('days').
-            const normalizedStart = new Date(
+            const normalizedFirst = new Date(
                 firstDate.year,
                 firstDate.month - 1,
                 firstDate.day
             );
-            const normalizedEnd = new Date(
+            const normalizedSecond = new Date(
                 secondDate.year,
                 secondDate.month - 1,
-                secondDate.day,
-                23,
-                59,
-                59,
-                999
+                secondDate.day
             );
-            const startTime = normalizedStart.getTime();
-            const endTime = normalizedEnd.getTime();
 
             let timeDiff = 1;
-            if (startTime > endTime) {
-                timeDiff = startTime - endTime;
-            } else if (startTime < endTime) {
-                timeDiff = endTime - startTime;
+            if (normalizedFirst > normalizedSecond) {
+                const firstTime = normalizedFirst.setHours(23, 59, 59, 999);
+                const secondTime = normalizedSecond.getTime();
+                timeDiff = firstTime - secondTime;
+            } else if (normalizedFirst < normalizedSecond) {
+                const firstTime = normalizedFirst.getTime();
+                const secondTime = normalizedSecond.setHours(23, 59, 59, 999);
+                timeDiff = secondTime - firstTime;
             }
 
             // Convert milliseconds to days and add 1 to include both start and end days
