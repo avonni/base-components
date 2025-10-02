@@ -137,8 +137,9 @@ export default class SchedulerEventData {
         } else {
             const daysCount = numberOfUnitsBetweenDates({
                 unit: 'day',
-                start: intersection.start,
-                end: intersection.end
+                firstDate: intersection.start,
+                secondDate: intersection.end,
+                weekStartDay: this.schedule.weekStartDay
             });
 
             for (let i = 0; i < daysCount; i++) {

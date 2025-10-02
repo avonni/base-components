@@ -216,17 +216,22 @@ const getWeekNumber = (date) => {
  * Calculate the number of units between two dates, including partial units.
  *
  * @param {string} unit The time unit (minute, hour, day, week, month or year).
- * @param {DateTime} start The starting date.
- * @param {DateTime} end The ending date.
+ * @param {DateTime} firstDate The first date.
+ * @param {DateTime} secondDate The second date.
  * @returns {number} Number of units between the start and end dates.
  */
-const numberOfUnitsBetweenDates = ({ unit, start, end, weekStartDay = 0 }) => {
+const numberOfUnitsBetweenDates = ({
+    unit,
+    firstDate,
+    secondDate,
+    weekStartDay = 0
+}) => {
     switch (unit) {
         case 'week': {
             // Transform "0" Sunday to a "7" Luxon Sunday
             let count = 1;
-            let date = getStartOfWeek(start, weekStartDay);
-            const endWeek = getStartOfWeek(end, weekStartDay);
+            let date = getStartOfWeek(firstDate, weekStartDay);
+            const endWeek = getStartOfWeek(secondDate, weekStartDay);
             while (date < endWeek) {
                 date = addToDate(date, 'week', 1);
                 count++;
@@ -236,14 +241,14 @@ const numberOfUnitsBetweenDates = ({ unit, start, end, weekStartDay = 0 }) => {
         case 'day': {
             // Save performance compared to using intersection.count('days').
             const normalizedStart = new Date(
-                start.year,
-                start.month - 1,
-                start.day
+                firstDate.year,
+                firstDate.month - 1,
+                firstDate.day
             );
             const normalizedEnd = new Date(
-                end.year,
-                end.month - 1,
-                end.day,
+                secondDate.year,
+                secondDate.month - 1,
+                secondDate.day,
                 23,
                 59,
                 59,
@@ -264,7 +269,7 @@ const numberOfUnitsBetweenDates = ({ unit, start, end, weekStartDay = 0 }) => {
             return daysDiff;
         }
         default: {
-            const interval = Interval.fromDateTimes(start, end);
+            const interval = Interval.fromDateTimes(firstDate, secondDate);
             return interval.count(unit);
         }
     }

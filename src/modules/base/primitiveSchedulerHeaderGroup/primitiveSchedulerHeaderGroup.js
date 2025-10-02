@@ -604,8 +604,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
             const referenceCells = numberOfUnitsBetweenDates({
                 unit: referenceUnit,
-                start: this.computedStart,
-                end: this.end,
+                firstDate: this.computedStart,
+                secondDate: this.end,
                 weekStartDay: this.weekStartDay
             });
 
@@ -656,8 +656,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 } else {
                     const cells = numberOfUnitsBetweenDates({
                         unit,
-                        start: this.computedStart,
-                        end: this.end,
+                        firstDate: this.computedStart,
+                        secondDate: this.end,
                         weekStartDay: this.weekStartDay
                     });
 

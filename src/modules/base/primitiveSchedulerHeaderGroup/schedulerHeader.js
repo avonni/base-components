@@ -144,8 +144,8 @@ export default class SchedulerHeader {
                 );
                 const numberOfUnits = numberOfUnitsBetweenDates({
                     unit,
-                    start: date,
-                    end: pushedEnd,
+                    firstDate: date,
+                    secondDate: pushedEnd,
                     weekStartDay: this.weekStartDay
                 });
                 this.numberOfCells = numberOfUnits / span;

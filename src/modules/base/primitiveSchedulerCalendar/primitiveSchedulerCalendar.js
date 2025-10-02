@@ -631,8 +631,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const endOfDay = this.start.endOf('day');
         const numberOfHours = numberOfUnitsBetweenDates({
             unit: 'hour',
-            start: startOfDay,
-            end: endOfDay
+            firstDate: startOfDay,
+            secondDate: endOfDay,
+            weekStartDay: this.weekStartDay
         });
         const isSpringTimeChange = numberOfHours < 24;
         return isSpringTimeChange
