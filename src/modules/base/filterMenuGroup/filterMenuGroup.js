@@ -237,7 +237,6 @@ export default class FilterMenuGroup extends LightningElement {
     }
     set singleLine(value) {
         this._singleLine = normalizeBoolean(value);
-        console.log(this._singleLine);
         if (!this._resizeObserver && this.showSingleLine) {
             this._resizeObserver = this.initResizeObserver();
         }
@@ -388,7 +387,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Return the menu group wrapper.
+     * Return the button icon popover.
      *
      * @type {Element}
      */
@@ -704,6 +703,7 @@ export default class FilterMenuGroup extends LightningElement {
             !this.menuGroupWrapper ||
             this._isCalculatingOverflow ||
             !this.showSingleLine ||
+            this._isPopoverOpen ||
             this._openedMenuCount > 0
         ) {
             return;
@@ -825,11 +825,14 @@ export default class FilterMenuGroup extends LightningElement {
     handleClose(event) {
         event.stopPropagation();
         const menuName = event.target.dataset.name;
-        if (this.visibleMenus.find((m) => m.name === menuName)) {
+        const isVisibleMenu = this.visibleMenus.find(
+            (m) => m.name === menuName
+        );
+        if (isVisibleMenu) {
             this._openedMenuCount = Math.max(0, this._openedMenuCount - 1);
-        }
-        if (this.showSingleLine && this._openedMenuCount === 0) {
-            this.reviewResize();
+            if (this.showSingleLine && this._openedMenuCount === 0) {
+                this.reviewResize();
+            }
         }
 
         /**
@@ -931,6 +934,9 @@ export default class FilterMenuGroup extends LightningElement {
         event.stopPropagation();
         const elementId = event.target.dataset.elementId;
         if (elementId === 'filter-menu-group-button-icon-popover') {
+            if (this.moreFilterElement) {
+                this._isPopoverOpen = true;
+            }
             return;
         }
         this.handleOpen(event);
@@ -951,6 +957,7 @@ export default class FilterMenuGroup extends LightningElement {
                         'slds-is-open'
                     ) && this._openedMenuCount === 0;
                 if (isAllClosed) {
+                    this._isPopoverOpen = false;
                     this.recomputeOverflow();
                 }
             });
