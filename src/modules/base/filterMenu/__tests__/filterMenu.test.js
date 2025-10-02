@@ -97,7 +97,6 @@ describe('Filter Menu', () => {
             expect(element.name).toBeUndefined();
             expect(element.resetButtonLabel).toBe('Clear selection');
             expect(element.showClearButton).toBeFalsy();
-            expect(element.showSelectedFilterValueCount).toBeFalsy();
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.type).toBe('list');
@@ -1547,40 +1546,6 @@ describe('Filter Menu', () => {
                         '[data-element-id="span-menu-selected-labels"]'
                     );
                     expect(buttonClear).toBeFalsy();
-                });
-            });
-        });
-
-        describe('Show Selected Filter Value Count', () => {
-            it('showSelectedFilterValueCount, true', () => {
-                element.showSelectedFilterValueCount = true;
-                element.selectedItems = ITEMS;
-
-                return Promise.resolve().then(() => {
-                    const selectedLabels = element.shadowRoot.querySelector(
-                        '[data-element-id="span-menu-selected-labels"]'
-                    );
-                    const selectedCount = element.shadowRoot.querySelector(
-                        '[data-element-id="span-menu-selected-item-count"]'
-                    );
-                    expect(selectedLabels).toBeDefined();
-                    expect(selectedCount).toBeDefined();
-                });
-            });
-
-            it('showSelectedFilterValueCount, false', () => {
-                element.showSelectedFilterValueCount = false;
-                element.selectedItems = ITEMS;
-
-                return Promise.resolve().then(() => {
-                    const selectedLabels = element.shadowRoot.querySelector(
-                        '[data-element-id="span-menu-selected-labels"]'
-                    );
-                    const selectedCount = element.shadowRoot.querySelector(
-                        '[data-element-id="span-menu-selected-item-count"]'
-                    );
-                    expect(selectedLabels).toBeFalsy();
-                    expect(selectedCount).toBeFalsy();
                 });
             });
         });

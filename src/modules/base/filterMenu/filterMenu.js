@@ -188,7 +188,6 @@ export default class FilterMenu extends LightningElement {
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     _showClearButton = false;
     _showSearchBox = false;
-    _showSelectedFilterValueCount = false;
     _tooltip;
     _type = TYPES.default;
     _typeAttributes = {};
@@ -197,6 +196,8 @@ export default class FilterMenu extends LightningElement {
 
     _allowBlur = true;
     _dropdownIsFocused = false;
+    _initialButtonWidth = 0;
+    _initialDropdownWidth = 0;
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
@@ -208,6 +209,7 @@ export default class FilterMenu extends LightningElement {
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
+    labelMap = new Map();
     searchTerm;
     @track selectedItems = [];
     visibleItems = [];
@@ -729,20 +731,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * If present, the selected filter value and count are displayed in the label.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get showSelectedFilterValueCount() {
-        return this._showSelectedFilterValueCount;
-    }
-    set showSelectedFilterValueCount(value) {
-        this._showSelectedFilterValueCount = normalizeBoolean(value);
-    }
-
-    /**
      * The tooltip is displayed on hover or focus on the button (horizontal variant), or on the help icon (vertical variant).
      *
      * @type {string}
@@ -906,9 +894,9 @@ export default class FilterMenu extends LightningElement {
             this.buttonVariant === 'bare' ||
             this.buttonVariant === 'bare-inverse';
 
-        const classes = classSet('slds-button avonni-filter-menu__truncate');
+        const classes = classSet('slds-button slds-truncate');
 
-        if (this.label) {
+        if (this.label || this.selectedItemLabels.length > 0) {
             classes.add({
                 'slds-button_neutral': this.buttonVariant === 'border',
                 'slds-button_inverse': this.buttonVariant === 'border-inverse',
@@ -949,8 +937,7 @@ export default class FilterMenu extends LightningElement {
 
         classes.add({
             'avonni-filter-menu__selected-item-button':
-                this.selectedItemLabels.length > 0 &&
-                this.showSelectedFilterValueCount
+                this.selectedItemLabels.length > 0
         });
 
         return classes
@@ -964,15 +951,51 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed Button style.
+     *
+     * @type {string}
+     */
+    get computedButtonStyle() {
+        const dropdownWidth =
+            this.template
+                .querySelector('[data-element-id="div-dropdown"]')
+                ?.getBoundingClientRect().width ?? 0;
+
+        const buttonWidth =
+            this.template
+                .querySelector('[data-element-id="button"]')
+                ?.getBoundingClientRect().width ?? 0;
+
+        if (dropdownWidth > 0) {
+            this._initialDropdownWidth = dropdownWidth;
+        }
+
+        if (buttonWidth > 0 && this.selectedItemLabels.length === 0) {
+            this._initialButtonWidth = buttonWidth;
+        }
+
+        if (this._initialButtonWidth === 0) {
+            return '';
+        }
+
+        const maxWidth =
+            this._initialButtonWidth + 0.8 * this._initialDropdownWidth;
+        return `max-width: ${maxWidth}px;`;
+    }
+
+    /**
      * Computed button title.
      *
      * @type {string}
      */
     get computedButtonTitle() {
-        if (this.showSelectedFilterValueCount) {
-            return `${this.label} ${this.selectedFilterLabels} ${this.selectedItemCountLabel}`;
-        }
-        return this.title;
+        return [
+            this.title,
+            this.selectedFilterLabels,
+            this.selectedItemCountLabel
+        ]
+            .filter(Boolean)
+            .join(' ');
     }
 
     /**
@@ -1028,11 +1051,9 @@ export default class FilterMenu extends LightningElement {
      * @type {string}
      */
     get computedMenuLabelClass() {
-        return classSet('slds-dropdown__list slds-truncate')
+        return classSet('slds-dropdown__list')
             .add({
-                'slds-text-title_bold':
-                    this.selectedItemLabels.length > 0 &&
-                    this.showSelectedFilterValueCount
+                'slds-text-title_bold': this.selectedItemLabels.length > 0
             })
             .toString();
     }
@@ -1251,7 +1272,10 @@ export default class FilterMenu extends LightningElement {
     get selectedOverTotal() {
         const currentLength = this.visibleItems.length;
         let totalLength = this.computedTypeAttributes?.totalCount ?? 0;
-        totalLength = currentLength > totalLength ? currentLength : totalLength;
+        totalLength =
+            currentLength > totalLength || !this.infiniteLoad
+                ? currentLength
+                : totalLength;
         return `${currentLength} of ${totalLength}`;
     }
 
@@ -1347,11 +1371,17 @@ export default class FilterMenu extends LightningElement {
      */
     get selectedItemLabels() {
         const isMultiSelect = this.computedTypeAttributes?.isMultiSelect;
-        const itemMap = new Map(
-            this.computedItems.map((item) => [item.value, item.noCountLabel])
-        );
+        this.labelMap = this.dropdownVisible
+            ? new Map(
+                  this.computedItems.map((item) => [
+                      item.value,
+                      item.noCountLabel
+                  ])
+              )
+            : this.labelMap;
+
         const valueLabels = this.value.map(
-            (value) => itemMap.get(value) || value
+            (value) => this.labelMap.get(value) || value
         );
         const labels = isMultiSelect
             ? valueLabels
@@ -1374,9 +1404,7 @@ export default class FilterMenu extends LightningElement {
      * @type {boolean}
      */
     get showCount() {
-        return (
-            this.showSelectedFilterValueCount && !!this.selectedItemCountLabel
-        );
+        return !!this.selectedItemCountLabel;
     }
 
     /**
@@ -1385,7 +1413,7 @@ export default class FilterMenu extends LightningElement {
      * @type {boolean}
      */
     get showFilterValue() {
-        return this.showSelectedFilterValueCount && !!this.selectedFilterLabels;
+        return !!this.selectedFilterLabels;
     }
 
     /**
@@ -1782,6 +1810,24 @@ export default class FilterMenu extends LightningElement {
             }
         }
         return visibleItems;
+    }
+
+    /**
+     * Normalize values for height and width.
+     *
+     * @param {number} value Value of the dimension.
+     * @param {number} defaultValue Default value of the dimension.
+     */
+    normalizeDimension(value, defaultValue) {
+        let normalizedValue;
+        if (value === undefined || value === null || value === '') {
+            normalizedValue = defaultValue;
+        } else if (!isNaN(value)) {
+            normalizedValue = `${value}px`;
+        } else {
+            normalizedValue = value;
+        }
+        return normalizedValue;
     }
 
     /**
@@ -2388,23 +2434,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Dispatch the `loadtotalcount` event.
-     */
-    dispatchLoadTotalCount() {
-        /**
-         * The event fired when the list is is rendered or the search term is modified.
-         *
-         * @event
-         * @name loadtotalcount
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('loadtotalcount', { bubbles: true })
-        );
-    }
-
-    /**
      * Dispatch the `loadmore` event.
      *
      * @param {object} item Parent item that triggered the `loadmore` event, if the items are nested.
@@ -2424,6 +2453,23 @@ export default class FilterMenu extends LightningElement {
                 bubbles: true,
                 detail: { item: deepCopy(item) }
             })
+        );
+    }
+
+    /**
+     * Dispatch the `loadtotalcount` event.
+     */
+    dispatchLoadTotalCount() {
+        /**
+         * The event fired when the list is is rendered or the search term is modified.
+         *
+         * @event
+         * @name loadtotalcount
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadtotalcount', { bubbles: true })
         );
     }
 

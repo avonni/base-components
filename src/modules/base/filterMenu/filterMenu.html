@@ -1,6 +1,7 @@
 <template>
     <div class="slds-is-relative">
         <button
+            style={computedButtonStyle}
             class={computedButtonClass}
             accesskey={accessKey}
             aria-expanded={computedAriaExpanded}
@@ -21,20 +22,24 @@
             >
                 {label}
             </span>
-            <span
-                if:true={showFilterValue}
-                class="slds-truncate"
-                data-element-id="span-menu-selected-labels"
-            >
-                &nbsp;{selectedFilterLabels}&nbsp;
-            </span>
-            <span
-                if:true={showCount}
-                class="slds-badge avonni-filter-menu__selected-item-count"
-                data-element-id="span-menu-selected-item-count"
-            >
-                {selectedItemCountLabel}
-            </span>
+
+            <div class="slds-truncate" data-element-id="div-menu-label-count">
+                <span
+                    if:true={showFilterValue}
+                    class="slds-truncate"
+                    data-element-id="span-menu-selected-labels"
+                >
+                    &nbsp;{selectedFilterLabels}&nbsp;
+                </span>
+                <span
+                    if:true={showCount}
+                    class="slds-badge avonni-filter-menu__selected-item-count"
+                    data-element-id="span-menu-selected-item-count"
+                >
+                    {selectedItemCountLabel}
+                </span>
+            </div>
+
             <c-primitive-icon
                 if:true={iconName}
                 class="slds-m-horizontal_xx-small"

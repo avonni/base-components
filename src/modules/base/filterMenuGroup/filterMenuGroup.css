@@ -1,3 +1,4 @@
-.avonni-filter-menu-group__wrapper_hidden {
-    visibility: hidden;
+.avonni-filter-menu-group__button-icon-popover {
+    --avonni-button-icon-popover-sizing-max-height: 300px;
+    --slds-c-popover-position-zindex: 8001;
 }

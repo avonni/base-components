@@ -21,7 +21,6 @@ export default class FilterMenu extends LightningElement {
     @api name;
     @api resetButtonLabel;
     @api showClearButton;
-    @api showSelectedFilterValueCount;
     @api title;
     @api tooltip;
     @api type;

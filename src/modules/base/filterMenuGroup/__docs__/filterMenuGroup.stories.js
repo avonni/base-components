@@ -13,6 +13,19 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        align: {
+            name: 'align',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'center', 'right'],
+            description:
+                'Alignment of the menu group. Valid values include left, center, right. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
         applyButtonLabel: {
             name: 'apply-button-label',
             control: {
@@ -68,29 +81,6 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        isToggleButtonVariant: {
-            name: 'is-toggle-button-variant',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, each menu will have its button variant toggled between the border and outline-brand variants',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        offsetFilterWidth: {
-            name: 'offset-filter-width',
-            control: {
-                type: 'number'
-            },
-            description: 'Width of the offset for the filter in pixels.',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: '0' }
-            }
-        },
         showClearButton: {
             name: 'show-clear-button',
             control: {
@@ -103,13 +93,13 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        showSelectedFilterValueCount: {
-            name: 'show-selected-filter-value-count',
+        singleLine: {
+            name: 'single-line',
             control: {
                 type: 'boolean'
             },
             description:
-                'If present, the selected filter value and count are displayed in the label.',
+                'If present, the menus are limited to one line for the horizontal variant.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -136,32 +126,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
             }
-        },
-        wrapperWidth: {
-            name: 'wrapper-width',
-            control: {
-                type: 'number'
-            },
-            description:
-                'Width of the wrapper in pixels. It is used to compute the overflow of the menu group.',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: '0' }
-            }
         }
     },
     args: {
+        align: 'left',
         applyButtonLabel: 'Apply',
         hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
-        isToggleButtonVariant: false,
-        offsetFilterWidth: 0,
         resetButtonLabel: 'Clear selection',
         showClearButton: false,
-        showSelectedFilterValueCount: false,
-        variant: 'horizontal',
-        wrapperWidth: 0
+        singleLine: false,
+        variant: 'horizontal'
     }
 };
 

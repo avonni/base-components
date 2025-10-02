@@ -29,15 +29,11 @@ describe('FilterMenuGroup', () => {
             expect(element.hideApplyButton).toBeFalsy();
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
-            expect(element.isToggleButtonVariant).toBeFalsy();
             expect(element.menus).toMatchObject([]);
-            expect(element.offsetFilterWidth).toBe(0);
             expect(element.resetButtonLabel).toBe('Clear selection');
             expect(element.showClearButton).toBeFalsy();
-            expect(element.showSelectedFilterValueCount).toBeFalsy();
             expect(element.value).toEqual({});
             expect(element.variant).toBe('horizontal');
-            expect(element.wrapperWidth).toBe(0);
         });
 
         describe('applyButtonLabel', () => {
@@ -160,18 +156,6 @@ describe('FilterMenuGroup', () => {
             });
         });
 
-        describe('isToggleButtonVariant', () => {
-            it('isToggleButtonVariant, true', () => {
-                element.isToggleButtonVariant = true;
-                expect(element.isToggleButtonVariant).toBeTruthy();
-            });
-
-            it('isToggleButtonVariant, false', () => {
-                element.isToggleButtonVariant = false;
-                expect(element.isToggleButtonVariant).toBeFalsy();
-            });
-        });
-
         describe('menus', () => {
             it('Passed to the component', () => {
                 element.menus = MENUS;
@@ -210,28 +194,6 @@ describe('FilterMenuGroup', () => {
                         expect(menu.name).toBe(MENUS[i].name);
                     });
                 });
-            });
-        });
-
-        describe('offsetFilterWidth', () => {
-            it('offsetFilterWidth = null', () => {
-                element.offsetFilterWidth = null;
-                expect(element.offsetFilterWidth).toBe(0);
-            });
-
-            it('offsetFilterWidth = undefined', () => {
-                element.offsetFilterWidth = undefined;
-                expect(element.offsetFilterWidth).toBe(0);
-            });
-
-            it('offsetFilterWidth = -1', () => {
-                element.offsetFilterWidth = -1;
-                expect(element.offsetFilterWidth).toBe(0);
-            });
-
-            it('offsetFilterWidth = 1', () => {
-                element.offsetFilterWidth = 1;
-                expect(element.offsetFilterWidth).toBe(1);
             });
         });
 
@@ -286,34 +248,6 @@ describe('FilterMenuGroup', () => {
                     );
                     menus.forEach((menu) => {
                         expect(menu.showClearButton).toBeFalsy();
-                    });
-                });
-            });
-        });
-
-        describe('showSelectedFilterValueCount', () => {
-            it('Passed to the component as true', () => {
-                element.showSelectedFilterValueCount = true;
-
-                return Promise.resolve().then(() => {
-                    const menus = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="avonni-filter-menu"]'
-                    );
-                    menus.forEach((menu) => {
-                        expect(menu.showSelectedFilterValueCount).toBeTruthy();
-                    });
-                });
-            });
-
-            it('Passed to the component as false', () => {
-                element.showSelectedFilterValueCount = false;
-
-                return Promise.resolve().then(() => {
-                    const menus = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="avonni-filter-menu"]'
-                    );
-                    menus.forEach((menu) => {
-                        expect(menu.showSelectedFilterValueCount).toBeFalsy();
                     });
                 });
             });
@@ -390,75 +324,6 @@ describe('FilterMenuGroup', () => {
                     );
                     expect(buttons).toHaveLength(2);
                 });
-            });
-        });
-
-        describe('wrapperWidth', () => {
-            it('wrapperWidth = null', () => {
-                element.wrapperWidth = null;
-                expect(element.wrapperWidth).toBe(0);
-            });
-
-            it('wrapperWidth = undefined', () => {
-                element.wrapperWidth = undefined;
-                expect(element.wrapperWidth).toBe(0);
-            });
-
-            it('wrapperWidth = -1', () => {
-                element.wrapperWidth = -1;
-                expect(element.wrapperWidth).toBe(0);
-            });
-
-            it('wrapperWidth = 1', () => {
-                element.wrapperWidth = 1;
-                expect(element.wrapperWidth).toBe(1);
-            });
-
-            it('wrapperWidth  = 100000', () => {
-                element.menus = MENUS;
-                element.wrapperWidth = 100000;
-                expect(element.wrapperWidth).toBe(100000);
-                return Promise.resolve()
-                    .then(() => {
-                        jest.runAllTimers();
-                        expect(element.wrapperWidth).toBe(100000);
-                    })
-                    .then(() => {
-                        const menus = element.shadowRoot.querySelectorAll(
-                            '[data-element-id^="avonni-filter-menu"]'
-                        );
-                        expect(menus).toHaveLength(MENUS.length);
-                        menus.forEach((menu, i) => {
-                            expect(menu.accessKey).toBe(MENUS[i].accessKey);
-                            expect(menu.alternativeText).toBe(
-                                MENUS[i].alternativeText
-                            );
-                            expect(menu.closed).toBe(MENUS[i].closed);
-                            expect(menu.collapsible).toBe(MENUS[i].collapsible);
-                            expect(menu.disabled).toBe(MENUS[i].disabled);
-                            expect(menu.iconName).toBe(MENUS[i].iconName);
-                            expect(menu.iconSize).toBe(MENUS[i].iconSize);
-                            expect(menu.isLoading).toBe(MENUS[i].isLoading);
-                            expect(menu.label).toBe(MENUS[i].label);
-                            expect(menu.loadingStateAlternativeText).toBe(
-                                MENUS[i].loadingStateAlternativeText
-                            );
-                            expect(menu.type).toBe(MENUS[i].type);
-                            expect(menu.typeAttributes).toEqual(
-                                MENUS[i].typeAttributes
-                            );
-                            expect(menu.title).toBe(MENUS[i].title);
-                            expect(menu.tooltip).toBe(MENUS[i].tooltip);
-                            expect(menu.value).toEqual([]);
-                            expect(menu.buttonVariant).toBe(
-                                MENUS[i].buttonVariant
-                            );
-                            expect(menu.dropdownAlignment).toBe(
-                                MENUS[i].dropdownAlignment
-                            );
-                            expect(menu.name).toBe(MENUS[i].name);
-                        });
-                    });
             });
         });
     });

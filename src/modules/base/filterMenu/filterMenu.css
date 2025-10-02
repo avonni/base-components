@@ -5,7 +5,3 @@
 .avonni-filter-menu__selected-item-count {
     background-color: var(--lwc-brandPrimary, #1b96ff);
 }
-
-.avonni-filter-menu__truncate {
-    max-width: 300px;
-}
