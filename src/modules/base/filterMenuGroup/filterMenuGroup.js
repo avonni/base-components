@@ -58,6 +58,7 @@ export default class FilterMenuGroup extends LightningElement {
     _resizeObserver;
     _selectedValue = {};
     _sliceIndex = 0;
+    _shouldFocus = false;
 
     /*
      * ------------------------------------------------------------
@@ -595,6 +596,14 @@ export default class FilterMenuGroup extends LightningElement {
         }
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
+        if (this.showSingleLine && this._isPopoverOpen) {
+            requestAnimationFrame(() => {
+                if (this._shouldFocus) {
+                    this.moreFilterElement?.focus();
+                    this._shouldFocus = false;
+                }
+            });
+        }
         if (this.isDifferentComputedMenu()) {
             this.recomputeOverflow();
         }
@@ -1090,6 +1099,10 @@ export default class FilterMenuGroup extends LightningElement {
         event.stopPropagation();
         const menuName = event.target.dataset.name;
         const value = event.detail.value;
+        if (this.showSingleLine && this._isPopoverOpen) {
+            const menu = this.computedMenus.find((m) => m.name === menuName);
+            this._shouldFocus = menu?.type === 'date-range';
+        }
 
         if (!value.length) {
             delete this._selectedValue[menuName];

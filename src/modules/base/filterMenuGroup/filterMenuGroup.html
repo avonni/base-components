@@ -56,7 +56,7 @@
                 ></avonni-filter-menu>
             </li>
         </template>
-        <c-layout-item class="slds-text-align_right" if:true={isOverflow}>
+        <c-layout-item if:true={isOverflow} class="slds-text-align_right">
             <c-button-icon-popover
                 class="
                     slds-show_inline-block
@@ -72,41 +72,43 @@
                 onopen={handleMoreFiltersOpen}
                 onclose={handleMoreFiltersClose}
             >
-                <template for:each={hiddenMenus} for:item="menu">
-                    <li class="slds-m-bottom_small" key={menu.name}>
-                        <avonni-filter-menu
-                            access-key={menu.accessKey}
-                            alternative-text={menu.alternativeText}
-                            apply-button-label={applyButtonLabel}
-                            button-variant={menu.buttonVariant}
-                            closed={menu.closed}
-                            collapsible={menu.collapsible}
-                            disabled={menu.disabled}
-                            dropdown-alignment={menu.dropdownAlignment}
-                            dropdown-nubbin={menu.dropdownNubbin}
-                            hide-apply-button={hideApplyButton}
-                            hide-apply-reset-buttons
-                            hide-selected-items
-                            icon-name={menu.iconName}
-                            icon-size={menu.iconSize}
-                            is-loading={menu.isLoading}
-                            label={menu.label}
-                            loading-state-alternative-text={menu.loadingStateAlternativeText}
-                            name={menu.name}
-                            reset-button-label={resetButtonLabel}
-                            show-clear-button
-                            title={menu.title}
-                            type={menu.type}
-                            type-attributes={menu.typeAttributes}
-                            tooltip={menu.tooltip}
-                            value={menu.value}
-                            variant="vertical"
-                            data-element-id="avonni-filter-menu-overflow"
-                            data-group-name="focusable-element"
-                            data-name={menu.name}
-                        ></avonni-filter-menu>
-                    </li>
-                </template>
+                <div tabindex="0" data-element-id="hidden-menus-wrapper">
+                    <template for:each={hiddenMenus} for:item="menu">
+                        <li class="slds-m-bottom_small" key={menu.name}>
+                            <avonni-filter-menu
+                                access-key={menu.accessKey}
+                                alternative-text={menu.alternativeText}
+                                apply-button-label={applyButtonLabel}
+                                button-variant={menu.buttonVariant}
+                                closed={menu.closed}
+                                collapsible={menu.collapsible}
+                                disabled={menu.disabled}
+                                dropdown-alignment={menu.dropdownAlignment}
+                                dropdown-nubbin={menu.dropdownNubbin}
+                                hide-apply-button={hideApplyButton}
+                                hide-apply-reset-buttons
+                                hide-selected-items
+                                icon-name={menu.iconName}
+                                icon-size={menu.iconSize}
+                                is-loading={menu.isLoading}
+                                label={menu.label}
+                                loading-state-alternative-text={menu.loadingStateAlternativeText}
+                                name={menu.name}
+                                reset-button-label={resetButtonLabel}
+                                show-clear-button
+                                title={menu.title}
+                                type={menu.type}
+                                type-attributes={menu.typeAttributes}
+                                tooltip={menu.tooltip}
+                                value={menu.value}
+                                variant="vertical"
+                                data-element-id="avonni-filter-menu-overflow"
+                                data-group-name="focusable-element"
+                                data-name={menu.name}
+                            ></avonni-filter-menu>
+                        </li>
+                    </template>
+                </div>
             </c-button-icon-popover>
         </c-layout-item>
     </ul>
