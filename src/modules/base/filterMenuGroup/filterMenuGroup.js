@@ -17,7 +17,7 @@ const MENU_VARIANTS = {
     default: 'horizontal'
 };
 const FILTER_MENU_MARGIN = 4;
-const FILTER_MENU_POPOVER_BUTTON_HEIGHT = 32;
+const FILTER_MENU_POPOVER_BUTTON_SIZE = 32;
 
 const MENU_GROUP_ALIGNS = {
     valid: ['left', 'center', 'right'],
@@ -571,14 +571,13 @@ export default class FilterMenuGroup extends LightningElement {
                 : 0;
 
         if (sliceIndex !== this.computedMenus.length) {
-            let totalWidth = 0;
+            let totalWidth = FILTER_MENU_POPOVER_BUTTON_SIZE;
             sliceIndex = 0;
-            this._itemsWidths.forEach((menuWidth) => {
-                if (totalWidth + menuWidth < wrapperWidth) {
-                    totalWidth += menuWidth;
-                    sliceIndex++;
-                }
-            });
+            for (const menuWidth of this._itemsWidths) {
+                if (totalWidth + menuWidth > wrapperWidth) break;
+                totalWidth += menuWidth;
+                sliceIndex++;
+            }
         }
         return sliceIndex;
     }
@@ -797,12 +796,12 @@ export default class FilterMenuGroup extends LightningElement {
         let tallestChildHeight;
 
         if (sliceIndex === 0) {
-            tallestChildHeight = FILTER_MENU_POPOVER_BUTTON_HEIGHT;
+            tallestChildHeight = FILTER_MENU_POPOVER_BUTTON_SIZE;
         } else if (sliceIndex === this.computedMenus.length) {
             tallestChildHeight = maxChildHeight;
         } else {
             tallestChildHeight = Math.max(
-                FILTER_MENU_POPOVER_BUTTON_HEIGHT,
+                FILTER_MENU_POPOVER_BUTTON_SIZE,
                 maxChildHeight
             );
         }
@@ -999,7 +998,6 @@ export default class FilterMenuGroup extends LightningElement {
                     ) && this._openedMenuCount === 0;
                 if (isAllClosed) {
                     this._isPopoverOpen = false;
-                    console.log(this._hasRecalculatedValue);
                     if (this._hasRecalculatedValue) {
                         this._hasRecalculatedValue = false;
                         this.recomputeOverflow();
