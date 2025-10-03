@@ -48,6 +48,7 @@ export default class FilterMenuGroup extends LightningElement {
     _computedMenusWhenLastOverflow = [];
     _connected = false;
     _containerMaxHeight = 0;
+    _hasRecalculatedValue = false;
     _hiddenMenusLength = 0;
     _isCalculatingOverflow = false;
     _isFitted = false;
@@ -488,6 +489,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     @api
     apply() {
+        this.computeRecalculation();
         this._value = deepCopy(this._selectedValue);
         this.computeValue();
     }
@@ -582,6 +584,33 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Compute the recalculation flag if the value of the first menu in the popover has changed.
+     */
+    computeRecalculation() {
+        if (!this.showSingleLine || !this._isPopoverOpen) {
+            this._hasRecalculatedValue = false;
+            return;
+        }
+        const name = this.hiddenMenus[0]?.name;
+        if (!name) {
+            this._hasRecalculatedValue = false;
+            return;
+        }
+
+        const newValue = this._selectedValue[name] ?? [];
+        const oldValue = this._value[name] ?? [];
+
+        if (newValue.length !== oldValue.length) {
+            this._hasRecalculatedValue = true;
+            return;
+        }
+
+        const hasChanged = newValue.some((val, i) => val !== oldValue[i]);
+
+        this._hasRecalculatedValue = hasChanged;
+    }
+
+    /**
      * Set the value in each computed menu.
      */
     computeValue() {
@@ -590,12 +619,11 @@ export default class FilterMenuGroup extends LightningElement {
             menu.value = deepCopy(this.value[menu.name]);
             pills.push(menu.selectedItems);
         });
-
+        this.selectedPills = pills.flat();
+        this._selectedValue = deepCopy(this.value);
         if (this._hiddenMenusLength === 0) {
             this._sliceIndex = this.computedMenus.length;
         }
-        this.selectedPills = pills.flat();
-        this._selectedValue = deepCopy(this.value);
         if (this.showSingleLine && this._isPopoverOpen) {
             requestAnimationFrame(() => {
                 if (this._shouldFocus) {
@@ -657,6 +685,7 @@ export default class FilterMenuGroup extends LightningElement {
             !this._connected ||
             !this.menuGroupWrapper ||
             !this.showSingleLine ||
+            this._openedMenuCount > 0 ||
             this._isCalculatingOverflow
         ) {
             return;
@@ -669,14 +698,7 @@ export default class FilterMenuGroup extends LightningElement {
             this.saveItemsWidths();
             let sliceIndex = this.computeSliceIndex(wrapperWidth);
             this.saveContainerMaxHeight(sliceIndex);
-            this._sliceIndex = sliceIndex;
-            this._hiddenMenusLength = this.hiddenMenus.length;
-            this._computedMenusWhenLastOverflow = this.computedMenus.map(
-                (menu) => ({
-                    name: menu.name,
-                    label: menu.label
-                })
-            );
+            this.updateOverflowState(sliceIndex);
         });
 
         // Put as many items as needed in the more filters popver if the new menu display is still overflowing.
@@ -686,16 +708,8 @@ export default class FilterMenuGroup extends LightningElement {
                     this.menuGroupWrapper.offsetHeight &&
                 this._sliceIndex > 0
             ) {
-                this._sliceIndex = Math.max(0, this._sliceIndex - 1);
-                this.saveContainerMaxHeight(this._sliceIndex);
-                this._hiddenMenusLength = this.hiddenMenus.length;
-                this._computedMenusWhenLastOverflow = this.computedMenus.map(
-                    (menu) => ({
-                        name: menu.name,
-                        label: menu.label
-                    })
-                );
-
+                const sliceIndex = Math.max(0, this._sliceIndex - 1);
+                this.updateOverflowState(sliceIndex);
                 requestAnimationFrame(rollbackSliceIndex);
             } else {
                 this._isFitted = true;
@@ -795,6 +809,25 @@ export default class FilterMenuGroup extends LightningElement {
         this._containerMaxHeight = tallestChildHeight;
     }
 
+    /**
+     * Update the overflow state based on the index at which menus appear in the popover.
+     *
+     * @param {number} sliceIndex The index at which the menus appear in the popover.
+     */
+    updateOverflowState(sliceIndex) {
+        this._sliceIndex = sliceIndex;
+        this.saveContainerMaxHeight(sliceIndex);
+        this._hiddenMenusLength = this.hiddenMenus.length;
+        this._computedMenusWhenLastOverflow = this.computedMenus.map(
+            (menu) => ({
+                name: menu.name,
+                label: menu.label
+            })
+        );
+        this._openedMenuCount = 0;
+        this._hasRecalculatedValue = false;
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -839,9 +872,7 @@ export default class FilterMenuGroup extends LightningElement {
         );
         if (isVisibleMenu) {
             this._openedMenuCount = Math.max(0, this._openedMenuCount - 1);
-            if (this.showSingleLine && this._openedMenuCount === 0) {
-                this.reviewResize();
-            }
+            this.reviewResize();
         }
 
         /**
@@ -944,6 +975,7 @@ export default class FilterMenuGroup extends LightningElement {
         const elementId = event.target.dataset.elementId;
         if (elementId === 'filter-menu-group-button-icon-popover') {
             if (this.moreFilterElement) {
+                this._hasRecalculatedValue = false;
                 this._isPopoverOpen = true;
             }
             return;
@@ -967,7 +999,13 @@ export default class FilterMenuGroup extends LightningElement {
                     ) && this._openedMenuCount === 0;
                 if (isAllClosed) {
                     this._isPopoverOpen = false;
-                    this.recomputeOverflow();
+                    console.log(this._hasRecalculatedValue);
+                    if (this._hasRecalculatedValue) {
+                        this._hasRecalculatedValue = false;
+                        this.recomputeOverflow();
+                    } else {
+                        this.reviewResize();
+                    }
                 }
             });
             return;
@@ -1017,6 +1055,7 @@ export default class FilterMenuGroup extends LightningElement {
         const menuName = event.target.dataset.name;
         delete this._selectedValue[menuName];
         if (this.hideApplyButton || this.hideApplyResetButtons) {
+            this.computeRecalculation();
             this._value = deepCopy(this._selectedValue);
             this.computeValue();
         }
@@ -1087,6 +1126,7 @@ export default class FilterMenuGroup extends LightningElement {
             delete this.value[menuName];
         }
         this.computeValue();
+        this.recomputeOverflow();
         this.dispatchApply();
     }
 
