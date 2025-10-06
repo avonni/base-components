@@ -12,6 +12,7 @@
             data-element-id="avonni-calendar__keyboard-handler"
         >
             <div class="slds-datepicker">
+                <!-- Top navigation -->
                 <div
                     if:false={hideNavigation}
                     class="slds-datepicker__filter slds-grid"
@@ -96,16 +97,19 @@
                         ></c-primitive-icon>
                     </label>
                 </div>
+
+                <!-- Current month -->
                 <table
                     class={computedTableClasses}
                     aria-labelledby="month"
                     aria-multiselectable={isMultiSelect}
                     role="grid"
                 >
+                    <!-- Weekdays headers -->
                     <thead>
                         <tr id="weekdays" role="row">
                             <template
-                                for:each={days}
+                                for:each={weekdays}
                                 for:item="day"
                                 for:index="index"
                             >
@@ -121,6 +125,8 @@
                             </template>
                         </tr>
                     </thead>
+
+                    <!-- Days -->
                     <tbody>
                         <template for:each={calendarData} for:item="week">
                             <tr
