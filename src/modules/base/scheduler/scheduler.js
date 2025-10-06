@@ -5,10 +5,11 @@ import {
     parseTimeFrame,
     removeFromDate
 } from 'c/luxonDateTimeUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
-    DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_DATE_FORMAT,
     DEFAULT_EVENTS_LABELS,
     EVENTS_THEMES,
@@ -19,7 +20,6 @@ import {
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
@@ -2771,14 +2771,14 @@ export default class Scheduler extends LightningElement {
                 this.availableDaysOfTheWeek
             );
         } else {
-            date = previousAllowedTime(
+            date = previousAllowedTime({
                 date,
-                this.availableMonths,
-                this.availableDaysOfTheWeek,
-                this.availableTimeFrames,
-                unit,
-                span
-            );
+                allowedMonths: this.availableMonths,
+                allowedDays: this.availableDaysOfTheWeek,
+                allowedTimeFrames: this.availableTimeFrames,
+                span,
+                unit
+            });
         }
         this.goToDate(date);
     }

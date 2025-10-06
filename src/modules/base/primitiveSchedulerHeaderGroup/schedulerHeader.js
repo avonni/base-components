@@ -1,7 +1,6 @@
-import { generateUUID } from 'c/utils';
 import {
-    dateTimeObjectFrom,
     addToDate,
+    dateTimeObjectFrom,
     getEndOfWeek,
     getStartOfWeek,
     numberOfUnitsBetweenDates
@@ -11,6 +10,7 @@ import {
     nextAllowedMonth,
     nextAllowedTime
 } from 'c/schedulerUtils';
+import { generateUUID } from 'c/utils';
 
 /**
  * Represent one row of the scheduler header group.
@@ -118,14 +118,14 @@ export default class SchedulerHeader {
                     this.availableDaysOfTheWeek
                 );
                 if (unit !== 'day' && unit !== 'week') {
-                    date = nextAllowedTime(
+                    date = nextAllowedTime({
                         date,
-                        this.availableMonths,
-                        this.availableDaysOfTheWeek,
-                        this.availableTimeFrames,
-                        unit,
-                        span
-                    );
+                        allowedMonths: this.availableMonths,
+                        allowedDays: this.availableDaysOfTheWeek,
+                        allowedTimeFrames: this.availableTimeFrames,
+                        span,
+                        unit
+                    });
                 }
             }
 
@@ -241,7 +241,7 @@ export default class SchedulerHeader {
             this.availableDaysOfTheWeek
         );
         const nextMonth = nextAllowedMonth(
-            this.createDate(lastCell.start),
+            lastCell.start,
             this.availableMonths
         );
 

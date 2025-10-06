@@ -1,3 +1,4 @@
+import { Interval } from 'c/luxon';
 import {
     addToDate,
     dateTimeObjectFrom,
@@ -10,18 +11,17 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { Interval } from 'c/luxon';
-import { SchedulerEventOccurrence } from './eventOccurrence';
 import { containsAllowedDateTimes } from './dateComputations';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_EVENTS_LABELS,
-    RECURRENCES,
     EVENTS_THEMES,
+    RECURRENCES,
     REFERENCE_LINE_VARIANTS
 } from './defaults';
+import { SchedulerEventOccurrence } from './eventOccurrence';
 
 /**
  * @class
@@ -328,15 +328,15 @@ export default class SchedulerEvent {
         )
             return;
 
-        const containsAllowedTimes = containsAllowedDateTimes(
-            from,
-            computedTo,
-            this.availableMonths,
-            this.availableDaysOfTheWeek,
-            this.availableTimeFrames,
-            this.smallestHeader.unit,
-            this.smallestHeader.span
-        );
+        const containsAllowedTimes = containsAllowedDateTimes({
+            start: from,
+            end: computedTo,
+            allowedMonths: this.availableMonths,
+            allowedDays: this.availableDaysOfTheWeek,
+            allowedTimeFrames: this.availableTimeFrames,
+            unit: this.smallestHeader.unit,
+            span: this.smallestHeader.span
+        });
 
         if (containsAllowedTimes) {
             if (this.referenceLine) {
