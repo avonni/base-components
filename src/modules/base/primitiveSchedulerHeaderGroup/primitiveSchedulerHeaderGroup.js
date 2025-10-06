@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import { Interval } from 'c/luxon';
 import {
     addToDate,
@@ -6,21 +5,22 @@ import {
     getStartOfWeek,
     numberOfUnitsBetweenDates
 } from 'c/luxonDateTimeUtils';
-import { equal } from 'c/utilsPrivate';
-import SchedulerHeader from './schedulerHeader';
+import {
+    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
+    DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_AVAILABLE_TIME_FRAMES,
+    DEFAULT_TIME_SPAN,
+    WEEK_START_DAYS
+} from 'c/schedulerUtils';
 import {
     classSet,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import {
-    DEFAULT_AVAILABLE_MONTHS,
-    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
-    DEFAULT_AVAILABLE_TIME_FRAMES,
-    DEFAULT_TIME_SPAN,
-    WEEK_START_DAYS
-} from 'c/schedulerUtils';
+import { equal } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
+import SchedulerHeader from './schedulerHeader';
 
 const DEFAULT_AVAILABLE_TIME_SPANS = [
     { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
@@ -64,6 +64,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _timezone;
     _variant = VARIANTS.default;
     _visibleWidth = 0;
+    _weekStartDay = WEEK_START_DAYS.default;
     _zoomToFit = false;
 
     _cellsSizeUpdateAnimationFrame;
