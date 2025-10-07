@@ -628,7 +628,7 @@ export default class Carousel extends LightningElement {
      * @type {string}
      */
     get computedAutoScrollAutoplayButton() {
-        return classSet('slds-m-left_x-small slds-m-top_xx-small').add({
+        return classSet('slds-m-left_x-small slds-m-vertical_xx-small').add({
             'avonni-carousel__autoscroll-button-with-indicator':
                 !this.hideIndicator
         });

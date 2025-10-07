@@ -902,7 +902,7 @@ export default class Tree extends LightningElement {
 
         // Parent
         const parentExists = !!parent;
-        const parentHasSlots = parentExists && !parent.noSlots;
+        const parentHasSlots = parentExists && !parent.treeNode.noSlots;
         const parentSupportsType =
             parentExists &&
             (parent.treeNode.slottableTypes.length === 0 ||

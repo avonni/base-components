@@ -3,11 +3,13 @@
  * @name options
  * @property {string} alternativeText Alternative text of the option.
  * @property {string} color CSS color value. If present, the checkbox, radio button or button will take this color.
+ * @property {boolean} disabled If present, the option is disabled and it is not possible to select it.
  * @property {string} label Label of the option.
  * @property {boolean} hideLabel If present, the label of the option is hidden.
+ * @property {boolean} hidden If present, the option is not visible.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
  * @property {string} iconPosition The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
- * @property {string} tooltip Tooltip of the option.
+ * @property {string} tooltip Text visible when the option is hovered or focused.
  * @property {string} value Value of the option.
  */
 /**

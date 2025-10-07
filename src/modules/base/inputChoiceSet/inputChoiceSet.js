@@ -138,6 +138,7 @@ export default class InputChoiceSet extends LightningElement {
     computedTypeAttributes = {};
     computedWidth;
     helpMessage;
+    transformedOptions = [];
 
     _connected = false;
     _containerWidth;
@@ -145,7 +146,6 @@ export default class InputChoiceSet extends LightningElement {
     _resizeObserver;
     _tooltip;
     _tooltipTimeout;
-    _transformedOptions = [];
 
     connectedCallback() {
         if (!Object.keys(this.computedOrientationAttributes).length) {
@@ -220,6 +220,10 @@ export default class InputChoiceSet extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.initOptions();
+        }
     }
 
     /**
@@ -251,6 +255,10 @@ export default class InputChoiceSet extends LightningElement {
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
         this.setWidth();
+
+        if (this._connected) {
+            this.initOptions();
+        }
     }
 
     /**
@@ -668,10 +676,6 @@ export default class InputChoiceSet extends LightningElement {
         } else if (this.buttonVariant) {
             label = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
         }
-
-        if (!this.disabled) {
-            label += ' avonni-input-choice-set__option-label';
-        }
         return label;
     }
 
@@ -770,15 +774,6 @@ export default class InputChoiceSet extends LightningElement {
      */
     get toggleVariant() {
         return this.type === 'toggle';
-    }
-
-    /**
-     * Create new InputChoiceOption object.
-     *
-     * @type {Object[]}
-     */
-    get transformedOptions() {
-        return this._transformedOptions;
     }
 
     /*
@@ -918,15 +913,15 @@ export default class InputChoiceSet extends LightningElement {
      * Initialize the options.
      */
     initOptions() {
-        const { options, value, type, computedWidth } = this;
-        this._transformedOptions = Array.isArray(options)
-            ? options.map((option) => {
-                  return new InputChoiceOption(
-                      option,
-                      value,
-                      type,
-                      computedWidth
-                  );
+        this.transformedOptions = Array.isArray(this.options)
+            ? this.options.map((option) => {
+                  return new InputChoiceOption(option, {
+                      disabled: this.disabled,
+                      labelClass: this.computedLabelClass,
+                      type: this.type,
+                      value: this.value,
+                      width: this.computedWidth
+                  });
               })
             : [];
     }
@@ -1182,8 +1177,10 @@ export default class InputChoiceSet extends LightningElement {
             const color = label.dataset.color;
             if (!color) return;
             if (hasValue && !this.toggleVariant) {
-                label.style.backgroundColor = color;
-                label.style.borderColor = color;
+                if (this.buttonVariant) {
+                    label.style.backgroundColor = color;
+                    label.style.borderColor = color;
+                }
                 label.style.color = this.buttonVariant ? 'white' : color;
             } else {
                 label.style.backgroundColor = '';

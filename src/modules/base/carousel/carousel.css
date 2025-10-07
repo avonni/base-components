@@ -8,7 +8,11 @@
     display: flex;
     flex: 0 0 100%;
     max-width: 100%;
-    align-items: center;
+    align-items: stretch;
+}
+
+.avonni-carousel__panel-item {
+    height: 100%;
 }
 
 .avonni-carousel__nav-button {
@@ -86,7 +90,7 @@
 
 .avonni-carousel__autoscroll-button-with-indicator {
     position: absolute;
-    bottom: 7px;
+    bottom: 4px;
 }
 
 .avonni-carousel__progress-indicator_active {

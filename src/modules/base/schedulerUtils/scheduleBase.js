@@ -886,9 +886,10 @@ export class ScheduleBase extends LightningElement {
         const start = selectedDate.startOf('month');
         const end = selectedDate.endOf('month');
         const interval = intervalFrom(start, end);
-        const events = this._eventData.getEventsInInterval(
+        const { events } = this._eventData.getEventsInInterval(
             this.events,
-            interval
+            interval,
+            true
         );
         this.navCalendarMarkedDates = this.getMonthMarkedDates(
             selectedDate.month,
@@ -1057,6 +1058,30 @@ export class ScheduleBase extends LightningElement {
                     from: from.toISO(),
                     to: to.toISO()
                 }
+            })
+        );
+    }
+
+    /**
+     * Handle the cursor clicking an event.
+     *
+     * @param {Event} event `privatemouseclick` event fired by a primitive event occurrence.
+     */
+    handleEventMouseClick(event) {
+        /**
+         * The event fired when the mouse clicks an event.
+         *
+         * @event
+         * @name eventmouseclick
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventmouseclick', {
+                detail: event.detail
             })
         );
     }

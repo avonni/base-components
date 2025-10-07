@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 /**
  * @constant
@@ -246,7 +246,7 @@ export default class InputData extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value = value ? value : '';
+        this._value = value ?? '';
     }
 
     /**

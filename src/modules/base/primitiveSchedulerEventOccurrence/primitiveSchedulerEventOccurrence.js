@@ -974,7 +974,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {boolean}
      */
     get isAllDay() {
-        return isAllDay(this.eventData, this.from, this.to);
+        return isAllDay({
+            event: this.eventData,
+            from: this.from,
+            to: this.to,
+            endOfTo: this.occurrence && this.occurrence.endOfTo,
+            startOfFrom: this.occurrence && this.occurrence.startOfFrom
+        });
     }
 
     /**
@@ -1104,7 +1110,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {boolean}
      */
     get spansOnMoreThanOneDay() {
-        return spansOnMoreThanOneDay(this.eventData, this.from, this.to);
+        return spansOnMoreThanOneDay({
+            event: this.eventData,
+            from: this.from,
+            to: this.to,
+            endOfTo: this.occurrence && this.occurrence.endOfTo,
+            startOfFrom: this.occurrence && this.occurrence.startOfFrom
+        });
     }
 
     /**
@@ -1916,6 +1928,41 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             event.preventDefault();
             this.handleContextMenu(event);
         }
+    }
+
+    /**
+     * Handle the mouseclick event fired by the occurrence.
+     * Dispatch a privatemouseclick event.
+     *
+     * @param {Event} event
+     */
+    handleMouseClick(event) {
+        if (event.button !== 0) return;
+
+        const resize = event.target.dataset.resize;
+
+        /**
+         * The event fired when the mouse is pressed on the occurrence.
+         *
+         * @event
+         * @name privatemouseclick
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatemouseclick', {
+                detail: {
+                    eventName: this.eventName,
+                    key: this.occurrenceKey,
+                    from: this.from,
+                    x: event.clientX,
+                    y: event.clientY,
+                    side: resize
+                }
+            })
+        );
     }
 
     /**

@@ -1,6 +1,12 @@
 import { api, track } from 'lwc';
 import { equal } from 'c/utilsPrivate';
-import { classSet, deepCopy, normalizeArray, normalizeString } from 'c/utils';
+import {
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeString,
+    normalizeBoolean
+} from 'c/utils';
 import { addToDate } from 'c/luxonDateTimeUtils';
 import {
     DEFAULT_START_DATE,
@@ -31,6 +37,7 @@ const CELL_SELECTOR = '[data-element-id="div-cell"]';
  */
 export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _columns = [];
+    _isMobileView = false;
     _orientation = ORIENTATIONS.default;
     _start = DEFAULT_START_DATE;
 
@@ -40,6 +47,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _resizeObserver;
     _rowsHeight = [];
     _updateOccurrencesLength = false;
+
     cellWidth = 0;
     @track computedEvents = [];
     computedHeaders = [];
@@ -152,6 +160,21 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         if (this._connected) {
             this.updateVisibleResources();
         }
+    }
+
+    /**
+     * If present, the mobile view is displayed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isMobileView() {
+        return this._isMobileView;
+    }
+    set isMobileView(value) {
+        this._isMobileView = normalizeBoolean(value);
     }
 
     /**
@@ -471,7 +494,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {boolean}
      */
     get isVertical() {
-        return this.orientation === 'vertical';
+        return this.orientation === 'vertical' || this.isMobileView;
     }
 
     /**

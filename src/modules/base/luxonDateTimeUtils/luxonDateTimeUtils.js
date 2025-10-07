@@ -190,10 +190,41 @@ const getWeekNumber = (date) => {
  * @returns {number} Number of units between the start and end dates.
  */
 const numberOfUnitsBetweenDates = (unit, start, end) => {
+    // Save performance compared to using intersection.count('days').
+    if (unit === 'day') {
+        const normalizedStart = new Date(
+            start.year,
+            start.month - 1,
+            start.day
+        );
+        const normalizedEnd = new Date(
+            end.year,
+            end.month - 1,
+            end.day,
+            23,
+            59,
+            59,
+            999
+        );
+        const startTime = normalizedStart.getTime();
+        const endTime = normalizedEnd.getTime();
+
+        let timeDiff = 1;
+        if (startTime > endTime) {
+            timeDiff = startTime - endTime;
+        } else if (startTime < endTime) {
+            timeDiff = endTime - startTime;
+        }
+
+        // Convert milliseconds to days and add 1 to include both start and end days
+        const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+        return daysDiff;
+    }
+
     // Compensate the fact that luxon weeks start on Monday
     const isWeek = unit === 'week';
-    let normalizedStart = isWeek ? addToDate(start, 'day', 1) : start;
-    let normalizedEnd = isWeek ? addToDate(end, 'day', 1) : end;
+    const normalizedStart = isWeek ? addToDate(start, 'day', 1) : start;
+    const normalizedEnd = isWeek ? addToDate(end, 'day', 1) : end;
 
     const interval = Interval.fromDateTimes(normalizedStart, normalizedEnd);
     return interval.count(unit);

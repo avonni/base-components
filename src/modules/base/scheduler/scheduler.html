@@ -2,7 +2,12 @@
     <!-- Toolbar -->
     <div
         if:false={hideToolbar}
-        class="slds-grid slds-p-bottom_medium slds-grid_vertical-align-center"
+        class="
+            slds-grid
+            slds-p-bottom_medium
+            slds-grid_vertical-align-center
+            slds-wrap
+        "
         data-element-id="div-toolbar"
     >
         <!-- Toolbar time spans -->
@@ -46,7 +51,7 @@
 
         <!-- Toolbar calendar selector -->
         <div
-            class={toolbarCalendarWrapperClass}
+            class={computedToolbarCalendarWrapperClass}
             onfocusin={handleToolbarCalendarFocusin}
             onfocusout={handleToolbarCalendarFocusout}
         >
@@ -200,6 +205,7 @@
 
     <div
         class="avonni-scheduler__wrapper"
+        data-element-id="avonni-primitive-scheduler-wrapper"
         onscheduleclick={handleScheduleClick}
     >
         <c-primitive-scheduler-timeline
@@ -216,6 +222,7 @@
             events-labels={eventsLabels}
             events-theme={eventsTheme}
             hidden-actions={hiddenActions}
+            is-mobile-view={displayInMobileView}
             loading-state-alternative-text={loadingStateAlternativeText}
             new-event-title={dialogLabels.newEventTitle}
             prevent-past-event-creation={preventPastEventCreation}
@@ -234,6 +241,7 @@
             oneventchange={handleEventChange}
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
+            oneventmouseclick={handleEventMouseClick}
             oneventmouseenter={handleEventMouseEnter}
             oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
@@ -269,6 +277,7 @@
             hidden-actions={hiddenActions}
             hide-resources-filter={hideResourcesFilter}
             hide-side-panel={hideSidePanel}
+            is-mobile-view={displayInMobileView}
             loading-state-alternative-text={loadingStateAlternativeText}
             prevent-past-event-creation={preventPastEventCreation}
             read-only={readOnly}
@@ -287,6 +296,7 @@
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
             oneventselect={handleEventSelect}
+            oneventmouseclick={handleEventMouseClick}
             oneventmouseenter={handleEventMouseEnter}
             oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
@@ -309,6 +319,7 @@
             hidden-actions={hiddenActions}
             hide-resources-filter={hideResourcesFilter}
             hide-side-panel={hideSidePanel}
+            is-mobile-view={displayInMobileView}
             label-no-events-found={labelNoEventsFound}
             read-only={readOnly}
             resize-column-disabled={resizeColumnDisabled}
@@ -325,6 +336,7 @@
             oneventchange={handleEventChange}
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
+            oneventmouseclick={handleEventMouseClick}
             oneventmouseenter={handleEventMouseEnter}
             oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
@@ -346,7 +358,7 @@
     <!-- Event detail popover -->
     <div
         if:true={showDetailPopover}
-        class="slds-is-absolute slds-popover slds-popover_medium"
+        class={detailPopoverClass}
         aria-live="polite"
         role="tooltip"
         data-element-id="div-detail-popover"
@@ -378,11 +390,7 @@
                         <div
                             if:false={field.isHidden}
                             key={field.key}
-                            class="
-                                slds-col
-                                slds-size_1-of-2
-                                slds-p-vertical_xx-small
-                            "
+                            class={computedPopoverFieldLayoutClass}
                         >
                             <c-output-data
                                 label={field.label}

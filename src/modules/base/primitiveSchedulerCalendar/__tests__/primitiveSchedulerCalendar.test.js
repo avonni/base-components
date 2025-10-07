@@ -194,6 +194,10 @@ describe('Primitive Scheduler Calendar', () => {
             is: PrimitiveSchedulerCalendar
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     /*
@@ -860,121 +864,6 @@ describe('Primitive Scheduler Calendar', () => {
                     });
             });
 
-            it('Month time span', () => {
-                const monthEvents = [
-                    {
-                        resourceNames: ['resource-1'],
-                        name: 'one-day',
-                        title: 'One day',
-                        from: new Date(2022, 8, 3, 12),
-                        to: new Date(2022, 8, 3, 13)
-                    },
-                    {
-                        resourceNames: ['resource-1'],
-                        name: 'several-days',
-                        title: 'Several days',
-                        from: new Date(2022, 8, 7),
-                        to: new Date(2022, 8, 9)
-                    },
-                    {
-                        resourceNames: ['resource-1'],
-                        name: 'several-weeks',
-                        from: new Date(2022, 8, 16, 4),
-                        to: new Date(2022, 8, 19, 16)
-                    }
-                ];
-                element.events = monthEvents;
-                element.selectedResources = ALL_RESOURCES;
-                element.resources = RESOURCES;
-                element.selectedDate = SELECTED_DATE;
-                element.timeSpan = { unit: 'month', span: 1 };
-
-                return Promise.resolve()
-                    .then(() => {
-                        // Wait for the visible interval to be set
-                    })
-                    .then(() => {
-                        const events = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
-                        );
-                        const placeholders =
-                            element.shadowRoot.querySelectorAll(
-                                '[data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"]'
-                            );
-
-                        expect(events).toHaveLength(3);
-                        expect(placeholders).toHaveLength(5);
-                        const placeholderArray = Array.from(placeholders);
-
-                        events.forEach((ev) => {
-                            expect(ev.variant).toBe('calendar-month');
-                        });
-                        placeholders.forEach((pl) => {
-                            expect(pl.variant).toBe('calendar-month');
-                        });
-
-                        const severalDays = placeholderArray.filter((pl) => {
-                            return pl.occurrenceKey.startsWith('several-days');
-                        });
-                        expect(severalDays).toHaveLength(2);
-                        severalDays.forEach((pl) => {
-                            // There should be no visible placeholder
-                            expect(pl.occurrence.weekStart).toBeUndefined();
-                        });
-
-                        const severalWeeks = placeholderArray.filter((pl) => {
-                            return pl.occurrenceKey.startsWith('several-weeks');
-                        });
-                        expect(severalWeeks).toHaveLength(3);
-                        // One placeholder is on the same row than th original event
-                        expect(
-                            severalWeeks[2].occurrence.weekStart
-                        ).toBeUndefined();
-                        const startOfNewWeek = DateTime.fromJSDate(
-                            new Date(2022, 8, 18)
-                        );
-                        // Two placeholders are on the next week row
-                        expect(severalWeeks[0].occurrence.weekStart.ts).toBe(
-                            startOfNewWeek.ts
-                        );
-                        expect(severalWeeks[1].occurrence.weekStart.ts).toBe(
-                            startOfNewWeek.ts
-                        );
-                    });
-            });
-
-            it('Primitive Scheduler Calendar: events, month time span, show more popover', () => {
-                element.events = SELECTED_DATE_EVENTS;
-                element.selectedResources = ALL_RESOURCES;
-                element.resources = RESOURCES;
-                element.selectedDate = new Date(2022, 8, 19);
-                element.timeSpan = { unit: 'month', span: 1 };
-
-                return Promise.resolve()
-                    .then(() => {
-                        // Wait for the visible interval to be set
-                    })
-                    .then(() => {
-                        const popover = element.shadowRoot.querySelector(
-                            '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
-                        );
-                        const openSpy = jest.spyOn(popover, 'open');
-                        const cellStart = new Date(2022, 8, 19).getTime();
-                        const showMoreButton = element.shadowRoot.querySelector(
-                            `[data-element-id="lightning-button-month-show-more"][data-start="${cellStart}"]`
-                        );
-                        expect(showMoreButton.label).toBe(
-                            `+${SELECTED_DATE_EVENTS.length} more`
-                        );
-                        showMoreButton.click();
-                        expect(openSpy).toHaveBeenCalled();
-                        const call = openSpy.mock.calls[0][0];
-                        expect(call.events).toHaveLength(
-                            SELECTED_DATE_EVENTS.length
-                        );
-                    });
-            });
-
             it('One occurrence per resource is created', () => {
                 element.events = [
                     {
@@ -1110,7 +999,231 @@ describe('Primitive Scheduler Calendar', () => {
                     });
             });
 
-            it('Displayed in a popover in year time span', () => {
+            it('Displayed in the side panel calendar', () => {
+                element.resources = RESOURCES;
+                element.selectedResources = ALL_RESOURCES;
+                element.selectedDate = SELECTED_DATE;
+                element.events = [EVENTS[0]];
+                element.timeSpan = { unit: 'week', span: 1 };
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar-left-panel"]'
+                    );
+                    expect(calendar.markedDates).toHaveLength(2);
+                    calendar.markedDates.forEach((d) => {
+                        expect(d.date.includes('2022-09-20')).toBeTruthy();
+                        expect(d.color).toBe('#333');
+                    });
+                });
+            });
+
+            describe('Month time span', () => {
+                it('Displayed in the calendar', () => {
+                    const monthEvents = [
+                        {
+                            resourceNames: ['resource-1'],
+                            name: 'one-day',
+                            title: 'One day',
+                            from: new Date(2022, 8, 3, 12),
+                            to: new Date(2022, 8, 3, 13)
+                        },
+                        {
+                            resourceNames: ['resource-1'],
+                            name: 'several-days',
+                            title: 'Several days',
+                            from: new Date(2022, 8, 7),
+                            to: new Date(2022, 8, 9)
+                        },
+                        {
+                            resourceNames: ['resource-1'],
+                            name: 'several-weeks',
+                            from: new Date(2022, 8, 16, 4),
+                            to: new Date(2022, 8, 19, 16)
+                        }
+                    ];
+                    element.events = monthEvents;
+                    element.selectedResources = ALL_RESOURCES;
+                    element.resources = RESOURCES;
+                    element.selectedDate = SELECTED_DATE;
+                    element.timeSpan = { unit: 'month', span: 1 };
+
+                    return Promise.resolve()
+                        .then(() => {
+                            // Wait for the visible interval to be set
+                        })
+                        .then(() => {
+                            const events = element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                            );
+                            const placeholders =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"]'
+                                );
+
+                            expect(events).toHaveLength(3);
+                            expect(placeholders).toHaveLength(5);
+                            const placeholderArray = Array.from(placeholders);
+
+                            events.forEach((ev) => {
+                                expect(ev.variant).toBe('calendar-month');
+                            });
+                            placeholders.forEach((pl) => {
+                                expect(pl.variant).toBe('calendar-month');
+                            });
+
+                            const severalDays = placeholderArray.filter(
+                                (pl) => {
+                                    return pl.occurrenceKey.startsWith(
+                                        'several-days'
+                                    );
+                                }
+                            );
+                            expect(severalDays).toHaveLength(2);
+                            severalDays.forEach((pl) => {
+                                // There should be no visible placeholder
+                                expect(pl.occurrence.weekStart).toBeUndefined();
+                            });
+
+                            const severalWeeks = placeholderArray.filter(
+                                (pl) => {
+                                    return pl.occurrenceKey.startsWith(
+                                        'several-weeks'
+                                    );
+                                }
+                            );
+                            expect(severalWeeks).toHaveLength(3);
+                            // One placeholder is on the same row than th original event
+                            expect(
+                                severalWeeks[2].occurrence.weekStart
+                            ).toBeUndefined();
+                            const startOfNewWeek = DateTime.fromJSDate(
+                                new Date(2022, 8, 18)
+                            );
+                            // Two placeholders are on the next week row
+                            expect(
+                                severalWeeks[0].occurrence.weekStart.ts
+                            ).toBe(startOfNewWeek.ts);
+                            expect(
+                                severalWeeks[1].occurrence.weekStart.ts
+                            ).toBe(startOfNewWeek.ts);
+                        });
+                });
+
+                it('Show more popover', () => {
+                    element.events = SELECTED_DATE_EVENTS;
+                    element.selectedResources = ALL_RESOURCES;
+                    element.resources = RESOURCES;
+                    element.selectedDate = new Date(2022, 8, 19);
+                    element.timeSpan = { unit: 'month', span: 1 };
+
+                    return Promise.resolve()
+                        .then(() => {
+                            // Wait for the visible interval to be set
+                        })
+                        .then(() => {
+                            const popover = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
+                            );
+                            const openSpy = jest.spyOn(popover, 'open');
+                            const cellStart = new Date(2022, 8, 19).getTime();
+                            const showMoreButton =
+                                element.shadowRoot.querySelector(
+                                    `[data-element-id="avonni-button-month-show-more"][data-start="${cellStart}"]`
+                                );
+                            expect(showMoreButton.label).toBe(
+                                `+${SELECTED_DATE_EVENTS.length} more`
+                            );
+                            showMoreButton.click();
+                            jest.runAllTimers();
+                            expect(openSpy).toHaveBeenCalled();
+                            const call = openSpy.mock.calls[0][0];
+                            expect(call.events).toHaveLength(
+                                SELECTED_DATE_EVENTS.length
+                            );
+                        });
+                });
+
+                it('Compute only a few events when there is more than 10 events per day', () => {
+                    const monthEvents = [];
+                    for (let i = 0; i < 200; i++) {
+                        monthEvents.push({
+                            resourceNames: [ALL_RESOURCES[0]],
+                            name: `event-${i}`,
+                            title: `Event ${i}`,
+                            from: SELECTED_DATE,
+                            to: new Date(SELECTED_DATE.getTime() + 7200000)
+                        });
+                    }
+                    element.events = monthEvents;
+                    element.selectedResources = ALL_RESOURCES;
+                    element.resources = RESOURCES;
+                    element.selectedDate = SELECTED_DATE;
+                    element.timeSpan = { unit: 'month', span: 1 };
+
+                    return Promise.resolve()
+                        .then(() => {
+                            // Wait for the visible interval to be set
+                            jest.runAllTimers();
+                        })
+                        .then(() => {
+                            const events = element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                            );
+                            const placeholders =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"]'
+                                );
+
+                            expect(events).toHaveLength(10);
+                            expect(placeholders).toHaveLength(0);
+
+                            // Open the show more popover
+                            const popover = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
+                            );
+                            const openSpy = jest.spyOn(popover, 'open');
+
+                            const cellStart = new Date(SELECTED_DATE).setHours(
+                                0,
+                                0,
+                                0,
+                                0
+                            );
+                            const showMoreButton =
+                                element.shadowRoot.querySelector(
+                                    `[data-element-id="avonni-button-month-show-more"][data-start="${cellStart}"]`
+                                );
+                            expect(showMoreButton.label).toBe(`+200 more`);
+                            showMoreButton.click();
+                            jest.runAllTimers();
+                            expect(openSpy).toHaveBeenCalled();
+                            const call = openSpy.mock.calls[0][0];
+                            expect(call.events).toHaveLength(30);
+
+                            // Load more events
+                            popover.dispatchEvent(new CustomEvent('loadmore'));
+                        })
+                        .then(() => {
+                            const popover = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
+                            );
+                            expect(popover.isLoading).toBeTruthy();
+                            const spy = jest.spyOn(popover, 'addEvents');
+                            jest.runAllTimers();
+                            expect(spy).toHaveBeenCalled();
+                            expect(spy.mock.calls[0][0]).toHaveLength(30);
+                        })
+                        .then(() => {
+                            const popover = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scheduler-calendar-popover"]'
+                            );
+                            expect(popover.isLoading).toBeFalsy();
+                        });
+                });
+            });
+
+            it('Year time span, show more popover', () => {
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.selectedDate = SELECTED_DATE;
@@ -1144,31 +1257,12 @@ describe('Primitive Scheduler Calendar', () => {
                     const call = openSpy.mock.calls[0][0];
                     expect(call.events).toHaveLength(2);
 
-                    expect(call.events[0].event.name).toBe('event-2');
-                    expect(call.events[1].event.name).toBe('disabled-event');
-                    expect(call.events[1].startsInPreviousCell).toBeTruthy();
-                    expect(call.events[1].endsInLaterCell).toBeTruthy();
-                    expect(call.events[0].startsInPreviousCell).toBeFalsy();
-                    expect(call.events[0].endsInLaterCell).toBeFalsy();
-                });
-            });
-
-            it('Displayed in the side panel calendar', () => {
-                element.resources = RESOURCES;
-                element.selectedResources = ALL_RESOURCES;
-                element.selectedDate = SELECTED_DATE;
-                element.events = [EVENTS[0]];
-                element.timeSpan = { unit: 'week', span: 1 };
-
-                return Promise.resolve().then(() => {
-                    const calendar = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-calendar-left-panel"]'
-                    );
-                    expect(calendar.markedDates).toHaveLength(2);
-                    calendar.markedDates.forEach((d) => {
-                        expect(d.date.includes('2022-09-20')).toBeTruthy();
-                        expect(d.color).toBe('#333');
-                    });
+                    expect(call.events[0].event.name).toBe('disabled-event');
+                    expect(call.events[0].startsInPreviousCell).toBeTruthy();
+                    expect(call.events[0].endsInLaterCell).toBeTruthy();
+                    expect(call.events[1].event.name).toBe('event-2');
+                    expect(call.events[1].startsInPreviousCell).toBeFalsy();
+                    expect(call.events[1].endsInLaterCell).toBeFalsy();
                 });
             });
         });

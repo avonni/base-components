@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import InputData from 'c/inputData';
+import { createElement } from 'lwc';
 
 let element;
 describe('InputData', () => {
@@ -425,6 +425,18 @@ describe('InputData', () => {
                         '[data-element-id="lightning-input-base"]'
                     );
                     expect(input.value).toBe('Default text');
+                });
+            });
+
+            it('Zero value', () => {
+                element.label = 'Base input';
+                element.value = 0;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-base"]'
+                    );
+                    expect(input.value).toBe(0);
                 });
             });
 

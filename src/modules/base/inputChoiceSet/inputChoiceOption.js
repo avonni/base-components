@@ -10,17 +10,22 @@ const POSITION_ICON = {
 /**
  * Input choice set options
  * @class
- * @param {string} label Label of the option.
  * @param {string} alternativeText Alternative text of the option.
+ * @param {string} color CSS color value. If present, the checkbox, radio button or button will take this color.
+ * @param {boolean} disabled If present, the option is disabled and it is not possible to select it.
+ * @param {string} label Label of the option.
  * @param {boolean} hideLabel If present, the label of the option is hidden.
+ * @param {boolean} hidden If present, the option is not visible.
  * @param {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
  * @param {string} iconPosition The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
- * @param {string} tooltip Tooltip of the option.
+ * @param {string} tooltip Text visible when the option is hovered or focused.
  * @param {string} value Value of the option.
  */
 export default class InputChoiceOption {
-    constructor(option, value, type, width) {
+    constructor(option, parent) {
         this.color = option.color;
+        this.disabled = option.disabled || parent.disabled;
+        this.hidden = option.hidden;
         this.iconName = option.iconName;
         this.iconPosition = option.iconPosition || POSITION_ICON.LEFT;
         this.hideLabel = option.hideLabel;
@@ -28,11 +33,12 @@ export default class InputChoiceOption {
         this.tooltip = option.tooltip;
         this.value = option.value;
         this.displayLabel = this.label && !this.hideLabel;
-        this.type = type;
-        this.width = width;
-        this.isChecked = Array.isArray(value)
-            ? value.includes(option.value)
-            : value === option.value;
+        this.type = parent.type;
+        this.width = parent.width;
+        this.isChecked = Array.isArray(parent.value)
+            ? parent.value.includes(option.value)
+            : parent.value === option.value;
+        this.labelClass = parent.labelClass;
         this.alternativeText = option.alternativeText;
     }
 
@@ -98,6 +104,19 @@ export default class InputChoiceOption {
             .add({
                 'slds-order_0': this.isIconTopOrLeft,
                 'slds-order_2': this.isIconBottomOrRight
+            })
+            .toString();
+    }
+
+    /**
+     * Computed style classes of the option's label. Part of it is computed by the parent.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        return classSet(this.labelClass)
+            .add({
+                'avonni-input-choice-set__option-label': !this.disabled
             })
             .toString();
     }

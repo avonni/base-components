@@ -145,6 +145,7 @@
                                     "
                                     available-days-of-the-week={availableDaysOfTheWeek}
                                     headers={dayHeaders}
+                                    is-mobile-view={isMobileView}
                                     start={start}
                                     time-span={dayHeadersTimeSpan}
                                     timezone={timezone}
@@ -328,7 +329,9 @@
                                                                 avonni-scheduler__calendar-cell-month-day
                                                             "
                                                         >
-                                                            {cell.day}
+                                                            <span
+                                                                >{cell.day}</span
+                                                            >
                                                         </div>
                                                         <!-- Placeholders used to take space in cells the multi-day events go through -->
                                                         <div
@@ -392,7 +395,7 @@
                                                                 ></c-primitive-scheduler-event-occurrence>
                                                             </template>
                                                         </div>
-                                                        <lightning-button
+                                                        <c-button
                                                             class="
                                                                 slds-text-align_center
                                                                 avonni-primitive-scheduler-calendar__month-show-more-button
@@ -401,10 +404,10 @@
                                                             variant="base"
                                                             data-column-index={index}
                                                             data-start={cell.start}
-                                                            data-element-id="lightning-button-month-show-more"
+                                                            data-element-id="avonni-button-month-show-more"
                                                             onclick={handleMonthCellShowMoreClick}
                                                             onmousedown={stopPropagation}
-                                                        ></lightning-button>
+                                                        ></c-button>
                                                     </div>
                                                 </div>
                                             </template>
@@ -467,6 +470,7 @@
                                                     onprivatefocus={handleEventFocus}
                                                     onprivatecontextmenu={handleEventContextMenu}
                                                     onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                                    onprivatemouseclick={handleEventMouseClick}
                                                     onprivatemouseenter={handleEventMouseEnter}
                                                     onprivatemouseleave={handleEventMouseLeave}
                                                     onprivatedblclick={handleEventDoubleClick}
@@ -615,11 +619,13 @@
         <!-- Show more popover -->
         <c-primitive-scheduler-calendar-popover
             class="
-                slds-hide slds-show slds-is-absolute slds-dropdown
+                slds-hide slds-show slds-is-absolute slds-popover
                 avonni-scheduler__calendar-show-more-popover
             "
             date-format={dateFormat}
             hidden-actions={hiddenActions}
+            enable-infinite-loading={popoverEnableInfiniteLoading}
+            is-loading={popoverIsLoading}
             prevent-past-event-creation={preventPastEventCreation}
             read-only={readOnly}
             resources={computedResources}
@@ -628,6 +634,7 @@
             onclose={handleClosePopover}
             oneventdblclick={handleEventDoubleClick}
             oneventmousedown={handleHiddenEventMouseDown}
+            onloadmore={handlePopoverLoadMore}
         ></c-primitive-scheduler-calendar-popover>
     </div>
 </template>
