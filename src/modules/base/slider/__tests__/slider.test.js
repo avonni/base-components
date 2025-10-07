@@ -510,10 +510,10 @@ describe('Slider', () => {
         });
 
         describe('step', () => {
-            it('0.1', () => {
+            it('Smaller than 0', () => {
                 element.min = 0;
                 element.max = 10;
-                element.step = 0.1;
+                element.step = -1;
                 element.value = 5.5;
 
                 return Promise.resolve().then(() => {
@@ -521,7 +521,7 @@ describe('Slider', () => {
                         '[data-group-name="input"]'
                     );
                     inputs.forEach((input) => {
-                        expect(input.step).toEqual('0.1');
+                        expect(input.step).toEqual('1');
                         expect(element.min).toEqual(0);
                         expect(element.max).toEqual(10);
                         expect(element.value).toEqual(5.5);
@@ -529,15 +529,95 @@ describe('Slider', () => {
                 });
             });
 
-            it('3', () => {
-                element.step = 3;
+            it('Equals to 0', () => {
+                element.min = 0;
+                element.max = 10;
+                element.step = 0;
+                element.value = 5.5;
 
                 return Promise.resolve().then(() => {
                     const inputs = element.shadowRoot.querySelectorAll(
                         '[data-group-name="input"]'
                     );
                     inputs.forEach((input) => {
-                        expect(input.step).toEqual('3');
+                        expect(input.step).toEqual('1');
+                        expect(element.min).toEqual(0);
+                        expect(element.max).toEqual(10);
+                        expect(element.value).toEqual(5.5);
+                    });
+                });
+            });
+
+            describe('Higher than 0', () => {
+                it('Decimal', () => {
+                    element.min = 0;
+                    element.max = 10;
+                    element.step = 0.1;
+                    element.value = 5.5;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('0.1');
+                            expect(element.min).toEqual(0);
+                            expect(element.max).toEqual(10);
+                            expect(element.value).toEqual(5.5);
+                        });
+                    });
+                });
+
+                it('Integer', () => {
+                    element.step = 3;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('3');
+                        });
+                    });
+                });
+            });
+
+            describe('Not a number', () => {
+                it('String', () => {
+                    element.min = 0;
+                    element.max = 10;
+                    element.step = 'abc';
+                    element.value = 5.5;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('1');
+                            expect(element.min).toEqual(0);
+                            expect(element.max).toEqual(10);
+                            expect(element.value).toEqual(5.5);
+                        });
+                    });
+                });
+
+                it('Undefined', () => {
+                    element.min = 0;
+                    element.max = 10;
+                    element.step = undefined;
+                    element.value = 5.5;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('1');
+                            expect(element.min).toEqual(0);
+                            expect(element.max).toEqual(10);
+                            expect(element.value).toEqual(5.5);
+                        });
                     });
                 });
             });

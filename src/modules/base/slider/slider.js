@@ -378,7 +378,7 @@ export default class Slider extends LightningElement {
         return this._step;
     }
     set step(value) {
-        if (isNaN(Number(value))) {
+        if (isNaN(Number(value)) || value <= 0) {
             return;
         }
         this._step = Number(value);
