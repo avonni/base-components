@@ -87,7 +87,7 @@ export default class Calendar extends LightningElement {
     _timezone;
     _value;
     _weekNumber = false;
-    _weekStartDay = 0;
+    _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     _computedDateLabels = [];
     _computedDisabledDates = [];
