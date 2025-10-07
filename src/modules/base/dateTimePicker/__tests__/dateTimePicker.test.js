@@ -1,6 +1,6 @@
-import { createElement } from 'lwc';
 import DateTimePicker from 'c/dateTimePicker';
 import { callObserver } from 'c/resizeObserver';
+import { createElement } from 'lwc';
 
 // Not tested
 // validity
@@ -244,7 +244,13 @@ describe('DateTimePicker', () => {
                         );
                         expect(buttons).toHaveLength(7);
 
-                        expect(buttons[0].textContent).toBe('9avril');
+                        // Make sure the test is not affected by the local language
+                        const month = new Intl.DateTimeFormat('default', {
+                            month: 'long',
+                            hour12: false
+                        }).formatToParts(new Date('2023-04-14'))[0].value;
+
+                        expect(buttons[0].textContent).toBe(`9${month}`);
                     });
                 });
 
