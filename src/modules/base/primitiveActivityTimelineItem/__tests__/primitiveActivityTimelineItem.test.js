@@ -353,11 +353,17 @@ describe('Primitive Activity Timeline Item', () => {
                 element.dateFormat = 'dd MMM yyyy';
                 element.datetimeValue = 1621605600000;
 
+                // Make sure the test is not affected by the local language
+                const month = new Intl.DateTimeFormat('default', {
+                    month: 'short',
+                    hour12: false
+                }).formatToParts(new Date(1621605600000))[0].value;
+
                 return Promise.resolve().then(() => {
                     const dateTime = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-formatted-date-time"]'
                     );
-                    expect(dateTime.textContent).toBe('21 May 2021');
+                    expect(dateTime.textContent).toBe(`21 ${month} 2021`);
                 });
             });
         });
@@ -635,12 +641,20 @@ describe('Primitive Activity Timeline Item', () => {
                 element.dateFormat = 'dd/LL/yyyy T ZZZZ';
                 element.datetimeValue = '2020-12-01T00:00:00.000Z';
 
+                // Make sure the test is not affected by the local language
+                const dateParts = new Intl.DateTimeFormat('default', {
+                    timeZoneName: 'short',
+                    hour12: false,
+                    timeZone: 'Pacific/Honolulu'
+                }).formatToParts(new Date('2020-12-01T00:00:00.000Z'));
+                const timezone = dateParts[dateParts.length - 1].value;
+
                 return Promise.resolve().then(() => {
                     const formattedDate = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-formatted-date-time"]'
                     );
                     expect(formattedDate.textContent).toBe(
-                        '30/11/2020 14:00 HST'
+                        `30/11/2020 14:00 ${timezone}`
                     );
                 });
             });
