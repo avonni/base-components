@@ -4,6 +4,7 @@ import {
     parseTimeFrame,
     removeFromDate
 } from 'c/luxonDateTimeUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     getDisabledWeekdaysLabels,
     positionPopover,
@@ -11,7 +12,6 @@ import {
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
@@ -1744,22 +1744,10 @@ export default class Scheduler extends LightningElement {
             }
         }
 
-        if (start !== this.start) {
-            /**
-             * The event fired when the start date changes.
-             *
-             * @event
-             * @name startchange
-             * @param {string} value New start date, as an ISO 8601 formatted string.
-             * @public
-             */
-            this.dispatchEvent(
-                new CustomEvent('startchange', {
-                    detail: { value: start.toISO() }
-                })
-            );
+        if (start.ts !== this.start) {
+            this._start = start.ts;
+            this.dispatchStartChange();
         }
-        this._start = start.ts;
     }
 
     /**
@@ -2860,6 +2848,7 @@ export default class Scheduler extends LightningElement {
     handleVisibleIntervalChange(event) {
         if (event.detail.start.ts !== this.computedStart.ts) {
             this._start = event.detail.start.ts;
+            this.dispatchStartChange();
         }
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);
@@ -2886,6 +2875,25 @@ export default class Scheduler extends LightningElement {
                     selectedResources: this.selectedResources,
                     name
                 }
+            })
+        );
+    }
+
+    /**
+     * Dispatch the startchange event.
+     */
+    dispatchStartChange() {
+        /**
+         * The event fired when the start date changes.
+         *
+         * @event
+         * @name startchange
+         * @param {string} value New start date, as an ISO 8601 formatted string.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('startchange', {
+                detail: { value: this.computedStart.toISO() }
             })
         );
     }
