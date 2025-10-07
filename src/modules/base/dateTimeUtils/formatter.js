@@ -73,7 +73,9 @@ function _parseCustomToken({ date, token, timeZone }) {
                 hour: 'numeric',
                 hour12: true
             }).format(tzDate.tzDate);
-            return typeof hour === 'string' ? hour.match(/(p|a).+/i)[0] : '';
+            const match =
+                typeof hour === 'string' ? hour.match(/(p|a).+/i) : null;
+            return match ? match[0].trim() : '';
         }
         case 'd':
             return tzDate.day.toString();
