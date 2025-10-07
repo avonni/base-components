@@ -195,6 +195,7 @@ export default class FilterMenu extends LightningElement {
     _variant = MENU_VARIANTS.default;
 
     _allowBlur = true;
+    _dateRangeTimeOut = false;
     _dropdownIsFocused = false;
     _initialButtonWidth = 0;
     _initialDropdownWidth = 0;
@@ -2106,7 +2107,11 @@ export default class FilterMenu extends LightningElement {
     handleDateRangeChange(event) {
         const { startDate, endDate } = event.detail;
         this.currentValue = [startDate, endDate];
-        this.dispatchSelect();
+        // Give time for the calendar to actually close
+        clearTimeout(this._dateRangeTimeOut);
+        this._dateRangeTimeOut = setTimeout(() => {
+            this.dispatchSelect();
+        }, 125);
     }
 
     /**

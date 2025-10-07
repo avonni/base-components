@@ -100,6 +100,7 @@ export default class InputDateRange extends LightningElement {
     @api todayButtonLabel = DEFAULT_TODAY_BUTTON_LABEL;
 
     _dateStyle = DATE_STYLES.defaultDate;
+    _disableAutoNextDate = false;
     _disabled = false;
     _endDate;
     _readOnly = false;
@@ -167,6 +168,21 @@ export default class InputDateRange extends LightningElement {
             fallbackValue: DATE_STYLES.defaultDate,
             validValues: DATE_STYLES.valid
         });
+    }
+
+    /**
+     * If present, disables the automatic display of the next date.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get disableAutoNextDate() {
+        return this._disableAutoNextDate;
+    }
+    set disableAutoNextDate(value) {
+        this._disableAutoNextDate = normalizeBoolean(value);
     }
 
     /**
@@ -931,7 +947,7 @@ export default class InputDateRange extends LightningElement {
             this.stopPositioning();
             if (this.calendarKeyEvent === 'keyboard') {
                 this.endDateIcon.focus();
-            } else if (!this.startDate) {
+            } else if (!this.startDate && !this.disableAutoNextDate) {
                 this.setFocusDate(this._endDate, 'start');
                 this.showStartDate = true;
             }
@@ -1044,7 +1060,7 @@ export default class InputDateRange extends LightningElement {
         requestAnimationFrame(() => {
             if (this.calendarKeyEvent === 'keyboard') {
                 this.startDateIcon.focus();
-            } else if (!this.endDate) {
+            } else if (!this.endDate && !this.disableAutoNextDate) {
                 this.setFocusDate(this._startDate, 'end');
                 this.showEndDate = true;
                 this.startPositioning('end');
@@ -1353,6 +1369,7 @@ export default class InputDateRange extends LightningElement {
     dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
+        console.log(startDate, endDate);
 
         /**
          * The event fired when the value changed.
