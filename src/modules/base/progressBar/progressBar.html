@@ -9,10 +9,7 @@
                     {valueToDisplay}
                 </span>
             </lightning-layout-item>
-            <lightning-layout-item
-                flexibility="auto"
-                padding="horizontal-small"
-            >
+            <lightning-layout-item flexibility="auto">
                 <lightning-layout horizontal-align="spread">
                     <lightning-layout-item>
                         <div
@@ -130,6 +127,7 @@
             </lightning-layout-item>
             <lightning-layout-item
                 if:true={showPositionRight}
+                padding="horizontal-small"
                 data-position-right
             >
                 <span class="avonni-progress-bar__value" aria-hidden="true">
