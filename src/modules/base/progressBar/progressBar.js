@@ -482,7 +482,7 @@ export default class ProgressBar extends LightningElement {
                     this.size === 'medium' && this.isVertical,
                 'avonni-progress-bar__vertical_size-large':
                     this.size === 'large' && this.isVertical,
-                'slds-theme_alert-texture': this.textured
+                'avonni-progress-bar__bar_theme-texture': this.textured
             })
             .toString();
     }
