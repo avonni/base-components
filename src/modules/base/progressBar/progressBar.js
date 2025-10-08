@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     normalizeArray,
@@ -6,9 +6,9 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const BORDER_RADIUS_REM = 0.5;
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
@@ -493,7 +493,9 @@ export default class ProgressBar extends LightningElement {
      * @type {string}
      */
     get computedOuterClass() {
-        return classSet('slds-progress-bar slds-text-align_center')
+        return classSet(
+            'slds-progress-bar slds-text-align_center avonni-progress-bar__bar'
+        )
             .add({
                 'slds-progress-bar_vertical': this.isVertical,
                 'slds-progress-bar_circular': this.variant === 'circular',
