@@ -79,15 +79,89 @@ describe('Separator', () => {
             });
         });
 
-        it('IconSize', () => {
-            element.iconName = 'utility:check';
-            element.iconSize = 'x-small';
+        describe('IconSize', () => {
+            it('X-Small', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'x-small';
 
-            return Promise.resolve().then(() => {
-                const content = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-avatar"]'
-                );
-                expect(content.size).toBe('x-small');
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('x-small');
+                });
+            });
+
+            it('Small', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'small';
+
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('small');
+                });
+            });
+
+            it('Medium', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'medium';
+
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('medium');
+                });
+            });
+
+            it('Large', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'large';
+
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('large');
+                });
+            });
+
+            it('X-Large', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'x-large';
+
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('x-large');
+                });
+            });
+
+            it('Xx-Large', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'xx-large';
+
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('xx-large');
+                });
+            });
+
+            it('Invalid value (Defaults to small)', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'xxx-small';
+
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('small');
+                });
             });
         });
 
