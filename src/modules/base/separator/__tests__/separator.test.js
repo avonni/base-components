@@ -80,6 +80,18 @@ describe('Separator', () => {
         });
 
         describe('IconSize', () => {
+            it('Xx-Small', () => {
+                element.iconName = 'utility:check';
+                element.iconSize = 'xx-small';
+
+                return Promise.resolve().then(() => {
+                    const content = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-avatar"]'
+                    );
+                    expect(content.size).toBe('xx-small');
+                });
+            });
+
             it('X-Small', () => {
                 element.iconName = 'utility:check';
                 element.iconSize = 'x-small';
