@@ -2090,6 +2090,7 @@ export default class FilterMenu extends LightningElement {
         const { startDate, endDate } = event.detail;
         this.currentValue = [startDate, endDate];
         this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
+        this._dateRangeFrames = [];
 
         // Give time for the calendar to actually close
         this._dateRangeFrames[0] = requestAnimationFrame(() => {
