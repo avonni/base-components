@@ -626,8 +626,9 @@ export default class FilterMenuGroup extends LightningElement {
         });
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
-        if (!this._hasInitSliceIndex) {
+        if (this._hasInitSliceIndex) {
             this._sliceIndex = this.computedMenus.length;
+            this._hasInitSliceIndex = true;
         }
         if (this.isDifferentComputedMenu()) {
             this.updateVisibleMenus();
