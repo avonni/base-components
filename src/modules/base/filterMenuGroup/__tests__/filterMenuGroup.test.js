@@ -2,7 +2,7 @@ import FilterMenuGroup from 'c/filterMenuGroup';
 import { createElement } from 'lwc';
 import { MENUS, VALUE } from './data';
 import { callObserver } from 'c/resizeObserver';
-import { deepCopy } from '../../utils/utility';
+import { deepCopy } from 'c/utils';
 
 let element;
 describe('FilterMenuGroup', () => {
@@ -461,34 +461,6 @@ describe('FilterMenuGroup', () => {
                         expect(moreFilter).toBeTruthy();
                         expect(menus.length).toBe(0);
                         expect(overflowMenus.length).toBe(MENUS.length);
-                    });
-            });
-
-            it('Changing computed menus', async () => {
-                element.singleLine = true;
-                element.menus = MENUS;
-
-                await flushPromises();
-                return Promise.resolve()
-                    .then(async () => {
-                        element.menus = [MENUS[0]];
-                        await flushPromises();
-                    })
-                    .then(async () => {
-                        const moreFilter = element.shadowRoot.querySelector(
-                            '[data-element-id="filter-menu-group-button-icon-popover"]'
-                        );
-                        const menus = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-filter-menu"]'
-                        );
-                        const overflowMenus =
-                            element.shadowRoot.querySelectorAll(
-                                '[data-element-id="avonni-filter-menu-overflow"]'
-                            );
-
-                        expect(moreFilter).toBeTruthy();
-                        expect(menus.length).toBe(0);
-                        expect(overflowMenus.length).toBe(1);
                     });
             });
         });
@@ -1007,30 +979,6 @@ describe('FilterMenuGroup', () => {
                 });
             });
 
-            it('close event from more filters popover', async () => {
-                element.singleLine = true;
-                element.menus = MENUS;
-                const handler = jest.fn();
-                element.addEventListener('close', handler);
-
-                await flushPromises();
-                return Promise.resolve()
-                    .then(async () => {
-                        const moreFilter = element.shadowRoot.querySelector(
-                            '[data-element-id="filter-menu-group-button-icon-popover"]'
-                        );
-                        moreFilter.dispatchEvent(
-                            new CustomEvent('close', {
-                                bubbles: true
-                            })
-                        );
-                        await flushPromises();
-                    })
-                    .then(() => {
-                        expect(handler).not.toHaveBeenCalled();
-                    });
-            });
-
             it('close event from a menu inside the more filters popover', async () => {
                 element.singleLine = true;
                 element.menus = MENUS;
@@ -1057,6 +1005,124 @@ describe('FilterMenuGroup', () => {
                         expect(call.bubbles).toBeFalsy();
                         expect(call.composed).toBeFalsy();
                         expect(call.cancelable).toBeFalsy();
+                    });
+            });
+        });
+
+        describe('close & open', () => {
+            it('close and open event from more filters popover', async () => {
+                element.singleLine = true;
+                element.menus = MENUS;
+                const openHandler = jest.fn();
+                const closeHandler = jest.fn();
+                element.addEventListener('open', openHandler);
+                element.addEventListener('close', closeHandler);
+
+                await flushPromises();
+                return Promise.resolve()
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('open', {
+                                bubbles: true
+                            })
+                        );
+                        await flushPromises();
+                    })
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('close', {
+                                bubbles: true
+                            })
+                        );
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        expect(openHandler).not.toHaveBeenCalled();
+                        expect(closeHandler).not.toHaveBeenCalled();
+                    });
+            });
+
+            it('close and open event from more filters popover with changed value', async () => {
+                element.singleLine = true;
+                element.menus = MENUS;
+                element.value = VALUE;
+                const openHandler = jest.fn();
+                const closeHandler = jest.fn();
+                element.addEventListener('open', openHandler);
+                element.addEventListener('close', closeHandler);
+
+                await flushPromises();
+                return Promise.resolve()
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        const overflowMenus =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-filter-menu-overflow"]'
+                            );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('open', {
+                                bubbles: true
+                            })
+                        );
+
+                        expect(moreFilter).toBeTruthy();
+                        expect(menus.length).toBe(0);
+                        expect(overflowMenus.length).toBe(MENUS.length);
+                    })
+                    .then(async () => {
+                        element.reset();
+                        element.apply();
+                        await flushPromises();
+                    })
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('close', {
+                                bubbles: true
+                            })
+                        );
+                    })
+                    .then(async () => {
+                        const buttonGroupRow = element.shadowRoot.querySelector(
+                            '[data-element-id="ul"]'
+                        );
+                        jest.spyOn(
+                            buttonGroupRow,
+                            'offsetWidth',
+                            'get'
+                        ).mockImplementation(() => 100);
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        const overflowMenus =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-filter-menu-overflow"]'
+                            );
+
+                        expect(moreFilter).toBeFalsy();
+                        expect(menus.length).toBe(5);
+                        expect(overflowMenus.length).toBe(0);
+                        expect(openHandler).not.toHaveBeenCalled();
+                        expect(closeHandler).not.toHaveBeenCalled();
                     });
             });
         });
@@ -1179,30 +1245,6 @@ describe('FilterMenuGroup', () => {
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
                 });
-            });
-
-            it('open event from more filters popover', async () => {
-                element.singleLine = true;
-                element.menus = MENUS;
-                const handler = jest.fn();
-                element.addEventListener('open', handler);
-
-                await flushPromises();
-                return Promise.resolve()
-                    .then(async () => {
-                        const moreFilter = element.shadowRoot.querySelector(
-                            '[data-element-id="filter-menu-group-button-icon-popover"]'
-                        );
-                        moreFilter.dispatchEvent(
-                            new CustomEvent('open', {
-                                bubbles: true
-                            })
-                        );
-                        await flushPromises();
-                    })
-                    .then(() => {
-                        expect(handler).not.toHaveBeenCalled();
-                    });
             });
 
             it('open event from a menu inside the more filters popover', async () => {

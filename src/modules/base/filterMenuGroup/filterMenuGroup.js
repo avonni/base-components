@@ -7,6 +7,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import Menu from './menu';
 
@@ -339,6 +340,15 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * True if the apply and reset buttons should be hidden for each hidden menu.
+     *
+     * @type {boolean}
+     */
+    get hideHiddenMenuApplyResetButtons() {
+        return this.hideApplyButton || this.hideApplyResetButtons;
+    }
+
+    /**
      * True if the menu group shows a single line
      *
      * @type {boolean}
@@ -357,7 +367,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Check if there is an overflow from the filters
+     * Check if there is an overflow from the visible menus.
      *
      * @type {boolean}
      */
@@ -486,7 +496,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     @api
     apply() {
-        this.computeRecalculation();
+        this.updateRecalculationFlag();
         this._value = deepCopy(this._selectedValue);
         this.computeValue();
     }
@@ -556,6 +566,22 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * Checks if a computation of the visible menus is allowed.
+     *
+     * @returns {boolean} True if a computation of the visible menus is allowed.
+     */
+    allowVisibleMenusComputation() {
+        return (
+            this._connected &&
+            this.menuGroupWrapper &&
+            this.showSingleLine &&
+            this._openedMenuCount === 0 &&
+            !this._isCalculatingOverflow &&
+            !this._isPopoverOpen
+        );
+    }
+
+    /**
      * Compute the slice index for the hidden menus.
      *
      * @param {number} wrapperWidth Width of the menu group wrapper.
@@ -580,33 +606,6 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Compute the recalculation flag if the value of the first menu in the popover has changed.
-     */
-    computeRecalculation() {
-        if (!this.showSingleLine || !this._isPopoverOpen) {
-            this._hasRecalculatedValue = false;
-            return;
-        }
-        const name = this.hiddenMenus[0]?.name;
-        if (!name) {
-            this._hasRecalculatedValue = false;
-            return;
-        }
-
-        const newValue = this._selectedValue[name] ?? [];
-        const oldValue = this._value[name] ?? [];
-
-        if (newValue.length !== oldValue.length) {
-            this._hasRecalculatedValue = true;
-            return;
-        }
-
-        const hasChanged = newValue.some((val, i) => val !== oldValue[i]);
-
-        this._hasRecalculatedValue = hasChanged;
-    }
-
-    /**
      * Set the value in each computed menu.
      */
     computeValue() {
@@ -621,7 +620,7 @@ export default class FilterMenuGroup extends LightningElement {
             this._sliceIndex = this.computedMenus.length;
         }
         if (this.isDifferentComputedMenu()) {
-            this.recomputeOverflow();
+            this.updateVisibleMenus();
         }
     }
 
@@ -635,7 +634,7 @@ export default class FilterMenuGroup extends LightningElement {
             return null;
         }
         return new AvonniResizeObserver(this.menuGroupWrapper, () => {
-            this.reviewResize();
+            this.updateVisibleMenusOnResize();
         });
     }
 
@@ -661,90 +660,6 @@ export default class FilterMenuGroup extends LightningElement {
                 );
             })
         );
-    }
-
-    /**
-     * Checks if overflow calculation is currently allowed.
-     *
-     * @returns {boolean} True if overflow can be calculated.
-     */
-    isOverflowCalculationAllowed() {
-        return (
-            this._connected &&
-            this.menuGroupWrapper &&
-            this.showSingleLine &&
-            this._openedMenuCount === 0 &&
-            !this._isCalculatingOverflow &&
-            !this._isPopoverOpen
-        );
-    }
-
-    /**
-     * Recompute the overflow for each computed menu.
-     *
-     * @param {number} maxWidth Max width of the menu group wrapper.
-     */
-    recomputeOverflow(maxWidth) {
-        if (!this.isOverflowCalculationAllowed()) {
-            return;
-        }
-        this._sliceIndex = this.computedMenus.length;
-        this._isCalculatingOverflow = true;
-        // Waiting for the items to be rendered
-        requestAnimationFrame(() => {
-            let wrapperWidth = maxWidth ?? this.menuGroupWrapper.offsetWidth;
-            this.saveItemsWidths();
-            let sliceIndex = this.computeSliceIndex(wrapperWidth);
-            this.saveContainerMaxHeight(sliceIndex);
-            this.updateOverflowState(sliceIndex);
-        });
-
-        // Put as many items as needed in the more filters popver if the new menu display is still overflowing.
-        const rollbackSliceIndex = () => {
-            if (
-                this._containerMaxHeight !==
-                    this.menuGroupWrapper.offsetHeight &&
-                this._sliceIndex > 0
-            ) {
-                const sliceIndex = Math.max(0, this._sliceIndex - 1);
-                this.updateOverflowState(sliceIndex);
-                requestAnimationFrame(rollbackSliceIndex);
-            } else {
-                this._isCalculatingOverflow = false;
-            }
-        };
-
-        requestAnimationFrame(rollbackSliceIndex);
-    }
-
-    reviewResize() {
-        if (!this.isOverflowCalculationAllowed()) {
-            return;
-        }
-
-        if (!this._itemsWidthsTotal) {
-            this.saveItemsWidths();
-            this.saveContainerMaxHeight(this._sliceIndex);
-        }
-
-        this.listMenus.forEach((listMenu, i) => {
-            const width =
-                listMenu.getBoundingClientRect().width + FILTER_MENU_MARGIN;
-
-            const oldWidth = this._itemsWidths[i] || 0;
-            this._itemsWidthsTotal += width - oldWidth;
-            this._itemsWidths[i] = width;
-        });
-
-        let wrapperWidth = this.menuGroupWrapper.offsetWidth;
-        let sliceIndex = this.computeSliceIndex(wrapperWidth);
-
-        if (
-            this._sliceIndex !== sliceIndex ||
-            this._containerMaxHeight !== this.menuGroupWrapper.offsetHeight
-        ) {
-            this.recomputeOverflow(this.menuGroupWrapper.offsetWidth);
-        }
     }
 
     /**
@@ -791,11 +706,104 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Update the overflow state based on the index at which menus appear in the popover.
+     * Updates the internal recalculation flag based on the value of the first hidden menu.
+     * The flag is set to true if the menu value has changed since the last stored value.
+     * This flag is used to determine whether the visible menus needs to be updated after a value change.
+     */
+    updateRecalculationFlag() {
+        if (!this.showSingleLine || !this._isPopoverOpen) {
+            this._hasRecalculatedValue = false;
+            return;
+        }
+        const name = this.hiddenMenus[0]?.name;
+        if (!name) {
+            this._hasRecalculatedValue = false;
+            return;
+        }
+
+        const newValue = this._selectedValue[name] ?? [];
+        const oldValue = this._value[name] ?? [];
+
+        this._hasRecalculatedValue = !equal(newValue, oldValue);
+    }
+
+    /**
+     * Re-evaluates and updates the visible menus when the component is resized.
+     */
+    updateVisibleMenusOnResize() {
+        if (!this.allowVisibleMenusComputation()) {
+            return;
+        }
+
+        if (!this._itemsWidthsTotal) {
+            this.saveItemsWidths();
+            this.saveContainerMaxHeight(this._sliceIndex);
+        }
+
+        this.listMenus.forEach((listMenu, i) => {
+            const width =
+                listMenu.getBoundingClientRect().width + FILTER_MENU_MARGIN;
+
+            const oldWidth = this._itemsWidths[i] || 0;
+            this._itemsWidthsTotal += width - oldWidth;
+            this._itemsWidths[i] = width;
+        });
+
+        let wrapperWidth = this.menuGroupWrapper.offsetWidth;
+        let sliceIndex = this.computeSliceIndex(wrapperWidth);
+
+        if (
+            this._sliceIndex !== sliceIndex ||
+            this._containerMaxHeight !== this.menuGroupWrapper.offsetHeight
+        ) {
+            this.updateVisibleMenus(this.menuGroupWrapper.offsetWidth);
+        }
+    }
+
+    /**
+     * Update the visible items.
+     *
+     * @param {number} maxWidth Max width of the menu group wrapper.
+     */
+    updateVisibleMenus(maxWidth) {
+        if (!this.allowVisibleMenusComputation()) {
+            return;
+        }
+        this._sliceIndex = this.computedMenus.length;
+        this._isCalculatingOverflow = true;
+        // Waiting for the items to be rendered
+        requestAnimationFrame(() => {
+            let wrapperWidth = maxWidth ?? this.menuGroupWrapper.offsetWidth;
+            this.saveItemsWidths();
+            let sliceIndex = this.computeSliceIndex(wrapperWidth);
+            this.saveContainerMaxHeight(sliceIndex);
+            this.updateVisibleState(sliceIndex);
+        });
+
+        // Put as many items as needed in the more filters popver if the new menu display is still overflowing.
+        const adjustOverflowStep = () => {
+            if (
+                this._containerMaxHeight !==
+                    this.menuGroupWrapper.offsetHeight &&
+                this._sliceIndex > 0
+            ) {
+                const sliceIndex = Math.max(0, this._sliceIndex - 1);
+                this.updateVisibleState(sliceIndex);
+                requestAnimationFrame(adjustOverflowStep);
+            } else {
+                this._isCalculatingOverflow = false;
+            }
+        };
+
+        requestAnimationFrame(adjustOverflowStep);
+    }
+
+    /**
+     * Update the visible state based on the index at which menus appear in the popover.
      *
      * @param {number} sliceIndex The index at which the menus appear in the popover.
      */
-    updateOverflowState(sliceIndex) {
+    updateVisibleState(sliceIndex) {
         this._sliceIndex = sliceIndex;
         this.saveContainerMaxHeight(sliceIndex);
         this._hiddenMenusLength = this.hiddenMenus.length;
@@ -853,7 +861,7 @@ export default class FilterMenuGroup extends LightningElement {
         );
         if (isVisibleMenu) {
             this._openedMenuCount = Math.max(0, this._openedMenuCount - 1);
-            this.reviewResize();
+            this.updateVisibleMenusOnResize();
         }
 
         /**
@@ -982,9 +990,9 @@ export default class FilterMenuGroup extends LightningElement {
                     this._isPopoverOpen = false;
                     if (this._hasRecalculatedValue) {
                         this._hasRecalculatedValue = false;
-                        this.recomputeOverflow();
+                        this.updateVisibleMenus();
                     } else {
-                        this.reviewResize();
+                        this.updateVisibleMenusOnResize();
                     }
                 }
             });
@@ -1035,7 +1043,7 @@ export default class FilterMenuGroup extends LightningElement {
         const menuName = event.target.dataset.name;
         delete this._selectedValue[menuName];
         if (this.hideApplyButton || this.hideApplyResetButtons) {
-            this.computeRecalculation();
+            this.updateRecalculationFlag();
             this._value = deepCopy(this._selectedValue);
             this.computeValue();
         }
@@ -1106,7 +1114,7 @@ export default class FilterMenuGroup extends LightningElement {
             delete this.value[menuName];
         }
         this.computeValue();
-        this.recomputeOverflow();
+        this.updateVisibleMenus();
         this.dispatchApply();
     }
 
