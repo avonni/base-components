@@ -447,6 +447,15 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * True if the clear button should be displayed for the hidden menus.
+     *
+     * @type {boolean}
+     */
+    get showHiddenMenuClearButton() {
+        return this.showClearButton || this.hideHiddenMenuApplyResetButtons;
+    }
+
+    /**
      * True if some filter options are selected, and the filter menu is horizontal.
      *
      * @type {boolean}
