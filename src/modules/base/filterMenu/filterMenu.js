@@ -1814,24 +1814,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Normalize values for height and width.
-     *
-     * @param {number} value Value of the dimension.
-     * @param {number} defaultValue Default value of the dimension.
-     */
-    normalizeDimension(value, defaultValue) {
-        let normalizedValue;
-        if (value === undefined || value === null || value === '') {
-            normalizedValue = defaultValue;
-        } else if (!isNaN(value)) {
-            normalizedValue = `${value}px`;
-        } else {
-            normalizedValue = value;
-        }
-        return normalizedValue;
-    }
-
-    /**
      * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the list items.
      */
     normalizeTypeAttributes() {

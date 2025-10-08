@@ -1369,7 +1369,6 @@ export default class InputDateRange extends LightningElement {
     dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
-        console.log(startDate, endDate);
 
         /**
          * The event fired when the value changed.

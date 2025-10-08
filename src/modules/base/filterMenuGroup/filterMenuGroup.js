@@ -227,7 +227,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * If present, the menus are limited to one line for the horizontal variant.
+     * If present, the menus are limited to one line. This attribute isn’t supported for the vertical variant.
      *
      * @type {boolean}
      * @default false
@@ -311,11 +311,10 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get computedFiltersWrapperClass() {
         return classSet({
+            'slds-grid': !this.isVertical,
             'slds-grid_align-center':
                 !this.isVertical && this.align === 'center',
             'slds-grid_align-end': !this.isVertical && this.align === 'right',
-
-            'slds-grid': !this.isVertical,
             'slds-wrap': !this.isVertical,
             'slds-grid_vertical-align-center': !this.isVertical,
             'slds-hidden': this._isCalculatingOverflow && this.showSingleLine
@@ -666,18 +665,28 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Checks if overflow calculation is currently allowed.
+     *
+     * @returns {boolean} True if overflow can be calculated.
+     */
+    isOverflowCalculationAllowed() {
+        return (
+            this._connected &&
+            this.menuGroupWrapper &&
+            this.showSingleLine &&
+            this._openedMenuCount === 0 &&
+            !this._isCalculatingOverflow &&
+            !this._isPopoverOpen
+        );
+    }
+
+    /**
      * Recompute the overflow for each computed menu.
      *
      * @param {number} maxWidth Max width of the menu group wrapper.
      */
     recomputeOverflow(maxWidth) {
-        if (
-            !this._connected ||
-            !this.menuGroupWrapper ||
-            !this.showSingleLine ||
-            this._openedMenuCount > 0 ||
-            this._isCalculatingOverflow
-        ) {
+        if (!this.isOverflowCalculationAllowed()) {
             return;
         }
         this._sliceIndex = this.computedMenus.length;
@@ -711,14 +720,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     reviewResize() {
-        if (
-            !this._connected ||
-            !this.menuGroupWrapper ||
-            this._isCalculatingOverflow ||
-            !this.showSingleLine ||
-            this._isPopoverOpen ||
-            this._openedMenuCount > 0
-        ) {
+        if (!this.isOverflowCalculationAllowed()) {
             return;
         }
 
