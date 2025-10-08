@@ -50,6 +50,7 @@ export default class FilterMenuGroup extends LightningElement {
     _connected = false;
     _containerMaxHeight = 0;
     _hasRecalculatedValue = false;
+    _hasInitSliceIndex = false;
     _hiddenMenusLength = 0;
     _isCalculatingOverflow = false;
     _isPopoverOpen = false;
@@ -625,7 +626,7 @@ export default class FilterMenuGroup extends LightningElement {
         });
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
-        if (this._hiddenMenusLength === 0) {
+        if (!this._hasInitSliceIndex) {
             this._sliceIndex = this.computedMenus.length;
         }
         if (this.isDifferentComputedMenu()) {
