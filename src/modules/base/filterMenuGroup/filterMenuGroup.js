@@ -51,7 +51,6 @@ export default class FilterMenuGroup extends LightningElement {
     _hasRecalculatedValue = false;
     _hiddenMenusLength = 0;
     _isCalculatingOverflow = false;
-    _isFitted = false;
     _isPopoverOpen = false;
     _itemsWidths = [];
     _itemsWidthsTotal = 0;
@@ -711,7 +710,6 @@ export default class FilterMenuGroup extends LightningElement {
                 this.updateOverflowState(sliceIndex);
                 requestAnimationFrame(rollbackSliceIndex);
             } else {
-                this._isFitted = true;
                 this._isCalculatingOverflow = false;
             }
         };
@@ -721,15 +719,6 @@ export default class FilterMenuGroup extends LightningElement {
 
     reviewResize() {
         if (!this.isOverflowCalculationAllowed()) {
-            return;
-        }
-
-        // Prevent the resize observer from going back and forth infinitely between two states
-        if (
-            this._isFitted &&
-            this._containerMaxHeight === this.menuGroupWrapper.offsetHeight
-        ) {
-            this._isFitted = false;
             return;
         }
 
@@ -1034,7 +1023,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Handle a click on a "Reset" button, in the horizontal variant.
+     * Handle a click on a "Reset" button, in the horizontal variant or a "Clear" button in the vertical variant.
      *
      * @param {Event} event `reset` event fired by the menu.
      */
