@@ -725,13 +725,15 @@ export default class Slider extends LightningElement {
         const horizontalTicks = !this.isVertical && this.showAnyTickMarks;
         return classSet(
             'avonni-slider__unit-container slds-grid slds-grid_align-spread'
-        ).add({
-            'slds-is-absolute avonni-slider__unit-container_ticks-horizontal':
-                horizontalTicks,
-            'avonni-slider__unit-container_ticks-horizontal-tick':
-                horizontalTicks && this.tickMarkStyle === 'tick',
-            'slds-p-top_x-small': !this.isVertical
-        });
+        )
+            .add({
+                'slds-is-absolute avonni-slider__unit-container_ticks-horizontal':
+                    horizontalTicks,
+                'avonni-slider__unit-container_ticks-horizontal-tick':
+                    horizontalTicks && this.tickMarkStyle === 'tick',
+                'slds-p-top_x-small': !this.isVertical
+            })
+            .toString();
     }
 
     /**
