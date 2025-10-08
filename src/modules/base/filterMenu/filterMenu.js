@@ -195,7 +195,7 @@ export default class FilterMenu extends LightningElement {
     _variant = MENU_VARIANTS.default;
 
     _allowBlur = true;
-    _dateRangeTimeOut = false;
+    _dateRangeFrames = [];
     _dropdownIsFocused = false;
     _initialButtonWidth = 0;
     _initialDropdownWidth = 0;
@@ -2089,11 +2089,24 @@ export default class FilterMenu extends LightningElement {
     handleDateRangeChange(event) {
         const { startDate, endDate } = event.detail;
         this.currentValue = [startDate, endDate];
+        this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
+
         // Give time for the calendar to actually close
-        clearTimeout(this._dateRangeTimeOut);
-        this._dateRangeTimeOut = setTimeout(() => {
-            this.dispatchSelect();
-        }, 125);
+        this._dateRangeFrames[0] = requestAnimationFrame(() => {
+            const dateRange = this.template.querySelector(
+                '[data-element-id="avonni-input-date-range"]'
+            );
+
+            if (dateRange) {
+                dateRange.blur();
+            }
+
+            this._dateRangeFrames[1] = requestAnimationFrame(() => {
+                this._dateRangeFrames[2] = requestAnimationFrame(() => {
+                    this.dispatchSelect();
+                });
+            });
+        });
     }
 
     /**
