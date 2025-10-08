@@ -1,3 +1,17 @@
+/* 
+* Replacement for .slds-media__body 
+* Prevents the title elements from wrapping on different lines
+* if the notification is used inside a .slds-listbox__option element, in SLDS 1.
+*/
+.avonni-primitive-combobox-group__option-body {
+    flex: 1;
+    min-width: 0;
+}
+.avonni-primitive-combobox-group__option-body,
+.avonni-primitive-combobox-group__option-body > :lastchild {
+    margin-bottom: 0;
+}
+
 .avonni-scoped-notification_theme-base {
     background-color: var(
         --avonni-scoped-notification-base-color-background,
