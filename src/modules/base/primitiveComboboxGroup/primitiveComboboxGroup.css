@@ -146,3 +146,17 @@
     .avonni-primitive-combobox__option-secondary-text {
     color: var(--avonni-combobox-option-secondary-text-color-disabled, #dddbda);
 }
+
+/* 
+* Replacement for .slds-media__body 
+* Prevents the option label and icon from wrapping on different lines
+* if the combobox group is used inside a .slds-listbox__option element, in SLDS 1.
+*/
+.avonni-primitive-combobox-group__option-body {
+    flex: 1;
+    min-width: 0;
+}
+.avonni-primitive-combobox-group__option-body,
+.avonni-primitive-combobox-group__option-body > :lastchild {
+    margin-bottom: 0;
+}
