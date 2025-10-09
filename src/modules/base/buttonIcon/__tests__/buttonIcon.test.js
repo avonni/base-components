@@ -431,6 +431,7 @@ describe('Button Icon', () => {
         describe('Title', () => {
             it('Passed to the component', () => {
                 element.title = 'some text';
+                element.iconName = 'utility:close';
 
                 return Promise.resolve().then(() => {
                     const button = element.shadowRoot.querySelector(
