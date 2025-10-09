@@ -623,7 +623,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get computedHiddenAvatarInlineClass() {
-        return this.layout === 'list' ? this.avatarInlineClass : '';
+        return this.layout === 'list' ? this.computedAvatarInlineClass : '';
     }
 
     /**
@@ -1028,7 +1028,7 @@ export default class AvatarGroup extends LightningElement {
     getAvatarClass(item, isHidden) {
         let avatarClass = isHidden
             ? this.hiddenAvatarInlineClass
-            : this.avatarInlineClass;
+            : this.computedAvatarInlineClass;
 
         return classSet(avatarClass)
             .add({ 'avonni-avatar-group__avatar-link': item.href })
