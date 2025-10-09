@@ -695,7 +695,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * If present, a clear button is displayed next to each filter.
+     * If present, a clear button is displayed. This attribute is only supported by the vertical variant.
      *
      * @type {boolean}
      * @default false
