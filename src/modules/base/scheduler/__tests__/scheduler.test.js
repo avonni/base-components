@@ -1,7 +1,7 @@
+import { DateTime, Interval } from 'c/luxon';
 import { createElement } from 'lwc';
 import Scheduler from '../scheduler';
-import { DateTime, Interval } from 'c/luxon';
-import { ACTIONS, COLUMNS, RESOURCES, RECURRING_EVENT, EVENTS } from './data';
+import { ACTIONS, COLUMNS, EVENTS, RECURRING_EVENT, RESOURCES } from './data';
 
 // Not tested:
 // - Context menu popover positionning, because it depends on DOM measurements
@@ -3932,6 +3932,183 @@ describe('Scheduler', () => {
                     expect(call.bubbles).toBeFalsy();
                     expect(call.cancellable).toBeFalsy();
                     expect(call.composed).toBeFalsy();
+                });
+            });
+        });
+
+        describe('startchange event', () => {
+            it('On goToDate() method call', () => {
+                element.selectedDisplay = 'calendar';
+                element.start = new Date(2025, 9, 6);
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+
+                element.goToDate(new Date(2025, 9, 7));
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(new Date(call.detail.value)).toEqual(
+                    new Date(2025, 9, 7)
+                );
+            });
+
+            it('When selected date changes', () => {
+                element.selectedDisplay = 'calendar';
+                element.start = new Date(2025, 9, 7);
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('datechange', {
+                            detail: {
+                                value: new Date(2025, 9, 8).toISOString()
+                            }
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.cancellable).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(new Date(call.detail.value)).toEqual(
+                        new Date(2025, 9, 8)
+                    );
+                });
+            });
+
+            it('On visible interval change', () => {
+                element.selectedDisplay = 'calendar';
+                element.start = new Date(2025, 9, 7);
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('visibleintervalchange', {
+                            detail: {
+                                start: DateTime.fromJSDate(
+                                    new Date(2025, 9, 10)
+                                ),
+                                visibleInterval: {
+                                    s: DateTime.fromJSDate(
+                                        new Date(2025, 9, 10)
+                                    ),
+                                    e: DateTime.fromJSDate(
+                                        new Date(2025, 9, 15)
+                                    )
+                                }
+                            }
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(new Date(call.detail.value)).toEqual(
+                        new Date(2025, 9, 10)
+                    );
+                });
+            });
+
+            it('On toolbar calendar change', () => {
+                element.selectedDisplay = 'calendar';
+                element.start = new Date(2025, 9, 7);
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button-toolbar-calendar"]'
+                        );
+                        button.click();
+                    })
+                    .then(() => {
+                        const toolbarCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-toolbar"]'
+                            );
+                        toolbarCalendar.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: new Date(2025, 9, 8).toISOString()
+                                }
+                            })
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(new Date(call.detail.value)).toEqual(
+                            new Date(2025, 9, 8)
+                        );
+                    });
+            });
+
+            it('On toolbar next button click', () => {
+                element.selectedDisplay = 'calendar';
+                element.start = new Date(2025, 9, 7);
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-toolbar-next"]'
+                    );
+                    button.click();
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(new Date(call.detail.value)).toEqual(
+                        new Date(2025, 9, 8)
+                    );
+                });
+            });
+
+            it('On toolbar previous button click', () => {
+                element.selectedDisplay = 'calendar';
+                element.start = new Date(2025, 9, 7);
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-toolbar-prev"]'
+                    );
+                    button.click();
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(new Date(call.detail.value)).toEqual(
+                        new Date(2025, 9, 6)
+                    );
+                });
+            });
+
+            it('On toolbar today button click', () => {
+                element.selectedDisplay = 'calendar';
+                element.start = new Date(2025, 9, 6);
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-toolbar-today"]'
+                    );
+                    button.click();
+                    const today = new Date(new Date().setHours(0, 0, 0, 0));
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(new Date(call.detail.value)).toEqual(today);
                 });
             });
         });

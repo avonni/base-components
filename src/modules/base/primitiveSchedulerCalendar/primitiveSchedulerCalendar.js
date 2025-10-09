@@ -175,7 +175,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         super.availableDaysOfTheWeek = value;
 
         if (this._connected) {
+            this.setStartToBeginningOfUnit();
             this.initHeaders();
+            this._hourHeadersLoading = false;
         }
     }
 
@@ -195,9 +197,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     set availableMonths(value) {
         super.availableMonths = value;
 
-        if (this._connected) {
+        const unavailableMonth = !this.availableMonths.includes(
+            this.computedSelectedDate.month - 1
+        );
+        if (this._connected && unavailableMonth) {
+            this.setStartToBeginningOfUnit();
             this.initHeaders();
-            this._dayHeadersLoading = false;
+            this._hourHeadersLoading = false;
         }
     }
 

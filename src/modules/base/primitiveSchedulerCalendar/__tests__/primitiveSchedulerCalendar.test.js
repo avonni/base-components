@@ -249,11 +249,11 @@ describe('Primitive Scheduler Calendar', () => {
         // available-days-of-the-week
         describe('Available days of the week', () => {
             it('Passed to the headers', () => {
-                element.availableDaysOfTheWeek = [2, 4];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
+                element.availableDaysOfTheWeek = [2, 4];
 
                 return Promise.resolve()
                     .then(() => {
@@ -305,12 +305,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Week time span', () => {
-                element.availableDaysOfTheWeek = [1, 2, 6];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'week', span: 1 };
+                element.availableDaysOfTheWeek = [1, 2, 6];
 
                 return Promise.resolve()
                     .then(() => {
@@ -338,12 +338,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Month time span', () => {
-                element.availableDaysOfTheWeek = [6, 0, 2];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'month', span: 1 };
+                element.availableDaysOfTheWeek = [6, 0, 2];
 
                 return Promise.resolve()
                     .then(() => {
@@ -367,12 +367,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Year time span', () => {
-                element.availableDaysOfTheWeek = [5];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'year', span: 1 };
+                element.availableDaysOfTheWeek = [5];
 
                 return Promise.resolve().then(() => {
                     const calendars = element.shadowRoot.querySelectorAll(
@@ -398,11 +398,11 @@ describe('Primitive Scheduler Calendar', () => {
         // available-months
         describe('Available months', () => {
             it('Passed to the headers', () => {
-                element.availableMonths = [9];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
+                element.availableMonths = [9];
 
                 return Promise.resolve()
                     .then(() => {
@@ -443,12 +443,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Week time span', () => {
-                element.availableMonths = [8, 9, 3];
                 element.selectedDate = new Date(2022, 4, 6);
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'day', span: 7 };
+                element.availableMonths = [8, 9, 3];
 
                 return Promise.resolve()
                     .then(() => {
@@ -476,12 +476,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Month time span', () => {
-                element.availableMonths = [8, 0, 3];
                 element.selectedDate = new Date(2021, 10, 14);
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'month', span: 1 };
+                element.availableMonths = [8, 0, 3];
 
                 const openDialogHandler = jest.fn();
                 const contextMenuDialog = jest.fn();
@@ -521,12 +521,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Year time span', () => {
-                element.availableMonths = [0, 5, 8];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = [EVENTS[0], EVENTS[1], EVENTS[5]];
                 element.timeSpan = { unit: 'year', span: 1 };
+                element.availableMonths = [0, 5, 8];
 
                 return Promise.resolve().then(() => {
                     const calendars = element.shadowRoot.querySelectorAll(
@@ -543,11 +543,11 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Taken into account when navigating in the left panel calendar', () => {
-                element.availableMonths = [9];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
+                element.availableMonths = [9];
 
                 return Promise.resolve()
                     .then(() => {
