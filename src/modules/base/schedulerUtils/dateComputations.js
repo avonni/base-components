@@ -1,10 +1,10 @@
+import { DateTime } from 'c/luxon';
 import {
     addToDate,
     dateTimeObjectFrom,
     isInTimeFrame,
     removeFromDate
 } from 'c/luxonDateTimeUtils';
-import { DateTime } from 'c/luxon';
 import { normalizeArray } from 'c/utils';
 import { DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK } from './defaults';
 
@@ -63,7 +63,10 @@ const nextAllowedMonth = (
     allowedMonths,
     startNewMonthOnFirstDay = true
 ) => {
-    let date = dateTimeObjectFrom(startDate);
+    let date =
+        startDate instanceof DateTime
+            ? startDate
+            : dateTimeObjectFrom(startDate);
     if (!isAllowedMonth(date, allowedMonths)) {
         // Add a month
         date = date.plus({ months: 1 });
@@ -107,7 +110,7 @@ const nextAllowedDay = (startDate, allowedMonths, allowedDays) => {
 /**
  * Find the next allowed time, based on a starting date. If the date time is already allowed, returns the original date.
  *
- * @param {DateTime} startDate The date we start from.
+ * @param {DateTime} date Date that needs to be checked.
  * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
  * @param {number[]} allowedDays Array of allowed days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
  * @param {string[]} allowedTimeFrames Array of allowed time frames. Each time frame string must follow the pattern 'start-end', with start and end being ISO8601 formatted time strings.
@@ -115,43 +118,48 @@ const nextAllowedDay = (startDate, allowedMonths, allowedDays) => {
  * @param {number} span Duration of each unit span. For example, the value would be 30 if the time spans are 30 minutes long.
  * @returns {DateTime} Date of the next allowed time.
  */
-const nextAllowedTime = (
-    startDate,
+const nextAllowedTime = ({
+    date,
     allowedMonths,
     allowedDays,
     allowedTimeFrames,
     unit,
     span
-) => {
-    let date = dateTimeObjectFrom(startDate);
+}) => {
+    let computedDate =
+        date instanceof DateTime ? date : dateTimeObjectFrom(date);
 
-    if (!isAllowedTime(date, allowedTimeFrames)) {
+    if (!isAllowedTime(computedDate, allowedTimeFrames)) {
         // Go to next time slot
-        date = addToDate(date, unit, span);
-        date = nextAllowedTime(
-            date,
+        computedDate = addToDate(computedDate, unit, span);
+        computedDate = nextAllowedTime({
+            date: computedDate,
             allowedMonths,
             allowedDays,
             allowedTimeFrames,
-            unit,
-            span
-        );
+            span,
+            unit
+        });
 
         // If the next time available is in another day, make sure the day is allowed
-        if (date.diff(startDate, 'day') > 0) {
-            date = nextAllowedDay(date, allowedMonths, allowedDays);
-            date = nextAllowedTime(
-                date,
+        if (computedDate.diff(date, 'day') > 0) {
+            computedDate = nextAllowedDay(
+                computedDate,
+                allowedMonths,
+                allowedDays
+            );
+            computedDate = nextAllowedTime({
+                date: computedDate,
                 allowedMonths,
                 allowedDays,
                 allowedTimeFrames,
                 unit,
                 span
-            );
+            });
         }
     }
 
-    return date;
+    return computedDate;
 };
 
 /**
@@ -215,7 +223,7 @@ const previousAllowedDay = (startDate, allowedMonths, allowedDays) => {
 /**
  * Find the previous allowed time, based on a starting date. If the date time is already allowed, returns the original date.
  *
- * @param {DateTime} startDate The date we start from.
+ * @param {DateTime} date Date that needs to be checked.
  * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
  * @param {number[]} allowedDays Array of allowed days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
  * @param {string[]} allowedTimeFrames Array of allowed time frames. Each time frame string must follow the pattern 'start-end', with start and end being ISO8601 formatted time strings.
@@ -223,43 +231,48 @@ const previousAllowedDay = (startDate, allowedMonths, allowedDays) => {
  * @param {number} span Duration of each unit span. For example, the value would be 30 if the time spans are 30 minutes long.
  * @returns {DateTime} Date of the previous allowed time.
  */
-const previousAllowedTime = (
-    startDate,
+const previousAllowedTime = ({
+    date,
     allowedMonths,
     allowedDays,
     allowedTimeFrames,
     unit,
     span
-) => {
-    let date = dateTimeObjectFrom(startDate);
+}) => {
+    let computedDate =
+        date instanceof DateTime ? date : dateTimeObjectFrom(date);
 
-    if (!isAllowedTime(date, allowedTimeFrames)) {
+    if (!isAllowedTime(computedDate, allowedTimeFrames)) {
         // Go to previous time slot
-        date = removeFromDate(date, unit, span);
-        date = previousAllowedTime(
-            date,
+        computedDate = removeFromDate(computedDate, unit, span);
+        computedDate = previousAllowedTime({
+            date: computedDate,
             allowedMonths,
             allowedDays,
             allowedTimeFrames,
-            unit,
-            span
-        );
+            span,
+            unit
+        });
 
         // If the previous time available is in another day, make sure the day is allowed
-        if (date.diff(startDate, 'day') < 0) {
-            date = previousAllowedDay(date, allowedMonths, allowedDays);
-            date = previousAllowedTime(
-                date,
+        if (computedDate.diff(date, 'day') < 0) {
+            computedDate = previousAllowedDay(
+                computedDate,
+                allowedMonths,
+                allowedDays
+            );
+            computedDate = previousAllowedTime({
+                date: computedDate,
                 allowedMonths,
                 allowedDays,
                 allowedTimeFrames,
-                unit,
-                span
-            );
+                span,
+                unit
+            });
         }
     }
 
-    return date;
+    return computedDate;
 };
 
 /**
@@ -274,7 +287,7 @@ const previousAllowedTime = (
  * @param {number} span Duration of each unit span. For example, the value would be 30 if the time spans are 30 minutes long.
  * @returns {DateTime} Date of the next allowed time.
  */
-const containsAllowedDateTimes = (
+const containsAllowedDateTimes = ({
     start,
     end,
     allowedMonths,
@@ -282,7 +295,7 @@ const containsAllowedDateTimes = (
     allowedTimeFrames,
     unit,
     span
-) => {
+}) => {
     const firstAllowedMonth = nextAllowedMonth(start, allowedMonths);
     if (firstAllowedMonth > end) return false;
 
@@ -294,15 +307,14 @@ const containsAllowedDateTimes = (
     if (firstAllowedDay > end) return false;
 
     if (unit === 'minute' || unit === 'hour') {
-        const computedUnit = unit === 'minute' ? 'minute' : 'hour';
-        const firstAllowedTime = nextAllowedTime(
-            firstAllowedDay,
+        const firstAllowedTime = nextAllowedTime({
+            date: firstAllowedDay,
             allowedMonths,
             allowedDays,
             allowedTimeFrames,
-            computedUnit,
-            span
-        );
+            span,
+            unit
+        });
         return firstAllowedTime <= end;
     }
 
@@ -332,30 +344,59 @@ const getDisabledWeekdaysLabels = (allowedDays) => {
 };
 
 /**
+ * Sort the days of the week starting from the first given day.
+ *
+ * @param {number[]} days Array of days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+ * @returns {number[]} Sorted array of days of the week,
+ */
+const sortDaysOfTheWeek = (days, weekStartDay) => {
+    const computedDays = [...days];
+    computedDays.sort();
+    const firstDayIndex = computedDays.findIndex((dayNumber) => {
+        return dayNumber >= weekStartDay;
+    });
+    const slice = computedDays.splice(0, firstDayIndex);
+    return [...computedDays, ...slice];
+};
+
+/**
  * Get the first available week, from a starting date.
  *
  * @param {DateTime} start Starting date.
  * @param {number[]} availableDaysOfTheWeek Array of available days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
- * @returns {DateTime} Sunday date of the first week to have available days.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+ * @returns {DateTime} First day of the first week to have available days.
  */
-const getFirstAvailableWeek = (start, availableDaysOfTheWeek) => {
-    let date = dateTimeObjectFrom(start);
-    const availableDays = [...availableDaysOfTheWeek];
+const getFirstAvailableWeek = (
+    start,
+    availableDaysOfTheWeek,
+    weekStartDay = 0
+) => {
+    const availableDays = sortDaysOfTheWeek(
+        availableDaysOfTheWeek,
+        weekStartDay
+    );
+
+    // Transform "0" Sunday to a "7" Luxon Sunday
+    const normalizedWeekStartDay = weekStartDay === 0 ? 7 : weekStartDay;
     if (availableDays[0] === 0) {
-        // Transform "0" Sunday to a "7" Luxon Sunday
         availableDays[0] = 7;
-        availableDays.sort();
     }
 
-    let hasAvailableDayThisWeek = false;
-    while (date.weekday !== 7 && !hasAvailableDayThisWeek) {
-        hasAvailableDayThisWeek = availableDays.includes(date.weekday);
+    let date = dateTimeObjectFrom(start);
+    for (let i = 0; i < 7; i++) {
+        if (date.weekday === normalizedWeekStartDay) {
+            if (date.toISO() === start.toISO()) {
+                return start;
+            }
+            break;
+        } else if (availableDays.includes(date.weekday)) {
+            return start;
+        }
         date = addToDate(date, 'day', 1);
     }
-    if (!hasAvailableDayThisWeek) {
-        return addToDate(start, 'week', 1);
-    }
-    return start;
+    return addToDate(start, 'week', 1);
 };
 
 /**
@@ -421,5 +462,6 @@ export {
     previousAllowedDay,
     previousAllowedMonth,
     previousAllowedTime,
+    sortDaysOfTheWeek,
     spansOnMoreThanOneDay
 };

@@ -27,7 +27,7 @@ export default class SchedulerCalendarColumn extends SchedulerCellGroup {
     initCells() {
         super.initCells();
         this._setStartAndEnd();
-        
+
         if (this.multiDayPlaceholders) {
             // Order the placeholders that are spanning on multiple weeks
             // from the latest to the earliest, so the last cells do not

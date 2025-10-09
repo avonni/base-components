@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import { DateTime } from 'c/luxon';
+import { createElement } from 'lwc';
 import PrimitiveSchedulerTimeline from '../primitiveSchedulerTimeline';
 
 /*
@@ -175,6 +175,7 @@ describe('Primitive Scheduler Timeline', () => {
             expect(element.selectedResources).toEqual([]);
             expect(element.timeSpan).toEqual({ unit: 'day', span: 1 });
             expect(element.orientation).toBe('horizontal');
+            expect(element.weekStartDay).toBe(0);
             expect(element.zoomToFit).toBeFalsy();
         });
 
@@ -1314,6 +1315,35 @@ describe('Primitive Scheduler Timeline', () => {
                         expect(event.headerCells.yAxis).toBeTruthy();
                         expect(event.variant).toBe('timeline-vertical');
                     });
+            });
+        });
+
+        describe('Week start day', () => {
+            it('Passed to the horizontal header', () => {
+                element.resources = RESOURCES;
+                element.selectedResources = ALL_RESOURCES;
+                element.weekStartDay = 4;
+
+                return Promise.resolve().then(() => {
+                    const header = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                    );
+                    expect(header.weekStartDay).toBe(4);
+                });
+            });
+
+            it('Passed to the vertical header', () => {
+                element.resources = RESOURCES;
+                element.selectedResources = ALL_RESOURCES;
+                element.orientation = 'vertical';
+                element.weekStartDay = 4;
+
+                return Promise.resolve().then(() => {
+                    const header = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                    );
+                    expect(header.weekStartDay).toBe(4);
+                });
             });
         });
 

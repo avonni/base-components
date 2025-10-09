@@ -27,6 +27,7 @@ export default class PrimitiveSchedulerAgenda extends LightningElement {
     @api sidePanelPosition;
     @api timeSpan;
     @api timezone;
+    @api weekStartDay;
     @api zoomToFit;
 
     @api cleanSelection() {}

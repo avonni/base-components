@@ -69,7 +69,7 @@ const intervalFrom = (start, end) => {
     if (!normalizedStart || !normalizedEnd) {
         return null;
     }
-    return Interval.fromDateTimes(start, end);
+    return Interval.fromDateTimes(normalizedStart, normalizedEnd);
 };
 
 /**
@@ -79,6 +79,10 @@ const intervalFrom = (start, end) => {
  * @returns {object} Object with three possible keys: valid, start and end.
  */
 const parseTimeFrame = (timeFrame, options) => {
+    if (typeof timeFrame !== 'string') {
+        console.error('Time frame must be a string');
+        return { valid: false };
+    }
     const startMatch = timeFrame.match(/^([0-9:]+(\.\d+)?)-/);
     const endMatch = timeFrame.match(/-([0-9:]+(\.\d+)?)$/);
 
@@ -153,13 +157,44 @@ const removeFromDate = (date, unit, span) => {
     return date.plus(options);
 };
 
-const getStartOfWeek = (date) => {
-    const isSunday = date.weekday === 7;
-    if (isSunday) {
-        return date.startOf('day');
+/**
+ * Get the start of the week for a given date.
+ *
+ * @param {DateTime} date Date we want to get the start of the week for.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+ * @returns {DateTime} The start of the week, as a DateTime object.
+ */
+const getStartOfWeek = (date, weekStartDay = 0) => {
+    if (weekStartDay === 0) {
+        const isSunday = date.weekday === 7;
+        if (isSunday) {
+            return date.startOf('day');
+        }
+        const monday = date.startOf('week');
+        return removeFromDate(monday, 'day', 1);
     }
-    const monday = date.startOf('week');
-    return removeFromDate(monday, 'day', 1);
+    if (date.weekday >= weekStartDay) {
+        return removeFromDate(date, 'day', date.weekday - weekStartDay).startOf(
+            'day'
+        );
+    }
+    return removeFromDate(
+        date,
+        'day',
+        7 - (weekStartDay - date.weekday)
+    ).startOf('day');
+};
+
+/**
+ * Get the end of the week for a given date.
+ *
+ * @param {DateTime} date Date we want to get the end of the week for.
+ * @param {number} weekStartDay Day that the week starts on, as a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+ * @returns {DateTime} The end of the week, as a DateTime object.
+ */
+const getEndOfWeek = (date, weekStartDay = 0) => {
+    const start = getStartOfWeek(date, weekStartDay).minus({ millisecond: 1 });
+    return start.plus({ week: 1 });
 };
 
 /**
@@ -185,54 +220,68 @@ const getWeekNumber = (date) => {
  * Calculate the number of units between two dates, including partial units.
  *
  * @param {string} unit The time unit (minute, hour, day, week, month or year).
- * @param {DateTime} start The starting date.
- * @param {DateTime} end The ending date.
+ * @param {DateTime} firstDate The first date.
+ * @param {DateTime} secondDate The second date.
  * @returns {number} Number of units between the start and end dates.
  */
-const numberOfUnitsBetweenDates = (unit, start, end) => {
-    // Save performance compared to using intersection.count('days').
-    if (unit === 'day') {
-        const normalizedStart = new Date(
-            start.year,
-            start.month - 1,
-            start.day
-        );
-        const normalizedEnd = new Date(
-            end.year,
-            end.month - 1,
-            end.day,
-            23,
-            59,
-            59,
-            999
-        );
-        const startTime = normalizedStart.getTime();
-        const endTime = normalizedEnd.getTime();
-
-        let timeDiff = 1;
-        if (startTime > endTime) {
-            timeDiff = startTime - endTime;
-        } else if (startTime < endTime) {
-            timeDiff = endTime - startTime;
+const numberOfUnitsBetweenDates = ({
+    unit,
+    firstDate,
+    secondDate,
+    weekStartDay = 0
+}) => {
+    switch (unit) {
+        case 'week': {
+            let count = 1;
+            const startDate = firstDate < secondDate ? firstDate : secondDate;
+            const endDate = firstDate > secondDate ? firstDate : secondDate;
+            let date = getStartOfWeek(startDate, weekStartDay);
+            const endWeek = getStartOfWeek(endDate, weekStartDay);
+            while (date < endWeek) {
+                date = addToDate(date, 'week', 1);
+                count++;
+            }
+            return count;
         }
+        case 'day': {
+            // Save performance compared to using intersection.count('days').
+            const normalizedFirst = new Date(
+                firstDate.year,
+                firstDate.month - 1,
+                firstDate.day
+            );
+            const normalizedSecond = new Date(
+                secondDate.year,
+                secondDate.month - 1,
+                secondDate.day
+            );
 
-        // Convert milliseconds to days and add 1 to include both start and end days
-        const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
-        return daysDiff;
+            let timeDiff = 1;
+            if (normalizedFirst > normalizedSecond) {
+                const firstTime = normalizedFirst.setHours(23, 59, 59, 999);
+                const secondTime = normalizedSecond.getTime();
+                timeDiff = firstTime - secondTime;
+            } else if (normalizedFirst < normalizedSecond) {
+                const firstTime = normalizedFirst.getTime();
+                const secondTime = normalizedSecond.setHours(23, 59, 59, 999);
+                timeDiff = secondTime - firstTime;
+            }
+
+            // Convert milliseconds to days and add 1 to include both start and end days
+            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+            return daysDiff;
+        }
+        default: {
+            const interval = Interval.fromDateTimes(firstDate, secondDate);
+            return interval.count(unit);
+        }
     }
-
-    // Compensate the fact that luxon weeks start on Monday
-    const isWeek = unit === 'week';
-    const normalizedStart = isWeek ? addToDate(start, 'day', 1) : start;
-    const normalizedEnd = isWeek ? addToDate(end, 'day', 1) : end;
-
-    const interval = Interval.fromDateTimes(normalizedStart, normalizedEnd);
-    return interval.count(unit);
 };
 
 export {
     addToDate,
     dateTimeObjectFrom,
+    getEndOfWeek,
     getStartOfWeek,
     getWeekday,
     getWeekNumber,

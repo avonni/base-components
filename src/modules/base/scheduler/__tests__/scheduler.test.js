@@ -153,6 +153,7 @@ describe('Scheduler', () => {
             ]);
             expect(element.timezone).toBeUndefined();
             expect(element.variant).toBe('horizontal');
+            expect(element.weekStartDay).toBe(0);
             expect(element.zoomToFit).toBeFalsy();
         });
 
@@ -2710,6 +2711,46 @@ describe('Scheduler', () => {
             });
         });
 
+        describe('weekStartDay', () => {
+            it('Passed to the timeline', () => {
+                element.weekStartDay = 3;
+                element.selectedDisplay = 'timeline';
+                element.resources = RESOURCES;
+                element.selectedResources = ['resource-1', 'resource-2'];
+
+                return Promise.resolve().then(() => {
+                    const timeline = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                    );
+                    expect(timeline.weekStartDay).toEqual(3);
+                });
+            });
+
+            it('Passed to the calendar', () => {
+                element.weekStartDay = 3;
+                element.selectedDisplay = 'calendar';
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-calendar"]'
+                    );
+                    expect(calendar.weekStartDay).toEqual(3);
+                });
+            });
+
+            it('Passed to the agenda', () => {
+                element.weekStartDay = 3;
+                element.selectedDisplay = 'agenda';
+
+                return Promise.resolve().then(() => {
+                    const agenda = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-agenda"]'
+                    );
+                    expect(agenda.weekStartDay).toEqual(3);
+                });
+            });
+        });
+
         describe('zoomToFit', () => {
             it('calendar display', () => {
                 element.selectedDisplay = 'calendar';
@@ -3024,6 +3065,20 @@ describe('Scheduler', () => {
                             new Date(2022, 9, 6).getTime()
                         );
                     });
+            });
+
+            it('Take weekStartDay into account', () => {
+                element.selectedTimeSpan = 'Standard.Scheduler.WeekTimeSpan';
+                element.start = new Date(2025, 9, 2);
+                element.weekStartDay = 3;
+
+                const handler = jest.fn();
+                element.addEventListener('startchange', handler);
+                element.goToDate(new Date(2025, 9, 14));
+                expect(element.start).toEqual(new Date(2025, 9, 8).getTime());
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.value).toBe('2025-10-08T00:00:00.000-04:00');
             });
         });
 
