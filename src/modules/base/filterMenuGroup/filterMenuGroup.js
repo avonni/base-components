@@ -322,6 +322,20 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Selected items class wrapper styling for the horizontal variant
+     *
+     * @type {string}
+     */
+    get computedHorizontalSelectedItemsWrapperClass() {
+        return classSet('slds-grid')
+            .add({
+                'slds-grid_align-end': this.align === 'right',
+                'slds-grid_align-center': this.align === 'center'
+            })
+            .toString();
+    }
+
+    /**
      * Dynamically compute the hidden menus based on the slice index.
      *
      * @type {object[]}

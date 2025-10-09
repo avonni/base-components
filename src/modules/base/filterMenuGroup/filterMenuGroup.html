@@ -109,15 +109,18 @@
             </c-button-icon-popover>
         </c-layout-item>
     </ul>
-    <avonni-pill-container
-        if:true={showHorizontalSelectedItems}
-        class="slds-m-top_x-small slds-show"
-        actions={pillActions}
-        items={selectedPills}
-        data-element-id="avonni-pill-container-horizontal"
-        data-group-name="focusable-element"
-        onactionclick={handleSelectedItemRemove}
-    ></avonni-pill-container>
+    <div class={computedHorizontalSelectedItemsWrapperClass}>
+        <avonni-pill-container
+            if:true={showHorizontalSelectedItems}
+            class="slds-m-top_x-small slds-show"
+            actions={pillActions}
+            items={selectedPills}
+            data-element-id="avonni-pill-container-horizontal"
+            data-group-name="focusable-element"
+            onactionclick={handleSelectedItemRemove}
+        ></avonni-pill-container>
+    </div>
+
     <template if:true={showApplyResetButtons}>
         <lightning-button
             class="slds-m-right_x-small"
