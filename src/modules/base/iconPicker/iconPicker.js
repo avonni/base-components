@@ -1006,6 +1006,8 @@ export default class IconPicker extends LightningElement {
      */
     handleDone(event) {
         event.stopPropagation();
+        event.preventDefault();
+
         if (this.newValue) {
             this._value = this.newValue;
             this.dispatchChange(this.newValue);
