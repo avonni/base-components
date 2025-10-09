@@ -7,7 +7,15 @@ const ALIGN_CONTENTS = {
 };
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const ICON_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
+    valid: [
+        'xx-small',
+        'x-small',
+        'small',
+        'medium',
+        'large',
+        'x-large',
+        'xx-large'
+    ],
     default: 'small'
 };
 const ICON_VARIANTS = {
