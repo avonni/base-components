@@ -802,7 +802,7 @@ describe('FilterMenuGroup', () => {
                             })
                         );
 
-                        expect(handler).toHaveBeenCalledTimes(2);
+                        expect(handler).toHaveBeenCalledTimes(1);
                         const detail = handler.mock.calls[0][0].detail;
                         expect(detail.value).toEqual({
                             contact: ['call']

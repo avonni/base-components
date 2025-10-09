@@ -50,7 +50,6 @@ export default class FilterMenuGroup extends LightningElement {
     _connected = false;
     _containerMaxHeight = 0;
     _hasRecalculatedValue = false;
-    _hasInitSliceIndex = false;
     _hiddenMenusLength = 0;
     _isCalculatingOverflow = false;
     _isPopoverOpen = false;
@@ -626,9 +625,9 @@ export default class FilterMenuGroup extends LightningElement {
         });
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
-        if (!this._hasInitSliceIndex) {
+        // Make sure the visible menus are all displayed.
+        if (this._hiddenMenusLength === 0) {
             this._sliceIndex = this.computedMenus.length;
-            this._hasInitSliceIndex = true;
         }
         if (this.isDifferentComputedMenu()) {
             this.updateVisibleMenus();
@@ -841,7 +840,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleApply(event) {
         event.stopPropagation();
-        if (this.hideMenuApplyResetButtons) {
+        if (this.hideMenuApplyResetButtons || this.hideApplyButton) {
             // The apply and select events are fired at the same time
             return;
         }
@@ -1048,17 +1047,31 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleReset(event) {
         event.stopPropagation();
-        if (this.isVertical && !this.showClearButton) {
-            return;
-        }
         const menuName = event.target.dataset.name;
-        delete this._selectedValue[menuName];
-        if (this.hideApplyButton || this.hideApplyResetButtons) {
-            this.updateRecalculationFlag();
-            this._value = deepCopy(this._selectedValue);
-            this.computeValue();
+
+        // A reset can be send in the horizontal variant from the hidden menus
+        // even if hideApplyResetButtons is true.
+        const shouldSaveImmediately =
+            this.hideApplyButton || this.hideApplyResetButtons;
+
+        // Reset Fired from a Vertical Menu Clear Button
+        if (this.isVertical && this.showClearButton) {
+            delete this._selectedValue[menuName];
+            this.dispatchReset(menuName);
+            // Save the reset immediately
+            if (shouldSaveImmediately) {
+                this.apply();
+                this.dispatchApply();
+            }
+        } else if (!this.isVertical) {
+            delete this._selectedValue[menuName];
+            this.dispatchReset(menuName);
+            // Save the reset immediately
+            if (shouldSaveImmediately) {
+                this.apply();
+                this.dispatchApply();
+            }
         }
-        this.dispatchReset(menuName);
     }
 
     /**
@@ -1070,6 +1083,7 @@ export default class FilterMenuGroup extends LightningElement {
         }
         this.reset();
         this.dispatchReset();
+        // Save the reset immediately
         if (this.hideApplyButton) {
             this.apply();
             this.dispatchApply();
