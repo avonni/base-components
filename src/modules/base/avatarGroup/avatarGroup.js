@@ -1027,7 +1027,7 @@ export default class AvatarGroup extends LightningElement {
      */
     getAvatarClass(item, isHidden) {
         let avatarClass = isHidden
-            ? this.hiddenAvatarInlineClass
+            ? this.computedHiddenAvatarInlineClass
             : this.computedAvatarInlineClass;
 
         return classSet(avatarClass)
