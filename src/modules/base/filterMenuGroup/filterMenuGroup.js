@@ -238,7 +238,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
     set singleLine(value) {
         this._singleLine = normalizeBoolean(value);
-        if (!this._resizeObserver && this.showSingleLine) {
+        if (this._connected && !this._resizeObserver && this.showSingleLine) {
             this._resizeObserver = this.initResizeObserver();
         }
     }
@@ -281,7 +281,7 @@ export default class FilterMenuGroup extends LightningElement {
             fallbackValue: MENU_VARIANTS.default,
             validValues: MENU_VARIANTS.valid
         });
-        if (!this._resizeObserver && this.showSingleLine) {
+        if (this._connected && !this._resizeObserver && this.showSingleLine) {
             this._resizeObserver = this.initResizeObserver();
         }
     }
