@@ -398,7 +398,10 @@ export default class Button extends PrimitiveButton {
             }
         }
 
-        this.dispatchEvent(new PointerEvent('click', event));
+        const clickEvent = new CustomEvent('click');
+        clickEvent.clientY = event.clientY;
+        clickEvent.clientX = event.clientX;
+        this.dispatchEvent(clickEvent);
     }
 
     /**
