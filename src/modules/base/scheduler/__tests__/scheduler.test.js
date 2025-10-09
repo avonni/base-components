@@ -4037,43 +4037,6 @@ describe('Scheduler', () => {
                 });
             });
 
-            it('On visible interval change', () => {
-                element.selectedDisplay = 'calendar';
-                element.start = new Date(2025, 9, 7);
-
-                const handler = jest.fn();
-                element.addEventListener('startchange', handler);
-
-                return Promise.resolve().then(() => {
-                    const calendar = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-primitive-scheduler-calendar"]'
-                    );
-                    calendar.dispatchEvent(
-                        new CustomEvent('visibleintervalchange', {
-                            detail: {
-                                start: DateTime.fromJSDate(
-                                    new Date(2025, 9, 10)
-                                ),
-                                visibleInterval: {
-                                    s: DateTime.fromJSDate(
-                                        new Date(2025, 9, 10)
-                                    ),
-                                    e: DateTime.fromJSDate(
-                                        new Date(2025, 9, 15)
-                                    )
-                                }
-                            }
-                        })
-                    );
-
-                    expect(handler).toHaveBeenCalled();
-                    const call = handler.mock.calls[0][0];
-                    expect(new Date(call.detail.value)).toEqual(
-                        new Date(2025, 9, 10)
-                    );
-                });
-            });
-
             it('On toolbar calendar change', () => {
                 element.selectedDisplay = 'calendar';
                 element.start = new Date(2025, 9, 7);

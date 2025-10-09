@@ -2859,7 +2859,6 @@ export default class Scheduler extends LightningElement {
     handleVisibleIntervalChange(event) {
         if (event.detail.start.ts !== this.computedStart.ts) {
             this._start = event.detail.start.ts;
-            this.dispatchStartChange();
         }
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);
