@@ -105,7 +105,7 @@ export default class Separator extends LightningElement {
     }
 
     /**
-     * The size of the icon. Valid values include x-small, small, medium, large, x-large and xx-large.
+     * The size of the icon. Valid values include xx-small, x-small, small, medium, large, x-large and xx-large.
      *
      * @type {string}
      * @public
