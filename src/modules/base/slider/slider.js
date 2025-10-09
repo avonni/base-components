@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
-import { equal } from 'c/utilsPrivate';
+import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     generateUUID,
@@ -8,8 +8,8 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
-import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+import { equal } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const BORDER_RADIUS_REM = 0.5;
 const DEFAULT_MAX = 100;
@@ -722,19 +722,18 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedUnitContainerClass() {
+        const horizontalTicks = !this.isVertical && this.showAnyTickMarks;
         return classSet(
             'avonni-slider__unit-container slds-grid slds-grid_align-spread'
-        ).add({
-            'avonni-slider__unit-container_ticks-horizontal':
-                !this.isVertical &&
-                this.showAnyTickMarks &&
-                this.tickMarkStyle !== 'tick',
-            'avonni-slider__unit-container_ticks-horizontal-tick':
-                !this.isVertical &&
-                this.showAnyTickMarks &&
-                this.tickMarkStyle === 'tick',
-            'slds-p-top_x-small': !this.isVertical
-        });
+        )
+            .add({
+                'slds-is-absolute avonni-slider__unit-container_ticks-horizontal':
+                    horizontalTicks,
+                'avonni-slider__unit-container_ticks-horizontal-tick':
+                    horizontalTicks && this.tickMarkStyle === 'tick',
+                'slds-p-top_x-small': !this.isVertical
+            })
+            .toString();
     }
 
     /**
