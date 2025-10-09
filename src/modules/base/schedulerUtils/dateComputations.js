@@ -213,7 +213,7 @@ const previousAllowedDay = (startDate, allowedMonths, allowedDays) => {
 
         // If the previous day available is another month, make sure the month is allowed
         if (date.diff(startDate, 'months') < 0) {
-            date = previousAllowedMonth(date, allowedMonths);
+            date = previousAllowedMonth(date, allowedMonths, false);
             date = previousAllowedDay(date, allowedMonths, allowedDays);
         }
     }

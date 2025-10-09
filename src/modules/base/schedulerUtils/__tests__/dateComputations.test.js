@@ -637,7 +637,7 @@ describe('Date Computations', () => {
             const allowedMonths = [0, 1, 2, 3, 11];
             const allowedDays = [2, 4, 6];
             const result = previousAllowedDay(date, allowedMonths, allowedDays);
-            expect(result.toISO()).toBe('2025-04-01T00:00:00.000-04:00');
+            expect(result.toISO()).toBe('2025-04-29T00:00:00.000-04:00');
         });
     });
 
