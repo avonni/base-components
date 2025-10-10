@@ -29,19 +29,18 @@
             >
                 <span
                     if:true={showFilterValue}
-                    class="slds-truncate"
                     data-element-id="span-menu-selected-labels"
                 >
                     &nbsp;{selectedFilterLabels}&nbsp;
                 </span>
-                <span
-                    if:true={showCount}
-                    class="slds-badge avonni-filter-menu__selected-item-count"
-                    data-element-id="span-menu-selected-item-count"
-                >
-                    {selectedItemCountLabel}
-                </span>
             </div>
+            <span
+                if:true={showCount}
+                class="slds-badge avonni-filter-menu__selected-item-count"
+                data-element-id="span-menu-selected-item-count"
+            >
+                {selectedItemCountLabel}
+            </span>
 
             <c-primitive-icon
                 if:true={iconName}
