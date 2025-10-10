@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
-import { classSet, normalizeArray, normalizeString } from 'c/utils';
 import { computeSldsClass, isActionIconType } from 'c/iconUtils';
+import { classSet, normalizeArray, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_SIZES = {
     valid: [
@@ -42,7 +42,6 @@ const STATUS = {
 
 export default class PrimitiveAvatar extends LightningElement {
     @api entityInitials;
-    @api initials;
 
     _actionMenuIcon = DEFAULT_ICON_MENU_ICON;
     _actionPosition = POSITIONS.actionDefault;
@@ -56,6 +55,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _entityVariant = AVATAR_VARIANTS.default;
     _fallbackIconName;
     _href;
+    _initials;
     _presence = PRESENCE.default;
     _presencePosition = POSITIONS.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
@@ -180,6 +180,10 @@ export default class PrimitiveAvatar extends LightningElement {
     set fallbackIconName(value) {
         this._fallbackIconName = value;
         this._updateClassList();
+
+        requestAnimationFrame(() => {
+            this._applyBackgroundToInitials();
+        });
     }
 
     @api
@@ -189,6 +193,18 @@ export default class PrimitiveAvatar extends LightningElement {
     set href(value) {
         this._href = value;
         this._updateClassList();
+    }
+
+    @api
+    get initials() {
+        return this._initials;
+    }
+    set initials(value) {
+        this._initials = value;
+
+        requestAnimationFrame(() => {
+            this._applyBackgroundToInitials();
+        });
     }
 
     @api
@@ -298,10 +314,41 @@ export default class PrimitiveAvatar extends LightningElement {
 
     @api
     getBackgroundColor() {
-        const icon = this.template.querySelector(
+        const container = this.template.querySelector(
             '[data-element-id="avatar-container"]'
         );
-        return icon ? getComputedStyle(icon).backgroundColor : '';
+        if (!container) return '';
+
+        const styles = getComputedStyle(container);
+        if (!styles) return '';
+
+        // Custom property
+        let backgroundColor = styles
+            .getPropertyValue('--avonni-avatar-fallback-icon-color-background')
+            .trim();
+        if (backgroundColor) return backgroundColor;
+
+        // Icon
+        if (this.fallbackIconName) {
+            if (!backgroundColor) {
+                backgroundColor =
+                    styles
+                        .getPropertyValue('--slds-c-icon-color-background')
+                        .trim() || styles.backgroundColor;
+            }
+            if (backgroundColor) return backgroundColor;
+        }
+        // In SLDS 2, the initials class have background color
+        if (this.initials) {
+            const initials = container.querySelector(
+                '[data-element-id="avatar-initials"]'
+            );
+            if (initials) {
+                backgroundColor = getComputedStyle(initials)?.backgroundColor;
+                if (backgroundColor) return backgroundColor;
+            }
+        }
+        return '';
     }
 
     /*
@@ -402,6 +449,24 @@ export default class PrimitiveAvatar extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    _applyBackgroundToInitials() {
+        const container = this.template.querySelector(
+            '[data-element-id="avatar-container"]'
+        );
+        if (!container) return;
+
+        const initials = container.querySelector(
+            '[data-element-id="avatar-initials"]'
+        );
+        if (!initials) return;
+
+        // Resets background color
+        initials.style.backgroundColor = '';
+
+        const bgColor = this.getBackgroundColor();
+        initials.style.backgroundColor = bgColor;
+    }
 
     _computeEntityClass() {
         const { entityVariant, entityPosition, entityIconName } = this;

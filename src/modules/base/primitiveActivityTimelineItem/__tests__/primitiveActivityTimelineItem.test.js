@@ -49,11 +49,17 @@ describe('Primitive Activity Timeline Item', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('avonni-activity-timeline-item', {
             is: ActivityTimelineItem
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -158,6 +164,75 @@ describe('Primitive Activity Timeline Item', () => {
                     expect(avatar.classList).toContain(
                         'avonni-timeline-item__bullet'
                     );
+                });
+            });
+
+            describe('Line color', () => {
+                let mockGetBackgroundColor;
+
+                afterEach(() => {
+                    if (mockGetBackgroundColor) {
+                        mockGetBackgroundColor.mockRestore();
+                        mockGetBackgroundColor = null;
+                    }
+                });
+
+                it('Uses fallback icon background color', () => {
+                    element.avatar = {
+                        fallbackIconName: 'standard:account'
+                    };
+                    return Promise.resolve()
+                        .then(() => {
+                            const avatar = element.shadowRoot.querySelector(
+                                '[data-element-id="item-marker"]'
+                            );
+                            mockGetBackgroundColor = jest
+                                .spyOn(avatar, 'getBackgroundColor')
+                                .mockImplementation(() => {
+                                    return 'blue';
+                                });
+                            expect(avatar.getBackgroundColor()).toBe('blue');
+                            jest.runAllTimers();
+                        })
+                        .then(() => {
+                            const container = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-timeline-item"]'
+                            );
+                            const lineColor =
+                                container.style.getPropertyValue(
+                                    '--line-color'
+                                );
+                            expect(lineColor).toBe('blue');
+                        });
+                });
+
+                it('Uses initials background color', () => {
+                    element.avatar = {
+                        initials: 'AB'
+                    };
+                    return Promise.resolve()
+                        .then(() => {
+                            const avatar = element.shadowRoot.querySelector(
+                                '[data-element-id="item-marker"]'
+                            );
+                            mockGetBackgroundColor = jest
+                                .spyOn(avatar, 'getBackgroundColor')
+                                .mockImplementation(() => {
+                                    return 'blue';
+                                });
+                            expect(avatar.getBackgroundColor()).toBe('blue');
+                            jest.runAllTimers();
+                        })
+                        .then(() => {
+                            const container = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-timeline-item"]'
+                            );
+                            const lineColor =
+                                container.style.getPropertyValue(
+                                    '--line-color'
+                                );
+                            expect(lineColor).toBe('blue');
+                        });
                 });
             });
         });
