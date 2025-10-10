@@ -493,9 +493,7 @@ export default class ProgressBar extends LightningElement {
      * @type {string}
      */
     get computedOuterClass() {
-        return classSet(
-            'slds-progress-bar slds-text-align_center avonni-progress-bar__bar'
-        )
+        return classSet('slds-progress-bar slds-text-align_center')
             .add({
                 'slds-progress-bar_vertical': this.isVertical,
                 'slds-progress-bar_circular': this.variant === 'circular',
