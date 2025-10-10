@@ -513,7 +513,7 @@ describe('Slider', () => {
             it('Smaller than 0', () => {
                 element.min = 0;
                 element.max = 10;
-                element.step = -1;
+                element.step = -5;
                 element.value = 5.5;
 
                 return Promise.resolve().then(() => {
@@ -521,7 +521,7 @@ describe('Slider', () => {
                         '[data-group-name="input"]'
                     );
                     inputs.forEach((input) => {
-                        expect(input.step).toEqual('1');
+                        expect(input.step).toEqual('5');
                         expect(element.min).toEqual(0);
                         expect(element.max).toEqual(10);
                         expect(element.value).toEqual(5.5);
