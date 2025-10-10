@@ -40,7 +40,7 @@
         --avonni-separator-icon-color-foreground
     );
     --avonni-avatar-fallback-icon-color-foreground-default: var(
-        --avonni-separator-icon-color-foreground-default
+        --avonni-separator-icon-color-foreground
     );
     --avonni-avatar-fallback-icon-color-background: var(
         --avonni-separator-icon-color-background

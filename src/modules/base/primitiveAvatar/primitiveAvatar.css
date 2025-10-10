@@ -30,7 +30,7 @@
 }
 
 .avonni-avatar__border-radius_circle {
-    border-radius: 50%;
+    border-radius: var(--avonni-avatar-radius-border, 50%);
 }
 
 /**
@@ -585,11 +585,18 @@
 }
 
 .avonni-avatar__icon {
-    --sds-c-icon-color-background: var(
-        --avonni-avatar-fallback-icon-color-background
+    background: var(
+        --avonni-avatar-fallback-icon-color-background,
+        var(--slds-c-icon-color-background, var(--slds-s-icon-color-background))
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-avatar-fallback-icon-color-foreground
     );
     --sds-c-icon-color-foreground: var(
         --avonni-avatar-fallback-icon-color-foreground
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-avatar-fallback-icon-color-foreground-default
     );
     --sds-c-icon-color-foreground-default: var(
         --avonni-avatar-fallback-icon-color-foreground-default
