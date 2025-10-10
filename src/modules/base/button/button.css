@@ -6,6 +6,9 @@
     border-width: var(--avonni-button-sizing-border, 1px);
     border-style: var(--avonni-button-styling-border, solid);
     justify-content: var(--avonni-button-horizontal-alignment, center);
+
+    /* Prevent the spinner from overflowing the button */
+    overflow: hidden;
 }
 
 .avonni-button:hover.avonni-button_border,
