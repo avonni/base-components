@@ -673,17 +673,7 @@ export default class FilterMenuGroup extends LightningElement {
             label: menu.label
         }));
 
-        return (
-            this._computedMenusWhenLastOverflow.length !==
-                currentMenusState.length ||
-            this._computedMenusWhenLastOverflow.some((prevMenu, index) => {
-                const currentMenu = currentMenusState[index];
-                return (
-                    prevMenu.name !== currentMenu.name ||
-                    prevMenu.label !== currentMenu.label
-                );
-            })
-        );
+        return !equal(currentMenusState, this._computedMenusWhenLastOverflow);
     }
 
     /**
