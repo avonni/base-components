@@ -27,7 +27,11 @@ export default class Option {
             : this.avatar && this.avatar.fallbackIconName
             ? this.avatar.fallbackIconName
             : undefined;
-        this.avatarInitials = this.avatar.avatarInitials;
+        this.avatarInitials = option.avatarInitials
+            ? option.avatarInitials
+            : this.avatar && this.avatar.initials
+            ? this.avatar.initials
+            : undefined;
         this.avatarSrc = option.avatarSrc
             ? option.avatarSrc
             : this.avatar && this.avatar.src

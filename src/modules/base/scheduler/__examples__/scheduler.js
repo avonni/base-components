@@ -39,6 +39,7 @@ export const Scheduler = ({
     start,
     timeSpans,
     timezone,
+    weekStartDay,
     toolbarActions,
     variant,
     zoomToFit
@@ -80,6 +81,7 @@ export const Scheduler = ({
     element.start = start;
     element.timeSpans = timeSpans;
     element.timezone = timezone;
+    element.weekStartDay = weekStartDay;
     element.toolbarActions = toolbarActions;
     element.variant = variant;
     element.zoomToFit = zoomToFit;

@@ -539,6 +539,18 @@ export default {
                 defaultValue: { summary: 'horizontal' }
             }
         },
+        weekStartDay: {
+            control: {
+                type: 'select'
+            },
+            options: [0, 1, 2, 3, 4, 5, 6],
+            description:
+                'Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' }
+            }
+        },
         zoomToFit: {
             name: 'zoom-to-fit',
             control: {
@@ -622,6 +634,7 @@ export default {
             }
         ],
         variant: 'horizontal',
+        weekStartDay: 0,
         zoomToFit: false
     }
 };

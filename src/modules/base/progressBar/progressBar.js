@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     normalizeArray,
@@ -6,9 +6,9 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const BORDER_RADIUS_REM = 0.5;
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
@@ -482,7 +482,7 @@ export default class ProgressBar extends LightningElement {
                     this.size === 'medium' && this.isVertical,
                 'avonni-progress-bar__vertical_size-large':
                     this.size === 'large' && this.isVertical,
-                'slds-theme_alert-texture': this.textured
+                'avonni-progress-bar__bar_theme-texture': this.textured
             })
             .toString();
     }

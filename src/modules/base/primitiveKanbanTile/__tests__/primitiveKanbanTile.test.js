@@ -205,7 +205,7 @@ describe('Primitive Kanban Tile', () => {
                     expect(container.classList).toContain(
                         'avonni-kanban__tile_dates_due-date'
                     );
-                    expect(date.value.toLocaleString()).toContain('7/21/2021');
+                    expect(date.value.getTime()).toBe(endDate.getTime());
                 });
             });
 
@@ -432,7 +432,7 @@ describe('Primitive Kanban Tile', () => {
                         '[data-element-id="avonni-kanban__tile-start-date"]'
                     );
                     expect(container).toBeTruthy();
-                    expect(date.value.toLocaleString()).toContain('7/20/2021');
+                    expect(date.value.getTime()).toBe(startDate.getTime());
                 });
             });
         });

@@ -13,6 +13,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api variant;
     @api visibleWidth;
     @api timezone;
+    @api weekStartDay;
     @api zoomToFit;
 
     _start;

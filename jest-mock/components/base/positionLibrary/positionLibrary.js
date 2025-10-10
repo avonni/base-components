@@ -5,7 +5,10 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
 
-class AutoPosition {}
+const AutoPosition = jest.fn();
+AutoPosition.prototype.start = jest.fn();
+AutoPosition.prototype.stop = jest.fn();
+
 function startPositioning() {
     return { reposition: () => Promise.resolve() };
 }

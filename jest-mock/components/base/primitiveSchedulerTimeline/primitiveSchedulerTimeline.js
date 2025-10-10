@@ -28,6 +28,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     @api start;
     @api timeSpan;
     @api timezone;
+    @api weekStartDay;
     @api zoomToFit;
 
     @api cleanSelection() {}

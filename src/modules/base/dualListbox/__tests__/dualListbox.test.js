@@ -5,8 +5,9 @@ import DualListbox from 'c/dualListbox';
 // Not tested
 // maxVisibleOptions, because depends on DOM measurements (offsetHeight)
 
-let element = null;
 describe('DualListbox', () => {
+    let element = null;
+
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -997,7 +998,7 @@ describe('DualListbox', () => {
     /*
      * ------------------------------------------------------------
      *  USER ACTIONS
-     * -------------------------------------------------------------
+     * ------------------------------------------------------------
      */
 
     describe('User actions', () => {
@@ -1053,7 +1054,7 @@ describe('DualListbox', () => {
     /*
      * ------------------------------------------------------------
      *  EVENTS
-     * -------------------------------------------------------------
+     * ------------------------------------------------------------
      */
 
     describe('Events', () => {
@@ -1367,6 +1368,425 @@ describe('DualListbox', () => {
                         expect(sourceOptions[0].dataset.value).toBe('AM');
                         expect(sourceOptions[1].dataset.value).toBe('AMa');
                     });
+            });
+        });
+
+        describe('drag and drop', () => {
+            let event;
+            beforeEach(() => {
+                const options = [
+                    { label: 'Adam Mangrove', value: '1' },
+                    { label: 'Adam Mantium', value: '2' },
+                    { label: 'Laurie Mantle', value: '3' }
+                ];
+                element.options = options;
+                event = {
+                    preventDefault: jest.fn(),
+                    currentTarget: {
+                        classList: {
+                            remove: jest.fn(),
+                            add: jest.fn()
+                        },
+                        dataset: { value: '1', index: '0' }
+                    },
+                    target: { dataset: { index: '0' } }
+                };
+            });
+
+            describe('start', () => {
+                it('adds dragging class to currentTarget', () => {
+                    const sourceListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    sourceListItems[0].dispatchEvent(
+                        new CustomEvent('dragstart', { detail: event })
+                    );
+
+                    return Promise.resolve().then(() => {
+                        expect(sourceListItems[0].classList).toContain(
+                            'avonni-dual-listbox__option_dragging'
+                        );
+                    });
+                });
+            });
+
+            describe('end', () => {
+                it('removes dragging class from currentTarget', () => {
+                    const sourceListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    sourceListItems[0].dispatchEvent(
+                        new CustomEvent('dragend', { detail: event })
+                    );
+
+                    return Promise.resolve().then(() => {
+                        expect(sourceListItems[0].classList).not.toContain(
+                            'avonni-dual-listbox__option_dragging'
+                        );
+                    });
+                });
+
+                it('drops on selected', async () => {
+                    const sourceListItem = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    sourceListItem[0].dispatchEvent(
+                        new CustomEvent('dragstart', { detail: event })
+                    );
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const divSelectedList =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="div-selected-list"]'
+                                );
+                            divSelectedList.dispatchEvent(
+                                new CustomEvent('dragover')
+                            );
+                        })
+                        .then(() => {
+                            sourceListItem[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            expect(sourceListItem[0].classList).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+                            const selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+                            expect(selectedListItems.length).toBe(1);
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).toBeNull();
+                        });
+                });
+
+                it('drops on selected and then back on source', async () => {
+                    let sourceListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    sourceListItems[0].dispatchEvent(
+                        new CustomEvent('dragstart', { detail: event })
+                    );
+
+                    let selectedListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-selected-list"]'
+                    );
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const divSelectedList =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="div-selected-list"]'
+                                );
+                            divSelectedList.dispatchEvent(
+                                new CustomEvent('dragover')
+                            );
+                        })
+                        .then(() => {
+                            sourceListItems[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            expect(sourceListItems[0].classList).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+
+                            selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+
+                            expect(selectedListItems.length).toBe(1);
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).toBeNull();
+
+                            selectedListItems[0].dispatchEvent(
+                                new CustomEvent('dragstart', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            const divSourceList =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="div-source-list"]'
+                                );
+                            divSourceList.dispatchEvent(
+                                new CustomEvent('dragover')
+                            );
+                        })
+                        .then(() => {
+                            selectedListItems[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            expect(
+                                selectedListItems[0].classList
+                            ).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+
+                            selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+
+                            expect(selectedListItems.length).toBe(0);
+                            sourceListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-source-list"]'
+                                );
+                            expect(sourceListItems.length).toBe(3);
+
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).not.toBeNull();
+                        });
+                });
+
+                it('drops outside selected or source', async () => {
+                    let sourceListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    sourceListItems[0].dispatchEvent(
+                        new CustomEvent('dragstart', { detail: event })
+                    );
+
+                    return Promise.resolve()
+                        .then(() => {
+                            sourceListItems[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            expect(sourceListItems[0].classList).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+                            sourceListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-source-list"]'
+                                );
+                            expect(sourceListItems.length).toBe(3);
+
+                            const selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+                            expect(selectedListItems.length).toBe(0);
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).not.toBeNull();
+                        });
+                });
+
+                it('drops outside selected or source after moving to selected', async () => {
+                    let sourceListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    sourceListItems[0].dispatchEvent(
+                        new CustomEvent('dragstart', { detail: event })
+                    );
+
+                    let selectedListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-selected-list"]'
+                    );
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const divSelectedList =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="div-selected-list"]'
+                                );
+                            divSelectedList.dispatchEvent(
+                                new CustomEvent('dragover')
+                            );
+                        })
+                        .then(() => {
+                            sourceListItems[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            expect(sourceListItems[0].classList).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+                            selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+                            expect(selectedListItems.length).toBe(1);
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).toBeNull();
+
+                            selectedListItems[0].dispatchEvent(
+                                new CustomEvent('dragstart', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+                            expect(selectedListItems.length).toBe(1);
+                        })
+                        .then(() => {
+                            selectedListItems[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            expect(
+                                selectedListItems[0].classList
+                            ).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+                            selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+                            expect(selectedListItems.length).toBe(1);
+                            sourceListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-source-list"]'
+                                );
+                            expect(sourceListItems.length).toBe(2);
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).toBeNull();
+                        });
+                });
+
+                it('reorders within selected', async () => {
+                    let sourceListItem = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    sourceListItem[0].dispatchEvent(
+                        new CustomEvent('dragstart', { detail: event })
+                    );
+                    let selectedListItems = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-selected-list"]'
+                    );
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const divSelectedList =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="div-selected-list"]'
+                                );
+                            divSelectedList.dispatchEvent(
+                                new CustomEvent('dragover')
+                            );
+                        })
+                        .then(() => {
+                            sourceListItem[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            sourceListItem =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-source-list"]'
+                                );
+                            sourceListItem[0].dispatchEvent(
+                                new CustomEvent('dragstart', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            const divSelectedList =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="div-selected-list"]'
+                                );
+                            divSelectedList.dispatchEvent(
+                                new CustomEvent('dragover')
+                            );
+                        })
+                        .then(() => {
+                            sourceListItem[0].dispatchEvent(
+                                new CustomEvent('dragend', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            expect(sourceListItem[0].classList).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+                            selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+                            expect(selectedListItems.length).toBe(2);
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).toBeNull();
+
+                            selectedListItems[1].dispatchEvent(
+                                new CustomEvent('dragstart', { detail: event })
+                            );
+                        })
+                        .then(() => {
+                            const divSelectedList =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="div-selected-list"]'
+                                );
+                            divSelectedList.dispatchEvent(
+                                new CustomEvent('dragover')
+                            );
+                            selectedListItems[0].dispatchEvent(
+                                new CustomEvent('dragover', {
+                                    target: { dataset: { index: '0' } }
+                                })
+                            );
+                        })
+                        .then(() => {
+                            selectedListItems[1].dispatchEvent(
+                                new CustomEvent('dragend', {
+                                    target: { dataset: { index: '1' } }
+                                })
+                            );
+                        })
+                        .then(() => {
+                            expect(
+                                selectedListItems[1].classList
+                            ).not.toContain(
+                                'avonni-dual-listbox__option_dragging'
+                            );
+                            selectedListItems =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-type="ul-selected-list"]'
+                                );
+                            expect(selectedListItems.length).toBe(2);
+                            expect(selectedListItems[0].label).toBe(
+                                'Adam Mantium'
+                            );
+                            expect(selectedListItems[1].label).toBe(
+                                'Adam Mangrove'
+                            );
+                            const placeholder =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="span-selected-placeholder"]'
+                                );
+                            expect(placeholder).toBeNull();
+                        });
+                });
             });
         });
     });

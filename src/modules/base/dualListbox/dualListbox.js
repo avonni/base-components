@@ -1697,12 +1697,12 @@ export default class DualListbox extends LightningElement {
             ) {
                 this.handleDragLeft();
             }
-        } else if (!this._dropItSource) {
+        } else if (this._dropItSelected) {
             if (!this.disableReordering) {
                 const values = this._computedSelectedList.map(
                     (option) => option.value
                 );
-                const swappingIndex = Number(event.target.dataset.value);
+                const swappingIndex = Number(event.target.dataset.index);
                 this._swapOptions(swappingIndex, this._newIndex, values);
                 this.computedValue = values;
                 this._initSelectedGroups();

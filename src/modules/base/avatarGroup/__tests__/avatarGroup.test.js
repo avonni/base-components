@@ -1,6 +1,7 @@
-import { createElement } from 'lwc';
 import AvatarGroup from 'c/avatarGroup';
+import { AutoPosition } from 'c/positionLibrary';
 import { Tooltip } from 'c/tooltipLibrary';
+import { createElement } from 'lwc';
 
 jest.mock('c/tooltipLibrary');
 
@@ -1079,6 +1080,10 @@ describe('Avatar Group', () => {
             it('open hidden items', () => {
                 element.maxCount = 3;
                 element.items = longItems;
+                const startPositioning = jest.spyOn(
+                    AutoPosition.prototype,
+                    'start'
+                );
 
                 return Promise.resolve()
                     .then(() => {
@@ -1102,6 +1107,7 @@ describe('Avatar Group', () => {
                         expect(avatarHidden).toHaveLength(longItems.length - 3);
                         jest.runAllTimers();
                         expect(focusSpy).toHaveBeenCalled();
+                        expect(startPositioning).toHaveBeenCalled();
                     });
             });
 
@@ -1198,9 +1204,14 @@ describe('Avatar Group', () => {
                         expect(buttonFocusSpy).toHaveBeenCalledTimes(0);
 
                         popover.dispatchEvent(new CustomEvent('focusout'));
+                        const stopPositioning = jest.spyOn(
+                            AutoPosition.prototype,
+                            'stop'
+                        );
                         jest.runAllTimers();
                         expect(avatarFocusSpy).toHaveBeenCalledTimes(1);
                         expect(buttonFocusSpy).toHaveBeenCalledTimes(1);
+                        expect(stopPositioning).toHaveBeenCalledTimes(1);
                     })
                     .then(() => {
                         const avatarHidden =

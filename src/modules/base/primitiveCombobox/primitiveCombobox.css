@@ -28,6 +28,20 @@ input.avonni-primitive-combobox__input {
     border-bottom-left-radius: 0;
 }
 
+/* 
+* Replacement for .slds-media__body 
+* Prevents the option label and icon from wrapping on different lines
+* if the combobox is used inside a .slds-listbox__option element, in SLDS 1.
+*/
+.avonni-primitive-combobox__option-label {
+    flex: 1;
+    min-width: 0;
+}
+.avonni-primitive-combobox__option-label,
+.avonni-primitive-combobox__option-label > :lastchild {
+    margin-bottom: 0;
+}
+
 .avonni-primitive-combobox__action {
     background: var(--avonni-combobox-action-color-background, transparent);
     color: var(
