@@ -1,9 +1,5 @@
 @import './shared.css';
 
-.avonni-progress-bar__bar {
-    height: initial;
-}
-
 .avonni-progress-bar__value_bottom-left {
     position: absolute;
     z-index: 1;
