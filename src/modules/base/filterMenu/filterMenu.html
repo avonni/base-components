@@ -1,7 +1,6 @@
 <template>
     <div class="slds-is-relative">
         <button
-            style={computedButtonStyle}
             class={computedButtonClass}
             accesskey={accessKey}
             aria-expanded={computedAriaExpanded}
@@ -23,7 +22,11 @@
                 {label}
             </span>
 
-            <div class="slds-truncate" data-element-id="div-menu-label-count">
+            <div
+                style={computedMenuSelectedLabelStyle}
+                class="slds-truncate"
+                data-element-id="div-menu-selected-label"
+            >
                 <span
                     if:true={showFilterValue}
                     class="slds-truncate"

@@ -52,6 +52,8 @@ const DEFAULT_RANGE_VALUE = [0, 100];
 const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 
+const DROPDOWN_MAX_WIDTH = 400;
+
 const i18n = {
     loading: 'Loading...',
     showMenu: 'Show Menu'
@@ -197,12 +199,12 @@ export default class FilterMenu extends LightningElement {
     _allowBlur = true;
     _dateRangeFrames = [];
     _dropdownIsFocused = false;
-    _initialButtonWidth = 0;
-    _initialDropdownWidth = 0;
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
     _searchTimeOut;
+    _selectedMenuLabelInitialized = false;
+    _selectedMenuLabelMaxWidth = 0;
 
     computedItemCounts = {};
     @track computedItems = [];
@@ -277,6 +279,7 @@ export default class FilterMenu extends LightningElement {
 
     renderedCallback() {
         this.initTooltip();
+        this.setSelectedMenuLabelMaxWidth();
 
         if (
             this.infiniteLoad &&
@@ -952,39 +955,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Computed Button style.
-     *
-     * @type {string}
-     */
-    get computedButtonStyle() {
-        const dropdownWidth =
-            this.template
-                .querySelector('[data-element-id="div-dropdown"]')
-                ?.getBoundingClientRect().width ?? 0;
-
-        const buttonWidth =
-            this.template
-                .querySelector('[data-element-id="button"]')
-                ?.getBoundingClientRect().width ?? 0;
-
-        if (dropdownWidth > 0) {
-            this._initialDropdownWidth = dropdownWidth;
-        }
-
-        if (buttonWidth > 0 && this.selectedItemLabels.length === 0) {
-            this._initialButtonWidth = buttonWidth;
-        }
-
-        if (this._initialButtonWidth === 0) {
-            return '';
-        }
-
-        const maxWidth =
-            this._initialButtonWidth + 0.8 * this._initialDropdownWidth;
-        return `max-width: ${maxWidth}px;`;
-    }
-
-    /**
      * Computed button title.
      *
      * @type {string}
@@ -1057,6 +1027,22 @@ export default class FilterMenu extends LightningElement {
                 'slds-text-title_bold': this.selectedItemLabels.length > 0
             })
             .toString();
+    }
+
+    /**
+     * Computed menu selected labels style
+     *
+     * @type {string}
+     */
+    get computedMenuSelectedLabelStyle() {
+        this.setSelectedMenuLabelMaxWidth();
+
+        if (!this._selectedMenuLabelMaxWidth) {
+            return '';
+        }
+
+        const maxWidth = this._selectedMenuLabelMaxWidth * 0.8;
+        return `max-width: ${maxWidth}px;`;
     }
 
     /**
@@ -1371,7 +1357,7 @@ export default class FilterMenu extends LightningElement {
      * @type {string[]}
      */
     get selectedItemLabels() {
-        const isMultiSelect = this.computedTypeAttributes?.isMultiSelect;
+        const hasComputedItems = this.computedItems.length > 0;
         this.labelMap = this.dropdownVisible
             ? new Map(
                   this.computedItems.map((item) => [
@@ -1384,9 +1370,12 @@ export default class FilterMenu extends LightningElement {
         const valueLabels = this.value.map(
             (value) => this.labelMap.get(value) || value
         );
-        const labels = isMultiSelect
-            ? valueLabels
-            : this.selectedItems.map((item) => item.label);
+        if (this.isDateRange || this.isRange) {
+            return this.selectedItems.map((item) => item.label);
+        }
+        const labels = hasComputedItems
+            ? this.selectedItems.map((item) => item.label)
+            : valueLabels;
         return labels;
     }
 
@@ -1861,6 +1850,39 @@ export default class FilterMenu extends LightningElement {
      */
     setOrder(order) {
         this._order = order;
+    }
+
+    /**
+     * Initialize the selected menu label max width.
+     */
+    setSelectedMenuLabelMaxWidth() {
+        if (!this._selectedMenuLabelInitialized && !this.isVertical) {
+            const menuLabel = this.template.querySelector(
+                '[data-element-id="div-menu-selected-label"]'
+            );
+
+            if (!menuLabel) {
+                return;
+            }
+
+            const dropdownWidth =
+                this.template
+                    .querySelector('[data-element-id="div-dropdown"]')
+                    ?.getBoundingClientRect().width ?? 0;
+
+            if (dropdownWidth > 0) {
+                this._selectedMenuLabelMaxWidth = Math.min(
+                    dropdownWidth,
+                    DROPDOWN_MAX_WIDTH
+                );
+                this._selectedMenuLabelInitialized = true;
+            }
+
+            if (dropdownWidth === 0 && this.value.length > 0) {
+                this._selectedMenuLabelMaxWidth = DROPDOWN_MAX_WIDTH;
+                this._selectedMenuLabelInitialized = true;
+            }
+        }
     }
 
     /**
