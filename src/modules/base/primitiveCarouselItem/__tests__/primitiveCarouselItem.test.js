@@ -275,29 +275,46 @@ describe('Primitive Carousel Item', () => {
 
         describe('Content Height', () => {
             it('Without content', () => {
-                const wrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-noTag"]');
-                expect(wrapper.className).not.toContain('avonni-carousel__panel-action_with-content');
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="a-actions-noTag"]'
+                );
+                expect(wrapper.className).not.toContain(
+                    'avonni-carousel__panel-action_with-content'
+                );
 
                 element.href = 'example.com';
                 return Promise.resolve().then(() => {
-                    const tagWrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-tag"]');
-                    expect(tagWrapper.className).not.toContain('avonni-carousel__panel-action_with-content');
+                    const tagWrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="a-actions-tag"]'
+                    );
+                    expect(tagWrapper.className).not.toContain(
+                        'avonni-carousel__panel-action_with-content'
+                    );
                 });
             });
-            
+
             it('With title', () => {
                 element.title = 'Some item title';
-                
-                return Promise.resolve().then(() => {
-                    const wrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-noTag"]');
-                    expect(wrapper.className).toContain('avonni-carousel__panel-action_with-content');
 
-                    element.href = 'example.com';
-                }).then(() => {
-                    const tagWrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-tag"]');
-                    expect(tagWrapper.className).toContain('avonni-carousel__panel-action_with-content');
+                return Promise.resolve()
+                    .then(() => {
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="a-actions-noTag"]'
+                        );
+                        expect(wrapper.className).toContain(
+                            'avonni-carousel__panel-action_with-content'
+                        );
 
-                });
+                        element.href = 'example.com';
+                    })
+                    .then(() => {
+                        const tagWrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="a-actions-tag"]'
+                        );
+                        expect(tagWrapper.className).toContain(
+                            'avonni-carousel__panel-action_with-content'
+                        );
+                    });
             });
         });
 

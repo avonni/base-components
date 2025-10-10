@@ -1,4 +1,9 @@
-import { classSet, normalizeArray, normalizeBoolean, normalizeString } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import { LightningElement, api } from 'lwc';
 import noTag from './noTag.html';
 import tag from './tag.html';
@@ -262,7 +267,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
             `slds-carousel__panel-action avonni-carousel__panel-action avonni-carousel__image-${this.imagePosition}`
         ).add({
             'slds-text-link_reset': normalizeBoolean(this.href),
-            'avonni-carousel__panel-action_with-content': this.displayContentContainer
+            'avonni-carousel__panel-action_with-content':
+                this.displayContentContainer
         });
     }
 

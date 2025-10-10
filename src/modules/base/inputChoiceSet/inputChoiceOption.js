@@ -38,7 +38,7 @@ export default class InputChoiceOption {
         this.isChecked = Array.isArray(parent.value)
             ? parent.value.includes(option.value)
             : parent.value === option.value;
-            this.labelClass = parent.labelClass
+        this.labelClass = parent.labelClass;
         this.alternativeText = option.alternativeText;
     }
 
@@ -109,14 +109,16 @@ export default class InputChoiceOption {
     }
 
     /**
-    * Computed style classes of the option's label. Part of it is computed by the parent.
-    *
-    * @type {string}
-    */
+     * Computed style classes of the option's label. Part of it is computed by the parent.
+     *
+     * @type {string}
+     */
     get computedLabelClass() {
-        return classSet(this.labelClass).add({
-            "avonni-input-choice-set__option-label": !this.disabled
-        }).toString()
+        return classSet(this.labelClass)
+            .add({
+                'avonni-input-choice-set__option-label': !this.disabled
+            })
+            .toString();
     }
 
     /**

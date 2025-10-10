@@ -7,6 +7,7 @@ customElements.define(
 
 export const InputDateRange = ({
     dateStyle,
+    disableAutoNextDate,
     disabled,
     endDate,
     fieldLevelHelp,
@@ -28,6 +29,7 @@ export const InputDateRange = ({
 }) => {
     const element = document.createElement('ac-base-input-date-range');
     element.dateStyle = dateStyle;
+    element.disableAutoNextDate = disableAutoNextDate;
     element.disabled = disabled;
     element.endDate = endDate;
     element.fieldLevelHelp = fieldLevelHelp;
