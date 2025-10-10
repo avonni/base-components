@@ -618,7 +618,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get computedHiddenAvatarInlineClass() {
-        return this.layout === 'list' ? this.avatarInlineClass : '';
+        return this.layout === 'list' ? this.computedAvatarInlineClass : '';
     }
 
     /**
@@ -706,7 +706,7 @@ export default class AvatarGroup extends LightningElement {
     get computedShowMoreAvatarClass() {
         return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
             .add({
-                'avonni-avatar-group_in-line ': this.layout === 'stack',
+                'avonni-avatar-group_in-line': this.layout === 'stack',
                 'avonni-avatar-group__avatar_radius-border-square':
                     (this.layout === 'stack' || this.layout === 'grid') &&
                     this.variant === 'square'
@@ -1023,8 +1023,8 @@ export default class AvatarGroup extends LightningElement {
      */
     getAvatarClass(item, isHidden) {
         let avatarClass = isHidden
-            ? this.hiddenAvatarInlineClass
-            : this.avatarInlineClass;
+            ? this.computedHiddenAvatarInlineClass
+            : this.computedAvatarInlineClass;
 
         return classSet(avatarClass)
             .add({ 'avonni-avatar-group__avatar-link': item.href })
