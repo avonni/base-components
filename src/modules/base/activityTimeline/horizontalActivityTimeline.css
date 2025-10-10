@@ -111,3 +111,11 @@
         3
     );
 }
+
+.avonni-horizontal-activity-timeline__item:focus {
+    outline: none;
+}
+
+.avonni-horizontal-activity-timeline__item:focus-visible {
+    outline: 3px solid #1589ee;
+}
