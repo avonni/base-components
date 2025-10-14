@@ -230,7 +230,7 @@ export default class Slider extends LightningElement {
         return this._max;
     }
     set max(value) {
-        const intValue = !isNaN(value) ? parseInt(value, 10) : null;
+        const intValue = !isNaN(value) ? value : null;
         this._initMax = intValue;
         this.initMaxDefaultValue();
 
@@ -253,8 +253,7 @@ export default class Slider extends LightningElement {
         return this._min;
     }
     set min(value) {
-        const intValue = parseInt(value, 10);
-        const normalizedMin = isNaN(intValue) ? DEFAULT_MIN : intValue;
+        const normalizedMin = isNaN(value) ? DEFAULT_MIN : value;
         this.computedMin = normalizedMin;
         this._min = normalizedMin;
 
@@ -382,8 +381,8 @@ export default class Slider extends LightningElement {
             return;
         }
         this._step = Math.abs(Number(value));
-        this._scalingFactor =
-            0 < this._step && this._step < 1 ? 1 / this._step : DEFAULT_STEP;
+        this.updateScaleFactor();
+
         if (this._connected) {
             this.scaleValues();
             this.capValues();
@@ -448,13 +447,11 @@ export default class Slider extends LightningElement {
         });
 
         this.initMaxDefaultValue();
+        this.updateScaleFactor();
 
-        if (this._unit === 'percent') {
-            this._scalingFactor = PERCENT_SCALING_FACTOR;
-            if (this._connected) {
-                this.scaleValues();
-                this.capValues();
-            }
+        if (this._unit === 'percent' && this._connected) {
+            this.scaleValues();
+            this.capValues();
         }
     }
 
@@ -1090,14 +1087,24 @@ export default class Slider extends LightningElement {
      * Caps the value if it overflows min or max.
      */
     capValues() {
-        this._computedValues.forEach((val, index) => {
-            this._computedValues[index] = Math.min(
-                Math.max(val, this.computedMin),
-                this.computedMax
-            );
-            this._computedValues[index] =
-                Math.round(this._computedValues[index] / this._step) *
-                this._step;
+        const tolerance = 1e-10;
+
+        // Align min if needed
+        const minRemainder = Math.abs(this._min % this._step);
+        this.computedMin =
+            minRemainder < tolerance || this._step - minRemainder < tolerance
+                ? this._min
+                : Math.ceil(this._min / this._step) * this._step;
+
+        // Align max if needed
+        const maxRemainder = Math.abs(this._max % this._step);
+        this.computedMax =
+            maxRemainder < tolerance || this._step - maxRemainder < tolerance
+                ? this._max
+                : Math.floor(this._max / this._step) * this._step;
+
+        this._computedValues = this._computedValues.map((val) => {
+            return Math.min(Math.max(val, this.computedMin), this.computedMax);
         });
     }
 
@@ -1333,12 +1340,11 @@ export default class Slider extends LightningElement {
         }
         const totalWidth = this.getInput(0).clientWidth;
         const numberOfSteps =
-            (this.computedMax - this.computedMin) /
-            (this.step * this._scalingFactor);
+            (this.computedMax - this.computedMin) / this._step;
         const normalizedNumberOfSteps =
             numberOfSteps > MAX_NUMBER_OF_TICKS
                 ? MAX_NUMBER_OF_TICKS
-                : numberOfSteps;
+                : Math.round(numberOfSteps);
         const stepWidth =
             (totalWidth - this.thumbRadius * 2) / normalizedNumberOfSteps;
 
@@ -1457,13 +1463,13 @@ export default class Slider extends LightningElement {
      */
     initMaxDefaultValue() {
         let normalizedMax;
+
         if (this._initMax && !isNaN(this._initMax)) {
             normalizedMax = this._initMax;
         } else {
             normalizedMax =
                 this.unit === 'percent' ? DEFAULT_MAX_PERCENTAGE : DEFAULT_MAX;
         }
-
         this.computedMax = normalizedMax;
         this._max = normalizedMax;
     }
@@ -1539,14 +1545,10 @@ export default class Slider extends LightningElement {
      */
     scaleValues() {
         if (!isNaN(this._value)) {
-            this._computedValues = [this._value * this._scalingFactor];
+            this._computedValues = [this._value];
         } else {
-            this._computedValues = this._value.map(
-                (val) => val * this._scalingFactor
-            );
+            this._computedValues = this._value.map((val) => val);
         }
-        this.computedMin = this._min * this._scalingFactor;
-        this.computedMax = this._max * this._scalingFactor;
     }
 
     /**
@@ -1622,13 +1624,12 @@ export default class Slider extends LightningElement {
     setPinPosition(event) {
         const pin = this.template.querySelector('[data-element-id="pin"]');
         const pinIndex = parseInt(event.target.dataset.index, 10);
-        const pinProgress = this.getPercentOfValue(
+
+        let pinProgress = this.getPercentOfValue(
             this._computedValues[pinIndex]
         );
         let transformedValue = this._computedValues[pinIndex];
-        if (this._scalingFactor !== 1) {
-            transformedValue = transformedValue / this._scalingFactor;
-        }
+
         pin.querySelector(
             '[data-element-id="lightning-formatted-number-pin"]'
         ).value = transformedValue;
@@ -1708,7 +1709,7 @@ export default class Slider extends LightningElement {
     updateInputSliders(event) {
         const newValues = [...this._computedValues];
         const targetIndex = parseInt(event.currentTarget.dataset.index, 10);
-        newValues[targetIndex] = parseInt(event.currentTarget.value, 10);
+        newValues[targetIndex] = Number(event.currentTarget.value);
         if (this._disableSwap) {
             this.manageCollisions(targetIndex, newValues);
         }
@@ -1743,6 +1744,20 @@ export default class Slider extends LightningElement {
                 (val) => val / this._scalingFactor
             );
             this._value = this._value.sort((a, b) => a - b);
+        }
+    }
+
+    /**
+     * Updates the scale factor.
+     */
+    updateScaleFactor() {
+        if (this.unit === 'percent') {
+            this._scalingFactor = PERCENT_SCALING_FACTOR;
+        } else {
+            this._scalingFactor =
+                0 < this._step && this._step < 1
+                    ? 1 / this._step
+                    : DEFAULT_STEP;
         }
     }
 
