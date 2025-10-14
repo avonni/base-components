@@ -121,7 +121,6 @@ export default class Slider extends LightningElement {
     _previousScalingFactor = 1;
     _rendered = false;
     _resizeObserver;
-    _scalingFactor = 1;
     _trackInterval = [DEFAULT_MIN, DEFAULT_VALUE];
 
     /*
@@ -381,7 +380,6 @@ export default class Slider extends LightningElement {
             return;
         }
         this._step = Math.abs(Number(value));
-        this.updateScaleFactor();
 
         if (this._connected) {
             this.scaleValues();
@@ -447,7 +445,6 @@ export default class Slider extends LightningElement {
         });
 
         this.initMaxDefaultValue();
-        this.updateScaleFactor();
 
         if (this._unit === 'percent' && this._connected) {
             this.scaleValues();
@@ -1738,26 +1735,10 @@ export default class Slider extends LightningElement {
      */
     updatePublicValue() {
         if (this._computedValues.length === 1) {
-            this._value = this._computedValues[0] / this._scalingFactor;
+            this._value = this._computedValues[0];
         } else {
-            this._value = this._computedValues.map(
-                (val) => val / this._scalingFactor
-            );
+            this._value = this._computedValues.map((val) => val);
             this._value = this._value.sort((a, b) => a - b);
-        }
-    }
-
-    /**
-     * Updates the scale factor.
-     */
-    updateScaleFactor() {
-        if (this.unit === 'percent') {
-            this._scalingFactor = PERCENT_SCALING_FACTOR;
-        } else {
-            this._scalingFactor =
-                0 < this._step && this._step < 1
-                    ? 1 / this._step
-                    : DEFAULT_STEP;
         }
     }
 
