@@ -1104,8 +1104,14 @@ export default class Slider extends LightningElement {
                 ? this._max
                 : Math.floor(this._max / this._step) * this._step;
 
-        this._computedValues = this._computedValues.map((val) => {
-            return Math.min(Math.max(val, this.computedMin), this.computedMax);
+        this._computedValues.forEach((val, index) => {
+            this._computedValues[index] = Math.min(
+                Math.max(val, this.computedMin),
+                this.computedMax
+            );
+            this._computedValues[index] =
+                Math.round(this._computedValues[index] / this._step) *
+                this._step;
         });
     }
 
