@@ -247,9 +247,8 @@ describe('Slider', () => {
             });
         });
 
-        describe('max', () => {
-            it('10', () => {
-                element.disableSwap = false;
+        describe('Max', () => {
+            it('Max', () => {
                 element.max = 10;
                 element.value = 15;
 
@@ -260,11 +259,42 @@ describe('Slider', () => {
                     expect(input.value).toBe('10');
                 });
             });
+
+            it('Aligned with the step', () => {
+                element.max = 10;
+                element.step = 5;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(input.max).toBe('10');
+                    expect(max.value).toBe(10);
+                });
+            });
+
+            it('Not aligned with the step', () => {
+                element.max = 10;
+                element.step = 3;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(input.max).toBe('9');
+                    expect(max.value).toBe(9);
+                });
+            });
         });
 
-        describe('min', () => {
-            it('10', () => {
-                element.disableSwap = false;
+        describe('Min', () => {
+            it('Min', () => {
                 element.min = 10;
                 element.value = 0;
 
@@ -273,6 +303,38 @@ describe('Slider', () => {
                         '[data-group-name="input"]'
                     );
                     expect(input.value).toBe('10');
+                });
+            });
+
+            it('Aligned with the step', () => {
+                element.min = -5;
+                element.step = 5;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(input.min).toBe('-5');
+                    expect(min.value).toBe(-5);
+                });
+            });
+
+            it('Not aligned with the step', () => {
+                element.min = -10;
+                element.step = 3;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(input.min).toBe('-9');
+                    expect(min.value).toBe(-9);
                 });
             });
         });

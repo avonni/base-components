@@ -382,9 +382,9 @@ export default class Slider extends LightningElement {
         this._step = Math.abs(Number(value));
 
         if (this._connected) {
+            this.initMaxDefaultValue();
             this.scaleValues();
             this.capValues();
-            this.initMaxDefaultValue();
         }
         this._domModified = true;
     }
