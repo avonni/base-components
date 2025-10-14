@@ -229,8 +229,10 @@ export default class Slider extends LightningElement {
         return this._max;
     }
     set max(value) {
-        const intValue = !isNaN(value) ? value : null;
-        this._initMax = intValue;
+        const max = Number(value);
+        const normalizedMax =
+            value == null || value === '' || isNaN(max) ? null : max;
+        this._initMax = normalizedMax;
         this.initMaxDefaultValue();
 
         if (this._connected) {
@@ -252,7 +254,9 @@ export default class Slider extends LightningElement {
         return this._min;
     }
     set min(value) {
-        const normalizedMin = isNaN(value) ? DEFAULT_MIN : value;
+        const min = Number(value);
+        const normalizedMin =
+            value == null || value === '' || isNaN(min) ? DEFAULT_MIN : min;
         this.computedMin = normalizedMin;
         this._min = normalizedMin;
 
