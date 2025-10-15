@@ -61,11 +61,18 @@
 
 .avonni-primitive-tree-item__header {
     color: var(--avonni-tree-item-text-color-header, #080707);
+    font-size: var(--avonni-tree-item-header-text-font-size, 0.8125rem);
+    font-style: var(--avonni-tree-item-header-text-font-style, normal);
+    font-weight: var(--avonni-tree-item-header-text-font-weight, 400);
     background-color: var(--avonni-tree-item-header-color-background);
     padding-top: var(--avonni-tree-item-header-spacing-block-start);
     padding-bottom: var(--avonni-tree-item-header-spacing-block-end);
     padding-left: var(--avonni-tree-item-header-spacing-inline-start);
     padding-right: var(--avonni-tree-item-header-spacing-inline-end);
+}
+
+.avonni-primitive-tree-item__header:hover {
+    background: var(--avonni-tree-item-header-color-background-hover);
 }
 
 .avonni-primitive-tree-item__item {
