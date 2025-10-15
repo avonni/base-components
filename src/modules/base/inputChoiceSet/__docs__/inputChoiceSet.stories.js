@@ -265,6 +265,13 @@ const optionsWithColors = [
     { label: 'Harvest Gold', value: 'harvestGold', color: '#F5AB00' },
     { label: 'Rojo', value: 'rojo', color: '#DD1C1A' }
 ];
+const optionsWithLongLabel = [
+    { label: 'A very long long long long long Monday', value: 'mon' },
+    { label: 'A very long long long long long Tuesday', value: 'tue' },
+    { label: 'A very long long long long long Wednesday', value: 'wed' },
+    { label: 'A very long long long long long Thursday', value: 'thu' },
+    { label: 'A very long long long long long Friday', value: 'fri' }
+];
 const dayValue = 'fri';
 const daysValue = ['thu', 'fri'];
 const alignmentValue = ['center'];
@@ -346,6 +353,16 @@ CheckboxesWithRightIcons.args = {
     isMultiSelect: true,
     options: optionsWithIcon,
     value: alignmentValue
+};
+
+export const CheckboxesWithLongLabelOptions = Template.bind({});
+CheckboxesWithLongLabelOptions.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithLongLabel,
+    orientation: 'horizontal',
+    value: dayValue
 };
 
 export const Buttons = Template.bind({});
