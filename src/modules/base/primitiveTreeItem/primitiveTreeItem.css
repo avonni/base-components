@@ -39,10 +39,18 @@
 }
 
 .avonni-primitive-tree-item__header .avonni-primitive-item__link {
-    color: var(--avonni-tree-item-header-text-color, #080707);
-    font-size: var(--avonni-tree-item-header-text-font-size, 0.8125rem);
-    font-style: var(--avonni-tree-item-header-text-font-style, normal);
-    font-weight: var(--avonni-tree-item-header-text-font-weight, 400);
+    color: var(
+        --avonni-tree-item-header-link-text-color,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+}
+
+.avonni-primitive-tree-item__header a.avonni-primitive-item__link:hover,
+.avonni-primitive-tree-item__header a.avonni-primitive-item__link:focus {
+    color: var(
+        --avonni-tree-item-header-link-text-color-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
 }
 
 .avonni-primitive-tree-item__metatext,
