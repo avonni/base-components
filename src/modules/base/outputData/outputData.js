@@ -99,7 +99,16 @@ export default class OutputData extends LightningElement {
             return this.truncateNumber(this._value);
         }
         if (this.isTime) {
-            return new Date(this._value).toISOString().substring(11, 23);
+            if (this._value === null || this._value === undefined) {
+                return this._value;
+            }
+
+            const date = new Date(this._value);
+            if (isNaN(date.getTime())) {
+                return this._value;
+            }
+
+            return date.toISOString().substring(11, 23);
         }
 
         return this._value;

@@ -1208,6 +1208,54 @@ describe('OutputData', () => {
                     ).toBeFalsy();
                 });
             });
+
+            it('with invalid value', () => {
+                element.value = 'Not a date';
+                element.type = 'time';
+
+                return Promise.resolve().then(() => {
+                    const text = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-text"]'
+                    );
+                    const boolean = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    const number = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number"]'
+                    );
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const email = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-email"]'
+                    );
+                    const location = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-location"]'
+                    );
+                    const phone = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-phone"]'
+                    );
+                    const url = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-url"]'
+                    );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
+
+                    expect(time).toBeTruthy();
+                    expect(time.value).toBe('Not a date');
+                    expect(
+                        boolean ||
+                            number ||
+                            date ||
+                            email ||
+                            location ||
+                            phone ||
+                            url ||
+                            text
+                    ).toBeFalsy();
+                });
+            });
         });
 
         describe('URL', () => {
