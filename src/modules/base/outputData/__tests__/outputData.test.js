@@ -55,6 +55,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(boolean).toBeTruthy();
                     expect(boolean.iconName).toBe('utility:check');
@@ -65,7 +68,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -99,6 +103,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(
                         text ||
@@ -108,7 +115,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -144,6 +152,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -154,7 +165,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -200,6 +212,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(number).toBeTruthy();
                     expect(number.value).toBe(33);
@@ -232,7 +247,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -269,6 +285,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -279,7 +298,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -329,6 +349,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(date).toBeTruthy();
                     expect(date.value).toMatchObject(
@@ -353,7 +376,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -390,6 +414,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -400,7 +427,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -439,6 +467,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(email).toBeTruthy();
                     expect(email.value).toBe('jane.doe@email.com');
@@ -451,7 +482,8 @@ describe('OutputData', () => {
                             date ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -488,6 +520,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -498,7 +533,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -538,6 +574,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(location).toBeTruthy();
                     expect(location.latitude).toBe(
@@ -554,7 +593,8 @@ describe('OutputData', () => {
                             date ||
                             email ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -591,6 +631,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -601,7 +644,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -645,6 +689,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(number).toBeTruthy();
                     expect(number.value).toBe(46);
@@ -671,7 +718,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -708,6 +756,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -718,7 +769,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -763,6 +815,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(number).toBeTruthy();
                     expect(number.value).toBe(46);
@@ -789,7 +844,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -826,6 +882,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -836,7 +895,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -872,6 +932,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(phone).toBeTruthy();
                     expect(phone.value).toBe('123-456-7890');
@@ -883,7 +946,8 @@ describe('OutputData', () => {
                             date ||
                             email ||
                             location ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -920,6 +984,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -930,7 +997,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -969,6 +1037,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(text).toBeTruthy();
                     expect(text.value).toBe('A string value');
@@ -980,7 +1051,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -1017,6 +1089,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -1027,7 +1102,109 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
+                    ).toBeFalsy();
+                });
+            });
+        });
+
+        describe('Time', () => {
+            it('with value', () => {
+                element.type = 'time';
+                element.value = 10800000;
+
+                return Promise.resolve().then(() => {
+                    const boolean = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    const number = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number"]'
+                    );
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const email = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-email"]'
+                    );
+                    const location = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-location"]'
+                    );
+                    const phone = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-phone"]'
+                    );
+                    const text = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-text"]'
+                    );
+                    const url = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-url"]'
+                    );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
+
+                    expect(time).toBeTruthy();
+                    expect(time.value).toBe('03:00:00.000');
+                    expect(
+                        boolean ||
+                            number ||
+                            date ||
+                            email ||
+                            location ||
+                            phone ||
+                            url ||
+                            text
+                    ).toBeFalsy();
+                });
+            });
+
+            it('with no value', () => {
+                element.value = null;
+                element.type = 'time';
+
+                return Promise.resolve().then(() => {
+                    const emptyValue = element.shadowRoot.querySelector(
+                        '[data-element-id="empty-value"]'
+                    );
+                    const text = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-text"]'
+                    );
+                    const boolean = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    const number = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number"]'
+                    );
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const email = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-email"]'
+                    );
+                    const location = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-location"]'
+                    );
+                    const phone = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-phone"]'
+                    );
+                    const url = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-url"]'
+                    );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
+
+                    expect(emptyValue).toBeTruthy();
+                    expect(
+                        text ||
+                            boolean ||
+                            number ||
+                            date ||
+                            email ||
+                            location ||
+                            phone ||
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -1069,6 +1246,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(url).toBeTruthy();
                     expect(url.value).toBe('https://www.avonni.app/');
@@ -1083,7 +1263,8 @@ describe('OutputData', () => {
                             date ||
                             email ||
                             location ||
-                            phone
+                            phone ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -1120,6 +1301,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(emptyValue).toBeTruthy();
                     expect(
@@ -1130,7 +1314,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
