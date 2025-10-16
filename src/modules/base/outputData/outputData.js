@@ -98,6 +98,9 @@ export default class OutputData extends LightningElement {
         if (this.isNumber) {
             return this.truncateNumber(this._value);
         }
+        if (this.isTime) {
+            return new Date(this._value).toISOString().substring(11, 23);
+        }
 
         return this._value;
     }
@@ -228,6 +231,15 @@ export default class OutputData extends LightningElement {
      */
     get isText() {
         return this.type === 'text';
+    }
+
+    /**
+     * True if the type is time.
+     *
+     * @type {boolean}
+     */
+    get isTime() {
+        return this.type === 'time';
     }
 
     /**
