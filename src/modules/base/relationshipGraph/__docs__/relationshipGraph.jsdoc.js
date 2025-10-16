@@ -33,6 +33,7 @@
  * @typedef {object} RelationshipGraphItemData
  * @name itemsData
  * @property {string} label Required. Field label.
+ * @property {string} type The field type. Used for formatting the value.
  * @property {string} value Required. Field value.
  */
 
