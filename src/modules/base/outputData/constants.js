@@ -52,6 +52,7 @@ const TYPES = {
         'percent',
         'phone',
         'text',
+        'time',
         'url'
     ],
     default: 'text'

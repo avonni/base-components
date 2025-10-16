@@ -98,6 +98,18 @@ export default class OutputData extends LightningElement {
         if (this.isNumber) {
             return this.truncateNumber(this._value);
         }
+        if (this.isTime) {
+            if (this._value === null || this._value === undefined) {
+                return this._value;
+            }
+
+            const date = new Date(this._value);
+            if (isNaN(date.getTime())) {
+                return this._value;
+            }
+
+            return date.toISOString().substring(11, 23);
+        }
 
         return this._value;
     }
@@ -228,6 +240,15 @@ export default class OutputData extends LightningElement {
      */
     get isText() {
         return this.type === 'text';
+    }
+
+    /**
+     * True if the type is time.
+     *
+     * @type {boolean}
+     */
+    get isTime() {
+        return this.type === 'time';
     }
 
     /**
