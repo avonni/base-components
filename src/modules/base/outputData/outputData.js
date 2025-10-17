@@ -339,6 +339,11 @@ export default class OutputData extends LightningElement {
             normalizedTypeAttributes[key] = normalizedValue;
         }
 
+        if (this.isText) {
+            normalizedTypeAttributes.disableLinkify =
+                !normalizedTypeAttributes.linkify;
+        }
+
         this.normalizedTypeAttributes = normalizedTypeAttributes;
     }
 
