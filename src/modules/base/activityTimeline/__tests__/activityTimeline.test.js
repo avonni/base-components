@@ -2604,5 +2604,234 @@ describe('Activity Timeline', () => {
                     ).toBe(initialIntervalPosition);
                 });
         });
+
+        describe('Keyboard Accessibility', () => {
+            describe('Show popover', () => {
+                it('Using Space key', () => {
+                    element.items = horizontalItemsTest;
+                    element.orientation = 'horizontal';
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const timelineItemsSVG =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+                                );
+                            const itemSVGGroup = timelineItemsSVG.querySelector(
+                                '#timeline-item-item4'
+                            );
+                            const popoverItem =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                                );
+                            expect(popoverItem).toBeNull();
+                            itemSVGGroup.dispatchEvent(
+                                new KeyboardEvent('keydown', {
+                                    key: ' ',
+                                    bubbles: true
+                                })
+                            );
+                        })
+                        .then(() => {
+                            const popoverItem =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                                );
+                            expect(popoverItem).toBeTruthy();
+                            expect(popoverItem.dataset.name).toBe('item4');
+                        });
+                });
+
+                it('Using Enter key', () => {
+                    element.items = horizontalItemsTest;
+                    element.orientation = 'horizontal';
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const timelineItemsSVG =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+                                );
+                            const itemSVGGroup = timelineItemsSVG.querySelector(
+                                '#timeline-item-item4'
+                            );
+                            const popoverItem =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                                );
+                            expect(popoverItem).toBeNull();
+                            itemSVGGroup.dispatchEvent(
+                                new KeyboardEvent('keydown', {
+                                    key: 'Enter',
+                                    bubbles: true
+                                })
+                            );
+                        })
+                        .then(() => {
+                            const popoverItem =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                                );
+                            expect(popoverItem).toBeTruthy();
+                            expect(popoverItem.dataset.name).toBe('item4');
+                        });
+                });
+            });
+
+            it('Close popover using Escape key', () => {
+                element.items = horizontalItemsTest;
+                element.orientation = 'horizontal';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const timelineItemsSVG =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+                            );
+                        const itemSVGGroup = timelineItemsSVG.querySelector(
+                            '#timeline-item-item4'
+                        );
+                        const popoverItem = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                        );
+                        expect(popoverItem).toBeNull();
+                        itemSVGGroup.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: ' ',
+                                bubbles: true
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const popoverItem = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                        );
+                        expect(popoverItem).toBeTruthy();
+                        expect(popoverItem.dataset.name).toBe('item4');
+
+                        const timelineItemsSVG =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+                            );
+                        const itemSVGGroup = timelineItemsSVG.querySelector(
+                            '#timeline-item-item4'
+                        );
+                        itemSVGGroup.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'Escape',
+                                bubbles: true
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const popoverItem = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
+                        );
+                        expect(popoverItem).toBeNull();
+                    });
+            });
+
+            describe('Move timeline x axis using arrows key', () => {
+                it('Left Arrow key', () => {
+                    jest.spyOn(
+                        HorizontalActivityTimeline.prototype,
+                        'minIntervalWidth',
+                        'get'
+                    ).mockReturnValue(2);
+                    element.items = horizontalItemsTest;
+                    element.orientation = 'horizontal';
+                    const initialIntervalPosition = 602;
+                    let intervalRectangle;
+
+                    return Promise.resolve()
+                        .then(() => {
+                            intervalRectangle =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+                                );
+                            jest.spyOn(
+                                intervalRectangle,
+                                'getBoundingClientRect'
+                            ).mockImplementation(() => {
+                                return { left: initialIntervalPosition };
+                            });
+                            expect(
+                                Math.floor(
+                                    Number(intervalRectangle.getAttribute('x'))
+                                )
+                            ).toBe(initialIntervalPosition);
+
+                            window.dispatchEvent(
+                                new KeyboardEvent('keydown', {
+                                    key: 'ArrowLeft',
+                                    bubbles: true
+                                })
+                            );
+                        })
+                        .then(() => {
+                            intervalRectangle =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+                                );
+                            // Set to beginning of the day (577 = 2022-01-31T05:00:00.000Z), initialIntervalPosition - SCROLL_STEP (= 10) set hours to 0,0,0,0
+                            expect(
+                                Math.floor(
+                                    Number(intervalRectangle.getAttribute('x'))
+                                )
+                            ).toBe(592);
+                        });
+                });
+
+                it('Right Arrow key', () => {
+                    jest.spyOn(
+                        HorizontalActivityTimeline.prototype,
+                        'minIntervalWidth',
+                        'get'
+                    ).mockReturnValue(2);
+                    element.items = horizontalItemsTest;
+                    element.orientation = 'horizontal';
+                    const initialIntervalPosition = 602;
+                    let intervalRectangle;
+
+                    return Promise.resolve()
+                        .then(() => {
+                            intervalRectangle =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+                                );
+                            jest.spyOn(
+                                intervalRectangle,
+                                'getBoundingClientRect'
+                            ).mockImplementation(() => {
+                                return { left: initialIntervalPosition };
+                            });
+                            expect(
+                                Math.floor(
+                                    Number(intervalRectangle.getAttribute('x'))
+                                )
+                            ).toBe(initialIntervalPosition);
+
+                            window.dispatchEvent(
+                                new KeyboardEvent('keydown', {
+                                    key: 'ArrowRight',
+                                    bubbles: true
+                                })
+                            );
+                        })
+                        .then(() => {
+                            intervalRectangle =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+                                );
+                            // Set to beginning of the day (577 = 2022-01-31T05:00:00.000Z), initialIntervalPosition + SCROLL_STEP (= 10) set hours to 0,0,0,0
+                            expect(
+                                Math.floor(
+                                    Number(intervalRectangle.getAttribute('x'))
+                                )
+                            ).toBe(612);
+                        });
+                });
+            });
+        });
     });
 });
