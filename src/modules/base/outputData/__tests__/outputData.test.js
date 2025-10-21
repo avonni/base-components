@@ -1066,7 +1066,7 @@ describe('OutputData', () => {
 
                     expect(text).toBeTruthy();
                     expect(text.value).toBe('A string value');
-                    expect(text.disableLinkify).toBeFalsy();
+                    expect(text.disableLinkify).toBeTruthy();
                     expect(
                         boolean ||
                             number ||
