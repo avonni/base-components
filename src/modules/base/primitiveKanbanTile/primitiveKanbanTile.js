@@ -1,11 +1,12 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
+    convertHTMLToPlainText,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_POSITION = {
     valid: ['left-of-title', 'right-of-title'],
@@ -29,7 +30,6 @@ const IMAGE_POSITION = {
 
 export default class PrimitiveKanbanTile extends LightningElement {
     @api coverImage;
-    @api description;
     @api name;
     @api title;
     @api titleUrl;
@@ -38,6 +38,7 @@ export default class PrimitiveKanbanTile extends LightningElement {
     _actions = [];
     _avatar = {};
     _avatarPosition = AVATAR_POSITION.default;
+    _description;
     _dueDate;
     _fields = [];
     _fieldAttributes = {
@@ -55,6 +56,8 @@ export default class PrimitiveKanbanTile extends LightningElement {
     _infos = [];
     _isDraggable = false;
     _startDate;
+
+    descriptionTitle;
 
     /*
      * ------------------------------------------------------------
@@ -103,6 +106,22 @@ export default class PrimitiveKanbanTile extends LightningElement {
             fallbackValue: AVATAR_POSITION.default
         });
     }
+
+    /**
+     * The description of the item.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get description() {
+        return this._description;
+    }
+    set description(value) {
+        this._description = value;
+        this.descriptionTitle = convertHTMLToPlainText(value);
+    }
+
     /**
      * Specifies the value of the end date, which can be a Date object, timestamp, or an ISO8601 formatted string.
      *

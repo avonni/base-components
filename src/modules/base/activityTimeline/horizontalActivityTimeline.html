@@ -196,7 +196,11 @@
                         avonni-horizontal-activity-timeline__item-description
                     "
                 >
-                    {selectedItem.description}
+                    <lightning-formatted-rich-text
+                        title={selectedItem.descriptionTitle}
+                        value={selectedItem.description}
+                        data-element-id="lightning-formatted-rich-text-description"
+                    ></lightning-formatted-rich-text>
                 </p>
             </div>
 

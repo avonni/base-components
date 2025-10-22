@@ -275,29 +275,46 @@ describe('Primitive Carousel Item', () => {
 
         describe('Content Height', () => {
             it('Without content', () => {
-                const wrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-noTag"]');
-                expect(wrapper.className).not.toContain('avonni-carousel__panel-action_with-content');
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="a-actions-noTag"]'
+                );
+                expect(wrapper.className).not.toContain(
+                    'avonni-carousel__panel-action_with-content'
+                );
 
                 element.href = 'example.com';
                 return Promise.resolve().then(() => {
-                    const tagWrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-tag"]');
-                    expect(tagWrapper.className).not.toContain('avonni-carousel__panel-action_with-content');
+                    const tagWrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="a-actions-tag"]'
+                    );
+                    expect(tagWrapper.className).not.toContain(
+                        'avonni-carousel__panel-action_with-content'
+                    );
                 });
             });
-            
+
             it('With title', () => {
                 element.title = 'Some item title';
-                
-                return Promise.resolve().then(() => {
-                    const wrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-noTag"]');
-                    expect(wrapper.className).toContain('avonni-carousel__panel-action_with-content');
 
-                    element.href = 'example.com';
-                }).then(() => {
-                    const tagWrapper = element.shadowRoot.querySelector('[data-element-id="a-actions-tag"]');
-                    expect(tagWrapper.className).toContain('avonni-carousel__panel-action_with-content');
+                return Promise.resolve()
+                    .then(() => {
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="a-actions-noTag"]'
+                        );
+                        expect(wrapper.className).toContain(
+                            'avonni-carousel__panel-action_with-content'
+                        );
 
-                });
+                        element.href = 'example.com';
+                    })
+                    .then(() => {
+                        const tagWrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="a-actions-tag"]'
+                        );
+                        expect(tagWrapper.className).toContain(
+                            'avonni-carousel__panel-action_with-content'
+                        );
+                    });
             });
         });
 
@@ -351,6 +368,32 @@ describe('Primitive Carousel Item', () => {
                     expect(image.className).toContain(
                         'avonni-carousel__image-object-fit_none'
                     );
+                });
+            });
+        });
+
+        describe('Description', () => {
+            it('Plain Text', () => {
+                element.description = 'Content';
+
+                return Promise.resolve().then(() => {
+                    const description = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-description"]'
+                    );
+                    expect(description.value).toBe('Content');
+                    expect(description.title).toBe('Content');
+                });
+            });
+
+            it('Rich Text', () => {
+                element.description = '<b>Content</b>';
+
+                return Promise.resolve().then(() => {
+                    const description = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-description"]'
+                    );
+                    expect(description.value).toBe('<b>Content</b>');
+                    expect(description.title).toBe('Content');
                 });
             });
         });

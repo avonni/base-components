@@ -308,7 +308,11 @@
                                                 avonni-visual-picker__item-description
                                             "
                                         >
-                                            {item.itemDescription}
+                                            <lightning-formatted-rich-text
+                                                title={item.itemDescriptionTitle}
+                                                value={item.itemDescription}
+                                                data-element-id="lightning-formatted-rich-text-description"
+                                            ></lightning-formatted-rich-text>
                                         </span>
                                     </span>
                                     <span

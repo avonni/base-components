@@ -186,6 +186,19 @@ describe('Primitive Kanban Tile', () => {
                         '[data-element-id="lightning-formatted-rich-text-description"]'
                     );
                     expect(description.value).toBe('some text');
+                    expect(description.title).toBe('some text');
+                });
+            });
+
+            it('Rich text', () => {
+                element.description = '<b>Content</b>';
+
+                return Promise.resolve().then(() => {
+                    const description = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-description"]'
+                    );
+                    expect(description.value).toBe('<b>Content</b>');
+                    expect(description.title).toBe('Content');
                 });
             });
         });

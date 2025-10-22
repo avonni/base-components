@@ -1,6 +1,7 @@
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     classSet,
+    convertHTMLToPlainText,
     generateUUID,
     normalizeArray,
     normalizeBoolean,
@@ -947,6 +948,8 @@ export default class VisualPicker extends LightningElement {
                 this._disabled ||
                 disabled ||
                 (maxReached && isUnselectedOption);
+            const itemDescriptionTitle =
+                convertHTMLToPlainText(itemDescription);
 
             // Check management
             const checked = this._value.includes(value);
@@ -1158,6 +1161,7 @@ export default class VisualPicker extends LightningElement {
                 imgPosition,
                 imgSrc,
                 itemDescription,
+                itemDescriptionTitle,
                 itemTitle,
                 layoutIsHorizontal,
                 tags,

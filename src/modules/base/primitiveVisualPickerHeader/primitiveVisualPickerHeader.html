@@ -43,7 +43,11 @@
                 >
                 </c-primitive-visual-picker-title>
                 <p if:false={hideDescription} class={computedDescriptionClass}>
-                    {description}
+                    <lightning-formatted-rich-text
+                        title={descriptionTitle}
+                        value={description}
+                        data-element-id="lightning-formatted-rich-text-description"
+                    ></lightning-formatted-rich-text>
                 </p>
                 <c-primitive-avatar
                     if:true={avatarIsBottom}
