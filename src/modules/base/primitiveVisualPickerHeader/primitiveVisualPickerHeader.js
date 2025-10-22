@@ -27,7 +27,7 @@ const VISUAL_PICKER_SIZES = {
 export default class PrimitiveVisualPickerHeader extends LightningElement {
     @api alternativeText;
     @api checked = false;
-    @api descriptionClass;
+    @api descriptionClass; // Deprecated
     @api hideAvatarTopBottom = false;
     @api hideDescription = false;
     @api hideTitle = false;
