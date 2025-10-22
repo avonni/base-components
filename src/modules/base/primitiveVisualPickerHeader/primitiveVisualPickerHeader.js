@@ -1,4 +1,9 @@
-import { classSet, normalizeObject, normalizeString } from 'c/utils';
+import {
+    classSet,
+    convertHTMLToPlainText,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import { LightningElement, api } from 'lwc';
 
 const AVATAR_POSITIONS = {
@@ -22,8 +27,7 @@ const VISUAL_PICKER_SIZES = {
 export default class PrimitiveVisualPickerHeader extends LightningElement {
     @api alternativeText;
     @api checked = false;
-    @api description;
-    @api descriptionClass;
+    @api descriptionClass; // Deprecated
     @api hideAvatarTopBottom = false;
     @api hideDescription = false;
     @api hideTitle = false;
@@ -31,7 +35,10 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
 
     _avatar = {};
     _avatarPosition = AVATAR_POSITIONS.default;
+    _description;
     _size = VISUAL_PICKER_SIZES.default;
+
+    descriptionTitle;
 
     /*
      * ------------------------------------------------------------
@@ -66,6 +73,21 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
             fallbackValue: AVATAR_POSITIONS.default,
             validValues: AVATAR_POSITIONS.valid
         });
+    }
+
+    /**
+     * The description of the item.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get description() {
+        return this._description;
+    }
+    set description(description) {
+        this._description = description;
+        this.descriptionTitle = convertHTMLToPlainText(description);
     }
 
     /**
