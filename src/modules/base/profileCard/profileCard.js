@@ -73,15 +73,19 @@ export default class ProfileCard extends LightningElement {
      */
     @api title;
 
-    _avatarMobilePosition = AVATAR_POSITIONS.default;
     _avatarPosition = AVATAR_POSITIONS.default;
     _avatarSize = AVATAR_SIZES.default;
     _avatarSrc;
     _avatarVariant = AVATAR_VARIANTS.default;
+    _largeAvatarPosition;
+    _mediumAvatarPosition;
+    _smallAvatarPosition;
 
+    _connected = false;
     _isSmallContainer = false;
     _resizeObserver;
 
+    avatarPositionToDisplay = AVATAR_POSITIONS.default;
     showActions = true;
     showAvatarActions = true;
     showFooter = true;
@@ -91,6 +95,10 @@ export default class ProfileCard extends LightningElement {
      *  LIFECYCLE HOOKS
      * -------------------------------------------------------------
      */
+
+    connectedCallback() {
+        this._connected = true;
+    }
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -155,17 +163,23 @@ export default class ProfileCard extends LightningElement {
      * Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, right.
      *
      * @type {string}
-     * @public
+     * @deprecated
      */
     @api
     get avatarMobilePosition() {
-        return this._avatarMobilePosition;
+        return this._smallAvatarPosition;
     }
-    set avatarMobilePosition(avatarMobilePosition) {
-        this._avatarMobilePosition = normalizeString(avatarMobilePosition, {
-            fallbackValue: AVATAR_POSITIONS.default,
+    set avatarMobilePosition(value) {
+        this._smallAvatarPosition = normalizeString(value, {
             validValues: AVATAR_POSITIONS.valid
         });
+
+        if (this._connected) {
+            this.initAvatarPosition();
+        }
+        console.warn(
+            "'avatarMobilePosition' is deprecated. Use 'small-avatar-position' instead."
+        );
     }
 
     /**
@@ -179,11 +193,15 @@ export default class ProfileCard extends LightningElement {
     get avatarPosition() {
         return this._avatarPosition;
     }
-    set avatarPosition(avatarPosition) {
-        this._avatarPosition = normalizeString(avatarPosition, {
+    set avatarPosition(value) {
+        this._avatarPosition = normalizeString(value, {
             fallbackValue: AVATAR_POSITIONS.default,
             validValues: AVATAR_POSITIONS.valid
         });
+
+        if (this._connected) {
+            this.initAvatarPosition();
+        }
     }
 
     /**
@@ -197,8 +215,8 @@ export default class ProfileCard extends LightningElement {
     get avatarSize() {
         return this._avatarSize;
     }
-    set avatarSize(avatarSize) {
-        this._avatarSize = normalizeString(avatarSize, {
+    set avatarSize(value) {
+        this._avatarSize = normalizeString(value, {
             fallbackValue: AVATAR_SIZES.default,
             validValues: AVATAR_SIZES.valid
         });
@@ -229,11 +247,51 @@ export default class ProfileCard extends LightningElement {
     get avatarVariant() {
         return this._avatarVariant;
     }
-    set avatarVariant(avatarVariant) {
-        this._avatarVariant = normalizeString(avatarVariant, {
+    set avatarVariant(value) {
+        this._avatarVariant = normalizeString(value, {
             fallbackValue: AVATAR_VARIANTS.default,
             validValues: AVATAR_VARIANTS.valid
         });
+    }
+
+    /**
+     * Position of the avatar when the component is 1024px wide or more. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, and right.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get largeAvatarPosition() {
+        return this._largeAvatarPosition;
+    }
+    set largeAvatarPosition(value) {
+        this._largeAvatarPosition = normalizeString(value, {
+            validValues: AVATAR_POSITIONS.valid
+        });
+
+        if (this._connected) {
+            this.initAvatarPosition();
+        }
+    }
+
+    /**
+     * Position of the avatar when the component is 768px wide or more. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, and right.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get mediumAvatarPosition() {
+        return this._mediumAvatarPosition;
+    }
+    set mediumAvatarPosition(value) {
+        this._mediumAvatarPosition = normalizeString(value, {
+            validValues: AVATAR_POSITIONS.valid
+        });
+
+        if (this._connected) {
+            this.initAvatarPosition();
+        }
     }
 
     /**
@@ -252,6 +310,26 @@ export default class ProfileCard extends LightningElement {
         console.warn(
             'The "size" attribute is deprecated. Use "avatar-size" instead.'
         );
+    }
+
+    /**
+     * Position of the avatar when the component is 480px wide or more. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, and right.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get smallAvatarPosition() {
+        return this._smallAvatarPosition;
+    }
+    set smallAvatarPosition(value) {
+        this._smallAvatarPosition = normalizeString(value, {
+            validValues: AVATAR_POSITIONS.valid
+        });
+
+        if (this._connected) {
+            this.initAvatarPosition();
+        }
     }
 
     /*
@@ -285,11 +363,7 @@ export default class ProfileCard extends LightningElement {
      */
     get computedActionsClass() {
         const isLeft =
-            this.showActions &&
-            ((!this._isSmallContainer &&
-                this.avatarPosition.includes('right')) ||
-                (this._isSmallContainer &&
-                    this.avatarMobilePosition.includes('right')));
+            this.showActions && this.avatarPositionToDisplay.includes('right');
         return classSet('slds-is-absolute')
             .add({
                 'avonni-profile-card__actions-right': !isLeft,
@@ -320,23 +394,13 @@ export default class ProfileCard extends LightningElement {
         return classSet('avonni-profile-card__flex-container')
             .add({
                 'avonni-profile-card__flex-container_align-center':
-                    this.avatarPosition === 'top-center' ||
-                    this.avatarPosition === 'bottom-center' ||
-                    this.avatarPosition === 'center',
+                    this.avatarPositionToDisplay === 'top-center' ||
+                    this.avatarPositionToDisplay === 'bottom-center' ||
+                    this.avatarPositionToDisplay === 'center',
                 'avonni-profile-card__flex-container_align-end':
-                    this.avatarPosition === 'top-right' ||
-                    this.avatarPosition === 'bottom-right' ||
-                    this.avatarPosition === 'right'
-            })
-            .add({
-                'avonni-profile-card__flex-container-mobile_align-center':
-                    this.avatarMobilePosition === 'top-center' ||
-                    this.avatarMobilePosition === 'bottom-center' ||
-                    this.avatarMobilePosition === 'center',
-                'avonni-profile-card__flex-container-mobile_align-end':
-                    this.avatarMobilePosition === 'top-right' ||
-                    this.avatarMobilePosition === 'bottom-right' ||
-                    this.avatarMobilePosition === 'right'
+                    this.avatarPositionToDisplay === 'top-right' ||
+                    this.avatarPositionToDisplay === 'bottom-right' ||
+                    this.avatarPositionToDisplay === 'right'
             })
             .toString();
     }
@@ -396,24 +460,25 @@ export default class ProfileCard extends LightningElement {
      */
     get computedMainContainerClass() {
         const containerClass = classSet('');
-        const isDesktop = !this._isSmallContainer;
-        const position = isDesktop
-            ? this.avatarPosition
-            : this.avatarMobilePosition;
 
         // Add responsive classes
         containerClass.add({
-            'avonni-profile-card__avatar-desktop': isDesktop,
-            'avonni-profile-card__avatar-mobile': !isDesktop
+            'avonni-profile-card__avatar-desktop': !this._isSmallContainer,
+            'avonni-profile-card__avatar-mobile': this._isSmallContainer
         });
 
         // Add position classes
         containerClass.add({
-            'avonni-profile-card__avatar-bottom': position.includes('bottom'),
-            'avonni-profile-card__avatar-center': position.includes('center'),
-            'avonni-profile-card__avatar-left': position.includes('left'),
-            'avonni-profile-card__avatar-right': position.includes('right'),
-            'avonni-profile-card__avatar-top': position.includes('top')
+            'avonni-profile-card__avatar-bottom':
+                this.avatarPositionToDisplay.includes('bottom'),
+            'avonni-profile-card__avatar-center':
+                this.avatarPositionToDisplay.includes('center'),
+            'avonni-profile-card__avatar-left':
+                this.avatarPositionToDisplay.includes('left'),
+            'avonni-profile-card__avatar-right':
+                this.avatarPositionToDisplay.includes('right'),
+            'avonni-profile-card__avatar-top':
+                this.avatarPositionToDisplay.includes('top')
         });
 
         // Add size class
@@ -428,18 +493,14 @@ export default class ProfileCard extends LightningElement {
      * @type {string}
      */
     get computedTextContainerClass() {
-        const isDesktop = !this._isSmallContainer;
-        const position = isDesktop
-            ? this.avatarPosition
-            : this.avatarMobilePosition;
         return classSet('avonni-profile-card__flex-container slds-size_full')
             .add({
                 'avonni-profile-card__flex-container__left':
-                    position.includes('left'),
+                    this.avatarPositionToDisplay.includes('left'),
                 'avonni-profile-card__flex-container__right':
-                    position.includes('right'),
+                    this.avatarPositionToDisplay.includes('right'),
                 'avonni-profile-card__flex-container__center':
-                    position.includes('center')
+                    this.avatarPositionToDisplay.includes('center')
             })
             .toString();
     }
@@ -499,6 +560,29 @@ export default class ProfileCard extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    initAvatarPosition() {
+        if (!this.profileCardContainer) return;
+
+        const width = this.profileCardContainer.clientWidth || 0;
+        if (width < 480) {
+            this.avatarPositionToDisplay = this.avatarPosition;
+        } else if (width >= 480 && width < 768) {
+            this.avatarPositionToDisplay =
+                this.smallAvatarPosition || this.avatarPosition;
+        } else if (width >= 768 && width < 1024) {
+            this.avatarPositionToDisplay =
+                this.mediumAvatarPosition ||
+                this.smallAvatarPosition ||
+                this.avatarPosition;
+        } else {
+            this.avatarPositionToDisplay =
+                this.largeAvatarPosition ||
+                this.mediumAvatarPosition ||
+                this.smallAvatarPosition ||
+                this.avatarPosition;
+        }
+    }
+
     /**
      * Initialize the screen resize observer.
      *
@@ -511,6 +595,7 @@ export default class ProfileCard extends LightningElement {
         return new AvonniResizeObserver(this.profileCardContainer, () => {
             const width = this.profileCardContainer.clientWidth || 0;
             this._isSmallContainer = width <= 480;
+            this.initAvatarPosition();
         });
     }
 
