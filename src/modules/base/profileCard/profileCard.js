@@ -98,6 +98,7 @@ export default class ProfileCard extends LightningElement {
 
     connectedCallback() {
         this._connected = true;
+        this.initAvatarPosition();
     }
 
     renderedCallback() {
@@ -167,16 +168,14 @@ export default class ProfileCard extends LightningElement {
      */
     @api
     get avatarMobilePosition() {
-        return this._smallAvatarPosition;
+        return this.smallAvatarPosition;
     }
     set avatarMobilePosition(value) {
-        this._smallAvatarPosition = normalizeString(value, {
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.smallAvatarPosition = normalizeString(value, {
             validValues: AVATAR_POSITIONS.valid
         });
 
-        if (this._connected) {
-            this.initAvatarPosition();
-        }
         console.warn(
             "'avatarMobilePosition' is deprecated. Use 'small-avatar-position' instead."
         );
@@ -594,7 +593,7 @@ export default class ProfileCard extends LightningElement {
         }
         return new AvonniResizeObserver(this.profileCardContainer, () => {
             const width = this.profileCardContainer.clientWidth || 0;
-            this._isSmallContainer = width <= 480;
+            this._isSmallContainer = width < 480;
             this.initAvatarPosition();
         });
     }
