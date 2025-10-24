@@ -419,6 +419,21 @@
     font-weight: var(--avonni-input-choice-set-option-label-font-weight, 400);
 }
 
+.slds-checkbox
+    .slds-checkbox__label
+    .avonni-input-choice-set__option-label-icon-container.slds-form-element__label,
+.slds-radio
+    .slds-radio__label
+    .avonni-input-choice-set__option-label-icon-container.slds-form-element__label,
+.slds-checkbox_toggle
+    .avonni-input-choice-set__option-label
+    [data-element-id='div-check-label']:not(.avonni-input-choice-set__toggle_stretch)
+    .slds-form-element__label {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
 .avonni-input-choice-set__checkbox-container {
     /* Checkbox */
     --slds-c-checkbox-color-background: var(
