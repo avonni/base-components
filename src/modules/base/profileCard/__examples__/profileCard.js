@@ -8,26 +8,30 @@ customElements.define(
 export const ProfileCard = ({
     avatarAlternativeText,
     avatarFallbackIconName,
-    avatarMobilePosition,
     avatarPosition,
     avatarSize,
     avatarSrc,
     avatarVariant,
     backgroundAlternativeText,
     backgroundSrc,
+    largeAvatarPosition,
+    mediumAvatarPosition,
+    smallAvatarPosition,
     subtitle,
     title
 }) => {
     const element = document.createElement('ac-base-profile-card');
     element.avatarAlternativeText = avatarAlternativeText;
     element.avatarFallbackIconName = avatarFallbackIconName;
-    element.avatarMobilePosition = avatarMobilePosition;
     element.avatarPosition = avatarPosition;
     element.avatarSize = avatarSize;
     element.avatarSrc = avatarSrc;
     element.avatarVariant = avatarVariant;
     element.backgroundAlternativeText = backgroundAlternativeText;
     element.backgroundSrc = backgroundSrc;
+    element.largeAvatarPosition = largeAvatarPosition;
+    element.mediumAvatarPosition = mediumAvatarPosition;
+    element.smallAvatarPosition = smallAvatarPosition;
     element.subtitle = subtitle;
     element.title = title;
     return element;

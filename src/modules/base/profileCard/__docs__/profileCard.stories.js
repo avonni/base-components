@@ -27,30 +27,6 @@ export default {
                 category: 'Avatar'
             }
         },
-        avatarMobilePosition: {
-            name: 'avatar-mobile-position',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'top-left',
-                'top-center',
-                'top-right',
-                'bottom-left',
-                'bottom-center',
-                'bottom-right',
-                'left',
-                'center',
-                'right'
-            ],
-            description:
-                'Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, center, left, right.',
-            table: {
-                defaultValue: { summary: 'top-left' },
-                type: { summary: 'string' },
-                category: 'Avatar'
-            }
-        },
         avatarPosition: {
             name: 'avatar-position',
             control: {
@@ -72,7 +48,7 @@ export default {
             table: {
                 defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
-                category: 'Avatar'
+                category: 'Avatar Position'
             }
         },
         avatarSize: {
@@ -136,6 +112,76 @@ export default {
                 category: 'Background'
             }
         },
+        largeAvatarPosition: {
+            name: 'large-avatar-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right',
+                'left',
+                'center',
+                'right'
+            ],
+            description:
+                'Position of the avatar when the component is 1024px wide or more. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, and right.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Avatar Position'
+            }
+        },
+        mediumAvatarPosition: {
+            name: 'medium-avatar-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right',
+                'left',
+                'center',
+                'right'
+            ],
+            description:
+                'Position of the avatar when the component is 768px wide or more. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, and right.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Avatar Position'
+            }
+        },
+        smallAvatarPosition: {
+            name: 'small-avatar-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right',
+                'left',
+                'center',
+                'right'
+            ],
+            description:
+                'Position of the avatar when the component is 480px wide or more. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left, center, and right.',
+            table: {
+                defaultValue: { summary: 'top-left' },
+                type: { summary: 'string' },
+                category: 'Avatar Position'
+            }
+        },
         subtitle: {
             control: {
                 type: 'text'
@@ -159,7 +205,6 @@ export default {
     },
     args: {
         avatarAlternativeText: 'Avatar',
-        avatarMobilePosition: 'top-left',
         avatarPosition: 'top-left',
         avatarSize: 'medium',
         avatarVariant: 'circle'
@@ -258,7 +303,7 @@ BaseMobile.args = {
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
-    avatarMobilePosition: 'top-left'
+    avatarPosition: 'top-left'
 };
 
 export const TopCenterMobile = Template.bind({});
@@ -274,7 +319,7 @@ TopCenterMobile.args = {
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
-    avatarMobilePosition: 'top-center'
+    avatarPosition: 'top-center'
 };
 
 export const SmallBottomCenterMobile = Template.bind({});
@@ -291,5 +336,19 @@ SmallBottomCenterMobile.args = {
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
-    avatarMobilePosition: 'bottom-center'
+    avatarPosition: 'bottom-center'
+};
+
+export const ResponsiveAvatar = Template.bind({});
+ResponsiveAvatar.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarPosition: 'bottom-center',
+    smallAvatarPosition: 'top-left',
+    mediumAvatarPosition: 'top-center',
+    largeAvatarPosition: 'top-right'
 };
