@@ -93,8 +93,3 @@
  * @name --avonni-separator-icon-color-foreground
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-separator-icon-color-foreground-default
- * @type color
- */

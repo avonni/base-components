@@ -1,5 +1,6 @@
 import { computeSldsClass, isActionIconType } from 'c/iconUtils';
 import { classSet, normalizeArray, normalizeString } from 'c/utils';
+import { isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const AVATAR_SIZES = {
@@ -66,6 +67,8 @@ export default class PrimitiveAvatar extends LightningElement {
     _statusTitle = DEFAULT_STATUS_TITLE;
     _variant = AVATAR_VARIANTS.default;
 
+    _rendered = false;
+
     computedAvatarClass;
     computedEntityClass;
     computedFallbackIconClass;
@@ -79,6 +82,13 @@ export default class PrimitiveAvatar extends LightningElement {
         if (this.status) this._computeStatusClass();
         if (this.presence) this._computePresenceClass();
         if (this.showEntity) this._computeEntityClass();
+    }
+
+    renderedCallback() {
+        if (!this._rendered) {
+            this._rendered = true;
+            this._updateClassList();
+        }
     }
 
     /*
@@ -535,13 +545,17 @@ export default class PrimitiveAvatar extends LightningElement {
         const avatarClass = classSet('avonni-avatar')
             .add({
                 'avonni-avatar__border-radius_circle': variant === 'circle',
-                'avonni-avatar_link': this.href
+                'avonni-avatar_link': this.href,
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             })
             .add(computeSldsClass(fallbackIconName));
 
         const fallbackIconClass = classSet('avonni-avatar__icon').add({
             'slds-avatar-grouped__icon': groupedAvatar,
-            'avonni-avatar__action-icon': isActionIconType(fallbackIconName)
+            'avonni-avatar__action-icon': isActionIconType(fallbackIconName),
+            slds1: !isOrgSlds2(),
+            slds2: isOrgSlds2()
         });
 
         this.computedAvatarClass = avatarClass;
