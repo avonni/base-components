@@ -33,57 +33,6 @@
     border-radius: var(--avonni-avatar-radius-border, 50%);
 }
 
-/**
-* Size
-*/
-.avonni-avatar_xx-small > .avonni-avatar {
-    font-size: 0.3rem;
-    height: 0.875rem;
-    width: 0.875rem;
-}
-
-.avonni-avatar_x-small > .avonni-avatar {
-    font-size: 0.4rem;
-    height: 1.25rem;
-    width: 1.25rem;
-}
-
-.avonni-avatar_small > .avonni-avatar {
-    font-size: 0.5rem;
-    height: 1.5rem;
-    width: 1.5rem;
-}
-
-.avonni-avatar_medium > .avonni-avatar {
-    font-size: 0.7rem;
-    height: 2rem;
-    width: 2rem;
-}
-
-.avonni-avatar_large > .avonni-avatar {
-    font-size: 1.1rem;
-    height: 3rem;
-    width: 3rem;
-}
-
-.avonni-avatar_x-large > .avonni-avatar {
-    font-size: 1.3rem;
-    width: 56px;
-    height: 56px;
-}
-
-.avonni-avatar_xx-large > .avonni-avatar {
-    font-size: 1.8rem;
-    width: 72px;
-    height: 72px;
-}
-
-.avonni-avatar_xxx-large > .avonni-avatar {
-    font-size: 1.9rem;
-    width: 104px;
-    height: 104px;
-}
-
 [class*='slds-icon-action-'] {
     /* Remove padding from action type icons */
     padding: 0;
@@ -164,8 +113,9 @@
     scale: 1.8;
 }
 
-/* Positioning Entity */
-
+/**
+* Positioning Entity
+*/
 .avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar__entity,
 .avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar__entity {
     top: -6px;
@@ -230,8 +180,9 @@
     right: -4px;
 }
 
-/* Positioning Presence and Status */
-
+/**
+* Positioning Presence and Status
+*/
 .avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar__presence,
 .avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar__presence,
 .avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar__status,
@@ -262,6 +213,8 @@
     right: -5px;
 }
 
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar__actions,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar__actions,
 .avonni-avatar_circle.avonni-avatar_medium .avonni-avatar__presence,
 .avonni-avatar_square.avonni-avatar_medium .avonni-avatar__presence,
 .avonni-avatar_circle.avonni-avatar_medium .avonni-avatar__status,
@@ -272,6 +225,8 @@
     right: -5px;
 }
 
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar__actions,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar__actions,
 .avonni-avatar_circle.avonni-avatar_large .avonni-avatar__presence,
 .avonni-avatar_square.avonni-avatar_large .avonni-avatar__presence,
 .avonni-avatar_circle.avonni-avatar_large .avonni-avatar__status,
@@ -282,6 +237,8 @@
     right: -5px;
 }
 
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar__actions,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar__actions,
 .avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar__presence,
 .avonni-avatar_square.avonni-avatar_x-large .avonni-avatar__presence,
 .avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar__status,
@@ -292,6 +249,8 @@
     right: -6px;
 }
 
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar__actions,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar__actions,
 .avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar__presence,
 .avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar__presence,
 .avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar__status,
@@ -302,6 +261,8 @@
     right: -6px;
 }
 
+.avonni-avatar_circle.avonni-avatar_xxx-large .avonni-avatar__actions,
+.avonni-avatar_square.avonni-avatar_xxx-large .avonni-avatar__actions,
 .avonni-avatar_circle.avonni-avatar_xxx-large .avonni-avatar__presence,
 .avonni-avatar_square.avonni-avatar_xxx-large .avonni-avatar__presence,
 .avonni-avatar_circle.avonni-avatar_xxx-large .avonni-avatar__status,
@@ -313,9 +274,8 @@
 }
 
 /* 
-* Positioning Avoid Reptitive Code
+* Positioning Avoid Repetitive Code
 */
-
 .avonni-avatar_circle .avonni-avatar_top-right,
 .avonni-avatar_square .avonni-avatar_top-right {
     bottom: unset !important;
@@ -341,9 +301,59 @@
 }
 
 /**
+* Sizing
+*/
+.avonni-avatar_xx-small > .avonni-avatar {
+    font-size: 0.3rem;
+    height: 0.875rem;
+    width: 0.875rem;
+}
+
+.avonni-avatar_x-small > .avonni-avatar {
+    font-size: 0.4rem;
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+.avonni-avatar_small > .avonni-avatar {
+    font-size: 0.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.avonni-avatar_medium > .avonni-avatar {
+    font-size: 0.7rem;
+    height: 2rem;
+    width: 2rem;
+}
+
+.avonni-avatar_large > .avonni-avatar {
+    font-size: 1.1rem;
+    height: 3rem;
+    width: 3rem;
+}
+
+.avonni-avatar_x-large > .avonni-avatar {
+    font-size: 1.3rem;
+    width: 56px;
+    height: 56px;
+}
+
+.avonni-avatar_xx-large > .avonni-avatar {
+    font-size: 1.8rem;
+    width: 72px;
+    height: 72px;
+}
+
+.avonni-avatar_xxx-large > .avonni-avatar {
+    font-size: 1.9rem;
+    width: 104px;
+    height: 104px;
+}
+
+/**
 * Sizing Entity
 */
-
 .avonni-avatar_xx-small .avonni-avatar__entity {
     scale: 0.5;
 }
@@ -369,9 +379,8 @@
 }
 
 /**
-* Sizing Status and Presence
+* Sizing Status, Presence and actions
 */
-
 .avonni-avatar_xx-small .avonni-avatar__presence,
 .avonni-avatar_xx-small .avonni-avatar__status {
     width: 8px;
