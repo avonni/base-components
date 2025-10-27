@@ -213,12 +213,17 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-foreground-color
+ * @name --avonni-avatar-entity-fallback-icon-color-background
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-foreground-color-utility
+ * @name --avonni-avatar-entity-fallback-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-fallback-icon-color-foreground-default
  * @type color
  */
 /**
