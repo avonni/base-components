@@ -45,7 +45,7 @@ describe('PrimitiveAvatar', () => {
             expect(element.entityPosition).toBe('top-left');
             expect(element.entityTitle).toBe('Entity');
             expect(element.entitySrc).toBeFalsy();
-            expect(element.entityVariant).toBe('square');
+            expect(element.entityVariant).toBeUndefined();
             expect(element.href).toBeUndefined();
             expect(element.initials).toBeFalsy();
             expect(element.presence).toBeFalsy();

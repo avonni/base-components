@@ -165,44 +165,173 @@
 /**
 * Positioning
 */
-.avonni-avatar_square .avonni-avatar_top-right {
-    top: -4px;
-    right: -4px;
+
+.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_top-right,
+.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_top-right {
+    top: -5px;
+    right: -5px;
 }
 
-.avonni-avatar_square .avonni-avatar_top-left {
-    top: -4px;
-    left: -4px;
+.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_top-right,
+.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_top-right {
+    top: -7px;
+    right: -5px;
 }
 
-.avonni-avatar_square .avonni-avatar_bottom-right {
-    bottom: -4px;
-    right: -4px;
+.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_top-right,
+.avonni-avatar_square.avonni-avatar_small .avonni-avatar_top-right {
+    top: -8px;
+    right: -5px;
 }
 
-.avonni-avatar_square .avonni-avatar_bottom-left {
-    bottom: -4px;
-    left: -4px;
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_top-right,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_top-right {
+    top: -7px;
+    right: -5px;
 }
 
-.avonni-avatar_circle .avonni-avatar_top-right {
-    top: -3px;
-    right: -3px;
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_top-right,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar_top-right {
+    top: -7px;
+    right: -5px;
 }
 
-.avonni-avatar_circle .avonni-avatar_top-left {
-    top: -3px;
-    left: -3px;
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_top-right,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_top-right {
+    top: -6px;
+    right: -6px;
 }
 
-.avonni-avatar_circle .avonni-avatar_bottom-right {
-    bottom: -3px;
-    right: -3px;
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_top-right,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_top-right {
+    top: -6px;
+    right: -6px;
 }
 
-.avonni-avatar_circle .avonni-avatar_bottom-left {
-    bottom: -3px;
-    left: -3px;
+.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_top-left,
+.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_top-left {
+    top: -5px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_top-left,
+.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_top-left {
+    top: -7px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_top-left,
+.avonni-avatar_square.avonni-avatar_small .avonni-avatar_top-left {
+    top: -8px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_top-left,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_top-left {
+    top: -7px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_top-left,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar_top-left {
+    top: -7px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_top-left,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_top-left {
+    top: -6px;
+    left: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_top-left,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_top-left {
+    top: -6px;
+    left: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_bottom-right,
+.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_bottom-right {
+    bottom: -5px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_bottom-right,
+.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_bottom-right {
+    bottom: -7px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_bottom-right,
+.avonni-avatar_square.avonni-avatar_small .avonni-avatar_bottom-right {
+    bottom: -8px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_bottom-right,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_bottom-right {
+    bottom: -7px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_bottom-right,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar_bottom-right {
+    bottom: -7px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_bottom-right,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_bottom-right {
+    bottom: -6px;
+    right: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_bottom-right,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_bottom-right {
+    bottom: -6px;
+    right: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_bottom-left,
+.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_bottom-left {
+    bottom: -5px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_bottom-left,
+.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_bottom-left {
+    bottom: -7px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_bottom-left,
+.avonni-avatar_square.avonni-avatar_small .avonni-avatar_bottom-left {
+    bottom: -8px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_bottom-left,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_bottom-left {
+    bottom: -7px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_bottom-left,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar_bottom-left {
+    bottom: -7px;
+    left: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_bottom-left,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_bottom-left {
+    bottom: -6px;
+    left: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_bottom-left,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_bottom-left {
+    bottom: -6px;
+    left: -6px;
 }
 
 /**
