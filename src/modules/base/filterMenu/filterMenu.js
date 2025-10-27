@@ -1341,7 +1341,9 @@ export default class FilterMenu extends LightningElement {
      */
     get selectedItemCountLabel() {
         if (this.isVertical) {
-            const count = this.isList ? this.value.length : 0;
+            const count = this.isList
+                ? this.value.length
+                : this.value.filter((v) => v !== null).length;
 
             return count > 0 ? String(count) : '';
         }
@@ -2110,7 +2112,7 @@ export default class FilterMenu extends LightningElement {
      */
     handleDateRangeChange(event) {
         const { startDate, endDate } = event.detail;
-        this.currentValue = [startDate, endDate];
+        this.currentValue = !startDate && !endDate ? [] : [startDate, endDate];
         this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
         this._dateRangeFrames = [];
 

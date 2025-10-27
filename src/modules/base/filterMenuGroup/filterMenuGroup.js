@@ -293,6 +293,34 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * Placement of the popover.
+     *
+     * @type {string}
+     */
+    get buttonPopoverPlacement() {
+        if (!this.moreFilterElement) {
+            return 'auto';
+        }
+        const rect = this.moreFilterElement.getBoundingClientRect();
+        const elementCenterX = rect.left + rect.width / 2;
+        const viewportCenterX = window.innerWidth / 2;
+        const horizontal = elementCenterX < viewportCenterX ? 'left' : 'right';
+        return horizontal;
+    }
+
+    /**
+     * Button variant of the popver
+     *
+     * @type {string}
+     */
+    get buttonPopoverVariant() {
+        const isInHiddenMenus = Object.keys(this.value || {}).some((key) =>
+            this.hiddenMenus?.some((menu) => menu.name === key)
+        );
+        return isInHiddenMenus ? 'brand' : 'border-filled';
+    }
+
+    /**
      * Filters class styling
      *
      * @type {string}
@@ -433,22 +461,6 @@ export default class FilterMenuGroup extends LightningElement {
                 iconName: 'utility:close'
             }
         ];
-    }
-
-    /**
-     * Returns the placement of the more filter button.
-     *
-     * @type {string}
-     */
-    get placement() {
-        if (!this.moreFilterElement) {
-            return 'auto';
-        }
-        const rect = this.moreFilterElement.getBoundingClientRect();
-        const elementCenterX = rect.left + rect.width / 2;
-        const viewportCenterX = window.innerWidth / 2;
-        const horizontal = elementCenterX < viewportCenterX ? 'left' : 'right';
-        return horizontal;
     }
 
     /**
