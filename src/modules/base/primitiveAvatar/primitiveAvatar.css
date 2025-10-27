@@ -479,9 +479,6 @@
     --avonni-avatar-color-border: var(--avonni-avatar-entity-color-border);
     --avonni-avatar-styling-border: var(--avonni-avatar-entity-styling-border);
     --avonni-avatar-sizing-border: var(--avonni-avatar-entity-sizing-border);
-    --avonni-avatar-background-color: var(
-        --avonni-avatar-entity-background-color
-    );
     --avonni-avatar-image-object-fit: var(
         --avonni-avatar-entity-image-object-fit
     );
@@ -493,6 +490,24 @@
     );
     --avonni-avatar-fallback-icon-color-foreground-default: var(
         --avonni-avatar-entity-fallback-icon-color-foreground-default
+    );
+    --avonni-avatar-initials-text-color: var(
+        --avonni-avatar-entity-initials-text-color
+    );
+    --avonni-avatar-initials-text-font-style: var(
+        --avonni-avatar-entity-initials-text-font-style
+    );
+    --avonni-avatar-initials-text-font-weight: var(
+        --avonni-avatar-entity-initials-text-font-weight
+    );
+    --avonni-avatar-initials-text-color-hover: var(
+        --avonni-avatar-entity-initials-text-color-hover
+    );
+    --avonni-avatar-initials-text-font-style-hover: var(
+        --avonni-avatar-entity-initials-text-font-style-hover
+    );
+    --avonni-avatar-initials-text-font-weight-hover: var(
+        --avonni-avatar-entity-initials-text-font-weight-hover
     );
 }
 

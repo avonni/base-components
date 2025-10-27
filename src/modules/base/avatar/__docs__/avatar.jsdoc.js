@@ -207,11 +207,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-background-color
- * @type color
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-avatar-entity-color-border
  * @default transparent
  * @type color
@@ -230,6 +225,42 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-entity-image-object-fit
  * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-color
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-color-hover
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-font-style-hover
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-font-weight-hover
+ * @default 400
+ * @type font
  */
 /**
  * @memberof stylingHooks
