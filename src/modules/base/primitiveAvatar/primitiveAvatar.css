@@ -101,15 +101,17 @@
 
 /* If the avatar is in a group, the size is set by the parent */
 :host(.slds-avatar-grouped) .avonni-avatar,
+.avonni-avatarcircle,
 :host(.slds-avatar-grouped) .avonni-avatar_square,
 :host(.slds-avatar-grouped) .avonni-avatar_circle {
     width: 100%;
     height: 100%;
 }
 
-/* Fix icon size for x-large and xx-large icons */
+/* Fix icon size for x-large, xx-large and xxx-large icons */
 :host(.slds-avatar-grouped) .avonni-avatar_x-large .avonni-avatar__icon,
-:host(.slds-avatar-grouped) .avonni-avatar_xx-large .avonni-avatar__icon {
+:host(.slds-avatar-grouped) .avonni-avatar_xx-large .avonni-avatar__icon,
+:host(.slds-avatar-grouped) .avonni-avatar_xxx-large .avonni-avatar__icon {
     scale: 1;
 }
 
@@ -162,176 +164,247 @@
     scale: 1.8;
 }
 
-/**
-* Positioning
+/* Positioning Entity */
+
+.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar__entity {
+    top: -6px;
+    bottom: -6px;
+    left: -6px;
+    right: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar__entity {
+    top: -8px;
+    bottom: -8px;
+    left: -5px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_small .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_small .avonni-avatar__entity {
+    top: -9px;
+    bottom: -9px;
+    left: -5px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar__entity {
+    top: -8px;
+    bottom: -8px;
+    left: -4px;
+    right: -4px;
+}
+
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar__entity {
+    top: -7px;
+    bottom: -7px;
+    left: -3px;
+    right: -3px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar__entity {
+    top: -5px;
+    bottom: -5px;
+    left: -6px;
+    right: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar__entity {
+    top: -5px;
+    bottom: -5px;
+    left: -6px;
+    right: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xxx-large .avonni-avatar__entity,
+.avonni-avatar_square.avonni-avatar_xxx-large .avonni-avatar__entity {
+    top: -2px;
+    bottom: -2px;
+    left: -4px;
+    right: -4px;
+}
+
+/* Positioning Presence and Status */
+
+.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar__status {
+    top: -1px;
+    bottom: -1px;
+    left: -4px;
+    right: -4px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar__status {
+    top: -4px;
+    bottom: -4px;
+    left: -4px;
+    right: -4px;
+}
+
+.avonni-avatar_circle.avonni-avatar_small .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_small .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_small .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_small .avonni-avatar__status {
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_medium .avonni-avatar__status {
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_large .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_large .avonni-avatar__status {
+    top: -7px;
+    bottom: -7px;
+    left: -5px;
+    right: -5px;
+}
+
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar__status {
+    top: -6px;
+    bottom: -6px;
+    left: -6px;
+    right: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar__status {
+    top: -6px;
+    bottom: -6px;
+    left: -6px;
+    right: -6px;
+}
+
+.avonni-avatar_circle.avonni-avatar_xxx-large .avonni-avatar__presence,
+.avonni-avatar_square.avonni-avatar_xxx-large .avonni-avatar__presence,
+.avonni-avatar_circle.avonni-avatar_xxx-large .avonni-avatar__status,
+.avonni-avatar_square.avonni-avatar_xxx-large .avonni-avatar__status {
+    top: -7px;
+    bottom: -7px;
+    left: -7px;
+    right: -7px;
+}
+
+/* 
+* Positioning Avoid Reptitive Code
 */
 
-.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_top-right,
-.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_top-right {
-    top: -5px;
-    right: -5px;
+.avonni-avatar_circle .avonni-avatar_top-right,
+.avonni-avatar_square .avonni-avatar_top-right {
+    bottom: unset !important;
+    left: unset !important;
 }
 
-.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_top-right,
-.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_top-right {
-    top: -7px;
-    right: -5px;
+.avonni-avatar_circle .avonni-avatar_top-left,
+.avonni-avatar_square .avonni-avatar_top-left {
+    bottom: unset !important;
+    right: unset !important;
 }
 
-.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_top-right,
-.avonni-avatar_square.avonni-avatar_small .avonni-avatar_top-right {
-    top: -8px;
-    right: -5px;
+.avonni-avatar_circle .avonni-avatar_bottom-right,
+.avonni-avatar_square .avonni-avatar_bottom-right {
+    top: unset !important;
+    left: unset !important;
 }
 
-.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_top-right,
-.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_top-right {
-    top: -7px;
-    right: -5px;
+.avonni-avatar_circle .avonni-avatar_bottom-left,
+.avonni-avatar_square .avonni-avatar_bottom-left {
+    top: unset !important;
+    right: unset !important;
 }
 
-.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_top-right,
-.avonni-avatar_square.avonni-avatar_large .avonni-avatar_top-right {
-    top: -7px;
-    right: -5px;
+/**
+* Sizing Status and Presence
+*/
+
+.avonni-avatar_xx-small .avonni-avatar__presence,
+.avonni-avatar_xx-small .avonni-avatar__status {
+    width: 8px;
+    height: 8px;
+    border-width: 1px;
 }
 
-.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_top-right,
-.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_top-right {
-    top: -6px;
-    right: -6px;
+.avonni-avatar_x-small .avonni-avatar__presence,
+.avonni-avatar_x-small .avonni-avatar__status {
+    width: 10px;
+    height: 10px;
+    border-width: 1px;
+    padding: 1px;
 }
 
-.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_top-right,
-.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_top-right {
-    top: -6px;
-    right: -6px;
+.avonni-avatar_small .avonni-avatar__presence,
+.avonni-avatar_small .avonni-avatar__status {
+    width: 12px;
+    height: 12px;
+    border-width: 1px;
+    padding: 2px;
 }
 
-.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_top-left,
-.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_top-left {
-    top: -5px;
-    left: -5px;
+.avonni-avatar_medium .avonni-avatar__presence,
+.avonni-avatar_medium .avonni-avatar__status {
+    width: 14px;
+    height: 14px;
+    border-width: 2px;
+    padding: 2px;
 }
 
-.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_top-left,
-.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_top-left {
-    top: -7px;
-    left: -5px;
+.avonni-avatar_large .avonni-avatar__presence,
+.avonni-avatar_large .avonni-avatar__status {
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+    padding: 2px;
 }
 
-.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_top-left,
-.avonni-avatar_square.avonni-avatar_small .avonni-avatar_top-left {
-    top: -8px;
-    left: -5px;
+.avonni-avatar_x-large .avonni-avatar__presence,
+.avonni-avatar_x-large .avonni-avatar__status {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+    padding: 2px;
 }
 
-.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_top-left,
-.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_top-left {
-    top: -7px;
-    left: -5px;
+.avonni-avatar_xx-large .avonni-avatar__presence,
+.avonni-avatar_xx-large .avonni-avatar__status {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+    padding: 3px;
 }
 
-.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_top-left,
-.avonni-avatar_square.avonni-avatar_large .avonni-avatar_top-left {
-    top: -7px;
-    left: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_top-left,
-.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_top-left {
-    top: -6px;
-    left: -6px;
-}
-
-.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_top-left,
-.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_top-left {
-    top: -6px;
-    left: -6px;
-}
-
-.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_bottom-right,
-.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_bottom-right {
-    bottom: -5px;
-    right: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_bottom-right,
-.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_bottom-right {
-    bottom: -7px;
-    right: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_bottom-right,
-.avonni-avatar_square.avonni-avatar_small .avonni-avatar_bottom-right {
-    bottom: -8px;
-    right: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_bottom-right,
-.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_bottom-right {
-    bottom: -7px;
-    right: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_bottom-right,
-.avonni-avatar_square.avonni-avatar_large .avonni-avatar_bottom-right {
-    bottom: -7px;
-    right: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_bottom-right,
-.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_bottom-right {
-    bottom: -6px;
-    right: -6px;
-}
-
-.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_bottom-right,
-.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_bottom-right {
-    bottom: -6px;
-    right: -6px;
-}
-
-.avonni-avatar_circle.avonni-avatar_xx-small .avonni-avatar_bottom-left,
-.avonni-avatar_square.avonni-avatar_xx-small .avonni-avatar_bottom-left {
-    bottom: -5px;
-    left: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_x-small .avonni-avatar_bottom-left,
-.avonni-avatar_square.avonni-avatar_x-small .avonni-avatar_bottom-left {
-    bottom: -7px;
-    left: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_small .avonni-avatar_bottom-left,
-.avonni-avatar_square.avonni-avatar_small .avonni-avatar_bottom-left {
-    bottom: -8px;
-    left: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_medium .avonni-avatar_bottom-left,
-.avonni-avatar_square.avonni-avatar_medium .avonni-avatar_bottom-left {
-    bottom: -7px;
-    left: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_large .avonni-avatar_bottom-left,
-.avonni-avatar_square.avonni-avatar_large .avonni-avatar_bottom-left {
-    bottom: -7px;
-    left: -5px;
-}
-
-.avonni-avatar_circle.avonni-avatar_x-large .avonni-avatar_bottom-left,
-.avonni-avatar_square.avonni-avatar_x-large .avonni-avatar_bottom-left {
-    bottom: -6px;
-    left: -6px;
-}
-
-.avonni-avatar_circle.avonni-avatar_xx-large .avonni-avatar_bottom-left,
-.avonni-avatar_square.avonni-avatar_xx-large .avonni-avatar_bottom-left {
-    bottom: -6px;
-    left: -6px;
+.avonni-avatar_xxx-large .avonni-avatar__presence,
+.avonni-avatar_xxx-large .avonni-avatar__status {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+    padding: 4px;
 }
 
 /**
@@ -376,59 +449,6 @@
         --avonni-avatar-status-unknown-color-background,
         #706e6b
     );
-}
-
-.avonni-avatar_xx-small .avonni-avatar__status {
-    width: 8px;
-    height: 8px;
-    border-width: 1px;
-    margin: 1px;
-}
-
-.avonni-avatar_x-small .avonni-avatar__status {
-    width: 10px;
-    height: 10px;
-    border-width: 1px;
-}
-
-.avonni-avatar_small .avonni-avatar__status {
-    width: 12px;
-    height: 12px;
-    border-width: 1px;
-}
-
-.avonni-avatar_medium .avonni-avatar__status {
-    width: 14px;
-    height: 14px;
-    border-width: 2px;
-}
-
-.avonni-avatar_large .avonni-avatar__status {
-    width: 18px;
-    height: 18px;
-    border-width: 2px;
-    padding: 2px;
-}
-
-.avonni-avatar_x-large .avonni-avatar__status {
-    width: 20px;
-    height: 20px;
-    border-width: 2px;
-    padding: 3px;
-}
-
-.avonni-avatar_xx-large .avonni-avatar__status {
-    width: 24px;
-    height: 24px;
-    border-width: 2px;
-    padding: 3px;
-}
-
-.avonni-avatar_xxx-large .avonni-avatar__status {
-    width: 32px;
-    height: 32px;
-    border-width: 2px;
-    padding: 4px;
 }
 
 /** 
@@ -509,49 +529,6 @@
     border-radius: var(--avonni-avatar-presence-radius-border, 50%);
     border-style: solid;
     border-color: var(--avonni-avatar-presence-color-border, #ffffff);
-}
-
-.avonni-avatar_xx-small .avonni-avatar__presence {
-    width: 8px;
-    height: 8px;
-    border-width: 1px;
-    margin: 1px;
-}
-
-.avonni-avatar_x-small .avonni-avatar__presence {
-    width: 10px;
-    height: 10px;
-    border-width: 1px;
-}
-
-.avonni-avatar_small .avonni-avatar__presence {
-    width: 12px;
-    height: 12px;
-    border-width: 1px;
-}
-
-.avonni-avatar_medium .avonni-avatar__presence {
-    width: 14px;
-    height: 14px;
-    border-width: 2px;
-}
-
-.avonni-avatar_large .avonni-avatar__presence {
-    width: 18px;
-    height: 18px;
-    border-width: 2px;
-}
-
-.avonni-avatar_x-large .avonni-avatar__presence {
-    width: 20px;
-    height: 20px;
-    border-width: 2px;
-}
-
-.avonni-avatar_xx-large .avonni-avatar__presence {
-    width: 24px;
-    height: 24px;
-    border-width: 2px;
 }
 
 .avonni-avatar__presence_online {
@@ -665,11 +642,19 @@
 }
 
 .avonni-avatar_small .avonni-avatar__entity {
-    scale: 0.9;
+    scale: 0.8;
 }
 
 .avonni-avatar_large .avonni-avatar__entity {
     scale: 1.3;
+}
+
+.avonni-avatar_xx-large .avonni-avatar__entity {
+    scale: 0.9;
+}
+
+.avonni-avatar_xxx-large .avonni-avatar__entity {
+    scale: 1.1;
 }
 
 /**

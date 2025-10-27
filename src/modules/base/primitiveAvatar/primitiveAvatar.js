@@ -377,7 +377,9 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     get computedEntitySize() {
-        if (this.size === 'xx-large') return 'small';
+        if (this.size === 'xx-large' || this.size === 'xxx-large') {
+            return 'small';
+        }
         if (this.size === 'x-large') return 'x-small';
         return 'xx-small';
     }
@@ -447,26 +449,19 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     _computePresenceClass() {
-        const { presence, presencePosition } = this;
-
         this.computedPresenceClass = classSet('avonni-avatar__presence')
-            .add(`avonni-avatar__presence_${presence}`)
-            .add(`avonni-avatar_${presencePosition}`);
+            .add(`avonni-avatar__presence_${this.presence}`)
+            .add(`avonni-avatar_${this.presencePosition}`);
     }
 
     _computeStatusClass() {
-        const { status, statusPosition, statusTitle } = this;
-        const classes = classSet('avonni-avatar__status slds-current-color')
-            .add(`avonni-avatar__status_${status}`)
-            .add(`avonni-avatar_${statusPosition}`);
-
-        let iconName = this._getStatusIconName(status);
-
         this.computedStatus = {
-            class: classes,
-            iconName,
-            type: status,
-            title: statusTitle
+            class: classSet('avonni-avatar__status slds-current-color')
+                .add(`avonni-avatar__status_${this.status}`)
+                .add(`avonni-avatar_${this.statusPosition}`),
+            iconName: this._getStatusIconName(this.status),
+            type: this.status,
+            title: this.statusTitle
         };
     }
 
