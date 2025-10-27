@@ -36,49 +36,49 @@
 /**
 * Size
 */
-.avonni-avatar_xx-small .avonni-avatar {
+.avonni-avatar_xx-small > .avonni-avatar {
     font-size: 0.3rem;
     height: 0.875rem;
     width: 0.875rem;
 }
 
-.avonni-avatar_x-small .avonni-avatar {
+.avonni-avatar_x-small > .avonni-avatar {
     font-size: 0.4rem;
     height: 1.25rem;
     width: 1.25rem;
 }
 
-.avonni-avatar_small .avonni-avatar {
+.avonni-avatar_small > .avonni-avatar {
     font-size: 0.5rem;
     height: 1.5rem;
     width: 1.5rem;
 }
 
-.avonni-avatar_medium .avonni-avatar {
+.avonni-avatar_medium > .avonni-avatar {
     font-size: 0.7rem;
     height: 2rem;
     width: 2rem;
 }
 
-.avonni-avatar_large .avonni-avatar {
+.avonni-avatar_large > .avonni-avatar {
     font-size: 1.1rem;
     height: 3rem;
     width: 3rem;
 }
 
-.avonni-avatar_x-large .avonni-avatar {
+.avonni-avatar_x-large > .avonni-avatar {
     font-size: 1.3rem;
     width: 56px;
     height: 56px;
 }
 
-.avonni-avatar_xx-large .avonni-avatar {
+.avonni-avatar_xx-large > .avonni-avatar {
     font-size: 1.8rem;
     width: 72px;
     height: 72px;
 }
 
-.avonni-avatar_xxx-large .avonni-avatar {
+.avonni-avatar_xxx-large > .avonni-avatar {
     font-size: 1.9rem;
     width: 104px;
     height: 104px;
@@ -113,52 +113,52 @@
     scale: 1;
 }
 
-.avonni-avatar_xx-small .avonni-avatar__icon {
+.avonni-avatar_xx-small > .avonni-avatar > .avonni-avatar__icon {
     scale: 0.8;
 }
 
-.avonni-avatar_x-large .avonni-avatar__icon {
+.avonni-avatar_x-large > .avonni-avatar > .avonni-avatar__icon {
     scale: 1.8;
 }
 
-.avonni-avatar_xx-large .avonni-avatar__icon {
+.avonni-avatar_xx-large > .avonni-avatar > .avonni-avatar__icon {
     scale: 2.2;
 }
 
-.avonni-avatar_xxx-large .avonni-avatar__icon {
+.avonni-avatar_xxx-large > .avonni-avatar > .avonni-avatar__icon {
     scale: 3.2;
 }
 
 /* Fix icon sizes for action icons */
-.avonni-avatar_xx-small .avonni-avatar__action-icon {
+.avonni-avatar_xx-small > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 0.6;
 }
 
-.avonni-avatar_x-small .avonni-avatar__action-icon {
+.avonni-avatar_x-small > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 0.7;
 }
 
-.avonni-avatar_small .avonni-avatar__action-icon {
+.avonni-avatar_small > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 0.6;
 }
 
-.avonni-avatar_medium .avonni-avatar__action-icon {
+.avonni-avatar_medium > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 0.65;
 }
 
-.avonni-avatar_large .avonni-avatar__action-icon {
+.avonni-avatar_large > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 0.65;
 }
 
-.avonni-avatar_x-large .avonni-avatar__action-icon {
+.avonni-avatar_x-large > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 1.1;
 }
 
-.avonni-avatar_xx-large .avonni-avatar__action-icon {
+.avonni-avatar_xx-large > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 1.4;
 }
 
-.avonni-avatar_xxx-large .avonni-avatar__action-icon {
+.avonni-avatar_xxx-large > .avonni-avatar > .avonni-avatar__action-icon {
     scale: 1.8;
 }
 
@@ -475,30 +475,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-style: var(--avonni-avatar-entity-initials-text-font-style, normal);
-    font-weight: var(--avonni-avatar-entity-initials-text-font-weight, 400);
-    border-radius: var(--avonni-avatar-entity-border-radius, 0);
-    border-color: var(--avonni-avatar-entity-border-color, transparent);
-    border-style: var(--avonni-avatar-entity-border-style, solid);
-    border-width: var(--avonni-avatar-entity-border-size, 0);
-    background-color: var(--avonni-avatar-entity-background-color, transparent);
-}
-
-.avonni-avatar__entity_circle {
-    border-radius: var(
-        --avonni-avatar-entity-border-radius,
-        var(--lwc-borderRadiusCircle, 50%)
+    --avonni-avatar-radius-border: var(--avonni-avatar-entity-radius-border);
+    --avonni-avatar-color-border: var(--avonni-avatar-entity-color-border);
+    --avonni-avatar-styling-border: var(--avonni-avatar-entity-styling-border);
+    --avonni-avatar-sizing-border: var(--avonni-avatar-entity-sizing-border);
+    --avonni-avatar-background-color: var(
+        --avonni-avatar-entity-background-color
     );
-}
-
-.avonni-avatar__entity-image {
-    height: 100%;
-    width: 100%;
-    object-fit: var(--avonni-avatar-entity-image-object-fit, cover);
-}
-
-.avonni-avatar__entity-initials {
-    color: var(--avonni-avatar-entity-initials-text-color, #ffffff);
+    --avonni-avatar-image-object-fit: var(
+        --avonni-avatar-entity-image-object-fit
+    );
+    --avonni-avatar-fallback-icon-color-background: var(
+        --avonni-avatar-entity-fallback-icon-color-background
+    );
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-avatar-entity-fallback-icon-color-foreground
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-avatar-entity-fallback-icon-color-foreground-default
+    );
 }
 
 /* Makes the icon size change with its container's */
@@ -508,59 +503,29 @@
     --slds-c-icon-color-foreground: var(
         --avonni-avatar-entity-foreground-color
     );
+    --sds-c-icon-color-foreground: var(--avonni-avatar-entity-foreground-color);
     --slds-c-icon-color-foreground-default: var(
+        --avonni-avatar-entity-foreground-color-utility
+    );
+    --sds-c-icon-color-foreground-default: var(
         --avonni-avatar-entity-foreground-color-utility
     );
 }
 
-.avonni-avatar_xx-small .avonni-avatar__entity,
-.avonni-avatar_xx-small .avonni-avatar__action-button {
-    width: 8px;
-    height: 8px;
-    font-size: 0.1rem;
+.avonni-avatar_xx-small .avonni-avatar__entity {
+    scale: 0.5;
 }
 
-.avonni-avatar_x-small .avonni-avatar__entity,
-.avonni-avatar_x-small .avonni-avatar__action-button {
-    width: 10px;
-    height: 10px;
-    font-size: 0.1rem;
+.avonni-avatar_x-small .avonni-avatar__entity {
+    scale: 0.7;
 }
 
 .avonni-avatar_small .avonni-avatar__entity {
-    width: 12px;
-    height: 12px;
-    font-size: 0.1rem;
-}
-
-.avonni-avatar_medium .avonni-avatar__entity {
-    width: 14px;
-    height: 14px;
-    font-size: 0.1rem;
+    scale: 0.9;
 }
 
 .avonni-avatar_large .avonni-avatar__entity {
-    width: 18px;
-    height: 18px;
-    font-size: 0.6rem;
-}
-
-.avonni-avatar_x-large .avonni-avatar__entity {
-    width: 20px;
-    height: 20px;
-    font-size: 0.6rem;
-}
-
-.avonni-avatar_xx-large .avonni-avatar__entity {
-    width: 24px;
-    height: 24px;
-    font-size: 0.6rem;
-}
-
-.avonni-avatar_xxx-large .avonni-avatar__entity {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    scale: 1.3;
 }
 
 /**

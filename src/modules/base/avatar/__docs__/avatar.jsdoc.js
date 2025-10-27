@@ -207,31 +207,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-radius
- * @default 0
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-color
- * @default transparent
+ * @name --avonni-avatar-entity-background-color
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-style
- * @default none
- * @type styling
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-size
- * @default 0
- * @type sizing
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-avatar-entity-background-color
+ * @name --avonni-avatar-entity-color-border
+ * @default transparent
  * @type color
  */
 /**
@@ -251,21 +233,21 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-initials-text-color
- * @default #ffffff
- * @type color
+ * @name --avonni-avatar-entity-radius-border
+ * @default 0
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-initials-text-font-style
- * @default normal
- * @type font
+ * @name --avonni-avatar-entity-sizing-border
+ * @default 0
+ * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-initials-text-font-weight
- * @default 400
- * @type font
+ * @name --avonni-avatar-entity-styling-border
+ * @default none
+ * @type styling
  */
 /**
  * @memberof stylingHooks

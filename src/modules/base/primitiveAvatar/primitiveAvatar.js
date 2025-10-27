@@ -42,18 +42,18 @@ const STATUS = {
 };
 
 export default class PrimitiveAvatar extends LightningElement {
+    @api entityIconName;
     @api entityInitials;
+    @api entitySrc;
+    @api entityVariant;
 
     _actionMenuIcon = DEFAULT_ICON_MENU_ICON;
     _actionPosition = POSITIONS.actionDefault;
     _actions = [];
     _actionTitle = '';
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
-    _entityIconName;
     _entityPosition = POSITIONS.entityDefault;
-    _entitySrc;
     _entityTitle = DEFAULT_ENTITY_TITLE;
-    _entityVariant = AVATAR_VARIANTS.default;
     _fallbackIconName;
     _href;
     _initials;
@@ -70,7 +70,6 @@ export default class PrimitiveAvatar extends LightningElement {
     _rendered = false;
 
     computedAvatarClass;
-    computedEntityClass;
     computedFallbackIconClass;
     computedPresenceClass;
     computedStatus;
@@ -81,7 +80,6 @@ export default class PrimitiveAvatar extends LightningElement {
 
         if (this.status) this._computeStatusClass();
         if (this.presence) this._computePresenceClass();
-        if (this.showEntity) this._computeEntityClass();
     }
 
     renderedCallback() {
@@ -134,15 +132,6 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     @api
-    get entityIconName() {
-        return this._entityIconName;
-    }
-    set entityIconName(value) {
-        this._entityIconName = value;
-        this._computeEntityClass();
-    }
-
-    @api
     get entityPosition() {
         return this._entityPosition;
     }
@@ -151,15 +140,6 @@ export default class PrimitiveAvatar extends LightningElement {
             fallbackValue: POSITIONS.entityDefault,
             validValues: POSITIONS.valid
         });
-        this._computeEntityClass();
-    }
-
-    @api
-    get entitySrc() {
-        return this._entitySrc;
-    }
-    set entitySrc(value) {
-        this._entitySrc = (typeof value === 'string' && value.trim()) || '';
     }
 
     @api
@@ -169,18 +149,6 @@ export default class PrimitiveAvatar extends LightningElement {
     set entityTitle(value) {
         this._entityTitle =
             (typeof value === 'string' && value.trim()) || DEFAULT_ENTITY_TITLE;
-    }
-
-    @api
-    get entityVariant() {
-        return this._entityVariant;
-    }
-    set entityVariant(value) {
-        this._entityVariant = normalizeString(value, {
-            fallbackValue: AVATAR_VARIANTS.default,
-            validValues: AVATAR_VARIANTS.valid
-        });
-        this._computeEntityClass();
     }
 
     @api
@@ -400,10 +368,18 @@ export default class PrimitiveAvatar extends LightningElement {
         }
     }
 
-    get computedEntityInitialsClass() {
-        return classSet('slds-avatar__initials avonni-avatar__entity-initials')
-            .add(computeSldsClass(this.entityIconName))
-            .toString();
+    get computedEntityClass() {
+        return classSet('avonni-avatar__entity')
+            .add(`avonni-avatar_${this.entityPosition}`)
+            .add({
+                'avonni-avatar__entity_circle': this.entityVariant === 'circle'
+            });
+    }
+
+    get computedEntitySize() {
+        if (this.size === 'xx-large') return 'small';
+        if (this.size === 'x-large') return 'x-small';
+        return 'xx-small';
     }
 
     get computedInitialsClass() {
@@ -438,14 +414,6 @@ export default class PrimitiveAvatar extends LightningElement {
         return this.entitySrc || this.entityInitials || this.entityIconName;
     }
 
-    get showEntityIcon() {
-        return !this.entitySrc && !this.entityInitials;
-    }
-
-    get showEntityInitials() {
-        return !this.entitySrc && this.entityInitials;
-    }
-
     get showIcon() {
         return !this._src && !this.initials;
     }
@@ -476,25 +444,6 @@ export default class PrimitiveAvatar extends LightningElement {
 
         const bgColor = this.getBackgroundColor();
         initials.style.backgroundColor = bgColor;
-    }
-
-    _computeEntityClass() {
-        const { entityVariant, entityPosition, entityIconName } = this;
-
-        const iconFullName =
-            typeof entityIconName === 'string' ? entityIconName.trim() : ':';
-        const iconCategory = iconFullName.split(':')[0];
-        const iconName = iconFullName.split(':')[1]
-            ? iconFullName.split(':')[1].replace(/_/g, '-')
-            : '';
-
-        this.computedEntityClass = classSet(
-            `avonni-avatar avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
-        )
-            .add(`avonni-avatar_${entityPosition}`)
-            .add({
-                'avonni-avatar__entity_circle': entityVariant === 'circle'
-            });
     }
 
     _computePresenceClass() {
