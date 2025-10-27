@@ -1,6 +1,5 @@
-import { LightningElement, api } from 'lwc';
-import { AvonniResizeObserver } from 'c/resizeObserver';
-import { equal } from 'c/utilsPrivate';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { DateTime } from 'c/luxon';
 import {
     dateTimeObjectFrom,
     getStartOfWeek,
@@ -8,9 +7,8 @@ import {
     intervalFrom,
     isInTimeFrame
 } from 'c/luxonDateTimeUtils';
-import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import { TIME_ZONES } from 'c/timeZones';
-import { DateTime } from 'c/luxon';
 import {
     classSet,
     normalizeArray,
@@ -18,6 +16,8 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { equal } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const DATE_PICKER_MOUSE_MOVE_OFFSET = 25;
 const DATE_PICKER_VARIANTS = {
@@ -55,6 +55,7 @@ const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const DEFAULT_TIME_ZONE_LABEL = 'Time Zone:';
 const DEFAULT_TIME_ZONE_PLACEHOLDER = 'Select time zone';
 const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
+const DEFAULT_WEEK_START_DAY = 0;
 const MIN_INLINE_DATE_PICKER_DATE_WIDTH = 60;
 const MONTH_FORMATS = {
     valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
@@ -210,6 +211,7 @@ export default class DateTimePicker extends LightningElement {
     _disabled = false;
     _value;
     _variant = DATE_TIME_VARIANTS.default;
+    _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     computedMax;
     computedMin;
@@ -989,6 +991,29 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get weekStartDay() {
+        return this._weekStartDay;
+    }
+    set weekStartDay(value) {
+        const number = parseInt(value, 10);
+        this._weekStartDay =
+            isNaN(number) || number < 0 || number > 6
+                ? DEFAULT_WEEK_START_DAY
+                : number;
+
+        if (this._connected) {
+            this._generateTable();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -1314,7 +1339,7 @@ export default class DateTimePicker extends LightningElement {
         }
         this.firstWeekDay =
             this.variant === 'weekly'
-                ? getStartOfWeek(normalizedDate)
+                ? getStartOfWeek(normalizedDate, this.weekStartDay)
                 : normalizedDate;
         this.datePickerValue =
             this.datePickerVariant === 'inline'
@@ -1655,7 +1680,10 @@ export default class DateTimePicker extends LightningElement {
     _setInlineDatePickerFirstDay() {
         if (this._inlineDatePickerMaxVisibleDays === 7) {
             // Show the current week, starting on Sunday
-            this._inlineDatePickerFirstDay = getStartOfWeek(this.firstWeekDay);
+            this._inlineDatePickerFirstDay = getStartOfWeek(
+                this.firstWeekDay,
+                this.weekStartDay
+            );
         } else {
             // Show the selected day in the center of the date picker
             this._inlineDatePickerFirstDay = this.firstWeekDay.minus({
