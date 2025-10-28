@@ -449,6 +449,7 @@ export default class VisualPicker extends LightningElement {
                 validValues: IMAGE_POSITION.valid
             }
         );
+        this._imageAttributes = { ...this._imageAttributes };
     }
 
     /**

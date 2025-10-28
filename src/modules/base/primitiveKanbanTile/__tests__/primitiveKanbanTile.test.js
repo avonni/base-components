@@ -254,12 +254,20 @@ describe('Primitive Kanban Tile', () => {
                     {
                         label: 'Name',
                         type: 'text',
-                        value: 'Item 1'
+                        value: 'Item 1',
+                        computedType: 'text'
                     },
                     {
                         label: 'Available',
                         type: 'boolean',
-                        value: true
+                        value: true,
+                        computedType: 'boolean'
+                    },
+                    {
+                        label: 'Amount',
+                        type: 'int',
+                        value: 2500,
+                        computedType: 'number'
                     }
                 ];
                 element.fields = fields;
@@ -268,10 +276,12 @@ describe('Primitive Kanban Tile', () => {
                     const fieldOutputs = element.shadowRoot.querySelectorAll(
                         '[data-element-id="field-output-data"]'
                     );
-                    expect(fieldOutputs).toHaveLength(2);
+                    expect(fieldOutputs).toHaveLength(3);
                     fieldOutputs.forEach((fieldOutput, index) => {
                         expect(fieldOutput.label).toBe(fields[index].label);
-                        expect(fieldOutput.type).toBe(fields[index].type);
+                        expect(fieldOutput.type).toBe(
+                            fields[index].computedType
+                        );
                         expect(fieldOutput.value).toBe(fields[index].value);
                     });
                 });

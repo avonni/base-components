@@ -972,7 +972,101 @@ describe('OutputData', () => {
 
                     expect(text).toBeTruthy();
                     expect(text.value).toBe('A string value');
-                    expect(text.linkify).toBeTruthy();
+                    expect(text.disableLinkify).toBeFalsy();
+                    expect(
+                        boolean ||
+                            number ||
+                            date ||
+                            email ||
+                            location ||
+                            phone ||
+                            url
+                    ).toBeFalsy();
+                });
+            });
+
+            it('with linkify false', () => {
+                element.type = 'text';
+                element.value = 'A string value';
+                element.typeAttributes = {
+                    linkify: false
+                };
+
+                return Promise.resolve().then(() => {
+                    const boolean = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    const number = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number"]'
+                    );
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const email = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-email"]'
+                    );
+                    const location = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-location"]'
+                    );
+                    const phone = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-phone"]'
+                    );
+                    const text = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-text"]'
+                    );
+                    const url = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-url"]'
+                    );
+
+                    expect(text).toBeTruthy();
+                    expect(text.value).toBe('A string value');
+                    expect(text.disableLinkify).toBeTruthy();
+                    expect(
+                        boolean ||
+                            number ||
+                            date ||
+                            email ||
+                            location ||
+                            phone ||
+                            url
+                    ).toBeFalsy();
+                });
+            });
+
+            it('without linkify', () => {
+                element.type = 'text';
+                element.value = 'A string value';
+                element.typeAttributes = {};
+
+                return Promise.resolve().then(() => {
+                    const boolean = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    const number = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number"]'
+                    );
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const email = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-email"]'
+                    );
+                    const location = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-location"]'
+                    );
+                    const phone = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-phone"]'
+                    );
+                    const text = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-text"]'
+                    );
+                    const url = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-url"]'
+                    );
+
+                    expect(text).toBeTruthy();
+                    expect(text.value).toBe('A string value');
+                    expect(text.disableLinkify).toBeTruthy();
                     expect(
                         boolean ||
                             number ||
