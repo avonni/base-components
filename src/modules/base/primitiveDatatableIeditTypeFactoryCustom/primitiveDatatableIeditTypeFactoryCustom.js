@@ -83,7 +83,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     renderedCallback() {
-        console.log(this.weekStartDay);
         if (!this.concreteComponent) return;
         this.concreteComponent.addEventListener('change', this._changeHandler);
         this.concreteComponent.addEventListener('blur', this._blurHandler);
