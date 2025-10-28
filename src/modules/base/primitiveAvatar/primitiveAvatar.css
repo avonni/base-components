@@ -50,7 +50,6 @@
 
 /* If the avatar is in a group, the size is set by the parent */
 :host(.slds-avatar-grouped) .avonni-avatar,
-.avonni-avatarcircle,
 :host(.slds-avatar-grouped) .avonni-avatar_square,
 :host(.slds-avatar-grouped) .avonni-avatar_circle {
     width: 100%;
