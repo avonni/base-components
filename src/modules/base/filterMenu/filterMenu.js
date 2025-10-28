@@ -199,6 +199,7 @@ export default class FilterMenu extends LightningElement {
     _allowBlur = true;
     _dateRangeFrames = [];
     _dropdownIsFocused = false;
+    _hasFocusRange = false;
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
@@ -287,6 +288,18 @@ export default class FilterMenu extends LightningElement {
             this.dropdownElement.scrollTop === 0
         ) {
             this.handleScroll();
+        }
+
+        // Set the focus on the slider of a dropdown menu
+        if (
+            this._connected &&
+            this.isRange &&
+            !this.isVertical &&
+            !this.isLoading &&
+            this.dropdownVisible &&
+            !this._hasFocusRange
+        ) {
+            this.focusRange();
         }
     }
 
@@ -1751,6 +1764,21 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    /**
+     * Set the focus on the range.
+     */
+    focusRange() {
+        requestAnimationFrame(() => {
+            const range = this.template.querySelector(
+                '[data-element-id="avonni-slider"]'
+            );
+            if (range) {
+                range.focus();
+                this._hasFocusRange = true;
+            }
+        });
+    }
+
     formatDateFromStyle(
         date,
         {
@@ -2019,6 +2047,7 @@ export default class FilterMenu extends LightningElement {
                 this.stopPositioning();
                 this.dispatchClose();
                 this._previousScroll = undefined;
+                this._hasFocusRange = false;
             }
         }
     }
