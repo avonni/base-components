@@ -45,7 +45,6 @@ export default class PrimitiveAvatar extends LightningElement {
     @api entityIconName;
     @api entityInitials;
     @api entitySrc;
-    @api entityVariant;
 
     _actionMenuIcon = DEFAULT_ICON_MENU_ICON;
     _actionPosition = POSITIONS.actionDefault;
@@ -54,6 +53,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _entityPosition = POSITIONS.entityDefault;
     _entityTitle = DEFAULT_ENTITY_TITLE;
+    _entityVariant = AVATAR_VARIANTS.default;
     _fallbackIconName;
     _href;
     _initials;
@@ -149,6 +149,17 @@ export default class PrimitiveAvatar extends LightningElement {
     set entityTitle(value) {
         this._entityTitle =
             (typeof value === 'string' && value.trim()) || DEFAULT_ENTITY_TITLE;
+    }
+
+    @api
+    get entityVariant() {
+        return this._entityVariant;
+    }
+    set entityVariant(value) {
+        this._entityVariant = normalizeString(value, {
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
+        });
     }
 
     @api
