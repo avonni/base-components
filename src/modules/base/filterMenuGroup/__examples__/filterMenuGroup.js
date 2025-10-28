@@ -12,7 +12,8 @@ export const FilterMenuGroup = ({
     menus,
     resetButtonLabel,
     value,
-    variant
+    variant,
+    weekStartDay
 }) => {
     const element = document.createElement('ac-base-filter-menu-group');
     element.applyButtonLabel = applyButtonLabel;
@@ -22,5 +23,6 @@ export const FilterMenuGroup = ({
     element.resetButtonLabel = resetButtonLabel;
     element.value = value;
     element.variant = variant;
+    element.weekStartDay = weekStartDay;
     return element;
 };

@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { deepCopy, normalizeArray, normalizeObject } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const LANGUAGES = [
     {
@@ -106,6 +106,7 @@ export default class FilterMenuGroup extends LightningElement {
     @api hideSelectedItems;
     @api resetButtonLabel;
     @api variant;
+    @api weekStartDay;
 
     _menus = [];
     _value = {};

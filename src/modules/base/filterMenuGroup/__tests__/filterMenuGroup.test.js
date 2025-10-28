@@ -26,6 +26,7 @@ describe('FilterMenuGroup', () => {
             expect(element.resetButtonLabel).toBe('Reset');
             expect(element.value).toEqual({});
             expect(element.variant).toBe('horizontal');
+            expect(element.weekStartDay).toBe(0);
         });
 
         describe('applyButtonLabel', () => {
@@ -299,6 +300,22 @@ describe('FilterMenuGroup', () => {
                         '[data-element-id^="lightning-button"]'
                     );
                     expect(buttons).toHaveLength(2);
+                });
+            });
+        });
+
+        describe('weekStartDay', () => {
+            it('Passed to the component', () => {
+                element.weekStartDay = 4;
+                element.menus = MENUS;
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="avonni-filter-menu"]'
+                    );
+                    menus.forEach((menu) => {
+                        expect(menu.weekStartDay).toBe(4);
+                    });
                 });
             });
         });
