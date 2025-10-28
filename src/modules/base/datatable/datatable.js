@@ -1,17 +1,11 @@
-import LightningDatatable from 'lightning/datatable';
-import { api } from 'lwc';
 import {
     deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import {
-    getCellValue,
-    getCurrentSelectionLength,
-    isSelectedRow,
-    processInlineEditFinishCustom
-} from './inlineEdit';
+import LightningDatatable from 'lightning/datatable';
+import { api } from 'lwc';
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
 import badge from './badge.html';
@@ -22,6 +16,12 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
+import {
+    getCellValue,
+    getCurrentSelectionLength,
+    isSelectedRow,
+    processInlineEditFinishCustom
+} from './inlineEdit';
 import percentFormatted from './percentFormatted.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
@@ -174,7 +174,8 @@ export default class Datatable extends LightningDatatable {
                 'labelEndDate',
                 'timeStyle',
                 'timezone',
-                'type'
+                'type',
+                'weekStartDay'
             ]
         },
         'dynamic-icon': {
