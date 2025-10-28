@@ -84,6 +84,7 @@ describe('DateTimePicker', () => {
             expect(element.validity).toMatchObject({});
             expect(element.value).toBeUndefined();
             expect(element.variant).toBe('daily');
+            expect(element.weekStartDay).toBe(0);
         });
 
         describe('Avatar', () => {
@@ -1162,6 +1163,50 @@ describe('DateTimePicker', () => {
                     expect(firstButton.ariaPressed).toBeFalsy();
                     expect(secondButton.ariaPressed).toBeFalsy();
                     expect(thirdButton.ariaPressed).toBeFalsy();
+                });
+            });
+        });
+
+        describe('Week start day', () => {
+            it('Inline date picker', () => {
+                element.weekStartDay = 3;
+                element.datePickerVariant = 'inline';
+                element.value = '2025-10-28';
+
+                return Promise.resolve().then(() => {
+                    const firstTime = element.shadowRoot.querySelector(
+                        '[data-element-id="button-inline-date-picker"]'
+                    );
+                    expect(Number(firstTime.dataset.date)).toBe(
+                        new Date(2025, 9, 22).getTime()
+                    );
+                });
+            });
+
+            it('Weekly variant', () => {
+                element.weekStartDay = 1;
+                element.variant = 'weekly';
+                element.value = '2025-10-28';
+
+                return Promise.resolve().then(() => {
+                    const firstTime = element.shadowRoot.querySelector(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(new Date(firstTime.dataset.time).getTime()).toBe(
+                        new Date(2025, 9, 27, 8).getTime()
+                    );
+                });
+            });
+
+            it('Monthly variant', () => {
+                element.weekStartDay = 1;
+                element.variant = 'monthly';
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar"]'
+                    );
+                    expect(calendar.weekStartDay).toBe(1);
                 });
             });
         });

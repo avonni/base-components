@@ -507,6 +507,17 @@ export default {
                     summary: 'No available time slots for this period.'
                 }
             }
+        },
+        weekStartDay: {
+            name: 'week-start-day',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.',
+            table: {
+                type: { summary: 'number' }
+            }
         }
     },
     args: {
@@ -538,7 +549,8 @@ export default {
         timezonePlaceholder: 'Select time zone',
         todayButtonLabel: 'Today',
         type: 'radio',
-        variant: 'daily'
+        variant: 'daily',
+        weekStartDay: 0
     }
 };
 
