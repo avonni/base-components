@@ -492,8 +492,36 @@ describe('DateTimePicker', () => {
                     expect(calendar.disabled).toBeTruthy();
                 });
             });
+        });
 
-            it('Disabled date times', () => {
+        describe('Disabled date times', () => {
+            it('Removed from the time slots', () => {
+                element.value = new Date(2025, 9, 27, 9);
+                element.disabledDateTimes = [
+                    new Date(2025, 9, 30, 10, 30),
+                    'Wed'
+                ];
+                element.variant = 'weekly';
+
+                return Promise.resolve().then(() => {
+                    const dayLabels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="span-day-label"]'
+                    );
+                    expect(dayLabels).toHaveLength(6);
+                    expect(dayLabels[2].textContent).toContain('28');
+                    expect(dayLabels[3].textContent).toContain('30');
+
+                    const days = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-day"]'
+                    );
+                    const day30Hours = days[3].querySelectorAll(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(day30Hours).toHaveLength(19);
+                });
+            });
+
+            it('Displayed as disabled', () => {
                 element.value = new Date(2023, 9, 16, 9);
                 element.disabledDateTimes = [
                     new Date(2023, 9, 16, 10, 30),
@@ -517,11 +545,45 @@ describe('DateTimePicker', () => {
                     const day16Hours = days[1].querySelectorAll(
                         '[data-element-id="button-default"]'
                     );
+                    expect(day16Hours).toHaveLength(20);
                     expect(day16Hours[4].disabled).toBeFalsy();
                     expect(day16Hours[5].disabled).toBeTruthy();
                     expect(day16Hours[6].disabled).toBeFalsy();
                     expect(day16Hours[12].disabled).toBeTruthy();
                 });
+            });
+
+            it('Value is not accepted if disabled', () => {
+                const date = new Date(2023, 9, 16, 10, 30);
+                element.disabledDateTimes = [date];
+                element.value = date;
+                element.variant = 'weekly';
+                element.showDisabledDates = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate(date);
+                    })
+                    .then(() => {
+                        const days = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="div-day"]'
+                        );
+                        const day16Hours = days[1].querySelectorAll(
+                            '[data-element-id="button-default"]'
+                        );
+                        expect(day16Hours[5].ariaPressed).toBeFalsy();
+                        element.disabledDateTimes = null;
+                    })
+                    .then(() => {
+                        // The value is not disabled anymore
+                        const days = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="div-day"]'
+                        );
+                        const day16Hours = days[1].querySelectorAll(
+                            '[data-element-id="button-default"]'
+                        );
+                        expect(day16Hours[5].ariaPressed).toBeTruthy();
+                    });
             });
 
             it('Imprecise disabled date times', () => {
@@ -1129,21 +1191,23 @@ describe('DateTimePicker', () => {
             it('Checkbox', () => {
                 element.type = 'checkbox';
 
-                const buttons = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="button-default"]'
-                );
-                const firstButton = buttons[0];
-                const secondButton = buttons[1];
-                const thirdButton = buttons[2];
-
-                return Promise.resolve().then(() => {
-                    firstButton.click();
-                    secondButton.click();
-                    thirdButton.click();
-                    expect(firstButton.ariaPressed).toBeTruthy();
-                    expect(secondButton.ariaPressed).toBeTruthy();
-                    expect(thirdButton.ariaPressed).toBeTruthy();
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        const buttons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-default"]'
+                        );
+                        buttons[0].click();
+                        buttons[1].click();
+                        buttons[2].click();
+                    })
+                    .then(() => {
+                        const buttons = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-default"]'
+                        );
+                        expect(buttons[0].ariaPressed).toBeTruthy();
+                        expect(buttons[1].ariaPressed).toBeTruthy();
+                        expect(buttons[2].ariaPressed).toBeTruthy();
+                    });
             });
 
             it('Radio', () => {
@@ -1314,6 +1378,62 @@ describe('DateTimePicker', () => {
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
                 });
+            });
+
+            it('Disabled date time picker cannot be selected', () => {
+                element.disabled = true;
+                element.showDisabledDates = true;
+                element.value = new Date(2023, 9, 16, 10, 30);
+
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="button-default"]'
+                    );
+                    time.dispatchEvent(new CustomEvent('click'));
+                    expect(handler).not.toHaveBeenCalled();
+                });
+            });
+
+            it('Disabled time cannot be selected', () => {
+                element.variant = 'weekly';
+                element.showDisabledDates = true;
+                element.disabledDateTimes = [
+                    new Date(2023, 9, 16, 10, 30),
+                    new Date(2023, 9, 16, 11, 30)
+                ];
+                element.value = new Date(2023, 9, 16, 10, 30);
+
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate(new Date(2023, 9, 16));
+                    })
+                    .then(() => {
+                        const days = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="div-day"]'
+                        );
+                        const day16Hours = days[1].querySelectorAll(
+                            '[data-element-id="button-default"]'
+                        );
+                        // Prevent selection of disabled time
+                        const hour1130 = day16Hours[7];
+                        hour1130.dispatchEvent(new CustomEvent('click'));
+                        expect(handler).not.toHaveBeenCalled();
+                        const hour1100 = day16Hours[6];
+
+                        // Disabled times are erased from the change event value
+                        hour1100.dispatchEvent(new CustomEvent('click'));
+                        expect(handler).toHaveBeenCalled();
+                        const value = handler.mock.calls[0][0].detail.value;
+                        expect(new Date(value)).toEqual(
+                            new Date(2023, 9, 16, 11)
+                        );
+                    });
             });
 
             it('Select a date through inline date picker', () => {

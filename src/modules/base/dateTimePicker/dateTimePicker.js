@@ -467,8 +467,10 @@ export default class DateTimePicker extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+
         if (this._connected) {
             this._initTimeFormat();
+            this._processValue();
             this._generateTable();
         }
     }
@@ -487,6 +489,7 @@ export default class DateTimePicker extends LightningElement {
         this._disabledDateTimes = normalizeArray(value);
 
         if (this._connected) {
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -515,6 +518,7 @@ export default class DateTimePicker extends LightningElement {
                 `1970-01-01T${this.endTime}`
             );
             this._initTimeSlots();
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -600,6 +604,7 @@ export default class DateTimePicker extends LightningElement {
         if (this._connected) {
             this.computedMax = this._processDate(this.max).endOf('day');
             this._setFirstWeekDay();
+            this._processValue();
         }
     }
 
@@ -622,6 +627,7 @@ export default class DateTimePicker extends LightningElement {
             const firstDay =
                 this._today < this.computedMin ? this.computedMin : this._today;
             this._setFirstWeekDay(firstDay);
+            this._processValue();
             this._generateTable();
         }
     }
@@ -735,6 +741,7 @@ export default class DateTimePicker extends LightningElement {
                 `1970-01-01T${this.startTime}`
             );
             this._initTimeSlots();
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -1533,6 +1540,7 @@ export default class DateTimePicker extends LightningElement {
      */
     _processValue() {
         this._computedValue = [];
+        this._selectedDayTime = null;
         const normalizedValue =
             this.value && !Array.isArray(this.value)
                 ? [this.value]
@@ -1543,22 +1551,28 @@ export default class DateTimePicker extends LightningElement {
 
             normalizedValue.forEach((val) => {
                 const date = this._processDate(val);
-                if (date) {
-                    selectedDayTimes.push(date.ts);
-                    this._computedValue.push(date.toISO());
+                if (date && !this.disabled && !this._isDisabledDay(date)) {
+                    const endTime = this._processDate(
+                        new Date(date.ts + this.timeSlotDuration)
+                    );
+                    if (!this._isDisabledTime(date, endTime)) {
+                        selectedDayTimes.push(date.ts);
+                        this._computedValue.push(date.toISO());
+                    }
                 }
             });
-
             this._selectedDayTime = selectedDayTimes;
-            return;
-        }
-
-        const date = this._processDate(normalizedValue[0]);
-        if (date) {
-            this._selectedDayTime = date.ts;
-            this._computedValue = [date.toISO()];
         } else {
-            this._selectedDayTime = null;
+            const date = this._processDate(normalizedValue[0]);
+            if (date && !this.disabled && !this._isDisabledDay(date)) {
+                const endTime = this._processDate(
+                    new Date(date.ts + this.timeSlotDuration)
+                );
+                if (!this._isDisabledTime(date, endTime)) {
+                    this._selectedDayTime = date.ts;
+                    this._computedValue = [date.toISO()];
+                }
+            }
         }
     }
 
@@ -1599,7 +1613,7 @@ export default class DateTimePicker extends LightningElement {
 
         while (currentTime < this._computedEndTime) {
             timeSlots.push(
-                new Date(currentTime).toLocaleTimeString('default', {
+                new Date(currentTime).toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
                     second: '2-digit',
@@ -1761,16 +1775,16 @@ export default class DateTimePicker extends LightningElement {
             });
 
             const timestamp = day.ts;
-            const selected =
-                this._selectedDayTime && this._isSelected(timestamp);
-
-            if (selected) dayTime.selected = true;
-
             const endTime = this._processDate(
                 new Date(timestamp + this.timeSlotDuration)
             );
             const disabled =
                 dayTime.disabled || this._isDisabledTime(day, endTime);
+
+            const selected = !disabled && this._isSelected(timestamp);
+            if (selected) {
+                dayTime.selected = true;
+            }
             const startTimeLabel = day.toLocaleString({
                 hour: this.timeFormatHour,
                 minute: this.timeFormatMinute,
@@ -1797,7 +1811,7 @@ export default class DateTimePicker extends LightningElement {
                 startTimeISO: day.toISO(),
                 endTimeISO: endTime.toISO(),
                 disabled,
-                selected,
+                selected: selected || undefined,
                 show: !disabled || this.showDisabledDates,
                 computedAriaLabel: `${timeLabel}, ${dateLabel}`
             };
@@ -2109,9 +2123,19 @@ export default class DateTimePicker extends LightningElement {
         if (this.readOnly) return;
 
         const isoDate = event.currentTarget.firstChild.value;
-        const timestamp = this._processDate(isoDate).ts;
+        const date = this._processDate(isoDate);
+        if (date && (this.disabled || this._isDisabledDay(date))) {
+            return;
+        }
+        const endTime = this._processDate(
+            new Date(date.ts + this.timeSlotDuration)
+        );
+        if (this._isDisabledTime(date, endTime)) {
+            return;
+        }
 
         // Select/unselect the date
+        const timestamp = date.ts;
         if (this.type === 'checkbox') {
             const valueIndex = this._computedValue.indexOf(isoDate);
             if (valueIndex > -1) {
