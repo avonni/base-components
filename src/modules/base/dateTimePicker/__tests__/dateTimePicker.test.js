@@ -1413,12 +1413,16 @@ describe('DateTimePicker', () => {
 
             it('Disabled time cannot be selected', () => {
                 element.variant = 'weekly';
+                element.type = 'checkbox';
                 element.showDisabledDates = true;
                 element.disabledDateTimes = [
                     new Date(2023, 9, 16, 10, 30),
                     new Date(2023, 9, 16, 11, 30)
                 ];
-                element.value = new Date(2023, 9, 16, 10, 30);
+                element.value = [
+                    new Date(2023, 9, 16, 10, 30),
+                    new Date(2023, 9, 16, 13)
+                ];
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
@@ -1444,7 +1448,11 @@ describe('DateTimePicker', () => {
                         hour1100.dispatchEvent(new CustomEvent('click'));
                         expect(handler).toHaveBeenCalled();
                         const value = handler.mock.calls[0][0].detail.value;
-                        expect(new Date(value)).toEqual(
+                        expect(value).toHaveLength(2);
+                        expect(new Date(value[0])).toEqual(
+                            new Date(2023, 9, 16, 13)
+                        );
+                        expect(new Date(value[1])).toEqual(
                             new Date(2023, 9, 16, 11)
                         );
                     });
