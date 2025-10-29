@@ -235,7 +235,7 @@ export default class DateTimePicker extends LightningElement {
     _inlineDatePickerMaxVisibleDays = DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS;
     _resizeIsHandledByParent = false;
     _resizeObserver;
-    _selectedDayTime;
+    _selectedDayTime = [];
     _today;
     _timeSlotMinHeight = 0;
     _timeSlotMinWidth = 0;
@@ -1540,7 +1540,7 @@ export default class DateTimePicker extends LightningElement {
      */
     _processValue() {
         this._computedValue = [];
-        this._selectedDayTime = null;
+        this._selectedDayTime = [];
         const normalizedValue =
             this.value && !Array.isArray(this.value)
                 ? [this.value]
@@ -1550,28 +1550,18 @@ export default class DateTimePicker extends LightningElement {
             const selectedDayTimes = [];
 
             normalizedValue.forEach((val) => {
-                const date = this._processDate(val);
-                if (date && !this.disabled && !this._isDisabledDay(date)) {
-                    const endTime = this._processDate(
-                        new Date(date.ts + this.timeSlotDuration)
-                    );
-                    if (!this._isDisabledTime(date, endTime)) {
-                        selectedDayTimes.push(date.ts);
-                        this._computedValue.push(date.toISO());
-                    }
+                const date = this._validDate(val);
+                if (date) {
+                    selectedDayTimes.push(date.ts);
+                    this._computedValue.push(date.toISO());
                 }
             });
             this._selectedDayTime = selectedDayTimes;
         } else {
-            const date = this._processDate(normalizedValue[0]);
-            if (date && !this.disabled && !this._isDisabledDay(date)) {
-                const endTime = this._processDate(
-                    new Date(date.ts + this.timeSlotDuration)
-                );
-                if (!this._isDisabledTime(date, endTime)) {
-                    this._selectedDayTime = date.ts;
-                    this._computedValue = [date.toISO()];
-                }
+            const date = this._validDate(normalizedValue[0]);
+            if (date) {
+                this._selectedDayTime = [date.ts];
+                this._computedValue = [date.toISO()];
             }
         }
     }
@@ -1853,11 +1843,7 @@ export default class DateTimePicker extends LightningElement {
      * @returns {boolean} returns false if selection === time.
      */
     _isSelected(time) {
-        const selection = this._selectedDayTime;
-
-        return Array.isArray(selection)
-            ? selection.indexOf(time) > -1
-            : selection === time;
+        return this._selectedDayTime.indexOf(time) > -1;
     }
 
     /**
@@ -1942,6 +1928,17 @@ export default class DateTimePicker extends LightningElement {
             this._resizeObserver.disconnect();
             this._resizeObserver = undefined;
         }
+    }
+
+    _validDate(value) {
+        const date = this._processDate(value);
+        if (!date || this.disabled || this._isDisabledDay(date)) {
+            return null;
+        }
+        const endTime = this._processDate(
+            new Date(date.ts + this.timeSlotDuration)
+        );
+        return this._isDisabledTime(date, endTime) ? null : date;
     }
 
     /*
@@ -2123,14 +2120,8 @@ export default class DateTimePicker extends LightningElement {
         if (this.readOnly) return;
 
         const isoDate = event.currentTarget.firstChild.value;
-        const date = this._processDate(isoDate);
-        if (date && (this.disabled || this._isDisabledDay(date))) {
-            return;
-        }
-        const endTime = this._processDate(
-            new Date(date.ts + this.timeSlotDuration)
-        );
-        if (this._isDisabledTime(date, endTime)) {
+        const date = this._validDate(isoDate);
+        if (!date) {
             return;
         }
 
@@ -2153,8 +2144,9 @@ export default class DateTimePicker extends LightningElement {
         } else {
             this._computedValue =
                 this._computedValue[0] === isoDate ? [] : [isoDate];
-            this._selectedDayTime =
-                this._selectedDayTime === timestamp ? null : timestamp;
+            this._selectedDayTime = this._isSelected(timestamp)
+                ? []
+                : [timestamp];
         }
 
         this._generateTable();
