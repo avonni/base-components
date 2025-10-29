@@ -138,6 +138,19 @@ export default {
                 category: 'Data'
             }
         },
+        hideAvatarInSelectedOptions: {
+            name: 'hide-avatar-in-selected-options',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the avatar will be hidden in selected options.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Appearance'
+            }
+        },
         hideClearIcon: {
             name: 'hide-clear-icon',
             control: {
@@ -541,6 +554,7 @@ export default {
         dropdownAlignment: 'left',
         dropdownLength: '7-items',
         enableInfiniteLoading: false,
+        hideAvatarInSelectedOptions: false,
         hideClearIcon: false,
         hideOptionsUntilSearch: false,
         hideSelectedOptions: false,
