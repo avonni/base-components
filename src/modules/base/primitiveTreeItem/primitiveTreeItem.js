@@ -1,5 +1,6 @@
 import {
     classSet,
+    convertHTMLToPlainText,
     generateUUID,
     normalizeArray,
     normalizeBoolean
@@ -150,16 +151,18 @@ export default class PrimitiveTreeItem extends LightningElement {
     _type;
     _unselectable = false;
 
+    _checkboxIsIndeterminate = false;
+    _connected = false;
+    _focusOn = false;
+    _menuIsOpen = false;
+
     buttonActions = [];
     draftValues = {};
     hasError = false;
     labelIsEdited = false;
     menuActions = [];
+    metatextTitle;
     popoverVisible = false;
-    _checkboxIsIndeterminate = false;
-    _connected = false;
-    _focusOn = false;
-    _menuIsOpen = false;
 
     /*
      * ------------------------------------------------------------
@@ -533,6 +536,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set metatext(value) {
         this._metatext = value;
+        this.metatextTitle = convertHTMLToPlainText(value);
     }
 
     /**

@@ -663,38 +663,23 @@ describe('Primitive Tree Item', () => {
             });
         });
 
-        describe('href, label and metatext', () => {
+        describe('href and label', () => {
             it('Passed to the component', () => {
                 element.label = 'Some label';
                 element.href = 'https://www.salesforce.com/';
-                element.metatext = 'some meta';
 
                 return Promise.resolve().then(() => {
                     const links = element.shadowRoot.querySelectorAll(
                         '[data-group-name="link"]'
                     );
-                    expect(links).toHaveLength(2);
-                    links.forEach((link) =>
-                        expect(link.href).toBe('https://www.salesforce.com/')
-                    );
+                    expect(links).toHaveLength(1);
+                    expect(links[0].href).toBe('https://www.salesforce.com/');
                     expect(links[0].textContent).toBe('Some label');
-                    expect(links[1].textContent).toBe('some meta');
-
-                    const noLinkLabel = element.shadowRoot.querySelector(
-                        '[data-element-id="span-label"]'
-                    );
-                    expect(noLinkLabel).toBeFalsy();
-
-                    const noLinkMeta = element.shadowRoot.querySelector(
-                        '[data-element-id="span-metatext"]'
-                    );
-                    expect(noLinkMeta).toBeFalsy();
                 });
             });
 
-            it('label and metatext with no href', () => {
+            it('label with no href', () => {
                 element.label = 'Some label';
-                element.metatext = 'some meta';
 
                 return Promise.resolve().then(() => {
                     const links = element.shadowRoot.querySelectorAll(
@@ -707,12 +692,57 @@ describe('Primitive Tree Item', () => {
                     );
                     expect(noLinkLabel).toBeTruthy();
                     expect(noLinkLabel.textContent).toBe('Some label');
+                });
+            });
+        });
 
-                    const noLinkMeta = element.shadowRoot.querySelector(
-                        '[data-element-id="span-metatext"]'
+        describe('metatext', () => {
+            it('Passed to the component', () => {
+                element.metatext = 'Some metatext';
+
+                return Promise.resolve().then(() => {
+                    const metatext = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-metatext"]'
                     );
-                    expect(noLinkMeta).toBeTruthy();
-                    expect(noLinkMeta.textContent).toBe('some meta');
+                    const metatextLink = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-metatext-link"]'
+                    );
+                    expect(metatextLink).toBeFalsy();
+                    expect(metatext).toBeTruthy();
+                    expect(metatext.value).toBe('Some metatext');
+                    expect(metatext.title).toBe('Some metatext');
+                });
+            });
+
+            it('Rich text', () => {
+                element.metatext = '<strong>Some metatext</strong>';
+
+                return Promise.resolve().then(() => {
+                    const metatext = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-metatext"]'
+                    );
+                    expect(metatext).toBeTruthy();
+                    expect(metatext.value).toBe(
+                        '<strong>Some metatext</strong>'
+                    );
+                    expect(metatext.title).toBe('Some metatext');
+                });
+            });
+
+            it('With href', () => {
+                element.label = 'Some label';
+                element.href = 'https://www.salesforce.com/';
+                element.metatext = '<strong>Some metatext</strong>';
+
+                return Promise.resolve().then(() => {
+                    const metatextLink = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-metatext-link"]'
+                    );
+                    expect(metatextLink).toBeTruthy();
+                    expect(metatextLink.value).toBe(
+                        '<strong>Some metatext</strong>'
+                    );
+                    expect(metatextLink.title).toBe('Some metatext');
                 });
             });
         });

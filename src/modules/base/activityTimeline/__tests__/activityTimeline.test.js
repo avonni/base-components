@@ -992,18 +992,18 @@ describe('Activity Timeline', () => {
                     });
                 });
             });
+        });
+    });
 
-            describe('title', () => {
-                it('Passed to the component', () => {
-                    element.title = 'This is an title text';
+    describe('title', () => {
+        it('Passed to the component', () => {
+            element.title = 'This is an title text';
 
-                    return Promise.resolve().then(() => {
-                        const title = element.shadowRoot.querySelector(
-                            '.slds-section__title'
-                        );
-                        expect(title.textContent).toBe('This is an title text');
-                    });
-                });
+            return Promise.resolve().then(() => {
+                const title = element.shadowRoot.querySelector(
+                    '.slds-section__title'
+                );
+                expect(title.textContent).toBe('This is an title text');
             });
         });
     });
