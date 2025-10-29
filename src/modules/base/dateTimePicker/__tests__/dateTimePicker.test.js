@@ -540,7 +540,6 @@ describe('DateTimePicker', () => {
                     new Date(2023, 9, 16, 14).toISOString()
                 ];
                 element.variant = 'weekly';
-                element.timezone = 'America/Montreal';
                 element.showDisabledDates = true;
 
                 return Promise.resolve().then(() => {
@@ -600,7 +599,6 @@ describe('DateTimePicker', () => {
             it('Imprecise disabled date times', () => {
                 element.value = new Date(2023, 9, 16, 9);
                 element.disabledDateTimes = [new Date(2023, 9, 16, 10, 43)];
-                element.timezone = 'America/Montreal';
                 element.showDisabledDates = true;
 
                 return Promise.resolve().then(() => {

@@ -61,6 +61,7 @@ const MONTH_FORMATS = {
     valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
     default: 'long'
 };
+const TIME_DATE = '1970-01-02';
 const WEEKDAY_FORMATS = {
     valid: ['narrow', 'short', 'long'],
     default: 'short'
@@ -509,12 +510,12 @@ export default class DateTimePicker extends LightningElement {
         return this._endTime;
     }
     set endTime(value) {
-        const isValid = value && this._processDate(`1970-01-01T${value}`);
+        const isValid = value && this._processDate(`${TIME_DATE}T${value}`);
         this._endTime = isValid ? value : DEFAULT_END_TIME;
 
         if (this._connected) {
             this._computedEndTime = this._processDate(
-                `1970-01-01T${this.endTime}`
+                `${TIME_DATE}T${this.endTime}`
             );
             this._initTimeSlots();
             this._processValue();
@@ -732,12 +733,12 @@ export default class DateTimePicker extends LightningElement {
         return this._startTime;
     }
     set startTime(value) {
-        const isValid = value && this._processDate(`1970-01-01T${value}`);
+        const isValid = value && this._processDate(`${TIME_DATE}T${value}`);
         this._startTime = isValid ? value : DEFAULT_START_TIME;
 
         if (this._connected) {
             this._computedStartTime = this._processDate(
-                `1970-01-01T${this.startTime}`
+                `${TIME_DATE}T${this.startTime}`
             );
             this._initTimeSlots();
             this._processValue();
@@ -1568,9 +1569,11 @@ export default class DateTimePicker extends LightningElement {
     _initDates() {
         this.computedMax = this._processDate(this.max).endOf('day');
         this.computedMin = this._processDate(this.min).startOf('day');
-        this._computedEndTime = this._processDate(`1970-01-01T${this.endTime}`);
+        this._computedEndTime = this._processDate(
+            `${TIME_DATE}T${this.endTime}`
+        );
         this._computedStartTime = this._processDate(
-            `1970-01-01T${this.startTime}`
+            `${TIME_DATE}T${this.startTime}`
         );
         this._today = this._processDate(new Date());
         this.datePickerValue = this._today.toISO();
