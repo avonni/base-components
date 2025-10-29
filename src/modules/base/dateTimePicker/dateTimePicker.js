@@ -249,7 +249,6 @@ export default class DateTimePicker extends LightningElement {
 
     connectedCallback() {
         this._initDates();
-        this._initTimeSlots();
         this._setFirstWeekDay();
 
         // If no time format is provided, defaults to hour:minutes (0:00)
@@ -875,6 +874,7 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._initTimeSlots();
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -898,7 +898,6 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._initDates();
-            this._initTimeSlots();
             const firstDay =
                 this._today < this.computedMin ? this.computedMin : this._today;
             this._setFirstWeekDay(firstDay);
@@ -1575,6 +1574,7 @@ export default class DateTimePicker extends LightningElement {
         );
         this._today = this._processDate(new Date());
         this.datePickerValue = this._today.toISO();
+        this._initTimeSlots();
         this._processValue();
     }
 
@@ -1935,6 +1935,16 @@ export default class DateTimePicker extends LightningElement {
         if (!date || this.disabled || this._isDisabledDay(date)) {
             return null;
         }
+
+        const startTime = date.toISOTime({
+            suppressMilliseconds: true,
+            includeOffset: false
+        });
+        const timeSlot = this._timeSlots.find((ts) => ts === startTime);
+        if (!timeSlot) {
+            // The date does not match the beginning of a time slot
+            return null;
+        }
         const endTime = this._processDate(
             new Date(date.ts + this.timeSlotDuration)
         );
@@ -1968,7 +1978,6 @@ export default class DateTimePicker extends LightningElement {
         this._timezone = event.detail.value;
 
         this._initDates();
-        this._initTimeSlots();
         const firstDay =
             this._today < this.computedMin ? this.computedMin : this._today;
         this._setFirstWeekDay(firstDay);

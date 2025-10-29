@@ -4,12 +4,7 @@ import { createElement } from 'lwc';
 
 // Not tested
 // validity
-// value
-// date format day
-// date format month
 // date format weekday
-// date format year
-// disabled date times
 
 let element;
 describe('DateTimePicker', () => {
@@ -162,43 +157,52 @@ describe('DateTimePicker', () => {
         describe('Date format day', () => {
             it('Passed to the component', () => {
                 element.dateFormatDay = '2-digit';
-                element.value = new Date(2024, 0, 2);
 
-                return Promise.resolve().then(() => {
-                    const label = element.shadowRoot.querySelector(
-                        '[data-element-id="p-date-label"]'
-                    );
-                    expect(label.textContent).toContain('02');
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate(new Date(2024, 0, 2));
+                    })
+                    .then(() => {
+                        const label = element.shadowRoot.querySelector(
+                            '[data-element-id="p-date-label"]'
+                        );
+                        expect(label.textContent).toContain('02');
+                    });
             });
         });
 
         describe('Date format month', () => {
             it('Passed to the component', () => {
                 element.dateFormatMonth = '2-digit';
-                element.value = new Date(2024, 0, 2);
 
-                return Promise.resolve().then(() => {
-                    const label = element.shadowRoot.querySelector(
-                        '[data-element-id="p-date-label"]'
-                    );
-                    expect(label.textContent).toContain('01');
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate(new Date(2024, 0, 2));
+                    })
+                    .then(() => {
+                        const label = element.shadowRoot.querySelector(
+                            '[data-element-id="p-date-label"]'
+                        );
+                        expect(label.textContent).toContain('01');
+                    });
             });
         });
 
         describe('Date format year', () => {
             it('Passed to the component', () => {
                 element.dateFormatYear = '2-digit';
-                element.value = new Date(2024, 0, 2);
 
-                return Promise.resolve().then(() => {
-                    const label = element.shadowRoot.querySelector(
-                        '[data-element-id="p-date-label"]'
-                    );
-                    expect(label.textContent).toContain('24');
-                    expect(label.textContent).not.toContain('2024');
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate(new Date(2024, 0, 2));
+                    })
+                    .then(() => {
+                        const label = element.shadowRoot.querySelector(
+                            '[data-element-id="p-date-label"]'
+                        );
+                        expect(label.textContent).toContain('24');
+                        expect(label.textContent).not.toContain('2024');
+                    });
             });
         });
 
@@ -222,45 +226,50 @@ describe('DateTimePicker', () => {
             describe('inline', () => {
                 it('Display is updated', () => {
                     element.datePickerVariant = 'inline';
-                    element.value = '2023-04-14';
 
-                    return Promise.resolve().then(() => {
-                        const input = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-input"]'
-                        );
-                        expect(input).toBeFalsy();
+                    return Promise.resolve()
+                        .then(() => {
+                            element.goToDate('2023-04-14');
+                        })
+                        .then(() => {
+                            const input = element.shadowRoot.querySelector(
+                                '[data-element-id="lightning-input"]'
+                            );
+                            expect(input).toBeFalsy();
 
-                        const inline = element.shadowRoot.querySelector(
-                            '[data-element-id="div-inline-date-picker"]'
-                        );
-                        expect(inline).toBeTruthy();
+                            const inline = element.shadowRoot.querySelector(
+                                '[data-element-id="div-inline-date-picker"]'
+                            );
+                            expect(inline).toBeTruthy();
 
-                        const labels = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-layout-item-inline-date-picker-weekday-label"]'
-                        );
-                        expect(labels).toHaveLength(7);
+                            const labels = element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-layout-item-inline-date-picker-weekday-label"]'
+                            );
+                            expect(labels).toHaveLength(7);
 
-                        const buttons = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="button-inline-date-picker"]'
-                        );
-                        expect(buttons).toHaveLength(7);
+                            const buttons = element.shadowRoot.querySelectorAll(
+                                '[data-element-id="button-inline-date-picker"]'
+                            );
+                            expect(buttons).toHaveLength(7);
 
-                        // Make sure the test is not affected by the local language
-                        const month = new Intl.DateTimeFormat('default', {
-                            month: 'long',
-                            hour12: false
-                        }).formatToParts(new Date('2023-04-14'))[0].value;
+                            // Make sure the test is not affected by the local language
+                            const month = new Intl.DateTimeFormat('default', {
+                                month: 'long',
+                                hour12: false
+                            }).formatToParts(new Date('2023-04-14'))[0].value;
 
-                        expect(buttons[0].textContent).toBe(`9${month}`);
-                    });
+                            expect(buttons[0].textContent).toBe(`9${month}`);
+                        });
                 });
 
                 it('Drag to the right', () => {
                     element.datePickerVariant = 'inline';
-                    element.value = '2023-04-14';
                     jest.useFakeTimers();
 
                     return Promise.resolve()
+                        .then(() => {
+                            element.goToDate('2023-04-14');
+                        })
                         .then(() => {
                             const sunday = new Date(2023, 3, 9).getTime();
                             const sundayButton =
@@ -314,10 +323,12 @@ describe('DateTimePicker', () => {
 
                 it('Drag to the left', () => {
                     element.datePickerVariant = 'inline';
-                    element.value = '2023-04-14';
                     jest.useFakeTimers();
 
                     return Promise.resolve()
+                        .then(() => {
+                            element.goToDate('2023-04-14');
+                        })
                         .then(() => {
                             const sunday = new Date(2023, 3, 9).getTime();
                             const sundayButton =
@@ -707,7 +718,7 @@ describe('DateTimePicker', () => {
                     const today = new Date();
                     const min = new Date(2040, 11, 1);
                     const max = new Date(1994, 0, 28);
-                    const date = new Date(1993, 4, 5);
+                    const date = new Date(1993, 4, 5, 10, 30);
 
                     // By default, the picker is centered on the current date
                     let input = element.shadowRoot.querySelector(
@@ -1235,16 +1246,19 @@ describe('DateTimePicker', () => {
             it('Inline date picker', () => {
                 element.weekStartDay = 3;
                 element.datePickerVariant = 'inline';
-                element.value = '2025-10-28';
 
-                return Promise.resolve().then(() => {
-                    const firstTime = element.shadowRoot.querySelector(
-                        '[data-element-id="button-inline-date-picker"]'
-                    );
-                    expect(Number(firstTime.dataset.date)).toBe(
-                        new Date(2025, 9, 22).getTime()
-                    );
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate('2025-10-28');
+                    })
+                    .then(() => {
+                        const firstTime = element.shadowRoot.querySelector(
+                            '[data-element-id="button-inline-date-picker"]'
+                        );
+                        expect(Number(firstTime.dataset.date)).toBe(
+                            new Date(2025, 9, 22).getTime()
+                        );
+                    });
             });
 
             it('Weekly variant', () => {
@@ -1588,12 +1602,11 @@ describe('DateTimePicker', () => {
             });
 
             it('Fired on Previous button click', () => {
-                element.value = new Date('2023-12-13');
-
-                const handler = jest.fn();
-                element.addEventListener('navigate', handler);
+                element.goToDate(new Date('2023-12-13'));
 
                 return Promise.resolve().then(() => {
+                    const handler = jest.fn();
+                    element.addEventListener('navigate', handler);
                     const previous = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-icon-previous"]'
                     );
