@@ -54,6 +54,24 @@
     );
 }
 
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-alt-inverse {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(
+            --avonni-progress-bar-bar-value-alt-inverse-color-background,
+            #032d60
+        );
+    background-size: 64px 64px, auto;
+}
+
 /* Base */
 .avonni-progress-bar__pin_theme-base {
     background: var(
@@ -71,6 +89,24 @@
 
 .avonni-progress-bar__bar-background_theme-base {
     background-color: var(--avonni-progress-bar-base-color-background, #dddbda);
+}
+
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-base {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(
+            --avonni-progress-bar-bar-value-base-color-background,
+            var(--lwc-brandAccessible, #0176d3)
+        );
+    background-size: 64px 64px, auto;
 }
 
 /* Error */
@@ -92,6 +128,21 @@
     );
 }
 
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-error {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(--avonni-progress-bar-bar-value-error-color-background, #ba0517);
+    background-size: 64px 64px, auto;
+}
+
 /* Info */
 .avonni-progress-bar__pin_theme-info {
     background: var(--avonni-progress-bar-pin-color-background, #706e6b);
@@ -106,6 +157,21 @@
 
 .avonni-progress-bar__bar-background_theme-info {
     background-color: var(--avonni-progress-bar-info-color-background, #dddbda);
+}
+
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-info {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(--avonni-progress-bar-bar-value-info-color-background, #706e6b);
+    background-size: 64px 64px, auto;
 }
 
 /* Inverse */
@@ -127,6 +193,21 @@
     );
 }
 
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-inverse {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(--avonni-progress-bar-bar-value-inverse-color-background, #001639);
+    background-size: 64px 64px, auto;
+}
+
 /* Offline */
 .avonni-progress-bar__pin_theme-offline {
     background: var(--avonni-progress-bar-pin-color-background, #444);
@@ -144,6 +225,21 @@
         --avonni-progress-bar-offline-color-background,
         #dddbda
     );
+}
+
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-offline {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(--avonni-progress-bar-bar-value-offline-color-background, #444);
+    background-size: 64px 64px, auto;
 }
 
 /* Success */
@@ -165,6 +261,21 @@
     );
 }
 
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-success {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(--avonni-progress-bar-bar-value-success-color-background, #2e844a);
+    background-size: 64px 64px, auto;
+}
+
 /* Warning */
 .avonni-progress-bar__pin_theme-warning {
     background: var(--avonni-progress-bar-pin-color-background, #dd7a01);
@@ -184,17 +295,17 @@
     );
 }
 
-/* Textured */
-.avonni-progress-bar__bar_theme-texture {
-    background-image: linear-gradient(
-        45deg,
-        rgba(24, 24, 24, 0.1) 25%,
-        transparent 25%,
-        transparent 50%,
-        rgba(24, 24, 24, 0.1) 50%,
-        rgba(24, 24, 24, 0.1) 75%,
-        transparent 75%,
-        transparent
-    );
-    background-size: 64px 64px;
+.avonni-progress-bar__bar_theme-texture.avonni-progress-bar__bar_theme-warning {
+    background: linear-gradient(
+            45deg,
+            rgba(24, 24, 24, 0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(24, 24, 24, 0.1) 50%,
+            rgba(24, 24, 24, 0.1) 75%,
+            transparent 75%,
+            transparent
+        ),
+        var(--avonni-progress-bar-bar-value-warning-color-background, #dd7a01);
+    background-size: 64px 64px, auto;
 }
