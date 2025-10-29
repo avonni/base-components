@@ -176,7 +176,7 @@
 
 /* Inverse */
 .avonni-progress-bar__pin_theme-inverse {
-    background: var(--avonni-progress-bar-pin-color-background #001639);
+    background: var(--avonni-progress-bar-pin-color-background, #001639);
 }
 
 .avonni-progress-bar__bar_theme-inverse {
