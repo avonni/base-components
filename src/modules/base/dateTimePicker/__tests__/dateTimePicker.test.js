@@ -1230,6 +1230,215 @@ describe('DateTimePicker', () => {
             });
         });
 
+        describe('Variant', () => {
+            it('Daily', () => {
+                element.variant = 'daily';
+
+                return Promise.resolve().then(() => {
+                    const timeSlots = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(timeSlots).toHaveLength(20);
+
+                    const layoutItem = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-item-time"]'
+                    );
+                    expect(layoutItem.style.cssText).toBe('');
+
+                    const dayLabel = element.shadowRoot.querySelector(
+                        '[data-element-id="div-day-label"]'
+                    );
+                    expect(dayLabel).toBeFalsy();
+
+                    const layout = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-day"]'
+                    );
+                    expect(layout.multipleRows).toBeFalsy();
+                    expect(layout.direction).toBe('column');
+
+                    const timelineTimeSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-item-time-timeline"]'
+                    );
+                    expect(timelineTimeSlot).toBeFalsy();
+
+                    const monthCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar"]'
+                    );
+                    expect(monthCalendar).toBeFalsy();
+                });
+            });
+
+            it('Inline', () => {
+                element.variant = 'inline';
+
+                return Promise.resolve().then(() => {
+                    const timeSlots = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(timeSlots).toHaveLength(20);
+
+                    const layoutItem = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-item-time"]'
+                    );
+                    expect(layoutItem.style.cssText).toBe('');
+
+                    const dayLabel = element.shadowRoot.querySelector(
+                        '[data-element-id="div-day-label"]'
+                    );
+                    expect(dayLabel).toBeFalsy();
+
+                    const layout = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-day"]'
+                    );
+                    expect(layout.multipleRows).toBeTruthy();
+                    expect(layout.direction).toBe('row');
+
+                    const timelineTimeSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-item-time-timeline"]'
+                    );
+                    expect(timelineTimeSlot).toBeFalsy();
+
+                    const monthCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar"]'
+                    );
+                    expect(monthCalendar).toBeFalsy();
+                });
+            });
+
+            describe('Monthly', () => {
+                it('Display is valid', () => {
+                    element.variant = 'monthly';
+
+                    return Promise.resolve().then(() => {
+                        const timeSlots = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="button-default"]'
+                        );
+                        expect(timeSlots).toHaveLength(20);
+
+                        const layoutItem = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-layout-item-time"]'
+                        );
+                        expect(layoutItem.style.cssText).toBe('');
+
+                        const dayLabel = element.shadowRoot.querySelector(
+                            '[data-element-id="div-day-label"]'
+                        );
+                        expect(dayLabel).toBeFalsy();
+
+                        const layout = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-layout-day"]'
+                        );
+                        expect(layout.multipleRows).toBeFalsy();
+                        expect(layout.direction).toBe('column');
+
+                        const timelineTimeSlot =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-layout-item-time-timeline"]'
+                            );
+                        expect(timelineTimeSlot).toBeFalsy();
+
+                        const monthCalendar = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-calendar"]'
+                        );
+                        expect(monthCalendar).toBeTruthy();
+                    });
+                });
+
+                it('Value is displayed as marked dates in the calendar', () => {
+                    element.variant = 'monthly';
+                    element.type = 'checkbox';
+                    element.value = [
+                        new Date(2025, 9, 28, 10),
+                        new Date(2025, 9, 28, 14),
+                        new Date(2025, 9, 30, 10)
+                    ];
+
+                    return Promise.resolve().then(() => {
+                        const monthCalendar = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-calendar"]'
+                        );
+                        expect(monthCalendar.markedDates).toHaveLength(2);
+                        expect(
+                            new Date(monthCalendar.markedDates[0].date)
+                        ).toEqual(new Date(2025, 9, 28, 10));
+                        expect(
+                            new Date(monthCalendar.markedDates[1].date)
+                        ).toEqual(new Date(2025, 9, 30, 10));
+                    });
+                });
+            });
+
+            it('Timeline', () => {
+                element.variant = 'timeline';
+
+                return Promise.resolve().then(() => {
+                    const timeSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(timeSlot).toBeFalsy();
+
+                    const layoutItem = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-item-time"]'
+                    );
+                    expect(layoutItem).toBeFalsy();
+
+                    const dayLabel = element.shadowRoot.querySelector(
+                        '[data-element-id="div-day-label"]'
+                    );
+                    expect(dayLabel).toBeFalsy();
+
+                    const layout = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-day"]'
+                    );
+                    expect(layout.multipleRows).toBeFalsy();
+                    expect(layout.direction).toBe('column');
+
+                    const timelineTimeSlots =
+                        element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-layout-item-time-timeline"]'
+                        );
+                    expect(timelineTimeSlots).toHaveLength(20);
+
+                    const monthCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar"]'
+                    );
+                    expect(monthCalendar).toBeFalsy();
+                });
+            });
+
+            it('Weekly', () => {
+                element.variant = 'weekly';
+
+                return Promise.resolve().then(() => {
+                    const timeSlots = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(timeSlots).toHaveLength(140);
+
+                    const layoutItem = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-item-time"]'
+                    );
+                    expect(layoutItem.style.cssText).toBe('');
+
+                    const dayLabels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="div-day-label"]'
+                    );
+                    expect(dayLabels).toHaveLength(7);
+
+                    const layout = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-day"]'
+                    );
+                    expect(layout.multipleRows).toBeFalsy();
+                    expect(layout.direction).toBe('column');
+
+                    const timelineTimeSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-layout-item-time-timeline"]'
+                    );
+                    expect(timelineTimeSlot).toBeFalsy();
+                });
+            });
+        });
+
         describe('Week start day', () => {
             it('Inline date picker', () => {
                 element.weekStartDay = 3;
