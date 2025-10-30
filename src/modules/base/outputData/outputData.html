@@ -80,7 +80,13 @@
                     disable-linkify={normalizedTypeAttributes.disableLinkify}
                     value={value}
                     data-element-id="lightning-formatted-text"
-                ></lightning-formatted-rich-text>
+                ></lightning-formatted-text>
+                <!-- Time -->
+                <lightning-formatted-time
+                    if:true={isTime}
+                    value={value}
+                    data-element-id="lightning-formatted-time"
+                ></lightning-formatted-time>
                 <!-- URL -->
                 <lightning-formatted-url
                     if:true={isUrl}
