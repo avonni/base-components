@@ -11,6 +11,7 @@ import Menu from './menu';
 
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
+const DEFAULT_WEEK_START_DAY = 0;
 const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -30,6 +31,7 @@ export default class FilterMenuGroup extends LightningElement {
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _value = {};
     _variant = MENU_VARIANTS.default;
+    _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     computedMenus = [];
     selectedPills = [];
@@ -178,6 +180,25 @@ export default class FilterMenuGroup extends LightningElement {
             fallbackValue: MENU_VARIANTS.default,
             validValues: MENU_VARIANTS.valid
         });
+    }
+
+    /**
+     * Used by the `date-range` menu type. Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get weekStartDay() {
+        return this._weekStartDay;
+    }
+    set weekStartDay(value) {
+        const number = parseInt(value, 10);
+        this._weekStartDay =
+            isNaN(number) || number < 0 || number > 6
+                ? DEFAULT_WEEK_START_DAY
+                : number;
     }
 
     /*
