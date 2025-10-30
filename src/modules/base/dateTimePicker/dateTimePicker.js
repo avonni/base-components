@@ -61,6 +61,7 @@ const MONTH_FORMATS = {
     valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
     default: 'long'
 };
+const TIME_DATE = '1970-01-02';
 const WEEKDAY_FORMATS = {
     valid: ['narrow', 'short', 'long'],
     default: 'short'
@@ -235,7 +236,7 @@ export default class DateTimePicker extends LightningElement {
     _inlineDatePickerMaxVisibleDays = DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS;
     _resizeIsHandledByParent = false;
     _resizeObserver;
-    _selectedDayTime;
+    _selectedDayTime = [];
     _today;
     _timeSlotMinHeight = 0;
     _timeSlotMinWidth = 0;
@@ -249,7 +250,6 @@ export default class DateTimePicker extends LightningElement {
 
     connectedCallback() {
         this._initDates();
-        this._initTimeSlots();
         this._setFirstWeekDay();
 
         // If no time format is provided, defaults to hour:minutes (0:00)
@@ -467,8 +467,10 @@ export default class DateTimePicker extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+
         if (this._connected) {
             this._initTimeFormat();
+            this._processValue();
             this._generateTable();
         }
     }
@@ -487,6 +489,7 @@ export default class DateTimePicker extends LightningElement {
         this._disabledDateTimes = normalizeArray(value);
 
         if (this._connected) {
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -507,14 +510,15 @@ export default class DateTimePicker extends LightningElement {
         return this._endTime;
     }
     set endTime(value) {
-        const isValid = value && this._processDate(`1970-01-01T${value}`);
+        const isValid = value && this._processDate(`${TIME_DATE}T${value}`);
         this._endTime = isValid ? value : DEFAULT_END_TIME;
 
         if (this._connected) {
             this._computedEndTime = this._processDate(
-                `1970-01-01T${this.endTime}`
+                `${TIME_DATE}T${this.endTime}`
             );
             this._initTimeSlots();
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -600,6 +604,7 @@ export default class DateTimePicker extends LightningElement {
         if (this._connected) {
             this.computedMax = this._processDate(this.max).endOf('day');
             this._setFirstWeekDay();
+            this._processValue();
         }
     }
 
@@ -622,6 +627,7 @@ export default class DateTimePicker extends LightningElement {
             const firstDay =
                 this._today < this.computedMin ? this.computedMin : this._today;
             this._setFirstWeekDay(firstDay);
+            this._processValue();
             this._generateTable();
         }
     }
@@ -727,14 +733,15 @@ export default class DateTimePicker extends LightningElement {
         return this._startTime;
     }
     set startTime(value) {
-        const isValid = value && this._processDate(`1970-01-01T${value}`);
+        const isValid = value && this._processDate(`${TIME_DATE}T${value}`);
         this._startTime = isValid ? value : DEFAULT_START_TIME;
 
         if (this._connected) {
             this._computedStartTime = this._processDate(
-                `1970-01-01T${this.startTime}`
+                `${TIME_DATE}T${this.startTime}`
             );
             this._initTimeSlots();
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -868,6 +875,7 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._initTimeSlots();
+            this._processValue();
             this._generateTable();
 
             requestAnimationFrame(() => {
@@ -891,7 +899,6 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._initDates();
-            this._initTimeSlots();
             const firstDay =
                 this._today < this.computedMin ? this.computedMin : this._today;
             this._setFirstWeekDay(firstDay);
@@ -1354,7 +1361,7 @@ export default class DateTimePicker extends LightningElement {
                     this._queueRecompute();
                 });
             }
-            this.dispatchNavigate();
+            this._dispatchNavigate();
         }
     }
 
@@ -1533,44 +1540,49 @@ export default class DateTimePicker extends LightningElement {
      */
     _processValue() {
         this._computedValue = [];
+        this._selectedDayTime = [];
         const normalizedValue =
             this.value && !Array.isArray(this.value)
                 ? [this.value]
                 : normalizeArray(this.value);
 
         if (this.type === 'checkbox') {
-            const selectedDayTimes = [];
-
             normalizedValue.forEach((val) => {
-                const date = this._processDate(val);
+                const date = this._validDate(val);
                 if (date) {
-                    selectedDayTimes.push(date.ts);
+                    this._selectedDayTime.push(date.ts);
                     this._computedValue.push(date.toISO());
                 }
             });
-
-            this._selectedDayTime = selectedDayTimes;
-            return;
+        } else {
+            const date = this._validDate(normalizedValue[0]);
+            if (date) {
+                this._selectedDayTime = [date.ts];
+                this._computedValue = [date.toISO()];
+            }
         }
 
-        const date = this._processDate(normalizedValue[0]);
-        if (date) {
-            this._selectedDayTime = date.ts;
-            this._computedValue = [date.toISO()];
-        } else {
-            this._selectedDayTime = null;
+        if (normalizedValue.length !== this._computedValue.length) {
+            this._value =
+                this.type === 'radio'
+                    ? this._computedValue[0] || null
+                    : [...this._computedValue];
+            this._dispatchChange();
         }
     }
 
     _initDates() {
         this.computedMax = this._processDate(this.max).endOf('day');
         this.computedMin = this._processDate(this.min).startOf('day');
-        this._computedEndTime = this._processDate(`1970-01-01T${this.endTime}`);
+        this._computedEndTime = this._processDate(
+            `${TIME_DATE}T${this.endTime}`
+        );
         this._computedStartTime = this._processDate(
-            `1970-01-01T${this.startTime}`
+            `${TIME_DATE}T${this.startTime}`
         );
         this._today = this._processDate(new Date());
         this.datePickerValue = this._today.toISO();
+        this._initTimeSlots();
         this._processValue();
     }
 
@@ -1599,7 +1611,7 @@ export default class DateTimePicker extends LightningElement {
 
         while (currentTime < this._computedEndTime) {
             timeSlots.push(
-                new Date(currentTime).toLocaleTimeString('default', {
+                new Date(currentTime).toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
                     second: '2-digit',
@@ -1761,16 +1773,16 @@ export default class DateTimePicker extends LightningElement {
             });
 
             const timestamp = day.ts;
-            const selected =
-                this._selectedDayTime && this._isSelected(timestamp);
-
-            if (selected) dayTime.selected = true;
-
             const endTime = this._processDate(
                 new Date(timestamp + this.timeSlotDuration)
             );
             const disabled =
                 dayTime.disabled || this._isDisabledTime(day, endTime);
+
+            const selected = !disabled && this._isSelected(timestamp);
+            if (selected) {
+                dayTime.selected = true;
+            }
             const startTimeLabel = day.toLocaleString({
                 hour: this.timeFormatHour,
                 minute: this.timeFormatMinute,
@@ -1797,7 +1809,7 @@ export default class DateTimePicker extends LightningElement {
                 startTimeISO: day.toISO(),
                 endTimeISO: endTime.toISO(),
                 disabled,
-                selected,
+                selected: selected || undefined,
                 show: !disabled || this.showDisabledDates,
                 computedAriaLabel: `${timeLabel}, ${dateLabel}`
             };
@@ -1839,11 +1851,7 @@ export default class DateTimePicker extends LightningElement {
      * @returns {boolean} returns false if selection === time.
      */
     _isSelected(time) {
-        const selection = this._selectedDayTime;
-
-        return Array.isArray(selection)
-            ? selection.indexOf(time) > -1
-            : selection === time;
+        return this._selectedDayTime.indexOf(time) > -1;
     }
 
     /**
@@ -1930,6 +1938,27 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    _validDate(value) {
+        const date = this._processDate(value);
+        if (!date || this.disabled || this._isDisabledDay(date)) {
+            return null;
+        }
+
+        const startTime = date.toISOTime({
+            suppressMilliseconds: true,
+            includeOffset: false
+        });
+        const timeSlot = this._timeSlots.find((ts) => ts === startTime);
+        if (!timeSlot) {
+            // The date does not match the beginning of a time slot
+            return null;
+        }
+        const endTime = this._processDate(
+            new Date(date.ts + this.timeSlotDuration)
+        );
+        return this._isDisabledTime(date, endTime) ? null : date;
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -1957,7 +1986,6 @@ export default class DateTimePicker extends LightningElement {
         this._timezone = event.detail.value;
 
         this._initDates();
-        this._initTimeSlots();
         const firstDay =
             this._today < this.computedMin ? this.computedMin : this._today;
         this._setFirstWeekDay(firstDay);
@@ -1985,7 +2013,7 @@ export default class DateTimePicker extends LightningElement {
         requestAnimationFrame(() => {
             this._queueRecompute();
         });
-        this.dispatchNavigate();
+        this._dispatchNavigate();
     }
 
     /**
@@ -2109,9 +2137,13 @@ export default class DateTimePicker extends LightningElement {
         if (this.readOnly) return;
 
         const isoDate = event.currentTarget.firstChild.value;
-        const timestamp = this._processDate(isoDate).ts;
+        const date = this._validDate(isoDate);
+        if (!date) {
+            return;
+        }
 
         // Select/unselect the date
+        const timestamp = date.ts;
         if (this.type === 'checkbox') {
             const valueIndex = this._computedValue.indexOf(isoDate);
             if (valueIndex > -1) {
@@ -2129,8 +2161,9 @@ export default class DateTimePicker extends LightningElement {
         } else {
             this._computedValue =
                 this._computedValue[0] === isoDate ? [] : [isoDate];
-            this._selectedDayTime =
-                this._selectedDayTime === timestamp ? null : timestamp;
+            this._selectedDayTime = this._isSelected(timestamp)
+                ? []
+                : [timestamp];
         }
 
         this._generateTable();
@@ -2139,23 +2172,7 @@ export default class DateTimePicker extends LightningElement {
                 ? this._computedValue[0] || null
                 : [...this._computedValue];
 
-        /**
-         * The event fired when the value changed.
-         *
-         * @event
-         * @name change
-         * @param {string|string[]} value Selected options' value. Returns an array of string if the type is checkbox. Returns a string otherwise.
-         * @param {string} name Name of the picker.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.value,
-                    name: this.name
-                }
-            })
-        );
+        this._dispatchChange();
     }
 
     /**
@@ -2177,10 +2194,36 @@ export default class DateTimePicker extends LightningElement {
         this.interactingState.enter();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchChange() {
+        /**
+         * The event fired when the value changed.
+         *
+         * @event
+         * @name change
+         * @param {string|string[]} value Selected options' value. Returns an array of string if the type is checkbox. Returns a string otherwise.
+         * @param {string} name Name of the picker.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: this.value,
+                    name: this.name
+                }
+            })
+        );
+    }
+
     /**
      * Dispatch the `navigate` event.
      */
-    dispatchNavigate() {
+    _dispatchNavigate() {
         /**
          * The event fired when the user navigates to another period of time.
          *
