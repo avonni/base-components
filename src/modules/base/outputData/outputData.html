@@ -75,9 +75,9 @@
                     data-element-id="lightning-formatted-phone"
                 ></lightning-formatted-phone>
                 <!-- Text -->
-                <lightning-formatted-text
+                <lightning-formatted-rich-text
                     if:true={isText}
-                    linkify={normalizedTypeAttributes.linkify}
+                    disable-linkify={normalizedTypeAttributes.disableLinkify}
                     value={value}
                     data-element-id="lightning-formatted-text"
                 ></lightning-formatted-text>

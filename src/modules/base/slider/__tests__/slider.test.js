@@ -247,9 +247,8 @@ describe('Slider', () => {
             });
         });
 
-        describe('max', () => {
-            it('10', () => {
-                element.disableSwap = false;
+        describe('Max', () => {
+            it('Max', () => {
                 element.max = 10;
                 element.value = 15;
 
@@ -260,11 +259,42 @@ describe('Slider', () => {
                     expect(input.value).toBe('10');
                 });
             });
+
+            it('Aligned with the step', () => {
+                element.max = 10;
+                element.step = 5;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(input.max).toBe('10');
+                    expect(max.value).toBe(10);
+                });
+            });
+
+            it('Not aligned with the step', () => {
+                element.max = 10;
+                element.step = 3;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(input.max).toBe('9');
+                    expect(max.value).toBe(9);
+                });
+            });
         });
 
-        describe('min', () => {
-            it('10', () => {
-                element.disableSwap = false;
+        describe('Min', () => {
+            it('Min', () => {
                 element.min = 10;
                 element.value = 0;
 
@@ -273,6 +303,38 @@ describe('Slider', () => {
                         '[data-group-name="input"]'
                     );
                     expect(input.value).toBe('10');
+                });
+            });
+
+            it('Aligned with the step', () => {
+                element.min = -5;
+                element.step = 5;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(input.min).toBe('-5');
+                    expect(min.value).toBe(-5);
+                });
+            });
+
+            it('Not aligned with the step', () => {
+                element.min = -10;
+                element.step = 3;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(input.min).toBe('-9');
+                    expect(min.value).toBe(-9);
                 });
             });
         });
@@ -510,10 +572,10 @@ describe('Slider', () => {
         });
 
         describe('step', () => {
-            it('0.1', () => {
+            it('Smaller than 0', () => {
                 element.min = 0;
                 element.max = 10;
-                element.step = 0.1;
+                element.step = -5;
                 element.value = 5.5;
 
                 return Promise.resolve().then(() => {
@@ -521,7 +583,7 @@ describe('Slider', () => {
                         '[data-group-name="input"]'
                     );
                     inputs.forEach((input) => {
-                        expect(input.step).toEqual('0.1');
+                        expect(input.step).toEqual('5');
                         expect(element.min).toEqual(0);
                         expect(element.max).toEqual(10);
                         expect(element.value).toEqual(5.5);
@@ -529,15 +591,95 @@ describe('Slider', () => {
                 });
             });
 
-            it('3', () => {
-                element.step = 3;
+            it('Equals to 0', () => {
+                element.min = 0;
+                element.max = 10;
+                element.step = 0;
+                element.value = 5.5;
 
                 return Promise.resolve().then(() => {
                     const inputs = element.shadowRoot.querySelectorAll(
                         '[data-group-name="input"]'
                     );
                     inputs.forEach((input) => {
-                        expect(input.step).toEqual('3');
+                        expect(input.step).toEqual('1');
+                        expect(element.min).toEqual(0);
+                        expect(element.max).toEqual(10);
+                        expect(element.value).toEqual(5.5);
+                    });
+                });
+            });
+
+            describe('Higher than 0', () => {
+                it('Decimal', () => {
+                    element.min = 0;
+                    element.max = 10;
+                    element.step = 0.1;
+                    element.value = 5.5;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('0.1');
+                            expect(element.min).toEqual(0);
+                            expect(element.max).toEqual(10);
+                            expect(element.value).toEqual(5.5);
+                        });
+                    });
+                });
+
+                it('Integer', () => {
+                    element.step = 3;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('3');
+                        });
+                    });
+                });
+            });
+
+            describe('Not a number', () => {
+                it('String', () => {
+                    element.min = 0;
+                    element.max = 10;
+                    element.step = 'abc';
+                    element.value = 5.5;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('1');
+                            expect(element.min).toEqual(0);
+                            expect(element.max).toEqual(10);
+                            expect(element.value).toEqual(5.5);
+                        });
+                    });
+                });
+
+                it('Undefined', () => {
+                    element.min = 0;
+                    element.max = 10;
+                    element.step = undefined;
+                    element.value = 5.5;
+
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-group-name="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.step).toEqual('1');
+                            expect(element.min).toEqual(0);
+                            expect(element.max).toEqual(10);
+                            expect(element.value).toEqual(5.5);
+                        });
                     });
                 });
             });

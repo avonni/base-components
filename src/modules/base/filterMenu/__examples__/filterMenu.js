@@ -29,7 +29,8 @@ export const FilterMenu = ({
     type,
     typeAttributes,
     value,
-    variant
+    variant,
+    weekStartDay
 }) => {
     const element = document.createElement('ac-base-filter-menu');
     element.accessKey = accessKey;
@@ -56,5 +57,6 @@ export const FilterMenu = ({
     element.typeAttributes = typeAttributes;
     element.value = value;
     element.variant = variant;
+    element.weekStartDay = weekStartDay;
     return element;
 };

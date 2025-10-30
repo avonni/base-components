@@ -312,6 +312,7 @@
                         max={computedMax}
                         min={computedMin}
                         timezone={timezone}
+                        week-start-day={weekStartDay}
                         data-element-id="avonni-calendar"
                         onchange={handleDateChange}
                         onnavigate={handleCalendarNavigate}
@@ -358,7 +359,9 @@
                                         data-element-id="div-day-label"
                                         data-today={day.isToday}
                                     >
-                                        {day.label}
+                                        <span data-element-id="span-day-label"
+                                            >{day.label}</span
+                                        >
                                     </c-layout-item>
                                     <!-- Hours -->
                                     <template

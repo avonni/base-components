@@ -315,12 +315,8 @@ export default class OutputData extends LightningElement {
      */
     normalizeTypeAttributes() {
         const typeAttributes = Object.entries(this.typeAttributes);
-        if (!typeAttributes.length) {
-            this.normalizedTypeAttributes = {};
-            return;
-        }
-
         const normalizedTypeAttributes = {};
+
         for (let i = 0; i < typeAttributes.length; i++) {
             // Check if the attribute is valid for the type
             const [key, value] = typeAttributes[i];
@@ -358,6 +354,11 @@ export default class OutputData extends LightningElement {
             }
 
             normalizedTypeAttributes[key] = normalizedValue;
+        }
+
+        if (this.isText) {
+            normalizedTypeAttributes.disableLinkify =
+                normalizedTypeAttributes.linkify !== true;
         }
 
         this.normalizedTypeAttributes = normalizedTypeAttributes;

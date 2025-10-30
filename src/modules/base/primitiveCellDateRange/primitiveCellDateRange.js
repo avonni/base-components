@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
+import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellDateRange extends LightningElement {
     @api colKeyValue;
@@ -12,6 +12,7 @@ export default class PrimitiveCellDateRange extends LightningElement {
     @api timeStyle;
     @api timezone;
     @api type;
+    @api weekStartDay;
 
     _value;
 

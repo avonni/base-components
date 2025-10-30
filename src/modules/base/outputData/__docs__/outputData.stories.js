@@ -83,7 +83,7 @@ const Template = (args) => OutputData(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Text',
-    value: 'Some text value'
+    value: '<p style="text-align: center;"><strong style="color: rgb(255, 0, 0); font-size: 20px;"><em>Some text value</em></strong></p> <p>https://google.com</p>'
 };
 
 export const DateTime = Template.bind({});

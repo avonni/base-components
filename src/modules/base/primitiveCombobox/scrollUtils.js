@@ -56,6 +56,12 @@ function getTopOption({ list, groupElements, topActionsHeight }) {
             };
         }
     }
+    if (options[0]) {
+        return {
+            value: options[0].dataset.value,
+            offset: 0
+        };
+    }
     return null;
 }
 
@@ -65,4 +71,4 @@ function isOutsideOfView(option, list) {
     return top < listBounds.top || bottom > listBounds.bottom;
 }
 
-export { MAX_LOADED_OPTIONS, computeScroll, getTopOption, isOutsideOfView };
+export { computeScroll, getTopOption, isOutsideOfView, MAX_LOADED_OPTIONS };
