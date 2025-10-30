@@ -1547,16 +1547,13 @@ export default class DateTimePicker extends LightningElement {
                 : normalizeArray(this.value);
 
         if (this.type === 'checkbox') {
-            const selectedDayTimes = [];
-
             normalizedValue.forEach((val) => {
                 const date = this._validDate(val);
                 if (date) {
-                    selectedDayTimes.push(date.ts);
+                    this._selectedDayTime.push(date.ts);
                     this._computedValue.push(date.toISO());
                 }
             });
-            this._selectedDayTime = selectedDayTimes;
         } else {
             const date = this._validDate(normalizedValue[0]);
             if (date) {
