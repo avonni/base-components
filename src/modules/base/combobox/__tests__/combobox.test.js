@@ -30,6 +30,7 @@ describe('Combobox', () => {
             expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.groups).toMatchObject([]);
+            expect(element.hideAvatarInSelectedOptions).toBeFalsy();
             expect(element.hideClearIcon).toBeFalsy();
             expect(element.hideOptionsUntilSearch).toBeFalsy();
             expect(element.hideSelectedOptions).toBeFalsy();
@@ -207,6 +208,68 @@ describe('Combobox', () => {
                     // A default group will be added to the beginning of the list by the primitive combobox
                     expect(combobox.groups).toMatchObject(groups);
                 });
+            });
+        });
+
+        describe('Hide Avatar In Selected Options', () => {
+            it('Hides avatar in vertical selected options', () => {
+                element.hideAvatarInSelectedOptions = true;
+                element.isMultiSelect = true;
+                element.selectedOptionsDirection = 'vertical';
+                element.options = options;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const combobox = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-main"]'
+                        );
+                        combobox.dispatchEvent(
+                            new CustomEvent('privateselect', {
+                                detail: {
+                                    selectedOptions: options
+                                }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const listOfSelectedOptions =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-list"]'
+                            );
+                        listOfSelectedOptions.items.forEach((item) => {
+                            expect(item.avatar).toBeUndefined();
+                        });
+                    });
+            });
+
+            it('Hides avatar in horizontal selected options', () => {
+                element.hideAvatarInSelectedOptions = true;
+                element.isMultiSelect = true;
+                element.selectedOptionsDirection = 'horizontal';
+                element.options = options;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const combobox = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-main"]'
+                        );
+                        combobox.dispatchEvent(
+                            new CustomEvent('privateselect', {
+                                detail: {
+                                    selectedOptions: options
+                                }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const listOfSelectedOptions =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-pill-container"]'
+                            );
+                        listOfSelectedOptions.items.forEach((item) => {
+                            expect(item.avatar).toBeUndefined();
+                        });
+                    });
             });
         });
 

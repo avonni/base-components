@@ -12,6 +12,7 @@ export const Combobox = ({
     fieldLevelHelp,
     enableInfiniteLoading,
     groups,
+    hideAvatarInSelectedOptions,
     hideClearIcon,
     hideOptionsUntilSearch,
     hideSelectedOptions,
@@ -55,6 +56,7 @@ export const Combobox = ({
     element.enableInfiniteLoading = enableInfiniteLoading;
     element.fieldLevelHelp = fieldLevelHelp;
     element.groups = groups;
+    element.hideAvatarInSelectedOptions = hideAvatarInSelectedOptions;
     element.hideClearIcon = hideClearIcon;
     element.hideOptionsUntilSearch = hideOptionsUntilSearch;
     element.hideSelectedOptions = hideSelectedOptions;
