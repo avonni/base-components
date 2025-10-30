@@ -1521,9 +1521,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const dayHeadersHeight = dayHeaders.getBoundingClientRect().height;
         const availableHeight = wrapperHeight - dayHeadersHeight;
         this.cellHeight = availableHeight / numberOfRows;
-        this.template.host.style = `
-            --avonni-scheduler-cell-height: ${this.cellHeight}px;
-        `;
+        const host = this.hostElement || this.template.host;
+        host.style = `--avonni-scheduler-cell-height: ${this.cellHeight}px;`;
     }
 
     /**
@@ -1905,7 +1904,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.multiDayCellHeight = cellSize;
 
             try {
-                this.template.host.style = `
+                const hostElement = this.hostElement || this.template.host;
+                hostElement.style = `
                     --avonni-scheduler-cell-height: ${this.cellHeight}px;
                 `;
             } catch (e) {
