@@ -1561,6 +1561,14 @@ export default class DateTimePicker extends LightningElement {
                 this._computedValue = [date.toISO()];
             }
         }
+
+        if (normalizedValue.length !== this._computedValue.length) {
+            this._value =
+                this.type === 'radio'
+                    ? this._computedValue[0] || null
+                    : [...this._computedValue];
+            this._dispatchChange();
+        }
     }
 
     _initDates() {
@@ -2164,23 +2172,7 @@ export default class DateTimePicker extends LightningElement {
                 ? this._computedValue[0] || null
                 : [...this._computedValue];
 
-        /**
-         * The event fired when the value changed.
-         *
-         * @event
-         * @name change
-         * @param {string|string[]} value Selected options' value. Returns an array of string if the type is checkbox. Returns a string otherwise.
-         * @param {string} name Name of the picker.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.value,
-                    name: this.name
-                }
-            })
-        );
+        this._dispatchChange();
     }
 
     /**
@@ -2200,6 +2192,32 @@ export default class DateTimePicker extends LightningElement {
      */
     handleValueFocus() {
         this.interactingState.enter();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchChange() {
+        /**
+         * The event fired when the value changed.
+         *
+         * @event
+         * @name change
+         * @param {string|string[]} value Selected options' value. Returns an array of string if the type is checkbox. Returns a string otherwise.
+         * @param {string} name Name of the picker.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: this.value,
+                    name: this.name
+                }
+            })
+        );
     }
 
     /**

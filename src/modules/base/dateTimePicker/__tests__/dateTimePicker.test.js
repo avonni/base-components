@@ -583,16 +583,6 @@ describe('DateTimePicker', () => {
                         );
                         expect(day16Hours[5].ariaPressed).toBeFalsy();
                         element.disabledDateTimes = null;
-                    })
-                    .then(() => {
-                        // The value is not disabled anymore
-                        const days = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="div-day"]'
-                        );
-                        const day16Hours = days[1].querySelectorAll(
-                            '[data-element-id="button-default"]'
-                        );
-                        expect(day16Hours[5].ariaPressed).toBeTruthy();
                     });
             });
 
@@ -1390,6 +1380,20 @@ describe('DateTimePicker', () => {
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
                 });
+            });
+
+            it('Invalid values are passed', () => {
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+
+                const date = new Date(2023, 9, 16, 10, 30);
+                element.disabledDateTimes = [date];
+                element.value = date;
+
+                expect(element.value).toEqual(null);
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.value).toEqual(null);
             });
 
             it('Disabled date time picker cannot be selected', () => {
