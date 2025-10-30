@@ -1361,7 +1361,7 @@ export default class DateTimePicker extends LightningElement {
                     this._queueRecompute();
                 });
             }
-            this.dispatchNavigate();
+            this._dispatchNavigate();
         }
     }
 
@@ -2013,7 +2013,7 @@ export default class DateTimePicker extends LightningElement {
         requestAnimationFrame(() => {
             this._queueRecompute();
         });
-        this.dispatchNavigate();
+        this._dispatchNavigate();
     }
 
     /**
@@ -2223,7 +2223,7 @@ export default class DateTimePicker extends LightningElement {
     /**
      * Dispatch the `navigate` event.
      */
-    dispatchNavigate() {
+    _dispatchNavigate() {
         /**
          * The event fired when the user navigates to another period of time.
          *
