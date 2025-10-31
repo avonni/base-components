@@ -221,6 +221,7 @@ export default class DateTimePicker extends LightningElement {
     firstWeekDay;
     helpMessage;
     lastWeekDay;
+    markedDates = [];
     showActionsSlot = true;
     table;
     timezones = TIME_ZONES;
@@ -992,6 +993,10 @@ export default class DateTimePicker extends LightningElement {
         if (this._connected) {
             this._setFirstWeekDay();
 
+            if (this.isMonthly) {
+                this._initMarkedDates();
+            }
+
             requestAnimationFrame(() => {
                 this._queueRecompute();
             });
@@ -1562,6 +1567,10 @@ export default class DateTimePicker extends LightningElement {
             }
         }
 
+        if (this.isMonthly) {
+            this._initMarkedDates();
+        }
+
         if (normalizedValue.length !== this._computedValue.length) {
             this._value =
                 this.type === 'radio'
@@ -1584,6 +1593,18 @@ export default class DateTimePicker extends LightningElement {
         this.datePickerValue = this._today.toISO();
         this._initTimeSlots();
         this._processValue();
+    }
+
+    _initMarkedDates() {
+        const existingDates = new Set();
+        this.markedDates = [];
+        this._computedValue.forEach((value) => {
+            const date = value.split('T')[0];
+            if (!existingDates.has(date)) {
+                existingDates.add(date);
+                this.markedDates.push({ date: value });
+            }
+        });
     }
 
     _initResizeObserver() {
@@ -2166,6 +2187,9 @@ export default class DateTimePicker extends LightningElement {
                 : [timestamp];
         }
 
+        if (this.isMonthly) {
+            this._initMarkedDates();
+        }
         this._generateTable();
         this._value =
             this.type === 'radio'

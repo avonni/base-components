@@ -306,12 +306,13 @@
                 <c-layout-item if:true={isMonthly} class="slds-m-right_medium">
                     <!-- Monthly calendar -->
                     <c-calendar
-                        value={firstWeekDayToString}
-                        disabled-dates={disabledDateTimes}
                         disabled={disabled}
+                        disabled-dates={disabledDateTimes}
+                        marked-dates={markedDates}
                         max={computedMax}
                         min={computedMin}
                         timezone={timezone}
+                        value={firstWeekDayToString}
                         week-start-day={weekStartDay}
                         data-element-id="avonni-calendar"
                         onchange={handleDateChange}
@@ -347,6 +348,7 @@
                                 <c-layout
                                     direction={tableDirection}
                                     multiple-rows={isInline}
+                                    data-element-id="avonni-layout-day"
                                 >
                                     <!-- Day label -->
                                     <c-layout-item
