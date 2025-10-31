@@ -1,6 +1,6 @@
-import { DateTime } from 'c/luxon';
 import { createElement } from 'lwc';
 import PrimitiveSchedulerAgenda from '../primitiveSchedulerAgenda';
+import { DateTime } from 'c/luxon';
 
 const RESOURCES = [
     {
@@ -268,7 +268,6 @@ describe('Primitive Scheduler Agenda', () => {
             expect(element.sidePanelPosition).toBe('left');
             expect(element.timeSpan).toEqual({ unit: 'day', span: 1 });
             expect(element.timezone).toBeUndefined();
-            expect(element.weekStartDay).toBe(0);
         });
 
         describe('availableDaysOfTheWeek', () => {
@@ -1411,34 +1410,6 @@ describe('Primitive Scheduler Agenda', () => {
                     expect(start).toBe('2023-02-16T16:00:00.000Z');
                     expect(end).toBe('2023-02-17T15:59:59.999Z');
                 });
-            });
-        });
-
-        describe('weekStartDay', () => {
-            it('Display the events of the current week', () => {
-                element.selectedDate = new Date(2022, 7, 29);
-                element.timeSpan = { unit: 'week', span: 1 };
-                element.events = [EVENTS[0], EVENTS[1]];
-                element.resources = RESOURCES;
-                element.selectedResources = ALL_RESOURCES;
-
-                return Promise.resolve()
-                    .then(() => {
-                        const events = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-                        );
-                        expect(events).toHaveLength(0);
-                        element.weekStartDay = 2;
-                    })
-                    .then(() => {
-                        const events = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-                        );
-                        expect(events).toHaveLength(3);
-                        expect(events[0].eventName).toBe(EVENTS[0].name);
-                        expect(events[1].eventName).toBe(EVENTS[0].name);
-                        expect(events[2].eventName).toBe(EVENTS[1].name);
-                    });
             });
         });
     });

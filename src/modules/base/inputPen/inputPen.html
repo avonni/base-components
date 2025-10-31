@@ -166,57 +166,51 @@
                             if:true={showExtraActions}
                             class="slds-button-group-list"
                         >
-                            <slot name="actions"></slot>
+                            <slot name="actions"> </slot>
                         </li>
-                        <li
-                            if:true={showRightButtons}
-                            class="slds-col_bump-left"
-                        >
-                            <ul class="slds-grid">
-                                <li if:true={showDownload}>
+                        <li if:true={showDownload} class="slds-col_bump-left">
+                            <lightning-button-icon
+                                alternative-text={downloadButtonAlternativeText}
+                                disabled={hasValue}
+                                icon-name="utility:download"
+                                variant="container"
+                                data-element-id="download-button"
+                                data-group-name="button"
+                                onclick={handleDownload}
+                            >
+                            </lightning-button-icon>
+                        </li>
+                        <li>
+                            <ul
+                                if:true={showUndoRedo}
+                                class="
+                                    slds-button-group-list
+                                    slds-m-left_xx-small
+                                "
+                            >
+                                <li if:true={showUndo}>
                                     <lightning-button-icon
-                                        alternative-text={downloadButtonAlternativeText}
-                                        disabled={hasValue}
-                                        icon-name="utility:download"
-                                        variant="container"
-                                        data-element-id="download-button"
+                                        alternative-text={undoButtonAlternativeText}
+                                        disabled={disabledUndoButton}
+                                        icon-name="utility:undo"
+                                        variant="base"
+                                        data-element-id="undo-button"
                                         data-group-name="button"
-                                        onclick={handleDownload}
+                                        onclick={handleUndo}
                                     >
                                     </lightning-button-icon>
                                 </li>
-                                <li if:true={showUndoRedo}>
-                                    <ul
-                                        class="
-                                            slds-button-group-list
-                                            slds-m-left_xx-small
-                                        "
+                                <li if:true={showRedo}>
+                                    <lightning-button-icon
+                                        alternative-text={redoButtonAlternativeText}
+                                        disabled={disabledRedoButton}
+                                        icon-name="utility:redo"
+                                        variant="base"
+                                        data-element-id="redo-button"
+                                        data-group-name="button"
+                                        onclick={handleRedo}
                                     >
-                                        <li if:true={showUndo}>
-                                            <lightning-button-icon
-                                                alternative-text={undoButtonAlternativeText}
-                                                disabled={disabledUndoButton}
-                                                icon-name="utility:undo"
-                                                variant="base"
-                                                data-element-id="undo-button"
-                                                data-group-name="button"
-                                                onclick={handleUndo}
-                                            >
-                                            </lightning-button-icon>
-                                        </li>
-                                        <li if:true={showRedo}>
-                                            <lightning-button-icon
-                                                alternative-text={redoButtonAlternativeText}
-                                                disabled={disabledRedoButton}
-                                                icon-name="utility:redo"
-                                                variant="base"
-                                                data-element-id="redo-button"
-                                                data-group-name="button"
-                                                onclick={handleRedo}
-                                            >
-                                            </lightning-button-icon>
-                                        </li>
-                                    </ul>
+                                    </lightning-button-icon>
                                 </li>
                             </ul>
                         </li>

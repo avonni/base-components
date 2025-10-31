@@ -250,25 +250,6 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         }
     }
 
-    /**
-     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get weekStartDay() {
-        return super.weekStartDay;
-    }
-    set weekStartDay(value) {
-        super.weekStartDay = value;
-
-        if (this._connected) {
-            this.setStartToBeginningOfUnit();
-        }
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES

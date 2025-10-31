@@ -1,12 +1,8 @@
-import { DATE, HOUR, MONTH, YEAR } from './constants';
+import { HOUR, DATE, MONTH, YEAR } from './constants';
 
-function getStartOfWeek(date, weekStartDay = 0) {
-    const weekday = date.getDay();
-    let daysDiff = weekday - weekStartDay;
-    if (daysDiff < 0) {
-        daysDiff = daysDiff + 7;
-    }
-    const timestamp = new Date(date).setDate(date.getDate() - daysDiff);
+function getStartOfWeek(date) {
+    const day = date.getDay();
+    const timestamp = new Date(date).setDate(date.getDate() - day);
     return new Date(timestamp);
 }
 

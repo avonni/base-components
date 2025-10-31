@@ -5,9 +5,9 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { keyValues } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 import { ICON_TYPES } from './icons/salesforceIcons';
+import { keyValues } from 'c/utilsPrivate';
 
 const DEFAULT_BAD_INPUT_MESSAGE = 'Please ensure the value is correct.';
 const DEFAULT_CANCEL_BUTTON_LABEL = 'Cancel';
@@ -1006,8 +1006,6 @@ export default class IconPicker extends LightningElement {
      */
     handleDone(event) {
         event.stopPropagation();
-        event.preventDefault();
-
         if (this.newValue) {
             this._value = this.newValue;
             this.dispatchChange(this.newValue);

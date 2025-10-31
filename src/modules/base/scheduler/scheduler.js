@@ -1,25 +1,17 @@
 import {
     addToDate,
     dateTimeObjectFrom,
-    getStartOfWeek,
     parseTimeFrame,
     removeFromDate
 } from 'c/luxonDateTimeUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
-    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
-    DEFAULT_AVAILABLE_MONTHS,
-    DEFAULT_AVAILABLE_TIME_FRAMES,
-    DEFAULT_DATE_FORMAT,
-    DEFAULT_EVENTS_LABELS,
-    EVENTS_THEMES,
-    WEEK_START_DAYS,
     getDisabledWeekdaysLabels,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
@@ -32,11 +24,16 @@ import { equal } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 import {
     BIG_NUMBER_OF_EVENTS,
+    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
+    DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_COLUMNS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
+    DEFAULT_DATE_FORMAT,
     DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_DISPLAY_FIELDS,
+    DEFAULT_EVENTS_LABELS,
     DEFAULT_LABEL_NO_EVENTS_FOUND,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_SELECTED_TIME_SPAN,
@@ -44,6 +41,7 @@ import {
     DISPLAYS,
     EDIT_MODES,
     EVENTS_PALETTES,
+    EVENTS_THEMES,
     PALETTES,
     SIDE_PANEL_POSITIONS,
     TIME_SPANS,
@@ -97,7 +95,6 @@ export default class Scheduler extends LightningElement {
     _timezone;
     _toolbarActions = [];
     _variant = VARIANTS.default;
-    _weekStartDay = WEEK_START_DAYS.default;
     _zoomToFit = false;
 
     _closeDetailPopoverTimeout;
@@ -1177,24 +1174,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get weekStartDay() {
-        return this._weekStartDay;
-    }
-    set weekStartDay(value) {
-        const number = parseInt(value, 10);
-        this._weekStartDay = WEEK_START_DAYS.valid.includes(number)
-            ? number
-            : WEEK_START_DAYS.default;
-    }
-
-    /**
      * If present, horizontal scrolling will be prevented in the timeline view.
      *
      * @type {boolean}
@@ -1750,15 +1729,37 @@ export default class Scheduler extends LightningElement {
         }
         this.selectedDate = selectedDate;
         const unit = this.currentTimeSpan.unit;
-        const start =
-            unit === 'week'
-                ? getStartOfWeek(selectedDate, this.weekStartDay)
-                : selectedDate.startOf(unit);
+        let start;
 
-        if (start.ts !== this.start) {
-            this._start = start.ts;
-            this.dispatchStartChange();
+        // Compensate the fact that Luxon weeks start on Monday
+        if (unit === 'week' && selectedDate.weekday === 7) {
+            // Start is on Sunday and the unit is week
+            start = selectedDate.startOf('day');
+        } else {
+            start = selectedDate.startOf(unit);
+
+            if (unit === 'week') {
+                // Start is not on a Sunday and the unit is week
+                start = removeFromDate(start, 'day', 1);
+            }
         }
+
+        if (start !== this.start) {
+            /**
+             * The event fired when the start date changes.
+             *
+             * @event
+             * @name startchange
+             * @param {string} value New start date, as an ISO 8601 formatted string.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('startchange', {
+                    detail: { value: start.toISO() }
+                })
+            );
+        }
+        this._start = start.ts;
     }
 
     /**
@@ -2759,14 +2760,14 @@ export default class Scheduler extends LightningElement {
                 this.availableDaysOfTheWeek
             );
         } else {
-            date = previousAllowedTime({
+            date = previousAllowedTime(
                 date,
-                allowedMonths: this.availableMonths,
-                allowedDays: this.availableDaysOfTheWeek,
-                allowedTimeFrames: this.availableTimeFrames,
-                span,
-                unit
-            });
+                this.availableMonths,
+                this.availableDaysOfTheWeek,
+                this.availableTimeFrames,
+                unit,
+                span
+            );
         }
         this.goToDate(date);
     }
@@ -2885,25 +2886,6 @@ export default class Scheduler extends LightningElement {
                     selectedResources: this.selectedResources,
                     name
                 }
-            })
-        );
-    }
-
-    /**
-     * Dispatch the startchange event.
-     */
-    dispatchStartChange() {
-        /**
-         * The event fired when the start date changes.
-         *
-         * @event
-         * @name startchange
-         * @param {string} value New start date, as an ISO 8601 formatted string.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('startchange', {
-                detail: { value: this.computedStart.toISO() }
             })
         );
     }

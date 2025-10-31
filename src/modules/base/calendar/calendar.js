@@ -23,7 +23,6 @@ const DEFAULT_NEXT_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Next Month';
 const DEFAULT_PREVIOUS_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Previous Month';
 const DEFAULT_YEAR_SELECT_ASSISTIVE_TEXT = 'Pick a year';
 const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
-const DEFAULT_WEEK_START_DAY = 0;
 const MONTHS = [
     'January',
     'February',
@@ -87,7 +86,6 @@ export default class Calendar extends LightningElement {
     _timezone;
     _value;
     _weekNumber = false;
-    _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     _computedDateLabels = [];
     _computedDisabledDates = [];
@@ -103,7 +101,6 @@ export default class Calendar extends LightningElement {
     month;
     months = MONTHS;
     year;
-    weekdays = [];
 
     /*
      * ------------------------------------------------------------
@@ -112,7 +109,6 @@ export default class Calendar extends LightningElement {
      */
 
     connectedCallback() {
-        this.initWeekdays();
         this.initDates();
         this.initDisplayDate();
         this.validateCurrentDayValue();
@@ -353,35 +349,9 @@ export default class Calendar extends LightningElement {
         this._weekNumber = normalizeBoolean(value);
 
         if (this._connected) {
-            this.initWeekdays();
             this.generateViewData();
         }
     }
-
-    /**
-     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get weekStartDay() {
-        return this._weekStartDay;
-    }
-    set weekStartDay(value) {
-        const number = parseInt(value, 10);
-        this._weekStartDay =
-            isNaN(number) || number < 0 || number > 6
-                ? DEFAULT_WEEK_START_DAY
-                : number;
-
-        if (this._connected) {
-            this.initWeekdays();
-            this.generateViewData();
-        }
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -411,6 +381,17 @@ export default class Calendar extends LightningElement {
         )
             .add({ 'avonni-calendar__date-with-labels': isLabeled })
             .toString();
+    }
+
+    /**
+     * Compute days from week.
+     */
+    get days() {
+        const days = [];
+        if (this.weekNumber) {
+            days.push('');
+        }
+        return days.concat(DAYS);
     }
 
     /**
@@ -689,8 +670,7 @@ export default class Calendar extends LightningElement {
         const calendarData = [];
         const today = this.startOfDay(new Date());
         const currentMonth = this.displayDate.getMonth();
-        const firstDay = setDate(this.displayDate, 'date', 1);
-        let date = getStartOfWeek(firstDay, this.weekStartDay);
+        let date = getStartOfWeek(setDate(this.displayDate, 'date', 1));
 
         const mode = this.selectionMode;
         const firstValue = this._computedValue[0];
@@ -940,19 +920,6 @@ export default class Calendar extends LightningElement {
         });
         computedValues.sort((a, b) => a.getTime() - b.getTime());
         this._computedValue = computedValues;
-    }
-
-    /**
-     * Initialize the weekdays headers.
-     */
-    initWeekdays() {
-        const days = DAYS.slice(this.weekStartDay).concat(
-            DAYS.slice(0, this.weekStartDay)
-        );
-        if (this.weekNumber) {
-            days.unshift('');
-        }
-        this.weekdays = days;
     }
 
     /**
@@ -1367,13 +1334,10 @@ export default class Calendar extends LightningElement {
                     nextDate = setDate(initialDate, 'date', day + 7);
                     break;
                 case keyValues.home:
-                    nextDate = getStartOfWeek(initialDate, this.weekStartDay);
+                    nextDate = getStartOfWeek(initialDate);
                     break;
                 case keyValues.end: {
-                    const startOfWeek = getStartOfWeek(
-                        initialDate,
-                        this.weekStartDay
-                    );
+                    const startOfWeek = getStartOfWeek(initialDate);
                     nextDate = setDate(
                         startOfWeek,
                         'date',

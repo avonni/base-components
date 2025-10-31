@@ -762,7 +762,6 @@ export default class InputPen extends LightningElement {
 
     /**
      * Check if background fill tool is shown.
-     *
      * @type {boolean}
      */
     get showBackground() {
@@ -798,7 +797,6 @@ export default class InputPen extends LightningElement {
 
     /**
      * Check if download button is shown.
-     *
      * @type {boolean}
      *
      */
@@ -808,7 +806,6 @@ export default class InputPen extends LightningElement {
 
     /**
      * Check if eraser tool is shown.
-     *
      * @type {boolean}
      *
      */
@@ -836,7 +833,6 @@ export default class InputPen extends LightningElement {
 
     /**
      * Check if pen tool is shown.
-     *
      * @type {boolean}
      */
     get showPen() {
@@ -845,22 +841,11 @@ export default class InputPen extends LightningElement {
 
     /**
      * Check if redo button is shown.
-     *
      * @type {boolean}
      *
      */
     get showRedo() {
         return !this.disabledButtons.includes('redo');
-    }
-
-    /**
-     * Check if right buttons are shown.
-     *
-     * @type {boolean}
-     *
-     */
-    get showRightButtons() {
-        return this.showDownload || this.showUndoRedo;
     }
 
     /**
@@ -883,7 +868,6 @@ export default class InputPen extends LightningElement {
 
     /**
      * Check if undo and redo buttons are shown.
-     *
      * @type {boolean}
      *
      */

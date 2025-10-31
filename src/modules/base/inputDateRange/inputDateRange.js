@@ -20,7 +20,6 @@ const DATE_TYPES = {
 };
 const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
 const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
-const DEFAULT_WEEK_START_DAY = 0;
 
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden'],
@@ -110,7 +109,6 @@ export default class InputDateRange extends LightningElement {
     _timeStyle = DATE_STYLES.defaultTime;
     _type = DATE_TYPES.default;
     _variant = LABEL_VARIANTS.default;
-    _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     calendarKeyEvent;
     endTime;
@@ -374,25 +372,6 @@ export default class InputDateRange extends LightningElement {
             fallbackValue: LABEL_VARIANTS.default,
             validValues: LABEL_VARIANTS.valid
         });
-    }
-
-    /**
-     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get weekStartDay() {
-        return this._weekStartDay;
-    }
-    set weekStartDay(value) {
-        const number = parseInt(value, 10);
-        this._weekStartDay =
-            isNaN(number) || number < 0 || number > 6
-                ? DEFAULT_WEEK_START_DAY
-                : number;
     }
 
     /*

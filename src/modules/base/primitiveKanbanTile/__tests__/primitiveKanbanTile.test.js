@@ -205,7 +205,7 @@ describe('Primitive Kanban Tile', () => {
                     expect(container.classList).toContain(
                         'avonni-kanban__tile_dates_due-date'
                     );
-                    expect(date.value.getTime()).toBe(endDate.getTime());
+                    expect(date.value.toLocaleString()).toContain('7/21/2021');
                 });
             });
 
@@ -241,20 +241,12 @@ describe('Primitive Kanban Tile', () => {
                     {
                         label: 'Name',
                         type: 'text',
-                        value: 'Item 1',
-                        computedType: 'text'
+                        value: 'Item 1'
                     },
                     {
                         label: 'Available',
                         type: 'boolean',
-                        value: true,
-                        computedType: 'boolean'
-                    },
-                    {
-                        label: 'Amount',
-                        type: 'int',
-                        value: 2500,
-                        computedType: 'number'
+                        value: true
                     }
                 ];
                 element.fields = fields;
@@ -263,12 +255,10 @@ describe('Primitive Kanban Tile', () => {
                     const fieldOutputs = element.shadowRoot.querySelectorAll(
                         '[data-element-id="field-output-data"]'
                     );
-                    expect(fieldOutputs).toHaveLength(3);
+                    expect(fieldOutputs).toHaveLength(2);
                     fieldOutputs.forEach((fieldOutput, index) => {
                         expect(fieldOutput.label).toBe(fields[index].label);
-                        expect(fieldOutput.type).toBe(
-                            fields[index].computedType
-                        );
+                        expect(fieldOutput.type).toBe(fields[index].type);
                         expect(fieldOutput.value).toBe(fields[index].value);
                     });
                 });
@@ -442,7 +432,7 @@ describe('Primitive Kanban Tile', () => {
                         '[data-element-id="avonni-kanban__tile-start-date"]'
                     );
                     expect(container).toBeTruthy();
-                    expect(date.value.getTime()).toBe(startDate.getTime());
+                    expect(date.value.toLocaleString()).toContain('7/20/2021');
                 });
             });
         });

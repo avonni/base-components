@@ -75,18 +75,12 @@
                     data-element-id="lightning-formatted-phone"
                 ></lightning-formatted-phone>
                 <!-- Text -->
-                <lightning-formatted-rich-text
+                <lightning-formatted-text
                     if:true={isText}
-                    disable-linkify={normalizedTypeAttributes.disableLinkify}
+                    linkify={normalizedTypeAttributes.linkify}
                     value={value}
                     data-element-id="lightning-formatted-text"
-                ></lightning-formatted-rich-text>
-                <!-- Time -->
-                <lightning-formatted-time
-                    if:true={isTime}
-                    value={value}
-                    data-element-id="lightning-formatted-time"
-                ></lightning-formatted-time>
+                ></lightning-formatted-text>
                 <!-- URL -->
                 <lightning-formatted-url
                     if:true={isUrl}

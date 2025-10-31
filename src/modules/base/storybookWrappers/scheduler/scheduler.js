@@ -40,6 +40,5 @@ export default class Scheduler extends LightningElement {
     @api timezone;
     @api toolbarActions;
     @api variant;
-    @api weekStartDay;
     @api zoomToFit;
 }

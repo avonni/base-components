@@ -16,8 +16,7 @@ export const FilterMenuGroup = ({
     showClearButton,
     singleLine,
     value,
-    variant,
-    weekStartDay
+    variant
 }) => {
     const element = document.createElement('ac-base-filter-menu-group');
     element.align = align;
@@ -31,6 +30,5 @@ export const FilterMenuGroup = ({
     element.singleLine = singleLine;
     element.value = value;
     element.variant = variant;
-    element.weekStartDay = weekStartDay;
     return element;
 };

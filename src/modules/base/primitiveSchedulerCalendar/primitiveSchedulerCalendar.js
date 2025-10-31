@@ -15,7 +15,6 @@ import {
     positionPopover,
     ScheduleBase,
     SchedulerEventOccurrence,
-    sortDaysOfTheWeek,
     spansOnMoreThanOneDay,
     updateOccurrencesOffset,
     updateOccurrencesPosition
@@ -176,9 +175,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         super.availableDaysOfTheWeek = value;
 
         if (this._connected) {
-            this.setStartToBeginningOfUnit();
             this.initHeaders();
-            this._hourHeadersLoading = false;
         }
     }
 
@@ -198,13 +195,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     set availableMonths(value) {
         super.availableMonths = value;
 
-        const unavailableMonth = !this.availableMonths.includes(
-            this.computedSelectedDate.month - 1
-        );
-        if (this._connected && unavailableMonth) {
-            this.setStartToBeginningOfUnit();
+        if (this._connected) {
             this.initHeaders();
-            this._hourHeadersLoading = false;
+            this._dayHeadersLoading = false;
         }
     }
 
@@ -392,30 +385,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             if (!this.start || previousStart !== this.start.ts) {
                 this.initHeaders();
                 this.initLeftPanelCalendarDisabledDates();
-            }
-        }
-    }
-
-    /**
-     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get weekStartDay() {
-        return super.weekStartDay;
-    }
-    set weekStartDay(value) {
-        super.weekStartDay = value;
-
-        if (this._connected) {
-            const previousStart = this.start && this.start.ts;
-            this.setStartToBeginningOfUnit();
-
-            if (!this.start || previousStart !== this.start.ts) {
-                this.initHeaders();
             }
         }
     }
@@ -635,12 +604,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     get hourHeadersStart() {
         const startOfDay = this.start.startOf('day');
         const endOfDay = this.start.endOf('day');
-        const numberOfHours = numberOfUnitsBetweenDates({
-            unit: 'hour',
-            firstDate: startOfDay,
-            secondDate: endOfDay,
-            weekStartDay: this.weekStartDay
-        });
+        const numberOfHours = numberOfUnitsBetweenDates(
+            'hour',
+            startOfDay,
+            endOfDay
+        );
         const isSpringTimeChange = numberOfHours < 24;
         return isSpringTimeChange
             ? addToDate(this.start, 'day', 1)
@@ -1175,26 +1143,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const span = this.timeSpan.span;
         const oneDay = this.isDay && span <= 1;
         const weekday = startDate.weekday === 7 ? 0 : startDate.weekday;
-        const sortedDays = sortDaysOfTheWeek(
-            this.availableDaysOfTheWeek,
-            this.weekStartDay
-        );
+        let availableDays = this.availableDaysOfTheWeek;
 
         if (oneDay) {
-            return [weekday];
+            availableDays = [weekday];
         } else if (this.isDay) {
-            const availableDays = [];
-            let dayIndex = sortedDays.findIndex((dayNumber) => {
-                return dayNumber === weekday;
-            });
+            availableDays = [];
+            let dayIndex = this.availableDaysOfTheWeek.findIndex(
+                (dayNumber) => {
+                    return dayNumber === weekday;
+                }
+            );
             for (let i = 0; i < span; i++) {
-                availableDays.push(sortedDays[dayIndex]);
-                const nextDay = sortedDays[dayIndex + 1];
+                availableDays.push(this.availableDaysOfTheWeek[dayIndex]);
+                const nextDay = this.availableDaysOfTheWeek[dayIndex + 1];
                 dayIndex = nextDay ? dayIndex + 1 : 0;
             }
-            return availableDays;
         }
-        return sortedDays;
+        return availableDays;
     }
 
     /**
@@ -1312,12 +1278,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             };
             let weekday = availableDays[i];
 
-            const nextDay = startDate.set({ weekday });
-            if (nextDay.ts < startDate.ts) {
-                startDate = addToDate(nextDay, 'week', 1);
-            } else {
-                startDate = nextDay;
+            if (startDate.weekday === 7 && weekday !== 0) {
+                // Make sure the day will be set to the next weekday,
+                // not the previous weekday
+                startDate = addToDate(startDate, 'day', 1);
+            } else if (weekday === 0) {
+                // Luxon's Sunday is 7, not 0
+                weekday = 7;
             }
+            startDate = startDate.set({ weekday });
 
             if (this.isMonth) {
                 const firstColumn = columns[0];
@@ -1521,8 +1490,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const dayHeadersHeight = dayHeaders.getBoundingClientRect().height;
         const availableHeight = wrapperHeight - dayHeadersHeight;
         this.cellHeight = availableHeight / numberOfRows;
-        const host = this.hostElement || this.template.host;
-        host.style = `--avonni-scheduler-cell-height: ${this.cellHeight}px;`;
+        this.template.host.style = `
+            --avonni-scheduler-cell-height: ${this.cellHeight}px;
+        `;
     }
 
     /**
@@ -1620,21 +1590,19 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 }
 
                 // Add the overflowing events count to the cell
-                if (this._eventData) {
-                    const dayKey = `${cell.month}-${cell.day}`;
-                    const dayMap = this._eventData.eventsPerDayMap;
-                    const dayData = dayMap[dayKey];
+                const dayKey = `${cell.month}-${cell.day}`;
+                const dayMap = this._eventData.eventsPerDayMap;
+                const dayData = dayMap[dayKey];
 
-                    if (dayData && dayData.count) {
-                        const visibleOccurrences = allOccurrences.filter(
-                            (element) => !element.occurrence.overflowsCell
-                        );
-                        cell.overflowingEvents =
-                            dayData.count - visibleOccurrences.length;
-                        return;
-                    }
+                if (dayData && dayData.count) {
+                    const visibleOccurrences = allOccurrences.filter(
+                        (element) => !element.occurrence.overflowsCell
+                    );
+                    cell.overflowingEvents =
+                        dayData.count - visibleOccurrences.length;
+                } else {
+                    cell.overflowingEvents = 0;
                 }
-                cell.overflowingEvents = 0;
             });
         });
     }
@@ -1904,8 +1872,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.multiDayCellHeight = cellSize;
 
             try {
-                const hostElement = this.hostElement || this.template.host;
-                hostElement.style = `
+                this.template.host.style = `
                     --avonni-scheduler-cell-height: ${this.cellHeight}px;
                 `;
             } catch (e) {

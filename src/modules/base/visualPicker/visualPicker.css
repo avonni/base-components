@@ -452,6 +452,7 @@
 
 /*-- responsive --*/
 .avonni-visual-picker_responsive {
+    height: 100%;
     min-height: 15rem;
     max-height: 21rem;
     width: 100%;

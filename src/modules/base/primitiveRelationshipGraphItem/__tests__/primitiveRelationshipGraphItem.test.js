@@ -68,13 +68,11 @@ describe('Primitive Relationship Graph Item', () => {
                 const data = [
                     {
                         label: 'Label 1',
-                        value: 'value-1',
-                        type: 'text'
+                        value: 'value-1'
                     },
                     {
                         label: 'Label 2',
-                        value: 2,
-                        type: 'number'
+                        value: 'value-2'
                     }
                 ];
 
@@ -82,14 +80,11 @@ describe('Primitive Relationship Graph Item', () => {
 
                 return Promise.resolve().then(() => {
                     const labels = element.shadowRoot.querySelectorAll('dt');
-                    const outputDatas = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="avonni-output-data"]'
-                    );
+                    const values = element.shadowRoot.querySelectorAll('dd');
 
                     data.forEach((item, index) => {
                         expect(labels[index].textContent).toBe(item.label);
-                        expect(outputDatas[index].type).toBe(item.type);
-                        expect(outputDatas[index].value).toBe(item.value);
+                        expect(values[index].textContent).toBe(item.value);
                     });
                 });
             });

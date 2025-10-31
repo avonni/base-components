@@ -135,12 +135,11 @@ export default class SchedulerEventData {
                 });
             }
         } else {
-            const daysCount = numberOfUnitsBetweenDates({
-                unit: 'day',
-                firstDate: intersection.start,
-                secondDate: intersection.end,
-                weekStartDay: this.schedule.weekStartDay
-            });
+            const daysCount = numberOfUnitsBetweenDates(
+                'day',
+                intersection.start,
+                intersection.end
+            );
 
             for (let i = 0; i < daysCount; i++) {
                 const date = intersection.start.plus({ days: i });
@@ -773,7 +772,6 @@ export default class SchedulerEventData {
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
         event.schedulerStart = isCalendarMultiDay ? null : visibleStart;
         event.selectedResources = normalizeArray(this.selectedResources);
-        event.weekStartDay = this.schedule.weekStartDay;
 
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels

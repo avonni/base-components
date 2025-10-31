@@ -646,7 +646,7 @@ describe('ProgressBar', () => {
                         '.slds-progress-bar__value'
                     );
                     expect(innerWrapper.classList).not.toContain(
-                        'avonni-progress-bar__bar_theme-texture'
+                        'slds-theme_alert-texture'
                     );
                 });
             });
@@ -659,7 +659,7 @@ describe('ProgressBar', () => {
                         '.slds-progress-bar__value'
                     );
                     expect(innerWrapper.classList).toContain(
-                        'avonni-progress-bar__bar_theme-texture'
+                        'slds-theme_alert-texture'
                     );
                 });
             });

@@ -141,18 +141,6 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        weekStartDay: {
-            name: 'week-start-day',
-            control: {
-                type: 'number'
-            },
-            description:
-                'Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: '0' }
-            }
-        },
         yearSelectAssistiveText: {
             name: 'year-select-assistive-text',
             control: {
@@ -174,8 +162,7 @@ export default {
         previousMonthButtonAlternativeText: 'Previous Month',
         yearSelectAssistiveText: 'Pick a year',
         selectionMode: 'single',
-        weekNumber: false,
-        weekStartDay: 0
+        weekNumber: false
     }
 };
 
@@ -218,8 +205,8 @@ BaseWithWeekNumber.args = {
     value: '05/09/2022',
     weekNumber: true,
     disabledDates: [
-        new Date(2022, 4, 9),
-        new Date(2022, 4, 26),
+        new Date(2021, 4, 9),
+        new Date(2021, 4, 26),
         13,
         14,
         20,

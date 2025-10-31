@@ -303,13 +303,11 @@
 }
 
 .avonni-slider__unit-container_ticks-horizontal {
-    top: 4px;
-    left: 0;
-    right: 0;
+    margin-top: -57px;
 }
 
 .avonni-slider__unit-container_ticks-horizontal-tick {
-    top: 20px;
+    margin-top: -42px;
 }
 
 .avonni-slider__slider::-webkit-slider-thumb {

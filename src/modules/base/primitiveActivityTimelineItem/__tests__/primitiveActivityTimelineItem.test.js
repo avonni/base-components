@@ -49,17 +49,11 @@ describe('Primitive Activity Timeline Item', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        jest.clearAllTimers();
-        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('avonni-activity-timeline-item', {
             is: ActivityTimelineItem
-        });
-        jest.useFakeTimers();
-        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -164,75 +158,6 @@ describe('Primitive Activity Timeline Item', () => {
                     expect(avatar.classList).toContain(
                         'avonni-timeline-item__bullet'
                     );
-                });
-            });
-
-            describe('Line color', () => {
-                let mockGetBackgroundColor;
-
-                afterEach(() => {
-                    if (mockGetBackgroundColor) {
-                        mockGetBackgroundColor.mockRestore();
-                        mockGetBackgroundColor = null;
-                    }
-                });
-
-                it('Uses fallback icon background color', () => {
-                    element.avatar = {
-                        fallbackIconName: 'standard:account'
-                    };
-                    return Promise.resolve()
-                        .then(() => {
-                            const avatar = element.shadowRoot.querySelector(
-                                '[data-element-id="item-marker"]'
-                            );
-                            mockGetBackgroundColor = jest
-                                .spyOn(avatar, 'getBackgroundColor')
-                                .mockImplementation(() => {
-                                    return 'blue';
-                                });
-                            expect(avatar.getBackgroundColor()).toBe('blue');
-                            jest.runAllTimers();
-                        })
-                        .then(() => {
-                            const container = element.shadowRoot.querySelector(
-                                '[data-element-id="avonni-timeline-item"]'
-                            );
-                            const lineColor =
-                                container.style.getPropertyValue(
-                                    '--line-color'
-                                );
-                            expect(lineColor).toBe('blue');
-                        });
-                });
-
-                it('Uses initials background color', () => {
-                    element.avatar = {
-                        initials: 'AB'
-                    };
-                    return Promise.resolve()
-                        .then(() => {
-                            const avatar = element.shadowRoot.querySelector(
-                                '[data-element-id="item-marker"]'
-                            );
-                            mockGetBackgroundColor = jest
-                                .spyOn(avatar, 'getBackgroundColor')
-                                .mockImplementation(() => {
-                                    return 'blue';
-                                });
-                            expect(avatar.getBackgroundColor()).toBe('blue');
-                            jest.runAllTimers();
-                        })
-                        .then(() => {
-                            const container = element.shadowRoot.querySelector(
-                                '[data-element-id="avonni-timeline-item"]'
-                            );
-                            const lineColor =
-                                container.style.getPropertyValue(
-                                    '--line-color'
-                                );
-                            expect(lineColor).toBe('blue');
-                        });
                 });
             });
         });
@@ -428,17 +353,11 @@ describe('Primitive Activity Timeline Item', () => {
                 element.dateFormat = 'dd MMM yyyy';
                 element.datetimeValue = 1621605600000;
 
-                // Make sure the test is not affected by the local language
-                const month = new Intl.DateTimeFormat('default', {
-                    month: 'short',
-                    hour12: false
-                }).formatToParts(new Date(1621605600000))[0].value;
-
                 return Promise.resolve().then(() => {
                     const dateTime = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-formatted-date-time"]'
                     );
-                    expect(dateTime.textContent).toBe(`21 ${month} 2021`);
+                    expect(dateTime.textContent).toBe('21 May 2021');
                 });
             });
         });
@@ -716,20 +635,12 @@ describe('Primitive Activity Timeline Item', () => {
                 element.dateFormat = 'dd/LL/yyyy T ZZZZ';
                 element.datetimeValue = '2020-12-01T00:00:00.000Z';
 
-                // Make sure the test is not affected by the local language
-                const dateParts = new Intl.DateTimeFormat('default', {
-                    timeZoneName: 'short',
-                    hour12: false,
-                    timeZone: 'Pacific/Honolulu'
-                }).formatToParts(new Date('2020-12-01T00:00:00.000Z'));
-                const timezone = dateParts[dateParts.length - 1].value;
-
                 return Promise.resolve().then(() => {
                     const formattedDate = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-formatted-date-time"]'
                     );
                     expect(formattedDate.textContent).toBe(
-                        `30/11/2020 14:00 ${timezone}`
+                        '30/11/2020 14:00 HST'
                     );
                 });
             });

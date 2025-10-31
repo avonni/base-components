@@ -6,16 +6,6 @@
     border-width: var(--avonni-button-sizing-border, 1px);
     border-style: var(--avonni-button-styling-border, solid);
     justify-content: var(--avonni-button-horizontal-alignment, center);
-
-    /* Prevent the spinner from overflowing the button */
-    overflow: hidden;
-}
-
-.avonni-button:hover.avonni-button_border,
-.avonni-button:hover.avonni-button_border-filled,
-.avonni-button:hover.avonni-button_border-inverse {
-    transform: var(--slds-s-button-brand-transform-hover);
-    transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
 }
 
 .avonni-button__spinner {
@@ -77,10 +67,7 @@
     font-family: var(--avonni-button-label-font-family);
     font-size: var(--avonni-button-label-font-size);
     font-style: var(--avonni-button-label-font-style, normal);
-    font-weight: var(
-        --avonni-button-label-font-weight,
-        var(--slds-c-button-font-weight, var(--slds-g-font-weight-4))
-    );
+    font-weight: var(--avonni-button-label-font-weight, 400);
 }
 
 .avonni-button_bare:disabled,
@@ -231,7 +218,8 @@
 .avonni-button_base:focus-visible,
 .avonni-button_base:hover {
     --slds-c-button-color-background: var(
-        --avonni-button-base-color-background-hover
+        --avonni-button-base-color-background-hover,
+        var(--slds-s-button-color-background-hover)
     );
 }
 
@@ -277,10 +265,6 @@
         --avonni-button-border-text-color-active,
         var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
     );
-    transform: none;
-    box-shadow: 0 0 0 0 var(--slds-g-color-neutral-base-20),
-        var(--slds-s-button-shadow-active, revert);
-    transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
 }
 
 /* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
@@ -344,10 +328,6 @@
         --avonni-button-border-filled-text-color-active,
         var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
     );
-    transform: none;
-    box-shadow: 0 0 0 0 var(--slds-g-color-neutral-base-20),
-        var(--slds-s-button-shadow-active, revert);
-    transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
 }
 
 /* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
@@ -406,34 +386,30 @@
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button_border-inverse:active {
     background-color: var(
-        --avonni-button-border-inverse-color-background-active,
-        var(--slds-g-color-surface-container-2)
+        --avonni-button-border-inverse-color-background-active
     );
     border-color: var(
         --avonni-button-border-inverse-color-border-active,
-        var(--slds-g-color-surface-container-2)
+        var(--slds-g-color-border-inverse-1, rgba(255, 255, 255, 0.5))
     );
     color: var(
         --avonni-button-border-inverse-text-color-active,
-        var(--slds-g-color-accent-3)
+        rgba(255, 255, 255, 0.5)
     );
-    box-shadow: 0 0 0 transparent, var(--slds-s-button-shadow-active, revert);
-    transform: none;
 }
 
 .avonni-button_border-inverse:hover,
 .avonni-button_border-inverse:focus {
     background-color: var(
-        --avonni-button-border-inverse-color-background-hover,
-        var(--slds-g-color-surface-container-2)
+        --avonni-button-border-inverse-color-background-hover
     );
     border-color: var(
         --avonni-button-border-inverse-color-border-hover,
-        var(--slds-g-color-surface-container-2)
+        var(--slds-g-color-border-base-1, #c9c9c9)
     );
     color: var(
         --avonni-button-border-inverse-text-color-hover,
-        var(--slds-g-color-accent-3)
+        rgba(255, 255, 255, 0.75)
     );
 }
 
@@ -740,9 +716,9 @@
     );
 }
 
-.avonni-button_inverse:hover:not(:active),
-.avonni-button_inverse:focus:not(:active) {
-    box-shadow: none;
+.slds-button.avonni-button_inverse:focus {
+    --slds-c-button-shadow: 0 0 3px #f3f3f3;
+    outline: none;
 }
 
 .avonni-button_neutral {

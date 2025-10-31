@@ -401,11 +401,11 @@ describe('Kanban', () => {
                     const tile = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-kanban-tile"]'
                     );
-                    expect(tile.startDate.getTime()).toBe(
-                        new Date('2020/07/07').getTime()
+                    expect(tile.startDate.toLocaleString()).toContain(
+                        '7/7/2020'
                     );
-                    expect(tile.dueDate.getTime()).toBe(
-                        new Date(1600354108000).getTime()
+                    expect(tile.dueDate.toLocaleString()).toContain(
+                        '9/17/2020'
                     );
                 });
             });

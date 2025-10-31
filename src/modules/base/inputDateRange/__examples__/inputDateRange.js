@@ -25,8 +25,7 @@ export const InputDateRange = ({
     timezone,
     todayButtonLabel,
     type,
-    variant,
-    weekStartDay
+    variant
 }) => {
     const element = document.createElement('ac-base-input-date-range');
     element.dateStyle = dateStyle;
@@ -49,6 +48,5 @@ export const InputDateRange = ({
     element.todayButtonLabel = todayButtonLabel;
     element.type = type;
     element.variant = variant;
-    element.weekStartDay = weekStartDay;
     return element;
 };

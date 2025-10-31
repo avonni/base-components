@@ -12,7 +12,6 @@ export default class Calendar extends LightningElement {
     @api timezone;
     @api value;
     @api weekNumber;
-    @api weekStartDay;
 
     @api focusDate() {}
     @api focus() {}

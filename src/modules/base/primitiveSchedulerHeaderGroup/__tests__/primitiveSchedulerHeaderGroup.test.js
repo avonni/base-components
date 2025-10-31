@@ -1,5 +1,5 @@
-import PrimitiveSchedulerHeaderGroup from 'avonni/primitiveSchedulerHeaderGroup';
 import { createElement } from 'lwc';
+import PrimitiveSchedulerHeaderGroup from 'avonni/primitiveSchedulerHeaderGroup';
 
 // Not tested because depends on DOM measurement:
 // - Width of the columns and privatecellwidthchange.
@@ -66,7 +66,6 @@ describe('Primitive Scheduler Header Group', () => {
             expect(element.variant).toBe('horizontal');
             expect(element.visibleInterval).toBeUndefined();
             expect(element.visibleWidth).toBe(0);
-            expect(element.weekStartDay).toBe(0);
             expect(element.zoomToFit).toBeFalsy();
         });
 
@@ -727,27 +726,6 @@ describe('Primitive Scheduler Header Group', () => {
                     handler.mock.calls[0][0].detail.cellSize
                 );
                 expect(size).toBe(50);
-            });
-        });
-
-        it('weekStartDay', () => {
-            element.start = new Date(2025, 9, 8);
-            element.timeSpan = {
-                unit: 'week',
-                span: 1
-            };
-            element.availableTimeSpans = [
-                { unit: 'week', span: 1, label: 'W' }
-            ];
-            element.weekStartDay = 1;
-            jest.runAllTimers();
-
-            return Promise.resolve().then(() => {
-                const end = new Date(2025, 9, 13).getTime() - 1;
-                const lastColumn = element.shadowRoot.querySelector(
-                    '[data-element-id="div-cell"]:last-of-type'
-                );
-                expect(Number(lastColumn.dataset.end)).toBe(end);
             });
         });
     });

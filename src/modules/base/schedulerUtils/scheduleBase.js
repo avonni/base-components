@@ -28,8 +28,7 @@ import {
     DEFAULT_NEW_EVENT_TITLE,
     DEFAULT_TIME_SPAN,
     EDIT_MODES,
-    EVENTS_THEMES,
-    WEEK_START_DAYS
+    EVENTS_THEMES
 } from './defaults';
 import EventData from './eventData';
 
@@ -66,7 +65,6 @@ export class ScheduleBase extends LightningElement {
     _selectedResources = [];
     _timeSpan = DEFAULT_TIME_SPAN;
     _timezone;
-    _weekStartDay = WEEK_START_DAYS.default;
     _zoomToFit = false;
 
     _connected = false;
@@ -471,28 +469,6 @@ export class ScheduleBase extends LightningElement {
     }
     set timezone(value) {
         this._timezone = value;
-
-        if (this._connected) {
-            this.initEvents();
-        }
-    }
-
-    /**
-     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get weekStartDay() {
-        return this._weekStartDay;
-    }
-    set weekStartDay(value) {
-        const number = parseInt(value, 10);
-        this._weekStartDay = WEEK_START_DAYS.valid.includes(number)
-            ? number
-            : WEEK_START_DAYS.default;
 
         if (this._connected) {
             this.initEvents();
@@ -946,21 +922,19 @@ export class ScheduleBase extends LightningElement {
                 this.start = this.computedSelectedDate.startOf('day');
                 break;
             case 'START_OF_WEEK':
-                this.start = getStartOfWeek(
-                    this.computedSelectedDate,
-                    this.weekStartDay
-                );
+                this.start = getStartOfWeek(this.computedSelectedDate);
                 break;
             case 'START_OF_MONTH_AND_WEEK':
                 this.start = this.computedSelectedDate.startOf('month');
-                // Make sure there are available days in the current week.
-                // Otherwise, go to the next week.
-                this.start = getFirstAvailableWeek(
-                    this.start,
-                    this.availableDaysOfTheWeek,
-                    this.weekStartDay
-                );
-                this.start = getStartOfWeek(this.start, this.weekStartDay);
+                if (this.start.weekday !== 7) {
+                    // Make sure there are available days in the current week.
+                    // Otherwise, go to the next week.
+                    this.start = getFirstAvailableWeek(
+                        this.start,
+                        this.availableDaysOfTheWeek
+                    );
+                }
+                this.start = getStartOfWeek(this.start);
                 break;
             case 'START_OF_MONTH':
                 this.start = this.computedSelectedDate.startOf('month');

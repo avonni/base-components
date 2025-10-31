@@ -1,8 +1,8 @@
+import { LightningElement, api } from 'lwc';
+import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
 import { getResolvedCellChanges } from 'c/primitiveCellUtils';
-import { classSet } from 'c/utils';
 import { keyValues } from 'c/utilsPrivate';
-import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveDatatableIeditPanelCustom extends LightningElement {
     @api colKeyValue;
@@ -47,7 +47,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api timezone;
     @api labelStartDate;
     @api labelEndDate;
-    @api weekStartDay;
 
     // primitive cell rich-text
     @api formats;

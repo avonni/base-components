@@ -37,8 +37,7 @@ export default class DataTypesFromDtoO extends LightningElement {
                 dateStyle: 'short',
                 labelStartDate: 'Start',
                 labelEndDate: 'End',
-                type: { fieldName: 'dateRangeType' },
-                weekStartDay: 1
+                type: { fieldName: 'dateRangeType' }
             },
             editable: true,
             initialWidth: 320

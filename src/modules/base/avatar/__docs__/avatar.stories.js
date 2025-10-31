@@ -717,10 +717,9 @@ customElements.define(
     'ac-base-avatar-sizes',
     AvatarSizesComponent.CustomElementConstructor
 );
-const AvatarSizes = ({ variant, entityPosition }) => {
+const AvatarSizes = ({ variant }) => {
     const element = document.createElement('ac-base-avatar-sizes');
     element.variant = variant;
-    element.entityPosition = entityPosition;
     return element;
 };
 const TemplateSizes = (args) => AvatarSizes(args);

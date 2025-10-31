@@ -1,6 +1,6 @@
-import { AutoPosition, Direction } from 'c/positionLibrary';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { LightningElement, api } from 'lwc';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { observePosition } from 'c/utilsPrivate';
 
 const BUTTON_SIZES = {
     validBare: ['x-small', 'small', 'medium', 'large'],
@@ -135,7 +135,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     showTitle = true;
     showFooter = true;
-    _autoPosition;
+    _boundingRect = {};
     _popoverVisible = false;
 
     /*
@@ -444,8 +444,8 @@ export default class ButtonIconPopover extends LightningElement {
     get computedPopoverClass() {
         return classSet('slds-popover')
             .add({
-                'slds-is-fixed': this.placement === 'auto',
-                'slds-dropdown_left': this.placement === 'left',
+                'slds-dropdown_left':
+                    this.placement === 'left' || this.isAutoAlignment(),
                 'slds-dropdown_center': this.placement === 'center',
                 'slds-dropdown_right': this.placement === 'right',
                 'slds-dropdown_bottom': this.placement === 'bottom-center',
@@ -753,45 +753,6 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * Start positioning the popover in the viewport.
-     */
-    startPositioning() {
-        const popover = this.template.querySelector(
-            '[data-element-id="div-popover"]'
-        );
-        if (!popover) {
-            return;
-        }
-        if (!this._autoPosition) {
-            this._autoPosition = new AutoPosition(this);
-        }
-
-        this._autoPosition.start({
-            target: () => this.button,
-            element: () => popover,
-            align: {
-                horizontal: Direction.Right,
-                vertical: Direction.Top
-            },
-            targetAlign: {
-                horizontal: Direction.Right,
-                vertical: Direction.Bottom
-            },
-            autoFlip: true,
-            padTop: 4
-        });
-    }
-
-    /**
-     * Stop positioning the popover.
-     */
-    stopPositioning() {
-        if (this._autoPosition) {
-            this._autoPosition.stop();
-        }
-    }
-
-    /**
      * Toggles the popover visibility depending on if it's visible or not.
      * Adds class slds-is-open if popover visible and removes if not.
      */
@@ -800,17 +761,43 @@ export default class ButtonIconPopover extends LightningElement {
             this._popoverVisible = !this._popoverVisible;
 
             if (this._popoverVisible) {
+                this._boundingRect = this.getBoundingClientRect();
+                this.pollBoundingRect();
                 this.dispatchOpen();
-                requestAnimationFrame(() => {
-                    this.startPositioning();
-                });
             } else {
-                this.stopPositioning();
                 this.dispatchClose();
             }
 
             this.classList.toggle('slds-is-open');
         }
+    }
+
+    /**
+     * Poll for change in bounding rectangle
+     * only if it is placement=auto since that is
+     * position:fixed and is opened.
+     */
+    pollBoundingRect() {
+        if (this.isAutoAlignment() && this._popoverVisible) {
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                if (this._connected) {
+                    observePosition(this, 300, this._boundingRect, () => {
+                        this.close();
+                        this.dispatchClose();
+                    });
+
+                    this.pollBoundingRect();
+                }
+            }, 250);
+        }
+    }
+
+    /**
+     * Returns true if the placement is auto.
+     */
+    isAutoAlignment() {
+        return this._placement.startsWith('auto');
     }
 
     /**

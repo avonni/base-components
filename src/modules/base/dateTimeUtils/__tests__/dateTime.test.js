@@ -1,14 +1,5 @@
-import { DateTime as LuxonDateTime } from 'c/luxon';
 import { DateTime } from '../dateTime';
-
-const DEFAULT_LANGUAGE = 'en-CA';
-jest.mock('../constants', () => {
-    const actualConstants = jest.requireActual('../constants');
-    return {
-        DEFAULT_LANGUAGE: DEFAULT_LANGUAGE, // Make sure the tests language is always the same
-        NUMERIC: actualConstants.NUMERIC
-    };
-});
+import { DateTime as LuxonDateTime } from 'c/luxon';
 
 describe('Date Time Utils: Date Time', () => {
     describe('Properties', () => {
@@ -23,7 +14,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.day).toBe(27);
 
             const luxon = LuxonDateTime.fromISO('2025-01-28T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.day).toBe(luxon.day);
         });
@@ -39,7 +30,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.hour).toBe(24 - 5);
 
             const luxon = LuxonDateTime.fromISO('2025-01-28T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.hour).toBe(luxon.hour);
         });
@@ -88,7 +79,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.minute).toBe(0);
 
             const luxon = LuxonDateTime.fromISO('2025-01-28T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.minute).toBe(luxon.minute);
         });
@@ -104,7 +95,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.month).toBe(12);
 
             const luxon = LuxonDateTime.fromISO('2025-01-01T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.month).toBe(luxon.month);
         });
@@ -120,7 +111,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.ordinal).toBe(366);
 
             const luxon = LuxonDateTime.fromISO('2025-01-01T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.ordinal).toBe(luxon.ordinal);
         });
@@ -136,7 +127,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.quarter).toBe(4);
 
             const luxon = LuxonDateTime.fromISO('2025-01-01T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.quarter).toBe(luxon.quarter);
         });
@@ -152,7 +143,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.second).toBe(0);
 
             const luxon = LuxonDateTime.fromISO('2025-01-01T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.second).toBe(luxon.second);
         });
@@ -193,7 +184,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.weekday).toBe(1);
 
             const luxon = LuxonDateTime.fromISO('2025-01-28T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.weekday).toBe(luxon.weekday);
         });
@@ -209,7 +200,7 @@ describe('Date Time Utils: Date Time', () => {
             expect(date.year).toBe(2024);
 
             const luxon = LuxonDateTime.fromISO('2025-01-01T00:00:00Z', {
-                zone: 'America/Toronto'
+                timeZone: 'America/Toronto'
             });
             expect(date.year).toBe(luxon.year);
         });

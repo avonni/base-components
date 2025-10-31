@@ -19,7 +19,6 @@ export default class InputDateRange extends LightningElement {
     @api readOnly;
     @api required;
     @api variant;
-    @api weekStartDay;
 
     @api
     get validity() {

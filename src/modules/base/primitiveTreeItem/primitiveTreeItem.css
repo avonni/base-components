@@ -39,18 +39,10 @@
 }
 
 .avonni-primitive-tree-item__header .avonni-primitive-item__link {
-    color: var(
-        --avonni-tree-item-header-link-text-color,
-        var(--lwc-brandAccessible, #0176d3)
-    );
-}
-
-.avonni-primitive-tree-item__header a.avonni-primitive-item__link:hover,
-.avonni-primitive-tree-item__header a.avonni-primitive-item__link:focus {
-    color: var(
-        --avonni-tree-item-header-link-text-color-hover,
-        var(--lwc-brandAccessibleActive, #014486)
-    );
+    color: var(--avonni-tree-item-header-text-color, #080707);
+    font-size: var(--avonni-tree-item-header-text-font-size, 0.8125rem);
+    font-style: var(--avonni-tree-item-header-text-font-style, normal);
+    font-weight: var(--avonni-tree-item-header-text-font-weight, 400);
 }
 
 .avonni-primitive-tree-item__metatext,
@@ -68,19 +60,12 @@
 }
 
 .avonni-primitive-tree-item__header {
-    color: var(--avonni-tree-item-header-text-color, #080707);
-    font-size: var(--avonni-tree-item-header-text-font-size, 0.8125rem);
-    font-style: var(--avonni-tree-item-header-text-font-style, normal);
-    font-weight: var(--avonni-tree-item-header-text-font-weight, 400);
+    color: var(--avonni-tree-item-text-color-header, #080707);
     background-color: var(--avonni-tree-item-header-color-background);
     padding-top: var(--avonni-tree-item-header-spacing-block-start);
     padding-bottom: var(--avonni-tree-item-header-spacing-block-end);
     padding-left: var(--avonni-tree-item-header-spacing-inline-start);
     padding-right: var(--avonni-tree-item-header-spacing-inline-end);
-}
-
-.avonni-primitive-tree-item__header:hover {
-    background: var(--avonni-tree-item-header-color-background-hover);
 }
 
 .avonni-primitive-tree-item__item {

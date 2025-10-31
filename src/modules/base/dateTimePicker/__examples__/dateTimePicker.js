@@ -48,8 +48,7 @@ export const DateTimePicker = ({
     todayButtonLabel,
     type,
     value,
-    variant,
-    weekStartDay
+    variant
 }) => {
     const element = document.createElement('ac-base-date-time-picker');
     element.avatar = avatar;
@@ -97,6 +96,5 @@ export const DateTimePicker = ({
     element.type = type;
     element.value = value;
     element.variant = variant;
-    element.weekStartDay = weekStartDay;
     return element;
 };

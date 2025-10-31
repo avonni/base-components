@@ -21,17 +21,11 @@ describe('PrimitiveAvatar', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        jest.clearAllTimers();
-        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('primitive-avatar', {
             is: PrimitiveAvatar
-        });
-        jest.useFakeTimers();
-        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -162,110 +156,14 @@ describe('PrimitiveAvatar', () => {
 
     describe('Methods', () => {
         describe('getBackgroundColor', () => {
-            let mockGetComputedStyle;
-
-            afterEach(() => {
-                if (mockGetComputedStyle) {
-                    mockGetComputedStyle.mockRestore();
-                    mockGetComputedStyle = null;
-                }
-            });
-
-            it('Uses custom styling hook', () => {
+            it('getBackgroundColor()', () => {
                 element.fallbackIconName = 'standard:account';
-                mockGetComputedStyle = jest
-                    .spyOn(window, 'getComputedStyle')
-                    .mockReturnValue({
-                        getPropertyValue: jest.fn((prop) => {
-                            if (
-                                prop ===
-                                '--avonni-avatar-fallback-icon-color-background'
-                            )
-                                return 'red';
-                            return '';
-                        })
-                    });
 
                 return Promise.resolve().then(() => {
                     const avatar = element.shadowRoot.querySelector(
                         '[data-element-id="avatar-container"]'
                     );
                     avatar.style.backgroundColor = 'blue';
-                    expect(element.getBackgroundColor()).toBe('red');
-                });
-            });
-
-            describe('Fallback Icon', () => {
-                it('Uses fallback icon default background color', () => {
-                    element.fallbackIconName = 'standard:account';
-
-                    return Promise.resolve().then(() => {
-                        const avatar = element.shadowRoot.querySelector(
-                            '[data-element-id="avatar-container"]'
-                        );
-                        avatar.style.backgroundColor = 'blue';
-                        expect(element.getBackgroundColor()).toBe('blue');
-                    });
-                });
-
-                it('Uses SLDS css variable for fallback icon background color', () => {
-                    element.fallbackIconName = 'standard:account';
-                    mockGetComputedStyle = jest
-                        .spyOn(window, 'getComputedStyle')
-                        .mockReturnValue({
-                            getPropertyValue: jest.fn((prop) => {
-                                if (prop === '--slds-c-icon-color-background')
-                                    return 'red';
-                                return '';
-                            })
-                        });
-
-                    return Promise.resolve().then(() => {
-                        const avatar = element.shadowRoot.querySelector(
-                            '[data-element-id="avatar-container"]'
-                        );
-                        avatar.style.backgroundColor = 'blue';
-                        expect(element.getBackgroundColor()).toBe('red');
-                    });
-                });
-
-                it('Fallback icon prioritized over initials', () => {
-                    element.initials = 'AB';
-                    element.fallbackIconName = 'standard:account';
-                    mockGetComputedStyle = jest
-                        .spyOn(window, 'getComputedStyle')
-                        .mockReturnValue({
-                            getPropertyValue: jest.fn((prop) => {
-                                if (prop === '--slds-c-icon-color-background')
-                                    return 'red';
-                                return '';
-                            })
-                        });
-
-                    return Promise.resolve().then(() => {
-                        const avatar = element.shadowRoot.querySelector(
-                            '[data-element-id="avatar-container"]'
-                        );
-                        avatar.style.backgroundColor = 'blue';
-                        expect(element.getBackgroundColor()).toBe('red');
-                    });
-                });
-            });
-
-            it('Uses initials', () => {
-                element.initials = 'AB';
-                mockGetComputedStyle = jest
-                    .spyOn(window, 'getComputedStyle')
-                    .mockReturnValue({
-                        getPropertyValue: jest.fn((prop) => {
-                            if (prop === '--slds-c-icon-color-background')
-                                return 'red';
-                            return '';
-                        }),
-                        backgroundColor: 'blue'
-                    });
-
-                return Promise.resolve().then(() => {
                     expect(element.getBackgroundColor()).toBe('blue');
                 });
             });

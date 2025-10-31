@@ -16,8 +16,7 @@ export const Calendar = ({
     selectionMode,
     timezone,
     value,
-    weekNumber,
-    weekStartDay
+    weekNumber
 }) => {
     const element = document.createElement('ac-base-calendar');
     element.dateLabels = dateLabels;
@@ -35,6 +34,5 @@ export const Calendar = ({
     element.timezone = timezone;
     element.value = value;
     element.weekNumber = weekNumber;
-    element.weekStartDay = weekStartDay;
     return element;
 };

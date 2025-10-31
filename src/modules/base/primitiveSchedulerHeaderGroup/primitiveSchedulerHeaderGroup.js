@@ -1,27 +1,23 @@
+import { LightningElement, api } from 'lwc';
 import { Interval } from 'c/luxon';
 import {
     addToDate,
     dateTimeObjectFrom,
-    getStartOfWeek,
-    numberOfUnitsBetweenDates
+    numberOfUnitsBetweenDates,
+    removeFromDate
 } from 'c/luxonDateTimeUtils';
-import {
-    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
-    DEFAULT_AVAILABLE_MONTHS,
-    DEFAULT_AVAILABLE_TIME_FRAMES,
-    DEFAULT_TIME_SPAN,
-    WEEK_START_DAYS
-} from 'c/schedulerUtils';
+import { equal } from 'c/utilsPrivate';
+import SchedulerHeader from './schedulerHeader';
 import {
     classSet,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { equal } from 'c/utilsPrivate';
-import { LightningElement, api } from 'lwc';
-import SchedulerHeader from './schedulerHeader';
 
+const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
+const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_TIME_SPANS = [
     { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
     { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
@@ -41,6 +37,10 @@ const DEFAULT_HEADERS = [
     }
 ];
 const DEFAULT_START_DATE = new Date();
+const DEFAULT_TIME_SPAN = {
+    unit: 'day',
+    span: 1
+};
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 const VARIANTS = {
     valid: ['horizontal', 'vertical'],
@@ -64,7 +64,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _timezone;
     _variant = VARIANTS.default;
     _visibleWidth = 0;
-    _weekStartDay = WEEK_START_DAYS.default;
     _zoomToFit = false;
 
     _cellsSizeUpdateAnimationFrame;
@@ -369,28 +368,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
-     * Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
-     *
-     * @type {number}
-     * @default 0
-     * @public
-     */
-    @api
-    get weekStartDay() {
-        return this._weekStartDay;
-    }
-    set weekStartDay(value) {
-        const number = parseInt(value, 10);
-        this._weekStartDay = WEEK_START_DAYS.valid.includes(number)
-            ? number
-            : WEEK_START_DAYS.default;
-
-        if (this._connected) {
-            this.initHeaders();
-        }
-    }
-
-    /**
      * If present, horizontal scrolling will be prevented.
      *
      * @type {boolean}
@@ -454,10 +431,17 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         const { unit, span } = this.timeSpan;
         let start = this.computedStart;
         if (this.endOnTimeSpanUnit) {
-            if (unit === 'week') {
-                start = getStartOfWeek(start, this.weekStartDay);
+            // Compensate the fact that Luxon weeks start on Monday
+            if (unit === 'week' && start.weekday === 7) {
+                // Start is on Sunday and the unit is week
+                start = start.startOf('day');
             } else {
                 start = this.computedStart.startOf(unit);
+
+                if (unit === 'week') {
+                    // Start is not on a Sunday and the unit is week
+                    start = removeFromDate(start, 'day', 1);
+                }
             }
         }
         const timeSpanEnd = addToDate(start, unit, span);
@@ -603,12 +587,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 (header) => header.unit === referenceUnit
             );
 
-            const referenceCells = numberOfUnitsBetweenDates({
-                unit: referenceUnit,
-                firstDate: this.computedStart,
-                secondDate: this.end,
-                weekStartDay: this.weekStartDay
-            });
+            const referenceCells = numberOfUnitsBetweenDates(
+                referenceUnit,
+                this.computedStart,
+                this.end
+            );
 
             const referenceSpan = referenceHeader
                 ? referenceHeader.span
@@ -630,7 +613,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 // If there is no header using the timeSpan unit,
                 // hide the reference header
                 isHidden: !referenceHeader,
-                weekStartDay: this.weekStartDay,
                 timezone: this.timezone
             });
 
@@ -655,12 +637,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 ) {
                     headerObject = reference;
                 } else {
-                    const cells = numberOfUnitsBetweenDates({
+                    const cells = numberOfUnitsBetweenDates(
                         unit,
-                        firstDate: this.computedStart,
-                        secondDate: this.end,
-                        weekStartDay: this.weekStartDay
-                    });
+                        this.computedStart,
+                        this.end
+                    );
 
                     headerObject = new SchedulerHeader({
                         unit: unit,
@@ -673,8 +654,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                         availableMonths: this.availableMonths,
                         numberOfCells: cells / header.span,
                         timezone: this.timezone,
-                        isMobileView: this.isMobileView,
-                        weekStartDay: this.weekStartDay
+                        isMobileView: this.isMobileView
                     });
                 }
 
