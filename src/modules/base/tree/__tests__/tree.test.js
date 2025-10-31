@@ -1785,6 +1785,73 @@ describe('Tree', () => {
                     });
                 });
 
+                it('Move an item with invalid type at middle of parent and then bottom of parent', () => {
+                    const fakeRegisters = generateFakeRegisters(
+                        ITEMS_WITH_INVALID_SORTING
+                    );
+                    element.items = ITEMS_WITH_INVALID_SORTING;
+                    element.sortable = true;
+
+                    jest.useFakeTimers();
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+
+                    return Promise.resolve().then(() => {
+                        // Register the items, including the nested ones
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-tree-item"]'
+                        );
+                        Object.values(fakeRegisters).forEach((register) => {
+                            items[0].dispatchEvent(
+                                new CustomEvent('privateregisteritem', {
+                                    bubbles: true,
+                                    detail: register
+                                })
+                            );
+                        });
+
+                        // Mouse down
+                        items[1].dispatchEvent(
+                            new CustomEvent('privatemousedown', {
+                                detail: {
+                                    name: ITEMS_WITH_INVALID_SORTING[1].name,
+                                    key: '2'
+                                },
+                                bubbles: true
+                            })
+                        );
+                        jest.runAllTimers();
+
+                        // Move to the center item
+                        const mouseMove = new CustomEvent('mousemove', {
+                            bubbles: true,
+                            composed: true
+                        });
+
+                        // Mouse to the center of the item
+                        mouseMove.clientY = 25;
+                        const tree = element.shadowRoot.querySelector(
+                            '[data-element-id="div-tree-wrapper"]'
+                        );
+                        tree.dispatchEvent(mouseMove);
+                        jest.advanceTimersByTime(500);
+
+                        // Mouse on the center of the item
+                        mouseMove.clientY = 29;
+                        const setBorderCallback =
+                            fakeRegisters.invalidSorting.setBorder;
+                        tree.dispatchEvent(mouseMove);
+                        expect(setBorderCallback).toHaveBeenCalled();
+                        expect(setBorderCallback.mock.calls[0][0]).toBe(
+                            'bottom'
+                        );
+                        expect(setBorderCallback.mock.calls[0][2]).toBeFalsy();
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalledTimes(0);
+                    });
+                });
+
                 it('Move an item with invalid type at top of another', () => {
                     const fakeRegisters = generateFakeRegisters(
                         ITEMS_WITH_INVALID_SORTING

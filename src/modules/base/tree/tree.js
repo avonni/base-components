@@ -571,6 +571,7 @@ export default class Tree extends LightningElement {
         this.callbackMap[key].removeBorder();
         this.callbackMap[key].setBorder(undefined, undefined, isValidSorting);
         this._dragState.currentLevelItem = null;
+        this._dragState.level = null;
 
         if (treeNode.children.length && !treeNode.nodeRef.expanded) {
             // Expand the hovered item after 500ms
@@ -652,6 +653,7 @@ export default class Tree extends LightningElement {
         this._dragState.nextItem = nextItem;
         this._dragState.prevItem = prevItem;
         this._dragState.currentLevelItem = null;
+        this._dragState.level = null;
 
         if (prevItem) {
             const prevBounds = this.callbackMap[prevItem.key].bounds();
@@ -869,7 +871,7 @@ export default class Tree extends LightningElement {
      * @param {string} position Position of the item being sorted. Can be 'top' or 'bottom'.
      */
     isSortingValid(position) {
-        const { currentLevelItem, item, key } = this._dragState;
+        const { currentLevelItem, item, key, level } = this._dragState;
         const targetItem = currentLevelItem || item;
 
         const { index, items } = this.getPositionInBranch(key);
@@ -907,18 +909,30 @@ export default class Tree extends LightningElement {
             parentExists &&
             (parent.treeNode.slottableTypes.length === 0 ||
                 parent.treeNode.slottableTypes.includes(itemType));
+        const parentIsCorrectLevel =
+            parentExists && (!level || parent.treeNode.level === level - 1);
 
         const canInsertAtTopOfParent =
-            isTop && parentHasSlots && parentSupportsType;
+            isTop &&
+            parentHasSlots &&
+            parentSupportsType &&
+            parentIsCorrectLevel;
         const canInsertAtBottomOfParent =
-            isBottom && parentHasSlots && parentSupportsType;
+            isBottom &&
+            parentHasSlots &&
+            parentSupportsType &&
+            parentIsCorrectLevel;
 
         // Root
         const isSlottableInRoot =
             this.rootSlottableTypes.length === 0 ||
             this.rootSlottableTypes.includes(itemType);
 
-        const canInsertAtRoot = !isMiddle && !parentExists && isSlottableInRoot;
+        const canInsertAtRoot =
+            !isMiddle &&
+            !parentExists &&
+            isSlottableInRoot &&
+            (level === 1 || !level);
 
         return (
             canInsertInCurrent ||
@@ -1057,12 +1071,12 @@ export default class Tree extends LightningElement {
             this._dragState.position = 'bottom';
             this._dragState.initialX = x;
             this.callbackMap[item.key].removeBorder();
-            const level =
+            this._dragState.level =
                 expanded && children.length ? item.level + 1 : item.level;
             const isValidSorting = this.isSortingValid('bottom');
             this.callbackMap[item.key].setBorder(
                 'bottom',
-                level,
+                this._dragState.level,
                 isValidSorting
             );
         } else if (hasMovedLeft) {
@@ -1083,11 +1097,11 @@ export default class Tree extends LightningElement {
 
             // ...move the border left, outward from the most nested item
             this._dragState.currentLevelItem = parentItem;
+            this._dragState.level = parentItem ? parentItem.level : 1;
             const isValidSorting = this.isSortingValid('bottom');
-            const level = parentItem ? parentItem.level : 1;
             this.callbackMap[item.key].setBorder(
                 'bottom',
-                level,
+                this._dragState.level,
                 isValidSorting
             );
         } else if (hasMovedRight) {
@@ -1101,10 +1115,11 @@ export default class Tree extends LightningElement {
             if (expanded && lastChild) {
                 const lastChildItem = this.treedata.getItem(lastChild.key);
                 this._dragState.currentLevelItem = lastChildItem;
+                this._dragState.level = lastChildItem.level;
                 const isValidSorting = this.isSortingValid('bottom');
                 this.callbackMap[item.key].setBorder(
                     'bottom',
-                    lastChildItem.level,
+                    this._dragState.level,
                     isValidSorting
                 );
             }
