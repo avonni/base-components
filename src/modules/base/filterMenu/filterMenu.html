@@ -7,7 +7,7 @@
             aria-haspopup="true"
             disabled={disabled}
             name={name}
-            title={title}
+            title={computedButtonTitle}
             type="button"
             value={value}
             data-element-id="button"
@@ -15,7 +15,33 @@
             onclick={handleButtonClick}
             onfocus={handleButtonFocus}
         >
-            {label}
+            <span
+                class={computedMenuLabelClass}
+                data-element-id="span-menu-label"
+            >
+                {label}
+            </span>
+
+            <div
+                style={computedMenuSelectedLabelStyle}
+                class="slds-truncate"
+                data-element-id="div-menu-selected-label"
+            >
+                <span
+                    if:true={showFilterValue}
+                    data-element-id="span-menu-selected-labels"
+                >
+                    &nbsp;{selectedFilterLabels}&nbsp;
+                </span>
+            </div>
+            <span
+                if:true={showCount}
+                class="slds-badge avonni-filter-menu__selected-item-count"
+                data-element-id="span-menu-selected-item-count"
+            >
+                {selectedItemCountLabel}
+            </span>
+
             <c-primitive-icon
                 if:true={iconName}
                 class="slds-m-horizontal_xx-small"
@@ -174,6 +200,7 @@
                                 if:true={isDateRange}
                                 class="slds-show slds-p-around_small"
                                 date-style={computedTypeAttributes.dateStyle}
+                                disable-auto-next-date
                                 end-date={dateRangeEndDate}
                                 label={label}
                                 label-end-date={computedTypeAttributes.labelEndDate}
@@ -222,11 +249,12 @@
                         class="
                             slds-p-horizontal_small
                             slds-p-bottom_x-small
-                            slds-text-align_right
+                            slds-grid
+                            slds-grid_align-spread
+                            slds-grid_vertical-align-center
                         "
                     >
                         <lightning-button
-                            class="slds-m-right_x-small"
                             disabled={isLoading}
                             label={resetButtonLabel}
                             title={resetButtonLabel}
@@ -235,15 +263,32 @@
                             data-is-focusable
                             onclick={handleResetClick}
                         ></lightning-button>
-                        <lightning-button
-                            disabled={isLoading}
-                            label={applyButtonLabel}
-                            title={applyButtonLabel}
-                            variant="brand"
-                            data-element-id="lightning-button-apply"
-                            data-is-focusable
-                            onclick={handleApply}
-                        ></lightning-button>
+                        <div
+                            class="
+                                slds-col_bump-left
+                                slds-grid
+                                slds-grid_align-center
+                                slds-grid_vertical-align-center
+                            "
+                        >
+                            <lightning-button
+                                if:false={hideApplyButton}
+                                disabled={isLoading}
+                                label={applyButtonLabel}
+                                title={applyButtonLabel}
+                                variant="brand"
+                                data-element-id="lightning-button-apply"
+                                data-is-focusable
+                                onclick={handleApply}
+                            ></lightning-button>
+
+                            <lightning-formatted-text
+                                if:true={isList}
+                                value={selectedOverTotal}
+                                class="slds-m-left_x-small"
+                                data-element-id="lightning-formatted-text-number-values"
+                            ></lightning-formatted-text>
+                        </div>
                     </div>
                 </div>
             </c-focus-trap>

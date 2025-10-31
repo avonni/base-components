@@ -40,7 +40,8 @@ const BUTTON_VARIANTS = {
         'border',
         'border-filled',
         'border-inverse',
-        'container'
+        'container',
+        'outline-brand'
     ]
 };
 
@@ -48,9 +49,11 @@ const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_RANGE_VALUE = [0, 100];
-const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
+const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 const DEFAULT_WEEK_START_DAY = 0;
+
+const DROPDOWN_MAX_WIDTH = 400;
 
 const i18n = {
     loading: 'Loading...',
@@ -105,9 +108,11 @@ const TYPE_ATTRIBUTES = {
         'enableInfiniteLoading',
         'hasNestedItems',
         'isMultiSelect',
+        'itemCounts',
         'items',
         'noResultsMessage',
-        'searchInputPlaceholder'
+        'searchInputPlaceholder',
+        'totalCount'
     ],
     range: [
         'hideMinMaxValues',
@@ -173,6 +178,7 @@ export default class FilterMenu extends LightningElement {
     _dropdownLength;
     _dropdownNubbin = false;
     _dropdownWidth = MENU_WIDTHS.default;
+    _hideApplyButton = false;
     _hideApplyResetButtons = false;
     _hideSelectedItems = false;
     _iconName = DEFAULT_ICON_NAME;
@@ -183,6 +189,7 @@ export default class FilterMenu extends LightningElement {
     _loadingStateAlternativeText = i18n.loading;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+    _showClearButton = false;
     _showSearchBox = false;
     _tooltip;
     _type = TYPES.default;
@@ -192,17 +199,22 @@ export default class FilterMenu extends LightningElement {
     _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     _allowBlur = true;
+    _dateRangeFrames = [];
     _dropdownIsFocused = false;
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
     _searchTimeOut;
+    _selectedMenuLabelInitialized = false;
+    _selectedMenuLabelMaxWidth = 0;
 
+    computedItemCounts = {};
     @track computedItems = [];
     computedTypeAttributes = {};
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
+    labelMap = new Map();
     searchTerm;
     @track selectedItems = [];
     visibleItems = [];
@@ -241,6 +253,7 @@ export default class FilterMenu extends LightningElement {
 
         this.dispatchEvent(privatebuttonregister);
         this.normalizeTypeAttributes();
+        this.computeItemCounts();
         this.computeListItems();
         this.computeSelectedItems();
         this._connected = true;
@@ -254,7 +267,10 @@ export default class FilterMenu extends LightningElement {
             // Fire the loadmore event without waiting for the user
             // to click on the load more button
             this.dispatchLoadMore();
+        } else if (!this.infiniteLoad && this.isList) {
+            this.dispatchLoadItemCounts();
         }
+        this.dispatchLoadTotalCount();
     }
 
     disconnectedCallback() {
@@ -265,6 +281,7 @@ export default class FilterMenu extends LightningElement {
 
     renderedCallback() {
         this.initTooltip();
+        this.setSelectedMenuLabelMaxWidth();
 
         if (
             this.infiniteLoad &&
@@ -470,6 +487,21 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * If present, the apply button is hidden and the value is immediately saved every time the selection changes.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideApplyButton() {
+        return this._hideApplyButton;
+    }
+    set hideApplyButton(value) {
+        this._hideApplyButton = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the apply and reset buttons are hidden and the value is immediately saved every time the selection changes.
      *
      * @type {boolean}
@@ -559,6 +591,9 @@ export default class FilterMenu extends LightningElement {
         }
 
         this._isLoading = normalizedValue;
+        if (!this._isLoading && this.isRange && this.dropdownVisible) {
+            this.focusRange();
+        }
     }
 
     /**
@@ -602,6 +637,7 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.supportDeprecatedAttributes();
+            this.computeItemCounts();
             this.computeListItems();
         }
     }
@@ -664,6 +700,20 @@ export default class FilterMenu extends LightningElement {
         if (this._connected) {
             this.supportDeprecatedAttributes();
         }
+    }
+
+    /**
+     * If present, a clear button is displayed. This attribute is only supported by the vertical variant.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showClearButton() {
+        return this._showClearButton;
+    }
+    set showClearButton(value) {
+        this._showClearButton = normalizeBoolean(value);
     }
 
     /**
@@ -791,6 +841,7 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = deepCopy(array);
 
         if (this._connected) {
+            this.computeItemCounts();
             this.computeListItems();
             this.computeSelectedItems();
         }
@@ -871,12 +922,14 @@ export default class FilterMenu extends LightningElement {
             this.buttonVariant === 'bare' ||
             this.buttonVariant === 'bare-inverse';
 
-        const classes = classSet('slds-button');
+        const classes = classSet('slds-button slds-truncate');
 
-        if (this.label) {
+        if (this.label || this.selectedItemLabels.length > 0) {
             classes.add({
                 'slds-button_neutral': this.buttonVariant === 'border',
-                'slds-button_inverse': this.buttonVariant === 'border-inverse'
+                'slds-button_inverse': this.buttonVariant === 'border-inverse',
+                'slds-button_outline-brand':
+                    this.buttonVariant === 'outline-brand'
             });
         } else {
             // The inverse check is to allow for a combination of a non-default icon and an -inverse buttonVariant
@@ -910,6 +963,11 @@ export default class FilterMenu extends LightningElement {
             });
         }
 
+        classes.add({
+            'avonni-filter-menu__selected-item-button':
+                this.selectedItemLabels.length > 0
+        });
+
         return classes
             .add({
                 // order classes when part of a button-group
@@ -918,6 +976,21 @@ export default class FilterMenu extends LightningElement {
                 'slds-button_last': this._order === 'last'
             })
             .toString();
+    }
+
+    /**
+     * Computed button title.
+     *
+     * @type {string}
+     */
+    get computedButtonTitle() {
+        return [
+            this.title,
+            this.selectedFilterLabels,
+            this.selectedItemCountLabel
+        ]
+            .filter(Boolean)
+            .join(' ');
     }
 
     /**
@@ -965,6 +1038,35 @@ export default class FilterMenu extends LightningElement {
             );
         }
         return classes.toString();
+    }
+
+    /**
+     * Computed Menu Label with selected items.
+     *
+     * @type {string}
+     */
+    get computedMenuLabelClass() {
+        return classSet('slds-dropdown__list')
+            .add({
+                'slds-text-title_bold': this.selectedItemLabels.length > 0
+            })
+            .toString();
+    }
+
+    /**
+     * Computed menu selected labels style
+     *
+     * @type {string}
+     */
+    get computedMenuSelectedLabelStyle() {
+        this.setSelectedMenuLabelMaxWidth();
+
+        if (!this._selectedMenuLabelMaxWidth) {
+            return '';
+        }
+
+        const maxWidth = this._selectedMenuLabelMaxWidth * 0.8;
+        return `max-width: ${maxWidth}px;`;
     }
 
     /**
@@ -1148,6 +1250,15 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the labels have a count.
+     *
+     * @type {boolean}
+     */
+    get hasCountLabel() {
+        return Object.keys(this.computedItemCounts).length > 0;
+    }
+
+    /**
      * True if no list items are visible.
      *
      * @type {boolean}
@@ -1162,6 +1273,21 @@ export default class FilterMenu extends LightningElement {
             i += 1;
         }
         return noVisibleListItem;
+    }
+
+    /**
+     * The loaded number of filter items over the total number of filter items
+     *
+     * @type {string}
+     */
+    get selectedOverTotal() {
+        const currentLength = this.visibleItems.length;
+        let totalLength = this.computedTypeAttributes?.totalCount ?? 0;
+        totalLength =
+            currentLength > totalLength || !this.infiniteLoad
+                ? currentLength
+                : totalLength;
+        return `${currentLength} of ${totalLength}`;
     }
 
     /**
@@ -1209,6 +1335,77 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed Menu Label with selected filters.
+     *
+     * @type {string}
+     */
+    get selectedFilterLabels() {
+        const selectedCount = this.selectedItemLabels.length;
+
+        if (selectedCount === 0) {
+            return '';
+        }
+
+        if (selectedCount <= 2) {
+            const selectedLabels = this.selectedItemLabels.join(', ');
+            return `(${selectedLabels})`;
+        }
+
+        const firstTwoLabels = this.selectedItemLabels
+            .slice(0, 2)
+            .map((item) => item)
+            .join(', ');
+        return `(${firstTwoLabels})`;
+    }
+
+    /**
+     * Display the count for the selected items
+     *
+     * @type {string}
+     */
+    get selectedItemCountLabel() {
+        if (this.isVertical) {
+            const count = this.isList
+                ? this.value.length
+                : this.value.filter((v) => v !== null).length;
+
+            return count > 0 ? String(count) : '';
+        }
+
+        const count = this.value.length;
+
+        return count > 2 ? `${count - 2}+` : '';
+    }
+
+    /**
+     * Display the labels of the selected items
+     *
+     * @type {string[]}
+     */
+    get selectedItemLabels() {
+        const hasComputedItems = this.computedItems.length > 0;
+        this.labelMap = this.dropdownVisible
+            ? new Map(
+                  this.computedItems.map((item) => [
+                      item.value,
+                      item.noCountLabel
+                  ])
+              )
+            : this.labelMap;
+
+        const valueLabels = this.value.map(
+            (value) => this.labelMap.get(value) || value
+        );
+        if (this.isDateRange || this.isRange) {
+            return this.selectedItems.map((item) => item.label);
+        }
+        const labels = hasComputedItems
+            ? this.selectedItems.map((item) => item.label)
+            : valueLabels;
+        return labels;
+    }
+
+    /**
      * True if the apply and reset buttons should be visible.
      *
      * @type {boolean}
@@ -1218,12 +1415,39 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the selected filter count should be visible
+     *
+     * @type {boolean}
+     */
+    get showCount() {
+        return !!this.selectedItemCountLabel;
+    }
+
+    /**
+     * True if the selected filter value should be visible
+     *
+     * @type {boolean}
+     */
+    get showFilterValue() {
+        return !!this.selectedFilterLabels;
+    }
+
+    /**
      * True if the load more button should be visible.
      *
      * @type {boolean}
      */
     get showLoadMoreButton() {
         return this.infiniteLoad && !this.isLoading;
+    }
+
+    /**
+     * True if clear only section should be visible.
+     *
+     * @type {boolean}
+     */
+    get showClearSection() {
+        return this.showClearButton && this.currentValue.length > 0;
     }
 
     /**
@@ -1276,6 +1500,7 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
+        this.computeItemCounts();
         this.computeListItems();
         this.computeSelectedItems();
 
@@ -1339,6 +1564,7 @@ export default class FilterMenu extends LightningElement {
     reset() {
         this.currentValue = [];
         if (this.isList) {
+            this.computeItemCounts();
             this.computeListItems();
         }
     }
@@ -1359,6 +1585,19 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Create the computed item counts, based on the given items.
+     */
+    computeItemCounts() {
+        if (!this.isList || !this.computedTypeAttributes?.itemCounts) {
+            return;
+        }
+
+        this.computedItemCounts = deepCopy(
+            normalizeObject(this.computedTypeAttributes.itemCounts)
+        );
+    }
+
+    /**
      * Create the computed list items, based on the given items.
      */
     computeListItems() {
@@ -1369,12 +1608,18 @@ export default class FilterMenu extends LightningElement {
         const items = deepCopy(
             normalizeArray(this.computedTypeAttributes.items, 'object')
         );
+        const hasCountLabel = this.hasCountLabel;
 
         this.computedItems = items.map((item) => {
             let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
                 firstFocusableItem = true;
                 tabindex = '0';
+            }
+            const numberRecords = this.computedItemCounts[item?.value] ?? 0;
+            item.noCountLabel = item.label;
+            if (hasCountLabel) {
+                item.label = `${item.label} (${numberRecords})`;
             }
             const computedItem = new Item({
                 ...item,
@@ -1411,7 +1656,10 @@ export default class FilterMenu extends LightningElement {
         this.value.forEach((v) => {
             const item = getItemByName(v, this.computedItems);
             if (item) {
-                selectedItems.push({ label: item.label, name: item.value });
+                selectedItems.push({
+                    label: item.noCountLabel ?? item.label,
+                    name: item.value
+                });
             }
         });
 
@@ -1527,6 +1775,20 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    /**
+     * Set the focus on the range.
+     */
+    focusRange() {
+        requestAnimationFrame(() => {
+            const range = this.template.querySelector(
+                '[data-element-id="avonni-slider"]'
+            );
+            if (range) {
+                range.focus();
+            }
+        });
+    }
+
     formatDateFromStyle(
         date,
         {
@@ -1595,6 +1857,7 @@ export default class FilterMenu extends LightningElement {
         });
         this.computedTypeAttributes = typeAttributes;
         this.supportDeprecatedAttributes();
+        this.computeItemCounts();
         this.computeListItems();
     }
 
@@ -1627,6 +1890,39 @@ export default class FilterMenu extends LightningElement {
      */
     setOrder(order) {
         this._order = order;
+    }
+
+    /**
+     * Initialize the selected menu label max width.
+     */
+    setSelectedMenuLabelMaxWidth() {
+        if (!this._selectedMenuLabelInitialized && !this.isVertical) {
+            const menuLabel = this.template.querySelector(
+                '[data-element-id="div-menu-selected-label"]'
+            );
+
+            if (!menuLabel) {
+                return;
+            }
+
+            const dropdownWidth =
+                this.template
+                    .querySelector('[data-element-id="div-dropdown"]')
+                    ?.getBoundingClientRect().width ?? 0;
+
+            if (dropdownWidth > 0) {
+                this._selectedMenuLabelMaxWidth = Math.min(
+                    dropdownWidth,
+                    DROPDOWN_MAX_WIDTH
+                );
+                this._selectedMenuLabelInitialized = true;
+            }
+
+            if (dropdownWidth === 0 && this.value.length > 0) {
+                this._selectedMenuLabelMaxWidth = DROPDOWN_MAX_WIDTH;
+                this._selectedMenuLabelInitialized = true;
+            }
+        }
     }
 
     /**
@@ -1754,6 +2050,7 @@ export default class FilterMenu extends LightningElement {
 
                 this.pollBoundingRect();
                 this.currentValue = [...this.value];
+                this.computeItemCounts();
                 this.computeListItems();
                 this.focusDropdown();
             } else {
@@ -1853,8 +2150,26 @@ export default class FilterMenu extends LightningElement {
      */
     handleDateRangeChange(event) {
         const { startDate, endDate } = event.detail;
-        this.currentValue = [startDate, endDate];
-        this.dispatchSelect();
+        this.currentValue = !startDate && !endDate ? [] : [startDate, endDate];
+        this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
+        this._dateRangeFrames = [];
+
+        // Give time for the calendar to actually close
+        this._dateRangeFrames[0] = requestAnimationFrame(() => {
+            const dateRange = this.template.querySelector(
+                '[data-element-id="avonni-input-date-range"]'
+            );
+
+            if (dateRange) {
+                dateRange.blur();
+            }
+
+            this._dateRangeFrames[1] = requestAnimationFrame(() => {
+                this._dateRangeFrames[2] = requestAnimationFrame(() => {
+                    this.dispatchSelect();
+                });
+            });
+        });
     }
 
     /**
@@ -1981,6 +2296,15 @@ export default class FilterMenu extends LightningElement {
          */
         this.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
         this.reset();
+
+        // In the vertical menu, a reset event can still be dispatched even when
+        // hideApplyResetButtons is true, because of the Clear button.
+        // Save the reset immediately.
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
+            this._value = [...this.currentValue];
+            this.computeSelectedItems();
+            this.dispatchApply();
+        }
     }
 
     /**
@@ -2043,6 +2367,8 @@ export default class FilterMenu extends LightningElement {
                 this.noVisibleListItem
             ) {
                 this.dispatchLoadMore();
+            } else if (!this.infiniteLoad && this.isList) {
+                this.dispatchLoadItemCounts();
             }
         }, 300);
     }
@@ -2067,6 +2393,7 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
+        this.computeItemCounts();
         this.computeListItems();
         this.dispatchApply();
     }
@@ -2155,6 +2482,26 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Dispatch the `loaditemcounts` event.
+     *
+     */
+    dispatchLoadItemCounts() {
+        /**
+         * The event fired when the number of records by item needs to be updated. It is only fired if type of the menu is a list and the`enableInfiniteLoading` type attribute is absent.
+         *
+         * @event
+         * @name loaditemcounts
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('loaditemcounts', {
+                bubbles: true
+            })
+        );
+    }
+
+    /**
      * Dispatch the `loadmore` event.
      *
      * @param {object} item Parent item that triggered the `loadmore` event, if the items are nested.
@@ -2174,6 +2521,23 @@ export default class FilterMenu extends LightningElement {
                 bubbles: true,
                 detail: { item: deepCopy(item) }
             })
+        );
+    }
+
+    /**
+     * Dispatch the `loadtotalcount` event.
+     */
+    dispatchLoadTotalCount() {
+        /**
+         * The event fired when the list is is rendered or the search term is modified.
+         *
+         * @event
+         * @name loadtotalcount
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadtotalcount', { bubbles: true })
         );
     }
 
@@ -2214,12 +2578,11 @@ export default class FilterMenu extends LightningElement {
             })
         );
 
-        if (this.hideApplyResetButtons) {
-            // Save the selection immediately
+        // Save the selection immediately
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
             this._value = [...this.currentValue];
             this.computeSelectedItems();
             this.dispatchApply();
-
             if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
                 this.close();
             }
