@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import InputDateRange from 'avonni/inputDateRange';
+import { createElement } from 'lwc';
 
 // Not tested:
 // Popover positioning
@@ -54,6 +54,7 @@ describe('Input Date Range', () => {
             });
             expect(element.validity).toMatchObject({});
             expect(element.variant).toBe('standard');
+            expect(element.weekStartDay).toBe(0);
         });
 
         describe('type', () => {
@@ -916,6 +917,34 @@ describe('Input Date Range', () => {
                     expect(label.classList).not.toContain('slds-m-right_small');
                 });
             });
+        });
+
+        it('Week start day', () => {
+            element.weekStartDay = 2;
+
+            return Promise.resolve()
+                .then(() => {
+                    const startButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-start-date"]'
+                    );
+                    startButton.click();
+                })
+                .then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-start-date"]'
+                    );
+                    expect(calendar.weekStartDay).toBe(2);
+                    const endButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-end-date"]'
+                    );
+                    endButton.click();
+                })
+                .then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-end-date"]'
+                    );
+                    expect(calendar.weekStartDay).toBe(2);
+                });
         });
     });
 

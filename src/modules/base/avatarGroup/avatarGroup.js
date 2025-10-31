@@ -1,18 +1,14 @@
-import { LightningElement, api } from 'lwc';
+import { AutoPosition, Direction } from 'c/positionLibrary';
+import { AvonniResizeObserver } from 'c/resizeObserver';
+import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import {
     classSet,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { animationFrame, keyValues, timeout } from 'c/utilsPrivate';
-import {
-    Direction,
-    startPositioning,
-    stopPositioning
-} from 'c/positionLibrary';
-import { Tooltip, TooltipType } from 'c/tooltipLibrary';
-import { AvonniResizeObserver } from 'c/resizeObserver';
+import { keyValues } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_GROUP_ICON_POSITIONS = {
     valid: ['start', 'center', 'end'],
@@ -163,7 +159,6 @@ export default class AvatarGroup extends LightningElement {
     _maxVisibleCount;
     _popoverFocusoutAnimationFrame;
     _popoverIsFocused = false;
-    _positioning = false;
     _preventPopoverClosing = false;
     _resizeObserver;
     _tooltip;
@@ -623,7 +618,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get computedHiddenAvatarInlineClass() {
-        return this.layout === 'list' ? this.avatarInlineClass : '';
+        return this.layout === 'list' ? this.computedAvatarInlineClass : '';
     }
 
     /**
@@ -633,7 +628,8 @@ export default class AvatarGroup extends LightningElement {
      */
     get computedHiddenListClass() {
         return classSet({
-            'slds-dropdown slds-p-around_none': this.isNotList
+            'slds-dropdown slds-is-fixed slds-p-around_none avonni-avatar-group__hidden-list':
+                this.isNotList
         }).toString();
     }
 
@@ -710,7 +706,7 @@ export default class AvatarGroup extends LightningElement {
     get computedShowMoreAvatarClass() {
         return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
             .add({
-                'avonni-avatar-group_in-line ': this.layout === 'stack',
+                'avonni-avatar-group_in-line': this.layout === 'stack',
                 'avonni-avatar-group__avatar_radius-border-square':
                     (this.layout === 'stack' || this.layout === 'grid') &&
                     this.variant === 'square'
@@ -1027,8 +1023,8 @@ export default class AvatarGroup extends LightningElement {
      */
     getAvatarClass(item, isHidden) {
         let avatarClass = isHidden
-            ? this.hiddenAvatarInlineClass
-            : this.avatarInlineClass;
+            ? this.computedHiddenAvatarInlineClass
+            : this.computedAvatarInlineClass;
 
         return classSet(avatarClass)
             .add({ 'avonni-avatar-group__avatar-link': item.href })
@@ -1174,9 +1170,6 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
-    /**
-     * Start the positioning of the popover.
-     */
     startPositioning() {
         const popover = this.template.querySelector(
             '[data-element-id="div-hidden-items-popover"]'
@@ -1184,47 +1177,27 @@ export default class AvatarGroup extends LightningElement {
         if (!popover) {
             return;
         }
+        if (!this._autoPosition) {
+            this._autoPosition = new AutoPosition(this);
+        }
 
-        this._positioning = true;
-        animationFrame()
-            .then(() => {
-                this.stopPositioning();
-                this._autoPosition = startPositioning(
-                    this,
-                    {
-                        target: () =>
-                            this.template.querySelector(
-                                '[data-element-id="div-show-more-button-wrapper"]'
-                            ),
-                        element: () =>
-                            this.template.querySelector(
-                                '[data-element-id="div-hidden-items-popover"]'
-                            ),
-                        align: {
-                            horizontal: Direction.Left,
-                            vertical: Direction.Top
-                        },
-                        targetAlign: {
-                            horizontal: Direction.Left,
-                            vertical: Direction.Bottom
-                        },
-                        autoFlip: true
-                    },
-                    true
-                );
-                // Edge case: W-7460656
-                if (this._autoPosition) {
-                    return this._autoPosition.reposition();
-                }
-                return Promise.reject();
-            })
-            .then(() => {
-                return timeout(0);
-            })
-            .then(() => {
-                // Use a flag to prevent this async function from executing multiple times in a single lifecycle
-                this._positioning = false;
-            });
+        this._autoPosition.start({
+            target: () =>
+                this.template.querySelector(
+                    '[data-element-id="div-show-more-button-wrapper"]'
+                ),
+            element: () => popover,
+            align: {
+                horizontal: Direction.Right,
+                vertical: Direction.Top
+            },
+            targetAlign: {
+                horizontal: Direction.Right,
+                vertical: Direction.Bottom
+            },
+            autoFlip: true,
+            padTop: 4
+        });
     }
 
     /**
@@ -1232,10 +1205,8 @@ export default class AvatarGroup extends LightningElement {
      */
     stopPositioning() {
         if (this._autoPosition) {
-            stopPositioning(this._autoPosition);
-            this._autoPosition = null;
+            this._autoPosition.stop();
         }
-        this._positioning = false;
     }
 
     /**
@@ -1279,7 +1250,9 @@ export default class AvatarGroup extends LightningElement {
 
         if (this.showHiddenItems) {
             if (this.isNotList) {
-                this.startPositioning();
+                requestAnimationFrame(() => {
+                    this.startPositioning();
+                });
             }
 
             this._hiddenItemsStartIndex = this.computedMaxCount;

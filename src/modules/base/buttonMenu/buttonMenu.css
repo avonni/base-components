@@ -7,6 +7,9 @@
     border-style: var(--avonni-button-menu-styling-border, solid);
     height: inherit;
     justify-content: var(--avonni-button-menu-horizontal-alignment, center);
+
+    /* Prevent the spinner from overflowing the button */
+    overflow: hidden;
 }
 
 .avonni-button-menu.slds-button_stretch {

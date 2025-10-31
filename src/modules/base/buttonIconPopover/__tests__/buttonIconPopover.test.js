@@ -1,5 +1,6 @@
-import { createElement } from 'lwc';
 import ButtonIconPopover from 'c/buttonIconPopover';
+import { AutoPosition } from 'c/positionLibrary';
+import { createElement } from 'lwc';
 
 let element;
 describe('Button Icon Popover', () => {
@@ -14,6 +15,10 @@ describe('Button Icon Popover', () => {
             is: ButtonIconPopover
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     describe('Attributes', () => {
@@ -280,13 +285,29 @@ describe('Button Icon Popover', () => {
                 it('Auto', () => {
                     element.placement = 'auto';
 
-                    return Promise.resolve().then(() => {
-                        const popover =
-                            element.shadowRoot.querySelector('.slds-popover');
-                        expect(popover.className).toContain(
-                            'slds-dropdown_left'
-                        );
-                    });
+                    const startPositioning = jest.spyOn(
+                        AutoPosition.prototype,
+                        'start'
+                    );
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const button = element.shadowRoot.querySelector(
+                                '[data-element-id="button-icon"]'
+                            );
+                            button.dispatchEvent(new CustomEvent('click'));
+                        })
+                        .then(() => {
+                            jest.runAllTimers();
+                            expect(startPositioning).toHaveBeenCalledTimes(1);
+
+                            const stopPositioning = jest.spyOn(
+                                AutoPosition.prototype,
+                                'stop'
+                            );
+                            element.close();
+                            expect(stopPositioning).toHaveBeenCalledTimes(1);
+                        });
                 });
 
                 it('Center', () => {
@@ -573,9 +594,10 @@ describe('Button Icon Popover', () => {
                     })
                     .then(() => {
                         expect(element.classList).not.toContain('slds-is-open');
-                        const popover =
-                            element.shadowRoot.querySelector('.slds-show');
-                        expect(popover).toBeFalsy();
+                        const popover = element.shadowRoot.querySelector(
+                            '[data-element-id="div-popover"]'
+                        );
+                        expect(popover.classList).not.toContain('slds-show');
                     });
             });
 

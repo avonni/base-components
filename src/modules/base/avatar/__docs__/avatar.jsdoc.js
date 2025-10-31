@@ -207,41 +207,23 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-radius
- * @default 0
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-color
+ * @name --avonni-avatar-entity-color-border
  * @default transparent
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-style
- * @default none
- * @type styling
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-avatar-entity-border-size
- * @default 0
- * @type sizing
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-avatar-entity-background-color
+ * @name --avonni-avatar-entity-fallback-icon-color-background
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-foreground-color
+ * @name --avonni-avatar-entity-fallback-icon-color-foreground
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-entity-foreground-color-utility
+ * @name --avonni-avatar-entity-fallback-icon-color-foreground-default
  * @type color
  */
 /**
@@ -266,6 +248,42 @@
  * @name --avonni-avatar-entity-initials-text-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-color-hover
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-font-style-hover
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-font-weight-hover
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-radius-border
+ * @default 0
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-sizing-border
+ * @default 0
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-styling-border
+ * @default none
+ * @type styling
  */
 /**
  * @memberof stylingHooks
