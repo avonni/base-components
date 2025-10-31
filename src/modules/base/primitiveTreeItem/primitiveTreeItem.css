@@ -38,6 +38,10 @@
     );
 }
 
+.avonni-primitive-tree-item__header .avonni-primitive-tree-item__label {
+    min-width: 0;
+}
+
 .avonni-primitive-tree-item__header .avonni-primitive-item__link {
     color: var(
         --avonni-tree-item-header-link-text-color,
