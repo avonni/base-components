@@ -1,12 +1,12 @@
 <template>
     <div if:true={showVerticalSelectedItems} class="slds-m-bottom_medium">
-        <avonni-pill-container
+        <c-pill-container
             actions={pillActions}
             items={selectedPills}
             data-element-id="avonni-pill-container-vertical"
             data-group-name="focusable-element"
             onactionclick={handleSelectedItemRemove}
-        ></avonni-pill-container>
+        ></c-pill-container>
     </div>
     <ul
         class={computedFiltersWrapperClass}
@@ -23,7 +23,7 @@
     >
         <template for:each={visibleMenus} for:item="menu">
             <li class={computedFiltersClass} key={menu.name}>
-                <avonni-filter-menu
+                <c-filter-menu
                     access-key={menu.accessKey}
                     alternative-text={menu.alternativeText}
                     apply-button-label={applyButtonLabel}
@@ -50,10 +50,11 @@
                     tooltip={menu.tooltip}
                     value={menu.value}
                     variant={variant}
+                    week-start-day={weekStartDay}
                     data-element-id="avonni-filter-menu"
                     data-group-name="focusable-element"
                     data-name={menu.name}
-                ></avonni-filter-menu>
+                ></c-filter-menu>
             </li>
         </template>
         <c-layout-item if:true={isOverflow} class="slds-text-align_right">

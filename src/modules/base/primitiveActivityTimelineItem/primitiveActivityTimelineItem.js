@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import { getFormattedDate } from 'c/dateTimeUtils';
 import {
     classSet,
@@ -8,6 +7,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const BUTTON_VARIANTS = {
@@ -112,7 +112,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _checked = false;
     _closed = false;
-    _color;
     _dateFormat;
     _datetimeValue;
     _endDateValue;
@@ -139,10 +138,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     connectedCallback() {
         this.formatDate();
         this._connected = true;
-    }
-
-    renderedCallback() {
-        this.setLineColor();
     }
 
     /*
@@ -179,6 +174,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._avatar = Object.keys(normalizedAvatar).length
             ? normalizedAvatar
             : undefined;
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                this.setLineColor();
+            });
+        });
     }
 
     /**
@@ -376,6 +376,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
     set hideVerticalBar(value) {
         this._hideVerticalBar = normalizeBoolean(value);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                this.setLineColor();
+            });
+        });
     }
 
     /**
@@ -486,15 +491,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                 this.avatar?.fallbackIconName) &&
             !this.hideVerticalBar
         );
-    }
-
-    /**
-     * Returns styling for item background color.
-     *
-     * @type {string}
-     */
-    get backgroundColor() {
-        return this._color ? `--line-color: ${this._color}` : '';
     }
 
     /**
@@ -679,18 +675,28 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @returns {string} line background color
      */
     setLineColor() {
+        const container = this.template.querySelector(
+            '[data-element-id="avonni-timeline-item"]'
+        );
         const icon = this.template.querySelector(
             '[data-element-id="item-marker"]'
         );
-        if (icon === null) return;
+        if (!icon || !container) return;
+
+        let color = '';
         if (this.avatarToDisplay) {
-            this._color = this.avatar?.fallbackIconName
-                ? icon.getBackgroundColor()
-                : '';
+            color =
+                this.avatar.fallbackIconName || this.avatar.initials
+                    ? icon.getBackgroundColor()
+                    : '';
+            if (color === 'rgba(0, 0, 0, 0)') {
+                color = '';
+            }
         } else {
             const style = getComputedStyle(icon);
-            this._color = style.backgroundColor;
+            color = style.backgroundColor;
         }
+        container.style.setProperty('--line-color', `${color || ''}`);
     }
 
     /**

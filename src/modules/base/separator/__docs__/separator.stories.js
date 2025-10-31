@@ -58,6 +58,7 @@ export default {
                 type: 'select'
             },
             options: [
+                'xx-small',
                 'x-small',
                 'small',
                 'medium',
@@ -66,7 +67,7 @@ export default {
                 'xx-large'
             ],
             description:
-                'The size of the icon. Valid values include x-small, small, medium, large, x-large and xx-large.',
+                'The size of the icon. Valid values include xx-small, x-small, small, medium, large, x-large and xx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'small' },

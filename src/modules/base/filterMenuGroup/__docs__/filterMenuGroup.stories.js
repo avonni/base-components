@@ -1,5 +1,5 @@
 import { FilterMenuGroup } from '../__examples__/filterMenuGroup';
-import { COLLAPSIBLE_MENUS, MENUS, ICONS_MENUS } from './data';
+import { COLLAPSIBLE_MENUS, ICONS_MENUS, MENUS } from './data';
 
 export default {
     title: 'Example/Filter Menu Group',
@@ -126,6 +126,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
             }
+        },
+        weekStartDay: {
+            name: 'week-start-day',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Used by the `date-range` menu type. Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' }
+            }
         }
     },
     args: {
@@ -137,7 +149,8 @@ export default {
         resetButtonLabel: 'Clear selection',
         showClearButton: false,
         singleLine: false,
-        variant: 'horizontal'
+        variant: 'horizontal',
+        weekStartDay: 0
     }
 };
 

@@ -1,5 +1,3 @@
-import { DateTime } from './dateTime';
-import { pad } from './utils';
 import {
     DATE_FORMAT_PRESETS,
     DEFAULT_LANGUAGE,
@@ -14,6 +12,8 @@ import {
     TIME_ZONE_NAME,
     WEEKDAY
 } from './constants';
+import { DateTime } from './dateTime';
+import { pad } from './utils';
 
 function _parseCustomToken({ date, token, timeZone }) {
     const tzDate = new DateTime(date, timeZone);
@@ -68,8 +68,15 @@ function _parseCustomToken({ date, token, timeZone }) {
             return tzDate.getUnit(TIME_ZONE_NAME, LONG);
         case 'z':
             return timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
-        case 'a':
-            return tzDate.hour < 12 ? 'AM' : 'PM';
+        case 'a': {
+            const hour = Intl.DateTimeFormat(DEFAULT_LANGUAGE, {
+                hour: 'numeric',
+                hour12: true
+            }).format(tzDate.tzDate);
+            const match =
+                typeof hour === 'string' ? hour.match(/(p|a).+/i) : null;
+            return match ? match[0].trim() : '';
+        }
         case 'd':
             return tzDate.day.toString();
         case 'dd':

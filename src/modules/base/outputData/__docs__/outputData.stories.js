@@ -25,8 +25,9 @@ export default {
                 'number',
                 'percent',
                 'phone',
-                'url',
-                'text'
+                'text',
+                'time',
+                'url'
             ],
             description: 'Data type',
             table: {
@@ -82,7 +83,7 @@ const Template = (args) => OutputData(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Text',
-    value: 'Some text value'
+    value: '<p style="text-align: center;"><strong style="color: rgb(255, 0, 0); font-size: 20px;"><em>Some text value</em></strong></p> <p>https://google.com</p>'
 };
 
 export const DateTime = Template.bind({});
@@ -107,6 +108,13 @@ Percent.args = {
     typeAttributes: {
         maximumFractionDigits: 1
     }
+};
+
+export const Time = Template.bind({});
+Time.args = {
+    label: 'Time',
+    type: 'time',
+    value: 10800000
 };
 
 export const URL = Template.bind({});

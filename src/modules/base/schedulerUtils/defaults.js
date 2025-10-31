@@ -48,6 +48,11 @@ const REFERENCE_LINE_VARIANTS = {
     default: 'default'
 };
 
+const WEEK_START_DAYS = {
+    default: 0,
+    valid: [0, 1, 2, 3, 4, 5, 6]
+};
+
 export {
     CELL_SELECTOR,
     DEFAULT_ACTION_NAMES,
@@ -63,5 +68,6 @@ export {
     MONTH_DAY_LABEL_HEIGHT,
     MONTH_EVENT_HEIGHT,
     RECURRENCES,
-    REFERENCE_LINE_VARIANTS
+    REFERENCE_LINE_VARIANTS,
+    WEEK_START_DAYS
 };

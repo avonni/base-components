@@ -243,17 +243,18 @@ describe('Primitive Scheduler Calendar', () => {
             expect(element.sidePanelPosition).toBe('left');
             expect(element.timeSpan).toEqual({ unit: 'day', span: 1 });
             expect(element.timezone).toBeUndefined();
+            expect(element.weekStartDay).toBe(0);
             expect(element.zoomToFit).toBeFalsy();
         });
 
         // available-days-of-the-week
         describe('Available days of the week', () => {
             it('Passed to the headers', () => {
-                element.availableDaysOfTheWeek = [2, 4];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
+                element.availableDaysOfTheWeek = [2, 4];
 
                 return Promise.resolve()
                     .then(() => {
@@ -305,12 +306,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Week time span', () => {
-                element.availableDaysOfTheWeek = [1, 2, 6];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'week', span: 1 };
+                element.availableDaysOfTheWeek = [1, 2, 6];
 
                 return Promise.resolve()
                     .then(() => {
@@ -338,12 +339,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Month time span', () => {
-                element.availableDaysOfTheWeek = [6, 0, 2];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'month', span: 1 };
+                element.availableDaysOfTheWeek = [6, 0, 2];
 
                 return Promise.resolve()
                     .then(() => {
@@ -367,12 +368,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Year time span', () => {
-                element.availableDaysOfTheWeek = [5];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'year', span: 1 };
+                element.availableDaysOfTheWeek = [5];
 
                 return Promise.resolve().then(() => {
                     const calendars = element.shadowRoot.querySelectorAll(
@@ -398,11 +399,11 @@ describe('Primitive Scheduler Calendar', () => {
         // available-months
         describe('Available months', () => {
             it('Passed to the headers', () => {
-                element.availableMonths = [9];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
+                element.availableMonths = [9];
 
                 return Promise.resolve()
                     .then(() => {
@@ -443,12 +444,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Week time span', () => {
-                element.availableMonths = [8, 9, 3];
                 element.selectedDate = new Date(2022, 4, 6);
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'day', span: 7 };
+                element.availableMonths = [8, 9, 3];
 
                 return Promise.resolve()
                     .then(() => {
@@ -476,12 +477,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Month time span', () => {
-                element.availableMonths = [8, 0, 3];
                 element.selectedDate = new Date(2021, 10, 14);
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
                 element.timeSpan = { unit: 'month', span: 1 };
+                element.availableMonths = [8, 0, 3];
 
                 const openDialogHandler = jest.fn();
                 const contextMenuDialog = jest.fn();
@@ -521,12 +522,12 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Year time span', () => {
-                element.availableMonths = [0, 5, 8];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = [EVENTS[0], EVENTS[1], EVENTS[5]];
                 element.timeSpan = { unit: 'year', span: 1 };
+                element.availableMonths = [0, 5, 8];
 
                 return Promise.resolve().then(() => {
                     const calendars = element.shadowRoot.querySelectorAll(
@@ -543,11 +544,11 @@ describe('Primitive Scheduler Calendar', () => {
             });
 
             it('Taken into account when navigating in the left panel calendar', () => {
-                element.availableMonths = [9];
                 element.selectedDate = SELECTED_DATE;
                 element.resources = RESOURCES;
                 element.selectedResources = ALL_RESOURCES;
                 element.events = EVENTS;
+                element.availableMonths = [9];
 
                 return Promise.resolve()
                     .then(() => {
@@ -2272,6 +2273,66 @@ describe('Primitive Scheduler Calendar', () => {
                     const start = new Date(dayHeaders.start).toISOString();
                     expect(start).toBe('2022-08-18T16:00:00.000Z');
                 });
+            });
+        });
+
+        describe('Week start day', () => {
+            it('Passed to the headers', () => {
+                element.weekStartDay = 3;
+
+                return Promise.resolve().then(() => {
+                    const dayHeaders = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
+                    );
+                    const hourHeaders = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+                    );
+                    expect(dayHeaders.weekStartDay).toBe(3);
+                    expect(hourHeaders.weekStartDay).toBe(3);
+                });
+            });
+
+            it('Display the events of the current week', () => {
+                element.selectedDate = new Date(2022, 8, 16);
+                element.timeSpan = { unit: 'week', span: 1 };
+                element.resources = RESOURCES;
+                element.selectedResources = ALL_RESOURCES;
+                element.events = [EVENTS[0], EVENTS[1]];
+
+                return Promise.resolve()
+                    .then(() => {
+                        const events = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                        );
+                        expect(events).toHaveLength(0);
+                        element.weekStartDay = 3;
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        // Wait for the visible interval to be set
+                    })
+                    .then(() => {
+                        const mainGridEvents =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                            );
+                        expect(mainGridEvents).toHaveLength(2);
+                        expect(mainGridEvents[0].eventName).toBe(
+                            EVENTS[0].name
+                        );
+                        expect(mainGridEvents[1].eventName).toBe(
+                            EVENTS[0].name
+                        );
+
+                        const multiDayEvents =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]'
+                            );
+                        expect(multiDayEvents).toHaveLength(1);
+                        expect(multiDayEvents[0].eventName).toBe(
+                            EVENTS[1].name
+                        );
+                    });
             });
         });
 

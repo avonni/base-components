@@ -8,6 +8,9 @@
     border-style: var(--avonni-button-icon-styling-border, solid);
     vertical-align: middle;
     justify-content: center;
+
+    /* Prevent the spinner from overflowing the button */
+    overflow: hidden;
 }
 
 .avonni-button-icon_medium {

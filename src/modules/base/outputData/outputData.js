@@ -98,6 +98,18 @@ export default class OutputData extends LightningElement {
         if (this.isNumber) {
             return this.truncateNumber(this._value);
         }
+        if (this.isTime) {
+            if (this._value === null || this._value === undefined) {
+                return this._value;
+            }
+
+            const date = new Date(this._value);
+            if (isNaN(date.getTime())) {
+                return this._value;
+            }
+
+            return date.toISOString().substring(11, 23);
+        }
 
         return this._value;
     }
@@ -231,6 +243,15 @@ export default class OutputData extends LightningElement {
     }
 
     /**
+     * True if the type is time.
+     *
+     * @type {boolean}
+     */
+    get isTime() {
+        return this.type === 'time';
+    }
+
+    /**
      * True if the type is url.
      *
      * @type {boolean}
@@ -294,12 +315,8 @@ export default class OutputData extends LightningElement {
      */
     normalizeTypeAttributes() {
         const typeAttributes = Object.entries(this.typeAttributes);
-        if (!typeAttributes.length) {
-            this.normalizedTypeAttributes = {};
-            return;
-        }
-
         const normalizedTypeAttributes = {};
+
         for (let i = 0; i < typeAttributes.length; i++) {
             // Check if the attribute is valid for the type
             const [key, value] = typeAttributes[i];
@@ -337,6 +354,11 @@ export default class OutputData extends LightningElement {
             }
 
             normalizedTypeAttributes[key] = normalizedValue;
+        }
+
+        if (this.isText) {
+            normalizedTypeAttributes.disableLinkify =
+                normalizedTypeAttributes.linkify !== true;
         }
 
         this.normalizedTypeAttributes = normalizedTypeAttributes;
