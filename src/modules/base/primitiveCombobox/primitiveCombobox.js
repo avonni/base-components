@@ -194,8 +194,10 @@ export default class PrimitiveCombobox extends LightningElement {
     _startIndex = 0;
     _topVisibleOption;
     _visibleOptions = [];
+
     backLink;
     bottomActions = [];
+    computedDropdownId = generateUUID();
     computedGroups = [];
     dropdownVisible = false;
     helpMessage;

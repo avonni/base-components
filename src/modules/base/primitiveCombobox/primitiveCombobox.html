@@ -54,6 +54,7 @@
                     avonni-primitive-combobox__input
                 "
                 aria-autocomplete={computedAriaAutocomplete}
+                aria-controls={computedDropdownId}
                 aria-expanded={computedAriaExpanded}
                 aria-haspopup="listbox"
                 aria-owns="dropdown-element"
@@ -115,6 +116,7 @@
             <ul
                 class="slds-scrollable_y"
                 aria-multiselectable={isMultiSelect}
+                id={computedDropdownId}
                 role="listbox"
                 data-element-id="ul-listbox"
                 onscroll={handleScroll}
