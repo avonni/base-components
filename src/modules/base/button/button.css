@@ -605,8 +605,9 @@
 }
 
 .avonni-button_destructive {
-    --slds-c-button-destructive-color-background: var(
-        --avonni-button-destructive-color-background
+    background: var(
+        --avonni-button-destructive-color-background,
+        var(--slds-c-button-destructive-color-background, rgb(186, 5, 23))
     );
     --slds-c-button-destructive-color-border: var(
         --avonni-button-destructive-color-border
@@ -626,8 +627,9 @@
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button_destructive:active {
-    --slds-c-button-destructive-color-background-active: var(
-        --avonni-button-destructive-color-background-active
+    background: var(
+        --avonni-button-destructive-color-background-active,
+        var(--slds-c-button-destructive-color-background-hover, rgb(142, 3, 15))
     );
     --slds-c-button-destructive-color-border-active: var(
         --avonni-button-destructive-color-border-active
@@ -639,8 +641,9 @@
 
 .avonni-button_destructive:hover,
 .avonni-button_destructive:focus {
-    --slds-c-button-destructive-color-background-hover: var(
-        --avonni-button-destructive-color-background-hover
+    background: var(
+        --avonni-button-destructive-color-background-hover,
+        var(--slds-c-button-destructive-color-background-hover, rgb(142, 3, 15))
     );
     --slds-c-button-destructive-color-border-hover: var(
         --avonni-button-destructive-color-border-hover
@@ -792,8 +795,9 @@
 }
 
 .avonni-button_success {
-    --slds-c-button-success-color-background: var(
-        --avonni-button-success-color-background
+    background: var(
+        --avonni-button-success-color-background,
+        var(--slds-c-button-success-color-background, #45c65a)
     );
     --slds-c-button-success-color-border: var(
         --avonni-button-success-color-border
@@ -811,8 +815,9 @@
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button_success:active {
-    --slds-c-button-success-color-background-active: var(
-        --avonni-button-success-color-background-active
+    background: var(
+        --avonni-button-success-color-background-active,
+        var(--slds-c-button-success-color-background-hover, #2e844a)
     );
     --slds-c-button-success-color-border-active: var(
         --avonni-button-success-color-border-active
@@ -824,8 +829,9 @@
 
 .avonni-button_success:hover,
 .avonni-button_success:focus {
-    --slds-c-button-success-color-background-hover: var(
-        --avonni-button-success-color-background-hover
+    background: var(
+        --avonni-button-success-color-background-hover,
+        var(--slds-c-button-success-color-background-hover, #2e844a)
     );
     --slds-c-button-success-color-border-hover: var(
         --avonni-button-success-color-border-hover
