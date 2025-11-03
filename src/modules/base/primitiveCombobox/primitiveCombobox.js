@@ -1443,7 +1443,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.highlightedOption.classList.add(
                 'avonni-primitive-combobox__option_focused'
             );
-            this.list.setAttribute(
+            this.input.setAttribute(
                 'aria-activedescendant',
                 normalizeAriaAttribute(this.highlightedOption.id)
             );
