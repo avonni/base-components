@@ -9,6 +9,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
 import { classListMutation, equal, getListHeight } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import Action from './action';
@@ -2116,7 +2117,7 @@ export default class PrimitiveCombobox extends LightningElement {
         } else {
             const index = this._highlightedOptionIndex;
             switch (event.key) {
-                case 'ArrowUp':
+                case keyValues.up:
                     if (index > 0) {
                         const option = this.optionElements[index - 1];
                         if (isOutsideOfView(option, this.list)) {
@@ -2132,7 +2133,7 @@ export default class PrimitiveCombobox extends LightningElement {
                     // Prevent the browser scrollbar from scrolling up
                     event.preventDefault();
                     break;
-                case 'ArrowDown':
+                case keyValues.down:
                     if (index < this.optionElements.length - 1) {
                         const option = this.optionElements[index + 1];
 
@@ -2148,13 +2149,13 @@ export default class PrimitiveCombobox extends LightningElement {
                     // Prevent the browser scrollbar from scrolling down
                     event.preventDefault();
                     break;
-                case 'ArrowLeft':
+                case keyValues.left:
                 case 'GoBack':
                     this.handleBackLinkClick();
                     break;
-                case ' ':
-                case 'Spacebar':
-                case 'Enter':
+                case keyValues.space:
+                case keyValues.spacebar:
+                case keyValues.enter:
                     this.handleHighlightedOptionClick(event);
 
                     if (
@@ -2165,14 +2166,14 @@ export default class PrimitiveCombobox extends LightningElement {
                         event.preventDefault();
                     }
                     break;
-                case 'Escape':
+                case keyValues.escape:
                     this.close();
                     this.dispatchClose();
                     break;
-                case 'Home':
+                case keyValues.home:
                     this._highlightOption(0);
                     break;
-                case 'End':
+                case keyValues.end:
                     this._highlightOption(this.optionElements - 1);
                     break;
                 default:
