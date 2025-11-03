@@ -385,7 +385,10 @@
 }
 
 .avonni-button_border-inverse {
-    background-color: var(--avonni-button-border-inverse-color-background);
+    background-color: var(
+        --avonni-button-border-inverse-color-background,
+        transparent
+    );
     border-color: var(
         --avonni-button-border-inverse-color-border,
         var(--slds-g-color-border-base-1, #c9c9c9)
@@ -407,15 +410,15 @@
 .slds-button.avonni-button_border-inverse:active {
     background-color: var(
         --avonni-button-border-inverse-color-background-active,
-        var(--slds-g-color-surface-container-2)
+        var(--slds-g-color-border-base-1, #c9c9c9)
     );
     border-color: var(
         --avonni-button-border-inverse-color-border-active,
-        var(--slds-g-color-surface-container-2)
+        transparent
     );
     color: var(
         --avonni-button-border-inverse-text-color-active,
-        var(--slds-g-color-accent-3)
+        rgba(255, 255, 255, 0.5)
     );
     box-shadow: 0 0 0 transparent, var(--slds-s-button-shadow-active, revert);
     transform: none;
@@ -425,15 +428,15 @@
 .avonni-button_border-inverse:focus {
     background-color: var(
         --avonni-button-border-inverse-color-background-hover,
-        var(--slds-g-color-surface-container-2)
+        rgba(255, 255, 255, 0.75)
     );
     border-color: var(
         --avonni-button-border-inverse-color-border-hover,
-        var(--slds-g-color-surface-container-2)
+        transparent
     );
     color: var(
         --avonni-button-border-inverse-text-color-hover,
-        var(--slds-g-color-accent-3)
+        rgba(255, 255, 255, 0.75)
     );
 }
 
