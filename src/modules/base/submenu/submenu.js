@@ -246,9 +246,11 @@ export default class Submenu extends ButtonMenuBase {
             }
             case keyValues.left:
             case keyValues.escape: {
-                this.preventDefaultAndStopPropagation(event);
-                this.close();
-                this.focus();
+                if (this.isOpen) {
+                    this.preventDefaultAndStopPropagation(event);
+                    this.close();
+                    this.focus();
+                }
                 break;
             }
             default:
