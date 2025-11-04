@@ -303,12 +303,11 @@ export default class Submenu extends ButtonMenuBase {
             }
             case keyValues.left:
             case keyValues.escape: {
-                event.preventDefault();
-                if (!this.isOpen) return;
-
-                event.stopPropagation();
-                this.close();
-                this.focus();
+                if (this.isOpen) {
+                    this.preventDefaultAndStopPropagation(event);
+                    this.close();
+                    this.focus();
+                }
                 break;
             }
             default:
