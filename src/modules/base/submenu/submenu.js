@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
 
 const DEFAULT_TAB_INDEX = '0';
 
@@ -7,6 +8,8 @@ const MENU_ALIGNMENTS = {
     valid: ['right', 'left'],
     default: 'right'
 };
+const MENU_ITEM_CLASSES = ['avonni-submenu'];
+const MENU_ITEM_TAGS = ['LIGHTNING-MENU-ITEM'];
 
 /**
  * @class
@@ -198,6 +201,107 @@ export default class Submenu extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Find menu item's index.
+     *
+     * @param {object} menuItemElement
+     * @returns {number} index of menu item
+     */
+    findMenuItemIndex(menuItemElement) {
+        return this.getMenuItems().indexOf(menuItemElement);
+    }
+
+    /**
+     * Find menu item from event target.
+     *
+     * @param {Element} element
+     * @returns {Element} menu item
+     */
+    findMenuItemFromEventTarget(element) {
+        let currentNode = element;
+        const stopAtElement = this.template.querySelector("[role='menu']");
+
+        while (currentNode !== stopAtElement) {
+            if (this.isValidMenuItem(currentNode)) {
+                return currentNode;
+            }
+            if (currentNode.parentNode) {
+                currentNode = currentNode.parentNode;
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Set focus on menu item via Item Index.
+     *
+     * @param {object} itemIndex
+     */
+    focusOnMenuItem(itemIndex) {
+        const menuItem = this.getMenuItemByIndex(itemIndex);
+        if (menuItem) {
+            menuItem.focus();
+        }
+    }
+
+    /**
+     * Get item with index in menu item array.
+     *
+     * @param {object[]} index
+     * @return menu item from array
+     */
+    getMenuItemByIndex(index) {
+        return this.getMenuItems()[index];
+    }
+
+    /**
+     * Get item array from menu.
+     *
+     * @return {object[]}
+     */
+    getMenuItems() {
+        const slot = this.template.querySelector('slot');
+        if (!slot) return [];
+
+        const slottedElements = slot.assignedElements();
+        return slottedElements.filter((el) => this.isValidMenuItem(el));
+    }
+
+    /**
+     * Checks if a DOM node matches menu item tags or classes.
+     *
+     * @param {Element} element
+     * @returns {boolean} True if the node is a menu item.
+     */
+    isValidMenuItem(element) {
+        if (!element || !element.tagName || !element.classList) return false;
+
+        return (
+            MENU_ITEM_TAGS.includes(element.tagName) ||
+            MENU_ITEM_CLASSES.some((itemClass) =>
+                element.classList.contains(itemClass)
+            )
+        );
+    }
+
+    /**
+     * To prevent default action and stop propagation of event
+     *
+     * @param {Event} event
+     */
+    preventDefaultAndStopPropagation(event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
@@ -230,6 +334,40 @@ export default class Submenu extends LightningElement {
         );
     }
 
+    handleDropdownKeyDown(event) {
+        switch (event.key) {
+            case keyValues.down:
+            case keyValues.up: {
+                const menuItem = this.findMenuItemFromEventTarget(event.target);
+                if (!menuItem) return;
+
+                const menuItemIndex = this.findMenuItemIndex(menuItem);
+                this.preventDefaultAndStopPropagation(event);
+                let nextIndex =
+                    event.key === keyValues.up
+                        ? menuItemIndex - 1
+                        : menuItemIndex + 1;
+
+                if (nextIndex >= this.getMenuItems().length) {
+                    nextIndex = 0;
+                } else if (nextIndex < 0) {
+                    nextIndex = this.getMenuItems().length - 1;
+                }
+                this.focusOnMenuItem(nextIndex);
+                break;
+            }
+
+            case keyValues.left:
+            case keyValues.escape: {
+                this.preventDefaultAndStopPropagation(event);
+                this.close();
+                this.focus();
+                break;
+            }
+            default:
+        }
+    }
+
     /**
      * Private Focus event handler.
      */
@@ -251,6 +389,63 @@ export default class Submenu extends LightningElement {
     }
 
     /**
+     * Menu item keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleMenuItemKeyDown(event) {
+        switch (event.key) {
+            case keyValues.down:
+            case keyValues.up: {
+                const menuItem = this.findMenuItemFromEventTarget(event.target);
+                if (!menuItem) return;
+
+                const menuItemIndex = this.findMenuItemIndex(menuItem);
+                this.preventDefaultAndStopPropagation(event);
+                let nextIndex =
+                    event.key === keyValues.up
+                        ? menuItemIndex - 1
+                        : menuItemIndex + 1;
+
+                if (nextIndex >= this.getMenuItems().length) {
+                    nextIndex = 0;
+                } else if (nextIndex < 0) {
+                    nextIndex = this.getMenuItems().length - 1;
+                }
+                this.focusOnMenuItem(nextIndex);
+                break;
+            }
+            case keyValues.right: {
+                this.preventDefaultAndStopPropagation(event);
+                if (this.disabled) return;
+                this.open();
+
+                requestAnimationFrame(() => {
+                    const menuItems = this.getMenuItems();
+                    if (menuItems.length > 0) {
+                        const firstMenuItem = menuItems[0];
+                        if (firstMenuItem) {
+                            firstMenuItem.focus();
+                        }
+                    }
+                });
+                break;
+            }
+            case keyValues.left:
+            case keyValues.escape: {
+                event.preventDefault();
+                if (!this.isOpen) return;
+
+                event.stopPropagation();
+                this.close();
+                this.focus();
+                break;
+            }
+            default:
+        }
+    }
+
+    /**
      * Mouse enter submenu event handler.
      *
      * @param {Event} event
@@ -263,7 +458,7 @@ export default class Submenu extends LightningElement {
                 });
             }
 
-            this.isOpen = true;
+            this.open();
             event.stopPropagation();
         }
 

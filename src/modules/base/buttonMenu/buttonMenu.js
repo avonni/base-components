@@ -55,7 +55,8 @@ const ICON_SIZES = {
 };
 
 const DEFAULT_ICON_NAME = 'utility:down';
-const MENU_ITEM_TAG = 'lightning-menu-item';
+const MENU_ITEM_CLASSES = ['avonni-submenu'];
+const MENU_ITEM_TAGS = ['LIGHTNING-MENU-ITEM'];
 
 /**
  * @class
@@ -747,7 +748,7 @@ export default class ButtonMenu extends PrimitiveButton {
         const stopAtElement = this.template.querySelector("[role='menu']");
 
         while (currentNode !== stopAtElement) {
-            if (currentNode.tagName === MENU_ITEM_TAG.toUpperCase()) {
+            if (this.isValidMenuItem(currentNode)) {
                 return currentNode;
             }
             if (currentNode.parentNode) {
@@ -789,7 +790,11 @@ export default class ButtonMenu extends PrimitiveButton {
      * @return {object[]}
      */
     getMenuItems() {
-        return Array.from(this.querySelectorAll(MENU_ITEM_TAG));
+        const slot = this.template.querySelector('slot');
+        if (!slot) return [];
+
+        const slottedElements = slot.assignedElements();
+        return slottedElements.filter((el) => this.isValidMenuItem(el));
     }
 
     /**
@@ -799,6 +804,23 @@ export default class ButtonMenu extends PrimitiveButton {
         if (this._tooltip && !this._tooltip.initialized) {
             this._tooltip.initialize();
         }
+    }
+
+    /**
+     * Checks if a DOM node matches menu item tags or classes.
+     *
+     * @param {Element} element
+     * @returns {boolean} True if the node is a menu item.
+     */
+    isValidMenuItem(element) {
+        if (!element || !element.tagName || !element.classList) return false;
+
+        return (
+            MENU_ITEM_TAGS.includes(element.tagName) ||
+            MENU_ITEM_CLASSES.some((itemClass) =>
+                element.classList.contains(itemClass)
+            )
+        );
     }
 
     /**
@@ -884,8 +906,7 @@ export default class ButtonMenu extends PrimitiveButton {
      */
     handleButtonBlur(event) {
         const isMenuItemFocused =
-            event.relatedTarget &&
-            event.relatedTarget.tagName === MENU_ITEM_TAG.toUpperCase();
+            event.relatedTarget && this.isValidMenuItem(event.relatedTarget);
         if (this.isTriggerFocus && !isMenuItemFocused) {
             this.toggleMenuVisibility();
         }
