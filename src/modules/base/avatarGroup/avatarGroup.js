@@ -987,7 +987,7 @@ export default class AvatarGroup extends LightningElement {
         const entity = item.entity ? item.entityTitle : null;
         const tags = Array.isArray(item.tags)
             ? item.tags
-                  .filter((tag) => tag.label)
+                  .filter((tag) => tag && tag.label)
                   .map((tag) => tag.label)
                   .join(', ')
             : '';
