@@ -990,7 +990,7 @@ export default class AvatarGroup extends LightningElement {
                   .filter((tag) => tag.label)
                   .map((tag) => tag.label)
                   .join(', ')
-            : [];
+            : '';
         return [
             primaryText,
             initials,
