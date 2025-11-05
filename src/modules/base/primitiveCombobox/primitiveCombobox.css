@@ -112,3 +112,7 @@ input.avonni-primitive-combobox__input {
 .avonni-primitive-combobox__action_disabled lightning-icon {
     color: #dddbda;
 }
+
+.slds-input-has-icon .slds-input__icon:not(button) {
+    pointer-events: none;
+}
