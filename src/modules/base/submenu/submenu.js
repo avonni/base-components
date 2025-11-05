@@ -233,7 +233,7 @@ export default class Submenu extends ButtonMenuBase {
     }
 
     /**
-     * Menu dropdown keydown handler.
+     * Submenu dropdown keydown handler.
      *
      * @param {Event} event
      */
@@ -279,17 +279,12 @@ export default class Submenu extends ButtonMenuBase {
     }
 
     /**
-     * Menu item keydown handler.
+     * Submenu keydown handler.
      *
      * @param {Event} event
      */
-    handleMenuItemKeyDown(event) {
+    handleKeyDown(event) {
         switch (event.key) {
-            case keyValues.down:
-            case keyValues.up: {
-                this.focusNextOrPreviousMenuItem(event);
-                break;
-            }
             case keyValues.right:
             case keyValues.enter: {
                 this.preventDefaultAndStopPropagation(event);
@@ -299,15 +294,6 @@ export default class Submenu extends ButtonMenuBase {
                 requestAnimationFrame(() => {
                     this.focusOnMenuItem(0);
                 });
-                break;
-            }
-            case keyValues.left:
-            case keyValues.escape: {
-                if (this.isOpen) {
-                    this.preventDefaultAndStopPropagation(event);
-                    this.close();
-                    this.focus();
-                }
                 break;
             }
             default:
