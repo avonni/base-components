@@ -1290,7 +1290,7 @@ export default class VisualPicker extends LightningElement {
         const figureDescription = item.description;
         const figureTags = Array.isArray(item.tags)
             ? item.tags
-                  .filter((tag) => tag.label)
+                  .filter((tag) => tag && tag.label)
                   .map((tag) => tag.label)
                   .join(', ')
             : null;

@@ -709,7 +709,7 @@ export default class VerticalVisualPicker extends LightningElement {
         const description = item.description;
         const tags = Array.isArray(item.tags)
             ? item.tags
-                  .filter((tag) => tag.label)
+                  .filter((tag) => tag && tag.label)
                   .map((tag) => tag.label)
                   .join(', ')
             : null;
