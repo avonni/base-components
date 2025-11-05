@@ -241,6 +241,7 @@ export default class Submenu extends ButtonMenuBase {
         switch (event.key) {
             case keyValues.down:
             case keyValues.up: {
+                this.preventDefaultAndStopPropagation(event);
                 this.focusNextOrPreviousMenuItem(event);
                 break;
             }
@@ -287,8 +288,8 @@ export default class Submenu extends ButtonMenuBase {
         switch (event.key) {
             case keyValues.right:
             case keyValues.enter: {
-                this.preventDefaultAndStopPropagation(event);
                 if (this.disabled) return;
+                this.preventDefaultAndStopPropagation(event);
                 this.open();
 
                 requestAnimationFrame(() => {
