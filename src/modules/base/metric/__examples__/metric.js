@@ -7,7 +7,6 @@ export const Metric = ({
     avatar,
     currencyCode,
     currencyDisplayAs,
-    dateStyle,
     day,
     description,
     era,
@@ -28,7 +27,6 @@ export const Metric = ({
     prefix,
     secondaryCurrencyCode,
     secondaryCurrencyDisplayAs,
-    secondaryDateStyle,
     secondaryDay,
     secondaryEra,
     secondaryFormatStyle,
@@ -71,7 +69,6 @@ export const Metric = ({
     element.avatar = avatar;
     element.currencyCode = currencyCode;
     element.currencyDisplayAs = currencyDisplayAs;
-    element.dateStyle = dateStyle;
     element.day = day;
     element.description = description;
     element.era = era;
@@ -92,7 +89,6 @@ export const Metric = ({
     element.prefix = prefix;
     element.secondaryCurrencyCode = secondaryCurrencyCode;
     element.secondaryCurrencyDisplayAs = secondaryCurrencyDisplayAs;
-    element.secondaryDateStyle = secondaryDateStyle;
     element.secondaryDay = secondaryDay;
     element.secondaryEra = secondaryEra;
     element.secondaryFormatStyle = secondaryFormatStyle;

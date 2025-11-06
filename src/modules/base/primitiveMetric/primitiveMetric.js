@@ -5,35 +5,11 @@ const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
-const DATE_STYLES = {
-    valid: ['short', 'medium', 'long']
-};
-const DAY = {
-    valid: ['numeric', '2-digit']
-};
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
-const ERA = {
-    valid: ['2-digit', 'numeric']
-};
 const FORMAT_STYLES = {
     default: 'decimal',
     valid: ['currency', 'date', 'decimal', 'percent', 'percent-fixed']
-};
-const HOUR = {
-    valid: ['2-digit', 'numeric']
-};
-const MINUTE = {
-    valid: ['2-digit', 'numeric']
-};
-const MONTH = {
-    valid: ['2-digit', 'narrow', 'short', 'long', 'numeric']
-};
-const SECOND = {
-    valid: ['2-digit', 'numeric']
-};
-const TIME_ZONE_NAME = {
-    valid: ['short', 'long']
 };
 const TREND_ICONS = {
     valid: ['dynamic', 'arrow', 'caret'],
@@ -42,12 +18,6 @@ const TREND_ICONS = {
 const VALUE_SIGNS = {
     valid: ['negative', 'positive-and-negative', 'none'],
     default: 'negative'
-};
-const WEEKDAY = {
-    valid: ['narrow', 'short', 'long']
-};
-const YEAR = {
-    valid: ['2-digit', 'numeric']
 };
 
 /**
@@ -92,7 +62,6 @@ export default class PrimitiveMetric extends LightningElement {
     @api timeZone;
 
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
-    _dateStyle;
     _day;
     _era;
     _formatStyle = FORMAT_STYLES.default;
@@ -140,30 +109,10 @@ export default class PrimitiveMetric extends LightningElement {
     }
 
     /**
-     * The date formatting style to use.
-     * The format of each style is specific to the locale.
-     * Valid values include short, medium and long.
-     *
-     * @type {string}
-     * @default medium
-     * @public
-     */
-    @api
-    get dateStyle() {
-        return this._dateStyle;
-    }
-    set dateStyle(value) {
-        this._dateStyle = normalizeString(value, {
-            validValues: DATE_STYLES.valid
-        });
-    }
-
-    /**
      * The day formatting style to use.
      * Valid values include numeric and 2-digit.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -171,9 +120,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._day;
     }
     set day(value) {
-        this._day = normalizeString(value, {
-            validValues: DAY.valid
-        });
+        this._day = value;
     }
 
     /**
@@ -181,7 +128,6 @@ export default class PrimitiveMetric extends LightningElement {
      * Valid values include 2-digit and numeric.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -189,9 +135,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._era;
     }
     set era(value) {
-        this._era = normalizeString(value, {
-            validValues: ERA.valid
-        });
+        this._era = value;
     }
 
     /**
@@ -216,7 +160,6 @@ export default class PrimitiveMetric extends LightningElement {
      * The hour formatting style to use. Valid values include numeric and 2-digit.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -224,9 +167,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._hour;
     }
     set hour(value) {
-        this._hour = normalizeString(value, {
-            validValues: HOUR.valid
-        });
+        this._hour = value;
     }
 
     /**
@@ -364,9 +305,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._minute;
     }
     set minute(value) {
-        this._minute = normalizeString(value, {
-            validValues: MINUTE.valid
-        });
+        this._minute = value;
     }
 
     /**
@@ -381,9 +320,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._month;
     }
     set month(value) {
-        this._month = normalizeString(value, {
-            validValues: MONTH.valid
-        });
+        this._month = value;
     }
 
     /**
@@ -398,9 +335,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._second;
     }
     set second(value) {
-        this._second = normalizeString(value, {
-            validValues: SECOND.valid
-        });
+        this._second = value;
     }
 
     /**
@@ -415,9 +350,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._timeZoneName;
     }
     set timeZoneName(value) {
-        this._timeZoneName = normalizeString(value, {
-            validValues: TIME_ZONE_NAME.valid
-        });
+        this._timeZoneName = value;
     }
 
     /**
@@ -501,9 +434,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._weekday;
     }
     set weekday(value) {
-        this._weekday = normalizeString(value, {
-            validValues: WEEKDAY.valid
-        });
+        this._weekday = value;
     }
 
     /**
@@ -518,10 +449,7 @@ export default class PrimitiveMetric extends LightningElement {
         return this._year;
     }
     set year(value) {
-        this._year = normalizeString(value, {
-            fallbackValue: YEAR.default,
-            validValues: YEAR.valid
-        });
+        this._year = value;
     }
 
     /*

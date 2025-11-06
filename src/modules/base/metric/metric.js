@@ -15,42 +15,19 @@ const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
-const DATE_STYLES = {
-    valid: ['short', 'medium', 'long']
-};
-const DAY = {
-    valid: ['numeric', '2-digit']
-};
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
 const FORMAT_STYLES = {
+    default: 'decimal',
     valid: ['currency', 'date', 'decimal', 'percent', 'percent-fixed']
-};
-const ERA = {
-    valid: ['2-digit', 'numeric']
-};
-const HOUR = {
-    valid: ['2-digit', 'numeric']
 };
 const LABEL_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
-const MINUTE = {
-    valid: ['2-digit', 'numeric']
-};
-const MONTH = {
-    valid: ['2-digit', 'narrow', 'short', 'long', 'numeric']
-};
 const POSITIONS = {
     valid: ['right', 'left', 'top', 'bottom'],
     default: 'right'
-};
-const SECOND = {
-    valid: ['2-digit', 'numeric']
-};
-const TIME_ZONE_NAME = {
-    valid: ['short', 'long']
 };
 const TREND_ICONS = {
     valid: ['dynamic', 'arrow', 'caret'],
@@ -59,12 +36,6 @@ const TREND_ICONS = {
 const VALUE_SIGNS = {
     valid: ['negative', 'positive-and-negative', 'none'],
     default: 'negative'
-};
-const WEEKDAY = {
-    valid: ['narrow', 'short', 'long']
-};
-const YEAR = {
-    valid: ['2-digit', 'numeric']
 };
 
 /**
@@ -161,7 +132,6 @@ export default class Metric extends LightningElement {
 
     _avatar;
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
-    _dateStyle;
     _day;
     _era;
     _formatStyle = FORMAT_STYLES.default;
@@ -177,7 +147,6 @@ export default class Metric extends LightningElement {
     _month;
     _second;
     _secondaryCurrencyDisplayAs = CURRENCY_DISPLAYS.default;
-    _secondaryDateStyle;
     _secondaryDay;
     _secondaryEra;
     _secondaryFormatStyle = FORMAT_STYLES.default;
@@ -210,8 +179,8 @@ export default class Metric extends LightningElement {
     _value;
     _valueIsLoading = false;
     _valueSign = VALUE_SIGNS.default;
-    _weekday = WEEKDAY.default;
-    _year = YEAR.default;
+    _weekday;
+    _year;
 
     /*
      * ------------------------------------------------------------
@@ -265,31 +234,10 @@ export default class Metric extends LightningElement {
     }
 
     /**
-     * The date formatting style to use.
-     * The format of each style is specific to the locale.
-     * Valid values include short, medium and long.
-     *
-     * @type {string}
-     * @default medium
-     * @public
-     */
-    @api
-    get dateStyle() {
-        return this._dateStyle;
-    }
-    set dateStyle(value) {
-        this._dateStyle = normalizeString(value, {
-            fallbackValue: DATE_STYLES.default,
-            validValues: DATE_STYLES.valid
-        });
-    }
-
-    /**
      * The day formatting style to use.
      * Valid values include numeric and 2-digit.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -297,10 +245,7 @@ export default class Metric extends LightningElement {
         return this._day;
     }
     set day(value) {
-        this._day = normalizeString(value, {
-            fallbackValue: DAY.default,
-            validValues: DAY.valid
-        });
+        this._day = value;
     }
 
     /**
@@ -308,7 +253,6 @@ export default class Metric extends LightningElement {
      * Valid values include 2-digit and numeric.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -316,10 +260,7 @@ export default class Metric extends LightningElement {
         return this._era;
     }
     set era(value) {
-        this._era = normalizeString(value, {
-            fallbackValue: ERA.default,
-            validValues: ERA.valid
-        });
+        this._era = value;
     }
 
     /**
@@ -352,10 +293,7 @@ export default class Metric extends LightningElement {
         return this._hour;
     }
     set hour(value) {
-        this._hour = normalizeString(value, {
-            fallbackValue: HOUR.default,
-            validValues: HOUR.valid
-        });
+        this._hour = value;
     }
 
     /**
@@ -496,10 +434,7 @@ export default class Metric extends LightningElement {
         return this._minute;
     }
     set minute(value) {
-        this._minute = normalizeString(value, {
-            fallbackValue: MINUTE.default,
-            validValues: MINUTE.valid
-        });
+        this._minute = value;
     }
 
     /**
@@ -514,10 +449,7 @@ export default class Metric extends LightningElement {
         return this._month;
     }
     set month(value) {
-        this._month = normalizeString(value, {
-            fallbackValue: MONTH.default,
-            validValues: MONTH.valid
-        });
+        this._month = value;
     }
 
     /**
@@ -532,10 +464,7 @@ export default class Metric extends LightningElement {
         return this._second;
     }
     set second(value) {
-        this._second = normalizeString(value, {
-            fallbackValue: SECOND.default,
-            validValues: SECOND.valid
-        });
+        this._second = value;
     }
 
     /**
@@ -557,25 +486,6 @@ export default class Metric extends LightningElement {
     }
 
     /**
-     * The date formatting style to use for the secondary value.
-     * The format of each style is specific to the locale.
-     * Valid values include short, medium and long.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get secondaryDateStyle() {
-        return this._secondaryDateStyle;
-    }
-    set secondaryDateStyle(value) {
-        this._secondaryDateStyle = normalizeString(value, {
-            fallbackValue: DATE_STYLES.default,
-            validValues: DATE_STYLES.valid
-        });
-    }
-
-    /**
      * The day formatting style to use for the secondary value.
      * Valid values include numeric and 2-digit.
      *
@@ -587,10 +497,7 @@ export default class Metric extends LightningElement {
         return this._secondaryDay;
     }
     set secondaryDay(value) {
-        this._secondaryDay = normalizeString(value, {
-            fallbackValue: DAY.default,
-            validValues: DAY.valid
-        });
+        this._secondaryDay = value;
     }
 
     /**
@@ -605,10 +512,7 @@ export default class Metric extends LightningElement {
         return this._secondaryEra;
     }
     set secondaryEra(value) {
-        this._secondaryEra = normalizeString(value, {
-            fallbackValue: ERA.default,
-            validValues: ERA.valid
-        });
+        this._secondaryEra = value;
     }
 
     /**
@@ -630,23 +534,6 @@ export default class Metric extends LightningElement {
     }
 
     /**
-     * The maximum number of fraction digits that are allowed.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get secondaryMaximumFractionDigits() {
-        return this._secondaryMaximumFractionDigits;
-    }
-    set secondaryMaximumFractionDigits(value) {
-        const normalizedNumber = parseInt(value, 10);
-        this._secondaryMaximumFractionDigits = isNaN(normalizedNumber)
-            ? undefined
-            : normalizedNumber;
-    }
-
-    /**
      * The hour formatting style to use for the secondary value.
      * Valid values include numeric and 2-digit.
      *
@@ -658,10 +545,7 @@ export default class Metric extends LightningElement {
         return this._secondaryHour;
     }
     set secondaryHour(value) {
-        this._secondaryHour = normalizeString(value, {
-            fallbackValue: HOUR.default,
-            validValues: HOUR.valid
-        });
+        this._secondaryHour = value;
     }
 
     /**
@@ -676,6 +560,23 @@ export default class Metric extends LightningElement {
     }
     set secondaryHour12(value) {
         this._secondaryHour12 = normalizeBoolean(value);
+    }
+
+    /**
+     * The maximum number of fraction digits that are allowed.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get secondaryMaximumFractionDigits() {
+        return this._secondaryMaximumFractionDigits;
+    }
+    set secondaryMaximumFractionDigits(value) {
+        const normalizedNumber = parseInt(value, 10);
+        this._secondaryMaximumFractionDigits = isNaN(normalizedNumber)
+            ? undefined
+            : normalizedNumber;
     }
 
     /**
@@ -770,10 +671,7 @@ export default class Metric extends LightningElement {
         return this._secondaryMinute;
     }
     set secondaryMinute(value) {
-        this._secondaryMinute = normalizeString(value, {
-            fallbackValue: MINUTE.default,
-            validValues: MINUTE.valid
-        });
+        this._secondaryMinute = value;
     }
 
     /**
@@ -788,10 +686,7 @@ export default class Metric extends LightningElement {
         return this._secondaryMonth;
     }
     set secondaryMonth(value) {
-        this._secondaryMonth = normalizeString(value, {
-            fallbackValue: MONTH.default,
-            validValues: MONTH.valid
-        });
+        this._secondaryMonth = value;
     }
 
     /**
@@ -824,10 +719,7 @@ export default class Metric extends LightningElement {
         return this._secondarySecond;
     }
     set secondarySecond(value) {
-        this._secondarySecond = normalizeString(value, {
-            fallbackValue: SECOND.default,
-            validValues: SECOND.valid
-        });
+        this._secondarySecond = value;
     }
 
     /**
@@ -857,10 +749,7 @@ export default class Metric extends LightningElement {
         return this._secondaryTimeZoneName;
     }
     set secondaryTimeZoneName(value) {
-        this._secondaryTimeZoneName = normalizeString(value, {
-            fallbackValue: TIME_ZONE_NAME.default,
-            validValues: TIME_ZONE_NAME.valid
-        });
+        this._secondaryTimeZoneName = value;
     }
 
     /**
@@ -899,9 +788,9 @@ export default class Metric extends LightningElement {
     }
 
     /**
-     * If present, a secondary number will be displayed to the right of the primary one.
+     * If present, a secondary number or date will be displayed to the right of the primary one.
      *
-     * @type {number}
+     * @type {string}
      * @public
      */
     @api
@@ -909,18 +798,20 @@ export default class Metric extends LightningElement {
         return this._secondaryValue;
     }
     set secondaryValue(value) {
-        const normalizedNumber = value === null ? undefined : Number(value);
-        this._secondaryValue = isFinite(normalizedNumber)
-            ? normalizedNumber
-            : undefined;
+        const normalizedNumber =
+            value === null ? undefined : Number(value) || new Date(value);
+        this._secondaryValue =
+            isFinite(normalizedNumber) || normalizedNumber instanceof Date
+                ? normalizedNumber
+                : undefined;
     }
 
     /**
      * If present, a spinner is displayed to indicate that the secondary value is loading.
      *
      * @type {boolean}
-     * @public
      * @default false
+     * @public
      */
     @api
     get secondaryValueIsLoading() {
@@ -953,8 +844,8 @@ export default class Metric extends LightningElement {
      * If present, the value will change color depending on the trend direction.
      *
      * @type {boolean}
-     * @public
      * @default false
+     * @public
      */
     @api
     get showTrendColor() {
@@ -976,10 +867,7 @@ export default class Metric extends LightningElement {
         return this._timeZoneName;
     }
     set timeZoneName(value) {
-        this._timeZoneName = normalizeString(value, {
-            fallbackValue: TIME_ZONE_NAME.default,
-            validValues: TIME_ZONE_NAME.valid
-        });
+        this._timeZoneName = value;
     }
 
     /**
@@ -1043,9 +931,9 @@ export default class Metric extends LightningElement {
     }
 
     /**
-     * Value of the primary metric.
+     * Value of the primary metric. Can be a number or a date.
      *
-     * @type {number}
+     * @type {string}
      * @public
      */
     @api
@@ -1053,8 +941,12 @@ export default class Metric extends LightningElement {
         return this._value;
     }
     set value(value) {
-        const normalizedNumber = value === null ? undefined : Number(value);
-        this._value = isFinite(normalizedNumber) ? normalizedNumber : undefined;
+        const normalizedNumber =
+            value === null ? undefined : Number(value) || new Date(value);
+        this._value =
+            isFinite(normalizedNumber) || normalizedNumber instanceof Date
+                ? normalizedNumber
+                : undefined;
     }
 
     /**
@@ -1096,7 +988,6 @@ export default class Metric extends LightningElement {
      * Valid values include narrow, short and long.
      *
      * @type {string}
-     * @default narrow
      * @public
      */
     @api
@@ -1104,10 +995,7 @@ export default class Metric extends LightningElement {
         return this._weekday;
     }
     set weekday(value) {
-        this._weekday = normalizeString(value, {
-            fallbackValue: WEEKDAY.default,
-            validValues: WEEKDAY.valid
-        });
+        this._weekday = value;
     }
 
     /**
@@ -1115,7 +1003,6 @@ export default class Metric extends LightningElement {
      * Valid values include 2-digit and numeric.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -1123,10 +1010,7 @@ export default class Metric extends LightningElement {
         return this._year;
     }
     set year(value) {
-        this._year = normalizeString(value, {
-            fallbackValue: YEAR.default,
-            validValues: YEAR.valid
-        });
+        this._year = value;
     }
 
     /*
