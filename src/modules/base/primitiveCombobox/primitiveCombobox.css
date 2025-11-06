@@ -113,6 +113,8 @@ input.avonni-primitive-combobox__input {
     color: #dddbda;
 }
 
+/* Maintains dropdown focus when the icon is clicked.
+   This behavior was supported by default in SLDS 1 but is no longer included in SLDS 2. */
 .slds-input-has-icon .slds-input__icon:not(button) {
     pointer-events: none;
 }
