@@ -5,11 +5,35 @@ const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
+const DATE_STYLES = {
+    valid: ['short', 'medium', 'long']
+};
+const DAY = {
+    valid: ['numeric', '2-digit']
+};
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
+const ERA = {
+    valid: ['2-digit', 'numeric']
+};
 const FORMAT_STYLES = {
     default: 'decimal',
-    valid: ['currency', 'decimal', 'percent', 'percent-fixed']
+    valid: ['currency', 'date', 'decimal', 'percent', 'percent-fixed']
+};
+const HOUR = {
+    valid: ['2-digit', 'numeric']
+};
+const MINUTE = {
+    valid: ['2-digit', 'numeric']
+};
+const MONTH = {
+    valid: ['2-digit', 'narrow', 'short', 'long', 'numeric']
+};
+const SECOND = {
+    valid: ['2-digit', 'numeric']
+};
+const TIME_ZONE_NAME = {
+    valid: ['short', 'long']
 };
 const TREND_ICONS = {
     valid: ['dynamic', 'arrow', 'caret'],
@@ -18,6 +42,12 @@ const TREND_ICONS = {
 const VALUE_SIGNS = {
     valid: ['negative', 'positive-and-negative', 'none'],
     default: 'negative'
+};
+const WEEKDAY = {
+    valid: ['narrow', 'short', 'long']
+};
+const YEAR = {
+    valid: ['2-digit', 'numeric']
 };
 
 /**
@@ -53,19 +83,37 @@ export default class PrimitiveMetric extends LightningElement {
      * @public
      */
     @api suffix;
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api timeZone;
 
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
+    _dateStyle;
+    _day;
+    _era;
     _formatStyle = FORMAT_STYLES.default;
+    _hour;
+    _hour12 = false;
     _isLoading = false;
     _maximumFractionDigits;
     _maximumSignificantDigits;
     _minimumFractionDigits;
     _minimumIntegerDigits;
     _minimumSignificantDigits;
+    _minute;
+    _month;
+    _second;
+    _timeZoneName;
     _trendBreakpointValue = DEFAULT_TREND_BREAKPOINT_VALUE;
     _trendIcon = TREND_ICONS.default;
     _value;
     _valueSign = VALUE_SIGNS.default;
+    _weekday;
+    _year;
 
     /*
      * ------------------------------------------------------------
@@ -92,7 +140,62 @@ export default class PrimitiveMetric extends LightningElement {
     }
 
     /**
-     * The number formatting style to use. Possible values are decimal, currency, percent, and percent-fixed. This value defaults to decimal.
+     * The date formatting style to use.
+     * The format of each style is specific to the locale.
+     * Valid values include short, medium and long.
+     *
+     * @type {string}
+     * @default medium
+     * @public
+     */
+    @api
+    get dateStyle() {
+        return this._dateStyle;
+    }
+    set dateStyle(value) {
+        this._dateStyle = normalizeString(value, {
+            validValues: DATE_STYLES.valid
+        });
+    }
+
+    /**
+     * The day formatting style to use.
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @default numeric
+     * @public
+     */
+    @api
+    get day() {
+        return this._day;
+    }
+    set day(value) {
+        this._day = normalizeString(value, {
+            validValues: DAY.valid
+        });
+    }
+
+    /**
+     * The era formatting style to use.
+     * Valid values include 2-digit and numeric.
+     *
+     * @type {string}
+     * @default numeric
+     * @public
+     */
+    @api
+    get era() {
+        return this._era;
+    }
+    set era(value) {
+        this._era = normalizeString(value, {
+            validValues: ERA.valid
+        });
+    }
+
+    /**
+     * The number formatting style to use. Possible values are currency, date, decimal, percent, and percent-fixed. This value defaults to decimal.
      *
      * @type {string}
      * @default decimal
@@ -107,6 +210,40 @@ export default class PrimitiveMetric extends LightningElement {
             fallbackValue: FORMAT_STYLES.default,
             validValues: FORMAT_STYLES.valid
         });
+    }
+
+    /**
+     * The hour formatting style to use. Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @default numeric
+     * @public
+     */
+    @api
+    get hour() {
+        return this._hour;
+    }
+    set hour(value) {
+        this._hour = normalizeString(value, {
+            validValues: HOUR.valid
+        });
+    }
+
+    /**
+     * Determines whether time is displayed as 12-hour. If false, time displays as 24-hour. The default setting is
+     * determined by the user's locale. Set the value using a variable. If set to any string directly, the component
+     * interprets its value as true.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hour12() {
+        return this._hour12;
+    }
+    set hour12(value) {
+        this._hour12 = normalizeBoolean(value);
     }
 
     /**
@@ -216,6 +353,74 @@ export default class PrimitiveMetric extends LightningElement {
     }
 
     /**
+     * The minute formatting style to use.
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get minute() {
+        return this._minute;
+    }
+    set minute(value) {
+        this._minute = normalizeString(value, {
+            validValues: MINUTE.valid
+        });
+    }
+
+    /**
+     * The month formatting style to use.
+     * Valid values include 2-digit, narrow, short, long and numeric.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get month() {
+        return this._month;
+    }
+    set month(value) {
+        this._month = normalizeString(value, {
+            validValues: MONTH.valid
+        });
+    }
+
+    /**
+     * The seconds formatting style to use.
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get second() {
+        return this._second;
+    }
+    set second(value) {
+        this._second = normalizeString(value, {
+            validValues: SECOND.valid
+        });
+    }
+
+    /**
+     * The time zone name format to use.
+     * Valid values include short and long.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timeZoneName() {
+        return this._timeZoneName;
+    }
+    set timeZoneName(value) {
+        this._timeZoneName = normalizeString(value, {
+            validValues: TIME_ZONE_NAME.valid
+        });
+    }
+
+    /**
      * Number at which the value will be considered neutral. Works in association with `trend-icon` and `show-trend-color`.
      *
      * @type {number}
@@ -284,6 +489,41 @@ export default class PrimitiveMetric extends LightningElement {
         });
     }
 
+    /**
+     * The weekday formatting style to use.
+     * Valid values include narrow, short and long.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get weekday() {
+        return this._weekday;
+    }
+    set weekday(value) {
+        this._weekday = normalizeString(value, {
+            validValues: WEEKDAY.valid
+        });
+    }
+
+    /**
+     * The year formatting style to use.
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get year() {
+        return this._year;
+    }
+    set year(value) {
+        this._year = normalizeString(value, {
+            fallbackValue: YEAR.default,
+            validValues: YEAR.valid
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -328,6 +568,15 @@ export default class PrimitiveMetric extends LightningElement {
             return neutral;
         }
         return this.value > this.trendBreakpointValue ? up : down;
+    }
+
+    /**
+     * True if the format style is date.
+     *
+     * @type {boolean}
+     */
+    get isDateFormat() {
+        return this.formatStyle === 'date';
     }
 
     /**

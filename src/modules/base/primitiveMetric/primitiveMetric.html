@@ -78,7 +78,27 @@
             >
                 {mathSign}&nbsp;
             </span>
+            <template if:true={isDateFormat}>
+                <lightning-formatted-date-time
+                    class="
+                        avonni-metric__value avonni-metric__primary-text
+                        slds-truncate
+                    "
+                    day={day}
+                    era="short"
+                    hour={hour}
+                    hour12={hour12}
+                    minute={minute}
+                    month={month}
+                    second={second}
+                    time-zone={timeZone}
+                    time-zone-name={timeZoneName}
+                    value={value}
+                    year={year}
+                ></lightning-formatted-date-time>
+            </template>
             <lightning-formatted-number
+                if:false={isDateFormat}
                 class="
                     avonni-metric__value avonni-metric__primary-text
                     slds-truncate

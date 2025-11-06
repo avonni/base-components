@@ -333,6 +333,9 @@ export default class OutputData extends LightningElement {
 
             let normalizedValue = value;
             if (definition.type === 'string' && definition.valid) {
+                console.log('value', value);
+                console.log('definition.default', definition.default);
+                console.log('definition.valid', definition.valid);
                 // Normalize string attributes
                 normalizedValue = normalizeString(value, {
                     fallbackValue: definition.default,
