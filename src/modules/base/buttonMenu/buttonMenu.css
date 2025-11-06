@@ -803,8 +803,9 @@
 .avonni-button-menu_destructive {
     --slds-c-button-destructive-spacing-inline-start: 0rem;
     --slds-c-button-destructive-spacing-inline-end: 0rem;
-    --slds-c-button-destructive-color-background: var(
-        --avonni-button-menu-button-destructive-color-background
+    background-color: var(
+        --avonni-button-menu-button-destructive-color-background,
+        var(--slds-c-button-destructive-color-background, rgb(186, 5, 23))
     );
     --slds-c-button-destructive-color-border: var(
         --avonni-button-menu-button-destructive-color-border
@@ -824,8 +825,9 @@
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-menu_destructive:active {
-    --slds-c-button-destructive-color-background-active: var(
-        --avonni-button-menu-button-destructive-color-background-active
+    background-color: var(
+        --avonni-button-menu-button-destructive-color-background-active,
+        var(--slds-c-button-destructive-color-background-hover, rgb(142, 3, 15))
     );
     --slds-c-button-destructive-color-border-active: var(
         --avonni-button-menu-button-destructive-color-border-active
@@ -837,8 +839,9 @@
 
 .avonni-button-menu_destructive:hover,
 .avonni-button-menu_destructive:focus {
-    --slds-c-button-destructive-color-background-hover: var(
-        --avonni-button-menu-button-destructive-color-background-hover
+    background-color: var(
+        --avonni-button-menu-button-destructive-color-background-hover,
+        var(--slds-c-button-destructive-color-background-hover, rgb(142, 3, 15))
     );
     --slds-c-button-destructive-color-border-hover: var(
         --avonni-button-menu-button-destructive-color-border-hover
@@ -1116,8 +1119,9 @@
 .avonni-button-menu_success {
     --slds-c-button-success-spacing-inline-start: 0rem;
     --slds-c-button-success-spacing-inline-end: 0rem;
-    --slds-c-button-success-color-background: var(
-        --avonni-button-menu-button-success-color-background
+    background-color: var(
+        --avonni-button-menu-button-success-color-background,
+        var(--slds-c-button-success-color-background, #45c65a)
     );
     --slds-c-button-success-color-border: var(
         --avonni-button-menu-button-success-color-border
@@ -1137,8 +1141,9 @@
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-menu_success:active {
-    --slds-c-button-success-color-background-active: var(
-        --avonni-button-menu-button-success-color-background-active
+    background-color: var(
+        --avonni-button-menu-button-success-color-background-active,
+        var(--slds-c-button-success-color-background-hover, #2e844a)
     );
     --slds-c-button-success-color-border-active: var(
         --avonni-button-menu-button-success-color-border-active
@@ -1150,8 +1155,9 @@
 
 .avonni-button-menu_success:hover,
 .avonni-button-menu_success:focus {
-    --slds-c-button-success-color-background-hover: var(
-        --avonni-button-menu-button-success-color-background-hover
+    background-color: var(
+        --avonni-button-menu-button-success-color-background-hover,
+        var(--slds-c-button-success-color-background-hover, #2e844a)
     );
     --slds-c-button-success-color-border-hover: var(
         --avonni-button-menu-button-success-color-border-hover
