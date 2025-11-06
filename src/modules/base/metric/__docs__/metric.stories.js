@@ -54,7 +54,7 @@ export default {
         },
         day: {
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description: 'How to display the day in date format.',
             table: {
                 type: { summary: 'string' },
@@ -73,7 +73,7 @@ export default {
         },
         era: {
             control: { type: 'select' },
-            options: ['short', 'long', undefined],
+            options: ['short', 'long'],
             description: 'How to display the era in date format.',
             table: {
                 type: { summary: 'string' },
@@ -113,7 +113,7 @@ export default {
         },
         hour: {
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description: 'How to display the hour in date format.',
             table: {
                 type: { summary: 'string' },
@@ -230,7 +230,7 @@ export default {
         },
         minute: {
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description: 'How to display the minute in date format.',
             table: {
                 type: { summary: 'string' },
@@ -239,7 +239,7 @@ export default {
         },
         month: {
             control: { type: 'select' },
-            options: ['numeric', '2-digit', 'short', 'long', undefined],
+            options: ['numeric', '2-digit', 'short', 'long'],
             description: 'How to display the month in date format.',
             table: {
                 type: { summary: 'string' },
@@ -297,7 +297,7 @@ export default {
         secondaryDay: {
             name: 'secondary-day',
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description:
                 'How to display the day for the secondary value in date format.',
             table: {
@@ -328,7 +328,7 @@ export default {
         secondaryHour: {
             name: 'secondary-hour',
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description:
                 'How to display the hour for the secondary value in date format.',
             table: {
@@ -399,7 +399,7 @@ export default {
         secondaryMinute: {
             name: 'secondary-minute',
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description:
                 'How to display the minute for the secondary value in date format.',
             table: {
@@ -410,7 +410,7 @@ export default {
         secondaryMonth: {
             name: 'secondary-month',
             control: { type: 'select' },
-            options: ['numeric', '2-digit', 'short', 'long', undefined],
+            options: ['numeric', '2-digit', 'short', 'long'],
             description:
                 'How to display the month for the secondary value in date format.',
             table: {
@@ -478,15 +478,7 @@ export default {
         secondaryTimeZoneName: {
             name: 'secondary-time-zone-name',
             control: { type: 'select' },
-            options: [
-                'short',
-                'long',
-                'shortOffset',
-                'longOffset',
-                'shortGeneric',
-                'longGeneric',
-                undefined
-            ],
+            options: ['short', 'long'],
             description:
                 'The time zone name style to use for the secondary date value.',
             table: {
@@ -549,7 +541,7 @@ export default {
         secondaryWeekday: {
             name: 'secondary-weekday',
             control: { type: 'select' },
-            options: ['long', 'short', 'narrow', undefined],
+            options: ['long', 'short', 'narrow'],
             description:
                 'How to display the weekday for the secondary value in date format.',
             table: {
@@ -560,7 +552,7 @@ export default {
         secondaryYear: {
             name: 'secondary-year',
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description:
                 'How to display the year for the secondary value in date format.',
             table: {
@@ -603,7 +595,7 @@ export default {
         timeZoneName: {
             name: 'time-zone-name',
             control: { type: 'select' },
-            options: ['short', 'long', undefined],
+            options: ['short', 'long'],
             description: 'The time zone name style to use.',
             table: {
                 type: { summary: 'string' },
@@ -674,7 +666,7 @@ export default {
         },
         weekday: {
             control: { type: 'select' },
-            options: ['long', 'short', 'narrow', undefined],
+            options: ['long', 'short', 'narrow'],
             description: 'How to display the weekday in date format.',
             table: {
                 type: { summary: 'string' },
@@ -683,7 +675,7 @@ export default {
         },
         year: {
             control: { type: 'select' },
-            options: ['numeric', '2-digit', undefined],
+            options: ['numeric', '2-digit'],
             description: 'How to display the year in date format.',
             table: {
                 type: { summary: 'string' },
