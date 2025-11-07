@@ -1152,9 +1152,9 @@ export default class Metric extends LightningElement {
             'slds-show_inline-block':
                 position === 'bottom' || position === 'top',
             'slds-m-right_x-small':
-                isFinite(this.secondaryValue) && position === 'right',
+                this.showSecondaryMetric && position === 'right',
             'slds-m-left_x-small':
-                isFinite(this.secondaryValue) && position === 'left',
+                this.showSecondaryMetric && position === 'left',
             'slds-show': position === 'left' || position === 'right'
         });
 
@@ -1207,7 +1207,9 @@ export default class Metric extends LightningElement {
      * @type {boolean}
      */
     get showSecondaryMetric() {
-        return isFinite(this.secondaryValue);
+        return (
+            isFinite(this.secondaryValue) || this.secondaryValue instanceof Date
+        );
     }
 
     /**

@@ -207,6 +207,19 @@ describe('Metric', () => {
             });
         });
 
+        describe('description', () => {
+            it('Passed to the component', () => {
+                element.description = 'some description';
+
+                return Promise.resolve().then(() => {
+                    const description = element.shadowRoot.querySelector(
+                        '[data-element-id="div-description"]'
+                    );
+                    expect(description.textContent).toBe('some description');
+                });
+            });
+        });
+
         describe('era', () => {
             it('Passed to the component', () => {
                 element.era = 'short';
@@ -218,19 +231,6 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
                     expect(metric.era).toBe('short');
-                });
-            });
-        });
-
-        describe('description', () => {
-            it('Passed to the component', () => {
-                element.description = 'some description';
-
-                return Promise.resolve().then(() => {
-                    const description = element.shadowRoot.querySelector(
-                        '[data-element-id="div-description"]'
-                    );
-                    expect(description.textContent).toBe('some description');
                 });
             });
         });
