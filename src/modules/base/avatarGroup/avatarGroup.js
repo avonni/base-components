@@ -985,7 +985,21 @@ export default class AvatarGroup extends LightningElement {
         const presence = item.presence ? item.presenceTitle : null;
         const status = item.status ? item.statusTitle : null;
         const entity = item.entity ? item.entityTitle : null;
-        return [primaryText, initials, secondaryText, presence, status, entity]
+        const tags = Array.isArray(item.tags)
+            ? item.tags
+                  .filter((tag) => tag && tag.label)
+                  .map((tag) => tag.label)
+                  .join(', ')
+            : '';
+        return [
+            primaryText,
+            initials,
+            secondaryText,
+            presence,
+            status,
+            entity,
+            tags
+        ]
             .filter(Boolean)
             .join(', ');
     }
