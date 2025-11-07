@@ -71,6 +71,10 @@ const TYPE_ATTRIBUTES = [
         default: 'symbol'
     },
     {
+        name: 'dateFormat',
+        type: 'string'
+    },
+    {
         name: 'day',
         type: 'string',
         valid: ['numeric', '2-digit']
@@ -182,4 +186,4 @@ const VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
 
-export { SUPPORTED_TYPE_ATTRIBUTES, TYPES, TYPE_ATTRIBUTES, VARIANTS };
+export { SUPPORTED_TYPE_ATTRIBUTES, TYPE_ATTRIBUTES, TYPES, VARIANTS };
