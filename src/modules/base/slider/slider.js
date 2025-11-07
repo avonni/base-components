@@ -92,6 +92,7 @@ export default class Slider extends LightningElement {
     _minimumDistance = DEFAULT_MINIMUM_DISTANCE;
     _hideTrack = false;
     _hideMinMaxValues = false;
+    _isRatio = false;
     _pin = false;
     _showTickMarks = false;
     _size = SLIDER_SIZES.default;
@@ -215,6 +216,21 @@ export default class Slider extends LightningElement {
     }
     set disableSwap(value) {
         this._disableSwap = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the displayed percentage is divided by 100.
+     *
+     * @type {Boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isRatio() {
+        return this._isRatio;
+    }
+    set isRatio(value) {
+        this._isRatio = normalizeBoolean(value);
     }
 
     /**
@@ -638,6 +654,54 @@ export default class Slider extends LightningElement {
         return classSet('avonni-slider__label slds-slider-label__label').add({
             'slds-assistive-text': this.variant === 'label-hidden'
         });
+    }
+
+    /**
+     * Computed display of the max value.
+     *
+     * @type {number}
+     */
+    get computedMaxDisplay() {
+        return this.isRatio &&
+            !isNaN(this.computedMax) &&
+            this._unit === 'percent'
+            ? this.computedMax / PERCENT_SCALING_FACTOR
+            : this.computedMax;
+    }
+
+    /**
+     * Computed display of the min value.
+     *
+     * @type {number}
+     */
+    get computedMinDisplay() {
+        return this.isRatio &&
+            !isNaN(this.computedMin) &&
+            this._unit === 'percent'
+            ? this.computedMin / PERCENT_SCALING_FACTOR
+            : this.computedMin;
+    }
+
+    /**
+     * Computed display of the vertical max value.
+     *
+     * @type {number}
+     */
+    get computedMaxVerticalDisplay() {
+        return this.isRatio && !isNaN(this.max) && this._unit === 'percent'
+            ? this.max / PERCENT_SCALING_FACTOR
+            : this.max;
+    }
+
+    /**
+     * Computed display of the vertical min value.
+     *
+     * @type {number}
+     */
+    get computedMinVerticalDisplay() {
+        return this.isRatio && !isNaN(this.min) && this._unit === 'percent'
+            ? this.min / PERCENT_SCALING_FACTOR
+            : this.min;
     }
 
     /**
@@ -1636,6 +1700,13 @@ export default class Slider extends LightningElement {
             this._computedValues[pinIndex]
         );
         let transformedValue = this._computedValues[pinIndex];
+        if (
+            this.isRatio &&
+            !isNaN(transformedValue) &&
+            this._unit === 'percent'
+        ) {
+            transformedValue /= PERCENT_SCALING_FACTOR;
+        }
 
         pin.querySelector(
             '[data-element-id="lightning-formatted-number-pin"]'

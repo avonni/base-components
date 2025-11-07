@@ -116,6 +116,7 @@ const TYPE_ATTRIBUTES = {
     ],
     range: [
         'hideMinMaxValues',
+        'isRatio',
         'max',
         'min',
         'showPin',
@@ -1690,6 +1691,9 @@ export default class FilterMenu extends LightningElement {
                     style,
                     ...attributes
                 };
+                if (this.computedTypeAttributes.isRatio) {
+                    value /= 100;
+                }
                 normalizedValue = value.toString();
                 normalizedValue = numberFormat(options).format(normalizedValue);
             }

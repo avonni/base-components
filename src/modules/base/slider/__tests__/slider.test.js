@@ -53,6 +53,7 @@ describe('Slider', () => {
             expect(element.disableSwap).toEqual(false);
             expect(element.hideMinMaxValues).toEqual(false);
             expect(element.hideTrack).toEqual(false);
+            expect(element.isRatio).toEqual(false);
             expect(element.label).toBeUndefined();
             expect(element.max).toBe(100);
             expect(element.messageWhenRangeOverflow).toBeUndefined();
@@ -230,6 +231,24 @@ describe('Slider', () => {
             });
         });
 
+        describe('isRatio', () => {
+            it('false', () => {
+                element.isRatio = false;
+
+                return Promise.resolve().then(() => {
+                    expect(element.isRatio).toEqual(false);
+                });
+            });
+
+            it('true', () => {
+                element.isRatio = true;
+
+                return Promise.resolve().then(() => {
+                    expect(element.isRatio).toEqual(true);
+                });
+            });
+        });
+
         describe('label', () => {
             it('"test label"', () => {
                 element.label = 'test label';
@@ -291,6 +310,32 @@ describe('Slider', () => {
                     expect(max.value).toBe(9);
                 });
             });
+
+            it('Divided by 100 if ratio and percent', () => {
+                element.max = 1;
+                element.unit = 'percent';
+                element.isRatio = true;
+
+                return Promise.resolve().then(() => {
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(max.value).toBe(0.01);
+                });
+            });
+
+            it('Not divided by 100 if ratio, but not percent', () => {
+                element.max = 1;
+                element.unit = 'decimal';
+                element.isRatio = true;
+
+                return Promise.resolve().then(() => {
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(max.value).toBe(1);
+                });
+            });
         });
 
         describe('Min', () => {
@@ -335,6 +380,32 @@ describe('Slider', () => {
                     );
                     expect(input.min).toBe('-9');
                     expect(min.value).toBe(-9);
+                });
+            });
+
+            it('Divided by 100 if ratio and percent', () => {
+                element.min = 1;
+                element.unit = 'percent';
+                element.isRatio = true;
+
+                return Promise.resolve().then(() => {
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(min.value).toBe(0.01);
+                });
+            });
+
+            it('Not divided by 100 if ratio, but not percent', () => {
+                element.min = 1;
+                element.unit = 'decimal';
+                element.isRatio = true;
+
+                return Promise.resolve().then(() => {
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(min.value).toBe(1);
                 });
             });
         });

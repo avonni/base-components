@@ -2160,6 +2160,7 @@ describe('Filter Menu', () => {
             it('typeAttributes for range', () => {
                 const typeAttributes = {
                     hideMinMaxValues: true,
+                    isRatio: true,
                     max: 117,
                     min: -45,
                     showPin: true,
@@ -2183,6 +2184,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="avonni-slider"]'
                     );
                     expect(slider.hideMinMaxValues).toBeTruthy();
+                    expect(slider.isRatio).toBeTruthy();
                     expect(slider.max).toBe(117);
                     expect(slider.min).toBe(-45);
                     expect(slider.showPin).toBeTruthy();

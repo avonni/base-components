@@ -8,6 +8,7 @@ export const VerticalSlider = ({
     disableSwap,
     hideMinMaxValues,
     hideTrack,
+    isRatio,
     label,
     max,
     messageWhenRangeOverflow,
@@ -32,6 +33,7 @@ export const VerticalSlider = ({
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;
     element.hideTrack = hideTrack;
+    element.isRatio = isRatio;
     element.label = label;
     element.max = max;
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
