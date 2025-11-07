@@ -1126,6 +1126,7 @@ export default class VisualPicker extends LightningElement {
                 avatarTopHidden,
                 avatarVerticalAlignment,
                 checked,
+                computedAriaLabel: this.computeAriaLabel(item),
                 computedBodyClass,
                 computedBodyContentBottomClass,
                 computedBodyContentCenterClass,
@@ -1278,6 +1279,27 @@ export default class VisualPicker extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Aria label computed for screen readers.
+     *
+     * @type {string}
+     */
+    computeAriaLabel(item) {
+        const figureTitle = item.title;
+        const figureDescription = item.description;
+        const figureTags = Array.isArray(item.tags)
+            ? item.tags
+                  .filter((tag) => tag && tag.label)
+                  .map((tag) => tag.label)
+                  .join(', ')
+            : null;
+        const title = item.itemTitle;
+        const description = item.itemDescription;
+        return [figureTitle, figureDescription, figureTags, title, description]
+            .filter(Boolean)
+            .join(', ');
+    }
 
     /**
      * Computed items body content class styling.
