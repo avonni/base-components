@@ -1,9 +1,7 @@
 export { hasAnimation } from './animation';
-export { EventEmitter } from './eventEmitter';
-export { toNorthAmericanPhoneNumber } from './phonify';
-export * from './linkUtils';
-export { arraysEqual, ArraySlice, equal, objectsEqual } from './utility';
+export { isChrome, isIE11, isSafari } from './browser';
 export { classListMutation } from './classListMutation';
+export { EventEmitter } from './eventEmitter';
 export {
     camelCase,
     capitalize,
@@ -14,18 +12,21 @@ export {
     upperFirst
 } from './fontCase';
 export {
+    isShiftMetaOrControlKey,
     keyCodes,
     keyValues,
-    runActionOnBufferedTypedCharacters,
     normalizeKeyValue,
-    isShiftMetaOrControlKey
+    runActionOnBufferedTypedCharacters
 } from './keyboard';
+export * from './linkUtils';
 export { getListHeight } from './listHeight';
-export { raf } from './scroll';
-export { isChrome, isIE11, isSafari } from './browser';
 export { observePosition } from './observers';
-import { smartSetAttribute } from './smartSetAttribute';
+export { toNorthAmericanPhoneNumber } from './phonify';
+export { raf } from './scroll';
+export { isOrgSlds2 } from './slds';
 export { isCSR } from './ssr';
+export { arraysEqual, ArraySlice, equal, objectsEqual } from './utility';
+import { smartSetAttribute } from './smartSetAttribute';
 
 export function synchronizeAttrs(element, values) {
     if (!element) {

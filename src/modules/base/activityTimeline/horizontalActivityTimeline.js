@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import { getFormattedDate } from 'c/dateTimeUtils';
 import { computeSldsClass, createAvatar } from 'c/iconUtils';
 import { convertHTMLToPlainText } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
@@ -32,6 +33,7 @@ const SCROLL_AXIS_RECTANGLES_G_ID =
     'avonni-horizontal-activity-timeline__scroll-axis-rectangles';
 const SCROLL_ITEM_RECTANGLE_HEIGHT = 3;
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
+const SCROLL_STEP = 10;
 const SPACE_BETWEEN_ICON_AND_TEXT = 5;
 const SVG_ICON_SIZE = 25;
 const TIMELINE_COLORS = {
@@ -58,6 +60,7 @@ const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_START_POSITION_TIMELINE_ITEM = 10;
+const ZOOM_STEP = 20;
 
 const BORDER_ITEM_HEIGHT = SVG_ICON_SIZE + AVATAR_MARGIN * 2;
 
@@ -91,6 +94,8 @@ export class HorizontalActivityTimeline {
     _timelineAxisDiv;
     _timelineItemsDiv;
     _timelineSVG;
+
+    _focusedItem;
 
     constructor(activityTimeline, sortedItems) {
         this.addValidItemsToData(sortedItems);
@@ -474,18 +479,26 @@ export class HorizontalActivityTimeline {
                 const itemGroup = this._timelineSVG
                     .append('g')
                     .attr('id', 'timeline-item-' + item.name)
-                    .attr('data-name', item.name);
+                    .attr('class', 'avonni-horizontal-activity-timeline__item')
+                    .attr(
+                        'data-element-id',
+                        'avonni-primitive-activity-timeline-item'
+                    )
+                    .attr('data-name', item.name)
+                    .attr('tabindex', 0);
 
                 this.createItem(itemGroup, item);
 
                 itemGroup
                     .style('cursor', 'default')
+                    .on('blur', this.handleMouseOutOnItem.bind(this))
+                    .on('click', this._activityTimeline.handleItemClick)
+                    .on('keydown', this.handleKeyDownOnItem.bind(this, item))
                     .on(
                         'mouseenter',
                         this.handleMouseOverOnItem.bind(this, item)
                     )
-                    .on('mouseleave', this.handleMouseOutOnItem.bind(this))
-                    .on('click', this._activityTimeline.handleItemClick);
+                    .on('mouseleave', this.handleMouseOutOnItem.bind(this));
             });
         }
     }
@@ -1200,6 +1213,16 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Focuses the current item.
+     */
+    focusCurrentItem() {
+        if (this._focusedItem) {
+            this._focusedItem.focus();
+        }
+        this._focusedItem = null;
+    }
+
+    /**
      * Finds the right popover nubbin class depending on direction and if fields are displayed.
      *
      * @return {string}
@@ -1845,6 +1868,145 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Handles moving the interval to the left using the keyboard arrow key.
+     */
+    handleIntervalKeyboardScrollLeft() {
+        this.handleMouseOutOfPopover();
+
+        const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
+        let position =
+            this.scrollTimeScale(this._intervalMinDate) - SCROLL_STEP;
+        if (position < minXPosition) {
+            position = minXPosition;
+        }
+        this.moveIntervalToPosition(position);
+    }
+
+    /**
+     * Handles moving the interval to the right using the keyboard arrow key.
+     */
+    handleIntervalKeyboardScrollRight() {
+        this.handleMouseOutOfPopover();
+
+        const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
+        const width = Number(this._timeIntervalSelector.attr('width'));
+        const startMaxXPosition = maxXPosition - width;
+        let position =
+            this.scrollTimeScale(this._intervalMinDate) + SCROLL_STEP;
+        if (position > startMaxXPosition) {
+            position = startMaxXPosition;
+        }
+        this.moveIntervalToPosition(position);
+    }
+
+    /**
+     * Handles increasing the width of the interval using the keyboard.
+     */
+    handleIntervalKeyboardZoomIn() {
+        this.handleMouseOutOfPopover();
+
+        const lowerMinXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
+        let xStartPosition =
+            this.scrollTimeScale(this._intervalMinDate) - ZOOM_STEP;
+        if (xStartPosition < lowerMinXPosition) {
+            xStartPosition = lowerMinXPosition;
+        }
+        const upperMaxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
+        let xEndPosition =
+            this.scrollTimeScale(this._intervalMaxDate) + ZOOM_STEP;
+        if (xEndPosition > upperMaxXPosition) {
+            xEndPosition = upperMaxXPosition;
+        }
+
+        const newRectangleWidth = xEndPosition - xStartPosition;
+        this._timeIntervalSelector
+            .attr('x', xStartPosition)
+            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
+            .attr('width', newRectangleWidth);
+
+        this.handleLowerBoundIntervalChange();
+        this.handleUpperBoundIntervalChange();
+        this.endIntervalResizing();
+    }
+
+    /**
+     * Handles decreasing the width of the interval using the keyboard.
+     */
+    handleIntervalKeyboardZoomOut() {
+        this.handleMouseOutOfPopover();
+
+        const width = Number(this._timeIntervalSelector.attr('width'));
+        if (width < ZOOM_STEP) {
+            return;
+        }
+
+        const lowerMaxXPosition =
+            this.scrollTimeScale(this._intervalMaxDate) - this.minIntervalWidth;
+        let xStartPosition =
+            this.scrollTimeScale(this._intervalMinDate) + ZOOM_STEP;
+        if (xStartPosition > lowerMaxXPosition) {
+            xStartPosition = lowerMaxXPosition;
+        }
+        const upperMinXPosition =
+            this.scrollTimeScale(this._intervalMinDate) + this.minIntervalWidth;
+        let xEndPosition =
+            this.scrollTimeScale(this._intervalMaxDate) - ZOOM_STEP;
+        if (xEndPosition < upperMinXPosition) {
+            xEndPosition = upperMinXPosition;
+        }
+
+        const newRectangleWidth = xEndPosition - xStartPosition;
+        if (newRectangleWidth < MIN_INTERVAL_WIDTH) {
+            return;
+        }
+
+        this._timeIntervalSelector
+            .attr('x', xStartPosition)
+            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
+            .attr('width', newRectangleWidth);
+
+        this.handleLowerBoundIntervalChange();
+        this.handleUpperBoundIntervalChange();
+        this.endIntervalResizing();
+    }
+
+    /**
+     * Handles a keydown on an item.
+     */
+    handleKeyDownOnItem(element, event) {
+        switch (event.key) {
+            case keyValues.space:
+            case keyValues.spacebar:
+            case keyValues.enter:
+                event.preventDefault();
+                event.stopPropagation();
+                if (!this._activityTimeline.showItemPopOver) {
+                    this._focusedItem = event.currentTarget;
+                    this.handleMouseOverOnItem(element);
+                    this._isMouseOverOnPopover = true;
+
+                    requestAnimationFrame(() => {
+                        const actionsMenu =
+                            this._activityTimeline.template.querySelector(
+                                '[data-element-id="lightning-button-menu-actions"]'
+                            );
+                        if (actionsMenu) {
+                            actionsMenu.focus();
+                        }
+                    });
+                }
+                break;
+            case keyValues.escape:
+                event.preventDefault();
+                event.stopPropagation();
+                this.handleMouseOutOfPopover();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * Handles the change of width of the interval with the lower bound side. Timeline is re-render.
      */
     handleLowerBoundIntervalChange() {
@@ -2028,7 +2190,7 @@ export class HorizontalActivityTimeline {
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
             .attr('width', newRectangleWidth);
 
-        this.handleUpperBoundIntervalChange(event);
+        this.handleUpperBoundIntervalChange();
     }
 
     /**

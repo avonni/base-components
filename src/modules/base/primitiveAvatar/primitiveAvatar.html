@@ -91,32 +91,14 @@
 
         <!-- Entity -->
         <div if:true={showEntity} class={computedEntityClass}>
-            <!-- Image -->
-            <img
-                if:true={entitySrc}
-                class="avonni-avatar__entity-image"
-                alt={entityTitle}
+            <c-primitive-avatar
+                fallback-icon-name={entityIconName}
+                initials={entityInitials}
+                variant={entityVariant}
+                size={computedEntitySize}
                 src={entitySrc}
                 title={entityTitle}
-                onerror={handleImageError}
-            />
-            <!-- Initials -->
-            <abbr
-                if:true={showEntityInitials}
-                class={computedEntityInitialsClass}
-                aria-hidden="true"
-                title={entityTitle}
-            >
-                {entityInitials}
-            </abbr>
-            <!-- Fallback icon -->
-            <c-primitive-icon
-                if:true={showEntityIcon}
-                class="avonni-avatar__entity-icon"
-                aria-hidden="true"
-                icon-name={entityIconName}
-                title={entityTitle}
-            ></c-primitive-icon>
+            ></c-primitive-avatar>
         </div>
 
         <!-- Actions -->

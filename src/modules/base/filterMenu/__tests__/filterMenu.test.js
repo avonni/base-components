@@ -101,6 +101,7 @@ describe('Filter Menu', () => {
             expect(element.typeAttributes).toEqual({});
             expect(element.value).toMatchObject([]);
             expect(element.variant).toBe('horizontal');
+            expect(element.weekStartDay).toBe(0);
         });
 
         describe('Access Key', () => {
@@ -2037,6 +2038,44 @@ describe('Filter Menu', () => {
                         expect(items[1].ariaChecked).toBe('false');
                         expect(items[2].ariaChecked).toBe('false');
                     });
+            });
+        });
+
+        describe('Week Start Day', () => {
+            it('Horizontal variant', () => {
+                element.type = 'date-range';
+                element.weekStartDay = 4;
+                element.variant = 'horizontal';
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown"]'
+                    );
+                    expect(dropdown.classList).toContain('slds-dropdown_large');
+
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.weekStartDay).toBe(4);
+                });
+            });
+
+            it('Vertical variant', () => {
+                element.type = 'date-range';
+                element.weekStartDay = 4;
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.weekStartDay).toBe(4);
+                });
             });
         });
 

@@ -3,10 +3,10 @@ import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
 import counterTpl from './counter.html';
 import dateRangeTpl from './dateRange.html';
+import DefaultTpl from './default.html';
 import percentFormatted from './percentFormatted.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
-import DefaultTpl from './default.html';
 
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
@@ -58,6 +58,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     @api labelStartDate;
     @api timeStyle;
     @api timezone;
+    @api weekStartDay;
     _startDate;
     _endDate;
 

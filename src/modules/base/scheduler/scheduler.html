@@ -90,6 +90,7 @@
                         disabled-dates={toolbarCalendarDisabledDates}
                         timezone={timezone}
                         value={selectedDate}
+                        week-start-day={weekStartDay}
                         data-element-id="calendar-toolbar"
                         data-is-focusable
                         onchange={handleToolbarCalendarChange}
@@ -561,6 +562,7 @@
                 timezone={timezone}
                 type="datetime"
                 variant="label-hidden"
+                week-start-day={weekStartDay}
                 data-element-id="avonni-input-date-range-event-dates"
                 onchange={handleEventDateChange}
             ></c-input-date-range>

@@ -50,6 +50,7 @@ const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_RANGE_VALUE = [0, 100];
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
+const DEFAULT_WEEK_START_DAY = 0;
 
 const i18n = {
     loading: 'Loading...',
@@ -188,6 +189,7 @@ export default class FilterMenu extends LightningElement {
     _typeAttributes = {};
     _value = [];
     _variant = MENU_VARIANTS.default;
+    _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     _allowBlur = true;
     _dropdownIsFocused = false;
@@ -822,6 +824,25 @@ export default class FilterMenu extends LightningElement {
             // to click on the load more button
             this.dispatchLoadMore();
         }
+    }
+
+    /**
+     * Used by the `date-range` type. Day displayed as the first day of the week. The value has to be a number between 0 and 6, 0 being Sunday, 1 being Monday, and so on until 6.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get weekStartDay() {
+        return this._weekStartDay;
+    }
+    set weekStartDay(value) {
+        const number = parseInt(value, 10);
+        this._weekStartDay =
+            isNaN(number) || number < 0 || number > 6
+                ? DEFAULT_WEEK_START_DAY
+                : number;
     }
 
     /*

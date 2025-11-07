@@ -78,10 +78,16 @@
                     ></c-primitive-avatar>
 
                     <!-- Label -->
-                    <div class="slds-grid slds-grid_vertical-align-center">
+                    <div
+                        class="
+                            avonni-primitive-tree-item__label
+                            slds-grid slds-grid_vertical-align-center
+                        "
+                    >
                         <div
                             if:false={labelIsEdited}
                             class={computedLabelClass}
+                            title={label}
                         >
                             <a
                                 if:true={showLink}
