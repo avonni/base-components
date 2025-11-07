@@ -294,7 +294,7 @@ export default class OutputData extends LightningElement {
      * @type {boolean}
      */
     get showBoolean() {
-        return this.isBoolean && this.value;
+        return this.isBoolean && this.computedValue;
     }
 
     /**
@@ -323,28 +323,23 @@ export default class OutputData extends LightningElement {
                 this._value === true || this._value === 'true' || this._value;
         } else if (this.isNumber) {
             this.computedValue = this.truncateNumber(this._value);
-        } else if (this.isTime) {
+        } else if (this.isTime || this.isCustomDate) {
             if (this._value == null) {
                 this.computedValue = this._value;
                 return;
             }
             const date = new Date(this._value);
-            this.computedValue = isNaN(date.getTime())
-                ? this._value
-                : date.toISOString().substring(11, 23);
-        } else if (this.isCustomDate) {
-            if (!this._value) {
-                this.computedValue = '';
-                return;
+            if (isNaN(date.getTime())) {
+                this.computedValue = this._value;
+            } else {
+                this.computedValue = this.isTime
+                    ? date.toISOString().substring(11, 23)
+                    : getFormattedDate({
+                          date: this._value,
+                          timeZone: this.normalizedTypeAttributes.timeZone,
+                          format: this.normalizedTypeAttributes.dateFormat
+                      });
             }
-            const date = new Date(this._value);
-            this.computedValue = isNaN(date.getTime())
-                ? ''
-                : getFormattedDate({
-                      date: this._value,
-                      timeZone: this.normalizedTypeAttributes.timeZone,
-                      format: this.normalizedTypeAttributes.dateFormat
-                  });
         } else {
             this.computedValue = this._value;
         }
