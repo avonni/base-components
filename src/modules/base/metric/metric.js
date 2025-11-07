@@ -978,7 +978,11 @@ export default class Metric extends LightningElement {
         return this._timeZoneName;
     }
     set timeZoneName(value) {
-        this._timeZoneName = value;
+        this._timeZoneName =
+            normalizeString(value, {
+                fallbackValue: TIME_ZONE_NAME_ATTRIBUTE.default,
+                validValues: TIME_ZONE_NAME_ATTRIBUTE.valid
+            }) || TIME_ZONE_NAME_ATTRIBUTE.default;
     }
 
     /**
