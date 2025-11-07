@@ -100,6 +100,17 @@ DateTime.args = {
     }
 };
 
+export const CustomDateTimeFormat = Template.bind({});
+CustomDateTimeFormat.args = {
+    label: 'Custom Date Format',
+    type: 'date',
+    value: new Date().toISOString(),
+    typeAttributes: {
+        timeZone: 'America/Los_Angeles',
+        dateFormat: 'LLLL dd, yyyy, t'
+    }
+};
+
 export const Percent = Template.bind({});
 Percent.args = {
     label: 'Percentage',

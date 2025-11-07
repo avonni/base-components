@@ -43,6 +43,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -65,6 +68,7 @@ describe('OutputData', () => {
                         text ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -91,6 +95,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -112,6 +119,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -140,6 +148,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -162,6 +173,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -199,6 +211,9 @@ describe('OutputData', () => {
                     );
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
                     );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
@@ -244,6 +259,7 @@ describe('OutputData', () => {
                         text ||
                             boolean ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -273,6 +289,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -295,6 +314,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -337,6 +357,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -373,6 +396,67 @@ describe('OutputData', () => {
                         text ||
                             boolean ||
                             number ||
+                            customDate ||
+                            email ||
+                            location ||
+                            phone ||
+                            url ||
+                            time
+                    ).toBeFalsy();
+                });
+            });
+
+            it('with custom value', () => {
+                const typeAttributes = {
+                    timeZone: 'America/Los_Angeles',
+                    dateFormat: 'LLLL dd, yyyy, t'
+                };
+                element.typeAttributes = typeAttributes;
+                element.type = 'date';
+                element.value = '2021-04-12T12:38:03.422Z';
+
+                return Promise.resolve().then(() => {
+                    const text = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-text"]'
+                    );
+                    const boolean = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    const number = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number"]'
+                    );
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
+                    const email = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-email"]'
+                    );
+                    const location = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-location"]'
+                    );
+                    const phone = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-phone"]'
+                    );
+                    const url = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-url"]'
+                    );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
+
+                    expect(customDate).toBeTruthy();
+                    expect(customDate.textContent).toBe(
+                        'April 12, 2021, 5:38 a.m.'
+                    );
+
+                    expect(
+                        text ||
+                            boolean ||
+                            number ||
+                            date ||
                             email ||
                             location ||
                             phone ||
@@ -455,6 +539,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -480,6 +567,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             location ||
                             phone ||
                             url ||
@@ -508,6 +596,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -530,6 +621,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -562,6 +654,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -591,6 +686,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             phone ||
                             url ||
@@ -619,6 +715,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -641,6 +740,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -676,6 +776,9 @@ describe('OutputData', () => {
                     );
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
                     );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
@@ -715,6 +818,7 @@ describe('OutputData', () => {
                         text ||
                             boolean ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -744,6 +848,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -766,6 +873,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -803,6 +911,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -841,6 +952,7 @@ describe('OutputData', () => {
                         text ||
                             boolean ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -870,6 +982,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -892,6 +1007,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -920,6 +1036,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -944,6 +1063,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             url ||
@@ -972,6 +1092,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -994,6 +1117,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -1022,6 +1146,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1048,10 +1175,12 @@ describe('OutputData', () => {
                         boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -1073,6 +1202,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1088,6 +1220,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(text).toBeTruthy();
                     expect(text.value).toBe('A string value');
@@ -1096,10 +1231,12 @@ describe('OutputData', () => {
                         boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });
@@ -1119,6 +1256,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1134,6 +1274,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(text).toBeTruthy();
                     expect(text.value).toBe('A string value');
@@ -1142,6 +1285,7 @@ describe('OutputData', () => {
                         boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -1171,6 +1315,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1193,6 +1340,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -1217,6 +1365,9 @@ describe('OutputData', () => {
                     );
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
                     );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
@@ -1243,6 +1394,7 @@ describe('OutputData', () => {
                         boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -1272,6 +1424,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1294,6 +1449,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -1320,6 +1476,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1342,6 +1501,7 @@ describe('OutputData', () => {
                         boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -1376,6 +1536,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1403,6 +1566,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
@@ -1431,6 +1595,9 @@ describe('OutputData', () => {
                     const date = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-date-time"]'
                     );
+                    const customDate = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-formatted-date-time"]'
+                    );
                     const email = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-email"]'
                     );
@@ -1453,6 +1620,7 @@ describe('OutputData', () => {
                             boolean ||
                             number ||
                             date ||
+                            customDate ||
                             email ||
                             location ||
                             phone ||
