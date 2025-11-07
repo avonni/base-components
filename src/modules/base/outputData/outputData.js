@@ -102,25 +102,6 @@ export default class OutputData extends LightningElement {
      */
     @api
     get value() {
-        if (this.isBoolean) {
-            return this._value === 'true' || this._value;
-        }
-        if (this.isNumber) {
-            return this.truncateNumber(this._value);
-        }
-        if (this.isTime) {
-            if (this._value === null || this._value === undefined) {
-                return this._value;
-            }
-
-            const date = new Date(this._value);
-            if (isNaN(date.getTime())) {
-                return this._value;
-            }
-
-            return date.toISOString().substring(11, 23);
-        }
-
         return this._value;
     }
     set value(value) {
@@ -337,16 +318,33 @@ export default class OutputData extends LightningElement {
      */
 
     initValue() {
-        if (this.isCustomDate) {
-            const date = new Date(this._value);
+        if (this.isBoolean) {
             this.computedValue =
-                !this._value || isNaN(date)
-                    ? ''
-                    : getFormattedDate({
-                          date: this._value,
-                          timeZone: this.normalizedTypeAttributes.timeZone,
-                          format: this.normalizedTypeAttributes.dateFormat
-                      });
+                this._value === true || this._value === 'true' || this._value;
+        } else if (this.isNumber) {
+            this.computedValue = this.truncateNumber(this._value);
+        } else if (this.isTime) {
+            if (this._value == null) {
+                this.computedValue = this._value;
+                return;
+            }
+            const date = new Date(this._value);
+            this.computedValue = isNaN(date.getTime())
+                ? this._value
+                : date.toISOString().substring(11, 23);
+        } else if (this.isCustomDate) {
+            if (!this._value) {
+                this.computedValue = '';
+                return;
+            }
+            const date = new Date(this._value);
+            this.computedValue = isNaN(date.getTime())
+                ? ''
+                : getFormattedDate({
+                      date: this._value,
+                      timeZone: this.normalizedTypeAttributes.timeZone,
+                      format: this.normalizedTypeAttributes.dateFormat
+                  });
         } else {
             this.computedValue = this._value;
         }
@@ -411,7 +409,20 @@ export default class OutputData extends LightningElement {
      * Truncates a number to handle floatting point errors (4.500000000000000003 for example)
      * @param {number} num Number to truncate
      */
-    truncateNumber(num) {
-        return Math.round(num * 1e6) / 1e6;
+    truncateNumber(value) {
+        let num = value;
+        if (typeof num === 'number' && !isNaN(value)) {
+            return Math.round(num * 1e6) / 1e6;
+        }
+
+        if (
+            typeof num === 'string' &&
+            num.trim() !== '' &&
+            !isNaN(Number(num))
+        ) {
+            num = Number(value);
+            return Math.round(num * 1e6) / 1e6;
+        }
+        return null;
     }
 }
