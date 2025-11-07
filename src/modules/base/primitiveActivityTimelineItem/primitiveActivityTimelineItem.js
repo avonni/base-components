@@ -283,6 +283,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
         if (this._connected) {
             this.formatStartEndDates();
+            this.formatFields();
         }
     }
 
@@ -678,9 +679,10 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             return;
         }
         const fields = this._fields.map((field) => {
-            let typeAttributes = {};
+            let typeAttributes = field.typeAttributes || {};
             if (field.type === 'date') {
                 typeAttributes = {
+                    ...typeAttributes,
                     timeZone: this.timezone,
                     dateFormat: this.dateFormat
                 };
