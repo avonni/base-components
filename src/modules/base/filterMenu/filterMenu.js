@@ -1386,10 +1386,7 @@ export default class FilterMenu extends LightningElement {
         const hasComputedItems = this.computedItems.length > 0;
         this.labelMap = this.dropdownVisible
             ? new Map(
-                  this.computedItems.map((item) => [
-                      item.value,
-                      item.noCountLabel
-                  ])
+                  this.computedItems.map((item) => [item.value, item.label])
               )
             : this.labelMap;
 
@@ -1617,9 +1614,9 @@ export default class FilterMenu extends LightningElement {
                 tabindex = '0';
             }
             const numberRecords = this.computedItemCounts[item?.value] ?? 0;
-            item.noCountLabel = item.label;
             if (hasCountLabel) {
-                item.label = `${item.label} (${numberRecords})`;
+                item.countLabel = `(${numberRecords})`;
+                item.additionalLabel = `(${numberRecords})`;
             }
             const computedItem = new Item({
                 ...item,
@@ -1657,7 +1654,7 @@ export default class FilterMenu extends LightningElement {
             const item = getItemByName(v, this.computedItems);
             if (item) {
                 selectedItems.push({
-                    label: item.noCountLabel ?? item.label,
+                    label: item.label,
                     name: item.value
                 });
             }
@@ -2583,6 +2580,7 @@ export default class FilterMenu extends LightningElement {
             this._value = [...this.currentValue];
             this.computeSelectedItems();
             this.dispatchApply();
+
             if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
                 this.close();
             }

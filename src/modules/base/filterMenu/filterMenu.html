@@ -1,6 +1,7 @@
 <template>
     <div class="slds-is-relative">
         <button
+            style={computedButtonStyle}
             class={computedButtonClass}
             accesskey={accessKey}
             aria-expanded={computedAriaExpanded}
@@ -138,7 +139,9 @@
                                             onclick={handleListItemClick}
                                             onkeydown={handleListItemKeyDown}
                                         >
-                                            <span class="slds-truncate">
+                                            <span
+                                                class="slds-truncate slds-grid"
+                                            >
                                                 <c-primitive-icon
                                                     class="slds-m-right_x-small"
                                                     icon-name="utility:check"
@@ -163,12 +166,34 @@
                                                     size="x-small"
                                                     data-element-id="avonni-primitive-icon-prefix"
                                                 ></c-primitive-icon>
-                                                <lightning-formatted-rich-text
-                                                    disable-linkify
-                                                    title={item.label}
-                                                    value={item.label}
-                                                    data-element-id="lightning-formatted-rich-text"
-                                                ></lightning-formatted-rich-text>
+                                                <span
+                                                    class="
+                                                        slds-truncate
+                                                        avonni-filter-menu__item-label-container
+                                                    "
+                                                >
+                                                    <lightning-formatted-rich-text
+                                                        class="
+                                                            slds-truncate
+                                                            avonni-filter-menu__item-label
+                                                        "
+                                                        disable-linkify
+                                                        title={item.label}
+                                                        value={item.label}
+                                                        data-element-id="lightning-formatted-rich-text-item-label"
+                                                    ></lightning-formatted-rich-text>
+
+                                                    <lightning-formatted-rich-text
+                                                        if:true={item.countLabel}
+                                                        class="
+                                                            avonni-filter-menu__count-label
+                                                        "
+                                                        disable-linkify
+                                                        title={item.countLabel}
+                                                        value={item.countLabel}
+                                                        data-element-id="lightning-formatted-rich-text-count-label"
+                                                    ></lightning-formatted-rich-text>
+                                                </span>
                                             </span>
                                             <c-primitive-icon
                                                 if:true={item.iconName}

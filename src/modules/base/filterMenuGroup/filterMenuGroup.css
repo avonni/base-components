@@ -1,4 +1,12 @@
 .avonni-filter-menu-group__button-icon-popover {
     --avonni-button-icon-popover-sizing-max-height: 300px;
     --slds-c-popover-position-zindex: 8001;
+    --avonni-button-icon-popover-brand-color-background: var(
+        --lwc-brandPrimary,
+        #1b96ff
+    );
+    --avonni-button-icon-popover-brand-color-border: var(
+        --lwc-brandPrimary,
+        #1b96ff
+    );
 }

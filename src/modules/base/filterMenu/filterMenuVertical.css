@@ -70,6 +70,20 @@
 }
 
 .avonni-filter-menu__form-element-legend {
+    display: flex;
+    overflow: hidden;
     /* Avoid Salesforce Experience site styles affecting the section button */
     margin-bottom: 0;
+}
+
+.avonni-filter-menu__label-container {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.avonni-filter-menu__label.slds-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

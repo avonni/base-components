@@ -5,3 +5,19 @@
 .avonni-filter-menu__selected-item-count {
     background-color: var(--lwc-brandPrimary, #1b96ff);
 }
+
+.avonni-filter-menu__item-label-container {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.avonni-filter-menu__item-label {
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.avonni-filter-menu__count-label {
+    flex-shrink: 0;
+    margin-left: var(--lwc-spacingXxSmall, 0.125rem);
+}

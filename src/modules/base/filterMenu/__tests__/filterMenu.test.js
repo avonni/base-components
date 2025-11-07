@@ -1230,7 +1230,7 @@ describe('Filter Menu', () => {
 
                     items.forEach((item, index) => {
                         const label = item.querySelector(
-                            '[data-element-id="lightning-formatted-rich-text"]'
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
                         );
                         const disabled = ITEMS[index].disabled ? 'true' : null;
                         expect(item.dataset.value).toBe(ITEMS[index].value);
@@ -1291,7 +1291,7 @@ describe('Filter Menu', () => {
 
                     items.forEach((item, index) => {
                         const label = item.querySelector(
-                            '[data-element-id="lightning-formatted-rich-text"]'
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
                         );
                         const disabled = ITEMS[index].disabled ? 'true' : null;
                         expect(item.dataset.value).toBe(ITEMS[index].value);
@@ -1355,14 +1355,16 @@ describe('Filter Menu', () => {
 
                     items.forEach((item, index) => {
                         const label = item.querySelector(
-                            '[data-element-id="lightning-formatted-rich-text"]'
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
+                        );
+                        const countLabel = item.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text-count-label"]'
                         );
                         const disabled = ITEMS[index].disabled ? 'true' : null;
                         expect(item.dataset.value).toBe(ITEMS[index].value);
                         expect(item.ariaDisabled).toBe(disabled);
-                        expect(label.value).toBe(
-                            `${ITEMS[index].label} (${index})`
-                        );
+                        expect(label.value).toBe(`${ITEMS[index].label}`);
+                        expect(countLabel.value).toBe(`(${index})`);
                     });
 
                     const prefixIcon = items[1].querySelector(
@@ -1427,7 +1429,7 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="lightning-formatted-rich-text"]'
+                        '[data-element-id="lightning-formatted-rich-text-item-label"]'
                     );
                     const apply = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-apply"]'
@@ -3408,7 +3410,7 @@ describe('Filter Menu', () => {
                         expect(dropdown).toBeTruthy();
 
                         const item = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-formatted-rich-text"]'
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
                         );
                         item.dispatchEvent(
                             new CustomEvent('privatefocus', {

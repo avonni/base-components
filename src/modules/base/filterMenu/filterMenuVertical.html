@@ -34,15 +34,28 @@
                 avonni-filter-menu__form-element-legend
                 slds-form-element__legend
             "
+            title={title}
         >
-            <span class="avonni-filter-menu__label">{label}</span>
-            <span if:true={showCount} class="avonni-filter-menu__label">
-                &nbsp;({selectedItemCountLabel})
+            <div
+                class="avonni-filter-menu__label-container slds-truncate"
+                title={label}
+            >
+                <span class="avonni-filter-menu__label slds-truncate"
+                    >{label}</span
+                >
+            </div>
+
+            <span
+                if:true={showCount}
+                class="avonni-filter-menu__label slds-m-left_x-small"
+            >
+                ({selectedItemCountLabel})
             </span>
+
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}
-                class="slds-m-left_xx-small slds-is-absolute"
+                class="slds-m-left_xx-small"
                 style="top: -0.25rem"
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
@@ -54,6 +67,7 @@
                 slds-form-element__legend
                 slds-float_none
                 slds-truncate slds-is-relative
+                avonni-filter-menu__form-element-legend
             "
             title={title}
         >
@@ -63,14 +77,26 @@
                 size={iconSize}
                 class="slds-m-right_x-small"
             ></lightning-icon>
-            <span class="avonni-filter-menu__label">{label}</span>
-            <span if:true={showCount} class="avonni-filter-menu__label">
-                &nbsp;({selectedItemCountLabel})
+            <div
+                class="avonni-filter-menu__label-container slds-truncate"
+                title={label}
+            >
+                <span class="avonni-filter-menu__label slds-truncate"
+                    >{label}</span
+                >
+            </div>
+
+            <span
+                if:true={showCount}
+                class="avonni-filter-menu__label slds-m-left_x-small"
+            >
+                ({selectedItemCountLabel})
             </span>
+
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}
-                class="slds-m-left_xx-small slds-is-absolute"
+                class="slds-m-left_xx-small"
                 style="top: -0.25rem"
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
