@@ -975,6 +975,36 @@ describe('Metric', () => {
             });
         });
 
+        describe('secondaryWeekday', () => {
+            it('Passed to the component', () => {
+                element.secondaryWeekday = 'short';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.weekday).toBe('short');
+                });
+            });
+        });
+
+        describe('secondaryYear', () => {
+            it('Passed to the component', () => {
+                element.secondaryYear = '2-digit';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.year).toBe('2-digit');
+                });
+            });
+        });
+
         describe('showTrendColor', () => {
             it('false', () => {
                 element.showTrendColor = false;

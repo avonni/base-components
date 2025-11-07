@@ -914,6 +914,44 @@ export default class Metric extends LightningElement {
     }
 
     /**
+     * The weekday formatting style to use for the secondary value.
+     * Valid values include narrow, short and long.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get secondaryWeekday() {
+        return this._secondaryWeekday;
+    }
+    set secondaryWeekday(value) {
+        this._secondaryWeekday =
+            normalizeString(value, {
+                fallbackValue: WEEKDAY_ATTRIBUTE.default,
+                validValues: WEEKDAY_ATTRIBUTE.valid
+            }) || WEEKDAY_ATTRIBUTE.default;
+    }
+
+    /**
+     * The year formatting style to use for the secondary value.
+     * Valid values include 2-digit and numeric.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get secondaryYear() {
+        return this._secondaryYear;
+    }
+    set secondaryYear(value) {
+        this._secondaryYear =
+            normalizeString(value, {
+                fallbackValue: YEAR_ATTRIBUTE.default,
+                validValues: YEAR_ATTRIBUTE.valid
+            }) || YEAR_ATTRIBUTE.default;
+    }
+
+    /**
      * If present, the value will change color depending on the trend direction.
      *
      * @type {boolean}
