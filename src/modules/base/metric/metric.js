@@ -15,19 +15,35 @@ const CURRENCY_DISPLAYS = {
     default: 'symbol',
     valid: ['symbol', 'code', 'name']
 };
+const DAY_ATTRIBUTE = { default: undefined, valid: ['2-digit', 'numeric'] };
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
+const ERA_ATTRIBUTE = {
+    default: undefined,
+    valid: ['narrow', 'short', 'long']
+};
 const FORMAT_STYLES = {
     default: 'decimal',
     valid: ['currency', 'date', 'decimal', 'percent', 'percent-fixed']
 };
+const HOUR_ATTRIBUTE = { default: undefined, valid: ['2-digit', 'numeric'] };
 const LABEL_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
+const MINUTE_ATTRIBUTE = { default: undefined, valid: ['2-digit', 'numeric'] };
+const MONTH_ATTRIBUTE = {
+    default: undefined,
+    valid: ['2-digit', 'narrow', 'short', 'long']
+};
 const POSITIONS = {
     valid: ['right', 'left', 'top', 'bottom'],
     default: 'right'
+};
+const SECOND_ATTRIBUTE = { default: undefined, valid: ['2-digit', 'numeric'] };
+const TIME_ZONE_NAME_ATTRIBUTE = {
+    default: undefined,
+    valid: ['short', 'long']
 };
 const TREND_ICONS = {
     valid: ['dynamic', 'arrow', 'caret'],
@@ -37,6 +53,11 @@ const VALUE_SIGNS = {
     valid: ['negative', 'positive-and-negative', 'none'],
     default: 'negative'
 };
+const WEEKDAY_ATTRIBUTE = {
+    default: undefined,
+    valid: ['narrow', 'short', 'long']
+};
+const YEAR_ATTRIBUTE = { default: undefined, valid: ['2-digit', 'numeric'] };
 
 /**
  * @class
@@ -245,7 +266,11 @@ export default class Metric extends LightningElement {
         return this._day;
     }
     set day(value) {
-        this._day = value;
+        this._day =
+            normalizeString(value, {
+                fallbackValue: DAY_ATTRIBUTE.default,
+                validValues: DAY_ATTRIBUTE.valid
+            }) || DAY_ATTRIBUTE.default;
     }
 
     /**
@@ -260,7 +285,11 @@ export default class Metric extends LightningElement {
         return this._era;
     }
     set era(value) {
-        this._era = value;
+        this._era =
+            normalizeString(value, {
+                fallbackValue: ERA_ATTRIBUTE.default,
+                validValues: ERA_ATTRIBUTE.valid
+            }) || ERA_ATTRIBUTE.default;
     }
 
     /**
@@ -293,7 +322,11 @@ export default class Metric extends LightningElement {
         return this._hour;
     }
     set hour(value) {
-        this._hour = value;
+        this._hour =
+            normalizeString(value, {
+                fallbackValue: HOUR_ATTRIBUTE.default,
+                validValues: HOUR_ATTRIBUTE.valid
+            }) || HOUR_ATTRIBUTE.default;
     }
 
     /**
@@ -434,7 +467,11 @@ export default class Metric extends LightningElement {
         return this._minute;
     }
     set minute(value) {
-        this._minute = value;
+        this._minute =
+            normalizeString(value, {
+                fallbackValue: MINUTE_ATTRIBUTE.default,
+                validValues: MINUTE_ATTRIBUTE.valid
+            }) || MINUTE_ATTRIBUTE.default;
     }
 
     /**
@@ -449,7 +486,11 @@ export default class Metric extends LightningElement {
         return this._month;
     }
     set month(value) {
-        this._month = value;
+        this._month =
+            normalizeString(value, {
+                fallbackValue: MONTH_ATTRIBUTE.default,
+                validValues: MONTH_ATTRIBUTE.valid
+            }) || MONTH_ATTRIBUTE.default;
     }
 
     /**
@@ -464,7 +505,11 @@ export default class Metric extends LightningElement {
         return this._second;
     }
     set second(value) {
-        this._second = value;
+        this._second =
+            normalizeString(value, {
+                fallbackValue: SECOND_ATTRIBUTE.default,
+                validValues: SECOND_ATTRIBUTE.valid
+            }) || SECOND_ATTRIBUTE.default;
     }
 
     /**
@@ -497,7 +542,11 @@ export default class Metric extends LightningElement {
         return this._secondaryDay;
     }
     set secondaryDay(value) {
-        this._secondaryDay = value;
+        this._secondaryDay =
+            normalizeString(value, {
+                fallbackValue: DAY_ATTRIBUTE.default,
+                validValues: DAY_ATTRIBUTE.valid
+            }) || DAY_ATTRIBUTE.default;
     }
 
     /**
@@ -512,7 +561,11 @@ export default class Metric extends LightningElement {
         return this._secondaryEra;
     }
     set secondaryEra(value) {
-        this._secondaryEra = value;
+        this._secondaryEra =
+            normalizeString(value, {
+                fallbackValue: ERA_ATTRIBUTE.default,
+                validValues: ERA_ATTRIBUTE.valid
+            }) || ERA_ATTRIBUTE.default;
     }
 
     /**
@@ -545,7 +598,11 @@ export default class Metric extends LightningElement {
         return this._secondaryHour;
     }
     set secondaryHour(value) {
-        this._secondaryHour = value;
+        this._secondaryHour =
+            normalizeString(value, {
+                fallbackValue: HOUR_ATTRIBUTE.default,
+                validValues: HOUR_ATTRIBUTE.valid
+            }) || HOUR_ATTRIBUTE.default;
     }
 
     /**
@@ -671,7 +728,11 @@ export default class Metric extends LightningElement {
         return this._secondaryMinute;
     }
     set secondaryMinute(value) {
-        this._secondaryMinute = value;
+        this._secondaryMinute =
+            normalizeString(value, {
+                fallbackValue: MINUTE_ATTRIBUTE.default,
+                validValues: MINUTE_ATTRIBUTE.valid
+            }) || MINUTE_ATTRIBUTE.default;
     }
 
     /**
@@ -686,7 +747,11 @@ export default class Metric extends LightningElement {
         return this._secondaryMonth;
     }
     set secondaryMonth(value) {
-        this._secondaryMonth = value;
+        this._secondaryMonth =
+            normalizeString(value, {
+                fallbackValue: MONTH_ATTRIBUTE.default,
+                validValues: MONTH_ATTRIBUTE.valid
+            }) || MONTH_ATTRIBUTE.default;
     }
 
     /**
@@ -719,7 +784,11 @@ export default class Metric extends LightningElement {
         return this._secondarySecond;
     }
     set secondarySecond(value) {
-        this._secondarySecond = value;
+        this._secondarySecond =
+            normalizeString(value, {
+                fallbackValue: SECOND_ATTRIBUTE.default,
+                validValues: SECOND_ATTRIBUTE.valid
+            }) || SECOND_ATTRIBUTE.default;
     }
 
     /**
@@ -749,7 +818,11 @@ export default class Metric extends LightningElement {
         return this._secondaryTimeZoneName;
     }
     set secondaryTimeZoneName(value) {
-        this._secondaryTimeZoneName = value;
+        this._secondaryTimeZoneName =
+            normalizeString(value, {
+                fallbackValue: TIME_ZONE_NAME_ATTRIBUTE.default,
+                validValues: TIME_ZONE_NAME_ATTRIBUTE.valid
+            }) || TIME_ZONE_NAME_ATTRIBUTE.default;
     }
 
     /**
@@ -995,7 +1068,11 @@ export default class Metric extends LightningElement {
         return this._weekday;
     }
     set weekday(value) {
-        this._weekday = value;
+        this._weekday =
+            normalizeString(value, {
+                fallbackValue: WEEKDAY_ATTRIBUTE.default,
+                validValues: WEEKDAY_ATTRIBUTE.valid
+            }) || WEEKDAY_ATTRIBUTE.default;
     }
 
     /**
@@ -1010,7 +1087,11 @@ export default class Metric extends LightningElement {
         return this._year;
     }
     set year(value) {
-        this._year = value;
+        this._year =
+            normalizeString(value, {
+                fallbackValue: YEAR_ATTRIBUTE.default,
+                validValues: YEAR_ATTRIBUTE.valid
+            }) || YEAR_ATTRIBUTE.default;
     }
 
     /*
@@ -1042,6 +1123,11 @@ export default class Metric extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed CSS classes for the metrics.
+     *
+     * @type {string}
+     */
     get computedMetricsClass() {
         const position = this.secondaryPosition;
         return classSet('avonni-metric__primary-and-secondary-wrapper')

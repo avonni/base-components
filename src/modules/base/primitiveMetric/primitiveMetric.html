@@ -78,25 +78,26 @@
             >
                 {mathSign}&nbsp;
             </span>
-            <template if:true={isDateFormat}>
-                <lightning-formatted-date-time
-                    class="
-                        avonni-metric__value avonni-metric__primary-text
-                        slds-truncate
-                    "
-                    day={day}
-                    era={era}
-                    hour={hour}
-                    hour12={hour12}
-                    minute={minute}
-                    month={month}
-                    second={second}
-                    time-zone={timeZone}
-                    time-zone-name={timeZoneName}
-                    value={value}
-                    year={year}
-                ></lightning-formatted-date-time>
-            </template>
+            <lightning-formatted-date-time
+                if:true={isDateFormat}
+                class="
+                    avonni-metric__value avonni-metric__primary-text
+                    slds-truncate
+                "
+                day={day}
+                era={era}
+                hour={hour}
+                hour12={hour12}
+                minute={minute}
+                month={month}
+                second={second}
+                time-zone={timeZone}
+                time-zone-name={timeZoneName}
+                value={value}
+                weekday={weekday}
+                year={year}
+                data-element-id="lightning-formatted-date-time"
+            ></lightning-formatted-date-time>
             <lightning-formatted-number
                 if:false={isDateFormat}
                 class="
