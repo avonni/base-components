@@ -1,0 +1,4 @@
+const MENU_ITEM_CLASSES = ['avonni-menu-item-dialog', 'avonni-submenu'];
+const MENU_ITEM_TAGS = ['LIGHTNING-MENU-ITEM'];
+
+export { MENU_ITEM_CLASSES, MENU_ITEM_TAGS };
