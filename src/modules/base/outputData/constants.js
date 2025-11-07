@@ -9,6 +9,7 @@ const SUPPORTED_TYPE_ATTRIBUTES = {
         'maximumSignificantDigits'
     ],
     date: [
+        'dateFormat',
         'day',
         'era',
         'hour',

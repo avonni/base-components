@@ -9,7 +9,7 @@
         </div>
         <div
             class="avonni-output-data__value slds-truncate slds-item_detail"
-            title={value}
+            title={computedValue}
         >
             <!-- Empty Value -->
             <span if:true={showEmptyValue} data-element-id="empty-value">
@@ -24,27 +24,36 @@
                     data-element-id="lightning-icon"
                 ></lightning-icon>
                 <!-- Date -->
-                <lightning-formatted-date-time
-                    if:true={isDate}
-                    day={normalizedTypeAttributes.day}
-                    era={normalizedTypeAttributes.era}
-                    hour={normalizedTypeAttributes.hour}
-                    hour12={normalizedTypeAttributes.hour12}
-                    minute={normalizedTypeAttributes.minute}
-                    month={normalizedTypeAttributes.month}
-                    second={normalizedTypeAttributes.second}
-                    time-zone={normalizedTypeAttributes.timeZone}
-                    time-zone-name={normalizedTypeAttributes.timeZoneName}
-                    value={value}
-                    weekday={normalizedTypeAttributes.weekday}
-                    year={normalizedTypeAttributes.year}
-                    data-element-id="lightning-formatted-date-time"
-                ></lightning-formatted-date-time>
+                <template if:true={isDate}>
+                    <div
+                        if:true={isCustomDate}
+                        class="slds-truncate"
+                        data-element-id="avonni-formatted-date-time"
+                    >
+                        {computedValue}
+                    </div>
+                    <lightning-formatted-date-time
+                        if:false={isCustomDate}
+                        day={normalizedTypeAttributes.day}
+                        era={normalizedTypeAttributes.era}
+                        hour={normalizedTypeAttributes.hour}
+                        hour12={normalizedTypeAttributes.hour12}
+                        minute={normalizedTypeAttributes.minute}
+                        month={normalizedTypeAttributes.month}
+                        second={normalizedTypeAttributes.second}
+                        time-zone={normalizedTypeAttributes.timeZone}
+                        time-zone-name={normalizedTypeAttributes.timeZoneName}
+                        value={computedValue}
+                        weekday={normalizedTypeAttributes.weekday}
+                        year={normalizedTypeAttributes.year}
+                        data-element-id="lightning-formatted-date-time"
+                    ></lightning-formatted-date-time>
+                </template>
                 <!-- Email -->
                 <lightning-formatted-email
                     if:true={isEmail}
                     hide-icon={normalizedTypeAttributes.hideIcon}
-                    value={value}
+                    value={computedValue}
                     data-element-id="lightning-formatted-email"
                 ></lightning-formatted-email>
                 <!-- Location -->
@@ -65,26 +74,26 @@
                     minimum-fraction-digits={normalizedTypeAttributes.minimumFractionDigits}
                     minimum-integer-digits={normalizedTypeAttributes.minimumIntegerDigits}
                     minimum-significant-digits={normalizedTypeAttributes.minimumSignificantDigits}
-                    value={value}
+                    value={computedValue}
                     data-element-id="lightning-formatted-number"
                 ></lightning-formatted-number>
                 <!-- Phone -->
                 <lightning-formatted-phone
                     if:true={isPhone}
-                    value={value}
+                    value={computedValue}
                     data-element-id="lightning-formatted-phone"
                 ></lightning-formatted-phone>
                 <!-- Text -->
                 <lightning-formatted-rich-text
                     if:true={isText}
                     disable-linkify={normalizedTypeAttributes.disableLinkify}
-                    value={value}
+                    value={computedValue}
                     data-element-id="lightning-formatted-text"
                 ></lightning-formatted-rich-text>
                 <!-- Time -->
                 <lightning-formatted-time
                     if:true={isTime}
-                    value={value}
+                    value={computedValue}
                     data-element-id="lightning-formatted-time"
                 ></lightning-formatted-time>
                 <!-- URL -->
@@ -93,7 +102,7 @@
                     label={normalizedTypeAttributes.label}
                     target={normalizedTypeAttributes.target}
                     tooltip={normalizedTypeAttributes.tooltip}
-                    value={value}
+                    value={computedValue}
                     data-element-id="lightning-formatted-url"
                 ></lightning-formatted-url>
             </template>

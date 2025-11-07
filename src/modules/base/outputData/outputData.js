@@ -1,3 +1,4 @@
+import { getFormattedDate } from 'c/dateTimeUtils';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { LightningElement, api } from 'lwc';
 import {
@@ -30,6 +31,8 @@ export default class OutputData extends LightningElement {
     _variant = VARIANTS.default;
 
     _connected = false;
+
+    computedValue;
     normalizedTypeAttributes = {};
 
     /*
@@ -40,6 +43,7 @@ export default class OutputData extends LightningElement {
 
     connectedCallback() {
         this.normalizeTypeAttributes();
+        this.initValue();
         this._connected = true;
     }
 
@@ -65,7 +69,10 @@ export default class OutputData extends LightningElement {
             validValues: TYPES.valid
         });
 
-        if (this._connected) this.normalizeTypeAttributes();
+        if (this._connected) {
+            this.normalizeTypeAttributes();
+            this.initValue();
+        }
     }
 
     /**
@@ -81,7 +88,10 @@ export default class OutputData extends LightningElement {
     set typeAttributes(value) {
         this._typeAttributes = typeof value === 'object' ? value : {};
 
-        if (this._connected) this.normalizeTypeAttributes();
+        if (this._connected) {
+            this.normalizeTypeAttributes();
+            this.initValue();
+        }
     }
 
     /**
@@ -115,6 +125,10 @@ export default class OutputData extends LightningElement {
     }
     set value(value) {
         this._value = value;
+
+        if (this._connected) {
+            this.initValue();
+        }
     }
 
     /**
@@ -185,6 +199,19 @@ export default class OutputData extends LightningElement {
     }
 
     /**
+     * True if the type is a date with custom date format.
+     *
+     * @type {boolean}
+     */
+    get isCustomDate() {
+        return (
+            this.isDate &&
+            this.normalizedTypeAttributes.timeZone &&
+            this.normalizedTypeAttributes.dateFormat
+        );
+    }
+
+    /**
      * True if the type is date.
      *
      * @type {boolean}
@@ -192,7 +219,6 @@ export default class OutputData extends LightningElement {
     get isDate() {
         return this.type === 'date';
     }
-
     /**
      * True if the type is email.
      *
@@ -301,7 +327,7 @@ export default class OutputData extends LightningElement {
                 !this.typeAttributes.latitude && !this.typeAttributes.longitude
             );
         }
-        return this._value === null || this._value === undefined;
+        return this.computedValue === null || this.computedValue === undefined;
     }
 
     /*
@@ -309,6 +335,22 @@ export default class OutputData extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    initValue() {
+        if (this.isCustomDate) {
+            const date = new Date(this._value);
+            this.computedValue =
+                !this._value || isNaN(date)
+                    ? ''
+                    : getFormattedDate({
+                          date: this._value,
+                          timeZone: this.normalizedTypeAttributes.timeZone,
+                          format: this.normalizedTypeAttributes.dateFormat
+                      });
+        } else {
+            this.computedValue = this._value;
+        }
+    }
 
     /**
      * Normalize the type attributes, to remove the invalid and unsupported attributes.

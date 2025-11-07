@@ -125,9 +125,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _isLoading = false;
     _timezone;
 
+    _connected = false;
+
+    computedFields = [];
     formattedEndDate = '';
     formattedStartDate = '';
-    _connected = false;
 
     /*
      * -------------------------------------------------------------
@@ -136,7 +138,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     connectedCallback() {
-        this.formatDate();
+        this.formatStartEndDates();
+        this.formatFields();
         this._connected = true;
     }
 
@@ -279,7 +282,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._dateFormat = typeof value === 'string' ? value : null;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
         }
     }
 
@@ -297,7 +300,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._datetimeValue = value;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
         }
     }
 
@@ -315,7 +318,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._endDateValue = value;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
         }
     }
 
@@ -331,6 +334,10 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
     set fields(value) {
         this._fields = normalizeArray(value);
+
+        if (this._connected) {
+            this.formatFields();
+        }
     }
 
     /**
@@ -469,7 +476,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._timezone = value;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
+            this.formatFields();
         }
     }
 
@@ -573,7 +581,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {boolean}
      */
     get hasFields() {
-        return this._fields.length > 0;
+        return this.computedFields.length > 0;
     }
 
     /**
@@ -654,19 +662,42 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     /**
      * Sets the formatted date.
      */
-    formatDate() {
-        const format = (value) => {
-            const date = new Date(value);
-            return !value || isNaN(date) || !this.dateFormat
-                ? ''
-                : getFormattedDate({
-                      date: value,
-                      timeZone: this.timezone,
-                      format: this.dateFormat
-                  });
-        };
-        this.formattedStartDate = format(this.datetimeValue);
-        this.formattedEndDate = format(this.endDateValue);
+    formatDate(value) {
+        const date = new Date(value);
+        return !value || isNaN(date) || !this.dateFormat
+            ? ''
+            : getFormattedDate({
+                  date: value,
+                  timeZone: this.timezone,
+                  format: this.dateFormat
+              });
+    }
+
+    formatFields() {
+        if (!Array.isArray(this._fields)) {
+            return;
+        }
+        const fields = this._fields.map((field) => {
+            let typeAttributes = {};
+            if (field.type === 'date') {
+                typeAttributes = {
+                    timeZone: this.timezone,
+                    dateFormat: this.dateFormat
+                };
+            }
+            return {
+                ...field,
+                ...(Object.keys(typeAttributes).length > 0 && {
+                    typeAttributes
+                })
+            };
+        });
+        this.computedFields = fields;
+    }
+
+    formatStartEndDates() {
+        this.formattedStartDate = this.formatDate(this.datetimeValue);
+        this.formattedEndDate = this.formatDate(this.endDateValue);
     }
 
     /**
