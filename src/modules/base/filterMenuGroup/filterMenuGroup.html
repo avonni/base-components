@@ -59,16 +59,12 @@
         </template>
         <c-layout-item if:true={isOverflow} class="slds-text-align_right">
             <c-button-icon-popover
-                class="
-                    slds-show_inline-block
-                    slds-text-align_left
-                    avonni-filter-menu-group__button-icon-popover
-                "
+                class={computedButtonIconPopoverClass}
                 icon-name="utility:filterList"
                 placement={buttonPopoverPlacement}
                 popover-size="large"
                 title="&#8203;"
-                variant={buttonPopoverVariant}
+                variant="border-filled"
                 data-element-id="filter-menu-group-button-icon-popover"
                 onopen={handleMoreFiltersOpen}
                 onclose={handleMoreFiltersClose}

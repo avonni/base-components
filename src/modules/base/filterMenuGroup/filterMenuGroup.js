@@ -330,15 +330,22 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Button variant of the popver
+     * Button Icon Popover Class Styling
      *
      * @type {string}
      */
-    get buttonPopoverVariant() {
+    get computedButtonIconPopoverClass() {
         const isInHiddenMenus = Object.keys(this.value || {}).some((key) =>
             this.hiddenMenus?.some((menu) => menu.name === key)
         );
-        return isInHiddenMenus ? 'brand' : 'border-filled';
+        return classSet(
+            'slds-show_inline-block slds-text-align_left avonni-filter-menu-group__button-icon-popover'
+        )
+            .add({
+                'avonni-filter-menu-group__button-icon-popover-selected':
+                    isInHiddenMenus
+            })
+            .toString();
     }
 
     /**
