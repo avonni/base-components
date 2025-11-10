@@ -1,4 +1,9 @@
-import { classSet, normalizeArray, normalizeBoolean, normalizeString } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import { LightningElement, api } from 'lwc';
 import noTag from './noTag.html';
 import tag from './tag.html';
@@ -262,7 +267,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
             `slds-carousel__panel-action avonni-carousel__panel-action avonni-carousel__image-${this.imagePosition}`
         ).add({
             'slds-text-link_reset': normalizeBoolean(this.href),
-            'avonni-carousel__panel-action_with-content': this.displayContentContainer
+            'avonni-carousel__panel-action_with-content':
+                this.displayContentContainer
         });
     }
 
@@ -460,16 +466,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * Action click event dispatcher.
      */
     _dispatchActionClick(actionName) {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
-
         /**
          * The event fired when a user clicks on an action.
          *
@@ -484,13 +480,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 detail: {
                     name: actionName,
                     item: {
-                        title,
-                        description,
-                        name,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText
+                        title: this.title,
+                        description: this.description,
+                        name: this.name,
+                        src: this.src,
+                        href: this.href,
+                        actions: this.actions,
+                        imageAssistiveText: this.imageAssistiveText
                     }
                 }
             })
@@ -501,16 +497,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * Item click event dispatcher.
      */
     _dispatchItemClick() {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
-
         /**
          * The event fired when an item is clicked.
          *
@@ -523,13 +509,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
             new CustomEvent('itemclick', {
                 detail: {
                     item: {
-                        title,
-                        description,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText,
-                        name
+                        title: this.title,
+                        description: this.description,
+                        src: this.src,
+                        href: this.href,
+                        actions: this.actions,
+                        imageAssistiveText: this.imageAssistiveText,
+                        name: this.name
                     }
                 }
             })

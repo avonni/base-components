@@ -1,4 +1,14 @@
-import { LightningElement, api } from 'lwc';
+import { DateTime } from 'c/luxon';
+import {
+    dateTimeObjectFrom,
+    getWeekday,
+    getWeekNumber
+} from 'c/luxonDateTimeUtils';
+import {
+    DEFAULT_ACTION_NAMES,
+    isAllDay,
+    spansOnMoreThanOneDay
+} from 'c/schedulerUtils';
 import {
     classSet,
     normalizeArray,
@@ -6,18 +16,8 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { DateTime } from 'c/luxon';
 import { classListMutation } from 'c/utilsPrivate';
-import {
-    dateTimeObjectFrom,
-    getWeekday,
-    getWeekNumber
-} from 'c/luxonDateTimeUtils';
-import {
-    isAllDay,
-    spansOnMoreThanOneDay,
-    DEFAULT_ACTION_NAMES
-} from 'c/schedulerUtils';
+import { api, LightningElement } from 'lwc';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
@@ -1146,30 +1146,29 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (this.displayAsDot) {
             return '';
         }
-        const { computedColor, transparentColor, theme } = this;
-        const isDefault = theme === 'default';
-        const isTransparent = theme === 'transparent';
-        const isRounded = theme === 'rounded';
-        const isHollow = theme === 'hollow';
-        const isLine = theme === 'line';
+        const isDefault = this.theme === 'default';
+        const isTransparent = this.theme === 'transparent';
+        const isRounded = this.theme === 'rounded';
+        const isHollow = this.theme === 'hollow';
+        const isLine = this.theme === 'line';
 
         let style = '';
         if (isDefault || isRounded || (isTransparent && this._focused)) {
             style += `
-                background-color: ${computedColor};
-                --avonni-primitive-scheduler-event-occurrence-background-color: ${computedColor};
+                background-color: ${this.computedColor};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${this.computedColor};
             `;
         } else if (isTransparent && !this._focused) {
             style += `
-                background-color: ${transparentColor};
-                --avonni-primitive-scheduler-event-occurrence-background-color: ${transparentColor};
+                background-color: ${this.transparentColor};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${this.transparentColor};
             `;
         }
         if (isTransparent) {
-            style += `border-left-color: ${computedColor};`;
+            style += `border-left-color: ${this.computedColor};`;
         }
         if (isHollow || isLine) {
-            style += `border-color: ${computedColor}`;
+            style += `border-color: ${this.computedColor}`;
         }
 
         return style;
@@ -1285,15 +1284,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         } else if (this.hostElement) {
             this.hostElement.style.width = null;
         }
-        const { cellHeight, cellWidth, cellDuration } = this;
         const from = this.getComparableTime(this.from);
         const headerCells = this.isVerticalCalendar
             ? this.headerCells.yAxis
             : this.timelineHeaderCells;
 
         let to = this.getComparableTime(this.to);
-        const cellSize = this.isVertical ? cellHeight : cellWidth;
-        if (!headerCells || !cellSize || !cellDuration) {
+        const cellSize = this.isVertical ? this.cellHeight : this.cellWidth;
+        if (!headerCells || !cellSize || !this.cellDuration) {
             return;
         }
 
@@ -1325,7 +1323,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         // Add the length of the header cells completely filled by the event
         while (i < headerCells.length) {
             const cellStart = this.getComparableTime(headerCells[i].start);
-            if (cellStart + cellDuration > to) break;
+            if (cellStart + this.cellDuration > to) break;
             length += cellSize;
             i += 1;
         }
@@ -1336,7 +1334,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const cellStart = cell && this.getComparableTime(cell.start);
         if (cell && cellStart < to) {
             const eventDurationLeft = to - cellStart;
-            const colPercentEnd = eventDurationLeft / cellDuration;
+            const colPercentEnd = eventDurationLeft / this.cellDuration;
             length += cellSize * colPercentEnd;
         }
         this.setLength(length);
@@ -1638,20 +1636,19 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
         style.display = isMonth && overflows ? 'none' : null;
 
-        const { cellHeight, headerCells, cellWidth } = this;
         if (
-            !headerCells.xAxis ||
-            !headerCells.yAxis ||
-            !cellWidth ||
-            !cellHeight
+            !this.headerCells.xAxis ||
+            !this.headerCells.yAxis ||
+            !this.cellWidth ||
+            !this.cellHeight
         ) {
             return;
         }
 
         // Get the vertical and horizontal cells indices
         const start = this.occurrence.firstAllowedDate;
-        const yIndex = this.getStartCellIndex(headerCells.yAxis);
-        const xIndex = headerCells.xAxis.findIndex((cell) => {
+        const yIndex = this.getStartCellIndex(this.headerCells.yAxis);
+        const xIndex = this.headerCells.xAxis.findIndex((cell) => {
             const cellEnd = this.createDate(cell.end);
             const sameWeekDay = cellEnd.weekday === start.weekday;
             return cellEnd > start && (!this.isMonthCalendar || sameWeekDay);
@@ -1660,8 +1657,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (yIndex < 0 || xIndex < 0) {
             return;
         }
-        this._y = yIndex * cellHeight;
-        this._x = xIndex * cellWidth;
+        this._y = yIndex * this.cellHeight;
+        this._x = xIndex * this.cellWidth;
 
         if (this.isMonthCalendar) {
             this._y += this.offsetSide;
@@ -1672,20 +1669,19 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Update the position of the event if it is set in a timeline.
      */
     updatePositionInTimeline() {
-        const { cellHeight, cellWidth, timelineHeaderCells } = this;
-        if (!timelineHeaderCells) {
+        if (!this.timelineHeaderCells) {
             return;
         }
 
         // Find the cell where the event starts
-        const i = this.getStartCellIndex(timelineHeaderCells);
+        const i = this.getStartCellIndex(this.timelineHeaderCells);
         if (i < 0) return;
 
         // Place the event at the right header
         if (this.isVerticalTimeline) {
-            this._y = i * cellHeight;
+            this._y = i * this.cellHeight;
         } else {
-            this._x = i * cellWidth;
+            this._x = i * this.cellWidth;
         }
 
         this.alignPositionWithResource();
@@ -1716,13 +1712,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     updateStandaloneLength() {
         const headerCells = this.headerCells.xAxis;
-        const { to, cellWidth } = this;
         const isOneCellLength =
             this.referenceLine || !this.spansOnMoreThanOneDay;
 
         if ((isOneCellLength || !headerCells) && this.hostElement) {
             // The event should span on one cell
-            this.hostElement.style.width = cellWidth ? `${cellWidth}px` : null;
+            this.hostElement.style.width = this.cellWidth
+                ? `${this.cellWidth}px`
+                : null;
             this.hostElement.style.height = null;
             return;
         }
@@ -1741,11 +1738,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         // Add the full length of the cells the event passes through
         while (i < headerCells.length) {
             const cellStart = this.createDate(headerCells[i].start);
-            const sameWeek = getWeekNumber(from) === getWeekNumber(to);
-            if (getWeekday(cellStart) > getWeekday(to) && sameWeek) {
+            const sameWeek = getWeekNumber(from) === getWeekNumber(this.to);
+            if (getWeekday(cellStart) > getWeekday(this.to) && sameWeek) {
                 break;
             }
-            length += cellWidth;
+            length += this.cellWidth;
             i += 1;
         }
         this.setLength(length);
