@@ -685,28 +685,6 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Computed display of the vertical max value.
-     *
-     * @type {number}
-     */
-    get computedMaxVerticalDisplay() {
-        return this.isPercentage && !isNaN(this.max) && this._unit === 'percent'
-            ? this.max / PERCENT_SCALING_FACTOR
-            : this.max;
-    }
-
-    /**
-     * Computed display of the vertical min value.
-     *
-     * @type {number}
-     */
-    get computedMinVerticalDisplay() {
-        return this.isPercentage && !isNaN(this.min) && this._unit === 'percent'
-            ? this.min / PERCENT_SCALING_FACTOR
-            : this.min;
-    }
-
-    /**
      * Computed pin class styling.
      *
      * @type {string}
@@ -798,6 +776,28 @@ export default class Slider extends LightningElement {
                 'slds-p-top_x-small': !this.isVertical
             })
             .toString();
+    }
+
+    /**
+     * Computed display of the vertical max value.
+     *
+     * @type {number}
+     */
+    get computedVerticalMaxDisplay() {
+        return this.isPercentage && !isNaN(this.max) && this._unit === 'percent'
+            ? this.max / PERCENT_SCALING_FACTOR
+            : this.max;
+    }
+
+    /**
+     * Computed display of the vertical min value.
+     *
+     * @type {number}
+     */
+    get computedVerticalMinDisplay() {
+        return this.isPercentage && !isNaN(this.min) && this._unit === 'percent'
+            ? this.min / PERCENT_SCALING_FACTOR
+            : this.min;
     }
 
     /**
