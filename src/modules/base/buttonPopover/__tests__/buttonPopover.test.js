@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import ButtonPopover from 'c/buttonPopover';
+import { createElement } from 'lwc';
 
 let element;
 describe('Button Popover', () => {
@@ -21,6 +21,7 @@ describe('Button Popover', () => {
             expect(element.accessKey).toBeUndefined();
             expect(element.disabled).toBeFalsy();
             expect(element.hideCloseButton).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
             expect(element.iconSize).toBe('x-small');
@@ -60,6 +61,19 @@ describe('Button Popover', () => {
 
                 return Promise.resolve().then(() => {
                     expect(button.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('Passed to the component', () => {
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.groupOrder).toBe('first');
                 });
             });
         });

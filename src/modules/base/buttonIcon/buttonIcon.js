@@ -62,6 +62,14 @@ export default class ButtonIcon extends PrimitiveButton {
      * @default false
      */
     /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @name groupOrder
+     * @public
+     * @type {string}
+     */
+    /**
      * The class to be applied to the contained icon element.
      * Only Lightning Design System utility classes are currently supported.
      *
