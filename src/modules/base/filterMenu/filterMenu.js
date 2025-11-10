@@ -15,6 +15,7 @@ import {
 } from 'c/utils';
 import {
     animationFrame,
+    buttonGroupOrderClass,
     equal,
     observePosition,
     timeout
@@ -142,6 +143,14 @@ export default class FilterMenu extends LightningElement {
      */
     @api accessKey;
     /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @public
+     * @type {string}
+     */
+    @api groupOrder = '';
+    /**
      * Label of the menu.
      *
      * @type {string}
@@ -214,32 +223,6 @@ export default class FilterMenu extends LightningElement {
      */
 
     connectedCallback() {
-        // button-group necessities
-        /**
-        * Private button register event
-        *
-        * @event
-        * @name privatebuttonregister
-        * @param {object} callbacks
-        * *setOrder : this.setOrder.bind(this),
-        * *setDeRegistrationCallback: (deRegistrationCallback) => {
-                        this._deRegistrationCallback = deRegistrationCallback;
-                    }
-        * @bubbles
-        */
-        const privatebuttonregister = new CustomEvent('privatebuttonregister', {
-            bubbles: true,
-            detail: {
-                callbacks: {
-                    setOrder: this.setOrder.bind(this),
-                    setDeRegistrationCallback: (deRegistrationCallback) => {
-                        this._deRegistrationCallback = deRegistrationCallback;
-                    }
-                }
-            }
-        });
-
-        this.dispatchEvent(privatebuttonregister);
         this.normalizeTypeAttributes();
         this.computeListItems();
         this.computeSelectedItems();
@@ -872,6 +855,7 @@ export default class FilterMenu extends LightningElement {
             this.buttonVariant === 'bare-inverse';
 
         const classes = classSet('slds-button');
+        classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
             classes.add({
@@ -910,14 +894,7 @@ export default class FilterMenu extends LightningElement {
             });
         }
 
-        return classes
-            .add({
-                // order classes when part of a button-group
-                'slds-button_first': this._order === 'first',
-                'slds-button_middle': this._order === 'middle',
-                'slds-button_last': this._order === 'last'
-            })
-            .toString();
+        return classes.toString();
     }
 
     /**

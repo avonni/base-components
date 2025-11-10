@@ -91,6 +91,14 @@ export default class DynamicMenu extends LightningElement {
      */
     @api alternativeText;
     /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @public
+     * @type {string}
+     */
+    @api groupOrder = '';
+    /**
      * The name of the icon to be used in the format 'utility:down'.
      *
      * @type {string}
@@ -174,21 +182,6 @@ export default class DynamicMenu extends LightningElement {
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
-
-        // Register event so the button-group (or other) component can register the button
-        const privatebuttonregister = new CustomEvent('privatebuttonregister', {
-            bubbles: true,
-            detail: {
-                callbacks: {
-                    setOrder: this.setOrder.bind(this),
-                    setDeRegistrationCallback: (deRegistrationCallback) => {
-                        this._deRegistrationCallback = deRegistrationCallback;
-                    }
-                }
-            }
-        });
-
-        this.dispatchEvent(privatebuttonregister);
         this._connected = true;
     }
 

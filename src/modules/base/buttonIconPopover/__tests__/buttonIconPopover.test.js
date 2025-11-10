@@ -27,6 +27,7 @@ describe('Button Icon Popover', () => {
             expect(element.alternativeText).toBeUndefined();
             expect(element.disabled).toBeFalsy();
             expect(element.hideCloseButton).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.iconClass).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSrc).toBeUndefined();
@@ -80,6 +81,19 @@ describe('Button Icon Popover', () => {
 
                 return Promise.resolve().then(() => {
                     expect(button.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('Passed to the component', () => {
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button-icon"]'
+                    );
+                    expect(button.groupOrder).toBe('first');
                 });
             });
         });

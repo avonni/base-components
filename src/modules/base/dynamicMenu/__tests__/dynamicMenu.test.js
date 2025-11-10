@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import DynamicMenu from 'c/dynamicMenu';
+import { createElement } from 'lwc';
 import { baseItems, listViewItems } from '../__docs__/data';
 
 // not tested menuLength because of offsetHeight in the DOM
@@ -32,6 +32,7 @@ describe('Dynamic Menu', () => {
             expect(element.alternativeText).toBeUndefined();
             expect(element.buttonSize).toBe('auto');
             expect(element.disabled).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.hideCheckMark).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSize).toBe('medium');
@@ -164,6 +165,31 @@ describe('Dynamic Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('Without label', () => {
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button-icon"]'
+                    );
+                    expect(button.groupOrder).toBe('first');
+                });
+            });
+
+            it('With label', () => {
+                element.label = 'label';
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.groupOrder).toBe('first');
                 });
             });
         });
@@ -967,28 +993,6 @@ describe('Dynamic Menu', () => {
                             handler.mock.calls[0][0].cancelable
                         ).toBeTruthy();
                     });
-            });
-        });
-
-        describe('Private Button Register', () => {
-            it('privatebuttonregister', () => {
-                const handler = jest.fn();
-                element.addEventListener('privatebuttonregister', handler);
-                document.body.appendChild(element);
-
-                return Promise.resolve().then(() => {
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                    expect(handler.mock.calls[0][0].canceled).toBeFalsy();
-                    expect(
-                        handler.mock.calls[0][0].detail.callbacks.setOrder
-                    ).toBeInstanceOf(Function);
-                    expect(
-                        handler.mock.calls[0][0].detail.callbacks
-                            .setDeRegistrationCallback
-                    ).toBeInstanceOf(Function);
-                });
             });
         });
 

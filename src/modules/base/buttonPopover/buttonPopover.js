@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { observePosition } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const BUTTON_VARIANTS = {
     valid: [
@@ -66,8 +66,17 @@ export default class ButtonPopover extends LightningElement {
      * The keyboard shortcut for the button.
      *
      * @type {string}
+     * @public
      */
     @api accessKey;
+    /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @public
+     * @type {string}
+     */
+    @api groupOrder = '';
     /**
      * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      * Only utility icons can be used in this component.
