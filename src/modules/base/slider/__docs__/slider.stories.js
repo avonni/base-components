@@ -154,8 +154,8 @@ export default {
             }
         },
 
-        isRatio: {
-            name: 'is-ratio',
+        isPercentage: {
+            name: 'is-percentage',
             control: {
                 type: 'boolean'
             },
@@ -305,7 +305,7 @@ export default {
         showTickMarks: false,
         hideMinMaxValues: false,
         hideTrack: false,
-        isRatio: false,
+        isPercentage: false,
         disableSwap: false,
         minimumDistance: 0,
         size: 'responsive',

@@ -3,7 +3,7 @@ import { LightningElement, api } from 'lwc';
 export default class Slider extends LightningElement {
     @api disabled;
     @api disableSwap;
-    @api isRatio;
+    @api isPercentage;
     @api label;
     @api max;
     @api messageWhenRangeOverflow;

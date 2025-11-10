@@ -6,7 +6,7 @@ export default class ColoredSlider extends LightningElement {
     @api disableSwap;
     @api hideMinMaxValues;
     @api hideTrack;
-    @api isRatio;
+    @api isPercentage;
     @api label;
     @api max;
     @api min;

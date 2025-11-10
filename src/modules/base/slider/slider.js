@@ -92,7 +92,7 @@ export default class Slider extends LightningElement {
     _minimumDistance = DEFAULT_MINIMUM_DISTANCE;
     _hideTrack = false;
     _hideMinMaxValues = false;
-    _isRatio = false;
+    _isPercentage = false;
     _pin = false;
     _showTickMarks = false;
     _size = SLIDER_SIZES.default;
@@ -219,7 +219,8 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * If present, the displayed percentages are normalized. For example, 50 as value is 50% in percentage.
+     * If present, the displayed percentages in percent unit are normalized.
+     * For example, 50 as value is 50% in percentage.
      * Otherwise, 0.5 as value is 50% in percentage.
      *
      * @type {Boolean}
@@ -227,11 +228,11 @@ export default class Slider extends LightningElement {
      * @default false
      */
     @api
-    get isRatio() {
-        return this._isRatio;
+    get isPercentage() {
+        return this._isPercentage;
     }
-    set isRatio(value) {
-        this._isRatio = normalizeBoolean(value);
+    set isPercentage(value) {
+        this._isPercentage = normalizeBoolean(value);
     }
 
     /**
@@ -663,7 +664,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedMaxDisplay() {
-        return this.isRatio &&
+        return this.isPercentage &&
             !isNaN(this.computedMax) &&
             this._unit === 'percent'
             ? this.computedMax / PERCENT_SCALING_FACTOR
@@ -676,7 +677,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedMinDisplay() {
-        return this.isRatio &&
+        return this.isPercentage &&
             !isNaN(this.computedMin) &&
             this._unit === 'percent'
             ? this.computedMin / PERCENT_SCALING_FACTOR
@@ -689,7 +690,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedMaxVerticalDisplay() {
-        return this.isRatio && !isNaN(this.max) && this._unit === 'percent'
+        return this.isPercentage && !isNaN(this.max) && this._unit === 'percent'
             ? this.max / PERCENT_SCALING_FACTOR
             : this.max;
     }
@@ -700,7 +701,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedMinVerticalDisplay() {
-        return this.isRatio && !isNaN(this.min) && this._unit === 'percent'
+        return this.isPercentage && !isNaN(this.min) && this._unit === 'percent'
             ? this.min / PERCENT_SCALING_FACTOR
             : this.min;
     }
@@ -1702,7 +1703,7 @@ export default class Slider extends LightningElement {
         );
         let transformedValue = this._computedValues[pinIndex];
         if (
-            this.isRatio &&
+            this.isPercentage &&
             !isNaN(transformedValue) &&
             this._unit === 'percent'
         ) {

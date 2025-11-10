@@ -8,7 +8,7 @@ export const MaxHeightSlider = ({
     disableSwap,
     hideMinMaxValues,
     hideTrack,
-    isRatio,
+    isPercentage,
     label,
     max,
     messageWhenRangeOverflow,
@@ -32,7 +32,7 @@ export const MaxHeightSlider = ({
     element.disabled = disabled;
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;
-    element.isRatio = isRatio;
+    element.isPercentage = isPercentage;
     element.hideTrack = hideTrack;
     element.label = label;
     element.max = max || 100;
