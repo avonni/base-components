@@ -219,7 +219,8 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * If present, the displayed percentage is divided by 100.
+     * If present, the displayed percentages are normalized. For example, 50 as value is 50% in percentage.
+     * Otherwise, 0.5 as value is 50% in percentage.
      *
      * @type {Boolean}
      * @public
