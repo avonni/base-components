@@ -92,17 +92,18 @@
                 <!-- Dropdown -->
                 <div
                     if:true={iconMenuOpened}
+                    class="
+                        slds-m-top_x-small
+                        slds-dropdown slds-dropdown_left
+                        slds-p-bottom_none
+                    "
                     tabindex="0"
+                    data-element-id="div-dropdown"
                     onfocusin={handleMenuFocusIn}
                     onfocusout={handleMenuFocusOut}
                 >
                     <c-focus-trap data-element-id="lightning-focus-trap">
                         <div
-                            class="
-                                slds-m-top_x-small
-                                slds-dropdown slds-dropdown_left
-                                slds-p-bottom_none
-                            "
                             onclick={handleMenuClick}
                             onkeydown={handleMenuKeydown}
                         >

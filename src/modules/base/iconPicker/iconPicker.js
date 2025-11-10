@@ -1,3 +1,4 @@
+import { AutoPosition, Direction } from 'c/positionLibrary';
 import {
     classSet,
     deepCopy,
@@ -153,6 +154,7 @@ export default class IconPicker extends LightningElement {
     newValue;
     showError = false;
     _allowBlur = false;
+    _autoPosition;
     _menuIsFocused = false;
 
     @track tabContent;
@@ -903,6 +905,46 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
+     * Position the dropdown automatically in the available space.
+     */
+    startDropdownPositioning() {
+        if (!this._autoPosition) {
+            this._autoPosition = new AutoPosition(this);
+        }
+
+        const button = this.template.querySelector(
+            '[data-element-id="button-toggle-menu"]'
+        );
+        const dropdown = this.template.querySelector(
+            '[data-element-id="div-dropdown"]'
+        );
+        this._autoPosition.start({
+            target: () => button,
+            element: () => dropdown,
+            align: {
+                horizontal: Direction.Left,
+                vertical: Direction.Top
+            },
+            targetAlign: {
+                horizontal: Direction.Left,
+                vertical: Direction.Bottom
+            },
+            autoFlip: true,
+            autoShrinkHeight: true,
+            padTop: 4
+        });
+    }
+
+    /**
+     * Stop the dropdown positioning.
+     */
+    stopDropdownPositioning() {
+        if (this._autoPosition) {
+            this._autoPosition.stop();
+        }
+    }
+
+    /**
      * Stops the propagation of an event.
      *
      * @param {Event} event
@@ -928,6 +970,11 @@ export default class IconPicker extends LightningElement {
             }
 
             requestAnimationFrame(() => {
+                if (this.iconMenuOpened) {
+                    this.startDropdownPositioning();
+                } else {
+                    this.stopDropdownPositioning();
+                }
                 this.focus();
             });
         }
