@@ -219,9 +219,9 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * If present, the displayed percentages in percent unit are normalized.
-     * For example, 50 as value is 50% in percentage.
-     * Otherwise, 0.5 as value is 50% in percentage.
+     * If present, the values in percent unit are treated as already in percentage.
+     * For example, 1 as value is treated as 1% in percentage.
+     * Otherwise, 1 as value is treated as 100% in percentage.
      *
      * @type {Boolean}
      * @public
