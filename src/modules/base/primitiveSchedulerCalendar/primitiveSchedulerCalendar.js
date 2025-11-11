@@ -561,6 +561,16 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             .toString();
     }
 
+    get computedWrapperClass() {
+        return classSet(
+            'slds-is-relative avonni-scheduler__wrapper slds-scrollable_x'
+        )
+            .add({
+                'avonni-scheduler__wrapper_month': this.isMonth
+            })
+            .toString();
+    }
+
     /**
      * Computed day headers, used by the horizontal primitive headers visible in the day, week and month view.
      *
