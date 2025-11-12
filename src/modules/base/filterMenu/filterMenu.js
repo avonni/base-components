@@ -261,6 +261,7 @@ export default class FilterMenu extends LightningElement {
         if (this._deRegistrationCallback) {
             this._deRegistrationCallback();
         }
+        this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
     }
 
     renderedCallback() {
