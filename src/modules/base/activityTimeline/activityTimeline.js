@@ -13,6 +13,7 @@ import { LightningElement, api, track } from 'lwc';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
+import { keyValues } from 'c/utilsPrivate';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
@@ -245,6 +246,13 @@ export default class ActivityTimeline extends LightningElement {
             return horizontalTimeline;
         }
         return verticalTimeline;
+    }
+
+    disconnectedCallback() {
+        window.removeEventListener(
+            'keydown',
+            this.handleHorizontalTimelineKeyDown
+        );
     }
 
     /*
@@ -1033,6 +1041,14 @@ export default class ActivityTimeline extends LightningElement {
             this,
             this.sortedItems
         );
+        window.removeEventListener(
+            'keydown',
+            this.handleHorizontalTimelineKeyDown
+        );
+        window.addEventListener(
+            'keydown',
+            this.handleHorizontalTimelineKeyDown
+        );
     }
 
     /**
@@ -1215,6 +1231,42 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Handle the keyboard down events on the horizontal view timeline.
+     *
+     * @param {Event} event
+     */
+    handleHorizontalTimelineKeyDown = (event) => {
+        if (!this.isTimelineHorizontal || !this.horizontalTimeline) {
+            return;
+        }
+
+        switch (event.key) {
+            case keyValues.left:
+                event.preventDefault();
+                event.stopPropagation();
+                this.horizontalTimeline.handleIntervalKeyboardScrollLeft();
+                break;
+            case keyValues.right:
+                event.preventDefault();
+                event.stopPropagation();
+                this.horizontalTimeline.handleIntervalKeyboardScrollRight();
+                break;
+            case '+':
+                event.preventDefault();
+                event.stopPropagation();
+                this.horizontalTimeline.handleIntervalKeyboardZoomIn();
+                break;
+            case '_':
+                event.preventDefault();
+                event.stopPropagation();
+                this.horizontalTimeline.handleIntervalKeyboardZoomOut();
+                break;
+            default:
+                break;
+        }
+    };
+
+    /**
      * Handle the click on an item. Dispatch the itemclick event.
      *
      * @param {Event} event
@@ -1244,6 +1296,14 @@ export default class ActivityTimeline extends LightningElement {
     handleItemMouseOver(item) {
         this.showItemPopOver = true;
         this.selectedItem = item;
+    }
+
+    handlePopoverKeyDown(event) {
+        if (event.key === keyValues.escape) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.handleTooltipClose();
+        }
     }
 
     /**
@@ -1308,5 +1368,9 @@ export default class ActivityTimeline extends LightningElement {
         }
         this.showItemPopOver = false;
         this.selectedItem = null;
+
+        if (this.isTimelineHorizontal) {
+            this.horizontalTimeline.focusCurrentItem();
+        }
     }
 }

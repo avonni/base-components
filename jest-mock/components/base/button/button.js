@@ -4,6 +4,7 @@ export default class Button extends LightningElement {
     @api accessKey;
     @api disableAnimation;
     @api disabled;
+    @api groupOrder;
     @api iconName;
     @api iconPosition;
     @api iconSize;

@@ -1,9 +1,13 @@
 @import 'c/schedulerSharedStyle';
 
 .avonni-scheduler__wrapper {
+    max-height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px));
+    height: 100%;
+    max-width: 100%;
+}
+.avonni-scheduler__wrapper_month {
     max-height: 100%;
     height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px));
-    max-width: 100%;
 }
 
 .avonni-scheduler__panel {

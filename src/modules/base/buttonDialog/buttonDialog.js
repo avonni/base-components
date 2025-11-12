@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const BUTTON_VARIANTS = {
     valid: [
@@ -60,6 +60,14 @@ export default class ButtonDialog extends LightningElement {
      * @default Cancel
      */
     @api cancelButtonLabel = DEFAULT_CANCEL_BUTTON_LABEL;
+    /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @public
+     * @type {string}
+     */
+    @api groupOrder = '';
     /**
      * The name of the icon to be used in the format 'utility:down'.
      *

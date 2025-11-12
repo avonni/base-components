@@ -79,6 +79,15 @@ export default class ButtonIconPopover extends LightningElement {
     @api alternativeText;
 
     /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @public
+     * @type {string}
+     */
+    @api groupOrder = '';
+
+    /**
      * The class to be applied to the contained icon element.
      *
      * @type {string}
@@ -752,9 +761,6 @@ export default class ButtonIconPopover extends LightningElement {
         this._cancelBlur = true;
     }
 
-    /**
-     * Start positioning the popover in the viewport.
-     */
     startPositioning() {
         const popover = this.template.querySelector(
             '[data-element-id="div-popover"]'
@@ -783,7 +789,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * Stop positioning the popover.
+     * Stop the positioning of the popover.
      */
     stopPositioning() {
         if (this._autoPosition) {

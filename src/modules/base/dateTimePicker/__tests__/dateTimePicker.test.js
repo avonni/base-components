@@ -1461,16 +1461,19 @@ describe('DateTimePicker', () => {
             it('Weekly variant', () => {
                 element.weekStartDay = 1;
                 element.variant = 'weekly';
-                element.value = '2025-10-28';
 
-                return Promise.resolve().then(() => {
-                    const firstTime = element.shadowRoot.querySelector(
-                        '[data-element-id="button-default"]'
-                    );
-                    expect(new Date(firstTime.dataset.time).getTime()).toBe(
-                        new Date(2025, 9, 27, 8).getTime()
-                    );
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate('2025-10-28');
+                    })
+                    .then(() => {
+                        const firstTime = element.shadowRoot.querySelector(
+                            '[data-element-id="button-default"]'
+                        );
+                        expect(new Date(firstTime.dataset.time).getTime()).toBe(
+                            new Date(2025, 9, 27, 8).getTime()
+                        );
+                    });
             });
 
             it('Monthly variant', () => {

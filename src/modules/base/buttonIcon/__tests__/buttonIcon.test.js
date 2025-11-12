@@ -25,6 +25,7 @@ describe('Button Icon', () => {
             expect(element.accessKey).toBeUndefined();
             expect(element.alternativeText).toBeUndefined();
             expect(element.disabled).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.iconClass).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSrc).toBeUndefined();
@@ -77,6 +78,69 @@ describe('Button Icon', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('No order by default', () => {
+                element.iconName = 'custom:custom1';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('First', () => {
+                element.groupOrder = 'first';
+                element.iconName = 'custom:custom1';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Middle', () => {
+                element.groupOrder = 'middle';
+                element.iconName = 'custom:custom1';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_middle');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Last', () => {
+                element.groupOrder = 'last';
+                element.iconName = 'custom:custom1';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_last');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
                 });
             });
         });

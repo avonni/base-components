@@ -12,6 +12,7 @@
             onblur={handleBlur}
             onclick={handlePreventDefault}
             onfocus={handleFocus}
+            onkeydown={handleKeyDown}
             onmouseenter={handleMouseEnter}
         >
             <span
@@ -50,7 +51,12 @@
         </a>
         <div class={computedDropdownClass}>
             <div class="avonni-submenu_dropdown-gap-cover"></div>
-            <div class="slds-dropdown__list" aria-label={label} role="menu">
+            <div
+                class="slds-dropdown__list"
+                aria-label={label}
+                role="menu"
+                onkeydown={handleDropdownKeyDown}
+            >
                 <slot></slot>
             </div>
         </div>

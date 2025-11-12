@@ -86,6 +86,7 @@ describe('Filter Menu', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.dropdownAlignment).toBe('left');
             expect(element.dropdownNubbin).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.hideApplyButton).toBeFalsy();
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
@@ -850,6 +851,64 @@ describe('Filter Menu', () => {
                     );
                     expect(dropdown.classList).not.toContain(
                         'slds-nubbin_bottom'
+                    );
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('No order by default', () => {
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('First', () => {
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Middle', () => {
+                element.groupOrder = 'middle';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_middle');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Last', () => {
+                element.groupOrder = 'last';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_last');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
                     );
                 });
             });
@@ -3437,41 +3496,6 @@ describe('Filter Menu', () => {
                         );
                         expect(dropdown).toBeTruthy();
                     });
-            });
-        });
-
-        describe('Private Button Register', () => {
-            it('privatebuttonregister event', () => {
-                element = createElement('base-filter-menu', {
-                    is: FilterMenu
-                });
-
-                const mockDeRegistrationCallback = jest.fn();
-
-                const handler = jest.fn().mockImplementation((event) => {
-                    event.detail.callbacks.setDeRegistrationCallback(
-                        mockDeRegistrationCallback
-                    );
-                });
-                element.addEventListener('privatebuttonregister', handler);
-
-                document.body.appendChild(element);
-
-                expect(handler).toHaveBeenCalled();
-                expect(
-                    handler.mock.calls[0][0].detail.callbacks
-                        .setDeRegistrationCallback
-                ).toBeTruthy();
-                expect(
-                    handler.mock.calls[0][0].detail.callbacks.setOrder
-                ).toBeTruthy();
-                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-
-                while (document.body.firstChild) {
-                    document.body.removeChild(document.body.firstChild);
-                }
-
-                expect(mockDeRegistrationCallback).toHaveBeenCalled();
             });
         });
 

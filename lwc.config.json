@@ -7,6 +7,10 @@
             "dir": "src/modules/base"
         },
         {
+            "name": "c/buttonMenuUtils",
+            "path": "src/modules/base/buttonMenuUtils/buttonMenuUtils.js"
+        },
+        {
             "name": "c/colorUtils",
             "path": "src/modules/base/colorUtils/colorUtils.js"
         },
