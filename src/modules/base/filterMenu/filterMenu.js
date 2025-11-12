@@ -1668,7 +1668,10 @@ export default class FilterMenu extends LightningElement {
                     style,
                     ...attributes
                 };
-                if (this.computedTypeAttributes.isPercentage) {
+                if (
+                    style === 'percent' &&
+                    this.computedTypeAttributes.isPercentage
+                ) {
                     value /= 100;
                 }
                 normalizedValue = value.toString();
