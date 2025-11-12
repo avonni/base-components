@@ -2348,6 +2348,7 @@ export default class FilterMenu extends LightningElement {
             } else if (!this.infiniteLoad && this.isList) {
                 this.dispatchLoadItemCounts();
             }
+            this.dispatchLoadTotalCount();
         }, 300);
     }
 
