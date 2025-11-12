@@ -120,12 +120,13 @@ const TYPE_ATTRIBUTES = {
         'tickMarkStyle',
         'unit',
         'unitAttributes'
-    ]
+    ],
+    'time-range': ['labelEndTime', 'labelStartTime', 'timeStyle']
 };
 
 const TYPES = {
     default: 'list',
-    valid: ['date-range', 'list', 'range']
+    valid: ['date-range', 'list', 'range', 'time-range']
 };
 
 /**
@@ -702,7 +703,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Type of the filter menu. Valid values include list, range and date-range.
+     * Type of the filter menu. Valid values include list, range, date-range and time-range.
      *
      * @type {string}
      * @default list
@@ -933,7 +934,8 @@ export default class FilterMenu extends LightningElement {
             'slds-nubbin_bottom-right': nubbin && alignment === 'bottom-right',
             'slds-nubbin_bottom': nubbin && alignment === 'bottom-center',
             'slds-dropdown_small': isSmallRange,
-            'slds-dropdown_large': this.isDateRange && !isDateTime
+            'slds-dropdown_large':
+                (this.isDateRange && !isDateTime) || this.isTimeRange
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {
@@ -1116,6 +1118,15 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the type is time-range.
+     *
+     * @type {boolean}
+     */
+    get isTimeRange() {
+        return this.type === 'time-range';
+    }
+
+    /**
      * True if the variant is vertical.
      *
      * @type {boolean}
@@ -1224,6 +1235,30 @@ export default class FilterMenu extends LightningElement {
      */
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
+    }
+
+    /**
+     * Selected start time, when the type is time-range.
+     *
+     * @type {string|null}
+     */
+    get timeRangeStartTime() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[0];
+    }
+
+    /**
+     * Selected end time, when the type is time-range.
+     *
+     * @type {string|null}
+     */
+    get timeRangeEndTime() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[1];
     }
 
     /*
@@ -2046,6 +2081,32 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = [...this.value];
         this.computeListItems();
         this.dispatchApply();
+    }
+
+    /**
+     * Handle a change of the input time range, when the type is time-range.
+     *
+     * @param {Event} event
+     */
+    handleTimeRangeChange(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const elementId = event.target.dataset.elementId;
+        const value = event.target.value;
+        console.log('');
+
+        let [start, end] = this.currentValue;
+
+        if (elementId === 'lightning-input-start-time') {
+            start = value;
+        } else if (elementId === 'lightning-input-end-time') {
+            end = value;
+        }
+
+        this.currentValue = [start, end];
+
+        this.dispatchSelect();
     }
 
     handleTreeActionClick(event) {
