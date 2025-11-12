@@ -1544,6 +1544,39 @@ describe('Filter Menu', () => {
                 });
             });
 
+            it('type = time-range', () => {
+                element.type = 'time-range';
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown"]'
+                    );
+                    expect(dropdown.classList).toContain('slds-dropdown_large');
+
+                    const timeRange = element.shadowRoot.querySelector(
+                        '[data-element-id="input-time-range-container"]'
+                    );
+                    expect(timeRange).toBeTruthy();
+                });
+            });
+
+            it('type = time-range, vertical variant', () => {
+                element.type = 'time-range';
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const timeRange = element.shadowRoot.querySelector(
+                        '[data-element-id="input-time-range-container"]'
+                    );
+                    expect(timeRange).toBeTruthy();
+                });
+            });
+
             // type-attributes
             it('typeAttributes for date-range', () => {
                 const typeAttributes = {
@@ -1583,6 +1616,33 @@ describe('Filter Menu', () => {
                     expect(dateRange.timeStyle).toBe(typeAttributes.timeStyle);
                     expect(dateRange.timezone).toBe(typeAttributes.timezone);
                     expect(dateRange.type).toBe(typeAttributes.type);
+                });
+            });
+
+            it('typeAttributes for time-range', () => {
+                const typeAttributes = {
+                    labelStartTime: 'Start time',
+                    labelEndTime: 'End time',
+                    timeStyle: 'long'
+                };
+                element.type = 'time-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const startTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    const endTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    expect(startTime.label).toBe(typeAttributes.labelStartTime);
+                    expect(startTime.timeStyle).toBe(typeAttributes.timeStyle);
+                    expect(endTime.label).toBe(typeAttributes.labelEndTime);
+                    expect(endTime.timeStyle).toBe(typeAttributes.timeStyle);
                 });
             });
 
@@ -2043,6 +2103,26 @@ describe('Filter Menu', () => {
                         '[data-element-id="avonni-slider"]'
                     );
                     expect(slider.value).toEqual([0.35, 67]);
+                });
+            });
+
+            it('value, time range type', () => {
+                element.value = ['08:30:00.000', '17:00:00.000'];
+                element.type = 'time-range';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const startTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    const endTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    expect(startTime.value).toEqual(element.value[0]);
+                    expect(endTime.value).toEqual(element.value[1]);
                 });
             });
 
@@ -2534,6 +2614,41 @@ describe('Filter Menu', () => {
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toEqual([
                         20, 80
+                    ]);
+                });
+            });
+
+            it('Time-range type', () => {
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                element.type = 'time-range';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const startTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    startTime.value = '08:30:00.000';
+                    const endTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    startTime.dispatchEvent(new CustomEvent('change'));
+
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.value).toEqual([
+                        '08:30:00.000',
+                        undefined
+                    ]);
+                    endTime.value = '17:00:00.000';
+                    endTime.dispatchEvent(new CustomEvent('change'));
+                    expect(handler).toHaveBeenCalledTimes(2);
+                    expect(handler.mock.calls[1][0].detail.value).toEqual([
+                        '08:30:00.000',
+                        '17:00:00.000'
                     ]);
                 });
             });
