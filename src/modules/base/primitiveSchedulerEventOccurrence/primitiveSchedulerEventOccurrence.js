@@ -1,4 +1,14 @@
-import { LightningElement, api } from 'lwc';
+import { DateTime } from 'c/luxon';
+import {
+    dateTimeObjectFrom,
+    getWeekday,
+    getWeekNumber
+} from 'c/luxonDateTimeUtils';
+import {
+    DEFAULT_ACTION_NAMES,
+    isAllDay,
+    spansOnMoreThanOneDay
+} from 'c/schedulerUtils';
 import {
     classSet,
     normalizeArray,
@@ -6,18 +16,8 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { DateTime } from 'c/luxon';
 import { classListMutation } from 'c/utilsPrivate';
-import {
-    dateTimeObjectFrom,
-    getWeekday,
-    getWeekNumber
-} from 'c/luxonDateTimeUtils';
-import {
-    isAllDay,
-    spansOnMoreThanOneDay,
-    DEFAULT_ACTION_NAMES
-} from 'c/schedulerUtils';
+import { api, LightningElement } from 'lwc';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
@@ -743,6 +743,19 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * True if the center label contains rich text. Used to make sure the truncation is applied when the label is not rich text.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get centerLabelHasRichText() {
+        return (
+            typeof this.computedLabels.center.value === 'string' &&
+            this.computedLabels.center.value.includes('<')
+        );
+    }
 
     /**
      * Computed CSS classes of the disabled events wrapper.
