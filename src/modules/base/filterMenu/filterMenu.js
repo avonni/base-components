@@ -2084,6 +2084,9 @@ export default class FilterMenu extends LightningElement {
 
         let [start, end] = this.currentValue;
 
+        start = start ?? null;
+        end = end ?? null;
+
         if (elementId === 'lightning-input-start-time') {
             start = value;
         } else if (elementId === 'lightning-input-end-time') {
