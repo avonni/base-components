@@ -41,7 +41,7 @@ describe('Filter Menu: Item Format Utils', () => {
     });
 
     describe('formatTimeString()', () => {
-        it('Time string in hh:mm:ss.SSS format should be formatted', () => {
+        it('Time string in HH:mm:ss.SSS format should be formatted', () => {
             const result = formatTimeString('08:30:00.000');
             expect(result).toBe('8:30 AM');
         });

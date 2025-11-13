@@ -8,7 +8,7 @@ import { isValidISOTimeString, STANDARD_TIME_FORMAT } from 'c/iso8601Utils';
  *
  * @param {Date} date - The date to format.
  * @param {Object} options - Formatting options.
- * @param {boolean} [options.showTime=false] - If present, include hime.
+ * @param {boolean} [options.showTime=false] - If present, include time.
  * @param {string} [options.dateStyle='medium'] - The date formatting style.
  * @param {string} [options.timeStyle='short'] - The time formatting style.
  * @param {string} [options.timeZone] - IANA Timezone
