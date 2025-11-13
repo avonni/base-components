@@ -757,7 +757,10 @@ export default class FilterMenu extends LightningElement {
 
     /**
      * Value of the filter menu.
-     * If the type is `list`, array of selected items values. If the type is `range`, array of selected numbers. If the type is `date-range`, array of ISO 8601 dates.
+     * If the type is `list`, array of selected items values.
+     * If the type is `range`, array of selected numbers.
+     * If the type is `date-range`, array of ISO 8601 dates.
+     * If the type is `time-range`, array of time strings in the format HH:mm[:ss[.SSS]].
      *
      * @type {String[] | Number[] | Date[]}
      * @public
