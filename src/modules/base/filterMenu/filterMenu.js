@@ -33,6 +33,8 @@ import {
     UNSELECT_ALL_ACTION
 } from './nestedItemsUtils';
 
+import { formatDateFromStyle, formatTimeString } from './itemFormatUtils.js';
+
 const BUTTON_VARIANTS = {
     default: 'border',
     valid: [
@@ -121,7 +123,7 @@ const TYPE_ATTRIBUTES = {
         'unit',
         'unitAttributes'
     ],
-    'time-range': ['labelEndTime', 'labelStartTime', 'timeStyle']
+    'time-range': ['labelEndTime', 'labelStartTime', 'timeStyle', 'variant']
 };
 
 const TYPES = {
@@ -1444,7 +1446,7 @@ export default class FilterMenu extends LightningElement {
                 // Date range
                 const { dateStyle, timeStyle, timezone, type } =
                     this.computedTypeAttributes;
-                normalizedValue = this.formatDateFromStyle(date, {
+                normalizedValue = formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
                     timeStyle,
@@ -1462,6 +1464,8 @@ export default class FilterMenu extends LightningElement {
                 };
                 normalizedValue = value.toString();
                 normalizedValue = numberFormat(options).format(normalizedValue);
+            } else if (this.isTimeRange && value) {
+                normalizedValue = formatTimeString(value);
             }
             return string.length
                 ? `${string} - ${normalizedValue}`
@@ -1540,26 +1544,6 @@ export default class FilterMenu extends LightningElement {
             item.focus();
             item.tabIndex = '0';
         }
-    }
-
-    formatDateFromStyle(
-        date,
-        {
-            showTime = false,
-            dateStyle = 'medium',
-            timeStyle = 'short',
-            timeZone
-        }
-    ) {
-        if (!(date instanceof Date)) {
-            return '';
-        }
-        const time = showTime ? timeStyle : undefined;
-        return new Intl.DateTimeFormat('default', {
-            dateStyle,
-            timeStyle: time,
-            timeZone
-        }).format(date);
     }
 
     /**
@@ -2097,7 +2081,6 @@ export default class FilterMenu extends LightningElement {
 
         const elementId = event.target.dataset.elementId;
         const value = event.target.value;
-        console.log('');
 
         let [start, end] = this.currentValue;
 
