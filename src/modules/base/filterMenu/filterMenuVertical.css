@@ -76,8 +76,14 @@
     margin-bottom: 0;
 }
 
-.avonni-filter-menu__label-container {
+.avonni-filter-menu__label-container-collapsible {
     flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.avonni-filter-menu__label-container-non-collapsible {
+    flex: 0 1 auto;
     min-width: 0;
     overflow: hidden;
 }

@@ -215,7 +215,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * If present, a clear button is displayed next to each filter. This attribute is only supported by the vertical variant.
+     * If present, a clear button is displayed next to each menu in the vertical variant and the hidden menus in the horizontal variant.
      *
      * @type {boolean}
      * @default false
@@ -498,15 +498,6 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get showApplyResetButtons() {
         return this.isVertical && !this.hideApplyResetButtons;
-    }
-
-    /**
-     * True if the clear button should be displayed for the hidden menus.
-     *
-     * @type {boolean}
-     */
-    get showHiddenMenuClearButton() {
-        return this.hideApplyButton || this.hideApplyResetButtons;
     }
 
     /**

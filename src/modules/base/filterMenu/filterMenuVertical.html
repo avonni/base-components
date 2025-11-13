@@ -37,7 +37,10 @@
             title={title}
         >
             <div
-                class="avonni-filter-menu__label-container slds-truncate"
+                class="
+                    avonni-filter-menu__label-container-collapsible
+                    slds-truncate
+                "
                 title={label}
             >
                 <span class="avonni-filter-menu__label slds-truncate"
@@ -47,7 +50,7 @@
 
             <span
                 if:true={showCount}
-                class="avonni-filter-menu__label slds-m-left_x-small"
+                class="avonni-filter-menu__label slds-m-left_xx-small"
             >
                 ({selectedItemCountLabel})
             </span>
@@ -78,7 +81,10 @@
                 class="slds-m-right_x-small"
             ></lightning-icon>
             <div
-                class="avonni-filter-menu__label-container slds-truncate"
+                class="
+                    avonni-filter-menu__label-container-non-collapsible
+                    slds-truncate
+                "
                 title={label}
             >
                 <span class="avonni-filter-menu__label slds-truncate"
@@ -88,7 +94,7 @@
 
             <span
                 if:true={showCount}
-                class="avonni-filter-menu__label slds-m-left_x-small"
+                class="avonni-filter-menu__label slds-m-left_xx-small"
             >
                 ({selectedItemCountLabel})
             </span>
