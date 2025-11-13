@@ -153,6 +153,20 @@ export default {
                 category: 'View'
             }
         },
+
+        isPercentage: {
+            name: 'is-percentage',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the displayed percentage is not divided by 100.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
         type: {
             control: {
                 type: 'select'
@@ -291,6 +305,7 @@ export default {
         showTickMarks: false,
         hideMinMaxValues: false,
         hideTrack: false,
+        isPercentage: false,
         disableSwap: false,
         minimumDistance: 0,
         size: 'responsive',

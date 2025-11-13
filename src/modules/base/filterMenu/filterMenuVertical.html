@@ -14,6 +14,7 @@
             slds-button
             slds-section__title-action
             avonni-filter-menu__title-button_base
+            slds-p-left_none
         "
         onclick={toggleSection}
     >
@@ -33,12 +34,31 @@
                 avonni-filter-menu__form-element-legend
                 slds-form-element__legend
             "
+            title={title}
         >
-            <span class="avonni-filter-menu__label">{label}</span>
+            <div
+                class="
+                    avonni-filter-menu__label-container-collapsible
+                    slds-truncate
+                "
+                title={label}
+            >
+                <span class="avonni-filter-menu__label slds-truncate"
+                    >{label}</span
+                >
+            </div>
+
+            <span
+                if:true={showCount}
+                class="avonni-filter-menu__label slds-m-left_xx-small"
+            >
+                ({selectedItemCountLabel})
+            </span>
+
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}
-                class="slds-m-left_xx-small slds-is-absolute"
+                class="slds-m-left_xx-small"
                 style="top: -0.25rem"
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
@@ -50,6 +70,7 @@
                 slds-form-element__legend
                 slds-float_none
                 slds-truncate slds-is-relative
+                avonni-filter-menu__form-element-legend
             "
             title={title}
         >
@@ -59,11 +80,29 @@
                 size={iconSize}
                 class="slds-m-right_x-small"
             ></lightning-icon>
-            <span class="avonni-filter-menu__label">{label}</span>
+            <div
+                class="
+                    avonni-filter-menu__label-container-non-collapsible
+                    slds-truncate
+                "
+                title={label}
+            >
+                <span class="avonni-filter-menu__label slds-truncate"
+                    >{label}</span
+                >
+            </div>
+
+            <span
+                if:true={showCount}
+                class="avonni-filter-menu__label slds-m-left_xx-small"
+            >
+                ({selectedItemCountLabel})
+            </span>
+
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}
-                class="slds-m-left_xx-small slds-is-absolute"
+                class="slds-m-left_xx-small"
                 style="top: -0.25rem"
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
@@ -71,19 +110,33 @@
     </template>
     <template if:true={displayFilters}>
         <!-- Search box -->
-        <lightning-input
-            if:true={computedTypeAttributes.allowSearch}
-            class="slds-p-vertical_x-small"
-            disabled={disabled}
-            label={computedTypeAttributes.searchInputPlaceholder}
-            placeholder={computedTypeAttributes.searchInputPlaceholder}
-            variant="label-hidden"
-            type="search"
-            value={searchTerm}
-            autocomplete="off"
-            data-element-id="lightning-input"
-            onchange={handleSearch}
-        ></lightning-input>
+        <div class="avonni-filter-menu__search-wrapper">
+            <lightning-input
+                if:true={computedTypeAttributes.allowSearch}
+                class="avonni-filter-menu__search-input slds-p-vertical_x-small"
+                disabled={disabled}
+                label={computedTypeAttributes.searchInputPlaceholder}
+                placeholder={computedTypeAttributes.searchInputPlaceholder}
+                variant="label-hidden"
+                type="search"
+                value={searchTerm}
+                autocomplete="off"
+                data-element-id="lightning-input"
+                onchange={handleSearch}
+            ></lightning-input>
+
+            <template if:true={showClearSection}>
+                <lightning-button
+                    class="slds-m-left_x-small"
+                    variant="base"
+                    label="Clear"
+                    title="Clear"
+                    data-element-id="lightning-button-clear"
+                    onclick={handleResetClick}
+                    disabled={disabledOrLoading}
+                ></lightning-button>
+            </template>
+        </div>
 
         <p if:true={showNoResultMessage} class="slds-p-around_small">
             No matches found
@@ -155,6 +208,7 @@
                     if:true={isDateRange}
                     class="slds-show slds-m-vertical_small"
                     date-style={computedTypeAttributes.dateStyle}
+                    disable-auto-next-date
                     end-date={dateRangeEndDate}
                     label={label}
                     label-end-date={computedTypeAttributes.labelEndDate}
@@ -177,6 +231,7 @@
                     class="slds-m-vertical_small"
                     disable-swap
                     hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
+                    is-percentage={computedTypeAttributes.isPercentage}
                     label={label}
                     max={computedTypeAttributes.max}
                     min={computedTypeAttributes.min}
@@ -217,6 +272,7 @@
             disabled={disabledOrLoading}
         ></lightning-button>
         <lightning-button
+            if:false={hideApplyButton}
             variant="brand"
             label={applyButtonLabel}
             title={applyButtonLabel}
