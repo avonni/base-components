@@ -1022,6 +1022,10 @@ export default class DateTimePicker extends LightningElement {
                 : number;
 
         if (this._connected) {
+            this.firstWeekDay =
+                this.variant === 'weekly'
+                    ? getStartOfWeek(this.firstWeekDay, this.weekStartDay)
+                    : this.firstWeekDay;
             this._generateTable();
         }
     }
