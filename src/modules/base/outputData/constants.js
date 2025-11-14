@@ -9,6 +9,7 @@ const SUPPORTED_TYPE_ATTRIBUTES = {
         'maximumSignificantDigits'
     ],
     date: [
+        'dateFormat',
         'day',
         'era',
         'hour',
@@ -68,6 +69,10 @@ const TYPE_ATTRIBUTES = [
         type: 'string',
         valid: ['symbol', 'code', 'name'],
         default: 'symbol'
+    },
+    {
+        name: 'dateFormat',
+        type: 'string'
     },
     {
         name: 'day',
@@ -181,4 +186,4 @@ const VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
 
-export { SUPPORTED_TYPE_ATTRIBUTES, TYPES, TYPE_ATTRIBUTES, VARIANTS };
+export { SUPPORTED_TYPE_ATTRIBUTES, TYPE_ATTRIBUTES, TYPES, VARIANTS };
