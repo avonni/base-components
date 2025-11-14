@@ -468,6 +468,21 @@ describe('Primitive Activity Timeline Item', () => {
                     expect(description.value).toBe(
                         'This is an description text'
                     );
+                    expect(description.title).toBe(
+                        'This is an description text'
+                    );
+                });
+            });
+
+            it('Rich text', () => {
+                element.description = '<b>Content</b>';
+
+                return Promise.resolve().then(() => {
+                    const itemDescription = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text-description"]'
+                    );
+                    expect(itemDescription.value).toBe('<b>Content</b>');
+                    expect(itemDescription.title).toBe('Content');
                 });
             });
         });
