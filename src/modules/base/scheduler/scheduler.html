@@ -386,9 +386,10 @@
             ></lightning-button-icon>
 
             <div class="slds-popover__body">
-                <div class="slds-m-bottom_small slds-text-heading_small">
-                    {selection.occurrence.title}
-                </div>
+                <lightning-formatted-rich-text
+                    class="slds-m-bottom_small slds-text-heading_small"
+                    value={selection.occurrence.title}
+                ></lightning-formatted-rich-text>
                 <div class="slds-grid slds-wrap slds-gutters_x-small">
                     <template for:each={detailPopoverFields} for:item="field">
                         <div

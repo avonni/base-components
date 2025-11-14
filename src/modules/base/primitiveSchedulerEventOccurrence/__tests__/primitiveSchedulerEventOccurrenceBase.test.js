@@ -289,6 +289,48 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         });
     });
 
+    it('Scheduler event occurence: center label contains rich text', () => {
+        element.resources = RESOURCES;
+        element.resourceKey = RESOURCE_KEY;
+        element.labels = {
+            center: {
+                value: '<p>Rich text with <strong>opinions</strong></p>'
+            }
+        };
+
+        return Promise.resolve()
+            .then(() => {
+                const centerRichText = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-formatted-rich-text-center-label"]'
+                );
+                const centerLabel = element.shadowRoot.querySelector(
+                    '[data-element-id="span-center-label-text"]'
+                );
+                expect(centerLabel).toBeFalsy();
+                expect(centerRichText).toBeTruthy();
+                expect(centerRichText.value).toBe(
+                    '<p>Rich text with <strong>opinions</strong></p>'
+                );
+
+                element.labels = {
+                    center: {
+                        value: 'Some text'
+                    }
+                };
+            })
+            .then(() => {
+                const centerRichText = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-formatted-rich-text-center-label"]'
+                );
+                const centerLabel = element.shadowRoot.querySelector(
+                    '[data-element-id="span-center-label-text"]'
+                );
+                expect(centerRichText).toBeFalsy();
+                expect(centerLabel).toBeTruthy();
+                expect(centerLabel.textContent).toBe('Some text');
+            });
+    });
+
     it('Scheduler event occurence: only center label is displayed with other variants than timeline-horizontal', () => {
         element.resources = RESOURCES;
         element.resourceKey = RESOURCE_KEY;
