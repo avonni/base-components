@@ -317,14 +317,15 @@ export default class SchedulerEvent {
      * @param {DateTime} to Ending date of the occurrence.
      */
     addOccurrence(from, to) {
-        const { schedulerEnd, schedulerStart, resourceNames } = this;
         const computedTo = to || this.computeOccurenceEnd(from);
 
         if (
-            (schedulerStart &&
-                from < schedulerStart &&
-                computedTo < schedulerStart) ||
-            (schedulerEnd && from > schedulerEnd && computedTo > schedulerEnd)
+            (this.schedulerStart &&
+                from < this.schedulerStart &&
+                computedTo < this.schedulerStart) ||
+            (this.schedulerEnd &&
+                from > this.schedulerEnd &&
+                computedTo > this.schedulerEnd)
         )
             return;
 
@@ -351,7 +352,7 @@ export default class SchedulerEvent {
                     })
                 );
             } else {
-                resourceNames.forEach((name) => {
+                this.resourceNames.forEach((name) => {
                     if (
                         !this.selectedResources.length ||
                         this.selectedResources.includes(name)
@@ -365,7 +366,7 @@ export default class SchedulerEvent {
                                 from,
                                 key: `${this.name}-${name}-${from.ts}`,
                                 resourceName: name,
-                                resourceNames,
+                                resourceNames: this.resourceNames,
                                 title: this.title,
                                 to: computedTo
                             })
@@ -403,7 +404,6 @@ export default class SchedulerEvent {
      * @returns {DateTime} Ending date/time of the occurrence.
      */
     computeOccurenceEnd(start) {
-        const { recurrence, recurrenceAttributes } = this;
         const from = this.computedFrom;
         const to = this.computedTo;
 
@@ -418,14 +418,14 @@ export default class SchedulerEvent {
                 : to.second;
         let end;
 
-        switch (recurrence.name) {
+        switch (this.recurrence.name) {
             case 'weekly': {
                 // If weekdays are given, the event will span on one day
                 // Else, the event can span on several days
                 const weekdays =
-                    recurrenceAttributes &&
-                    recurrenceAttributes.weekdays &&
-                    recurrenceAttributes.weekdays.length;
+                    this.recurrenceAttributes &&
+                    this.recurrenceAttributes.weekdays &&
+                    this.recurrenceAttributes.weekdays.length;
 
                 if (weekdays) {
                     end = start.set({
@@ -475,7 +475,6 @@ export default class SchedulerEvent {
      * Compute the recurrence to create the occurrences.
      */
     computeRecurrence() {
-        const { recurrence, schedulerEnd } = this;
         const from = this.computedFrom;
         const endDate = this.recurrenceEndDate;
         const attributes = this.recurrenceAttributes;
@@ -485,14 +484,14 @@ export default class SchedulerEvent {
 
         // Use the recurrence end date only if it happens before the scheduler end
         let end =
-            !schedulerEnd || (endDate && endDate < schedulerEnd)
+            !this.schedulerEnd || (endDate && endDate < this.schedulerEnd)
                 ? endDate
-                : schedulerEnd;
+                : this.schedulerEnd;
 
         let date = from;
         let occurrences = 0;
 
-        switch (recurrence.name) {
+        switch (this.recurrence.name) {
             case 'daily': {
                 while (date <= end && occurrences < count) {
                     this.addOccurrence(date);
