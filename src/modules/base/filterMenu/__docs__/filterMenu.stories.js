@@ -257,9 +257,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['date-range', 'list', 'range'],
+            options: ['date-range', 'list', 'range', 'time-range'],
             description:
-                'Type of the filter menu. Valid values include list, range and date-range.',
+                'Type of the filter menu. Valid values include list, range, date-range and time-range.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'list' }
@@ -403,6 +403,20 @@ Range.args = {
     },
     iconName: 'utility:money',
     type: 'range'
+};
+
+export const TimeRange = Template.bind({});
+TimeRange.args = {
+    typeAttributes: {
+        labelStartTime: 'Start',
+        labelEndTime: 'End'
+    },
+    buttonVariant: 'container',
+    resetButtonLabel: 'Clear',
+    applyButtonLabel: 'Save',
+    label: 'Times',
+    type: 'time-range',
+    value: ['08:30:00.000', '17:00:00.000']
 };
 
 export const Vertical = Template.bind({});

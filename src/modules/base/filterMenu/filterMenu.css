@@ -1,0 +1,5 @@
+[data-element-id='input-time-range-container'] .slds-form-element {
+    padding-right: var(--lwc-spacingXSmall, 0.5rem);
+    padding-bottom: var(--lwc-spacingXxSmall, 0.25rem);
+    min-width: 150px;
+}
