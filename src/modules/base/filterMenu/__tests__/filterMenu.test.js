@@ -3137,6 +3137,61 @@ describe('Filter Menu', () => {
                     });
             });
 
+            it('Search allows list items on horizontal variant to be checked', () => {
+                const handler = jest.fn();
+                element.addEventListener('search', handler);
+                jest.useFakeTimers();
+
+                element.variant = 'horizontal';
+                element.typeAttributes = {
+                    items: ITEMS,
+                    allowSearch: true
+                };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input"]'
+                        );
+                        input.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: 'Searchable'
+                                }
+                            })
+                        );
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.value).toBe('Searchable');
+                        expect(call.bubbles).toBeTruthy();
+                        expect(call.composed).toBeFalsy();
+                        expect(call.cancelable).toBeFalsy();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items).toHaveLength(1);
+                        expect(items[0].dataset.value).toBe('item-3');
+                        expect(items[0].ariaChecked).toBe('false');
+                        items[0].click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items).toHaveLength(1);
+                        expect(items[0].dataset.value).toBe('item-3');
+                        expect(items[0].ariaChecked).toBe('true');
+                    });
+            });
+
             it('Search expands nested items', () => {
                 const handler = jest.fn();
                 element.addEventListener('search', handler);

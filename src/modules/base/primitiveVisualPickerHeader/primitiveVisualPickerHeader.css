@@ -41,7 +41,8 @@
         --avonni-visual-picker-avatar-fallback-icon-foreground
     );
     --avonni-avatar-fallback-icon-color-foreground-default: var(
-        --avonni-visual-picker-avatar-fallback-icon-foreground-default
+        --avonni-visual-picker-avatar-fallback-icon-foreground-default,
+        var(--avonni-visual-picker-avatar-fallback-icon-foreground)
     );
 }
 
@@ -51,7 +52,8 @@
         --avonni-visual-picker-avatar-fallback-icon-foreground
     );
     --avonni-visual-picker-title-avatar-fallback-icon-foreground-default: var(
-        --avonni-visual-picker-avatar-fallback-icon-foreground-default
+        --avonni-visual-picker-avatar-fallback-icon-foreground-default,
+        var(--avonni-visual-picker-avatar-fallback-icon-foreground)
     );
     --avonni-visual-picker-title-padding: 0rem 0.75rem 0.15rem 0.75rem;
 }

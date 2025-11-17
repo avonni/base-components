@@ -125,7 +125,8 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
         --avonni-blockquote-default-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-default-icon-color-foreground-default
+        --avonni-blockquote-default-icon-color-foreground-default,
+        var(--avonni-blockquote-default-icon-color-foreground)
     );
     --sds-c-icon-color-background: var(
         --avonni-blockquote-default-icon-color-background
@@ -145,7 +146,8 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
         --avonni-blockquote-brand-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-brand-icon-color-foreground-default
+        --avonni-blockquote-brand-icon-color-foreground-default,
+        var(--avonni-blockquote-brand-icon-color-foreground)
     );
     --sds-c-icon-color-background: var(
         --avonni-blockquote-brand-icon-color-background
@@ -165,7 +167,8 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
         --avonni-blockquote-warning-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-warning-icon-color-foreground-default
+        --avonni-blockquote-warning-icon-color-foreground-default,
+        var(--avonni-blockquote-warning-icon-color-foreground)
     );
     --sds-c-icon-color-background: var(
         --avonni-blockquote-warning-icon-color-background
@@ -185,7 +188,8 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
         --avonni-blockquote-error-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-error-icon-color-foreground-default
+        --avonni-blockquote-error-icon-color-foreground-default,
+        var(--avonni-blockquote-error-icon-color-foreground)
     );
     --sds-c-icon-color-background: var(
         --avonni-blockquote-error-icon-color-background
@@ -205,7 +209,8 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
         --avonni-blockquote-success-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-success-icon-color-foreground-default
+        --avonni-blockquote-success-icon-color-foreground-default,
+        var(--avonni-blockquote-success-icon-color-foreground)
     );
     --sds-c-icon-color-background: var(
         --avonni-blockquote-success-icon-color-background

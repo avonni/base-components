@@ -134,7 +134,17 @@
                             data-element-id="span-time-label"
                             >{startTime}</span
                         >
-                        {computedLabels.center.value}
+                        <lightning-formatted-rich-text
+                            if:true={centerLabelHasRichText}
+                            value={computedLabels.center.value}
+                            data-element-id="lightning-formatted-rich-text-center-label"
+                        ></lightning-formatted-rich-text>
+                        <span
+                            if:false={centerLabelHasRichText}
+                            data-element-id="span-center-label-text"
+                        >
+                            {computedLabels.center.value}
+                        </span>
                     </span>
                 </div>
 

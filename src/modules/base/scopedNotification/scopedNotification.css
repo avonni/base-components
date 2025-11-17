@@ -28,7 +28,8 @@
         --avonni-scoped-notification-base-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-base-icon-color-foreground-default
+        --avonni-scoped-notification-base-icon-color-foreground-default,
+        var(--avonni-scoped-notification-base-icon-color-foreground)
     );
     --sds-c-icon-radius-border: var(
         --avonni-scoped-notification-icon-radius-border
@@ -51,7 +52,8 @@
         --avonni-scoped-notification-dark-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-dark-icon-color-foreground-default
+        --avonni-scoped-notification-dark-icon-color-foreground-default,
+        var(--avonni-scoped-notification-dark-icon-color-foreground)
     );
     --sds-c-icon-radius-border: var(
         --avonni-scoped-notification-icon-radius-border
@@ -74,7 +76,8 @@
         --avonni-scoped-notification-error-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-error-icon-color-foreground-default
+        --avonni-scoped-notification-error-icon-color-foreground-default,
+        var(--avonni-scoped-notification-error-icon-color-foreground)
     );
     --sds-c-icon-radius-border: var(
         --avonni-scoped-notification-icon-radius-border
@@ -97,7 +100,8 @@
         --avonni-scoped-notification-success-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-success-icon-color-foreground-default
+        --avonni-scoped-notification-success-icon-color-foreground-default,
+        var(--avonni-scoped-notification-success-icon-color-foreground)
     );
     --sds-c-icon-radius-border: var(
         --avonni-scoped-notification-icon-radius-border
@@ -121,7 +125,7 @@
     );
     --sds-c-icon-color-foreground-default: var(
         --avonni-scoped-notification-warning-icon-color-foreground-default,
-        #444
+        var(--avonni-scoped-notification-warning-icon-color-foreground, #444)
     );
     --sds-c-icon-radius-border: var(
         --avonni-scoped-notification-icon-radius-border

@@ -1917,6 +1917,7 @@ export default class FilterMenu extends LightningElement {
             }
             return item;
         });
+        this.visibleItems = this.getVisibleItems();
 
         this.dispatchSelect();
     }

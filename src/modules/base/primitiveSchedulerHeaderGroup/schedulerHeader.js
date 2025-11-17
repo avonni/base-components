@@ -91,7 +91,6 @@ export default class SchedulerHeader {
      * Create the header cells.
      */
     initCells() {
-        const { unit, label, span, isReference } = this;
         let iterations = this.numberOfCells;
         this.cells = [];
         let date = this.start;
@@ -108,23 +107,23 @@ export default class SchedulerHeader {
             // We don't want to take the day or time of the date into account if the header does not use them.
             // If the unit is "week", we want to start counting the weeks from the first available day, and then ignore the days availability
             if (
-                unit !== 'month' &&
-                unit !== 'year' &&
-                !(unit === 'week' && i > 0)
+                this.unit !== 'month' &&
+                this.unit !== 'year' &&
+                !(this.unit === 'week' && i > 0)
             ) {
                 date = nextAllowedDay(
                     date,
                     this.availableMonths,
                     this.availableDaysOfTheWeek
                 );
-                if (unit !== 'day' && unit !== 'week') {
+                if (this.unit !== 'day' && this.unit !== 'week') {
                     date = nextAllowedTime({
                         date,
                         allowedMonths: this.availableMonths,
                         allowedDays: this.availableDaysOfTheWeek,
                         allowedTimeFrames: this.availableTimeFrames,
-                        span,
-                        unit
+                        span: this.span,
+                        unit: this.unit
                     });
                 }
             }
@@ -132,10 +131,10 @@ export default class SchedulerHeader {
             // Recalculate the number of week cells if the start date changed
             // because of the allowed dates/times
             if (
-                isReference &&
+                this.isReference &&
                 i === 0 &&
                 date.ts !== this.start.ts &&
-                unit === 'week'
+                this.unit === 'week'
             ) {
                 const pushedEnd = addToDate(
                     this.end,
@@ -143,23 +142,23 @@ export default class SchedulerHeader {
                     date.diff(this.start, 'days').days
                 );
                 const numberOfUnits = numberOfUnitsBetweenDates({
-                    unit,
+                    unit: this.unit,
                     firstDate: date,
                     secondDate: pushedEnd,
                     weekStartDay: this.weekStartDay
                 });
-                this.numberOfCells = numberOfUnits / span;
+                this.numberOfCells = numberOfUnits / this.span;
             }
 
             // Compute the cell end
-            let cellEnd = addToDate(date, unit, span - 1);
+            let cellEnd = addToDate(date, this.unit, this.span - 1);
             cellEnd =
-                unit === 'week'
+                this.unit === 'week'
                     ? getEndOfWeek(cellEnd, this.weekStartDay)
-                    : cellEnd.endOf(unit);
+                    : cellEnd.endOf(this.unit);
 
             // If the current date is bigger than the reference end, stop adding cells
-            if (!isReference && this.dateIsBiggerThanEnd(date)) {
+            if (!this.isReference && this.dateIsBiggerThanEnd(date)) {
                 this.cells[this.cells.length - 1].end = this.end.ts;
                 break;
             }
@@ -170,8 +169,10 @@ export default class SchedulerHeader {
                 this.createDate(new Date()).ts <= cellEnd.ts;
 
             const startOfUnit =
-                unit === 'week' ? getStartOfWeek(date) : date.startOf(unit);
-            const formattedLabel = startOfUnit.toFormat(label);
+                this.unit === 'week'
+                    ? getStartOfWeek(date)
+                    : date.startOf(this.unit);
+            const formattedLabel = startOfUnit.toFormat(this.label);
             this.cells.push({
                 isToday,
                 label: formattedLabel,
@@ -180,8 +181,8 @@ export default class SchedulerHeader {
                 isMobileView:
                     this.isMobileView &&
                     this.numberOfCells === 7 &&
-                    label === 'ccc dd',
-                ...(unit === 'day' && this.isMobileView
+                    this.label === 'ccc dd',
+                ...(this.unit === 'day' && this.isMobileView
                     ? {
                           day: startOfUnit.toFormat('ccc').charAt(0),
                           date: startOfUnit.toFormat('d')
@@ -190,11 +191,11 @@ export default class SchedulerHeader {
             });
 
             // Set date to the next cell's start
-            date = addToDate(cellEnd, unit, 1);
+            date = addToDate(cellEnd, this.unit, 1);
             date =
-                unit === 'week'
+                this.unit === 'week'
                     ? getStartOfWeek(date, this.weekStartDay)
-                    : date.startOf(unit);
+                    : date.startOf(this.unit);
         }
 
         this.start = this.createDate(this.cells[0].start);
@@ -210,17 +211,16 @@ export default class SchedulerHeader {
      * @returns {boolean} True or false.
      */
     dateIsBiggerThanEnd(date) {
-        const { end, unit } = this;
         let dateUnit;
         let endUnit;
 
         // Compensate the fact that luxon weeks start on Monday
-        if (unit === 'week') {
+        if (this.unit === 'week') {
             dateUnit = getEndOfWeek(date, this.weekStartDay);
-            endUnit = getEndOfWeek(end, this.weekStartDay);
+            endUnit = getEndOfWeek(this.end, this.weekStartDay);
         } else {
-            dateUnit = date.endOf(unit);
-            endUnit = end.endOf(unit);
+            dateUnit = date.endOf(this.unit);
+            endUnit = this.end.endOf(this.unit);
         }
 
         return endUnit < dateUnit;
@@ -269,39 +269,35 @@ export default class SchedulerHeader {
      * Adjust the header end when the start or end is in the middle of a unit.
      */
     setHeaderEnd() {
-        const {
-            unit,
-            cells,
-            isReference,
-            numberOfCells,
-            canExpandOverEndOfUnit
-        } = this;
-        const lastCell = cells[cells.length - 1];
-        const start = this.createDate(cells[0].start);
+        const lastCell = this.cells[this.cells.length - 1];
+        const start = this.createDate(this.cells[0].start);
         let end = this.createDate(lastCell.end);
 
         // If the header has a span bigger than 1, the last cell may not be fully visible
-        const partialCell = numberOfCells % 1;
+        const partialCell = this.numberOfCells % 1;
         if (partialCell > 0) {
             const lastCellStart = this.createDate(lastCell.start);
-            end = addToDate(lastCellStart, unit, partialCell);
+            end = addToDate(lastCellStart, this.unit, partialCell);
             end = this.createDate(end.ts - 1);
         }
 
-        if (isReference) {
-            if (canExpandOverEndOfUnit) {
+        if (this.isReference) {
+            if (this.canExpandOverEndOfUnit) {
                 // If the start date is in the middle of the unit,
                 // make sure the end date is too
-                if (unit === 'year') {
+                if (this.unit === 'year') {
                     end = end.set({ months: start.month });
                 }
-                if ((unit === 'month' || unit === 'year') && start.day > 1) {
+                if (
+                    (this.unit === 'month' || this.unit === 'year') &&
+                    start.day > 1
+                ) {
                     end = end.set({ days: start.day - 1 });
                 }
-                if (unit === 'week') {
+                if (this.unit === 'week') {
                     end = end.set({ weekday: start.weekday - 1 });
                 }
-                if (unit !== 'hour' && start.hour !== 0) {
+                if (this.unit !== 'hour' && start.hour !== 0) {
                     end = end.set({ hours: start.hour - 1 });
                 }
                 if (start.minute !== 0) {
@@ -323,36 +319,35 @@ export default class SchedulerHeader {
      * @param {object[]} smallestCells Array containing the cells of the smallest unit header.
      */
     computeCellWidths(cellWidth, smallestCells) {
-        const { cells, unit, span } = this;
         const cellWidths = [];
 
         if (this.cells === smallestCells) {
             // The cells of the header with the shortest unit all have the same width
-            cells.forEach(() => {
+            this.cells.forEach(() => {
                 cellWidths.push(cellWidth);
             });
         } else {
             // The other headers base their cell widths on the header with the shortest unit
             let cellIndex = 0;
-            cells.forEach((cell, index) => {
+            this.cells.forEach((cell, index) => {
                 let width = 0;
                 let start =
                     index === 0
                         ? this.createDate(smallestCells[0].start)
                         : this.createDate(cell.start);
-                const end = addToDate(start, unit, span);
+                const end = addToDate(start, this.unit, this.span);
 
                 while (cellIndex < smallestCells.length) {
                     start = this.createDate(smallestCells[cellIndex].start);
 
                     const startUnit =
-                        unit === 'week'
+                        this.unit === 'week'
                             ? getStartOfWeek(start, this.weekStartDay)
-                            : start.startOf(unit);
+                            : start.startOf(this.unit);
                     const endUnit =
-                        unit === 'week'
+                        this.unit === 'week'
                             ? getStartOfWeek(end, this.weekStartDay)
-                            : end.startOf(unit);
+                            : end.startOf(this.unit);
 
                     // Stop if the next smallestHeader cell belongs to the next header unit
                     if (endUnit <= startUnit) {
