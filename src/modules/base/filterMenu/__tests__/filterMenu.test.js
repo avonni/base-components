@@ -1636,13 +1636,23 @@ describe('Filter Menu', () => {
                     const startTime = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-input-start-time"]'
                     );
+                    const labelStartTime = element.shadowRoot.querySelector(
+                        '[data-element-id="label-start-time"]'
+                    );
                     const endTime = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-input-end-time"]'
                     );
-                    expect(startTime.label).toBe(typeAttributes.labelStartTime);
+                    const labelEndTime = element.shadowRoot.querySelector(
+                        '[data-element-id="label-start-time"]'
+                    );
                     expect(startTime.timeStyle).toBe(typeAttributes.timeStyle);
-                    expect(endTime.label).toBe(typeAttributes.labelEndTime);
+                    expect(labelStartTime.textContent).toBe(
+                        typeAttributes.labelStartTime
+                    );
                     expect(endTime.timeStyle).toBe(typeAttributes.timeStyle);
+                    expect(labelEndTime.textContent).toBe(
+                        typeAttributes.labelEndTime
+                    );
                 });
             });
 
@@ -2641,7 +2651,7 @@ describe('Filter Menu', () => {
                     expect(handler).toHaveBeenCalledTimes(1);
                     expect(handler.mock.calls[0][0].detail.value).toEqual([
                         '08:30:00.000',
-                        undefined
+                        null
                     ]);
                     endTime.value = '17:00:00.000';
                     endTime.dispatchEvent(new CustomEvent('change'));

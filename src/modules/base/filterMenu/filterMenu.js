@@ -123,7 +123,7 @@ const TYPE_ATTRIBUTES = {
         'unit',
         'unitAttributes'
     ],
-    'time-range': ['labelEndTime', 'labelStartTime', 'timeStyle', 'variant']
+    'time-range': ['labelEndTime', 'labelStartTime', 'timeStyle']
 };
 
 const TYPES = {
