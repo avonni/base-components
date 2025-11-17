@@ -1643,7 +1643,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="lightning-input-end-time"]'
                     );
                     const labelEndTime = element.shadowRoot.querySelector(
-                        '[data-element-id="label-start-time"]'
+                        '[data-element-id="label-end-time"]'
                     );
                     expect(startTime.timeStyle).toBe(typeAttributes.timeStyle);
                     expect(labelStartTime.textContent).toBe(
