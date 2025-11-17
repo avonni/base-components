@@ -87,7 +87,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If present, a clear button is displayed next to each filter.',
+                'If present, a clear button is displayed next to each menu in the vertical variant and the hidden menus in the horizontal variant.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }

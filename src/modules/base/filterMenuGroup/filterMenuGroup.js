@@ -632,8 +632,7 @@ export default class FilterMenuGroup extends LightningElement {
             this.showSingleLine &&
             this._openedMenuCount === 0 &&
             !this._isCalculatingOverflow &&
-            !this._isPopoverOpen &&
-            !this._hasCalculatedOverflow
+            !this._isPopoverOpen
         );
     }
 
@@ -779,6 +778,14 @@ export default class FilterMenuGroup extends LightningElement {
      */
     updateVisibleMenusOnResize() {
         if (!this.allowVisibleMenusComputation()) {
+            this._hasCalculatedOverflow = false;
+            return;
+        }
+
+        if (
+            this._containerMaxHeight === this.menuGroupWrapper.offsetHeight &&
+            this._hasCalculatedOverflow
+        ) {
             this._hasCalculatedOverflow = false;
             return;
         }

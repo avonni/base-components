@@ -449,6 +449,11 @@ describe('FilterMenuGroup', () => {
                         await flushPromises();
                     })
                     .then(async () => {
+                        jest.spyOn(
+                            buttonGroupRow,
+                            'offsetWidth',
+                            'get'
+                        ).mockImplementation(() => 0);
                         callObserver();
                         await flushPromises();
                     })
