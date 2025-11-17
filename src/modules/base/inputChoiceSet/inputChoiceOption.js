@@ -38,7 +38,7 @@ export default class InputChoiceOption {
         this.isChecked = Array.isArray(parent.value)
             ? parent.value.includes(option.value)
             : parent.value === option.value;
-            this.labelClass = parent.labelClass
+        this.labelClass = parent.labelClass;
         this.alternativeText = option.alternativeText;
     }
 
@@ -109,14 +109,16 @@ export default class InputChoiceOption {
     }
 
     /**
-    * Computed style classes of the option's label. Part of it is computed by the parent.
-    *
-    * @type {string}
-    */
+     * Computed style classes of the option's label. Part of it is computed by the parent.
+     *
+     * @type {string}
+     */
     get computedLabelClass() {
-        return classSet(this.labelClass).add({
-            "avonni-input-choice-set__option-label": !this.disabled
-        }).toString()
+        return classSet(this.labelClass)
+            .add({
+                'avonni-input-choice-set__option-label': !this.disabled
+            })
+            .toString();
     }
 
     /**
@@ -126,9 +128,13 @@ export default class InputChoiceOption {
      */
     get computedLabelButtonClass() {
         return classSet(
-            'slds-checkbox_faux slds-truncate avonni-input-choice-set__option-button-label'
+            'slds-truncate avonni-input-choice-set__option-button-label'
         )
-            .add({ 'slds-align_absolute-center': this.isIconTopOrBottom })
+            .add({
+                'slds-align_absolute-center': this.isIconTopOrBottom,
+                'slds-checkbox_faux': this.isMultiSelect,
+                'slds-radio_faux': !this.isMultiSelect
+            })
             .toString();
     }
 
