@@ -51,6 +51,7 @@ export default class FilterMenuGroup extends LightningElement {
     _computedMenusWhenLastOverflow = [];
     _connected = false;
     _containerMaxHeight = 0;
+    _hasCalculatedOverflow = false;
     _hasRecalculatedValue = false;
     _hiddenMenusLength = 0;
     _isCalculatingOverflow = false;
@@ -631,7 +632,8 @@ export default class FilterMenuGroup extends LightningElement {
             this.showSingleLine &&
             this._openedMenuCount === 0 &&
             !this._isCalculatingOverflow &&
-            !this._isPopoverOpen
+            !this._isPopoverOpen &&
+            !this._hasCalculatedOverflow
         );
     }
 
@@ -777,6 +779,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     updateVisibleMenusOnResize() {
         if (!this.allowVisibleMenusComputation()) {
+            this._hasCalculatedOverflow = false;
             return;
         }
 
@@ -812,6 +815,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     updateVisibleMenus(maxWidth) {
         if (!this.allowVisibleMenusComputation()) {
+            this._hasCalculatedOverflow = false;
             return;
         }
         this._sliceIndex = this.computedMenus.length;
@@ -837,6 +841,7 @@ export default class FilterMenuGroup extends LightningElement {
                 requestAnimationFrame(adjustOverflowStep);
             } else {
                 this._isCalculatingOverflow = false;
+                this._hasCalculatedOverflow = true; // Prevents infinite loops of resize
             }
         };
 

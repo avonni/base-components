@@ -448,6 +448,10 @@ describe('FilterMenuGroup', () => {
                         callObserver();
                         await flushPromises();
                     })
+                    .then(async () => {
+                        callObserver();
+                        await flushPromises();
+                    })
                     .then(() => {
                         const moreFilter = element.shadowRoot.querySelector(
                             '[data-element-id="filter-menu-group-button-icon-popover"]'
@@ -1076,6 +1080,10 @@ describe('FilterMenuGroup', () => {
 
                 await flushPromises();
                 return Promise.resolve()
+                    .then(async () => {
+                        callObserver();
+                        await flushPromises();
+                    })
                     .then(async () => {
                         const moreFilter = element.shadowRoot.querySelector(
                             '[data-element-id="filter-menu-group-button-icon-popover"]'

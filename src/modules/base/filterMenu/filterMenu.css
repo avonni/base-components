@@ -21,3 +21,22 @@
     flex-shrink: 0;
     margin-left: var(--lwc-spacingXxSmall, 0.125rem);
 }
+
+.avonni-filter-menu__button {
+    max-width: 250px;
+    min-width: 0;
+}
+
+.avonni-filter-menu__label-container {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.avonni-filter-menu__label-left {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

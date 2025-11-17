@@ -15,32 +15,21 @@
             onclick={handleButtonClick}
             onfocus={handleButtonFocus}
         >
-            <span
-                class={computedMenuLabelClass}
-                data-element-id="span-menu-label"
-            >
-                {label}
-            </span>
+            <div class="avonni-filter-menu__label-container">
+                <div class="avonni-filter-menu__label-left slds-truncate">
+                    <span class={computedMenuLabelClass}>{label}</span>
+                    <span if:true={showFilterValue}
+                        >&nbsp;{selectedFilterLabels}</span
+                    >
+                </div>
 
-            <div
-                style={computedMenuSelectedLabelStyle}
-                class="slds-truncate"
-                data-element-id="div-menu-selected-label"
-            >
                 <span
-                    if:true={showFilterValue}
-                    data-element-id="span-menu-selected-labels"
+                    if:true={showCount}
+                    class="slds-badge avonni-filter-menu__selected-item-count"
                 >
-                    &nbsp;{selectedFilterLabels}&nbsp;
+                    {selectedItemCountLabel}
                 </span>
             </div>
-            <span
-                if:true={showCount}
-                class="slds-badge avonni-filter-menu__selected-item-count"
-                data-element-id="span-menu-selected-item-count"
-            >
-                {selectedItemCountLabel}
-            </span>
 
             <c-primitive-icon
                 if:true={iconName}

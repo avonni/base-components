@@ -54,8 +54,6 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 const DEFAULT_WEEK_START_DAY = 0;
 
-const DROPDOWN_MAX_WIDTH = 400;
-
 const i18n = {
     loading: 'Loading...',
     showMenu: 'Show Menu'
@@ -215,8 +213,6 @@ export default class FilterMenu extends LightningElement {
     _previousScroll;
     _preventDropdownToggle = false;
     _searchTimeOut;
-    _selectedMenuLabelInitialized = false;
-    _selectedMenuLabelMaxWidth = 0;
 
     computedItemCounts = {};
     @track computedItems = [];
@@ -266,7 +262,6 @@ export default class FilterMenu extends LightningElement {
 
     renderedCallback() {
         this.initTooltip();
-        this.setSelectedMenuLabelMaxWidth();
 
         if (
             this.infiniteLoad &&
@@ -907,7 +902,9 @@ export default class FilterMenu extends LightningElement {
             this.buttonVariant === 'bare' ||
             this.buttonVariant === 'bare-inverse';
 
-        const classes = classSet('slds-button slds-truncate');
+        const classes = classSet(
+            'slds-button slds-truncate avonni-filter-menu__button'
+        );
         classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label || this.selectedItemLabels.length > 0) {
@@ -1030,22 +1027,6 @@ export default class FilterMenu extends LightningElement {
                 'slds-text-title_bold': this.selectedItemLabels.length > 0
             })
             .toString();
-    }
-
-    /**
-     * Computed menu selected labels style
-     *
-     * @type {string}
-     */
-    get computedMenuSelectedLabelStyle() {
-        this.setSelectedMenuLabelMaxWidth();
-
-        if (!this._selectedMenuLabelMaxWidth) {
-            return '';
-        }
-
-        const maxWidth = this._selectedMenuLabelMaxWidth * 0.8;
-        return `max-width: ${maxWidth}px;`;
     }
 
     /**
@@ -1875,39 +1856,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Initialize the selected menu label max width.
-     */
-    setSelectedMenuLabelMaxWidth() {
-        if (!this._selectedMenuLabelInitialized && !this.isVertical) {
-            const menuLabel = this.template.querySelector(
-                '[data-element-id="div-menu-selected-label"]'
-            );
-
-            if (!menuLabel) {
-                return;
-            }
-
-            const dropdownWidth =
-                this.template
-                    .querySelector('[data-element-id="div-dropdown"]')
-                    ?.getBoundingClientRect().width ?? 0;
-
-            if (dropdownWidth > 0) {
-                this._selectedMenuLabelMaxWidth = Math.min(
-                    dropdownWidth,
-                    DROPDOWN_MAX_WIDTH
-                );
-                this._selectedMenuLabelInitialized = true;
-            }
-
-            if (dropdownWidth === 0 && this.value.length > 0) {
-                this._selectedMenuLabelMaxWidth = DROPDOWN_MAX_WIDTH;
-                this._selectedMenuLabelInitialized = true;
-            }
-        }
-    }
-
-    /**
      * Menu positioning and animation start.
      *
      * @returns object dropdown menu positioning.
@@ -2215,6 +2163,7 @@ export default class FilterMenu extends LightningElement {
             }
             return item;
         });
+        this.visibleItems = this.getVisibleItems();
 
         this.dispatchSelect();
     }
