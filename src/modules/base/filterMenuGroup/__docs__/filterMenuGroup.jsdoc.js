@@ -33,14 +33,14 @@
 
 /**
  * @memberof stylingHooks
- * @name --avonni-filter-menu-group-horizontal-menu-button-selected-color-background
+ * @name --avonni-filter-menu-group-horizontal-menu-button-color-background-selected
  * @default #eef4ff
  * @type color
  */
 
 /**
  * @memberof stylingHooks
- * @name --avonni-filter-menu-group-horizontal-more-filter-button-selected-color-background
+ * @name --avonni-filter-menu-group-horizontal-more-filter-button-color-background-selected
  * @default #eef4ff
  * @type color
  */

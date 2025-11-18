@@ -16,7 +16,7 @@
 
 /**
  * @memberof stylingHooks
- * @name --avonni-filter-menu-horizontal-button-selected-color-background
+ * @name --avonni-filter-menu-horizontal-button-color-background-selected
  * @default #eef4ff
  * @type color
  */

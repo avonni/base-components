@@ -947,7 +947,7 @@ export default class FilterMenu extends LightningElement {
         }
 
         classes.add({
-            'avonni-filter-menu__selected-item-button':
+            'avonni-filter-menu__item-button-selected':
                 this.selectedItemLabels.length > 0
         });
 

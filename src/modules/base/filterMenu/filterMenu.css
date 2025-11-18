@@ -1,11 +1,11 @@
-.avonni-filter-menu__selected-item-button {
+.avonni-filter-menu__item-button-selected {
     background-color: var(
-        --avonni-filter-menu-horizontal-button-selected-color-background,
+        --avonni-filter-menu-horizontal-button-color-background-selected,
         var(--slds-g-color-palette-blue-95, #eef4ff)
     );
 }
 
-.avonni-filter-menu__selected-item-count {
+.avonni-filter-menu__item-count-selected {
     background-color: var(--lwc-brandPrimary, #1b96ff);
 }
 
