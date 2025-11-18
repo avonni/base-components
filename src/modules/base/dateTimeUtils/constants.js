@@ -110,7 +110,7 @@ const DEFAULT_DATE_FORMATS = {
         year: NUMERIC,
         month: NUMERIC,
         day: NUMERIC,
-        hour: DOUBLE_DIGIT,
+        hour: NUMERIC,
         minute: DOUBLE_DIGIT
     }
 };
