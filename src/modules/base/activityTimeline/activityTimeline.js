@@ -1,4 +1,4 @@
-import { DateTime } from 'c/dateTimeUtils';
+import { DateTime, isISODateOnly } from 'c/dateTimeUtils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
@@ -49,7 +49,6 @@ const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 const DEFAULT_LOCALE = 'en-GB';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}/;
 
 const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
@@ -997,10 +996,7 @@ export default class ActivityTimeline extends LightningElement {
             this.supportDeprecatedAttributes(computedItem);
 
             let date = computedItem.datetimeValue;
-            const isDateOnly =
-                typeof date === 'string' &&
-                date.match(ISO_DATE_PATTERN) &&
-                !date.includes('T');
+            const isDateOnly = isISODateOnly(date);
             if (isDateOnly) {
                 const dateTime = new DateTime(date, this.timezone);
                 date = `${date}T00:00:00${dateTime.tzOffset}`;

@@ -99,6 +99,22 @@ const DATE_FORMAT_PRESETS = {
     }
 };
 
+// Based on the Salesforce Record Details
+const DEFAULT_DATE_FORMATS = {
+    date: {
+        year: NUMERIC,
+        month: NUMERIC,
+        day: NUMERIC
+    },
+    dateTime: {
+        year: NUMERIC,
+        month: NUMERIC,
+        day: NUMERIC,
+        hour: DOUBLE_DIGIT,
+        minute: DOUBLE_DIGIT
+    }
+};
+
 const millisecondsPerSecond = 1000;
 const secondsPerMinute = 60;
 const minutesPerHour = 60;
@@ -126,14 +142,18 @@ const INTERVALS = {
     second: millisecondsPerSecond
 };
 
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}/;
+
 export {
     DATE,
     DATE_FORMAT_PRESETS,
+    DEFAULT_DATE_FORMATS,
     DEFAULT_LANGUAGE,
     DOUBLE_DIGIT,
     ERA,
     HOUR,
     INTERVALS,
+    ISO_DATE_PATTERN,
     LONG,
     MONTH,
     NARROW,
