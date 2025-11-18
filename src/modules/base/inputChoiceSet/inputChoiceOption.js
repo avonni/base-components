@@ -28,6 +28,7 @@ export default class InputChoiceOption {
         this.hidden = option.hidden;
         this.iconName = option.iconName;
         this.iconPosition = option.iconPosition || POSITION_ICON.LEFT;
+        this.isMultiSelect = parent.isMultiSelect;
         this.hideLabel = option.hideLabel;
         this.label = option.label;
         this.tooltip = option.tooltip;
