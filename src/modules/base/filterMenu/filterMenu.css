@@ -1,5 +1,8 @@
 .avonni-filter-menu__selected-item-button {
-    background-color: var(--slds-g-color-palette-blue-95, #eef4ff);
+    background-color: var(
+        --avonni-filter-menu-horizontal-button-selected-color-background,
+        var(--slds-g-color-palette-blue-95, #eef4ff)
+    );
 }
 
 .avonni-filter-menu__selected-item-count {

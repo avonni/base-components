@@ -24,6 +24,7 @@
         <template for:each={visibleMenus} for:item="menu">
             <li class={computedFiltersClass} key={menu.name}>
                 <c-filter-menu
+                    class="avonni-filter-menu-visible"
                     access-key={menu.accessKey}
                     alternative-text={menu.alternativeText}
                     apply-button-label={applyButtonLabel}

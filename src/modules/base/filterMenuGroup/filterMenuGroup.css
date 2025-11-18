@@ -5,7 +5,14 @@
 
 .avonni-filter-menu-group__button-icon-popover-selected {
     --avonni-button-icon-popover-border-filled-color-background: var(
-        --slds-g-color-palette-blue-95,
-        #eef4ff
+        --avonni-filter-menu-group-horizontal-more-filter-button-selected-color-background,
+        var(--slds-g-color-palette-blue-95, #eef4ff)
+    );
+}
+
+.avonni-filter-menu-visible {
+    --avonni-filter-menu-horizontal-button-selected-color-background: var(
+        --avonni-filter-menu-group-horizontal-menu-button-selected-color-background,
+        var(--slds-g-color-palette-blue-95, #eef4ff)
     );
 }

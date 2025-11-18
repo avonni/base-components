@@ -13,6 +13,14 @@
 /**
  * @namespace stylingHooks
  */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-filter-menu-horizontal-button-selected-color-background
+ * @default #eef4ff
+ * @type color
+ */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-filter-menu-vertical-collapse-icon-color-foreground

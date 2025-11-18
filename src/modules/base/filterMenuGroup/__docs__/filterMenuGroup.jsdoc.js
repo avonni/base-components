@@ -26,3 +26,21 @@
  * @property {string} type Type of the filter menu. Valid values include date-range, list and range. Defaults to list.
  * @property {object} typeAttributes Attributes specific to the type (see **Types and Type Attributes** in <a href="/components/filter-menu">Filter Menu</a>).
  */
+
+/**
+ * @namespace stylingHooks
+ */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-filter-menu-group-horizontal-menu-button-selected-color-background
+ * @default #eef4ff
+ * @type color
+ */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-filter-menu-group-horizontal-more-filter-button-selected-color-background
+ * @default #eef4ff
+ * @type color
+ */
