@@ -40,6 +40,18 @@
 
 /**
  * @memberof stylingHooks
+ * @name --avonni-filter-menu-group-horizontal-menu-button-count-color-background-selected
+ * @type color
+ */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-filter-menu-group-horizontal-menu-button-count-text-color-selected
+ * @type color
+ */
+
+/**
+ * @memberof stylingHooks
  * @name --avonni-filter-menu-group-horizontal-more-filter-button-color-background-selected
  * @default #eef4ff
  * @type color

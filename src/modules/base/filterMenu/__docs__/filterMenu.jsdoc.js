@@ -23,6 +23,17 @@
 
 /**
  * @memberof stylingHooks
+ * @name --avonni-filter-menu-horizontal-button-count-background-color-selected
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-filter-menu-horizontal-button-count-text-color-selected
+ * @type color
+ */
+
+/**
+ * @memberof stylingHooks
  * @name --avonni-filter-menu-vertical-collapse-icon-color-foreground
  * @type color
  */

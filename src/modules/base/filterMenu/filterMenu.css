@@ -1,12 +1,17 @@
-.avonni-filter-menu__item-button-selected {
+.avonni-filter-menu__button-selected {
     background-color: var(
         --avonni-filter-menu-horizontal-button-color-background-selected,
         var(--slds-g-color-palette-blue-95, #eef4ff)
     );
 }
 
-.avonni-filter-menu__item-count-selected {
-    background-color: var(--lwc-brandPrimary, #1b96ff);
+.avonni-filter-menu__button-count-selected {
+    background-color: var(
+        --avonni-filter-menu-horizontal-button-count-background-color-selected
+    );
+    color: var(
+        --avonni-filter-menu-horizontal-button-count-text-color-selected
+    );
 }
 
 .avonni-filter-menu__item-label-container {

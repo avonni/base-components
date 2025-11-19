@@ -11,8 +11,14 @@
 }
 
 .avonni-filter-menu-visible {
-    --avonni-filter-menu-horizontal-button-selected-color-background: var(
+    --avonni-filter-menu-horizontal-button-color-background-selected: var(
         --avonni-filter-menu-group-horizontal-menu-button-color-background-selected,
         var(--slds-g-color-palette-blue-95, #eef4ff)
+    );
+    --avonni-filter-menu-horizontal-button-count-background-color-selected: var(
+        --avonni-filter-menu-group-horizontal-menu-button-count-color-background-selected
+    );
+    --avonni-filter-menu-horizontal-button-count-text-color-selected: var(
+        --avonni-filter-menu-group-horizontal-menu-button-count-text-color-selected
     );
 }
