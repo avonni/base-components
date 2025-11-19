@@ -20,6 +20,7 @@ export default class PrimitiveScrollableContainer extends LightningElement {
             this._resizeObserver = this._initResizeObserver();
         } else if (this._resizeObserver && !this.showScrollButtons) {
             this._resizeObserver.disconnect();
+            this._resizeObserver = null;
         }
         this._updateScrollButtonVisibility();
     }
