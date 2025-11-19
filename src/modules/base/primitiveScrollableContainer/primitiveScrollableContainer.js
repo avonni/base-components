@@ -29,6 +29,7 @@ export default class PrimitiveScrollableContainer extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
+        clearTimeout(this._scrollTimeout);
     }
 
     /*
