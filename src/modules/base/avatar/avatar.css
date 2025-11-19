@@ -47,3 +47,7 @@
     margin-left: -0.5rem;
     --avonni-chip-container-color-border: transparent;
 }
+
+.avonni-avatar__media-object {
+    --avonni-media-object-width: 100%;
+}

@@ -106,7 +106,7 @@ export default class MediaObject extends LightningElement {
      * @type {string}
      */
     get computedMediaObjectClass() {
-        return classSet('slds-media')
+        return classSet('slds-media avonni-media-object__container')
             .add({
                 'slds-media_small': this.size === 'small',
                 'slds-media_large': this.size === 'large',
