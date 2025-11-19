@@ -1,0 +1,75 @@
+<template>
+    <div
+        class="
+            slds-is-relative
+            avonni-primitive-scrollable-container__width-100
+        "
+    >
+        <!-- Left scroll button -->
+        <div
+            if:true={showScrollButtons}
+            class="
+                slds-is-absolute slds-grid
+                slds-p-right_large
+                slds-p-left_x-small
+                avonni-primitive-scrollable-container__scroll-button
+                avonni-primitive-scrollable-container__scroll-left-button
+                slds-hide
+            "
+            data-element-id="div-scroll-left-button"
+        >
+            <lightning-button-icon
+                class="slds-align-middle"
+                alternative-text="Scroll Left"
+                aria-hidden="true"
+                icon-name="utility:chevronleft"
+                size="small"
+                title="Scroll Left"
+                variant="border-filled"
+                data-direction="left"
+                data-element-id="lightning-button-icon-left"
+                onclick={handleScrollButtonClick}
+            ></lightning-button-icon>
+        </div>
+
+        <!-- Main content -->
+        <div
+            class="
+                slds-scrollable_x
+                avonni-primitive-scrollable-container__width-100
+                avonni-primitive-scrollable-container__main
+            "
+            data-element-id="div-main"
+            onscroll={handleScroll}
+        >
+            <slot></slot>
+        </div>
+
+        <!-- Right scroll button -->
+        <div
+            if:true={showScrollButtons}
+            class="
+                slds-is-absolute slds-grid
+                slds-p-left_large
+                slds-p-right_x-small
+                avonni-primitive-scrollable-container__scroll-button
+                avonni-primitive-scrollable-container__scroll-right-button
+                slds-hide
+            "
+            data-element-id="div-scroll-right-button"
+        >
+            <lightning-button-icon
+                class="slds-align-middle"
+                alternative-text="Scroll Right"
+                aria-hidden="true"
+                icon-name="utility:chevronright"
+                size="small"
+                title="Scroll Right"
+                variant="border-filled"
+                data-direction="right"
+                data-element-id="lightning-button-icon-right"
+                onclick={handleScrollButtonClick}
+            ></lightning-button-icon>
+        </div>
+    </div>
+</template>
