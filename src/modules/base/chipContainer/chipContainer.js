@@ -18,6 +18,8 @@ const DEFAULT_SHOW_MORE_BUTTON_WIDTH = 60;
 const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
 
+const RECOMPUTE_OVERFLOW_THRESHOLD_PX = 5;
+
 /**
  * @class
  * @name ChipContainer
@@ -57,6 +59,7 @@ export default class ChipContainer extends LightningElement {
     _resizeObserver;
     _scrollingInterval;
     _visibleItemsCount = 0;
+    _wrapperWidthWhenLastResized = 0;
 
     showPopover = false;
     _connected = false;
@@ -784,11 +787,19 @@ export default class ChipContainer extends LightningElement {
             if (!this.wrapperElement) {
                 return;
             }
+            const wrapperWidth = this.wrapperElement.offsetWidth;
+            const isOverflow =
+                Math.abs(wrapperWidth - this._wrapperWidthWhenLastResized) >=
+                RECOMPUTE_OVERFLOW_THRESHOLD_PX;
+
+            if (!isOverflow) {
+                return;
+            }
 
             this.saveItemsWidths();
             let fittingCount = 0;
             let width = 0;
-            let totalWidth = this.wrapperElement.offsetWidth - 10;
+            let totalWidth = wrapperWidth - 10;
             const visibleItems = this.template.querySelectorAll(
                 '[data-element-id="li-item"]'
             );
@@ -842,6 +853,10 @@ export default class ChipContainer extends LightningElement {
                 }
             }
             this._visibleItemsCount = fittingCount;
+            requestAnimationFrame(() => {
+                this._wrapperWidthWhenLastResized =
+                    this.wrapperElement.offsetWidth;
+            });
         });
     }
 
