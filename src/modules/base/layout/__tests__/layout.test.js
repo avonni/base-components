@@ -330,6 +330,55 @@ describe('Layout', () => {
                 });
             });
 
+            it('privatelayoutitemconnected is dispatched when an item is connected and resize is handled by parent', () => {
+                clearDOM();
+                createLayout();
+
+                const connexionHandler = jest.fn((event) => {
+                    event.detail.callbacks.setIsResizedByParent(true);
+                });
+                element.addEventListener(
+                    'privatelayoutconnected',
+                    connexionHandler
+                );
+                const layoutItemConnectedHandler = jest.fn();
+                element.addEventListener(
+                    'privatelayoutitemconnected',
+                    layoutItemConnectedHandler
+                );
+                addLayoutToDOM();
+                layoutItemConnectedHandler.mockClear();
+                jest.runAllTimers();
+
+                return Promise.resolve().then(() => {
+                    const callback = jest.fn();
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: callback
+                                }
+                            }
+                        })
+                    );
+
+                    expect(layoutItemConnectedHandler).toHaveBeenCalledTimes(1);
+                    expect(
+                        layoutItemConnectedHandler.mock.calls[0][0].composed
+                    ).toBeTruthy();
+                    expect(
+                        layoutItemConnectedHandler.mock.calls[0][0].bubbles
+                    ).toBeTruthy();
+                    expect(
+                        layoutItemConnectedHandler.mock.calls[0][0].detail.name
+                    ).toBe('numberOne');
+                });
+            });
+
             it('sizechange is fired on first render', () => {
                 clearDOM();
                 createLayout();
