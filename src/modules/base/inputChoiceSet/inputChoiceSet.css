@@ -2,6 +2,10 @@
     display: block;
 }
 
+.avonni-input-choice-set__fieldset {
+    min-width: 0;
+}
+
 .avonni-input-choice-set__option-label {
     cursor: pointer;
 }
