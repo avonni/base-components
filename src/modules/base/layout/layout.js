@@ -298,6 +298,27 @@ export default class Layout extends LightningElement {
         // Here we use the setItemsSize() method instead of setting the size immediately.
         // This ensures that it does not freeze with a lot of items, since there is a debounce.
         this.setItemsSize();
+
+        if (!this._resizeIsHandledByParent) return;
+
+        /**
+         * The event fired when the layout item is inserted in the DOM.
+         *
+         * @event
+         * @name privatelayoutitemconnected
+         * @param {string} name Unique name of the layout item.
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutitemconnected', {
+                detail: {
+                    name
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     /**
