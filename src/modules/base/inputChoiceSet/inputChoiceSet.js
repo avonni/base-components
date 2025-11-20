@@ -1,15 +1,12 @@
-import { LightningElement, api } from 'lwc';
-import {
-    synchronizeAttrs,
-    getRealDOMId,
-    classListMutation
-} from 'c/utilsPrivate';
 import {
     FieldConstraintApi,
     InteractingState,
     normalizeVariant,
     VARIANT
 } from 'c/inputUtils';
+import { Direction } from 'c/positionLibrary';
+import { AvonniResizeObserver } from 'c/resizeObserver';
+import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import {
     classSet,
     deepCopy,
@@ -18,10 +15,13 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import {
+    classListMutation,
+    getRealDOMId,
+    synchronizeAttrs
+} from 'c/utilsPrivate';
+import { api, LightningElement } from 'lwc';
 import InputChoiceOption from './inputChoiceOption';
-import { AvonniResizeObserver } from 'c/resizeObserver';
-import { Tooltip, TooltipType } from 'c/tooltipLibrary';
-import { Direction } from 'c/positionLibrary';
 
 const CHECK_POSITIONS = {
     valid: ['left', 'right'],
@@ -152,6 +152,7 @@ export default class InputChoiceSet extends LightningElement {
             this.initOrientationAttributes();
         }
 
+        this.normalizeTypeAttributes();
         this.classList.add('slds-form-element');
         this.updateClassList();
         this.interactingState = new InteractingState();
@@ -390,6 +391,7 @@ export default class InputChoiceSet extends LightningElement {
             validValues: INPUT_CHOICE_TYPES.valid
         });
         if (this._connected) {
+            this.normalizeTypeAttributes();
             this.initOptions();
             this.destroyTooltip();
         }
@@ -407,8 +409,8 @@ export default class InputChoiceSet extends LightningElement {
     }
     set typeAttributes(value) {
         this._typeAttributes = normalizeObject(value);
-        this.normalizeTypeAttributes();
         if (this._connected) {
+            this.normalizeTypeAttributes();
             this.destroyTooltip();
         }
     }
