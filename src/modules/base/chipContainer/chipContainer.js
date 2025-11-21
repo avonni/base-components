@@ -6,7 +6,7 @@ import {
     normalizeArray,
     normalizeBoolean
 } from 'c/utils';
-import { equal, keyValues } from 'c/utilsPrivate';
+import { keyValues } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 
 const AUTO_SCROLL_INCREMENT = 5;
@@ -134,13 +134,12 @@ export default class ChipContainer extends LightningElement {
         return this._isCollapsible;
     }
     set isCollapsible(value) {
-        const hasChanged = !equal(this._isCollapsible, normalizeBoolean(value));
         this._isCollapsible = normalizeBoolean(value);
         this.clearDrag();
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems(hasChanged);
+            this.updateVisibleItems(true);
         }
     }
 
@@ -156,13 +155,12 @@ export default class ChipContainer extends LightningElement {
         return this._isExpanded;
     }
     set isExpanded(value) {
-        const hasChanged = !equal(this._isExpanded, normalizeBoolean(value));
         this._isExpanded = normalizeBoolean(value);
         this.clearDrag();
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems(hasChanged);
+            this.updateVisibleItems(true);
         }
     }
 
@@ -204,13 +202,12 @@ export default class ChipContainer extends LightningElement {
         return this._singleLine;
     }
     set singleLine(value) {
-        const hasChanged = !equal(this._singleLine, normalizeBoolean(value));
         this._singleLine = normalizeBoolean(value);
         this.clearDrag();
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems(hasChanged);
+            this.updateVisibleItems(true);
         }
     }
 

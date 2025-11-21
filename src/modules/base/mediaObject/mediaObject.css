@@ -39,5 +39,5 @@
 }
 
 .avonni-media-object__container {
-    width: var(--avonni-media-object-width);
+    width: var(--avonni-media-object-sizing-width);
 }

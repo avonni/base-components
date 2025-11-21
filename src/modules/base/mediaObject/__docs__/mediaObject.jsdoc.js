@@ -25,6 +25,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-media-object-width
- * @type dimension
+ * @name --avonni-media-object-sizing-width
+ * @type sizing
  */

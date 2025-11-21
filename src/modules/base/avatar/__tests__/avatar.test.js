@@ -896,7 +896,7 @@ describe('Avatar', () => {
                     );
                     expect(mediaObject.inline).toBeTruthy();
                     expect(mediaObject.className).toBe(
-                        'slds-text-align_center avonni-avatar__media-object-width-100'
+                        'slds-text-align_center avonni-avatar__media-object_width-100'
                     );
                 });
             });
