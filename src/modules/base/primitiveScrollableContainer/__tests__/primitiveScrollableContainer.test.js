@@ -25,7 +25,45 @@ describe('Primitive Scrollable Container', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.scrollLeftButtonAlternativeText).toBe('Scroll Left');
+            expect(element.scrollRightButtonAlternativeText).toBe(
+                'Scroll Right'
+            );
             expect(element.showScrollButtons).toBeFalsy();
+        });
+
+        describe('Scroll left button alternative text', () => {
+            it('Passed to the component', () => {
+                element.showScrollButtons = true;
+                element.scrollLeftButtonAlternativeText =
+                    'This is a scroll left button alternative text';
+
+                return Promise.resolve().then(() => {
+                    const leftButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-left"]'
+                    );
+                    expect(leftButton.alternativeText).toBe(
+                        'This is a scroll left button alternative text'
+                    );
+                });
+            });
+        });
+
+        describe('Scroll right button alternative text', () => {
+            it('Passed to the component', () => {
+                element.showScrollButtons = true;
+                element.scrollRightButtonAlternativeText =
+                    'This is a scroll right button alternative text';
+
+                return Promise.resolve().then(() => {
+                    const rightButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-right"]'
+                    );
+                    expect(rightButton.alternativeText).toBe(
+                        'This is a scroll right button alternative text'
+                    );
+                });
+            });
         });
 
         describe('Show scroll buttons', () => {

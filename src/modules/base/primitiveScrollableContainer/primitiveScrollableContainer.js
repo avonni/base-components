@@ -2,8 +2,14 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { LightningElement, api } from 'lwc';
 
 const SCROLL_OFFSET = 150;
+const DEFAULT_SCROLL_LEFT_BUTTON_ALTERNATIVE_TEXT = 'Scroll Left';
+const DEFAULT_SCROLL_RIGHT_BUTTON_ALTERNATIVE_TEXT = 'Scroll Right';
 
 export default class PrimitiveScrollableContainer extends LightningElement {
+    @api scrollLeftButtonAlternativeText =
+        DEFAULT_SCROLL_LEFT_BUTTON_ALTERNATIVE_TEXT;
+    @api scrollRightButtonAlternativeText =
+        DEFAULT_SCROLL_RIGHT_BUTTON_ALTERNATIVE_TEXT;
     @api showScrollButtons = false;
 
     _resizeObserver;
