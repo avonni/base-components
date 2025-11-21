@@ -861,7 +861,7 @@ export default class ChipContainer extends LightningElement {
             // Needs to update within the next frame to get the right offsetWidth
             requestAnimationFrame(() => {
                 this._wrapperWidthWhenLastResized =
-                    this.wrapperElement.offsetWidth;
+                    this.wrapperElement?.offsetWidth || 0;
             });
         });
     }
