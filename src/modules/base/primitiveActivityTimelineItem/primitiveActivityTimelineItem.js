@@ -1,4 +1,9 @@
-import { getFormattedDate } from 'c/dateTimeUtils';
+import {
+    DateTime,
+    DEFAULT_DATE_FORMATS,
+    getFormattedDate,
+    isISODateOnly
+} from 'c/dateTimeUtils';
 import {
     classSet,
     deepCopy,
@@ -7,7 +12,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { LightningElement, api } from 'lwc';
+import { api, LightningElement } from 'lwc';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const BUTTON_VARIANTS = {
@@ -125,9 +130,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _isLoading = false;
     _timezone;
 
+    _connected = false;
+
+    computedFields = [];
     formattedEndDate = '';
     formattedStartDate = '';
-    _connected = false;
 
     /*
      * -------------------------------------------------------------
@@ -136,7 +143,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     connectedCallback() {
-        this.formatDate();
+        this.formatStartEndDates();
+        this.formatFields();
         this._connected = true;
     }
 
@@ -279,7 +287,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._dateFormat = typeof value === 'string' ? value : null;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
+            this.formatFields();
         }
     }
 
@@ -297,7 +306,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._datetimeValue = value;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
         }
     }
 
@@ -315,7 +324,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._endDateValue = value;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
         }
     }
 
@@ -331,6 +340,10 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
     set fields(value) {
         this._fields = normalizeArray(value);
+
+        if (this._connected) {
+            this.formatFields();
+        }
     }
 
     /**
@@ -469,7 +482,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._timezone = value;
 
         if (this._connected) {
-            this.formatDate();
+            this.formatStartEndDates();
+            this.formatFields();
         }
     }
 
@@ -573,7 +587,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {boolean}
      */
     get hasFields() {
-        return this._fields.length > 0;
+        return this.computedFields.length > 0;
     }
 
     /**
@@ -654,19 +668,51 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     /**
      * Sets the formatted date.
      */
-    formatDate() {
-        const format = (value) => {
-            const date = new Date(value);
-            return !value || isNaN(date) || !this.dateFormat
-                ? ''
-                : getFormattedDate({
-                      date: value,
-                      timeZone: this.timezone,
-                      format: this.dateFormat
-                  });
-        };
-        this.formattedStartDate = format(this.datetimeValue);
-        this.formattedEndDate = format(this.endDateValue);
+    formatDate(value) {
+        const date = new Date(value);
+        return !value || isNaN(date) || !this.dateFormat
+            ? ''
+            : getFormattedDate({
+                  date: value,
+                  timeZone: this.timezone,
+                  format: this.dateFormat
+              });
+    }
+
+    formatFields() {
+        if (!Array.isArray(this._fields)) {
+            return;
+        }
+        const fields = this._fields.map((field) => {
+            let typeAttributes = field.typeAttributes || {};
+            let value = field.value;
+            if (field.type === 'date') {
+                const isDateOnly = isISODateOnly(value);
+                const dateType = isDateOnly ? 'date' : 'dateTime';
+                if (isDateOnly) {
+                    const dateTime = new DateTime(value, this.timezone);
+                    value = `${value}T00:00:00${dateTime.tzOffset}`;
+                }
+                typeAttributes = {
+                    ...DEFAULT_DATE_FORMATS[dateType],
+                    ...typeAttributes,
+                    timeZone: this.timezone
+                };
+            }
+            return {
+                ...field,
+                ...(Object.keys(typeAttributes).length > 0
+                    ? { typeAttributes }
+                    : {}),
+                value
+            };
+        });
+        this.computedFields = fields;
+    }
+
+    formatStartEndDates() {
+        this.formattedStartDate = this.formatDate(this.datetimeValue);
+        this.formattedEndDate = this.formatDate(this.endDateValue);
     }
 
     /**
