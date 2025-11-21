@@ -6,7 +6,7 @@ import {
     normalizeArray,
     normalizeBoolean
 } from 'c/utils';
-import { keyValues } from 'c/utilsPrivate';
+import { equal, keyValues } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 
 const AUTO_SCROLL_INCREMENT = 5;
@@ -73,7 +73,7 @@ export default class ChipContainer extends LightningElement {
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.initVisibleItemsCount();
-        this.updateVisibleItems();
+        this.updateVisibleItems(true);
         this._connected = true;
     }
 
@@ -134,12 +134,13 @@ export default class ChipContainer extends LightningElement {
         return this._isCollapsible;
     }
     set isCollapsible(value) {
+        const hasChanged = !equal(this._isCollapsible, normalizeBoolean(value));
         this._isCollapsible = normalizeBoolean(value);
         this.clearDrag();
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(hasChanged);
         }
     }
 
@@ -155,12 +156,13 @@ export default class ChipContainer extends LightningElement {
         return this._isExpanded;
     }
     set isExpanded(value) {
+        const hasChanged = !equal(this._isExpanded, normalizeBoolean(value));
         this._isExpanded = normalizeBoolean(value);
         this.clearDrag();
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(hasChanged);
         }
     }
 
@@ -186,7 +188,7 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(true);
         }
     }
 
@@ -202,12 +204,13 @@ export default class ChipContainer extends LightningElement {
         return this._singleLine;
     }
     set singleLine(value) {
+        const hasChanged = !equal(this._singleLine, normalizeBoolean(value));
         this._singleLine = normalizeBoolean(value);
         this.clearDrag();
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(hasChanged);
         }
     }
 
@@ -548,7 +551,7 @@ export default class ChipContainer extends LightningElement {
             if (!this._connected) {
                 return;
             }
-            this.updateVisibleItems();
+            this.updateVisibleItems(false);
         });
     }
 
@@ -771,8 +774,10 @@ export default class ChipContainer extends LightningElement {
 
     /**
      * Update the number of visible and collapsed items, depending on the available space.
+     *
+     * @param {boolean} hasChangedContent If present, the number of visible items is updated even if the size of the chip container has not changed.
      */
-    updateVisibleItems() {
+    updateVisibleItems(hasChangedContent = false) {
         requestAnimationFrame(() => {
             if (!this.items) {
                 return;
@@ -792,7 +797,7 @@ export default class ChipContainer extends LightningElement {
                 Math.abs(wrapperWidth - this._wrapperWidthWhenLastResized) >=
                 RECOMPUTE_OVERFLOW_THRESHOLD_PX;
 
-            if (!isOverflow) {
+            if (!isOverflow && !hasChangedContent) {
                 return;
             }
 
@@ -853,6 +858,7 @@ export default class ChipContainer extends LightningElement {
                 }
             }
             this._visibleItemsCount = fittingCount;
+            // Needs to update within the next frame to get the right offsetWidth
             requestAnimationFrame(() => {
                 this._wrapperWidthWhenLastResized =
                     this.wrapperElement.offsetWidth;
@@ -983,7 +989,7 @@ export default class ChipContainer extends LightningElement {
             this._isExpanded = true;
             this._focusedIndex = this._visibleItemsCount - 1;
             this._focusOnRender = true;
-            this.updateVisibleItems();
+            this.updateVisibleItems(false);
         }
 
         /**
