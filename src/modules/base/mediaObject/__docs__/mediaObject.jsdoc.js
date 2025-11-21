@@ -27,5 +27,4 @@
  * @memberof stylingHooks
  * @name --avonni-media-object-width
  * @type dimension
- * @default 100%
  */

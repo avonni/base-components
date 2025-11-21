@@ -48,6 +48,6 @@
     --avonni-chip-container-color-border: transparent;
 }
 
-.avonni-avatar__media-object {
+.avonni-avatar__media-object-width-100 {
     --avonni-media-object-width: 100%;
 }
