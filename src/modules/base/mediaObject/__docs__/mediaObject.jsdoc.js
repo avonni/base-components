@@ -19,3 +19,12 @@
  * @memberof slots
  * @name figure-inverse
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-media-object-sizing-width
+ * @type sizing
+ */
