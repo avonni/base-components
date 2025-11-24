@@ -18,14 +18,8 @@
     --avonni-avatar-fallback-icon-color-background: var(
         --avonni-chip-avatar-icon-color-background
     );
-    --avonni-avatar-fallback-icon-color-foreground: var(
-        --avonni-chip-avatar-icon-color-foreground
-    );
-    --avonni-avatar-fallback-icon-color-foreground-default: var(
-        --avonni-chip-avatar-icon-color-foreground-default,
-        var(--avonni-chip-avatar-icon-color-foreground)
-    );
     --avonni-avatar-image-object-fit: var(
         --avonni-chip-avatar-image-object-fit
     );
+    /* Avatar icon foreground color defined inside avonni-chip component to follow the variant */
 }
