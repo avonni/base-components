@@ -48,7 +48,8 @@
         --avonni-activity-timeline-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-activity-timeline-icon-color-foreground-default
+        --avonni-activity-timeline-icon-color-foreground-default,
+        var(--avonni-activity-timeline-icon-color-foreground)
     );
 }
 

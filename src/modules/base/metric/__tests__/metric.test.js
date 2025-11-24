@@ -26,8 +26,12 @@ describe('Metric', () => {
             expect(element.avatar).toBeUndefined();
             expect(element.currencyCode).toBeUndefined();
             expect(element.currencyDisplayAs).toBe('symbol');
+            expect(element.day).toBeUndefined();
             expect(element.description).toBeUndefined();
+            expect(element.era).toBeUndefined();
             expect(element.formatStyle).toBe('decimal');
+            expect(element.hour).toBeUndefined();
+            expect(element.hour12).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.labelPosition).toBe('top');
             expect(element.loadingStateAlternativeText).toBe('Loading...');
@@ -36,32 +40,55 @@ describe('Metric', () => {
             expect(element.minimumFractionDigits).toBeUndefined();
             expect(element.minimumIntegerDigits).toBeUndefined();
             expect(element.minimumSignificantDigits).toBeUndefined();
+            expect(element.minute).toBeUndefined();
+            expect(element.month).toBeUndefined();
             expect(element.prefix).toBeUndefined();
+            expect(element.second).toBeUndefined();
             expect(element.secondaryCurrencyCode).toBeUndefined();
             expect(element.secondaryCurrencyDisplayAs).toBe('symbol');
+            expect(element.secondaryDay).toBeUndefined();
+            expect(element.secondaryEra).toBeUndefined();
             expect(element.secondaryFormatStyle).toBe('decimal');
+            expect(element.secondaryFormatStyle).toBe('decimal');
+            expect(element.secondaryHour).toBeUndefined();
+            expect(element.secondaryHour12).toBeFalsy();
+            expect(element.secondaryMaximumFractionDigits).toBeUndefined();
             expect(element.secondaryMaximumFractionDigits).toBeUndefined();
             expect(element.secondaryMaximumSignificantDigits).toBeUndefined();
+            expect(element.secondaryMaximumSignificantDigits).toBeUndefined();
+            expect(element.secondaryMinimumFractionDigits).toBeUndefined();
             expect(element.secondaryMinimumFractionDigits).toBeUndefined();
             expect(element.secondaryMinimumIntegerDigits).toBeUndefined();
             expect(element.secondaryMinimumSignificantDigits).toBeUndefined();
+            expect(element.secondaryMinute).toBeUndefined();
+            expect(element.secondaryMonth).toBeUndefined();
             expect(element.secondaryPosition).toBe('right');
             expect(element.secondaryPrefix).toBeUndefined();
-            expect(element.secondarySuffix).toBeUndefined();
+            expect(element.secondarySecond).toBeUndefined();
             expect(element.secondaryShowTrendColor).toBeFalsy();
+            expect(element.secondarySuffix).toBeUndefined();
+            expect(element.secondaryTimeZone).toBeUndefined();
+            expect(element.secondaryTimeZoneName).toBeUndefined();
             expect(element.secondaryTrendBreakpointValue).toBe(0);
             expect(element.secondaryTrendIcon).toBeUndefined();
             expect(element.secondaryValue).toBeUndefined();
             expect(element.secondaryValueIsLoading).toBeFalsy();
             expect(element.secondaryValueSign).toBe('negative');
+            expect(element.secondaryWeekday).toBeUndefined();
+            expect(element.secondaryYear).toBeUndefined();
             expect(element.showTrendColor).toBeFalsy();
             expect(element.suffix).toBeUndefined();
+            expect(element.timeZone).toBeUndefined();
+            expect(element.timeZoneName).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.trendBreakpointValue).toBe(0);
             expect(element.trendIcon).toBeUndefined();
             expect(element.value).toBeUndefined();
+            expect(element.value).toBeUndefined();
             expect(element.valueIsLoading).toBeFalsy();
             expect(element.valueSign).toBe('negative');
+            expect(element.weekday).toBeUndefined();
+            expect(element.year).toBeUndefined();
         });
 
         describe('avatar', () => {
@@ -165,6 +192,21 @@ describe('Metric', () => {
             });
         });
 
+        describe('day', () => {
+            it('Passed to the component', () => {
+                element.day = 'numeric';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.day).toBe('numeric');
+                });
+            });
+        });
+
         describe('description', () => {
             it('Passed to the component', () => {
                 element.description = 'some description';
@@ -174,6 +216,21 @@ describe('Metric', () => {
                         '[data-element-id="div-description"]'
                     );
                     expect(description.textContent).toBe('some description');
+                });
+            });
+        });
+
+        describe('era', () => {
+            it('Passed to the component', () => {
+                element.era = 'short';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.era).toBe('short');
                 });
             });
         });
@@ -200,6 +257,36 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
                     expect(metric.formatStyle).toBe('percent');
+                });
+            });
+        });
+
+        describe('hour', () => {
+            it('Passed to the component', () => {
+                element.hour = '2-digit';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.hour).toBe('2-digit');
+                });
+            });
+        });
+
+        describe('hour12', () => {
+            it('Passed to the component', () => {
+                element.hour12 = true;
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.hour12).toBe(true);
                 });
             });
         });
@@ -327,6 +414,36 @@ describe('Metric', () => {
             });
         });
 
+        describe('minute', () => {
+            it('Passed to the component', () => {
+                element.minute = '2-digit';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.minute).toBe('2-digit');
+                });
+            });
+        });
+
+        describe('month', () => {
+            it('Passed to the component', () => {
+                element.month = 'short';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.month).toBe('short');
+                });
+            });
+        });
+
         describe('prefix', () => {
             it('Passed to the component', () => {
                 element.prefix = 'some prefix';
@@ -336,6 +453,21 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
                     expect(metric.prefix).toBe('some prefix');
+                });
+            });
+        });
+
+        describe('second', () => {
+            it('Passed to the component', () => {
+                element.second = '2-digit';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.second).toBe('2-digit');
                 });
             });
         });
@@ -368,6 +500,35 @@ describe('Metric', () => {
             });
         });
 
+        describe('secondaryDay', () => {
+            it('Passed to the component', () => {
+                element.secondaryDay = 'numeric';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.day).toBe('numeric');
+                });
+            });
+        });
+
+        describe('secondaryEra', () => {
+            it('Passed to the component', () => {
+                element.secondaryEra = 'short';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.era).toBe('short');
+                });
+            });
+        });
+
         describe('secondaryFormatStyle', () => {
             it('Passed to the component', () => {
                 element.secondaryFormatStyle = 'percent';
@@ -378,6 +539,36 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-secondary"]'
                     );
                     expect(metric.formatStyle).toBe('percent');
+                });
+            });
+        });
+
+        describe('secondaryHour', () => {
+            it('Passed to the component', () => {
+                element.secondaryHour = '2-digit';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.hour).toBe('2-digit');
+                });
+            });
+        });
+
+        describe('secondaryHour12', () => {
+            it('Passed to the component', () => {
+                element.secondaryHour12 = true;
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.hour12).toBe(true);
                 });
             });
         });
@@ -448,6 +639,36 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-secondary"]'
                     );
                     expect(metric.minimumSignificantDigits).toBe(3);
+                });
+            });
+        });
+
+        describe('secondaryMinute', () => {
+            it('Passed to the component', () => {
+                element.secondaryMinute = '2-digit';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.minute).toBe('2-digit');
+                });
+            });
+        });
+
+        describe('secondaryMonth', () => {
+            it('Passed to the component', () => {
+                element.secondaryMonth = 'short';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.month).toBe('short');
                 });
             });
         });
@@ -584,6 +805,21 @@ describe('Metric', () => {
             });
         });
 
+        describe('secondarySecond', () => {
+            it('Passed to the component', () => {
+                element.secondarySecond = '2-digit';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.second).toBe('2-digit');
+                });
+            });
+        });
+
         describe('secondarySuffix', () => {
             it('Passed to the component', () => {
                 element.secondarySuffix = 'suffix';
@@ -594,6 +830,36 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-secondary"]'
                     );
                     expect(metric.suffix).toBe('suffix');
+                });
+            });
+        });
+
+        describe('secondaryTimeZone', () => {
+            it('Passed to the component', () => {
+                element.secondaryTimeZone = 'Europe/Berlin';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.timeZone).toBe('Europe/Berlin');
+                });
+            });
+        });
+
+        describe('secondaryTimeZoneName', () => {
+            it('Passed to the component', () => {
+                element.secondaryTimeZoneName = 'short';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.timeZoneName).toBe('short');
                 });
             });
         });
@@ -709,6 +975,36 @@ describe('Metric', () => {
             });
         });
 
+        describe('secondaryWeekday', () => {
+            it('Passed to the component', () => {
+                element.secondaryWeekday = 'short';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.weekday).toBe('short');
+                });
+            });
+        });
+
+        describe('secondaryYear', () => {
+            it('Passed to the component', () => {
+                element.secondaryYear = '2-digit';
+                element.secondaryValue = new Date('2025-01-01');
+                element.secondaryFormatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.year).toBe('2-digit');
+                });
+            });
+        });
+
         describe('showTrendColor', () => {
             it('false', () => {
                 element.showTrendColor = false;
@@ -778,6 +1074,36 @@ describe('Metric', () => {
             });
         });
 
+        describe('timeZone', () => {
+            it('Passed to the component', () => {
+                element.timeZone = 'Europe/Berlin';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.timeZone).toBe('Europe/Berlin');
+                });
+            });
+        });
+
+        describe('timeZoneName', () => {
+            it('Passed to the component', () => {
+                element.timeZoneName = 'short';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.timeZoneName).toBe('short');
+                });
+            });
+        });
+
         describe('tooltip', () => {
             it('Passed to the component', () => {
                 element.tooltip = 'some tooltip';
@@ -838,6 +1164,36 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
                     expect(metric.valueSign).toBe('positive-and-negative');
+                });
+            });
+        });
+
+        describe('weekday', () => {
+            it('Passed to the component', () => {
+                element.weekday = 'short';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.weekday).toBe('short');
+                });
+            });
+        });
+
+        describe('year', () => {
+            it('Passed to the component', () => {
+                element.year = '2-digit';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.year).toBe('2-digit');
                 });
             });
         });

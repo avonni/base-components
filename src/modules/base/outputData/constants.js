@@ -138,7 +138,7 @@ const TYPE_ATTRIBUTES = [
     {
         name: 'month',
         type: 'string',
-        valid: ['2-digit', 'narrow', 'short', 'long']
+        valid: ['2-digit', 'numeric', 'narrow', 'short', 'long']
     },
     {
         name: 'second',

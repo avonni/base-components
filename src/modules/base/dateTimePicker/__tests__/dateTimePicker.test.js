@@ -1487,6 +1487,27 @@ describe('DateTimePicker', () => {
                     expect(calendar.weekStartDay).toBe(1);
                 });
             });
+
+            it('First day of the week is updated', () => {
+                element.variant = 'weekly';
+                element.weekStartDay = 1;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.goToDate('2025-10-28');
+                    })
+                    .then(() => {
+                        element.weekStartDay = 3;
+                    })
+                    .then(() => {
+                        const firstTime = element.shadowRoot.querySelector(
+                            '[data-element-id="button-default"]'
+                        );
+                        expect(new Date(firstTime.dataset.time).getTime()).toBe(
+                            new Date(2025, 9, 22, 8).getTime()
+                        );
+                    });
+            });
         });
     });
 

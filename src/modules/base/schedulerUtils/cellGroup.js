@@ -93,23 +93,23 @@ export class SchedulerCellGroup {
      * @param {object} event Event to remove from the cells.
      */
     removeEvent(event) {
-        const { cells, events } = this;
-
         // Remove the event from the cells
-        let i = cells.findIndex((cell) => cell.end >= event.from);
+        let i = this.cells.findIndex((cell) => cell.end >= event.from);
         if (i > -1) {
-            while (i < cells.length && event.to > cells[i].start) {
-                const eventIndex = cells[i].events.findIndex(
+            while (i < this.cells.length && event.to > this.cells[i].start) {
+                const eventIndex = this.cells[i].events.findIndex(
                     (evt) => evt.key === event.key
                 );
-                cells[i].events.splice(eventIndex, 1);
+                this.cells[i].events.splice(eventIndex, 1);
                 i += 1;
             }
         }
 
         // Remove the event
-        const eventIndex = events.findIndex((evt) => evt.key === event.key);
-        events.splice(eventIndex, 1);
+        const eventIndex = this.events.findIndex(
+            (evt) => evt.key === event.key
+        );
+        this.events.splice(eventIndex, 1);
     }
 
     /**

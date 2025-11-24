@@ -531,6 +531,10 @@
             "path": "src/modules/base/primitiveSchedulerTimeline/primitiveSchedulerTimeline.js"
         },
         {
+            "name": "c/primitiveScrollableContainer",
+            "path": "src/modules/base/primitiveScrollableContainer/primitiveScrollableContainer.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },

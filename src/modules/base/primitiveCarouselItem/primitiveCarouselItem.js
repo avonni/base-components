@@ -466,16 +466,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * Action click event dispatcher.
      */
     _dispatchActionClick(actionName) {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
-
         /**
          * The event fired when a user clicks on an action.
          *
@@ -490,13 +480,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 detail: {
                     name: actionName,
                     item: {
-                        title,
-                        description,
-                        name,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText
+                        title: this.title,
+                        description: this.description,
+                        name: this.name,
+                        src: this.src,
+                        href: this.href,
+                        actions: this.actions,
+                        imageAssistiveText: this.imageAssistiveText
                     }
                 }
             })
@@ -507,16 +497,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * Item click event dispatcher.
      */
     _dispatchItemClick() {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
-
         /**
          * The event fired when an item is clicked.
          *
@@ -529,13 +509,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
             new CustomEvent('itemclick', {
                 detail: {
                     item: {
-                        title,
-                        description,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText,
-                        name
+                        title: this.title,
+                        description: this.description,
+                        src: this.src,
+                        href: this.href,
+                        actions: this.actions,
+                        imageAssistiveText: this.imageAssistiveText,
+                        name: this.name
                     }
                 }
             })

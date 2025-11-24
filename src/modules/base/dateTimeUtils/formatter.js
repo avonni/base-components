@@ -4,6 +4,7 @@ import {
     DOUBLE_DIGIT,
     ERA,
     INTERVALS,
+    ISO_DATE_PATTERN,
     LONG,
     MONTH,
     NARROW,
@@ -274,4 +275,12 @@ function getFormattedDate({ date = new Date(), timeZone, format }) {
     return _customFormat({ date: givenDate, format, timeZone });
 }
 
-export { getFormattedDate };
+function isISODateOnly(date) {
+    return (
+        typeof date === 'string' &&
+        date.match(ISO_DATE_PATTERN) &&
+        !date.includes('T')
+    );
+}
+
+export { getFormattedDate, isISODateOnly };

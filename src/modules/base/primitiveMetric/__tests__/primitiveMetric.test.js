@@ -20,7 +20,11 @@ describe('Primitive Metric', () => {
         it('Default attributes', () => {
             expect(element.currencyCode).toBeUndefined();
             expect(element.currencyDisplayAs).toBe('symbol');
+            expect(element.day).toBeUndefined();
+            expect(element.era).toBeUndefined();
             expect(element.formatStyle).toBe('decimal');
+            expect(element.hour).toBeUndefined();
+            expect(element.hour12).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.maximumFractionDigits).toBeUndefined();
@@ -28,12 +32,19 @@ describe('Primitive Metric', () => {
             expect(element.minimumFractionDigits).toBeUndefined();
             expect(element.minimumIntegerDigits).toBeUndefined();
             expect(element.minimumSignificantDigits).toBeUndefined();
+            expect(element.minute).toBeUndefined();
+            expect(element.month).toBeUndefined();
             expect(element.prefix).toBeUndefined();
+            expect(element.second).toBeUndefined();
             expect(element.suffix).toBeUndefined();
+            expect(element.timeZone).toBeUndefined();
+            expect(element.timeZoneName).toBeUndefined();
             expect(element.trendBreakpointValue).toBe(0);
             expect(element.trendIcon).toBeUndefined();
             expect(element.value).toBeUndefined();
             expect(element.valueSign).toBe('negative');
+            expect(element.weekday).toBeUndefined();
+            expect(element.year).toBeUndefined();
         });
 
         describe('currencyCode', () => {
@@ -64,6 +75,36 @@ describe('Primitive Metric', () => {
             });
         });
 
+        describe('day', () => {
+            it('Passed to the component', () => {
+                element.formatStyle = 'date';
+                element.day = 'numeric';
+                element.value = new Date('2025-01-01');
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.day).toBe('numeric');
+                });
+            });
+        });
+
+        describe('era', () => {
+            it('Passed to the component', () => {
+                element.formatStyle = 'date';
+                element.era = 'short';
+                element.value = new Date('2025-01-01');
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.era).toBe('short');
+                });
+            });
+        });
+
         describe('formatStyle', () => {
             it('Passed to the component', () => {
                 element.formatStyle = 'percent-fixed';
@@ -74,6 +115,36 @@ describe('Primitive Metric', () => {
                         '[data-element-id="lightning-formatted-number"]'
                     );
                     expect(number.formatStyle).toBe('percent-fixed');
+                });
+            });
+        });
+
+        describe('hour', () => {
+            it('Passed to the component', () => {
+                element.formatStyle = 'date';
+                element.hour = '2-digit';
+                element.value = new Date('2025-01-01');
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.hour).toBe('2-digit');
+                });
+            });
+        });
+
+        describe('hour12', () => {
+            it('Passed to the component', () => {
+                element.formatStyle = 'date';
+                element.hour12 = true;
+                element.value = new Date('2025-01-01');
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.hour12).toBe(true);
                 });
             });
         });
@@ -132,6 +203,20 @@ describe('Primitive Metric', () => {
                     expect(emptyValue).toBeTruthy();
                     expect(spinner).toBeTruthy();
                     expect(number).toBeFalsy();
+                });
+            });
+        });
+
+        describe('loadingStateAlternativeText', () => {
+            it('Passed to the component', () => {
+                element.loadingStateAlternativeText = 'Loading';
+                element.isLoading = true;
+
+                return Promise.resolve().then(() => {
+                    const spinner = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-spinner"]'
+                    );
+                    expect(spinner.alternativeText).toBe('Loading');
                 });
             });
         });
@@ -206,16 +291,32 @@ describe('Primitive Metric', () => {
             });
         });
 
-        describe('loadingStateAlternativeText', () => {
+        describe('minute', () => {
             it('Passed to the component', () => {
-                element.loadingStateAlternativeText = 'Loading';
-                element.isLoading = true;
+                element.formatStyle = 'date';
+                element.minute = '2-digit';
+                element.value = new Date('2025-01-01');
 
                 return Promise.resolve().then(() => {
-                    const spinner = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-spinner"]'
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
                     );
-                    expect(spinner.alternativeText).toBe('Loading');
+                    expect(date.minute).toBe('2-digit');
+                });
+            });
+        });
+
+        describe('month', () => {
+            it('Passed to the component', () => {
+                element.formatStyle = 'date';
+                element.month = 'short';
+                element.value = new Date('2025-01-01');
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.month).toBe('short');
                 });
             });
         });
@@ -230,6 +331,52 @@ describe('Primitive Metric', () => {
                         '[data-element-id="span-prefix"]'
                     );
                     expect(prefix.textContent).toBe('some prefix ');
+                });
+            });
+        });
+
+        describe('second', () => {
+            it('Passed to the component', () => {
+                element.formatStyle = 'date';
+                element.second = '2-digit';
+                element.value = new Date('2025-01-01');
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.second).toBe('2-digit');
+                });
+            });
+        });
+
+        describe('timeZone', () => {
+            it('Passed to the component', () => {
+                element.timeZone = 'Europe/Berlin';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.timeZone).toBe('Europe/Berlin');
+                });
+            });
+        });
+
+        describe('timeZoneName', () => {
+            it('Passed to the component', () => {
+                element.timeZoneName = 'short';
+                element.value = new Date('2025-01-01');
+                element.timeZone = 'Europe/Berlin';
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.timeZoneName).toBe('short');
                 });
             });
         });
@@ -530,6 +677,36 @@ describe('Primitive Metric', () => {
                         expect(number.value).toBe(3);
                         expect(sign).toBeFalsy();
                     });
+            });
+        });
+
+        describe('weekday', () => {
+            it('Passed to the component', () => {
+                element.weekday = 'short';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.weekday).toBe('short');
+                });
+            });
+        });
+
+        describe('year', () => {
+            it('Passed to the component', () => {
+                element.year = '2025';
+                element.value = new Date('2025-01-01');
+                element.formatStyle = 'date';
+
+                return Promise.resolve().then(() => {
+                    const date = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-date-time"]'
+                    );
+                    expect(date.year).toBe('2025');
+                });
             });
         });
     });
