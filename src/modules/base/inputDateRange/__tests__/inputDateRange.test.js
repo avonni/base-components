@@ -1125,7 +1125,7 @@ describe('Input Date Range', () => {
                         '2022-07-25T00:00:00.000Z'
                     );
                     expect(handler.mock.calls[0][0].detail.endDate).toEqual(
-                        '2022-07-25T17:00:00.000Z'
+                        '2022-07-25T00:00:00.000Z'
                     );
                 });
         });
@@ -1170,7 +1170,7 @@ describe('Input Date Range', () => {
                     );
                     expect(handler).toHaveBeenCalledTimes(1);
                     expect(handler.mock.calls[0][0].detail.startDate).toEqual(
-                        '2022-07-28T18:00:00.000Z'
+                        '2022-07-28T00:00:00.000Z'
                     );
                     expect(handler.mock.calls[0][0].detail.endDate).toEqual(
                         '2022-07-28T00:00:00.000Z'

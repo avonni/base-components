@@ -964,6 +964,7 @@ export default class InputDateRange extends LightningElement {
                 this._endDate = this._startDate;
                 if (this.type === 'datetime' && !this.isValidTimeRange) {
                     this.startTime = null;
+                    this.endTime = null;
                 }
                 break;
 
@@ -996,6 +997,7 @@ export default class InputDateRange extends LightningElement {
         this.endTime = event.target.value;
         if (!this.isValidTimeRange) {
             this.startTime = null;
+            this.endTime = null;
         }
         this.dispatchChange();
     }
@@ -1082,6 +1084,7 @@ export default class InputDateRange extends LightningElement {
             case 'SELECT_START_EQUAL_END':
                 this._startDate = this._endDate;
                 if (this.type === 'datetime' && !this.isValidTimeRange) {
+                    this.startTime = null;
                     this.endTime = null;
                 }
                 break;
@@ -1115,6 +1118,7 @@ export default class InputDateRange extends LightningElement {
         event.preventDefault();
         this.startTime = event.target.value;
         if (!this.isValidTimeRange) {
+            this.startTime = null;
             this.endTime = null;
         }
         this.dispatchChange();
