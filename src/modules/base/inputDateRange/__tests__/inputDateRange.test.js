@@ -1081,6 +1081,102 @@ describe('Input Date Range', () => {
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
                 });
         });
+
+        it('Change event with invalid start time', () => {
+            element.startDate = new Date('7/25/2022');
+            element.endDate = new Date('7/28/2022');
+            element.type = 'datetime';
+
+            return Promise.resolve()
+                .then(() => {
+                    const startTimeInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    const endTimeInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    startTimeInput.value = '18:00:00.000';
+                    endTimeInput.value = '17:00:00.000';
+                    startTimeInput.dispatchEvent(new CustomEvent('change'));
+                    endTimeInput.dispatchEvent(new CustomEvent('change'));
+                })
+                .then(() => {
+                    const endInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-end-date"]'
+                    );
+                    endInput.click();
+                })
+                .then(() => {
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+                    const endCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-end-date"]'
+                    );
+                    endCalendar.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: [new Date('7/25/2022')],
+                                clickedDate: new Date('7/25/2022')
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.startDate).toEqual(
+                        '2022-07-25T00:00:00.000Z'
+                    );
+                    expect(handler.mock.calls[0][0].detail.endDate).toEqual(
+                        '2022-07-25T00:00:00.000Z'
+                    );
+                });
+        });
+
+        it('Change event with invalid end time', () => {
+            element.startDate = new Date('7/25/2022');
+            element.endDate = new Date('7/28/2022');
+            element.type = 'datetime';
+
+            return Promise.resolve()
+                .then(() => {
+                    const startTimeInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    const endTimeInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    startTimeInput.value = '18:00:00.000';
+                    endTimeInput.value = '17:00:00.000';
+                    startTimeInput.dispatchEvent(new CustomEvent('change'));
+                    endTimeInput.dispatchEvent(new CustomEvent('change'));
+                })
+                .then(() => {
+                    const startInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-start-date"]'
+                    );
+                    startInput.click();
+                })
+                .then(() => {
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+                    const startCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-start-date"]'
+                    );
+                    startCalendar.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: [new Date('7/28/2022')],
+                                clickedDate: new Date('7/28/2022')
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.startDate).toEqual(
+                        '2022-07-28T00:00:00.000Z'
+                    );
+                    expect(handler.mock.calls[0][0].detail.endDate).toEqual(
+                        '2022-07-28T00:00:00.000Z'
+                    );
+                });
+        });
     });
 
     describe('Keyboard Accessibility', () => {

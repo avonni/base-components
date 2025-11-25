@@ -481,6 +481,28 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * True if time range is valid.
+     *
+     * @type {boolean}
+     */
+    get isValidTimeRange() {
+        if (
+            this.startDate &&
+            this.endDate &&
+            this.startDateString === this.endDateString &&
+            this.endTime &&
+            this.startTime
+        ) {
+            const startDateTime = new Date(`1970-01-01T${this.startTime}Z`);
+            const endDateTime = new Date(`1970-01-01T${this.endTime}Z`);
+            if (startDateTime > endDateTime) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * True if type is datetime.
      *
      * @type {boolean}
@@ -940,6 +962,10 @@ export default class InputDateRange extends LightningElement {
 
             case 'SELECT_END_EQUAL_START':
                 this._endDate = this._startDate;
+                if (this.type === 'datetime' && !this.isValidTimeRange) {
+                    this.startTime = null;
+                    this.endTime = null;
+                }
                 break;
 
             default:
@@ -969,6 +995,10 @@ export default class InputDateRange extends LightningElement {
         event.stopPropagation();
         event.preventDefault();
         this.endTime = event.target.value;
+        if (!this.isValidTimeRange) {
+            this.startTime = null;
+            this.endTime = null;
+        }
         this.dispatchChange();
     }
 
@@ -1053,6 +1083,10 @@ export default class InputDateRange extends LightningElement {
 
             case 'SELECT_START_EQUAL_END':
                 this._startDate = this._endDate;
+                if (this.type === 'datetime' && !this.isValidTimeRange) {
+                    this.startTime = null;
+                    this.endTime = null;
+                }
                 break;
 
             default:
@@ -1083,6 +1117,10 @@ export default class InputDateRange extends LightningElement {
         event.stopPropagation();
         event.preventDefault();
         this.startTime = event.target.value;
+        if (!this.isValidTimeRange) {
+            this.startTime = null;
+            this.endTime = null;
+        }
         this.dispatchChange();
     }
 
