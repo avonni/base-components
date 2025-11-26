@@ -992,7 +992,7 @@ export default class List extends LightningElement {
      */
     get fieldsContainer() {
         return this.template.querySelector(
-            '[data-element-id="fields-container"]'
+            '[data-element-id="fields-container-wrapper"]'
         );
     }
 
@@ -2443,6 +2443,7 @@ export default class List extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('privatelayoutdisconnected', {
                 detail: {
+                    name: event.detail.name,
                     callbacks: {
                         setAllFieldsItemsSize
                     }
