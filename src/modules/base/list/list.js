@@ -163,6 +163,7 @@ export default class List extends LightningElement {
     _visibleActions;
     _visibleMediaActions;
 
+    _cachedWidth = 0;
     _cardRendersBeforeScrollUpdate = 0;
     _columnsSizes = {
         default: 1
@@ -1997,6 +1998,25 @@ export default class List extends LightningElement {
         }
     }
 
+    setFieldItemInitialSize(callbackSetSize) {
+        // If the size is already being computed, skip to avoid multiple computations.
+        if (!this._isComputingCachedWidth) {
+            this._isComputingCachedWidth = true;
+
+            // Compute the width on the next microtask to ensure DOM is ready.
+            queueMicrotask(() => {
+                this._cachedWidth =
+                    this.fieldsContainer?.getBoundingClientRect().width || 0;
+                this._isComputingCachedWidth = false;
+            });
+        }
+
+        // Set the size on the next microtask to ensure the cached width is ready.
+        queueMicrotask(() => {
+            callbackSetSize(this._cachedWidth);
+        });
+    }
+
     setFieldsAreResizedByParent(value) {
         this._fieldsResizeIsHandledByParent = normalizeBoolean(value);
     }
@@ -2413,6 +2433,13 @@ export default class List extends LightningElement {
                 callback(widthFields);
             });
         };
+
+        try {
+            // Set initial size so the field layout doesn't jump before the resize observer is triggered
+            this.setFieldItemInitialSize(callbacks.setItemsSize);
+        } catch (error) {
+            console.error(error);
+        }
 
         this.dispatchEvent(
             new CustomEvent('privatelayoutconnected', {
