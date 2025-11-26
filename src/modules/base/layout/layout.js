@@ -64,6 +64,7 @@ export default class Layout extends LightningElement {
     renderedCallback() {
         if (this._rendered) return;
         this._rendered = true;
+        if (this._resizeIsHandledByParent) return;
         this.dispatchSizeChange();
         this.setItemsSize();
         this.initResizeObserver();
@@ -297,6 +298,7 @@ export default class Layout extends LightningElement {
 
         // Here we use the setItemsSize() method instead of setting the size immediately.
         // This ensures that it does not freeze with a lot of items, since there is a debounce.
+        if (this._resizeIsHandledByParent) return;
         this.setItemsSize();
     }
 
