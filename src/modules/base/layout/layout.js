@@ -193,10 +193,7 @@ export default class Layout extends LightningElement {
      */
     get width() {
         const width = this.wrapper?.getBoundingClientRect().width || 0;
-        if (width >= 1024) return 'large';
-        if (width >= 768) return 'medium';
-        if (width >= 480) return 'small';
-        return WIDTHS.default;
+        return this.getSizeFromWidth(width);
     }
 
     /**
@@ -221,6 +218,19 @@ export default class Layout extends LightningElement {
             clearTimeout(this._debounceTimeoutId);
             this._debounceTimeoutId = null;
         }
+    }
+
+    /**
+     * Get size from width value.
+     *
+     * @param {number} width
+     * @returns {string} Size value: default, small, medium or large.
+     */
+    getSizeFromWidth(width) {
+        if (width >= 1024) return 'large';
+        if (width >= 768) return 'medium';
+        if (width >= 480) return 'small';
+        return WIDTHS.default;
     }
 
     /**
@@ -268,16 +278,28 @@ export default class Layout extends LightningElement {
 
     /**
      * Set the size of the items.
+     *
+     * @param {number} width
      */
-    setItemsSize() {
+    setItemsSize(width) {
         if (this._disconnected) return;
 
-        this.clearDebounceTimeout();
-        this._debounceTimeoutId = setTimeout(() => {
-            this._items.forEach((item) => {
-                item.setContainerSize(this.width);
-            });
-        }, ONE_TWENTY_FPS);
+        if (!width) {
+            this.clearDebounceTimeout();
+            this._debounceTimeoutId = setTimeout(() => {
+                this._items.forEach((item) => {
+                    item.setContainerSize(this.width);
+                });
+            }, ONE_TWENTY_FPS);
+            return;
+        }
+
+        // If width is provided, we set the size immediately without debounce
+        // since we avoid the performance overhead of calling getBoundingClientRect.
+        const size = this.getSizeFromWidth(width);
+        this._items.forEach((item) => {
+            item.setContainerSize(size);
+        });
     }
 
     /*
