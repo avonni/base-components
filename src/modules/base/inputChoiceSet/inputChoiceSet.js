@@ -659,8 +659,8 @@ export default class InputChoiceSet extends LightningElement {
     get computedInputContainerClass() {
         const checkboxClass = this.isMultiSelect
             ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
-            : `slds-radio avonni-input-choice-set__${this.orientation}`;
-        const toggleClass = `slds-checkbox_toggle slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__${this.orientation}`;
+            : `slds-radio slds-is-relative avonni-input-choice-set__${this.orientation}`;
+        const toggleClass = `slds-checkbox_toggle slds-is-relative slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__${this.orientation}`;
 
         if (this.checkboxVariant) {
             return checkboxClass;
