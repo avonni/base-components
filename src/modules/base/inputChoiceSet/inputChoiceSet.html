@@ -40,7 +40,10 @@
                 </div>
                 <c-primitive-scrollable-container
                     if:false={isLoading}
-                    show-scroll-buttons
+                    disabled={horizontalOverflowIsDisabled}
+                    show-menu={displayShowMoreMenu}
+                    show-scroll-buttons={computedOrientationAttributes.showScrollButtons}
+                    onwidthchange={handleWidthChange}
                 >
                     <div
                         class={computedButtonClass}
@@ -56,7 +59,7 @@
                         >
                             <!-- Vertical/Horizontal toggle, checkbox, radio and displayAsRow button -->
                             <template
-                                for:each={transformedOptions}
+                                for:each={visibleOptions}
                                 for:item="option"
                             >
                                 <c-layout-item
@@ -138,7 +141,7 @@
                                                 </div>
                                                 <div
                                                     class={computedLabelContainerClass}
-                                                    style={option.width}
+                                                    style={option.computedStyle}
                                                     data-element-id="label-icon-container"
                                                 >
                                                     <div
@@ -214,10 +217,11 @@
                                 </c-layout-item>
                             </template>
                         </c-layout>
+
                         <!-- Vertical buttons -->
                         <template
                             if:false={hasLayoutItem}
-                            for:each={transformedOptions}
+                            for:each={visibleOptions}
                             for:item="option"
                         >
                             <span
@@ -290,6 +294,81 @@
                                             data-element-id="lightning-icon-check"
                                         ></lightning-icon>
                                     </div>
+                                </label>
+                            </span>
+                        </template>
+                    </div>
+
+                    <!-- "Show More" menu content -->
+                    <div class="slds-listbox_vertical" slot="menu-content">
+                        <template
+                            for:each={overflowingOptions}
+                            for:item="option"
+                        >
+                            <span
+                                if:false={option.hidden}
+                                key={option.value}
+                                data-element-id="span-checkbox-container"
+                                data-value={option.value}
+                                onmouseenter={handleEnter}
+                                onmouseleave={handleLeave}
+                            >
+                                <input
+                                    class="
+                                        avonni-input-choice-set__overflowing-option-input
+                                    "
+                                    checked={option.isChecked}
+                                    disabled={option.disabled}
+                                    id={option.value}
+                                    name={name}
+                                    readonly={readOnly}
+                                    type={computedInputType}
+                                    value={option.value}
+                                    data-checked={option.isChecked}
+                                    data-element-id="input-overflowing-option"
+                                    onblur={handleBlur}
+                                    onchange={handleChange}
+                                    onclick={handleClick}
+                                    onfocus={handleFocus}
+                                    onkeyup={handleKeyUp}
+                                />
+                                <label
+                                    for={option.value}
+                                    class="
+                                        slds-media
+                                        slds-media_small
+                                        slds-media_center
+                                        slds-listbox__item slds-listbox__option
+                                        avonni-input-choice-set__overflowing-option-label
+                                    "
+                                    data-element-id="label"
+                                    data-value={option.value}
+                                >
+                                    <span
+                                        class="
+                                            slds-media__figure
+                                            slds-listbox__option-icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <lightning-icon
+                                            class="
+                                                avonni-input-choice-set__overflowing-option-checked-icon
+                                            "
+                                            icon-name="utility:check"
+                                            size="x-small"
+                                        ></lightning-icon>
+                                    </span>
+                                    <span
+                                        class="
+                                            slds-listbox__option-text
+                                            slds-listbox__option-text_entity
+                                            avonni-input-choice-set__overflowing-option-label-text
+                                            slds-p-vertical_x-small
+                                            slds-m-bottom_none
+                                        "
+                                        >{option.label}</span
+                                    >
                                 </label>
                             </span>
                         </template>

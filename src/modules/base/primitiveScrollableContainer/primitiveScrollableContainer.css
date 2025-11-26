@@ -2,9 +2,13 @@
     width: 100%;
 }
 
-.avonni-primitive-scrollable-container__main {
+.avonni-primitive-scrollable-container__main-wrapper {
     /* Hide horizontal scrollbar */
     scrollbar-width: none;
+}
+
+.avonni-primitive-scrollable-container__show-more-button {
+    width: 100px;
 }
 
 .avonni-primitive-scrollable-container__scroll-button {

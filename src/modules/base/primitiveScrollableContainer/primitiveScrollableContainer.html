@@ -7,7 +7,7 @@
     >
         <!-- Left scroll button -->
         <div
-            if:true={showScrollButtons}
+            if:true={computedShowScrollButtons}
             class="
                 slds-is-absolute slds-grid
                 slds-p-right_large
@@ -22,6 +22,7 @@
                 class="slds-align-middle"
                 alternative-text="Scroll Left"
                 aria-hidden="true"
+                disabled={disabled}
                 icon-name="utility:chevronleft"
                 size="small"
                 title="Scroll Left"
@@ -34,20 +35,63 @@
 
         <!-- Main content -->
         <div
-            class="
-                slds-scrollable_x
-                avonni-primitive-scrollable-container__width-100
-                avonni-primitive-scrollable-container__main
-            "
+            class={computedMainWrapperClass}
             data-element-id="div-main"
             onscroll={handleScroll}
         >
-            <slot></slot>
+            <div
+                class={computedMainContentClass}
+                data-element-id="div-main-content"
+            >
+                <slot></slot>
+            </div>
+
+            <lightning-button
+                if:true={showMenu}
+                class="
+                    slds-show
+                    slds-m-left_medium
+                    slds-shrink-none
+                    slds-text-align_center
+                    avonni-primitive-scrollable-container__show-more-button
+                "
+                disabled={disabled}
+                icon-name="utility:chevrondown"
+                icon-position="right"
+                label="More"
+                title="Show more content"
+                variant="base"
+                data-element-id="lightning-button-show-more"
+                onclick={handleShowMoreClick}
+            ></lightning-button>
+
+            <div
+                class="
+                    slds-hide slds-dropdown slds-dropdown_length-7
+                    slds-p-vertical_none
+                    slds-p-horizontal_xx-small
+                    slds-dropdown_right
+                "
+                data-element-id="div-hidden-content"
+                onfocusin={handleHiddenContentFocusIn}
+                onfocusout={handleHiddenContentFocusOut}
+                onkeyup={handleHiddenContentKeyUp}
+            >
+                <span
+                    id="instructions"
+                    class="slds-assistive-text"
+                    aria-live="assertive"
+                    >Press escape to close this menu.</span
+                >
+                <c-focus-trap data-element-id="avonni-focus-trap">
+                    <slot name="menu-content"></slot>
+                </c-focus-trap>
+            </div>
         </div>
 
         <!-- Right scroll button -->
         <div
-            if:true={showScrollButtons}
+            if:true={computedShowScrollButtons}
             class="
                 slds-is-absolute slds-grid
                 slds-p-left_large
@@ -62,6 +106,7 @@
                 class="slds-align-middle"
                 alternative-text="Scroll Right"
                 aria-hidden="true"
+                disabled={disabled}
                 icon-name="utility:chevronright"
                 size="small"
                 title="Scroll Right"

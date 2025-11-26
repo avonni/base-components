@@ -48,6 +48,8 @@ const ORIENTATION_ATTRIBUTES = {
     vertical: [],
     horizontal: [
         'cols',
+        'scrollable',
+        'showScrollButtons',
         'smallContainerCols',
         'mediumContainerCols',
         'largeContainerCols',
@@ -134,14 +136,17 @@ export default class InputChoiceSet extends LightningElement {
     _value = [];
     _variant;
 
+    computedOptions = [];
     computedOrientationAttributes = {};
     computedTypeAttributes = {};
-    computedWidth;
+    displayShowMoreMenu = false;
     helpMessage;
-    transformedOptions = [];
+    overflowingOptions = [];
+    visibleOptions = [];
 
     _connected = false;
     _containerWidth;
+    _fixedOptionWidth;
     _rendered = false;
     _resizeObserver;
     _tooltip;
@@ -168,7 +173,7 @@ export default class InputChoiceSet extends LightningElement {
         }
 
         if (!this._rendered) {
-            this.setWidth();
+            this.setFixedOptionWidth();
             this.updateLabelsStyle();
         }
         this._rendered = true;
@@ -205,7 +210,9 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: CHECK_POSITIONS.default,
             validValues: CHECK_POSITIONS.valid
         });
-        this.setWidth();
+        if (this._connected) {
+            this.setFixedOptionWidth();
+        }
     }
 
     /**
@@ -255,9 +262,9 @@ export default class InputChoiceSet extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
-        this.setWidth();
 
         if (this._connected) {
+            this.setFixedOptionWidth();
             this.initOptions();
         }
     }
@@ -299,7 +306,8 @@ export default class InputChoiceSet extends LightningElement {
         });
         if (this._connected) {
             this.initOrientationAttributes();
-            this.setWidth();
+            this.initOptions();
+            this.setFixedOptionWidth();
             this.destroyTooltip();
         }
     }
@@ -320,7 +328,8 @@ export default class InputChoiceSet extends LightningElement {
 
         if (this._connected) {
             this.initOrientationAttributes();
-            this.setWidth();
+            this.initOptions();
+            this.setFixedOptionWidth();
         }
     }
 
@@ -487,9 +496,17 @@ export default class InputChoiceSet extends LightningElement {
      * @type {HTMLElement[]}
      */
     get checkboxes() {
-        return this.toggleVariant
-            ? this.template.querySelectorAll('[data-element-id="input-toggle"]')
-            : this.template.querySelectorAll('[data-element-id="input"]');
+        const id = this.toggleVariant ? 'input-toggle' : 'input';
+        const visibleElements = this.template.querySelectorAll(
+            `[data-element-id="${id}"]`
+        );
+        const overflowingCheckboxes = this.template.querySelectorAll(
+            '[data-element-id="input-overflowing-option"]'
+        );
+        return [
+            ...Array.from(visibleElements),
+            ...Array.from(overflowingCheckboxes)
+        ];
     }
 
     /**
@@ -760,6 +777,13 @@ export default class InputChoiceSet extends LightningElement {
         );
     }
 
+    get horizontalOverflowIsDisabled() {
+        return (
+            this.computedOrientationAttributes.multipleRows ||
+            this.computedTypeAttributes.stretch
+        );
+    }
+
     /**
      * True if orientation is horizontal.
      *
@@ -873,7 +897,7 @@ export default class InputChoiceSet extends LightningElement {
      */
     handleChecking(value, target, isInput) {
         const isSingleToggle =
-            this.type === 'toggle' && this.checkboxes.length === 1;
+            this.toggleVariant && this.checkboxes.length === 1;
         if (this.isMultiSelect || isSingleToggle) {
             if (this.toggleVariant) {
                 const checked = target.checked;
@@ -915,17 +939,24 @@ export default class InputChoiceSet extends LightningElement {
      * Initialize the options.
      */
     initOptions() {
-        this.transformedOptions = Array.isArray(this.options)
+        this.displayShowMoreMenu = false;
+        this.computedOptions = Array.isArray(this.options)
             ? this.options.map((option) => {
                   return new InputChoiceOption(option, {
                       disabled: this.disabled,
                       labelClass: this.computedLabelClass,
                       type: this.type,
                       value: this.value,
-                      width: this.computedWidth
+                      fixedWidth: this._fixedOptionWidth
                   });
               })
             : [];
+        this.visibleOptions = this.computedOptions;
+        this.overflowingOptions = [];
+
+        requestAnimationFrame(() => {
+            this.setOptionWidth();
+        });
     }
 
     /**
@@ -933,6 +964,10 @@ export default class InputChoiceSet extends LightningElement {
      */
     initOrientationAttributes() {
         const attributes = deepCopy(this.orientationAttributes);
+        if (attributes.scrollable) {
+            this.computedOrientationAttributes = attributes;
+            return;
+        }
         const small = this.normalizeHorizontalColumns(
             attributes.smallContainerCols
         );
@@ -976,7 +1011,7 @@ export default class InputChoiceSet extends LightningElement {
 
         this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
             this._containerWidth = wrapper.getBoundingClientRect().width;
-            this.setWidth();
+            this.setFixedOptionWidth();
             this.destroyTooltip();
         });
     }
@@ -1043,7 +1078,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Set the width of the label icon container when check position is right and orientation vertical.
      */
-    setWidth() {
+    setFixedOptionWidth() {
         const labelIconContainers = this.template.querySelectorAll(
             '[data-element-id="label-icon-container"]'
         );
@@ -1069,7 +1104,16 @@ export default class InputChoiceSet extends LightningElement {
                     : maxWidth;
             labelIconContainer.style.width = `${maxWidth + 4}px`;
         });
-        this.computedWidth = `width: ${maxWidth + 4}px;`;
+        this._fixedOptionWidth = maxWidth + 4;
+    }
+
+    setOptionWidth() {
+        this.computedOptions.forEach((option) => {
+            const optionElement = this.template.querySelector(
+                `[data-element-id="span-checkbox-container"][data-value="${option.value}"]`
+            );
+            option.width = optionElement?.offsetWidth || 0;
+        });
     }
 
     showTooltip(tooltipValue, target) {
@@ -1242,9 +1286,14 @@ export default class InputChoiceSet extends LightningElement {
         let target = event.currentTarget;
         const value = target.value || target.name;
         const isInput = target.dataset.elementId === 'input';
+        const isOverflowing = target.dataset.overflowingOption;
+        const option = this.computedOptions.find((opt) => opt.value === value);
+        if (option) {
+            option.isChecked = target.checked;
+        }
 
         // When toggle variant, if we press on the label we need to get the target input-toggle
-        if (this.toggleVariant && isInput) {
+        if (!isOverflowing && this.toggleVariant && isInput) {
             target = this.template.querySelector(
                 `[data-element-id="input-toggle"][data-value="${value}"]`
             );
@@ -1327,6 +1376,33 @@ export default class InputChoiceSet extends LightningElement {
     handleKeyUp(event) {
         if (event.key !== 'Enter') return;
         event.currentTarget.click();
+    }
+
+    handleWidthChange(event) {
+        const allowShowMoreMenu =
+            this.isHorizontal &&
+            !this.computedOrientationAttributes.scrollable &&
+            !this.horizontalOverflowIsDisabled;
+        if (!allowShowMoreMenu) {
+            return;
+        }
+        let availableWidth = event.detail.availableWidth;
+        let firstHiddenIndex = this.computedOptions.length;
+
+        for (let i = 0; i < this.computedOptions.length; i++) {
+            availableWidth -= this.computedOptions[i].width;
+            // Allow for 5px to overflow the container,
+            // to avoid displaying the "show more" menu
+            // when only a tiny bit of space is missing
+            if (availableWidth <= -5) {
+                firstHiddenIndex = i;
+                break;
+            }
+        }
+
+        this.visibleOptions = this.computedOptions.slice(0, firstHiddenIndex);
+        this.overflowingOptions = this.computedOptions.slice(firstHiddenIndex);
+        this.displayShowMoreMenu = this.overflowingOptions.length > 0;
     }
 
     /**
