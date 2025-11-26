@@ -129,12 +129,6 @@ export default class PrimitiveScrollableContainer extends LightningElement {
         return !this.showMenu && this.showScrollButtons;
     }
 
-    get isOverflowing() {
-        const totalWidth = this.mainElement.scrollWidth;
-        const visibleWidth = this.mainElement.clientWidth;
-        return totalWidth > visibleWidth;
-    }
-
     get mainElement() {
         return this.template.querySelector('[data-element-id="div-main"]');
     }
@@ -185,19 +179,19 @@ export default class PrimitiveScrollableContainer extends LightningElement {
             return;
         }
 
-        const { scrollWidth, clientWidth } = this.mainElement;
-        const scrolledDistance = Math.ceil(this.mainElement.scrollLeft);
+        const { scrollWidth, clientWidth, scrollLeft } = this.mainElement;
+        const scrolledDistance = Math.ceil(scrollLeft);
         const maxScroll = scrollWidth - clientWidth;
+        const isOverflowing = scrollWidth > clientWidth;
 
-        const hasScrollRight =
-            this.isOverflowing && scrolledDistance < maxScroll;
+        const hasScrollRight = isOverflowing && scrolledDistance < maxScroll;
         if (hasScrollRight) {
             rightScrollButton.classList.remove('slds-hide');
         } else {
             rightScrollButton.classList.add('slds-hide');
         }
 
-        const hasScrollLeft = this.isOverflowing && scrolledDistance > 0;
+        const hasScrollLeft = isOverflowing && scrolledDistance > 0;
         if (hasScrollLeft) {
             leftScrollButton.classList.remove('slds-hide');
         } else {
@@ -272,6 +266,13 @@ export default class PrimitiveScrollableContainer extends LightningElement {
             if (focusTrap) {
                 focusTrap.focus();
             }
+
+            const instructions = this.template.querySelector(
+                '[data-element-id="span-instructions"]'
+            );
+            if (instructions) {
+                instructions.textContent = 'Press escape to close this menu.';
+            }
         }
     }
 
@@ -282,7 +283,9 @@ export default class PrimitiveScrollableContainer extends LightningElement {
      */
 
     _dispatchWidthChange() {
-        const visibleWidth = this.mainElement.clientWidth;
+        const visibleWidth = this.mainElement
+            ? this.mainElement.clientWidth
+            : 0;
         this.dispatchEvent(
             new CustomEvent('widthchange', {
                 detail: {

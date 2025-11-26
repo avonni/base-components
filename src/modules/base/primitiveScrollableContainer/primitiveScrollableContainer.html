@@ -78,11 +78,11 @@
                 onkeyup={handleHiddenContentKeyUp}
             >
                 <span
-                    id="instructions"
+                    lwc:dom="manual"
                     class="slds-assistive-text"
-                    aria-live="assertive"
-                    >Press escape to close this menu.</span
-                >
+                    aria-live="polite"
+                    data-element-id="span-instructions"
+                ></span>
                 <c-focus-trap data-element-id="avonni-focus-trap">
                     <slot name="menu-content"></slot>
                 </c-focus-trap>

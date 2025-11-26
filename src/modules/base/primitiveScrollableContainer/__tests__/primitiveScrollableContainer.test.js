@@ -15,6 +15,9 @@ describe('Primitive Scrollable Container', () => {
         jest.spyOn(mainElement, 'scrollWidth', 'get').mockReturnValue(1000);
         jest.spyOn(mainElement, 'clientWidth', 'get').mockReturnValue(500);
         jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     afterEach(() => {
@@ -25,7 +28,211 @@ describe('Primitive Scrollable Container', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.disabled).toBeFalsy();
+            expect(element.showMenu).toBeFalsy();
             expect(element.showScrollButtons).toBeFalsy();
+        });
+
+        describe('Disabled', () => {
+            it('false', () => {
+                element.disabled = false;
+                element.showScrollButtons = true;
+
+                return Promise.resolve().then(() => {
+                    const main = element.shadowRoot.querySelector(
+                        '[data-element-id="div-main"]'
+                    );
+                    expect(main.classList).toContain('slds-scrollable_x');
+
+                    const leftButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-left"]'
+                    );
+                    const rightButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-right"]'
+                    );
+                    expect(leftButton.disabled).toBeFalsy();
+                    expect(rightButton.disabled).toBeFalsy();
+                });
+            });
+
+            it('true', () => {
+                element.disabled = true;
+                element.showScrollButtons = true;
+
+                return Promise.resolve().then(() => {
+                    const main = element.shadowRoot.querySelector(
+                        '[data-element-id="div-main"]'
+                    );
+                    expect(main.classList).not.toContain('slds-scrollable_x');
+
+                    const leftButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-left"]'
+                    );
+                    const rightButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-right"]'
+                    );
+                    expect(leftButton.disabled).toBeTruthy();
+                    expect(rightButton.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Show Menu', () => {
+            it('false', () => {
+                element.showMenu = false;
+                element.showScrollButtons = true;
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-show-more"]'
+                    );
+                    expect(button).toBeFalsy();
+
+                    const main = element.shadowRoot.querySelector(
+                        '[data-element-id="div-main"]'
+                    );
+                    const mainContent = element.shadowRoot.querySelector(
+                        '[data-element-id="div-main-content"]'
+                    );
+                    expect(main.classList).toContain('slds-scrollable_x');
+                    expect(main.classList).not.toContain('slds-grid');
+                    expect(mainContent.className).toBeFalsy();
+
+                    const leftButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-left"]'
+                    );
+                    const rightButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-icon-right"]'
+                    );
+                    expect(leftButton).toBeTruthy();
+                    expect(rightButton).toBeTruthy();
+                });
+            });
+
+            describe('True', () => {
+                it('Content is not scrollable', () => {
+                    element.showMenu = true;
+                    element.showScrollButtons = true;
+
+                    return Promise.resolve().then(() => {
+                        const main = element.shadowRoot.querySelector(
+                            '[data-element-id="div-main"]'
+                        );
+                        const mainContent = element.shadowRoot.querySelector(
+                            '[data-element-id="div-main-content"]'
+                        );
+                        expect(main.classList).not.toContain(
+                            'slds-scrollable_x'
+                        );
+                        expect(main.classList).toContain('slds-grid');
+                        expect(mainContent.className).toBe(
+                            'slds-col slds-has-flexi-truncate'
+                        );
+
+                        const leftButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-icon-left"]'
+                        );
+                        const rightButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-icon-right"]'
+                        );
+                        expect(leftButton).toBeFalsy();
+                        expect(rightButton).toBeFalsy();
+                    });
+                });
+
+                it('Menu is visible', () => {
+                    element.showMenu = true;
+
+                    return Promise.resolve().then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-show-more"]'
+                        );
+                        expect(button).toBeTruthy();
+                        const menu = element.shadowRoot.querySelector(
+                            '[data-element-id="div-hidden-content"]'
+                        );
+                        expect(menu.classList).toContain('slds-hide');
+                        const focusTrap = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-focus-trap"]'
+                        );
+                        expect(focusTrap).toBeTruthy();
+                        const focusSpy = jest.spyOn(focusTrap, 'focus');
+
+                        const instructions = element.shadowRoot.querySelector(
+                            '[data-element-id="span-instructions"]'
+                        );
+                        expect(instructions.textContent).toBeFalsy();
+
+                        button.click();
+                        expect(focusSpy).toHaveBeenCalled();
+                        expect(instructions.textContent).toBe(
+                            'Press escape to close this menu.'
+                        );
+                        expect(menu.classList).not.toContain('slds-hide');
+                    });
+                });
+
+                it('Menu is closed when focus is lost', () => {
+                    element.showMenu = true;
+
+                    return Promise.resolve().then(() => {
+                        const menu = element.shadowRoot.querySelector(
+                            '[data-element-id="div-hidden-content"]'
+                        );
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-show-more"]'
+                        );
+                        button.click();
+                        const focusSpy = jest.spyOn(button, 'focus');
+
+                        // Quick focus in and out does not close the menu
+                        const focusTrap = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-focus-trap"]'
+                        );
+                        focusTrap.dispatchEvent(
+                            new CustomEvent('focusout', { bubbles: true })
+                        );
+                        focusTrap.dispatchEvent(
+                            new CustomEvent('focusin', { bubbles: true })
+                        );
+                        jest.runAllTimers();
+                        expect(menu.classList).not.toContain('slds-hide');
+                        expect(focusSpy).not.toHaveBeenCalled();
+
+                        // Focus out without focusing closes the menu
+                        focusTrap.dispatchEvent(
+                            new CustomEvent('focusout', { bubbles: true })
+                        );
+                        jest.runAllTimers();
+                        expect(menu.classList).toContain('slds-hide');
+                        expect(focusSpy).toHaveBeenCalled();
+                    });
+                });
+
+                it('Menu is closed when pressing escape', () => {
+                    element.showMenu = true;
+
+                    return Promise.resolve().then(() => {
+                        const menu = element.shadowRoot.querySelector(
+                            '[data-element-id="div-hidden-content"]'
+                        );
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-show-more"]'
+                        );
+                        button.click();
+
+                        const focusTrap = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-focus-trap"]'
+                        );
+                        const event = new CustomEvent('keyup', {
+                            bubbles: true
+                        });
+                        event.key = 'Escape';
+                        focusTrap.dispatchEvent(event);
+                        expect(menu.classList).toContain('slds-hide');
+                    });
+                });
+            });
         });
 
         describe('Show scroll buttons', () => {
@@ -57,6 +264,31 @@ describe('Primitive Scrollable Container', () => {
                     expect(leftButton).toBeTruthy();
                     expect(rightButton).toBeTruthy();
                 });
+            });
+        });
+    });
+
+    describe('Events', () => {
+        describe('Width change', () => {
+            it('On show menu attribute change', () => {
+                const handler = jest.fn();
+                element.addEventListener('widthchange', handler);
+                element.showMenu = true;
+
+                jest.runAllTimers();
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.availableWidth).toBe(400);
+            });
+
+            it('On resize', () => {
+                const handler = jest.fn();
+                element.addEventListener('widthchange', handler);
+                callObserver();
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.availableWidth).toBe(500);
             });
         });
     });

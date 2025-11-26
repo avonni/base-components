@@ -9,7 +9,6 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import {
     classSet,
-    deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
@@ -324,7 +323,6 @@ export default class InputChoiceSet extends LightningElement {
     }
     set orientationAttributes(value) {
         this._orientationAttributes = normalizeObject(value);
-        this.normalizeOrientationAttributes();
 
         if (this._connected) {
             this.initOrientationAttributes();
@@ -779,6 +777,7 @@ export default class InputChoiceSet extends LightningElement {
 
     get horizontalOverflowIsDisabled() {
         return (
+            !this.isHorizontal ||
             this.computedOrientationAttributes.multipleRows ||
             this.computedTypeAttributes.stretch
         );
@@ -889,6 +888,24 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Make sure only the authorized attributes for the given orientation are kept.
+     *
+     * @returns {object} The normalized orientation attributes.
+     */
+    getNormalizedOrientationAttributes() {
+        const orientationAttributes = {};
+        Object.entries(this.orientationAttributes).forEach(([key, value]) => {
+            const allowedAttribute =
+                ORIENTATION_ATTRIBUTES[this.orientation] &&
+                ORIENTATION_ATTRIBUTES[this.orientation].includes(key);
+            if (allowedAttribute) {
+                orientationAttributes[key] = value;
+            }
+        });
+        return orientationAttributes;
+    }
+
+    /**
      * Handles the checking for the change event.
      *
      * @param {string} value Value of the checkbox.
@@ -963,7 +980,8 @@ export default class InputChoiceSet extends LightningElement {
      * Initialize the orientation attributes.
      */
     initOrientationAttributes() {
-        const attributes = deepCopy(this.orientationAttributes);
+        const attributes = this.getNormalizedOrientationAttributes();
+
         if (attributes.scrollable) {
             this.computedOrientationAttributes = attributes;
             return;
@@ -1039,22 +1057,6 @@ export default class InputChoiceSet extends LightningElement {
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
             : null;
-    }
-
-    /**
-     * Create the computed orientation attributes. Make sure only the authorized attributes for the given orientation are kept.
-     */
-    normalizeOrientationAttributes() {
-        const orientationAttributes = {};
-        Object.entries(this._orientationAttributes).forEach(([key, value]) => {
-            const allowedAttribute =
-                ORIENTATION_ATTRIBUTES[this.orientation] &&
-                ORIENTATION_ATTRIBUTES[this.orientation].includes(key);
-            if (allowedAttribute) {
-                orientationAttributes[key] = value;
-            }
-        });
-        this._orientationAttributes = orientationAttributes;
     }
 
     /**

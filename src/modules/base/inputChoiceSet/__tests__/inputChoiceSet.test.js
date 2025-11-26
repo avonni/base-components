@@ -44,6 +44,7 @@ describe('Input choice set', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllMocks();
     });
 
     beforeEach(() => {
@@ -51,7 +52,12 @@ describe('Input choice set', () => {
             is: InputChoiceSet
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
+
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.checkPosition).toBe('left');
@@ -153,13 +159,17 @@ describe('Input choice set', () => {
             });
 
             it('disabled = false, some options are disabled', () => {
-                element.options = [{ value: '1', label: 'First', disabled: true }, { value: '2', label: 'Second' }, { value: '3', label: 'Third', disabled: true }];
+                element.options = [
+                    { value: '1', label: 'First', disabled: true },
+                    { value: '2', label: 'Second' },
+                    { value: '3', label: 'Third', disabled: true }
+                ];
                 element.disabled = false;
 
                 return Promise.resolve().then(() => {
                     const inputs = element.shadowRoot.querySelectorAll(
                         '[data-element-id="input"]'
-                    );  
+                    );
                     expect(inputs).toHaveLength(3);
                     expect(inputs[0].disabled).toBeTruthy();
                     expect(inputs[1].disabled).toBeFalsy();
@@ -419,10 +429,16 @@ describe('Input choice set', () => {
             });
 
             it('Hidden options', () => {
-                element.options = [{ value: '1', label: 'First' }, { value: '2', label: 'Second', hidden: true }, { value: '3', label: 'Third' }];
-                
+                element.options = [
+                    { value: '1', label: 'First' },
+                    { value: '2', label: 'Second', hidden: true },
+                    { value: '3', label: 'Third' }
+                ];
+
                 return Promise.resolve().then(() => {
-                    const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input"]'
+                    );
                     expect(inputs).toHaveLength(2);
                     expect(inputs[0].value).toBe('1');
                     expect(inputs[1].value).toBe('3');
@@ -450,74 +466,255 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('horizontal', () => {
-                element.options = options;
-                element.orientation = 'horizontal';
+            describe('Horizontal', () => {
+                it('Classes are set', () => {
+                    element.options = options;
+                    element.orientation = 'horizontal';
 
-                return Promise.resolve().then(() => {
-                    const inputs = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="span-checkbox-container"]'
-                    );
-                    inputs.forEach((input) => {
-                        expect(input.className).not.toContain(
-                            'avonni-input-choice-set__vertical'
+                    return Promise.resolve().then(() => {
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="span-checkbox-container"]'
                         );
-                        expect(input.className).toContain(
-                            'avonni-input-choice-set__horizontal'
-                        );
+                        inputs.forEach((input) => {
+                            expect(input.className).not.toContain(
+                                'avonni-input-choice-set__vertical'
+                            );
+                            expect(input.className).toContain(
+                                'avonni-input-choice-set__horizontal'
+                            );
+                        });
                     });
+                });
+
+                it('Display show more menu when there is not enough space', () => {
+                    element.options = options;
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const visibleInputs =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="input"]'
+                                );
+                            const overflowingInputs =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="input-overflowing-option"]'
+                                );
+                            expect(visibleInputs).toHaveLength(options.length);
+                            expect(overflowingInputs).toHaveLength(0);
+                            const visibleSpans =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="span-checkbox-container"]'
+                                );
+                            visibleSpans.forEach((input) => {
+                                jest.spyOn(
+                                    input,
+                                    'offsetWidth',
+                                    'get'
+                                ).mockReturnValue(100);
+                            });
+
+                            element.orientation = 'horizontal';
+                            jest.runAllTimers();
+                        })
+                        .then(() => {
+                            const container = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                            expect(container.showMenu).toBeFalsy();
+
+                            container.dispatchEvent(
+                                new CustomEvent('widthchange', {
+                                    detail: {
+                                        availableWidth: 200
+                                    }
+                                })
+                            );
+                        })
+                        .then(() => {
+                            const container = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                            expect(container.showMenu).toBeTruthy();
+
+                            const visibleInputs =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="input"]'
+                                );
+                            const overflowingInputs =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="input-overflowing-option"]'
+                                );
+                            expect(visibleInputs).toHaveLength(2);
+                            expect(overflowingInputs).toHaveLength(
+                                options.length - 2
+                            );
+                        });
                 });
             });
         });
 
         describe('Orientation Attributes', () => {
-            it('vertical', () => {
-                element.options = options;
-                element.orientation = 'vertical';
-                element.orientationAttributes = {
-                    cols: 3,
-                    multipleRows: false
-                };
+            describe('Vertical', () => {
+                it('Attributes are ignored', () => {
+                    element.options = options;
+                    element.orientation = 'vertical';
+                    element.orientationAttributes = {
+                        cols: 3,
+                        scrollable: true,
+                        showScrollButtons: true,
+                        multipleRows: false
+                    };
 
-                return Promise.resolve().then(() => {
-                    // When vertical orientation, cols and multipleRows are ignored
-                    // and multipleRows is always true and cols is always 100%
-                    const layout = element.shadowRoot.querySelector(
-                        '[data-element-id="layout"]'
-                    );
-                    expect(layout.multipleRows).toBeTruthy();
-                    const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="layout-item"]'
-                    );
-                    expect(items).toHaveLength(5);
-                    items.forEach((item) => {
-                        expect(item.size).toBe(12);
+                    return Promise.resolve().then(() => {
+                        const scrollableContainer =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                        expect(
+                            scrollableContainer.showScrollButtons
+                        ).toBeFalsy();
+                        expect(scrollableContainer.disabled).toBeTruthy();
+
+                        // When vertical orientation, cols and multipleRows are ignored
+                        // and multipleRows is always true and cols is always 100%
+                        const layout = element.shadowRoot.querySelector(
+                            '[data-element-id="layout"]'
+                        );
+                        expect(layout.multipleRows).toBeTruthy();
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="layout-item"]'
+                        );
+                        expect(items).toHaveLength(5);
+                        items.forEach((item) => {
+                            expect(item.size).toBe(12);
+                        });
                     });
                 });
             });
 
-            it('horizontal', () => {
-                element.options = options;
-                element.orientation = 'horizontal';
-                element.orientationAttributes = {
-                    cols: 4,
-                    multipleRows: false
-                };
+            describe('Horizontal', () => {
+                it('Columns are used', () => {
+                    element.options = options;
+                    element.orientation = 'horizontal';
+                    element.orientationAttributes = { cols: 4 };
 
-                return Promise.resolve().then(() => {
-                    // When vertical orientation, cols and multipleRows are ignored
-                    // and multipleRows is always true and cols is always 100%
-                    const layout = element.shadowRoot.querySelector(
-                        '[data-element-id="layout"]'
-                    );
-                    expect(layout.multipleRows).toBeFalsy();
-                    const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="layout-item"]'
-                    );
-                    expect(items).toHaveLength(5);
-                    items.forEach((item) => {
-                        expect(item.size).toBe(3);
+                    return Promise.resolve().then(() => {
+                        const scrollableContainer =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                        expect(
+                            scrollableContainer.showScrollButtons
+                        ).toBeFalsy();
+                        expect(scrollableContainer.disabled).toBeFalsy();
+                        const layout = element.shadowRoot.querySelector(
+                            '[data-element-id="layout"]'
+                        );
+                        expect(layout.multipleRows).toBeFalsy();
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="layout-item"]'
+                        );
+                        expect(items).toHaveLength(options.length);
+                        items.forEach((item) => {
+                            expect(item.size).toBe(3);
+                        });
                     });
+                });
+
+                it('Multiple rows', () => {
+                    element.options = options;
+                    element.orientation = 'horizontal';
+                    element.orientationAttributes = {
+                        cols: 2,
+                        multipleRows: true
+                    };
+
+                    return Promise.resolve().then(() => {
+                        const scrollableContainer =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                        expect(
+                            scrollableContainer.showScrollButtons
+                        ).toBeFalsy();
+                        expect(scrollableContainer.disabled).toBeTruthy();
+                        const layout = element.shadowRoot.querySelector(
+                            '[data-element-id="layout"]'
+                        );
+                        expect(layout.multipleRows).toBeTruthy();
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="layout-item"]'
+                        );
+                        expect(items).toHaveLength(options.length);
+                        items.forEach((item) => {
+                            expect(item.size).toBe(6);
+                        });
+                    });
+                });
+
+                it('Scrollable', () => {
+                    element.options = options;
+                    element.orientation = 'horizontal';
+                    element.orientationAttributes = {
+                        scrollable: true,
+                        showScrollButtons: true
+                    };
+
+                    return Promise.resolve().then(() => {
+                        const scrollableContainer =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                        expect(
+                            scrollableContainer.showScrollButtons
+                        ).toBeTruthy();
+                        expect(scrollableContainer.disabled).toBeFalsy();
+                    });
+                });
+
+                it('Show more menu is not displayed when scrollable', () => {
+                    element.options = options;
+                    element.orientation = 'horizontal';
+                    element.orientationAttributes = {
+                        scrollable: true,
+                        showScrollButtons: true
+                    };
+
+                    return Promise.resolve()
+                        .then(() => {
+                            const visibleSpans =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="span-checkbox-container"]'
+                                );
+                            visibleSpans.forEach((input) => {
+                                jest.spyOn(
+                                    input,
+                                    'offsetWidth',
+                                    'get'
+                                ).mockReturnValue(100);
+                            });
+
+                            element.orientation = 'horizontal';
+                            jest.runAllTimers();
+                        })
+                        .then(() => {
+                            const container = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                            container.dispatchEvent(
+                                new CustomEvent('widthchange', {
+                                    detail: {
+                                        availableWidth: 200
+                                    }
+                                })
+                            );
+                        })
+                        .then(() => {
+                            const container = element.shadowRoot.querySelector(
+                                '[data-element-id="avonni-primitive-scrollable-container"]'
+                            );
+                            expect(container.showMenu).toBeFalsy();
+                        });
                 });
             });
         });
@@ -630,7 +827,7 @@ describe('Input choice set', () => {
                     inputs.forEach((input) => {
                         const expected =
                             input.className ===
-                                'slds-checkbox_toggle slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__vertical' ||
+                                'slds-checkbox_toggle slds-is-relative slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__vertical' ||
                             input.className === 'slds-checkbox_faux';
                         expect(expected).toBe(true);
                         expect(input.className).not.toBe('slds-checkbox');
