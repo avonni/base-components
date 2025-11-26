@@ -284,7 +284,7 @@ export default class Layout extends LightningElement {
     setItemsSize(width) {
         if (this._disconnected) return;
 
-        if (!width) {
+        if (width === undefined || width === null) {
             this.clearDebounceTimeout();
             this._debounceTimeoutId = setTimeout(() => {
                 this._items.forEach((item) => {
