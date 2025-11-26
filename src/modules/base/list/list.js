@@ -207,7 +207,7 @@ export default class List extends LightningElement {
     _savedComputedItems;
     _scrollingInterval;
     _scrollTop = 0;
-    _setItemsSizeCallbacks = new Map();
+    _setFieldItemsSizeCallbacks = new Map();
     _singleLinePageFirstIndex = 0;
 
     computedActions = [];
@@ -985,6 +985,15 @@ export default class List extends LightningElement {
                 : [];
         }
         return this.computedItems;
+    }
+
+    /**
+     * Query selector for the fields container.
+     */
+    get fieldsContainer() {
+        return this.template.querySelector(
+            '[data-element-id="fields-container"]'
+        );
     }
 
     /**
@@ -1830,8 +1839,10 @@ export default class List extends LightningElement {
         this._resizeObserver = new AvonniResizeObserver(
             this.listContainer,
             () => {
-                this._setItemsSizeCallbacks.forEach((callback) => {
-                    callback();
+                const width =
+                    this.fieldsContainer?.getBoundingClientRect().width || 0;
+                this._setFieldItemsSizeCallbacks.forEach((callback) => {
+                    callback(width);
                 });
             }
         );
@@ -2393,7 +2404,15 @@ export default class List extends LightningElement {
         event.stopPropagation();
         const { name, callbacks } = event.detail;
         callbacks.setIsResizedByParent(true);
-        this._setItemsSizeCallbacks.set(name, callbacks.setItemsSize);
+        this._setFieldItemsSizeCallbacks.set(name, callbacks.setItemsSize);
+
+        const setAllFieldsItemsSize = () => {
+            const widthFields =
+                this.fieldsContainer?.getBoundingClientRect().width || 0;
+            this._setFieldItemsSizeCallbacks.forEach((callback) => {
+                callback(widthFields);
+            });
+        };
 
         this.dispatchEvent(
             new CustomEvent('privatelayoutconnected', {
@@ -2402,7 +2421,7 @@ export default class List extends LightningElement {
                     callbacks: {
                         setIsResizedByParent:
                             this.setFieldsAreResizedByParent.bind(this),
-                        setItemsSize: callbacks.setItemsSize
+                        setAllFieldsItemsSize
                     }
                 },
                 bubbles: true,
@@ -2412,7 +2431,26 @@ export default class List extends LightningElement {
     }
 
     handleFieldsLayoutDisconnected(event) {
-        this._setItemsSizeCallbacks.delete(event.detail.name);
+        event.stopPropagation();
+        this._setFieldItemsSizeCallbacks.delete(event.detail.name);
+        const setAllFieldsItemsSize = () => {
+            const width =
+                this.fieldsContainer?.getBoundingClientRect().width || 0;
+            this._setFieldItemsSizeCallbacks.forEach((callback) => {
+                callback(width);
+            });
+        };
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutdisconnected', {
+                detail: {
+                    callbacks: {
+                        setAllFieldsItemsSize
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     handleLayoutSizeChange(event) {
