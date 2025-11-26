@@ -526,7 +526,9 @@ export default class Avatar extends LightningElement {
     get computedMediaObjectClass() {
         return classSet('').add({
             'slds-text-align_right': this.textPosition === 'left',
-            'slds-text-align_center': this.textPosition === 'center'
+            'slds-text-align_center': this.textPosition === 'center',
+            'avonni-avatar__media-object_width-100':
+                this.textPosition === 'center'
         });
     }
 

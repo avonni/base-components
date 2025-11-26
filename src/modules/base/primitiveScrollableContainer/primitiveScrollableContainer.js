@@ -4,11 +4,18 @@ import { LightningElement, api } from 'lwc';
 
 const MENU_WIDTH = 100;
 const SCROLL_OFFSET = 150;
+const DEFAULT_SCROLL_LEFT_BUTTON_ALTERNATIVE_TEXT = 'Scroll Left';
+const DEFAULT_SCROLL_RIGHT_BUTTON_ALTERNATIVE_TEXT = 'Scroll Right';
 
 export default class PrimitiveScrollableContainer extends LightningElement {
+    @api scrollLeftButtonAlternativeText =
+        DEFAULT_SCROLL_LEFT_BUTTON_ALTERNATIVE_TEXT;
+    @api scrollRightButtonAlternativeText =
+        DEFAULT_SCROLL_RIGHT_BUTTON_ALTERNATIVE_TEXT;
+    @api showScrollButtons = false;
+
     _disabled = false;
     _showMenu = false;
-    _showScrollButtons = false;
 
     _connected = false;
     _hiddenContentCloseTimeout;
@@ -85,21 +92,6 @@ export default class PrimitiveScrollableContainer extends LightningElement {
                 this._dispatchWidthChange();
             });
         }
-    }
-
-    /**
-     * If present, display scroll buttons when the slot content is overflowing the container.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get showScrollButtons() {
-        return this._showScrollButtons;
-    }
-    set showScrollButtons(value) {
-        this._showScrollButtons = normalizeBoolean(value);
     }
 
     /*

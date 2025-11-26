@@ -33,6 +33,8 @@ import {
     UNSELECT_ALL_ACTION
 } from './nestedItemsUtils';
 
+import { formatDateFromStyle, formatTimeString } from './itemFormatUtils.js';
+
 const BUTTON_VARIANTS = {
     default: 'border',
     valid: [
@@ -120,12 +122,13 @@ const TYPE_ATTRIBUTES = {
         'tickMarkStyle',
         'unit',
         'unitAttributes'
-    ]
+    ],
+    'time-range': ['labelEndTime', 'labelStartTime', 'timeStyle']
 };
 
 const TYPES = {
     default: 'list',
-    valid: ['date-range', 'list', 'range']
+    valid: ['date-range', 'list', 'range', 'time-range']
 };
 
 /**
@@ -702,7 +705,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Type of the filter menu. Valid values include list, range and date-range.
+     * Type of the filter menu. Valid values include list, range, date-range and time-range.
      *
      * @type {string}
      * @default list
@@ -756,7 +759,10 @@ export default class FilterMenu extends LightningElement {
 
     /**
      * Value of the filter menu.
-     * If the type is `list`, array of selected items values. If the type is `range`, array of selected numbers. If the type is `date-range`, array of ISO 8601 dates.
+     * If the type is `list`, array of selected items values.
+     * If the type is `range`, array of selected numbers.
+     * If the type is `date-range`, array of ISO 8601 dates.
+     * If the type is `time-range`, array of time strings in the format HH:mm[:ss[.SSS]].
      *
      * @type {String[] | Number[] | Date[]}
      * @public
@@ -933,7 +939,8 @@ export default class FilterMenu extends LightningElement {
             'slds-nubbin_bottom-right': nubbin && alignment === 'bottom-right',
             'slds-nubbin_bottom': nubbin && alignment === 'bottom-center',
             'slds-dropdown_small': isSmallRange,
-            'slds-dropdown_large': this.isDateRange && !isDateTime
+            'slds-dropdown_large':
+                (this.isDateRange && !isDateTime) || this.isTimeRange
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {
@@ -1116,6 +1123,15 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the type is time-range.
+     *
+     * @type {boolean}
+     */
+    get isTimeRange() {
+        return this.type === 'time-range';
+    }
+
+    /**
      * True if the variant is vertical.
      *
      * @type {boolean}
@@ -1224,6 +1240,30 @@ export default class FilterMenu extends LightningElement {
      */
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
+    }
+
+    /**
+     * Selected start time, when the type is time-range.
+     *
+     * @type {string|null}
+     */
+    get timeRangeStartTime() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[0];
+    }
+
+    /**
+     * Selected end time, when the type is time-range.
+     *
+     * @type {string|null}
+     */
+    get timeRangeEndTime() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[1];
     }
 
     /*
@@ -1406,7 +1446,7 @@ export default class FilterMenu extends LightningElement {
                 // Date range
                 const { dateStyle, timeStyle, timezone, type } =
                     this.computedTypeAttributes;
-                normalizedValue = this.formatDateFromStyle(date, {
+                normalizedValue = formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
                     timeStyle,
@@ -1424,6 +1464,8 @@ export default class FilterMenu extends LightningElement {
                 };
                 normalizedValue = value.toString();
                 normalizedValue = numberFormat(options).format(normalizedValue);
+            } else if (this.isTimeRange && value) {
+                normalizedValue = formatTimeString(value);
             }
             return string.length
                 ? `${string} - ${normalizedValue}`
@@ -1502,26 +1544,6 @@ export default class FilterMenu extends LightningElement {
             item.focus();
             item.tabIndex = '0';
         }
-    }
-
-    formatDateFromStyle(
-        date,
-        {
-            showTime = false,
-            dateStyle = 'medium',
-            timeStyle = 'short',
-            timeZone
-        }
-    ) {
-        if (!(date instanceof Date)) {
-            return '';
-        }
-        const time = showTime ? timeStyle : undefined;
-        return new Intl.DateTimeFormat('default', {
-            dateStyle,
-            timeStyle: time,
-            timeZone
-        }).format(date);
     }
 
     /**
@@ -2047,6 +2069,34 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = [...this.value];
         this.computeListItems();
         this.dispatchApply();
+    }
+
+    /**
+     * Handle a change of the input time range, when the type is time-range.
+     *
+     * @param {Event} event
+     */
+    handleTimeRangeChange(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const elementId = event.target.dataset.elementId;
+        const value = event.target.value;
+
+        let [start, end] = this.currentValue;
+
+        start = start ?? null;
+        end = end ?? null;
+
+        if (elementId === 'lightning-input-start-time') {
+            start = value;
+        } else if (elementId === 'lightning-input-end-time') {
+            end = value;
+        }
+
+        this.currentValue = [start, end];
+
+        this.dispatchSelect();
     }
 
     handleTreeActionClick(event) {
