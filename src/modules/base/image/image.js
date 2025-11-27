@@ -935,6 +935,15 @@ export default class Image extends LightningElement {
         );
     }
 
+    /**
+     * The magnified image element.
+     *
+     * @type {HTMLElement}
+     */
+    get magnifiedImage() {
+        return this.template.querySelector('[data-element-id="magnified-img"]');
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -994,15 +1003,12 @@ export default class Image extends LightningElement {
         const img = this.template.querySelector('[data-element-id="img"]');
         if (!img) return;
 
+        // Initial position at the center of the image
         this._magnifierPosition = {
             x: this._imgElementWidth / 2,
             y: this._imgElementHeight / 2
         };
-        this.handleMagnifierMove({
-            target: img,
-            clientX: this._magnifierPosition.x,
-            clientY: this._magnifierPosition.y
-        });
+        this._moveKeyboardMagnifier(0, 0);
     }
 
     /**
@@ -1058,7 +1064,40 @@ export default class Image extends LightningElement {
         }
     }
 
-    _moveMagnifier(data, magnifiedImage) {
+    /**
+     * Move the magnifier using the keyboard.
+     */
+    _moveKeyboardMagnifier(stepX, stepY) {
+        const img = this.template.querySelector('[data-element-id="img"]');
+        if (!img) return;
+
+        showMagnifierBox(
+            this.magnifierType,
+            this.magnifierAttributes.zoomRatioWidth,
+            this.magnifierAttributes.zoomRatioHeight,
+            img.width,
+            img.height,
+            this.magnifier
+        );
+
+        this._magnifierPosition.x += stepX;
+        this._magnifierPosition.y += stepY;
+
+        const data = getMagnifierData(
+            this._magnifierPosition,
+            this.magnifierAttributes,
+            this.magnifier,
+            this.magnifiedLens,
+            this.magnifiedImage,
+            img
+        );
+        this._moveMagnifier(data);
+    }
+
+    /**
+     * Move the magnifier based on position.
+     */
+    _moveMagnifier(data) {
         if (!data?.img) {
             return;
         }
@@ -1066,7 +1105,12 @@ export default class Image extends LightningElement {
         const imgWidth = data.img.width;
         const zoomFactor = this.magnifierAttributes.zoomFactor || 1;
 
-        scaleMagnifiedImage(magnifiedImage, imgHeight, imgWidth, zoomFactor);
+        scaleMagnifiedImage(
+            this.magnifiedImage,
+            imgHeight,
+            imgWidth,
+            zoomFactor
+        );
 
         switch (this.magnifierType) {
             case 'standard':
@@ -1085,30 +1129,6 @@ export default class Image extends LightningElement {
             default:
                 break;
         }
-    }
-
-    _moveMagnifierX(step) {
-        const img = this.template.querySelector('[data-element-id="img"]');
-        if (!img) return;
-
-        this._magnifierPosition.x += step;
-        this.handleMagnifierMove({
-            target: img,
-            clientX: this._magnifierPosition.x,
-            clientY: this._magnifierPosition.y
-        });
-    }
-
-    _moveMagnifierY(step) {
-        const img = this.template.querySelector('[data-element-id="img"]');
-        if (!img) return;
-
-        this._magnifierPosition.y += step;
-        this.handleMagnifierMove({
-            target: img,
-            clientX: this._magnifierPosition.x,
-            clientY: this._magnifierPosition.y
-        });
     }
 
     /*
@@ -1292,31 +1312,31 @@ export default class Image extends LightningElement {
                 this.handleMagnifierOut();
                 break;
             case keyValues.left:
-                event.preventDefault();
-                event.stopPropagation();
                 if (this._magnifierEnabled) {
-                    this._moveMagnifierX(-MAGNIFIER_KEYBOARD_STEP);
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this._moveKeyboardMagnifier(-MAGNIFIER_KEYBOARD_STEP, 0);
                 }
                 break;
             case keyValues.right:
-                event.preventDefault();
-                event.stopPropagation();
                 if (this._magnifierEnabled) {
-                    this._moveMagnifierX(MAGNIFIER_KEYBOARD_STEP);
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this._moveKeyboardMagnifier(MAGNIFIER_KEYBOARD_STEP, 0);
                 }
                 break;
             case keyValues.up:
-                event.preventDefault();
-                event.stopPropagation();
                 if (this._magnifierEnabled) {
-                    this._moveMagnifierY(-MAGNIFIER_KEYBOARD_STEP);
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this._moveKeyboardMagnifier(0, -MAGNIFIER_KEYBOARD_STEP);
                 }
                 break;
             case keyValues.down:
-                event.preventDefault();
-                event.stopPropagation();
                 if (this._magnifierEnabled) {
-                    this._moveMagnifierY(MAGNIFIER_KEYBOARD_STEP);
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this._moveKeyboardMagnifier(0, MAGNIFIER_KEYBOARD_STEP);
                 }
                 break;
             default:
@@ -1348,9 +1368,6 @@ export default class Image extends LightningElement {
             return;
         }
         const img = event.target;
-        const magnifiedImage = this.template.querySelector(
-            '[data-element-id="magnified-img"]'
-        );
         img.style.cursor = 'crosshair';
 
         showMagnifierBox(
@@ -1362,6 +1379,7 @@ export default class Image extends LightningElement {
             this.magnifier
         );
 
+        // Get the mouse cursor position relative to the image
         let mouseX, mouseY;
         if (event.type === 'touchstart' || event.type === 'touchmove') {
             mouseX = event.touches[0].clientX;
@@ -1376,10 +1394,10 @@ export default class Image extends LightningElement {
             this.magnifierAttributes,
             this.magnifier,
             this.magnifiedLens,
-            magnifiedImage,
+            this.magnifiedImage,
             img
         );
-        this._moveMagnifier(data, magnifiedImage);
+        this._moveMagnifier(data);
     }
 
     /**
