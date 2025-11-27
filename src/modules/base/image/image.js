@@ -168,23 +168,12 @@ export default class Image extends LightningElement {
     _imgElementWidth;
     _imgElementHeight;
     _isDraggingCompareCursor = false;
-    _loaded = false;
     _magnifierEnabled = false;
     _magnifierPosition = { x: 0, y: 0 };
 
     displayImageError = false;
     illustrationVariant;
     illustrationTitle;
-
-    /*
-     * ------------------------------------------------------------
-     *  LIFECYCLE HOOKS
-     * -------------------------------------------------------------
-     */
-
-    disconnectedCallback() {
-        this._loaded = false;
-    }
 
     /*
      * ------------------------------------------------------------
@@ -1065,6 +1054,13 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * Check if the magnifier type if valid.
+     */
+    _isValidMagnifierType() {
+        return MAGNIFIER_TYPES.valid.includes(this.magnifierType);
+    }
+
+    /**
      * Move the magnifier using the keyboard.
      */
     _moveKeyboardMagnifier(stepX, stepY) {
@@ -1080,17 +1076,19 @@ export default class Image extends LightningElement {
             this.magnifier
         );
 
-        this._magnifierPosition.x += stepX;
-        this._magnifierPosition.y += stepY;
-
+        const position = {
+            x: this._magnifierPosition.x + stepX,
+            y: this._magnifierPosition.y + stepY
+        };
         const data = getMagnifierData(
-            this._magnifierPosition,
+            position,
             this.magnifierAttributes,
             this.magnifier,
             this.magnifiedLens,
             this.magnifiedImage,
             img
         );
+        this._magnifierPosition = { x: data.x, y: data.y };
         this._moveMagnifier(data);
     }
 
@@ -1295,7 +1293,7 @@ export default class Image extends LightningElement {
      * @param {KeyboardEvent} event
      */
     handleImageKeydown(event) {
-        if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
+        if (!this._isValidMagnifierType()) {
             return;
         }
 
@@ -1364,7 +1362,7 @@ export default class Image extends LightningElement {
      * Call the right function to handle the magnifier.
      */
     handleMagnifierMove(event) {
-        if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
+        if (!this._isValidMagnifierType()) {
             return;
         }
         const img = event.target;
