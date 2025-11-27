@@ -167,11 +167,13 @@ export default class PrimitiveScrollableContainer extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
 
-    _closeHiddenContent() {
+    @api
+    closeMenu() {
+        clearTimeout(this._hiddenContentCloseTimeout);
         this._showHiddenContent = false;
         const hiddenContent = this.template.querySelector(
             '[data-element-id="div-hidden-content"]'
@@ -187,6 +189,12 @@ export default class PrimitiveScrollableContainer extends LightningElement {
             showMoreButton.focus();
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     _initResizeObserver() {
         if (!this.mainElement) {
@@ -244,7 +252,7 @@ export default class PrimitiveScrollableContainer extends LightningElement {
     handleHiddenContentFocusOut() {
         clearTimeout(this._hiddenContentCloseTimeout);
         this._hiddenContentCloseTimeout = setTimeout(() => {
-            this._closeHiddenContent();
+            this.closeMenu();
 
             // We have to use a timeout for the use in the input choice set.
             // On click on a label, the focus passes to the input,
@@ -254,7 +262,7 @@ export default class PrimitiveScrollableContainer extends LightningElement {
 
     handleHiddenContentKeyUp(event) {
         if (event.key === 'Escape') {
-            this._closeHiddenContent();
+            this.closeMenu();
         }
     }
 

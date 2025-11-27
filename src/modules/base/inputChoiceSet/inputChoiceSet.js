@@ -927,7 +927,7 @@ export default class InputChoiceSet extends LightningElement {
      * @param {HTMLElement} target event target.
      * @param {boolean} isInput If the target is an input.
      */
-    handleChecking(value, target, isInput) {
+    handleChecking({ value, target, isInput, isOverflowing }) {
         const isSingleToggle =
             this.toggleVariant && this.checkboxes.length === 1;
         if (this.isMultiSelect || isSingleToggle) {
@@ -944,7 +944,9 @@ export default class InputChoiceSet extends LightningElement {
                 target.dataset.checked = target.checked;
             }
         } else {
-            if (this.toggleVariant) {
+            if (isOverflowing) {
+                target.dataset.checked = target.checked;
+            } else if (this.toggleVariant) {
                 target.checked = true;
                 target.dataset.checked = 'true';
             }
@@ -963,6 +965,7 @@ export default class InputChoiceSet extends LightningElement {
                 checkbox.dataset.checked = 'false';
             });
         }
+
         this._value = this.valueChangeHandler();
         this._dispatchChangeEvent();
     }
@@ -1306,7 +1309,8 @@ export default class InputChoiceSet extends LightningElement {
         let target = event.currentTarget;
         const value = target.value || target.name;
         const isInput = target.dataset.elementId === 'input';
-        const isOverflowing = target.dataset.overflowingOption;
+        const isOverflowing =
+            target.dataset.elementId === 'input-overflowing-option';
         const option = this.computedOptions.find((opt) => opt.value === value);
         if (option) {
             option.isChecked = target.checked;
@@ -1318,8 +1322,17 @@ export default class InputChoiceSet extends LightningElement {
                 `[data-element-id="input-toggle"][data-value="${value}"]`
             );
         }
-        this.handleChecking(value, target, isInput);
+        this.handleChecking({ value, target, isInput, isOverflowing });
         this.updateLabelsStyle();
+
+        if (isOverflowing && !this.isMultiSelect) {
+            const scrollableContainer = this.template.querySelector(
+                '[data-element-id="avonni-primitive-scrollable-container"]'
+            );
+            if (scrollableContainer) {
+                scrollableContainer.closeMenu();
+            }
+        }
     }
 
     /**
