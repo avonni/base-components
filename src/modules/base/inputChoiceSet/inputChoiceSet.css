@@ -405,11 +405,15 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    -webkit-line-clamp: var(--avonni-input-choice-set-option-label-line-clamp);
+    text-overflow: ellipsis;
+}
+
+.avonni-input-choice-set__option-label_line-clamp-vertical {
     -webkit-line-clamp: var(
         --avonni-input-choice-set-option-label-line-clamp,
         1
     );
-    text-overflow: ellipsis;
 }
 
 .avonni-input-choice-set__option-label-icon-container {

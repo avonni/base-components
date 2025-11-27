@@ -726,6 +726,17 @@ export default class InputChoiceSet extends LightningElement {
             .toString();
     }
 
+    get computedOptionLabelClass() {
+        return classSet(
+            'slds-order_1 avonni-input-choice-set__option-label_line-clamp'
+        )
+            .add({
+                'avonni-input-choice-set__option-label_line-clamp-vertical':
+                    !this.isHorizontal
+            })
+            .toString();
+    }
+
     /**
      * Get element unique help ID.
      *
@@ -986,7 +997,10 @@ export default class InputChoiceSet extends LightningElement {
     initOrientationAttributes() {
         const attributes = this.getNormalizedOrientationAttributes();
 
-        if (attributes.scrollable) {
+        if (
+            attributes.scrollable ||
+            (this.isHorizontal && !attributes.multipleRows)
+        ) {
             this.computedOrientationAttributes = attributes;
             return;
         }

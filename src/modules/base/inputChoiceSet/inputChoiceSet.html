@@ -71,6 +71,7 @@
                                     grow="1"
                                     large-container-size={computedOrientationAttributes.largeContainerCols}
                                     medium-container-size={computedOrientationAttributes.mediumContainerCols}
+                                    shrink="0"
                                     size={computedOrientationAttributes.cols}
                                     small-container-size={computedOrientationAttributes.smallContainerCols}
                                     data-element-id="layout-item"
@@ -154,10 +155,7 @@
                                                     >
                                                         <lightning-formatted-rich-text
                                                             if:true={option.displayLabel}
-                                                            class="
-                                                                slds-order_1
-                                                                avonni-input-choice-set__option-label_line-clamp
-                                                            "
+                                                            class={computedOptionLabelClass}
                                                             disable-linkify
                                                             title={option.label}
                                                             value={option.label}
