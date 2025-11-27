@@ -165,8 +165,8 @@ export default class Image extends LightningElement {
     _width;
 
     _aspectRatio;
-    _imgElementWidth;
-    _imgElementHeight;
+    _imgElementWidth = 0;
+    _imgElementHeight = 0;
     _isDraggingCompareCursor = false;
     _magnifierEnabled = false;
     _magnifierPosition = { x: 0, y: 0 };
@@ -1151,7 +1151,11 @@ export default class Image extends LightningElement {
         const handle = this.template.querySelector(
             '[data-element-id="compare-slider-handle"]'
         );
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (
+            event.key === keyValues.enter ||
+            event.key === keyValues.space ||
+            event.key === keyValues.spacebar
+        ) {
             event.preventDefault();
             const handleMouseDown = () => {
                 this._isDraggingCompareCursor = false;
@@ -1183,7 +1187,7 @@ export default class Image extends LightningElement {
             const numericValue = parseFloat(initialPosition);
             slider.style.transition = 'all 0.15s ease-out';
             compareImg.style.transition = 'all 0.15s ease-out';
-            if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+            if (event.key === keyValues.left || event.key === keyValues.up) {
                 if (this.compareAttributes.orientation === 'horizontal') {
                     if (numericValue > 20) {
                         slider.style.left = `${numericValue - 20}px`;
@@ -1202,8 +1206,8 @@ export default class Image extends LightningElement {
                     }
                 }
             } else if (
-                event.key === 'ArrowRight' ||
-                event.key === 'ArrowDown'
+                event.key === keyValues.right ||
+                event.key === keyValues.down
             ) {
                 if (this.compareAttributes.orientation === 'horizontal') {
                     if (numericValue < img.width - 20) {
@@ -1318,6 +1322,7 @@ export default class Image extends LightningElement {
 
         switch (event.key) {
             case keyValues.space:
+            case keyValues.spacebar:
             case keyValues.enter:
                 event.preventDefault();
                 event.stopPropagation();
@@ -1368,8 +1373,8 @@ export default class Image extends LightningElement {
         const img = this.template.querySelector('[data-element-id="img"]');
         if (!img) return;
 
-        this._imgElementWidth = img.clientWidth;
-        this._imgElementHeight = img.clientHeight;
+        this._imgElementWidth = img.clientWidth || 0;
+        this._imgElementHeight = img.clientHeight || 0;
         if (this.compareSrc) {
             requestAnimationFrame(() => {
                 this._initCompareSlider(img);
