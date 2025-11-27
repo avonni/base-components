@@ -183,9 +183,6 @@ export default class Image extends LightningElement {
      */
 
     disconnectedCallback() {
-        if (this._loaded) {
-            window.removeEventListener('keydown', this.handleKeyDown);
-        }
         this._loaded = false;
     }
 
@@ -1061,16 +1058,6 @@ export default class Image extends LightningElement {
         }
     }
 
-    /**
-     * Add event listener for magnifier keyboard control.
-     */
-    _initMagnifier() {
-        if (!this._loaded) {
-            this._loaded = true;
-            window.addEventListener('keydown', this.handleKeyDown);
-        }
-    }
-
     _moveMagnifier(data, magnifiedImage) {
         if (!data?.img) {
             return;
@@ -1287,7 +1274,7 @@ export default class Image extends LightningElement {
      *
      * @param {KeyboardEvent} event
      */
-    handleKeyDown = (event) => {
+    handleImageKeydown(event) {
         if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
             return;
         }
@@ -1335,7 +1322,7 @@ export default class Image extends LightningElement {
             default:
                 break;
         }
-    };
+    }
 
     /**
      * Get Image dimensions when values missing or %.
@@ -1346,9 +1333,6 @@ export default class Image extends LightningElement {
 
         this._imgElementWidth = img.clientWidth;
         this._imgElementHeight = img.clientHeight;
-        if (this.magnifier) {
-            this._initMagnifier();
-        }
         if (this.compareSrc) {
             requestAnimationFrame(() => {
                 this._initCompareSlider(img);

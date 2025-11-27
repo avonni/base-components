@@ -4,6 +4,7 @@
             <div class="slds-is-relative">
                 <img
                     if:false={displayImageError}
+                    tabindex="0"
                     style={computedStyle}
                     class="avonni-image_img_border-radius"
                     alt={alternativeText}
@@ -13,6 +14,7 @@
                     srcset={srcset}
                     data-element-id="img"
                     onerror={handleImageError}
+                    onkeydown={handleImageKeydown}
                     onload={handleLoadImage}
                     onmousemove={handleMagnifierMove}
                     onmouseout={handleMagnifierOut}
