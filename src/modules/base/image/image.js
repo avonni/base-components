@@ -6,10 +6,12 @@ import {
     normalizeString
 } from 'c/utils';
 import {
-    applyBoundaries,
     followMagnifier,
-    getCursorPosition,
+    getMagnifierData,
+    getRelativePosition,
     innerMagnifier,
+    scaleMagnifiedImage,
+    showMagnifierBox,
     standardMagnifier
 } from './magnifier';
 import { keyValues } from 'c/utilsPrivate';
@@ -48,6 +50,8 @@ const LAZY_LOADING_VARIANTS = {
     default: 'auto'
 };
 
+const MAGNIFIER_KEYBOARD_STEP = 25;
+
 const MAGNIFIER_POSITIONS = {
     valid: ['auto', 'left', 'right', 'top', 'bottom'],
     default: 'auto'
@@ -67,8 +71,6 @@ const POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: undefined
 };
-
-const MAGNIFIER_KEYBOARD_MOVE_STEP = 25;
 
 /**
  * @class
@@ -166,7 +168,8 @@ export default class Image extends LightningElement {
     _imgElementWidth;
     _imgElementHeight;
     _isDraggingCompareCursor = false;
-    _magnifierToggled = false;
+    _loaded = false;
+    _magnifierEnabled = false;
     _magnifierPosition = { x: 0, y: 0 };
 
     displayImageError = false;
@@ -179,12 +182,11 @@ export default class Image extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    connectedCallback() {
-        window.addEventListener('keydown', this.handleKeyDown);
-    }
-
     disconnectedCallback() {
-        window.removeEventListener('keydown', this.handleKeyDown);
+        if (this._loaded) {
+            window.removeEventListener('keydown', this.handleKeyDown);
+        }
+        this._loaded = false;
     }
 
     /*
@@ -916,6 +918,26 @@ export default class Image extends LightningElement {
         return this.compareSrc && !this.displayImageError;
     }
 
+    /**
+     * The magnifier element.
+     *
+     * @type {HTMLElement}
+     */
+    get magnifier() {
+        return this.template.querySelector('[data-element-id="magnifier"]');
+    }
+
+    /**
+     * The magnified lens element.
+     *
+     * @type {HTMLElement}
+     */
+    get magnifiedLens() {
+        return this.template.querySelector(
+            '[data-element-id="magnifier-lens"]'
+        );
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -1021,13 +1043,69 @@ export default class Image extends LightningElement {
         }
     }
 
-    _toggleMagnifier() {
+    _moveMagnifier(data, magnifiedImage) {
+        if (!data?.img) {
+            return;
+        }
+        const imgHeight = data.img.height;
+        const imgWidth = data.img.width;
+        const zoomFactor = this.magnifierAttributes.zoomFactor || 1;
+
+        scaleMagnifiedImage(magnifiedImage, imgHeight, imgWidth, zoomFactor);
+
+        switch (this.magnifierType) {
+            case 'standard':
+                standardMagnifier(
+                    data,
+                    this.magnifierAttributes,
+                    this.position
+                );
+                break;
+            case 'inner':
+                innerMagnifier(data, zoomFactor);
+                break;
+            case 'follow':
+                followMagnifier(data, zoomFactor);
+                break;
+            default:
+                break;
+        }
+    }
+
+    _moveMagnifierX(step) {
+        const img = this.template.querySelector('[data-element-id="img"]');
+        if (!img) return;
+
+        this._magnifierPosition.x += step;
+        this.handleMagnifierMove({
+            target: img,
+            clientX: this._magnifierPosition.x,
+            clientY: this._magnifierPosition.y
+        });
+    }
+
+    _moveMagnifierY(step) {
+        const img = this.template.querySelector('[data-element-id="img"]');
+        if (!img) return;
+
+        this._magnifierPosition.y += step;
+        this.handleMagnifierMove({
+            target: img,
+            clientX: this._magnifierPosition.x,
+            clientY: this._magnifierPosition.y
+        });
+    }
+
+    _initMagnifier() {
+        const img = this.template.querySelector('[data-element-id="img"]');
+        if (!img) return;
+
         this._magnifierPosition = {
             x: this._imgElementWidth / 2,
             y: this._imgElementHeight / 2
         };
         this.handleMagnifierMove({
-            target: this.template.querySelector('[data-element-id="img"]'),
+            target: img,
             clientX: this._magnifierPosition.x,
             clientY: this._magnifierPosition.y
         });
@@ -1191,6 +1269,11 @@ export default class Image extends LightningElement {
         this.displayImageError = true;
     }
 
+    /**
+     * Handle the 'keydown' event for magnifier movement.
+     *
+     * @param {KeyboardEvent} event
+     */
     handleKeyDown = (event) => {
         if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
             return;
@@ -1201,76 +1284,39 @@ export default class Image extends LightningElement {
             case keyValues.enter:
                 event.preventDefault();
                 event.stopPropagation();
-                this._magnifierToggled = !this._magnifierToggled;
-                if (this._magnifierToggled) {
-                    this._toggleMagnifier();
-                } else {
-                    this.handleMagnifierOut();
+                this._magnifierEnabled = !this._magnifierEnabled;
+                if (this._magnifierEnabled) {
+                    this._initMagnifier();
+                    return;
                 }
+                this.handleMagnifierOut();
                 break;
             case keyValues.left:
                 event.preventDefault();
                 event.stopPropagation();
-                if (this._magnifierToggled) {
-                    this._magnifierPosition.x =
-                        this._magnifierPosition.x -
-                        MAGNIFIER_KEYBOARD_MOVE_STEP;
-                    this.handleMagnifierMove({
-                        target: this.template.querySelector(
-                            '[data-element-id="img"]'
-                        ),
-                        clientX: this._magnifierPosition.x,
-                        clientY: this._magnifierPosition.y
-                    });
+                if (this._magnifierEnabled) {
+                    this._moveMagnifierX(-MAGNIFIER_KEYBOARD_STEP);
                 }
                 break;
             case keyValues.right:
                 event.preventDefault();
                 event.stopPropagation();
-                if (this._magnifierToggled) {
-                    this._magnifierPosition.x =
-                        this._magnifierPosition.x +
-                        MAGNIFIER_KEYBOARD_MOVE_STEP;
-
-                    this.handleMagnifierMove({
-                        target: this.template.querySelector(
-                            '[data-element-id="img"]'
-                        ),
-                        clientX: this._magnifierPosition.x,
-                        clientY: this._magnifierPosition.y
-                    });
+                if (this._magnifierEnabled) {
+                    this._moveMagnifierX(MAGNIFIER_KEYBOARD_STEP);
                 }
                 break;
             case keyValues.up:
                 event.preventDefault();
                 event.stopPropagation();
-                if (this._magnifierToggled) {
-                    this._magnifierPosition.y =
-                        this._magnifierPosition.y -
-                        MAGNIFIER_KEYBOARD_MOVE_STEP;
-                    this.handleMagnifierMove({
-                        target: this.template.querySelector(
-                            '[data-element-id="img"]'
-                        ),
-                        clientX: this._magnifierPosition.x,
-                        clientY: this._magnifierPosition.y
-                    });
+                if (this._magnifierEnabled) {
+                    this._moveMagnifierY(-MAGNIFIER_KEYBOARD_STEP);
                 }
                 break;
             case keyValues.down:
                 event.preventDefault();
                 event.stopPropagation();
-                if (this._magnifierToggled) {
-                    this._magnifierPosition.y =
-                        this._magnifierPosition.y +
-                        MAGNIFIER_KEYBOARD_MOVE_STEP;
-                    this.handleMagnifierMove({
-                        target: this.template.querySelector(
-                            '[data-element-id="img"]'
-                        ),
-                        clientX: this._magnifierPosition.x,
-                        clientY: this._magnifierPosition.y
-                    });
+                if (this._magnifierEnabled) {
+                    this._moveMagnifierY(MAGNIFIER_KEYBOARD_STEP);
                 }
                 break;
             default:
@@ -1280,8 +1326,6 @@ export default class Image extends LightningElement {
 
     /**
      * Get Image dimensions when values missing or %.
-     *
-     * @returns {number} imgHeight , imgWidth
      */
     handleLoadImage() {
         const img = this.template.querySelector('[data-element-id="img"]');
@@ -1289,13 +1333,23 @@ export default class Image extends LightningElement {
             this._imgElementWidth = img.clientWidth;
             this._imgElementHeight = img.clientHeight;
             if (this.magnifier) {
-                this.handleMagnifier(img);
+                this.handleMagnifier();
             }
             if (this.compareSrc) {
                 requestAnimationFrame(() => {
                     this._initCompareSlider(img);
                 });
             }
+        }
+    }
+
+    /**
+     * Add event listener for magnifier keyboard control.
+     */
+    handleMagnifier() {
+        if (!this._loaded) {
+            this._loaded = true;
+            window.addEventListener('keydown', this.handleKeyDown);
         }
     }
 
@@ -1307,84 +1361,45 @@ export default class Image extends LightningElement {
             return;
         }
         const img = event.target;
-        const magnifier = this.template.querySelector(
-            '[data-element-id="magnifier"]'
-        );
-        const magnifiedLens = this.template.querySelector(
-            '[data-element-id="magnifier-lens"]'
-        );
         const magnifiedImage = this.template.querySelector(
             '[data-element-id="magnified-img"]'
         );
-        if (this.magnifierType === 'inner') {
-            magnifier.style.width = `${img.width}px`;
-            magnifier.style.height = `${img.height}px`;
-        } else {
-            magnifier.style.width = this.magnifierAttributes.zoomRatioWidth;
-            magnifier.style.height = this.magnifierAttributes.zoomRatioHeight;
-        }
-        magnifier.style.display = 'block';
-        const w = magnifier.offsetWidth / 2;
-        const h = magnifier.offsetHeight / 2;
-        const dimensions = {
-            img: img,
-            w: w,
-            h: h
-        };
-        const realPos = getCursorPosition(event);
-        const boundedPos = applyBoundaries(
-            realPos,
-            dimensions,
-            this.magnifierAttributes
-        );
-        const data = {
-            x: boundedPos.x,
-            y: boundedPos.y,
-            w: w,
-            h: h,
-            magnifier: magnifier,
-            magnifiedLens: magnifiedLens,
-            magnifiedImage: magnifiedImage,
-            img: img
-        };
         img.style.cursor = 'crosshair';
-        magnifiedImage.style.height = `${
-            data.img.height * this.magnifierAttributes.zoomFactor
-        }px`;
-        magnifiedImage.style.width = `${
-            data.img.width * this.magnifierAttributes.zoomFactor
-        }px`;
 
-        switch (this.magnifierType) {
-            case 'standard':
-                standardMagnifier(
-                    data,
-                    this.magnifierAttributes,
-                    this.position
-                );
-                break;
-            case 'inner':
-                innerMagnifier(data, this.magnifierAttributes.zoomFactor);
-                break;
-            case 'follow':
-                followMagnifier(data, this.magnifierAttributes.zoomFactor);
-                break;
-            default:
-                break;
+        showMagnifierBox(
+            this.magnifierType,
+            this.magnifierAttributes.zoomRatioHeight,
+            this.magnifierAttributes.zoomRatioWidth,
+            img.width,
+            img.height,
+            this.magnifier
+        );
+
+        let mouseX, mouseY;
+        if (event.type === 'touchstart' || event.type === 'touchmove') {
+            mouseX = event.touches[0].clientX;
+            mouseY = event.touches[0].clientY;
+        } else {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
         }
+        const position = getRelativePosition(img, mouseX, mouseY);
+        const data = getMagnifierData(
+            position,
+            this.magnifierAttributes,
+            this.magnifier,
+            this.magnifiedLens,
+            magnifiedImage,
+            img
+        );
+        this._moveMagnifier(data, magnifiedImage);
     }
 
     /**
      * Remove the magnifier when mouse out.
      */
     handleMagnifierOut() {
-        const magnifier = this.template.querySelector(
-            '[data-element-id="magnifier"]'
-        );
-        const magnifiedLens = this.template.querySelector(
-            '[data-element-id="magnifier-lens"]'
-        );
-        magnifier.style.display = 'none';
-        magnifiedLens.style.display = 'none';
+        this.magnifier.style.display = 'none';
+        this.magnifiedLens.style.display = 'none';
     }
 }
