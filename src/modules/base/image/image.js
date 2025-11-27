@@ -887,6 +887,15 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * Computed tabindex value for image.
+     *
+     * @type {string}
+     */
+    get computedTabIndex() {
+        return this._isValidMagnifierType() ? '0' : '';
+    }
+
+    /**
      * If the compare label should be displayed.
      *
      * @type {boolean}
@@ -1275,6 +1284,16 @@ export default class Image extends LightningElement {
             this._hoverSlider(event);
         } else {
             this._clickSlider(event);
+        }
+    }
+
+    /**
+     * Handle image blur event to disable magnifier.
+     */
+    handleImageBlur() {
+        if (this._magnifierEnabled) {
+            this._magnifierEnabled = false;
+            this.handleMagnifierOut();
         }
     }
 
