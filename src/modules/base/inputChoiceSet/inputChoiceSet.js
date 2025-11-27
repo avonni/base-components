@@ -930,9 +930,9 @@ export default class InputChoiceSet extends LightningElement {
     handleChecking({ value, target, isInput, isOverflowing }) {
         const isSingleToggle =
             this.toggleVariant && this.checkboxes.length === 1;
-        const checked = target.checked;
         if (this.isMultiSelect || isSingleToggle) {
             if (this.toggleVariant) {
+                const checked = target.checked;
                 if (!isInput) {
                     target.checked = checked;
                     target.dataset.checked = checked;
