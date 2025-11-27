@@ -1,21 +1,28 @@
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet, normalizeBoolean } from 'c/utils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { LightningElement, api } from 'lwc';
 
+const MENU_VARIANTS = {
+    valid: [
+        'base',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'base'
+};
 const MENU_WIDTH = 100;
 const SCROLL_OFFSET = 150;
-const DEFAULT_SCROLL_LEFT_BUTTON_ALTERNATIVE_TEXT = 'Scroll Left';
-const DEFAULT_SCROLL_RIGHT_BUTTON_ALTERNATIVE_TEXT = 'Scroll Right';
 
 export default class PrimitiveScrollableContainer extends LightningElement {
-    @api scrollLeftButtonAlternativeText =
-        DEFAULT_SCROLL_LEFT_BUTTON_ALTERNATIVE_TEXT;
-    @api scrollRightButtonAlternativeText =
-        DEFAULT_SCROLL_RIGHT_BUTTON_ALTERNATIVE_TEXT;
-    @api showScrollButtons = false;
-
     _disabled = false;
+    _menuVariant = MENU_VARIANTS.default;
     _showMenu = false;
+    _showScrollButtons = false;
 
     _connected = false;
     _hiddenContentCloseTimeout;
@@ -70,6 +77,24 @@ export default class PrimitiveScrollableContainer extends LightningElement {
     }
 
     /**
+     * The variant changes the look of the "more" menu. Valid variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse and success.
+     *
+     * @type {string}
+     * @public
+     * @default base
+     */
+    @api
+    get menuVariant() {
+        return this._menuVariant;
+    }
+    set menuVariant(value) {
+        this._menuVariant = normalizeString(value, {
+            fallbackValue: MENU_VARIANTS.default,
+            validValues: MENU_VARIANTS.valid
+        });
+    }
+
+    /**
      * If present, the overflowing content will be displayed in a menu.
      *
      * @type {boolean}
@@ -92,6 +117,21 @@ export default class PrimitiveScrollableContainer extends LightningElement {
                 this._dispatchWidthChange();
             });
         }
+    }
+
+    /**
+     * If present, display scroll buttons when the slot content is overflowing the container.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showScrollButtons() {
+        return this._showScrollButtons;
+    }
+    set showScrollButtons(value) {
+        this._showScrollButtons = normalizeBoolean(value);
     }
 
     /*

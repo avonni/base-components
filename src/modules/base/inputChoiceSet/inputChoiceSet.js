@@ -792,6 +792,10 @@ export default class InputChoiceSet extends LightningElement {
         return this.orientation === 'horizontal';
     }
 
+    get showMoreMenuVariant() {
+        return this.buttonVariant ? 'neutral' : 'base';
+    }
+
     /**
      * True if type is toggle.
      *
