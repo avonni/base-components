@@ -7,7 +7,7 @@
             aria-haspopup="true"
             disabled={disabled}
             name={name}
-            title={title}
+            title={computedButtonTitle}
             type="button"
             value={value}
             data-element-id="button"
@@ -15,7 +15,22 @@
             onclick={handleButtonClick}
             onfocus={handleButtonFocus}
         >
-            {label}
+            <div class="avonni-filter-menu__label-container">
+                <div class="avonni-filter-menu__label-left slds-truncate">
+                    <span class={computedMenuLabelClass}>{label}</span>
+                    <span if:true={showFilterValue}
+                        >&nbsp;{selectedFilterLabels}</span
+                    >
+                </div>
+
+                <span
+                    if:true={showCount}
+                    class="slds-badge avonni-filter-menu__button-count-selected"
+                >
+                    {selectedItemCountLabel}
+                </span>
+            </div>
+
             <c-primitive-icon
                 if:true={iconName}
                 class="slds-m-horizontal_xx-small"
@@ -112,7 +127,9 @@
                                             onclick={handleListItemClick}
                                             onkeydown={handleListItemKeyDown}
                                         >
-                                            <span class="slds-truncate">
+                                            <span
+                                                class="slds-truncate slds-grid"
+                                            >
                                                 <c-primitive-icon
                                                     class="slds-m-right_x-small"
                                                     icon-name="utility:check"
@@ -137,12 +154,34 @@
                                                     size="x-small"
                                                     data-element-id="avonni-primitive-icon-prefix"
                                                 ></c-primitive-icon>
-                                                <lightning-formatted-rich-text
-                                                    disable-linkify
-                                                    title={item.label}
-                                                    value={item.label}
-                                                    data-element-id="lightning-formatted-rich-text"
-                                                ></lightning-formatted-rich-text>
+                                                <span
+                                                    class="
+                                                        slds-truncate
+                                                        avonni-filter-menu__item-label-container
+                                                    "
+                                                >
+                                                    <lightning-formatted-rich-text
+                                                        class="
+                                                            slds-truncate
+                                                            avonni-filter-menu__item-label
+                                                        "
+                                                        disable-linkify
+                                                        title={item.label}
+                                                        value={item.label}
+                                                        data-element-id="lightning-formatted-rich-text-item-label"
+                                                    ></lightning-formatted-rich-text>
+
+                                                    <lightning-formatted-rich-text
+                                                        if:true={item.countLabel}
+                                                        class="
+                                                            avonni-filter-menu__count-label
+                                                        "
+                                                        disable-linkify
+                                                        title={item.countLabel}
+                                                        value={item.countLabel}
+                                                        data-element-id="lightning-formatted-rich-text-count-label"
+                                                    ></lightning-formatted-rich-text>
+                                                </span>
                                             </span>
                                             <c-primitive-icon
                                                 if:true={item.iconName}
@@ -174,6 +213,7 @@
                                 if:true={isDateRange}
                                 class="slds-show slds-p-around_small"
                                 date-style={computedTypeAttributes.dateStyle}
+                                disable-auto-next-date
                                 end-date={dateRangeEndDate}
                                 label={label}
                                 label-end-date={computedTypeAttributes.labelEndDate}
@@ -196,6 +236,7 @@
                                 class="slds-show slds-m-around_small"
                                 disable-swap
                                 hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
+                                is-percentage={computedTypeAttributes.isPercentage}
                                 label={label}
                                 max={computedTypeAttributes.max}
                                 min={computedTypeAttributes.min}
@@ -270,11 +311,12 @@
                         class="
                             slds-p-horizontal_small
                             slds-p-bottom_x-small
-                            slds-text-align_right
+                            slds-grid
+                            slds-grid_align-spread
+                            slds-grid_vertical-align-center
                         "
                     >
                         <lightning-button
-                            class="slds-m-right_x-small"
                             disabled={isLoading}
                             label={resetButtonLabel}
                             title={resetButtonLabel}
@@ -283,15 +325,32 @@
                             data-is-focusable
                             onclick={handleResetClick}
                         ></lightning-button>
-                        <lightning-button
-                            disabled={isLoading}
-                            label={applyButtonLabel}
-                            title={applyButtonLabel}
-                            variant="brand"
-                            data-element-id="lightning-button-apply"
-                            data-is-focusable
-                            onclick={handleApply}
-                        ></lightning-button>
+                        <div
+                            class="
+                                slds-col_bump-left
+                                slds-grid
+                                slds-grid_align-center
+                                slds-grid_vertical-align-center
+                            "
+                        >
+                            <lightning-button
+                                if:false={hideApplyButton}
+                                disabled={isLoading}
+                                label={applyButtonLabel}
+                                title={applyButtonLabel}
+                                variant="brand"
+                                data-element-id="lightning-button-apply"
+                                data-is-focusable
+                                onclick={handleApply}
+                            ></lightning-button>
+
+                            <lightning-formatted-text
+                                if:true={isList}
+                                value={selectedOverTotal}
+                                class="slds-m-left_x-small"
+                                data-element-id="lightning-formatted-text-number-values"
+                            ></lightning-formatted-text>
+                        </div>
                     </div>
                 </div>
             </c-focus-trap>

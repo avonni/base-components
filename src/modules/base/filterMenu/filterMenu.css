@@ -1,3 +1,54 @@
+.avonni-filter-menu__button-selected {
+    background-color: var(
+        --avonni-filter-menu-horizontal-button-color-background-selected,
+        var(--slds-g-color-palette-blue-95, #eef4ff)
+    );
+}
+
+.avonni-filter-menu__button-count-selected {
+    background-color: var(
+        --avonni-filter-menu-horizontal-button-count-background-color-selected
+    );
+    color: var(
+        --avonni-filter-menu-horizontal-button-count-text-color-selected
+    );
+}
+
+.avonni-filter-menu__item-label-container {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.avonni-filter-menu__item-label {
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.avonni-filter-menu__count-label {
+    flex-shrink: 0;
+    margin-left: var(--lwc-spacingXxSmall, 0.125rem);
+}
+
+.avonni-filter-menu__button {
+    max-width: 250px;
+    min-width: 0;
+}
+
+.avonni-filter-menu__label-container {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.avonni-filter-menu__label-left {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 [data-element-id='input-time-range-container'] .slds-form-element {
     padding-right: var(--lwc-spacingXSmall, 0.5rem);
     padding-bottom: var(--lwc-spacingXxSmall, 0.25rem);

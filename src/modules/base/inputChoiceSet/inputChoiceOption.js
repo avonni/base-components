@@ -10,6 +10,7 @@ const POSITION_ICON = {
 /**
  * Input choice set options
  * @class
+ * @param {string} additionalLabel Additional label of the option.
  * @param {string} alternativeText Alternative text of the option.
  * @param {string} color CSS color value. If present, the checkbox, radio button or button will take this color.
  * @param {boolean} disabled If present, the option is disabled and it is not possible to select it.
@@ -23,6 +24,7 @@ const POSITION_ICON = {
  */
 export default class InputChoiceOption {
     constructor(option, parent) {
+        this.additionalLabel = option.additionalLabel;
         this.color = option.color;
         this.disabled = option.disabled || parent.disabled;
         this.hidden = option.hidden;
@@ -32,13 +34,14 @@ export default class InputChoiceOption {
         this.label = option.label;
         this.tooltip = option.tooltip;
         this.value = option.value;
+        this.displayAdditionalLabel = this.additionalLabel && !this.hideLabel;
         this.displayLabel = this.label && !this.hideLabel;
         this.type = parent.type;
         this.width = parent.width;
         this.isChecked = Array.isArray(parent.value)
             ? parent.value.includes(option.value)
             : parent.value === option.value;
-            this.labelClass = parent.labelClass
+        this.labelClass = parent.labelClass;
         this.alternativeText = option.alternativeText;
     }
 
@@ -109,14 +112,16 @@ export default class InputChoiceOption {
     }
 
     /**
-    * Computed style classes of the option's label. Part of it is computed by the parent.
-    *
-    * @type {string}
-    */
+     * Computed style classes of the option's label. Part of it is computed by the parent.
+     *
+     * @type {string}
+     */
     get computedLabelClass() {
-        return classSet(this.labelClass).add({
-            "avonni-input-choice-set__option-label": !this.disabled
-        }).toString()
+        return classSet(this.labelClass)
+            .add({
+                'avonni-input-choice-set__option-label': !this.disabled
+            })
+            .toString();
     }
 
     /**

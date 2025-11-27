@@ -13,6 +13,7 @@ export default class FilterMenu extends LightningElement {
     @api dropdownNubbin;
     @api dropdownWidth;
     @api groupOrder;
+    @api hideApplyButton;
     @api hideApplyResetButtons;
     @api hideSelectedItems;
     @api iconName;
@@ -25,6 +26,7 @@ export default class FilterMenu extends LightningElement {
     @api name;
     @api resetButtonLabel;
     @api searchInputPlaceholder;
+    @api showClearButton;
     @api showSearchBox;
     @api title;
     @api tooltip;
