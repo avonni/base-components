@@ -12,6 +12,7 @@ import {
     innerMagnifier,
     standardMagnifier
 } from './magnifier';
+import { keyValues } from 'c/utilsPrivate';
 
 const COMPARE_ORIENTATION = {
     valid: ['horizontal', 'vertical'],
@@ -66,6 +67,8 @@ const POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: undefined
 };
+
+const MAGNIFIER_KEYBOARD_MOVE_STEP = 25;
 
 /**
  * @class
@@ -163,9 +166,26 @@ export default class Image extends LightningElement {
     _imgElementWidth;
     _imgElementHeight;
     _isDraggingCompareCursor = false;
+    _magnifierToggled = false;
+    _magnifierPosition = { x: 0, y: 0 };
+
     displayImageError = false;
     illustrationVariant;
     illustrationTitle;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
+    connectedCallback() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    disconnectedCallback() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+    }
 
     /*
      * ------------------------------------------------------------
@@ -1001,6 +1021,18 @@ export default class Image extends LightningElement {
         }
     }
 
+    _toggleMagnifier() {
+        this._magnifierPosition = {
+            x: this._imgElementWidth / 2,
+            y: this._imgElementHeight / 2
+        };
+        this.handleMagnifierMove({
+            target: this.template.querySelector('[data-element-id="img"]'),
+            clientX: this._magnifierPosition.x,
+            clientY: this._magnifierPosition.y
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS
@@ -1158,6 +1190,93 @@ export default class Image extends LightningElement {
         this.illustrationTitle = this.imageErrorLabel;
         this.displayImageError = true;
     }
+
+    handleKeyDown = (event) => {
+        if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
+            return;
+        }
+
+        switch (event.key) {
+            case keyValues.space:
+            case keyValues.enter:
+                event.preventDefault();
+                event.stopPropagation();
+                this._magnifierToggled = !this._magnifierToggled;
+                if (this._magnifierToggled) {
+                    this._toggleMagnifier();
+                } else {
+                    this.handleMagnifierOut();
+                }
+                break;
+            case keyValues.left:
+                event.preventDefault();
+                event.stopPropagation();
+                if (this._magnifierToggled) {
+                    this._magnifierPosition.x =
+                        this._magnifierPosition.x -
+                        MAGNIFIER_KEYBOARD_MOVE_STEP;
+                    this.handleMagnifierMove({
+                        target: this.template.querySelector(
+                            '[data-element-id="img"]'
+                        ),
+                        clientX: this._magnifierPosition.x,
+                        clientY: this._magnifierPosition.y
+                    });
+                }
+                break;
+            case keyValues.right:
+                event.preventDefault();
+                event.stopPropagation();
+                if (this._magnifierToggled) {
+                    this._magnifierPosition.x =
+                        this._magnifierPosition.x +
+                        MAGNIFIER_KEYBOARD_MOVE_STEP;
+
+                    this.handleMagnifierMove({
+                        target: this.template.querySelector(
+                            '[data-element-id="img"]'
+                        ),
+                        clientX: this._magnifierPosition.x,
+                        clientY: this._magnifierPosition.y
+                    });
+                }
+                break;
+            case keyValues.up:
+                event.preventDefault();
+                event.stopPropagation();
+                if (this._magnifierToggled) {
+                    this._magnifierPosition.y =
+                        this._magnifierPosition.y -
+                        MAGNIFIER_KEYBOARD_MOVE_STEP;
+                    this.handleMagnifierMove({
+                        target: this.template.querySelector(
+                            '[data-element-id="img"]'
+                        ),
+                        clientX: this._magnifierPosition.x,
+                        clientY: this._magnifierPosition.y
+                    });
+                }
+                break;
+            case keyValues.down:
+                event.preventDefault();
+                event.stopPropagation();
+                if (this._magnifierToggled) {
+                    this._magnifierPosition.y =
+                        this._magnifierPosition.y +
+                        MAGNIFIER_KEYBOARD_MOVE_STEP;
+                    this.handleMagnifierMove({
+                        target: this.template.querySelector(
+                            '[data-element-id="img"]'
+                        ),
+                        clientX: this._magnifierPosition.x,
+                        clientY: this._magnifierPosition.y
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+    };
 
     /**
      * Get Image dimensions when values missing or %.
