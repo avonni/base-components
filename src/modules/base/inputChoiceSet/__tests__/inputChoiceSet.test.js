@@ -455,12 +455,23 @@ describe('Input choice set', () => {
                     const inputs = element.shadowRoot.querySelectorAll(
                         '[data-element-id="span-checkbox-container"]'
                     );
+                    const labels = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="lightning-formatted-rich-text-option-label"]'
+                    );
+                    expect(inputs).toHaveLength(options.length);
+                    expect(labels).toHaveLength(options.length);
+
                     inputs.forEach((input) => {
                         expect(input.className).not.toContain(
                             'avonni-input-choice-set__horizontal'
                         );
                         expect(input.className).toContain(
                             'avonni-input-choice-set__vertical'
+                        );
+                    });
+                    labels.forEach((label) => {
+                        expect(label.className).toContain(
+                            'avonni-input-choice-set__option-label_line-clamp-vertical'
                         );
                     });
                 });
@@ -475,12 +486,23 @@ describe('Input choice set', () => {
                         const inputs = element.shadowRoot.querySelectorAll(
                             '[data-element-id="span-checkbox-container"]'
                         );
+                        const labels = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="lightning-formatted-rich-text-option-label"]'
+                        );
+                        expect(inputs).toHaveLength(options.length);
+                        expect(labels).toHaveLength(options.length);
+
                         inputs.forEach((input) => {
                             expect(input.className).not.toContain(
                                 'avonni-input-choice-set__vertical'
                             );
                             expect(input.className).toContain(
                                 'avonni-input-choice-set__horizontal'
+                            );
+                        });
+                        labels.forEach((label) => {
+                            expect(label.className).not.toContain(
+                                'avonni-input-choice-set__option-label_line-clamp-vertical'
                             );
                         });
                     });
@@ -596,7 +618,10 @@ describe('Input choice set', () => {
                 it('Columns are used', () => {
                     element.options = options;
                     element.orientation = 'horizontal';
-                    element.orientationAttributes = { cols: 4 };
+                    element.orientationAttributes = {
+                        cols: 4,
+                        multipleRows: true
+                    };
 
                     return Promise.resolve().then(() => {
                         const scrollableContainer =
@@ -606,11 +631,11 @@ describe('Input choice set', () => {
                         expect(
                             scrollableContainer.showScrollButtons
                         ).toBeFalsy();
-                        expect(scrollableContainer.disabled).toBeFalsy();
+                        expect(scrollableContainer.disabled).toBeTruthy();
                         const layout = element.shadowRoot.querySelector(
                             '[data-element-id="layout"]'
                         );
-                        expect(layout.multipleRows).toBeFalsy();
+                        expect(layout.multipleRows).toBeTruthy();
                         const items = element.shadowRoot.querySelectorAll(
                             '[data-element-id="layout-item"]'
                         );
@@ -1129,6 +1154,95 @@ describe('Input choice set', () => {
                     );
 
                     expect(handler).not.toHaveBeenCalled();
+                });
+            });
+
+            describe('From overflowing option', () => {
+                function displayOverflowingOptions() {
+                    const visibleSpans = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="span-checkbox-container"]'
+                    );
+                    visibleSpans.forEach((input) => {
+                        jest.spyOn(input, 'offsetWidth', 'get').mockReturnValue(
+                            100
+                        );
+                    });
+
+                    element.orientation = 'horizontal';
+                    jest.runAllTimers();
+
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scrollable-container"]'
+                    );
+                    container.dispatchEvent(
+                        new CustomEvent('widthchange', {
+                            detail: {
+                                availableWidth: 200
+                            }
+                        })
+                    );
+                }
+
+                it('Event is fired on click on overflowing option', () => {
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+                    element.options = options;
+
+                    return Promise.resolve()
+                        .then(() => {
+                            displayOverflowingOptions();
+                        })
+                        .then(() => {
+                            const scrollableContainer =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-primitive-scrollable-container"]'
+                                );
+                            const closeMenuSpy = jest.spyOn(
+                                scrollableContainer,
+                                'closeMenu'
+                            );
+                            const overflowingInputs =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="input-overflowing-option"]'
+                                );
+                            overflowingInputs[0].click();
+                            expect(handler).toHaveBeenCalledTimes(1);
+                            const call = handler.mock.calls[0][0];
+                            expect(call.detail.value).toBe(options[2].value);
+                            expect(overflowingInputs[0].checked).toBeTruthy();
+                            expect(overflowingInputs[0].dataset.checked).toBe(
+                                'true'
+                            );
+                            expect(closeMenuSpy).toHaveBeenCalled();
+                        });
+                });
+
+                it('Menu is not closed when multi select is allowed', () => {
+                    const handler = jest.fn();
+                    element.addEventListener('change', handler);
+                    element.options = options;
+                    element.isMultiSelect = true;
+
+                    return Promise.resolve()
+                        .then(() => {
+                            displayOverflowingOptions();
+                        })
+                        .then(() => {
+                            const scrollableContainer =
+                                element.shadowRoot.querySelector(
+                                    '[data-element-id="avonni-primitive-scrollable-container"]'
+                                );
+                            const closeMenuSpy = jest.spyOn(
+                                scrollableContainer,
+                                'closeMenu'
+                            );
+                            const overflowingInputs =
+                                element.shadowRoot.querySelectorAll(
+                                    '[data-element-id="input-overflowing-option"]'
+                                );
+                            overflowingInputs[0].click();
+                            expect(closeMenuSpy).not.toHaveBeenCalled();
+                        });
                 });
             });
 

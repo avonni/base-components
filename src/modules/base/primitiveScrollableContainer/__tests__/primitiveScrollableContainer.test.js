@@ -29,6 +29,7 @@ describe('Primitive Scrollable Container', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.disabled).toBeFalsy();
+            expect(element.menuVariant).toBe('base');
             expect(element.scrollLeftButtonAlternativeText).toBe('Scroll Left');
             expect(element.scrollRightButtonAlternativeText).toBe(
                 'Scroll Right'
@@ -77,6 +78,20 @@ describe('Primitive Scrollable Container', () => {
                     );
                     expect(leftButton.disabled).toBeTruthy();
                     expect(rightButton.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Menu variant', () => {
+            it('Passed to the component', () => {
+                element.showMenu = true;
+                element.menuVariant = 'brand';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-show-more"]'
+                    );
+                    expect(button.variant).toBe('brand');
                 });
             });
         });
@@ -302,6 +317,27 @@ describe('Primitive Scrollable Container', () => {
                     expect(leftButton).toBeTruthy();
                     expect(rightButton).toBeTruthy();
                 });
+            });
+        });
+    });
+
+    describe('Methods', () => {
+        it('Close menu', () => {
+            element.showMenu = true;
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+
+                const menu = element.shadowRoot.querySelector(
+                    '[data-element-id="div-hidden-content"]'
+                );
+                expect(menu.classList).not.toContain('slds-hide');
+
+                element.closeMenu();
+                expect(menu.classList).toContain('slds-hide');
             });
         });
     });
