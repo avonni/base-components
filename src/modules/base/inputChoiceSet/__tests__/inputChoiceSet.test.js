@@ -153,13 +153,17 @@ describe('Input choice set', () => {
             });
 
             it('disabled = false, some options are disabled', () => {
-                element.options = [{ value: '1', label: 'First', disabled: true }, { value: '2', label: 'Second' }, { value: '3', label: 'Third', disabled: true }];
+                element.options = [
+                    { value: '1', label: 'First', disabled: true },
+                    { value: '2', label: 'Second' },
+                    { value: '3', label: 'Third', disabled: true }
+                ];
                 element.disabled = false;
 
                 return Promise.resolve().then(() => {
                     const inputs = element.shadowRoot.querySelectorAll(
                         '[data-element-id="input"]'
-                    );  
+                    );
                     expect(inputs).toHaveLength(3);
                     expect(inputs[0].disabled).toBeTruthy();
                     expect(inputs[1].disabled).toBeFalsy();
@@ -419,10 +423,16 @@ describe('Input choice set', () => {
             });
 
             it('Hidden options', () => {
-                element.options = [{ value: '1', label: 'First' }, { value: '2', label: 'Second', hidden: true }, { value: '3', label: 'Third' }];
-                
+                element.options = [
+                    { value: '1', label: 'First' },
+                    { value: '2', label: 'Second', hidden: true },
+                    { value: '3', label: 'Third' }
+                ];
+
                 return Promise.resolve().then(() => {
-                    const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input"]'
+                    );
                     expect(inputs).toHaveLength(2);
                     expect(inputs[0].value).toBe('1');
                     expect(inputs[1].value).toBe('3');
@@ -583,6 +593,7 @@ describe('Input choice set', () => {
                 element.options = options;
                 element.type = 'button';
                 element.orientation = 'vertical';
+                element.isMultiSelect = true;
 
                 return Promise.resolve().then(() => {
                     const inputs = element.shadowRoot.querySelectorAll(
