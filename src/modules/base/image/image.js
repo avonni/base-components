@@ -892,7 +892,7 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     get computedTabIndex() {
-        return this._isValidMagnifierType() ? '0' : '';
+        return this._isValidMagnifierType() ? '0' : '-1';
     }
 
     /**
