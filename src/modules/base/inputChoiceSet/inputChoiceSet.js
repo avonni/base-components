@@ -943,6 +943,12 @@ export default class InputChoiceSet extends LightningElement {
             } else {
                 target.dataset.checked = target.checked;
             }
+            const option = this.computedOptions.find(
+                (opt) => opt.value === value
+            );
+            if (option) {
+                option.isChecked = target.checked;
+            }
         } else {
             if (isOverflowing) {
                 target.dataset.checked = target.checked;
@@ -963,6 +969,12 @@ export default class InputChoiceSet extends LightningElement {
             checkboxesToUncheck.forEach((checkbox) => {
                 checkbox.checked = false;
                 checkbox.dataset.checked = 'false';
+            });
+            const optionsToUncheck = this.computedOptions.filter(
+                (opt) => opt.value !== value
+            );
+            optionsToUncheck.forEach((option) => {
+                option.isChecked = false;
             });
         }
 
@@ -1311,10 +1323,6 @@ export default class InputChoiceSet extends LightningElement {
         const isInput = target.dataset.elementId === 'input';
         const isOverflowing =
             target.dataset.elementId === 'input-overflowing-option';
-        const option = this.computedOptions.find((opt) => opt.value === value);
-        if (option) {
-            option.isChecked = target.checked;
-        }
 
         // When toggle variant, if we press on the label we need to get the target input-toggle
         if (!isOverflowing && this.toggleVariant && isInput) {
