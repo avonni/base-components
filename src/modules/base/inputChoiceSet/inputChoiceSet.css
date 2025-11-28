@@ -434,6 +434,10 @@
     max-width: 100%;
 }
 
+.slds-checkbox_toggle.avonni-input-choice-set__horizontal {
+    max-width: fit-content;
+}
+
 .avonni-input-choice-set__checkbox-container {
     /* Checkbox */
     --slds-c-checkbox-color-background: var(
