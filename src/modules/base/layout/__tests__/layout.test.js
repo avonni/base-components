@@ -330,6 +330,152 @@ describe('Layout', () => {
                 });
             });
 
+            describe('privatelayoutconnected allows the setting of the items size with a width', () => {
+                it('size is large', () => {
+                    clearDOM();
+                    createLayout();
+
+                    const handler = jest.fn();
+                    element.addEventListener('privatelayoutconnected', handler);
+                    addLayoutToDOM();
+
+                    const setItemsSize =
+                        handler.mock.calls[0][0].detail.callbacks.setItemsSize;
+
+                    return Promise.resolve().then(() => {
+                        const callback = jest.fn();
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-wrapper"]'
+                        );
+                        wrapper.dispatchEvent(
+                            new CustomEvent('privatelayoutitemconnected', {
+                                detail: {
+                                    name: 'numberOne',
+                                    callbacks: {
+                                        setContainerSize: callback
+                                    }
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(1);
+                        expect(callback.mock.calls[0][0]).toBe('default');
+                        setItemsSize(1025);
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(2);
+                        expect(callback.mock.calls[1][0]).toBe('large');
+                    });
+                });
+
+                it('size is medium', () => {
+                    clearDOM();
+                    createLayout();
+
+                    const handler = jest.fn();
+                    element.addEventListener('privatelayoutconnected', handler);
+                    addLayoutToDOM();
+
+                    const setItemsSize =
+                        handler.mock.calls[0][0].detail.callbacks.setItemsSize;
+
+                    return Promise.resolve().then(() => {
+                        const callback = jest.fn();
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-wrapper"]'
+                        );
+                        wrapper.dispatchEvent(
+                            new CustomEvent('privatelayoutitemconnected', {
+                                detail: {
+                                    name: 'numberOne',
+                                    callbacks: {
+                                        setContainerSize: callback
+                                    }
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(1);
+                        expect(callback.mock.calls[0][0]).toBe('default');
+                        setItemsSize(769);
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(2);
+                        expect(callback.mock.calls[1][0]).toBe('medium');
+                    });
+                });
+
+                it('size is small', () => {
+                    clearDOM();
+                    createLayout();
+
+                    const handler = jest.fn();
+                    element.addEventListener('privatelayoutconnected', handler);
+                    addLayoutToDOM();
+
+                    const setItemsSize =
+                        handler.mock.calls[0][0].detail.callbacks.setItemsSize;
+
+                    return Promise.resolve().then(() => {
+                        const callback = jest.fn();
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-wrapper"]'
+                        );
+                        wrapper.dispatchEvent(
+                            new CustomEvent('privatelayoutitemconnected', {
+                                detail: {
+                                    name: 'numberOne',
+                                    callbacks: {
+                                        setContainerSize: callback
+                                    }
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(1);
+                        expect(callback.mock.calls[0][0]).toBe('default');
+                        setItemsSize(481);
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(2);
+                        expect(callback.mock.calls[1][0]).toBe('small');
+                    });
+                });
+
+                it('size is default', () => {
+                    clearDOM();
+                    createLayout();
+
+                    const handler = jest.fn();
+                    element.addEventListener('privatelayoutconnected', handler);
+                    addLayoutToDOM();
+
+                    const setItemsSize =
+                        handler.mock.calls[0][0].detail.callbacks.setItemsSize;
+
+                    return Promise.resolve().then(() => {
+                        const callback = jest.fn();
+                        const wrapper = element.shadowRoot.querySelector(
+                            '[data-element-id="div-wrapper"]'
+                        );
+                        wrapper.dispatchEvent(
+                            new CustomEvent('privatelayoutitemconnected', {
+                                detail: {
+                                    name: 'numberOne',
+                                    callbacks: {
+                                        setContainerSize: callback
+                                    }
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(1);
+                        expect(callback.mock.calls[0][0]).toBe('default');
+                        setItemsSize(400);
+                        jest.runAllTimers();
+                        expect(callback).toHaveBeenCalledTimes(2);
+                        expect(callback.mock.calls[1][0]).toBe('default');
+                    });
+                });
+            });
+
             it('sizechange is fired on first render', () => {
                 clearDOM();
                 createLayout();
@@ -449,7 +595,7 @@ describe('Layout', () => {
                 });
             });
 
-            it('If true is passed to setIsResizedByParent(), newly connected items get sized after the debounce', () => {
+            it('If true is passed to setIsResizedByParent(), newly connected items do not get sized after the debounce', () => {
                 clearDOM();
                 createLayout();
 
@@ -488,8 +634,7 @@ describe('Layout', () => {
                     );
 
                     jest.runAllTimers();
-                    expect(callback).toHaveBeenCalledTimes(1);
-                    expect(callback.mock.calls[0][0]).toBe('small');
+                    expect(callback).not.toHaveBeenCalled();
                 });
             });
         });
