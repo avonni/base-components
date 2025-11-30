@@ -1,25 +1,23 @@
 /**
  * Apply the boundaries to the magnifier.
  */
-export function applyBoundaries(realPos, dimensions, magnifierAttributes) {
-    const boundedPos = { x: realPos.x, y: realPos.y };
-    const rightBoundary =
-        dimensions.img.width - dimensions.w / magnifierAttributes.zoomFactor;
-    const leftBoundary = dimensions.w / magnifierAttributes.zoomFactor;
-    const bottomBoundary =
-        dimensions.img.height - dimensions.h / magnifierAttributes.zoomFactor;
-    const topBoundary = dimensions.h / magnifierAttributes.zoomFactor;
+function applyBoundaries(position, dimensions, zoomFactor) {
+    const boundedPos = { x: position.x, y: position.y };
+    const rightBoundary = dimensions.img.width - dimensions.w / zoomFactor;
+    const leftBoundary = dimensions.w / zoomFactor;
+    const bottomBoundary = dimensions.img.height - dimensions.h / zoomFactor;
+    const topBoundary = dimensions.h / zoomFactor;
 
-    if (realPos.x > rightBoundary) {
+    if (position.x > rightBoundary) {
         boundedPos.x = rightBoundary;
     }
-    if (realPos.x < leftBoundary) {
+    if (position.x < leftBoundary) {
         boundedPos.x = leftBoundary;
     }
-    if (realPos.y > bottomBoundary) {
+    if (position.y > bottomBoundary) {
         boundedPos.y = bottomBoundary;
     }
-    if (realPos.y < topBoundary) {
+    if (position.y < topBoundary) {
         boundedPos.y = topBoundary;
     }
     return boundedPos;
@@ -66,20 +64,56 @@ export function followMagnifier(
 }
 
 /**
+ * Get the magnifier data.
+ *
+ * @returns {object} x, y, w, h, magnifier, magnifiedLens, magnifiedImage, img
+ */
+export function getMagnifierData(
+    position,
+    magnifierAttributes,
+    magnifier,
+    magnifiedLens,
+    magnifiedImage,
+    target
+) {
+    const w = magnifier.offsetWidth / 2;
+    const h = magnifier.offsetHeight / 2;
+    const dimensions = {
+        img: target,
+        w,
+        h
+    };
+    const boundedPosition = applyBoundaries(
+        position,
+        dimensions,
+        magnifierAttributes.zoomFactor
+    );
+    const x = boundedPosition.x;
+    const y = boundedPosition.y;
+
+    return {
+        x,
+        y,
+        w,
+        h,
+        magnifier,
+        magnifiedLens,
+        magnifiedImage,
+        img: target
+    };
+}
+
+/**
  * Get the position of the cursor relative to the image.
  *
  * @returns {object} posX, posY
  */
-export function getCursorPosition(event) {
-    const rect = event.target.getBoundingClientRect();
-    let x, y;
-    if (event.type === 'touchstart' || event.type === 'touchmove') {
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
-    } else {
-        x = event.clientX;
-        y = event.clientY;
+export function getRelativePosition(target, x, y) {
+    const rect = target.getBoundingClientRect();
+    if (!rect) {
+        return { x, y };
     }
+
     const posX = x - rect.left;
     const posY = y - rect.top;
     return { x: posX, y: posY };
@@ -98,6 +132,35 @@ export function innerMagnifier(
     magnifiedImage.style.transform = `translate(-${x * zoomFactor - w}px, -${
         y * zoomFactor - h
     }px)`;
+}
+
+/**
+ * Scale the magnified image according to the zoom factor.
+ */
+export function scaleMagnifiedImage(target, imgHeight, imgWidth, zoomFactor) {
+    target.style.height = `${imgHeight * zoomFactor}px`;
+    target.style.width = `${imgWidth * zoomFactor}px`;
+}
+
+/**
+ * Show magnifier box.
+ */
+export function showMagnifierBox(
+    type,
+    zoomRatioWidth,
+    zoomRatioHeight,
+    imgWidth,
+    imgHeight,
+    target
+) {
+    if (type === 'inner') {
+        target.style.width = `${imgWidth}px`;
+        target.style.height = `${imgHeight}px`;
+    } else {
+        target.style.width = zoomRatioWidth;
+        target.style.height = zoomRatioHeight;
+    }
+    target.style.display = 'block';
 }
 
 /**
