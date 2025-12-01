@@ -1,0 +1,24 @@
+.avonni-status__truncation_container {
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--avonni-status-label-line-clamp, 1);
+}
+
+.avonni-status__max-width {
+    max-width: fit-content;
+}
+
+.avonni-status__horizontal-alignment {
+    justify-content: var(--avonni-status-horizontal-alignment, flex-start);
+}
+
+.avonni-status__label {
+    font-family: var(--avonni-status-label-font-family);
+    font-size: var(--avonni-status-label-font-size, 0.8125rem);
+    font-style: var(--avonni-status-label-font-style, normal);
+    font-weight: var(--avonni-status-label-font-weight, 400);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--avonni-status-label-line-clamp, 1);
+}
