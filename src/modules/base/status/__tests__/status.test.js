@@ -17,7 +17,13 @@ const STATES = [
         value: 'warning',
         color: 'yellow'
     },
-    { iconName: 'utility:error', label: 'Error', value: 'error', color: 'red' }
+    {
+        iconName: 'utility:error',
+        label: 'Error',
+        value: 'error',
+        color: 'red',
+        tooltip: 'some tooltip'
+    }
 ];
 
 let element;
@@ -33,6 +39,7 @@ describe('Status', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllMocks();
     });
 
     describe('Attributes', () => {
@@ -44,10 +51,10 @@ describe('Status', () => {
         });
 
         describe('Icon Position', () => {
-            it('iconPosition = "left"', () => {
+            it('Left', () => {
                 element.states = STATES;
                 element.iconPosition = 'left';
-                element.value = 'success';
+                element.value = STATES[1].value;
 
                 return Promise.resolve().then(() => {
                     const icon = element.shadowRoot.querySelector(
@@ -59,10 +66,10 @@ describe('Status', () => {
                 });
             });
 
-            it('iconPosition = "right"', () => {
+            it('Right', () => {
                 element.states = STATES;
                 element.iconPosition = 'right';
-                element.value = 'success';
+                element.value = STATES[0].value;
 
                 return Promise.resolve().then(() => {
                     const icon = element.shadowRoot.querySelector(
@@ -76,10 +83,10 @@ describe('Status', () => {
         });
 
         describe('Icon Size', () => {
-            it('Small', () => {
+            it('Passed to the component', () => {
                 element.states = STATES;
                 element.iconSize = 'small';
-                element.value = 'success';
+                element.value = STATES[0].value;
 
                 return Promise.resolve().then(() => {
                     const icon = element.shadowRoot.querySelector(
@@ -90,18 +97,37 @@ describe('Status', () => {
             });
         });
 
+        describe('States', () => {
+            it('Selected state is displayed', () => {
+                element.states = STATES;
+                element.value = STATES[0].value;
+
+                return Promise.resolve().then(() => {
+                    const formattedText = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-text"]'
+                    );
+                    expect(formattedText).toBeTruthy();
+                    expect(formattedText.style.cssText).toBe(
+                        `color: ${STATES[0].color};`
+                    );
+                    expect(formattedText.value).toBe(STATES[0].label);
+
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon"]'
+                    );
+                    expect(icon).toBeTruthy();
+                    expect(icon.style.cssText).toBe(
+                        `--slds-c-icon-color-foreground-default: ${STATES[0].color};`
+                    );
+                    expect(icon.iconName).toBe(STATES[0].iconName);
+                });
+            });
+        });
+
         describe('Tooltip', () => {
-            it('Passed to the component', () => {
-                element.states = [
-                    {
-                        iconName: 'utility:success',
-                        label: 'Success',
-                        value: 'success',
-                        color: 'green',
-                        tooltip: 'some tooltip'
-                    }
-                ];
-                element.value = 'success';
+            it('Created when tooltip is provided', () => {
+                element.states = STATES;
+                element.value = STATES[2].value;
 
                 return Promise.resolve().then(() => {
                     expect(Tooltip).toHaveBeenCalled();
@@ -109,6 +135,20 @@ describe('Status', () => {
 
                     const instance = Tooltip.mock.instances[0];
                     expect(instance.initialize).toHaveBeenCalled();
+                });
+            });
+
+            it('Destroyed when tooltip is removed', () => {
+                element.states = STATES;
+                element.value = STATES[2].value;
+
+                return Promise.resolve().then(() => {
+                    const instance = Tooltip.mock.instances[0];
+                    expect(instance.initialize).toHaveBeenCalledTimes(1);
+                    expect(instance.destroy).not.toHaveBeenCalled();
+
+                    element.value = STATES[0].value;
+                    expect(instance.destroy).toHaveBeenCalledTimes(1);
                 });
             });
         });

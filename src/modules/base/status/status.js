@@ -24,6 +24,7 @@ export default class Status extends LightningElement {
     _value;
 
     _connected = false;
+    _tooltip;
     computedState = {};
 
     /*
@@ -35,6 +36,12 @@ export default class Status extends LightningElement {
     connectedCallback() {
         this._initStates();
         this._connected = true;
+    }
+
+    disconnectedCallback() {
+        if (this._tooltip) {
+            this._tooltip.destroy();
+        }
     }
 
     /*
@@ -151,6 +158,9 @@ export default class Status extends LightningElement {
     }
 
     _initTooltip() {
+        if (this._tooltip) {
+            this._tooltip.destroy();
+        }
         const tooltip = this.computedState.tooltip;
         if (!tooltip) {
             return;
