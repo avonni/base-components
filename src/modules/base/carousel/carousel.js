@@ -1224,7 +1224,10 @@ export default class Carousel extends LightningElement {
 
         // we want to make sure that while we are using the keyboard
         // navigation we are focusing on the right indicator
-        if (indicatorActionsElements[this.activePanelIndex]) {
+        if (
+            indicatorActionsElements[this.activePanelIndex] &&
+            key !== keyValues.tab
+        ) {
             indicatorActionsElements[this.activePanelIndex].focus();
         }
     }
