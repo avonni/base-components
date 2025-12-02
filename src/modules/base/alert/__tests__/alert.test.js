@@ -255,4 +255,57 @@ describe('Alert', () => {
             });
         });
     });
+
+    describe('Methods', () => {
+        it('focus', () => {
+            element.isDismissible = true;
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                const spy = jest.spyOn(button, 'focus');
+                element.focus();
+                expect(spy).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('Events', () => {
+        it('blur', () => {
+            element.isDismissible = true;
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            return Promise.resolve().then(() => {
+                const lightningButtonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                lightningButtonIcon.dispatchEvent(new CustomEvent('blur'));
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        it('focus', () => {
+            element.isDismissible = true;
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            return Promise.resolve().then(() => {
+                const lightningButtonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                lightningButtonIcon.dispatchEvent(new CustomEvent('focus'));
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+    });
 });

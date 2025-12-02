@@ -113,9 +113,29 @@ export default class Alert extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="lightning-button-icon"]'
+        );
+        if (button) {
+            button.focus();
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    handleBlur() {
+        this._dispatchBlur();
+    }
 
     /**
      * Hide the alert and execute the close action.
@@ -125,5 +145,37 @@ export default class Alert extends LightningElement {
         if (typeof this.closeAction === 'function') {
             this.closeAction();
         }
+    }
+
+    handleFocus() {
+        this._dispatchFocus();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the close button.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the close button.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
