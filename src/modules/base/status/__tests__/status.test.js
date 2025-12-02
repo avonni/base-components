@@ -142,14 +142,21 @@ describe('Status', () => {
                 element.states = STATES;
                 element.value = STATES[2].value;
 
-                return Promise.resolve().then(() => {
-                    const instance = Tooltip.mock.instances[0];
-                    expect(instance.initialize).toHaveBeenCalledTimes(1);
-                    expect(instance.destroy).not.toHaveBeenCalled();
+                let instance;
+                return Promise.resolve()
+                    .then(() => {
+                        instance = Tooltip.mock.instances[0];
+                        expect(instance.initialize).toHaveBeenCalledTimes(1);
+                        expect(instance.destroy).not.toHaveBeenCalled();
+                        instance.initialize.mockClear();
 
-                    element.value = STATES[0].value;
-                    expect(instance.destroy).toHaveBeenCalledTimes(1);
-                });
+                        element.value = STATES[0].value;
+                    })
+                    .then(() => {
+                        expect(Tooltip.mock.instances).toHaveLength(1);
+                        expect(instance.initialize).not.toHaveBeenCalled();
+                        expect(instance.destroy).toHaveBeenCalledTimes(1);
+                    });
             });
         });
     });

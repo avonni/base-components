@@ -38,6 +38,10 @@ export default class Status extends LightningElement {
         this._connected = true;
     }
 
+    renderedCallback() {
+        this._initTooltip();
+    }
+
     disconnectedCallback() {
         if (this._tooltip) {
             this._tooltip.destroy();
@@ -154,21 +158,24 @@ export default class Status extends LightningElement {
         this.computedState = normalizeObject(
             this.states.find((s) => s.value === this.value)
         );
-        this._initTooltip();
     }
 
     _initTooltip() {
         if (this._tooltip) {
             this._tooltip.destroy();
+            this._tooltip = null;
         }
         const tooltip = this.computedState.tooltip;
-        if (!tooltip) {
+        const target = this.template.querySelector(
+            '[data-element-id="span-wrapper"]'
+        );
+        if (!tooltip || !target) {
             return;
         }
+
         this._tooltip = new Tooltip(tooltip, {
             root: this,
-            target: () =>
-                this.template.querySelector('[data-element-id="span-wrapper"]')
+            target: () => target
         });
         this._tooltip.initialize();
     }
