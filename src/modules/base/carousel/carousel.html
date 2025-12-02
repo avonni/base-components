@@ -20,7 +20,7 @@
                     title={assistiveText.previousPanel}
                     type="button"
                     data-element-id="lightning-button-icon-previous"
-                    onclick={previous}
+                    onclick={handlePreviousClick}
                 >
                     <c-primitive-icon
                         class="avonni-carousel__nav-icon"
@@ -48,7 +48,7 @@
                         title={assistiveText.autoplayButton}
                         variant="border-filled"
                         data-element-id="lightning-button-icon"
-                        onclick={toggleAutoScroll}
+                        onclick={handleAutoplayClick}
                     ></lightning-button-icon>
                     <!-- Carousel panels -->
                     <div class="slds-carousel__panels" style={panelStyle}>
@@ -83,7 +83,10 @@
                                         style={carouselItemStyle}
                                     >
                                         <c-primitive-carousel-item
-                                            class="slds-show avonni-carousel__panel-item"
+                                            class="
+                                                slds-show
+                                                avonni-carousel__panel-item
+                                            "
                                             actions={item.actions}
                                             actions-position={actionsPosition}
                                             actions-variant={actionsVariant}
@@ -192,7 +195,7 @@
                     title={assistiveText.nextPanel}
                     type="button"
                     data-element-id="lightning-button-icon-next"
-                    onclick={next}
+                    onclick={handleNextClick}
                 >
                     <c-primitive-icon
                         class="avonni-carousel__nav-icon"
