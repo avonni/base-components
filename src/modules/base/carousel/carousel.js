@@ -684,6 +684,20 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Set the focus on the first focusable element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const focusableElement =
+            this.template.querySelector('[data-focusable]');
+        if (focusableElement) {
+            focusableElement.focus();
+        }
+    }
+
+    /**
      * Go to last slide.
      *
      * @public
@@ -1089,6 +1103,15 @@ export default class Carousel extends LightningElement {
         this.autoScrollOn ? this.pause() : this.play();
     }
 
+    handleBlur(event) {
+        if (
+            !event.relatedTarget ||
+            !this.template.contains(event.relatedTarget)
+        ) {
+            this._dispatchBlur();
+        }
+    }
+
     /**
      * Panel dragged by touch event handler.
      *
@@ -1121,6 +1144,15 @@ export default class Carousel extends LightningElement {
         };
 
         window.addEventListener('touchend', handleDragEnd);
+    }
+
+    handleFocus(event) {
+        if (
+            !event.relatedTarget ||
+            !this.template.contains(event.relatedTarget)
+        ) {
+            this._dispatchFocus();
+        }
     }
 
     /**
@@ -1266,6 +1298,17 @@ export default class Carousel extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the carousel.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
     _dispatchCurrentPanelChange(item) {
         /**
          * The event fired when the currently visible panel changes.
@@ -1284,6 +1327,17 @@ export default class Carousel extends LightningElement {
                 }
             })
         );
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the carousel.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     _dispatchLoadMoreEvent() {

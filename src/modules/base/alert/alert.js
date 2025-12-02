@@ -117,6 +117,11 @@ export default class Alert extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Set the focus on the close button, if present
+     *
+     * @public
+     */
     @api
     focus() {
         const button = this.template.querySelector(

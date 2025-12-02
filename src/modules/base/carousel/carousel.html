@@ -19,8 +19,11 @@
                     disabled={previousPanelNavigationDisabled}
                     title={assistiveText.previousPanel}
                     type="button"
+                    data-focusable
                     data-element-id="lightning-button-icon-previous"
+                    onblur={handleBlur}
                     onclick={handlePreviousClick}
+                    onfocus={handleFocus}
                 >
                     <c-primitive-icon
                         class="avonni-carousel__nav-icon"
@@ -48,7 +51,10 @@
                         title={assistiveText.autoplayButton}
                         variant="border-filled"
                         data-element-id="lightning-button-icon"
+                        data-focusable
+                        onblur={handleBlur}
                         onclick={handleAutoplayClick}
+                        onfocus={handleFocus}
                     ></lightning-button-icon>
                     <!-- Carousel panels -->
                     <div class="slds-carousel__panels" style={panelStyle}>
@@ -66,6 +72,9 @@
                                 role="tabpanel"
                                 tabindex={panel.tabIndex}
                                 data-element-id="div-panel"
+                                data-focusable
+                                onblur={handleBlur}
+                                onfocus={handleFocus}
                                 ontouchstart={handleDragStart}
                             >
                                 <template
@@ -105,7 +114,10 @@
                                             src={item.src}
                                             title={item.title}
                                             tabindex={panel.tabIndex}
+                                            data-focusable
                                             onactionclick={handleActionClick}
+                                            onblur={handleBlur}
+                                            onfocus={handleFocus}
                                             onitemclick={handleItemClick}
                                         ></c-primitive-carousel-item>
                                     </div>
@@ -149,9 +161,12 @@
                                     tabindex={paginationItem.tabIndex}
                                     title={paginationItem.tabTitle}
                                     data-element-id="a-pagination"
+                                    data-focusable
                                     data-index={paginationIndex}
                                     onanimationend={handlePaginationItemAnimationEnd}
+                                    onblur={handleBlur}
                                     onclick={handlePreventDefault}
+                                    onfocus={handleFocus}
                                 >
                                     <span class="slds-assistive-text">
                                         {paginationItem.tabTitle}
@@ -195,7 +210,10 @@
                     title={assistiveText.nextPanel}
                     type="button"
                     data-element-id="lightning-button-icon-next"
+                    data-focusable
+                    onblur={handleBlur}
                     onclick={handleNextClick}
+                    onfocus={handleFocus}
                 >
                     <c-primitive-icon
                         class="avonni-carousel__nav-icon"
