@@ -1,4 +1,3 @@
-import { LightningElement, api } from 'lwc';
 import { generateColors } from 'c/colorUtils';
 import {
     classSet,
@@ -7,9 +6,10 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
+import Color from './color';
 import grid from './grid.html';
 import list from './list.html';
-import Color from './color';
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -513,7 +513,12 @@ export default class ColorPalette extends LightningElement {
      * Private focus event handler.
      */
     handleFocus(event) {
-        event.stopPropagation();
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
 
         /**
          * The event fired when the focus is set on the palette.
@@ -542,10 +547,16 @@ export default class ColorPalette extends LightningElement {
      * Blur and private blur event handler.
      */
     handleBlur(event) {
-        event.stopPropagation();
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
 
         /**
          * The event fired when the focus is removed from the palette.
+         *
          * @event
          * @name blur
          * @public
