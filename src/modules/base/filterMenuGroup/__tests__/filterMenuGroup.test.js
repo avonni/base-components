@@ -673,6 +673,50 @@ describe('FilterMenuGroup', () => {
             });
         });
 
+        describe('blur', () => {
+            it('Fired when the focus is removed from the filter menu group', () => {
+                const handler = jest.fn();
+                element.addEventListener('blur', handler);
+
+                element.menus = MENUS;
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menus[0].dispatchEvent(new CustomEvent('blur'));
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+        });
+
+        describe('focus', () => {
+            it('Fired when the focus is set on the filter menu group', () => {
+                const handler = jest.fn();
+                element.addEventListener('focus', handler);
+
+                element.menus = MENUS;
+
+                return Promise.resolve().then(() => {
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menus[0].dispatchEvent(new CustomEvent('focus'));
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+        });
+
         describe('loadmore', () => {
             it('loadmore event', () => {
                 element.menus = MENUS;
