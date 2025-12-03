@@ -55,6 +55,7 @@
                             data-element-id="input-start-date"
                             onblur={handleBlurStartInput}
                             onclick={handleClickDateInput}
+                            onfocus={handleFocus}
                             onkeydown={handleInputKeyDown}
                         />
                         <lightning-button-icon
@@ -65,6 +66,7 @@
                             data-element-id="lightning-icon-start-date"
                             onblur={handleBlurStartButtonIcon}
                             onclick={handleClickDateInput}
+                            onfocus={handleFocus}
                             onkeydown={handleInputKeyDown}
                         ></lightning-button-icon>
                     </div>
@@ -75,6 +77,8 @@
                     >
                         <c-focus-trap
                             data-element-id="calendar-start-date-dialog"
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
                             onfocusin={handleStartCalendarFocusIn}
                             onfocusout={handleStartCalendarFocusOut}
                             onkeydown={handleCalendarDialogKeyDown}
@@ -87,7 +91,9 @@
                                 week-start-day={weekStartDay}
                                 data-element-id="calendar-start-date"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onchange={handleChangeStartDate}
+                                onfocus={handleFocus}
                             ></c-calendar>
                             <div class="slds-align_absolute-center">
                                 <lightning-button
@@ -95,7 +101,9 @@
                                     variant="base"
                                     data-element-id="select-start-today-button"
                                     data-is-focusable
+                                    onblur={handleBlur}
                                     onclick={handleSelectStartToday}
+                                    onfocus={handleFocus}
                                 ></lightning-button>
                             </div>
                         </c-focus-trap>
@@ -125,7 +133,9 @@
                         value={startTime}
                         variant="label-hidden"
                         data-element-id="lightning-input-start-time"
+                        onblur={handleBlur}
                         onchange={handleChangeStartTime}
+                        onfocus={handleFocus}
                     ></lightning-input>
                     <p if:true={readOnly} data-element-id="start-time">
                         {startTimeString}
@@ -165,6 +175,7 @@
                             data-element-id="input-end-date"
                             onblur={handleBlurEndInput}
                             onclick={handleClickDateInput}
+                            onfocus={handleFocus}
                             onkeydown={handleInputKeyDown}
                         />
                         <lightning-button-icon
@@ -175,6 +186,7 @@
                             data-element-id="lightning-icon-end-date"
                             onblur={handleBlurEndButtonIcon}
                             onclick={handleClickDateInput}
+                            onfocus={handleFocus}
                             onkeydown={handleInputKeyDown}
                         ></lightning-button-icon>
                     </div>
@@ -185,6 +197,8 @@
                     >
                         <c-focus-trap
                             data-element-id="calendar-end-date-dialog"
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
                             onfocusin={handleEndCalendarFocusIn}
                             onfocusout={handleEndCalendarFocusOut}
                             onkeydown={handleCalendarDialogKeyDown}
@@ -197,7 +211,9 @@
                                 week-start-day={weekStartDay}
                                 data-element-id="calendar-end-date"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onchange={handleChangeEndDate}
+                                onfocus={handleFocus}
                             ></c-calendar>
                             <div class="slds-align_absolute-center">
                                 <lightning-button
@@ -205,7 +221,9 @@
                                     variant="base"
                                     data-element-id="select-end-today-button"
                                     data-is-focusable
+                                    onblur={handleBlur}
                                     onclick={handleSelectEndToday}
+                                    onfocus={handleFocus}
                                 ></lightning-button>
                             </div>
                         </c-focus-trap>
@@ -234,7 +252,9 @@
                         variant="label-hidden"
                         disabled={disabled}
                         data-element-id="lightning-input-end-time"
+                        onblur={handleBlur}
                         onchange={handleChangeEndTime}
+                        onfocus={handleFocus}
                     ></lightning-input>
                     <p if:true={readOnly} data-element-id="end-time">
                         {endTimeString}
