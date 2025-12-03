@@ -1,11 +1,11 @@
-import { LightningElement, api } from 'lwc';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
-    generateUUID,
     classSet,
+    generateUUID,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { LightningElement, api } from 'lwc';
 import Item from './item';
 
 const DEFAULT_MAX = 5;
@@ -414,6 +414,21 @@ export default class Rating extends LightningElement {
     }
 
     /**
+     * Set the focus on the rating.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="button"]'
+        );
+        if (button) {
+            button.focus();
+        }
+    }
+
+    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
@@ -484,6 +499,26 @@ export default class Rating extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchBlur();
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchFocus();
+    }
+
     /**
      * Handle a click on a rating item. Update the value and dispatch the change event.
      *
@@ -509,5 +544,33 @@ export default class Rating extends LightningElement {
         });
         this.dispatchEvent(selectedEvent);
         this.initItems();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the rating.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the rating.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
