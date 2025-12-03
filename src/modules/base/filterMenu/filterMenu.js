@@ -1793,12 +1793,23 @@ export default class FilterMenu extends LightningElement {
         this.dispatchApply();
     }
 
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this.dispatchBlur();
+    }
+
     /**
      * Handle the blur of the button menu.
      */
     handleButtonBlur() {
+        this.dispatchBlur();
+
         if (this._allowBlur) {
-            this.dispatchEvent(new CustomEvent('blur'));
             this.close();
         }
     }
@@ -1818,7 +1829,7 @@ export default class FilterMenu extends LightningElement {
      */
     handleButtonFocus() {
         if (this._allowBlur) {
-            this.dispatchEvent(new CustomEvent('focus'));
+            this.dispatchFocus();
         } else {
             this._allowBlur = true;
 
@@ -1891,6 +1902,16 @@ export default class FilterMenu extends LightningElement {
                 this.focus();
             });
         }
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this.dispatchFocus();
     }
 
     /**
@@ -2144,6 +2165,12 @@ export default class FilterMenu extends LightningElement {
         this.dispatchSelect();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Dispatch the apply event.
      */
@@ -2167,6 +2194,16 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the filter menu.
+         *
+         * @event
+         * @name blur
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
     /**
      * Dispatch the close event.
      */
@@ -2180,6 +2217,16 @@ export default class FilterMenu extends LightningElement {
          * @bubbles
          */
         this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
+    }
+
+    dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the filter menu.
+         *
+         * @event
+         * @name focus
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
