@@ -5,6 +5,8 @@
             items={selectedItems}
             data-element-id="avonni-pill-container"
             onactionclick={handleSelectedItemRemove}
+            onblur={handleBlur}
+            onfocus={handleFocus}
         ></c-pill-container>
     </div>
     <button
@@ -15,7 +17,9 @@
             slds-section__title-action
             avonni-filter-menu__title-button_base
         "
-        onclick={toggleSection}
+        onblur={handleBlur}
+        onclick={handleToggleSection}
+        onfocus={handleFocus}
     >
         <lightning-icon
             icon-name={computedCollapsibleButtonIconName}
@@ -82,7 +86,9 @@
             value={searchTerm}
             autocomplete="off"
             data-element-id="lightning-input"
+            onblur={handleBlur}
             onchange={handleSearch}
+            onfocus={handleFocus}
         ></lightning-input>
 
         <p if:true={showNoResultMessage} class="slds-p-around_small">
@@ -105,7 +111,9 @@
                     selected-items={currentValue}
                     data-element-id="avonni-tree"
                     onactionclick={handleTreeActionClick}
+                    onblur={handleBlur}
                     onloadmore={handleTreeLoadMore}
+                    onfocus={handleFocus}
                     onselect={handleTreeSelect}
                 ></c-tree>
                 <c-input-choice-set
@@ -120,7 +128,9 @@
                     value={currentValue}
                     name={name}
                     data-element-id="avonni-input-choice-set"
+                    onblur={handleBlur}
                     onchange={handleChoiceSetChange}
+                    onfocus={handleFocus}
                 ></c-input-choice-set>
                 <lightning-button
                     if:true={showLoadMoreButton}
@@ -128,7 +138,9 @@
                     label="Load more"
                     variant="base"
                     data-element-id="lightning-button-load-more"
+                    onblur={handleBlur}
                     onclick={handleLoadMore}
+                    onfocus={handleFocus}
                 ></lightning-button>
             </template>
 
@@ -168,7 +180,9 @@
                     variant="label-hidden"
                     week-start-day={weekStartDay}
                     data-element-id="avonni-input-date-range"
+                    onblur={handleBlur}
                     onchange={handleDateRangeChange}
+                    onfocus={handleFocus}
                 ></c-input-date-range>
 
                 <!-- Range -->
@@ -189,7 +203,9 @@
                     value={rangeValue}
                     variant="label-hidden"
                     data-element-id="avonni-slider"
+                    onblur={handleBlur}
                     onchange={handleRangeChange}
+                    onfocus={handleFocus}
                 ></c-slider>
 
                 <!-- Time Range -->
@@ -215,7 +231,9 @@
                             variant="label-hidden"
                             data-is-focusable
                             data-element-id="lightning-input-start-time"
+                            onblur={handleBlur}
                             onchange={handleTimeRangeChange}
+                            onfocus={handleFocus}
                         ></lightning-input>
                     </div>
 
@@ -236,7 +254,9 @@
                             variant="label-hidden"
                             data-is-focusable
                             data-element-id="lightning-input-end-time"
+                            onblur={handleBlur}
                             onchange={handleTimeRangeChange}
+                            onfocus={handleFocus}
                         ></lightning-input>
                     </div>
                 </div>
@@ -258,20 +278,24 @@
     >
         <lightning-button
             class="slds-m-right_x-small"
-            variant="base"
+            disabled={disabledOrLoading}
             label={resetButtonLabel}
             title={resetButtonLabel}
+            variant="base"
             data-element-id="lightning-button-reset"
+            onblur={handleBlur}
             onclick={handleResetClick}
-            disabled={disabledOrLoading}
+            onfocus={handleFocus}
         ></lightning-button>
         <lightning-button
-            variant="brand"
+            disabled={disabledOrLoading}
             label={applyButtonLabel}
             title={applyButtonLabel}
+            variant="brand"
             data-element-id="lightning-button-apply"
+            onblur={handleBlur}
             onclick={handleApply}
-            disabled={disabledOrLoading}
+            onfocus={handleFocus}
         ></lightning-button>
     </div>
 </template>
